@@ -42,3 +42,7 @@ tsconfig.tsbuildinfo
 database-backup/
 *.zip
 database-backup/
+
+# Yarn (we use npm)
+.yarnrc.yml
+yarn.lock
