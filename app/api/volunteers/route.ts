@@ -1,9 +1,10 @@
 
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { volunteerCreateSchema } from '@/lib/validations/volunteer'
+import { ZodError } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
@@ -64,34 +65,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
     }
 
-    const {
-      memberId,
-      firstName,
-      lastName,
-      email,
-      phone,
-      skills,
-      availability,
-      ministryId
-    } = await request.json()
-
-    if (!firstName || !lastName) {
-      return NextResponse.json(
-        { message: 'Nombre y apellido son requeridos' },
-        { status: 400 }
-      )
-    }
+    // Parse and validate request body
+    const body = await request.json()
+    
+    // ✅ SECURITY FIX: Validate all input with Zod schema
+    // Prevents: XSS attacks, SQL injection, data corruption, invalid emails
+    const validated = volunteerCreateSchema.parse(body)
 
     const volunteer = await db.volunteer.create({
       data: {
-        memberId,
-        firstName,
-        lastName,
-        email,
-        phone,
-        skills: skills ? JSON.stringify(skills) : null,
-        availability: availability ? JSON.stringify(availability) : null,
-        ministryId,
+        memberId: validated.memberId || null,
+        firstName: validated.firstName,
+        lastName: validated.lastName,
+        email: validated.email || null,
+        phone: validated.phone || null,
+        // ✅ VALIDATED: skills is now guaranteed to be an array
+        skills: validated.skills?.length ? JSON.stringify(validated.skills) : null,
+        // ✅ VALIDATED: availability is now guaranteed to be a proper object
+        availability: validated.availability ? JSON.stringify(validated.availability) : null,
+        ministryId: validated.ministryId === 'no-ministry' ? null : validated.ministryId,
         churchId: session.user.churchId,
         isActive: true
       },
@@ -105,6 +97,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(volunteer, { status: 201 })
 
   } catch (error) {
+    // ✅ SECURITY FIX: User-friendly error messages for validation failures
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { 
+          message: 'Datos inválidos',
+          errors: error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        },
+        { status: 400 }
+      )
+    }
+    
     console.error('Error creating volunteer:', error)
     return NextResponse.json(
       { message: 'Error interno del servidor' },

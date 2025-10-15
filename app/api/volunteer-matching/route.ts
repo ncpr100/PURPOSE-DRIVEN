@@ -3,14 +3,22 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { volunteerMatchingSchema } from '@/lib/validations/volunteer'
+import { ZodError } from 'zod'
 
-// Smart Volunteer Matching Algorithm
-async function calculateVolunteerScore(member: any, ministryId: string, eventId?: string) {
+// ✅ PERFORMANCE FIX: Pure function - no database queries
+// Receives all data pre-fetched to eliminate N+1 query problem
+// BEFORE: 3 queries per member × 500 members = 1,500 queries
+// AFTER: 0 queries (pure function with pre-fetched data)
+function calculateVolunteerScore(
+  member: any,
+  ministry: { id: string; name: string } | null,
+  ministryId: string
+) {
   let score = 0
   let reasoning: string[] = []
 
   // Spiritual Gift Match (40% weight)
-  const ministry = await prisma.ministry.findUnique({ where: { id: ministryId } })
   if (ministry) {
     const primaryGifts = member.spiritualGifts || []
     const ministryPassions = member.ministryPassion || []
@@ -26,11 +34,8 @@ async function calculateVolunteerScore(member: any, ministryId: string, eventId?
   }
 
   // Availability Score (25% weight)
-  const availabilityMatrix = await prisma.availabilityMatrix.findUnique({
-    where: { memberId: member.id }
-  })
-  
-  if (availabilityMatrix) {
+  // Data already loaded via member.availabilityMatrix relation
+  if (member.availabilityMatrix) {
     score += 25
     reasoning.push('Tiene matriz de disponibilidad configurada')
   } else {
@@ -49,13 +54,13 @@ async function calculateVolunteerScore(member: any, ministryId: string, eventId?
     reasoning.push('Ministerio coincide con sus intereses expresados')
   }
 
-  // Recent Activity (10% weight) - simplified
-  const recentAssignments = await prisma.volunteerAssignment.count({
-    where: {
-      volunteer: { memberId: member.id },
-      date: { gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } // Last 30 days
-    }
-  })
+  // Recent Activity (10% weight)
+  // Calculate from pre-loaded volunteers.assignments data
+  const recentAssignments = member.volunteers.reduce((total: number, volunteer: any) => {
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    const recentCount = volunteer.assignments.filter((a: any) => new Date(a.date) >= thirtyDaysAgo).length
+    return total + recentCount
+  }, 0)
 
   if (recentAssignments === 0) {
     score += 10
@@ -86,13 +91,32 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    const { ministryId, eventId, maxRecommendations = 5 } = await request.json()
+    // Parse and validate request body
+    const body = await request.json()
+    
+    // ✅ SECURITY FIX: Validate matching parameters with Zod
+    // Prevents: Invalid ministry IDs, malicious maxRecommendations values
+    const validated = volunteerMatchingSchema.parse(body)
 
-    if (!ministryId) {
-      return NextResponse.json({ error: 'Ministry ID is required' }, { status: 400 })
+    // ✅ PERFORMANCE FIX: Fetch ministry ONCE before loop (eliminates N+1)
+    // BEFORE: 1 query × 500 members = 500 queries
+    // AFTER: 1 query total
+    const ministry = await prisma.ministry.findUnique({ 
+      where: { id: validated.ministryId },
+      select: { id: true, name: true }
+    })
+
+    if (!ministry) {
+      return NextResponse.json(
+        { error: 'Ministerio no encontrado' },
+        { status: 404 }
+      )
     }
 
-    // Get all active members with spiritual profiles
+    // ✅ PERFORMANCE FIX: Eager load ALL relations in single query
+    // BEFORE: Member query + (availabilityMatrix × 500) + (assignments × 500) = 1,001+ queries
+    // AFTER: 1 query with all includes
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
     const members = await prisma.member.findMany({
       where: {
         churchId: session.user.churchId,
@@ -104,7 +128,7 @@ export async function POST(request: NextRequest) {
           include: {
             assignments: {
               where: {
-                date: { gte: new Date() } // Future assignments
+                date: { gte: thirtyDaysAgo } // Last 30 days (optimized with index)
               }
             }
           }
@@ -113,10 +137,11 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // ✅ PERFORMANCE FIX: Pure function - no more database queries in loop
     // Calculate scores for each member
     const recommendations = []
     for (const member of members) {
-      const { score, reasoning } = await calculateVolunteerScore(member, ministryId, eventId)
+      const { score, reasoning } = calculateVolunteerScore(member, ministry, validated.ministryId)
       
       if (score > 20) { // Minimum threshold
         recommendations.push({
@@ -138,7 +163,7 @@ export async function POST(request: NextRequest) {
     // Sort by score (descending) and take top recommendations
     const topRecommendations = recommendations
       .sort((a, b) => b.score - a.score)
-      .slice(0, maxRecommendations)
+      .slice(0, validated.maxRecommendations)
 
     // Create recommendation records
     const createdRecommendations = await Promise.all(
@@ -146,8 +171,8 @@ export async function POST(request: NextRequest) {
         return prisma.volunteerRecommendation.create({
           data: {
             memberId: rec.memberId,
-            ministryId,
-            eventId: eventId || null,
+            ministryId: validated.ministryId,
+            eventId: validated.eventId || null,
             recommendationType: 'AUTO_MATCH',
             matchScore: rec.score,
             reasoning: { reasons: rec.reasoning },
@@ -183,6 +208,20 @@ export async function POST(request: NextRequest) {
       }
     })
   } catch (error) {
+    // ✅ SECURITY FIX: Handle validation errors with user-friendly messages
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { 
+          error: 'Datos inválidos',
+          details: error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        },
+        { status: 400 }
+      )
+    }
+    
     console.error('Error generating volunteer recommendations:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' }, 

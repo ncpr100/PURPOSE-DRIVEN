@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { spiritualProfileSchema } from '@/lib/validations/volunteer'
+import { ZodError } from 'zod'
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,185 +27,118 @@ export async function POST(request: NextRequest) {
     const requestBody = await request.json()
     console.log('📝 Request payload:', requestBody)
     
-    const {
-      memberId,
-      primaryGifts,
-      secondaryGifts,
-      spiritualCalling,
-      ministryPassions,
-      experienceLevel,
-      leadershipScore,
-      servingMotivation,
-      previousExperience,
-      trainingCompleted
-    } = requestBody
+    // ✅ SECURITY FIX: Validate all spiritual profile data with Zod
+    // Prevents: Malformed JSON, oversized payloads, invalid gift IDs, data corruption
+    const validated = spiritualProfileSchema.parse(requestBody)
+    console.log('✅ VALIDATION PASSED: Input validated successfully')
 
-    if (!memberId) {
-      console.log('❌ REJECTED: No memberId provided')
-      return NextResponse.json({ error: 'Member ID is required' }, { status: 400 })
-    }
-
-    // Create or update spiritual profile
-    console.log('🔄 PRE-UPSERT: About to create/update spiritual profile for member:', memberId)
+    // ✅ DATA INTEGRITY FIX: Wrap both operations in a transaction
+    // BEFORE: Dual-write pattern - MemberSpiritualProfile succeeds but Member update fails = data inconsistency
+    // AFTER: Both operations succeed together or both fail together (atomic operation)
+    // This fixes CRITICAL-003: Race condition in dual-write pattern
+    console.log('🔄 TRANSACTION START: About to execute atomic operation for member:', validated.memberId)
     
-    let profile;
-    try {
-      console.log('🔄 UPSERT START: Entering upsert operation...')
-      profile = await prisma.memberSpiritualProfile.upsert({
-      where: { memberId },
-      update: {
-        primaryGifts: primaryGifts || [],
-        secondaryGifts: secondaryGifts || [],
-        spiritualCalling,
-        ministryPassions: ministryPassions || [],
-        experienceLevel: experienceLevel || 1,
-        leadershipScore: leadershipScore || 1,
-        servingMotivation,
-        previousExperience: previousExperience || [],
-        trainingCompleted: trainingCompleted || [],
-        assessmentDate: new Date(),
-      },
-      create: {
-        memberId,
-        primaryGifts: primaryGifts || [],
-        secondaryGifts: secondaryGifts || [],
-        spiritualCalling,
-        ministryPassions: ministryPassions || [],
-        experienceLevel: experienceLevel || 1,
-        leadershipScore: leadershipScore || 1,
-        servingMotivation,
-        previousExperience: previousExperience || [],
-        trainingCompleted: trainingCompleted || [],
-      },
-      include: {
-        member: {
-          select: {
-            firstName: true,
-            lastName: true,
-            email: true
+    const result = await prisma.$transaction(async (tx) => {
+      console.log('🔄 TRANSACTION: Step 1 - Upsert spiritual profile...')
+      
+      // Step 1: Create or update spiritual profile
+      const profile = await tx.memberSpiritualProfile.upsert({
+        where: { memberId: validated.memberId },
+        update: {
+          primaryGifts: validated.primaryGifts,
+          secondaryGifts: validated.secondaryGifts,
+          spiritualCalling: validated.spiritualCalling,
+          ministryPassions: validated.ministryPassions,
+          experienceLevel: validated.experienceLevel,
+          leadershipScore: validated.leadershipScore || 1,
+          servingMotivation: validated.servingMotivation,
+          previousExperience: validated.previousExperience,
+          trainingCompleted: validated.trainingCompleted,
+          assessmentDate: new Date(),
+        },
+        create: {
+          memberId: validated.memberId,
+          primaryGifts: validated.primaryGifts,
+          secondaryGifts: validated.secondaryGifts,
+          spiritualCalling: validated.spiritualCalling,
+          ministryPassions: validated.ministryPassions,
+          experienceLevel: validated.experienceLevel,
+          leadershipScore: validated.leadershipScore || 1,
+          servingMotivation: validated.servingMotivation,
+          previousExperience: validated.previousExperience,
+          trainingCompleted: validated.trainingCompleted,
+        },
+        include: {
+          member: {
+            select: {
+              firstName: true,
+              lastName: true,
+              email: true
+            }
           }
         }
-      }
+      })
+      
+      console.log('✅ TRANSACTION: Step 1 complete - Profile ID:', profile.id)
+      console.log('� TRANSACTION: Step 2 - Update member table...')
+      
+      // Step 2: Update corresponding fields in Member table
+      const updatedMember = await tx.member.update({
+        where: { id: validated.memberId },
+        data: {
+          spiritualGifts: validated.primaryGifts,
+          secondaryGifts: validated.secondaryGifts,
+          spiritualCalling: validated.spiritualCalling,
+          ministryPassion: validated.ministryPassions,
+          experienceLevel: validated.experienceLevel,
+          leadershipReadiness: validated.leadershipScore || 1,
+        }
+      })
+      
+      console.log('✅ TRANSACTION: Step 2 complete - Member updated:', {
+        id: updatedMember.id,
+        name: `${updatedMember.firstName} ${updatedMember.lastName}`,
+        giftsCount: updatedMember.spiritualGifts ? (updatedMember.spiritualGifts as any[]).length : 0
+      })
+      
+      return { profile, member: updatedMember }
     })
     
-    console.log('🔄 UPSERT COMPLETE: Operation finished successfully')
-    } catch (upsertError: any) {
-      console.error('❌ UPSERT FAILED:', {
-        memberId,
-        error: upsertError?.message,
-        code: upsertError?.code,
-        meta: upsertError?.meta,
-        stack: upsertError?.stack
-      })
-      throw upsertError; // Re-throw to be caught by outer try-catch
-    }
-
-    console.log('💾 UPSERT SUCCESS: Profile created/updated with ID:', profile.id)
-    console.log('📋 UPSERT RESULT: Profile object:', JSON.stringify(profile, null, 2))
-    console.log('🔄 CHECKPOINT 1: Starting Member table update process...')
-    
-    // CRITICAL: Add server logs to response for browser visibility
-    const serverLogs = []
-    serverLogs.push('SERVER LOG: Profile upsert successful')
-    serverLogs.push('SERVER LOG: Starting Member table update...')
-
-    // CRITICAL: Wrap entire member update in separate try-catch to isolate issues
-    try {
-      console.log('🔄 CHECKPOINT 2: Inside member update try block')
-      serverLogs.push('SERVER LOG: Checkpoint 2 - Inside member update try block')
-      console.log('🔄 CHECKPOINT 3: Member ID received:', memberId)
-      serverLogs.push(`SERVER LOG: Checkpoint 3 - Member ID: ${memberId}`)
-      console.log('🔄 CHECKPOINT 4: Primary gifts received:', primaryGifts)
-      serverLogs.push(`SERVER LOG: Checkpoint 4 - Primary gifts: ${JSON.stringify(primaryGifts)}`)
-
-      // First, verify the member exists
-      console.log('🔄 CHECKPOINT 5: About to find member...')
-      serverLogs.push('SERVER LOG: Checkpoint 5 - About to find member...')
-      const existingMember = await prisma.member.findUnique({
-        where: { id: memberId }
-      })
-      
-      console.log('🔄 CHECKPOINT 6: Member query result:', existingMember ? 'FOUND' : 'NOT FOUND')
-      serverLogs.push(`SERVER LOG: Checkpoint 6 - Member query result: ${existingMember ? 'FOUND' : 'NOT FOUND'}`)
-      
-      if (!existingMember) {
-        console.error('❌ Member not found:', memberId)
-        serverLogs.push(`SERVER LOG: ERROR - Member not found: ${memberId}`)
-        // Don't return error, just log and continue - the spiritual profile was saved
-        console.warn('⚠️  Continuing without member table update')
-        serverLogs.push('SERVER LOG: WARNING - Continuing without member table update')
-      } else {
-        console.log('✅ CHECKPOINT 7: Member found:', `${existingMember.firstName} ${existingMember.lastName}`)
-        serverLogs.push(`SERVER LOG: Checkpoint 7 - Member found: ${existingMember.firstName} ${existingMember.lastName}`)
-        
-        const memberUpdateData = {
-          spiritualGifts: primaryGifts || [],
-          secondaryGifts: secondaryGifts || [],
-          spiritualCalling,
-          ministryPassion: ministryPassions || [],
-          experienceLevel: experienceLevel || 1,
-          leadershipReadiness: leadershipScore || 1,
-        }
-        
-        console.log('📝 CHECKPOINT 8: Member update data:', memberUpdateData)
-        serverLogs.push(`SERVER LOG: Checkpoint 8 - Member update data prepared`)
-        
-        console.log('🔄 CHECKPOINT 9: About to update member...')
-        serverLogs.push('SERVER LOG: Checkpoint 9 - About to update member table...')
-        const updatedMember = await prisma.member.update({
-          where: { id: memberId },
-          data: memberUpdateData
-        })
-        
-        console.log('✅ CHECKPOINT 10: Member updated successfully:', {
-          id: updatedMember.id,
-          name: `${updatedMember.firstName} ${updatedMember.lastName}`,
-          hasSpiritual: updatedMember.spiritualGifts ? (updatedMember.spiritualGifts as any[]).length : 0,
-          spiritualGifts: updatedMember.spiritualGifts,
-          secondaryGifts: updatedMember.secondaryGifts
-        })
-        serverLogs.push(`SERVER LOG: SUCCESS - Member table updated! Spiritual gifts count: ${updatedMember.spiritualGifts ? (updatedMember.spiritualGifts as any[]).length : 0}`)
-      }
-    } catch (memberUpdateError: any) {
-      console.error('❌ MEMBER UPDATE EXCEPTION at checkpoint:', {
-        memberId,
-        error: memberUpdateError?.message,
-        code: memberUpdateError?.code,
-        meta: memberUpdateError?.meta,
-        stack: memberUpdateError?.stack
-      })
-      serverLogs.push(`SERVER LOG: EXCEPTION - Member update failed: ${memberUpdateError?.message}`)
-      
-      // Don't fail the entire operation, but log the issue
-      console.warn('⚠️ Spiritual profile was saved but member table update failed')
-      serverLogs.push('SERVER LOG: WARNING - Spiritual profile was saved but member table update failed')
-    }
-
-    console.log('🔄 CHECKPOINT 11: About to trigger metrics update...')
-    
-    // Trigger metrics/cache update - this ensures smart lists reflect changes
-    try {
-      // Update any cached metrics that depend on member spiritual profiles
-      // For now, we'll just ensure the response includes a trigger for client-side cache refresh
-      console.log(`🔄 CHECKPOINT 12: Spiritual profile updated for member ${memberId}, metrics may need refresh`)
-    } catch (error) {
-      console.warn('Metrics update failed:', error)
-      // Don't fail the main operation if metrics update fails
-    }
+    console.log('✅ TRANSACTION COMPLETE: Both operations succeeded atomically')
+    console.log('💾 Profile ID:', result.profile.id, '| Member ID:', result.member.id)
 
     const response = {
       success: true,
-      profile,
+      profile: result.profile,
+      member: {
+        id: result.member.id,
+        firstName: result.member.firstName,
+        lastName: result.member.lastName,
+        spiritualGiftsCount: result.member.spiritualGifts ? (result.member.spiritualGifts as any[]).length : 0
+      },
       message: 'Perfil espiritual actualizado exitosamente',
-      refreshMetrics: true, // Flag to trigger client-side cache refresh
-      serverLogs: serverLogs // Include server logs for browser visibility
+      refreshMetrics: true
     }
 
-    console.log('🔄 CHECKPOINT 13: About to return success response...')
     console.log('📤 Final API response:', response)
-    console.log('✅ SUCCESS: Spiritual profile saved successfully')
+    console.log('✅ SUCCESS: Spiritual profile and member data saved atomically')
     return NextResponse.json(response)
   } catch (error: any) {
+    // ✅ SECURITY FIX: Handle validation errors with user-friendly messages
+    if (error instanceof ZodError) {
+      console.error('❌ VALIDATION ERROR:', error.errors)
+      return NextResponse.json(
+        { 
+          error: 'Datos inválidos',
+          details: error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        },
+        { status: 400 }
+      )
+    }
+    
     console.error('❌ MAJOR ERROR in spiritual profile API:', error)
     console.error('❌ Error stack:', error?.stack)
     console.error('❌ Error details:', {

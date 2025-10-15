@@ -1,9 +1,10 @@
 
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { volunteerAssignmentSchema } from '@/lib/validations/volunteer'
+import { ZodError } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
@@ -64,28 +65,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
     }
 
-    const {
-      volunteerId,
-      eventId,
-      title,
-      description,
-      date,
-      startTime,
-      endTime,
-      notes
-    } = await request.json()
-
-    if (!volunteerId || !title || !date || !startTime || !endTime) {
-      return NextResponse.json(
-        { message: 'Campos requeridos: volunteerId, title, date, startTime, endTime' },
-        { status: 400 }
-      )
-    }
+    // Parse and validate request body
+    const body = await request.json()
+    
+    // ✅ SECURITY FIX: Validate all assignment data with Zod
+    // Prevents: Invalid dates, malformed times, XSS attacks
+    const validated = volunteerAssignmentSchema.parse(body)
 
     // Verify volunteer belongs to the church
     const volunteer = await db.volunteer.findFirst({
       where: {
-        id: volunteerId,
+        id: validated.volunteerId,
         churchId: session.user.churchId
       }
     })
@@ -97,16 +87,66 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // ✅ BUSINESS LOGIC FIX: Check for scheduling conflicts
+    // Prevents: Double-booking volunteers at the same time
+    const assignmentDate = new Date(validated.date)
+    const conflicts = await db.volunteerAssignment.findMany({
+      where: {
+        volunteerId: validated.volunteerId,
+        date: assignmentDate,
+        status: { in: ['ASIGNADO', 'CONFIRMADO'] },
+        OR: [
+          // New assignment starts during existing
+          {
+            AND: [
+              { startTime: { lte: validated.startTime } },
+              { endTime: { gt: validated.startTime } }
+            ]
+          },
+          // New assignment ends during existing
+          {
+            AND: [
+              { startTime: { lt: validated.endTime } },
+              { endTime: { gte: validated.endTime } }
+            ]
+          },
+          // New assignment encompasses existing
+          {
+            AND: [
+              { startTime: { gte: validated.startTime } },
+              { endTime: { lte: validated.endTime } }
+            ]
+          }
+        ]
+      }
+    })
+
+    if (conflicts.length > 0) {
+      return NextResponse.json(
+        { 
+          message: 'Conflicto de horario detectado',
+          conflicts: conflicts.map(c => ({
+            id: c.id,
+            title: c.title,
+            date: c.date,
+            time: `${c.startTime} - ${c.endTime}`
+          }))
+        },
+        { status: 409 }
+      )
+    }
+
+    // ✅ No conflicts - proceed with creation
     const assignment = await db.volunteerAssignment.create({
       data: {
-        volunteerId,
-        eventId,
-        title,
-        description,
-        date: new Date(date),
-        startTime,
-        endTime,
-        notes,
+        volunteerId: validated.volunteerId,
+        eventId: validated.eventId || null,
+        title: validated.title,
+        description: validated.description,
+        date: assignmentDate,
+        startTime: validated.startTime,
+        endTime: validated.endTime,
+        notes: validated.notes,
         churchId: session.user.churchId,
         status: 'ASIGNADO'
       },
@@ -119,6 +159,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(assignment, { status: 201 })
 
   } catch (error) {
+    // ✅ SECURITY FIX: Handle validation errors with user-friendly messages
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { 
+          message: 'Datos inválidos',
+          errors: error.errors.map(e => ({
+            field: e.path.join('.'),
+            message: e.message
+          }))
+        },
+        { status: 400 }
+      )
+    }
+    
     console.error('Error creating volunteer assignment:', error)
     return NextResponse.json(
       { message: 'Error interno del servidor' },
