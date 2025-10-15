@@ -1,9 +1,11 @@
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { db as prisma } from '@/lib/db'
 import { subDays, format, startOfDay, endOfDay } from 'date-fns'
+
+// Explicitly mark the route as dynamic
+export const dynamic = 'force-dynamic';
 
 // GET /api/prayer-analytics - Get comprehensive prayer analytics
 export async function GET(request: NextRequest) {
@@ -86,7 +88,7 @@ export async function GET(request: NextRequest) {
     // Filter contacts by contact method if specified
     let filteredContacts = allContacts
     if (contactMethod !== 'all') {
-      filteredContacts = allContacts.filter(contact => contact.preferredContact === contactMethod)
+      filteredContacts = allContacts.filter((contact: any) => contact.preferredContact === contactMethod)
     }
 
     // Get prayer categories
@@ -114,9 +116,9 @@ export async function GET(request: NextRequest) {
     // Calculate overview metrics
     const overview = {
       totalRequests: prayerRequests.length,
-      approvedRequests: prayerRequests.filter(req => req.status === 'approved').length,
-      rejectedRequests: prayerRequests.filter(req => req.status === 'rejected').length,
-      pendingRequests: prayerRequests.filter(req => req.status === 'pending').length,
+      approvedRequests: prayerRequests.filter((req: any) => req.status === 'approved').length,
+      rejectedRequests: prayerRequests.filter((req: any) => req.status === 'rejected').length,
+      pendingRequests: prayerRequests.filter((req: any) => req.status === 'pending').length,
       totalContacts: allContacts.length,
       activeContacts: allContacts.length, // All contacts are considered active for now
       totalResponses: 0, // Would be calculated from actual message data
@@ -124,12 +126,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Calculate average response time from approval data
-    const approvedWithTimes = prayerRequests.filter(req => 
+    const approvedWithTimes = prayerRequests.filter((req: any) => 
       req.status === 'approved' && req.approval?.approvedAt
     )
 
     if (approvedWithTimes.length > 0) {
-      const totalResponseTime = approvedWithTimes.reduce((sum, req) => {
+      const totalResponseTime = approvedWithTimes.reduce((sum: any, req: any) => {
         const requestTime = new Date(req.createdAt).getTime()
         const approvalTime = new Date(req.approval!.approvedAt!).getTime()
         return sum + (approvalTime - requestTime)
@@ -151,12 +153,12 @@ export async function GET(request: NextRequest) {
       const dayStart = startOfDay(date)
       const dayEnd = endOfDay(date)
 
-      const dayRequests = prayerRequests.filter(req => {
+      const dayRequests = prayerRequests.filter((req: any) => {
         const reqDate = new Date(req.createdAt)
         return reqDate >= dayStart && reqDate <= dayEnd
       })
 
-      const dayContacts = allContacts.filter(contact => {
+      const dayContacts = allContacts.filter((contact: any) => {
         const contactDate = new Date(contact.createdAt)
         return contactDate >= dayStart && contactDate <= dayEnd
       })
@@ -164,14 +166,14 @@ export async function GET(request: NextRequest) {
       trends.requestsOverTime.unshift({
         date: format(date, 'yyyy-MM-dd'),
         requests: dayRequests.length,
-        approvals: dayRequests.filter(req => req.status === 'approved').length,
-        rejections: dayRequests.filter(req => req.status === 'rejected').length
+        approvals: dayRequests.filter((req: any) => req.status === 'approved').length,
+        rejections: dayRequests.filter((req: any) => req.status === 'rejected').length
       })
 
       trends.contactGrowth.unshift({
         date: format(date, 'yyyy-MM-dd'),
         newContacts: dayContacts.length,
-        totalContacts: allContacts.filter(contact => 
+        totalContacts: allContacts.filter((contact: any) => 
           new Date(contact.createdAt) <= dayEnd
         ).length
       })
@@ -186,9 +188,9 @@ export async function GET(request: NextRequest) {
     }
 
     // Process categories analytics
-    const categoryAnalytics = categories.map(category => {
-      const categoryRequests = prayerRequests.filter(req => req.categoryId === category.id)
-      const approvedInCategory = categoryRequests.filter(req => req.status === 'approved').length
+    const categoryAnalytics = categories.map((category: any) => {
+      const categoryRequests = prayerRequests.filter((req: any) => req.categoryId === category.id)
+      const approvedInCategory = categoryRequests.filter((req: any) => req.status === 'approved').length
       
       return {
         id: category.id,
@@ -209,7 +211,7 @@ export async function GET(request: NextRequest) {
       { method: 'whatsapp', count: 0, preference: 0 }
     ]
 
-    allContacts.forEach(contact => {
+    allContacts.forEach((contact: any) => {
       const methodIndex = contactMethods.findIndex(m => m.method === contact.preferredContact)
       if (methodIndex !== -1) {
         contactMethods[methodIndex].count++
@@ -225,7 +227,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Engagement metrics
-    const repeatRequesters = allContacts.filter(contact => contact.requests.length > 1).length
+    const repeatRequesters = allContacts.filter((contact: any) => contact.requests.length > 1).length
     const avgRequestsPerContact = totalContacts > 0 
       ? prayerRequests.length / totalContacts
       : 0

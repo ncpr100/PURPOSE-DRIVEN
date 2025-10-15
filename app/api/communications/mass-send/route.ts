@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
@@ -32,7 +31,7 @@ function replaceVariables(content: string, variables: Record<string, string>) {
 }
 
 // Función para obtener destinatarios basado en el grupo objetivo
-async function getRecipients(targetGroup: string, churchId: string) {
+async function getRecipients(targetGroup: string, churchId: string, recipientIds?: string[]) {
   let recipients: Array<{ name: string; phone?: string; email?: string }> = []
 
   switch (targetGroup) {
@@ -41,38 +40,56 @@ async function getRecipients(targetGroup: string, churchId: string) {
         where: { churchId, isActive: true },
         select: { firstName: true, lastName: true, phone: true, email: true }
       })
-      recipients = allMembers.map(m => ({
+      recipients = allMembers.map((m: { firstName: string; lastName: string; phone: string | null; email: string | null }) => ({
         name: `${m.firstName} ${m.lastName}`,
         phone: m.phone || undefined,
         email: m.email || undefined
       }))
       break
-    
-    case 'VOLUNTARIOS':
+    case 'volunteers':
       const volunteers = await db.volunteer.findMany({
-        where: { churchId, isActive: true },
-        select: { firstName: true, lastName: true, phone: true, email: true }
-      })
-      recipients = volunteers.map(v => ({
-        name: `${v.firstName} ${v.lastName}`,
-        phone: v.phone || undefined,
-        email: v.email || undefined
-      }))
-      break
-    
-    case 'LIDERES':
-      const leaders = await db.user.findMany({
-        where: { 
-          churchId, 
-          isActive: true,
-          role: { in: ['PASTOR', 'LIDER', 'ADMIN_IGLESIA'] }
-        },
+        where: { churchId: churchId, isActive: true },
         include: { member: true }
       })
-      recipients = leaders.map(l => ({
-        name: l.member ? `${l.member.firstName} ${l.member.lastName}` : l.name || 'Usuario',
-        phone: l.member?.phone || undefined,
-        email: l.email
+      recipients = volunteers.map((v: any) => ({
+        name: `${v.member.firstName} ${v.member.lastName}`,
+        phone: v.member.phone || undefined,
+        email: v.member.email || undefined
+      }))
+      break
+    case 'leaders':
+      const leaders = await db.member.findMany({
+        where: {
+          churchId: churchId,
+          isActive: true,
+          user: {
+            role: { in: ['PASTOR', 'LIDER'] },
+          },
+        },
+      });
+      recipients = leaders.map((l: any) => ({
+        name: `${l.firstName} ${l.lastName}`,
+        phone: l.phone || undefined,
+        email: l.email || undefined
+      }))
+      break
+    case 'custom':
+      if (!recipientIds || recipientIds.length === 0) {
+        return []
+      }
+
+      const customRecipients = await db.member.findMany({
+        where: {
+          id: { in: recipientIds },
+          churchId,
+          isActive: true
+        }
+      })
+
+      recipients = customRecipients.map((m: { firstName: string; lastName: string; phone: string | null; email: string | null }) => ({
+        name: `${m.firstName} ${m.lastName}`,
+        phone: m.phone || undefined,
+        email: m.email || undefined
       }))
       break
     
@@ -101,6 +118,7 @@ export async function POST(req: NextRequest) {
       content, 
       type, 
       targetGroup, 
+      recipientIds,
       templateId, 
       scheduledAt,
       templateVariables 
@@ -132,7 +150,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Obtener destinatarios
-    const recipients = await getRecipients(targetGroup, session.user.churchId)
+    const recipients = await getRecipients(targetGroup, session.user.churchId, recipientIds)
+
+    if (!Array.isArray(recipients)) {
+      return recipients; // Return error response from getRecipients
+    }
 
     // Crear el registro de comunicación
     const communication = await db.communication.create({
@@ -170,9 +192,9 @@ export async function POST(req: NextRequest) {
           const client = twilio(twilioConfig.accountSid, twilioConfig.authToken)
           
           // Enviar SMS a todos los destinatarios con teléfono
-          const smsPromises = recipients
-            .filter(r => r.phone)
-            .map(recipient => 
+          const smsPromises = (recipients as any[])
+            .filter((r: any) => r.phone)
+            .map((recipient: any) => 
               client.messages.create({
                 body: finalContent,
                 from: twilioConfig.phoneNumber,

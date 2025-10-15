@@ -1,5 +1,3 @@
-
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
@@ -121,20 +119,17 @@ export async function GET(request: NextRequest) {
       _count: { id: true }
     })
 
-    // Obtener nombres de categorías
-    const categoriesWithData = await Promise.all(
-      donationsByCategory.map(async (item) => {
-        const category = await db.donationCategory.findUnique({
-          where: { id: item.categoryId },
-          select: { name: true }
-        })
-        return {
-          categoryName: category?.name || 'Sin categoría',
-          amount: item._sum.amount || 0,
-          count: item._count.id
-        }
-      })
-    )
+    // Donaciones por campaña (este mes)
+    const donationsByCampaign = await db.donation.groupBy({
+      by: ['campaignId'],
+      _sum: { amount: true },
+      _count: { id: true },
+      where: {
+        churchId: session.user.churchId,
+        status: 'COMPLETADA',
+        donationDate: { gte: startOfMonth, lte: endOfMonth }
+      }
+    })
 
     // Donaciones por método de pago (este mes)
     const donationsByPaymentMethod = await db.donation.groupBy({
@@ -147,21 +142,6 @@ export async function GET(request: NextRequest) {
       _sum: { amount: true },
       _count: { id: true }
     })
-
-    // Obtener nombres de métodos de pago
-    const paymentMethodsWithData = await Promise.all(
-      donationsByPaymentMethod.map(async (item) => {
-        const paymentMethod = await db.paymentMethod.findUnique({
-          where: { id: item.paymentMethodId },
-          select: { name: true }
-        })
-        return {
-          paymentMethodName: paymentMethod?.name || 'Sin método',
-          amount: item._sum.amount || 0,
-          count: item._count.id
-        }
-      })
-    )
 
     // Top donantes (este año)
     const topDonorsQuery = await db.donation.groupBy({
@@ -179,16 +159,72 @@ export async function GET(request: NextRequest) {
       take: 10
     })
 
+    // Obtener nombres de categorías
+    const categoriesWithData = await Promise.all(
+      donationsByCategory.map(async (item: { categoryId: string | null; _sum: { amount: number | null } }) => {
+        if (!item.categoryId) {
+          return {
+            category: 'Sin Categoría',
+            amount: item._sum.amount || 0,
+          };
+        }
+        const category = await db.donationCategory.findUnique({
+          where: { id: item.categoryId },
+          select: { name: true }
+        })
+        return {
+          category: category?.name || 'Desconocido',
+          amount: item._sum.amount || 0,
+        }
+      })
+    )
+
+    const campaignsWithData = await Promise.all(
+      donationsByCampaign.map(async (item: any) => {
+        if (!item.campaignId) {
+          return {
+            campaign: 'Sin Campaña',
+            amount: item._sum.amount || 0,
+            count: item._count.id
+          };
+        }
+        const campaign = await db.donationCampaign.findUnique({
+          where: { id: item.campaignId },
+        });
+        return {
+          campaign: campaign?.title || 'Desconocido',
+          total: item._sum.amount,
+        }
+      })
+    )
+
+    const paymentMethodsWithData = await Promise.all(
+      donationsByPaymentMethod.map(async (item: any) => {
+        return {
+          method: item.paymentMethod,
+          amount: item._sum.amount || 0,
+          count: item._count.id
+        }
+      })
+    )
+
     const topDonors = await Promise.all(
-      topDonorsQuery.map(async (item) => {
+      topDonorsQuery.map(async (item: any) => {
+        if (!item.memberId) {
+          return {
+            name: 'Donante Anónimo',
+            amount: item._sum.amount || 0,
+            count: item._count.id
+          };
+        }
         const member = await db.member.findUnique({
-          where: { id: item.memberId! },
+          where: { id: item.memberId },
           select: { firstName: true, lastName: true }
         })
         return {
-          memberName: member ? `${member.firstName} ${member.lastName}` : 'Miembro desconocido',
+          name: member ? `${member.firstName} ${member.lastName}` : 'Desconocido',
           amount: item._sum.amount || 0,
-          donationsCount: item._count.id
+          count: item._count.id
         }
       })
     )
@@ -213,6 +249,7 @@ export async function GET(request: NextRequest) {
         }
       },
       byCategory: categoriesWithData,
+      byCampaign: campaignsWithData,
       byPaymentMethod: paymentMethodsWithData,
       topDonors
     }

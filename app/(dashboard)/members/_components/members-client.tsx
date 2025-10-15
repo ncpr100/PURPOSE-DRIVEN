@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -34,7 +33,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MemberForm } from '@/components/members/member-form'
+import { EnhancedMemberForm } from '@/components/members/enhanced-member-form'
 import { MemberImportDialog } from '@/components/members/member-import-dialog'
 import { 
   Plus, 
@@ -65,7 +64,6 @@ import {
   Target
 } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
-import { Member } from '@prisma/client'
 import { toast } from 'sonner'
 
 interface MembersClientProps {
@@ -74,14 +72,14 @@ interface MembersClientProps {
 }
 
 export function MembersClient({ userRole, churchId }: MembersClientProps) {
-  const [members, setMembers] = useState<Member[]>([])
-  const [filteredMembers, setFilteredMembers] = useState<Member[]>([])
+  const [members, setMembers] = useState<any[]>([])
+  const [filteredMembers, setFilteredMembers] = useState<any[]>([])
   const [volunteers, setVolunteers] = useState<any[]>([])
   const [qualificationSettings, setQualificationSettings] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isImportOpen, setIsImportOpen] = useState(false)
-  const [editingMember, setEditingMember] = useState<Member | null>(null)
+  const [editingMember, setEditingMember] = useState<any | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [genderFilter, setGenderFilter] = useState('all')
   
@@ -92,7 +90,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   
   // Volunteer Integration State
   const [isVolunteerRecruitOpen, setIsVolunteerRecruitOpen] = useState(false)
-  const [selectedMemberForVolunteer, setSelectedMemberForVolunteer] = useState<Member | null>(null)
+  const [selectedMemberForVolunteer, setSelectedMemberForVolunteer] = useState<any | null>(null)
   const [volunteerRecommendations, setVolunteerRecommendations] = useState<any[]>([])
   const [showLeadershipTrack, setShowLeadershipTrack] = useState(false)
 
@@ -157,7 +155,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   }
 
   // Handle volunteer recruitment for a member
-  const handleVolunteerRecruitment = async (member: Member) => {
+  const handleVolunteerRecruitment = async (member: any) => {
     setSelectedMemberForVolunteer(member)
     
     // Fetch volunteer recommendations for this member
@@ -394,7 +392,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
     }
   }
 
-  const handleEdit = (member: Member) => {
+  const handleEdit = (member: any) => {
     setEditingMember(member)
     setIsFormOpen(true)
   }
@@ -516,7 +514,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
             {editingMember ? 'Editar Miembro' : 'Nuevo Miembro'}
           </h1>
         </div>
-        <MemberForm
+        <EnhancedMemberForm
           member={editingMember}
           onSave={handleSaveMember}
           onCancel={() => {

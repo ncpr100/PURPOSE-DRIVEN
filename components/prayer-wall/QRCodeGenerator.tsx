@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
@@ -58,7 +57,7 @@ interface QRCodeData {
 }
 
 interface QRCodeGeneratorProps {
-  qrCode?: QRCodeData
+  qrCode?: Partial<QRCodeData>
   forms: PrayerForm[]
   onSave: (qrCodeData: QRCodeData) => Promise<void>
   onCancel: () => void
@@ -385,7 +384,7 @@ export function QRCodeGenerator({ qrCode, forms, onSave, onCancel }: QRCodeGener
                   ...prev,
                   design: { ...prev.design, logo: e.target.value }
                 }))}
-                placeholder="https://i.pinimg.com/originals/0e/14/4c/0e144ca05ee70479dcd63915d1fb3ad0.jpg"
+                placeholder="https://example.com/logo.png"
               />
             </div>
 

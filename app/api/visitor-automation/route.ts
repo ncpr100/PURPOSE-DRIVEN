@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Check-in ID required' }, { status: 400 })
     }
 
-    const { prisma } = await import('@/lib/prisma')
+    const { db: prisma } = await import('@/lib/db')
     
     const checkIn = await prisma.checkIn.findUnique({
       where: { id: checkInId },

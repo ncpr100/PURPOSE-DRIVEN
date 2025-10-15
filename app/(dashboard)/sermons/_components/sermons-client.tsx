@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -19,7 +18,6 @@ import {
   Sparkles
 } from 'lucide-react'
 import { formatDate, truncateText } from '@/lib/utils'
-import { Sermon } from '@prisma/client'
 
 interface SermonsClientProps {
   userRole: string
@@ -27,13 +25,13 @@ interface SermonsClientProps {
 }
 
 export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
-  const [sermons, setSermons] = useState<Sermon[]>([])
-  const [filteredSermons, setFilteredSermons] = useState<Sermon[]>([])
+  const [sermons, setSermons] = useState<any[]>([])
+  const [filteredSermons, setFilteredSermons] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [showAssistant, setShowAssistant] = useState(false)
   const [showSpanishAssistant, setShowSpanishAssistant] = useState(false)
-  const [viewingSermon, setViewingSermon] = useState<Sermon | null>(null)
+  const [viewingSermon, setViewingSermon] = useState<any | null>(null)
 
   useEffect(() => {
     fetchSermons()

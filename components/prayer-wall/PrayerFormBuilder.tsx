@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -71,7 +70,7 @@ interface PrayerFormData {
 }
 
 interface PrayerFormBuilderProps {
-  form?: PrayerFormData
+  form?: Partial<PrayerFormData>
   onSave: (formData: PrayerFormData) => Promise<void>
   onCancel: () => void
 }

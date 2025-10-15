@@ -92,7 +92,8 @@
 // Current: Centralized data management
 /lib/bible-config.ts     → Version definitions
 /lib/bible-data.ts       → Verse content storage  
-/lib/bible-api-service.ts → API integration layer
+/lib/services/bible-service.ts → Unified service for free and premium Bible verse fetching.
+/lib/premium-bible-api.ts → API integration layer for premium services.
 
 // Future: Hybrid approach
 Local Data + External APIs + Cache Layer

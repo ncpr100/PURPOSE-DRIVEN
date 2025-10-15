@@ -1,8 +1,9 @@
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { db as prisma } from '@/lib/db'
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -20,7 +21,7 @@ export async function GET() {
     })
 
     // Group by category for easier UI consumption
-    const giftsByCategory = spiritualGifts.reduce((acc, gift) => {
+    const giftsByCategory = spiritualGifts.reduce((acc: any, gift: any) => {
       if (!acc[gift.category]) {
         acc[gift.category] = []
       }

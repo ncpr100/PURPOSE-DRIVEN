@@ -1,8 +1,7 @@
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { db as prisma } from '@/lib/db'
 import { 
   emailQueue, 
   renderEmailTemplate,
@@ -97,7 +96,7 @@ export async function POST(request: NextRequest) {
       })
 
       // Filter users that should receive digest
-      const eligibleUsers = users.filter(user => {
+      const eligibleUsers = users.filter((user: any) => {
         const preferences = user.notificationPreferences
         if (!preferences) return false
         
@@ -105,12 +104,7 @@ export async function POST(request: NextRequest) {
       })
 
       if (eligibleUsers.length === 0) {
-        results.push({
-          churchId: church.id,
-          churchName: churchDetails.name,
-          sent: 0,
-          reason: 'No eligible users'
-        })
+        console.log(`No eligible users for ${validatedData.period} digest in church ${churchDetails.name}`)
         continue
       }
 
@@ -125,8 +119,8 @@ export async function POST(request: NextRequest) {
           // Only include notifications that would be sent via email
           OR: [
             { isGlobal: true },
-            { targetRole: { in: eligibleUsers.map(u => u.role) } },
-            { targetUser: { in: eligibleUsers.map(u => u.id) } }
+            { targetRole: { in: eligibleUsers.map((u: any) => u.role) } },
+            { targetUser: { in: eligibleUsers.map((u: any) => u.id) } }
           ]
         },
         orderBy: {
@@ -145,9 +139,9 @@ export async function POST(request: NextRequest) {
       }
 
       // Prepare digest emails for each eligible user
-      const emails = eligibleUsers.map(user => {
+      const emails = eligibleUsers.map((user: any) => {
         // Filter notifications relevant to this user
-        const userNotifications = notifications.filter(notification => {
+        const userNotifications = notifications.filter((notification: any) => {
           if (notification.isGlobal) return true
           if (notification.targetUser === user.id) return true
           if (notification.targetRole === user.role) return true
@@ -165,7 +159,7 @@ export async function POST(request: NextRequest) {
             name: churchDetails.name,
             id: church.id
           },
-          notifications: userNotifications.map(n => ({
+          notifications: userNotifications.map((n: any) => ({
             title: n.title,
             message: n.message,
             type: n.type as any,
@@ -307,30 +301,21 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    return NextResponse.json({
-      period,
-      dateRange: {
-        start: startDate.toISOString(),
-        end: endDate.toISOString()
-      },
-      church: church.name,
-      user: {
-        name: user.name,
-        email: session.user.email
-      },
-      notifications: notifications.map(n => ({
+    // Ejemplo de cómo se verían los datos para el email
+    const emailData = {
+      churchName: "Iglesia de Ejemplo",
+      userName: "Admin",
+      frequency: "Diario",
+      notifications: notifications.map((n: any) => ({
         id: n.id,
-        title: n.title,
         message: n.message,
         type: n.type,
-        category: n.category,
-        priority: n.priority,
-        actionUrl: n.actionUrl,
-        actionLabel: n.actionLabel,
-        createdAt: n.createdAt.toISOString()
-      })),
-      preview: notifications.length > 0
-    })
+        createdAt: n.createdAt,
+        url: n.url
+      }))
+    };
+
+    return NextResponse.json(emailData)
 
   } catch (error) {
     console.error('Error getting digest preview:', error)

@@ -1,9 +1,11 @@
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { db as prisma } from '@/lib/db'
 import { subDays, format } from 'date-fns'
+
+// Mark the route as dynamic
+export const dynamic = 'force-dynamic';
 
 // GET /api/prayer-analytics/export - Export prayer analytics data
 export async function GET(request: NextRequest) {
@@ -72,7 +74,7 @@ export async function GET(request: NextRequest) {
     // Filter by contact method if specified
     let filteredRequests = prayerRequests
     if (contactMethod !== 'all') {
-      filteredRequests = prayerRequests.filter(req => 
+      filteredRequests = prayerRequests.filter((req: any) => 
         req.contact?.preferredContact === contactMethod
       )
     }
@@ -96,7 +98,7 @@ export async function GET(request: NextRequest) {
         'Notas de Aprobación'
       ]
 
-      const rows = filteredRequests.map(req => [
+      const rows = filteredRequests.map((req: any) => [
         req.id,
         format(new Date(req.createdAt), 'yyyy-MM-dd HH:mm:ss'),
         req.status,
@@ -115,7 +117,7 @@ export async function GET(request: NextRequest) {
 
       const csvContent = [
         headers.join(','),
-        ...rows.map(row => row.join(','))
+        ...rows.map((row: any) => row.join(','))
       ].join('\n')
 
       // Add BOM for proper UTF-8 encoding in Excel
@@ -144,12 +146,12 @@ export async function GET(request: NextRequest) {
         },
         summary: {
           totalRequests: filteredRequests.length,
-          approvedRequests: filteredRequests.filter(req => req.status === 'approved').length,
-          rejectedRequests: filteredRequests.filter(req => req.status === 'rejected').length,
-          pendingRequests: filteredRequests.filter(req => req.status === 'pending').length,
-          uniqueContacts: new Set(filteredRequests.map(req => req.contactId)).size
+          approvedRequests: filteredRequests.filter((req: any) => req.status === 'approved').length,
+          rejectedRequests: filteredRequests.filter((req: any) => req.status === 'rejected').length,
+          pendingRequests: filteredRequests.filter((req: any) => req.status === 'pending').length,
+          uniqueContacts: new Set(filteredRequests.map((req: any) => req.contactId)).size
         },
-        requests: filteredRequests.map(req => ({
+        requests: filteredRequests.map((req: any) => ({
           id: req.id,
           createdAt: req.createdAt,
           status: req.status,

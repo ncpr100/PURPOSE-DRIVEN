@@ -2,7 +2,7 @@
 // Push Notifications Service
 // Kḥesed-tek Church Management Systems
 
-import { prisma } from '@/lib/prisma'
+import { db } from '@/lib/db';
 
 // Types for push notifications
 export interface PushSubscription {
@@ -61,7 +61,7 @@ export class PushNotificationService {
   ): Promise<void> {
     try {
       // Check if subscription already exists
-      const existingSubscription = await prisma.pushSubscription.findFirst({
+      const existingSubscription = await db.pushSubscription.findFirst({
         where: {
           userId,
           endpoint: subscription.endpoint
@@ -70,7 +70,7 @@ export class PushNotificationService {
 
       if (existingSubscription) {
         // Update existing subscription
-        await prisma.pushSubscription.update({
+        await db.pushSubscription.update({
           where: { id: existingSubscription.id },
           data: {
             p256dh: subscription.keys.p256dh,
@@ -84,7 +84,7 @@ export class PushNotificationService {
         })
       } else {
         // Create new subscription
-        await prisma.pushSubscription.create({
+        await db.pushSubscription.create({
           data: {
             userId,
             churchId,
@@ -111,7 +111,7 @@ export class PushNotificationService {
    */
   static async removeSubscription(userId: string, endpoint: string): Promise<void> {
     try {
-      await prisma.pushSubscription.updateMany({
+      await db.pushSubscription.updateMany({
         where: {
           userId,
           endpoint
@@ -137,7 +137,7 @@ export class PushNotificationService {
   ): Promise<{ success: number; failed: number }> {
     try {
       // Get user's active subscriptions
-      const subscriptions = await prisma.pushSubscription.findMany({
+      const subscriptions = await db.pushSubscription.findMany({
         where: {
           userId,
           isActive: true
@@ -227,7 +227,7 @@ export class PushNotificationService {
         }
       }
 
-      const users = await prisma.user.findMany({
+      const users = await db.user.findMany({
         where: whereClause,
         select: { id: true }
       })
@@ -313,18 +313,18 @@ export class PushNotificationService {
         platformStats,
         recentActivity
       ] = await Promise.all([
-        prisma.pushSubscription.count({
+        db.pushSubscription.count({
           where: { churchId }
         }),
-        prisma.pushSubscription.count({
+        db.pushSubscription.count({
           where: { churchId, isActive: true }
         }),
-        prisma.pushSubscription.groupBy({
+        db.pushSubscription.groupBy({
           by: ['platform'],
           where: { churchId, isActive: true },
           _count: true
         }),
-        prisma.pushSubscription.count({
+        db.pushSubscription.count({
           where: {
             churchId,
             isActive: true,

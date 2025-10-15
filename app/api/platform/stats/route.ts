@@ -1,10 +1,11 @@
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
+
+export const dynamic = 'force-dynamic';
 
 // GET - Obtener estadísticas generales de la plataforma (SUPER_ADMIN)
 export async function GET(request: NextRequest) {
@@ -137,7 +138,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Count requests by status
-    websiteRequests.forEach(group => {
+    websiteRequests.forEach((group: { status: string; _count: { status: number } }) => {
       const status = group.status.toLowerCase().replace('_', '')
       if (status === 'pending') websiteStats.pending = group._count.status
       if (status === 'inprogress') websiteStats.inProgress = group._count.status
@@ -150,7 +151,7 @@ export async function GET(request: NextRequest) {
       let totalRevenue = 0
       let totalCompletionDays = 0
 
-      completedWebsiteRequests.forEach(request => {
+      completedWebsiteRequests.forEach((request: any) => {
         const revenue = request.finalPrice || request.estimatedPrice || 0
         totalRevenue += revenue
 

@@ -5,6 +5,30 @@
 
 ---
 
+## ✨ ¿Qué hay de nuevo? (Resumen de Cambios)
+
+*   **Nuevo Logo Corporativo**: Se ha implementado un nuevo logo en toda la plataforma para unificar la identidad de marca.
+*   **Módulo de Comunicaciones Unificado**: Las funcionalidades de "Comunicaciones" e "Integraciones" se han consolidado en un único módulo con 5 pestañas para una gestión centralizada.
+*   **Branding Corregido**: Se ha estandarizado el nombre del producto a "Kḥesed-tek Church Management Systems" en toda la aplicación.
+
+---
+
+## 📚 Tabla de Contenidos
+
+1.  [Resumen Ejecutivo de Actualizaciones](#-resumen-ejecutivo-de-actualizaciones)
+2.  [Actualización 1: Implementación de Logo Corporativo](#-actualización-1-implementación-de-logo-corporativo)
+3.  [Actualización 2: Consolidación del Módulo Comunicaciones](#-actualización-2-consolidación-del-módulo-comunicaciones)
+4.  [Actualización 3: Corrección de Branding Corporativo](#-actualización-3-corrección-de-branding-corporativo)
+5.  [Consideraciones Técnicas para Super Admin](#-consideraciones-técnicas-para-super-admin)
+6.  [Mantenimiento y Updates Futuros](#-mantenimiento-y-updates-futuros)
+7.  [Impacto en Rendimiento](#-impacto-en-rendimiento)
+8.  [Deployment Checklist](#-deployment-checklist)
+9.  [Preguntas Frecuentes (FAQ)](#-preguntas-frecuentes-faq)
+10. [Troubleshooting](#-troubleshooting)
+11. [Métricas de Éxito](#-métricas-de-éxito)
+
+---
+
 ## 📋 RESUMEN EJECUTIVO DE ACTUALIZACIONES
 
 Esta documentación técnica detalla las actualizaciones implementadas en la plataforma Kḥesed-tek Church Management Systems, incluyendo impactos técnicos, cambios en la arquitectura y consideraciones administrativas.
@@ -146,28 +170,28 @@ testMessage: 'Mensaje de prueba desde Kḥesed-tek Church Management Systems'
 ## 🔧 CONSIDERACIONES TÉCNICAS PARA SUPER ADMIN
 
 ### Performance y Caching:
-- **Browser Cache**: Usuarios podrían necesitar limpiar cache para ver logo
-- **CDN**: Nuevo logo se sirve eficientemente desde `/public`
-- **PWA**: Usuarios móviles verán iconos actualizados al reinstalar
+- **Browser Cache**: Usuarios podrían necesitar limpiar cache para ver logo.
+- **CDN**: Nuevo logo se sirve eficientemente desde `/public`.
+- **PWA**: Usuarios móviles verán iconos actualizados al reinstalar.
 
 ### Monitoreo y Analytics:
-- **Logo Loading**: Monitorear tiempos de carga de imágenes
-- **User Experience**: Verificar que logos sean visibles en todos los dispositivos
-- **PWA Adoption**: Seguimiento de reinstalaciones con nuevos iconos
+- **Logo Loading**: Monitorear tiempos de carga de imágenes.
+- **User Experience**: Verificar que logos sean visibles en todos los dispositivos.
+- **PWA Adoption**: Seguimiento de reinstalaciones con nuevos iconos.
 
 ### Seguridad:
-- **No impact**: Cambios no afectan autenticación o permisos
-- **Asset Security**: Logo servido desde directorio público seguro
-- **Data Integrity**: Sin cambios en base de datos o modelos
+- **No impact**: Cambios no afectan autenticación o permisos.
+- **Asset Security**: Logo servido desde directorio público seguro.
+- **Data Integrity**: Sin cambios en base de datos o modelos.
 
 ---
 
 ## 🗄️ MANTENIMIENTO Y UPDATES FUTUROS
 
 ### Respaldos:
-- **Componentes originales**: Respaldados antes de modificación
-- **Configuraciones**: Settings preservados durante consolidación
-- **Datos**: Sin pérdida de información durante updates
+- **Componentes originales**: Respaldados antes de modificación.
+- **Configuraciones**: Settings preservados durante consolidación.
+- **Datos**: Sin pérdida de información durante updates.
 
 ### Procedimientos de Rollback:
 ```bash
@@ -176,25 +200,25 @@ testMessage: 'Mensaje de prueba desde Kḥesed-tek Church Management Systems'
 ```
 
 ### Testing Requerido:
-- **Navegadores**: Verificar compatibilidad cross-browser del logo
-- **Dispositivos móviles**: Confirmar responsive design
-- **PWA**: Validar instalación en dispositivos móviles
-- **Email**: Confirmar nombre correcto en comunicaciones
+- **Navegadores**: Verificar compatibilidad cross-browser del logo.
+- **Dispositivos móviles**: Confirmar responsive design.
+- **PWA**: Validar instalación en dispositivos móviles.
+- **Email**: Confirmar nombre correcto en comunicaciones.
 
 ---
 
 ## 📊 IMPACTO EN RENDIMIENTO
 
 ### Métricas de Rendimiento:
-- **Bundle Size**: Incremento mínimo por componente Logo
-- **Image Loading**: Optimización automática Next.js
-- **First Paint**: Sin impacto significativo en velocidad inicial
-- **SEO Score**: Mejora por meta-title correcto
+- **Bundle Size**: Incremento mínimo por componente Logo.
+- **Image Loading**: Optimización automática Next.js.
+- **First Paint**: Sin impacto significativo en velocidad inicial.
+- **SEO Score**: Mejora por meta-title correcto.
 
 ### Resource Usage:
-- **Memory**: Uso mínimo adicional por imagen logo
-- **Bandwidth**: Carga única del logo, cached posteriormente
-- **CPU**: Sin impacto en procesamiento del servidor
+- **Memory**: Uso mínimo adicional por imagen logo.
+- **Bandwidth**: Carga única del logo, cached posteriormente.
+- **CPU**: Sin impacto en procesamiento del servidor.
 
 ---
 
@@ -208,17 +232,33 @@ testMessage: 'Mensaje de prueba desde Kḥesed-tek Church Management Systems'
 - [x] PWA manifest actualizado con nuevos iconos
 
 ### Post-deployment:
-- [ ] Verificar logo visible en header y sidebar
-- [ ] Confirmar 5 tabs en módulo Comunicaciones
-- [ ] Validar que navegación "Integraciones" no existe
-- [ ] Probar envío masivo y configuración de servicios
-- [ ] Verificar título correcto en browser tabs
+- [ ] Verificar logo visible en header y sidebar.
+- [ ] Confirmar 5 tabs en módulo Comunicaciones.
+- [ ] Validar que navegación "Integraciones" no existe.
+- [ ] Probar envío masivo y configuración de servicios.
+- [ ] Verificar título correcto en browser tabs.
 
 ### User Communication:
-- [ ] Manual de usuario distribuido
-- [ ] Administradores de iglesia notificados
-- [ ] Documentación técnica actualizada
-- [ ] Support team entrenado en nuevas funciones
+- [ ] Manual de usuario distribuido.
+- [ ] Administradores de iglesia notificados.
+- [ ] Documentación técnica actualizada.
+- [ ] Support team entrenado en nuevas funciones.
+
+---
+
+## ❓ PREGUNTAS FRECUENTES (FAQ)
+
+**P1: ¿Por qué se eliminó el módulo de "Integraciones" del menú?**
+> **R:** No se eliminó, se consolidó. Todas sus funciones ahora residen en la pestaña **"Configurar"** dentro del módulo **"Comunicaciones"**. Este cambio centraliza la gestión de comunicaciones y reduce la redundancia en la navegación.
+
+**P2: ¿Se perdieron las configuraciones de API keys de los servicios (Mailgun, Twilio) durante la consolidación?**
+> **R:** No. Todas las configuraciones existentes se han mantenido intactas. Puede verificarlas y probarlas en **Comunicaciones > Configurar**.
+
+**P3: Un usuario reporta que no ve el nuevo logo. ¿Qué debo hacer?**
+> **R:** El problema más común es el caché del navegador. Indique al usuario que realice una recarga forzada (Ctrl+F5 o Cmd+Shift+R). Si el problema persiste, verifique los logs del servidor en busca de errores de carga de assets.
+
+**P4: ¿El cambio de nombre a "Church Management Systems" afecta el SEO?**
+> **R:** Sí, positivamente. El nuevo nombre es más descriptivo y específico, lo que puede mejorar el ranking en motores de búsqueda para términos relacionados con la gestión de iglesias.
 
 ---
 
@@ -228,44 +268,44 @@ testMessage: 'Mensaje de prueba desde Kḥesed-tek Church Management Systems'
 
 #### Logo no aparece:
 ```bash
-# Verificar archivo existe
+# 1. Verificar que el archivo existe en el servidor
 ls -la /home/ubuntu/khesed_tek_church_systems/app/public/logo.png
 
-# Limpiar cache de Next.js
-rm -rf .next/cache
+# 2. Forzar la limpieza del caché de Next.js y reconstruir
+rm -rf .next/cache && npm run build
 ```
 
-#### Tab Comunicaciones no funciona:
+#### Tab "Configurar" en Comunicaciones no funciona:
 ```bash
-# Verificar componente consolidado
+# Verificar que el componente consolidado está presente
 ls -la app/(dashboard)/communications/_components/communications-client.tsx
 ```
 
-#### Branding incorrecto:
+#### Branding incorrecto persiste en alguna parte:
 ```bash
-# Buscar referencias a "Church Systems"
+# Buscar cualquier referencia restante al nombre antiguo
 grep -r "Church Systems" . --exclude-dir=node_modules
 ```
 
 ### Logs a Monitorear:
-- **Image loading errors**: Next.js console para problemas de logo
-- **API errors**: Endpoints de integrations para funcionalidad consolidada
-- **Navigation errors**: Router issues por navegación modificada
+- **Errores de carga de imágenes**: Revise la consola de Next.js para problemas relacionados con el logo.
+- **Errores de API**: Monitoree los endpoints de integraciones para asegurar que la funcionalidad consolidada opera correctamente.
+- **Errores de Navegación**: Esté atento a problemas con el router debido a la modificación de la navegación.
 
 ---
 
 ## 📈 SUCCESS METRICS
 
 ### KPIs para Medir Éxito:
-- **Logo Visibility**: 100% de usuarios ven nuevo logo
-- **Feature Adoption**: Uso del nuevo tab "Masivo" y "Configurar"
-- **Support Tickets**: Reducción de confusión por navegación duplicada
-- **User Satisfaction**: Feedback positivo sobre navegación unificada
+- **Visibilidad del Logo**: 100% de los usuarios ven el nuevo logo correctamente.
+- **Adopción de Funciones**: Incremento en el uso de las pestañas "Masivo" y "Configurar".
+- **Tickets de Soporte**: Reducción en tickets relacionados con confusión por navegación duplicada.
+- **Satisfacción del Usuario**: Feedback positivo sobre la experiencia de navegación unificada.
 
 ### Monitoreo Continuo:
-- **Performance**: Tiempo de carga de páginas con nuevo logo
-- **User Behavior**: Analytics de uso de tabs consolidados
-- **Error Rate**: Reducción de errores por navegación simplificada
+- **Performance**: Vigilar el tiempo de carga de las páginas que incluyen el nuevo logo.
+- **Comportamiento del Usuario**: Analizar el uso de las pestañas consolidadas.
+- **Tasa de Errores**: Observar una reducción de errores de navegación y de API.
 
 ---
 

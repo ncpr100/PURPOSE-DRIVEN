@@ -1,5 +1,5 @@
 
-import { prisma } from '@/lib/prisma'
+import { db } from '@/lib/db'
 import { 
   AutomationTriggerType, 
   AutomationConditionType, 
@@ -44,7 +44,6 @@ export class AutomationEngine {
 
       // Find matching automation rules for this trigger type and church
       const matchingRules = await this.findMatchingRules(triggerData)
-
       if (matchingRules.length === 0) {
         console.log(`📋 No automation rules found for trigger: ${triggerData.type}`)
         return
@@ -67,7 +66,7 @@ export class AutomationEngine {
    * Find automation rules that match the trigger type and church
    */
   private static async findMatchingRules(triggerData: TriggerData): Promise<AutomationRuleWithDetails[]> {
-    const rules = await prisma.automationRule.findMany({
+    const rules = await db.automationRule.findMany({
       where: {
         churchId: triggerData.churchId,
         isActive: true,
@@ -102,11 +101,13 @@ export class AutomationEngine {
    */
   private static async executeRule(rule: AutomationRuleWithDetails, triggerData: TriggerData): Promise<void> {
     // Create execution record
-    const execution = await prisma.automationRuleExecution.create({
+    const execution = await db.automationExecution.create({
       data: {
-        ruleId: rule.id,
+        automationId: rule.id,
         triggerData: triggerData as any,
-        status: 'RUNNING'
+        status: 'RUNNING',
+        churchId: rule.churchId,
+        results: ""
       }
     })
 
@@ -143,7 +144,7 @@ export class AutomationEngine {
       await this.updateExecution(execution.id, 'SUCCESS', actionResults, null, duration)
 
       // Update rule execution count and last executed time
-      await prisma.automationRule.update({
+      await db.automationRule.update({
         where: { id: rule.id },
         data: {
           executionCount: { increment: 1 },
@@ -157,12 +158,12 @@ export class AutomationEngine {
       console.error(`Error executing automation rule ${rule.name}:`, error)
       
       // Update execution record with error
-      await prisma.automationRuleExecution.update({
+      await db.automationExecution.update({
         where: { id: execution.id },
         data: {
           status: 'FAILED',
-          error: error instanceof Error ? error.message : 'Unknown error',
-          executedAt: new Date()
+          results: error instanceof Error ? error.message : 'Unknown error',
+          completedAt: new Date()
         }
       })
     }
@@ -366,7 +367,7 @@ export class AutomationEngine {
   private static async executeNotificationAction(config: any, triggerData: TriggerData): Promise<any> {
     try {
       // Create notification in database
-      const notification = await prisma.notification.create({
+      const notification = await db.notification.create({
         data: {
           title: this.interpolateTemplate(config.title, triggerData),
           message: this.interpolateTemplate(config.message, triggerData),
@@ -541,14 +542,12 @@ export class AutomationEngine {
     error?: string | null,
     duration?: number
   ): Promise<void> {
-    await prisma.automationRuleExecution.update({
+    await db.automationExecution.update({
       where: { id: executionId },
       data: {
         status,
-        result: result || null,
-        error,
-        executedAt: new Date(),
-        duration
+        results: result ? JSON.stringify(result) : (error || null),
+        completedAt: new Date(),
       }
     })
   }

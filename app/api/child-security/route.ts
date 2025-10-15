@@ -81,7 +81,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Default: return basic security info
-    const { prisma } = await import('@/lib/prisma')
+    const { db: prisma } = await import('@/lib/db')
     
     const checkIn = await prisma.childCheckIn.findUnique({
       where: { id: checkInId },

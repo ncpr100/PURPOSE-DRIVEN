@@ -1,8 +1,10 @@
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { db as prisma } from '@/lib/db'
+
+// Marking the route as dynamic
+export const dynamic = 'force-dynamic';
 
 // GET - Fetch support contact information
 export async function GET() {

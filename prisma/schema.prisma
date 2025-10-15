@@ -1,7 +1,6 @@
 generator client {
     provider = "prisma-client-js"
     binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
-    output = "/home/ubuntu/khesed_tek_church_systems/app/node_modules/.prisma/client"
 }
 
 datasource db {
@@ -130,7 +129,7 @@ model Ministry {
   churchId    String
   isActive    Boolean     @default(true)
   createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  updatedAt   DateTime    @default(now())
   members     Member[]
   church      Church      @relation(fields: [churchId], references: [id], onDelete: Cascade)
   volunteers  Volunteer[]
@@ -149,7 +148,7 @@ model Permission {
   conditions      String?
   isActive        Boolean          @default(true)
   createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  updatedAt       DateTime         @default(now())
   rolePermissions RolePermission[]
   userPermissions UserPermission[]
 
@@ -166,7 +165,7 @@ model Role {
   isActive        Boolean             @default(true)
   priority        Int                 @default(0)
   createdAt       DateTime            @default(now())
-  updatedAt       DateTime            @updatedAt
+  updatedAt       DateTime            @default(now())
   rolePermissions RolePermission[]
   church          Church?             @relation(fields: [churchId], references: [id], onDelete: Cascade)
   userRoles       UserRole_Advanced[]
@@ -196,7 +195,7 @@ model UserPermission {
   conditions   String?
   expiresAt    DateTime?
   createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  updatedAt    DateTime   @default(now())
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -211,7 +210,7 @@ model UserRole_Advanced {
   isActive  Boolean   @default(true)
   expiresAt DateTime?
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime  @default(now())
   role      Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -295,7 +294,7 @@ model Member {
   emergencyContact      String?         // Emergency contact info
   
   createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  updatedAt      DateTime    @default(now())
   donations      Donation[]
   church         Church      @relation(fields: [churchId], references: [id], onDelete: Cascade)
   ministry       Ministry?   @relation(fields: [ministryId], references: [id])
@@ -319,7 +318,7 @@ model Sermon {
   churchId  String
   isPublic  Boolean   @default(false)
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime  @default(now())
   church    Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@map("sermons")
@@ -335,7 +334,7 @@ model Event {
   churchId             String
   isPublic             Boolean                    @default(true)
   createdAt            DateTime                   @default(now())
-  updatedAt            DateTime                   @updatedAt
+  updatedAt            DateTime                   @default(now())
   checkIns             CheckIn[]
   childrenCheckIns     ChildCheckIn[]
   resourceReservations EventResourceReservation[]
@@ -359,7 +358,7 @@ model Volunteer {
   churchId     String
   isActive     Boolean               @default(true)
   createdAt    DateTime              @default(now())
-  updatedAt    DateTime              @updatedAt
+  updatedAt    DateTime              @default(now())
   assignments  VolunteerAssignment[]
   church       Church                @relation(fields: [churchId], references: [id], onDelete: Cascade)
   member       Member?               @relation(fields: [memberId], references: [id])
@@ -382,7 +381,7 @@ model VolunteerAssignment {
   notes       String?
   churchId    String
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime  @default(now())
   event       Event?    @relation(fields: [eventId], references: [id])
   volunteer   Volunteer @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
 
@@ -419,6 +418,7 @@ model CheckIn {
   event           Event?            @relation(fields: [eventId], references: [id])
   followUps       VisitorFollowUp[]
 
+  @@index([checkedInAt])
   @@map("check_ins")
 }
 
@@ -433,7 +433,7 @@ model VisitorFollowUp {
   assignedTo    String?
   churchId      String
   createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  updatedAt     DateTime  @default(now())
   
   // Enhanced automation fields
   automationRuleId String?    // Link to automation that created this follow-up
@@ -449,6 +449,8 @@ model VisitorFollowUp {
   checkIn       CheckIn   @relation(fields: [checkInId], references: [id], onDelete: Cascade)
   church        Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
+  @@index([status])
+  @@index([followUpType])
   @@map("visitor_follow_ups")
 }
 
@@ -472,7 +474,7 @@ model ChildCheckIn {
   eventId          String?
   churchId         String
   createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  updatedAt        DateTime  @default(now())
   
   // Enhanced security features - WebRTC Photo Matching + PIN
   childPhotoUrl    String?   // Encrypted photo URL (auto-delete after 7 days)
@@ -487,6 +489,7 @@ model ChildCheckIn {
   church           Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
   event            Event?    @relation(fields: [eventId], references: [id])
 
+  @@index([parentPhone])
   @@map("children_check_ins")
 }
 
@@ -497,7 +500,7 @@ model DonationCategory {
   churchId       String
   isActive       Boolean            @default(true)
   createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
+  updatedAt      DateTime           @default(now())
   campaigns      DonationCampaign[]
   church         Church             @relation(fields: [churchId], references: [id], onDelete: Cascade)
   donations      Donation[]
@@ -514,7 +517,7 @@ model PaymentMethod {
   churchId    String
   isActive    Boolean    @default(true)
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  updatedAt   DateTime   @default(now())
   donations   Donation[]
   church      Church     @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -538,7 +541,7 @@ model Donation {
   donationDate    DateTime          @default(now())
   churchId        String
   createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  updatedAt       DateTime          @default(now())
   campaignId      String?
   campaign        DonationCampaign? @relation(fields: [campaignId], references: [id])
   category        DonationCategory  @relation(fields: [categoryId], references: [id])
@@ -567,7 +570,7 @@ model Notification {
   churchId    String
   createdBy   String?
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime  @default(now())
   church      Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
   creator     User?     @relation("NotificationCreator", fields: [createdBy], references: [id])
 
@@ -599,7 +602,7 @@ model NotificationPreference {
   digestEnabled        Boolean  @default(false)
   digestFrequency      String   @default("DAILY")
   createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  updatedAt            DateTime @default(now())
   user                 User     @relation("UserNotificationPreferences", fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("notification_preferences")
@@ -620,7 +623,7 @@ model NotificationTemplate {
   defaultTargetRole String?
   churchId          String?
   createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  updatedAt         DateTime @default(now())
   church            Church?  @relation("ChurchNotificationTemplates", fields: [churchId], references: [id], onDelete: Cascade)
 
   @@unique([name, churchId])
@@ -641,7 +644,7 @@ model Communication {
   templateId  String?
   churchId    String
   createdAt   DateTime               @default(now())
-  updatedAt   DateTime               @updatedAt
+  updatedAt   DateTime               @default(now())
   church      Church                 @relation(fields: [churchId], references: [id], onDelete: Cascade)
   template    CommunicationTemplate? @relation(fields: [templateId], references: [id])
 
@@ -659,7 +662,7 @@ model CommunicationTemplate {
   isActive       Boolean         @default(true)
   churchId       String
   createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  updatedAt      DateTime        @default(now())
   church         Church          @relation(fields: [churchId], references: [id], onDelete: Cascade)
   communications Communication[]
 
@@ -675,7 +678,7 @@ model EventResource {
   isActive     Boolean                    @default(true)
   churchId     String
   createdAt    DateTime                   @default(now())
-  updatedAt    DateTime                   @updatedAt
+  updatedAt    DateTime                   @default(now())
   reservations EventResourceReservation[]
   church       Church                     @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -693,7 +696,7 @@ model EventResourceReservation {
   reservedBy String
   churchId   String
   createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  updatedAt  DateTime      @default(now())
   church     Church        @relation(fields: [churchId], references: [id], onDelete: Cascade)
   event      Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
   resource   EventResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
@@ -724,7 +727,7 @@ model Automation {
   isActive    Boolean               @default(true)
   churchId    String
   createdAt   DateTime              @default(now())
-  updatedAt   DateTime              @updatedAt
+  updatedAt   DateTime              @default(now())
   executions  AutomationExecution[]
   church      Church                @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -761,7 +764,7 @@ model SocialMediaAccount {
   churchId       String
   connectedBy    String
   createdAt      DateTime                @default(now())
-  updatedAt      DateTime                @updatedAt
+  updatedAt      DateTime                @default(now())
   campaignPosts  MarketingCampaignPost[]
   church         Church                  @relation(fields: [churchId], references: [id], onDelete: Cascade)
   metrics        SocialMediaMetrics[]
@@ -788,7 +791,7 @@ model SocialMediaPost {
   authorId      String
   churchId      String
   createdAt     DateTime                @default(now())
-  updatedAt     DateTime                @updatedAt
+  updatedAt     DateTime                @default(now())
   campaignPosts MarketingCampaignPost[]
   campaign      MarketingCampaign?      @relation(fields: [campaignId], references: [id])
   church        Church                  @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -813,7 +816,7 @@ model MarketingCampaign {
   managerId      String
   churchId       String
   createdAt      DateTime                @default(now())
-  updatedAt      DateTime                @updatedAt
+  updatedAt      DateTime                @default(now())
   campaignPosts  MarketingCampaignPost[]
   church         Church                  @relation(fields: [churchId], references: [id], onDelete: Cascade)
   posts          SocialMediaPost[]
@@ -834,7 +837,7 @@ model MarketingCampaignPost {
   notes       String?
   churchId    String
   createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  updatedAt   DateTime           @default(now())
   account     SocialMediaAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
   campaign    MarketingCampaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   church      Church             @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -883,7 +886,7 @@ model CustomReport {
   lastRunAt   DateTime?
   runCount    Int               @default(0)
   createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  updatedAt   DateTime          @default(now())
   church      Church            @relation(fields: [churchId], references: [id], onDelete: Cascade)
   executions  ReportExecution[]
   schedules   ReportSchedule[]
@@ -905,7 +908,7 @@ model ReportSchedule {
   nextScheduled DateTime?
   churchId      String
   createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  updatedAt     DateTime     @default(now())
   church        Church       @relation(fields: [churchId], references: [id], onDelete: Cascade)
   report        CustomReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
 
@@ -943,7 +946,7 @@ model AnalyticsDashboard {
   createdBy   String
   churchId    String
   createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  updatedAt   DateTime          @default(now())
   church      Church            @relation(fields: [churchId], references: [id], onDelete: Cascade)
   widgets     DashboardWidget[]
 
@@ -964,7 +967,7 @@ model DashboardWidget {
   config          String?
   churchId        String
   createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  updatedAt       DateTime           @default(now())
   church          Church             @relation(fields: [churchId], references: [id], onDelete: Cascade)
   dashboard       AnalyticsDashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
 
@@ -1069,7 +1072,7 @@ model Website {
   isActive        Boolean            @default(true)
   churchId        String
   createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  updatedAt       DateTime           @default(now())
   funnels                Funnel[]
   pages                  WebPage[]
   analytics              WebsiteAnalytics[]
@@ -1093,7 +1096,7 @@ model WebPage {
   order           Int              @default(0)
   websiteId       String
   createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  updatedAt       DateTime         @default(now())
   sections        WebPageSection[]
   website         Website          @relation(fields: [websiteId], references: [id], onDelete: Cascade)
 
@@ -1126,7 +1129,7 @@ model Funnel {
   isPublished Boolean            @default(false)
   websiteId   String
   createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  updatedAt   DateTime           @default(now())
   conversions FunnelConversion[]
   steps       FunnelStep[]
   website     Website            @relation(fields: [websiteId], references: [id], onDelete: Cascade)
@@ -1145,7 +1148,7 @@ model FunnelStep {
   settings    Json
   funnelId    String
   createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  updatedAt   DateTime           @default(now())
   conversions FunnelConversion[]
   funnel      Funnel             @relation(fields: [funnelId], references: [id], onDelete: Cascade)
 
@@ -1260,7 +1263,7 @@ model AutomationRule {
   lastExecuted   DateTime?
   metadata       Json?
   createdAt      DateTime                  @default(now())
-  updatedAt      DateTime                  @updatedAt
+  updatedAt      DateTime                  @default(now())
   actions        AutomationAction[]
   conditions     AutomationCondition[]
   executions     AutomationRuleExecution[]
@@ -1282,7 +1285,7 @@ model AutomationTrigger {
   configuration Json                  @default("{}")
   isActive      Boolean               @default(true)
   createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
+  updatedAt     DateTime              @default(now())
   rule          AutomationRule        @relation(fields: [ruleId], references: [id], onDelete: Cascade)
 
   @@index([ruleId])
@@ -1303,7 +1306,7 @@ model AutomationCondition {
   orderIndex      Int                     @default(0)
   isActive        Boolean                 @default(true)
   createdAt       DateTime                @default(now())
-  updatedAt       DateTime                @updatedAt
+  updatedAt       DateTime                @default(now())
   rule            AutomationRule          @relation(fields: [ruleId], references: [id], onDelete: Cascade)
 
   @@index([ruleId])
@@ -1321,7 +1324,7 @@ model AutomationAction {
   delay         Int                  @default(0)
   isActive      Boolean              @default(true)
   createdAt     DateTime             @default(now())
-  updatedAt     DateTime             @updatedAt
+  updatedAt     DateTime             @default(now())
   rule          AutomationRule       @relation(fields: [ruleId], references: [id], onDelete: Cascade)
 
   @@index([ruleId])
@@ -1340,7 +1343,7 @@ model AutomationRuleExecution {
   executedAt  DateTime?
   duration    Int?
   createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  updatedAt   DateTime       @default(now())
   rule        AutomationRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
 
   @@index([ruleId])
@@ -1405,7 +1408,7 @@ model PushNotificationLog {
   clickedAt        DateTime?
   dismissedAt      DateTime?
   createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  updatedAt        DateTime  @default(now())
   church           Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
   user             User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -1430,7 +1433,7 @@ model SubscriptionPlan {
   sortOrder     Int                  @default(0)
   features      Json?
   createdAt     DateTime             @default(now())
-  updatedAt     DateTime             @updatedAt
+  updatedAt     DateTime             @default(now())
   subscriptions ChurchSubscription[]
 
   @@map("subscription_plans")
@@ -1444,7 +1447,7 @@ model PlanFeature {
   category    String?
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now())
 
   @@map("plan_features")
 }
@@ -1461,7 +1464,7 @@ model SubscriptionAddon {
   unit          String?
   isActive      Boolean                   @default(true)
   createdAt     DateTime                  @default(now())
-  updatedAt     DateTime                  @updatedAt
+  updatedAt     DateTime                  @default(now())
   subscriptions ChurchSubscriptionAddon[]
 
   @@map("subscription_addons")
@@ -1480,7 +1483,7 @@ model ChurchSubscription {
   cancelledAt        DateTime?
   metadata           Json?
   createdAt          DateTime                  @default(now())
-  updatedAt          DateTime                  @updatedAt
+  updatedAt          DateTime                  @default(now())
   addons             ChurchSubscriptionAddon[]
   church             Church                    @relation(fields: [churchId], references: [id], onDelete: Cascade)
   plan               SubscriptionPlan          @relation(fields: [planId], references: [id])
@@ -1499,7 +1502,7 @@ model ChurchSubscriptionAddon {
   quantity       Int                @default(1)
   isActive       Boolean            @default(true)
   createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
+  updatedAt      DateTime           @default(now())
   addon          SubscriptionAddon  @relation(fields: [addonId], references: [id])
   subscription   ChurchSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
 
@@ -1530,8 +1533,8 @@ model OnlinePayment {
   gatewayType      String
   status           String            @default("pending")
   donorName        String?
-  donorEmail       String?
-  donorPhone       String?
+  donorEmail      String?
+  donorPhone      String?
   donationId       String?           @unique
   churchId         String
   categoryId       String?
@@ -1544,7 +1547,7 @@ model OnlinePayment {
   webhookReceived  Boolean           @default(false)
   completedAt      DateTime?
   createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  updatedAt        DateTime          @default(now())
   category         DonationCategory? @relation(fields: [categoryId], references: [id])
   church           Church            @relation(fields: [churchId], references: [id], onDelete: Cascade)
   donation         Donation?         @relation(fields: [donationId], references: [id])
@@ -1568,7 +1571,7 @@ model PaymentGatewayConfig {
   webhookSecret String?
   configuration Json?
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt     DateTime @default(now())
   church        Church   @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@unique([churchId, gatewayType])
@@ -1576,25 +1579,22 @@ model PaymentGatewayConfig {
 }
 
 model DonationCampaign {
-  id            String            @id @default(cuid())
-  title         String
-  description   String?
-  goalAmount    Float?
-  currentAmount Float             @default(0)
-  currency      String            @default("COP")
-  churchId      String
-  categoryId    String?
-  isActive      Boolean           @default(true)
-  isPublic      Boolean           @default(true)
-  slug          String?           @unique
-  coverImage    String?
-  startDate     DateTime?
-  endDate       DateTime?
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  category      DonationCategory? @relation(fields: [categoryId], references: [id])
-  church        Church            @relation(fields: [churchId], references: [id], onDelete: Cascade)
-  donations     Donation[]
+  id              String            @id @default(cuid())
+  name            String
+  description     String?
+  goal            Float
+  currency        String            @default("COP")
+  startDate       DateTime
+  endDate         DateTime?
+  status          String            @default("ACTIVA")
+  isPublic        Boolean           @default(true)
+  churchId        String
+  categoryId      String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now())
+  donations       Donation[]
+  church          Church            @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  category        DonationCategory? @relation(fields: [categoryId], references: [id])
 
   @@map("donation_campaigns")
 }
@@ -1608,7 +1608,7 @@ model PrayerCategory {
   isActive          Boolean                  @default(true)
   churchId          String
   createdAt         DateTime                 @default(now())
-  updatedAt         DateTime                 @updatedAt
+  updatedAt         DateTime                 @default(now())
   church            Church                   @relation(fields: [churchId], references: [id], onDelete: Cascade)
   requests          PrayerRequest[]
   responseTemplates PrayerResponseTemplate[]
@@ -1627,7 +1627,7 @@ model PrayerResponseTemplate {
   isDefault  Boolean        @default(false)
   churchId   String
   createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
+  updatedAt  DateTime       @default(now())
   category   PrayerCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   church     Church         @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -1635,43 +1635,38 @@ model PrayerResponseTemplate {
 }
 
 model PrayerContact {
-  id               String           @id @default(cuid())
-  fullName         String
-  phone            String?
-  email            String?
-  preferredContact String           @default("sms")
-  churchId         String
-  isActive         Boolean          @default(true)
-  source           String           @default("prayer_form")
-  notes            String?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  approvals        PrayerApproval[]
-  church           Church           @relation(fields: [churchId], references: [id], onDelete: Cascade)
-  requests         PrayerRequest[]
-  testimonies      PrayerTestimony[]
+  id                 String          @id @default(cuid())
+  fullName           String
+  phone              String?
+  email              String?
+  preferredContact   String          @default("sms")
+  churchId           String
+  source             String?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @default(now())
+  church             Church          @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  prayerRequests     PrayerRequest[]
+  prayerTestimonies  PrayerTestimony[]
+  prayerApprovals    PrayerApproval[] // Add this line
 
-  @@unique([churchId, phone])
-  @@unique([churchId, email])
+  @@unique([churchId, phone, email])
   @@map("prayer_contacts")
 }
 
 model PrayerRequest {
   id           String          @id @default(cuid())
   contactId    String
+  churchId     String
   categoryId   String
-  message      String?
+  message      String
   isAnonymous  Boolean         @default(false)
   status       String          @default("pending")
   priority     String          @default("normal")
-  scheduledAt  DateTime?
-  sentAt       DateTime?
-  responseType String?
-  churchId     String
+  source       String?         // 'prayer_form', 'qr_code', 'direct', etc.
   formId       String?
   qrCodeId     String?
   createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
+  updatedAt    DateTime        @default(now())
   approval     PrayerApproval?
   category     PrayerCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   church       Church          @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -1691,7 +1686,7 @@ model PrayerApproval {
   approvedAt DateTime?
   churchId   String
   createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  updatedAt  DateTime      @default(now())
   approver   User          @relation(fields: [approvedBy], references: [id])
   church     Church        @relation(fields: [churchId], references: [id], onDelete: Cascade)
   contact    PrayerContact @relation(fields: [contactId], references: [id], onDelete: Cascade)
@@ -1711,7 +1706,7 @@ model PrayerForm {
   slug        String         @unique
   churchId    String
   createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  updatedAt   DateTime       @default(now())
   church      Church         @relation(fields: [churchId], references: [id], onDelete: Cascade)
   qrCodes     PrayerQRCode[]
 
@@ -1730,7 +1725,7 @@ model PrayerQRCode {
   lastScan    DateTime?
   churchId    String
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  updatedAt   DateTime   @default(now())
   church      Church     @relation(fields: [churchId], references: [id], onDelete: Cascade)
   form        PrayerForm @relation(fields: [formId], references: [id], onDelete: Cascade)
 
@@ -1756,7 +1751,7 @@ model PrayerTestimony {
   approvedAt          DateTime?
   submittedAt         DateTime         @default(now())
   createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
+  updatedAt           DateTime         @default(now())
   
   // Relations
   church              Church           @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -1778,7 +1773,7 @@ model TestimonyForm {
   slug        String         @unique
   churchId    String
   createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  updatedAt   DateTime       @default(now())
   church      Church         @relation(fields: [churchId], references: [id], onDelete: Cascade)
   qrCodes     TestimonyQRCode[]
 
@@ -1797,7 +1792,7 @@ model TestimonyQRCode {
   lastScan    DateTime?
   churchId    String
   createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  updatedAt   DateTime     @default(now())
   church      Church       @relation(fields: [churchId], references: [id], onDelete: Cascade)
   form        TestimonyForm @relation(fields: [formId], references: [id], onDelete: Cascade)
 
@@ -1851,7 +1846,7 @@ model MemberSpiritualProfile {
   
   assessmentDate  DateTime @default(now())
   createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  updatedAt      DateTime @default(now())
   
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
@@ -1869,7 +1864,7 @@ model AvailabilityMatrix {
   travelWillingness     Int      @default(1) // 1-10 scale for travel distance
   lastUpdated          DateTime @default(now())
   createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  updatedAt            DateTime @default(now())
   
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
@@ -1888,7 +1883,7 @@ model VolunteerRecommendation {
   priority      String   @default("MEDIUM") // HIGH, MEDIUM, LOW
   validUntil    DateTime
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt     DateTime @default(now())
   
   member   Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
   ministry Ministry  @relation(fields: [ministryId], references: [id], onDelete: Cascade)
@@ -1911,7 +1906,7 @@ model MinistryGapAnalysis {
   seasonalFactor    Float    @default(1.0) // Seasonal adjustment
   status            String   @default("ACTIVE") // ACTIVE, RESOLVED, MONITORING
   createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  updatedAt         DateTime @default(now())
   
   ministry Ministry @relation(fields: [ministryId], references: [id], onDelete: Cascade)
   church   Church   @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -1932,7 +1927,7 @@ model VolunteerEngagementScore {
   recommendedActions Json?    // Array of engagement improvement suggestions
   calculatedAt       DateTime @default(now())
   createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  updatedAt          DateTime @default(now())
   
   volunteer Volunteer @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
 
@@ -2027,12 +2022,12 @@ model WebsiteRequest {
   estimatedCompletion   DateTime?
   completedAt           DateTime?
   adminNotes            String?   @db.Text
-  metadata              String?   @db.Text // JSON metadata for additional details
+  metadata              String?     @db.Text // JSON metadata for additional details
   existingWebsiteId     String?   // If updating existing website
   resultingWebsiteId    String?   // Website created from this request
-  assignedTo            String?   // SUPER_ADMIN assigned to this project
+  assignedTo            String?     // SUPER_ADMIN assigned to this project
   createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  updatedAt             DateTime  @default(now())
   
   church                Church    @relation("ChurchWebsiteRequests", fields: [churchId], references: [id], onDelete: Cascade)
   existingWebsite       Website?  @relation("ExistingWebsiteRequests", fields: [existingWebsiteId], references: [id])
@@ -2080,7 +2075,7 @@ model Invoice {
   paidAt          DateTime?
   createdBy       String            // SUPER_ADMIN user ID
   createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  updatedAt       DateTime          @default(now())
   
   church          Church            @relation(fields: [churchId], references: [id], onDelete: Cascade)
   subscription    ChurchSubscription? @relation(fields: [subscriptionId], references: [id])
@@ -2161,7 +2156,7 @@ model TenantCredentials {
   lastSentAt    DateTime?
   createdBy     String    // SUPER_ADMIN user ID
   createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  updatedAt     DateTime  @default(now())
   
   church        Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
   creator       User      @relation("CredentialCreator", fields: [createdBy], references: [id])

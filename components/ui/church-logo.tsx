@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useSession } from 'next-auth/react'
@@ -6,6 +5,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { Building2 } from 'lucide-react'
+import { Logo } from './logo' // Import the Logo component
 
 interface ChurchLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl'
@@ -93,29 +93,11 @@ export function ChurchLogo({
   // If no church data but fallbackToPlatform is true, show platform logo
   if (!church && fallbackToPlatform) {
     return (
-      <div className={cn('flex items-center gap-3', className)}>
-        <div className={cn('relative', sizeClasses[size])}>
-          <Image
-            src="/logo.png"
-            alt="Kḥesed-tek Church Management Systems"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-        {showText && (
-          <div>
-            <h1 className={cn('font-bold text-foreground', textSizeClasses[size])}>
-              Kḥesed-tek
-            </h1>
-            {size !== 'sm' && (
-              <p className="text-xs text-muted-foreground">
-                Church Management Systems
-              </p>
-            )}
-          </div>
-        )}
-      </div>
+      <Logo 
+        size={size}
+        className={className}
+        showText={showText}
+      />
     )
   }
 

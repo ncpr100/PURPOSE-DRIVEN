@@ -1,9 +1,9 @@
-
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { createCheckInSchema } from '@/lib/validations/check-in'
+import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,9 +21,13 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url)
+    const page = parseInt(searchParams.get('page') || '1', 10)
+    const limit = parseInt(searchParams.get('limit') || '10', 10)
     const isFirstTime = searchParams.get('isFirstTime')
     const eventId = searchParams.get('eventId')
     const date = searchParams.get('date')
+
+    const skip = (page - 1) * limit
 
     const whereClause: any = {
       churchId: session.user.churchId
@@ -41,22 +45,35 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const checkIns = await db.checkIn.findMany({
-      where: whereClause,
-      include: {
-        event: true,
-        followUps: {
-          include: {
-            assignedUser: true
+    const [checkIns, total] = await db.$transaction([
+      db.checkIn.findMany({
+        where: whereClause,
+        include: {
+          event: true,
+          followUps: {
+            include: {
+              assignedUser: true
+            }
           }
-        }
-      },
-      orderBy: {
-        checkedInAt: 'desc'
+        },
+        orderBy: {
+          checkedInAt: 'desc'
+        },
+        skip,
+        take: limit,
+      }),
+      db.checkIn.count({ where: whereClause })
+    ])
+
+    return NextResponse.json({
+      data: checkIns,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
       }
     })
-
-    return NextResponse.json(checkIns)
 
   } catch (error) {
     console.error('Error fetching check-ins:', error)
@@ -76,6 +93,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
     }
 
+    const body = await request.json()
+    const validatedData = createCheckInSchema.safeParse(body)
+
+    if (!validatedData.success) {
+      return NextResponse.json(
+        {
+          message: 'Datos inválidos.',
+          errors: validatedData.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      )
+    }
+
     const {
       firstName,
       lastName,
@@ -84,15 +114,8 @@ export async function POST(request: NextRequest) {
       isFirstTime,
       visitReason,
       prayerRequest,
-      eventId
-    } = await request.json()
-
-    if (!firstName || !lastName) {
-      return NextResponse.json(
-        { message: 'Nombre y apellido son requeridos' },
-        { status: 400 }
-      )
-    }
+      eventId,
+    } = validatedData.data
 
     // Generate QR code data
     const qrData = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
@@ -101,14 +124,14 @@ export async function POST(request: NextRequest) {
       data: {
         firstName,
         lastName,
-        email,
+        email: email || null,
         phone,
         isFirstTime: isFirstTime || false,
         visitReason,
         prayerRequest,
         qrCode: qrData,
         eventId,
-        churchId: session.user.churchId
+        churchId: session.user.churchId,
       },
       include: {
         event: true,

@@ -1,4 +1,3 @@
-
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
@@ -148,17 +147,17 @@ export default async function DashboardPage() {
 
   // Calculate visitor analytics
   const averageEngagementScore = visitorEngagementData.length > 0 
-    ? Math.round(visitorEngagementData.reduce((sum, visitor) => sum + (visitor.engagementScore || 0), 0) / visitorEngagementData.length)
+    ? Math.round(visitorEngagementData.reduce((sum: number, visitor: any) => sum + (visitor.engagementScore || 0), 0) / visitorEngagementData.length)
     : 0
   
   const automationSuccessRate = visitorEngagementData.length > 0
-    ? Math.round((visitorEngagementData.filter(v => v.automationTriggered).length / visitorEngagementData.length) * 100)
+    ? Math.round((visitorEngagementData.filter((v: any) => v.automationTriggered).length / visitorEngagementData.length) * 100)
     : 0
   
-  const returningVisitorsCount = visitorEngagementData.filter(v => v.visitorType === 'returning' || !v.isFirstTime).length
-  const firstTimeVisitorsCount = visitorEngagementData.filter(v => v.isFirstTime).length
+  const returningVisitorsCount = visitorEngagementData.filter((v: any) => v.visitorType === 'returning' || !v.isFirstTime).length
+  const firstTimeVisitorsCount = visitorEngagementData.filter((v: any) => v.isFirstTime).length
 
-  const stats = {
+  const kpiData = {
     totalMembers,
     totalSermons,
     upcomingEvents,
@@ -168,7 +167,7 @@ export default async function DashboardPage() {
     pendingFollowUps,
     childrenPresent,
     websiteRequests: websiteRequests.length,
-    pendingWebsiteRequests: websiteRequests.filter(r => r.status === 'pending').length,
+    pendingWebsiteRequests: websiteRequests.filter((r: any) => r.status === 'pending').length,
     existingWebsites,
     // Visitor analytics
     averageEngagementScore,
@@ -238,7 +237,7 @@ export default async function DashboardPage() {
 
   return (
     <DashboardClient 
-      stats={stats}
+      stats={kpiData}
       recentMembers={recentMembers}
       recentSermons={recentSermons}
       recentCheckIns={recentCheckIns}
