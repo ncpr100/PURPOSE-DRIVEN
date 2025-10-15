@@ -55,7 +55,7 @@ export async function GET(
             phone: true,
             email: true,
             preferredContact: true,
-            notes: true
+            // notes: true // Field doesn't exist in PrayerContact model
           }
         },
         approver: {

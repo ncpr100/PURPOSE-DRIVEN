@@ -192,7 +192,7 @@ export async function GET(request: NextRequest) {
           where: { id: item.campaignId },
         });
         return {
-          campaign: campaign?.title || 'Desconocido',
+          campaign: campaign?.name || 'Desconocido', // Changed from 'title' to 'name'
           total: item._sum.amount,
         }
       })

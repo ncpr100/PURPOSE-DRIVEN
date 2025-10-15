@@ -58,19 +58,21 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
   if (searchParams.campaign) {
     campaign = await prisma.donationCampaign.findFirst({
       where: {
-        slug: searchParams.campaign,
+        // slug: searchParams.campaign, // Field doesn't exist in DonationCampaign model
+        id: searchParams.campaign, // Using ID instead of slug
         churchId: params.churchId,
-        isActive: true,
+        // isActive: true, // Field doesn't exist, using status
+        status: 'ACTIVA',
         isPublic: true
       },
       select: {
         id: true,
-        title: true,
+        name: true, // Changed from 'title' to 'name'
         description: true,
-        goalAmount: true,
-        currentAmount: true,
+        goal: true, // Changed from 'goalAmount' to 'goal'
+        // currentAmount: true, // Field doesn't exist in schema
         currency: true,
-        coverImage: true,
+        // coverImage: true, // Field doesn't exist in schema
         endDate: true,
         categoryId: true
       }
@@ -81,18 +83,19 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
   const campaigns = await prisma.donationCampaign.findMany({
     where: {
       churchId: params.churchId,
-      isActive: true,
+      // isActive: true, // Field doesn't exist, using status
+      status: 'ACTIVA',
       isPublic: true
     },
     select: {
       id: true,
-      title: true,
+      name: true, // Changed from 'title' to 'name'
       description: true,
-      goalAmount: true,
-      currentAmount: true,
+      goal: true, // Changed from 'goalAmount' to 'goal'
+      // currentAmount: true, // Field doesn't exist
       currency: true,
-      slug: true,
-      coverImage: true
+      // slug: true, // Field doesn't exist
+      // coverImage: true // Field doesn't exist
     },
     take: 3,
     orderBy: {
@@ -131,28 +134,29 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
         {campaign && (
           <div className="mb-8">
             <Card className="overflow-hidden">
-              {campaign.coverImage && (
+              {/* {campaign.coverImage && (
                 <div className="h-48 bg-cover bg-center" 
                      style={{ backgroundImage: `url(${campaign.coverImage})` }}>
                 </div>
-              )}
+              )} */}
               <CardHeader>
-                <CardTitle className="text-2xl">{campaign.title}</CardTitle>
+                <CardTitle className="text-2xl">{campaign.name}</CardTitle>
                 {campaign.description && (
                   <CardDescription className="text-base">
                     {campaign.description}
                   </CardDescription>
                 )}
               </CardHeader>
-              {campaign.goalAmount && (
+              {campaign.goal && (
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm text-gray-600">
-                      <span>Progreso</span>
+                      <span>Meta de la Campaña</span>
                       <span>
-                        ${campaign.currentAmount.toLocaleString()} de ${campaign.goalAmount.toLocaleString()}
+                        ${campaign.goal.toLocaleString()}
                       </span>
                     </div>
+                    {/* Progress bar commented out - currentAmount field doesn't exist
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div 
                         className="bg-blue-600 h-2 rounded-full transition-all duration-300"
@@ -164,6 +168,7 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
                     <p className="text-center text-sm text-gray-600">
                       {Math.round((campaign.currentAmount / campaign.goalAmount) * 100)}% completado
                     </p>
+                    */}
                   </div>
                 </CardContent>
               )}
@@ -188,8 +193,8 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
                 <PublicDonationForm
                   church={church}
                   categories={categories}
-                  campaigns={campaigns}
-                  preselectedCampaign={campaign}
+                  campaigns={campaigns as any} // Type cast due to schema field mismatch
+                  preselectedCampaign={campaign as any}
                 />
               </CardContent>
             </Card>

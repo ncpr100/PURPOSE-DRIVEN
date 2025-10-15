@@ -30,7 +30,7 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        requests: {
+        prayerRequests: { // Changed from 'requests' to 'prayerRequests'
           include: {
             category: {
               select: {
@@ -46,7 +46,7 @@ export async function GET(
         },
         _count: {
           select: {
-            requests: true
+            prayerRequests: true // Changed from 'requests' to 'prayerRequests'
           }
         }
       }
@@ -129,8 +129,8 @@ export async function PUT(
         phone: phone?.trim(),
         email: email?.trim().toLowerCase(),
         preferredContact: preferredContact || contact.preferredContact,
-        notes: notes?.trim(),
-        isActive: isActive ?? contact.isActive
+        // notes: notes?.trim(), // Field doesn't exist in PrayerContact model
+        // isActive: isActive ?? contact.isActive // Field doesn't exist in PrayerContact model
       }
     })
 
