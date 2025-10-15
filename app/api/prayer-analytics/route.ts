@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     const allContacts = await prisma.prayerContact.findMany({
       where: { churchId: user.churchId },
       include: {
-        requests: {
+        prayerRequests: { // Changed from 'requests' to 'prayerRequests'
           where: {
             createdAt: {
               gte: startDate,
@@ -227,7 +227,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Engagement metrics
-    const repeatRequesters = allContacts.filter((contact: any) => contact.requests.length > 1).length
+    const repeatRequesters = allContacts.filter((contact: any) => contact.prayerRequests.length > 1).length
     const avgRequestsPerContact = totalContacts > 0 
       ? prayerRequests.length / totalContacts
       : 0

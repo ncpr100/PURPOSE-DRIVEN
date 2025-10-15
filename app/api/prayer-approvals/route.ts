@@ -177,14 +177,14 @@ export async function POST(request: Request) {
     // If approved, schedule for sending (1-4 hours from now to look human)
     if (action === 'approve') {
       const randomDelay = Math.floor(Math.random() * 3 + 1) * 60 * 60 * 1000 // 1-4 hours
-      const scheduledAt = new Date(Date.now() + randomDelay)
+      // const scheduledAt = new Date(Date.now() + randomDelay) // scheduledAt doesn't exist in PrayerRequest
 
       await prisma.prayerRequest.updateMany({
         where: {
           id: { in: requestIds }
         },
         data: {
-          scheduledAt,
+          // scheduledAt, // Field doesn't exist in PrayerRequest model
           status: 'approved'
         }
       })

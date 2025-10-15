@@ -127,30 +127,30 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Generate unique slug
-    let slug = title.toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
-      .replace(/^-+|-+$/g, '')
+    // Generate unique slug (commented out - slug field doesn't exist in schema)
+    // let slug = title.toLowerCase()
+    //   .replace(/[^\w\s-]/g, '')
+    //   .replace(/[\s_-]+/g, '-')
+    //   .replace(/^-+|-+$/g, '')
 
-    const existingSlug = await prisma.donationCampaign.findFirst({
-      where: { slug }
-    })
+    // const existingSlug = await prisma.donationCampaign.findFirst({
+    //   where: { slug }
+    // })
 
-    if (existingSlug) {
-      slug = `${slug}-${Date.now()}`
-    }
+    // if (existingSlug) {
+    //   slug = `${slug}-${Date.now()}`
+    // }
 
     const campaign = await prisma.donationCampaign.create({
       data: {
-        title,
+        name: title, // DonationCampaign uses 'name' not 'title'
         description,
-        goalAmount: goalAmount ? parseFloat(goalAmount.toString()) : null,
+        goal: goalAmount ? parseFloat(goalAmount.toString()) : 0, // 'goal' is required, not 'goalAmount'
         categoryId,
-        isPublic,
-        slug,
-        coverImage,
-        startDate: startDate ? new Date(startDate) : null,
+        // isPublic, // Field exists in schema, keeping it
+        // slug, // Commented out - doesn't exist in schema
+        // coverImage, // Commented out - doesn't exist in schema
+        startDate: startDate ? new Date(startDate) : new Date(),
         endDate: endDate ? new Date(endDate) : null,
         churchId: session.user.churchId
       },

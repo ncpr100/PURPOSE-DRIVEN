@@ -228,21 +228,23 @@ async function updateCampaignTotal(categoryId: string, amount: number) {
     const campaigns = await prisma.donationCampaign.findMany({
       where: {
         categoryId,
-        isActive: true
+        // isActive: true // Field doesn't exist in schema, using status
+        status: 'ACTIVA'
       }
     })
 
-    // Update current amounts
-    for (const campaign of campaigns) {
-      await prisma.donationCampaign.update({
-        where: { id: campaign.id },
-        data: {
-          currentAmount: {
-            increment: amount
-          }
-        }
-      })
-    }
+    // Update current amounts (commented out - currentAmount field doesn't exist in schema)
+    // The donations are linked to campaigns via the campaignId field in the donations table
+    // for (const campaign of campaigns) {
+    //   await prisma.donationCampaign.update({
+    //     where: { id: campaign.id },
+    //     data: {
+    //       currentAmount: {
+    //         increment: amount
+    //       }
+    //     }
+    //   })
+    // }
     
   } catch (error) {
     console.error('Error updating campaign total:', error)

@@ -48,7 +48,7 @@ export async function GET(request: Request) {
         include: {
           _count: {
             select: {
-              requests: true
+              prayerRequests: true // Changed from 'requests' to 'prayerRequests'
             }
           }
         },
@@ -141,7 +141,7 @@ export async function POST(request: Request) {
         phone: phone?.trim(),
         email: email?.trim().toLowerCase(),
         preferredContact,
-        notes: notes?.trim(),
+        // notes: notes?.trim(), // Field doesn't exist in PrayerContact model
         source,
         churchId: user.churchId
       }

@@ -37,7 +37,7 @@ export async function GET(
             phone: true,
             email: true,
             preferredContact: true,
-            notes: true,
+            // notes: true, // Field doesn't exist in PrayerContact model
             source: true,
             createdAt: true
           }
@@ -120,7 +120,7 @@ export async function PUT(
       data: {
         status: status || prayerRequest.status,
         priority: priority || prayerRequest.priority,
-        scheduledAt: scheduledAt ? new Date(scheduledAt) : prayerRequest.scheduledAt
+        // scheduledAt: scheduledAt ? new Date(scheduledAt) : prayerRequest.scheduledAt // Field doesn't exist in PrayerRequest model
       }
     })
 
