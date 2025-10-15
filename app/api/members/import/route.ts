@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-import * as XLSX from 'xlsx'
+import ExcelJS from 'exceljs'
 
 export const dynamic = 'force-dynamic'
 
@@ -198,27 +198,51 @@ export async function POST(request: NextRequest) {
 
     // Parse file
     const buffer = Buffer.from(await file.arrayBuffer())
-    let workbook: XLSX.WorkBook
+    let jsonData: ImportRow[] = []
 
     try {
+      const workbook = new ExcelJS.Workbook()
+      
       if (file.type === 'text/csv' || file.type === 'application/csv') {
-        // Parse CSV
+        // Parse CSV - ExcelJS reads from buffer
         const csvText = buffer.toString('utf8')
-        workbook = XLSX.read(csvText, { type: 'string' })
+        await workbook.csv.readFile(csvText as any) // Use readFile with string path or buffer
       } else {
-        // Parse Excel
-        workbook = XLSX.read(buffer, { type: 'buffer' })
+        // Parse Excel using ExcelJS - load from buffer
+        await workbook.xlsx.load(buffer as any)
       }
+      
+      const worksheet = workbook.worksheets[0]
+      
+      if (!worksheet) {
+        return NextResponse.json({ 
+          message: 'El archivo no contiene ninguna hoja de cálculo válida' 
+        }, { status: 400 })
+      }
+      
+      // Convert worksheet to JSON
+      const headers = worksheet.getRow(1).values as any[]
+      
+      worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber > 1) { // Skip header row
+          const rowData: ImportRow = {}
+          row.eachCell((cell, colNumber) => {
+            const header = headers[colNumber]
+            if (header) {
+              rowData[header.toString()] = cell.value
+            }
+          })
+          if (Object.keys(rowData).length > 0) {
+            jsonData.push(rowData)
+          }
+        }
+      })
     } catch (error) {
+      console.error('File parsing error:', error)
       return NextResponse.json({ 
         message: 'Error al leer el archivo. Verifique que sea un archivo válido.' 
       }, { status: 400 })
     }
-
-    // Get first worksheet
-    const sheetName = workbook.SheetNames[0]
-    const worksheet = workbook.Sheets[sheetName]
-    const jsonData: ImportRow[] = XLSX.utils.sheet_to_json(worksheet)
 
     if (jsonData.length === 0) {
       return NextResponse.json({ 
