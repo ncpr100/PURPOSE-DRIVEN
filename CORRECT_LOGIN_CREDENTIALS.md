@@ -13,15 +13,15 @@ Status: NOT FOUND IN DATABASE
 
 ### Option 1 (Primary Account):
 ```
-Email: soporte@khesed-tek.com
-Password: Bendecido100%$$%
+Email: soporte@khesedtek.com
+Password: SuperAdmin2024!
 Role: SUPER_ADMIN
 Status: Active ✅
 ```
 
 ### Option 2 (Secondary Account):
 ```
-Email: soporte@khesed-tek.com
+Email: soport@khesed-tek.com
 Password: SuperAdmin2024!
 Role: SUPER_ADMIN  
 Status: Active ✅

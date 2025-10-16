@@ -34,3 +34,15 @@ yarn-error.log*
 *.tsbuildinfo
 tsconfig.tsbuildinfo
 
+
+# Backup files (should not be deployed)
+*.zip
+*backup*.sql
+*dump*.sql
+database-backup/
+*.zip
+database-backup/
+
+# Yarn (we use npm)
+.yarnrc.yml
+yarn.lock
