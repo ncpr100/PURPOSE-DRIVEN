@@ -223,14 +223,13 @@ async function sendEmail(context: ActionExecutionContext): Promise<{ success: bo
       return { success: false, error: 'No email address provided' };
     }
     
-    await emailService({
+    const result = await emailService({
       to: context.recipientEmail,
       subject: context.data.subject || 'Notification',
-      html: context.data.message || context.data.body,
-      from: process.env.EMAIL_FROM
+      html: context.data.message || context.data.body
     });
     
-    return { success: true };
+    return { success: result };
   } catch (error) {
     return {
       success: false,
@@ -308,18 +307,20 @@ async function sendWhatsApp(context: ActionExecutionContext): Promise<{ success:
 async function sendPushNotification(context: ActionExecutionContext): Promise<{ success: boolean; error?: string }> {
   try {
     // Import push notification service
-    const { sendPushNotification: pushService } = await import('@/lib/push-notifications');
+    const { PushNotificationService } = await import('@/lib/push-notifications');
     
     if (!context.recipientId) {
       return { success: false, error: 'No recipient user ID provided' };
     }
     
-    await pushService({
-      userId: context.recipientId,
-      title: context.data.title || 'Notification',
-      message: context.data.message,
-      data: context.data.additionalData || {}
-    });
+    await PushNotificationService.sendToUser(
+      context.recipientId,
+      {
+        title: context.data.title || 'Notification',
+        body: context.data.message,
+        data: context.data.additionalData || {}
+      }
+    );
     
     return { success: true };
   } catch (error) {
@@ -371,6 +372,7 @@ async function logExecutionSuccess(
     await prisma.automationRuleExecution.create({
       data: {
         ruleId: context.automationRuleId,
+        triggerData: context.data,
         status: 'SUCCESS',
         result: {
           channel,
@@ -399,6 +401,7 @@ async function logExecutionFailure(
     await prisma.automationRuleExecution.create({
       data: {
         ruleId: context.automationRuleId,
+        triggerData: context.data,
         status: 'FAILED',
         error: error || 'All channels failed',
         result: {
@@ -434,12 +437,14 @@ export async function createManualTask(
     await prisma.visitorFollowUp.create({
       data: {
         churchId: context.churchId,
+        checkInId: 'MANUAL_TASK', // Placeholder for manual tasks
         assignedTo: 'AUTO_ASSIGNED', // Will be assigned to available staff
         category: 'MANUAL_TASK',
-        status: 'PENDING',
+        followUpType: 'AUTOMATION_FAILURE',
+        status: 'PENDIENTE',
         priority: 'HIGH',
         notes: `Automation failed: ${rule?.name}\nReason: ${reason}\nOriginal context: ${JSON.stringify(context.data)}`,
-        scheduledFor: new Date()
+        scheduledAt: new Date()
       }
     });
     
@@ -469,9 +474,9 @@ export async function handleEscalation(
       const pastors = await prisma.user.findMany({
         where: {
           churchId,
-          role: { in: ['PASTOR', 'SENIOR_PASTOR'] }
+          role: { in: ['PASTOR'] }
         },
-        select: { id: true, email: true, phone: true }
+        select: { id: true, email: true }
       });
       
       // Notify each pastor
@@ -497,6 +502,7 @@ export async function handleEscalation(
     await prisma.automationRuleExecution.create({
       data: {
         ruleId: automationRuleId,
+        triggerData: {},
         status: 'ESCALATED',
         result: {
           escalatedTo: escalationTarget,
