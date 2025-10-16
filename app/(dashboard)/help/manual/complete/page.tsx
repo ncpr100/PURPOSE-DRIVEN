@@ -136,6 +136,77 @@ export default function CompleteManual() {
       ]
     },
     {
+      id: 'automation-rules',
+      title: '🆕 ⚡ Reglas de Automatización',
+      description: 'Sistema completo de automatización inteligente',
+      pages: 25,
+      timeToRead: '30 min',
+      topics: [
+        '8+ plantillas pre-configuradas listas para usar',
+        'Ejecución instantánea con 3 reintentos automáticos',
+        '5 canales de comunicación (SMS, Email, WhatsApp, Push, Llamadas)',
+        'Fallback automático entre canales',
+        'Horario laboral configurable',
+        'Escalamiento a supervisores',
+        'Navegador de plantillas con activación 1-click',
+        'Bypass approval para respuesta instantánea'
+      ]
+    },
+    {
+      id: 'prayer-automation',
+      title: '🆕 🙏 Automatización de Peticiones de Oración',
+      description: 'Respuesta automática a peticiones de oración',
+      pages: 18,
+      timeToRead: '22 min',
+      topics: [
+        'Detección automática de peticiones urgentes',
+        'Respuesta instantánea (< 60 segundos)',
+        '4 plantillas de oración pre-configuradas',
+        'Auto-confirmación de recepción',
+        'Notificación 24/7 a equipo pastoral',
+        'Escalamiento a 15 min si no hay respuesta',
+        'Mensajes personalizados con variables',
+        'Seguimiento automático de peticiones'
+      ]
+    },
+    {
+      id: 'visitor-automation',
+      title: '🆕 👥 Automatización de Seguimiento de Visitantes',
+      description: 'Categorización y seguimiento automático inteligente',
+      pages: 20,
+      timeToRead: '25 min',
+      topics: [
+        'Auto-categorización: FIRST_TIME, RETURNING, REGULAR, MEMBER_CANDIDATE',
+        'Análisis de historial de visitas automático',
+        'Secuencia de bienvenida de 5 toques (30 días)',
+        'Seguimiento personalizado según compromiso',
+        'Invitación automática a membresía (4+ visitas)',
+        'Creación/actualización de VisitorProfile',
+        'Conexión automática con ministerios de interés',
+        'Follow-up urgente 24/7 para casos especiales'
+      ]
+    },
+    {
+      id: 'super-admin-automation',
+      title: '🆕 ⚙️ Configuración Avanzada (Super Admin)',
+      description: 'Arquitectura técnica y personalización del sistema',
+      pages: 22,
+      timeToRead: '28 min',
+      topics: [
+        'Arquitectura de AutomationRule (modelo de datos)',
+        'Configuración de Bypass Approval',
+        'Retry & Fallback Logic (JSON config)',
+        'Business Hours Configuration',
+        'Escalation Config con múltiples niveles',
+        'Operadores de condiciones (equals, contains, greater_than, etc.)',
+        'Tipos de acciones disponibles (SEND_SMS, SEND_EMAIL, etc.)',
+        'Crear plantillas personalizadas desde cero',
+        'Variables de personalización ({{name}}, {{email}}, etc.)',
+        'Referencia completa de API endpoints',
+        'Troubleshooting avanzado'
+      ]
+    },
+    {
       id: 'whats-new-august-2025',
       title: '🎉 Novedades - Agosto 2025',
       description: 'Últimas funcionalidades y mejoras disponibles',
