@@ -37,7 +37,6 @@ export async function GET(
             phone: true,
             email: true,
             preferredContact: true,
-            notes: true,
             source: true,
             createdAt: true
           }
@@ -119,8 +118,7 @@ export async function PUT(
       where: { id: params.id },
       data: {
         status: status || prayerRequest.status,
-        priority: priority || prayerRequest.priority,
-        scheduledAt: scheduledAt ? new Date(scheduledAt) : prayerRequest.scheduledAt
+        priority: priority || prayerRequest.priority
       }
     })
 

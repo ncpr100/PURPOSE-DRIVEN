@@ -184,7 +184,6 @@ export async function POST(request: Request) {
           id: { in: requestIds }
         },
         data: {
-          scheduledAt,
           status: 'approved'
         }
       })

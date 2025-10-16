@@ -56,7 +56,7 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
   // Get campaign if specified
   let campaign = null
   if (searchParams.campaign) {
-    campaign = await prisma.donationCampaign.findFirst({
+    const campaignData = await prisma.donationCampaign.findFirst({
       where: {
         id: searchParams.campaign,
         churchId: params.churchId,
@@ -74,10 +74,24 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
         categoryId: true
       }
     })
+    
+    // Transform to match Campaign interface
+    if (campaignData) {
+      campaign = {
+        id: campaignData.id,
+        title: campaignData.name,
+        description: campaignData.description,
+        goalAmount: campaignData.goal,
+        currentAmount: 0, // TODO: Calculate actual current amount from donations
+        currency: campaignData.currency,
+        slug: campaignData.id,
+        categoryId: campaignData.categoryId
+      }
+    }
   }
 
   // Get active campaigns
-  const campaigns = await prisma.donationCampaign.findMany({
+  const campaignData = await prisma.donationCampaign.findMany({
     where: {
       churchId: params.churchId,
       status: 'ACTIVA',
@@ -97,6 +111,18 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
       createdAt: 'desc'
     }
   })
+
+  // Transform to match Campaign interface
+  const campaigns = campaignData.map(c => ({
+    id: c.id,
+    title: c.name,
+    description: c.description,
+    goalAmount: c.goal,
+    currentAmount: 0, // TODO: Calculate actual current amount from donations
+    currency: c.currency,
+    slug: c.id, // Use ID as slug since we don't have slug field
+    categoryId: null
+  }))
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -130,25 +156,24 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
           <div className="mb-8">
             <Card className="overflow-hidden">
               <CardHeader>
-                <CardTitle className="text-2xl">{campaign.name}</CardTitle>
+                <CardTitle className="text-2xl">{campaign.title}</CardTitle>
                 {campaign.description && (
                   <CardDescription className="text-base">
                     {campaign.description}
                   </CardDescription>
                 )}
               </CardHeader>
-              {campaign.goal && (
+              {campaign.goalAmount && (
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm text-gray-600">
                       <span>Meta de Donación</span>
                       <span>
-                        ${campaign.goal.toLocaleString()} {campaign.currency || 'COP'}
+                        ${campaign.goalAmount.toLocaleString()} {campaign.currency || 'COP'}
                       </span>
                     </div>
                     <p className="text-sm text-gray-600">
-                      Campaña activa desde {new Date(campaign.startDate).toLocaleDateString()}
-                      {campaign.endDate && ` hasta ${new Date(campaign.endDate).toLocaleDateString()}`}
+                      Campaña de donaciones activa
                     </p>
                   </div>
                 </CardContent>

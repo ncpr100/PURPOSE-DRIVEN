@@ -30,7 +30,7 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        requests: {
+        prayerRequests: {
           include: {
             category: {
               select: {
@@ -46,7 +46,7 @@ export async function GET(
         },
         _count: {
           select: {
-            requests: true
+            prayerRequests: true
           }
         }
       }
@@ -89,7 +89,7 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const { fullName, phone, email, preferredContact, notes, isActive } = body
+    const { fullName, phone, email, preferredContact } = body
 
     const contact = await prisma.prayerContact.findFirst({
       where: {
@@ -128,9 +128,7 @@ export async function PUT(
         fullName: fullName?.trim() || contact.fullName,
         phone: phone?.trim(),
         email: email?.trim().toLowerCase(),
-        preferredContact: preferredContact || contact.preferredContact,
-        notes: notes?.trim(),
-        isActive: isActive ?? contact.isActive
+        preferredContact: preferredContact || contact.preferredContact
       }
     })
 

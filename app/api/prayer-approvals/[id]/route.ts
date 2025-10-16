@@ -54,8 +54,7 @@ export async function GET(
             fullName: true,
             phone: true,
             email: true,
-            preferredContact: true,
-            notes: true
+            preferredContact: true
           }
         },
         approver: {

@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     const allContacts = await prisma.prayerContact.findMany({
       where: { churchId: user.churchId },
       include: {
-        requests: {
+        prayerRequests: {
           where: {
             createdAt: {
               gte: startDate,
