@@ -6,12 +6,27 @@ import { z } from 'zod'
 
 const createTemplateSchema = z.object({
   name: z.string().min(1),
-  description: z.string().optional(),
+  description: z.string().min(1),
   category: z.string().min(1),
-  template: z.any() // The full automation rule structure
+  subcategory: z.string().optional(),
+  icon: z.string().optional(),
+  color: z.string().optional(),
+  triggerConfig: z.any(),
+  conditionsConfig: z.array(z.any()).optional(),
+  actionsConfig: z.array(z.any()),
+  priorityLevel: z.enum(['URGENT', 'HIGH', 'NORMAL', 'LOW']).optional(),
+  escalationConfig: z.any().optional(),
+  businessHoursOnly: z.boolean().optional(),
+  businessHoursConfig: z.any().optional(),
+  urgentMode24x7: z.boolean().optional(),
+  retryConfig: z.any().optional(),
+  fallbackChannels: z.array(z.string()).optional(),
+  createManualTaskOnFail: z.boolean().optional(),
+  tags: z.array(z.string()).optional(),
+  isPublic: z.boolean().optional()
 })
 
-// GET - Get automation templates
+// GET - Get automation rule templates
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -31,6 +46,7 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
+    const search = searchParams.get('search')
 
     const where: any = {
       isActive: true
@@ -40,25 +56,58 @@ export async function GET(request: NextRequest) {
       where.category = category
     }
 
-    const templates = await prisma.automationTemplate.findMany({
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        { tags: { has: search } }
+      ]
+    }
+
+    const templates = await prisma.automationRuleTemplate.findMany({
       where,
       orderBy: [
-        { isSystem: 'desc' }, // System templates first
-        { usageCount: 'desc' }, // Most used templates next
-        { createdAt: 'desc' }
+        { isSystemTemplate: 'desc' }, // System templates first
+        { installCount: 'desc' }, // Most used templates next
+        { name: 'asc' }
       ],
-      include: {
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        category: true,
+        subcategory: true,
+        icon: true,
+        color: true,
+        isSystemTemplate: true,
+        isActive: true,
+        isPublic: true,
+        priorityLevel: true,
+        businessHoursOnly: true,
+        urgentMode24x7: true,
+        installCount: true,
+        lastUsedAt: true,
+        tags: true,
+        createdAt: true,
+        updatedAt: true,
         creator: {
           select: {
             id: true,
             name: true
           }
-        }
+        },
+        // Don't expose full configs in list view for performance
+        triggerConfig: false,
+        conditionsConfig: false,
+        actionsConfig: false,
+        escalationConfig: false,
+        businessHoursConfig: false,
+        retryConfig: false
       }
     })
 
     // Get categories for filtering
-    const categories = await prisma.automationTemplate.groupBy({
+    const categories = await prisma.automationRuleTemplate.groupBy({
       by: ['category'],
       where: { isActive: true },
       _count: {
@@ -83,7 +132,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create automation template
+// POST - Create custom automation rule template (admin only)
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -109,13 +158,30 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = createTemplateSchema.parse(body)
 
-    const template = await prisma.automationTemplate.create({
+    const template = await prisma.automationRuleTemplate.create({
       data: {
         name: validatedData.name,
         description: validatedData.description,
         category: validatedData.category,
-        template: validatedData.template,
-        createdBy: user.id
+        subcategory: validatedData.subcategory,
+        icon: validatedData.icon || '⚡',
+        color: validatedData.color || '#3B82F6',
+        isSystemTemplate: false,
+        isActive: true,
+        isPublic: validatedData.isPublic !== undefined ? validatedData.isPublic : false,
+        createdBy: user.id,
+        triggerConfig: validatedData.triggerConfig,
+        conditionsConfig: validatedData.conditionsConfig || [],
+        actionsConfig: validatedData.actionsConfig,
+        priorityLevel: validatedData.priorityLevel || 'NORMAL',
+        escalationConfig: validatedData.escalationConfig,
+        businessHoursOnly: validatedData.businessHoursOnly || false,
+        businessHoursConfig: validatedData.businessHoursConfig,
+        urgentMode24x7: validatedData.urgentMode24x7 || false,
+        retryConfig: validatedData.retryConfig,
+        fallbackChannels: validatedData.fallbackChannels || [],
+        createManualTaskOnFail: validatedData.createManualTaskOnFail || false,
+        tags: validatedData.tags || []
       },
       include: {
         creator: {
