@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import prisma from '@/lib/prisma'
+import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
   try {
@@ -43,11 +43,11 @@ export async function GET(request: NextRequest) {
     const activeRules = allRules.filter(r => r.isActive).length
     const inactiveRules = totalRules - activeRules
 
-    // Fetch today's executions
+    // Fetch today's executions from AutomationExecution table
     const executions = await prisma.automationExecution.findMany({
       where: {
         churchId,
-        createdAt: {
+        executedAt: {
           gte: today,
           lt: tomorrow
         }
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       select: {
         id: true,
         status: true,
-        startedAt: true,
+        executedAt: true,
         completedAt: true
       }
     })
@@ -68,10 +68,7 @@ export async function GET(request: NextRequest) {
       e.status === 'FAILED' || e.status === 'ERROR'
     ).length
     const pendingExecutions = executions.filter(e => 
-      e.status === 'PENDING'
-    ).length
-    const retryingExecutions = executions.filter(e => 
-      e.status === 'RETRYING'
+      e.status === 'PENDING' || e.status === 'EJECUTANDO'
     ).length
 
     // Calculate success rate
@@ -79,113 +76,104 @@ export async function GET(request: NextRequest) {
       ? (successfulExecutions / totalExecutions) * 100 
       : 0
 
-    // Calculate average execution time
-    const completedExecutions = executions.filter(e => e.completedAt && e.startedAt)
-    const avgExecutionTime = completedExecutions.length > 0
-      ? completedExecutions.reduce((sum, e) => {
-          const duration = (new Date(e.completedAt!).getTime() - new Date(e.startedAt!).getTime()) / 1000
-          return sum + duration
+    // Calculate average duration for completed executions
+    const completedExecutions = executions.filter(e => e.completedAt && e.executedAt)
+    const avgDuration = completedExecutions.length > 0
+      ? completedExecutions.reduce((acc, e) => {
+          const duration = (new Date(e.completedAt!).getTime() - new Date(e.executedAt).getTime()) / 1000
+          return acc + duration
         }, 0) / completedExecutions.length
       : 0
 
-    // Fetch recent executions (last 100)
+    // Fetch recent executions (last 100) with full details
     const recentExecutions = await prisma.automationExecution.findMany({
       where: { churchId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { executedAt: 'desc' },
       take: 100,
       select: {
         id: true,
-        automationRuleId: true,
-        entityType: true,
-        entityId: true,
+        automationId: true,
         status: true,
-        retryCount: true,
-        startedAt: true,
+        triggerData: true,
+        results: true,
+        executedAt: true,
         completedAt: true,
-        error: true,
-        automationRule: {
-          select: {
-            name: true
-          }
-        }
+        churchId: true
       }
     })
 
-    // Fetch manual approval tasks (pending follow-ups)
-    const manualTasks = await prisma.visitorFollowUp.findMany({
+    // Fetch pending follow-ups that require manual intervention
+    const pendingFollowUps = await prisma.visitorFollowUp.findMany({
       where: {
-        status: 'PENDING',
-        visitorProfile: {
-          churchId
-        }
+        churchId,
+        status: 'PENDING'
       },
-      orderBy: { scheduledFor: 'asc' },
+      orderBy: { createdAt: 'desc' },
       take: 50,
       select: {
         id: true,
-        visitorName: true,
-        followUpType: true,
         status: true,
         priority: true,
-        contactMethod: true,
-        assignedToId: true,
-        scheduledFor: true,
-        assignedTo: {
-          select: {
-            name: true
-          }
-        }
+        createdAt: true,
+        followUpType: true,
+        notes: true
       }
     })
 
-    // Format response
-    const stats = {
-      totalRules,
-      activeRules,
-      inactiveRules,
-      totalExecutions,
-      successfulExecutions,
-      failedExecutions,
-      pendingExecutions,
-      retryingExecutions,
-      avgExecutionTime,
-      successRate
-    }
-
-    const formattedExecutions = recentExecutions.map(e => ({
-      id: e.id,
-      automationRuleId: e.automationRuleId,
-      ruleName: e.automationRule?.name || 'Regla sin nombre',
-      entityType: e.entityType,
-      entityId: e.entityId,
-      status: e.status,
-      retryCount: e.retryCount || 0,
-      startedAt: e.startedAt,
-      completedAt: e.completedAt,
-      error: e.error
-    }))
-
-    const formattedTasks = manualTasks.map(t => ({
-      id: t.id,
-      visitorName: t.visitorName,
-      followUpType: t.followUpType,
-      status: t.status,
-      priority: t.priority,
-      contactMethod: t.contactMethod,
-      assignedTo: t.assignedTo?.name || null,
-      scheduledFor: t.scheduledFor
-    }))
-
     return NextResponse.json({
-      stats,
-      recentExecutions: formattedExecutions,
-      manualTasks: formattedTasks
+      // Overall stats
+      stats: {
+        totalRules,
+        activeRules,
+        inactiveRules,
+        totalExecutions,
+        successfulExecutions,
+        failedExecutions,
+        pendingExecutions,
+        successRate: Math.round(successRate * 10) / 10,
+        avgDuration: Math.round(avgDuration * 10) / 10
+      },
+
+      // Recent executions (simplified - no retry/error fields as they don't exist)
+      recentExecutions: recentExecutions.map(e => {
+        // Parse triggerData if it exists
+        let parsedTriggerData: any = null
+        try {
+          if (e.triggerData) {
+            parsedTriggerData = JSON.parse(e.triggerData)
+          }
+        } catch (err) {
+          // Invalid JSON, ignore
+        }
+
+        return {
+          id: e.id,
+          automationId: e.automationId,
+          ruleName: 'Regla de automatización', // We'd need to join with Automation table to get name
+          entityType: parsedTriggerData?.entityType || 'UNKNOWN',
+          entityId: parsedTriggerData?.entityId || null,
+          status: e.status,
+          executedAt: e.executedAt,
+          completedAt: e.completedAt,
+          triggerData: parsedTriggerData
+        }
+      }),
+
+      // Manual intervention queue (pending follow-ups)
+      manualInterventionQueue: pendingFollowUps.map(t => ({
+        id: t.id,
+        type: t.followUpType,
+        priority: t.priority,
+        status: t.status,
+        createdAt: t.createdAt,
+        notes: t.notes
+      }))
     })
 
   } catch (error) {
-    console.error('Dashboard API error:', error)
+    console.error('Error fetching automation dashboard data:', error)
     return NextResponse.json(
-      { error: 'Error al cargar dashboard' },
+      { error: 'Error al cargar datos del dashboard' },
       { status: 500 }
     )
   }
