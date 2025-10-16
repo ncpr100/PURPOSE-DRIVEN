@@ -20,17 +20,17 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10')
     const skip = (page - 1) * limit
     
-    const isActive = searchParams.get('active') === 'true'
+    const status = searchParams.get('status')
     const isPublic = searchParams.get('public') === 'true'
 
     const where: any = {
       churchId: session.user.churchId
     }
 
-    if (isActive !== undefined) {
-      where.isActive = isActive
+    if (status) {
+      where.status = status
     }
-    if (isPublic !== undefined) {
+    if (searchParams.has('public')) {
       where.isPublic = isPublic
     }
 
@@ -94,18 +94,29 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const {
       title,
+      name,
       description,
       goalAmount,
+      goal,
       categoryId,
       isPublic = true,
-      coverImage,
       startDate,
       endDate
     } = body
 
-    if (!title) {
+    const campaignName = name || title
+    const campaignGoal = goal || goalAmount
+
+    if (!campaignName) {
       return NextResponse.json(
         { message: 'El título es requerido' },
+        { status: 400 }
+      )
+    }
+
+    if (!campaignGoal || campaignGoal <= 0) {
+      return NextResponse.json(
+        { message: 'La meta de donación es requerida y debe ser mayor a 0' },
         { status: 400 }
       )
     }
@@ -127,30 +138,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Generate unique slug
-    let slug = title.toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-
-    const existingSlug = await prisma.donationCampaign.findFirst({
-      where: { slug }
-    })
-
-    if (existingSlug) {
-      slug = `${slug}-${Date.now()}`
-    }
-
     const campaign = await prisma.donationCampaign.create({
       data: {
-        title,
+        name: campaignName,
         description,
-        goalAmount: goalAmount ? parseFloat(goalAmount.toString()) : null,
+        goal: parseFloat(campaignGoal.toString()),
         categoryId,
         isPublic,
-        slug,
-        coverImage,
-        startDate: startDate ? new Date(startDate) : null,
+        startDate: startDate ? new Date(startDate) : new Date(),
         endDate: endDate ? new Date(endDate) : null,
         churchId: session.user.churchId
       },

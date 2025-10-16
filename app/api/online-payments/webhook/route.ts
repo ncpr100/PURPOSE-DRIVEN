@@ -224,25 +224,18 @@ async function sendDonationConfirmationEmail(onlinePaymentId: string) {
 // Helper function to update campaign totals
 async function updateCampaignTotal(categoryId: string, amount: number) {
   try {
-    // Find campaigns using this category
+    // Find active campaigns using this category
     const campaigns = await prisma.donationCampaign.findMany({
       where: {
         categoryId,
-        isActive: true
+        status: 'ACTIVA'
       }
     })
 
-    // Update current amounts
-    for (const campaign of campaigns) {
-      await prisma.donationCampaign.update({
-        where: { id: campaign.id },
-        data: {
-          currentAmount: {
-            increment: amount
-          }
-        }
-      })
-    }
+    // Note: DonationCampaign model doesn't have currentAmount field
+    // Campaign totals should be calculated from donations sum
+    // This function is kept for backwards compatibility but doesn't update anything
+    console.log(`Campaign totals will be calculated from donations for ${campaigns.length} campaigns`)
     
   } catch (error) {
     console.error('Error updating campaign total:', error)
