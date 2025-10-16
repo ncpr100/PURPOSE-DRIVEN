@@ -139,29 +139,14 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // If it's a first-time visitor, create automatic follow-up tasks
-    if (isFirstTime) {
-      await db.visitorFollowUp.create({
-        data: {
-          checkInId: checkIn.id,
-          followUpType: 'EMAIL',
-          status: 'PENDIENTE',
-          scheduledAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours later
-          notes: 'Email de bienvenida automático',
-          churchId: session.user.churchId
-        }
-      })
-
-      await db.visitorFollowUp.create({
-        data: {
-          checkInId: checkIn.id,
-          followUpType: 'LLAMADA',
-          status: 'PENDIENTE',
-          scheduledAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days later
-          notes: 'Llamada de seguimiento para visitante por primera vez',
-          churchId: session.user.churchId
-        }
-      })
+    // TRIGGER AUTOMATION: Process through automation rules with auto-categorization
+    try {
+      const { VisitorAutomationService } = await import('@/lib/services/visitor-automation');
+      await VisitorAutomationService.processVisitor(checkIn.id);
+      console.log(`[Check-In API] Automation triggered for check-in: ${checkIn.id}`);
+    } catch (automationError) {
+      // Don't fail the request if automation fails, just log it
+      console.error('[Check-In API] Automation trigger failed:', automationError);
     }
 
     return NextResponse.json(checkIn, { status: 201 })

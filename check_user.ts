@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 async function checkUser() {
   try {
     const user = await db.user.findUnique({
-      where: { email: 'nelson.castro@khesedtek.com' }
+      where: { email: 'soporte@khesed-tek.com' }
     })
     
     console.log('User found:', user ? 'YES' : 'NO')
@@ -19,15 +19,15 @@ async function checkUser() {
       console.log('- Password length:', user.password ? user.password.length : 'N/A')
       
       // Test password
-      const testPassword = 'SuperAdmin2024!'
+      const testPassword = 'Bendecido100%$$%'
       const isValid = user.password ? await bcrypt.compare(testPassword, user.password) : false
-      console.log('- Password "SuperAdmin2024!" valid:', isValid ? 'YES' : 'NO')
+      console.log('- Password "Bendecido100%$$%" valid:', isValid ? 'YES' : 'NO')
       
       // Test multiple variations just in case
       const variations = [
-        'SuperAdmin2024!',
-        'superadmin2024!',
-        'SuperAdmin2024',
+        'Bendecido100%$$%',
+        'Bendecido100%$$%',
+        'Bendecido100%$$%',
         'password123'
       ]
       

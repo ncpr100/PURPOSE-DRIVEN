@@ -1,279 +1,363 @@
+/**
+ * Visitor Automation Integration
+ * Triggers automation rules for visitor check-ins
+ * Handles auto-categorization and bypass approval logic
+ */
 
-import { prisma } from '@/lib/prisma'
-import { AutomationEngine } from './automation-engine'
-import { PrayerAutomation } from './prayer-automation'
+import { prisma } from '@/lib/prisma';
+import { executeAutomationAction } from './automation-execution-engine';
 
-export interface VisitorProfile {
-  id: string
-  firstName: string
-  lastName: string
-  email?: string
-  phone?: string
-  isFirstTime: boolean
-  visitorType: string
-  ministryInterest: string[]
-  ageGroup?: string
-  familyStatus?: string
-  referredBy?: string
-  engagementScore: number
-}
+type VisitorCategory = 'FIRST_TIME' | 'RETURNING' | 'REGULAR' | 'NON_MEMBER' | 'MEMBER_CANDIDATE';
 
 export class VisitorAutomationService {
-  private automationEngine: AutomationEngine
-  private prayerAutomation: PrayerAutomation
-
-  constructor() {
-    this.automationEngine = new AutomationEngine()
-    this.prayerAutomation = new PrayerAutomation()
-  }
-
   /**
-   * Main entry point - triggers appropriate automation based on visitor type
+   * Process a visitor check-in through automation rules
    */
-  async triggerVisitorAutomation(checkInId: string): Promise<void> {
-    const checkIn = await prisma.checkIn.findUnique({
-      where: { id: checkInId },
-      include: {
-        church: true,
-        event: true
+  static async processVisitor(checkInId: string): Promise<void> {
+    try {
+      // Fetch check-in with related data
+      const checkIn = await prisma.checkIn.findUnique({
+        where: { id: checkInId },
+        include: {
+          church: true,
+          event: true,
+        }
+      });
+
+      if (!checkIn) {
+        console.error(`[Visitor Automation] Check-in ${checkInId} not found`);
+        return;
       }
-    })
 
-    if (!checkIn || checkIn.automationTriggered) return
+      // AUTO-CATEGORIZE VISITOR
+      const category = await this.categorizeVisitor(checkIn);
+      console.log(`[Visitor Automation] Categorized visitor as: ${category}`);
 
-    // Determine visitor type if not set
-    const visitorType = this.determineVisitorType(checkIn)
-    
-    // Update visitor type and trigger automation
-    await prisma.checkIn.update({
-      where: { id: checkInId },
-      data: { 
-        visitorType,
-        automationTriggered: true
+      // Create or update VisitorProfile
+      const visitorProfile = await this.upsertVisitorProfile(checkIn, category);
+
+      // Find active automation rules for this visitor category
+      const triggerType = this.getTriggerTypeForCategory(category);
+      
+      const automationRules = await prisma.automationRule.findMany({
+        where: {
+          churchId: checkIn.churchId,
+          isActive: true,
+          triggers: {
+            some: {
+              type: triggerType,
+              isActive: true
+            }
+          }
+        },
+        include: {
+          actions: {
+            where: { isActive: true },
+            orderBy: { createdAt: 'asc' }
+          },
+          conditions: true,
+          triggers: true
+        }
+      });
+
+      if (automationRules.length === 0) {
+        console.log(`[Visitor Automation] No active automation rules found for ${category} visitors`);
+        return;
       }
-    })
 
-    // Route to appropriate automation sequence
-    switch (visitorType) {
-      case 'FIRST_TIME':
-        await this.triggerFirstTimeVisitorSequence(checkIn)
-        break
-      case 'RETURN':
-        await this.triggerReturnVisitorSequence(checkIn)
-        break
-      case 'MINISTRY_INTEREST':
-        await this.triggerMinistryConnectionSequence(checkIn)
-        break
-      case 'PRAYER_REQUEST':
-        await this.triggerPrayerRequestSequence(checkIn)
-        break
+      // Execute each matching automation rule
+      for (const rule of automationRules) {
+        // Check if conditions match
+        const conditionsMatch = await this.evaluateConditions(rule.conditions, checkIn, visitorProfile);
+        
+        if (!conditionsMatch) {
+          continue;
+        }
+
+        console.log(`[Visitor Automation] Executing rule: ${rule.name} for check-in: ${checkInId}`);
+
+        // CHECK BYPASS APPROVAL FIELD
+        if (rule.bypassApproval) {
+          // SKIP APPROVAL - Execute actions immediately
+          console.log(`[Visitor Automation] Bypassing approval for rule: ${rule.name}`);
+          
+          await this.executeRuleActions(rule, checkIn, visitorProfile);
+        } else {
+          // CREATE FOLLOW-UP TASK - Require manual approval
+          console.log(`[Visitor Automation] Creating follow-up task for rule: ${rule.name}`);
+          
+          await this.createFollowUpTask(rule, checkIn, visitorProfile);
+        }
+      }
+
+    } catch (error) {
+      console.error('[Visitor Automation] Error processing visitor:', error);
+      throw error;
     }
   }
 
   /**
-   * 5-Touch First-Time Visitor Welcome Sequence
+   * AUTO-CATEGORIZE visitor based on behavior and history
    */
-  private async triggerFirstTimeVisitorSequence(checkIn: any): Promise<void> {
-    const touches = [
-      { day: 0, type: 'IMMEDIATE_WELCOME', category: 'WELCOME' },
-      { day: 2, type: 'PASTOR_WELCOME_VIDEO', category: 'WELCOME' },
-      { day: 7, type: 'MINISTRY_OVERVIEW', category: 'MINISTRY_CONNECTION' },
-      { day: 14, type: 'SMALL_GROUP_INVITATION', category: 'MINISTRY_CONNECTION' },
-      { day: 30, type: 'SERVICE_FEEDBACK_REQUEST', category: 'WELCOME' }
-    ]
-
-    for (const touch of touches) {
-      await this.scheduleFollowUp({
-        checkInId: checkIn.id,
-        followUpType: touch.type,
-        category: touch.category,
-        touchSequence: touches.indexOf(touch) + 1,
-        scheduledAt: new Date(Date.now() + (touch.day * 24 * 60 * 60 * 1000)),
-        priority: 'HIGH',
-        churchId: checkIn.churchId
-      })
-    }
-  }
-
-  /**
-   * Return Visitor Engagement Sequence
-   */
-  private async triggerReturnVisitorSequence(checkIn: any): Promise<void> {
-    // Check engagement history and tailor response
+  private static async categorizeVisitor(checkIn: any): Promise<VisitorCategory> {
+    // Check if first-time visitor
     const previousVisits = await prisma.checkIn.count({
       where: {
         email: checkIn.email,
         churchId: checkIn.churchId,
         id: { not: checkIn.id }
       }
-    })
+    });
 
-    const followUpType = previousVisits > 5 ? 'COMMITTED_VISITOR_OUTREACH' : 'RETURN_VISITOR_ENGAGEMENT'
-    
-    await this.scheduleFollowUp({
-      checkInId: checkIn.id,
-      followUpType,
-      category: 'MINISTRY_CONNECTION',
-      scheduledAt: new Date(Date.now() + (3 * 24 * 60 * 60 * 1000)), // 3 days
-      priority: 'MEDIUM',
-      churchId: checkIn.churchId
-    })
-  }
-
-  /**
-   * Ministry Interest Connection Automation
-   */
-  private async triggerMinistryConnectionSequence(checkIn: any): Promise<void> {
-    if (!checkIn.ministryInterest?.length) return
-
-    for (const ministry of checkIn.ministryInterest) {
-      // Match with ministry leaders
-      const ministryMatch = await this.findMinistryMatch(ministry, checkIn.churchId)
-      
-      await this.scheduleFollowUp({
-        checkInId: checkIn.id,
-        followUpType: 'MINISTRY_LEADER_INTRODUCTION',
-        category: 'MINISTRY_CONNECTION',
-        ministryMatch,
-        scheduledAt: new Date(Date.now() + (24 * 60 * 60 * 1000)), // 1 day
-        priority: 'HIGH',
-        assignedTo: ministryMatch?.leaderId,
-        churchId: checkIn.churchId,
-        responseData: { ministryName: ministry }
-      })
+    // FIRST_TIME: New visitor (0 previous visits)
+    if (previousVisits === 0) {
+      return 'FIRST_TIME';
     }
-  }
 
-  /**
-   * Prayer Request Integration with Prayer Wall
-   */
-  private async triggerPrayerRequestSequence(checkIn: any): Promise<void> {
-    if (!checkIn.prayerRequest) return
-
-    // Create prayer request in Prayer Wall system
-    const prayerRequestId = await this.prayerAutomation.createFromVisitor({
-      visitorName: `${checkIn.firstName} ${checkIn.lastName}`,
-      email: checkIn.email,
-      phone: checkIn.phone,
-      request: checkIn.prayerRequest,
-      churchId: checkIn.churchId
-    })
-
-    await this.scheduleFollowUp({
-      checkInId: checkIn.id,
-      followUpType: 'PRAYER_REQUEST_FOLLOW_UP',
-      category: 'PRAYER',
-      scheduledAt: new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)), // 1 week
-      priority: 'MEDIUM',
-      churchId: checkIn.churchId,
-      responseData: { prayerRequestId }
-    })
-  }
-
-  /**
-   * Smart visitor type determination
-   */
-  private determineVisitorType(checkIn: any): string {
-    if (checkIn.prayerRequest) return 'PRAYER_REQUEST'
-    if (checkIn.ministryInterest?.length > 0) return 'MINISTRY_INTEREST'
-    if (checkIn.isFirstTime) return 'FIRST_TIME'
-    return 'RETURN'
-  }
-
-  /**
-   * Ministry matching algorithm
-   */
-  private async findMinistryMatch(ministryName: string, churchId: string) {
-    // This would integrate with your ministry database
-    // For now, return a placeholder structure
-    return {
-      ministryId: 'ministry-id',
-      ministryName,
-      leaderId: 'leader-user-id',
-      leaderName: 'Ministry Leader',
-      leaderEmail: 'leader@church.com'
+    // MEMBER_CANDIDATE: 4+ visits or expressed membership interest
+    if (previousVisits >= 4 || checkIn.membershipInterest) {
+      return 'MEMBER_CANDIDATE';
     }
+
+    // REGULAR: 3+ visits
+    if (previousVisits >= 3) {
+      return 'REGULAR';
+    }
+
+    // RETURNING: 1-2 previous visits
+    return 'RETURNING';
   }
 
   /**
-   * Enhanced follow-up scheduling
+   * Create or update VisitorProfile in database
    */
-  private async scheduleFollowUp(data: any) {
-    return await prisma.visitorFollowUp.create({
-      data: {
-        checkInId: data.checkInId,
-        followUpType: data.followUpType,
-        category: data.category || 'WELCOME',
-        touchSequence: data.touchSequence,
-        priority: data.priority || 'MEDIUM',
-        scheduledAt: data.scheduledAt,
-        assignedTo: data.assignedTo,
-        ministryMatch: data.ministryMatch?.ministryName,
-        responseData: data.responseData,
-        nextActionDue: data.scheduledAt,
-        churchId: data.churchId
+  private static async upsertVisitorProfile(checkIn: any, category: VisitorCategory) {
+    // Try to find existing profile by email or phone
+    const existingProfile = await prisma.visitorProfile.findFirst({
+      where: {
+        OR: [
+          { email: checkIn.email },
+          { phone: checkIn.phone }
+        ]
       }
-    })
+    });
+
+    if (existingProfile) {
+      // Update existing profile
+      return await prisma.visitorProfile.update({
+        where: { id: existingProfile.id },
+        data: {
+          category,
+          visitCount: existingProfile.visitCount + 1,
+          lastVisitDate: new Date(),
+          checkInId: checkIn.id // Update to latest check-in
+        }
+      });
+    } else {
+      // Create new profile
+      return await prisma.visitorProfile.create({
+        data: {
+          checkInId: checkIn.id,
+          fullName: `${checkIn.firstName} ${checkIn.lastName}`,
+          email: checkIn.email,
+          phone: checkIn.phone,
+          category,
+          visitCount: 1,
+          firstVisitDate: new Date(),
+          lastVisitDate: new Date(),
+          interestAreas: checkIn.ministryInterest || []
+        }
+      });
+    }
   }
 
   /**
-   * Generate follow-up forms with QR codes (leveraging Prayer Wall infrastructure)
+   * Calculate engagement score (0-100)
    */
-  async generateFollowUpForm(checkInId: string, formType: string): Promise<string> {
-    const checkIn = await prisma.checkIn.findUnique({
-      where: { id: checkInId }
-    })
+  private static calculateEngagementScore(checkIn: any, category: VisitorCategory): number {
+    let score = 50; // Base score
 
-    if (!checkIn) throw new Error('Check-in not found')
+    // Category bonuses
+    const categoryBonus: Record<VisitorCategory, number> = {
+      'FIRST_TIME': 0,
+      'RETURNING': 10,
+      'REGULAR': 20,
+      'NON_MEMBER': 25,
+      'MEMBER_CANDIDATE': 30
+    };
+    score += categoryBonus[category];
 
-    // Create custom form using Prayer Wall form builder
-    const formData = {
-      title: this.getFormTitle(formType),
-      fields: this.getFormFields(formType),
-      visitorId: checkInId,
-      churchId: checkIn.churchId
+    // Ministry interest bonus
+    if (checkIn.ministryInterest?.length > 0) {
+      score += checkIn.ministryInterest.length * 5;
     }
 
-    // This would integrate with your existing form builder
-    const formUrl = await this.createForm(formData)
-    const qrCodeUrl = await this.generateQRCode(formUrl)
+    // Contact info completeness
+    if (checkIn.email) score += 5;
+    if (checkIn.phone) score += 5;
 
-    return qrCodeUrl
+    // Prayer request or special needs
+    if (checkIn.prayerRequest) score += 10;
+    if (checkIn.specialNeeds) score += 10;
+
+    return Math.min(100, score);
   }
 
-  private getFormTitle(formType: string): string {
-    const titles = {
-      'MINISTRY_INTEREST': '¿En qué ministerios te interesaría participar?',
-      'SERVICE_FEEDBACK': '¿Cómo fue tu experiencia en el servicio?',
-      'SMALL_GROUP_INTEREST': '¿Te gustaría unirte a un grupo pequeño?',
-      'VOLUNTEER_INTEREST': '¿Te interesaría servir como voluntario?'
+  /**
+   * Map visitor category to automation trigger type
+   */
+  private static getTriggerTypeForCategory(category: VisitorCategory): any {
+    const mapping: Record<string, any> = {
+      'FIRST_TIME': 'VISITOR_FIRST_TIME',
+      'RETURNING': 'VISITOR_RETURNED',
+      'REGULAR': 'VISITOR_RETURNED',
+      'NON_MEMBER': 'VISITOR_CHECKED_IN',
+      'MEMBER_CANDIDATE': 'VISITOR_CHECKED_IN'
+    };
+    return mapping[category];
+  }
+
+  /**
+   * Execute all actions for a rule (when bypassApproval is true)
+   */
+  private static async executeRuleActions(rule: any, checkIn: any, visitorProfile: any): Promise<void> {
+    for (const action of rule.actions) {
+      try {
+        // Prepare context for action execution
+        const context = {
+          checkInId: checkIn.id,
+          visitorProfileId: visitorProfile.id,
+          churchId: checkIn.churchId,
+          recipientEmail: checkIn.email,
+          recipientPhone: checkIn.phone,
+          recipientName: `${checkIn.firstName} ${checkIn.lastName}`,
+          visitorCategory: visitorProfile.category,
+          engagementScore: visitorProfile.engagementScore,
+          isFirstTime: visitorProfile.category === 'FIRST_TIME',
+          ministryInterests: checkIn.ministryInterest || [],
+          data: {
+            checkIn,
+            visitorProfile
+          }
+        };
+
+        // Execute action through automation engine (handles retry/fallback)
+        const result = await executeAutomationAction(rule, action, context);
+
+        if (result.success) {
+          console.log(`[Visitor Automation] Action ${action.type} executed successfully`);
+        } else {
+          console.error(`[Visitor Automation] Action ${action.type} failed:`, result.error);
+        }
+
+      } catch (error) {
+        console.error(`[Visitor Automation] Error executing action ${action.id}:`, error);
+      }
     }
-    return titles[formType as keyof typeof titles] || 'Formulario de seguimiento'
   }
 
-  private getFormFields(formType: string): any[] {
-    // Return appropriate form fields based on type
-    const fieldSets = {
-      'MINISTRY_INTEREST': [
-        { type: 'checkbox-group', label: 'Ministerios de interés', options: ['Música', 'Niños', 'Jóvenes', 'Adultos Mayores', 'Cocina', 'Seguridad'] },
-        { type: 'textarea', label: 'Comentarios adicionales' }
-      ],
-      'SERVICE_FEEDBACK': [
-        { type: 'rating', label: 'Califica el servicio (1-5)' },
-        { type: 'textarea', label: '¿Qué te gustó más?' },
-        { type: 'textarea', label: '¿Cómo podemos mejorar?' }
-      ]
+  /**
+   * Create follow-up task (when bypassApproval is false)
+   */
+  private static async createFollowUpTask(rule: any, checkIn: any, visitorProfile: any): Promise<void> {
+    // Find a pastor or admin to assign task
+    const staff = await prisma.user.findMany({
+      where: {
+        churchId: checkIn.churchId,
+        role: {
+          in: ['PASTOR', 'ADMIN_IGLESIA']
+        }
+      },
+      take: 1
+    });
+
+    const assignee = staff[0];
+    if (!assignee) {
+      console.error('[Visitor Automation] No staff found for task assignment, executing anyway');
+      // Execute immediately if no staff available
+      await this.executeRuleActions(rule, checkIn, visitorProfile);
+      return;
     }
-    return fieldSets[formType as keyof typeof fieldSets] || []
+
+    // Calculate scheduled follow-up time (24 hours default)
+    const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    await prisma.visitorFollowUp.create({
+      data: {
+        checkInId: checkIn.id,
+        churchId: checkIn.churchId,
+        followUpType: rule.name,
+        category: visitorProfile.category,
+        priority: rule.priorityLevel || 'NORMAL',
+        scheduledAt,
+        assignedTo: assignee.id,
+        status: 'PENDIENTE',
+        notes: `Automation rule: ${rule.name} - Requires manual approval before execution`
+      }
+    });
+
+    console.log(`[Visitor Automation] Follow-up task created for check-in: ${checkIn.id}`);
   }
 
-  private async createForm(formData: any): Promise<string> {
-    // Placeholder - integrate with existing form builder
-    return `https://church.com/forms/${formData.visitorId}`
+  /**
+   * Evaluate rule conditions against check-in and visitor profile
+   */
+  private static async evaluateConditions(conditions: any[], checkIn: any, visitorProfile: any): Promise<boolean> {
+    if (!conditions || conditions.length === 0) {
+      return true; // No conditions = always match
+    }
+
+    for (const condition of conditions) {
+      // Merge checkIn and visitorProfile for field lookup
+      const data = { ...checkIn, ...visitorProfile };
+      const fieldValue = this.getFieldValue(data, condition.field);
+      const conditionValue = condition.value;
+
+      switch (condition.operator) {
+        case 'equals':
+          if (fieldValue !== conditionValue) return false;
+          break;
+        case 'not_equals':
+          if (fieldValue === conditionValue) return false;
+          break;
+        case 'contains':
+          if (!String(fieldValue).toLowerCase().includes(String(conditionValue).toLowerCase())) return false;
+          break;
+        case 'greater_than':
+          if (!(Number(fieldValue) > Number(conditionValue))) return false;
+          break;
+        case 'less_than':
+          if (!(Number(fieldValue) < Number(conditionValue))) return false;
+          break;
+        case 'is_true':
+          if (!fieldValue) return false;
+          break;
+        case 'is_false':
+          if (fieldValue) return false;
+          break;
+        default:
+          console.warn(`[Visitor Automation] Unknown operator: ${condition.operator}`);
+      }
+    }
+
+    return true; // All conditions matched
   }
 
-  private async generateQRCode(url: string): Promise<string> {
-    // Placeholder - integrate with existing QR generator
-    return `https://church.com/qr/${btoa(url)}.png`
+  /**
+   * Get field value from data object
+   */
+  private static getFieldValue(data: any, fieldPath: string): any {
+    const parts = fieldPath.split('.');
+    let value = data;
+
+    for (const part of parts) {
+      if (value && typeof value === 'object') {
+        value = value[part];
+      } else {
+        return null;
+      }
+    }
+
+    return value;
   }
 }

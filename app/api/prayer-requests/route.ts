@@ -184,7 +184,15 @@ export async function POST(request: Request) {
       }
     });
 
-    // TODO: Trigger notification to church admins about the new prayer request
+    // TRIGGER AUTOMATION: Process through automation rules
+    try {
+      const { PrayerAutomation } = await import('@/lib/services/prayer-automation');
+      await PrayerAutomation.processPrayerRequest(prayerRequest.id);
+      console.log(`[Prayer Request API] Automation triggered for prayer request: ${prayerRequest.id}`);
+    } catch (automationError) {
+      // Don't fail the request if automation fails, just log it
+      console.error('[Prayer Request API] Automation trigger failed:', automationError);
+    }
 
     return NextResponse.json(prayerRequest, { status: 201 });
 

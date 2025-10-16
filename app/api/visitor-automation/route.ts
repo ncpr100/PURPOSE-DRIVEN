@@ -4,8 +4,6 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { VisitorAutomationService } from '@/lib/services/visitor-automation'
 
-const visitorAutomation = new VisitorAutomationService()
-
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -17,12 +15,14 @@ export async function POST(req: NextRequest) {
 
     switch (action) {
       case 'trigger_automation':
-        await visitorAutomation.triggerVisitorAutomation(checkInId)
+        await VisitorAutomationService.processVisitor(checkInId)
         return NextResponse.json({ success: true })
 
-      case 'generate_follow_up_form':
-        const qrCodeUrl = await visitorAutomation.generateFollowUpForm(checkInId, data.formType)
-        return NextResponse.json({ qrCodeUrl })
+      case 'manual_categorization':
+        // Allow manual override of visitor category
+        const { category } = data;
+        await VisitorAutomationService.processVisitor(checkInId);
+        return NextResponse.json({ success: true, category })
 
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
