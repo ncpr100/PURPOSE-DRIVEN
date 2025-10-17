@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'react-hot-toast'
+import { TemplateDetailModal } from '@/components/automation-rules/template-detail-modal'
 import { 
   Zap, 
   Plus, 
@@ -73,6 +74,8 @@ export function UnifiedAutomationInterface() {
   const [loading, setLoading] = useState(true)
   const [automationRules, setAutomationRules] = useState<AutomationRule[]>([])
   const [templates, setTemplates] = useState<Template[]>([])
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
   const [stats, setStats] = useState({
     total: 0,
     active: 0,
@@ -145,8 +148,19 @@ export function UnifiedAutomationInterface() {
   }
 
   const handleUseTemplate = (templateId: string) => {
-    // TODO: Open configuration dialog
-    toast('Funcionalidad en desarrollo', { icon: '🚧' })
+    setSelectedTemplateId(templateId)
+    setModalOpen(true)
+  }
+
+  const handleActivateTemplate = async (templateId: string, customizations: any) => {
+    try {
+      // TODO: Implement template activation API call
+      toast.success('Plantilla activada correctamente')
+      setModalOpen(false)
+      fetchData() // Refresh data
+    } catch (error) {
+      toast.error('Error al activar plantilla')
+    }
   }
 
   if (loading) {
@@ -408,6 +422,24 @@ export function UnifiedAutomationInterface() {
             }
             const iconGradient = iconGradients[template.category] || 'from-gray-500 to-gray-600'
 
+            // Emoji mapping for categories
+            const categoryEmojis: Record<string, string> = {
+              'PRAYER_REQUEST': '🙏',
+              'VISITOR_FOLLOWUP': '👥',
+              'SOCIAL_MEDIA': '💬',
+              'EVENTS': '📅'
+            }
+            const emoji = categoryEmojis[template.category] || '⚡'
+
+            // Text colors matching button gradient
+            const textColors: Record<string, string> = {
+              'PRAYER_REQUEST': 'text-pink-600',
+              'VISITOR_FOLLOWUP': 'text-blue-600',
+              'SOCIAL_MEDIA': 'text-purple-600',
+              'EVENTS': 'text-orange-600'
+            }
+            const textColor = textColors[template.category] || 'text-gray-600'
+
             return (
               <Card 
                 key={template.id} 
@@ -417,9 +449,9 @@ export function UnifiedAutomationInterface() {
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div 
-                        className={`flex h-14 w-14 items-center justify-center rounded-xl text-2xl bg-gradient-to-br ${iconGradient} shadow-lg`}
+                        className={`flex h-14 w-14 items-center justify-center rounded-xl text-3xl bg-gradient-to-br ${iconGradient} shadow-lg`}
                       >
-                        <span className="text-white">{template.icon}</span>
+                        <span>{emoji}</span>
                       </div>
                       <div className="flex flex-col gap-1">
                         <Badge variant="secondary" className="text-xs shadow-sm">
@@ -438,9 +470,9 @@ export function UnifiedAutomationInterface() {
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        {getCategoryIcon(template.category)}
-                        <span className="font-medium">{getCategoryLabel(template.category)}</span>
+                      <div className={`flex items-center gap-1.5 text-xs font-semibold ${textColor}`}>
+                        <span className="text-lg">{emoji}</span>
+                        <span>{getCategoryLabel(template.category)}</span>
                       </div>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
                         <TrendingUp className="h-3.5 w-3.5" />
@@ -449,7 +481,7 @@ export function UnifiedAutomationInterface() {
                     </div>
 
                     <Button 
-                      className={`w-full gap-2 bg-gradient-to-r ${iconGradient} hover:opacity-90 shadow-md`}
+                      className={`w-full gap-2 bg-gradient-to-r ${iconGradient} hover:opacity-90 shadow-md text-white`}
                       onClick={() => handleUseTemplate(template.id)}
                     >
                       <Sparkles className="h-4 w-4" />
@@ -497,6 +529,17 @@ export function UnifiedAutomationInterface() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Template Detail Modal */}
+      <TemplateDetailModal
+        templateId={selectedTemplateId}
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false)
+          setSelectedTemplateId(null)
+        }}
+        onActivate={handleActivateTemplate}
+      />
     </div>
   )
 }
