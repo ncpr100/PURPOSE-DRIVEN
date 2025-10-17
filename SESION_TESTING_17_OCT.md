@@ -298,19 +298,31 @@ Problemas:
 
 ---
 
-### Bug #3: Plantillas duplicadas (sistema viejo + nuevo)
-- **Severidad**: 🟡 IMPORTANTE
-- **Módulo**: Plantillas de Automatización
-- **Qué esperabas**: Solo un set de plantillas
-- **Qué pasó**: Hay DOS grupos de plantillas:
-  - Plantillas del sistema anterior
-  - Plantillas nuevas del seed
-- **Impacto**: Confusión para usuarios, datos redundantes
-- **Pasos para reproducir**:
-  1. Ir a /automation-rules/templates
-  2. Ver lista completa de plantillas
-  3. Notar duplicación de funcionalidad
-- **STATUS**: 🟡 PENDIENTE - Requiere decisión: ¿Eliminar viejas o nuevas?
+## 🔴 BUG #3 - PLANTILLAS DUPLICADAS
+**Severidad:** ✅ RESUELTO  
+**Módulo:** Sistema de Plantillas  
+**Descripción:**  
+El sistema mostraba DOS conjuntos de plantillas:
+1. **Plantillas viejas hardcodeadas (mockTemplates)**: Bienvenida a Nuevos Miembros, Agradecimiento por Donación, Recordatorio de Cumpleaños (mock data en el componente)
+2. **Plantillas nuevas del seed (base de datos)**: Las 8 plantillas de Prayer Request y Visitor Followup
+
+**Root Cause Encontrado:**
+El componente `automation-templates.tsx` tenía un array `mockTemplates` hardcodeado con 6 plantillas fake que SIEMPRE se mostraban, ignorando las plantillas reales de la base de datos.
+
+**Solución Implementada:**
+1. ✅ Eliminado array `mockTemplates` completo
+2. ✅ Componente ahora usa SOLO plantillas del API (`filteredTemplates`)
+3. ✅ Actualizadas categorías: `PRAYER_REQUEST`, `VISITOR_FOLLOWUP`
+4. ✅ API devuelve datos correctos con configs incluidos
+5. ✅ Badge dinámico muestra count real de plantillas
+
+**Verificación:**
+- Usuarios ahora ven SOLO las 8 plantillas reales del sistema
+- Todas en español ✅
+- No más duplicados
+- Fuente única de verdad: base de datos PostgreSQL
+
+**STATUS:** ✅ RESUELTO - Commit 7ab66544 pushed to Railway
 
 ---
 
