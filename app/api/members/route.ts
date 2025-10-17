@@ -25,6 +25,8 @@ export async function GET() {
         lastName: true,
         email: true,
         phone: true,
+        gender: true, // 🔥 CRITICAL: Added missing gender field
+        maritalStatus: true, // Also adding maritalStatus for completeness
         membershipDate: true,
         isActive: true,
         spiritualGifts: true,
@@ -37,9 +39,15 @@ export async function GET() {
         updatedAt: true,
         // Add any other fields that the UI expects
         address: true,
+        city: true,
+        state: true,
+        zipCode: true,
         emergencyContact: true,
         birthDate: true,
-        churchId: true
+        baptismDate: true,
+        ministryId: true,
+        churchId: true,
+        notes: true
       },
       orderBy: {
         createdAt: 'desc'
