@@ -22,7 +22,8 @@ const PROTECTED_ROUTES = [
   '/advanced-events',
   '/follow-ups',
   '/check-ins',
-  '/platform'
+  '/platform',
+  '/automation-rules'
 ];
 
 // Rutas de API que requieren autenticación
@@ -43,7 +44,9 @@ const PROTECTED_API_ROUTES = [
   '/api/roles-advanced',
   '/api/user-roles',
   '/api/user-permissions',
-  '/api/platform'
+  '/api/platform',
+  '/api/automation-rules',
+  '/api/automation-templates'
 ];
 
 // Mapeo de rutas a permisos requeridos
@@ -63,7 +66,8 @@ const ROUTE_PERMISSIONS = {
   '/settings': { resource: 'settings', action: 'read' },
   '/advanced-events': { resource: 'events', action: 'read' },
   '/follow-ups': { resource: 'communications', action: 'read' },
-  '/check-ins': { resource: 'events', action: 'read' }
+  '/check-ins': { resource: 'events', action: 'read' },
+  '/automation-rules': { resource: 'automation', action: 'read' }
 } as const;
 
 export async function middleware(request: NextRequest) {
