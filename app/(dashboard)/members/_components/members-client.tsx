@@ -336,9 +336,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       )
     }
 
-    // Apply Gender Filter
+    // Apply Gender Filter (case-insensitive)
     if (genderFilter !== 'all') {
-      filtered = filtered.filter(member => member.gender === genderFilter)
+      filtered = filtered.filter(member => member.gender?.toLowerCase() === genderFilter.toLowerCase())
     }
 
     setFilteredMembers(filtered)
@@ -666,7 +666,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filteredMembers.filter(m => m.gender === 'masculino').length}
+                    {filteredMembers.filter(m => m.gender?.toLowerCase() === 'masculino').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Hombres</p>
                 </div>
@@ -681,7 +681,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filteredMembers.filter(m => m.gender === 'femenino').length}
+                    {filteredMembers.filter(m => m.gender?.toLowerCase() === 'femenino').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Mujeres</p>
                 </div>
