@@ -178,57 +178,57 @@ export function UnifiedAutomationInterface() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Reglas</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-sm font-medium text-blue-700">Total Reglas</p>
+                <p className="text-3xl font-bold text-blue-900">{stats.total}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
-                <Zap className="h-6 w-6 text-blue-600" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg">
+                <Zap className="h-7 w-7 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Activas</p>
-                <p className="text-2xl font-bold">{stats.active}</p>
+                <p className="text-sm font-medium text-green-700">Activas</p>
+                <p className="text-3xl font-bold text-green-900">{stats.active}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
-                <CheckCircle className="h-6 w-6 text-green-600" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-green-600 shadow-lg">
+                <CheckCircle className="h-7 w-7 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Ejecuciones</p>
-                <p className="text-2xl font-bold">{stats.totalExecutions}</p>
+                <p className="text-sm font-medium text-purple-700">Ejecuciones</p>
+                <p className="text-3xl font-bold text-purple-900">{stats.totalExecutions}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100">
-                <TrendingUp className="h-6 w-6 text-purple-600" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg">
+                <TrendingUp className="h-7 w-7 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Tasa de Éxito</p>
-                <p className="text-2xl font-bold">{stats.successRate}%</p>
+                <p className="text-sm font-medium text-orange-700">Tasa de Éxito</p>
+                <p className="text-3xl font-bold text-orange-900">{stats.successRate}%</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100">
-                <Sparkles className="h-6 w-6 text-orange-600" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg">
+                <Sparkles className="h-7 w-7 text-white" />
               </div>
             </div>
           </CardContent>
@@ -237,17 +237,17 @@ export function UnifiedAutomationInterface() {
 
       {/* Welcome Section (if no rules) */}
       {!hasActiveRules && (
-        <Card className="border-dashed border-2 bg-gradient-to-br from-blue-50 to-purple-50">
+        <Card className="border-dashed border-2 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
           <CardContent className="p-12">
             <div className="text-center space-y-6">
               <div className="flex justify-center">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 shadow-lg">
                   <Zap className="h-10 w-10 text-white" />
                 </div>
               </div>
               
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                   ¡Bienvenido al Sistema de Automatización!
                 </h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -257,61 +257,57 @@ export function UnifiedAutomationInterface() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                <div className="p-4 rounded-lg bg-white/80 backdrop-blur-sm border">
+                <div className="p-4 rounded-lg bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 shadow-sm">
                   <div className="flex items-center gap-2 mb-2 text-pink-600">
                     <Heart className="h-5 w-5" />
-                    <h3 className="font-semibold">Responder a Peticiones de Oración</h3>
+                    <h3 className="font-semibold text-sm">Peticiones de Oración</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Envía confirmación automática y notifica al equipo
+                  <p className="text-xs text-muted-foreground">
+                    Confirmación automática y notificación al equipo
                   </p>
                 </div>
 
-                <div className="p-4 rounded-lg bg-white/80 backdrop-blur-sm border">
+                <div className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 shadow-sm">
                   <div className="flex items-center gap-2 mb-2 text-blue-600">
                     <Users className="h-5 w-5" />
-                    <h3 className="font-semibold">Seguimiento de Visitantes</h3>
+                    <h3 className="font-semibold text-sm">Seguimiento de Visitantes</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Mensaje de bienvenida y seguimiento automático
+                  <p className="text-xs text-muted-foreground">
+                    Bienvenida y seguimiento automático
                   </p>
                 </div>
 
-                <div className="p-4 rounded-lg bg-white/80 backdrop-blur-sm border">
+                <div className="p-4 rounded-lg bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 shadow-sm">
                   <div className="flex items-center gap-2 mb-2 text-purple-600">
                     <Calendar className="h-5 w-5" />
-                    <h3 className="font-semibold">Notificaciones de Cumpleaños</h3>
+                    <h3 className="font-semibold text-sm">Cumpleaños</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Felicita automáticamente a tus miembros
+                  <p className="text-xs text-muted-foreground">
+                    Felicitaciones automáticas
                   </p>
                 </div>
 
-                <div className="p-4 rounded-lg bg-white/80 backdrop-blur-sm border">
+                <div className="p-4 rounded-lg bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 shadow-sm">
                   <div className="flex items-center gap-2 mb-2 text-orange-600">
                     <Sparkles className="h-5 w-5" />
-                    <h3 className="font-semibold">Y mucho más...</h3>
+                    <h3 className="font-semibold text-sm">Y mucho más...</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {templates.length} plantillas listas para usar en segundos
+                  <p className="text-xs text-muted-foreground">
+                    {templates.length} plantillas disponibles
                   </p>
                 </div>
               </div>
 
               <div className="flex justify-center gap-3">
-                <Button size="lg" className="gap-2">
-                  <Sparkles className="h-5 w-5" />
-                  Ver Plantillas Disponibles
-                </Button>
                 <Button size="lg" variant="outline" className="gap-2">
                   <Plus className="h-5 w-5" />
                   Crear Regla Personalizada
                 </Button>
               </div>
 
-              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>💡 Consejo: Empieza con una plantilla pre-configurada. Solo toma 30 segundos activarla.</span>
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground bg-blue-50 rounded-lg p-3 max-w-2xl mx-auto border border-blue-100">
+                <AlertCircle className="h-4 w-4 text-blue-600" />
+                <span>💡 <strong>Consejo:</strong> Empieza con una plantilla pre-configurada abajo. Solo toma 30 segundos activarla.</span>
               </div>
             </div>
           </CardContent>
@@ -394,54 +390,77 @@ export function UnifiedAutomationInterface() {
           </Badge>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {templates.map((template) => (
-            <Card key={template.id} className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div 
-                      className="flex h-12 w-12 items-center justify-center rounded-lg text-2xl"
-                      style={{ backgroundColor: template.color + '20' }}
-                    >
-                      {template.icon}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        {getCategoryIcon(template.category)}
-                        <Badge variant="outline" className="text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {templates.map((template) => {
+            const gradientColors: Record<string, string> = {
+              'PRAYER_REQUEST': 'from-pink-50 via-pink-100 to-rose-100 border-pink-200',
+              'VISITOR_FOLLOWUP': 'from-blue-50 via-blue-100 to-cyan-100 border-blue-200',
+              'SOCIAL_MEDIA': 'from-purple-50 via-purple-100 to-indigo-100 border-purple-200',
+              'EVENTS': 'from-orange-50 via-orange-100 to-amber-100 border-orange-200'
+            }
+            const gradient = gradientColors[template.category] || 'from-gray-50 to-gray-100 border-gray-200'
+            
+            const iconGradients: Record<string, string> = {
+              'PRAYER_REQUEST': 'from-pink-500 to-rose-600',
+              'VISITOR_FOLLOWUP': 'from-blue-500 to-cyan-600',
+              'SOCIAL_MEDIA': 'from-purple-500 to-indigo-600',
+              'EVENTS': 'from-orange-500 to-amber-600'
+            }
+            const iconGradient = iconGradients[template.category] || 'from-gray-500 to-gray-600'
+
+            return (
+              <Card 
+                key={template.id} 
+                className={`bg-gradient-to-br ${gradient} hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}
+              >
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start justify-between">
+                      <div 
+                        className={`flex h-14 w-14 items-center justify-center rounded-xl text-2xl bg-gradient-to-br ${iconGradient} shadow-lg`}
+                      >
+                        <span className="text-white">{template.icon}</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <Badge variant="secondary" className="text-xs shadow-sm">
                           Sistema
                         </Badge>
                       </div>
-                      <h3 className="font-semibold text-sm leading-tight">
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold text-base leading-tight mb-2">
                         {template.name}
                       </h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {template.description}
+                      </p>
                     </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        {getCategoryIcon(template.category)}
+                        <span className="font-medium">{getCategoryLabel(template.category)}</span>
+                      </div>
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
+                        <TrendingUp className="h-3.5 w-3.5" />
+                        {template.installCount} usos
+                      </span>
+                    </div>
+
+                    <Button 
+                      className={`w-full gap-2 bg-gradient-to-r ${iconGradient} hover:opacity-90 shadow-md`}
+                      onClick={() => handleUseTemplate(template.id)}
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      Usar Plantilla
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
                   </div>
-
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {template.description}
-                  </p>
-
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>{getCategoryLabel(template.category)}</span>
-                    <span className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3" />
-                      {template.installCount} usos
-                    </span>
-                  </div>
-
-                  <Button 
-                    className="w-full gap-2" 
-                    onClick={() => handleUseTemplate(template.id)}
-                  >
-                    Usar Plantilla
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       </div>
 
