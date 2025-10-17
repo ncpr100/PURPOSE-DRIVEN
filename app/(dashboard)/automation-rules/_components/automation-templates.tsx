@@ -74,24 +74,22 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
 
   const getCategoryIcon = (category: string) => {
     const icons: Record<string, React.ReactNode> = {
-      'nuevos-miembros': <Users className="h-4 w-4" />,
-      'donaciones': <Gift className="h-4 w-4" />,
-      'eventos': <Calendar className="h-4 w-4" />,
-      'comunicacion': <MessageSquare className="h-4 w-4" />,
-      'fechas-especiales': <Heart className="h-4 w-4" />,
-      'seguimiento': <Star className="h-4 w-4" />
+      'PRAYER_REQUEST': <Heart className="h-4 w-4" />,
+      'VISITOR_FOLLOWUP': <Users className="h-4 w-4" />,
+      'MEMBER_ENGAGEMENT': <Star className="h-4 w-4" />,
+      'DONATION_MANAGEMENT': <Gift className="h-4 w-4" />,
+      'EVENT_MANAGEMENT': <Calendar className="h-4 w-4" />
     }
     return icons[category] || <FileText className="h-4 w-4" />
   }
 
   const getCategoryLabel = (category: string) => {
     const labels: Record<string, string> = {
-      'nuevos-miembros': 'Nuevos Miembros',
-      'donaciones': 'Donaciones',
-      'eventos': 'Eventos',
-      'comunicacion': 'Comunicación',
-      'fechas-especiales': 'Fechas Especiales',
-      'seguimiento': 'Seguimiento'
+      'PRAYER_REQUEST': 'Peticiones de Oración',
+      'VISITOR_FOLLOWUP': 'Seguimiento de Visitantes',
+      'MEMBER_ENGAGEMENT': 'Compromiso de Miembros',
+      'DONATION_MANAGEMENT': 'Gestión de Donaciones',
+      'EVENT_MANAGEMENT': 'Gestión de Eventos'
     }
     return labels[category] || category
   }
@@ -100,83 +98,6 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
     template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     template.description?.toLowerCase().includes(searchTerm.toLowerCase())
   )
-
-  // Mock templates for demonstration
-  const mockTemplates = [
-    {
-      id: '1',
-      name: 'Bienvenida a Nuevos Miembros',
-      description: 'Envía automáticamente un mensaje de bienvenida cuando alguien se une a la iglesia',
-      category: 'nuevos-miembros',
-      usageCount: 156,
-      isSystem: true,
-      template: {
-        triggers: [{ type: 'MEMBER_JOINED' }],
-        actions: [{ type: 'SEND_NOTIFICATION', configuration: { title: 'Bienvenido a nuestra familia' } }]
-      }
-    },
-    {
-      id: '2',
-      name: 'Agradecimiento por Donación',
-      description: 'Agradece automáticamente a los miembros cuando realizan una donación',
-      category: 'donaciones',
-      usageCount: 89,
-      isSystem: true,
-      template: {
-        triggers: [{ type: 'DONATION_RECEIVED' }],
-        actions: [{ type: 'SEND_EMAIL', configuration: { subject: 'Gracias por tu donación' } }]
-      }
-    },
-    {
-      id: '3',
-      name: 'Recordatorio de Cumpleaños',
-      description: 'Felicita a los miembros en su cumpleaños',
-      category: 'fechas-especiales',
-      usageCount: 234,
-      isSystem: true,
-      template: {
-        triggers: [{ type: 'BIRTHDAY' }],
-        actions: [{ type: 'SEND_NOTIFICATION', configuration: { title: '¡Feliz Cumpleaños!' } }]
-      }
-    },
-    {
-      id: '4',
-      name: 'Confirmación de Evento',
-      description: 'Confirma automáticamente la creación de nuevos eventos',
-      category: 'eventos',
-      usageCount: 67,
-      isSystem: true,
-      template: {
-        triggers: [{ type: 'EVENT_CREATED' }],
-        actions: [{ type: 'SEND_NOTIFICATION', configuration: { title: 'Evento creado exitosamente' } }]
-      }
-    },
-    {
-      id: '5',
-      name: 'Seguimiento de Visitantes',
-      description: 'Crea automáticamente tareas de seguimiento para nuevos visitantes',
-      category: 'seguimiento',
-      usageCount: 45,
-      isSystem: true,
-      template: {
-        triggers: [{ type: 'MEMBER_JOINED' }],
-        conditions: [{ field: 'memberType', value: 'visitor' }],
-        actions: [{ type: 'CREATE_FOLLOW_UP', configuration: { priority: 'HIGH' } }]
-      }
-    },
-    {
-      id: '6',
-      name: 'Aniversario de Membresía',
-      description: 'Celebra automáticamente los aniversarios de membresía',
-      category: 'fechas-especiales',
-      usageCount: 78,
-      isSystem: true,
-      template: {
-        triggers: [{ type: 'ANNIVERSARY' }],
-        actions: [{ type: 'SEND_NOTIFICATION', configuration: { title: '¡Feliz Aniversario!' } }]
-      }
-    }
-  ]
 
   if (loading) {
     return (
@@ -249,11 +170,7 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
 
       {/* Templates Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockTemplates.filter(template =>
-          (selectedCategory === 'all' || template.category === selectedCategory) &&
-          (template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           template.description.toLowerCase().includes(searchTerm.toLowerCase()))
-        ).map((template) => (
+        {filteredTemplates.map((template) => (
           <Card key={template.id} className="hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -274,27 +191,11 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {/* Template Components */}
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="font-medium text-muted-foreground">Triggers:</span>
-                    <div className="mt-1">
-                      {template.template.triggers?.length || 0}
-                    </div>
-                  </div>
-                  <div>
-                    <span className="font-medium text-muted-foreground">Acciones:</span>
-                    <div className="mt-1">
-                      {template.template.actions?.length || 0}
-                    </div>
-                  </div>
-                </div>
-
                 {/* Usage Stats */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <Star className="h-4 w-4" />
-                    <span>{template.usageCount} usos</span>
+                    <span>{template.usageCount} instalaciones</span>
                   </div>
                   
                   <Button

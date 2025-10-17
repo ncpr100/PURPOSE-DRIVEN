@@ -282,13 +282,35 @@ Problemas:
 
 ---
 
-### Bug #2: [Título]
-[Same format]
+### Bug #2: Modal de Plantilla sin botón para cerrar
+- **Severidad**: 🔴 CRÍTICO
+- **Módulo**: Template Detail Modal
+- **Qué esperabas**: Botón X o "Cerrar" o "Regresar" visible
+- **Qué pasó**: Modal se abre pero NO hay forma obvia de cerrarlo
+- **Pasos para reproducir**:
+  1. Ir a /automation-rules/templates
+  2. Click en cualquier plantilla
+  3. Modal se abre
+  4. NO hay botón X, ni "Cerrar", ni "Regresar"
+- **Workaround**: Presionar ESC o click fuera del modal
+- **Screenshot**: Proporcionado por usuario
+- **STATUS**: 🔴 PENDIENTE - Necesita fix urgente
 
 ---
 
-### Bug #3: [Título]
-[Same format]
+### Bug #3: Plantillas duplicadas (sistema viejo + nuevo)
+- **Severidad**: 🟡 IMPORTANTE
+- **Módulo**: Plantillas de Automatización
+- **Qué esperabas**: Solo un set de plantillas
+- **Qué pasó**: Hay DOS grupos de plantillas:
+  - Plantillas del sistema anterior
+  - Plantillas nuevas del seed
+- **Impacto**: Confusión para usuarios, datos redundantes
+- **Pasos para reproducir**:
+  1. Ir a /automation-rules/templates
+  2. Ver lista completa de plantillas
+  3. Notar duplicación de funcionalidad
+- **STATUS**: 🟡 PENDIENTE - Requiere decisión: ¿Eliminar viejas o nuevas?
 
 ---
 
@@ -370,11 +392,14 @@ Al final de esta sesión deberíamos tener:
 
 ```
 Tests completados: 0/5 ( 0%)
-Tests en progreso: 1/5 (Test #1 - Automatización)
+Tests en progreso: 1/5 (Test #1 - Automatización BLOQUEADO)
 Features verificadas: 3/12 (25%)
-Bugs encontrados: 1 (1 resuelto inmediatamente)
-Tiempo transcurrido: ~30 min
+Bugs encontrados: 3 (1 resuelto, 2 críticos pendientes)
+Bugs críticos: 1 (Modal sin botón cerrar - BLOQUEA testing)
+Tiempo transcurrido: ~40 min
 ```
+
+**ESTADO**: 🔴 Test #1 bloqueado por Bug #2 (no se puede cerrar modal)
 
 ---
 

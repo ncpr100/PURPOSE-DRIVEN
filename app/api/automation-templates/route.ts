@@ -96,15 +96,31 @@ export async function GET(request: NextRequest) {
             name: true
           }
         },
-        // Don't expose full configs in list view for performance
-        triggerConfig: false,
-        conditionsConfig: false,
-        actionsConfig: false,
-        escalationConfig: false,
-        businessHoursConfig: false,
-        retryConfig: false
+        // Include configs for template preview
+        triggerConfig: true,
+        conditionsConfig: true,
+        actionsConfig: true,
+        escalationConfig: true,
+        businessHoursConfig: true,
+        retryConfig: true
       }
     })
+
+    // Map to match component interface
+    const mappedTemplates = templates.map(t => ({
+      id: t.id,
+      name: t.name,
+      description: t.description,
+      category: t.category,
+      usageCount: t.installCount,
+      isSystem: t.isSystemTemplate,
+      template: {
+        triggers: t.triggerConfig,
+        conditions: t.conditionsConfig,
+        actions: t.actionsConfig
+      },
+      creator: t.creator
+    }))
 
     // Get categories for filtering
     const categories = await prisma.automationRuleTemplate.groupBy({
@@ -116,7 +132,7 @@ export async function GET(request: NextRequest) {
     })
 
     return NextResponse.json({
-      templates,
+      templates: mappedTemplates,
       categories: categories.map((cat: { category: string; _count: { category: number } }) => ({
         name: cat.category,
         count: cat._count.category

@@ -92,6 +92,7 @@ export function AutomationRulesClient() {
   const { data: session } = useSession()
   const [loading, setLoading] = useState(true)
   const [automationRules, setAutomationRules] = useState<AutomationRule[]>([])
+  const [templatesCount, setTemplatesCount] = useState(0)
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -111,8 +112,21 @@ export function AutomationRulesClient() {
   useEffect(() => {
     if (session?.user?.role && ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
       fetchAutomationRules()
+      fetchTemplatesCount()
     }
   }, [session, pagination.page, statusFilter, triggerTypeFilter, sortBy, sortOrder])
+
+  const fetchTemplatesCount = async () => {
+    try {
+      const response = await fetch('/api/automation-templates')
+      if (response.ok) {
+        const data = await response.json()
+        setTemplatesCount(data.templates?.length || 0)
+      }
+    } catch (error) {
+      console.error('Error fetching templates count:', error)
+    }
+  }
 
   const fetchAutomationRules = async () => {
     try {
@@ -311,7 +325,9 @@ export function AutomationRulesClient() {
           <TabsTrigger value="templates" className="gap-2">
             <FileText className="h-4 w-4" />
             Plantillas
-            <Badge variant="secondary" className="ml-1">8</Badge>
+            {templatesCount > 0 && (
+              <Badge variant="secondary" className="ml-1">{templatesCount}</Badge>
+            )}
           </TabsTrigger>
           <TabsTrigger value="analytics" className="gap-2">
             <TrendingUp className="h-4 w-4" />
