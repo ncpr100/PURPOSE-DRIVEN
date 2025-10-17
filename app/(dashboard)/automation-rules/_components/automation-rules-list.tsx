@@ -16,7 +16,8 @@ import {
   Zap,
   Target,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
+  Plus
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -160,17 +161,67 @@ export function AutomationRulesList({
 
   if (rules.length === 0) {
     return (
-      <Card>
+      <Card className="border-2 border-dashed">
         <CardContent className="p-12">
-          <div className="text-center">
-            <Zap className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">No hay reglas de automatización</h3>
-            <p className="text-muted-foreground mb-4">
-              Crea tu primera regla para automatizar las notificaciones de tu iglesia.
+          <div className="text-center max-w-2xl mx-auto">
+            <div className="mb-6 inline-flex p-4 bg-primary/10 rounded-full">
+              <Zap className="h-12 w-12 text-primary" />
+            </div>
+            
+            <h3 className="text-2xl font-bold mb-3">¡Bienvenido al Sistema de Automatización!</h3>
+            
+            <p className="text-muted-foreground mb-6 text-lg">
+              Parece que es tu primera vez aquí. Las automatizaciones te ayudan a ahorrar tiempo respondiendo automáticamente a eventos importantes.
             </p>
-            <Button variant="outline">
-              Crear Primera Regla
-            </Button>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left">
+              <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium">Responder a Peticiones de Oración</p>
+                  <p className="text-sm text-muted-foreground">Envía confirmación automática y notifica al equipo</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium">Seguimiento de Visitantes</p>
+                  <p className="text-sm text-muted-foreground">Mensaje de bienvenida y seguimiento automático</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium">Notificaciones de Cumpleaños</p>
+                  <p className="text-sm text-muted-foreground">Felicita automáticamente a tus miembros</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium">Y mucho más...</p>
+                  <p className="text-sm text-muted-foreground">8 plantillas listas para usar en segundos</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button size="lg" className="gap-2" onClick={() => window.location.href = '/automation-rules/templates'}>
+                <Zap className="h-5 w-5" />
+                Ver Plantillas Disponibles
+              </Button>
+              <Button size="lg" variant="outline" className="gap-2">
+                <Plus className="h-5 w-5" />
+                Crear Regla Personalizada
+              </Button>
+            </div>
+
+            <p className="text-sm text-muted-foreground mt-6">
+              💡 <strong>Consejo:</strong> Empieza con una plantilla pre-configurada. Solo toma 30 segundos activarla.
+            </p>
           </div>
         </CardContent>
       </Card>

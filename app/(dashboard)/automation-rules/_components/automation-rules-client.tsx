@@ -26,7 +26,9 @@ import {
   TrendingUp,
   Settings,
   FileText,
-  TestTube
+  TestTube,
+  HelpCircle,
+  Info
 } from 'lucide-react'
 import { CreateAutomationRuleDialog } from './create-automation-rule-dialog'
 import { AutomationRulesList } from './automation-rules-list'
@@ -132,15 +134,31 @@ export function AutomationRulesClient() {
       }
       
       const response = await fetch(`/api/automation-rules?${params}`)
-      if (!response.ok) throw new Error('Error al cargar reglas de automatización')
+      
+      if (!response.ok) {
+        // Only show error for actual server errors, not empty states
+        if (response.status >= 500) {
+          throw new Error('Error del servidor al cargar reglas')
+        }
+        // For 404 or other client errors, just set empty array
+        setAutomationRules([])
+        return
+      }
       
       const data: AutomationRulesResponse = await response.json()
-      setAutomationRules(data.automationRules)
+      
+      // Empty result is OK - not an error
+      setAutomationRules(data.automationRules || [])
       setPagination(data.pagination)
       
     } catch (error) {
       console.error('Error fetching automation rules:', error)
-      toast.error('Error al cargar las reglas de automatización')
+      // Only show toast for real errors, not empty states
+      if (error instanceof Error && error.message.includes('servidor')) {
+        toast.error('Error al cargar las reglas de automatización')
+      }
+      // Set empty array so UI can show helpful empty state
+      setAutomationRules([])
     } finally {
       setLoading(false)
     }
@@ -243,11 +261,28 @@ export function AutomationRulesClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Zap className="h-8 w-8 text-primary" />
-            Reglas de Automatización
-          </h1>
-          <p className="text-muted-foreground mt-2">
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              <Zap className="h-8 w-8 text-primary" />
+              Reglas de Automatización
+            </h1>
+            <div className="group relative">
+              <HelpCircle className="h-5 w-5 text-muted-foreground cursor-help" />
+              <div className="absolute left-0 top-8 w-80 p-4 bg-popover border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  <Info className="h-4 w-4 text-primary" />
+                  ¿Cómo funciona?
+                </h4>
+                <ol className="text-sm space-y-2 text-muted-foreground">
+                  <li><strong className="text-foreground">1. Plantillas:</strong> Reglas pre-configuradas listas para usar</li>
+                  <li><strong className="text-foreground">2. Activar:</strong> Un clic para empezar a automatizar</li>
+                  <li><strong className="text-foreground">3. Mis Reglas:</strong> Ver y gestionar reglas activas</li>
+                  <li><strong className="text-foreground">4. Analítica:</strong> Medir efectividad</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <p className="text-muted-foreground">
             Crea notificaciones automáticas basadas en eventos de la iglesia
           </p>
         </div>
@@ -268,11 +303,15 @@ export function AutomationRulesClient() {
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="rules" className="gap-2">
             <Settings className="h-4 w-4" />
-            Reglas Activas
+            Mis Reglas
+            {!loading && automationRules.length > 0 && (
+              <Badge variant="secondary" className="ml-1">{automationRules.length}</Badge>
+            )}
           </TabsTrigger>
           <TabsTrigger value="templates" className="gap-2">
             <FileText className="h-4 w-4" />
             Plantillas
+            <Badge variant="secondary" className="ml-1">8</Badge>
           </TabsTrigger>
           <TabsTrigger value="analytics" className="gap-2">
             <TrendingUp className="h-4 w-4" />
