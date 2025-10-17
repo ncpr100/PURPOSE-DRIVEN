@@ -313,7 +313,12 @@ export function UnifiedAutomationInterface() {
               </div>
 
               <div className="flex justify-center gap-3">
-                <Button size="lg" variant="outline" className="gap-2">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="gap-2"
+                  onClick={() => toast('Funcionalidad disponible próximamente', { icon: '🚧' })}
+                >
                   <Plus className="h-5 w-5" />
                   Crear Regla Personalizada
                 </Button>
@@ -470,9 +475,11 @@ export function UnifiedAutomationInterface() {
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">
-                      <div className={`flex items-center gap-1.5 text-xs font-semibold ${textColor}`}>
+                      <div className="flex items-center gap-1.5 text-xs font-bold">
                         <span className="text-lg">{emoji}</span>
-                        <span>{getCategoryLabel(template.category)}</span>
+                        <span className={`bg-gradient-to-r ${iconGradient} bg-clip-text text-transparent`}>
+                          {getCategoryLabel(template.category)}
+                        </span>
                       </div>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
                         <TrendingUp className="h-3.5 w-3.5" />

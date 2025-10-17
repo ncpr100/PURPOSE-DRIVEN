@@ -15,6 +15,72 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+
+// Translation helpers
+const translateActionType = (type: string): string => {
+  const translations: Record<string, string> = {
+    'ADD_TO_CRM': 'Agregar al CRM',
+    'SEND_NOTIFICATION': 'Enviar Notificación',
+    'ASSIGN_STAFF': 'Asignar Personal',
+    'SEND_SMS': 'Enviar SMS',
+    'SEND_EMAIL': 'Enviar Email',
+    'ESCALATE_TO_SUPERVISOR': 'Escalar a Supervisor',
+    'CREATE_TASK': 'Crear Tarea',
+    'UPDATE_STATUS': 'Actualizar Estado',
+    'ADD_TAG': 'Agregar Etiqueta',
+    'SEND_PUSH_NOTIFICATION': 'Enviar Notificación Push'
+  };
+  return translations[type] || type;
+};
+
+const translateConditionField = (field: string): string => {
+  const translations: Record<string, string> = {
+    'priority': 'prioridad',
+    'requesterType': 'tipo de solicitante',
+    'category': 'categoría',
+    'visitCount': 'número de visitas',
+    'isUrgent': 'es urgente',
+    'status': 'estado'
+  };
+  return translations[field] || field;
+};
+
+const translateOperator = (operator: string): string => {
+  const translations: Record<string, string> = {
+    'EQUALS': 'igual a',
+    'NOT_EQUALS': 'no igual a',
+    'IN': 'en',
+    'NOT_IN': 'no en',
+    'GREATER_THAN': 'mayor que',
+    'LESS_THAN': 'menor que',
+    'CONTAINS': 'contiene'
+  };
+  return translations[operator] || operator;
+};
+
+const translateValue = (value: any): string => {
+  if (Array.isArray(value)) {
+    return value.map(v => {
+      const translations: Record<string, string> = {
+        'VISITOR': 'VISITANTE',
+        'NON_MEMBER': 'NO MIEMBRO',
+        'urgent': 'urgente',
+        'URGENT_PRAYER': 'ORACIÓN URGENTE',
+        'VISITOR_FOLLOWUP': 'SEGUIMIENTO VISITANTE'
+      };
+      return translations[v] || v;
+    }).join(', ');
+  }
+  
+  const translations: Record<string, string> = {
+    'VISITOR': 'VISITANTE',
+    'NON_MEMBER': 'NO MIEMBRO',
+    'urgent': 'urgente',
+    'URGENT_PRAYER': 'ORACIÓN URGENTE',
+    'VISITOR_FOLLOWUP': 'SEGUIMIENTO VISITANTE'
+  };
+  return translations[value] || String(value);
+};
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -221,9 +287,9 @@ export function TemplateDetailModal({
                     {template.conditionsConfig.map((condition: any, index: number) => (
                       <div key={index} className="rounded-lg border p-4 bg-muted/50">
                         <p className="text-sm">
-                          <span className="font-medium">{condition.field}</span>{' '}
-                          <span className="text-muted-foreground">{condition.operator}</span>{' '}
-                          <span className="font-medium">{JSON.stringify(condition.value)}</span>
+                          <span className="font-medium">{translateConditionField(condition.field)}</span>{' '}
+                          <span className="text-muted-foreground">{translateOperator(condition.operator)}</span>{' '}
+                          <span className="font-medium">[{translateValue(condition.value)}]</span>
                         </p>
                       </div>
                     ))}
@@ -247,7 +313,7 @@ export function TemplateDetailModal({
                   <div key={index} className="rounded-lg border p-4 bg-muted/50">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium">{action.type}</p>
+                        <p className="font-medium">{translateActionType(action.type)}</p>
                         {action.configuration && (
                           <p className="text-sm text-muted-foreground mt-1">
                             {Object.keys(action.configuration).length} configuraciones
