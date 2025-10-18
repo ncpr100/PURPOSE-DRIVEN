@@ -57,6 +57,33 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   const [spiritualGifts, setSpiritualGifts] = useState<any[]>([])
   const [memberSpiritualProfile, setMemberSpiritualProfile] = useState<any>(null)
 
+  // Debug: Monitor dialog state changes
+  useEffect(() => {
+    console.log('🔍 isAssignDialogOpen changed to:', isAssignDialogOpen)
+  }, [isAssignDialogOpen])
+
+  useEffect(() => {
+    console.log('🔍 isProfileDialogOpen changed to:', isProfileDialogOpen)
+  }, [isProfileDialogOpen])
+
+  useEffect(() => {
+    console.log('🔍 selectedVolunteer changed to:', selectedVolunteer?.firstName, selectedVolunteer?.lastName)
+  }, [selectedVolunteer])
+
+  // Handler functions for buttons
+  const handleOpenAssignDialog = (volunteer: Volunteer) => {
+    alert(`PRUEBA: Asignar Actividad para ${volunteer.firstName} ${volunteer.lastName}`)
+    setSelectedVolunteer(volunteer)
+    setIsAssignDialogOpen(true)
+  }
+
+  const handleOpenProfileDialog = (volunteer: Volunteer) => {
+    alert(`PRUEBA: Ver Perfil de ${volunteer.firstName} ${volunteer.lastName}`)
+    setSelectedVolunteer(volunteer)
+    setIsProfileDialogOpen(true)
+    fetchMemberSpiritualProfile(volunteer.id)
+  }
+
   // Form states
   const [formData, setFormData] = useState({
     firstName: '',
@@ -360,17 +387,8 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                         <Button 
                           size="sm" 
                           className="flex-1"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            console.log('Asignar Actividad clicked for:', volunteer.firstName, volunteer.lastName)
-                            try {
-                              setSelectedVolunteer(volunteer)
-                              setIsAssignDialogOpen(true)
-                            } catch (error) {
-                              console.error('Error opening assignment dialog:', error)
-                              toast.error('Error al abrir diálogo de asignación')
-                            }
-                          }}
+                          type="button"
+                          onClick={() => handleOpenAssignDialog(volunteer)}
                         >
                           <Activity className="h-4 w-4 mr-1" />
                           Asignar Actividad
@@ -639,17 +657,8 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   size="sm" 
                   variant="outline"
                   className="flex-1"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    console.log('Recommendations Asignar Actividad clicked for:', volunteer.firstName, volunteer.lastName)
-                    try {
-                      setSelectedVolunteer(volunteer)
-                      setIsAssignDialogOpen(true)
-                    } catch (error) {
-                      console.error('Error opening assignment dialog:', error)
-                      toast.error('Error al abrir diálogo de asignación')
-                    }
-                  }}
+                  type="button"
+                  onClick={() => handleOpenAssignDialog(volunteer)}
                 >
                   <Activity className="h-4 w-4 mr-1" />
                   Asignar Actividad
@@ -658,18 +667,8 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   size="sm" 
                   variant="secondary"
                   className="flex-1"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    console.log('Recommendations Ver Perfil clicked for:', volunteer.firstName, volunteer.lastName)
-                    try {
-                      setSelectedVolunteer(volunteer)
-                      setIsProfileDialogOpen(true)
-                      fetchMemberSpiritualProfile(volunteer.id)
-                    } catch (error) {
-                      console.error('Error opening profile dialog:', error)
-                      toast.error('Error al abrir perfil del voluntario')
-                    }
-                  }}
+                  type="button"
+                  onClick={() => handleOpenProfileDialog(volunteer)}
                 >
                   <Eye className="h-4 w-4 mr-1" />
                   Ver Perfil

@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Member } from '@prisma/client'
 import { Save, X, User, Heart, Calendar, Brain } from 'lucide-react'
-import { SpiritualAssessment } from './spiritual-assessment'
+import { MemberSpiritualAssessment } from './member-spiritual-assessment'
 import { AvailabilityMatrix } from './availability-matrix'
 import { toast } from 'sonner'
 
@@ -25,6 +25,21 @@ interface EnhancedMemberFormProps {
 
 export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: EnhancedMemberFormProps) {
   const [activeTab, setActiveTab] = useState('basic')
+  
+  // Helper function to safely format dates
+  const formatDateForInput = (date: any): string => {
+    if (!date) return ''
+    try {
+      if (typeof date === 'string') {
+        return date.split('T')[0]
+      }
+      return new Date(date).toISOString().split('T')[0]
+    } catch (error) {
+      console.error('Error formatting date:', error)
+      return ''
+    }
+  }
+  
   const [formData, setFormData] = useState({
     firstName: member?.firstName || '',
     lastName: member?.lastName || '',
@@ -34,9 +49,9 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
     city: member?.city || '',
     state: member?.state || '',
     zipCode: member?.zipCode || '',
-    birthDate: member?.birthDate ? member.birthDate.toISOString().split('T')[0] : '',
-    baptismDate: member?.baptismDate ? member.baptismDate.toISOString().split('T')[0] : '',
-    membershipDate: member?.membershipDate ? member.membershipDate.toISOString().split('T')[0] : '',
+    birthDate: formatDateForInput(member?.birthDate),
+    baptismDate: formatDateForInput(member?.baptismDate),
+    membershipDate: formatDateForInput(member?.membershipDate),
     maritalStatus: member?.maritalStatus || '',
     gender: member?.gender || '',
     occupation: member?.occupation || '',
@@ -121,7 +136,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               Cambios sin guardar
             </Badge>
           )}
-          {member?.spiritualGifts && (
+          {member?.spiritualGiftsStructured && (
             <Badge variant="secondary" className="text-green-700">
               <Heart className="h-3 w-3 mr-1" />
               Evaluación completa
@@ -135,7 +150,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           <TabsTrigger value="basic">Información Básica</TabsTrigger>
           <TabsTrigger value="spiritual" className="relative">
             Evaluación Espiritual
-            {member?.spiritualGifts && (
+            {member?.spiritualGiftsStructured && (
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></div>
             )}
           </TabsTrigger>
@@ -373,10 +388,10 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         {/* Spiritual Assessment Tab */}
         <TabsContent value="spiritual">
           {member?.id ? (
-            <SpiritualAssessment 
+            <MemberSpiritualAssessment 
               memberId={member.id}
               memberName={`${formData.firstName} ${formData.lastName}`}
-              onSave={handleSpiritualAssessmentSave}
+              onAssessmentComplete={handleSpiritualAssessmentSave}
             />
           ) : (
             <Card>

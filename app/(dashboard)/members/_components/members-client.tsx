@@ -82,6 +82,8 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const [editingMember, setEditingMember] = useState<any | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [genderFilter, setGenderFilter] = useState('all')
+  const [ageFilter, setAgeFilter] = useState('all')
+  const [maritalStatusFilter, setMaritalStatusFilter] = useState('all')
   
   // Smart Lists & Bulk Actions State
   const [activeSmartList, setActiveSmartList] = useState('all')
@@ -102,7 +104,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
   useEffect(() => {
     filterMembers()
-  }, [members, searchTerm, genderFilter, activeSmartList])
+  }, [members, searchTerm, genderFilter, ageFilter, maritalStatusFilter, activeSmartList])
 
   const fetchMembers = async () => {
     try {
@@ -177,19 +179,29 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
     if (!selectedMemberForVolunteer) return
 
     try {
+      const volunteerData = {
+        memberId: selectedMemberForVolunteer.id,
+        firstName: selectedMemberForVolunteer.firstName,
+        lastName: selectedMemberForVolunteer.lastName,
+        email: selectedMemberForVolunteer.email || '',
+        phone: selectedMemberForVolunteer.phone || '',
+        skills: [],
+        availability: {
+          days: [],
+          times: [],
+          frequency: 'weekly' as const
+        },
+        ministryId: ministryId === 'no-ministry' ? 'no-ministry' : ministryId,
+      }
+
+      console.log('🚀 Creating volunteer with data:', volunteerData)
+
       const response = await fetch('/api/volunteers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          memberId: selectedMemberForVolunteer.id,
-          firstName: selectedMemberForVolunteer.firstName,
-          lastName: selectedMemberForVolunteer.lastName,
-          email: selectedMemberForVolunteer.email,
-          phone: selectedMemberForVolunteer.phone,
-          ministryId: ministryId !== 'no-ministry' ? ministryId : null,
-        }),
+        body: JSON.stringify(volunteerData),
       })
 
       if (response.ok) {
@@ -198,7 +210,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         setSelectedMemberForVolunteer(null)
         toast.success('¡Miembro reclutado como voluntario exitosamente!')
       } else {
-        toast.error('Error al reclutar voluntario')
+        const errorData = await response.json()
+        console.error('❌ Error response:', errorData)
+        toast.error(errorData.message || 'Error al reclutar voluntario')
       }
     } catch (error) {
       console.error('Error creating volunteer:', error)
@@ -207,6 +221,16 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   }
 
   const filterMembers = () => {
+    console.log('🔍 filterMembers called')
+    console.log('📊 Total members:', members.length)
+    console.log('🎯 Active filters:', { 
+      searchTerm, 
+      genderFilter, 
+      ageFilter, 
+      maritalStatusFilter, 
+      activeSmartList 
+    })
+    
     let filtered = members
 
     // Apply Smart List Filters First
@@ -341,6 +365,28 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       filtered = filtered.filter(member => member.gender?.toLowerCase() === genderFilter.toLowerCase())
     }
 
+    // Apply Age Filter
+    if (ageFilter !== 'all') {
+      filtered = filtered.filter(member => {
+        if (!member.birthDate) return false
+        const age = new Date().getFullYear() - new Date(member.birthDate).getFullYear()
+        switch (ageFilter) {
+          case '0-17': return age >= 0 && age <= 17
+          case '18-25': return age >= 18 && age <= 25
+          case '26-35': return age >= 26 && age <= 35
+          case '36-50': return age >= 36 && age <= 50
+          case '51+': return age >= 51
+          default: return true
+        }
+      })
+    }
+
+    // Apply Marital Status Filter
+    if (maritalStatusFilter !== 'all') {
+      filtered = filtered.filter(member => member.maritalStatus === maritalStatusFilter)
+    }
+
+    console.log('✅ Filtered result:', filtered.length, 'members')
     setFilteredMembers(filtered)
   }
 
@@ -443,12 +489,26 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         'Fecha Bautismo': member.baptismDate ? formatDate(member.baptismDate) : ''
       }))
 
-    const csv = [
-      Object.keys(selectedMemberData[0]).join(','),
-      ...selectedMemberData.map(row => Object.values(row).join(','))
-    ].join('\n')
+    // Helper function to escape CSV values (handles commas, quotes, newlines)
+    const escapeCSVValue = (value: any): string => {
+      const stringValue = String(value)
+      // If value contains comma, quote, or newline, wrap in quotes and escape internal quotes
+      if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+        return `"${stringValue.replace(/"/g, '""')}"`
+      }
+      return stringValue
+    }
 
-    const blob = new Blob([csv], { type: 'text/csv' })
+    // Build CSV with proper escaping and UTF-8 BOM for Excel compatibility
+    const headers = Object.keys(selectedMemberData[0]).map(escapeCSVValue).join(',')
+    const rows = selectedMemberData.map(row => 
+      Object.values(row).map(escapeCSVValue).join(',')
+    )
+    
+    // Add UTF-8 BOM (\uFEFF) for proper Spanish character display in Excel
+    const csv = '\uFEFF' + [headers, ...rows].join('\n')
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.setAttribute('hidden', '')
@@ -636,6 +696,35 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                     <SelectItem value="all">Todos los géneros</SelectItem>
                     <SelectItem value="masculino">Masculino</SelectItem>
                     <SelectItem value="femenino">Femenino</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-48">
+                <Select value={ageFilter} onValueChange={setAgeFilter}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Edad" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas las edades</SelectItem>
+                    <SelectItem value="0-17">0-17 años</SelectItem>
+                    <SelectItem value="18-25">18-25 años</SelectItem>
+                    <SelectItem value="26-35">26-35 años</SelectItem>
+                    <SelectItem value="36-50">36-50 años</SelectItem>
+                    <SelectItem value="51+">51+ años</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-48">
+                <Select value={maritalStatusFilter} onValueChange={setMaritalStatusFilter}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Estado Civil" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos</SelectItem>
+                    <SelectItem value="Soltero">Soltero/a</SelectItem>
+                    <SelectItem value="Casado">Casado/a</SelectItem>
+                    <SelectItem value="Divorciado">Divorciado/a</SelectItem>
+                    <SelectItem value="Viudo">Viudo/a</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

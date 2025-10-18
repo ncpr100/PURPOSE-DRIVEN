@@ -23,7 +23,9 @@ const PROTECTED_ROUTES = [
   '/follow-ups',
   '/check-ins',
   '/platform',
-  '/automation-rules'
+  '/automation-rules',
+  '/test-assessment',
+  '/test-member-integration'
 ];
 
 // Rutas de API que requieren autenticación
@@ -46,7 +48,8 @@ const PROTECTED_API_ROUTES = [
   '/api/user-permissions',
   '/api/platform',
   '/api/automation-rules',
-  '/api/automation-templates'
+  '/api/automation-templates',
+  '/api/spiritual-assessment'
 ];
 
 // Mapeo de rutas a permisos requeridos

@@ -18,6 +18,22 @@ interface MemberFormProps {
   isLoading?: boolean
 }
 
+  // Helper function to safely format dates
+  const formatDateForInput = (date: any): string => {
+    if (!date) return ''
+    try {
+      // If it's already a string in the right format, use it
+      if (typeof date === 'string') {
+        return date.split('T')[0]
+      }
+      // Otherwise convert to Date first
+      return new Date(date).toISOString().split('T')[0]
+    } catch (error) {
+      console.error('Error formatting date:', error, date)
+      return ''
+    }
+  }
+
 export function MemberForm({ member, onSave, onCancel, isLoading }: MemberFormProps) {
   const [formData, setFormData] = useState({
     firstName: member?.firstName || '',
@@ -28,9 +44,9 @@ export function MemberForm({ member, onSave, onCancel, isLoading }: MemberFormPr
     city: member?.city || '',
     state: member?.state || '',
     zipCode: member?.zipCode || '',
-    birthDate: member?.birthDate ? new Date(member.birthDate).toISOString().split('T')[0] : '',
-    baptismDate: member?.baptismDate ? new Date(member.baptismDate).toISOString().split('T')[0] : '',
-    membershipDate: member?.membershipDate ? new Date(member.membershipDate).toISOString().split('T')[0] : '',
+    birthDate: formatDateForInput(member?.birthDate),
+    baptismDate: formatDateForInput(member?.baptismDate),
+    membershipDate: formatDateForInput(member?.membershipDate),
     maritalStatus: member?.maritalStatus || '',
     gender: member?.gender || '',
     occupation: member?.occupation || '',

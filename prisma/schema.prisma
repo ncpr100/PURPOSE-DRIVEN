@@ -282,11 +282,11 @@ model Member {
   isActive       Boolean   @default(true)
 
   // Enhanced CRM Fields
-  spiritualGifts      Json? // Array of spiritual gifts
-  secondaryGifts      Json? // Secondary spiritual gifts
+  spiritualGifts      Json? // Array of spiritual gifts (legacy format)
+  secondaryGifts      Json? // Secondary spiritual gifts (legacy format)
   spiritualCalling    String? // Personal calling description
   ministryPassion     Json? // Array of ministry interests
-  experienceLevel     Int?      @default(1) // 1-10 scale
+  experienceLevel     Int?      @default(1) // 1-10 scale (legacy format)
   availabilityScore   Float?    @default(0.0) // Calculated availability
   leadershipReadiness Int?      @default(1) // 1-10 scale
   skillsMatrix        Json? // Technical and interpersonal skills
@@ -295,6 +295,11 @@ model Member {
   childcareAvailable  Boolean?  @default(false)
   backgroundCheckDate DateTime? // Background check completion
   emergencyContact    String? // Emergency contact info
+
+  // Enhanced Spiritual Assessment (8-category system)
+  spiritualGiftsStructured Json? // New 8-category format: {primary: [], secondary: [], passions: [], experienceLevel: '', spiritualCalling: '', motivation: ''}
+  experienceLevelEnum      ExperienceLevel? // NOVATO, INTERMEDIO, AVANZADO
+  leadershipStage          LeadershipStage? @default(VOLUNTEER) // Current leadership pipeline stage
 
   createdAt                DateTime                  @default(now())
   updatedAt                DateTime                  @default(now())
@@ -2284,6 +2289,22 @@ enum VisitorCategory {
   REGULAR // Attended 4+ times but not a member
   NON_MEMBER // Regular attendee but not officially a member
   MEMBER_CANDIDATE // In membership process
+}
+
+// Experience level for volunteers and ministry workers
+enum ExperienceLevel {
+  NOVATO // Beginner - no prior experience
+  INTERMEDIO // Intermediate - some experience
+  AVANZADO // Advanced - extensive experience
+}
+
+// Leadership development pipeline stages
+enum LeadershipStage {
+  VOLUNTEER // Active volunteer, not in leadership
+  TEAM_COORDINATOR // Coordinates small team or specific tasks
+  MINISTRY_LEADER // Leads entire ministry or department
+  SENIOR_LEADER // Multi-ministry oversight, strategic planning
+  PASTOR // Pastoral leadership, spiritual oversight
 }
 
 // Visitor profile with auto-categorization
