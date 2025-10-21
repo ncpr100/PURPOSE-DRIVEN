@@ -171,6 +171,14 @@ export function EnhancedSpiritualAssessment({
       return { valid: false, message: 'Por favor selecciona tu nivel de experiencia' }
     }
 
+    if (!spiritualCalling.trim()) {
+      return { valid: false, message: 'Por favor describe tu llamado espiritual' }
+    }
+
+    if (!motivation.trim()) {
+      return { valid: false, message: 'Por favor describe tu motivación para servir' }
+    }
+
     return { valid: true }
   }
 
@@ -575,7 +583,10 @@ export function EnhancedSpiritualAssessment({
           {/* Section 4: Spiritual Calling */}
           <Card>
             <CardHeader>
-              <CardTitle>Llamado Espiritual (Opcional)</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                Llamado Espiritual
+                <span className="text-red-500">*</span>
+              </CardTitle>
               <CardDescription>
                 Describe brevemente lo que sientes que Dios te está llamando a hacer. Esto puede ser
                 general o específico.
@@ -589,11 +600,15 @@ export function EnhancedSpiritualAssessment({
                 placeholder="Ej: Siento un llamado a trabajar con jóvenes, enseñar la Palabra, servir a los necesitados..."
                 className="min-h-[100px] resize-none"
                 maxLength={500}
+                required
               />
               <div className="flex items-center justify-between mt-2">
                 <span className="text-sm text-muted-foreground">
                   {spiritualCalling.length}/500 caracteres
                 </span>
+                {!spiritualCalling.trim() && (
+                  <span className="text-xs text-red-500">Campo requerido</span>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -601,7 +616,10 @@ export function EnhancedSpiritualAssessment({
           {/* Section 5: Motivation */}
           <Card>
             <CardHeader>
-              <CardTitle>Motivación para Servir (Opcional)</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                Motivación para Servir
+                <span className="text-red-500">*</span>
+              </CardTitle>
               <CardDescription>
                 ¿Qué te motiva a servir en la iglesia? ¿Qué esperas lograr o aprender?
               </CardDescription>
@@ -614,11 +632,15 @@ export function EnhancedSpiritualAssessment({
                 placeholder="Ej: Quiero usar mis dones para glorificar a Dios, crecer espiritualmente, impactar vidas..."
                 className="min-h-[100px] resize-none"
                 maxLength={500}
+                required
               />
               <div className="flex items-center justify-between mt-2">
                 <span className="text-sm text-muted-foreground">
                   {motivation.length}/500 caracteres
                 </span>
+                {!motivation.trim() && (
+                  <span className="text-xs text-red-500">Campo requerido</span>
+                )}
               </div>
             </CardContent>
           </Card>
