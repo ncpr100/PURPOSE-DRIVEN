@@ -914,6 +914,17 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                         <Brain className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
                         <p className="text-sm text-muted-foreground">No hay evaluación de dones espirituales</p>
                         <p className="text-xs text-muted-foreground mt-1">El voluntario no ha completado la evaluación</p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="mt-3"
+                          onClick={() => {
+                            window.location.href = `/volunteers/spiritual-assessment?volunteerId=${selectedVolunteer.id}&memberId=${selectedVolunteer.memberId}`
+                          }}
+                        >
+                          <Brain className="h-4 w-4 mr-2" />
+                          Completar Evaluación Espiritual
+                        </Button>
                       </div>
                     )}
                   </div>
