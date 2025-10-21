@@ -887,7 +887,12 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                                 {member.gender}
                               </Badge>
                             )}
-                            {member.maritalStatus && (
+                            {/* Show marital status OR family filter badge (not both) */}
+                            {maritalStatusFilter === 'family-group' ? (
+                              <Badge variant="outline" className="text-xs ml-1 bg-purple-100 text-purple-700 border-purple-300">
+                                Familias
+                              </Badge>
+                            ) : member.maritalStatus && (
                               <Badge variant="outline" className="text-xs ml-1">
                                 {member.maritalStatus}
                               </Badge>
