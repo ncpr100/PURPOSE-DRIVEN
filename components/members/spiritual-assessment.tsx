@@ -164,14 +164,18 @@ export function SpiritualAssessment({
               Seleccione los dones que mejor describen sus fortalezas espirituales principales
             </p>
             <div className="grid gap-4">
-              {Object.entries(spiritualGifts).map(([category, gifts]) => (
-                <div key={category}>
-                  <h4 className="font-medium text-sm mb-2 text-primary">{category}</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {gifts.map(gift => (
+              {Object.entries(spiritualGifts).map(([categoryId, categoryData]: [string, any]) => (
+                <div key={categoryId} className="border rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-2xl">{categoryData.icon}</span>
+                    <h4 className="font-semibold text-base">{categoryData.name}</h4>
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-3">{categoryData.description}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {(categoryData.gifts || categoryData.subcategories || []).map((gift: any) => (
                       <div
                         key={gift.id}
-                        className={`p-2 border rounded-lg cursor-pointer transition-colors ${
+                        className={`p-3 border rounded-lg cursor-pointer transition-colors ${
                           formData.primaryGifts.includes(gift.id)
                             ? 'bg-primary text-primary-foreground border-primary'
                             : 'hover:border-primary/50'
@@ -205,11 +209,14 @@ export function SpiritualAssessment({
               Seleccione dones en los que tiene habilidad o interés en desarrollar
             </p>
             <div className="grid gap-4">
-              {Object.entries(spiritualGifts).map(([category, gifts]) => (
-                <div key={`secondary-${category}`}>
-                  <h4 className="font-medium text-sm mb-2 text-secondary-foreground">{category}</h4>
+              {Object.entries(spiritualGifts).map(([categoryId, categoryData]: [string, any]) => (
+                <div key={`secondary-${categoryId}`} className="border-l-4 pl-4" style={{ borderColor: categoryData.color }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">{categoryData.icon}</span>
+                    <h4 className="font-medium text-sm">{categoryData.name}</h4>
+                  </div>
                   <div className="flex flex-wrap gap-2">
-                    {gifts.map(gift => (
+                    {(categoryData.gifts || categoryData.subcategories || []).map((gift: any) => (
                       <Badge
                         key={`secondary-${gift.id}`}
                         variant={formData.secondaryGifts.includes(gift.id) ? "default" : "outline"}

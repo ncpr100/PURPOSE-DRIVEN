@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
-import { db as prisma } from '@/lib/db'
+import { SPIRITUAL_GIFT_CATEGORIES, MINISTRY_PASSIONS } from '@/lib/spiritual-gifts-config'
 
 export const dynamic = 'force-dynamic';
 
@@ -13,25 +13,22 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const spiritualGifts = await prisma.spiritualGift.findMany({
-      orderBy: [
-        { category: 'asc' },
-        { name: 'asc' }
-      ]
-    })
-
-    // Group by category for easier UI consumption
-    const giftsByCategory = spiritualGifts.reduce((acc: any, gift: any) => {
-      if (!acc[gift.category]) {
-        acc[gift.category] = []
+    // Return the 8-category structure from config file
+    // This ensures consistency with ENHANCED_SPIRITUAL_ASSESSMENT_IMPLEMENTATION.md spec
+    const giftsByCategory = SPIRITUAL_GIFT_CATEGORIES.reduce((acc: any, category: any) => {
+      acc[category.id] = {
+        ...category,
+        gifts: category.subcategories
       }
-      acc[gift.category].push(gift)
       return acc
-    }, {} as Record<string, typeof spiritualGifts>)
+    }, {})
 
     return NextResponse.json({
-      gifts: spiritualGifts,
-      categories: giftsByCategory
+      categories: giftsByCategory,
+      categoryList: SPIRITUAL_GIFT_CATEGORIES,
+      ministryPassions: MINISTRY_PASSIONS,
+      totalCategories: SPIRITUAL_GIFT_CATEGORIES.length,
+      totalSubcategories: SPIRITUAL_GIFT_CATEGORIES.reduce((sum, cat) => sum + cat.subcategories.length, 0)
     })
   } catch (error) {
     console.error('Error fetching spiritual gifts:', error)
