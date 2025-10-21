@@ -84,6 +84,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const [genderFilter, setGenderFilter] = useState('all')
   const [ageFilter, setAgeFilter] = useState('all')
   const [maritalStatusFilter, setMaritalStatusFilter] = useState('all')
+  const [familyFilter, setFamilyFilter] = useState('all')
   
   // Smart Lists & Bulk Actions State
   const [activeSmartList, setActiveSmartList] = useState('all')
@@ -104,7 +105,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
   useEffect(() => {
     filterMembers()
-  }, [members, searchTerm, genderFilter, ageFilter, maritalStatusFilter, activeSmartList])
+  }, [members, searchTerm, genderFilter, ageFilter, maritalStatusFilter, familyFilter, activeSmartList])
 
   const fetchMembers = async () => {
     try {
@@ -227,7 +228,8 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       searchTerm, 
       genderFilter, 
       ageFilter, 
-      maritalStatusFilter, 
+      maritalStatusFilter,
+      familyFilter, 
       activeSmartList 
     })
     
@@ -384,6 +386,25 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
     // Apply Marital Status Filter (case-insensitive to handle mixed case data)
     if (maritalStatusFilter !== 'all') {
       filtered = filtered.filter(member => member.maritalStatus?.toLowerCase() === maritalStatusFilter.toLowerCase())
+    }
+
+    // Apply Family Filter (group by last name)
+    if (familyFilter !== 'all') {
+      if (familyFilter === 'single-member') {
+        // Show only members whose last name appears once
+        const lastNameCounts = filtered.reduce((acc, member) => {
+          acc[member.lastName] = (acc[member.lastName] || 0) + 1
+          return acc
+        }, {} as Record<string, number>)
+        filtered = filtered.filter(member => lastNameCounts[member.lastName] === 1)
+      } else if (familyFilter === 'family-group') {
+        // Show only members whose last name appears multiple times
+        const lastNameCounts = filtered.reduce((acc, member) => {
+          acc[member.lastName] = (acc[member.lastName] || 0) + 1
+          return acc
+        }, {} as Record<string, number>)
+        filtered = filtered.filter(member => lastNameCounts[member.lastName] > 1)
+      }
     }
 
     console.log('✅ Filtered result:', filtered.length, 'members')
@@ -725,6 +746,18 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                     <SelectItem value="casado">Casado/a</SelectItem>
                     <SelectItem value="divorciado">Divorciado/a</SelectItem>
                     <SelectItem value="viudo">Viudo/a</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-48">
+                <Select value={familyFilter} onValueChange={setFamilyFilter}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Agrupación" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos</SelectItem>
+                    <SelectItem value="family-group">👨‍👩‍👧‍👦 Familias</SelectItem>
+                    <SelectItem value="single-member">👤 Miembros Individuales</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
