@@ -84,7 +84,6 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const [genderFilter, setGenderFilter] = useState('all')
   const [ageFilter, setAgeFilter] = useState('all')
   const [maritalStatusFilter, setMaritalStatusFilter] = useState('all')
-  const [familyFilter, setFamilyFilter] = useState('all')
   
   // Smart Lists & Bulk Actions State
   const [activeSmartList, setActiveSmartList] = useState('all')
@@ -105,7 +104,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
   useEffect(() => {
     filterMembers()
-  }, [members, searchTerm, genderFilter, ageFilter, maritalStatusFilter, familyFilter, activeSmartList])
+  }, [members, searchTerm, genderFilter, ageFilter, maritalStatusFilter, activeSmartList])
 
   const fetchMembers = async () => {
     try {
@@ -228,8 +227,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       searchTerm, 
       genderFilter, 
       ageFilter, 
-      maritalStatusFilter,
-      familyFilter, 
+      maritalStatusFilter, 
       activeSmartList 
     })
     
@@ -383,27 +381,18 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       })
     }
 
-    // Apply Marital Status Filter (case-insensitive to handle mixed case data)
+    // Apply Marital Status Filter (case-insensitive to handle mixed case data) + Family Filter
     if (maritalStatusFilter !== 'all') {
-      filtered = filtered.filter(member => member.maritalStatus?.toLowerCase() === maritalStatusFilter.toLowerCase())
-    }
-
-    // Apply Family Filter (group by last name)
-    if (familyFilter !== 'all') {
-      if (familyFilter === 'single-member') {
-        // Show only members whose last name appears once
-        const lastNameCounts = filtered.reduce((acc, member) => {
-          acc[member.lastName] = (acc[member.lastName] || 0) + 1
-          return acc
-        }, {} as Record<string, number>)
-        filtered = filtered.filter(member => lastNameCounts[member.lastName] === 1)
-      } else if (familyFilter === 'family-group') {
-        // Show only members whose last name appears multiple times
+      if (maritalStatusFilter === 'family-group') {
+        // Show only members whose last name appears multiple times (families)
         const lastNameCounts = filtered.reduce((acc, member) => {
           acc[member.lastName] = (acc[member.lastName] || 0) + 1
           return acc
         }, {} as Record<string, number>)
         filtered = filtered.filter(member => lastNameCounts[member.lastName] > 1)
+      } else {
+        // Regular marital status filter
+        filtered = filtered.filter(member => member.maritalStatus?.toLowerCase() === maritalStatusFilter.toLowerCase())
       }
     }
 
@@ -738,7 +727,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
               <div className="w-48">
                 <Select value={maritalStatusFilter} onValueChange={setMaritalStatusFilter}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Estado Civil" />
+                    <SelectValue placeholder="Todos los Miembros" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos</SelectItem>
@@ -746,18 +735,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                     <SelectItem value="casado">Casado/a</SelectItem>
                     <SelectItem value="divorciado">Divorciado/a</SelectItem>
                     <SelectItem value="viudo">Viudo/a</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="w-48">
-                <Select value={familyFilter} onValueChange={setFamilyFilter}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Agrupación" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos</SelectItem>
-                    <SelectItem value="family-group">👨‍👩‍👧‍👦 Familias</SelectItem>
-                    <SelectItem value="single-member">👤 Miembros Individuales</SelectItem>
+                    <SelectItem value="family-group">Familias</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
