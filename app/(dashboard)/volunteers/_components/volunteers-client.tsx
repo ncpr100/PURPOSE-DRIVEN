@@ -919,7 +919,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                           size="sm"
                           className="mt-3"
                           onClick={() => {
-                            window.location.href = `/volunteers/spiritual-assessment?volunteerId=${selectedVolunteer.id}&memberId=${selectedVolunteer.memberId}`
+                            window.location.href = `/volunteers/spiritual-assessment?volunteerId=${selectedVolunteer.id}&memberId=${selectedVolunteer.id}`
                           }}
                         >
                           <Brain className="h-4 w-4 mr-2" />
