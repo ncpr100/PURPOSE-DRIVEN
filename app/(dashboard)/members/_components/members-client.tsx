@@ -381,9 +381,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       })
     }
 
-    // Apply Marital Status Filter
+    // Apply Marital Status Filter (case-insensitive to handle mixed case data)
     if (maritalStatusFilter !== 'all') {
-      filtered = filtered.filter(member => member.maritalStatus === maritalStatusFilter)
+      filtered = filtered.filter(member => member.maritalStatus?.toLowerCase() === maritalStatusFilter.toLowerCase())
     }
 
     console.log('✅ Filtered result:', filtered.length, 'members')
@@ -721,10 +721,10 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todos</SelectItem>
-                    <SelectItem value="Soltero">Soltero/a</SelectItem>
-                    <SelectItem value="Casado">Casado/a</SelectItem>
-                    <SelectItem value="Divorciado">Divorciado/a</SelectItem>
-                    <SelectItem value="Viudo">Viudo/a</SelectItem>
+                    <SelectItem value="soltero">Soltero/a</SelectItem>
+                    <SelectItem value="casado">Casado/a</SelectItem>
+                    <SelectItem value="divorciado">Divorciado/a</SelectItem>
+                    <SelectItem value="viudo">Viudo/a</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

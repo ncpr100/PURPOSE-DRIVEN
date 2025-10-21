@@ -1,9 +1,9 @@
 
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getServerBaseUrl } from '@/lib/server-url'
 
 // POST - Resend tenant credentials
 export async function POST(
@@ -74,7 +74,7 @@ export async function POST(
             churchName: credentials.church.name,
             loginEmail: credentials.loginEmail,
             tempPassword: newPassword,
-            platformUrl: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+            platformUrl: getServerBaseUrl(),
             supportEmail: 'soporte@khesedtek.com'
           }
         })

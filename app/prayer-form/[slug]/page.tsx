@@ -1,6 +1,7 @@
 
 import { notFound } from 'next/navigation'
 import { PublicPrayerForm } from '@/components/prayer-wall/PublicPrayerForm'
+import { getServerUrl } from '@/lib/server-url'
 
 interface PrayerFormPageProps {
   params: {
@@ -10,7 +11,7 @@ interface PrayerFormPageProps {
 
 async function getFormData(slug: string) {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/prayer-forms/public/${slug}`, {
+    const response = await fetch(getServerUrl(`/api/prayer-forms/public/${slug}`), {
       cache: 'no-store'
     })
     

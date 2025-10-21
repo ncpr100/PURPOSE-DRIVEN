@@ -1,10 +1,10 @@
 
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
+import { getServerBaseUrl } from '@/lib/server-url'
 
 // GET - Fetch tenant credentials (SUPER_ADMIN only)
 export async function GET(request: NextRequest) {
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
               churchName: church.name,
               loginEmail: loginEmail,
               tempPassword: password,
-              platformUrl: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+              platformUrl: getServerBaseUrl(),
               supportEmail: 'soporte@khesedtek.com'
             }
           })

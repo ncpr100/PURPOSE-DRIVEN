@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { PaymentGatewayFactory, DonationPaymentData } from '@/lib/payments/colombian-gateways'
+import { getServerBaseUrl } from '@/lib/server-url'
 
 export const dynamic = 'force-dynamic'
 
@@ -144,7 +145,7 @@ export async function POST(request: NextRequest) {
       churchId,
       categoryId,
       notes,
-      returnUrl: returnUrl || `${process.env.NEXTAUTH_URL}/donate/thank-you`
+      returnUrl: returnUrl || `${getServerBaseUrl()}/donate/thank-you`
     }
 
     // Process payment with gateway

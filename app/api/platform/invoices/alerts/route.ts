@@ -1,9 +1,9 @@
 
-
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getServerBaseUrl } from '@/lib/server-url'
 
 // GET - Get payment alerts and overdue invoices
 export async function GET() {
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
               totalAmount: invoice.totalAmount,
               currency: invoice.currency,
               dueDate: invoice.dueDate,
-              platformUrl: process.env.NEXTAUTH_URL || 'http://localhost:3000'
+              platformUrl: getServerBaseUrl()
             }
           })
         })

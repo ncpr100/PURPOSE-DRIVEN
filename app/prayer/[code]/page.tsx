@@ -1,6 +1,7 @@
 
 import { notFound } from 'next/navigation'
 import { PublicPrayerForm } from '@/components/prayer-wall/PublicPrayerForm'
+import { getServerUrl } from '@/lib/server-url'
 
 interface PrayerQRPageProps {
   params: {
@@ -10,7 +11,7 @@ interface PrayerQRPageProps {
 
 async function getQRCodeData(code: string) {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/prayer-qr-codes/public/${code}`, {
+    const response = await fetch(getServerUrl(`/api/prayer-qr-codes/public/${code}`), {
       cache: 'no-store'
     })
     

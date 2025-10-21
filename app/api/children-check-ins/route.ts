@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { getServerBaseUrl } from '@/lib/server-url'
 
 export const dynamic = 'force-dynamic'
 
@@ -94,7 +95,7 @@ export async function POST(request: NextRequest) {
 
     // Generate unique QR code that links to public check-in page
     const qrData = `CHILD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-    const qrUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/public/children-checkin/${qrData}`
+    const qrUrl = `${getServerBaseUrl()}/public/children-checkin/${qrData}`
 
     const childCheckIn = await db.childCheckIn.create({
       data: {

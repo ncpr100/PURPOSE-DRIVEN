@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { getServerUrl } from '@/lib/server-url'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 
@@ -209,7 +211,7 @@ export async function POST(request: NextRequest) {
     for (const notification of createdNotifications) {
       try {
         // Make internal API call to broadcast real-time notification
-        const realtimeResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/realtime/broadcast`, {
+        const realtimeResponse = await fetch(getServerUrl('/api/realtime/broadcast'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -248,7 +250,7 @@ export async function POST(request: NextRequest) {
     for (const notification of createdNotifications) {
       try {
         // Make internal API call to send notification email
-        const emailResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/email/send-notification`, {
+        const emailResponse = await fetch(getServerUrl('/api/email/send-notification'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

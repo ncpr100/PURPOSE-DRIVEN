@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { sendEmail, emailQueue } from '@/lib/email'
+import { getServerBaseUrl } from '@/lib/server-url'
 
 export const dynamic = 'force-dynamic'
 
@@ -230,7 +231,7 @@ export async function POST(request: NextRequest) {
               <h3>📧 Credenciales de Acceso:</h3>
               <p><strong>Usuario:</strong> ${adminUser.email}</p>
               <p><strong>Contraseña temporal:</strong> <code>${temporaryPassword}</code></p>
-              <p><strong>URL de acceso:</strong> <a href="${process.env.NEXTAUTH_URL}">${process.env.NEXTAUTH_URL}</a></p>
+              <p><strong>URL de acceso:</strong> <a href="${getServerBaseUrl()}">${getServerBaseUrl()}</a></p>
             </div>
             
             <div class="warning">

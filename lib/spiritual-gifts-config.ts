@@ -37,11 +37,27 @@ export interface MinistryPassion {
 }
 
 export interface ExperienceLevelDefinition {
+  id: string
   value: 'NOVATO' | 'INTERMEDIO' | 'AVANZADO'
+  name: string
   label: string
   range: string
   yearsOfService: string
   description: string
+}
+
+export interface GiftSelection {
+  subcategoryId: string
+  type: 'primary' | 'secondary'
+}
+
+export interface SpiritualAssessmentData {
+  giftSelections: GiftSelection[]
+  ministryPassions: string[]
+  experienceLevel: string
+  spiritualCalling?: string
+  motivation?: string
+  completedAt?: string
 }
 
 // ============================================================================
@@ -412,21 +428,27 @@ export const MINISTRY_PASSIONS: MinistryPassion[] = [
 
 export const EXPERIENCE_LEVELS: ExperienceLevelDefinition[] = [
   {
+    id: 'novato',
     value: 'NOVATO',
+    name: 'Principiante',
     label: 'Nivel 1 (Principiante)',
     range: '0-2 años',
     yearsOfService: '0-2',
     description: 'Nuevo en el ministerio, comenzando a explorar dones y llamado'
   },
   {
+    id: 'intermedio',
     value: 'INTERMEDIO',
+    name: 'Intermedio',
     label: 'Nivel 2 (Intermedio)',
     range: '3-5 años',
     yearsOfService: '3-5',
     description: 'Experiencia activa en ministerio, desarrollando habilidades'
   },
   {
+    id: 'avanzado',
     value: 'AVANZADO',
+    name: 'Avanzado',
     label: 'Nivel 3 (Avanzado)',
     range: '6+ años',
     yearsOfService: '6+',
