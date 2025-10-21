@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, CheckCircle2, User, Sparkles } from 'lucide-react'
+import { toast } from 'sonner'
 import type { SpiritualAssessmentData } from '@/lib/spiritual-gifts-config'
 
 interface MemberSpiritualAssessmentProps {
@@ -42,13 +43,33 @@ export function MemberSpiritualAssessment({
   useEffect(() => {
     const loadAssessmentData = async () => {
       try {
-        const response = await fetch(`/api/spiritual-assessment?memberId=${memberId}`)
+        console.log('🔄 Loading spiritual assessment for member:', memberId)
+        const response = await fetch(`/api/members/${memberId}/spiritual-profile`)
         
         if (response.ok) {
-          const result = await response.json()
-          const existingData = result.data.assessmentData
+          const { profile } = await response.json()
           
-          if (existingData) {
+          if (profile) {
+            console.log('✅ Existing assessment found:', profile)
+            // Convert database format to component format
+            const existingData: SpiritualAssessmentData = {
+              giftSelections: [
+                ...(profile.primaryGifts as string[]).map((id: string) => ({ 
+                  subcategoryId: id, 
+                  type: 'primary' as const 
+                })),
+                ...(profile.secondaryGifts as string[]).map((id: string) => ({ 
+                  subcategoryId: id, 
+                  type: 'secondary' as const 
+                }))
+              ],
+              ministryPassions: profile.ministryPassions as string[],
+              experienceLevel: profile.experienceLevel === 3 ? 'NOVATO' : 
+                              profile.experienceLevel === 6 ? 'INTERMEDIO' : 'AVANZADO',
+              spiritualCalling: profile.spiritualCalling || '',
+              motivation: profile.servingMotivation || ''
+            }
+            
             setAssessmentState({
               data: existingData,
               loading: false,
@@ -56,6 +77,7 @@ export function MemberSpiritualAssessment({
               hasExistingAssessment: true
             })
           } else {
+            console.log('ℹ️ No existing assessment found')
             setAssessmentState({
               data: null,
               loading: false,
@@ -67,7 +89,7 @@ export function MemberSpiritualAssessment({
           throw new Error('Error al cargar datos de evaluación')
         }
       } catch (error) {
-        console.error('Error loading assessment:', error)
+        console.error('❌ Error loading assessment:', error)
         setAssessmentState({
           data: null,
           loading: false,
@@ -82,24 +104,29 @@ export function MemberSpiritualAssessment({
 
   const handleSave = async (data: SpiritualAssessmentData) => {
     try {
-      const response = await fetch('/api/spiritual-assessment', {
+      console.log('💾 Saving spiritual assessment for member:', memberId)
+      console.log('📊 Assessment data:', data)
+      
+      const response = await fetch(`/api/members/${memberId}/spiritual-profile`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...data,
-          memberId
-        })
+        body: JSON.stringify(data)
       })
 
+      const result = await response.json()
+
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Error al guardar evaluación')
+        throw new Error(result.error || 'Error al guardar evaluación')
       }
 
-      const result = await response.json()
-      console.log('Assessment saved:', result)
+      console.log('✅ Assessment saved successfully:', result)
+      
+      // Show success notification
+      toast.success('Evaluación espiritual guardada exitosamente', {
+        description: `${data.giftSelections.length} dones seleccionados, ${data.ministryPassions.length} pasiones ministeriales`
+      })
       
       // Update state
       setAssessmentState(prev => ({
@@ -117,7 +144,10 @@ export function MemberSpiritualAssessment({
       }
 
     } catch (error) {
-      console.error('Error saving assessment:', error)
+      console.error('❌ Error saving assessment:', error)
+      toast.error('Error al guardar evaluación', {
+        description: error instanceof Error ? error.message : 'Error desconocido'
+      })
       throw error // Re-throw to be handled by the component
     }
   }

@@ -2,15 +2,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Brain, Users, BarChart3, Search, Plus, Eye, Edit, BookOpen } from 'lucide-react'
 import { toast } from 'sonner'
-import { SpiritualGiftsAssessment } from '../../volunteers/_components/spiritual-gifts-assessment'
 
 interface Member {
   id: string
@@ -34,14 +33,12 @@ interface SpiritualProfile {
 }
 
 export default function SpiritualGiftsManagement() {
+  const router = useRouter()
   const [members, setMembers] = useState<Member[]>([])
   const [profiles, setProfiles] = useState<SpiritualProfile[]>([])
   const [spiritualGifts, setSpiritualGifts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedMember, setSelectedMember] = useState<Member | null>(null)
-  const [isAssessmentDialogOpen, setIsAssessmentDialogOpen] = useState(false)
-  const [selectedProfile, setSelectedProfile] = useState<SpiritualProfile | null>(null)
 
   useEffect(() => {
     fetchData()
@@ -92,19 +89,13 @@ export default function SpiritualGiftsManagement() {
   }
 
   const openAssessmentDialog = (member: Member) => {
-    setSelectedMember(member)
-    setIsAssessmentDialogOpen(true)
-  }
-
-  const closeAssessmentDialog = () => {
-    setSelectedMember(null)
-    setIsAssessmentDialogOpen(false)
+    // Redirect to dedicated spiritual assessment page with returnTo parameter
+    router.push(`/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
   }
 
   const handleAssessmentSave = (profile: any) => {
     console.log('🔄 handleAssessmentSave called with profile:', profile)
     toast.success('Perfil espiritual guardado exitosamente')
-    closeAssessmentDialog()
     
     console.log('🔄 Triggering fetchData() to refresh metrics...')
     // Refresh data to ensure metrics and profiles are updated
@@ -373,28 +364,6 @@ export default function SpiritualGiftsManagement() {
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* Assessment Dialog */}
-      <Dialog open={isAssessmentDialogOpen} onOpenChange={setIsAssessmentDialogOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              Evaluación de Dones Espirituales - {selectedMember?.firstName} {selectedMember?.lastName}
-            </DialogTitle>
-            <DialogDescription>
-              Complete o edite el perfil de dones espirituales
-            </DialogDescription>
-          </DialogHeader>
-          
-          {selectedMember && (
-            <SpiritualGiftsAssessment
-              memberId={selectedMember.id}
-              onSave={handleAssessmentSave}
-              onCancel={closeAssessmentDialog}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

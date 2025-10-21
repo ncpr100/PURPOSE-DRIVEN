@@ -15,6 +15,7 @@ export default function SpiritualAssessmentTestPage() {
   const router = useRouter()
   const memberId = searchParams.get('memberId')
   const volunteerId = searchParams.get('volunteerId')
+  const returnTo = searchParams.get('returnTo') || '/volunteers' // Support custom return path
   
   const [savedData, setSavedData] = useState<SpiritualAssessmentData | null>(null)
   const [showSavedView, setShowSavedView] = useState(false)
@@ -79,9 +80,9 @@ export default function SpiritualAssessmentTestPage() {
       setSavedData(data)
       toast.success('Evaluación espiritual guardada exitosamente')
       
-      // Redirect back to volunteers after 2 seconds
+      // Redirect back to origin page after 2 seconds
       setTimeout(() => {
-        router.push('/volunteers')
+        router.push(returnTo)
       }, 2000)
     } catch (error) {
       console.error('Error saving assessment:', error)
@@ -97,10 +98,10 @@ export default function SpiritualAssessmentTestPage() {
     <div className="container py-8">
       {/* Navigation */}
       <div className="mb-6">
-        <Link href="/volunteers">
+        <Link href={returnTo}>
           <Button variant="ghost" size="sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Volver a Voluntarios
+            {returnTo === '/spiritual-gifts' ? 'Volver a Dones Espirituales' : 'Volver a Voluntarios'}
           </Button>
         </Link>
       </div>
@@ -167,7 +168,7 @@ export default function SpiritualAssessmentTestPage() {
           memberId={memberId || undefined}
           initialData={initialData || savedData || undefined}
           onSave={handleSave}
-          onCancel={() => router.push('/volunteers')}
+          onCancel={() => router.push(returnTo)}
           showHeader={true}
         />
       )}
