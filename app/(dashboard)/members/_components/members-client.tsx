@@ -65,6 +65,8 @@ import {
 } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import { toast } from 'sonner'
+import { MemberInfoBadges } from './member-info-badges'
+import type { MaritalStatusFilter } from '@/types/member-filters'
 
 interface MembersClientProps {
   userRole: string
@@ -83,7 +85,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [genderFilter, setGenderFilter] = useState('all')
   const [ageFilter, setAgeFilter] = useState('all')
-  const [maritalStatusFilter, setMaritalStatusFilter] = useState('all')
+  const [maritalStatusFilter, setMaritalStatusFilter] = useState<MaritalStatusFilter>('all')
   
   // Smart Lists & Bulk Actions State
   const [activeSmartList, setActiveSmartList] = useState('all')
@@ -725,7 +727,10 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </Select>
               </div>
               <div className="w-48">
-                <Select value={maritalStatusFilter} onValueChange={setMaritalStatusFilter}>
+                <Select 
+                  value={maritalStatusFilter} 
+                  onValueChange={(value) => setMaritalStatusFilter(value as MaritalStatusFilter)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Todos los Miembros" />
                   </SelectTrigger>
@@ -881,35 +886,15 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <div className="space-y-1">
-                            {member.gender && (
-                              <Badge variant="secondary" className="text-xs">
-                                {member.gender}
-                              </Badge>
-                            )}
-                            {/* Show marital status OR family filter badge (not both) */}
-                            {maritalStatusFilter === 'family-group' ? (
-                              <Badge variant="outline" className="text-xs ml-1 bg-purple-100 text-purple-700 border-purple-300">
-                                Familias
-                              </Badge>
-                            ) : member.maritalStatus && (
-                              <Badge variant="outline" className="text-xs ml-1">
-                                {member.maritalStatus}
-                              </Badge>
-                            )}
-                            {member.ministryId && (
-                              <Badge variant="default" className="text-xs ml-1">
-                                <Star className="h-3 w-3 mr-1" />
-                                Líder
-                              </Badge>
-                            )}
-                            {getMemberVolunteerStatus(member.id) && (
-                              <Badge variant="default" className="text-xs ml-1 bg-green-600">
-                                <UserPlus className="h-3 w-3 mr-1" />
-                                Voluntario
-                              </Badge>
-                            )}
-                          </div>
+                          <MemberInfoBadges
+                            member={{
+                              gender: member.gender,
+                              maritalStatus: member.maritalStatus,
+                              ministryId: member.ministryId
+                            }}
+                            activeMaritalStatusFilter={maritalStatusFilter}
+                            isVolunteer={!!getMemberVolunteerStatus(member.id)}
+                          />
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">

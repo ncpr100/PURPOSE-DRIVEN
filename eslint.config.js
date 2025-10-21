@@ -16,6 +16,9 @@ module.exports = [
     },
     rules: {
       "@next/next/no-duplicate-head": "off",
+      // Prevent state vs. props confusion in UI components
+      // Warns when rendering props directly that might need state-based conditional logic
+      "react/jsx-no-leaked-render": "warn",
     },
   },
 ];
