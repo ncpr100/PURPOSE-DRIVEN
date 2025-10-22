@@ -57,6 +57,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   const [spiritualGifts, setSpiritualGifts] = useState<any[]>([])
   const [memberSpiritualProfile, setMemberSpiritualProfile] = useState<any>(null)
   const [volunteerProfiles, setVolunteerProfiles] = useState<Map<string, any>>(new Map())
+  const [memberAvailabilityMatrix, setMemberAvailabilityMatrix] = useState<any>(null)
 
   // Debug: Monitor dialog state changes
   useEffect(() => {
@@ -83,6 +84,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
     setSelectedVolunteer(volunteer)
     setIsProfileDialogOpen(true)
     fetchMemberSpiritualProfile(volunteer.id)
+    fetchMemberAvailabilityMatrix(volunteer.id)
   }
 
   // Form states
@@ -200,6 +202,66 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
       console.error('❌ Error loading member spiritual profile:', error)
       setMemberSpiritualProfile(null)
     }
+  }
+
+  const fetchMemberAvailabilityMatrix = async (memberId: string) => {
+    try {
+      console.log('🔄 Fetching availability matrix for member:', memberId)
+      const response = await fetch(`/api/availability-matrix?memberId=${memberId}`)
+      if (response.ok) {
+        const data = await response.json()
+        console.log('✅ Availability matrix loaded:', data.matrix)
+        setMemberAvailabilityMatrix(data.matrix)
+      } else {
+        console.log('ℹ️ No availability matrix found')
+        setMemberAvailabilityMatrix(null)
+      }
+    } catch (error) {
+      console.error('❌ Error loading availability matrix:', error)
+      setMemberAvailabilityMatrix(null)
+    }
+  }
+
+  // Helper function to format availability matrix display
+  const formatAvailabilityDisplay = (matrix: any) => {
+    if (!matrix || !matrix.days || matrix.days.length === 0) {
+      return 'No se ha registrado disponibilidad'
+    }
+
+    const dayNames: { [key: string]: string } = {
+      monday: 'Lunes',
+      tuesday: 'Martes',
+      wednesday: 'Miércoles',
+      thursday: 'Jueves',
+      friday: 'Viernes',
+      saturday: 'Sábado',
+      sunday: 'Domingo'
+    }
+
+    const timeNames: { [key: string]: string } = {
+      morning: 'Mañana',
+      afternoon: 'Tarde',
+      evening: 'Noche'
+    }
+
+    const availableDays = matrix.days.map((day: string) => dayNames[day] || day)
+    const availableTimes = (matrix.times || []).map((time: string) => timeNames[time] || time)
+
+    let display = `Disponible ${availableDays.join(', ')}`
+    if (availableTimes.length > 0) {
+      display += ` (${availableTimes.join(', ')})`
+    }
+    if (matrix.frequency) {
+      const freqNames: { [key: string]: string } = {
+        weekly: 'Semanal',
+        biweekly: 'Quincenal',
+        monthly: 'Mensual',
+        occasional: 'Ocasional'
+      }
+      display += ` - ${freqNames[matrix.frequency] || matrix.frequency}`
+    }
+
+    return display
   }
 
   const handleCreateVolunteer = async (e: React.FormEvent) => {
@@ -1035,12 +1097,21 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   </div>
                 </div>
                 
-                {selectedVolunteer.availability && (
-                  <div>
-                    <Label className="text-sm font-medium text-muted-foreground">Disponibilidad</Label>
-                    <p className="mt-1 text-sm">{selectedVolunteer.availability}</p>
+                <div>
+                  <Label className="text-sm font-medium text-muted-foreground">Disponibilidad</Label>
+                  <div className="mt-2">
+                    {memberAvailabilityMatrix ? (
+                      <div className="space-y-2">
+                        <p className="text-sm">{formatAvailabilityDisplay(memberAvailabilityMatrix)}</p>
+                        {memberAvailabilityMatrix.notes && (
+                          <p className="text-xs text-muted-foreground italic">{memberAvailabilityMatrix.notes}</p>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">No se ha registrado disponibilidad</p>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
 
               {/* Spiritual Gifts */}
@@ -1159,21 +1230,70 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               <div>
                 <Label className="text-sm font-medium text-muted-foreground">Recomendaciones Inteligentes</Label>
                 <div className="mt-2 space-y-2">
-                  <div className="flex items-center gap-2 p-2 bg-green-50 rounded text-sm">
-                    <Target className="h-4 w-4 text-green-500" />
-                    <span>Ideal para liderar equipos pequeños</span>
-                    <Badge variant="outline" className="ml-auto text-xs bg-green-100 text-green-700">95% match</Badge>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-blue-50 rounded text-sm">
-                    <Calendar className="h-4 w-4 text-blue-500" />
-                    <span>Excelente disponibilidad dominical</span>
-                    <Badge variant="outline" className="ml-auto text-xs bg-blue-100 text-blue-700">88% match</Badge>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-purple-50 rounded text-sm">
-                    <Star className="h-4 w-4 text-purple-500" />
-                    <span>Potencial para desarrollo de liderazgo</span>
-                    <Badge variant="outline" className="ml-auto text-xs bg-purple-100 text-purple-700">82% match</Badge>
-                  </div>
+                  {memberSpiritualProfile ? (
+                    <>
+                      {/* Calculate real match score based on spiritual profile */}
+                      {(() => {
+                        const primaryGifts = memberSpiritualProfile.primaryGifts || []
+                        const secondaryGifts = memberSpiritualProfile.secondaryGifts || []
+                        const ministryPassions = memberSpiritualProfile.ministryPassions || []
+                        const hasLeadershipGifts = primaryGifts.some((giftId: string) => 
+                          ['leadership', 'administration', 'wisdom', 'teaching'].includes(giftId)
+                        )
+                        
+                        const matchScore = Math.min(100, 50 + (primaryGifts.length * 10) + (secondaryGifts.length * 5) + (ministryPassions.length * 3))
+                        
+                        return (
+                          <>
+                            {primaryGifts.length > 0 && (
+                              <div className="flex items-center gap-2 p-2 bg-blue-50 rounded text-sm">
+                                <Sparkles className="h-4 w-4 text-blue-500" />
+                                <span>
+                                  {primaryGifts.length === 1 ? 'Don primario identificado' : `${primaryGifts.length} dones primarios identificados`}
+                                  {primaryGifts.length > 0 && `: ${primaryGifts.map((id: string) => spiritualGifts.find(g => g.id === id)?.name || id).join(', ')}`}
+                                </span>
+                                <Badge variant="outline" className="ml-auto text-xs bg-blue-100 text-blue-700">{matchScore}% match</Badge>
+                              </div>
+                            )}
+                            
+                            {hasLeadershipGifts && (
+                              <div className="flex items-center gap-2 p-2 bg-purple-50 rounded text-sm">
+                                <Crown className="h-4 w-4 text-purple-500" />
+                                <span>Potencial para desarrollo de liderazgo</span>
+                                <Badge variant="outline" className="ml-auto text-xs bg-purple-100 text-purple-700">Alto</Badge>
+                              </div>
+                            )}
+                            
+                            {memberAvailabilityMatrix && memberAvailabilityMatrix.days?.includes('sunday') && (
+                              <div className="flex items-center gap-2 p-2 bg-green-50 rounded text-sm">
+                                <Calendar className="h-4 w-4 text-green-500" />
+                                <span>Disponibilidad dominical confirmada</span>
+                                <Badge variant="outline" className="ml-auto text-xs bg-green-100 text-green-700">Excelente</Badge>
+                              </div>
+                            )}
+                            
+                            {ministryPassions.length > 0 && (
+                              <div className="flex items-center gap-2 p-2 bg-amber-50 rounded text-sm">
+                                <Target className="h-4 w-4 text-amber-500" />
+                                <span>
+                                  {ministryPassions.length === 1 ? 'Pasión ministerial identificada' : `${ministryPassions.length} pasiones ministeriales identificadas`}
+                                </span>
+                                <Badge variant="outline" className="ml-auto text-xs bg-amber-100 text-amber-700">Activo</Badge>
+                              </div>
+                            )}
+                          </>
+                        )
+                      })()}
+                    </>
+                  ) : (
+                    <div className="flex items-center gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm">
+                      <Lightbulb className="h-4 w-4 text-yellow-600" />
+                      <div className="flex-1">
+                        <p className="font-medium text-yellow-800">Evaluación espiritual pendiente</p>
+                        <p className="text-xs text-yellow-700 mt-1">Complete la evaluación para obtener recomendaciones inteligentes</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
