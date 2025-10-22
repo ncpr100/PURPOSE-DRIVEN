@@ -49,7 +49,8 @@ const PROTECTED_API_ROUTES = [
   '/api/platform',
   '/api/automation-rules',
   '/api/automation-templates',
-  '/api/spiritual-assessment'
+  '/api/spiritual-assessment',
+  '/api/admin'
 ];
 
 // Mapeo de rutas a permisos requeridos
