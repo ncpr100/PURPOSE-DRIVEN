@@ -127,8 +127,14 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
     const profiles = new Map()
     
     for (const volunteer of volunteers) {
+      // Skip volunteers without a linked member
+      if (!volunteer.memberId) {
+        console.warn(`⚠️ Volunteer ${volunteer.firstName} ${volunteer.lastName} has no linked member`)
+        continue
+      }
+      
       try {
-        const response = await fetch(`/api/members/${volunteer.id}/spiritual-profile`)
+        const response = await fetch(`/api/members/${volunteer.memberId}/spiritual-profile`)
         if (response.ok) {
           const data = await response.json()
           if (data.profile) {
