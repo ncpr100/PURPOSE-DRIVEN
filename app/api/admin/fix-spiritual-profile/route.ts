@@ -8,9 +8,9 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    // Only allow SUPER_ADMIN to run this fix
-    if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
-      return NextResponse.json({ error: 'Unauthorized - SUPER_ADMIN only' }, { status: 403 })
+    // Only allow SUPER_ADMIN or ADMIN_IGLESIA to run this fix
+    if (!session?.user || !['SUPER_ADMIN', 'ADMIN_IGLESIA'].includes(session.user.role)) {
+      return NextResponse.json({ error: 'Unauthorized - Admin access required' }, { status: 403 })
     }
 
     console.log('🔧 Starting spiritual profile fix...')
