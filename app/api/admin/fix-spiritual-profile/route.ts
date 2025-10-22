@@ -95,11 +95,11 @@ export async function POST(request: NextRequest) {
         spiritualProfile: {
           id: verification?.spiritualProfile?.id,
           primaryGiftsCount: Array.isArray(verification?.spiritualProfile?.primaryGifts) 
-            ? verification.spiritualProfile.primaryGifts.length : 0,
+            ? verification?.spiritualProfile?.primaryGifts.length : 0,
           secondaryGiftsCount: Array.isArray(verification?.spiritualProfile?.secondaryGifts) 
-            ? verification.spiritualProfile.secondaryGifts.length : 0,
+            ? verification?.spiritualProfile?.secondaryGifts.length : 0,
           ministryPassionsCount: Array.isArray(verification?.spiritualProfile?.ministryPassions) 
-            ? verification.spiritualProfile.ministryPassions.length : 0,
+            ? verification?.spiritualProfile?.ministryPassions.length : 0,
           readinessScore: verification?.spiritualProfile?.volunteerReadinessScore
         }
       }
