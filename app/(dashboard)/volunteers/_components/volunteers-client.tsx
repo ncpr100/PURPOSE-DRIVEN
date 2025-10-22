@@ -56,6 +56,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(null)
   const [spiritualGifts, setSpiritualGifts] = useState<any[]>([])
   const [memberSpiritualProfile, setMemberSpiritualProfile] = useState<any>(null)
+  const [volunteerProfiles, setVolunteerProfiles] = useState<Map<string, any>>(new Map())
 
   // Debug: Monitor dialog state changes
   useEffect(() => {
@@ -112,6 +113,35 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
     fetchSpiritualGifts()
   }, [])
 
+  // Fetch spiritual profiles for all volunteers (for recommendations)
+  useEffect(() => {
+    if (volunteers.length > 0) {
+      fetchAllSpiritualProfiles()
+    }
+  }, [volunteers.length])
+
+  const fetchAllSpiritualProfiles = async () => {
+    console.log('🔄 Fetching spiritual profiles for all volunteers...')
+    const profiles = new Map()
+    
+    for (const volunteer of volunteers) {
+      try {
+        const response = await fetch(`/api/members/${volunteer.id}/spiritual-profile`)
+        if (response.ok) {
+          const data = await response.json()
+          if (data.profile) {
+            profiles.set(volunteer.id, data.profile)
+          }
+        }
+      } catch (error) {
+        console.error(`Error loading profile for ${volunteer.firstName}:`, error)
+      }
+    }
+    
+    console.log('✅ Loaded spiritual profiles for', profiles.size, 'volunteers')
+    setVolunteerProfiles(profiles)
+  }
+
   const fetchVolunteers = async () => {
     try {
       const response = await fetch('/api/volunteers')
@@ -156,15 +186,18 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
   const fetchMemberSpiritualProfile = async (memberId: string) => {
     try {
-      const response = await fetch(`/api/member-spiritual-profile?memberId=${memberId}`)
+      console.log('🔄 Fetching spiritual profile for member:', memberId)
+      const response = await fetch(`/api/members/${memberId}/spiritual-profile`)
       if (response.ok) {
         const data = await response.json()
+        console.log('✅ Spiritual profile loaded:', data.profile)
         setMemberSpiritualProfile(data.profile)
       } else {
+        console.log('ℹ️ No spiritual profile found')
         setMemberSpiritualProfile(null)
       }
     } catch (error) {
-      console.error('Error loading member spiritual profile:', error)
+      console.error('❌ Error loading member spiritual profile:', error)
       setMemberSpiritualProfile(null)
     }
   }
@@ -351,8 +384,34 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {volunteers.filter(v => v.isActive).map((volunteer) => {
+                const profile = volunteerProfiles.get(volunteer.id)
                 const skillsArray = volunteer.skills ? JSON.parse(volunteer.skills) : []
-                const recommendationScore = Math.floor(Math.random() * 30) + 70 // Mock score 70-100
+                
+                // Calculate REAL match score based on spiritual profile
+                let matchScore = 50 // Base score
+                if (profile) {
+                  const primaryGifts = profile.primaryGifts || []
+                  const secondaryGifts = profile.secondaryGifts || []
+                  const ministryPassions = profile.ministryPassions || []
+                  
+                  matchScore = 50 + (primaryGifts.length * 10) + (secondaryGifts.length * 5) + (ministryPassions.length * 3)
+                  matchScore = Math.min(matchScore, 99) // Cap at 99%
+                }
+                
+                // Get primary gift categories for display
+                const primaryGiftNames = profile?.primaryGifts?.slice(0, 2).map((giftId: string) => {
+                  // Extract category from gift ID (e.g., "MUSICA" from "musica-instrumento")
+                  const categoryId = giftId.split('-')[0]
+                  return categoryId.charAt(0).toUpperCase() + categoryId.slice(1).toLowerCase()
+                }) || []
+                
+                // Determine leadership potential
+                const hasLeadershipGifts = profile?.primaryGifts?.some((giftId: string) => 
+                  giftId.includes('liderazgo') || giftId.includes('vision')
+                ) || false
+                
+                // Determine availability status (mock for now - would need actual availability data)
+                const isAvailableWeekend = true // Would check actual availability matrix
                 
                 return (
                   <Card key={volunteer.id} className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-yellow-400">
@@ -361,8 +420,12 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                         <CardTitle className="text-lg">
                           {volunteer.firstName} {volunteer.lastName}
                         </CardTitle>
-                        <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                          {recommendationScore}% match
+                        <Badge variant="secondary" className={
+                          matchScore >= 80 ? "bg-green-100 text-green-800" :
+                          matchScore >= 60 ? "bg-yellow-100 text-yellow-800" :
+                          "bg-gray-100 text-gray-800"
+                        }>
+                          {matchScore}% match
                         </Badge>
                       </div>
                       <CardDescription>
@@ -370,32 +433,69 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div>
-                        <h4 className="font-medium text-sm text-muted-foreground mb-2">Habilidades Destacadas</h4>
-                        <div className="flex flex-wrap gap-1">
-                          {skillsArray.slice(0, 3).map((skill: string, index: number) => (
-                            <Badge key={index} variant="outline" className="text-xs border-yellow-400 text-yellow-700">
-                              {skill}
-                            </Badge>
-                          ))}
+                      {/* Show Spiritual Gifts if available */}
+                      {profile && (profile.primaryGifts?.length > 0 || profile.secondaryGifts?.length > 0) ? (
+                        <div>
+                          <h4 className="font-medium text-sm text-muted-foreground mb-2">Dones Espirituales</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {profile.primaryGifts?.slice(0, 3).map((giftId: string, index: number) => (
+                              <Badge key={index} variant="default" className="text-xs">
+                                {giftId.split('-').pop()?.replace(/_/g, ' ')}
+                              </Badge>
+                            ))}
+                            {profile.primaryGifts?.length > 3 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{profile.primaryGifts.length - 3}
+                              </Badge>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      ) : skillsArray.length > 0 ? (
+                        <div>
+                          <h4 className="font-medium text-sm text-muted-foreground mb-2">Habilidades Destacadas</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {skillsArray.slice(0, 3).map((skill: string, index: number) => (
+                              <Badge key={index} variant="outline" className="text-xs border-yellow-400 text-yellow-700">
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
+                          <p className="text-xs text-amber-800">
+                            <strong>Nota:</strong> Este voluntario no ha completado su evaluación espiritual. 
+                            Recomendamos completarla para mejores recomendaciones.
+                          </p>
+                        </div>
+                      )}
                       
                       <div>
                         <h4 className="font-medium text-sm text-muted-foreground mb-2">Recomendaciones</h4>
                         <div className="space-y-2">
-                          <div className="flex items-center gap-2 text-sm">
-                            <Target className="h-4 w-4 text-green-500" />
-                            <span>Ideal para Ministerio de Alabanza</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <Calendar className="h-4 w-4 text-blue-500" />
-                            <span>Disponible fines de semana</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm">
-                            <Star className="h-4 w-4 text-purple-500" />
-                            <span>Alto potencial de liderazgo</span>
-                          </div>
+                          {profile && primaryGiftNames.length > 0 ? (
+                            <div className="flex items-center gap-2 text-sm">
+                              <Target className="h-4 w-4 text-green-500" />
+                              <span>Ideal para Ministerio de {primaryGiftNames[0]}</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Target className="h-4 w-4" />
+                              <span>Completar evaluación para recomendaciones</span>
+                            </div>
+                          )}
+                          {isAvailableWeekend && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <Calendar className="h-4 w-4 text-blue-500" />
+                              <span>Disponible fines de semana</span>
+                            </div>
+                          )}
+                          {hasLeadershipGifts && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <Star className="h-4 w-4 text-purple-500" />
+                              <span>Alto potencial de liderazgo</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                       
