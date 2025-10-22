@@ -72,13 +72,13 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
   // Handler functions for buttons
   const handleOpenAssignDialog = (volunteer: Volunteer) => {
-    alert(`PRUEBA: Asignar Actividad para ${volunteer.firstName} ${volunteer.lastName}`)
+    console.log('📋 Opening assignment dialog for:', volunteer.firstName, volunteer.lastName)
     setSelectedVolunteer(volunteer)
     setIsAssignDialogOpen(true)
   }
 
   const handleOpenProfileDialog = (volunteer: Volunteer) => {
-    alert(`PRUEBA: Ver Perfil de ${volunteer.firstName} ${volunteer.lastName}`)
+    console.log('👤 Opening profile dialog for:', volunteer.firstName, volunteer.lastName)
     setSelectedVolunteer(volunteer)
     setIsProfileDialogOpen(true)
     fetchMemberSpiritualProfile(volunteer.id)
@@ -98,7 +98,9 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   const [assignmentData, setAssignmentData] = useState({
     title: '',
     description: '',
+    assignmentType: 'temporary', // 'temporary' or 'permanent'
     date: '',
+    endDate: '', // For temporary assignments
     startTime: '',
     endTime: '',
     notes: ''
@@ -214,10 +216,17 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   const handleCreateAssignment = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!selectedVolunteer || !assignmentData.title || !assignmentData.date || 
-        !assignmentData.startTime || !assignmentData.endTime) {
-      toast.error('Todos los campos requeridos deben estar completados')
+    // Validation based on assignment type
+    if (!selectedVolunteer || !assignmentData.title) {
+      toast.error('El título de la asignación es requerido')
       return
+    }
+
+    if (assignmentData.assignmentType === 'temporary') {
+      if (!assignmentData.date || !assignmentData.startTime || !assignmentData.endTime) {
+        toast.error('Para asignaciones temporales, la fecha y horarios son requeridos')
+        return
+      }
     }
 
     try {
@@ -233,11 +242,18 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
       })
 
       if (response.ok) {
-        toast.success('Asignación creada exitosamente')
+        const isPermanent = assignmentData.assignmentType === 'permanent'
+        toast.success(
+          isPermanent 
+            ? 'Asignación permanente creada exitosamente' 
+            : 'Asignación temporal creada exitosamente'
+        )
         setAssignmentData({
           title: '',
           description: '',
+          assignmentType: 'temporary',
           date: '',
+          endDate: '',
           startTime: '',
           endTime: '',
           notes: ''
@@ -693,7 +709,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
       {/* Assignment Dialog */}
       <Dialog open={isAssignDialogOpen} onOpenChange={setIsAssignDialogOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Crear Asignación</DialogTitle>
             <DialogDescription>
@@ -701,10 +717,60 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleCreateAssignment} className="space-y-4">
+            {/* Assignment Type Selector */}
+            <div className="space-y-2 border-b pb-4">
+              <Label htmlFor="assignmentType" className="text-base font-semibold">Tipo de Asignación *</Label>
+              <Select
+                value={assignmentData.assignmentType}
+                onValueChange={(value) => setAssignmentData(prev => ({ ...prev, assignmentType: value }))}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccionar tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="temporary">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-blue-600" />
+                      <div>
+                        <div className="font-medium">Temporal</div>
+                        <div className="text-xs text-muted-foreground">Para eventos o días específicos</div>
+                      </div>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="permanent">
+                    <div className="flex items-center gap-2">
+                      <Crown className="h-4 w-4 text-purple-600" />
+                      <div>
+                        <div className="font-medium">Permanente</div>
+                        <div className="text-xs text-muted-foreground">Rol continuo sin fecha de finalización</div>
+                      </div>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              {assignmentData.assignmentType === 'permanent' && (
+                <div className="mt-2 p-3 bg-purple-50 border border-purple-200 rounded-md">
+                  <p className="text-sm text-purple-900">
+                    <strong>Nota:</strong> Las asignaciones permanentes no tienen fecha de finalización. 
+                    El voluntario puede tener múltiples asignaciones temporales además de su rol permanente.
+                  </p>
+                </div>
+              )}
+              {assignmentData.assignmentType === 'temporary' && (
+                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                  <p className="text-sm text-blue-900">
+                    <strong>Nota:</strong> Las asignaciones temporales requieren fecha y horario específicos.
+                    Recibirás notificación cuando la asignación esté próxima a finalizar.
+                  </p>
+                </div>
+              )}
+            </div>
+
             <div className="space-y-2">
-              <Label htmlFor="title">Título *</Label>
+              <Label htmlFor="title">Título de la Asignación *</Label>
               <Input
                 id="title"
+                placeholder={assignmentData.assignmentType === 'permanent' ? 'Ej: Líder de Alabanza' : 'Ej: Ayuda en Evento de Navidad'}
                 value={assignmentData.title}
                 onChange={(e) => setAssignmentData(prev => ({ ...prev, title: e.target.value }))}
                 required
@@ -715,44 +781,75 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               <Label htmlFor="description">Descripción</Label>
               <Textarea
                 id="description"
+                placeholder="Describe las responsabilidades y expectativas..."
                 value={assignmentData.description}
                 onChange={(e) => setAssignmentData(prev => ({ ...prev, description: e.target.value }))}
+                rows={3}
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="date">Fecha *</Label>
-              <Input
-                id="date"
-                type="date"
-                value={assignmentData.date}
-                onChange={(e) => setAssignmentData(prev => ({ ...prev, date: e.target.value }))}
-                required
-              />
-            </div>
+            {/* Conditional fields based on assignment type */}
+            {assignmentData.assignmentType === 'temporary' && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="date">Fecha de Inicio *</Label>
+                    <Input
+                      id="date"
+                      type="date"
+                      value={assignmentData.date}
+                      onChange={(e) => setAssignmentData(prev => ({ ...prev, date: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="endDate">Fecha de Finalización (Opcional)</Label>
+                    <Input
+                      id="endDate"
+                      type="date"
+                      value={assignmentData.endDate}
+                      onChange={(e) => setAssignmentData(prev => ({ ...prev, endDate: e.target.value }))}
+                    />
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="startTime">Hora inicio *</Label>
-                <Input
-                  id="startTime"
-                  type="time"
-                  value={assignmentData.startTime}
-                  onChange={(e) => setAssignmentData(prev => ({ ...prev, startTime: e.target.value }))}
-                  required
-                />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="startTime">Hora de Inicio *</Label>
+                    <Input
+                      id="startTime"
+                      type="time"
+                      value={assignmentData.startTime}
+                      onChange={(e) => setAssignmentData(prev => ({ ...prev, startTime: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="endTime">Hora de Finalización *</Label>
+                    <Input
+                      id="endTime"
+                      type="time"
+                      value={assignmentData.endTime}
+                      onChange={(e) => setAssignmentData(prev => ({ ...prev, endTime: e.target.value }))}
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {assignmentData.assignmentType === 'permanent' && (
+              <div className="p-4 bg-purple-50 border border-purple-200 rounded-md">
+                <div className="flex items-center gap-2 mb-2">
+                  <Crown className="h-5 w-5 text-purple-600" />
+                  <h4 className="font-medium text-purple-900">Rol Permanente</h4>
+                </div>
+                <p className="text-sm text-purple-700">
+                  Este voluntario será asignado de manera continua. No se requiere fecha o horario específico.
+                  Puedes agregar asignaciones temporales adicionales en cualquier momento.
+                </p>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="endTime">Hora fin *</Label>
-                <Input
-                  id="endTime"
-                  type="time"
-                  value={assignmentData.endTime}
-                  onChange={(e) => setAssignmentData(prev => ({ ...prev, endTime: e.target.value }))}
-                  required
-                />
-              </div>
-            </div>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="notes">Notas</Label>
