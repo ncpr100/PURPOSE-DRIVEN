@@ -10,7 +10,7 @@ import { Slider } from '@/components/ui/slider'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Calendar, Clock, MapPin, Save, Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
+import toast from 'react-hot-toast'
 
 interface AvailabilityMatrixProps {
   memberId: string
