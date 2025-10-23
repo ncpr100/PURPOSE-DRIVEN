@@ -15,7 +15,15 @@ interface SkillsSelectorProps {
   onSkillsChange: (skills: string[]) => void
 }
 
-const PREDEFINED_SKILLS = {
+const SKILL_CATEGORIES = [
+  { id: 'Technical', name: '🔧 Técnicas' },
+  { id: 'Creative', name: '🎨 Creativas' },
+  { id: 'Administrative', name: '📋 Administrativas' },
+  { id: 'Professional', name: '💼 Profesionales' },
+  { id: 'Trades', name: '🛠️ Oficios' }
+] as const
+
+const PREDEFINED_SKILLS: Record<string, string[]> = {
   'Technical': [
     'Electricista',
     'Plomero',
@@ -124,13 +132,9 @@ export function SkillsSelector({ memberName, existingSkills = [], onSkillsChange
                 <SelectValue placeholder="Selecciona una categoría..." />
               </SelectTrigger>
               <SelectContent>
-                {Object.keys(PREDEFINED_SKILLS).map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category === 'Technical' && '🔧 Técnicas'}
-                    {category === 'Creative' && '🎨 Creativas'}
-                    {category === 'Administrative' && '📋 Administrativas'}
-                    {category === 'Professional' && '💼 Profesionales'}
-                    {category === 'Trades' && '🛠️ Oficios'}
+                {SKILL_CATEGORIES.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name}
                   </SelectItem>
                 ))}
               </SelectContent>
