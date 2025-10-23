@@ -30,7 +30,7 @@ interface Volunteer {
   skills?: string
   availability?: string
   ministry?: { name: string }
-  member?: { firstName: string; lastName: string }
+  member?: { id: string; firstName: string; lastName: string }
   assignments: any[]
   isActive: boolean
 }
@@ -128,13 +128,16 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
     
     for (const volunteer of volunteers) {
       // Skip volunteers without a linked member
-      if (!volunteer.memberId) {
+      // Note: API includes member relation, so we check volunteer.member
+      const memberId = volunteer.member?.id
+      
+      if (!memberId) {
         console.warn(`⚠️ Volunteer ${volunteer.firstName} ${volunteer.lastName} has no linked member`)
         continue
       }
       
       try {
-        const response = await fetch(`/api/members/${volunteer.memberId}/spiritual-profile`)
+        const response = await fetch(`/api/members/${memberId}/spiritual-profile`)
         if (response.ok) {
           const data = await response.json()
           if (data.profile) {
