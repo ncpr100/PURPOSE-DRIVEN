@@ -417,7 +417,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         <TabsContent value="skills">
           <SkillsSelector
             memberName={`${formData.firstName} ${formData.lastName}`}
-            existingSkills={Array.isArray(member?.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
+            existingSkills={member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
             onSkillsChange={(skills) => {
               setFormData(prev => ({ ...prev, skillsMatrix: skills }))
               setHasUnsavedChanges(true)
