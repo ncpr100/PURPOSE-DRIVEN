@@ -238,7 +238,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
   // Helper function to format availability matrix display
   const formatAvailabilityDisplay = (matrix: any) => {
-    if (!matrix || !matrix.days || matrix.days.length === 0) {
+    if (!matrix || !matrix.recurringAvailability || Object.keys(matrix.recurringAvailability).length === 0) {
       return 'No se ha registrado disponibilidad'
     }
 
@@ -253,28 +253,38 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
     }
 
     const timeNames: { [key: string]: string } = {
-      morning: 'Mañana',
-      afternoon: 'Tarde',
-      evening: 'Noche'
+      morning: 'Mañana (6:00 - 12:00)',
+      afternoon: 'Tarde (12:00 - 18:00)',
+      evening: 'Noche (18:00 - 22:00)'
     }
 
-    const availableDays = matrix.days.map((day: string) => dayNames[day] || day)
-    const availableTimes = (matrix.times || []).map((time: string) => timeNames[time] || time)
+    // Extract days and times from recurringAvailability object
+    const availableDays: string[] = []
+    const timeSlots = new Set<string>()
+    
+    Object.entries(matrix.recurringAvailability).forEach(([day, times]: [string, any]) => {
+      if (times && typeof times === 'object') {
+        const hasTimes = Object.values(times).some(val => val === true)
+        if (hasTimes) {
+          availableDays.push(dayNames[day] || day)
+          Object.entries(times).forEach(([time, available]) => {
+            if (available) {
+              timeSlots.add(timeNames[time] || time)
+            }
+          })
+        }
+      }
+    })
+
+    if (availableDays.length === 0) {
+      return 'No se ha registrado disponibilidad'
+    }
 
     let display = `Disponible ${availableDays.join(', ')}`
-    if (availableTimes.length > 0) {
-      display += ` (${availableTimes.join(', ')})`
+    if (timeSlots.size > 0) {
+      display += ` - ${Array.from(timeSlots).join(', ')}`
     }
-    if (matrix.frequency) {
-      const freqNames: { [key: string]: string } = {
-        weekly: 'Semanal',
-        biweekly: 'Quincenal',
-        monthly: 'Mensual',
-        occasional: 'Ocasional'
-      }
-      display += ` - ${freqNames[matrix.frequency] || matrix.frequency}`
-    }
-
+    
     return display
   }
 
