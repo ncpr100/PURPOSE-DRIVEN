@@ -1,7 +1,7 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -61,6 +61,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
     emergencyContact: member?.emergencyContact || '',
     transportationOwned: member?.transportationOwned || false,
     childcareAvailable: member?.childcareAvailable || false,
+    skillsMatrix: member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : [],
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -88,11 +89,19 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         emergencyContact: member.emergencyContact || '',
         transportationOwned: member.transportationOwned || false,
         childcareAvailable: member.childcareAvailable || false,
+        skillsMatrix: member.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : [],
       })
     }
   }, [member])
 
+  // Mark form as having unsaved changes when data changes
+  // Skip on initial mount to avoid triggering on load
+  const isInitialMount = useRef(true)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     setHasUnsavedChanges(true)
   }, [formData])
 
