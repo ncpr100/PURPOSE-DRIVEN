@@ -124,7 +124,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!validateForm()) {
@@ -141,6 +141,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
 
     onSave(memberData)
     setHasUnsavedChanges(false)
+    toast.success('Información básica guardada exitosamente')
   }
 
   const handleSpiritualAssessmentSave = (profile: any) => {
@@ -151,6 +152,31 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
   const handleAvailabilityMatrixSave = (matrix: any) => {
     toast.success('Disponibilidad guardada')
     setHasUnsavedChanges(false)
+  }
+
+  const handleSkillsSave = async () => {
+    if (!member?.id) {
+      toast.error('Primero debe guardar la información básica del miembro')
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/members/${member.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ skillsMatrix: formData.skillsMatrix })
+      })
+
+      if (response.ok) {
+        toast.success('Habilidades guardadas exitosamente')
+        setHasUnsavedChanges(false)
+      } else {
+        toast.error('Error al guardar habilidades')
+      }
+    } catch (error) {
+      console.error('Error saving skills:', error)
+      toast.error('Error al guardar habilidades')
+    }
   }
 
   return (
@@ -450,16 +476,40 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
 
         {/* Skills Tab */}
         <TabsContent value="skills">
-          {activeTab === 'skills' ? (
-            <SkillsSelector
-              memberName={`${formData.firstName} ${formData.lastName}`}
-              existingSkills={member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
-              onSkillsChange={(skills) => {
-                setFormData(prev => ({ ...prev, skillsMatrix: skills }))
-                setHasUnsavedChanges(true)
-              }}
-            />
-          ) : null}
+          {member?.id ? (
+            <Card>
+              <CardContent className="pt-6">
+                {activeTab === 'skills' ? (
+                  <>
+                    <SkillsSelector
+                      memberName={`${formData.firstName} ${formData.lastName}`}
+                      existingSkills={member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
+                      onSkillsChange={(skills) => {
+                        setFormData(prev => ({ ...prev, skillsMatrix: skills }))
+                        setHasUnsavedChanges(true)
+                      }}
+                    />
+                    <div className="flex justify-end mt-6 pt-6 border-t">
+                      <Button onClick={handleSkillsSave} disabled={isLoading}>
+                        <Save className="w-4 h-4 mr-2" />
+                        Guardar Habilidades
+                      </Button>
+                    </div>
+                  </>
+                ) : null}
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="text-center py-12">
+                <Brain className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-medium mb-2">Primero guarde la información básica</h3>
+                <p className="text-muted-foreground">
+                  Las habilidades estarán disponibles después de crear el miembro
+                </p>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         {/* Availability Matrix Tab */}
