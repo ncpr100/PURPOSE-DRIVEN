@@ -450,7 +450,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </div>
 
               <div className="flex justify-end pt-4 border-t">
-                <Button onClick={handleSavePersonalInfo} disabled={isLoading}>
+                <Button onClick={handleSavePersonalInfo} disabled={isLoading} variant="default">
                   <Save className="w-4 h-4 mr-2" />
                   {member ? 'Guardar Información Personal' : 'Crear Miembro'}
                 </Button>
@@ -521,7 +521,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </div>
 
               <div className="flex justify-end pt-4 border-t">
-                <Button onClick={handleSaveAddress} disabled={isLoading || !member?.id}>
+                <Button onClick={handleSaveAddress} disabled={isLoading || !member?.id} variant="default">
                   <Save className="w-4 h-4 mr-2" />
                   Guardar Dirección
                 </Button>
@@ -614,7 +614,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </div>
 
               <div className="flex justify-end pt-4 border-t">
-                <Button onClick={handleSavePersonalDetails} disabled={isLoading || !member?.id}>
+                <Button onClick={handleSavePersonalDetails} disabled={isLoading || !member?.id} variant="default">
                   <Save className="w-4 h-4 mr-2" />
                   Guardar Detalles Personales
                 </Button>
@@ -689,7 +689,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </div>
 
               <div className="flex justify-end pt-4 border-t">
-                <Button onClick={handleSaveChurchInfo} disabled={isLoading || !member?.id}>
+                <Button onClick={handleSaveChurchInfo} disabled={isLoading || !member?.id} variant="default">
                   <Save className="w-4 h-4 mr-2" />
                   Guardar Información de Iglesia
                 </Button>
