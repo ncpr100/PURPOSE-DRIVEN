@@ -86,16 +86,10 @@ export function SkillsSelector({ memberName, existingSkills = [], onSkillsChange
     setIsMounted(true)
   }, [])
 
+  // Sync with parent's existing skills, but don't trigger onSkillsChange
   useEffect(() => {
     setSelectedSkills(existingSkills)
   }, [existingSkills])
-
-  useEffect(() => {
-    // Only call onSkillsChange after mount to avoid hydration errors
-    if (isMounted) {
-      onSkillsChange(selectedSkills)
-    }
-  }, [selectedSkills, isMounted, onSkillsChange])
 
   // Prevent server-side rendering to avoid hydration errors
   if (!isMounted) {
@@ -104,12 +98,16 @@ export function SkillsSelector({ memberName, existingSkills = [], onSkillsChange
 
   const addSkill = (skill: string) => {
     if (skill && !selectedSkills.includes(skill)) {
-      setSelectedSkills([...selectedSkills, skill])
+      const newSkills = [...selectedSkills, skill]
+      setSelectedSkills(newSkills)
+      onSkillsChange(newSkills) // Only call when user adds a skill
     }
   }
 
   const removeSkill = (skillToRemove: string) => {
-    setSelectedSkills(selectedSkills.filter(s => s !== skillToRemove))
+    const newSkills = selectedSkills.filter(s => s !== skillToRemove)
+    setSelectedSkills(newSkills)
+    onSkillsChange(newSkills) // Only call when user removes a skill
   }
 
   const handleAddCustomSkill = () => {
