@@ -109,12 +109,12 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
 
   const handleSpiritualAssessmentSave = (profile: any) => {
     toast.success('Evaluación espiritual guardada')
-    // Optionally update local state or trigger parent refresh
+    setHasUnsavedChanges(false)
   }
 
   const handleAvailabilityMatrixSave = (matrix: any) => {
     toast.success('Disponibilidad guardada')
-    // Optionally update local state or trigger parent refresh
+    setHasUnsavedChanges(false)
   }
 
   return (
