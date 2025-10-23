@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Member } from '@prisma/client'
@@ -124,26 +124,6 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!validateForm()) {
-      toast.error('Por favor corrija los errores en el formulario')
-      return
-    }
-
-    const memberData = {
-      ...formData,
-      birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
-      baptismDate: formData.baptismDate ? new Date(formData.baptismDate) : null,
-      membershipDate: formData.membershipDate ? new Date(formData.membershipDate) : null,
-    }
-
-    onSave(memberData)
-    setHasUnsavedChanges(false)
-    toast.success('Información básica guardada exitosamente')
-  }
-
   const handleSpiritualAssessmentSave = (profile: any) => {
     toast.success('Evaluación espiritual guardada')
     setHasUnsavedChanges(false)
@@ -176,6 +156,132 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
     } catch (error) {
       console.error('Error saving skills:', error)
       toast.error('Error al guardar habilidades')
+    }
+  }
+
+  // Individual save handlers for Basic Info sections
+  const handleSavePersonalInfo = async () => {
+    if (!validateForm()) {
+      toast.error('Por favor corrija los errores en el formulario')
+      return
+    }
+
+    const data = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+    }
+
+    try {
+      if (member?.id) {
+        const response = await fetch(`/api/members/${member.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+        if (response.ok) {
+          toast.success('Información personal guardada')
+          setHasUnsavedChanges(false)
+        } else {
+          toast.error('Error al guardar')
+        }
+      } else {
+        onSave({ ...formData, ...data })
+        toast.success('Miembro creado exitosamente')
+      }
+    } catch (error) {
+      toast.error('Error al guardar información personal')
+    }
+  }
+
+  const handleSaveAddress = async () => {
+    if (!member?.id) {
+      toast.error('Primero debe crear el miembro')
+      return
+    }
+
+    const data = {
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      zipCode: formData.zipCode,
+    }
+
+    try {
+      const response = await fetch(`/api/members/${member.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      if (response.ok) {
+        toast.success('Dirección guardada')
+        setHasUnsavedChanges(false)
+      } else {
+        toast.error('Error al guardar dirección')
+      }
+    } catch (error) {
+      toast.error('Error al guardar dirección')
+    }
+  }
+
+  const handleSavePersonalDetails = async () => {
+    if (!member?.id) {
+      toast.error('Primero debe crear el miembro')
+      return
+    }
+
+    const data = {
+      birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
+      gender: formData.gender,
+      maritalStatus: formData.maritalStatus,
+      occupation: formData.occupation,
+    }
+
+    try {
+      const response = await fetch(`/api/members/${member.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      if (response.ok) {
+        toast.success('Detalles personales guardados')
+        setHasUnsavedChanges(false)
+      } else {
+        toast.error('Error al guardar detalles')
+      }
+    } catch (error) {
+      toast.error('Error al guardar detalles personales')
+    }
+  }
+
+  const handleSaveChurchInfo = async () => {
+    if (!member?.id) {
+      toast.error('Primero debe crear el miembro')
+      return
+    }
+
+    const data = {
+      baptismDate: formData.baptismDate ? new Date(formData.baptismDate) : null,
+      membershipDate: formData.membershipDate ? new Date(formData.membershipDate) : null,
+      emergencyContact: formData.emergencyContact,
+      notes: formData.notes,
+    }
+
+    try {
+      const response = await fetch(`/api/members/${member.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      if (response.ok) {
+        toast.success('Información de iglesia guardada')
+        setHasUnsavedChanges(false)
+      } else {
+        toast.error('Error al guardar')
+      }
+    } catch (error) {
+      toast.error('Error al guardar información de iglesia')
     }
   }
 
@@ -231,224 +337,323 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         </TabsList>
 
         {/* Basic Information Tab */}
-        <TabsContent value="basic">
+        <TabsContent value="basic" className="space-y-6">
+          {/* Card 1: Personal Information */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <User className="h-5 w-5" />
-                Información Personal y Contacto
+                Información Personal
               </CardTitle>
+              <CardDescription>
+                Nombre, correo y teléfono del miembro
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Personal Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">Nombre *</Label>
-                    <Input
-                      id="firstName"
-                      value={formData.firstName}
-                      onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
-                    />
-                    {errors.firstName && (
-                      <p className="text-sm text-red-600">{errors.firstName}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Apellido *</Label>
-                    <Input
-                      id="lastName"
-                      value={formData.lastName}
-                      onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
-                    />
-                    {errors.lastName && (
-                      <p className="text-sm text-red-600">{errors.lastName}</p>
-                    )}
-                  </div>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">Nombre *</Label>
+                  <Input
+                    id="firstName"
+                    value={formData.firstName}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, firstName: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
+                  {errors.firstName && (
+                    <p className="text-sm text-red-600">{errors.firstName}</p>
+                  )}
                 </div>
 
-                {/* Contact Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    />
-                    {errors.email && (
-                      <p className="text-sm text-red-600">{errors.email}</p>
-                    )}
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Apellido *</Label>
+                  <Input
+                    id="lastName"
+                    value={formData.lastName}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, lastName: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
+                  {errors.lastName && (
+                    <p className="text-sm text-red-600">{errors.lastName}</p>
+                  )}
+                </div>
+              </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Teléfono</Label>
-                    <Input
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                    />
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, email: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-red-600">{errors.email}</p>
+                  )}
                 </div>
 
-                {/* Address Information */}
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Dirección</Label>
-                    <Input
-                      id="address"
-                      value={formData.address}
-                      onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Teléfono</Label>
+                  <Input
+                    id="phone"
+                    value={formData.phone}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, phone: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
+                </div>
+              </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="city">Ciudad</Label>
-                      <Input
-                        id="city"
-                        value={formData.city}
-                        onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
-                      />
-                    </div>
+              <div className="flex justify-end pt-4 border-t">
+                <Button onClick={handleSavePersonalInfo} disabled={isLoading}>
+                  <Save className="w-4 h-4 mr-2" />
+                  {member ? 'Guardar Información Personal' : 'Crear Miembro'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="state">Estado/Provincia</Label>
-                      <Input
-                        id="state"
-                        value={formData.state}
-                        onChange={(e) => setFormData(prev => ({ ...prev, state: e.target.value }))}
-                      />
-                    </div>
+          {/* Card 2: Address */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                🏠 Dirección
+              </CardTitle>
+              <CardDescription>
+                Ubicación residencial del miembro
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="address">Dirección</Label>
+                <Input
+                  id="address"
+                  value={formData.address}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, address: e.target.value }))
+                    setHasUnsavedChanges(true)
+                  }}
+                />
+              </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="zipCode">Código Postal</Label>
-                      <Input
-                        id="zipCode"
-                        value={formData.zipCode}
-                        onChange={(e) => setFormData(prev => ({ ...prev, zipCode: e.target.value }))}
-                      />
-                    </div>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="city">Ciudad</Label>
+                  <Input
+                    id="city"
+                    value={formData.city}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, city: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
                 </div>
 
-                {/* Personal Details */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="birthDate">Fecha de Nacimiento</Label>
-                    <Input
-                      id="birthDate"
-                      type="date"
-                      value={formData.birthDate}
-                      onChange={(e) => setFormData(prev => ({ ...prev, birthDate: e.target.value }))}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="gender">Género</Label>
-                    <Select value={formData.gender} onValueChange={(value) => setFormData(prev => ({ ...prev, gender: value }))}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccionar género" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="masculino">Masculino</SelectItem>
-                        <SelectItem value="femenino">Femenino</SelectItem>
-                        <SelectItem value="otro">Otro</SelectItem>
-                        <SelectItem value="no-especificar">Prefiero no especificar</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="state">Estado/Provincia</Label>
+                  <Input
+                    id="state"
+                    value={formData.state}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, state: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
                 </div>
 
-                {/* Church Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="baptismDate">Fecha de Bautismo</Label>
-                    <Input
-                      id="baptismDate"
-                      type="date"
-                      value={formData.baptismDate}
-                      onChange={(e) => setFormData(prev => ({ ...prev, baptismDate: e.target.value }))}
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="zipCode">Código Postal</Label>
+                  <Input
+                    id="zipCode"
+                    value={formData.zipCode}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, zipCode: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
+                </div>
+              </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="membershipDate">Fecha de Membresía</Label>
-                    <Input
-                      id="membershipDate"
-                      type="date"
-                      value={formData.membershipDate}
-                      onChange={(e) => setFormData(prev => ({ ...prev, membershipDate: e.target.value }))}
-                    />
-                  </div>
+              <div className="flex justify-end pt-4 border-t">
+                <Button onClick={handleSaveAddress} disabled={isLoading || !member?.id}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Guardar Dirección
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Card 3: Personal Details */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                👤 Detalles Personales
+              </CardTitle>
+              <CardDescription>
+                Fecha de nacimiento, género, estado civil y ocupación
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="birthDate">Fecha de Nacimiento</Label>
+                  <Input
+                    id="birthDate"
+                    type="date"
+                    value={formData.birthDate}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, birthDate: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
                 </div>
 
-                {/* Enhanced CRM Fields */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Información Adicional</h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="occupation">Ocupación</Label>
-                      <Input
-                        id="occupation"
-                        value={formData.occupation}
-                        onChange={(e) => setFormData(prev => ({ ...prev, occupation: e.target.value }))}
-                      />
-                    </div>
+                <div className="space-y-2">
+                  <Label htmlFor="gender">Género</Label>
+                  <Select 
+                    value={formData.gender} 
+                    onValueChange={(value) => {
+                      setFormData(prev => ({ ...prev, gender: value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar género" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="masculino">Masculino</SelectItem>
+                      <SelectItem value="femenino">Femenino</SelectItem>
+                      <SelectItem value="otro">Otro</SelectItem>
+                      <SelectItem value="no-especificar">Prefiero no especificar</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="maritalStatus">Estado Civil</Label>
-                      <Select value={formData.maritalStatus} onValueChange={(value) => setFormData(prev => ({ ...prev, maritalStatus: value }))}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleccionar estado civil" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="soltero">Soltero(a)</SelectItem>
-                          <SelectItem value="casado">Casado(a)</SelectItem>
-                          <SelectItem value="divorciado">Divorciado(a)</SelectItem>
-                          <SelectItem value="viudo">Viudo(a)</SelectItem>
-                          <SelectItem value="union-libre">Unión Libre</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="emergencyContact">Contacto de Emergencia</Label>
-                    <Input
-                      id="emergencyContact"
-                      placeholder="Nombre y teléfono de contacto de emergencia"
-                      value={formData.emergencyContact}
-                      onChange={(e) => setFormData(prev => ({ ...prev, emergencyContact: e.target.value }))}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="notes">Notas</Label>
-                    <Textarea
-                      id="notes"
-                      rows={3}
-                      value={formData.notes}
-                      onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                    />
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="maritalStatus">Estado Civil</Label>
+                  <Select 
+                    value={formData.maritalStatus} 
+                    onValueChange={(value) => {
+                      setFormData(prev => ({ ...prev, maritalStatus: value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar estado civil" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="soltero">Soltero(a)</SelectItem>
+                      <SelectItem value="casado">Casado(a)</SelectItem>
+                      <SelectItem value="divorciado">Divorciado(a)</SelectItem>
+                      <SelectItem value="viudo">Viudo(a)</SelectItem>
+                      <SelectItem value="union-libre">Unión Libre</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex justify-end gap-2 pt-6">
-                  <Button type="button" variant="outline" onClick={onCancel}>
-                    <X className="w-4 h-4 mr-2" />
-                    Cancelar
-                  </Button>
-                  <Button type="submit" disabled={isLoading}>
-                    <Save className="w-4 h-4 mr-2" />
-                    {isLoading ? 'Guardando...' : member ? 'Actualizar Miembro' : 'Crear Miembro'}
-                  </Button>
+                <div className="space-y-2">
+                  <Label htmlFor="occupation">Ocupación</Label>
+                  <Input
+                    id="occupation"
+                    value={formData.occupation}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, occupation: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
                 </div>
-              </form>
+              </div>
+
+              <div className="flex justify-end pt-4 border-t">
+                <Button onClick={handleSavePersonalDetails} disabled={isLoading || !member?.id}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Guardar Detalles Personales
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Card 4: Church Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                ⛪ Información de Iglesia
+              </CardTitle>
+              <CardDescription>
+                Fechas importantes, contacto de emergencia y notas
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="baptismDate">Fecha de Bautismo</Label>
+                  <Input
+                    id="baptismDate"
+                    type="date"
+                    value={formData.baptismDate}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, baptismDate: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="membershipDate">Fecha de Membresía</Label>
+                  <Input
+                    id="membershipDate"
+                    type="date"
+                    value={formData.membershipDate}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, membershipDate: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="emergencyContact">Contacto de Emergencia</Label>
+                <Input
+                  id="emergencyContact"
+                  placeholder="Nombre y teléfono de contacto de emergencia"
+                  value={formData.emergencyContact}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, emergencyContact: e.target.value }))
+                    setHasUnsavedChanges(true)
+                  }}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="notes">Notas</Label>
+                <Textarea
+                  id="notes"
+                  rows={3}
+                  value={formData.notes}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, notes: e.target.value }))
+                    setHasUnsavedChanges(true)
+                  }}
+                />
+              </div>
+
+              <div className="flex justify-end pt-4 border-t">
+                <Button onClick={handleSaveChurchInfo} disabled={isLoading || !member?.id}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Guardar Información de Iglesia
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

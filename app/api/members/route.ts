@@ -47,7 +47,9 @@ export async function GET() {
         baptismDate: true,
         ministryId: true,
         churchId: true,
-        notes: true
+        notes: true,
+        occupation: true,
+        skillsMatrix: true
       },
       orderBy: {
         createdAt: 'desc'
