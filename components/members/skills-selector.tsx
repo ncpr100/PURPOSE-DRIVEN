@@ -97,6 +97,11 @@ export function SkillsSelector({ memberName, existingSkills = [], onSkillsChange
     }
   }, [selectedSkills, isMounted, onSkillsChange])
 
+  // Prevent server-side rendering to avoid hydration errors
+  if (!isMounted) {
+    return <div className="p-4 text-center text-muted-foreground">Cargando...</div>
+  }
+
   const addSkill = (skill: string) => {
     if (skill && !selectedSkills.includes(skill)) {
       setSelectedSkills([...selectedSkills, skill])

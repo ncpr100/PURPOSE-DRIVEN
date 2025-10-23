@@ -66,6 +66,32 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
 
+  // Update form data when member prop changes
+  useEffect(() => {
+    if (member) {
+      setFormData({
+        firstName: member.firstName || '',
+        lastName: member.lastName || '',
+        email: member.email || '',
+        phone: member.phone || '',
+        address: member.address || '',
+        city: member.city || '',
+        state: member.state || '',
+        zipCode: member.zipCode || '',
+        birthDate: formatDateForInput(member.birthDate),
+        baptismDate: formatDateForInput(member.baptismDate),
+        membershipDate: formatDateForInput(member.membershipDate),
+        maritalStatus: member.maritalStatus || '',
+        gender: member.gender || '',
+        occupation: member.occupation || '',
+        notes: member.notes || '',
+        emergencyContact: member.emergencyContact || '',
+        transportationOwned: member.transportationOwned || false,
+        childcareAvailable: member.childcareAvailable || false,
+      })
+    }
+  }, [member])
+
   useEffect(() => {
     setHasUnsavedChanges(true)
   }, [formData])
