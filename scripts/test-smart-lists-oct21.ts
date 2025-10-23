@@ -34,13 +34,13 @@ async function testSmartLists() {
       },
       select: { id: true, firstName: true, lastName: true, birthDate: true }
     });
-    const birthdaysThisMonth = membersWithBirthdays.filter(m => {
+    const birthdaysThisMonth = membersWithBirthdays.filter((m: any) => {
       const month = new Date(m.birthDate).getMonth() + 1;
       return month === currentMonth;
     });
     console.log(`3️⃣  Cumpleaños en Octubre: ${birthdaysThisMonth.length}`);
     if (birthdaysThisMonth.length > 0 && birthdaysThisMonth.length <= 5) {
-      birthdaysThisMonth.forEach(m => {
+      birthdaysThisMonth.forEach((m: any) => {
         console.log(`   - ${m.firstName} ${m.lastName} (${new Date(m.birthDate).getDate()} de octubre)`);
       });
     }
@@ -63,7 +63,7 @@ async function testSmartLists() {
       },
       select: { id: true, firstName: true, lastName: true, membershipDate: true }
     });
-    const anniversariesThisMonth = membersWithAnniversaries.filter(m => {
+    const anniversariesThisMonth = membersWithAnniversaries.filter((m: any) => {
       const month = new Date(m.membershipDate).getMonth() + 1;
       return month === currentMonth;
     });
@@ -107,7 +107,7 @@ async function testSmartLists() {
     });
     console.log(`8️⃣  Son Voluntarios: ${activeVolunteers.length}`);
     if (activeVolunteers.length > 0 && activeVolunteers.length <= 10) {
-      activeVolunteers.forEach(m => {
+      activeVolunteers.forEach((m: any) => {
         console.log(`   - ${m.firstName} ${m.lastName}`);
       });
     }
@@ -139,8 +139,8 @@ async function testSmartLists() {
     console.log('✅ TEST #2.4: SMART LISTS - VALIDACIÓN COMPLETA');
     
   } catch (error) {
-    console.error('❌ Error durante la validación:', error.message);
-    console.error(error.stack);
+    console.error('❌ Error durante la validación:', (error as Error).message);
+    console.error((error as Error).stack);
   } finally {
     await prisma.$disconnect();
   }

@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Member } from '@prisma/client'
-import { Save, X, User, Heart, Calendar, Brain, Home, UserCircle, Church } from 'lucide-react'
+import { Save, X, User, Heart, Calendar, Brain, Home, UserCircle, Church, ArrowLeft } from 'lucide-react'
 import { MemberSpiritualAssessment } from './member-spiritual-assessment'
 import { AvailabilityMatrix } from './availability-matrix'
 import { SkillsSelector } from './skills-selector'
@@ -187,10 +187,35 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           toast.error('Error al guardar')
         }
       } else {
-        onSave({ ...formData, ...data })
+        // Creating new member - only send non-empty values
+        const cleanData: any = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+        }
+        
+        // Add optional fields only if they have values
+        if (formData.email) cleanData.email = formData.email
+        if (formData.phone) cleanData.phone = formData.phone
+        if (formData.address) cleanData.address = formData.address
+        if (formData.city) cleanData.city = formData.city
+        if (formData.state) cleanData.state = formData.state
+        if (formData.zipCode) cleanData.zipCode = formData.zipCode
+        if (formData.gender) cleanData.gender = formData.gender
+        if (formData.maritalStatus) cleanData.maritalStatus = formData.maritalStatus
+        if (formData.occupation) cleanData.occupation = formData.occupation
+        if (formData.notes) cleanData.notes = formData.notes
+        if (formData.emergencyContact) cleanData.emergencyContact = formData.emergencyContact
+        
+        // Add dates only if they have valid values
+        if (formData.birthDate) cleanData.birthDate = new Date(formData.birthDate)
+        if (formData.baptismDate) cleanData.baptismDate = new Date(formData.baptismDate)
+        if (formData.membershipDate) cleanData.membershipDate = new Date(formData.membershipDate)
+        
+        onSave(cleanData)
         toast.success('Miembro creado exitosamente')
       }
     } catch (error) {
+      console.error('Error saving personal info:', error)
       toast.error('Error al guardar información personal')
     }
   }
@@ -287,16 +312,28 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header with Back Button */}
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <User className="h-6 w-6" />
-            {member ? 'Información de Miembros' : 'Nuevo Miembro'}
-          </h2>
-          <p className="text-muted-foreground">
-            Complete la información del miembro con evaluación espiritual y disponibilidad
-          </p>
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onCancel}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Volver a Miembros
+          </Button>
+          <div className="border-l h-8" />
+          <div>
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <User className="h-6 w-6" />
+              {member ? 'Información de Miembros' : 'Nuevo Miembro'}
+            </h2>
+            <p className="text-muted-foreground">
+              Complete la información del miembro con evaluación espiritual y disponibilidad
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {hasUnsavedChanges && (
