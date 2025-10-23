@@ -81,10 +81,15 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
   const handleOpenProfileDialog = (volunteer: Volunteer) => {
     console.log('👤 Opening profile dialog for:', volunteer.firstName, volunteer.lastName)
+    const memberId = volunteer.member?.id
+    if (!memberId) {
+      toast.error('Este voluntario no tiene un miembro vinculado')
+      return
+    }
     setSelectedVolunteer(volunteer)
     setIsProfileDialogOpen(true)
-    fetchMemberSpiritualProfile(volunteer.id)
-    fetchMemberAvailabilityMatrix(volunteer.id)
+    fetchMemberSpiritualProfile(memberId)
+    fetchMemberAvailabilityMatrix(memberId)
   }
 
   // Form states
@@ -586,14 +591,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                           onClick={(e) => {
                             e.preventDefault()
                             console.log('Ver Perfil clicked for:', volunteer.firstName, volunteer.lastName)
-                            try {
-                              setSelectedVolunteer(volunteer)
-                              setIsProfileDialogOpen(true)
-                              fetchMemberSpiritualProfile(volunteer.id)
-                            } catch (error) {
-                              console.error('Error opening profile dialog:', error)
-                              toast.error('Error al abrir perfil del voluntario')
-                            }
+                            handleOpenProfileDialog(volunteer)
                           }}
                         >
                           <Eye className="h-4 w-4 mr-1" />
