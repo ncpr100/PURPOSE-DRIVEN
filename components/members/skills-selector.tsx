@@ -71,14 +71,19 @@ export function SkillsSelector({ memberName, existingSkills = [], onSkillsChange
   const [selectedSkills, setSelectedSkills] = useState<string[]>(existingSkills)
   const [customSkill, setCustomSkill] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
     setSelectedSkills(existingSkills)
+    setIsInitialized(true)
   }, [existingSkills])
 
   useEffect(() => {
-    onSkillsChange(selectedSkills)
-  }, [selectedSkills, onSkillsChange])
+    // Only call onSkillsChange after initial mount to avoid hydration errors
+    if (isInitialized) {
+      onSkillsChange(selectedSkills)
+    }
+  }, [selectedSkills])
 
   const addSkill = (skill: string) => {
     if (skill && !selectedSkills.includes(skill)) {
