@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Member } from '@prisma/client'
-import { Save, X, User, Heart, Calendar, Brain } from 'lucide-react'
+import { Save, X, User, Heart, Calendar, Brain, Home, UserCircle, Church } from 'lucide-react'
 import { MemberSpiritualAssessment } from './member-spiritual-assessment'
 import { AvailabilityMatrix } from './availability-matrix'
 import { SkillsSelector } from './skills-selector'
@@ -292,7 +292,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <User className="h-6 w-6" />
-            {member ? 'Editar Miembro' : 'Nuevo Miembro'}
+            {member ? 'Información de Miembros' : 'Nuevo Miembro'}
           </h2>
           <p className="text-muted-foreground">
             Complete la información del miembro con evaluación espiritual y disponibilidad
@@ -425,7 +425,8 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                🏠 Dirección
+                <Home className="h-5 w-5" />
+                Dirección
               </CardTitle>
               <CardDescription>
                 Ubicación residencial del miembro
@@ -495,7 +496,8 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                👤 Detalles Personales
+                <UserCircle className="h-5 w-5" />
+                Detalles Personales
               </CardTitle>
               <CardDescription>
                 Fecha de nacimiento, género, estado civil y ocupación
@@ -587,7 +589,8 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                ⛪ Información de Iglesia
+                <Church className="h-5 w-5" />
+                Información de Iglesia
               </CardTitle>
               <CardDescription>
                 Fechas importantes, contacto de emergencia y notas
