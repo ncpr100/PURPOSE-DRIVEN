@@ -875,8 +875,12 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           </CardContent>
         </Card>
       )}
+      </TabsContent>
 
-      {/* Assignment Dialog */}
+
+      </Tabs>
+
+      {/* Assignment Dialog - Moved outside Tabs so it works from all tabs */}
       <Dialog open={isAssignDialogOpen} onOpenChange={setIsAssignDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -1320,10 +1324,6 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           )}
         </DialogContent>
       </Dialog>
-        </TabsContent>
-
-
-      </Tabs>
     </div>
   )
 }
