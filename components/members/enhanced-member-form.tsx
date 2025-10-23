@@ -441,14 +441,16 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
 
         {/* Skills Tab */}
         <TabsContent value="skills">
-          <SkillsSelector
-            memberName={`${formData.firstName} ${formData.lastName}`}
-            existingSkills={member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
-            onSkillsChange={(skills) => {
-              setFormData(prev => ({ ...prev, skillsMatrix: skills }))
-              setHasUnsavedChanges(true)
-            }}
-          />
+          {activeTab === 'skills' ? (
+            <SkillsSelector
+              memberName={`${formData.firstName} ${formData.lastName}`}
+              existingSkills={member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
+              onSkillsChange={(skills) => {
+                setFormData(prev => ({ ...prev, skillsMatrix: skills }))
+                setHasUnsavedChanges(true)
+              }}
+            />
+          ) : null}
         </TabsContent>
 
         {/* Availability Matrix Tab */}
