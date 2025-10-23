@@ -79,19 +79,23 @@ export function SkillsSelector({ memberName, existingSkills = [], onSkillsChange
   const [selectedSkills, setSelectedSkills] = useState<string[]>(existingSkills)
   const [customSkill, setCustomSkill] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [isInitialized, setIsInitialized] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Prevent hydration mismatch by only rendering after client-side mount
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     setSelectedSkills(existingSkills)
-    setIsInitialized(true)
   }, [existingSkills])
 
   useEffect(() => {
-    // Only call onSkillsChange after initial mount to avoid hydration errors
-    if (isInitialized) {
+    // Only call onSkillsChange after mount to avoid hydration errors
+    if (isMounted) {
       onSkillsChange(selectedSkills)
     }
-  }, [selectedSkills])
+  }, [selectedSkills, isMounted, onSkillsChange])
 
   const addSkill = (skill: string) => {
     if (skill && !selectedSkills.includes(skill)) {
@@ -112,6 +116,23 @@ export function SkillsSelector({ memberName, existingSkills = [], onSkillsChange
 
   const handleSelectSkill = (skill: string) => {
     addSkill(skill)
+  }
+
+  // Prevent hydration mismatch by not rendering until client-side mount
+  if (!isMounted) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Habilidades de {memberName}</CardTitle>
+          <CardDescription>
+            Selecciona habilidades de las categorías o agrega habilidades personalizadas
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="text-muted-foreground">Cargando...</div>
+        </CardContent>
+      </Card>
+    )
   }
 
   return (
