@@ -14,7 +14,8 @@ import { Member } from '@prisma/client'
 import { Save, X, User, Heart, Calendar, Brain } from 'lucide-react'
 import { MemberSpiritualAssessment } from './member-spiritual-assessment'
 import { AvailabilityMatrix } from './availability-matrix'
-import { toast } from 'sonner'
+import { SkillsSelector } from './skills-selector'
+import toast from 'react-hot-toast'
 
 interface EnhancedMemberFormProps {
   member?: Member | null
@@ -146,12 +147,18 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="basic">Información Básica</TabsTrigger>
           <TabsTrigger value="spiritual" className="relative">
             Evaluación Espiritual
             {member?.spiritualGiftsStructured && (
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></div>
+            )}
+          </TabsTrigger>
+          <TabsTrigger value="skills" className="relative">
+            Habilidades
+            {member?.skillsMatrix && Array.isArray(member.skillsMatrix) && (member.skillsMatrix as any[]).length > 0 && (
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></div>
             )}
           </TabsTrigger>
           <TabsTrigger value="availability">
@@ -404,6 +411,18 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </CardContent>
             </Card>
           )}
+        </TabsContent>
+
+        {/* Skills Tab */}
+        <TabsContent value="skills">
+          <SkillsSelector
+            memberName={`${formData.firstName} ${formData.lastName}`}
+            existingSkills={Array.isArray(member?.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
+            onSkillsChange={(skills) => {
+              setFormData(prev => ({ ...prev, skillsMatrix: skills }))
+              setHasUnsavedChanges(true)
+            }}
+          />
         </TabsContent>
 
         {/* Availability Matrix Tab */}

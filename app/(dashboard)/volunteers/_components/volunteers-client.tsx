@@ -1107,8 +1107,8 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 <div>
                   <Label className="text-sm font-medium text-muted-foreground">Habilidades</Label>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    {selectedVolunteer.skills ? 
-                      JSON.parse(selectedVolunteer.skills).map((skill: string, index: number) => (
+                    {selectedVolunteer.member && Array.isArray((selectedVolunteer.member as any).skillsMatrix) && ((selectedVolunteer.member as any).skillsMatrix as string[]).length > 0 ? 
+                      ((selectedVolunteer.member as any).skillsMatrix as string[]).map((skill: string, index: number) => (
                         <Badge key={index} variant="secondary" className="text-xs">
                           {skill}
                         </Badge>
