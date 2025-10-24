@@ -871,56 +871,68 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="emergencyContactName">Nombre del Contacto de Emergencia</Label>
-                <Input
-                  id="emergencyContactName"
-                  placeholder="Nombre completo del contacto"
-                  value={formData.emergencyContactName}
-                  onChange={(e) => {
-                    setFormData(prev => ({ ...prev, emergencyContactName: e.target.value }))
-                    setHasUnsavedChanges(true)
-                  }}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="emergencyContactName">Nombre del Contacto de Emergencia</Label>
+                  <Input
+                    id="emergencyContactName"
+                    placeholder="Nombre completo del contacto"
+                    value={formData.emergencyContactName}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, emergencyContactName: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                    autoComplete="off"
+                    className="bg-background"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="emergencyContactPhone">Teléfono del Contacto de Emergencia</Label>
+                  <Input
+                    id="emergencyContactPhone"
+                    placeholder="Número de teléfono"
+                    value={formData.emergencyContactPhone}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, emergencyContactPhone: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                    autoComplete="off"
+                    className="bg-background"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="emergencyContactPhone">Teléfono del Contacto de Emergencia</Label>
-                <Input
-                  id="emergencyContactPhone"
-                  placeholder="Número de teléfono"
-                  value={formData.emergencyContactPhone}
-                  onChange={(e) => {
-                    setFormData(prev => ({ ...prev, emergencyContactPhone: e.target.value }))
-                    setHasUnsavedChanges(true)
-                  }}
-                />
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="emergencyContactAddress">Dirección del Contacto de Emergencia</Label>
+                  <Input
+                    id="emergencyContactAddress"
+                    placeholder="Dirección completa"
+                    value={formData.emergencyContactAddress}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, emergencyContactAddress: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                    autoComplete="off"
+                    className="bg-background"
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="emergencyContactAddress">Dirección del Contacto de Emergencia</Label>
-                <Input
-                  id="emergencyContactAddress"
-                  placeholder="Dirección completa"
-                  value={formData.emergencyContactAddress}
-                  onChange={(e) => {
-                    setFormData(prev => ({ ...prev, emergencyContactAddress: e.target.value }))
-                    setHasUnsavedChanges(true)
-                  }}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="emergencyContactRelationship">Relación con el Miembro</Label>
-                <Input
-                  id="emergencyContactRelationship"
-                  placeholder="Ej: Esposo/a, Padre/Madre, Hermano/a, Amigo/a"
-                  value={formData.emergencyContactRelationship}
-                  onChange={(e) => {
-                    setFormData(prev => ({ ...prev, emergencyContactRelationship: e.target.value }))
-                    setHasUnsavedChanges(true)
-                  }}
-                />
+                <div className="space-y-2">
+                  <Label htmlFor="emergencyContactRelationship">Relación con el Miembro</Label>
+                  <Input
+                    id="emergencyContactRelationship"
+                    placeholder="Ej: Esposo/a, Padre/Madre, Hermano/a, Amigo/a"
+                    value={formData.emergencyContactRelationship}
+                    onChange={(e) => {
+                      setFormData(prev => ({ ...prev, emergencyContactRelationship: e.target.value }))
+                      setHasUnsavedChanges(true)
+                    }}
+                    autoComplete="off"
+                    className="bg-background"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
