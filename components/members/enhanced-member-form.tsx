@@ -17,6 +17,33 @@ import { AvailabilityMatrix } from './availability-matrix'
 import { SkillsSelector } from './skills-selector'
 import toast from 'react-hot-toast'
 
+// Helper function to parse emergency contact field into structured data
+function parseEmergencyContactField(emergencyContact: string | null | undefined, field: 'name' | 'phone' | 'address' | 'relationship'): string {
+  if (!emergencyContact) return ''
+  
+  // Try to parse structured format: "Name | Phone | Address | Relationship"
+  const parts = emergencyContact.split(' | ')
+  
+  switch (field) {
+    case 'name':
+      return parts[0] || ''
+    case 'phone':
+      return parts[1] || ''
+    case 'address':
+      return parts[2] || ''
+    case 'relationship':
+      return parts[3] || ''
+    default:
+      return ''
+  }
+}
+
+// Helper function to combine emergency contact fields into single field
+function combineEmergencyContactFields(name: string, phone: string, address: string, relationship: string): string {
+  const parts = [name, phone, address, relationship].filter(part => part.trim() !== '')
+  return parts.join(' | ')
+}
+
 interface EnhancedMemberFormProps {
   member?: Member | null
   onSave: (memberData: any) => void
@@ -57,8 +84,11 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
     gender: member?.gender || '',
     occupation: member?.occupation || '',
     notes: member?.notes || '',
-    // Enhanced CRM fields
-    emergencyContact: member?.emergencyContact || '',
+    // Enhanced CRM fields - Emergency Contact Details (parsed from single field)
+    emergencyContactName: parseEmergencyContactField(member?.emergencyContact, 'name'),
+    emergencyContactAddress: parseEmergencyContactField(member?.emergencyContact, 'address'),
+    emergencyContactPhone: parseEmergencyContactField(member?.emergencyContact, 'phone'),
+    emergencyContactRelationship: parseEmergencyContactField(member?.emergencyContact, 'relationship'),
     transportationOwned: member?.transportationOwned || false,
     childcareAvailable: member?.childcareAvailable || false,
     skillsMatrix: member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : [],
@@ -87,7 +117,10 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         gender: member.gender || '',
         occupation: member.occupation || '',
         notes: member.notes || '',
-        emergencyContact: member.emergencyContact || '',
+        emergencyContactName: parseEmergencyContactField(member.emergencyContact, 'name'),
+        emergencyContactAddress: parseEmergencyContactField(member.emergencyContact, 'address'),
+        emergencyContactPhone: parseEmergencyContactField(member.emergencyContact, 'phone'),
+        emergencyContactRelationship: parseEmergencyContactField(member.emergencyContact, 'relationship'),
         transportationOwned: member.transportationOwned || false,
         childcareAvailable: member.childcareAvailable || false,
         skillsMatrix: member.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : [],
@@ -207,7 +240,15 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         if (formData.maritalStatus) cleanData.maritalStatus = formData.maritalStatus
         if (formData.occupation) cleanData.occupation = formData.occupation
         if (formData.notes) cleanData.notes = formData.notes
-        if (formData.emergencyContact) cleanData.emergencyContact = formData.emergencyContact
+        
+        // Combine emergency contact fields into single field
+        const combinedEmergencyContact = combineEmergencyContactFields(
+          formData.emergencyContactName,
+          formData.emergencyContactPhone,
+          formData.emergencyContactAddress,
+          formData.emergencyContactRelationship
+        )
+        if (combinedEmergencyContact) cleanData.emergencyContact = combinedEmergencyContact
         
         // Add dates only if they have valid values
         if (formData.birthDate) cleanData.birthDate = new Date(formData.birthDate)
@@ -311,17 +352,24 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
       return
     }
 
+    const combinedEmergencyContact = combineEmergencyContactFields(
+      formData.emergencyContactName,
+      formData.emergencyContactPhone,
+      formData.emergencyContactAddress,
+      formData.emergencyContactRelationship
+    )
+
     console.log('[handleSaveChurchInfo] Saving to member ID:', member.id, 'Data:', {
       baptismDate: formData.baptismDate,
       membershipDate: formData.membershipDate,
-      emergencyContact: formData.emergencyContact,
+      emergencyContact: combinedEmergencyContact,
       notes: formData.notes
     })
 
     const data = {
       baptismDate: formData.baptismDate ? new Date(formData.baptismDate) : null,
       membershipDate: formData.membershipDate ? new Date(formData.membershipDate) : null,
-      emergencyContact: formData.emergencyContact,
+      emergencyContact: combinedEmergencyContact,
       notes: formData.notes,
     }
 
@@ -435,7 +483,12 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
             body: JSON.stringify({
               baptismDate: formData.baptismDate ? new Date(formData.baptismDate) : null,
               membershipDate: formData.membershipDate ? new Date(formData.membershipDate) : null,
-              emergencyContact: formData.emergencyContact,
+              emergencyContact: combineEmergencyContactFields(
+                formData.emergencyContactName,
+                formData.emergencyContactPhone,
+                formData.emergencyContactAddress,
+                formData.emergencyContactRelationship
+              ),
               notes: formData.notes,
             })
           })
@@ -819,13 +872,52 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="emergencyContact">Contacto de Emergencia</Label>
+                <Label htmlFor="emergencyContactName">Nombre del Contacto de Emergencia</Label>
                 <Input
-                  id="emergencyContact"
-                  placeholder="Nombre y teléfono de contacto de emergencia"
-                  value={formData.emergencyContact}
+                  id="emergencyContactName"
+                  placeholder="Nombre completo del contacto"
+                  value={formData.emergencyContactName}
                   onChange={(e) => {
-                    setFormData(prev => ({ ...prev, emergencyContact: e.target.value }))
+                    setFormData(prev => ({ ...prev, emergencyContactName: e.target.value }))
+                    setHasUnsavedChanges(true)
+                  }}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="emergencyContactPhone">Teléfono del Contacto de Emergencia</Label>
+                <Input
+                  id="emergencyContactPhone"
+                  placeholder="Número de teléfono"
+                  value={formData.emergencyContactPhone}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, emergencyContactPhone: e.target.value }))
+                    setHasUnsavedChanges(true)
+                  }}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="emergencyContactAddress">Dirección del Contacto de Emergencia</Label>
+                <Input
+                  id="emergencyContactAddress"
+                  placeholder="Dirección completa"
+                  value={formData.emergencyContactAddress}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, emergencyContactAddress: e.target.value }))
+                    setHasUnsavedChanges(true)
+                  }}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="emergencyContactRelationship">Relación con el Miembro</Label>
+                <Input
+                  id="emergencyContactRelationship"
+                  placeholder="Ej: Esposo/a, Padre/Madre, Hermano/a, Amigo/a"
+                  value={formData.emergencyContactRelationship}
+                  onChange={(e) => {
+                    setFormData(prev => ({ ...prev, emergencyContactRelationship: e.target.value }))
                     setHasUnsavedChanges(true)
                   }}
                 />
