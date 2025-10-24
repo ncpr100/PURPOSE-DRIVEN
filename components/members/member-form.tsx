@@ -102,7 +102,7 @@ export function MemberForm({ member, onSave, onCancel, isLoading }: MemberFormPr
     <Card>
       <CardHeader>
         <CardTitle>
-          {member ? 'Editar Miembro' : 'Nuevo Miembro'}
+          {member ? 'Información del Miembro' : 'Nuevo Miembro'}
         </CardTitle>
       </CardHeader>
       <CardContent>
