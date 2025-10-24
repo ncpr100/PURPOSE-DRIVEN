@@ -16,7 +16,7 @@ export const volunteerCreateSchema = z.object({
     .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/, 'Apellido contiene caracteres inválidos'),
   
   email: z.string()
-    .email('Email inválido')
+    .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Email inválido')
     .max(255, 'Email demasiado largo')
     .optional()
     .or(z.literal('')),
