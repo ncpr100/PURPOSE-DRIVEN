@@ -70,6 +70,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
   // Update form data when member prop changes
   useEffect(() => {
     if (member) {
+      console.log('[EnhancedMemberForm] member prop updated:', { id: member.id, name: `${member.firstName} ${member.lastName}` })
       setFormData({
         firstName: member.firstName || '',
         lastName: member.lastName || '',
@@ -91,6 +92,8 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         childcareAvailable: member.childcareAvailable || false,
         skillsMatrix: member.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : [],
       })
+    } else {
+      console.log('[EnhancedMemberForm] member prop is null - new member mode')
     }
   }, [member])
 
@@ -211,8 +214,10 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         if (formData.baptismDate) cleanData.baptismDate = new Date(formData.baptismDate)
         if (formData.membershipDate) cleanData.membershipDate = new Date(formData.membershipDate)
         
-        onSave(cleanData)
-        toast.success('Miembro creado exitosamente')
+        // CRITICAL: Await onSave so parent updates editingMember state before continuing
+        await onSave(cleanData)
+        toast.success('Miembro creado exitosamente. Puede agregar dirección y detalles.')
+        // Note: Cards 2-4 buttons will enable once member prop updates with new ID
       }
     } catch (error) {
       console.error('Error saving personal info:', error)
@@ -593,6 +598,8 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
                       setFormData(prev => ({ ...prev, city: e.target.value }))
                       setHasUnsavedChanges(true)
                     }}
+                    autoComplete="off"
+                    className="bg-background"
                   />
                 </div>
 
@@ -605,6 +612,8 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
                       setFormData(prev => ({ ...prev, state: e.target.value }))
                       setHasUnsavedChanges(true)
                     }}
+                    autoComplete="off"
+                    className="bg-background"
                   />
                 </div>
 
@@ -622,9 +631,18 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </div>
 
               <div className="flex justify-end pt-4 border-t">
-                <Button onClick={handleSaveAddress} disabled={isLoading || !member?.id} variant="default">
+                <Button 
+                  onClick={() => {
+                    console.log('[Guardar Dirección] Clicked. member.id:', member?.id, 'isLoading:', isLoading)
+                    handleSaveAddress()
+                  }} 
+                  disabled={isLoading || !member?.id} 
+                  variant="default"
+                  title={!member?.id ? 'Primero debe crear el miembro' : 'Guardar dirección'}
+                >
                   <Save className="w-4 h-4 mr-2" />
                   Guardar Dirección
+                  {!member?.id && <span className="ml-2 text-xs">(esperando ID)</span>}
                 </Button>
               </div>
             </CardContent>
