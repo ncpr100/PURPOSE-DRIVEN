@@ -207,11 +207,28 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         ministryId: ministryId === 'no-ministry' ? 'no-ministry' : ministryId,
       }
 
+      // Remove phone if empty to avoid validation issues
+      if (!volunteerData.phone || volunteerData.phone === '') {
+        delete (volunteerData as any).phone
+      }
+
+      // Remove email if empty to avoid validation issues  
+      if (!volunteerData.email || volunteerData.email === '') {
+        delete (volunteerData as any).email
+      }
+
       // Fix email format if it has issues
       if (volunteerData.email && volunteerData.email.includes('.@')) {
         volunteerData.email = volunteerData.email.replace('.@', '@')
         console.log('🔧 [DEBUG] Fixed email format:', volunteerData.email)
       }
+
+      // Test validation locally before sending to API
+      console.log('🔍 [DEBUG] Testing field validations:')
+      console.log('🔍 [DEBUG] firstName regex test:', /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/.test(volunteerData.firstName))
+      console.log('🔍 [DEBUG] lastName regex test:', /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/.test(volunteerData.lastName))
+      console.log('🔍 [DEBUG] email format test:', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(volunteerData.email))
+      console.log('🔍 [DEBUG] phone format test:', /^\+?[\d\s\-()]+$/.test(volunteerData.phone))
 
       console.log('🚀 [DEBUG] Creating volunteer with data:', volunteerData)
       console.log('🚀 [DEBUG] Raw member data for comparison:', {
