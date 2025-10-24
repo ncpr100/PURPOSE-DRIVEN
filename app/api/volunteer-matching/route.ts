@@ -240,7 +240,15 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const ministryId = searchParams.get('ministryId')
+    const memberId = searchParams.get('memberId') // 🔍 Support for fetching recommendations for specific member
     const status = searchParams.get('status') || 'PENDING'
+
+    console.log('🔍 [DEBUG] Volunteer-matching GET request params:', {
+      ministryId,
+      memberId,
+      status,
+      churchId: session.user.churchId
+    })
 
     const where: any = {
       member: { churchId: session.user.churchId },
@@ -251,6 +259,14 @@ export async function GET(request: NextRequest) {
     if (ministryId) {
       where.ministryId = ministryId
     }
+
+    // 🎯 Add support for fetching recommendations for a specific member (for crown badge display)
+    if (memberId) {
+      where.memberId = memberId
+      console.log('🔍 [DEBUG] Filtering by memberId:', memberId)
+    }
+
+    console.log('🔍 [DEBUG] Final where clause:', where)
 
     const recommendations = await prisma.volunteerRecommendation.findMany({
       where,
@@ -281,6 +297,9 @@ export async function GET(request: NextRequest) {
         { createdAt: 'desc' }
       ]
     })
+
+    console.log('🔍 [DEBUG] Found recommendations:', recommendations.length)
+    console.log('🔍 [DEBUG] Recommendations data:', recommendations)
 
     return NextResponse.json({ recommendations })
   } catch (error) {

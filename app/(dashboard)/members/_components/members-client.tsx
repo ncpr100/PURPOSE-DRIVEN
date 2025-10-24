@@ -168,14 +168,23 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
     
     // Fetch volunteer recommendations for this member
     try {
+      console.log('🔍 [DEBUG] Fetching recommendations for memberId:', member.id)
       const response = await fetch(`/api/volunteer-matching?memberId=${member.id}`)
+      console.log('🔍 [DEBUG] Recommendations API response status:', response.status)
+      
       if (response.ok) {
         const data = await response.json()
+        console.log('🔍 [DEBUG] Recommendations API response data:', data)
         setVolunteerRecommendations(data.recommendations || [])
-        console.log('🎯 [DEBUG] Volunteer recommendations:', data.recommendations)
+        console.log('🎯 [DEBUG] Volunteer recommendations set:', data.recommendations)
+        console.log('🎯 [DEBUG] Recommendations length:', (data.recommendations || []).length)
+      } else {
+        console.error('❌ [DEBUG] Recommendations API failed with status:', response.status)
+        const errorText = await response.text()
+        console.error('❌ [DEBUG] Error response:', errorText)
       }
     } catch (error) {
-      console.error('Error fetching volunteer recommendations:', error)
+      console.error('❌ [DEBUG] Error fetching volunteer recommendations:', error)
     }
     
     setIsVolunteerRecruitOpen(true)
