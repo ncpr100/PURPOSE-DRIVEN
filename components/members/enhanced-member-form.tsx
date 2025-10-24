@@ -302,7 +302,10 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
       return
     }
 
-    console.log('[handleSavePersonalDetails] Saving to member ID:', member.id, 'Data:', {
+    console.log('[handleSavePersonalDetails] Starting save process...')
+    console.log('[handleSavePersonalDetails] Member ID:', member.id)
+    console.log('[handleSavePersonalDetails] Member name:', member.firstName, member.lastName)
+    console.log('[handleSavePersonalDetails] Form data to save:', {
       birthDate: formData.birthDate,
       gender: formData.gender,
       maritalStatus: formData.maritalStatus,
@@ -315,6 +318,8 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
       maritalStatus: formData.maritalStatus,
       occupation: formData.occupation,
     }
+
+    console.log('[handleSavePersonalDetails] Processed data for API:', data)
 
     try {
       const response = await fetch(`/api/members/${member.id}`, {
@@ -405,6 +410,10 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
 
   // Global "Guardar y Cerrar" handler - saves ALL data and closes dialog
   const handleSaveAndClose = async () => {
+    console.log('[handleSaveAndClose] Called with member:', member?.id, member?.firstName, member?.lastName)
+    console.log('[handleSaveAndClose] hasUnsavedChanges:', hasUnsavedChanges)
+    console.log('[handleSaveAndClose] activeTab:', activeTab)
+    
     // If no member created yet, create it first
     if (!member?.id) {
       const personalData: Record<string, any> = {}
@@ -462,6 +471,13 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         )
         
         // Card 3: Personal Details
+        console.log('[handleSaveAndClose] Adding Card 3 save to promises with data:', {
+          birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
+          gender: formData.gender,
+          maritalStatus: formData.maritalStatus,
+          occupation: formData.occupation,
+        })
+        
         promises.push(
           fetch(`/api/members/${member.id}`, {
             method: 'PUT',
@@ -809,8 +825,10 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
                     id="occupation"
                     value={formData.occupation}
                     onChange={(e) => {
+                      console.log('[Card3] Occupation changed from:', formData.occupation, 'to:', e.target.value)
                       setFormData(prev => ({ ...prev, occupation: e.target.value }))
                       setHasUnsavedChanges(true)
+                      console.log('[Card3] hasUnsavedChanges set to true')
                     }}
                   />
                 </div>
