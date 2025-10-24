@@ -161,7 +161,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
   // Handle volunteer recruitment for a member
   const handleVolunteerRecruitment = async (member: any) => {
+    console.log('🎯 [DEBUG] handleVolunteerRecruitment called with member:', member)
     setSelectedMemberForVolunteer(member)
+    console.log('🎯 [DEBUG] selectedMemberForVolunteer set to:', member)
     
     // Fetch volunteer recommendations for this member
     try {
@@ -169,17 +171,25 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       if (response.ok) {
         const data = await response.json()
         setVolunteerRecommendations(data.recommendations || [])
+        console.log('🎯 [DEBUG] Volunteer recommendations:', data.recommendations)
       }
     } catch (error) {
       console.error('Error fetching volunteer recommendations:', error)
     }
     
     setIsVolunteerRecruitOpen(true)
+    console.log('🎯 [DEBUG] Volunteer recruitment dialog opened')
   }
 
   // Handle creating volunteer from member
   const handleCreateVolunteerFromMember = async (ministryId: string) => {
-    if (!selectedMemberForVolunteer) return
+    console.log('🔥 [DEBUG] handleCreateVolunteerFromMember called with ministryId:', ministryId)
+    console.log('🔥 [DEBUG] selectedMemberForVolunteer:', selectedMemberForVolunteer)
+    
+    if (!selectedMemberForVolunteer) {
+      console.log('❌ [DEBUG] No selected member for volunteer!')
+      return
+    }
 
     try {
       const volunteerData = {
@@ -197,7 +207,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         ministryId: ministryId === 'no-ministry' ? 'no-ministry' : ministryId,
       }
 
-      console.log('🚀 Creating volunteer with data:', volunteerData)
+      console.log('🚀 [DEBUG] Creating volunteer with data:', volunteerData)
 
       const response = await fetch('/api/volunteers', {
         method: 'POST',
@@ -207,18 +217,22 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         body: JSON.stringify(volunteerData),
       })
 
+      console.log('📡 [DEBUG] API response status:', response.status)
+      console.log('📡 [DEBUG] API response ok:', response.ok)
+
       if (response.ok) {
+        console.log('✅ [DEBUG] Volunteer created successfully!')
         fetchVolunteers()
         setIsVolunteerRecruitOpen(false)
         setSelectedMemberForVolunteer(null)
         toast.success('¡Miembro reclutado como voluntario exitosamente!')
       } else {
         const errorData = await response.json()
-        console.error('❌ Error response:', errorData)
+        console.error('❌ [DEBUG] Error response:', errorData)
         toast.error(errorData.message || 'Error al reclutar voluntario')
       }
     } catch (error) {
-      console.error('Error creating volunteer:', error)
+      console.error('💥 [DEBUG] Exception in handleCreateVolunteerFromMember:', error)
       toast.error('Error al reclutar voluntario')
     }
   }
@@ -1083,7 +1097,11 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
             <div className="flex gap-2">
               <Button 
                 variant="default"
-                onClick={() => handleCreateVolunteerFromMember('no-ministry')}
+                onClick={() => {
+                  console.log('🔘 [DEBUG] Volunteer button clicked!')
+                  console.log('🔘 [DEBUG] Selected member:', selectedMemberForVolunteer)
+                  handleCreateVolunteerFromMember('no-ministry')
+                }}
               >
                 <UserPlus className="h-4 w-4 mr-2" />
                 Reclutar como Voluntario General
