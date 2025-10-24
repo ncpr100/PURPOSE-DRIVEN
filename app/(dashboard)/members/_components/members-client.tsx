@@ -194,10 +194,10 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
     try {
       const volunteerData = {
         memberId: selectedMemberForVolunteer.id,
-        firstName: selectedMemberForVolunteer.firstName,
-        lastName: selectedMemberForVolunteer.lastName,
-        email: selectedMemberForVolunteer.email || '',
-        phone: selectedMemberForVolunteer.phone || '',
+        firstName: selectedMemberForVolunteer.firstName?.trim() || '',
+        lastName: selectedMemberForVolunteer.lastName?.trim() || '',
+        email: selectedMemberForVolunteer.email?.trim() || '',
+        phone: selectedMemberForVolunteer.phone?.trim() || '',
         skills: [],
         availability: {
           days: [],
@@ -207,7 +207,20 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         ministryId: ministryId === 'no-ministry' ? 'no-ministry' : ministryId,
       }
 
+      // Fix email format if it has issues
+      if (volunteerData.email && volunteerData.email.includes('.@')) {
+        volunteerData.email = volunteerData.email.replace('.@', '@')
+        console.log('🔧 [DEBUG] Fixed email format:', volunteerData.email)
+      }
+
       console.log('🚀 [DEBUG] Creating volunteer with data:', volunteerData)
+      console.log('🚀 [DEBUG] Raw member data for comparison:', {
+        id: selectedMemberForVolunteer.id,
+        firstName: selectedMemberForVolunteer.firstName,
+        lastName: selectedMemberForVolunteer.lastName,
+        email: selectedMemberForVolunteer.email,
+        phone: selectedMemberForVolunteer.phone
+      })
 
       const response = await fetch('/api/volunteers', {
         method: 'POST',
@@ -229,6 +242,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       } else {
         const errorData = await response.json()
         console.error('❌ [DEBUG] Error response:', errorData)
+        console.error('❌ [DEBUG] Validation errors:', errorData.errors)
         toast.error(errorData.message || 'Error al reclutar voluntario')
       }
     } catch (error) {
