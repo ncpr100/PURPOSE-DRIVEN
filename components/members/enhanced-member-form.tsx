@@ -470,16 +470,6 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
             <ArrowLeft className="h-4 w-4" />
             Volver a Miembros
           </Button>
-          <div className="border-l h-8" />
-          <div>
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <User className="h-6 w-6" />
-              Información de Miembros
-            </h2>
-            <p className="text-muted-foreground">
-              Complete la información del miembro con evaluación espiritual y disponibilidad
-            </p>
-          </div>
         </div>
         <div className="flex items-center gap-2">
           {hasUnsavedChanges && (
