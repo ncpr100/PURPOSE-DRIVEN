@@ -778,6 +778,26 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           )}
         </TabsContent>
       </Tabs>
+
+      {/* Global Save and Close Button */}
+      <div className="sticky bottom-0 bg-background border-t pt-4 pb-2 mt-6">
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            {hasUnsavedChanges 
+              ? '⚠️ Hay cambios sin guardar en esta sección' 
+              : '✓ Todos los cambios guardados'}
+          </p>
+          <Button 
+            onClick={onCancel}
+            size="lg"
+            className="min-w-[200px]"
+            variant="default"
+          >
+            <Save className="w-4 h-4 mr-2" />
+            Guardar y Cerrar
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

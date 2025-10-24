@@ -419,15 +419,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         const savedMember = await response.json()
         await fetchMembers()
         
-        // If creating new member, keep dialog open and update editingMember with new member data
-        if (!editingMember) {
-          setEditingMember(savedMember)
-          // Don't close dialog - allow user to continue editing other Cards
-        } else {
-          // If editing existing member, close dialog as before
-          setIsFormOpen(false)
-          setEditingMember(null)
-        }
+        // Always close dialog and clear editing state after successful save
+        setIsFormOpen(false)
+        setEditingMember(null)
       } else {
         const error = await response.json()
         alert(error.message || 'Error al guardar el miembro')
