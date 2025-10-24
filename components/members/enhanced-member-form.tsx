@@ -261,6 +261,13 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
       return
     }
 
+    console.log('[handleSavePersonalDetails] Saving to member ID:', member.id, 'Data:', {
+      birthDate: formData.birthDate,
+      gender: formData.gender,
+      maritalStatus: formData.maritalStatus,
+      occupation: formData.occupation
+    })
+
     const data = {
       birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
       gender: formData.gender,
@@ -274,13 +281,26 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       })
+      
+      console.log('[handleSavePersonalDetails] Response status:', response.status)
+      
       if (response.ok) {
+        const savedData = await response.json()
+        console.log('[handleSavePersonalDetails] Saved successfully:', savedData)
         toast.success('Detalles personales guardados')
         setHasUnsavedChanges(false)
+        
+        // CRITICAL: Trigger parent refresh
+        if (onSave) {
+          await onSave(savedData)
+        }
       } else {
+        const error = await response.json()
+        console.error('[handleSavePersonalDetails] Save failed:', error)
         toast.error('Error al guardar detalles')
       }
     } catch (error) {
+      console.error('[handleSavePersonalDetails] Exception:', error)
       toast.error('Error al guardar detalles personales')
     }
   }
@@ -290,6 +310,13 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
       toast.error('Primero debe crear el miembro')
       return
     }
+
+    console.log('[handleSaveChurchInfo] Saving to member ID:', member.id, 'Data:', {
+      baptismDate: formData.baptismDate,
+      membershipDate: formData.membershipDate,
+      emergencyContact: formData.emergencyContact,
+      notes: formData.notes
+    })
 
     const data = {
       baptismDate: formData.baptismDate ? new Date(formData.baptismDate) : null,
@@ -304,13 +331,26 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       })
+      
+      console.log('[handleSaveChurchInfo] Response status:', response.status)
+      
       if (response.ok) {
+        const savedData = await response.json()
+        console.log('[handleSaveChurchInfo] Saved successfully:', savedData)
         toast.success('Información de iglesia guardada')
         setHasUnsavedChanges(false)
+        
+        // CRITICAL: Trigger parent refresh
+        if (onSave) {
+          await onSave(savedData)
+        }
       } else {
+        const error = await response.json()
+        console.error('[handleSaveChurchInfo] Save failed:', error)
         toast.error('Error al guardar')
       }
     } catch (error) {
+      console.error('[handleSaveChurchInfo] Exception:', error)
       toast.error('Error al guardar información de iglesia')
     }
   }
