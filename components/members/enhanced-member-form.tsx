@@ -474,7 +474,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           <div>
             <h2 className="text-2xl font-bold flex items-center gap-2">
               <User className="h-6 w-6" />
-              {member ? 'Información de Miembros' : 'Nuevo Miembro'}
+              Información de Miembros
             </h2>
             <p className="text-muted-foreground">
               Complete la información del miembro con evaluación espiritual y disponibilidad

@@ -49,6 +49,7 @@ import {
   Gift,
   UserCheck,
   UserX,
+  UserCircle,
   Clock,
   Heart,
   ChevronDown,
@@ -596,10 +597,18 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   if (isFormOpen) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">
-            {editingMember ? 'Editar Miembro' : 'Nuevo Miembro'}
-          </h1>
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <UserCircle className="h-6 w-6" />
+              <h1 className="text-3xl font-bold tracking-tight">
+                Información de Miembros
+              </h1>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Complete la información del miembro con evaluación espiritual y disponibilidad
+            </p>
+          </div>
         </div>
         <EnhancedMemberForm
           member={editingMember}

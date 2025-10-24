@@ -26,7 +26,7 @@ Información Básica Tab
 ### AFTER (NEW Pattern):
 ```
 Información Básica Tab
-├── Card 1: Personal Information
+├── Card 1: Información Personal
 │   ├── Fields: firstName, lastName, email, phone
 │   └── Button: "Crear Miembro" (new) or "Guardar Información Personal" (edit)
 │   └── Handler: handleSavePersonalInfo()
@@ -61,6 +61,8 @@ Información Básica Tab
 **Navigate**: Members → Edit Juan Pachanga → "Información Básica" tab
 
 **Expected Visual**:
+- ✅ Dialog header shows "Información de Miembros" (NOT "Editar Miembro")
+- ✅ Dialog subtitle shows "Complete la información del miembro con evaluación espiritual y disponibilidad"
 - ✅ See 4 separate Cards with borders
 - ✅ Card 1: "Información Personal" with user icon
 - ✅ Card 2: "🏠 Dirección"
@@ -73,22 +75,24 @@ Información Básica Tab
 
 ---
 
-### TEST 2: Personal Information Card (Create Flow)
+### TEST 2: Información Personal Card (Create Flow)
 **Steps**:
 1. Click "Nuevo Miembro"
-2. Enter in Card 1:
+2. Verify dialog header shows "Información de Miembros" with subtitle
+3. Enter in Card 1:
    - Nombre: "Carlos"
    - Apellido: "Rodriguez"
    - Email: "carlos.rodriguez@test.com"
    - Teléfono: "+1 555-0102"
-3. Click "Crear Miembro" button (note: says "Crear" not "Guardar")
-4. Verify green toast: "Miembro creado exitosamente"
-5. Close dialog
-6. Search for "Carlos Rodriguez" in Members list
-7. Edit Carlos Rodriguez
-8. Verify Card 1 shows all data correctly
+4. Click "Crear Miembro" button (note: says "Crear" not "Guardar")
+5. Verify green toast: "Miembro creado exitosamente"
+6. Close dialog
+7. Search for "Carlos Rodriguez" in Members list
+8. Edit Carlos Rodriguez
+9. Verify Card 1 shows all data correctly
 
 **Expected**:
+- ✅ Dialog shows correct title "Información de Miembros" (not "Nuevo Miembro")
 - ✅ New member created
 - ✅ Green toast confirmation
 - ✅ Member appears in list

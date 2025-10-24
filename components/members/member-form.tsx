@@ -102,8 +102,11 @@ export function MemberForm({ member, onSave, onCancel, isLoading }: MemberFormPr
     <Card>
       <CardHeader>
         <CardTitle>
-          {member ? 'Editar Miembro' : 'Nuevo Miembro'}
+          Información de Miembros
         </CardTitle>
+        <p className="text-muted-foreground">
+          Complete la información del miembro con evaluación espiritual y disponibilidad
+        </p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
