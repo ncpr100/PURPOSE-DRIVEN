@@ -212,9 +212,17 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         delete (volunteerData as any).phone
       }
 
-      // Remove email if empty to avoid validation issues  
-      if (!volunteerData.email || volunteerData.email === '') {
+      // Remove email if empty OR if it contains problematic characters
+      if (!volunteerData.email || volunteerData.email === '' || volunteerData.email.includes('Ñ') || volunteerData.email.includes('ñ')) {
         delete (volunteerData as any).email
+        console.log('🔧 [DEBUG] Removed problematic email:', selectedMemberForVolunteer.email)
+      }
+
+      // Remove memberId if it doesn't match CUID format to let server generate one
+      const cuidPattern = /^c[a-z0-9]{25}$/
+      if (!cuidPattern.test(volunteerData.memberId || '')) {
+        delete (volunteerData as any).memberId
+        console.log('🔧 [DEBUG] Removed non-CUID memberId, server will link by name match')
       }
 
       // Fix email format if it has issues
