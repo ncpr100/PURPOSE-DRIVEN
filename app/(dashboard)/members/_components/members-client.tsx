@@ -229,6 +229,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       console.log('🔍 [DEBUG] lastName regex test:', /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/.test(volunteerData.lastName))
       console.log('🔍 [DEBUG] email format test:', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(volunteerData.email))
       console.log('🔍 [DEBUG] phone format test:', /^\+?[\d\s\-()]+$/.test(volunteerData.phone))
+      console.log('🔍 [DEBUG] memberId format:', volunteerData.memberId)
+      console.log('🔍 [DEBUG] memberId length:', volunteerData.memberId?.length)
+      console.log('🔍 [DEBUG] CUID format test:', /^c[a-z0-9]{25}$/.test(volunteerData.memberId || ''))
 
       console.log('🚀 [DEBUG] Creating volunteer with data:', volunteerData)
       console.log('🚀 [DEBUG] Raw member data for comparison:', {
@@ -260,6 +263,15 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         const errorData = await response.json()
         console.error('❌ [DEBUG] Error response:', errorData)
         console.error('❌ [DEBUG] Validation errors:', errorData.errors)
+        if (errorData.errors && Array.isArray(errorData.errors)) {
+          errorData.errors.forEach((error: any, index: number) => {
+            console.error(`❌ [DEBUG] Validation Error ${index + 1}:`, {
+              field: error.field,
+              message: error.message,
+              value: volunteerData[error.field as keyof typeof volunteerData]
+            })
+          })
+        }
         toast.error(errorData.message || 'Error al reclutar voluntario')
       }
     } catch (error) {
