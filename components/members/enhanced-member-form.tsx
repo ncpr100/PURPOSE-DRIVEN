@@ -310,6 +310,107 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
     }
   }
 
+  // Global "Guardar y Cerrar" handler - saves ALL data and closes dialog
+  const handleSaveAndClose = async () => {
+    // If no member created yet, create it first
+    if (!member?.id) {
+      const personalData: Record<string, any> = {}
+      if (formData.firstName) personalData.firstName = formData.firstName
+      if (formData.lastName) personalData.lastName = formData.lastName
+      if (formData.email) personalData.email = formData.email
+      if (formData.phone) personalData.phone = formData.phone
+      
+      if (!personalData.firstName || !personalData.lastName) {
+        toast.error('Debe ingresar nombre y apellido antes de guardar')
+        return
+      }
+      
+      await handleSavePersonalInfo()
+      // After creating member, onSave will update editingMember with new ID
+      // But we need to wait for that to complete before continuing
+      // Since we don't have access to the new member here, just show message
+      toast.success('Miembro creado. Puede cerrar o continuar editando.')
+      return
+    }
+
+    // If member exists and has unsaved changes, save everything in active tab
+    if (hasUnsavedChanges) {
+      // Based on active tab, save the appropriate section
+      if (activeTab === 'basic') {
+        // Save all 4 Cards if we're on basic tab
+        const promises = []
+        
+        // Card 1: Personal Info (only if it changed)
+        promises.push(
+          fetch(`/api/members/${member.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              email: formData.email,
+              phone: formData.phone,
+            })
+          })
+        )
+        
+        // Card 2: Address
+        promises.push(
+          fetch(`/api/members/${member.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              address: formData.address,
+              city: formData.city,
+              state: formData.state,
+              zipCode: formData.zipCode,
+            })
+          })
+        )
+        
+        // Card 3: Personal Details
+        promises.push(
+          fetch(`/api/members/${member.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
+              gender: formData.gender,
+              maritalStatus: formData.maritalStatus,
+              occupation: formData.occupation,
+            })
+          })
+        )
+        
+        // Card 4: Church Info
+        promises.push(
+          fetch(`/api/members/${member.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              baptismDate: formData.baptismDate ? new Date(formData.baptismDate) : null,
+              membershipDate: formData.membershipDate ? new Date(formData.membershipDate) : null,
+              emergencyContact: formData.emergencyContact,
+              notes: formData.notes,
+            })
+          })
+        )
+        
+        try {
+          await Promise.all(promises)
+          toast.success('Todos los cambios guardados exitosamente')
+          setHasUnsavedChanges(false)
+        } catch (error) {
+          toast.error('Error al guardar algunos cambios')
+          return // Don't close if save failed
+        }
+      }
+    }
+
+    // Close dialog
+    onCancel()
+  }
+
   return (
     <div className="space-y-6">
       {/* Header with Back Button */}
@@ -788,13 +889,14 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               : '✓ Todos los cambios guardados'}
           </p>
           <Button 
-            onClick={onCancel}
+            onClick={handleSaveAndClose}
             size="lg"
             className="min-w-[200px]"
             variant="default"
+            disabled={isLoading}
           >
             <Save className="w-4 h-4 mr-2" />
-            Guardar y Cerrar
+            {hasUnsavedChanges ? 'Guardar Todo y Cerrar' : 'Cerrar'}
           </Button>
         </div>
       </div>

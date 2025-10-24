@@ -417,11 +417,23 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
       if (response.ok) {
         const savedMember = await response.json()
+        
+        // CRITICAL: Update editingMember with saved data BEFORE fetchMembers
+        // This ensures the form gets the new member.id immediately
+        if (!editingMember) {
+          // Creating new member - update with full saved member data (including ID)
+          console.log('[CREATE] New member saved with ID:', savedMember.id)
+          setEditingMember(savedMember)
+        } else {
+          // Editing existing member - update with latest data
+          console.log('[UPDATE] Member updated:', savedMember.id)
+          setEditingMember(savedMember)
+        }
+        
+        // Refresh member list in background
         await fetchMembers()
         
-        // Always close dialog and clear editing state after successful save
-        setIsFormOpen(false)
-        setEditingMember(null)
+        // Dialog stays open - user must click "Guardar y Cerrar" to close
       } else {
         const error = await response.json()
         alert(error.message || 'Error al guardar el miembro')
