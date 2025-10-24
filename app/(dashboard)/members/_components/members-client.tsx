@@ -217,12 +217,19 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         delete (volunteerData as any).email
       }
 
-      // Remove memberId if it doesn't match CUID format to let server generate one
+      // Check if memberId is valid - but don't remove it, just log for debugging
       const cuidPattern = /^c[a-z0-9]{25}$/
-      if (!cuidPattern.test(volunteerData.memberId || '')) {
-        delete (volunteerData as any).memberId
-        console.log('🔧 [DEBUG] Removed non-CUID memberId, server will link by name match')
-      }
+      console.log('🔍 [DEBUG] CUID validation:')
+      console.log('🔍 [DEBUG] memberId:', volunteerData.memberId)
+      console.log('🔍 [DEBUG] memberId length:', volunteerData.memberId?.length)
+      console.log('🔍 [DEBUG] CUID pattern test:', cuidPattern.test(volunteerData.memberId || ''))
+      console.log('🔍 [DEBUG] Expected CUID format: c[a-z0-9]{25}')
+      
+      // DON'T remove the memberId - let the server handle it
+      // if (!cuidPattern.test(volunteerData.memberId || '')) {
+      //   delete (volunteerData as any).memberId
+      //   console.log('🔧 [DEBUG] Removed non-CUID memberId, server will link by name match')
+      // }
 
       // Fix email format if it has issues
       if (volunteerData.email && volunteerData.email.includes('.@')) {
@@ -262,10 +269,16 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
       if (response.ok) {
         console.log('✅ [DEBUG] Volunteer created successfully!')
-        fetchVolunteers()
+        console.log('✅ [DEBUG] Refreshing volunteers list...')
+        await fetchVolunteers() // Make sure this completes
+        console.log('✅ [DEBUG] Current volunteers after refresh:', volunteers.length)
         setIsVolunteerRecruitOpen(false)
         setSelectedMemberForVolunteer(null)
         toast.success('¡Miembro reclutado como voluntario exitosamente!')
+        
+        // Force a re-render of the members list
+        await fetchMembers()
+        console.log('✅ [DEBUG] Members list refreshed')
       } else {
         const errorData = await response.json()
         console.error('❌ [DEBUG] Error response:', errorData)
