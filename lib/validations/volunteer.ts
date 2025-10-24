@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { cuidSchema, optionalCuidSchema, cuidOrEmptySchema } from './cuid'
 
 /**
  * Validation schema for creating/updating volunteers
@@ -38,9 +39,9 @@ export const volunteerCreateSchema = z.object({
     frequency: z.enum(['weekly', 'biweekly', 'monthly', 'occasional']).optional()
   }).optional(),
   
-  ministryId: z.string().cuid().optional().or(z.literal('no-ministry')),
+  ministryId: cuidOrEmptySchema.or(z.literal('no-ministry')),
   
-  memberId: z.string().cuid().optional()
+  memberId: optionalCuidSchema
 })
 
 export type VolunteerCreateInput = z.infer<typeof volunteerCreateSchema>
@@ -50,9 +51,9 @@ export type VolunteerCreateInput = z.infer<typeof volunteerCreateSchema>
  * Addresses HIGH-012: No Scheduling Conflict Detection (validation layer)
  */
 export const volunteerAssignmentSchema = z.object({
-  volunteerId: z.string().cuid('ID de voluntario inválido'),
+  volunteerId: cuidSchema,
   
-  eventId: z.string().cuid('ID de evento inválido').optional(),
+  eventId: optionalCuidSchema,
   
   title: z.string()
     .min(1, 'Título es requerido')
@@ -92,13 +93,13 @@ export type VolunteerAssignmentInput = z.infer<typeof volunteerAssignmentSchema>
  * Addresses HIGH-003: JSON Fields Lack Schema Validation
  */
 export const spiritualProfileSchema = z.object({
-  memberId: z.string().cuid('ID de miembro inválido'),
+  memberId: cuidSchema,
   
-  primaryGifts: z.array(z.string().cuid())
+  primaryGifts: z.array(cuidSchema)
     .min(1, 'Seleccione al menos un don primario')
     .max(5, 'Máximo 5 dones primarios'),
   
-  secondaryGifts: z.array(z.string().cuid())
+  secondaryGifts: z.array(cuidSchema)
     .max(10, 'Máximo 10 dones secundarios')
     .optional()
     .default([]),
@@ -238,9 +239,9 @@ export type EnhancedSpiritualProfileInput = z.infer<typeof enhancedSpiritualProf
  * Validation schema for volunteer matching requests
  */
 export const volunteerMatchingSchema = z.object({
-  ministryId: z.string().cuid('ID de ministerio inválido'),
+  ministryId: cuidSchema,
   
-  eventId: z.string().cuid('ID de evento inválido').optional(),
+  eventId: optionalCuidSchema,
   
   maxRecommendations: z.number()
     .int('Debe ser número entero')

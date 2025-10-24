@@ -67,6 +67,7 @@ import {
 import { formatDate } from '@/lib/utils'
 import { toast } from 'sonner'
 import { MemberInfoBadges } from './member-info-badges'
+import { isValidCUID, analyzeCUID, CUID_PATTERN } from '@/lib/validations/cuid'
 import type { MaritalStatusFilter } from '@/types/member-filters'
 
 interface MembersClientProps {
@@ -217,19 +218,15 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         delete (volunteerData as any).email
       }
 
-      // Check if memberId is valid - but don't remove it, just log for debugging
-      const cuidPattern = /^c[a-z0-9]{25}$/
-      console.log('🔍 [DEBUG] CUID validation:')
+      // Check if memberId is valid using standardized CUID validation
+      const cuidAnalysis = analyzeCUID(volunteerData.memberId || '')
+      console.log('🔍 [DEBUG] CUID validation using standardized utility:')
       console.log('🔍 [DEBUG] memberId:', volunteerData.memberId)
-      console.log('🔍 [DEBUG] memberId length:', volunteerData.memberId?.length)
-      console.log('🔍 [DEBUG] CUID pattern test:', cuidPattern.test(volunteerData.memberId || ''))
-      console.log('🔍 [DEBUG] Expected CUID format: c[a-z0-9]{25}')
+      console.log('🔍 [DEBUG] CUID analysis:', cuidAnalysis)
+      console.log('🔍 [DEBUG] isValidCUID result:', isValidCUID(volunteerData.memberId || ''))
+      console.log('🔍 [DEBUG] Supports: Legacy (23 chars) + Current (25 chars) CUIDs')
       
-      // DON'T remove the memberId - let the server handle it
-      // if (!cuidPattern.test(volunteerData.memberId || '')) {
-      //   delete (volunteerData as any).memberId
-      //   console.log('🔧 [DEBUG] Removed non-CUID memberId, server will link by name match')
-      // }
+      // The member ID should now pass validation for both legacy and current formats
 
       // Fix email format if it has issues
       if (volunteerData.email && volunteerData.email.includes('.@')) {
@@ -245,7 +242,6 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       console.log('🔍 [DEBUG] phone format test:', /^\+?[\d\s\-()]+$/.test(volunteerData.phone))
       console.log('🔍 [DEBUG] memberId format:', volunteerData.memberId)
       console.log('🔍 [DEBUG] memberId length:', volunteerData.memberId?.length)
-      console.log('🔍 [DEBUG] CUID format test:', /^c[a-z0-9]{25}$/.test(volunteerData.memberId || ''))
 
       console.log('🚀 [DEBUG] Creating volunteer with data:', volunteerData)
       console.log('🚀 [DEBUG] Raw member data for comparison:', {
