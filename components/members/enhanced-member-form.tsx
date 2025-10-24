@@ -638,6 +638,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
                   }} 
                   disabled={isLoading || !member?.id} 
                   variant="default"
+                  className={member?.id ? '' : 'opacity-50 cursor-not-allowed'}
                   title={!member?.id ? 'Primero debe crear el miembro' : 'Guardar dirección'}
                 >
                   <Save className="w-4 h-4 mr-2" />
@@ -733,9 +734,15 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </div>
 
               <div className="flex justify-end pt-4 border-t">
-                <Button onClick={handleSavePersonalDetails} disabled={isLoading || !member?.id} variant="default">
+                <Button 
+                  onClick={handleSavePersonalDetails} 
+                  disabled={isLoading || !member?.id} 
+                  variant="default"
+                  className={member?.id ? '' : 'opacity-50 cursor-not-allowed'}
+                >
                   <Save className="w-4 h-4 mr-2" />
                   Guardar Detalles Personales
+                  {!member?.id && <span className="ml-2 text-xs">(esperando ID)</span>}
                 </Button>
               </div>
             </CardContent>
@@ -808,9 +815,15 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
               </div>
 
               <div className="flex justify-end pt-4 border-t">
-                <Button onClick={handleSaveChurchInfo} disabled={isLoading || !member?.id} variant="default">
+                <Button 
+                  onClick={handleSaveChurchInfo} 
+                  disabled={isLoading || !member?.id} 
+                  variant="default"
+                  className={member?.id ? '' : 'opacity-50 cursor-not-allowed'}
+                >
                   <Save className="w-4 h-4 mr-2" />
                   Guardar Información de Iglesia
+                  {!member?.id && <span className="ml-2 text-xs">(esperando ID)</span>}
                 </Button>
               </div>
             </CardContent>
