@@ -72,7 +72,7 @@ class UIValidationFramework {
       return {
         testId,
         status: 'FAIL',
-        message: `Test execution error: ${error.message}`,
+        message: `Test execution error: ${error instanceof Error ? error.message : String(error)}`,
         timestamp: new Date()
       };
     }
@@ -138,7 +138,8 @@ ${this.results.map(r => `${r.testId}: ${r.status} - ${r.message}`).join('\n')}
 }
 
 // Export for use in validation scripts
-export { UIValidationFramework, TestResult, UITestConfig };
+export { UIValidationFramework };
+export type { TestResult, UITestConfig };
 
 // Auto-run if executed directly
 if (require.main === module) {
