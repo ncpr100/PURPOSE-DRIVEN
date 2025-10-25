@@ -292,7 +292,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     // Log error with masked sensitive data
     const maskedError = DonationSecurity.maskSensitiveData({
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString(),
       endpoint: 'POST /api/online-payments'
     })

@@ -313,7 +313,7 @@ export async function POST(req: NextRequest) {
         })
         
         // Mass communication audit trail for errors
-        console.log(`Mass communication failed: ${communication.id} - ${error.message}`)
+        console.log(`Mass communication failed: ${communication.id} - ${error instanceof Error ? error.message : String(error)}`)
       }
     }
 
@@ -321,7 +321,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     // Error handling in mass send with audit trail - try catch pattern
     console.error('Error in mass communication:', error)
-    console.log(`Mass communication system error at ${new Date().toISOString()}: ${error.message}`)
+    console.log(`Mass communication system error at ${new Date().toISOString()}: ${error instanceof Error ? error.message : String(error)}`)
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

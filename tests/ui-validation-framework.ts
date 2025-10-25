@@ -153,3 +153,4 @@ if (require.main === module) {
     process.exit(hasFailures ? 1 : 0);
   });
 }
+

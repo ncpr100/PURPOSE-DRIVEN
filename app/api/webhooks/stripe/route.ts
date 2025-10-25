@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2025-09-30.clover',
 });
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -71,7 +71,8 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   try {
     // Find the online payment record
     const onlinePayment = await prisma.onlinePayment.findFirst({
-      where: { stripePaymentIntentId: paymentIntent.id }
+      where: { paymentId: paymentIntent.id },
+      include: { donation: true }
     });
 
     if (!onlinePayment) {
@@ -92,10 +93,8 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
       }
     });
 
-    // Create donation record if not exists
-    let donation = await prisma.donation.findFirst({
-      where: { onlinePaymentId: onlinePayment.id }
-    });
+    // Check if donation already exists for this payment
+    let donation = onlinePayment.donation;
 
     if (!donation) {
       // Get payment method for Stripe
@@ -120,6 +119,29 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
         });
       }
 
+      // Ensure we have a category ID
+      let categoryId = onlinePayment.categoryId;
+      if (!categoryId) {
+        let defaultCategory = await prisma.donationCategory.findFirst({
+          where: {
+            churchId: onlinePayment.churchId,
+            name: 'General'
+          }
+        });
+
+        if (!defaultCategory) {
+          defaultCategory = await prisma.donationCategory.create({
+            data: {
+              name: 'General',
+              description: 'Donaciones generales',
+              isActive: true,
+              churchId: onlinePayment.churchId
+            }
+          });
+        }
+        categoryId = defaultCategory.id;
+      }
+
       donation = await prisma.donation.create({
         data: {
           churchId: onlinePayment.churchId,
@@ -128,12 +150,11 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
           donorName: onlinePayment.donorName,
           donorEmail: onlinePayment.donorEmail,
           donorPhone: onlinePayment.donorPhone,
-          categoryId: onlinePayment.categoryId,
+          categoryId: categoryId,
           paymentMethodId: paymentMethod.id,
           reference: paymentIntent.id,
           notes: `Donación online procesada via Stripe - ${paymentIntent.id}`,
           donationDate: new Date(),
-          onlinePaymentId: onlinePayment.id,
           isAnonymous: false
         }
       });
@@ -154,7 +175,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
 async function handlePaymentFailed(paymentIntent: Stripe.PaymentIntent) {
   try {
     const onlinePayment = await prisma.onlinePayment.findFirst({
-      where: { stripePaymentIntentId: paymentIntent.id }
+      where: { paymentId: paymentIntent.id }
     });
 
     if (onlinePayment) {
@@ -188,7 +209,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     
     // Find and update online payment
     const onlinePayment = await prisma.onlinePayment.findFirst({
-      where: { stripeSessionId: session.id }
+      where: { paymentId: session.id }
     });
 
     if (onlinePayment) {

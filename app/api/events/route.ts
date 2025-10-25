@@ -48,9 +48,6 @@ export async function GET(request: NextRequest) {
     const events = await db.event.findMany({
       where: whereClause,
       include: {
-        creator: {
-          select: { name: true, email: true }
-        },
         church: {
           select: { name: true }
         }

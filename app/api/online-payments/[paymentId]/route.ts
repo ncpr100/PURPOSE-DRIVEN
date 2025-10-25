@@ -47,6 +47,49 @@ export async function PATCH(
 
       // If payment completed, create donation record
       if (status === 'completed' && existingPayment.status !== 'completed') {
+        // Find or create ONLINE payment method
+        let onlinePaymentMethod = await tx.paymentMethod.findFirst({
+          where: {
+            churchId: payment.churchId,
+            name: 'ONLINE'
+          }
+        })
+
+        if (!onlinePaymentMethod) {
+          onlinePaymentMethod = await tx.paymentMethod.create({
+            data: {
+              name: 'ONLINE',
+              description: 'Pagos en línea',
+              isDigital: true,
+              isActive: true,
+              churchId: payment.churchId
+            }
+          })
+        }
+
+        // Find or create default donation category if not provided
+        let categoryId = payment.categoryId
+        if (!categoryId) {
+          let defaultCategory = await tx.donationCategory.findFirst({
+            where: {
+              churchId: payment.churchId,
+              name: 'General'
+            }
+          })
+
+          if (!defaultCategory) {
+            defaultCategory = await tx.donationCategory.create({
+              data: {
+                name: 'General',
+                description: 'Donaciones generales',
+                isActive: true,
+                churchId: payment.churchId
+              }
+            })
+          }
+          categoryId = defaultCategory.id
+        }
+
         await tx.donation.create({
           data: {
             amount: payment.amount,
@@ -55,16 +98,10 @@ export async function PATCH(
             donorEmail: payment.donorEmail,
             donorPhone: payment.donorPhone,
             churchId: payment.churchId,
-            categoryId: payment.categoryId,
-            campaignId: payment.campaignId || null,
-            paymentMethod: 'ONLINE',
-            notes: `Donación online - ${payment.gatewayType.toUpperCase()}`,
-            reference: payment.reference,
-            metadata: {
-              onlinePaymentId: payment.id,
-              gatewayType: payment.gatewayType,
-              paymentId: payment.paymentId
-            }
+            categoryId: categoryId,
+            paymentMethodId: onlinePaymentMethod.id,
+            notes: `Donación online - ${payment.gatewayType.toUpperCase()} - ID: ${payment.paymentId}`,
+            reference: payment.reference
           }
         })
       }
@@ -90,7 +127,7 @@ export async function PATCH(
 
   } catch (error) {
     const maskedError = DonationSecurity.maskSensitiveData({
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString(),
       endpoint: 'PATCH /api/online-payments/[paymentId]'
     })

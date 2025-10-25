@@ -232,9 +232,8 @@ export async function POST(request: NextRequest) {
         categoryName: donation.category?.name,
         paymentMethod: donation.paymentMethod?.name,
         donationDate: donation.donationDate,
-        isAnonymous: donation.isAnonymous,
-        churchId: session.user.churchId!
-      })
+        isAnonymous: donation.isAnonymous
+      }, session.user.churchId!)
       
       // Payment logging for successful donation
       console.log(`Payment processed: ${donation.amount} ${donation.currency}`)

@@ -21,18 +21,24 @@ import { toast } from 'sonner';
 interface DonationCategory {
   id: string;
   name: string;
-  description?: string;
+  description?: string | null;
   isActive: boolean;
-  sortOrder: number;
+  createdAt: Date;
+  updatedAt: Date;
+  churchId: string;
+  sortOrder?: number;
 }
 
 interface PaymentMethod {
   id: string;
   name: string;
-  description?: string;
+  description?: string | null;
   isDigital: boolean;
   isActive: boolean;
   config?: any;
+  createdAt: Date;
+  updatedAt: Date;
+  churchId: string;
 }
 
 interface DonationsSettingsClientProps {
@@ -94,8 +100,7 @@ export default function DonationsSettingsClient({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...categoryForm,
-          churchId,
-          sortOrder: categories.length + 1
+          churchId
         })
       });
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 export async function GET(request: NextRequest) {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const config = await prisma.paymentGatewayConfig.findFirst({
       where: {
         churchId: session.user.church.id,
-        provider: 'STRIPE'
+        gatewayType: 'STRIPE'
       }
     });
 
@@ -32,10 +32,10 @@ export async function GET(request: NextRequest) {
 
     // Don't expose sensitive data
     const sanitizedConfig = {
-      provider: config.provider,
-      enabled: config.isActive,
+      provider: config.gatewayType,
+      enabled: config.isEnabled,
       config: {
-        publicKey: config.config ? (config.config as any).publicKey : '',
+        publicKey: config.configuration ? (config.configuration as any).publicKey : '',
         webhookEndpoint: '/api/webhooks/stripe'
       }
     };
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
-    if (!session?.user?.church?.id || session.user.role === 'MEMBER') {
+    if (!session?.user?.church?.id || session.user.role === 'MIEMBRO') {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -74,21 +74,21 @@ export async function POST(request: NextRequest) {
     // Upsert payment gateway configuration
     const config = await prisma.paymentGatewayConfig.upsert({
       where: {
-        churchId_provider: {
+        churchId_gatewayType: {
           churchId: session.user.church.id,
-          provider: 'STRIPE'
+          gatewayType: 'STRIPE'
         }
       },
       update: {
-        config: stripeConfig,
-        isActive: stripeConfig.enabled ?? true,
+        configuration: stripeConfig,
+        isEnabled: stripeConfig.enabled ?? true,
         updatedAt: new Date()
       },
       create: {
         churchId: session.user.church.id,
-        provider: 'STRIPE',
-        config: stripeConfig,
-        isActive: stripeConfig.enabled ?? true
+        gatewayType: 'STRIPE',
+        configuration: stripeConfig,
+        isEnabled: stripeConfig.enabled ?? true
       }
     });
 

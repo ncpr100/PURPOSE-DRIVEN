@@ -254,6 +254,7 @@ model User {
   createdRuleTemplates       AutomationRuleTemplate[]             @relation("TemplateCreator")
   installedTemplates         AutomationRuleTemplateInstallation[]
   assignedVisitorProfiles    VisitorProfile[]
+  createdEvents              Event[]                              @relation("EventCreator")
 
   @@map("users")
 }
@@ -340,7 +341,12 @@ model Event {
   startDate                DateTime
   endDate                  DateTime?
   location                 String?
+  capacity                 Int?
+  budget                   Float?
+  category                 String                     @default("GENERAL")
+  status                   String                     @default("PLANIFICANDO")
   churchId                 String
+  createdBy                String?
   isPublic                 Boolean                    @default(true)
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @default(now())
@@ -348,6 +354,7 @@ model Event {
   childrenCheckIns         ChildCheckIn[]
   resourceReservations     EventResourceReservation[]
   church                   Church                     @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  creator                  User?                      @relation("EventCreator", fields: [createdBy], references: [id])
   volunteerAssignments     VolunteerAssignment[]
   volunteerRecommendations VolunteerRecommendation[]
 
