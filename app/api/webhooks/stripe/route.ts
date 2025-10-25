@@ -3,14 +3,35 @@ import { headers } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-09-30.clover',
-});
-
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+// Force dynamic rendering to avoid build-time errors with tenant-specific Stripe keys
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
+    // Initialize Stripe inside the function to avoid build-time errors
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+    if (!stripeSecretKey) {
+      console.error('Missing STRIPE_SECRET_KEY environment variable');
+      return NextResponse.json(
+        { error: 'Stripe configuration error - Tenant must configure Stripe keys' },
+        { status: 500 }
+      );
+    }
+
+    if (!endpointSecret) {
+      console.error('Missing STRIPE_WEBHOOK_SECRET environment variable');
+      return NextResponse.json(
+        { error: 'Webhook configuration error - Tenant must configure Stripe webhook secret' },
+        { status: 500 }
+      );
+    }
+
+    const stripe = new Stripe(stripeSecretKey, {
+      apiVersion: '2025-09-30.clover',
+    });
+
     const body = await request.text();
     const headersList = headers();
     const sig = headersList.get('stripe-signature');
