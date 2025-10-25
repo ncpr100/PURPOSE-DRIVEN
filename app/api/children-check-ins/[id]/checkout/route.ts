@@ -23,6 +23,10 @@ export async function POST(
       return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
     }
 
+    // Parse request body for pickup verification data
+    const body = await request.json().catch(() => ({}))
+    const { securityPin, parentPhoto, notes } = body
+
     const childCheckIn = await db.childCheckIn.findFirst({
       where: {
         id: params.id,
@@ -44,12 +48,30 @@ export async function POST(
       )
     }
 
+    // Create pickup attempt log entry
+    const pickupAttempt = {
+      timestamp: new Date().toISOString(),
+      authorizedBy: session.user.id,
+      authorizedByName: session.user.name || session.user.email || 'Unknown',
+      securityPinProvided: !!securityPin,
+      securityPinValid: securityPin === childCheckIn.securityPin,
+      parentPhotoProvided: !!parentPhoto,
+      notes: notes || 'Checkout authorized by staff',
+      ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+      userAgent: request.headers.get('user-agent') || 'unknown'
+    }
+
+    // Update pickup attempts log
+    const currentAttempts = Array.isArray(childCheckIn.pickupAttempts) ? childCheckIn.pickupAttempts : []
+    const updatedAttempts = [...currentAttempts, pickupAttempt]
+
     const updatedCheckIn = await db.childCheckIn.update({
       where: { id: params.id },
       data: {
         checkedOut: true,
         checkedOutAt: new Date(),
-        checkedOutBy: session.user.id
+        checkedOutBy: session.user.id,
+        pickupAttempts: updatedAttempts as any
       },
       include: {
         event: true

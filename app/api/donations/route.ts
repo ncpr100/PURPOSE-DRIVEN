@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db';
+import DonationSecurity from '@/lib/donations/security'
 
 export const dynamic = 'force-dynamic'
 
@@ -113,10 +114,24 @@ export async function POST(request: NextRequest) {
       donationDate
     } = await request.json()
 
-    // Validaciones básicas
-    if (!amount || amount <= 0) {
+    // ENHANCED VALIDATION
+    if (!amount || isNaN(amount) || amount <= 0) {
       return NextResponse.json(
         { message: 'El monto debe ser mayor a cero' },
+        { status: 400 }
+      )
+    }
+
+    if (amount < 1) {
+      return NextResponse.json(
+        { message: 'El monto mínimo es $1' },
+        { status: 400 }
+      )
+    }
+
+    if (amount > 20000000) {
+      return NextResponse.json(
+        { message: 'El monto máximo es $20.000.000' },
         { status: 400 }
       )
     }
@@ -126,6 +141,28 @@ export async function POST(request: NextRequest) {
         { message: 'Categoría y método de pago son requeridos' },
         { status: 400 }
       )
+    }
+
+    // Email validation (if provided)
+    if (donorEmail && donorEmail.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(donorEmail.trim())) {
+        return NextResponse.json(
+          { message: 'Email no es válido' },
+          { status: 400 }
+        )
+      }
+    }
+
+    // Phone validation (if provided)
+    if (donorPhone && donorPhone.trim()) {
+      const phoneRegex = /^[\+]?[\d\s\-\(\)]+$/;
+      if (!phoneRegex.test(donorPhone.trim())) {
+        return NextResponse.json(
+          { message: 'Número de teléfono no es válido' },
+          { status: 400 }
+        )
+      }
     }
 
     // Verificar que la categoría y método de pago pertenezcan a la iglesia
@@ -145,36 +182,43 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const donation = await db.donation.create({
-      data: {
-        amount: parseFloat(amount),
-        currency,
-        donorName: isAnonymous ? null : donorName,
-        donorEmail: isAnonymous ? null : donorEmail,
-        donorPhone: isAnonymous ? null : donorPhone,
-        memberId: isAnonymous ? null : memberId,
-        categoryId,
-        paymentMethodId,
-        reference,
-        notes,
-        isAnonymous,
-        donationDate: donationDate ? new Date(donationDate) : new Date(),
-        status: 'COMPLETADA',
-        churchId: session.user.churchId
-      },
-      include: {
-        category: true,
-        paymentMethod: true,
-        member: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true
+    // DATABASE TRANSACTION for data integrity
+    // Use database transaction to ensure atomicity
+    const donation = await db.$transaction(async (tx) => {
+      // Create the donation within transaction
+      const newDonation = await tx.donation.create({
+        data: {
+          amount: parseFloat(amount),
+          currency,
+          donorName: isAnonymous ? null : (donorName ? DonationSecurity.sanitizeInput(donorName) : null),
+          donorEmail: isAnonymous ? null : (donorEmail ? DonationSecurity.sanitizeInput(donorEmail.toLowerCase()) : null),
+          donorPhone: isAnonymous ? null : (donorPhone ? DonationSecurity.sanitizeInput(donorPhone) : null),
+          memberId: isAnonymous ? null : memberId,
+          categoryId,
+          paymentMethodId,
+          reference: reference ? DonationSecurity.sanitizeInput(reference) : DonationSecurity.generatePaymentReference(),
+          notes: notes ? DonationSecurity.sanitizeInput(notes) : null,
+          isAnonymous,
+          donationDate: donationDate ? new Date(donationDate) : new Date(),
+          churchId: session.user.churchId!,
+          status: 'COMPLETADA' // Status tracking for donations
+        },
+        include: {
+          category: true,
+          paymentMethod: true,
+          member: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true
+            }
           }
         }
-      }
-    })
+      });
+
+      return newDonation;
+    });
 
     // Trigger automation for donation received
     try {
@@ -189,15 +233,13 @@ export async function POST(request: NextRequest) {
         paymentMethod: donation.paymentMethod?.name,
         donationDate: donation.donationDate,
         isAnonymous: donation.isAnonymous,
-        member: donation.member ? {
-          id: donation.member.id,
-          name: `${donation.member.firstName} ${donation.member.lastName}`
-        } : null
-      }, session.user.churchId)
+        churchId: session.user.churchId!
+      })
       
-      console.log(`🤖 Triggered donation received automation for ${donation.amount} ${donation.currency}`)
+      // Payment logging for successful donation
+      console.log(`Payment processed: ${donation.amount} ${donation.currency}`)
     } catch (automationError) {
-      console.error('Error triggering donation received automation:', automationError)
+      console.error('Automation trigger failed:', automationError)
       // Don't fail the donation creation if automation fails
     }
 

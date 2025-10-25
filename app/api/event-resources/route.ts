@@ -63,15 +63,25 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { name, description, type, capacity } = body
 
-    if (!name || !type) {
-      return NextResponse.json({ error: 'Nombre y tipo son requeridos' }, { status: 400 })
+    // Resource validation logic - name and type are required
+    if (!name || !name.trim()) {
+      return NextResponse.json({ error: 'Nombre es requerido' }, { status: 400 })
     }
+
+    if (!type || !type.trim()) {
+      return NextResponse.json({ error: 'Tipo es requerido' }, { status: 400 })
+    }
+
+    // Input sanitization in forms
+    const sanitizedName = name.trim()
+    const sanitizedDescription = description?.trim() || ''
+    const sanitizedType = type.trim()
 
     const resource = await db.eventResource.create({
       data: {
-        name,
-        description,
-        type,
+        name: sanitizedName,
+        description: sanitizedDescription,
+        type: sanitizedType,
         capacity: capacity ? parseInt(capacity) : null,
         churchId: session.user.churchId
       }

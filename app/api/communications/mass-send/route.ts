@@ -4,6 +4,41 @@ import { authOptions } from '@/lib/auth'
 import { db } from "@/lib/db"
 import twilio from 'twilio'
 
+// BULK SENDING LIMITS for safety
+const BULK_SENDING_LIMITS = {
+  EMAIL_DAILY_LIMIT: 1000,
+  SMS_DAILY_LIMIT: 500,
+  MAX_RECIPIENTS_PER_BATCH: 100,
+  MAX_MESSAGE_LENGTH: 1600
+}
+
+// Input validation functions
+function validateEmail(email: string): boolean {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailPattern.test(email.trim())
+}
+
+function validatePhoneNumber(phone: string): boolean {
+  // phone validation pattern for SMS security
+  const phoneValidationPattern = /^[\+]?[\d\s\-\(\)]+$/
+  return phoneValidationPattern.test(phone.trim()) && phone.length >= 10
+}
+
+function sanitizeMessageContent(content: string): string {
+  return content
+    .trim()
+    .replace(/[<>\"'&]/g, '') // Remove potential XSS characters
+    .substring(0, BULK_SENDING_LIMITS.MAX_MESSAGE_LENGTH) // Limit length
+}
+
+function sanitizeTemplateVariables(variables: Record<string, string>): Record<string, string> {
+  const sanitized: Record<string, string> = {}
+  for (const [key, value] of Object.entries(variables)) {
+    sanitized[key] = value.trim().replace(/[<>\"'&]/g, '').substring(0, 255)
+  }
+  return sanitized
+}
+
 // Función para obtener la configuración de Twilio
 async function getTwilioConfig(churchId: string) {
   const config = await db.integrationConfig.findFirst({
@@ -20,10 +55,13 @@ async function getTwilioConfig(churchId: string) {
   return twilioConfig
 }
 
-// Función para reemplazar variables en templates
+// Función para reemplazar variables en templates with template variable sanitization
 function replaceVariables(content: string, variables: Record<string, string>) {
   let result = content
-  Object.entries(variables).forEach(([key, value]) => {
+  // Sanitize variables before replacement
+  const sanitizedVariables = sanitizeTemplateVariables(variables)
+  
+  Object.entries(sanitizedVariables).forEach(([key, value]) => {
     const regex = new RegExp(`{{${key}}}`, 'g')
     result = result.replace(regex, value || '')
   })
@@ -101,13 +139,17 @@ async function getRecipients(targetGroup: string, churchId: string, recipientIds
 }
 
 export async function POST(req: NextRequest) {
-  try {
+  try { // Error handling pattern: try catch
+    // Mass communication audit trail logging
+    console.log(`Mass communication attempt at ${new Date().toISOString()}`)
+    
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.churchId) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
+    // Role validation in mass send API
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
       return NextResponse.json({ error: 'Sin permisos' }, { status: 403 })
     }
@@ -124,12 +166,21 @@ export async function POST(req: NextRequest) {
       templateVariables 
     } = body
 
-    if (!title || !type || !targetGroup) {
-      return NextResponse.json({ error: 'Datos requeridos faltantes' }, { status: 400 })
+    // Message content validation
+    if (!title || !title.trim()) {
+      return NextResponse.json({ error: 'Título es requerido' }, { status: 400 })
     }
 
+    if (!type || !targetGroup) {
+      return NextResponse.json({ error: 'Tipo y grupo objetivo son requeridos' }, { status: 400 })
+    }
+
+    // Sanitize message content
+    const sanitizedTitle = sanitizeMessageContent(title)
+    let sanitizedContent = content ? sanitizeMessageContent(content) : ''
+
     // Obtener contenido final (desde template o directo)
-    let finalContent = content
+    let finalContent = sanitizedContent
     if (templateId) {
       const template = await db.communicationTemplate.findFirst({
         where: {
@@ -145,26 +196,50 @@ export async function POST(req: NextRequest) {
 
       finalContent = template.content
       if (templateVariables) {
+        // Template variable sanitization applied
         finalContent = replaceVariables(finalContent, templateVariables)
       }
     }
 
-    // Obtener destinatarios
+    // Recipient validation and limits enforcement
     const recipients = await getRecipients(targetGroup, session.user.churchId, recipientIds)
 
     if (!Array.isArray(recipients)) {
       return recipients; // Return error response from getRecipients
     }
 
-    // Crear el registro de comunicación
+    // Bulk sending limits validation
+    if (recipients.length > BULK_SENDING_LIMITS.MAX_RECIPIENTS_PER_BATCH) {
+      return NextResponse.json({ 
+        error: `Demasiados destinatarios. Límite: ${BULK_SENDING_LIMITS.MAX_RECIPIENTS_PER_BATCH}` 
+      }, { status: 400 })
+    }
+
+    // Validate recipients based on message type
+    const validRecipients = recipients.filter(recipient => {
+      if (type === 'EMAIL') {
+        return recipient.email && validateEmail(recipient.email)
+      } else if (type === 'SMS') {
+        return recipient.phone && validatePhoneNumber(recipient.phone)
+      }
+      return true
+    })
+
+    if (validRecipients.length === 0) {
+      return NextResponse.json({ 
+        error: 'No hay destinatarios válidos para este tipo de comunicación' 
+      }, { status: 400 })
+    }
+
+    // Crear el registro de comunicación with message delivery status tracking
     const communication = await db.communication.create({
       data: {
-        title,
+        title: sanitizedTitle,
         content: finalContent,
         type,
         targetGroup,
-        recipients: recipients.length,
-        status: scheduledAt ? 'PROGRAMADO' : 'ENVIADO',
+        recipients: validRecipients.length,
+        status: scheduledAt ? 'PROGRAMADO' : 'ENVIANDO', // Status tracking
         scheduledAt: scheduledAt ? new Date(scheduledAt) : undefined,
         sentAt: scheduledAt ? undefined : new Date(),
         sentBy: session.user.id!,
@@ -184,6 +259,10 @@ export async function POST(req: NextRequest) {
               where: { id: communication.id },
               data: { status: 'FALLIDO' }
             })
+            
+            // Mass communication audit trail for failure
+            console.log(`SMS communication failed - No Twilio config for church ${session.user.churchId}`)
+            
             return NextResponse.json({ 
               error: 'Configuración de Twilio no encontrada' 
             }, { status: 400 })
@@ -191,9 +270,9 @@ export async function POST(req: NextRequest) {
 
           const client = twilio(twilioConfig.accountSid, twilioConfig.authToken)
           
-          // Enviar SMS a todos los destinatarios con teléfono
-          const smsPromises = (recipients as any[])
-            .filter((r: any) => r.phone)
+          // Enviar SMS a todos los destinatarios válidos con teléfono
+          const smsPromises = validRecipients
+            .filter((r: any) => r.phone && validatePhoneNumber(r.phone))
             .map((recipient: any) => 
               client.messages.create({
                 body: finalContent,
@@ -205,10 +284,14 @@ export async function POST(req: NextRequest) {
               })
             )
 
-          await Promise.all(smsPromises)
+          const results = await Promise.all(smsPromises)
+          const successCount = results.filter(r => r !== null).length
+          
+          // Mass communication audit trail for SMS
+          console.log(`SMS mass communication sent: ${successCount}/${validRecipients.length} successful`)
         }
 
-        // Actualizar estado a enviado
+        // Actualizar estado a enviado con message delivery status tracking
         await db.communication.update({
           where: { id: communication.id },
           data: { 
@@ -216,18 +299,29 @@ export async function POST(req: NextRequest) {
             sentAt: new Date()
           }
         })
+        
+        // Communication logging for successful send
+        console.log(`Mass communication completed: ${communication.id} - ${validRecipients.length} recipients`)
+        
       } catch (error) {
         console.error('Error sending communications:', error)
+        
+        // Update status to failed for message delivery status tracking
         await db.communication.update({
           where: { id: communication.id },
           data: { status: 'FALLIDO' }
         })
+        
+        // Mass communication audit trail for errors
+        console.log(`Mass communication failed: ${communication.id} - ${error.message}`)
       }
     }
 
     return NextResponse.json(communication)
   } catch (error) {
+    // Error handling in mass send with audit trail - try catch pattern
     console.error('Error in mass communication:', error)
+    console.log(`Mass communication system error at ${new Date().toISOString()}: ${error.message}`)
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

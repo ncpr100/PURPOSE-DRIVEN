@@ -163,10 +163,17 @@ export function NotificationEmail({
               <Link href={`${baseUrl}/notifications`} style={link}>
                 Ver todas las notificaciones
               </Link>
+              {' • '}
+              <Link href={`${baseUrl}/unsubscribe`} style={link}>
+                Cancelar suscripción
+              </Link>
             </Text>
             <Text style={{ ...footerText, fontSize: '12px', color: '#6b7280' }}>
-              Si ya no deseas recibir estas notificaciones, puedes actualizar tus preferencias 
-              en tu perfil de usuario.
+              Si ya no deseas recibir estas notificaciones, puedes{' '}
+              <Link href={`${baseUrl}/unsubscribe`} style={link}>
+                cancelar tu suscripción
+              </Link>{' '}
+              o actualizar tus preferencias en tu perfil de usuario.
             </Text>
           </Section>
         </Container>

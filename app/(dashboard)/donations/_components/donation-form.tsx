@@ -79,11 +79,25 @@ export function DonationForm({ categories, paymentMethods, onSuccess }: Donation
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!formData.amount || parseFloat(formData.amount) <= 0) {
+    // ENHANCED VALIDATION
+    
+    // Amount validation
+    if (!formData.amount || isNaN(parseFloat(formData.amount)) || parseFloat(formData.amount) <= 0) {
       toast.error('El monto debe ser mayor a cero')
       return
     }
 
+    if (parseFloat(formData.amount) < 1) {
+      toast.error('El monto mínimo es $1')
+      return
+    }
+
+    if (parseFloat(formData.amount) > 20000000) {
+      toast.error('El monto máximo es $20.000.000')
+      return
+    }
+
+    // Required field validation
     if (!formData.categoryId) {
       toast.error('Debe seleccionar una categoría')
       return
@@ -94,9 +108,28 @@ export function DonationForm({ categories, paymentMethods, onSuccess }: Donation
       return
     }
 
-    if (!formData.isAnonymous && !formData.memberId && !formData.donorName) {
+    // Donor information validation
+    if (!formData.isAnonymous && !formData.memberId && !formData.donorName?.trim()) {
       toast.error('Debe proporcionar un nombre del donante o seleccionar un miembro')
       return
+    }
+
+    // Email validation (if provided)
+    if (!formData.isAnonymous && formData.donorEmail && formData.donorEmail.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.donorEmail.trim())) {
+        toast.error('El email no es válido')
+        return
+      }
+    }
+
+    // Phone validation (if provided)
+    if (!formData.isAnonymous && formData.donorPhone && formData.donorPhone.trim()) {
+      const phoneRegex = /^[\+]?[\d\s\-\(\)]+$/;
+      if (!phoneRegex.test(formData.donorPhone.trim())) {
+        toast.error('El número de teléfono no es válido')
+        return
+      }
     }
 
     try {
@@ -104,14 +137,14 @@ export function DonationForm({ categories, paymentMethods, onSuccess }: Donation
       
       const payload = {
         amount: parseFloat(formData.amount),
-        donorName: formData.isAnonymous ? null : formData.donorName,
-        donorEmail: formData.isAnonymous ? null : formData.donorEmail,
-        donorPhone: formData.isAnonymous ? null : formData.donorPhone,
+        donorName: formData.isAnonymous ? null : (formData.donorName?.trim() || null),
+        donorEmail: formData.isAnonymous ? null : (formData.donorEmail?.trim()?.toLowerCase() || null),
+        donorPhone: formData.isAnonymous ? null : (formData.donorPhone?.trim() || null),
         memberId: formData.isAnonymous ? null : (formData.memberId === 'none' ? null : formData.memberId || null),
         categoryId: formData.categoryId,
         paymentMethodId: formData.paymentMethodId,
-        reference: formData.reference,
-        notes: formData.notes,
+        reference: formData.reference?.trim() || null,
+        notes: formData.notes?.trim() || null,
         isAnonymous: formData.isAnonymous,
         donationDate: formData.donationDate
       }

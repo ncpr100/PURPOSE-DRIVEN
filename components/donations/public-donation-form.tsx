@@ -135,10 +135,29 @@ export function PublicDonationForm({
           toast.error('El nombre es requerido')
           return false
         }
+        
+        // email validation with specific pattern
         if (!formData.donorEmail.trim()) {
           toast.error('El email es requerido')
           return false
         }
+        // Email pattern validation for security
+        const emailValidationPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailValidationPattern.test(formData.donorEmail.trim())) {
+          toast.error('El email no es válido')
+          return false
+        }
+        
+        // phone validation with specific pattern (if provided)
+        if (formData.donorPhone.trim()) {
+          // phone pattern validation for security
+          const phoneValidationPattern = /^[\+]?[\d\s\-\(\)]+$/;
+          if (!phoneValidationPattern.test(formData.donorPhone.trim())) {
+            toast.error('El teléfono no es válido')
+            return false
+          }
+        }
+        
         if (!formData.categoryId) {
           toast.error('Debe seleccionar una categoría')
           return false
@@ -446,6 +465,14 @@ export function PublicDonationForm({
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold mb-4">Método de pago</h3>
+            
+            {/* https Security Notice */}
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-sm text-green-800">
+                🔒 <strong>Pago seguro:</strong> Tu información está protegida con cifrado https y tecnología de seguridad de nivel bancario.
+              </p>
+            </div>
+            
             <div className="space-y-3">
               {paymentMethods.map((method) => (
                 <Card 

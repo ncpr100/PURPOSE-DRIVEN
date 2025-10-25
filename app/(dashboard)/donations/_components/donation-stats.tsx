@@ -30,6 +30,11 @@ interface DonationStatsData {
   }>
 }
 
+// Simple cache for stats data - revalidate every 5 minutes
+const CACHE_KEY = 'donation-stats'
+const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
+let cachedData: { data: DonationStatsData; timestamp: number } | null = null
+
 export function DonationStats() {
   const [stats, setStats] = useState<DonationStatsData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -41,9 +46,25 @@ export function DonationStats() {
   const fetchStats = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/donations/stats')
+      
+      // Check cache first - revalidate strategy
+      const now = Date.now()
+      if (cachedData && (now - cachedData.timestamp) < CACHE_DURATION) {
+        setStats(cachedData.data)
+        setLoading(false)
+        return
+      }
+      
+      const response = await fetch('/api/donations/stats', {
+        headers: {
+          'Cache-Control': 'max-age=300' // Cache for 5 minutes
+        }
+      })
       if (!response.ok) throw new Error('Error fetching stats')
       const data = await response.json()
+      
+      // Update cache
+      cachedData = { data, timestamp: now }
       setStats(data)
     } catch (error) {
       console.error('Error:', error)

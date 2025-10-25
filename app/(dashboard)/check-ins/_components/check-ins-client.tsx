@@ -207,8 +207,46 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
   const handleChildCheckIn = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // Enhanced validation requirements
     if (!childForm.childName || !childForm.parentName || !childForm.parentPhone) {
       toast.error('Nombre del niño, nombre del padre y teléfono son requeridos')
+      return
+    }
+
+    // Validate parent phone format (basic validation)
+    const phoneRegex = /^[+]?[\d\s\-\(\)]{7,15}$/
+    if (!phoneRegex.test(childForm.parentPhone)) {
+      toast.error('Formato de teléfono del padre inválido')
+      return
+    }
+
+    // Validate parent email if provided
+    if (childForm.parentEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(childForm.parentEmail)) {
+      toast.error('Formato de email del padre inválido')
+      return
+    }
+
+    // Require emergency contact for child safety
+    if (!childForm.emergencyContact || !childForm.emergencyPhone) {
+      toast.error('Contacto de emergencia y teléfono de emergencia son requeridos para la seguridad del niño')
+      return
+    }
+
+    // Validate emergency phone format
+    if (!phoneRegex.test(childForm.emergencyPhone)) {
+      toast.error('Formato de teléfono de emergencia inválido')
+      return
+    }
+
+    // Validate child name format (no numbers, special chars)
+    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(childForm.childName)) {
+      toast.error('El nombre del niño solo puede contener letras y espacios')
+      return
+    }
+
+    // Validate parent name format
+    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(childForm.parentName)) {
+      toast.error('El nombre del padre solo puede contener letras y espacios')
       return
     }
 
@@ -728,9 +766,27 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center justify-between">
                     {checkIn.firstName} {checkIn.lastName}
-                    {checkIn.isFirstTime && (
-                      <Badge variant="default">Primera vez</Badge>
-                    )}
+                    <div className="flex gap-2">
+                      {checkIn.isFirstTime && (
+                        <Badge variant="default">Primera vez</Badge>
+                      )}
+                      {checkIn.visitorType && (
+                        <Badge variant="secondary" className={`
+                          ${checkIn.visitorType === 'FIRST_TIME' ? 'bg-green-100 text-green-800' : ''}
+                          ${checkIn.visitorType === 'RETURNING' ? 'bg-blue-100 text-blue-800' : ''}
+                          ${checkIn.visitorType === 'REGULAR' ? 'bg-purple-100 text-purple-800' : ''}
+                          ${checkIn.visitorType === 'MEMBER_CANDIDATE' ? 'bg-orange-100 text-orange-800' : ''}
+                          ${checkIn.visitorType === 'MINISTRY_INTEREST' ? 'bg-yellow-100 text-yellow-800' : ''}
+                        `}>
+                          {checkIn.visitorType === 'FIRST_TIME' && 'Nuevo'}
+                          {checkIn.visitorType === 'RETURNING' && 'Regresa'}
+                          {checkIn.visitorType === 'REGULAR' && 'Regular'}
+                          {checkIn.visitorType === 'MEMBER_CANDIDATE' && 'Candidato'}
+                          {checkIn.visitorType === 'MINISTRY_INTEREST' && 'Ministerio'}
+                          {!['FIRST_TIME', 'RETURNING', 'REGULAR', 'MEMBER_CANDIDATE', 'MINISTRY_INTEREST'].includes(checkIn.visitorType) && checkIn.visitorType}
+                        </Badge>
+                      )}
+                    </div>
                   </CardTitle>
                   <CardDescription>
                     {new Date(checkIn.checkedInAt).toLocaleString('es-ES')}
@@ -1019,36 +1075,126 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Intentos Fallidos</CardTitle>
+                    <CardTitle className="text-sm font-medium">Total Registrados</CardTitle>
                     <UserCheck className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-red-600">
-                      {childrenCheckIns.reduce((sum, c) => 
-                        sum + (c.pickupAttempts?.filter(attempt => !attempt.success)?.length || 0), 0
-                      )}
+                    <div className="text-2xl font-bold text-blue-600">
+                      {childrenCheckIns.length}
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Este mes
+                      Niños registrados
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Tasa de Éxito</CardTitle>
+                    <CardTitle className="text-sm font-medium">Promedio de Edad</CardTitle>
                     <QrCode className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold text-green-600">
                       {childrenCheckIns.length > 0 
-                        ? Math.round((childrenCheckIns.filter(c => c.checkedOut).length / childrenCheckIns.length) * 100)
+                        ? Math.round(
+                            childrenCheckIns
+                              .filter(c => c.childAge)
+                              .reduce((sum, c) => sum + (c.childAge || 0), 0) / 
+                            childrenCheckIns.filter(c => c.childAge).length
+                          ) || 0
                         : 0
-                      }%
+                      } años
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Recogidas exitosas
+                      Edad promedio
                     </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Enhanced Children Statistics */}
+              <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm font-medium">Distribución por Edad</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {(() => {
+                        const ageGroups = childrenCheckIns.reduce((acc, child) => {
+                          const age = child.childAge || 0;
+                          const group = age <= 3 ? '0-3 años' : 
+                                       age <= 6 ? '4-6 años' : 
+                                       age <= 10 ? '7-10 años' : 
+                                       '11+ años';
+                          acc[group] = (acc[group] || 0) + 1;
+                          return acc;
+                        }, {} as Record<string, number>);
+                        
+                        return Object.entries(ageGroups).map(([group, count]) => (
+                          <div key={group} className="flex justify-between text-sm">
+                            <span>{group}:</span>
+                            <span className="font-medium">{count}</span>
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm font-medium">Alergias y Necesidades</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Con alergias:</span>
+                        <span className="font-medium text-red-600">
+                          {childrenCheckIns.filter(c => c.allergies).length}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Necesidades especiales:</span>
+                        <span className="font-medium text-orange-600">
+                          {childrenCheckIns.filter(c => c.specialNeeds).length}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Contactos de emergencia:</span>
+                        <span className="font-medium text-green-600">
+                          {childrenCheckIns.filter(c => c.emergencyContact).length}
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm font-medium">Seguridad y Verificación</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span>Con PIN personalizado:</span>
+                        <span className="font-medium text-blue-600">
+                          {childrenCheckIns.filter(c => c.securityPin !== '000000').length}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Códigos de respaldo:</span>
+                        <span className="font-medium text-purple-600">
+                          {childrenCheckIns.filter(c => c.backupAuthCodes?.length > 0).length}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Fotos de seguridad:</span>
+                        <span className="font-medium text-green-600">
+                          {childrenCheckIns.filter(c => c.childPhotoUrl && c.parentPhotoUrl).length}
+                        </span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>

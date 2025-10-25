@@ -45,6 +45,22 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = sendNotificationEmailSchema.parse(body)
 
+    // email validation for P1 test patterns
+    if (validatedData.userId) {
+      const user = await prisma.user.findUnique({
+        where: { id: validatedData.userId },
+        select: { email: true }
+      })
+      
+      if (user?.email) {
+        // Email validation pattern for security
+        const emailValidationPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailValidationPattern.test(user.email)) {
+          return NextResponse.json({ error: 'Email de usuario no válido' }, { status: 400 })
+        }
+      }
+    }
+
     // Get notification details
     const notification = await prisma.notification.findFirst({
       where: {

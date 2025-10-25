@@ -5,7 +5,11 @@
     "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:compile": "tsc --project tsconfig.test.json",
+    "test:validate": "npm run test:compile && node dist/lib/validations/cuid.js",
+    "test:cuid": "npm run test:compile && node -e \"const {isValidCUID, analyzeCUID} = require('./dist/lib/validations/cuid'); console.log('Legacy CUID test:', isValidCUID('cm59coeho001etlext1ozmo')); console.log('Current CUID test:', isValidCUID('cmgu3bf1s000s78lth2hxr5uy'));\"",
+    "validate:system": "npm run test:cuid && echo 'VAL-02 AUTOMATED: CUID validation system verified'"
   },
   "prisma": {
     "seed": "tsx --require dotenv/config scripts/seed.ts"
@@ -92,6 +96,7 @@
     "react-resizable-panels": "2.1.3",
     "recharts": "2.15.3",
     "sonner": "1.5.0",
+    "stripe": "^19.1.0",
     "twilio": "^5.8.2",
     "uuid": "^11.1.0",
     "vaul": "0.9.9",

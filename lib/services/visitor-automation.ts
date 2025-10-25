@@ -204,6 +204,115 @@ export class VisitorAutomationService {
   }
 
   /**
+   * Match visitor to suitable ministries based on interests and profile
+   */
+  private static async matchMinistries(checkIn: any, visitorProfile: any): Promise<string[]> {
+    try {
+      // Get available ministries for the church
+      const ministries = await prisma.ministry.findMany({
+        where: {
+          churchId: checkIn.churchId,
+          isActive: true
+        }
+      });
+
+      const matches: Array<{name: string, score: number}> = [];
+
+      for (const ministry of ministries) {
+        let matchScore = 0;
+
+        // Direct interest match (highest priority)
+        if (checkIn.ministryInterest?.includes(ministry.name)) {
+          matchScore += 40;
+        }
+
+        // Age group compatibility (simplified check)
+        if (checkIn.ageGroup) {
+          // Basic age group matching based on ministry name
+          const ageGroupMatch = this.isAgeGroupCompatible(ministry.name, checkIn.ageGroup);
+          if (ageGroupMatch) matchScore += 20;
+        }
+
+        // Keywords in prayer request or visit reason
+        const textToAnalyze = `${checkIn.prayerRequest || ''} ${checkIn.visitReason || ''}`.toLowerCase();
+        const ministryKeywords = this.getMinistryKeywords(ministry.name);
+        
+        for (const keyword of ministryKeywords) {
+          if (textToAnalyze.includes(keyword.toLowerCase())) {
+            matchScore += 15;
+          }
+        }
+
+        // Family status compatibility (simplified)
+        if (checkIn.familyStatus === 'FAMILY_WITH_KIDS' && ministry.name.toLowerCase().includes('niños')) {
+          matchScore += 10;
+        }
+
+        // Experience level match (simplified)
+        if (visitorProfile.category === 'MEMBER_CANDIDATE') {
+          matchScore += 10; // Member candidates get bonus for all ministries
+        }
+
+        // Add ministry if score is meaningful
+        if (matchScore >= 20) {
+          matches.push({ name: ministry.name, score: matchScore });
+        }
+      }
+
+      // Sort by score and return top 3 matches
+      const topMatches = matches
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3)
+        .map(match => match.name);
+
+      console.log(`[Ministry Matching] Found ${topMatches.length} ministry matches for visitor:`, topMatches);
+      
+      return topMatches;
+
+    } catch (error) {
+      console.error('[Ministry Matching] Error matching ministries:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get relevant keywords for ministry matching
+   */
+  private static getMinistryKeywords(ministryName: string): string[] {
+    const keywordMap: Record<string, string[]> = {
+      'Alabanza y Adoración': ['música', 'canto', 'adoración', 'alabanza', 'instrumento', 'coro', 'banda'],
+      'Evangelismo': ['evangelio', 'testificar', 'compartir fe', 'misiones', 'alcance'],
+      'Niños': ['niños', 'infantil', 'escuela dominical', 'familia', 'hijos'],
+      'Jóvenes': ['jóvenes', 'adolescentes', 'juventud', 'universidad'],
+      'Diaconía': ['servicio', 'ayuda', 'necesitados', 'caridad', 'social'],
+      'Intercesión': ['oración', 'intercesión', 'ayuno', 'espiritual'],
+      'Medios': ['tecnología', 'sonido', 'video', 'grabación', 'streaming'],
+      'Células': ['grupos pequeños', 'hogar', 'comunión', 'discipulado'],
+      'Administración': ['administración', 'gestión', 'organización', 'finanzas'],
+      'Ujieres': ['recepción', 'bienvenida', 'orden', 'protocolo']
+    };
+
+    return keywordMap[ministryName] || [ministryName.toLowerCase()];
+  }
+
+  /**
+   * Check if age group is compatible with ministry
+   */
+  private static isAgeGroupCompatible(ministryName: string, ageGroup: string): boolean {
+    const compatibility: Record<string, string[]> = {
+      'CHILDREN': ['Niños', 'Escuela Dominical', 'Infantil'],
+      'YOUTH': ['Jóvenes', 'Adolescentes', 'Juventud'],
+      'ADULTS': ['Alabanza y Adoración', 'Evangelismo', 'Diaconía', 'Intercesión', 'Células', 'Administración', 'Ujieres'],
+      'SENIORS': ['Intercesión', 'Diaconía', 'Células', 'Ujieres']
+    };
+
+    const compatibleMinistries = compatibility[ageGroup] || [];
+    return compatibleMinistries.some(ministry => 
+      ministryName.toLowerCase().includes(ministry.toLowerCase())
+    );
+  }
+
+  /**
    * Map visitor category to automation trigger type
    */
   private static getTriggerTypeForCategory(category: VisitorCategory): any {
