@@ -131,13 +131,18 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
     try {
       const response = await fetch('/api/check-ins')
       if (response.ok) {
-        const data = await response.json()
-        setCheckIns(data)
+        const result = await response.json()
+        // API returns { data: [], pagination: {} }
+        setCheckIns(Array.isArray(result.data) ? result.data : [])
       } else {
+        console.error('Failed to fetch check-ins:', response.status)
         toast.error('Error al cargar check-ins')
+        setCheckIns([]) // Ensure it's always an array
       }
     } catch (error) {
+      console.error('Error fetching check-ins:', error)
       toast.error('Error al cargar check-ins')
+      setCheckIns([]) // Ensure it's always an array
     } finally {
       setLoading(false)
     }
@@ -148,12 +153,17 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
       const response = await fetch('/api/children-check-ins')
       if (response.ok) {
         const data = await response.json()
-        setChildrenCheckIns(data)
+        // API returns array directly
+        setChildrenCheckIns(Array.isArray(data) ? data : [])
       } else {
+        console.error('Failed to fetch children check-ins:', response.status)
         toast.error('Error al cargar check-ins de niños')
+        setChildrenCheckIns([]) // Ensure it's always an array
       }
     } catch (error) {
+      console.error('Error fetching children check-ins:', error)
       toast.error('Error al cargar check-ins de niños')
+      setChildrenCheckIns([]) // Ensure it's always an array
     }
   }
 
