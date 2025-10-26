@@ -243,7 +243,11 @@ export default function SpiritualGiftsManagement() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {members.length > 0 ? Math.round((membersWithProfiles.length / members.length) * 100) : 0}%
+              {members.length > 0 ? (() => {
+                const percentage = (membersWithProfiles.length / members.length) * 100;
+                // Show 1 decimal place if percentage is less than 1%, otherwise round to whole number
+                return percentage < 1 ? percentage.toFixed(1) : Math.round(percentage);
+              })() : 0}%
             </div>
           </CardContent>
         </Card>
