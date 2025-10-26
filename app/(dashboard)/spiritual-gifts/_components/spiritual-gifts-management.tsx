@@ -16,8 +16,18 @@ interface Member {
   firstName: string
   lastName: string
   email?: string
-  spiritualGifts?: string[]
-  secondaryGifts?: string[]
+  spiritualGifts?: string[] // OLD SYSTEM - Keep for backward compatibility
+  secondaryGifts?: string[] // OLD SYSTEM - Keep for backward compatibility
+  spiritualProfile?: {       // NEW SYSTEM - Primary source of truth
+    id: string
+    primaryGifts: any[]
+    secondaryGifts: any[]
+    spiritualCalling?: string
+    ministryPassions: any[]
+    experienceLevel: number
+    volunteerReadinessScore: number
+    assessmentDate: string
+  }
 }
 
 interface SpiritualProfile {
@@ -118,20 +128,40 @@ export default function SpiritualGiftsManagement() {
   )
 
   const membersWithProfiles = filteredMembers.filter(member => {
-    const hasGifts = member.spiritualGifts && member.spiritualGifts.length > 0
-    if (member.firstName === 'Juan' && member.lastName === 'PACHANGA') {
-      console.log('🔍 Juan PACHANGA spiritual gifts check:', {
-        spiritualGifts: member.spiritualGifts,
-        hasGifts: hasGifts,
-        secondaryGifts: member.secondaryGifts
+    // 🆕 NEW SYSTEM - Check spiritual profile relation (primary)
+    const hasNewProfile = member.spiritualProfile && 
+                         member.spiritualProfile.primaryGifts && 
+                         member.spiritualProfile.primaryGifts.length > 0
+    
+    // 🔄 OLD SYSTEM - Check legacy fields (fallback)
+    const hasOldGifts = member.spiritualGifts && member.spiritualGifts.length > 0
+    
+    // Debug logging for specific members
+    if (member.firstName === 'Pedro' || member.firstName === 'Juan') {
+      console.log(`🔍 ${member.firstName} ${member.lastName} spiritual gifts check:`, {
+        newProfile: !!member.spiritualProfile,
+        newPrimaryGifts: member.spiritualProfile?.primaryGifts?.length || 0,
+        oldGifts: member.spiritualGifts?.length || 0,
+        hasNewProfile,
+        hasOldGifts
       })
     }
-    return hasGifts
+    
+    // Use NEW system if available, fallback to OLD system
+    return hasNewProfile || hasOldGifts
   })
 
   const membersWithoutProfiles = filteredMembers.filter(member => {
-    const lacksGifts = !member.spiritualGifts || member.spiritualGifts.length === 0
-    return lacksGifts
+    // 🆕 NEW SYSTEM - Check spiritual profile relation (primary)
+    const hasNewProfile = member.spiritualProfile && 
+                         member.spiritualProfile.primaryGifts && 
+                         member.spiritualProfile.primaryGifts.length > 0
+    
+    // 🔄 OLD SYSTEM - Check legacy fields (fallback)
+    const hasOldGifts = member.spiritualGifts && member.spiritualGifts.length > 0
+    
+    // Member lacks profile if NEITHER system has data
+    return !hasNewProfile && !hasOldGifts
   })
 
   const getGiftName = (giftId: string) => {
@@ -238,9 +268,31 @@ export default function SpiritualGiftsManagement() {
                   <CardDescription>{member.email}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {member.spiritualGifts && member.spiritualGifts.length > 0 ? (
+                  {/* Display spiritual gifts from NEW system first, fallback to OLD system */}
+                  {member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0 ? (
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios</p>
+                      <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Nuevo Sistema)</p>
+                      <div className="flex flex-wrap gap-1">
+                        {member.spiritualProfile.primaryGifts.slice(0, 3).map((giftId, index) => (
+                          <Badge key={index} variant="default" className="text-xs">
+                            {getGiftName(giftId)}
+                          </Badge>
+                        ))}
+                        {member.spiritualProfile.primaryGifts.length > 3 && (
+                          <Badge variant="outline" className="text-xs">
+                            +{member.spiritualProfile.primaryGifts.length - 3} más
+                          </Badge>
+                        )}
+                      </div>
+                      {member.spiritualProfile.spiritualCalling && (
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Llamado: {member.spiritualProfile.spiritualCalling.substring(0, 50)}...
+                        </p>
+                      )}
+                    </div>
+                  ) : member.spiritualGifts && member.spiritualGifts.length > 0 ? (
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Sistema Anterior)</p>
                       <div className="flex flex-wrap gap-1">
                         {member.spiritualGifts.slice(0, 3).map((giftId, index) => (
                           <Badge key={index} variant="default" className="text-xs">
@@ -262,7 +314,9 @@ export default function SpiritualGiftsManagement() {
                   )}
                   
                   <div className="flex gap-2">
-                    {member.spiritualGifts && member.spiritualGifts.length > 0 ? (
+                    {/* Check if member has profile in EITHER system */}
+                    {(member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0) || 
+                     (member.spiritualGifts && member.spiritualGifts.length > 0) ? (
                       <Button 
                         size="sm" 
                         variant="outline" 
@@ -306,13 +360,29 @@ export default function SpiritualGiftsManagement() {
                   <div>
                     <p className="text-sm font-medium text-muted-foreground mb-2">Dones Espirituales</p>
                     <div className="flex flex-wrap gap-1">
-                      {member.spiritualGifts?.map((giftId, index) => (
-                        <Badge key={index} variant="default" className="text-xs">
-                          {getGiftName(giftId)}
-                        </Badge>
-                      ))}
+                      {/* Display gifts from NEW system first, fallback to OLD system */}
+                      {member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0 ? (
+                        member.spiritualProfile.primaryGifts.map((giftId, index) => (
+                          <Badge key={index} variant="default" className="text-xs">
+                            {getGiftName(giftId)}
+                          </Badge>
+                        ))
+                      ) : (
+                        member.spiritualGifts?.map((giftId, index) => (
+                          <Badge key={index} variant="default" className="text-xs">
+                            {getGiftName(giftId)}
+                          </Badge>
+                        ))
+                      )}
                     </div>
                   </div>
+                  
+                  {/* Show assessment date if available from NEW system */}
+                  {member.spiritualProfile?.assessmentDate && (
+                    <p className="text-xs text-muted-foreground">
+                      Evaluado: {new Date(member.spiritualProfile.assessmentDate).toLocaleDateString()}
+                    </p>
+                  )}
                   
                   <Button 
                     size="sm" 

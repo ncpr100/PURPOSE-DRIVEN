@@ -29,8 +29,8 @@ export async function GET() {
         maritalStatus: true, // Also adding maritalStatus for completeness
         membershipDate: true,
         isActive: true,
-        spiritualGifts: true,
-        secondaryGifts: true,
+        spiritualGifts: true, // OLD SYSTEM - Keep for backward compatibility
+        secondaryGifts: true, // OLD SYSTEM - Keep for backward compatibility
         spiritualCalling: true,
         ministryPassion: true,
         experienceLevel: true,
@@ -49,7 +49,20 @@ export async function GET() {
         churchId: true,
         notes: true,
         occupation: true,
-        skillsMatrix: true
+        skillsMatrix: true,
+        // 🆕 NEW SYSTEM - Include spiritual profile relation
+        spiritualProfile: {
+          select: {
+            id: true,
+            primaryGifts: true,
+            secondaryGifts: true,
+            spiritualCalling: true,
+            ministryPassions: true,
+            experienceLevel: true,
+            volunteerReadinessScore: true,
+            assessmentDate: true
+          }
+        }
       },
       orderBy: {
         createdAt: 'desc'
@@ -57,7 +70,8 @@ export async function GET() {
     })
 
     console.log('📊 Members API returning:', members.length, 'members')
-    console.log('🔍 Members with spiritual gifts:', members.filter(m => m.spiritualGifts && (m.spiritualGifts as any[]).length > 0).length)
+    console.log('🔍 Members with OLD spiritual gifts:', members.filter(m => m.spiritualGifts && (m.spiritualGifts as any[]).length > 0).length)
+    console.log('🔍 Members with NEW spiritual profiles:', members.filter(m => m.spiritualProfile && m.spiritualProfile.primaryGifts && (m.spiritualProfile.primaryGifts as any[]).length > 0).length)
     
     return NextResponse.json(members)
   } catch (error) {
