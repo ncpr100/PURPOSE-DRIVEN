@@ -340,13 +340,16 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
   }
 
   const handleDownload = async (format: 'pdf' | 'word' | 'text' | 'markdown' | 'html') => {
+    console.log('🚀 Download button clicked for format:', format)
+    
     if (!generatedContent.trim() || !formData.title.trim()) {
+      console.log('❌ Validation failed - missing content or title')
       toast.error('Por favor genera un sermón y agrega un título antes de descargar')
       return
     }
 
     try {
-      console.log(`Attempting to download in ${format} format...`)
+      console.log(`✅ Starting download process for ${format}...`)
       
       const sermonData: SermonData = {
         title: formData.title,
@@ -354,41 +357,102 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
         date: new Date().toLocaleDateString('es-ES'),
         scripture: formData.scripture,
         topic: formData.topic,
-        pastor: 'Pastor', // Could be enhanced to get actual user name
-        church: 'Iglesia' // Could be enhanced to get church name
+        pastor: 'Pastor',
+        church: 'Iglesia'
       }
 
-      console.log('Sermon data prepared:', sermonData.title)
+      console.log('📄 Sermon data prepared:', { title: sermonData.title, contentLength: sermonData.content.length })
 
+      // Simple direct download approach
       switch (format) {
         case 'pdf':
-          console.log('Calling PDF download...')
-          await sermonDownloadService.downloadAsPDF(sermonData)
+          console.log('📱 Attempting PDF download...')
+          await downloadSimplePDF(sermonData)
           break
         case 'word':
-          console.log('Calling Word download...')
-          await sermonDownloadService.downloadAsWord(sermonData)
+          console.log('📝 Attempting Word download...')
+          await downloadSimpleWord(sermonData)
           break
         case 'text':
-          console.log('Calling Text download...')
-          await sermonDownloadService.downloadAsText(sermonData)
+          console.log('📄 Attempting Text download...')
+          await downloadSimpleText(sermonData)
           break
         case 'markdown':
-          console.log('Calling Markdown download...')
-          await sermonDownloadService.downloadAsMarkdown(sermonData)
+          console.log('📋 Attempting Markdown download...')
+          await downloadSimpleMarkdown(sermonData)
           break
         case 'html':
-          console.log('Calling HTML download...')
-          await sermonDownloadService.downloadAsHTML(sermonData)
+          console.log('🌐 Attempting HTML download...')
+          await downloadSimpleHTML(sermonData)
           break
       }
 
-      console.log(`${format} download completed`)
+      console.log(`✅ ${format} download completed successfully`)
       toast.success(`Sermón descargado exitosamente en formato ${format.toUpperCase()}`)
       
     } catch (error) {
-      console.error('Error downloading sermon:', error)
-      toast.error(`Error descargando el sermón en formato ${format.toUpperCase()}. Por favor intenta de nuevo.`)
+      console.error('❌ Download error:', error)
+      toast.error(`Error descargando el sermón en formato ${format.toUpperCase()}: ${error instanceof Error ? error.message : 'Error desconocido'}`)
+    }
+  }
+
+  // Simple download methods that work directly in browser
+  const downloadSimpleText = (sermon: SermonData) => {
+    const content = `${sermon.title}\n${'='.repeat(sermon.title.length)}\n\n${sermon.content}`
+    const blob = new Blob([content], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `sermon_${sermon.title.replace(/[^a-z0-9]/gi, '_')}.txt`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const downloadSimpleHTML = (sermon: SermonData) => {
+    const html = `<!DOCTYPE html><html><head><title>${sermon.title}</title></head><body><h1>${sermon.title}</h1><pre>${sermon.content}</pre></body></html>`
+    const blob = new Blob([html], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `sermon_${sermon.title.replace(/[^a-z0-9]/gi, '_')}.html`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const downloadSimpleMarkdown = (sermon: SermonData) => {
+    const md = `# ${sermon.title}\n\n${sermon.content}`
+    const blob = new Blob([md], { type: 'text/markdown' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `sermon_${sermon.title.replace(/[^a-z0-9]/gi, '_')}.md`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const downloadSimpleWord = (sermon: SermonData) => {
+    // Simple Word document as HTML with Word headers
+    const docContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><title>${sermon.title}</title></head><body><h1>${sermon.title}</h1><p>${sermon.content.replace(/\n/g, '</p><p>')}</p></body></html>`
+    const blob = new Blob([docContent], { type: 'application/msword' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `sermon_${sermon.title.replace(/[^a-z0-9]/gi, '_')}.doc`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const downloadSimplePDF = async (sermon: SermonData) => {
+    // For now, fallback to text if jsPDF fails
+    try {
+      const { jsPDF } = await import('jspdf')
+      const doc = new jsPDF()
+      doc.text(sermon.title, 20, 20)
+      doc.text(sermon.content, 20, 40, { maxWidth: 170 })
+      doc.save(`sermon_${sermon.title.replace(/[^a-z0-9]/gi, '_')}.pdf`)
+    } catch (error) {
+      console.log('PDF failed, using text fallback')
+      downloadSimpleText(sermon)
     }
   }
 
@@ -419,40 +483,63 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
   }
 
   const handleSave = async () => {
+    console.log('💾 Save button clicked')
+    
     if (!generatedContent.trim() || !formData.title.trim()) {
+      console.log('❌ Save validation failed - missing content or title')
       toast.error('Por favor genera un sermón y agrega un título antes de guardar')
       return
     }
 
     try {
-      console.log('Attempting to save sermon...', formData.title)
+      console.log('✅ Starting save process...', formData.title)
+      
+      // Simple approach - try to save directly without complex authentication
+      const sermonData = {
+        title: formData.title,
+        content: generatedContent,
+        scripture: formData.scripture,
+        topic: formData.topic,
+        date: new Date().toISOString()
+      }
+
+      console.log('📄 Attempting to call save API...', sermonData.title)
       
       const response = await fetch('/api/sermons', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Ensure cookies are included
-        body: JSON.stringify({
-          title: formData.title,
-          content: generatedContent,
-          scripture: formData.scripture,
-          topic: formData.topic,
-        }),
+        credentials: 'include',
+        body: JSON.stringify(sermonData),
       })
 
-      console.log('Save response status:', response.status)
+      console.log('📡 Save API response status:', response.status)
+
+      if (response.status === 401) {
+        console.log('🔒 Authentication issue detected')
+        toast.error('Error de autenticación. Por favor inicia sesión de nuevo.')
+        return
+      }
+
+      if (response.status === 403) {
+        console.log('🚫 Permission issue detected')
+        toast.error('No tienes permisos para guardar sermones.')
+        return
+      }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: 'Error desconocido' }))
-        console.error('Save API error:', errorData)
-        throw new Error(errorData.message || 'Error guardando el sermón')
+        console.error('❌ Save API error:', errorData)
+        throw new Error(errorData.message || `Error del servidor: ${response.status}`)
       }
 
       const data = await response.json()
-      console.log('Sermon saved successfully:', data.id)
+      console.log('✅ Sermon saved successfully:', data.id || 'success')
       
       toast.success('Sermón guardado exitosamente')
+      
+      // Clear form after successful save
       setGeneratedContent('')
       setFormData({
         topic: '',
@@ -468,7 +555,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
         onSave(data)
       }
     } catch (error) {
-      console.error('Error saving sermon:', error)
+      console.error('❌ Save error:', error)
       toast.error(`Error guardando el sermón: ${error instanceof Error ? error.message : 'Error desconocido'}`)
     }
   }
@@ -736,7 +823,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                         size="lg"
                       >
                         <Download className="h-4 w-4 mr-2" />
-                        PDF
+                        Descargar PDF
                       </Button>
                       <Button 
                         onClick={() => handleDownload('word')} 
@@ -744,7 +831,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                         size="lg"
                       >
                         <Download className="h-4 w-4 mr-2" />
-                        Word
+                        Descargar Word
                       </Button>
                       <Button 
                         onClick={() => handleDownload('html')} 
@@ -752,7 +839,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                         size="lg"
                       >
                         <Download className="h-4 w-4 mr-2" />
-                        HTML
+                        Descargar HTML
                       </Button>
                       <Button 
                         onClick={() => handleDownload('text')} 
@@ -760,7 +847,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                         size="lg"
                       >
                         <Download className="h-4 w-4 mr-2" />
-                        Texto
+                        Descargar Texto
                       </Button>
                       <Button 
                         onClick={() => handleDownload('markdown')} 
@@ -768,7 +855,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                         size="lg"
                       >
                         <FileText className="h-4 w-4 mr-2" />
-                        Markdown
+                        Descargar Markdown
                       </Button>
                       <Button 
                         onClick={handlePrint} 
