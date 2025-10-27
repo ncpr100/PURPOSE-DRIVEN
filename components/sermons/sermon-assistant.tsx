@@ -10,10 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, Sparkles, Save, BookOpen, Lightbulb, Search, Book } from 'lucide-react'
-import { PremiumBibleSearch } from './premium-bible-search'
-import { PremiumBibleComparison } from './premium-bible-comparison'
-
+import { Loader2, Sparkles, Save, BookOpen, Lightbulb, Search, Book, Download, GitCompare, FileText, Printer } from 'lucide-react'
+import BibleVersionComparison from './bible-version-comparison'
+import { sermonDownloadService, SermonData } from '@/lib/services/sermon-download-service'
+import { freeBibleService, FREE_BIBLE_VERSIONS } from '@/lib/services/free-bible-service'
 import { toast } from 'sonner'
 
 interface SermonAssistantProps {
@@ -94,7 +94,7 @@ export function SermonAssistant({ onSave }: SermonAssistantProps) {
   }
 
   const parseSermonSections = (content: string) => {
-    // Basic parsing - enhanced for better section detection
+    // Enhanced parsing for better section detection
     const sections = {
       introduction: '',
       biblicalContext: '',
@@ -115,6 +115,21 @@ export function SermonAssistant({ onSave }: SermonAssistantProps) {
     
     const outlineMatch = content.match(/ESQUEMA[\s\S]*$/i)
     if (outlineMatch) sections.outline = outlineMatch[0].replace(/ESQUEMA[^:]*:?\s*/i, '').trim()
+    
+    // Extract main points (enhanced)
+    const pointsMatch = content.match(/PUNTOS PRINCIPALES[\s\S]*?(?=CONCLUSIÓN|ESQUEMA|$)/i)
+    if (pointsMatch) {
+      const pointsContent = pointsMatch[0].replace(/PUNTOS PRINCIPALES\s*/i, '')
+      // Match numbered points with their content
+      const pointMatches = pointsContent.match(/\d+\.\s+[^\n]+(?:\n(?!\d+\.)[^\n]*)*(?=\n\d+\.|\nCONCLUSIÓN|\nESQUEMA|$)/gi)
+      if (pointMatches) {
+        pointMatches.forEach((point, index) => {
+          if (index < 3) {
+            sections.mainPoints[index] = point.trim()
+          }
+        })
+      }
+    }
     
     setSermonSections(sections)
   }
@@ -174,6 +189,75 @@ export function SermonAssistant({ onSave }: SermonAssistantProps) {
     setFormData(prev => ({ ...prev, scripture: verse }))
   }
 
+  const handleDownload = async (format: 'pdf' | 'word' | 'text' | 'markdown' | 'html') => {
+    if (!generatedContent.trim() || !formData.title.trim()) {
+      toast.error('Por favor genera un sermón y agrega un título antes de descargar')
+      return
+    }
+
+    try {
+      const sermonData: SermonData = {
+        title: formData.title,
+        content: generatedContent,
+        date: new Date().toLocaleDateString('es-ES'),
+        scripture: formData.scripture,
+        topic: formData.topic,
+        pastor: 'Pastor', // Could be enhanced to get actual user name
+        church: 'Iglesia' // Could be enhanced to get church name
+      }
+
+      switch (format) {
+        case 'pdf':
+          sermonDownloadService.downloadAsPDF(sermonData)
+          break
+        case 'word':
+          sermonDownloadService.downloadAsWord(sermonData)
+          break
+        case 'text':
+          sermonDownloadService.downloadAsText(sermonData)
+          break
+        case 'markdown':
+          sermonDownloadService.downloadAsMarkdown(sermonData)
+          break
+        case 'html':
+          sermonDownloadService.downloadAsHTML(sermonData)
+          break
+      }
+
+      toast.success(`Sermón descargado exitosamente en formato ${format.toUpperCase()}`)
+      
+    } catch (error) {
+      console.error('Error downloading sermon:', error)
+      toast.error('Error descargando el sermón. Por favor intenta de nuevo.')
+    }
+  }
+
+  const handlePrint = () => {
+    if (!generatedContent.trim() || !formData.title.trim()) {
+      toast.error('Por favor genera un sermón y agrega un título antes de imprimir')
+      return
+    }
+
+    try {
+      const sermonData: SermonData = {
+        title: formData.title,
+        content: generatedContent,
+        date: new Date().toLocaleDateString('es-ES'),
+        scripture: formData.scripture,
+        topic: formData.topic,
+        pastor: 'Pastor',
+        church: 'Iglesia'
+      }
+
+      sermonDownloadService.printSermon(sermonData)
+      toast.success('Ventana de impresión abierta')
+      
+    } catch (error) {
+      console.error('Error printing sermon:', error)
+      toast.error('Error abriendo ventana de impresión')
+    }
+  }
+
   const handleSave = async () => {
     if (!generatedContent.trim() || !formData.title.trim()) {
       toast.error('Por favor genera un sermón y agrega un título antes de guardar')
@@ -226,16 +310,25 @@ export function SermonAssistant({ onSave }: SermonAssistantProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="h-5 w-5" />
-            Asistente de Sermones Reformado con IA
+            Asistente de Sermones Reformado con IA - 100% Gratis
           </CardTitle>
           <div className="flex items-center gap-2 mt-2">
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-300">
               <Lightbulb className="h-3 w-3 mr-1" />
               Teología del Pacto
             </Badge>
-            <Badge variant="outline" className="text-xs">🌐 APIs Bíblicas Externas</Badge>
-            <Badge variant="outline" className="text-xs">66 Libros • 31,000+ Versículos</Badge>
-            <Badge variant="outline" className="text-xs">18 Versiones</Badge>
+            <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-300">
+              🆓 APIs Bíblicas Gratuitas
+            </Badge>
+            <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+              66 Libros • 31,000+ Versículos
+            </Badge>
+            <Badge variant="outline" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-300">
+              15+ Versiones Gratuitas
+            </Badge>
+            <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700 border-orange-300">
+              📄 5 Formatos de Descarga
+            </Badge>
           </div>
         </CardHeader>
         <CardContent>
@@ -247,11 +340,11 @@ export function SermonAssistant({ onSave }: SermonAssistantProps) {
               </TabsTrigger>
               <TabsTrigger value="editor" className="flex items-center gap-2">
                 <BookOpen className="h-4 w-4" />
-                Editor
+                Editor & Descarga
               </TabsTrigger>
-              <TabsTrigger value="bible-premium" className="flex items-center gap-2">
-                <Book className="h-4 w-4" />
-                Búsqueda Bíblica
+              <TabsTrigger value="bible-free" className="flex items-center gap-2">
+                <GitCompare className="h-4 w-4" />
+                Herramientas Bíblicas
               </TabsTrigger>
             </TabsList>
 
@@ -291,10 +384,11 @@ export function SermonAssistant({ onSave }: SermonAssistantProps) {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-60">
-                        <SelectItem value="RVR1960">Reina Valera 1960</SelectItem>
-                        <SelectItem value="RVC">Reina Valera Contemporánea</SelectItem>
-                        <SelectItem value="NVI">Nueva Versión Internacional</SelectItem>
-                        <SelectItem value="TLA">Traducción en Lenguaje Actual</SelectItem>
+                        {FREE_BIBLE_VERSIONS.filter((v: any) => v.language === formData.language).map((version: any) => (
+                          <SelectItem key={version.id} value={version.id}>
+                            {version.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -460,12 +554,62 @@ export function SermonAssistant({ onSave }: SermonAssistantProps) {
                     </TabsContent>
                   </Tabs>
 
-                  <div className="flex gap-4">
+                  <div className="flex flex-wrap gap-4">
                     <Button onClick={handleSave} size="lg">
                       <Save className="h-4 w-4 mr-2" />
                       Guardar Sermón
                     </Button>
-
+                    
+                    <div className="flex gap-2">
+                      <Button 
+                        onClick={() => handleDownload('pdf')} 
+                        variant="outline"
+                        size="lg"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        PDF
+                      </Button>
+                      <Button 
+                        onClick={() => handleDownload('word')} 
+                        variant="outline"
+                        size="lg"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Word
+                      </Button>
+                      <Button 
+                        onClick={() => handleDownload('html')} 
+                        variant="outline"
+                        size="lg"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        HTML
+                      </Button>
+                      <Button 
+                        onClick={() => handleDownload('text')} 
+                        variant="outline"
+                        size="lg"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Texto
+                      </Button>
+                      <Button 
+                        onClick={() => handleDownload('markdown')} 
+                        variant="outline"
+                        size="lg"
+                      >
+                        <FileText className="h-4 w-4 mr-2" />
+                        Markdown
+                      </Button>
+                      <Button 
+                        onClick={handlePrint} 
+                        variant="outline"
+                        size="lg"
+                      >
+                        <Printer className="h-4 w-4 mr-2" />
+                        Imprimir
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -483,69 +627,157 @@ export function SermonAssistant({ onSave }: SermonAssistantProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="bible-premium" className="space-y-6">
-              <div className="grid grid-cols-1 gap-6">
-                {/* Premium Bible Search */}
+            <TabsContent value="bible-free" className="space-y-6">
+              <div className="space-y-6">
+                {/* Free Bible Version Comparison */}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Search className="h-5 w-5" />
-                      Búsqueda Bíblica
+                      <GitCompare className="h-5 w-5" />
+                      Comparación de Versiones Bíblicas - 100% Gratuito
                     </CardTitle>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Badge variant="secondary" className="text-xs bg-green-50 text-green-700 border-green-300">
+                        🆓 100% Gratis
+                      </Badge>
+                      <Badge variant="secondary" className="text-xs bg-blue-50 text-blue-700 border-blue-300">
+                        15+ Versiones
+                      </Badge>
+                      <Badge variant="secondary" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                        Referencias Cruzadas IA
+                      </Badge>
+                      <Badge variant="secondary" className="text-xs bg-orange-50 text-orange-700 border-orange-300">
+                        Sin Límites
+                      </Badge>
+                    </div>
                   </CardHeader>
                   <CardContent>
-                    <PremiumBibleSearch 
-                      onVerseSelect={(verse) => setFormData(prev => ({ ...prev, scripture: verse }))}
-                    />
+                    <BibleVersionComparison />
                   </CardContent>
                 </Card>
 
-                {/* Premium Bible Comparison */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Book className="h-5 w-5" />
-                      Comparación de Versiones
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <PremiumBibleComparison 
-                      initialVerse={formData.scripture}
-                      onVerseSelect={(verse) => setFormData(prev => ({ ...prev, scripture: verse }))}
-                    />
-                  </CardContent>
-                </Card>
+                {/* Feature Overview */}
+                <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+                  <CardContent className="py-6">
+                    <div className="text-center mb-6">
+                      <GitCompare className="h-12 w-12 mx-auto text-green-600 mb-4" />
+                      <h3 className="text-xl font-semibold mb-2 text-green-800">Herramientas Bíblicas Completamente Gratuitas</h3>
+                      <p className="text-green-600">
+                        Todo lo que necesitas para preparar sermones poderosos, sin costo alguno
+                      </p>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-green-700 flex items-center gap-2">
+                          ✅ Características Incluidas
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span>15+ versiones bíblicas gratuitas</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span>Comparación lado a lado</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span>Referencias cruzadas con IA</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span>Búsqueda por temas</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span>Sin límites de uso</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span>66 libros bíblicos completos</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-blue-700 flex items-center gap-2">
+                          🔄 APIs Gratuitas
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span>Bible-API.com</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span>GetBible.net</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span>ESV API (5000/día gratis)</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span>Bible Gateway público</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span>Múltiples fuentes respaldo</span>
+                          </div>
+                        </div>
+                      </div>
 
-                {/* Feature Highlight */}
-                <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
-                  <CardContent className="text-center py-6">
-                    <Book className="h-12 w-12 mx-auto text-blue-600 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">Funciones Bíblicas Avanzadas</h3>
-                    <p className="text-muted-foreground mb-4">
-                      Accede a múltiples versiones bíblicas con contenido auténtico verificado
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="w-2 h-2 bg-green-600 rounded-full"></span>
-                        <span>Versiones españolas múltiples</span>
+                      <div className="space-y-3">
+                        <h4 className="font-semibold text-purple-700 flex items-center gap-2">
+                          📚 Versiones Disponibles
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span>Reina-Valera 1960</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span>Nueva Versión Internacional</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span>Traducción en Lenguaje Actual</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span>King James Version</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span>English Standard Version</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span>+ 10 versiones más</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="w-2 h-2 bg-green-600 rounded-full"></span>
-                        <span>Versiones inglesas incluidas</span>
-                      </div>
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="w-2 h-2 bg-green-600 rounded-full"></span>
-                        <span>Comparación de versiones</span>
-                      </div>
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="w-2 h-2 bg-green-600 rounded-full"></span>
-                        <span>Contenido auténtico</span>
+                    </div>
+
+                    <div className="mt-6 p-4 bg-white rounded-lg border border-green-200">
+                      <div className="text-center">
+                        <p className="text-sm text-green-700 mb-2">
+                          <strong>🎯 RESULTADO:</strong> Herramientas 100% gratuitas que eliminan la necesidad de suscripciones premium
+                        </p>
+                        <p className="text-xs text-green-600">
+                          Usa estas herramientas para encontrar versículos, compararlos y obtener referencias. 
+                          Los resultados se copian directamente al generador de sermones.
+                        </p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </div>
             </TabsContent>
+
+
 
           </Tabs>
         </CardContent>
