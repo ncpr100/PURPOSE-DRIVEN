@@ -237,7 +237,7 @@ class FreeBibleService {
           }
         }
       } catch (error) {
-        console.log(`Failed to fetch with ${alt}:`, error.message)
+        console.log(`Failed to fetch with ${alt}:`, error instanceof Error ? error.message : 'Unknown error')
       }
     }
 
@@ -267,7 +267,7 @@ class FreeBibleService {
         }
       }
     } catch (error) {
-      console.log('GetBible fallback failed:', error.message)
+      console.log('GetBible fallback failed:', error instanceof Error ? error.message : 'Unknown error')
     }
 
     return null
