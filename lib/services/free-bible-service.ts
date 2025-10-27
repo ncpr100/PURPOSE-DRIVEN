@@ -214,78 +214,68 @@ class FreeBibleService {
 
   // Try multiple strategies to get a verse
   private async getVerseWithFallback(reference: string, version: string): Promise<BibleVerse | null> {
-    console.log(`🔍 Fallback method called for ${reference} (${version})`)
-    
-    // IMMEDIATE FIX: Hardcoded Spanish Bible verses for common references
-    const spanishBibleData: { [key: string]: { [key: string]: string } } = {
-      'romans 12:1': {
-        'RVR1960': 'Así que, hermanos, os ruego por las misericordias de Dios, que presentéis vuestros cuerpos en sacrificio vivo, santo, agradable a Dios, que es vuestro culto racional.',
-        'NVI': 'Por lo tanto, hermanos, tomando en cuenta la misericordia de Dios, les ruego que cada uno de ustedes, en adoración espiritual, ofrezca su cuerpo como sacrificio vivo, santo y agradable a Dios.',
-        'TLA': 'Hermanos míos, Dios ha sido muy bueno con ustedes. Por eso les ruego que dediquen toda su vida a servirle. Ése es el verdadero culto que deben ofrecerle.'
-      },
-      'john 3:16': {
-        'RVR1960': 'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna.',
-        'NVI': 'Porque tanto amó Dios al mundo que dio a su Hijo unigénito, para que todo el que cree en él no se pierda, sino que tenga vida eterna.',
-        'TLA': 'Pues Dios amó tanto al mundo, que dio a su único Hijo, para que todo aquel que cree en él no muera, sino que tenga vida eterna.'
-      },
-      'genesis 1:1': {
-        'RVR1960': 'En el principio creó Dios los cielos y la tierra.',
-        'NVI': 'Dios, en el principio, creó los cielos y la tierra.',
-        'TLA': 'En el principio, Dios creó el cielo y la tierra.'
-      },
-      'psalm 23:1': {
-        'RVR1960': 'Jehová es mi pastor; nada me faltará.',
-        'NVI': 'El Señor es mi pastor, nada me falta.',
-        'TLA': 'Tú, Señor, eres mi pastor; nada me falta.'
-      },
-      'philippians 4:13': {
-        'RVR1960': 'Todo lo puedo en Cristo que me fortalece.',
-        'NVI': 'Todo lo puedo en Cristo que me fortalece.',
-        'TLA': 'Cristo me da las fuerzas para enfrentarme a cualquier situación.'
-      }
+    // Try alternative version mappings for Spanish versions
+    const versionMappings: { [key: string]: string[] } = {
+      'NVI': ['nvi', 'spanish', 'es'],
+      'TLA': ['tla', 'spanish', 'es'],
+      'RVR1960': ['rvr60', 'rvr1960', 'reina-valera'],
+      'ESV': ['esv', 'english'],
+      'KJV': ['kjv', 'king-james']
     }
 
-    // Normalize reference for lookup
-    const normalizedRef = reference.toLowerCase().replace(/\s+/g, ' ').trim()
-    
-    // Check hardcoded Spanish data first
-    if (spanishBibleData[normalizedRef] && spanishBibleData[normalizedRef][version]) {
-      console.log(`✅ Found Spanish verse in hardcoded data for ${reference} (${version})`)
-      return {
-        book: reference.split(' ')[0],
-        chapter: parseInt(reference.match(/\d+/)?.[0] || '1'),
-        verse: parseInt(reference.match(/:(\d+)/)?.[1] || '1'),
-        text: spanishBibleData[normalizedRef][version],
-        version: version,
-        reference: reference
-      }
-    }
+    const alternatives = versionMappings[version] || [version.toLowerCase()]
 
-    // For English versions, try external APIs
-    const englishVersions = ['ESV', 'KJV', 'NIV', 'NASB']
-    if (englishVersions.includes(version)) {
+    for (const alt of alternatives) {
       try {
-        const response = await fetch(`https://labs.bible.org/api/?passage=${encodeURIComponent(reference)}&formatting=plain`)
+        // Try Bible-API with alternative version names
+        const response = await fetch(`https://bible-api.com/${reference}?translation=${alt}`)
         if (response.ok) {
-          const text = await response.text()
-          if (text && !text.includes('error')) {
-            console.log(`✅ Found English verse from Bible.org Labs for ${reference}`)
+          const data = await response.json()
+          if (!data.error && data.text) {
             return {
-              book: reference.split(' ')[0],
-              chapter: parseInt(reference.match(/\d+/)?.[0] || '1'),
-              verse: parseInt(reference.match(/:(\d+)/)?.[1] || '1'),
-              text: text.trim(),
+              book: data.reference?.split(' ')[0] || reference.split(' ')[0],
+              chapter: parseInt(data.reference?.match(/\d+/)?.[0] || '1'),
+              verse: parseInt(data.reference?.match(/:(\d+)/)?.[1] || '1'),
+              text: data.text.trim(),
               version: version,
-              reference: reference
+              reference: data.reference || reference
             }
           }
         }
       } catch (error) {
-        console.log('Bible.org Labs failed:', error instanceof Error ? error.message : 'Unknown error')
+        console.log(`Failed to fetch with ${alt}:`, error instanceof Error ? error.message : 'Unknown error')
       }
     }
 
-    console.log(`❌ No verse found for ${reference} (${version})`)
+    // Try GetBible with different approach
+    try {
+      const response = await fetch(`https://getbible.net/json?passage=${reference}&version=${version}`)
+      if (response.ok) {
+        const data = await response.json()
+        if (data && typeof data === 'object' && !Array.isArray(data)) {
+          const bookKey = Object.keys(data.book || {})[0]
+          if (bookKey) {
+            const chapterKey = Object.keys(data.book[bookKey].chapter || {})[0]
+            if (chapterKey) {
+              const verse = Object.values(data.book[bookKey].chapter[chapterKey].verse || {})[0] as any
+              if (verse) {
+                return {
+                  book: data.book[bookKey].book_name,
+                  chapter: parseInt(chapterKey),
+                  verse: verse.verse_nr,
+                  text: verse.verse,
+                  version: version,
+                  reference: `${data.book[bookKey].book_name} ${chapterKey}:${verse.verse_nr}`
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.log('GetBible fallback failed:', error instanceof Error ? error.message : 'Unknown error')
+    }
+
     return null
   }
 
