@@ -214,20 +214,29 @@ class FreeBibleService {
 
   // Try multiple strategies to get a verse
   private async getVerseWithFallback(reference: string, version: string): Promise<BibleVerse | null> {
-    // Try alternative version mappings for Spanish versions
+    console.log(`🔄 Getting verse fallback for ${reference} (${version})`)
+    
+    // Spanish versions - use Bible Gateway scraping for reliable content
+    const spanishVersions = ['RVR1960', 'NVI', 'TLA', 'RVA2015', 'RVC', 'NTV', 'DHH', 'BLP', 'BLPH', 'PDT', 'LBLA', 'BLA']
+    
+    if (spanishVersions.includes(version)) {
+      console.log(`🇪🇸 Using Bible Gateway for Spanish version: ${version}`)
+      return await this.getVerseFromBibleGateway(reference, version)
+    }
+
+    // English versions - continue with existing APIs
     const versionMappings: { [key: string]: string[] } = {
-      'NVI': ['nvi', 'spanish', 'es'],
-      'TLA': ['tla', 'spanish', 'es'],
-      'RVR1960': ['rvr60', 'rvr1960', 'reina-valera'],
       'ESV': ['esv', 'english'],
-      'KJV': ['kjv', 'king-james']
+      'KJV': ['kjv', 'king-james'],
+      'NIV': ['niv', 'english'],
+      'NASB': ['nasb', 'english']
     }
 
     const alternatives = versionMappings[version] || [version.toLowerCase()]
 
     for (const alt of alternatives) {
       try {
-        // Try Bible-API with alternative version names
+        // Try Bible-API with alternative version names (English only)
         const response = await fetch(`https://bible-api.com/${reference}?translation=${alt}`)
         if (response.ok) {
           const data = await response.json()
@@ -247,36 +256,61 @@ class FreeBibleService {
       }
     }
 
-    // Try GetBible with different approach
+    return null
+  }
+
+  // Bible Gateway scraping for Spanish versions (reliable source)
+  private async getVerseFromBibleGateway(reference: string, version: string): Promise<BibleVerse | null> {
     try {
-      const response = await fetch(`https://getbible.net/json?passage=${reference}&version=${version}`)
-      if (response.ok) {
-        const data = await response.json()
-        if (data && typeof data === 'object' && !Array.isArray(data)) {
-          const bookKey = Object.keys(data.book || {})[0]
-          if (bookKey) {
-            const chapterKey = Object.keys(data.book[bookKey].chapter || {})[0]
-            if (chapterKey) {
-              const verse = Object.values(data.book[bookKey].chapter[chapterKey].verse || {})[0] as any
-              if (verse) {
-                return {
-                  book: data.book[bookKey].book_name,
-                  chapter: parseInt(chapterKey),
-                  verse: verse.verse_nr,
-                  text: verse.verse,
-                  version: version,
-                  reference: `${data.book[bookKey].book_name} ${chapterKey}:${verse.verse_nr}`
-                }
-              }
-            }
+      console.log(`📖 Fetching from Bible Gateway: ${reference} (${version})`)
+      
+      // Format reference for Bible Gateway URL
+      const encodedRef = encodeURIComponent(reference)
+      const url = `https://www.biblegateway.com/passage/?search=${encodedRef}&version=${version}`
+      
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; BibleBot/1.0)',
+        }
+      })
+      
+      if (!response.ok) {
+        console.log(`❌ Bible Gateway response not ok: ${response.status}`)
+        return null
+      }
+      
+      const html = await response.text()
+      
+      // Extract verse text from meta description (reliable method)
+      const metaMatch = html.match(/<meta[^>]*name="description"[^>]*content="([^"]*)"/)
+      if (metaMatch && metaMatch[1]) {
+        let verseText = metaMatch[1]
+        
+        // Clean up the text (remove title prefix if present)
+        verseText = verseText.replace(/^[^-]*-\s*/, '') // Remove "Deberes cristianos -" style prefixes
+        verseText = verseText.trim()
+        
+        // Parse reference details
+        const refParts = reference.match(/(\w+)\s+(\d+):(\d+)/)
+        if (refParts && verseText.length > 10) { // Ensure we have substantial content
+          return {
+            book: refParts[1],
+            chapter: parseInt(refParts[2]),
+            verse: parseInt(refParts[3]),
+            text: verseText,
+            version: version,
+            reference: reference
           }
         }
       }
+      
+      console.log(`⚠️ Could not extract verse from Bible Gateway for ${reference}`)
+      return null
+      
     } catch (error) {
-      console.log('GetBible fallback failed:', error instanceof Error ? error.message : 'Unknown error')
+      console.log(`❌ Bible Gateway fetch failed:`, error instanceof Error ? error.message : 'Unknown error')
+      return null
     }
-
-    return null
   }
 
   // Get cross-references for a Bible passage
@@ -695,6 +729,7 @@ export const FREE_BIBLE_VERSIONS = [
   { id: 'TLA', name: 'Traducción en Lenguaje Actual', language: 'es' },
   { id: 'DHH', name: 'Dios Habla Hoy', language: 'es' },
   { id: 'LBLA', name: 'La Biblia de Las Américas', language: 'es' },
+  { id: 'BLA', name: 'Biblia Latinoamericana', language: 'es' },
   { id: 'PDT', name: 'Palabra de Dios para Todos', language: 'es' },
   { id: 'ESV', name: 'English Standard Version', language: 'en' },
   { id: 'KJV', name: 'King James Version', language: 'en' },
