@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Search, Copy, BookOpen, Zap, Eye, EyeOff } from 'lucide-react'
-import { freeBibleService, BibleVerse, FREE_BIBLE_VERSIONS } from '@/lib/bible-service'
+import { freeBibleService, BibleVerse, FREE_BIBLE_VERSIONS } from '@/lib/services/free-bible-service'
 import { toast } from 'sonner'
 
 interface ComparisonResult {
@@ -60,7 +60,7 @@ export default function BibleVersionComparison() {
 
     try {
       // Get verses from selected versions
-      const verses = await freeBibleService.compareVersions(searchReference, selectedVersions)
+      const verses = await freeBibleService.compareVerses(searchReference, selectedVersions)
       
       // Get cross-references
       const crossRefs = await freeBibleService.getCrossReferences(searchReference, topic)
