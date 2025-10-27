@@ -346,6 +346,8 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
     }
 
     try {
+      console.log(`Attempting to download in ${format} format...`)
+      
       const sermonData: SermonData = {
         title: formData.title,
         content: generatedContent,
@@ -356,29 +358,37 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
         church: 'Iglesia' // Could be enhanced to get church name
       }
 
+      console.log('Sermon data prepared:', sermonData.title)
+
       switch (format) {
         case 'pdf':
-          sermonDownloadService.downloadAsPDF(sermonData)
+          console.log('Calling PDF download...')
+          await sermonDownloadService.downloadAsPDF(sermonData)
           break
         case 'word':
-          sermonDownloadService.downloadAsWord(sermonData)
+          console.log('Calling Word download...')
+          await sermonDownloadService.downloadAsWord(sermonData)
           break
         case 'text':
-          sermonDownloadService.downloadAsText(sermonData)
+          console.log('Calling Text download...')
+          await sermonDownloadService.downloadAsText(sermonData)
           break
         case 'markdown':
-          sermonDownloadService.downloadAsMarkdown(sermonData)
+          console.log('Calling Markdown download...')
+          await sermonDownloadService.downloadAsMarkdown(sermonData)
           break
         case 'html':
-          sermonDownloadService.downloadAsHTML(sermonData)
+          console.log('Calling HTML download...')
+          await sermonDownloadService.downloadAsHTML(sermonData)
           break
       }
 
+      console.log(`${format} download completed`)
       toast.success(`Sermón descargado exitosamente en formato ${format.toUpperCase()}`)
       
     } catch (error) {
       console.error('Error downloading sermon:', error)
-      toast.error('Error descargando el sermón. Por favor intenta de nuevo.')
+      toast.error(`Error descargando el sermón en formato ${format.toUpperCase()}. Por favor intenta de nuevo.`)
     }
   }
 
@@ -415,11 +425,14 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
     }
 
     try {
+      console.log('Attempting to save sermon...', formData.title)
+      
       const response = await fetch('/api/sermons', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Ensure cookies are included
         body: JSON.stringify({
           title: formData.title,
           content: generatedContent,
@@ -428,10 +441,17 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
         }),
       })
 
+      console.log('Save response status:', response.status)
+
       if (!response.ok) {
-        throw new Error('Error guardando el sermón')
+        const errorData = await response.json().catch(() => ({ message: 'Error desconocido' }))
+        console.error('Save API error:', errorData)
+        throw new Error(errorData.message || 'Error guardando el sermón')
       }
 
+      const data = await response.json()
+      console.log('Sermon saved successfully:', data.id)
+      
       toast.success('Sermón guardado exitosamente')
       setGeneratedContent('')
       setFormData({
@@ -445,12 +465,11 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
       })
 
       if (onSave) {
-        const data = await response.json()
         onSave(data)
       }
     } catch (error) {
-      console.error('Error:', error)
-      toast.error('Error guardando el sermón. Por favor intenta de nuevo.')
+      console.error('Error saving sermon:', error)
+      toast.error(`Error guardando el sermón: ${error instanceof Error ? error.message : 'Error desconocido'}`)
     }
   }
 

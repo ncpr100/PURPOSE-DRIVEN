@@ -16,7 +16,16 @@ class SermonDownloadService {
   // Download as PDF
   downloadAsPDF(sermon: SermonData): void {
     try {
+      console.log('Starting PDF generation for:', sermon.title)
+      
+      // Check if jsPDF is available
+      if (typeof window === 'undefined') {
+        throw new Error('PDF generation is not available in server environment')
+      }
+
       const doc = new jsPDF()
+      console.log('jsPDF instance created successfully')
+      
       const pageWidth = doc.internal.pageSize.getWidth()
       const margin = 20
       const maxWidth = pageWidth - 2 * margin
@@ -70,10 +79,12 @@ class SermonDownloadService {
 
       // Download
       const filename = `sermon_${sermon.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`
+      console.log('Saving PDF as:', filename)
       doc.save(filename)
+      console.log('PDF download initiated successfully')
     } catch (error) {
       console.error('Error generating PDF:', error)
-      throw new Error('Error al generar PDF')
+      throw new Error(`Error al generar PDF: ${error instanceof Error ? error.message : 'Error desconocido'}`)
     }
   }
 
@@ -110,6 +121,13 @@ class SermonDownloadService {
   // Download as Plain Text
   downloadAsText(sermon: SermonData): void {
     try {
+      console.log('Starting text download for:', sermon.title)
+      
+      // Check if we're in browser environment
+      if (typeof window === 'undefined' || typeof document === 'undefined') {
+        throw new Error('Text download is not available in server environment')
+      }
+
       let content = `${sermon.title}\n${'='.repeat(sermon.title.length)}\n\n`
       
       if (sermon.scripture) content += `Pasaje Bíblico: ${sermon.scripture}\n`
@@ -120,18 +138,22 @@ class SermonDownloadService {
       
       content += '\n' + sermon.content
 
+      console.log('Creating blob for text download')
       const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
       a.download = `sermon_${sermon.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`
+      
+      console.log('Triggering text download')
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
+      console.log('Text download completed successfully')
     } catch (error) {
       console.error('Error generating text file:', error)
-      throw new Error('Error al generar archivo de texto')
+      throw new Error(`Error al generar archivo de texto: ${error instanceof Error ? error.message : 'Error desconocido'}`)
     }
   }
 
