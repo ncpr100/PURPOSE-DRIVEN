@@ -547,29 +547,56 @@ class FreeBibleService {
     try {
       console.log(`🔍 Enhanced verse lookup: ${reference} (${version})`)
       
-      // Try Bible-API.com first (most reliable, complete database)
-      let verse = await this.getVerseFromBibleAPICom(reference, version)
-      if (verse) {
-        console.log('✅ Retrieved from Bible-API.com')
-        return verse
-      }
+      // Spanish versions detection
+      const spanishVersions = ['RVR1960', 'RVA2015', 'NVI', 'NTV', 'TLA', 'DHH', 'LBLA', 'PDT']
+      const isSpanishVersion = spanishVersions.includes(version)
       
-      // Try Bible.org Labs API (excellent backup, multiple versions)
-      verse = await this.getVerseFromBibleOrgLabs(reference, version)
-      if (verse) {
-        console.log('✅ Retrieved from Bible.org Labs')
-        return verse
+      if (isSpanishVersion) {
+        console.log('🇪🇸 Spanish version detected, using Spanish-specific methods')
+        
+        // For Spanish versions, try original method and fallback first
+        let verse = await this.getVerse(reference, version)
+        if (verse) {
+          console.log('✅ Retrieved from original Spanish service')
+          return verse
+        }
+        
+        // Try Spanish fallback strategy
+        verse = await this.getVerseWithFallback(reference, version)
+        if (verse) {
+          console.log('✅ Retrieved from Spanish fallback service')
+          return verse
+        }
+        
+        console.log('⚠️ Spanish verse not found in Spanish APIs')
+        return null
+      } else {
+        console.log('🇺🇸 English version detected, using enhanced APIs')
+        
+        // For English versions, try enhanced APIs first
+        let verse = await this.getVerseFromBibleAPICom(reference, version)
+        if (verse) {
+          console.log('✅ Retrieved from Bible-API.com')
+          return verse
+        }
+        
+        // Try Bible.org Labs API (excellent backup, multiple versions)
+        verse = await this.getVerseFromBibleOrgLabs(reference, version)
+        if (verse) {
+          console.log('✅ Retrieved from Bible.org Labs')
+          return verse
+        }
+        
+        // Fallback to existing methods
+        verse = await this.getVerse(reference, version)
+        if (verse) {
+          console.log('✅ Retrieved from existing service')
+          return verse
+        }
+        
+        console.log('⚠️ English verse not found in any API')
+        return null
       }
-      
-      // Fallback to existing methods
-      verse = await this.getVerse(reference, version)
-      if (verse) {
-        console.log('✅ Retrieved from existing service')
-        return verse
-      }
-      
-      console.log('⚠️ Verse not found in any API')
-      return null
       
     } catch (error) {
       console.error('Enhanced verse lookup error:', error)
