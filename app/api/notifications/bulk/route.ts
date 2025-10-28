@@ -121,10 +121,10 @@ export async function POST(request: NextRequest) {
       expiresAt: expiresAt,
       churchId: user.churchId,
       createdBy: user.id,
-      isRead: false,
     }
 
     let createdNotifications: any[] = []
+    let deliveryRecords: any[] = []
 
     switch (validatedData.targetType) {
       case 'GLOBAL':
@@ -135,6 +135,31 @@ export async function POST(request: NextRequest) {
           include: { church: { select: { name: true } } }
         })
         createdNotifications.push(globalNotification)
+
+        // Create delivery records for all church users
+        const globalChurchUsers = await prisma.user.findMany({
+          where: {
+            churchId: user.churchId,
+            isActive: true
+          },
+          select: { id: true }
+        })
+
+        const globalDeliveries = await prisma.notificationDelivery.createMany({
+          data: globalChurchUsers.map(churchUser => ({
+            notificationId: globalNotification.id,
+            userId: churchUser.id,
+            deliveryMethod: 'in-app',
+            deliveryStatus: 'PENDING',
+            deliveredAt: new Date()
+          }))
+        })
+        
+        deliveryRecords.push(...globalChurchUsers.map(u => ({ 
+          notificationId: globalNotification.id, 
+          userId: u.id,
+          deliveryMethod: 'in-app'
+        })))
         break
 
       case 'ROLE':
@@ -148,6 +173,33 @@ export async function POST(request: NextRequest) {
           include: { church: { select: { name: true } } }
         })
         createdNotifications.push(roleNotification)
+
+        // Create delivery records for users with this role
+        const roleUsers = await prisma.user.findMany({
+          where: {
+            churchId: user.churchId,
+            role: validatedData.targetRole,
+            isActive: true
+          },
+          select: { id: true }
+        })
+
+        const roleDeliveries = await prisma.notificationDelivery.createMany({
+          data: roleUsers.map(roleUser => ({
+            notificationId: roleNotification.id,
+            userId: roleUser.id,
+            deliveryMethod: 'in-app',
+            deliveryStatus: 'PENDING',
+            deliveredAt: new Date()
+          }))
+        })
+
+        deliveryRecords.push(...roleUsers.map(u => ({ 
+          notificationId: roleNotification.id, 
+          userId: u.id,
+          deliveryMethod: 'in-app'
+        })))
+        break
         break
 
       case 'USERS':
@@ -180,6 +232,23 @@ export async function POST(request: NextRequest) {
             include: { church: { select: { name: true } } }
           })
           createdNotifications.push(userNotification)
+
+          // Create delivery record for this user
+          await prisma.notificationDelivery.create({
+            data: {
+              notificationId: userNotification.id,
+              userId: targetUser.id,
+              deliveryMethod: 'in-app',
+              deliveryStatus: 'PENDING',
+              deliveredAt: new Date()
+            }
+          })
+
+          deliveryRecords.push({ 
+            notificationId: userNotification.id, 
+            userId: targetUser.id,
+            deliveryMethod: 'in-app'
+          })
         }
         break
 
@@ -202,6 +271,23 @@ export async function POST(request: NextRequest) {
             include: { church: { select: { name: true } } }
           })
           createdNotifications.push(userNotification)
+
+          // Create delivery record for this user
+          await prisma.notificationDelivery.create({
+            data: {
+              notificationId: userNotification.id,
+              userId: churchUser.id,
+              deliveryMethod: 'in-app',
+              deliveryStatus: 'PENDING',
+              deliveredAt: new Date()
+            }
+          })
+
+          deliveryRecords.push({ 
+            notificationId: userNotification.id, 
+            userId: churchUser.id,
+            deliveryMethod: 'in-app'
+          })
         }
         break
     }
@@ -275,6 +361,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       notificationsCreated: createdNotifications.length,
+      deliveryRecordsCreated: deliveryRecords.length,
       notifications: createdNotifications,
       realTimeSent,
       emailsSent

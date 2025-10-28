@@ -255,6 +255,7 @@ model User {
   installedTemplates         AutomationRuleTemplateInstallation[]
   assignedVisitorProfiles    VisitorProfile[]
   createdEvents              Event[]                              @relation("EventCreator")
+  notificationDeliveries     NotificationDelivery[]               @relation("UserNotificationDeliveries")
 
   @@map("users")
 }
@@ -573,27 +574,49 @@ model Donation {
 }
 
 model Notification {
-  id          String    @id @default(cuid())
+  id          String                 @id @default(cuid())
   title       String
   message     String
   type        String
   category    String?
   targetRole  String?
   targetUser  String?
-  isRead      Boolean   @default(false)
-  isGlobal    Boolean   @default(false)
-  priority    String    @default("NORMAL")
+  isGlobal    Boolean                @default(false)
+  priority    String                 @default("NORMAL")
   actionUrl   String?
   actionLabel String?
   expiresAt   DateTime?
   churchId    String
   createdBy   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
-  church      Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
-  creator     User?     @relation("NotificationCreator", fields: [createdBy], references: [id])
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @default(now())
+  church      Church                 @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  creator     User?                  @relation("NotificationCreator", fields: [createdBy], references: [id])
+  deliveries  NotificationDelivery[]
 
   @@map("notifications")
+}
+
+// Per-user notification delivery tracking for read state and delivery status
+model NotificationDelivery {
+  id             String       @id @default(cuid())
+  notificationId String
+  userId         String
+  isRead         Boolean      @default(false)
+  readAt         DateTime?
+  deliveredAt    DateTime?
+  deliveryMethod String?      // 'in-app', 'email', 'push', 'sms'
+  deliveryStatus String       @default("PENDING") // 'PENDING', 'DELIVERED', 'FAILED', 'BOUNCED'
+  failureReason  String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  user           User         @relation("UserNotificationDeliveries", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([notificationId, userId, deliveryMethod])
+  @@index([userId, isRead])
+  @@index([notificationId])
+  @@map("notification_deliveries")
 }
 
 model NotificationPreference {
