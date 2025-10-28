@@ -96,6 +96,68 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
     }
 
+    // Check if user has permission to create events
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(user.role)) {
+      return NextResponse.json({ error: 'Sin permisos para crear eventos' }, { status: 403 })
+    }
+
+    const body = await request.json()
+    console.log('📋 Request body:', body)
+    
+    const validatedData = createEventSchema.parse(body)
+    console.log('✅ Validated data:', validatedData)
+
+    // Date validation
+    const startDate = new Date(validatedData.startDate)
+    const endDate = validatedData.endDate ? new Date(validatedData.endDate) : null
+
+    if (endDate && endDate <= startDate) {
+      return NextResponse.json({ 
+        error: 'La fecha de fin debe ser posterior a la fecha de inicio' 
+      }, { status: 400 })
+    }
+
+    const event = await db.event.create({
+      data: {
+        title: validatedData.title,
+        description: validatedData.description,
+        startDate: startDate,
+        endDate: endDate,
+        location: validatedData.location,
+        capacity: validatedData.capacity,
+        budget: validatedData.budget,
+        category: validatedData.category,
+        isPublic: validatedData.isPublic,
+        status: validatedData.status,
+        churchId: user.churchId,
+        createdBy: user.id,
+      },
+      include: {
+        church: { select: { name: true } },
+        creator: { select: { name: true, email: true } }
+      }
+    })
+
+    console.log(`📅 Event created: ${event.id} - ${event.title} by user ${user.id}`)
+
+    return NextResponse.json(event, { status: 201 })
+  } catch (error) {
+    console.error('Error creating event:', error)
+    
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Datos de entrada inválidos', details: error.errors },
+        { status: 400 }
+      )
+    }
+    
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}
+
 // PUT - Update event
 export async function PUT(request: NextRequest) {
   try {

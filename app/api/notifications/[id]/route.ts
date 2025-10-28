@@ -113,7 +113,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     // Return the notification with updated delivery status
-    const notification = await prisma.notification.findUnique({
+    const updatedNotification = await prisma.notification.findUnique({
       where: { id: params.id },
       include: {
         church: { select: { name: true } },
@@ -129,9 +129,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     })
 
     return NextResponse.json({
-      ...notification,
-      isRead: notification?.deliveries[0]?.isRead || false,
-      readAt: notification?.deliveries[0]?.readAt
+      ...updatedNotification,
+      isRead: updatedNotification?.deliveries[0]?.isRead || false,
+      readAt: updatedNotification?.deliveries[0]?.readAt
     })
   } catch (error) {
     console.error('Error updating notification:', error)
