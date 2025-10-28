@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
         const roleUsers = await prisma.user.findMany({
           where: {
             churchId: user.churchId,
-            role: validatedData.targetRole,
+            role: validatedData.targetRole as any,
             isActive: true
           },
           select: { id: true }

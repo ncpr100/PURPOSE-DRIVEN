@@ -6,8 +6,7 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 
 const acknowledgeSchema = z.object({
-  notificationId: z.string().uuid(),
-  deliveryMethod: z.string().optional().default('in-app')
+  notificationId: z.string()
 })
 
 // POST - Acknowledge notification as read
@@ -29,71 +28,34 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { notificationId, deliveryMethod } = acknowledgeSchema.parse(body)
+    const { notificationId } = acknowledgeSchema.parse(body)
 
-    // Verify user has access to this notification
-    const notification = await prisma.notification.findFirst({
+    // Update the user's delivery record for this notification
+    const updatedDelivery = await prisma.notificationDelivery.updateMany({
       where: {
-        id: notificationId,
-        OR: [
-          { targetUser: user.id },
-          ...(user.churchId ? [{ 
-            isGlobal: true,
-            churchId: user.churchId 
-          }] : []),
-          ...(user.churchId ? [{ 
-            targetRole: user.role,
-            churchId: user.churchId 
-          }] : []),
-          // System-wide global notifications (no churchId)
-          {
-            isGlobal: true,
-            churchId: null
-          }
-        ]
+        notificationId: notificationId,
+        userId: user.id,
+        notification: {
+          churchId: user.churchId
+        }
+      },
+      data: {
+        isRead: true,
+        readAt: new Date()
       }
     })
 
-    if (!notification) {
+    if (updatedDelivery.count === 0) {
       return NextResponse.json({ error: 'Notificación no encontrada o sin permisos' }, { status: 404 })
     }
 
-    // Create or update delivery record
-    const deliveryRecord = await prisma.notificationDelivery.upsert({
-      where: {
-        notificationId_userId_deliveryMethod: {
-          notificationId,
-          userId: user.id,
-          deliveryMethod
-        }
-      },
-      update: {
-        isRead: true,
-        readAt: new Date(),
-        deliveryStatus: 'DELIVERED'
-      },
-      create: {
-        notificationId,
-        userId: user.id,
-        deliveryMethod,
-        isRead: true,
-        readAt: new Date(),
-        deliveredAt: new Date(),
-        deliveryStatus: 'DELIVERED'
-      }
-    })
-
     return NextResponse.json({
       success: true,
-      acknowledged: true,
-      deliveryId: deliveryRecord.id
+      acknowledged: true
     })
 
   } catch (error) {
-    console.error('Error acknowledging notification:', error, {
-      userId: session?.user?.email,
-      notificationId: request.body
-    })
+    console.error('Error acknowledging notification:', error)
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
