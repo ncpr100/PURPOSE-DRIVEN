@@ -8,11 +8,23 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    console.log('AI Suggestions API - Session data:', {
+      user: session?.user,
+      churchId: session?.user?.churchId,
+      hasSession: !!session
+    })
+    
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+    
+    if (!session.user.churchId) {
+      return NextResponse.json({ error: 'No church assigned to user' }, { status: 403 })
     }
 
     const { eventHistory, currentSeason } = await request.json()
+    
+    console.log('AI Suggestions request data:', { eventHistory: eventHistory?.length, currentSeason })
 
     // Mock AI suggestions based on season and church patterns
     const seasonalSuggestions = {

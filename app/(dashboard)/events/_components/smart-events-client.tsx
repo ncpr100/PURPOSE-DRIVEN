@@ -250,35 +250,48 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
   // Event Management
   const handleCreateEvent = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    console.log('🎯 Starting event creation...')
+    console.log('Event form data:', eventForm)
 
     if (!eventForm.title || !eventForm.startDate) {
+      console.error('Validation failed: Missing title or start date')
       toast.error('Título y fecha de inicio son requeridos')
       return
     }
 
     try {
+      const requestBody = {
+        ...eventForm,
+        startDate: new Date(eventForm.startDate).toISOString(),
+        endDate: eventForm.endDate ? new Date(eventForm.endDate).toISOString() : null,
+        budget: eventForm.budget ? parseFloat(eventForm.budget) : null,
+        status: 'PLANIFICANDO'
+      }
+      console.log('Create event request body:', requestBody)
+      
       const response = await fetch('/api/events', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...eventForm,
-          startDate: new Date(eventForm.startDate).toISOString(),
-          endDate: eventForm.endDate ? new Date(eventForm.endDate).toISOString() : null,
-          budget: eventForm.budget ? parseFloat(eventForm.budget) : null,
-          status: 'PLANIFICANDO'
-        }),
+        body: JSON.stringify(requestBody),
       })
 
+      console.log('Create event response status:', response.status)
+      
       if (response.ok) {
+        const createdEvent = await response.json()
+        console.log('Event created successfully:', createdEvent)
         toast.success('✅ Evento creado exitosamente')
         resetEventForm()
         setIsNewEventDialogOpen(false)
         fetchEvents()
       } else {
         const error = await response.json()
+        console.error('Create event API error:', error)
         toast.error(error.message || 'Error al crear evento')
       }
     } catch (error) {
+      console.error('Create event error:', error)
       toast.error('Error al crear evento')
     }
   }
@@ -317,23 +330,35 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
   const generateEventSuggestions = async () => {
     try {
+      console.log('🧠 Starting AI suggestions generation...')
+      console.log('Church ID:', churchId)
+      console.log('Events for context:', events.slice(-10))
+      
       toast.info('🧠 Generando sugerencias inteligentes...')
+      
+      const requestBody = { 
+        churchId,
+        eventHistory: events.slice(-10), // Last 10 events for context
+        currentSeason: new Date().getMonth() + 1 
+      }
+      console.log('Request body:', requestBody)
       
       const response = await fetch('/api/events/ai-suggestions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          churchId,
-          eventHistory: events.slice(-10), // Last 10 events for context
-          currentSeason: new Date().getMonth() + 1 
-        })
+        body: JSON.stringify(requestBody)
       })
 
+      console.log('API Response status:', response.status)
+      
       if (response.ok) {
         const data = await response.json()
+        console.log('API Response data:', data)
         
         if (data.suggestions && data.suggestions.length > 0) {
           const suggestion = data.suggestions[0] // Use first suggestion
+          console.log('Applying suggestion:', suggestion)
+          
           setEventForm(prev => ({
             ...prev,
             title: suggestion.title || '',
@@ -345,6 +370,10 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         } else {
           toast.info('No se encontraron sugerencias específicas')
         }
+      } else {
+        const errorData = await response.json()
+        console.error('API Error:', errorData)
+        toast.error(`Error: ${errorData.error || 'Error al generar sugerencias'}`)
       }
     } catch (error) {
       console.error('Error generating suggestions:', error)

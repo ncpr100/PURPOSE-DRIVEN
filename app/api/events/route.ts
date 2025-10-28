@@ -72,8 +72,19 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    console.log('Create Event API - Session data:', {
+      user: session?.user,
+      churchId: session?.user?.churchId,
+      role: session?.user?.role,
+      hasSession: !!session
+    })
+    
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+    
+    if (!session.user.churchId) {
+      return NextResponse.json({ error: 'No church assigned to user' }, { status: 403 })
     }
 
     // Event access permissions - role validation
@@ -82,6 +93,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
+    console.log('Create event request body:', body)
     
     // Event title validation and input sanitization
     const validatedData = createEventSchema.parse({
