@@ -236,6 +236,7 @@ model User {
   member                     Member?
   notificationPreferences    NotificationPreference?              @relation("UserNotificationPreferences")
   createdNotifications       Notification[]                       @relation("NotificationCreator")
+  notificationDeliveries     NotificationDelivery[]               @relation("UserNotificationDeliveries")
   prayerApprovals            PrayerApproval[]
   pushNotificationLogs       PushNotificationLog[]
   pushSubscriptions          PushSubscription[]
@@ -573,27 +574,49 @@ model Donation {
 }
 
 model Notification {
-  id          String    @id @default(cuid())
+  id          String                 @id @default(cuid())
   title       String
   message     String
   type        String
   category    String?
   targetRole  String?
   targetUser  String?
-  isRead      Boolean   @default(false)
-  isGlobal    Boolean   @default(false)
-  priority    String    @default("NORMAL")
+  isRead      Boolean                @default(false)
+  isGlobal    Boolean                @default(false)
+  priority    String                 @default("NORMAL")
   actionUrl   String?
   actionLabel String?
   expiresAt   DateTime?
   churchId    String
   createdBy   String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
-  church      Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
-  creator     User?     @relation("NotificationCreator", fields: [createdBy], references: [id])
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @default(now())
+  church      Church                 @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  creator     User?                  @relation("NotificationCreator", fields: [createdBy], references: [id])
+  deliveries  NotificationDelivery[]
 
   @@map("notifications")
+}
+
+model NotificationDelivery {
+  id             String       @id @default(cuid())
+  notificationId String
+  userId         String
+  isRead         Boolean      @default(false)
+  isDelivered    Boolean      @default(false)
+  deliveredAt    DateTime?
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now())
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  user           User         @relation("UserNotificationDeliveries", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([notificationId, userId])
+  @@index([userId])
+  @@index([notificationId])
+  @@index([isRead])
+  @@index([isDelivered])
+  @@map("notification_deliveries")
 }
 
 model NotificationPreference {
