@@ -358,13 +358,13 @@ export default function PrayerWallPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Muro de Oración - Phase 5 📱
+            Muro de Oración �
           </h1>
           <p className="text-gray-600 mt-1">
             {loading ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Cargando Mobile App features...
+                Cargando información de peticiones...
               </span>
             ) : error ? (
               <span className="text-amber-600">⚠️ Modo sin conexión - {error}</span>
@@ -505,27 +505,27 @@ export default function PrayerWallPage() {
       {/* Content based on mode */}
       {viewMode === 'overview' ? (
         <div className="space-y-6">
-          {/* Phase 5 Success Banner */}
-          <Card className="bg-gradient-to-r from-green-500 to-blue-600 text-white">
+          {/* Mobile Features Banner */}
+          <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
             <CardContent className="p-6">
               <div className="text-center space-y-4">
-                <h2 className="text-2xl font-bold">📱 Phase 5: Mobile App Integration Active</h2>
-                <p className="text-green-100">
-                  Progressive Web App (PWA) features implemented: app installation, push notifications, offline support, and mobile optimization.
+                <h2 className="text-2xl font-bold">📱 Muro de Oración Móvil</h2>
+                <p className="text-blue-100">
+                  Accede a las peticiones de oración desde cualquier dispositivo. Puedes instalar la aplicación, recibir notificaciones y usar el muro sin conexión.
                 </p>
                 <div className="flex justify-center gap-4 flex-wrap">
-                  <Badge className="bg-white text-green-600 p-2">✅ PWA Ready</Badge>
-                  <Badge className="bg-green-100 text-green-700 p-2">📱 App Install</Badge>
-                  <Badge className="bg-blue-100 text-blue-700 p-2">🔔 Push Notifications</Badge>
-                  <Badge className="bg-purple-100 text-purple-700 p-2">📶 Offline Support</Badge>
+                  <Badge className="bg-white text-blue-600 p-2">✅ Listo para móviles</Badge>
+                  <Badge className="bg-blue-100 text-blue-700 p-2">📱 Instalable</Badge>
+                  <Badge className="bg-purple-100 text-purple-700 p-2">🔔 Notificaciones</Badge>
+                  <Badge className="bg-indigo-100 text-indigo-700 p-2">📶 Funciona sin internet</Badge>
                 </div>
                 <Button 
                   size="lg" 
-                  className="bg-white text-green-600 hover:bg-gray-100"
+                  className="bg-white text-blue-600 hover:bg-gray-100"
                   onClick={() => handleModeSwitch('integrated')}
                 >
                   <Smartphone className="w-5 h-5 mr-2" />
-                  Ver Mobile Features
+                  Ver Características Móviles
                 </Button>
               </div>
             </CardContent>
@@ -539,14 +539,14 @@ export default function PrayerWallPage() {
                 Estado de Características Mobile
               </CardTitle>
               <CardDescription>
-                Funcionalidades Progressive Web App (PWA) implementadas
+                Características móviles disponibles para acceso desde cualquier dispositivo
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="p-4 bg-green-50 rounded-lg text-center">
                   <Smartphone className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <h4 className="font-semibold text-green-800">App Installation</h4>
+                  <h4 className="font-semibold text-green-800">Instalación</h4>
                   <p className="text-sm text-green-600 mt-1">
                     {isInstalled ? '✅ Instalada' : isInstallable ? '🔄 Disponible' : '⏳ Pendiente'}
                   </p>
@@ -707,44 +707,36 @@ export default function PrayerWallPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Phase 5 Mobile App Integration Dashboard */}
-          <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+          {/* Mobile App Features Dashboard */}
+          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-green-700">
+              <CardTitle className="flex items-center gap-2 text-blue-700">
                 <Smartphone className="h-5 w-5" />
-                ✅ Phase 5: Mobile App Integration Complete
+                📱 Características Móviles Disponibles
               </CardTitle>
               <CardDescription>
-                Progressive Web App (PWA) con instalación, notificaciones, soporte offline y optimización móvil
+                Aplicación móvil con instalación, notificaciones, soporte sin conexión y optimización móvil
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-                <div className="p-4 bg-green-100 rounded-lg">
-                  <h4 className="font-semibold text-green-800">✅ Phase 1: Dashboard</h4>
-                  <p className="text-sm text-green-600">Interface consolidada</p>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="p-4 bg-blue-100 rounded-lg">
-                  <h4 className="font-semibold text-blue-800">✅ Phase 2: Modo Dual</h4>
-                  <p className="text-sm text-blue-600">Navegación avanzada</p>
+                  <h4 className="font-semibold text-blue-800">📊 Panel Principal</h4>
+                  <p className="text-sm text-blue-600">Vista consolidada de peticiones</p>
                 </div>
                 <div className="p-4 bg-purple-100 rounded-lg">
-                  <h4 className="font-semibold text-purple-800">✅ Phase 3: Real-time</h4>
-                  <p className="text-sm text-purple-600">Datos en vivo activos</p>
+                  <h4 className="font-semibold text-purple-800">📱 Navegación Móvil</h4>
+                  <p className="text-sm text-purple-600">Optimizada para dispositivos móviles</p>
                 </div>
                 <div className="p-4 bg-indigo-100 rounded-lg">
-                  <h4 className="font-semibold text-indigo-800">✅ Phase 4: Analytics</h4>
-                  <p className="text-sm text-indigo-600">Gráficos interactivos</p>
-                </div>
-                <div className="p-4 bg-teal-100 rounded-lg">
-                  <h4 className="font-semibold text-teal-800">✅ Phase 5: Mobile</h4>
-                  <p className="text-sm text-teal-600">PWA Features</p>
+                  <h4 className="font-semibold text-indigo-800">📈 Estadísticas</h4>
+                  <p className="text-sm text-indigo-600">Gráficos interactivos en tiempo real</p>
                 </div>
               </div>
 
-              {/* Advanced Analytics Features */}
-              <div className="bg-white p-6 rounded-lg border border-purple-200">
-                <h3 className="font-semibold text-green-800 mb-4">📱 Características Mobile & Analytics Implementadas</h3>
+              {/* Mobile Analytics Features */}
+              <div className="bg-white p-6 rounded-lg border border-blue-200">
+                <h3 className="font-semibold text-blue-800 mb-4">📱 Características Móviles Implementadas</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div className="text-center p-3 bg-blue-50 rounded-lg">
                     <LineChart className="w-8 h-8 text-blue-600 mx-auto mb-2" />
@@ -866,29 +858,29 @@ export default function PrayerWallPage() {
       <Card className="bg-gradient-to-r from-purple-50 to-indigo-50">
         <CardContent className="p-6">
           <div className="text-center space-y-4">
-            <h2 className="text-xl font-bold text-green-800">🎉 Prayer Wall - Sistema Mobile Completo</h2>
+            <h2 className="text-xl font-bold text-blue-800">🙏 Muro de Oración - Sistema Completo</h2>
             <div className="flex justify-center gap-4 flex-wrap">
-              <Badge className="bg-green-100 text-green-800 p-2">✅ Phase 1: Dashboard</Badge>
-              <Badge className="bg-green-100 text-green-800 p-2">✅ Phase 2: Modo Dual</Badge>
-              <Badge className="bg-green-100 text-green-800 p-2">✅ Phase 3: Real-time Data</Badge>
-              <Badge className="bg-green-100 text-green-800 p-2">✅ Phase 4: Advanced Analytics</Badge>
-              <Badge className="bg-blue-100 text-blue-800 p-2">✅ Phase 5: Mobile App (PWA)</Badge>
+              <Badge className="bg-blue-100 text-blue-800 p-2">📊 Panel de Control</Badge>
+              <Badge className="bg-purple-100 text-purple-800 p-2">📱 Versión Móvil</Badge>
+              <Badge className="bg-indigo-100 text-indigo-800 p-2">📈 Estadísticas en Tiempo Real</Badge>
+              <Badge className="bg-green-100 text-green-800 p-2">📈 Análisis Avanzados</Badge>
+              <Badge className="bg-teal-100 text-teal-800 p-2">📲 Aplicación Instalable</Badge>
             </div>
             {analytics && !loading && (
-              <div className="mt-4 p-3 bg-white rounded-lg border border-purple-200">
-                <p className="text-sm text-purple-600">
-                  � Analytics completos: {new Date().toLocaleTimeString()} | 
-                  🎯 {analytics.overview.totalRequests} peticiones analizadas | 
-                  📈 {analytics.trends?.requestsOverTime.length || 0} días de tendencias | 
+              <div className="mt-4 p-3 bg-white rounded-lg border border-blue-200">
+                <p className="text-sm text-blue-600">
+                  📊 Última actualización: {new Date().toLocaleTimeString()} | 
+                  🎯 {analytics.overview.totalRequests} peticiones registradas | 
+                  📈 {analytics.trends?.requestsOverTime.length || 0} días de estadísticas | 
                   💾 Exportación disponible
                 </p>
               </div>
             )}
-            <div className="mt-4 p-4 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-lg">
-              <h3 className="font-semibold text-purple-800 mb-2">🚀 Sistema de Prayer Wall Completado</h3>
-              <p className="text-sm text-purple-600">
-                Todas las fases implementadas exitosamente: Dashboard consolidado, navegación dual, 
-                datos en tiempo real, y analytics avanzados con gráficos interactivos.
+            <div className="mt-4 p-4 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg">
+              <h3 className="font-semibold text-blue-800 mb-2">🎉 Muro de Oración Completado</h3>
+              <p className="text-sm text-blue-600">
+                Sistema completo de peticiones de oración: Panel principal, navegación móvil, 
+                datos en tiempo real y análisis avanzados con gráficos interactivos.
               </p>
             </div>
           </div>
