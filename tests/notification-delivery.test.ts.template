@@ -1,0 +1,344 @@
+/**
+ * NotificationDelivery Model Test Suite
+ * 
+ * Tests the new NotificationDelivery model and its integration with the notifications API
+ * 
+ * Note: These tests require a test database and Jest/Vitest setup.
+ * Run with: npm test
+ */
+
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+describe('NotificationDelivery Model Tests', () => {
+  let testChurchId: string;
+  let testUserId1: string;
+  let testUserId2: string;
+  let testNotificationId: string;
+
+  beforeAll(async () => {
+    // Setup test data
+    const church = await prisma.church.create({
+      data: {
+        name: 'Test Church for Notifications',
+        isActive: true,
+      },
+    });
+    testChurchId = church.id;
+
+    const user1 = await prisma.user.create({
+      data: {
+        email: 'testuser1@notifications.test',
+        name: 'Test User 1',
+        churchId: testChurchId,
+        role: 'MIEMBRO',
+      },
+    });
+    testUserId1 = user1.id;
+
+    const user2 = await prisma.user.create({
+      data: {
+        email: 'testuser2@notifications.test',
+        name: 'Test User 2',
+        churchId: testChurchId,
+        role: 'MIEMBRO',
+      },
+    });
+    testUserId2 = user2.id;
+  });
+
+  afterAll(async () => {
+    // Cleanup test data
+    await prisma.notificationDelivery.deleteMany({
+      where: {
+        notification: {
+          churchId: testChurchId,
+        },
+      },
+    });
+
+    await prisma.notification.deleteMany({
+      where: {
+        churchId: testChurchId,
+      },
+    });
+
+    await prisma.user.deleteMany({
+      where: {
+        churchId: testChurchId,
+      },
+    });
+
+    await prisma.church.delete({
+      where: {
+        id: testChurchId,
+      },
+    });
+
+    await prisma.$disconnect();
+  });
+
+  describe('Schema Validation', () => {
+    it('should create a NotificationDelivery record successfully', async () => {
+      const notification = await prisma.notification.create({
+        data: {
+          title: 'Test Notification',
+          message: 'Test message',
+          type: 'INFO',
+          churchId: testChurchId,
+          isGlobal: false,
+        },
+      });
+
+      const delivery = await prisma.notificationDelivery.create({
+        data: {
+          notificationId: notification.id,
+          userId: testUserId1,
+          isDelivered: true,
+          deliveredAt: new Date(),
+        },
+      });
+
+      expect(delivery).toBeDefined();
+      expect(delivery.notificationId).toBe(notification.id);
+      expect(delivery.userId).toBe(testUserId1);
+      expect(delivery.isRead).toBe(false);
+      expect(delivery.isDelivered).toBe(true);
+      expect(delivery.deliveredAt).toBeDefined();
+    });
+
+    it('should enforce unique constraint on notificationId + userId', async () => {
+      const notification = await prisma.notification.create({
+        data: {
+          title: 'Duplicate Test',
+          message: 'Test message',
+          type: 'INFO',
+          churchId: testChurchId,
+        },
+      });
+
+      await prisma.notificationDelivery.create({
+        data: {
+          notificationId: notification.id,
+          userId: testUserId1,
+        },
+      });
+
+      // Attempting to create duplicate should fail
+      await expect(
+        prisma.notificationDelivery.create({
+          data: {
+            notificationId: notification.id,
+            userId: testUserId1,
+          },
+        })
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('Delivery Tracking', () => {
+    it('should track multiple deliveries for the same notification', async () => {
+      const notification = await prisma.notification.create({
+        data: {
+          title: 'Global Notification',
+          message: 'Message for all users',
+          type: 'INFO',
+          churchId: testChurchId,
+          isGlobal: true,
+        },
+      });
+
+      await prisma.notificationDelivery.createMany({
+        data: [
+          {
+            notificationId: notification.id,
+            userId: testUserId1,
+            isDelivered: true,
+            deliveredAt: new Date(),
+          },
+          {
+            notificationId: notification.id,
+            userId: testUserId2,
+            isDelivered: true,
+            deliveredAt: new Date(),
+          },
+        ],
+      });
+
+      const deliveries = await prisma.notificationDelivery.findMany({
+        where: {
+          notificationId: notification.id,
+        },
+      });
+
+      expect(deliveries).toHaveLength(2);
+      expect(deliveries.map(d => d.userId)).toContain(testUserId1);
+      expect(deliveries.map(d => d.userId)).toContain(testUserId2);
+    });
+
+    it('should track read status independently per user', async () => {
+      const notification = await prisma.notification.create({
+        data: {
+          title: 'Multi-user Notification',
+          message: 'Test independent read status',
+          type: 'INFO',
+          churchId: testChurchId,
+          isGlobal: true,
+        },
+      });
+
+      const delivery1 = await prisma.notificationDelivery.create({
+        data: {
+          notificationId: notification.id,
+          userId: testUserId1,
+          isDelivered: true,
+          deliveredAt: new Date(),
+        },
+      });
+
+      const delivery2 = await prisma.notificationDelivery.create({
+        data: {
+          notificationId: notification.id,
+          userId: testUserId2,
+          isDelivered: true,
+          deliveredAt: new Date(),
+        },
+      });
+
+      // User 1 reads the notification
+      await prisma.notificationDelivery.update({
+        where: { id: delivery1.id },
+        data: {
+          isRead: true,
+          readAt: new Date(),
+        },
+      });
+
+      const updatedDelivery1 = await prisma.notificationDelivery.findUnique({
+        where: { id: delivery1.id },
+      });
+
+      const updatedDelivery2 = await prisma.notificationDelivery.findUnique({
+        where: { id: delivery2.id },
+      });
+
+      expect(updatedDelivery1?.isRead).toBe(true);
+      expect(updatedDelivery1?.readAt).toBeDefined();
+      expect(updatedDelivery2?.isRead).toBe(false);
+      expect(updatedDelivery2?.readAt).toBeNull();
+    });
+  });
+
+  describe('Query Performance', () => {
+    it('should efficiently query user notifications using indexes', async () => {
+      // Create multiple notifications
+      const notifications = await Promise.all(
+        Array.from({ length: 10 }, (_, i) =>
+          prisma.notification.create({
+            data: {
+              title: `Notification ${i}`,
+              message: `Message ${i}`,
+              type: 'INFO',
+              churchId: testChurchId,
+            },
+          })
+        )
+      );
+
+      // Create deliveries for user 1
+      await prisma.notificationDelivery.createMany({
+        data: notifications.map(n => ({
+          notificationId: n.id,
+          userId: testUserId1,
+          isDelivered: true,
+          deliveredAt: new Date(),
+        })),
+      });
+
+      const startTime = Date.now();
+
+      // Query unread notifications for user
+      const unreadDeliveries = await prisma.notificationDelivery.findMany({
+        where: {
+          userId: testUserId1,
+          isRead: false,
+        },
+        include: {
+          notification: true,
+        },
+      });
+
+      const queryTime = Date.now() - startTime;
+
+      expect(unreadDeliveries).toHaveLength(10);
+      expect(queryTime).toBeLessThan(100); // Query should be fast due to indexes
+    });
+  });
+
+  describe('Cascade Deletion', () => {
+    it('should delete deliveries when notification is deleted', async () => {
+      const notification = await prisma.notification.create({
+        data: {
+          title: 'Delete Test',
+          message: 'Test cascade delete',
+          type: 'INFO',
+          churchId: testChurchId,
+        },
+      });
+
+      const delivery = await prisma.notificationDelivery.create({
+        data: {
+          notificationId: notification.id,
+          userId: testUserId1,
+        },
+      });
+
+      await prisma.notification.delete({
+        where: { id: notification.id },
+      });
+
+      const deletedDelivery = await prisma.notificationDelivery.findUnique({
+        where: { id: delivery.id },
+      });
+
+      expect(deletedDelivery).toBeNull();
+    });
+
+    it('should delete deliveries when user is deleted', async () => {
+      const tempUser = await prisma.user.create({
+        data: {
+          email: 'tempuser@test.com',
+          name: 'Temp User',
+          churchId: testChurchId,
+        },
+      });
+
+      const notification = await prisma.notification.create({
+        data: {
+          title: 'User Delete Test',
+          message: 'Test cascade delete on user removal',
+          type: 'INFO',
+          churchId: testChurchId,
+        },
+      });
+
+      const delivery = await prisma.notificationDelivery.create({
+        data: {
+          notificationId: notification.id,
+          userId: tempUser.id,
+        },
+      });
+
+      await prisma.user.delete({
+        where: { id: tempUser.id },
+      });
+
+      const deletedDelivery = await prisma.notificationDelivery.findUnique({
+        where: { id: delivery.id },
+      });
+
+      expect(deletedDelivery).toBeNull();
+    });
+  });
+});

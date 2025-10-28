@@ -72,10 +72,13 @@ async function migrateNotificationDeliveries() {
           deliveriesToCreate.push({
             notificationId: notification.id,
             userId: user.id,
-            isRead: notification.isRead, // Use the notification's isRead status
+            // For existing notifications, we cannot know the per-user read status
+            // Default to false (unread) to be safe - users can mark as read if needed
+            isRead: false,
             isDelivered: true, // Mark as delivered since it's an existing notification
             deliveredAt: notification.createdAt,
-            readAt: notification.isRead ? notification.updatedAt : null,
+            // readAt is null since we're defaulting to unread
+            readAt: null,
           });
         }
       }

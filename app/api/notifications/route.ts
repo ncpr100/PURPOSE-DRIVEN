@@ -95,7 +95,19 @@ export async function GET(request: NextRequest) {
       })
     } else {
       // For received notifications - use NotificationDelivery to get user-specific notifications
-      const deliveryWhereClause: any = {
+      type DeliveryWhereClause = {
+        userId: string;
+        notification: {
+          churchId: string;
+          OR?: Array<{ title?: { contains: string; mode: 'insensitive' }; message?: { contains: string; mode: 'insensitive' } }>;
+          type?: string;
+          category?: string;
+          priority?: string;
+        };
+        isRead?: boolean;
+      };
+
+      const deliveryWhereClause: DeliveryWhereClause = {
         userId: user.id,
         notification: {
           churchId: user.churchId,
