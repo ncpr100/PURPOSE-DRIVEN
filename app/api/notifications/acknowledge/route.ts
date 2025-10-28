@@ -27,6 +27,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 })
     }
 
+    if (!user.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
+    }
+
     const body = await request.json()
     const { notificationId } = acknowledgeSchema.parse(body)
 
