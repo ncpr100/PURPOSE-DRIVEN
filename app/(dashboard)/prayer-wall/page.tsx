@@ -27,7 +27,8 @@ import {
   Wifi,
   WifiOff,
   Bell,
-  Share
+  Share,
+  ArrowLeft
 } from 'lucide-react'
 import {
   LineChart as RechartsLineChart,
@@ -50,49 +51,46 @@ import { sanitizeUrlForSharing, createSafeShareData, logSharingActivity } from '
 
 interface PrayerAnalytics {
   overview: {
-    totalRequests: number
-    approvedRequests: number
-    rejectedRequests: number
-    pendingRequests: number
-    totalContacts: number
-    activeContacts: number
-    totalResponses: number
-    avgResponseTime: number
+    totalRequestsCount: number
+    totalContactos: number
+    averageResponseTime: number // in hours
+    approvalRate: number // percentage
+    userEngagementScore: number // 0-100
   }
   categories: Array<{
     id: string
     name: string
-    requestCount: number
+    cantidadPeticiones: number
     approvalRate: number
     color?: string
   }>
   trends?: {
     requestsOverTime: Array<{
       date: string
-      requests: number
-      approvals: number
-      rejections: number
+      peticiones: number
+      aprobaciones: number
+      rechazos: number
     }>
     contactGrowth: Array<{
       date: string
-      newContacts: number
-      totalContacts: number
+      contactosNuevos: number
+      totalContactos: number
     }>
     responseMetrics: Array<{
       date: string
-      responsesSent: number
-      deliveryRate: number
-      responseRate: number
+      respuestasEnviadas: number
+      tasaEntrega: number
+      tasaRespuesta: number
     }>
   }
   engagement?: {
     mostActiveHours: Array<{
       hour: number
-      count: number
+      cantidad: number
     }>
     mostActiveDays: Array<{
       day: string
-      count: number
+      cantidad: number
     }>
   }
 }
@@ -260,57 +258,54 @@ export default function PrayerWallPage() {
         // Enhanced fallback data with trends
         setAnalytics({
           overview: {
-            totalRequests: 156,
-            approvedRequests: 134,
-            rejectedRequests: 10,
-            pendingRequests: 12,
-            totalContacts: 89,
-            activeContacts: 89,
-            totalResponses: 134,
-            avgResponseTime: 2.5
-          },
+            totalRequestsCount: 156,
+            totalContactos: 89,
+            averageResponseTime: 4.2,
+            approvalRate: 87.5,
+            userEngagementScore: 78
+        },
           categories: [
-            { id: '1', name: 'Salud', requestCount: 45, approvalRate: 92 },
-            { id: '2', name: 'Familia', requestCount: 38, approvalRate: 89 },
-            { id: '3', name: 'Trabajo', requestCount: 28, approvalRate: 94 },
-            { id: '4', name: 'Ministerio', requestCount: 25, approvalRate: 96 },
-            { id: '5', name: 'Finanzas', requestCount: 20, approvalRate: 85 }
+            { id: '1', name: 'Salud', cantidadPeticiones: 45, approvalRate: 92 },
+            { id: '2', name: 'Familia', cantidadPeticiones: 38, approvalRate: 89 },
+            { id: '3', name: 'Trabajo', cantidadPeticiones: 28, approvalRate: 94 },
+            { id: '4', name: 'Ministerio', cantidadPeticiones: 25, approvalRate: 96 },
+            { id: '5', name: 'Finanzas', cantidadPeticiones: 20, approvalRate: 85 }
           ],
           trends: {
             requestsOverTime: Array.from({ length: 7 }, (_, i) => ({
               date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-              requests: Math.floor(Math.random() * 10) + 5,
-              approvals: Math.floor(Math.random() * 8) + 4,
-              rejections: Math.floor(Math.random() * 2)
+              peticiones: Math.floor(Math.random() * 10) + 5,
+              aprobaciones: Math.floor(Math.random() * 8) + 4,
+              rechazos: Math.floor(Math.random() * 2)
             })).reverse(),
             contactGrowth: Array.from({ length: 7 }, (_, i) => ({
               date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-              newContacts: Math.floor(Math.random() * 5) + 1,
-              totalContacts: 89 - i * 2
+              contactosNuevos: Math.floor(Math.random() * 5) + 1,
+              totalContactos: 89 - i * 2
             })).reverse(),
             responseMetrics: Array.from({ length: 7 }, (_, i) => ({
               date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-              responsesSent: Math.floor(Math.random() * 8) + 4,
-              deliveryRate: 95 + Math.random() * 5,
-              responseRate: 20 + Math.random() * 10
+              respuestasEnviadas: Math.floor(Math.random() * 8) + 4,
+              tasaEntrega: 95 + Math.random() * 5,
+              tasaRespuesta: 20 + Math.random() * 10
             })).reverse()
           },
           engagement: {
             mostActiveHours: [
-              { hour: 9, count: 15 },
-              { hour: 10, count: 12 },
-              { hour: 11, count: 20 },
-              { hour: 14, count: 18 },
-              { hour: 19, count: 25 }
+              { hour: 9, cantidad: 15 },
+              { hour: 10, cantidad: 12 },
+              { hour: 11, cantidad: 20 },
+              { hour: 14, cantidad: 18 },
+              { hour: 19, cantidad: 25 }
             ],
             mostActiveDays: [
-              { day: 'Domingo', count: 45 },
-              { day: 'Lunes', count: 20 },
-              { day: 'Martes', count: 25 },
-              { day: 'Miércoles', count: 30 },
-              { day: 'Jueves', count: 22 },
-              { day: 'Viernes', count: 28 },
-              { day: 'Sábado', count: 18 }
+              { day: 'Domingo', cantidad: 45 },
+              { day: 'Lunes', cantidad: 20 },
+              { day: 'Martes', cantidad: 25 },
+              { day: 'Miércoles', cantidad: 30 },
+              { day: 'Jueves', cantidad: 22 },
+              { day: 'Viernes', cantidad: 28 },
+              { day: 'Sábado', cantidad: 18 }
             ]
           }
         })
@@ -358,7 +353,7 @@ export default function PrayerWallPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Muro de Oración �
+            Muro de Oración 🙏
           </h1>
           <p className="text-gray-600 mt-1">
             {loading ? (
@@ -369,7 +364,7 @@ export default function PrayerWallPage() {
             ) : error ? (
               <span className="text-amber-600">⚠️ Modo sin conexión - {error}</span>
             ) : (
-              <span className="text-green-600">📱 Mobile App Ready - PWA Features Active</span>
+              <span className="text-green-600">📱 Sistema móvil activo - Funciones disponibles</span>
             )}
           </p>
         </div>
@@ -418,12 +413,12 @@ export default function PrayerWallPage() {
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.overview.totalRequests || 0
+                    analytics?.overview.totalRequestsCount || 0
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-blue-600 mt-1">
-                    {analytics.overview.approvedRequests} aprobadas
+                    {analytics.trends?.requestsOverTime.reduce((sum, day) => sum + day.aprobaciones, 0) || 0} aprobadas
                   </p>
                 )}
               </div>
@@ -441,12 +436,12 @@ export default function PrayerWallPage() {
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.overview.pendingRequests || 0
+                    analytics?.trends?.requestsOverTime.reduce((sum, day) => sum + day.rechazos, 0) || 0
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-amber-600 mt-1">
-                    {analytics.overview.rejectedRequests} rechazadas
+                    {analytics.trends?.requestsOverTime.reduce((sum, day) => sum + day.rechazos, 0) || 0} rechazadas
                   </p>
                 )}
               </div>
@@ -464,12 +459,12 @@ export default function PrayerWallPage() {
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.overview.totalContacts || 0
+                    analytics?.overview.totalContactos || 0
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-green-600 mt-1">
-                    {analytics.overview.activeContacts} activos
+                    {analytics.overview.totalContactos} activos
                   </p>
                 )}
               </div>
@@ -487,12 +482,12 @@ export default function PrayerWallPage() {
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.overview.totalResponses || 0
+                    analytics?.trends?.requestsOverTime.reduce((sum, day) => sum + day.aprobaciones, 0) || 0
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-purple-600 mt-1">
-                    {analytics.overview.avgResponseTime.toFixed(1)}h promedio
+                    {analytics.overview.averageResponseTime.toFixed(1)}h promedio
                   </p>
                 )}
               </div>
@@ -606,9 +601,9 @@ export default function PrayerWallPage() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Line type="monotone" dataKey="requests" stroke="#8884d8" strokeWidth={2} />
-                      <Line type="monotone" dataKey="approvals" stroke="#82ca9d" strokeWidth={2} />
-                      <Line type="monotone" dataKey="rejections" stroke="#ff7300" strokeWidth={2} />
+                      <Line type="monotone" dataKey="peticiones" stroke="#8884d8" strokeWidth={2} name="Peticiones" />
+                      <Line type="monotone" dataKey="aprobaciones" stroke="#82ca9d" strokeWidth={2} name="Aprobaciones" />
+                      <Line type="monotone" dataKey="rechazos" stroke="#ff7300" strokeWidth={2} name="Rechazos" />
                     </RechartsLineChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -636,7 +631,7 @@ export default function PrayerWallPage() {
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                         outerRadius={80}
                         fill="#8884d8"
-                        dataKey="requestCount"
+                        dataKey="cantidadPeticiones"
                       >
                         {analytics.categories.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -672,8 +667,8 @@ export default function PrayerWallPage() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Area type="monotone" dataKey="totalContacts" stackId="1" stroke="#8884d8" fill="#8884d8" />
-                      <Area type="monotone" dataKey="newContacts" stackId="2" stroke="#82ca9d" fill="#82ca9d" />
+                      <Area type="monotone" dataKey="totalContactos" stackId="1" stroke="#8884d8" fill="#8884d8" name="Total de Contactos" />
+                      <Area type="monotone" dataKey="contactosNuevos" stackId="2" stroke="#82ca9d" fill="#82ca9d" name="Contactos Nuevos" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -697,7 +692,7 @@ export default function PrayerWallPage() {
                       <XAxis dataKey="hour" />
                       <YAxis />
                       <Tooltip />
-                      <Bar dataKey="count" fill="#ffc658" />
+                      <Bar dataKey="cantidad" fill="#ffc658" name="Cantidad" />
                     </RechartsBarChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -707,6 +702,19 @@ export default function PrayerWallPage() {
         </div>
       ) : (
         <div className="space-y-6">
+          {/* Back Navigation */}
+          <div className="flex items-center gap-2 mb-4">
+            <Button 
+              onClick={() => setViewMode('overview')}
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Volver al Panel Principal
+            </Button>
+          </div>
+
           {/* Mobile App Features Dashboard */}
           <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
             <CardHeader>
@@ -797,7 +805,7 @@ export default function PrayerWallPage() {
               </div>
 
               <div className="text-center">
-                <h3 className="font-semibold text-purple-800 mb-2">🎉 Phase 4 Completado Exitosamente</h3>
+                <h3 className="font-semibold text-purple-800 mb-2">📊 Analytics Completos</h3>
                 <p className="text-sm text-purple-600 mb-4">
                   Sistema completo con gráficos interactivos, análisis de tendencias y capacidades de exportación
                 </p>
@@ -843,9 +851,9 @@ export default function PrayerWallPage() {
                     <YAxis yAxisId="right" orientation="right" />
                     <Tooltip />
                     <Legend />
-                    <Bar yAxisId="left" dataKey="responsesSent" fill="#8884d8" name="Respuestas Enviadas" />
-                    <Line yAxisId="right" type="monotone" dataKey="deliveryRate" stroke="#82ca9d" strokeWidth={2} name="Tasa de Entrega %" />
-                    <Line yAxisId="right" type="monotone" dataKey="responseRate" stroke="#ff7300" strokeWidth={2} name="Tasa de Respuesta %" />
+                    <Bar yAxisId="left" dataKey="respuestasEnviadas" fill="#8884d8" name="Respuestas Enviadas" />
+                    <Line yAxisId="right" type="monotone" dataKey="tasaEntrega" stroke="#82ca9d" strokeWidth={2} name="Tasa de Entrega %" />
+                    <Line yAxisId="right" type="monotone" dataKey="tasaRespuesta" stroke="#ff7300" strokeWidth={2} name="Tasa de Respuesta %" />
                   </RechartsLineChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -854,7 +862,7 @@ export default function PrayerWallPage() {
         </div>
       )}
 
-      {/* Phase Progress */}
+      {/* Sistema Completo */}
       <Card className="bg-gradient-to-r from-purple-50 to-indigo-50">
         <CardContent className="p-6">
           <div className="text-center space-y-4">
@@ -870,7 +878,7 @@ export default function PrayerWallPage() {
               <div className="mt-4 p-3 bg-white rounded-lg border border-blue-200">
                 <p className="text-sm text-blue-600">
                   📊 Última actualización: {new Date().toLocaleTimeString()} | 
-                  🎯 {analytics.overview.totalRequests} peticiones registradas | 
+                  🎯 {analytics.overview.totalRequestsCount} peticiones registradas | 
                   📈 {analytics.trends?.requestsOverTime.length || 0} días de estadísticas | 
                   💾 Exportación disponible
                 </p>
