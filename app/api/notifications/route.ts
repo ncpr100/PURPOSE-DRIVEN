@@ -42,12 +42,9 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category')
     const priority = searchParams.get('priority')
 
-    // Build where clause
-    let whereClause
-    
     if (sentOnly) {
       // For sent notifications - only show notifications created by this user
-      whereClause = {
+      const whereClause = {
         churchId: user.churchId,
         createdBy: user.id,
         ...(search && {
@@ -60,66 +57,117 @@ export async function GET(request: NextRequest) {
         ...(category && category !== 'all' && { category }),
         ...(priority && priority !== 'all' && { priority })
       }
+
+      const [notifications, totalCount] = await Promise.all([
+        prisma.notification.findMany({
+          where: whereClause,
+          orderBy: { createdAt: 'desc' },
+          take: limit,
+          skip: offset,
+          include: {
+            church: {
+              select: { name: true }
+            },
+            creator: {
+              select: { name: true }
+            },
+            deliveries: {
+              select: {
+                id: true,
+                userId: true,
+                isRead: true,
+                isDelivered: true,
+                deliveredAt: true,
+                readAt: true,
+              }
+            }
+          }
+        }),
+        prisma.notification.count({
+          where: whereClause
+        })
+      ])
+
+      return NextResponse.json({
+        notifications,
+        totalCount,
+        hasMore: offset + notifications.length < totalCount
+      })
     } else {
-      // For received notifications - notifications targeting this user
-      whereClause = {
-        churchId: user.churchId,
-        AND: [
-          {
-            OR: [
-              { isGlobal: true },
-              { targetUser: user.id },
-              { targetRole: user.role },
-            ]
-          },
-          ...(unreadOnly ? [{ isRead: false }] : []),
-          ...(search ? [{
+      // For received notifications - use NotificationDelivery to get user-specific notifications
+      const deliveryWhereClause: any = {
+        userId: user.id,
+        notification: {
+          churchId: user.churchId,
+        },
+        ...(unreadOnly && { isRead: false }),
+      }
+
+      // Add search filters to notification
+      if (search || type || category || priority) {
+        deliveryWhereClause.notification = {
+          ...deliveryWhereClause.notification,
+          ...(search && {
             OR: [
               { title: { contains: search, mode: 'insensitive' as any } },
               { message: { contains: search, mode: 'insensitive' as any } }
             ]
-          }] : []),
-          ...(type && type !== 'all' ? [{ type }] : []),
-          ...(category && category !== 'all' ? [{ category }] : []),
-          ...(priority && priority !== 'all' ? [{ priority }] : [])
-        ]
-      }
-    }
-
-    const [notifications, totalCount] = await Promise.all([
-      prisma.notification.findMany({
-        where: whereClause,
-        orderBy: { createdAt: 'desc' },
-        take: limit,
-        skip: offset,
-        include: {
-          church: {
-            select: { name: true }
-          },
-          creator: {
-            select: { name: true }
-          }
+          }),
+          ...(type && type !== 'all' && { type }),
+          ...(category && category !== 'all' && { category }),
+          ...(priority && priority !== 'all' && { priority })
         }
-      }),
-      prisma.notification.count({
-        where: whereClause
-      })
-    ])
-
-    // Also get unread count for the user
-    const unreadCount = await prisma.notification.count({
-      where: {
-        ...whereClause,
-        isRead: false
       }
-    })
 
-    return NextResponse.json({
-      notifications,
-      totalCount,
-      unreadCount,
-      hasMore: offset + notifications.length < totalCount
-    })
+      const [deliveries, totalCount, unreadCount] = await Promise.all([
+        prisma.notificationDelivery.findMany({
+          where: deliveryWhereClause,
+          orderBy: { createdAt: 'desc' },
+          take: limit,
+          skip: offset,
+          include: {
+            notification: {
+              include: {
+                church: {
+                  select: { name: true }
+                },
+                creator: {
+                  select: { name: true }
+                }
+              }
+            }
+          }
+        }),
+        prisma.notificationDelivery.count({
+          where: deliveryWhereClause
+        }),
+        prisma.notificationDelivery.count({
+          where: {
+            userId: user.id,
+            isRead: false,
+            notification: {
+              churchId: user.churchId,
+            }
+          }
+        })
+      ])
+
+      // Transform deliveries to match the expected notification format
+      const notifications = deliveries.map(delivery => ({
+        ...delivery.notification,
+        isRead: delivery.isRead,
+        deliveryId: delivery.id,
+        deliveredAt: delivery.deliveredAt,
+        readAt: delivery.readAt,
+      }))
+
+      return NextResponse.json({
+        notifications,
+        totalCount,
+        unreadCount,
+        hasMore: offset + notifications.length < totalCount
+      })
+    }
   } catch (error) {
     console.error('Error fetching notifications:', error)
     return NextResponse.json(
@@ -167,10 +215,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Create notification and determine target users
     const notification = await prisma.notification.create({
       data: {
         ...validatedData,
         churchId: user.churchId,
+        createdBy: user.id,
       },
       include: {
         church: {
@@ -179,10 +229,50 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // TODO: Add real-time notification delivery (WebSocket/SSE)
-    // This would be implemented in a separate WebSocket service
+    // Determine which users should receive this notification
+    let targetUsers: Array<{ id: string }> = []
 
-    return NextResponse.json(notification, { status: 201 })
+    if (validatedData.targetUser) {
+      // Specific user targeted
+      targetUsers = [{ id: validatedData.targetUser }]
+    } else if (validatedData.targetRole) {
+      // Role-based notification - get all users with this role in the church
+      targetUsers = await prisma.user.findMany({
+        where: {
+          churchId: user.churchId,
+          role: validatedData.targetRole as any,
+          isActive: true,
+        },
+        select: { id: true }
+      })
+    } else if (validatedData.isGlobal) {
+      // Global notification - all active users in the church
+      targetUsers = await prisma.user.findMany({
+        where: {
+          churchId: user.churchId,
+          isActive: true,
+        },
+        select: { id: true }
+      })
+    }
+
+    // Create NotificationDelivery records for all target users
+    if (targetUsers.length > 0) {
+      await prisma.notificationDelivery.createMany({
+        data: targetUsers.map(targetUser => ({
+          notificationId: notification.id,
+          userId: targetUser.id,
+          isDelivered: true,
+          deliveredAt: new Date(),
+        })),
+        skipDuplicates: true,
+      })
+    }
+
+    return NextResponse.json({
+      ...notification,
+      deliveryCount: targetUsers.length,
+    }, { status: 201 })
   } catch (error) {
     console.error('Error creating notification:', error)
     
@@ -219,40 +309,50 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { notificationIds, markAllAsRead } = body
+    const { notificationIds, deliveryIds, markAllAsRead } = body
+
+    const now = new Date()
 
     if (markAllAsRead) {
-      // Mark all user's notifications as read
-      await prisma.notification.updateMany({
+      // Mark all user's notification deliveries as read
+      await prisma.notificationDelivery.updateMany({
         where: {
-          churchId: user.churchId,
-          OR: [
-            { isGlobal: true },
-            { targetUser: user.id },
-            { targetRole: user.role },
-          ],
-          isRead: false
+          userId: user.id,
+          isRead: false,
+          notification: {
+            churchId: user.churchId,
+          }
         },
         data: {
           isRead: true,
-          updatedAt: new Date()
+          readAt: now,
+          updatedAt: now
+        }
+      })
+    } else if (deliveryIds && Array.isArray(deliveryIds)) {
+      // Mark specific delivery records as read (preferred method)
+      await prisma.notificationDelivery.updateMany({
+        where: {
+          id: { in: deliveryIds },
+          userId: user.id,
+        },
+        data: {
+          isRead: true,
+          readAt: now,
+          updatedAt: now
         }
       })
     } else if (notificationIds && Array.isArray(notificationIds)) {
-      // Mark specific notifications as read
-      await prisma.notification.updateMany({
+      // Legacy support: mark by notification IDs
+      await prisma.notificationDelivery.updateMany({
         where: {
-          id: { in: notificationIds },
-          churchId: user.churchId,
-          OR: [
-            { isGlobal: true },
-            { targetUser: user.id },
-            { targetRole: user.role },
-          ]
+          notificationId: { in: notificationIds },
+          userId: user.id,
         },
         data: {
           isRead: true,
-          updatedAt: new Date()
+          readAt: now,
+          updatedAt: now
         }
       })
     }
