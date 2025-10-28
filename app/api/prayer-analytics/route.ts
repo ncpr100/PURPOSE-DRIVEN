@@ -3,13 +3,58 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
 import { subDays, format, startOfDay, endOfDay } from 'date-fns'
+import { checkRateLimit } from '@/lib/rate-limit'
+import { validateRequestSecurity } from '@/lib/csrf'
+import { z } from 'zod'
 
 // Explicitly mark the route as dynamic
 export const dynamic = 'force-dynamic';
 
+// Input validation schema
+const analyticsQuerySchema = z.object({
+  days: z.coerce.number().min(1).max(365).default(30),
+  category: z.string().regex(/^[a-zA-Z0-9_-]*$/).max(50).default('all'),
+  status: z.enum(['all', 'pending', 'approved', 'rejected']).default('all'),
+  contactMethod: z.enum(['all', 'email', 'sms', 'whatsapp']).default('all')
+})
+
 // GET /api/prayer-analytics - Get comprehensive prayer analytics
 export async function GET(request: NextRequest) {
   try {
+    // ✅ SECURITY: Rate limiting (30 requests per minute)
+    const rateLimitResult = await checkRateLimit(request, 'prayer-analytics')
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { 
+          error: rateLimitResult.message || 'Demasiadas solicitudes',
+          code: 'RATE_LIMIT_EXCEEDED',
+          retryAfter: Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)
+        },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString(),
+            'X-RateLimit-Limit': '30',
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': Math.ceil(rateLimitResult.resetTime / 1000).toString()
+          }
+        }
+      )
+    }
+
+    // ✅ SECURITY: Request validation (CSRF + Origin)
+    const securityValidation = await validateRequestSecurity(request)
+    if (!securityValidation.valid) {
+      return NextResponse.json(
+        { 
+          error: 'Solicitud de seguridad inválida',
+          code: 'SECURITY_VALIDATION_FAILED',
+          reason: securityValidation.reason
+        },
+        { status: 403 }
+      )
+    }
+
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -29,16 +74,51 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }
 
+    // ✅ SECURITY: Input validation and sanitization
     const url = new URL(request.url)
-    const days = parseInt(url.searchParams.get('days') || '30')
-    const category = url.searchParams.get('category') || 'all'
-    const status = url.searchParams.get('status') || 'all'
-    const contactMethod = url.searchParams.get('contactMethod') || 'all'
+    let queryParams: z.infer<typeof analyticsQuerySchema>
+    try {
+      queryParams = analyticsQuerySchema.parse({
+        days: url.searchParams.get('days'),
+        category: url.searchParams.get('category'),
+        status: url.searchParams.get('status'),
+        contactMethod: url.searchParams.get('contactMethod')
+      })
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return NextResponse.json(
+          { 
+            error: 'Parámetros inválidos',
+            code: 'INVALID_PARAMETERS',
+            details: error.errors
+          },
+          { status: 400 }
+        )
+      }
+      throw error
+    }
 
-    const startDate = subDays(new Date(), days)
+    // ✅ SECURITY: Validate category belongs to user's church
+    if (queryParams.category !== 'all') {
+      const validCategory = await prisma.prayerCategory.findFirst({
+        where: {
+          id: queryParams.category,
+          churchId: user.churchId
+        }
+      })
+      
+      if (!validCategory) {
+        return NextResponse.json(
+          { error: 'Categoría inválida o no autorizada' },
+          { status: 400 }
+        )
+      }
+    }
+
+    const startDate = subDays(new Date(), queryParams.days)
     const endDate = new Date()
 
-    // Build where clause for filtering
+    // Build where clause for filtering with validated parameters
     const whereClause: any = {
       churchId: user.churchId,
       createdAt: {
@@ -47,48 +127,104 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    if (category !== 'all') {
-      whereClause.categoryId = category
+    if (queryParams.category !== 'all') {
+      whereClause.categoryId = queryParams.category
     }
 
-    if (status !== 'all') {
-      whereClause.status = status
+    if (queryParams.status !== 'all') {
+      whereClause.status = queryParams.status
     }
 
-    // Get all prayer requests for the period
+    // ✅ SECURITY: Enhanced query building with sanitized parameters
+    // Get all prayer requests for the period with secure filtering
     const prayerRequests = await prisma.prayerRequest.findMany({
       where: whereClause,
-      include: {
-        category: true,
-        contact: true,
+      select: {
+        id: true,
+        message: true, // ✅ Correct field name from schema
+        status: true,
+        isAnonymous: true,
+        createdAt: true,
+        updatedAt: true,
+        categoryId: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            color: true
+          }
+        },
+        contact: {
+          select: {
+            id: true,
+            fullName: true, // ✅ Correct field name from schema
+            email: true,
+            phone: true,
+            preferredContact: true
+          }
+        },
         approval: {
-          include: {
-            approver: true
+          select: {
+            id: true,
+            status: true, // ✅ Correct field name from schema
+            approvedAt: true,
+            approver: {
+              select: {
+                id: true,
+                name: true,
+                role: true
+              }
+            }
+          }
+        },
+        testimonies: { // ✅ Following clarification: prayer requests have testimonios
+          select: {
+            id: true,
+            title: true,
+            message: true,
+            status: true,
+            isPublic: true,
+            createdAt: true
           }
         }
       },
       orderBy: { createdAt: 'desc' }
     })
 
-    // Get all contacts for the church
+    // ✅ SECURITY: Get contacts with secure filtering and limited data exposure
     const allContacts = await prisma.prayerContact.findMany({
       where: { churchId: user.churchId },
-      include: {
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        phone: true,
+        preferredContact: true,
+        createdAt: true,
+        updatedAt: true,
         prayerRequests: {
           where: {
             createdAt: {
               gte: startDate,
               lte: endDate
             }
+          },
+          select: {
+            id: true,
+            status: true,
+            createdAt: true,
+            categoryId: true
           }
         }
       }
     })
 
-    // Filter contacts by contact method if specified
+    // ✅ SECURITY: Apply contact method filter with validated input
     let filteredContacts = allContacts
-    if (contactMethod !== 'all') {
-      filteredContacts = allContacts.filter((contact: any) => contact.preferredContact === contactMethod)
+    if (queryParams.contactMethod !== 'all') {
+      filteredContacts = allContacts.filter((contact: any) => 
+        contact.preferredContact === queryParams.contactMethod
+      )
     }
 
     // Get prayer categories
@@ -148,7 +284,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Generate daily data for the period
-    for (let i = 0; i < days; i++) {
+    for (let i = 0; i < queryParams.days; i++) {
       const date = subDays(endDate, i)
       const dayStart = startOfDay(date)
       const dayEnd = endOfDay(date)

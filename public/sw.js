@@ -5,6 +5,9 @@
 const CACHE_NAME = 'khesed-tek-v1'
 const OFFLINE_URL = '/offline'
 
+// Import security utilities
+importScripts('/sw-security-utils.js')
+
 // Install event
 self.addEventListener('install', event => {
   console.log('🔧 Service Worker installing...')
@@ -58,46 +61,35 @@ self.addEventListener('push', event => {
     notificationData = event.data.json()
   } catch (error) {
     console.error('Error parsing push data:', error)
-    notificationData = {
-      title: 'Kḥesed-tek Church',
-      body: event.data.text() || 'Nueva notificación',
-      icon: '/icons/icon-192.png',
-      badge: '/icons/badge-72.png'
-    }
+    return // Don't show notification with invalid data
   }
   
-  const {
-    title,
-    body,
-    icon = '/icons/icon-192.png',
-    badge = '/icons/badge-72.png',
-    tag = 'khesed-notification',
-    url = '/',
-    actions = [],
-    requireInteraction = false,
-    silent = false,
-    data = {}
-  } = notificationData
+  // ✅ SECURITY: Validate notification content
+  const validatedData = validateNotificationData(notificationData)
+  if (!validatedData) {
+    console.warn('Invalid notification data received, blocking notification')
+    return
+  }
   
   const notificationOptions = {
-    body,
-    icon,
-    badge,
-    tag,
+    body: validatedData.body,
+    icon: validatedData.icon,
+    badge: validatedData.badge,
+    tag: validatedData.tag,
     data: {
-      url,
+      url: validatedData.url,
       timestamp: Date.now(),
-      ...data
+      notificationId: validatedData.notificationId
     },
-    actions,
-    requireInteraction,
-    silent,
-    vibrate: silent ? undefined : [200, 100, 200],
+    actions: [], // Only allow predefined actions
+    requireInteraction: false,
+    silent: false,
+    vibrate: [200, 100, 200],
     timestamp: Date.now()
   }
   
   event.waitUntil(
-    self.registration.showNotification(title, notificationOptions)
+    self.registration.showNotification(validatedData.title, notificationOptions)
   )
 })
 
@@ -220,12 +212,20 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       caches.match(event.request).then(response => {
         return response || fetch(event.request).then(fetchResponse => {
-          // Cache the response for future use
-          const responseClone = fetchResponse.clone()
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone)
-          })
-          return fetchResponse
+          // ✅ SECURITY: Validate response before caching
+          if (validateResponseSecurity(fetchResponse, event.request)) {
+            const responseClone = fetchResponse.clone()
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseClone)
+            })
+            return fetchResponse
+          } else {
+            console.warn('🚨 Security: Blocking suspicious response:', event.request.url)
+            return createSecureErrorResponse('Resource blocked for security reasons')
+          }
+        }).catch(error => {
+          console.error('Fetch error:', error)
+          return createSecureErrorResponse('Network error occurred')
         })
       })
     )

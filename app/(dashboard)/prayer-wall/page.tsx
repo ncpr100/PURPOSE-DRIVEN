@@ -46,6 +46,7 @@ import {
   Area,
   AreaChart
 } from 'recharts'
+import { sanitizeUrlForSharing, createSafeShareData, logSharingActivity } from '@/lib/url-sanitizer'
 
 interface PrayerAnalytics {
   overview: {
@@ -201,22 +202,39 @@ export default function PrayerWallPage() {
     }
   }
 
-  // Share API Handler
+  // Share API Handler - SECURITY ENHANCED
   const handleShare = async () => {
-    if (typeof navigator !== 'undefined' && 'share' in navigator) {
-      try {
+    if (typeof window === 'undefined') return
+
+    try {
+      // ✅ SECURITY: Create safe sharing data without sensitive parameters
+      const shareData = createSafeShareData('Muro de Oración', 'Sistema de gestión de peticiones de oración con analytics avanzados')
+      
+      // ✅ SECURITY: Sanitize URL before sharing
+      const originalUrl = window.location.href
+      const sanitizedUrl = sanitizeUrlForSharing(originalUrl)
+      
+      // Log sharing activity for security monitoring
+      logSharingActivity(originalUrl, sanitizedUrl)
+      
+      if (typeof navigator !== 'undefined' && 'share' in navigator) {
         await (navigator as any).share({
-          title: 'Muro de Oración - Kḥesed-tek',
-          text: 'Sistema de gestión de peticiones de oración con analytics avanzados',
-          url: window.location.href,
+          ...shareData,
+          url: sanitizedUrl, // Use sanitized URL
         })
-      } catch (error) {
-        console.log('Error sharing:', error)
+      } else {
+        // Fallback: copy sanitized URL to clipboard
+        if (typeof navigator !== 'undefined' && 'clipboard' in navigator) {
+          await (navigator as any).clipboard.writeText(sanitizedUrl)
+          alert('URL segura copiada al portapapeles')
+        }
       }
-    } else {
-      // Fallback: copy to clipboard
+    } catch (error) {
+      console.error('Error sharing:', error)
+      // Fallback: provide a safe default URL
+      const fallbackUrl = typeof window !== 'undefined' ? `${window.location.origin}/prayer-wall` : '/prayer-wall'
       if (typeof navigator !== 'undefined' && 'clipboard' in navigator) {
-        await (navigator as any).clipboard.writeText(window.location.href)
+        await (navigator as any).clipboard.writeText(fallbackUrl)
         alert('URL copiada al portapapeles')
       }
     }
