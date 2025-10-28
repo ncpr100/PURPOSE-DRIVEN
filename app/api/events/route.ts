@@ -72,88 +72,29 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    console.log('Create Event API - Session data:', {
-      user: session?.user,
+    console.log('📅 Events API debug:', {
+      hasSession: !!session,
+      hasUser: !!session?.user,
+      userEmail: session?.user?.email,
       churchId: session?.user?.churchId,
-      role: session?.user?.role,
-      hasSession: !!session
+      role: session?.user?.role
     })
     
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
-    }
-    
-    if (!session.user.churchId) {
-      return NextResponse.json({ error: 'No church assigned to user' }, { status: 403 })
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    // Event access permissions - role validation
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
-      return NextResponse.json({ error: 'Sin permisos para crear eventos' }, { status: 403 })
-    }
-
-    const body = await request.json()
-    console.log('Create event request body:', body)
-    
-    // Event title validation and input sanitization
-    const validatedData = createEventSchema.parse({
-      ...body,
-      title: body.title?.trim(),
-      description: body.description?.trim(),
-      location: body.location?.trim()
+    // Get user data from database to ensure we have the latest churchId
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { id: true, churchId: true, role: true }
     })
 
-    // Date range validation
-    const startDate = new Date(validatedData.startDate)
-    const endDate = validatedData.endDate ? new Date(validatedData.endDate) : null
+    console.log('🏛️ User data from DB (events):', user)
 
-    if (endDate && endDate <= startDate) {
-      return NextResponse.json({ 
-        error: 'La fecha de fin debe ser posterior a la fecha de inicio' 
-      }, { status: 400 })
+    if (!user || !user.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
     }
-
-    // Event data protection - ensure church isolation
-    const event = await db.event.create({
-      data: {
-        title: validatedData.title,
-        description: validatedData.description,
-        startDate: startDate,
-        endDate: endDate,
-        location: validatedData.location,
-        capacity: validatedData.capacity,
-        budget: validatedData.budget,
-        category: validatedData.category || 'GENERAL',
-        isPublic: validatedData.isPublic,
-        status: validatedData.status,
-        churchId: session.user.churchId,
-        createdBy: session.user.id
-      },
-      include: {
-        creator: {
-          select: { name: true, email: true }
-        }
-      }
-    })
-
-    // Event creation logging
-    console.log(`Event created: ${event.id} - ${event.title} by user ${session.user.id}`)
-
-    return NextResponse.json(event, { status: 201 })
-  } catch (error) {
-    // Error logging exists
-    console.error('Error creating event:', error)
-    
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({ 
-        error: 'Datos de evento inválidos',
-        details: error.errors 
-      }, { status: 400 })
-    }
-
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
-  }
-}
 
 // PUT - Update event
 export async function PUT(request: NextRequest) {

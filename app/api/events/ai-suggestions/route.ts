@@ -1,25 +1,36 @@
 
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
+import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    console.log('AI Suggestions API - Session data:', {
-      user: session?.user,
+    console.log('🔍 Session debug:', {
+      hasSession: !!session,
+      hasUser: !!session?.user,
+      userEmail: session?.user?.email,
       churchId: session?.user?.churchId,
-      hasSession: !!session
+      role: session?.user?.role
     })
     
     if (!session?.user) {
-      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    
-    if (!session.user.churchId) {
-      return NextResponse.json({ error: 'No church assigned to user' }, { status: 403 })
+
+    // Get user data from database to ensure we have the latest churchId
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { id: true, churchId: true, role: true }
+    })
+
+    console.log('🏛️ User data from DB:', user)
+
+    if (!user || !user.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
     }
 
     const { eventHistory, currentSeason } = await request.json()
