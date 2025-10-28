@@ -94,20 +94,45 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Notificación no encontrada' }, { status: 404 })
     }
 
-    const updatedNotification = await prisma.notification.update({
-      where: { id: params.id },
-      data: { 
-        isRead: true,
-        updatedAt: new Date()
+    const updatedDelivery = await prisma.notificationDelivery.updateMany({
+      where: {
+        notificationId: params.id,
+        userId: user.id,
+        notification: {
+          churchId: user.churchId
+        }
       },
+      data: {
+        isRead: true,
+        readAt: new Date()
+      }
+    })
+
+    if (updatedDelivery.count === 0) {
+      return NextResponse.json({ error: 'Notificación no encontrada o sin permisos' }, { status: 404 })
+    }
+
+    // Return the notification with updated delivery status
+    const notification = await prisma.notification.findUnique({
+      where: { id: params.id },
       include: {
-        church: {
-          select: { name: true }
+        church: { select: { name: true } },
+        deliveries: {
+          where: { userId: user.id },
+          select: {
+            isRead: true,
+            readAt: true,
+            deliveryStatus: true
+          }
         }
       }
     })
 
-    return NextResponse.json(updatedNotification)
+    return NextResponse.json({
+      ...notification,
+      isRead: notification?.deliveries[0]?.isRead || false,
+      readAt: notification?.deliveries[0]?.readAt
+    })
   } catch (error) {
     console.error('Error updating notification:', error)
     return NextResponse.json(
