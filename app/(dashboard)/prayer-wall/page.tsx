@@ -114,6 +114,9 @@ export default function PrayerWallPage() {
 
   // PWA Installation and Notifications Setup
   useEffect(() => {
+    // Only run in browser environment
+    if (typeof window === 'undefined') return
+
     // Check if already installed
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstalled(true)
@@ -200,9 +203,9 @@ export default function PrayerWallPage() {
 
   // Share API Handler
   const handleShare = async () => {
-    if (navigator.share) {
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
       try {
-        await navigator.share({
+        await (navigator as any).share({
           title: 'Muro de Oración - Kḥesed-tek',
           text: 'Sistema de gestión de peticiones de oración con analytics avanzados',
           url: window.location.href,
@@ -212,8 +215,10 @@ export default function PrayerWallPage() {
       }
     } else {
       // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href)
-      alert('URL copiada al portapapeles')
+      if (typeof navigator !== 'undefined' && 'clipboard' in navigator) {
+        await (navigator as any).clipboard.writeText(window.location.href)
+        alert('URL copiada al portapapeles')
+      }
     }
   }
 
@@ -554,7 +559,7 @@ export default function PrayerWallPage() {
                   <Share className="w-8 h-8 text-orange-600 mx-auto mb-2" />
                   <h4 className="font-semibold text-orange-800">Compartir</h4>
                   <p className="text-sm text-orange-600 mt-1">
-                    {navigator.share ? '✅ Nativo' : '📋 Clipboard'}
+                    {typeof navigator !== 'undefined' && 'share' in navigator ? '✅ Nativo' : '📋 Clipboard'}
                   </p>
                 </div>
               </div>
