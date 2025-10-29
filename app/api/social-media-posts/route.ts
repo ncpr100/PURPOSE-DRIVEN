@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { AutomationTriggers } from '@/lib/automation-engine';
 
 const prisma = new PrismaClient();
 
@@ -104,6 +105,15 @@ export async function POST(request: Request) {
         }
       }
     });
+
+    // 🔄 P1 ENHANCEMENT: Trigger automation for social media post creation
+    try {
+      await AutomationTriggers.socialMediaPostCreated(post, user.churchId, user.id);
+      console.log(`✅ Social media post automation triggered for post: ${post.id}`);
+    } catch (automationError) {
+      console.error('❌ Error triggering social media post automation:', automationError);
+      // Don't fail the request if automation fails
+    }
 
     return NextResponse.json(post);
   } catch (error) {

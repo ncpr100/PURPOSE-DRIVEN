@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Plus, Trash2, RefreshCw, Facebook, Twitter, Instagram, Linkedin, ExternalLink } from 'lucide-react';
+import { Settings, Plus, Trash2, RefreshCw, Facebook, Twitter, Instagram, Youtube, Music, ExternalLink } from 'lucide-react';
 
 interface SocialMediaAccount {
   id: string;
@@ -31,11 +31,17 @@ const platformIcons = {
   FACEBOOK: Facebook,
   TWITTER: Twitter,
   INSTAGRAM: Instagram,
-  LINKEDIN: Linkedin
+  YOUTUBE: Youtube,
+  TIKTOK: Music
 };
 
 const platformColors = {
   FACEBOOK: 'bg-blue-500',
+  TWITTER: 'bg-sky-500',
+  INSTAGRAM: 'bg-pink-500',
+  YOUTUBE: 'bg-red-500',
+  TIKTOK: 'bg-black'
+};
   TWITTER: 'bg-sky-500',
   INSTAGRAM: 'bg-pink-500',
   LINKEDIN: 'bg-blue-600'
@@ -45,7 +51,8 @@ const platformNames = {
   FACEBOOK: 'Facebook',
   TWITTER: 'Twitter/X',
   INSTAGRAM: 'Instagram',
-  LINKEDIN: 'LinkedIn'
+  YOUTUBE: 'YouTube',
+  TIKTOK: 'TikTok'
 };
 
 export default function AccountsManager({ accounts, onAccountsChanged }: AccountsManagerProps) {
@@ -164,7 +171,8 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
       FACEBOOK: 'https://www.facebook.com/v18.0/dialog/oauth',
       TWITTER: 'https://api.twitter.com/oauth/authorize',
       INSTAGRAM: 'https://api.instagram.com/oauth/authorize',
-      LINKEDIN: 'https://www.linkedin.com/oauth/v2/authorization'
+      YOUTUBE: 'https://accounts.google.com/oauth2/v2/auth',
+      TIKTOK: 'https://www.tiktok.com/auth/authorize'
     };
     return urls[platform as keyof typeof urls] || '#';
   };

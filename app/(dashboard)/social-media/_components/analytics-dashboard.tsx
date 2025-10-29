@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BarChart3, TrendingUp, Users, Heart, MessageSquare, Share, Eye, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { BarChart3, TrendingUp, Users, Heart, MessageSquare, Share, Eye, Facebook, Twitter, Instagram, Youtube, Music } from 'lucide-react';
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface SocialMediaAccount {
@@ -36,14 +36,16 @@ const platformColors = {
   FACEBOOK: '#1877f2',
   TWITTER: '#1da1f2',
   INSTAGRAM: '#e1306c',
-  LINKEDIN: '#0077b5'
+  YOUTUBE: '#ff0000',
+  TIKTOK: '#000000'
 };
 
 const platformIcons = {
   FACEBOOK: Facebook,
   TWITTER: Twitter,
   INSTAGRAM: Instagram,
-  LINKEDIN: Linkedin
+  YOUTUBE: Youtube,
+  TIKTOK: Music
 };
 
 const metricIcons = {

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { AutomationTriggers } from '@/lib/automation-engine';
 
 const prisma = new PrismaClient();
 

@@ -653,5 +653,30 @@ export const AutomationTriggers = {
     triggerAutomation('SERMON_PUBLISHED', sermonData, churchId, sermonData.id, 'sermon', userId),
 
   followUpDue: (followUpData: any, churchId: string) =>
-    triggerAutomation('FOLLOW_UP_DUE', followUpData, churchId, followUpData.id, 'followUp')
+    triggerAutomation('FOLLOW_UP_DUE', followUpData, churchId, followUpData.id, 'followUp'),
+
+  // Social Media Automation Triggers (P1 Enhancement)
+  socialMediaPostCreated: (postData: any, churchId: string, userId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_POST_CREATED', postData, churchId, postData.id, 'socialMediaPost', userId),
+
+  socialMediaPostPublished: (postData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_POST_PUBLISHED', postData, churchId, postData.id, 'socialMediaPost'),
+
+  socialMediaCampaignLaunched: (campaignData: any, churchId: string, userId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_CAMPAIGN_LAUNCHED', campaignData, churchId, campaignData.id, 'marketingCampaign', userId),
+
+  socialMediaAccountConnected: (accountData: any, churchId: string, userId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_ACCOUNT_CONNECTED', accountData, churchId, accountData.id, 'socialMediaAccount', userId),
+
+  socialMediaEngagementThreshold: (metricsData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_ENGAGEMENT_THRESHOLD', metricsData, churchId, metricsData.id, 'socialMediaMetrics'),
+
+  socialMediaScheduledPostReady: (postData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_SCHEDULED_POST_READY', postData, churchId, postData.id, 'socialMediaPost'),
+
+  socialMediaCampaignCompleted: (campaignData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_CAMPAIGN_COMPLETED', campaignData, churchId, campaignData.id, 'marketingCampaign'),
+
+  socialMediaAnalyticsReport: (reportData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_ANALYTICS_REPORT', reportData, churchId, reportData.id, 'analyticsReport')
 }
