@@ -117,13 +117,18 @@ export async function PUT(request: NextRequest) {
     })
 
     // Log de actividad: crear notificación y entregas por usuario
+    const notificationData: any = {
+      title: 'Usuario actualizado por SUPER_ADMIN',
+      message: `Usuario ${user.name} actualizado`,
+      type: 'info'
+    }
+    
+    if (user.churchId) {
+      notificationData.churchId = user.churchId
+    }
+    
     const activityNotification = await db.notification.create({
-      data: {
-        title: 'Usuario actualizado por SUPER_ADMIN',
-        message: `Usuario ${user.name} actualizado`,
-        type: 'info',
-        ...(user.churchId ? { churchId: user.churchId } : {})
-      }
+      data: notificationData
     })
 
     if (user.churchId) {
