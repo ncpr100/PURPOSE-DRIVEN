@@ -196,8 +196,7 @@ export async function POST(request: NextRequest) {
           title: 'Nueva iglesia creada',
           message: `Iglesia "${name}" creada por SUPER_ADMIN`,
           type: 'info',
-          churchId: church.id,
-          isRead: false
+          churchId: church.id
         }
       })
 

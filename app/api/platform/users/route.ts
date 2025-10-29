@@ -120,8 +120,7 @@ export async function PUT(request: NextRequest) {
     const notificationData: any = {
       title: 'Usuario actualizado por SUPER_ADMIN',
       message: `Usuario ${user.name} actualizado`,
-      type: 'info',
-      isRead: false
+      type: 'info'
     }
 
     if (user.churchId) {

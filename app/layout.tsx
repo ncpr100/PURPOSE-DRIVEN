@@ -1,12 +1,12 @@
 
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+// import { Inter } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/layout/providers"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 
-const inter = Inter({ subsets: ["latin"] })
+// const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Kḥesed-tek Church Management Systems",
@@ -40,7 +40,7 @@ export default async function RootLayout({
 
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className="font-sans">
         <Providers session={session}>
           {children}
         </Providers>

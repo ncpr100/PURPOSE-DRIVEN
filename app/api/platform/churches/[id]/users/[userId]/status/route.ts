@@ -94,8 +94,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         title: `Usuario ${isActive ? 'activado' : 'desactivado'}`,
         message: `Usuario "${user.name}" (${user.role}) ${isActive ? 'activado' : 'desactivado'} por SUPER_ADMIN`,
         type: isActive ? 'info' : 'warning',
-        churchId: churchId,
-        isRead: false
+        churchId: churchId
       }
     })
 

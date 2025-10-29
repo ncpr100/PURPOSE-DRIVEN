@@ -139,8 +139,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         title: 'Iglesia actualizada',
         message: `Iglesia "${updatedChurch.name}" actualizada por SUPER_ADMIN`,
         type: 'info',
-        churchId: updatedChurch.id,
-        isRead: false
+        churchId: updatedChurch.id
       }
     })
 
@@ -206,8 +205,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
         title: 'Iglesia desactivada',
         message: `Iglesia "${existingChurch.name}" desactivada por SUPER_ADMIN`,
         type: 'warning',
-        churchId: existingChurch.id,
-        isRead: false
+        churchId: existingChurch.id
       }
     })
 

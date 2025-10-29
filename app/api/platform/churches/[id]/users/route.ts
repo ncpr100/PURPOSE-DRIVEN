@@ -205,8 +205,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
           title: 'Nuevo usuario creado',
           message: `Usuario "${name}" (${role}) creado por SUPER_ADMIN`,
           type: 'info',
-          churchId,
-          isRead: false
+          churchId
         }
       })
 
