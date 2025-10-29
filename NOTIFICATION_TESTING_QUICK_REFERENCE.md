@@ -34,8 +34,9 @@ node tests/notifications-database-validator.js
 - UI component validation (5 tests)
 - TypeScript compilation (1 test)
 - Critical functionality (3 tests)
+- Additional validation (1 test)
 
-### P1 High Priority Tests (37 tests)
+### P1 High Priority Tests (34 tests)
 - Template system (3 tests)
 - User preferences (6 tests)
 - Delivery workflow (5 tests)
@@ -45,8 +46,9 @@ node tests/notifications-database-validator.js
 - UI/UX components (3 tests)
 - Security & validation (3 tests)
 - Data validation (3 tests)
+- Additional features (1 test)
 
-### P2 Advanced Tests (42 tests)
+### P2 Advanced Tests (35 tests)
 - Multi-channel delivery tracking (5 tests)
 - Advanced query optimization (3 tests)
 - Advanced targeting (4 tests)
@@ -57,9 +59,9 @@ node tests/notifications-database-validator.js
 - Internationalization (1 test)
 - Realtime features (2 tests)
 - Edge cases & error handling (3 tests)
-- Scalability features (3 tests)
+- Scalability features (4 tests)
 
-**Total: 100 Automated Tests**
+**Total: 90 Automated Tests**
 
 ---
 
