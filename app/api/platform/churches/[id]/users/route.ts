@@ -199,16 +199,32 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
         })
       }
 
-      // Log de actividad
-      await tx.notification.create({
+      // Log de actividad: crear notificación y entregas por usuario dentro de la transacción
+      const activityNotification = await tx.notification.create({
         data: {
           title: 'Nuevo usuario creado',
           message: `Usuario "${name}" (${role}) creado por SUPER_ADMIN`,
           type: 'info',
-          churchId,
-          isRead: false
+          churchId
         }
       })
+
+      const churchUsers = await tx.user.findMany({
+        where: { churchId, isActive: true },
+        select: { id: true }
+      })
+
+      if (churchUsers.length > 0) {
+        await tx.notificationDelivery.createMany({
+          data: churchUsers.map(u => ({
+            notificationId: activityNotification.id,
+            userId: u.id,
+            deliveryMethod: 'in-app',
+            deliveryStatus: 'PENDING',
+            deliveredAt: new Date()
+          }))
+        })
+      }
 
       return user
     })

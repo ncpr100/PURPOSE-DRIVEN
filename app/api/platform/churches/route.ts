@@ -190,16 +190,32 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      // Log de actividad
-      await tx.notification.create({
+      // Log de actividad: crear notificación y entregas por usuario dentro de la transacción
+      const activityNotification = await tx.notification.create({
         data: {
           title: 'Nueva iglesia creada',
           message: `Iglesia "${name}" creada por SUPER_ADMIN`,
           type: 'info',
-          churchId: church.id,
-          isRead: false
+          churchId: church.id
         }
       })
+
+      const churchUsers = await tx.user.findMany({
+        where: { churchId: church.id, isActive: true },
+        select: { id: true }
+      })
+
+      if (churchUsers.length > 0) {
+        await tx.notificationDelivery.createMany({
+          data: churchUsers.map(u => ({
+            notificationId: activityNotification.id,
+            userId: u.id,
+            deliveryMethod: 'in-app',
+            deliveryStatus: 'PENDING',
+            deliveredAt: new Date()
+          }))
+        })
+      }
 
       return { church, admin }
     })

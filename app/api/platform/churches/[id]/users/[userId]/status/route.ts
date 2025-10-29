@@ -88,16 +88,32 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       }
     })
 
-    // Log de actividad
-    await db.notification.create({
+    // Log de actividad: crear notificación y entregas por usuario
+    const activityNotification = await db.notification.create({
       data: {
         title: `Usuario ${isActive ? 'activado' : 'desactivado'}`,
         message: `Usuario "${user.name}" (${user.role}) ${isActive ? 'activado' : 'desactivado'} por SUPER_ADMIN`,
         type: isActive ? 'info' : 'warning',
-        churchId: churchId,
-        isRead: false
+        churchId: churchId
       }
     })
+
+    const churchUsers = await db.user.findMany({
+      where: { churchId: churchId, isActive: true },
+      select: { id: true }
+    })
+
+    if (churchUsers.length > 0) {
+      await db.notificationDelivery.createMany({
+        data: churchUsers.map(u => ({
+          notificationId: activityNotification.id,
+          userId: u.id,
+          deliveryMethod: 'in-app',
+          deliveryStatus: 'PENDING',
+          deliveredAt: new Date()
+        }))
+      })
+    }
 
     return NextResponse.json({
       message: `Usuario ${isActive ? 'activado' : 'desactivado'} exitosamente`,

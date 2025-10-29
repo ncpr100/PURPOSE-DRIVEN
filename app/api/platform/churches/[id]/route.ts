@@ -133,16 +133,32 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       }
     })
 
-    // Log de actividad
-    await db.notification.create({
+    // Log de actividad: crear notificación y entregas para usuarios activos de la iglesia
+    const activityNotification = await db.notification.create({
       data: {
         title: 'Iglesia actualizada',
         message: `Iglesia "${updatedChurch.name}" actualizada por SUPER_ADMIN`,
         type: 'info',
-        churchId: updatedChurch.id,
-        isRead: false
+        churchId: updatedChurch.id
       }
     })
+
+    const churchUsers = await db.user.findMany({
+      where: { churchId: updatedChurch.id, isActive: true },
+      select: { id: true }
+    })
+
+    if (churchUsers.length > 0) {
+      await db.notificationDelivery.createMany({
+        data: churchUsers.map(u => ({
+          notificationId: activityNotification.id,
+          userId: u.id,
+          deliveryMethod: 'in-app',
+          deliveryStatus: 'PENDING',
+          deliveredAt: new Date()
+        }))
+      })
+    }
 
     return NextResponse.json({
       message: 'Iglesia actualizada exitosamente',
@@ -200,16 +216,32 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       data: { isActive: false }
     })
 
-    // Log de actividad
-    await db.notification.create({
+    // Log de actividad: crear notificación y entregas para usuarios activos de la iglesia
+    const activityNotification = await db.notification.create({
       data: {
         title: 'Iglesia desactivada',
         message: `Iglesia "${existingChurch.name}" desactivada por SUPER_ADMIN`,
         type: 'warning',
-        churchId: existingChurch.id,
-        isRead: false
+        churchId: existingChurch.id
       }
     })
+
+    const churchUsers = await db.user.findMany({
+      where: { churchId: existingChurch.id, isActive: true },
+      select: { id: true }
+    })
+
+    if (churchUsers.length > 0) {
+      await db.notificationDelivery.createMany({
+        data: churchUsers.map(u => ({
+          notificationId: activityNotification.id,
+          userId: u.id,
+          deliveryMethod: 'in-app',
+          deliveryStatus: 'PENDING',
+          deliveredAt: new Date()
+        }))
+      })
+    }
 
     return NextResponse.json({
       message: 'Iglesia desactivada exitosamente',

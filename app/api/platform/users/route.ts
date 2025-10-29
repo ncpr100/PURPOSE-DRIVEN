@@ -116,21 +116,34 @@ export async function PUT(request: NextRequest) {
       }
     })
 
-    // Log de actividad
-    const notificationData: any = {
-      title: 'Usuario actualizado por SUPER_ADMIN',
-      message: `Usuario ${user.name} actualizado`,
-      type: 'info',
-      isRead: false
-    }
+    // Log de actividad: crear notificación y entregas por usuario
+    const activityNotification = await db.notification.create({
+      data: {
+        title: 'Usuario actualizado por SUPER_ADMIN',
+        message: `Usuario ${user.name} actualizado`,
+        type: 'info',
+        ...(user.churchId ? { churchId: user.churchId } : {})
+      }
+    })
 
     if (user.churchId) {
-      notificationData.churchId = user.churchId
-    }
+      const churchUsers = await db.user.findMany({
+        where: { churchId: user.churchId, isActive: true },
+        select: { id: true }
+      })
 
-    await db.notification.create({
-      data: notificationData
-    })
+      if (churchUsers.length > 0) {
+        await db.notificationDelivery.createMany({
+          data: churchUsers.map(u => ({
+            notificationId: activityNotification.id,
+            userId: u.id,
+            deliveryMethod: 'in-app',
+            deliveryStatus: 'PENDING',
+            deliveredAt: new Date()
+          }))
+        })
+      }
+    }
 
     return NextResponse.json({
       message: 'Usuario actualizado exitosamente',
