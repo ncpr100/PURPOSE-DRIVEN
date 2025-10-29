@@ -141,6 +141,27 @@ export async function POST(request: NextRequest) {
 
     console.log(`📅 Event created: ${event.id} - ${event.title} by user ${user.id}`)
 
+    // ✅ ENTERPRISE: Trigger automation for event creation
+    try {
+      const { AutomationTriggers } = await import('@/lib/automation-engine')
+      await AutomationTriggers.eventCreated({
+        id: event.id,
+        title: event.title,
+        description: event.description,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        location: event.location,
+        category: event.category,
+        isPublic: event.isPublic,
+        churchId: event.churchId
+      }, user.churchId, user.id)
+      
+      console.log(`🤖 Triggered event creation automation for ${event.title}`)
+    } catch (automationError) {
+      console.error('Error triggering event creation automation:', automationError)
+      // Don't fail the event creation if automation fails
+    }
+
     return NextResponse.json(event, { status: 201 })
   } catch (error) {
     console.error('Error creating event:', error)

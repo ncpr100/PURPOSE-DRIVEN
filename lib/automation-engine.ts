@@ -362,7 +362,7 @@ export class AutomationEngine {
   }
 
   /**
-   * Execute notification action
+   * Execute notification action with NotificationDelivery integration
    */
   private static async executeNotificationAction(config: any, triggerData: TriggerData): Promise<any> {
     try {
@@ -383,6 +383,59 @@ export class AutomationEngine {
           createdBy: 'automation-engine'
         }
       })
+
+      // Create NotificationDelivery records for proper tracking
+      if (config.targetUser) {
+        // Single user notification
+        await db.notificationDelivery.create({
+          data: {
+            notificationId: notification.id,
+            userId: config.targetUser,
+            deliveryMethod: 'in-app',
+            deliveryStatus: 'PENDING',
+            deliveredAt: new Date()
+          }
+        })
+      } else if (config.targetRole) {
+        // Role-based notification
+        const roleUsers = await db.user.findMany({
+          where: {
+            churchId: triggerData.churchId,
+            role: config.targetRole as any,
+            isActive: true
+          },
+          select: { id: true }
+        })
+
+        await db.notificationDelivery.createMany({
+          data: roleUsers.map(roleUser => ({
+            notificationId: notification.id,
+            userId: roleUser.id,
+            deliveryMethod: 'in-app',
+            deliveryStatus: 'PENDING',
+            deliveredAt: new Date()
+          }))
+        })
+      } else if (config.isGlobal) {
+        // Global church notification
+        const churchUsers = await db.user.findMany({
+          where: {
+            churchId: triggerData.churchId,
+            isActive: true
+          },
+          select: { id: true }
+        })
+
+        await db.notificationDelivery.createMany({
+          data: churchUsers.map(churchUser => ({
+            notificationId: notification.id,
+            userId: churchUser.id,
+            deliveryMethod: 'in-app',
+            deliveryStatus: 'PENDING',
+            deliveredAt: new Date()
+          }))
+        })
+      }
 
       // Send real-time notification
       const realtimeMessage = {
@@ -413,7 +466,7 @@ export class AutomationEngine {
         broadcastToChurch(triggerData.churchId, realtimeMessage)
       }
 
-      return { notificationId: notification.id, sent: true }
+      return { notificationId: notification.id, sent: true, deliveryTracking: 'enabled' }
 
     } catch (error) {
       console.error('Error executing notification action:', error)
