@@ -104,6 +104,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = notificationTemplateSchema.parse(body)
 
+    // Extract churchId if present in validated data to avoid conflicts
+    const { churchId: _, ...templateData } = validatedData as any
+
     // Check if template name already exists for this church
     const existingTemplate = await prisma.notificationTemplate.findFirst({
       where: {
@@ -118,7 +121,7 @@ export async function POST(request: NextRequest) {
 
     const template = await prisma.notificationTemplate.create({
       data: {
-        ...validatedData,
+        ...templateData,
         churchId: user.churchId,
         isSystem: false, // User-created templates are never system templates
       },

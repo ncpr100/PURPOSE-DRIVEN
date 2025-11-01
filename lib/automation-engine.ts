@@ -11,10 +11,11 @@ import {
 } from '@prisma/client'
 import { broadcastToUser, broadcastToChurch, broadcastToRole } from '@/lib/sse-broadcast'
 import { PushNotificationService, NotificationTemplates } from '@/lib/push-notifications'
+import { isFeatureEnabled } from '@/lib/feature-flags'
 
 // Types for trigger data
 export interface TriggerData {
-  type: AutomationTriggerType
+  type: AutomationTriggerType | string // Allow string for new triggers
   entityId?: string
   entityType?: string
   data: Record<string, any>
@@ -42,6 +43,13 @@ export class AutomationEngine {
         churchId: triggerData.churchId 
       })
 
+      // 🔒 SAFE DEPLOYMENT: Check if social media automation is enabled
+      const isSocialMediaTrigger = triggerData.type.toString().startsWith('SOCIAL_MEDIA_');
+      if (isSocialMediaTrigger && !isFeatureEnabled('SOCIAL_MEDIA_AUTOMATION')) {
+        console.log(`🚫 Social media automation disabled for trigger: ${triggerData.type}`);
+        return;
+      }
+
       // Find matching automation rules for this trigger type and church
       const matchingRules = await this.findMatchingRules(triggerData)
       if (matchingRules.length === 0) {
@@ -66,20 +74,30 @@ export class AutomationEngine {
    * Find automation rules that match the trigger type and church
    */
   private static async findMatchingRules(triggerData: TriggerData): Promise<AutomationRuleWithDetails[]> {
-    const rules = await db.automationRule.findMany({
-      where: {
-        churchId: triggerData.churchId,
-        isActive: true,
-        triggers: {
-          some: {
-            type: triggerData.type,
-            isActive: true
+    try {
+      // 🔒 SAFE QUERY: Only query existing trigger types to avoid enum errors
+      const isSocialMediaTrigger = triggerData.type.toString().startsWith('SOCIAL_MEDIA_');
+      
+      if (isSocialMediaTrigger) {
+        // For new social media triggers, return empty array until database is updated
+        console.log(`⚠️ Social media trigger ${triggerData.type} - database schema not yet updated`);
+        return [];
+      }
+
+      const rules = await db.automationRule.findMany({
+        where: {
+          churchId: triggerData.churchId,
+          isActive: true,
+          triggers: {
+            some: {
+              type: triggerData.type as AutomationTriggerType,
+              isActive: true
+            }
           }
-        }
-      },
-      include: {
-        triggers: {
-          where: { isActive: true }
+        },
+        include: {
+          triggers: {
+            where: { isActive: true }
         },
         conditions: {
           where: { isActive: true },
@@ -94,6 +112,10 @@ export class AutomationEngine {
     })
 
     return rules as AutomationRuleWithDetails[]
+    } catch (error) {
+      console.error('Error finding matching automation rules:', error);
+      return [];
+    }
   }
 
   /**
@@ -653,5 +675,30 @@ export const AutomationTriggers = {
     triggerAutomation('SERMON_PUBLISHED', sermonData, churchId, sermonData.id, 'sermon', userId),
 
   followUpDue: (followUpData: any, churchId: string) =>
-    triggerAutomation('FOLLOW_UP_DUE', followUpData, churchId, followUpData.id, 'followUp')
+    triggerAutomation('FOLLOW_UP_DUE', followUpData, churchId, followUpData.id, 'followUp'),
+
+  // Social Media Automation Triggers (P1 Enhancement)
+  socialMediaPostCreated: (postData: any, churchId: string, userId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_POST_CREATED', postData, churchId, postData.id, 'socialMediaPost', userId),
+
+  socialMediaPostPublished: (postData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_POST_PUBLISHED', postData, churchId, postData.id, 'socialMediaPost'),
+
+  socialMediaCampaignLaunched: (campaignData: any, churchId: string, userId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_CAMPAIGN_LAUNCHED', campaignData, churchId, campaignData.id, 'marketingCampaign', userId),
+
+  socialMediaAccountConnected: (accountData: any, churchId: string, userId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_ACCOUNT_CONNECTED', accountData, churchId, accountData.id, 'socialMediaAccount', userId),
+
+  socialMediaEngagementThreshold: (metricsData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_ENGAGEMENT_THRESHOLD', metricsData, churchId, metricsData.id, 'socialMediaMetrics'),
+
+  socialMediaScheduledPostReady: (postData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_SCHEDULED_POST_READY', postData, churchId, postData.id, 'socialMediaPost'),
+
+  socialMediaCampaignCompleted: (campaignData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_CAMPAIGN_COMPLETED', campaignData, churchId, campaignData.id, 'marketingCampaign'),
+
+  socialMediaAnalyticsReport: (reportData: any, churchId: string) =>
+    triggerAutomation('SOCIAL_MEDIA_ANALYTICS_REPORT', reportData, churchId, reportData.id, 'analyticsReport')
 }

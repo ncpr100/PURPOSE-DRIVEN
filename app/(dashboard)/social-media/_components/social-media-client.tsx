@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Calendar, BarChart3, Settings, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Plus, Calendar, BarChart3, Settings, Facebook, Twitter, Instagram, Youtube, Music } from 'lucide-react';
 import PostComposer from './post-composer';
 import PostCalendar from './post-calendar';
 import AccountsManager from './accounts-manager';
@@ -19,14 +19,16 @@ const platformIcons = {
   FACEBOOK: Facebook,
   TWITTER: Twitter,
   INSTAGRAM: Instagram,
-  LINKEDIN: Linkedin
+  YOUTUBE: Youtube,
+  TIKTOK: Music
 };
 
 const platformColors = {
   FACEBOOK: 'bg-blue-500',
   TWITTER: 'bg-sky-500',
   INSTAGRAM: 'bg-pink-500',
-  LINKEDIN: 'bg-blue-600'
+  YOUTUBE: 'bg-red-500',
+  TIKTOK: 'bg-black'
 };
 
 export default function SocialMediaClient() {

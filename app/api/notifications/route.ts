@@ -197,7 +197,12 @@ export async function POST(request: NextRequest) {
 
     const notification = await prisma.notification.create({
       data: {
-        ...validatedData,
+        title: validatedData.title,
+        message: validatedData.message,
+        type: validatedData.type,
+        targetRole: validatedData.targetRole,
+        targetUser: validatedData.targetUser,
+        isGlobal: validatedData.isGlobal,
         churchId: user.churchId,
         createdBy: user.id,
       },

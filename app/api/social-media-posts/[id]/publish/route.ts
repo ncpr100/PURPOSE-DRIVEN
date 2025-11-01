@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { AutomationTriggers } from '@/lib/automation-engine';
 
 const prisma = new PrismaClient();
 
@@ -78,6 +79,15 @@ export async function POST(request: Request, { params }: { params: { id: string 
         postIds: JSON.stringify(postIds)
       }
     });
+
+    // 🔄 P1 ENHANCEMENT: Trigger automation for social media post publishing
+    try {
+      await AutomationTriggers.socialMediaPostPublished(updatedPost, user.churchId);
+      console.log(`✅ Social media post published automation triggered for post: ${updatedPost.id}`);
+    } catch (automationError) {
+      console.error('❌ Error triggering social media post published automation:', automationError);
+      // Don't fail the request if automation fails
+    }
 
     return NextResponse.json({ 
       message: 'Post published successfully',
