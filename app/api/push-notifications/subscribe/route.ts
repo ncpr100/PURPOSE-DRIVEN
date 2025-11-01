@@ -42,11 +42,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { subscription, deviceInfo } = subscribeSchema.parse(body)
 
-    // Save subscription using the service
+    // Save subscription using the service (subscription is validated by schema)
     await PushNotificationService.saveSubscription(
       user.id,
       user.churchId,
-      subscription,
+      subscription as { endpoint: string; keys: { p256dh: string; auth: string } },
       deviceInfo
     )
 

@@ -52,22 +52,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Sin permisos para enviar notificaciones' }, { status: 403 })
     }
 
-    const body = await request.json()
-    const validatedData = sendNotificationSchema.parse(body)
+    const requestBody = await request.json()
+    const validatedData = sendNotificationSchema.parse(requestBody)
 
     const {
       targetType,
       targetIds,
       targetRole,
       churchId,
-      ...notificationPayload
+      title,
+      body,
+      actions,
+      ...restPayload
     } = validatedData
 
-    // Create push notification payload
+    // Create push notification payload with proper type handling
     const payload: PushNotificationPayload = {
-      ...notificationPayload,
-      icon: notificationPayload.icon || '/icons/icon-192.png',
-      badge: notificationPayload.badge || '/icons/badge-72.png'
+      title,
+      body,
+      ...restPayload,
+      icon: restPayload.icon || '/icons/icon-192.png',
+      badge: restPayload.badge || '/icons/badge-72.png',
+      // Ensure actions array matches the required interface
+      ...(actions && { actions: actions as Array<{ action: string; title: string; icon?: string }> })
     }
 
     let result: { success: number; failed: number; totalUsers?: number }
