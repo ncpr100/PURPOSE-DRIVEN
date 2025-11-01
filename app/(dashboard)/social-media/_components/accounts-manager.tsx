@@ -42,10 +42,6 @@ const platformColors = {
   YOUTUBE: 'bg-red-500',
   TIKTOK: 'bg-black'
 };
-  TWITTER: 'bg-sky-500',
-  INSTAGRAM: 'bg-pink-500',
-  LINKEDIN: 'bg-blue-600'
-};
 
 const platformNames = {
   FACEBOOK: 'Facebook',

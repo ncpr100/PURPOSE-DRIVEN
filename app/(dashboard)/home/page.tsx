@@ -146,16 +146,17 @@ export default async function DashboardPage() {
   ])
 
   // Calculate visitor analytics
-  const averageEngagementScore = visitorEngagementData.length > 0 
-    ? Math.round(visitorEngagementData.reduce((sum: number, visitor: any) => sum + (visitor.engagementScore || 0), 0) / visitorEngagementData.length)
+  const visitorArray = Array.isArray(visitorEngagementData) ? visitorEngagementData : [];
+  const averageEngagementScore = visitorArray.length > 0 
+    ? Math.round(visitorArray.reduce((sum: number, visitor: any) => sum + (visitor.engagementScore || 0), 0) / visitorArray.length)
     : 0
   
-  const automationSuccessRate = visitorEngagementData.length > 0
-    ? Math.round((visitorEngagementData.filter((v: any) => v.automationTriggered).length / visitorEngagementData.length) * 100)
+  const automationSuccessRate = visitorArray.length > 0
+    ? Math.round((visitorArray.filter((v: any) => v.automationTriggered).length / visitorArray.length) * 100)
     : 0
   
-  const returningVisitorsCount = visitorEngagementData.filter((v: any) => v.visitorType === 'returning' || !v.isFirstTime).length
-  const firstTimeVisitorsCount = visitorEngagementData.filter((v: any) => v.isFirstTime).length
+  const returningVisitorsCount = visitorArray.filter((v: any) => v.visitorType === 'returning' || !v.isFirstTime).length
+  const firstTimeVisitorsCount = visitorArray.filter((v: any) => v.isFirstTime).length
 
   const kpiData = {
     totalMembers,

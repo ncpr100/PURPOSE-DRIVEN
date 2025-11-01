@@ -116,6 +116,15 @@ export async function POST(request: Request) {
       }
     });
 
+    // 🔄 P1 ENHANCEMENT: Trigger automation for social media account connection
+    try {
+      await AutomationTriggers.socialMediaAccountConnected(account, user.churchId, user.id);
+      console.log(`✅ Social media account automation triggered for account: ${account.id}`);
+    } catch (automationError) {
+      console.error('❌ Error triggering social media account automation:', automationError);
+      // Don't fail the request if automation fails
+    }
+
     return NextResponse.json(account);
   } catch (error) {
     console.error('Error creating social media account:', error);
