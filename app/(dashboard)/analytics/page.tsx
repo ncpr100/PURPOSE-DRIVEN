@@ -1,8 +1,12 @@
 
 import { Suspense } from 'react';
 import AnalyticsClient from './_components/analytics-client';
+import P2AnalyticsDashboard from './_components/p2-analytics-dashboard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import { Brain, BarChart3 } from 'lucide-react';
 
 function AnalyticsLoadingSkeleton() {
   return (
@@ -54,9 +58,37 @@ function AnalyticsLoadingSkeleton() {
 export default function AnalyticsPage() {
   return (
     <div className="container mx-auto py-6">
-      <Suspense fallback={<AnalyticsLoadingSkeleton />}>
-        <AnalyticsClient />
-      </Suspense>
+      {/* Enhanced Header */}
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Centro de Analíticas</h1>
+        <p className="text-gray-600">Insights y métricas para el crecimiento de la iglesia</p>
+      </div>
+
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="overview" className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Analíticas Generales
+          </TabsTrigger>
+          <TabsTrigger value="p2-analytics" className="flex items-center gap-2">
+            <Brain className="h-4 w-4" />
+            Analíticas Inteligentes P2
+            <Badge variant="secondary" className="ml-1 text-xs">NUEVO</Badge>
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview">
+          <Suspense fallback={<AnalyticsLoadingSkeleton />}>
+            <AnalyticsClient />
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="p2-analytics">
+          <Suspense fallback={<AnalyticsLoadingSkeleton />}>
+            <P2AnalyticsDashboard />
+          </Suspense>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
