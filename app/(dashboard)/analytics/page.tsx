@@ -1,11 +1,10 @@
 
 import { Suspense } from 'react';
 import AnalyticsClient from './_components/analytics-client';
-import P2AnalyticsDashboard from './_components/p2-analytics-dashboard';
+import IntelligentAnalyticsDashboard from './_components/intelligent-analytics-dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
 import { Brain, BarChart3 } from 'lucide-react';
 
 function AnalyticsLoadingSkeleton() {
@@ -70,10 +69,9 @@ export default function AnalyticsPage() {
             <BarChart3 className="h-4 w-4" />
             Analíticas Generales
           </TabsTrigger>
-          <TabsTrigger value="p2-analytics" className="flex items-center gap-2">
+          <TabsTrigger value="intelligent-analytics" className="flex items-center gap-2">
             <Brain className="h-4 w-4" />
-            Analíticas Inteligentes P2
-            <Badge variant="secondary" className="ml-1 text-xs">NUEVO</Badge>
+            Analíticas Inteligentes
           </TabsTrigger>
         </TabsList>
 
@@ -83,9 +81,9 @@ export default function AnalyticsPage() {
           </Suspense>
         </TabsContent>
 
-        <TabsContent value="p2-analytics">
+        <TabsContent value="intelligent-analytics">
           <Suspense fallback={<AnalyticsLoadingSkeleton />}>
-            <P2AnalyticsDashboard />
+            <IntelligentAnalyticsDashboard />
           </Suspense>
         </TabsContent>
       </Tabs>
