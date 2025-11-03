@@ -1,7 +1,7 @@
 
 import { Suspense } from 'react';
 import AnalyticsClient from './_components/analytics-client';
-import P2AnalyticsDashboard from './_components/p2-analytics-dashboard';
+import AdvancedAnalyticsDashboard from './_components/advanced-analytics-dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -72,7 +72,7 @@ export default function AnalyticsPage() {
           </TabsTrigger>
           <TabsTrigger value="p2-analytics" className="flex items-center gap-2">
             <Brain className="h-4 w-4" />
-            Analíticas Inteligentes P2
+            Analíticas Inteligentes
             <Badge variant="secondary" className="ml-1 text-xs">NUEVO</Badge>
           </TabsTrigger>
         </TabsList>
@@ -85,7 +85,7 @@ export default function AnalyticsPage() {
 
         <TabsContent value="p2-analytics">
           <Suspense fallback={<AnalyticsLoadingSkeleton />}>
-            <P2AnalyticsDashboard />
+            <AdvancedAnalyticsDashboard />
           </Suspense>
         </TabsContent>
       </Tabs>

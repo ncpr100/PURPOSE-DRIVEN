@@ -105,7 +105,7 @@ interface ExecutiveReport {
   }>;
 }
 
-export default function P2AnalyticsDashboard() {
+export default function AdvancedAnalyticsDashboard() {
   const [predictiveData, setPredictiveData] = useState<PredictiveAnalytics | null>(null);
   const [journeyData, setJourneyData] = useState<MemberJourneyAnalytics | null>(null);
   const [executiveData, setExecutiveData] = useState<ExecutiveReport | null>(null);
@@ -135,9 +135,9 @@ export default function P2AnalyticsDashboard() {
         setExecutiveData(await executiveRes.json());
       }
 
-      toast.success('📊 Analíticas P2 cargadas exitosamente');
+      toast.success('📊 Analíticas cargadas exitosamente');
     } catch (error) {
-      console.error('Error fetching P2 analytics:', error);
+      console.error('Error fetching analytics:', error);
       toast.error('Error al cargar analíticas avanzadas');
     } finally {
       setLoading(false);
@@ -206,7 +206,7 @@ export default function P2AnalyticsDashboard() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
             <Brain className="h-8 w-8 text-purple-600" />
-            Analíticas Inteligentes P2
+            Analíticas Inteligentes
           </h1>
           <p className="text-gray-600">Insights avanzados y predicciones para el crecimiento de la iglesia</p>
         </div>
