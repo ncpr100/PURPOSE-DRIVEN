@@ -67,8 +67,8 @@ find . -name "*.bak" -o -name "*.old" -type f -not -path "./node_modules/*" 2>/d
     fi
 done
 
-# Remove temporary test files (ONLY from root and app directories, NOT from node_modules)
-find . -maxdepth 1 -name "test-*.js" -o -name "test-*.ts" -type f 2>/dev/null | while read file; do
+# Remove temporary test files (ONLY from root directory, NOT from node_modules)
+find . -maxdepth 1 \( -name "test-*.js" -o -name "test-*.ts" \) -type f 2>/dev/null | while read file; do
     if [ -f "$file" ]; then
         echo "  ✅ Removing temporary test file: $file"
         rm -f "$file"
