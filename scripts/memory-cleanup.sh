@@ -51,8 +51,24 @@ fi
 echo ""
 echo "🔄 PHASE 2: TEMPORARY FILES CLEANUP"
 
-# Remove temporary test files (exclude legitimate test files in node_modules)
-find . -name "test-*.js" -o -name "test-*.ts" -type f -not -path "./tests/*" -not -path "./node_modules/lucide-react/*" -not -path "./node_modules/*/test*.js" 2>/dev/null | while read file; do
+# Remove temporary result files (.tmp)
+find . -name "*.tmp" -type f -not -path "./node_modules/*" 2>/dev/null | while read file; do
+    if [ -f "$file" ]; then
+        echo "  ✅ Removing temporary file: $file"
+        rm -f "$file"
+    fi
+done
+
+# Remove backup files
+find . -name "*.bak" -o -name "*.old" -type f -not -path "./node_modules/*" 2>/dev/null | while read file; do
+    if [ -f "$file" ]; then
+        echo "  ✅ Removing backup file: $file"
+        rm -f "$file"
+    fi
+done
+
+# Remove temporary test files (ONLY from root directory, NOT from node_modules)
+find . -maxdepth 1 \( -name "test-*.js" -o -name "test-*.ts" \) -type f 2>/dev/null | while read file; do
     if [ -f "$file" ]; then
         echo "  ✅ Removing temporary test file: $file"
         rm -f "$file"
@@ -66,6 +82,17 @@ find . -name "*.log" -type f -not -path "./node_modules/*" 2>/dev/null | while r
         rm -f "$file"
     fi
 done
+
+# Report on screenshot/attachment files (don't delete, just report)
+echo ""
+echo "📸 ATTACHMENT FILES ASSESSMENT:"
+SCREENSHOT_COUNT=$(find . \( -name "*screenshot*" -o -name "*capture*" \) -type f -not -path "./node_modules/*" 2>/dev/null | wc -l)
+if [ "$SCREENSHOT_COUNT" -gt 0 ]; then
+    echo "  📊 Found $SCREENSHOT_COUNT screenshot/capture files"
+    echo "  💡 To review: find . \( -name '*screenshot*' -o -name '*capture*' \) -type f -not -path './node_modules/*'"
+else
+    echo "  ✅ No temporary screenshot files found"
+fi
 
 echo ""
 echo "🔄 PHASE 3: DEPENDENCY OPTIMIZATION"

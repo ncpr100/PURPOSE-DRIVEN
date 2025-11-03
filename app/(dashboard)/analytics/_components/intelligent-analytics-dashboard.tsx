@@ -105,7 +105,11 @@ interface ExecutiveReport {
   }>;
 }
 
+<<<<<<<< HEAD:app/(dashboard)/analytics/_components/intelligent-analytics-dashboard.tsx
 export default function IntelligentAnalyticsDashboard() {
+========
+export default function AdvancedAnalyticsDashboard() {
+>>>>>>>> fd59c37cefc44a4eb29b427d302e54209f546dc4:app/(dashboard)/analytics/_components/advanced-analytics-dashboard.tsx
   const [predictiveData, setPredictiveData] = useState<PredictiveAnalytics | null>(null);
   const [journeyData, setJourneyData] = useState<MemberJourneyAnalytics | null>(null);
   const [executiveData, setExecutiveData] = useState<ExecutiveReport | null>(null);
@@ -135,9 +139,15 @@ export default function IntelligentAnalyticsDashboard() {
         setExecutiveData(await executiveRes.json());
       }
 
+<<<<<<<< HEAD:app/(dashboard)/analytics/_components/intelligent-analytics-dashboard.tsx
       toast.success('📊 Analíticas Inteligentes cargadas exitosamente');
     } catch (error) {
       console.error('Error fetching intelligent analytics:', error);
+========
+      toast.success('📊 Analíticas cargadas exitosamente');
+    } catch (error) {
+      console.error('Error fetching analytics:', error);
+>>>>>>>> fd59c37cefc44a4eb29b427d302e54209f546dc4:app/(dashboard)/analytics/_components/advanced-analytics-dashboard.tsx
       toast.error('Error al cargar analíticas avanzadas');
     } finally {
       setLoading(false);

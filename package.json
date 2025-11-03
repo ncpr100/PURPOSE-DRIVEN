@@ -14,6 +14,7 @@
     "validate:system": "npm run test:cuid && echo 'VAL-02 AUTOMATED: CUID validation system verified'",
     "cleanup": "./scripts/memory-cleanup.sh",
     "cleanup:memory": "tsx scripts/memory-monitor-test.ts",
+    "memory:assess": "tsx scripts/memory-assessment.ts",
     "optimize": "npm run cleanup && npm run build:memory-optimized"
   },
   "prisma": {
@@ -85,7 +86,7 @@
     "globals": "^16.4.0",
     "input-otp": "1.2.4",
     "jspdf": "^3.0.3",
-    "lucide-react": "^0.446.0",
+    "lucide-react": "^0.460.0",
     "mailgun.js": "^12.0.3",
     "mime-types": "^3.0.1",
     "nanoid": "^5.1.5",

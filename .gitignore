@@ -43,6 +43,20 @@ yarn-error.log*
 *.tsbuildinfo
 tsconfig.tsbuildinfo
 
+# Temporary files
+*.tmp
+*.log
+*.bak
+*.old
+*_results.tmp
+p0_results.tmp
+p1_results.tmp
+p2_results.tmp
+
+# Build artifacts and cache
+/tmp/
+.cache/
+dist/
 
 # Backup files (should not be deployed)
 *.zip
