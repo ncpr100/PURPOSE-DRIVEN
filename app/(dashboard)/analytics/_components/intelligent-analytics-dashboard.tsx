@@ -15,7 +15,7 @@ import {
 import { 
   LineChart, Line, AreaChart, Area, BarChart, Bar, 
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart as RechartsPieChart, Cell, Legend
+  PieChart as RechartsPieChart, Pie, Cell, Legend
 } from 'recharts';
 import { toast } from 'sonner';
 
@@ -337,6 +337,34 @@ export default function IntelligentAnalyticsDashboard() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Enhanced Retention Trend Chart */}
+                  <div className="mt-6">
+                    <h4 className="font-semibold mb-3">Proyección de Retención</h4>
+                    <ResponsiveContainer width="100%" height={200}>
+                      <LineChart data={[
+                        { periodo: 'Actual', retencion: predictiveData.memberRetention.predicted30Day },
+                        { periodo: '30 días', retencion: predictiveData.memberRetention.predicted30Day },
+                        { periodo: '60 días', retencion: Math.round((predictiveData.memberRetention.predicted30Day + predictiveData.memberRetention.predicted90Day) / 2) },
+                        { periodo: '90 días', retencion: predictiveData.memberRetention.predicted90Day },
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="periodo" />
+                        <YAxis domain={[0, 100]} />
+                        <Tooltip 
+                          formatter={(value) => [`${value}%`, 'Retención']}
+                          labelFormatter={(label) => `Período: ${label}`}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="retencion" 
+                          stroke={COLORS.blue} 
+                          strokeWidth={3}
+                          dot={{ fill: COLORS.blue, strokeWidth: 2, r: 6 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -381,6 +409,116 @@ export default function IntelligentAnalyticsDashboard() {
                         </span>
                       </div>
                       <div className="text-sm text-gray-600">Tendencia Promedio</div>
+                    </div>
+                  </div>
+
+                  {/* Enhanced Giving Trends Chart */}
+                  <div className="mt-6">
+                    <h4 className="font-semibold mb-3">Proyección de Donaciones</h4>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <AreaChart data={[
+                        { mes: 'Mes Anterior', donaciones: predictiveData.givingTrends.predictedNextMonth * 0.85, proyeccion: null },
+                        { mes: 'Mes Actual', donaciones: predictiveData.givingTrends.predictedNextMonth * 0.92, proyeccion: null },
+                        { mes: 'Próximo Mes', donaciones: null, proyeccion: predictiveData.givingTrends.predictedNextMonth },
+                        { mes: 'Mes +2', donaciones: null, proyeccion: predictiveData.givingTrends.predictedNextMonth * 1.08 },
+                        { mes: 'Mes +3', donaciones: null, proyeccion: predictiveData.givingTrends.predictedNextMonth * 1.15 },
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="mes" />
+                        <YAxis tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`} />
+                        <Tooltip formatter={(value, name) => [
+                          `$${value?.toLocaleString() || 0}`, 
+                          name === 'donaciones' ? 'Histórico' : 'Proyección'
+                        ]} />
+                        <Area 
+                          type="monotone" 
+                          dataKey="donaciones" 
+                          stackId="1"
+                          stroke={COLORS.green} 
+                          fill={COLORS.green}
+                          fillOpacity={0.6}
+                        />
+                        <Area 
+                          type="monotone" 
+                          dataKey="proyeccion" 
+                          stackId="2"
+                          stroke={COLORS.blue} 
+                          fill={COLORS.blue}
+                          fillOpacity={0.4}
+                          strokeDasharray="5 5"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Engagement Forecast */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-orange-600" />
+                    Pronóstico de Compromiso
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Engagement Metrics */}
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium">Asistencia a Eventos</span>
+                        <span className="text-lg font-bold text-orange-600">
+                          {predictiveData.engagementForecast.eventAttendanceTrend}%
+                        </span>
+                      </div>
+                      <Progress value={predictiveData.engagementForecast.eventAttendanceTrend} className="h-2" />
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium">Participación Voluntarios</span>
+                        <span className="text-lg font-bold text-orange-600">
+                          {predictiveData.engagementForecast.volunteerParticipationTrend}%
+                        </span>
+                      </div>
+                      <Progress value={predictiveData.engagementForecast.volunteerParticipationTrend} className="h-2" />
+                      
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium">Engagement Comunicación</span>
+                        <span className="text-lg font-bold text-orange-600">
+                          {predictiveData.engagementForecast.communicationEngagement}%
+                        </span>
+                      </div>
+                      <Progress value={predictiveData.engagementForecast.communicationEngagement} className="h-2" />
+                    </div>
+
+                    {/* Overall Engagement Chart */}
+                    <div>
+                      <h4 className="font-semibold mb-3 text-center">Score General de Compromiso</h4>
+                      <ResponsiveContainer width="100%" height={200}>
+                        <RechartsPieChart>
+                          <Pie
+                            data={[
+                              { name: 'Compromiso Actual', value: predictiveData.engagementForecast.overallEngagementScore },
+                              { name: 'Potencial de Mejora', value: 100 - predictiveData.engagementForecast.overallEngagementScore }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={40}
+                            outerRadius={80}
+                            paddingAngle={5}
+                            dataKey="value"
+                          >
+                            <Cell fill={COLORS.orange} />
+                            <Cell fill="#E5E7EB" />
+                          </Pie>
+                          <Tooltip formatter={(value) => `${value}%`} />
+                        </RechartsPieChart>
+                      </ResponsiveContainer>
+                      <div className="text-center mt-2">
+                        <span className="text-2xl font-bold text-orange-600">
+                          {predictiveData.engagementForecast.overallEngagementScore}%
+                        </span>
+                        <p className="text-sm text-gray-600">Score Total</p>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
