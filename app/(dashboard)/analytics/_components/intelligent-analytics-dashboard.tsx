@@ -191,6 +191,18 @@ export default function IntelligentAnalyticsDashboard() {
     }
   };
 
+  const COLORS = {
+    primary: '#8B5CF6',
+    secondary: '#06B6D4',
+    success: '#10B981',
+    warning: '#F59E0B',
+    danger: '#EF4444',
+    purple: '#A855F7',
+    blue: '#3B82F6',
+    green: '#22C55E',
+    orange: '#F97316'
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto py-6">
@@ -203,18 +215,6 @@ export default function IntelligentAnalyticsDashboard() {
       </div>
     );
   }
-
-  const COLORS = {
-    primary: '#8B5CF6',
-    secondary: '#06B6D4',
-    success: '#10B981',
-    warning: '#F59E0B',
-    danger: '#EF4444',
-    purple: '#A855F7',
-    blue: '#3B82F6',
-    green: '#22C55E',
-    orange: '#F97316'
-  };
 
   return (
     <div className="container mx-auto py-6 space-y-6">
@@ -453,7 +453,7 @@ export default function IntelligentAnalyticsDashboard() {
         </TabsContent>
 
         <TabsContent value="journey" className="space-y-4">
-          {journeyData && (
+          {journeyData ? (
             <>
               {/* Conversion Funnel */}
               <Card>
@@ -589,7 +589,7 @@ export default function IntelligentAnalyticsDashboard() {
         </TabsContent>
 
         <TabsContent value="executive" className="space-y-4">
-          {executiveData && (
+          {executiveData ? (
             <>
               {/* Key Metrics Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -746,7 +746,7 @@ export default function IntelligentAnalyticsDashboard() {
         </TabsContent>
 
         <TabsContent value="recommendations" className="space-y-4">
-          {executiveData?.recommendations && (
+          {executiveData?.recommendations ? (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
