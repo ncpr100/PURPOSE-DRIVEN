@@ -125,17 +125,34 @@ export default function IntelligentAnalyticsDashboard() {
         fetch('/api/analytics/executive-report?type=monthly')
       ]);
 
+      let successCount = 0;
+      
       if (predictiveRes.ok) {
         setPredictiveData(await predictiveRes.json());
+        successCount++;
+      } else {
+        console.error('Predictive analytics failed:', predictiveRes.status);
       }
+      
       if (journeyRes.ok) {
         setJourneyData(await journeyRes.json());
+        successCount++;
+      } else {
+        console.error('Member journey analytics failed:', journeyRes.status);
       }
+      
       if (executiveRes.ok) {
         setExecutiveData(await executiveRes.json());
+        successCount++;
+      } else {
+        console.error('Executive report failed:', executiveRes.status);
       }
 
-      toast.success('📊 Analíticas Inteligentes cargadas exitosamente');
+      if (successCount > 0) {
+        toast.success(`📊 ${successCount}/3 módulos de analíticas cargados exitosamente`);
+      } else {
+        toast.warning('⚠️ No se pudieron cargar los datos de analíticas');
+      }
     } catch (error) {
       console.error('Error fetching intelligent analytics:', error);
       toast.error('Error al cargar analíticas avanzadas');
@@ -276,7 +293,7 @@ export default function IntelligentAnalyticsDashboard() {
         </TabsList>
 
         <TabsContent value="predictive" className="space-y-4">
-          {predictiveData && (
+          {predictiveData ? (
             <>
               {/* Member Retention Prediction */}
               <Card>
@@ -412,6 +429,26 @@ export default function IntelligentAnalyticsDashboard() {
                 </CardContent>
               </Card>
             </>
+          ) : (
+            <Card>
+              <CardContent className="flex items-center justify-center h-64">
+                <div className="text-center">
+                  <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">Cargando Analítica Predictiva</h3>
+                  <p className="text-gray-500">Analizando datos históricos para generar predicciones...</p>
+                  {!loading && (
+                    <Button 
+                      onClick={refreshData} 
+                      variant="outline" 
+                      className="mt-4"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Reintentar
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           )}
         </TabsContent>
 
@@ -528,6 +565,26 @@ export default function IntelligentAnalyticsDashboard() {
                 </Card>
               </div>
             </>
+          ) : (
+            <Card>
+              <CardContent className="flex items-center justify-center h-64">
+                <div className="text-center">
+                  <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">Cargando Jornada del Miembro</h3>
+                  <p className="text-gray-500">Analizando el viaje de los miembros en la iglesia...</p>
+                  {!loading && (
+                    <Button 
+                      onClick={refreshData} 
+                      variant="outline" 
+                      className="mt-4"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Reintentar
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           )}
         </TabsContent>
 
@@ -665,6 +722,26 @@ export default function IntelligentAnalyticsDashboard() {
                 </Card>
               )}
             </>
+          ) : (
+            <Card>
+              <CardContent className="flex items-center justify-center h-64">
+                <div className="text-center">
+                  <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">Cargando Reporte Ejecutivo</h3>
+                  <p className="text-gray-500">Preparando métricas ejecutivas y análisis...</p>
+                  {!loading && (
+                    <Button 
+                      onClick={refreshData} 
+                      variant="outline" 
+                      className="mt-4"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Reintentar
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           )}
         </TabsContent>
 
@@ -700,6 +777,26 @@ export default function IntelligentAnalyticsDashboard() {
                       <p className="text-sm text-gray-600">{rec.expectedImpact}</p>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="flex items-center justify-center h-64">
+                <div className="text-center">
+                  <Zap className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">Cargando Recomendaciones</h3>
+                  <p className="text-gray-500">Generando recomendaciones estratégicas...</p>
+                  {!loading && (
+                    <Button 
+                      onClick={refreshData} 
+                      variant="outline" 
+                      className="mt-4"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Reintentar
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
