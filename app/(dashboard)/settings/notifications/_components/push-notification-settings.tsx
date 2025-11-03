@@ -19,7 +19,7 @@ import {
   AlertCircle, 
   Info,
   Settings,
-  TestTube,
+  Settings2,
   BarChart3
 } from 'lucide-react'
 
@@ -196,7 +196,7 @@ export function PushNotificationSettings() {
                     disabled={testLoading}
                     className="gap-2"
                   >
-                    <TestTube className="h-4 w-4" />
+                    <Settings2 className="h-4 w-4" />
                     {testLoading ? 'Enviando...' : 'Probar'}
                   </Button>
                 </div>

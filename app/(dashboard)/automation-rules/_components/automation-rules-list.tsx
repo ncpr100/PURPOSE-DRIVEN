@@ -11,7 +11,7 @@ import {
   Edit, 
   Trash2, 
   Eye,
-  TestTube,
+  Settings2,
   Calendar,
   Zap,
   Target,
@@ -363,7 +363,7 @@ export function AutomationRulesList({
                   className="gap-1"
                   title="Probar regla"
                 >
-                  <TestTube className="h-4 w-4" />
+                  <Settings2 className="h-4 w-4" />
                 </Button>
 
                 <Button

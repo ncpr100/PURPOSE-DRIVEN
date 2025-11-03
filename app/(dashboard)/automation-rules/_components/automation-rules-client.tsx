@@ -26,7 +26,7 @@ import {
   TrendingUp,
   Settings,
   FileText,
-  TestTube,
+  Settings2,
   HelpCircle,
   Info
 } from 'lucide-react'
