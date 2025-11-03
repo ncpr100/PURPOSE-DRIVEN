@@ -366,7 +366,7 @@ export default function AnalyticsClient() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Analíticas Ministeriales</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Analíticas Generales</h1>
           <p className="text-gray-600 mt-2">
             Métricas operacionales y perspectivas basadas en datos para la gestión diaria de tu ministerio
           </p>
