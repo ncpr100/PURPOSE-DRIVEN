@@ -6,11 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { useRealTime } from '@/hooks/use-realtime';
 import { 
   TrendingUp, TrendingDown, Users, DollarSign, Calendar, 
   Target, Brain, BarChart3, PieChart, Activity, 
   AlertTriangle, CheckCircle, Clock, ArrowRight,
-  Download, RefreshCw, Eye, Zap
+  Download, RefreshCw, Eye, Zap, Wifi, WifiOff
 } from 'lucide-react';
 import { 
   LineChart, Line, AreaChart, Area, BarChart, Bar, 
@@ -111,6 +112,52 @@ export default function IntelligentAnalyticsDashboard() {
   const [executiveData, setExecutiveData] = useState<ExecutiveReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+
+  // Real-time integration using existing infrastructure
+  const { isConnected, isConnecting } = useRealTime({
+    autoConnect: true,
+    enableToasts: false, // We'll handle our own notifications
+    enablePresence: false
+  });
+
+  useEffect(() => {
+    fetchAnalyticsData();
+    
+    // Set up auto-refresh every 30 seconds when connected (client-side only)
+    if (typeof window === 'undefined') return;
+    
+    let interval: NodeJS.Timeout | null = null;
+    if (isConnected) {
+      interval = setInterval(() => {
+        fetchRealTimeAnalyticsUpdate();
+      }, 30000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isConnected]);
+
+  const fetchRealTimeAnalyticsUpdate = async () => {
+    // Skip real-time updates during build/SSG
+    if (typeof window === 'undefined') return;
+    
+    try {
+      const response = await fetch('/api/analytics/realtime-overview');
+      if (response.ok) {
+        const data = await response.json();
+        // Update data without showing loading spinner
+        if (data.hasUpdates) {
+          await fetchAnalyticsData();
+          setLastUpdate(new Date());
+          toast.success('Datos actualizados en tiempo real');
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching real-time update:', error);
+    }
+  };
 
   useEffect(() => {
     fetchAnalyticsData();
@@ -224,6 +271,30 @@ export default function IntelligentAnalyticsDashboard() {
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
             <Brain className="h-8 w-8 text-purple-600" />
             Analíticas Inteligentes
+            {/* Real-time status indicator */}
+            <div className="flex items-center gap-2 ml-4">
+              {isConnected ? (
+                <Badge variant="secondary" className="flex items-center gap-1 bg-green-100 text-green-800">
+                  <Wifi className="h-3 w-3" />
+                  En Vivo
+                </Badge>
+              ) : isConnecting ? (
+                <Badge variant="secondary" className="flex items-center gap-1 bg-yellow-100 text-yellow-800">
+                  <RefreshCw className="h-3 w-3 animate-spin" />
+                  Conectando
+                </Badge>
+              ) : (
+                <Badge variant="secondary" className="flex items-center gap-1 bg-gray-100 text-gray-600">
+                  <WifiOff className="h-3 w-3" />
+                  Sin Conexión
+                </Badge>
+              )}
+              {lastUpdate && (
+                <span className="text-xs text-gray-500">
+                  Actualizado: {lastUpdate.toLocaleTimeString()}
+                </span>
+              )}
+            </div>
           </h1>
           <p className="text-gray-600">Insights avanzados y predicciones para el crecimiento de la iglesia</p>
         </div>

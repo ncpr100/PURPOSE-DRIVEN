@@ -2,10 +2,11 @@
 import { Suspense } from 'react';
 import AnalyticsClient from './_components/analytics-client';
 import IntelligentAnalyticsDashboard from './_components/intelligent-analytics-dashboard';
+import { RealTimeAnalyticsOverview } from '@/components/analytics/realtime-analytics-overview';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Brain, BarChart3 } from 'lucide-react';
+import { Brain, BarChart3, Activity } from 'lucide-react';
 
 function AnalyticsLoadingSkeleton() {
   return (
@@ -63,8 +64,17 @@ export default function AnalyticsPage() {
         <p className="text-gray-600">Insights y métricas para el crecimiento de la iglesia</p>
       </div>
 
+      {/* Real-time Analytics Overview */}
+      <div className="mb-6">
+        <RealTimeAnalyticsOverview />
+      </div>
+
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="realtime" className="flex items-center gap-2">
+            <Activity className="h-4 w-4" />
+            Tiempo Real
+          </TabsTrigger>
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
             Analíticas Generales
@@ -74,6 +84,22 @@ export default function AnalyticsPage() {
             Analíticas Inteligentes
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="realtime">
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="h-5 w-5" />
+                  Dashboard en Tiempo Real
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <RealTimeAnalyticsOverview showDetails={true} autoRefresh={true} />
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
 
         <TabsContent value="overview">
           <Suspense fallback={<AnalyticsLoadingSkeleton />}>
