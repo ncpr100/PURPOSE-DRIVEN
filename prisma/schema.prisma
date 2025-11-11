@@ -80,6 +80,11 @@ model Church {
   invoices                  Invoice[]
   tenantCredentials         TenantCredentials?
   qualificationSettings     ChurchQualificationSettings?
+  
+  // Enhanced Member Journey Analytics
+  memberJourneys            MemberJourney[]
+  memberBehavioralPatterns  MemberBehavioralPattern[]
+  ministryPathwayRecommendations MinistryPathwayRecommendation[]
 
   @@map("churches")
 }
@@ -314,7 +319,13 @@ model Member {
   availabilityMatrix       AvailabilityMatrix?
   volunteerRecommendations VolunteerRecommendation[]
   visitorProfiles          VisitorProfile[] // If member was previously a visitor
+  memberJourney            MemberJourney? // Enhanced lifecycle tracking
 
+  // Performance optimization indexes for analytics
+  @@index([churchId, isActive, createdAt])
+  @@index([churchId, email])
+  @@index([churchId, firstName, lastName])
+  @@index([membershipDate, isActive])
   @@map("members")
 }
 
@@ -359,6 +370,10 @@ model Event {
   volunteerAssignments     VolunteerAssignment[]
   volunteerRecommendations VolunteerRecommendation[]
 
+  // Performance optimization indexes for analytics
+  @@index([churchId, status, startDate, category])
+  @@index([churchId, startDate, endDate])
+  @@index([createdBy, churchId, startDate])
   @@map("events")
 }
 
@@ -382,6 +397,10 @@ model Volunteer {
   ministry        Ministry?                 @relation(fields: [ministryId], references: [id])
   engagementScore VolunteerEngagementScore?
 
+  // Performance optimization indexes for analytics
+  @@index([churchId, memberId, isActive, createdAt])
+  @@index([churchId, ministryId, isActive])
+  @@index([email, churchId])
   @@map("volunteers")
 }
 
@@ -435,7 +454,12 @@ model CheckIn {
   event     Event?            @relation(fields: [eventId], references: [id])
   followUps VisitorFollowUp[]
 
+  // Performance optimization indexes for analytics
   @@index([checkedInAt])
+  @@index([churchId, checkedInAt, eventId])
+  @@index([churchId, email, checkedInAt])
+  @@index([churchId, firstName, lastName, checkedInAt])
+  @@index([isFirstTime, churchId, checkedInAt])
   @@map("check_ins")
 }
 
@@ -570,6 +594,11 @@ model Donation {
   paymentMethod   PaymentMethod     @relation(fields: [paymentMethodId], references: [id])
   onlinePayment   OnlinePayment?
 
+  // Performance optimization indexes for analytics
+  @@index([churchId, memberId, createdAt, amount])
+  @@index([churchId, donationDate, status])
+  @@index([churchId, categoryId, createdAt])
+  @@index([campaignId, createdAt])
   @@map("donations")
 }
 
@@ -690,6 +719,10 @@ model Communication {
   church      Church                 @relation(fields: [churchId], references: [id], onDelete: Cascade)
   template    CommunicationTemplate? @relation(fields: [templateId], references: [id])
 
+  // Performance optimization indexes for analytics
+  @@index([churchId, sentAt, type, status])
+  @@index([churchId, createdAt, type])
+  @@index([sentAt, status])
   @@map("communications")
 }
 
@@ -2393,4 +2426,191 @@ model VisitorProfile {
   @@index([phone])
   @@index([lastVisitDate])
   @@map("visitor_profiles")
+}
+
+// Member Journey Deep Analytics - Enhanced Lifecycle Tracking
+enum MemberLifecycleStage {
+  VISITOR // First contact, not yet registered
+  FIRST_TIME_GUEST // Attended once, registered in system
+  RETURNING_VISITOR // Attended 2-4 times, showing interest
+  REGULAR_ATTENDEE // Attends regularly (5+ times), not yet member
+  MEMBERSHIP_CANDIDATE // In membership process
+  NEW_MEMBER // Recently became member (0-6 months)
+  ESTABLISHED_MEMBER // Active member (6+ months)
+  GROWING_MEMBER // Engaged in discipleship/growth activities
+  SERVING_MEMBER // Active in ministry/volunteering
+  LEADING_MEMBER // In leadership roles
+  MATURE_LEADER // Seasoned leader developing others
+  INACTIVE_MEMBER // Member but low engagement
+  DISCONNECTED_MEMBER // No recent activity, needs outreach
+}
+
+enum EngagementLevel {
+  HIGH // 90-100% engagement score
+  MEDIUM_HIGH // 70-89% engagement score
+  MEDIUM // 50-69% engagement score
+  MEDIUM_LOW // 30-49% engagement score
+  LOW // 0-29% engagement score
+}
+
+enum RetentionRisk {
+  VERY_LOW // 0-10% risk of leaving
+  LOW // 11-25% risk
+  MEDIUM // 26-50% risk
+  HIGH // 51-75% risk
+  VERY_HIGH // 76-100% risk
+}
+
+// Member Journey Lifecycle Tracking
+model MemberJourney {
+  id              String                @id @default(cuid())
+  memberId        String?               @unique // Links to Member record
+  visitorId       String?               @unique // Links to VisitorProfile record
+  churchId        String
+
+  // Current State
+  currentStage          MemberLifecycleStage @default(VISITOR)
+  previousStage         MemberLifecycleStage?
+  stageStartDate        DateTime             @default(now())
+  totalDaysInCurrentStage Int               @default(0)
+
+  // Journey Progression
+  stageHistory          Json                 // Array of stage transitions with timestamps
+  conversionMilestones  Json                 // Key conversion events and dates
+  engagementTimeline    Json                 // Historical engagement data
+
+  // Scoring & Analytics
+  engagementScore       Float                @default(0.0) // 0-100 engagement score
+  engagementLevel       EngagementLevel      @default(LOW)
+  retentionScore        Float                @default(50.0) // 0-100 retention likelihood
+  retentionRisk         RetentionRisk        @default(MEDIUM)
+
+  // Behavioral Patterns
+  attendancePattern     Json                 // Frequency, consistency patterns
+  ministryInvolvement   Json                 // Ministry participation history
+  givingPattern         Json                 // Donation behavior analysis
+  communicationResponse Json                 // Response to communications
+
+  // Predictive Analytics
+  nextStageRecommendation MemberLifecycleStage?
+  nextStageProbability    Float?               // 0-100% likelihood
+  recommendedActions      Json                 // Suggested next steps for growth
+  pathwayRecommendations  Json                 // Ministry/growth pathway suggestions
+
+  // AI Insights
+  behavioralProfile     Json                 // AI-generated behavioral insights
+  growthPredictions     Json                 // Growth trajectory predictions
+  riskFactors           Json                 // Factors contributing to retention risk
+  strengthFactors       Json                 // Positive engagement factors
+
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @default(now())
+  lastAnalysisDate      DateTime             @default(now())
+
+  church                Church               @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  member                Member?              @relation(fields: [memberId], references: [id])
+  
+  // Relations
+  behavioralPatterns    MemberBehavioralPattern[]
+  ministryRecommendations MinistryPathwayRecommendation[]
+
+  @@index([currentStage])
+  @@index([engagementLevel])
+  @@index([retentionRisk])
+  @@index([churchId, currentStage])
+  @@index([lastAnalysisDate])
+  @@map("member_journeys")
+}
+
+// Detailed Behavioral Analytics
+model MemberBehavioralPattern {
+  id                    String   @id @default(cuid())
+  memberJourneyId       String
+  churchId              String
+
+  // Attendance Patterns
+  averageWeeklyAttendance Float    @default(0.0)
+  attendanceConsistency   Float    @default(0.0) // 0-1 consistency score
+  preferredEventTypes     Json     // Array of preferred event categories
+  attendanceTrend         String   @default("stable") // "increasing", "decreasing", "stable"
+
+  // Engagement Patterns
+  communicationEngagement Float    @default(0.0) // Response rate to communications
+  eventParticipation      Float    @default(0.0) // Participation in events beyond Sunday service
+  ministryParticipation   Float    @default(0.0) // Level of ministry involvement
+  socialInteraction       Float    @default(0.0) // Interaction with other members
+
+  // Giving Patterns
+  givingFrequency         String?  // "weekly", "monthly", "occasional", "rare"
+  givingTrend             String   @default("none") // "increasing", "decreasing", "stable", "none"
+  averageDonationAmount   Float?   @default(0.0)
+  givingConsistency       Float    @default(0.0)
+
+  // Growth Indicators
+  spiritualGrowthActivity Float    @default(0.0) // Participation in growth activities
+  leadershipPotential     Float    @default(0.0) // Leadership readiness score
+  mentorshipEngagement    Float    @default(0.0) // Being mentored or mentoring others
+  communityBuilding       Float    @default(0.0) // Building relationships within church
+
+  // Lifecycle Transition Indicators
+  readinessForNextStage   Float    @default(0.0) // 0-1 readiness for advancement
+  stagnationRisk          Float    @default(0.0) // 0-1 risk of stagnation
+  dropoutRisk             Float    @default(0.0) // 0-1 risk of leaving
+
+  analyzedAt              DateTime @default(now())
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @default(now())
+
+  memberJourney           MemberJourney @relation(fields: [memberJourneyId], references: [id], onDelete: Cascade)
+  church                  Church        @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@index([memberJourneyId])
+  @@index([churchId])
+  @@index([readinessForNextStage])
+  @@index([dropoutRisk])
+  @@map("member_behavioral_patterns")
+}
+
+// Ministry Pathway Recommendations
+model MinistryPathwayRecommendation {
+  id                String   @id @default(cuid())
+  memberJourneyId   String
+  churchId          String
+
+  // Recommendation Details
+  recommendationType String   // "ministry", "growth", "leadership", "service"
+  title             String   // Recommendation title
+  description       String   // Detailed description
+  priority          String   @default("medium") // "high", "medium", "low"
+  
+  // Matching Criteria
+  matchScore        Float    @default(0.0) // 0-100 compatibility score
+  basedOnFactors    Json     // Array of factors contributing to recommendation
+  spiritualGiftsMatch Float  @default(0.0) // How well gifts match opportunity
+  availabilityMatch Float    @default(0.0) // Schedule compatibility
+  experienceMatch   Float    @default(0.0) // Experience level match
+
+  // Pathway Information
+  ministryCategory  String?  // Category of ministry
+  requiredSkills    Json     // Skills needed
+  timeCommitment    String?  // Expected time investment
+  difficultyLevel   String   @default("beginner") // "beginner", "intermediate", "advanced"
+
+  // Tracking
+  status           String    @default("pending") // "pending", "accepted", "declined", "completed"
+  presentedAt      DateTime? // When recommendation was shown to user
+  respondedAt      DateTime? // When user responded
+  completedAt      DateTime? // When pathway was completed
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now())
+
+  memberJourney    MemberJourney @relation(fields: [memberJourneyId], references: [id], onDelete: Cascade)
+  church           Church        @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@index([memberJourneyId])
+  @@index([churchId])
+  @@index([status])
+  @@index([priority])
+  @@map("ministry_pathway_recommendations")
 }

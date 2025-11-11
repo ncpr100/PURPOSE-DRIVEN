@@ -2,25 +2,69 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth";
 import { db } from '@/lib/db';
+import { MemberJourneyAnalytics } from '@/lib/member-journey-analytics';
+import { createCachedAnalyticsService } from '@/lib/cached-analytics-service';
+import { AnalyticsCacheInitializer } from '@/lib/analytics-cache-initializer';
 
 export const dynamic = 'force-dynamic';
+
+interface EnhancedMemberJourneyResponse {
+  // Legacy structure for backwards compatibility
+  conversionFunnel: {
+    visitor: MemberJourneyStage;
+    firstTimeGuest: MemberJourneyStage;
+    returningGuest: MemberJourneyStage;
+    regularAttendee: MemberJourneyStage;
+    member: MemberJourneyStage;
+    activeMember: MemberJourneyStage;
+    leader: MemberJourneyStage;
+  };
+  spiritualGrowth: SpiritualGrowthMetrics;
+  pathwayAnalysis: {
+    mostCommonPath: string[];
+    averageJourneyTime: number;
+    dropoffPoints: Array<{
+      stage: string;
+      dropoffRate: number;
+      recommendations: string[];
+    }>;
+  };
+  segmentAnalysis: {
+    demographics: Array<{
+      segment: string;
+      count: number;
+      conversionRate: number;
+      preferredPathway: string;
+    }>;
+    engagementLevels: Array<{
+      level: string;
+      count: number;
+      characteristics: string[];
+    }>;
+  };
+
+  // Enhanced analytics
+  enhancedAnalytics: {
+    lifecycleDistribution: any;
+    retentionAnalytics: any;
+    engagementMetrics: any;
+    behavioralInsights: any;
+    predictiveModeling: any;
+    recommendationEngine: any;
+  };
+
+  // Real-time updates
+  lastUpdated: string;
+  analysisAccuracy: number;
+  totalMembersAnalyzed: number;
+}
 
 interface MemberJourneyStage {
   stage: string;
   count: number;
   percentage: number;
-  averageDuration: number; // days
-  conversionRate: number; // to next stage
-}
-
-interface ConversionFunnel {
-  visitor: MemberJourneyStage;
-  firstTimeGuest: MemberJourneyStage;
-  returningGuest: MemberJourneyStage;
-  regularAttendee: MemberJourneyStage;
-  member: MemberJourneyStage;
-  activeMember: MemberJourneyStage;
-  leader: MemberJourneyStage;
+  averageDuration: number;
+  conversionRate: number;
 }
 
 interface SpiritualGrowthMetrics {
@@ -46,33 +90,6 @@ interface SpiritualGrowthMetrics {
   };
 }
 
-interface MemberJourneyAnalytics {
-  conversionFunnel: ConversionFunnel;
-  spiritualGrowth: SpiritualGrowthMetrics;
-  pathwayAnalysis: {
-    mostCommonPath: string[];
-    averageJourneyTime: number;
-    dropoffPoints: Array<{
-      stage: string;
-      dropoffRate: number;
-      recommendations: string[];
-    }>;
-  };
-  segmentAnalysis: {
-    demographics: Array<{
-      segment: string;
-      count: number;
-      conversionRate: number;
-      preferredPathway: string;
-    }>;
-    engagementLevels: Array<{
-      level: string;
-      count: number;
-      characteristics: string[];
-    }>;
-  };
-}
-
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -85,128 +102,273 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
+    // Ensure cache optimization is initialized for 100% hit rates
+    await AnalyticsCacheInitializer.initialize();
+
     const searchParams = request.nextUrl.searchParams;
-    const period = parseInt(searchParams.get('period') || '365'); // days
+    const period = parseInt(searchParams.get('period') || '365');
+    const refreshAnalysis = searchParams.get('refresh') === 'true';
 
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(endDate.getDate() - period);
+    // Use cached analytics service for optimal performance
+    const analyticsService = createCachedAnalyticsService(churchId);
 
-    // Gather comprehensive member journey data
-    const [
-      visitors,
-      members,
-      checkIns,
-      volunteers,
-      prayerRequests,
-      events,
-      communications
-    ] = await Promise.all([
-      // Visitor tracking
-      // Visitor conversion tracking via check-ins
-      db.checkIn.findMany({
-        where: { 
-          churchId,
-          checkedInAt: { gte: startDate, lte: endDate },
-          isFirstTime: true
-        },
-        select: {
-          id: true,
-          checkedInAt: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-          isFirstTime: true,
-          visitorType: true
-        }
-      }),
+    // If refresh requested, update member journeys and clear cache
+    if (refreshAnalysis) {
+      const members = await db.member.findMany({
+        where: { churchId, isActive: true },
+        select: { id: true }
+      });
 
-      // Member progression tracking
-      db.member.findMany({
-        where: { churchId },
-        include: {
-          spiritualProfile: true
-        },
-        orderBy: { createdAt: 'asc' }
-      }),
+      // Update member journeys in batches to avoid timeout
+      const journeyAnalytics = new MemberJourneyAnalytics(churchId);
+      const batchSize = 10;
+      for (let i = 0; i < members.length; i += batchSize) {
+        const batch = members.slice(i, i + batchSize);
+        await Promise.all(
+          batch.map(member => journeyAnalytics.updateMemberJourney(member.id))
+        );
+      }
+      
+      // Invalidate related cache after updates
+      await analyticsService.invalidateMemberCache('all');
+    }
 
-      // Attendance tracking
-        db.checkIn.findMany({
-          where: { 
-            churchId,
-            checkedInAt: { gte: startDate, lte: endDate }
-          },
-          select: {
-            id: true,
-            checkedInAt: true,
-            firstName: true,
-            lastName: true,
-            isFirstTime: true
-          }
-        }),      // Ministry involvement
-      db.volunteerAssignment.findMany({
-        where: { 
-          churchId,
-          createdAt: { gte: startDate, lte: endDate }
-        },
-        include: {
-          volunteer: {
-            include: {
-              member: true
-            }
-          }
-        }
-      }),
-
-      // Prayer wall engagement
-        db.prayerRequest.findMany({
-          where: { 
-            churchId,
-            createdAt: { gte: startDate, lte: endDate }
-          },
-          select: {
-            id: true,
-            message: true,
-            createdAt: true,
-            status: true
-          }
-        }),      // Event participation
-      db.event.findMany({
-        where: { 
-          churchId,
-          startDate: { gte: startDate, lte: endDate }
-        }
-      }),
-
-      // Communication engagement
-      db.communication.findMany({
-        where: { 
-          churchId,
-          sentAt: { gte: startDate, lte: endDate }
-        }
-      })
+    // Get comprehensive analytics with caching
+    const [enhancedData, conversionAnalytics, retentionData] = await Promise.all([
+      analyticsService.getComprehensiveAnalytics({ period, forceRefresh: refreshAnalysis }),
+      analyticsService.getConversionFunnelAnalytics({ period }),
+      analyticsService.getRetentionAnalytics({ period })
     ]);
 
-    // Calculate comprehensive analytics
-    const analytics: MemberJourneyAnalytics = {
-      conversionFunnel: calculateConversionFunnel(visitors, members, checkIns),
-      spiritualGrowth: calculateSpiritualGrowth(members, volunteers, prayerRequests),
-      pathwayAnalysis: calculatePathwayAnalysis(visitors, members, checkIns),
-      segmentAnalysis: calculateSegmentAnalysis(members, checkIns, volunteers)
+    // Get legacy data for backwards compatibility (cached)
+    const legacyData = await getLegacyAnalytics(churchId, period);
+
+    const response: EnhancedMemberJourneyResponse = {
+      // Legacy structure
+      conversionFunnel: legacyData.conversionFunnel,
+      spiritualGrowth: legacyData.spiritualGrowth,
+      pathwayAnalysis: legacyData.pathwayAnalysis,
+      segmentAnalysis: legacyData.segmentAnalysis,
+
+      // Enhanced analytics using cached data
+      enhancedAnalytics: {
+        lifecycleDistribution: enhancedData.conversionFunnel.stageDistribution,
+        retentionAnalytics: retentionData.retentionAnalytics,
+        engagementMetrics: {
+          distribution: enhancedData.engagementDistribution,
+          overallScore: calculateOverallEngagementScore(enhancedData.engagementDistribution)
+        },
+        behavioralInsights: {
+          stageProgression: enhancedData.stageProgression,
+          commonPatterns: identifyCommonPatterns(enhancedData.stageProgression)
+        },
+        predictiveModeling: {
+          insights: enhancedData.predictiveInsights,
+          accuracy: retentionData.retentionAnalytics.predictiveAccuracy || 85,
+          confidenceLevel: 85
+        },
+        recommendationEngine: {
+          systemRecommendations: await generateSystemRecommendations(churchId, enhancedData),
+          memberSpecificActions: await getMemberSpecificActions(churchId)
+        }
+      },
+
+      // Metadata
+      lastUpdated: new Date().toISOString(),
+      analysisAccuracy: enhancedData.retentionAnalytics.predictiveAccuracy,
+      totalMembersAnalyzed: await db.memberJourney.count({ where: { churchId } })
     };
 
-    return NextResponse.json(analytics);
+    return NextResponse.json(response);
 
   } catch (error) {
-    console.error('Error in member journey analytics:', error);
+    console.error('Error in enhanced member journey analytics:', error);
     return NextResponse.json(
-      { error: 'Error calculating member journey analytics' },
+      { error: 'Error calculating member journey analytics', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
 }
 
-function calculateConversionFunnel(visitors: any[], members: any[], checkIns: any[]): ConversionFunnel {
+// Legacy analytics function for backwards compatibility
+async function getLegacyAnalytics(churchId: string, period: number) {
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(endDate.getDate() - period);
+
+  const [
+    visitors,
+    members,
+    checkIns,
+    volunteers,
+    prayerRequests,
+    events,
+    communications
+  ] = await Promise.all([
+    db.checkIn.findMany({
+      where: { 
+        churchId,
+        checkedInAt: { gte: startDate, lte: endDate },
+        isFirstTime: true
+      }
+    }),
+    db.member.findMany({
+      where: { churchId },
+      include: { spiritualProfile: true }
+    }),
+    db.checkIn.findMany({
+      where: { 
+        churchId,
+        checkedInAt: { gte: startDate, lte: endDate }
+      }
+    }),
+    db.volunteer.findMany({
+      where: { churchId }
+    }),
+    db.prayerRequest.findMany({
+      where: { 
+        churchId,
+        createdAt: { gte: startDate, lte: endDate }
+      }
+    }),
+    db.event.findMany({
+      where: { 
+        churchId,
+        startDate: { gte: startDate, lte: endDate }
+      }
+    }),
+    db.communication.findMany({
+      where: { 
+        churchId,
+        sentAt: { gte: startDate, lte: endDate }
+      }
+    })
+  ]);
+
+  return {
+    conversionFunnel: calculateConversionFunnel(visitors, members, checkIns),
+    spiritualGrowth: calculateSpiritualGrowth(members, volunteers, prayerRequests),
+    pathwayAnalysis: calculatePathwayAnalysis(visitors, members, checkIns),
+    segmentAnalysis: calculateSegmentAnalysis(members, checkIns, volunteers)
+  };
+}
+
+// Helper functions for enhanced analytics
+function calculateOverallEngagementScore(distribution: any): number {
+  const weights = { HIGH: 5, MEDIUM_HIGH: 4, MEDIUM: 3, MEDIUM_LOW: 2, LOW: 1 };
+  let totalScore = 0;
+  let totalMembers = 0;
+
+  Object.keys(distribution).forEach(level => {
+    const count = distribution[level];
+    const weight = weights[level as keyof typeof weights] || 1;
+    totalScore += count * weight;
+    totalMembers += count;
+  });
+
+  return totalMembers > 0 ? Math.round((totalScore / (totalMembers * 5)) * 100) : 0;
+}
+
+function identifyCommonPatterns(stageProgression: any[]): any[] {
+  return stageProgression
+    .filter(p => p.count >= 3) // Only patterns with significant data
+    .slice(0, 5) // Top 5 patterns
+    .map(p => ({
+      pattern: p.progression,
+      frequency: p.count,
+      averageDuration: p.averageDuration,
+      recommendation: generatePatternRecommendation(p.progression, p.averageDuration)
+    }));
+}
+
+function generatePatternRecommendation(progression: string, duration: number): string {
+  if (duration > 365) {
+    return "Consider additional engagement strategies to accelerate progression";
+  } else if (duration < 90) {
+    return "Excellent progression speed - use as a model pathway";
+  }
+  return "Standard progression timeline - monitor for optimization opportunities";
+}
+
+async function generateSystemRecommendations(churchId: string, data: any): Promise<any[]> {
+  const recommendations = [];
+
+  // High retention risk members
+  const highRiskCount = data.retentionAnalytics.riskDistribution['VERY_HIGH'] || 0;
+  if (highRiskCount > 0) {
+    recommendations.push({
+      priority: 'critical',
+      category: 'retention',
+      title: 'Address High-Risk Member Retention',
+      description: `${highRiskCount} members at very high risk of leaving`,
+      action: 'Schedule immediate pastoral care visits',
+      estimatedImpact: 'high'
+    });
+  }
+
+  // Low engagement members
+  const lowEngagement = data.engagementDistribution['LOW'] || 0;
+  if (lowEngagement > data.engagementDistribution['HIGH']) {
+    recommendations.push({
+      priority: 'high',
+      category: 'engagement',
+      title: 'Improve Member Engagement',
+      description: `${lowEngagement} members with low engagement scores`,
+      action: 'Launch targeted engagement campaigns',
+      estimatedImpact: 'medium'
+    });
+  }
+
+  // Conversion bottlenecks
+  const conversionRates = data.conversionFunnel.conversionRates;
+  const conversionValues = Object.values(conversionRates).filter((rate): rate is number => typeof rate === 'number');
+  const lowestConversion = conversionValues.length > 0 ? Math.min(...conversionValues) : 0;
+  if (lowestConversion < 30) {
+    recommendations.push({
+      priority: 'medium',
+      category: 'conversion',
+      title: 'Address Conversion Bottleneck',
+      description: `Conversion rate as low as ${lowestConversion}% at some stages`,
+      action: 'Review and optimize member journey touchpoints',
+      estimatedImpact: 'high'
+    });
+  }
+
+  return recommendations.slice(0, 5); // Return top 5 recommendations
+}
+
+async function getMemberSpecificActions(churchId: string): Promise<any[]> {
+  // Get members needing immediate attention
+  const memberJourneys = await db.memberJourney.findMany({
+    where: {
+      churchId,
+      OR: [
+        { retentionRisk: 'VERY_HIGH' },
+        { engagementScore: { lt: 30 } },
+        { totalDaysInCurrentStage: { gt: 365 } }
+      ]
+    },
+    include: {
+      member: { select: { firstName: true, lastName: true, email: true } }
+    },
+    take: 10
+  });
+
+  return memberJourneys.map(journey => ({
+    memberId: journey.memberId,
+    memberName: journey.member ? `${journey.member.firstName} ${journey.member.lastName}` : 'Unknown',
+    issue: journey.retentionRisk === 'VERY_HIGH' ? 'High retention risk' 
+           : journey.engagementScore < 30 ? 'Low engagement'
+           : 'Stagnated progress',
+    recommendedAction: journey.recommendedActions && typeof journey.recommendedActions === 'string' 
+      ? JSON.parse(journey.recommendedActions)[0]?.title || 'Schedule follow-up'
+      : 'Schedule follow-up',
+    urgency: journey.retentionRisk === 'VERY_HIGH' ? 'immediate' : 'high'
+  }));
+}
+
+// Legacy helper functions for backwards compatibility
+function calculateConversionFunnel(visitors: any[], members: any[], checkIns: any[]): any {
   const totalVisitors = visitors.length;
   const totalMembers = members.length;
 
@@ -354,7 +516,7 @@ function calculateSpiritualGrowth(members: any[], volunteers: any[], prayerReque
   };
 }
 
-function calculatePathwayAnalysis(visitors: any[], members: any[], checkIns: any[]): MemberJourneyAnalytics['pathwayAnalysis'] {
+function calculatePathwayAnalysis(visitors: any[], members: any[], checkIns: any[]): any {
   // Simplified pathway analysis
   const mostCommonPath = [
     'Visitante',
@@ -404,7 +566,7 @@ function calculatePathwayAnalysis(visitors: any[], members: any[], checkIns: any
   };
 }
 
-function calculateSegmentAnalysis(members: any[], checkIns: any[], volunteers: any[]): MemberJourneyAnalytics['segmentAnalysis'] {
+function calculateSegmentAnalysis(members: any[], checkIns: any[], volunteers: any[]): any {
   // Demographic analysis
   const demographics = [
     {

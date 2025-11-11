@@ -1,163 +1,213 @@
-# Khesed-tek Church Management System - AI Agent Instructions
+# Khesed-tek Church Management System - AI Assistant Instructions
 
-## ROLE & MISSION
-You are an expert security-focused AI agent designed for comprehensive vulnerability analysis and pragmatic security hardening within defined projects. You function as a security auditor and pragmatic implementer, not a theorist.
+**Document Version**: 2.1  
+**Last Updated**: November 11, 2025  
+**Project Status**: Production Active - Phase 3 Advanced Analytics (85% Complete)  
 
-## 1. Core Architecture & Project Context
+## Project State & Current Focus
 
-This is a large-scale Next.js 14 application. The key technologies are:
-- **Framework**: Next.js 14 (App Router)
-- **Database ORM**: Prisma with a PostgreSQL database. The schema is the source of truth for data models (`prisma/schema.prisma`).
-- **Authentication**: NextAuth.js handles user sessions. See `app/api/auth/[...nextauth]/route.ts` for the configuration.
-- **UI Components**: Built with Radix UI primitives, styled with Tailwind CSS. Custom components are in `components/`.
-- **State Management**: A mix of Zustand and Jotai for global state, and React Query for server state.
-- **Security**: `helmet`, `bcryptjs`, `jsonwebtoken`.
-- **Integrations**: 20+ external APIs including Stripe, Twilio, Mailgun, Facebook, Twitter.
+This is an **enterprise-grade church management platform** actively deployed in production with **85% overall completion** and **60% Phase 3 completion**. Currently implementing **Member Journey Deep Analytics** as the next critical milestone.
 
-**Key File**: `middleware.ts` is critical. It manages all routing, authentication checks, and role-based access control (RBAC) for both pages and API routes. Before adding or changing a route, check this file.
+### Current Phase Status
+- **Phase 1**: Core Foundation ✅ COMPLETE (Members, Events, Finance, Communication)
+- **Phase 2**: Business Intelligence ✅ COMPLETE (Analytics, Reporting)  
+- **Phase 3**: Advanced Analytics 🔄 **60% COMPLETE** - Active Development Focus
+- **Phase 4**: AI & Mobile Apps (Planned for Q2 2026)
 
-## 2. Developer Workflows
+## Core Architecture & Context
 
-- **To run the app locally**:
-  ```bash
-  npm install
-  npm run dev
-  ```
-- **To build for production**:
-  ```bash
-  npm run build
-  ```
-- **Database Seeding**: To populate the database with initial data, use the custom seed script.
-  ```bash
-  npx prisma db seed
-  ```
-  This command executes `scripts/seed.ts` via `tsx`.
+### Tech Stack
+- **Framework**: Next.js 14 with App Router (`app/` directory structure)
+- **Database**: PostgreSQL with Prisma ORM (`prisma/schema.prisma` - 2,397 lines, ~50 tables)
+- **Authentication**: NextAuth.js with custom providers (`lib/auth.ts`)
+- **UI**: Radix UI primitives + Tailwind CSS with shadcn/ui components
+- **Analytics**: Dual analytics system with AI-powered insights
+- **Real-time**: Server-Sent Events (SSE) + WebSocket integrations
+- **External APIs**: 20+ integrations (Stripe, Twilio, Bible APIs, social media)
 
-## 3. Code Conventions & Patterns
+### Critical Production Systems (OPERATIONAL)
 
-- **Path Aliases**: The project uses `@/*` to reference the root directory. Always use this for imports (e.g., `import { logger } from '@/lib/logger';`).
-- **API Routes**: API logic is located in `app/api/`. These routes follow the file-based routing conventions of Next.js.
-- **Authentication & Authorization**:
-    - All protected routes (pages and APIs) are defined in `middleware.ts`.
-    - User roles (`SUPER_ADMIN`, `ADMIN_IGLESIA`, `PASTOR`, etc.) and their permissions are also managed in the middleware.
-    - When adding a new feature that requires access control, you **must** update the `PROTECTED_ROUTES` or `PROTECTED_API_ROUTES` arrays and potentially the permission logic in `middleware.ts`.
-- **External Services**: The application integrates with over 20 external APIs (Stripe, Twilio, Mailgun, etc.). API keys and secrets are managed via environment variables. Do not hardcode credentials.
+**1. Completed Analytics Infrastructure** ✅
+- **Dual Analytics Dashboard**: `Analíticas Generales` + `Analíticas Inteligentes`
+- **AI-Powered Modules**: Predictive analytics, member journey, executive reporting, recommendations
+- **Real-Time Updates**: SSE integration with live dashboard updates
+- **Advanced Export System**: PDF Ejecutivo, Excel Avanzado, CSV Estructurado with church branding
 
-## 4. Key Directories
+**2. Social Media Automation** ✅ (P1 Priority Complete)
+- **8 Automation Triggers**: Post creation, publishing, campaigns, engagement monitoring
+- **Platform Updates**: LinkedIn→YouTube migration, TikTok integration
+- **Production Deploy**: All automation triggers deployed (feature-flag controlled)
 
-- `app/`: Main application code, following the Next.js App Router structure.
-- `components/`: Reusable React components.
-- `lib/`: Shared utilities, helpers, and libraries (e.g., `lib/prisma.ts`).
-- `prisma/`: Contains the `schema.prisma` file, migrations, and seed data definitions.
-- `scripts/`: Contains utility scripts, including the database seed script (`seed.ts`).
-- `types/`: Global TypeScript type definitions.
+**3. Memory Management System** ✅
+- **Assessment Tools**: `lib/memory-assessment.ts`, `scripts/memory-assessment.ts`
+- **Optimization**: 3.4MB storage freed, 679Mi memory optimized
+- **Cleanup Scripts**: `npm run cleanup`, `npm run build:memory-optimized`
 
-## 5. What to Avoid
+### Critical Architectural Patterns
 
-- **Modifying `next.config.js`**: Unless absolutely necessary. It's configured for specific deployment environments.
-- **Bypassing Middleware**: Do not implement one-off authentication or authorization checks in individual components or API routes. All access control should be centralized in `middleware.ts`.
-- **Direct Database Queries**: Always use the Prisma client (`lib/prisma.ts`) for database interactions.
+**1. Centralized Access Control**
+- `middleware.ts` is the **most important file** - controls all routing and permissions
+- Protected routes arrays: `PROTECTED_ROUTES` and `PROTECTED_API_ROUTES`
+- Role hierarchy: `SUPER_ADMIN` → `ADMIN_IGLESIA` → `PASTOR` → `LIDER` → `MIEMBRO`
+- **Never bypass middleware** - all auth/permissions must flow through it
 
-## CORE SECURITY DIRECTIVES
+**2. Multi-Tenant Pattern**
+- Church-scoped data isolation via `churchId` foreign keys
+- Platform-level routes: `/platform/*` (super admin only)
+- Church-level routes: `/(dashboard)/*` (church members)
+- Tenant credentials managed in `/platform/tenant-credentials`
 
-### SECURITY ANALYSIS MANDATE
-- **LINE-BY-LINE AUDIT**: Conduct meticulous analysis of every code line and configuration.
-- **OWASP TOP 10 COVERAGE**: Comprehensive scanning for:
-    1. Injection vulnerabilities (SQL, NoSQL, Command, LDAP)
-    2. Broken Access Control & Authorization flaws
-    3. Insecure Design & Architectural weaknesses
-    4. Cryptographic Failures & Data protection gaps
-    5. Identification & Authentication failures
-    6. Security Misconfigurations
-    7. Software & Data Integrity failures
-    8. Security Logging & Monitoring failures
-    9. Server-Side Request Forgery (SSRF)
-    10. Vulnerable & Outdated Components
+**3. Path Aliases & Imports**
+Always use `@/*` for imports:
+```typescript
+import { db } from '@/lib/db'
+import { Button } from '@/components/ui/button'
+import { authOptions } from '@/lib/auth'
+```
 
-### OPTIMIZATION MANDATE
-- **SPACE OPTIMIZATION**: Identify memory leaks, inefficient data structures, storage bloat.
-- **REDUNDANCY ELIMINATION**: Remove duplicate code, unnecessary dependencies, overlapping functionality.
-- **RESOURCE MAXIMIZATION**: Optimize CPU usage, database queries, API calls, network overhead.
-- **FEATURE ENHANCEMENT**: Security-hardening existing features while maintaining functionality.
+## Current Development Priorities (Next 2-4 Weeks)
 
-## MANDATORY EXECUTION WORKFLOW
+### **PRIORITY 1: Member Journey Deep Analytics** (ACTIVE)
+Implementing sophisticated member lifecycle analytics with behavioral insights:
+- Member lifecycle state machine (Visitor → Member → Leader)
+- Behavioral pattern detection algorithms
+- Engagement scoring with ministry pathway recommendations
+- Predictive retention modeling (80%+ accuracy target)
 
-### PHASE 1: PROJECT ASSESSMENT & CLARIFICATION
-CLARIFY: "Please provide:
-1. Complete codebase access or specific files for analysis
-2. Current tech stack details beyond Node.js
-3. Existing security protocols in place
-4. High-risk modules requiring immediate attention"
+### **PRIORITY 2: Performance & Database Optimization**
+Final Phase 3 optimization for high-performance analytics:
+- Strategic database indexing analysis
+- Redis-based caching layer for analytics queries
+- Performance monitoring dashboard
+- Target: 50% query response reduction, sub-1s page loads
 
-### PHASE 2: CONTEXTUAL MAPPING
-- Map security findings to specific project components.
-- Identify security-critical vs non-critical code paths.
-- Document existing security patterns and anti-patterns.
+## Key Workflows & Commands
 
-### PHASE 3: RISK ANTICIPATION & FLAGGING
-BEFORE ANALYSIS: Identify potential high-risk areas:
-- Authentication/Authorization flows
-- Data input/output boundaries
-- Third-party integrations
-- File processing routines
-- Database interaction points
-- API endpoints with user input
+### Development
+```bash
+npm run dev                    # Start dev server (0.0.0.0:3000)
+npm run build                  # Production build
+npm run build:memory-optimized # Memory-optimized build (CRITICAL for production)
+npx prisma db seed            # Populate database (scripts/seed.ts)
+npm run cleanup               # Memory cleanup scripts (3.4MB freed)
+npm run memory:assess         # Memory assessment and optimization
+```
 
-### PHASE 4: ANALYSIS PLAN & CONFIRMATION
-SECURITY ANALYSIS PLAN:
-1. Static Code Analysis Methodology
-2. Dependency Vulnerability Scanning Approach
-3. Data Flow Security Mapping
-4. Authentication/Authorization Audit Path
-5. Input Validation Coverage Check
+### Database Operations
+```bash
+npx prisma generate          # Regenerate Prisma client
+npx prisma db push          # Push schema changes
+npx prisma studio           # Database GUI
+```
 
-### PHASE 5: IMPLEMENTATION-READY ANALYSIS
-DELIVERABLES WILL INCLUDE:
-- Categorized vulnerability report with severity ratings
-- Specific code snippets with security issues highlighted
-- Immediate mitigation recommendations
-- Proof-of-concept exploits for critical vulnerabilities
-- Resource optimization opportunities
-- Feature enhancement security recommendations
+## Essential Project Patterns
 
-### PHASE 6: VERIFICATION & VALIDATION
-NON-NEGOTIABLE SECURITY TESTING:
-- For each vulnerability: Provide exploit example and mitigation validation.
-- Demonstrate security regression prevention.
-- Verify backward compatibility of security fixes.
-- Test edge cases and boundary conditions.
+### Analytics Architecture (NEWLY DEPLOYED)
+```typescript
+// Dual analytics system pattern
+/app/(dashboard)/analytics/page.tsx        # Analíticas Generales
+/app/(dashboard)/intelligent-analytics/    # Analíticas Inteligentes
 
-### PHASE 7: STRATEGIC SECURITY ROADMAP
-NEXT STEPS WILL PROVIDE:
-- Critical/High/Medium/Low priority remediation schedule
-- Technical debt security implications
-- Security documentation requirements
-- Logical security feature enhancements
-- Monitoring and logging improvements
+// AI-powered insights API pattern
+/api/analytics/executive-report           # Church health scoring
+/api/analytics/predictive                # Member retention forecasting
+/api/analytics/member-journey            # Conversion funnel tracking
+/api/analytics/recommendations          # Strategic recommendations
+```
 
-## SECURITY-FOCUSED OUTPUT REQUIREMENTS
+### Component Architecture
+- UI components: `/components/ui/*` (shadcn/ui based)
+- Feature components: `/components/{feature}/*` (analytics, members, volunteers)
+- Page components: `app/(dashboard)/{feature}/_components/*-client.tsx`
 
-### VULNERABILITY REPORTING FORMAT
-CRITICAL ISSUES: [Immediate action required]
-HIGH PRIORITY: [Address within sprint]
-MEDIUM PRIORITY: [Schedule for next release]
-LOW PRIORITY: [Backlog for technical debt]
+### Data Fetching Pattern
+```typescript
+// Server components fetch data directly
+const members = await db.member.findMany({
+  where: { churchId: session.user.churchId }
+})
 
-EACH FINDING INCLUDES:
-- Vulnerability Type & CVSS Score Estimate
-- Exact Code Location & Problematic Snippet
-- Exploit Scenario & Potential Impact
-- Recommended Fix with Secure Code Example
-- Testing Verification Steps
+// Client components use API routes
+const response = await fetch('/api/analytics/executive-report')
+```
 
-### OPTIMIZATION REPORTING FORMAT
-PERFORMANCE FINDINGS:
-- Space Optimization Opportunities
-- Redundancy Elimination Targets
-- Resource Maximization Strategies
-- Feature Enhancement Security Improvements
+## Module Organization
 
-## CHECKPOINT & CONTINUITY
-- Save security analysis state after each major component.
-- Maintain vulnerability tracking throughout engagement.
-- Document security debt and remediation progress.
+### Core Production Modules ✅
+- **Analytics**: Dual dashboard with AI insights (`/analytics`, `/intelligent-analytics`)
+- **Members**: Lifecycle management with spiritual assessments (`/members`)
+- **Volunteers**: Coordination with skill matching (`/volunteers`)
+- **Donations**: Multi-platform payment processing (`/donations`)
+- **Events**: QR code check-in systems (`/events`)
+- **Communications**: Multi-channel messaging (`/communications`)
+- **Social Media**: Automation with 8 triggers (`/social-media`)
+
+### Platform Modules ✅
+- **Website Builder**: Dynamic church websites (`/website-builder`)
+- **Prayer Wall**: Prayer request management (`/prayer-wall`)
+- **Platform Admin**: Multi-tenant management (`/platform`)
+
+## Development Guidelines
+
+### **CRITICAL PROTOCOL CHECK** (NON-NEGOTIABLE)
+Before implementing or deleting ANY code, **ALWAYS** ask yourself:
+
+1. **IS THIS THE RIGHT APPROACH?** - Verify the implementation strategy aligns with existing patterns
+2. **WHAT ARE THE REPERCUSSIONS?** - Consider impact on existing functionality and dependencies  
+3. **DO WE ALREADY HAVE THIS?** - Check for existing implementations to avoid duplication
+4. **DOUBLE-CHECK THE WORK** - Validate logic and syntax before assuming correctness
+5. **AM I CREATING NEW ERRORS?** - Forward-thinking approach to prevent regressions
+6. **WILL WE NEED THIS LATER?** - Consider future application workflow dependencies
+
+### Production Deployment Standards
+- **TypeScript Coverage**: 100% with zero compilation errors (ENFORCED)
+- **Memory Optimization**: Use `npm run build:memory-optimized` for production
+- **Railway Deployment**: All builds must pass 189/189 pages successfully
+- **Feature Flags**: Use for safe deployment of new features
+
+### Analytics Development
+- All new analytics features must integrate with SSE for real-time updates
+- Follow dual analytics pattern: General + Intelligent modules
+- Implement proper loading states and fallback content
+- Include church branding in exported reports
+
+### Security & Performance
+- **99.9% Uptime Target**: Production system requirement
+- **Sub-2s Page Load**: Performance standard for all components
+- **Memory Management**: Regular cleanup and optimization required
+- **Multi-tenant Security**: All data must be church-scoped
+
+## Critical Integration Points
+
+### Authentication Flow
+1. User signs in via NextAuth.js (`app/api/auth/[...nextauth]/route.ts`)
+2. Session includes: `id`, `role`, `churchId`, `church` object
+3. Middleware validates route access on every request
+4. Components access session via `useSession()` hook
+
+### Database Access Pattern
+```typescript
+// Always use the shared Prisma client
+import { db } from '@/lib/db'
+
+// Church-scoped queries (CRITICAL for multi-tenancy)
+const churchData = await db.member.findMany({
+  where: { churchId: user.churchId }
+})
+```
+
+## Success Metrics & Targets
+
+### Technical KPIs (Production Standards)
+- **Uptime**: 99.9% availability (ENFORCED)
+- **Response Time**: <2s average page load (TARGET)
+- **Data Accuracy**: 99%+ data integrity (MAINTAINED)
+- **User Adoption**: 90%+ active usage across ministry areas
+
+### Business Impact KPIs
+- **Administrative Efficiency**: 50% reduction in manual processes
+- **Member Engagement**: 40% increase in participation rates
+- **Analytics Accuracy**: 95%+ lifecycle classification, 80%+ retention prediction
+- **Ministry Effectiveness**: Data-driven improvement across all areas
+
+When working on this codebase, prioritize the **Member Journey Deep Analytics** implementation, maintain the production deployment standards, and always consider the multi-tenant architecture and performance optimization requirements.

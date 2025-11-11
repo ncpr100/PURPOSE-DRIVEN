@@ -2,11 +2,12 @@
 import { Suspense } from 'react';
 import AnalyticsClient from './_components/analytics-client';
 import IntelligentAnalyticsDashboard from './_components/intelligent-analytics-dashboard';
+import MemberJourneyAnalytics from './_components/member-journey-analytics';
 import { RealTimeAnalyticsOverview } from '@/components/analytics/realtime-analytics-overview';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Brain, BarChart3, Activity } from 'lucide-react';
+import { Brain, BarChart3, Activity, Users } from 'lucide-react';
 
 function AnalyticsLoadingSkeleton() {
   return (
@@ -70,7 +71,7 @@ export default function AnalyticsPage() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="realtime" className="flex items-center gap-2">
             <Activity className="h-4 w-4" />
             Tiempo Real
@@ -82,6 +83,10 @@ export default function AnalyticsPage() {
           <TabsTrigger value="intelligent-analytics" className="flex items-center gap-2">
             <Brain className="h-4 w-4" />
             Analíticas Inteligentes
+          </TabsTrigger>
+          <TabsTrigger value="member-journey" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            Recorrido de Miembros
           </TabsTrigger>
         </TabsList>
 
@@ -110,6 +115,12 @@ export default function AnalyticsPage() {
         <TabsContent value="intelligent-analytics">
           <Suspense fallback={<AnalyticsLoadingSkeleton />}>
             <IntelligentAnalyticsDashboard />
+          </Suspense>
+        </TabsContent>
+
+        <TabsContent value="member-journey">
+          <Suspense fallback={<AnalyticsLoadingSkeleton />}>
+            <MemberJourneyAnalytics churchId="default" />
           </Suspense>
         </TabsContent>
       </Tabs>
