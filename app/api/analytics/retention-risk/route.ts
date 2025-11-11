@@ -27,11 +27,11 @@ export async function GET(request: Request) {
       });
     }
 
-    // Get high-risk members
+    // Get high-risk members needing intervention
     const highRiskMembers = await db.memberJourney.findMany({
       where: {
         churchId,
-        retentionRisk: { in: ['HIGH', 'CRITICAL'] },
+        retentionRisk: { in: ['HIGH', 'VERY_HIGH'] },
         member: { 
           isActive: true 
         }
@@ -125,7 +125,7 @@ export async function GET(request: Request) {
     const trendsByMonth = retentionTrends.reduce((acc, record) => {
       const monthKey = record.lastAnalysisDate.toISOString().substring(0, 7); // YYYY-MM
       if (!acc[monthKey]) {
-        acc[monthKey] = { scores: [], risks: { HIGH: 0, MEDIUM: 0, LOW: 0, CRITICAL: 0 } };
+        acc[monthKey] = { scores: [], risks: { HIGH: 0, MEDIUM: 0, LOW: 0, VERY_HIGH: 0 } };
       }
       acc[monthKey].scores.push(record.retentionScore);
       acc[monthKey].risks[record.retentionRisk]++;
@@ -135,7 +135,7 @@ export async function GET(request: Request) {
     const monthlyTrends = Object.entries(trendsByMonth).map(([month, data]) => ({
       month,
       averageRetention: Math.round(data.scores.reduce((sum, score) => sum + score, 0) / data.scores.length),
-      highRiskCount: data.risks.HIGH + data.risks.CRITICAL,
+      highRiskCount: data.risks.HIGH + data.risks.VERY_HIGH,
       totalMembers: data.scores.length
     }));
 
@@ -143,7 +143,7 @@ export async function GET(request: Request) {
     const recentRiskIncrease = await db.memberJourney.findMany({
       where: {
         churchId,
-        retentionRisk: { in: ['HIGH', 'CRITICAL'] },
+        retentionRisk: { in: ['HIGH', 'VERY_HIGH'] },
         lastAnalysisDate: {
           gte: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000) // Last 2 weeks
         },
@@ -241,7 +241,7 @@ export async function GET(request: Request) {
 
     // Calculate summary statistics
     const riskStats = {
-      critical: riskDistribution.find(r => r.retentionRisk === 'CRITICAL')?._count || 0,
+      critical: riskDistribution.find(r => r.retentionRisk === 'VERY_HIGH')?._count || 0,
       high: riskDistribution.find(r => r.retentionRisk === 'HIGH')?._count || 0,
       medium: riskDistribution.find(r => r.retentionRisk === 'MEDIUM')?._count || 0,
       low: riskDistribution.find(r => r.retentionRisk === 'LOW')?._count || 0
@@ -259,7 +259,7 @@ export async function GET(request: Request) {
         ).length
       },
       riskDistribution: [
-        { level: 'CRITICAL', count: riskStats.critical, percentage: Math.round((riskStats.critical / totalActiveMembers) * 100) },
+        { level: 'VERY_HIGH', count: riskStats.critical, percentage: Math.round((riskStats.critical / totalActiveMembers) * 100) },
         { level: 'HIGH', count: riskStats.high, percentage: Math.round((riskStats.high / totalActiveMembers) * 100) },
         { level: 'MEDIUM', count: riskStats.medium, percentage: Math.round((riskStats.medium / totalActiveMembers) * 100) },
         { level: 'LOW', count: riskStats.low, percentage: Math.round((riskStats.low / totalActiveMembers) * 100) }

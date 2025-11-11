@@ -63,26 +63,25 @@ export async function GET(request: Request) {
       select: {
         id: true,
         name: true,
-        description: true,
-        requiredSkills: true,
-        timeCommitment: true,
-        category: true
+        description: true
       }
     });
 
     // Get volunteer information to calculate current capacity
-    const ministryVolunteers = await db.volunteer.groupBy({
-      by: ['ministryId'],
+    const activeVolunteers = await db.volunteer.findMany({
       where: {
         churchId,
-        status: 'ACTIVE'
+        isActive: true,
+        ministryId: { not: null }
       },
-      _count: true
+      select: {
+        ministryId: true
+      }
     });
 
-    const volunteerCounts = ministryVolunteers.reduce((acc, vol) => {
+    const volunteerCounts = activeVolunteers.reduce((acc, vol) => {
       if (vol.ministryId) {
-        acc[vol.ministryId] = vol._count;
+        acc[vol.ministryId] = (acc[vol.ministryId] || 0) + 1;
       }
       return acc;
     }, {} as Record<string, number>);
@@ -91,7 +90,7 @@ export async function GET(request: Request) {
     const readyMembers = await db.memberJourney.findMany({
       where: {
         churchId,
-        currentStage: { in: ['ESTABLISHED_MEMBER', 'LEADER'] },
+        currentStage: { in: ['ESTABLISHED_MEMBER', 'LEADING_MEMBER', 'SERVING_MEMBER'] },
         engagementScore: { gte: 60 },
         member: { isActive: true }
       },
@@ -323,13 +322,12 @@ export async function GET(request: Request) {
         .map(ministry => ({
           id: ministry.id,
           title: ministry.name,
-          description: ministry.description,
+          description: ministry.description || 'Descripción no disponible',
           currentVolunteers: volunteerCounts[ministry.id] || 0,
           neededVolunteers: 3 - (volunteerCounts[ministry.id] || 0),
-          category: ministry.category,
-          timeCommitment: ministry.timeCommitment,
-          requiredSkills: ministry.requiredSkills ? 
-            JSON.parse(ministry.requiredSkills as string) : []
+          category: 'general', // Default category
+          timeCommitment: 'Por determinar', // Default time commitment
+          requiredSkills: ['Compromiso', 'Disponibilidad'] // Default skills
         })),
       
       recentActivity: {

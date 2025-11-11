@@ -128,9 +128,9 @@ export function RetentionRiskAlerts({ churchId, className }: RetentionRiskAlerts
         },
         totalAtRisk: 30, // VERY_HIGH + HIGH
         trends: {
-          'retention': 'improving',
-          'engagement': 'stable',
-          'followup': 'worsening'
+          'retention': 'improving' as const,
+          'engagement': 'stable' as const,
+          'followup': 'worsening' as const
         }
       };
 

@@ -384,10 +384,10 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                       <div className="flex-1 min-w-0">
                         <h4 className="font-medium text-sm truncate">{member.name}</h4>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge className={getStageColor(member.currentStage)} size="sm">
+                          <Badge className={`${getStageColor(member.currentStage)} text-xs`}>
                             {member.currentStage.replace(/_/g, ' ')}
                           </Badge>
-                          <Badge className={getRiskColor(member.riskLevel)} size="sm">
+                          <Badge className={`${getRiskColor(member.riskLevel)} text-xs`}>
                             {member.riskLevel === 'low' ? 'Bajo' : 
                              member.riskLevel === 'medium' ? 'Medio' : 'Alto'} Riesgo
                           </Badge>
