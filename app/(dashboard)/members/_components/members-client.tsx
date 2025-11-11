@@ -115,7 +115,8 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       const response = await fetch('/api/members')
       if (response.ok) {
         const data = await response.json()
-        setMembers(data)
+        // API returns { members: [...], pagination: {...} }
+        setMembers(data.members || data)
       }
     } catch (error) {
       console.error('Error fetching members:', error)
