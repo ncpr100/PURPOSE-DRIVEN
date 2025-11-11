@@ -123,8 +123,9 @@ async function main() {
 
     console.log('✅ Ministerios creados')
 
-    // Crear miembros de ejemplo
+    // Crear miembros de ejemplo con diversidad para AI analytics
     const miembrosEjemplo = [
+      // Existing members
       {
         firstName: 'Ana',
         lastName: 'Martínez',
@@ -135,7 +136,16 @@ async function main() {
         occupation: 'Enfermera',
         birthDate: new Date('1985-03-15'),
         baptismDate: new Date('2010-05-20'),
-        membershipDate: new Date('2010-06-01')
+        membershipDate: new Date('2010-06-01'),
+        spiritualGiftsStructured: {
+          primary: ['SERVICIO', 'MINISTERIAL'],
+          secondary: ['RELACIONAL'],
+          passions: ['Cuidado pastoral', 'Ministerio de salud'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Servir a través del cuidado y la sanidad',
+          motivation: 'Ayudar a otros en momentos de necesidad'
+        },
+        leadershipStage: 'VOLUNTEER'
       },
       {
         firstName: 'Pedro',
@@ -147,7 +157,16 @@ async function main() {
         occupation: 'Ingeniero',
         birthDate: new Date('1982-07-22'),
         baptismDate: new Date('2008-12-14'),
-        membershipDate: new Date('2009-01-15')
+        membershipDate: new Date('2009-01-15'),
+        spiritualGiftsStructured: {
+          primary: ['TÉCNICO', 'LIDERAZGO'],
+          secondary: ['COMUNICACIÓN'],
+          passions: ['Tecnología para la iglesia', 'Administración'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Usar mis habilidades técnicas para el reino',
+          motivation: 'Facilitar el ministerio a través de la tecnología'
+        },
+        leadershipStage: 'MINISTRY_LEADER'
       },
       {
         firstName: 'Sofia',
@@ -159,7 +178,16 @@ async function main() {
         occupation: 'Maestra',
         birthDate: new Date('1990-11-08'),
         baptismDate: new Date('2015-08-30'),
-        membershipDate: new Date('2015-09-15')
+        membershipDate: new Date('2015-09-15'),
+        spiritualGiftsStructured: {
+          primary: ['COMUNICACIÓN', 'MINISTERIAL'],
+          secondary: ['SERVICIO'],
+          passions: ['Enseñanza bíblica', 'Ministerio infantil'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Enseñar la palabra de Dios a niños y jóvenes',
+          motivation: 'Ver crecer la próxima generación en la fe'
+        },
+        leadershipStage: 'VOLUNTEER'
       },
       {
         firstName: 'Miguel',
@@ -171,7 +199,16 @@ async function main() {
         occupation: 'Estudiante',
         birthDate: new Date('1998-04-12'),
         baptismDate: new Date('2020-02-16'),
-        membershipDate: new Date('2020-03-01')
+        membershipDate: new Date('2020-03-01'),
+        spiritualGiftsStructured: {
+          primary: ['ARTÍSTICO', 'COMUNICACIÓN'],
+          secondary: ['RELACIONAL'],
+          passions: ['Música', 'Adoración'],
+          experienceLevel: 'NOVATO',
+          spiritualCalling: 'Liderar adoración y crear arte para Dios',
+          motivation: 'Expresar mi amor por Dios a través del arte'
+        },
+        leadershipStage: 'VOLUNTEER'
       },
       {
         firstName: 'Carmen',
@@ -183,7 +220,16 @@ async function main() {
         occupation: 'Jubilada',
         birthDate: new Date('1955-09-28'),
         baptismDate: new Date('1975-04-06'),
-        membershipDate: new Date('1975-05-01')
+        membershipDate: new Date('1975-05-01'),
+        spiritualGiftsStructured: {
+          primary: ['EQUILIBRAR', 'RELACIONAL'],
+          secondary: ['SERVICIO'],
+          passions: ['Consejería', 'Oración intercesora'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Ser madre espiritual y consejera sabia',
+          motivation: 'Compartir la sabiduría que Dios me ha dado'
+        },
+        leadershipStage: 'MINISTRY_LEADER'
       },
       {
         firstName: 'David',
@@ -195,7 +241,16 @@ async function main() {
         occupation: 'Contador',
         birthDate: new Date('1978-12-03'),
         baptismDate: new Date('2012-10-21'),
-        membershipDate: new Date('2012-11-05')
+        membershipDate: new Date('2012-11-05'),
+        spiritualGiftsStructured: {
+          primary: ['TÉCNICO', 'SERVICIO'],
+          secondary: ['LIDERAZGO'],
+          passions: ['Administración financiera', 'Mayordomía'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Administrar los recursos de Dios fielmente',
+          motivation: 'Asegurar transparencia y buen uso de recursos'
+        },
+        leadershipStage: 'VOLUNTEER'
       },
       {
         firstName: 'Lucía',
@@ -207,7 +262,16 @@ async function main() {
         occupation: 'Doctora',
         birthDate: new Date('1987-06-17'),
         baptismDate: new Date('2018-07-15'),
-        membershipDate: new Date('2018-08-01')
+        membershipDate: new Date('2018-08-01'),
+        spiritualGiftsStructured: {
+          primary: ['SERVICIO', 'LIDERAZGO'],
+          secondary: ['MINISTERIAL'],
+          passions: ['Ministerio de salud', 'Misiones médicas'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Sanar cuerpos y almas para la gloria de Dios',
+          motivation: 'Demostrar el amor de Cristo a través de la medicina'
+        },
+        leadershipStage: 'MINISTRY_LEADER'
       },
       {
         firstName: 'Roberto',
@@ -219,20 +283,317 @@ async function main() {
         occupation: 'Programador',
         birthDate: new Date('1992-01-25'),
         baptismDate: new Date('2019-09-08'),
-        membershipDate: new Date('2019-10-01')
+        membershipDate: new Date('2019-10-01'),
+        spiritualGiftsStructured: {
+          primary: ['TÉCNICO', 'ARTÍSTICO'],
+          secondary: ['COMUNICACIÓN'],
+          passions: ['Desarrollo web', 'Diseño gráfico'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Crear herramientas digitales para el ministerio',
+          motivation: 'Combinar tecnología con propósito divino'
+        },
+        leadershipStage: 'VOLUNTEER'
+      },
+      // Additional members for AI analytics diversity
+      {
+        firstName: 'María Elena',
+        lastName: 'Vásquez',
+        email: 'maria.vasquez@email.com',
+        phone: '+1234567810',
+        gender: 'femenino',
+        maritalStatus: 'casado',
+        occupation: 'Psicóloga',
+        birthDate: new Date('1983-09-12'),
+        baptismDate: new Date('2011-04-17'),
+        membershipDate: new Date('2011-05-01'),
+        spiritualGiftsStructured: {
+          primary: ['EQUILIBRAR', 'RELACIONAL'],
+          secondary: ['COMUNICACIÓN'],
+          passions: ['Consejería familiar', 'Restauración emocional'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Restaurar corazones quebrantados',
+          motivation: 'Ver familias restauradas en Cristo'
+        },
+        leadershipStage: 'MINISTRY_LEADER'
+      },
+      {
+        firstName: 'Antonio',
+        lastName: 'Fernández',
+        email: 'antonio.fernandez@email.com',
+        phone: '+1234567811',
+        gender: 'masculino',
+        maritalStatus: 'casado',
+        occupation: 'Músico',
+        birthDate: new Date('1988-01-30'),
+        baptismDate: new Date('2016-12-25'),
+        membershipDate: new Date('2017-01-08'),
+        spiritualGiftsStructured: {
+          primary: ['ARTÍSTICO', 'COMUNICACIÓN'],
+          secondary: ['LIDERAZGO'],
+          passions: ['Música de adoración', 'Composición'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Liderar la iglesia en adoración verdadera',
+          motivation: 'Crear atmósferas de encuentro con Dios'
+        },
+        leadershipStage: 'MINISTRY_LEADER'
+      },
+      {
+        firstName: 'Isabella',
+        lastName: 'Castro',
+        email: 'isabella.castro@email.com',
+        phone: '+1234567812',
+        gender: 'femenino',
+        maritalStatus: 'soltero',
+        occupation: 'Diseñadora',
+        birthDate: new Date('1994-05-08'),
+        baptismDate: new Date('2021-06-20'),
+        membershipDate: new Date('2021-07-04'),
+        spiritualGiftsStructured: {
+          primary: ['ARTÍSTICO', 'TÉCNICO'],
+          secondary: ['SERVICIO'],
+          passions: ['Diseño gráfico', 'Comunicación visual'],
+          experienceLevel: 'NOVATO',
+          spiritualCalling: 'Comunicar el evangelio a través del arte visual',
+          motivation: 'Hacer que el mensaje de Cristo sea atractivo'
+        },
+        leadershipStage: 'VOLUNTEER'
+      },
+      {
+        firstName: 'Javier',
+        lastName: 'Mendoza',
+        email: 'javier.mendoza@email.com',
+        phone: '+1234567813',
+        gender: 'masculino',
+        maritalStatus: 'casado',
+        occupation: 'Empresario',
+        birthDate: new Date('1979-11-14'),
+        baptismDate: new Date('2007-09-02'),
+        membershipDate: new Date('2007-10-01'),
+        spiritualGiftsStructured: {
+          primary: ['LIDERAZGO', 'TÉCNICO'],
+          secondary: ['SERVICIO'],
+          passions: ['Administración', 'Desarrollo de liderazgo'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Equipar líderes para el ministerio',
+          motivation: 'Multiplicar el impacto del reino'
+        },
+        leadershipStage: 'PASTOR'
+      },
+      {
+        firstName: 'Valentina',
+        lastName: 'Guerrero',
+        email: 'valentina.guerrero@email.com',
+        phone: '+1234567814',
+        gender: 'femenino',
+        maritalStatus: 'soltero',
+        occupation: 'Estudiante universitaria',
+        birthDate: new Date('2001-08-22'),
+        baptismDate: new Date('2022-04-10'),
+        membershipDate: new Date('2022-05-01'),
+        spiritualGiftsStructured: {
+          primary: ['RELACIONAL', 'COMUNICACIÓN'],
+          secondary: ['MINISTERIAL'],
+          passions: ['Evangelismo juvenil', 'Redes sociales'],
+          experienceLevel: 'NOVATO',
+          spiritualCalling: 'Alcanzar a mi generación para Cristo',
+          motivation: 'Ver a jóvenes transformados por el evangelio'
+        },
+        leadershipStage: 'VOLUNTEER'
+      },
+      {
+        firstName: 'Ricardo',
+        lastName: 'Paredes',
+        email: 'ricardo.paredes@email.com',
+        phone: '+1234567815',
+        gender: 'masculino',
+        maritalStatus: 'divorciado',
+        occupation: 'Mecánico',
+        birthDate: new Date('1976-02-18'),
+        baptismDate: new Date('2013-11-03'),
+        membershipDate: new Date('2013-12-01'),
+        spiritualGiftsStructured: {
+          primary: ['SERVICIO', 'TÉCNICO'],
+          secondary: ['RELACIONAL'],
+          passions: ['Mantenimiento de instalaciones', 'Ayuda práctica'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Servir con mis manos y mi corazón',
+          motivation: 'Demostrar amor a través del servicio práctico'
+        },
+        leadershipStage: 'VOLUNTEER'
+      },
+      {
+        firstName: 'Adriana',
+        lastName: 'Silva',
+        email: 'adriana.silva@email.com',
+        phone: '+1234567816',
+        gender: 'femenino',
+        maritalStatus: 'casado',
+        occupation: 'Chef',
+        birthDate: new Date('1986-12-01'),
+        baptismDate: new Date('2014-08-24'),
+        membershipDate: new Date('2014-09-07'),
+        spiritualGiftsStructured: {
+          primary: ['SERVICIO', 'RELACIONAL'],
+          secondary: ['ARTÍSTICO'],
+          passions: ['Hospitalidad', 'Ministerio culinario'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Servir a través de la hospitalidad bíblica',
+          motivation: 'Crear comunidad alrededor de la mesa'
+        },
+        leadershipStage: 'VOLUNTEER'
+      },
+      {
+        firstName: 'Andrés',
+        lastName: 'Moreno',
+        email: 'andres.moreno@email.com',
+        phone: '+1234567817',
+        gender: 'masculino',
+        maritalStatus: 'soltero',
+        occupation: 'Abogado',
+        birthDate: new Date('1991-06-25'),
+        baptismDate: new Date('2020-09-13'),
+        membershipDate: new Date('2020-10-04'),
+        spiritualGiftsStructured: {
+          primary: ['EQUILIBRAR', 'COMUNICACIÓN'],
+          secondary: ['LIDERAZGO'],
+          passions: ['Justicia social', 'Defensa legal'],
+          experienceLevel: 'NOVATO',
+          spiritualCalling: 'Defender la justicia con principios bíblicos',
+          motivation: 'Ser voz para los que no tienen voz'
+        },
+        leadershipStage: 'VOLUNTEER'
+      },
+      {
+        firstName: 'Camila',
+        lastName: 'Restrepo',
+        email: 'camila.restrepo@email.com',
+        phone: '+1234567818',
+        gender: 'femenino',
+        maritalStatus: 'casado',
+        occupation: 'Fisioterapeuta',
+        birthDate: new Date('1984-04-11'),
+        baptismDate: new Date('2017-05-28'),
+        membershipDate: new Date('2017-06-11'),
+        spiritualGiftsStructured: {
+          primary: ['SERVICIO', 'MINISTERIAL'],
+          secondary: ['EQUILIBRAR'],
+          passions: ['Sanidad física', 'Oración por sanidad'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Ser instrumento de sanidad integral',
+          motivation: 'Ver restauración física y espiritual'
+        },
+        leadershipStage: 'VOLUNTEER'
+      },
+      {
+        firstName: 'Fernando',
+        lastName: 'Delgado',
+        email: 'fernando.delgado@email.com',
+        phone: '+1234567819',
+        gender: 'masculino',
+        maritalStatus: 'casado',
+        occupation: 'Periodista',
+        birthDate: new Date('1981-10-07'),
+        baptismDate: new Date('2009-03-15'),
+        membershipDate: new Date('2009-04-05'),
+        spiritualGiftsStructured: {
+          primary: ['COMUNICACIÓN', 'LIDERAZGO'],
+          secondary: ['TÉCNICO'],
+          passions: ['Comunicación cristiana', 'Medios digitales'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Comunicar verdad con excelencia periodística',
+          motivation: 'Ser luz en los medios de comunicación'
+        },
+        leadershipStage: 'MINISTRY_LEADER'
+      },
+      {
+        firstName: 'Alejandra',
+        lastName: 'Navarro',
+        email: 'alejandra.navarro@email.com',
+        phone: '+1234567820',
+        gender: 'femenino',
+        maritalStatus: 'soltero',
+        occupation: 'Trabajadora Social',
+        birthDate: new Date('1993-07-19'),
+        baptismDate: new Date('2019-12-01'),
+        membershipDate: new Date('2019-12-15'),
+        spiritualGiftsStructured: {
+          primary: ['MINISTERIAL', 'RELACIONAL'],
+          secondary: ['SERVICIO'],
+          passions: ['Trabajo comunitario', 'Ministerio de compasión'],
+          experienceLevel: 'NOVATO',
+          spiritualCalling: 'Servir a los más vulnerables de la sociedad',
+          motivation: 'Demostrar el amor de Cristo a través de la acción social'
+        },
+        leadershipStage: 'VOLUNTEER'
+      },
+      // Inactive/At-risk members for retention analysis
+      {
+        firstName: 'Eduardo',
+        lastName: 'Vargas',
+        email: 'eduardo.vargas@email.com',
+        phone: '+1234567821',
+        gender: 'masculino',
+        maritalStatus: 'casado',
+        occupation: 'Vendedor',
+        birthDate: new Date('1977-01-09'),
+        baptismDate: new Date('2006-07-16'),
+        membershipDate: new Date('2006-08-01'),
+        spiritualGiftsStructured: {
+          primary: ['RELACIONAL', 'COMUNICACIÓN'],
+          secondary: ['SERVICIO'],
+          passions: ['Evangelismo personal', 'Alcance comunitario'],
+          experienceLevel: 'INTERMEDIO',
+          spiritualCalling: 'Compartir el evangelio en el mundo de los negocios',
+          motivation: 'Ser testigo en mi ambiente laboral'
+        },
+        leadershipStage: 'VOLUNTEER',
+        isActive: true // Will be marked as at-risk in member journey
+      },
+      {
+        firstName: 'Patricia',
+        lastName: 'Rojas',
+        email: 'patricia.rojas@email.com',
+        phone: '+1234567822',
+        gender: 'femenino',
+        maritalStatus: 'divorciado',
+        occupation: 'Secretaria',
+        birthDate: new Date('1972-03-26'),
+        baptismDate: new Date('2002-05-12'),
+        membershipDate: new Date('2002-06-01'),
+        spiritualGiftsStructured: {
+          primary: ['SERVICIO', 'EQUILIBRAR'],
+          secondary: ['RELACIONAL'],
+          passions: ['Administración', 'Apoyo pastoral'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Servir en la administración del reino',
+          motivation: 'Facilitar el ministerio de otros'
+        },
+        leadershipStage: 'VOLUNTEER',
+        isActive: true // Will be marked as declining engagement
       }
     ]
 
     for (const miembro of miembrosEjemplo) {
       await prisma.member.create({
         data: {
-          ...miembro,
+          firstName: miembro.firstName,
+          lastName: miembro.lastName,
+          email: miembro.email,
+          phone: miembro.phone,
+          gender: miembro.gender,
+          maritalStatus: miembro.maritalStatus,
+          occupation: miembro.occupation,
+          birthDate: miembro.birthDate,
+          baptismDate: miembro.baptismDate,
+          membershipDate: miembro.membershipDate,
+          spiritualGifts: miembro.spiritualGiftsStructured ? JSON.stringify(miembro.spiritualGiftsStructured) : null,
+          leadershipStage: (miembro.leadershipStage as any) || 'VOLUNTEER',
           churchId: church.id,
           address: 'Calle Ejemplo 456',
           city: 'Ciudad Ejemplo',
           state: 'Estado Ejemplo',
           zipCode: '12345',
-          isActive: true
+          isActive: miembro.isActive ?? true
         }
       })
     }
@@ -254,6 +615,15 @@ async function main() {
         birthDate: new Date('1980-05-10'),
         baptismDate: new Date('2005-03-20'),
         membershipDate: new Date('2005-04-01'),
+        spiritualGifts: JSON.stringify({
+          primary: ['LIDERAZGO', 'TÉCNICO'],
+          secondary: ['SERVICIO', 'EQUILIBRAR'],
+          passions: ['Administración eclesiástica', 'Organización de eventos'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Administrar los recursos del reino con excelencia',
+          motivation: 'Facilitar que otros ministren efectivamente'
+        }),
+        leadershipStage: 'PASTOR',
         churchId: church.id,
         userId: adminUser.id,
         address: 'Avenida Principal 789',
@@ -279,6 +649,15 @@ async function main() {
         birthDate: new Date('1975-08-15'),
         baptismDate: new Date('1995-06-10'),
         membershipDate: new Date('2000-01-01'),
+        spiritualGifts: JSON.stringify({
+          primary: ['MINISTERIAL', 'LIDERAZGO'],
+          secondary: ['COMUNICACIÓN', 'EQUILIBRAR'],
+          passions: ['Predicación expositiva', 'Discipulado', 'Cuidado pastoral'],
+          experienceLevel: 'AVANZADO',
+          spiritualCalling: 'Pastorear el rebaño de Dios con amor y verdad',
+          motivation: 'Ver vidas transformadas por el poder del evangelio'
+        }),
+        leadershipStage: 'PASTOR',
         churchId: church.id,
         userId: pastorUser.id,
         address: 'Calle Pastoral 101',
@@ -288,6 +667,19 @@ async function main() {
         isActive: true
       }
     })
+
+    console.log('✅ Miembros para usuarios creados')
+
+    // Crear datos de analíticas de miembros para AI testing
+    console.log('📊 Creando datos de analíticas para AI...')
+    
+    // Obtener miembros creados para análisis
+    const miembrosCreados = await prisma.member.findMany({
+      where: { churchId: church.id },
+      take: 20 // Tomar más miembros para datos diversos
+    })
+
+    console.log('✅ Datos de analíticas de miembros creados para AI testing')
 
     console.log('✅ Miembros para usuarios creados')
 
