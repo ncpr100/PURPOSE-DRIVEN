@@ -171,9 +171,10 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
 
-  // Helper method for church-wide insights
-  async generateChurchWideAIInsights(churchId: string, aiEngine: EnhancedAIInsightsEngine) {
+// Helper function for church-wide insights
+async function generateChurchWideAIInsights(churchId: string, aiEngine: EnhancedAIInsightsEngine) {
     return {
       overallHealth: {
         score: 82,
@@ -214,5 +215,4 @@ export async function GET(request: NextRequest) {
         ]
       }
     };
-  }
 }

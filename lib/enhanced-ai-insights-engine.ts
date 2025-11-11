@@ -106,19 +106,25 @@ export class EnhancedAIInsightsEngine {
       where: { id: memberId },
       include: {
         donations: { orderBy: { createdAt: 'desc' }, take: 100 },
-        volunteers: { include: { assignments: true } },
+        volunteers: {
+          include: {
+            assignments: true,
+            ministry: true // Include the ministry relation
+          }
+        },
         spiritualProfile: true,
         memberJourney: true,
-        eventAttendances: { orderBy: { attendedAt: 'desc' }, take: 100 },
       }
     });
 
-    if (!member) throw new Error('Member not found');
+    if (!member) {
+      throw new Error(`Member with ID ${memberId} not found`);
+    }
 
     const now = new Date();
     const ninetyDaysAgo = new Date(now.getTime() - (90 * 24 * 60 * 60 * 1000));
 
-    // Get attendance data
+    // Get attendance data from CheckIn records (the correct way)
     const checkIns = await db.checkIn.findMany({
       where: {
         churchId: this.churchId,
@@ -136,15 +142,12 @@ export class EnhancedAIInsightsEngine {
       orderBy: { checkedInAt: 'desc' }
     });
 
-    // Get communication data
+    // Get communication data (count-based, not email-specific)
     const communications = await db.communication.findMany({
       where: {
         churchId: this.churchId,
         createdAt: { gte: ninetyDaysAgo },
-        OR: [
-          { recipients: { contains: member.email } },
-          { recipients: { contains: member.phone } }
-        ]
+        status: 'ENVIADO'
       }
     });
 
@@ -165,8 +168,8 @@ export class EnhancedAIInsightsEngine {
       // Engagement Patterns
       communicationResponseRate: this.calculateCommunicationResponse(member, communications),
       communicationInitiation: this.calculateCommunicationInitiation(member, communications),
-      eventParticipationRate: member.eventAttendances.length / 13,
-      eventTypePreferences: this.calculateEventPreferences(member.eventAttendances),
+      eventParticipationRate: checkIns.length / 13, // Use actual CheckIn records
+      eventTypePreferences: this.calculateEventPreferences(checkIns),
 
       // Financial Patterns
       givingFrequency: member.donations.filter(d => d.createdAt >= ninetyDaysAgo).length / 13,
@@ -547,9 +550,17 @@ export class EnhancedAIInsightsEngine {
     return 0.2;
   }
 
-  private calculateEventPreferences(eventAttendances: any[]): string[] {
-    // Would analyze event types attended
-    return ['worship', 'social'];
+  private calculateEventPreferences(checkIns: any[]): string[] {
+    // Analyze event types from CheckIn records
+    if (checkIns.length === 0) return [];
+    
+    // Get unique event types from check-ins with events
+    const eventTypes = checkIns
+      .filter(checkIn => checkIn.event)
+      .map(checkIn => checkIn.event.category || 'GENERAL')
+      .filter((type, index, arr) => arr.indexOf(type) === index);
+    
+    return eventTypes.length > 0 ? eventTypes : ['worship', 'social'];
   }
 
   private calculateGivingConsistency(donations: any[], startDate: Date): number {
