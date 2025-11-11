@@ -85,6 +85,11 @@ model Church {
   memberJourneys            MemberJourney[]
   memberBehavioralPatterns  MemberBehavioralPattern[]
   ministryPathwayRecommendations MinistryPathwayRecommendation[]
+  
+  // AI Prediction & Learning System
+  aiPredictionRecords       AIPredictionRecord[]
+  aiModelABTests            AIModelABTest[]
+  aiModelPerformance        AIModelPerformance[]
 
   @@map("churches")
 }
@@ -320,6 +325,7 @@ model Member {
   volunteerRecommendations VolunteerRecommendation[]
   visitorProfiles          VisitorProfile[] // If member was previously a visitor
   memberJourney            MemberJourney? // Enhanced lifecycle tracking
+  aiPredictionRecords      AIPredictionRecord[] // AI prediction tracking
 
   // Performance optimization indexes for analytics
   @@index([churchId, isActive, createdAt])
@@ -2613,4 +2619,69 @@ model MinistryPathwayRecommendation {
   @@index([status])
   @@index([priority])
   @@map("ministry_pathway_recommendations")
+}
+
+// AI Prediction Accuracy & Learning System
+model AIPredictionRecord {
+  id                  String    @id @default(cuid())
+  predictionType      String    // "retention", "stage_progression", "ministry_match", "growth_projection"
+  memberId            String?
+  churchId            String
+  predictedValue      Json      // The predicted outcome
+  actualValue         Json?     // The actual outcome (when available)
+  confidence          Int       // 0-100 confidence score
+  accuracy            Float?    // Calculated accuracy (0-100) when validated
+  contributingFactors Json      // Array of factors that influenced the prediction
+  modelVersion        String    // Version of AI model used
+  predictionDate      DateTime  @default(now())
+  validationDate      DateTime? // When the prediction was validated
+  
+  member              Member?   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  church              Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  abTest              AIModelABTest? @relation(fields: [abTestId], references: [id])
+  abTestId            String?
+
+  @@index([churchId, predictionType])
+  @@index([predictionDate])
+  @@index([validationDate])
+  @@index([accuracy])
+  @@map("ai_prediction_records")
+}
+
+// A/B Testing for AI Models
+model AIModelABTest {
+  id              String    @id @default(cuid())
+  testName        String
+  churchId        String
+  controlModel    String    // Version identifier for control model
+  testModel       String    // Version identifier for test model
+  trafficSplit    Float     @default(0.5) // Percentage going to test model
+  startDate       DateTime  @default(now())
+  endDate         DateTime?
+  isActive        Boolean   @default(true)
+  
+  church          Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  predictions     AIPredictionRecord[]
+
+  @@index([churchId, isActive])
+  @@index([startDate, endDate])
+  @@map("ai_model_ab_tests")
+}
+
+// AI Model Performance Metrics
+model AIModelPerformance {
+  id                    String    @id @default(cuid())
+  churchId              String
+  modelVersion          String
+  metricType            String    // "retention_accuracy", "stage_accuracy", "ministry_accuracy"
+  value                 Float     // The metric value
+  sampleSize            Int       // Number of predictions in sample
+  timeframe             String    // "daily", "weekly", "monthly"
+  calculatedAt          DateTime  @default(now())
+  
+  church                Church    @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@index([churchId, modelVersion])
+  @@index([metricType, calculatedAt])
+  @@map("ai_model_performance")
 }
