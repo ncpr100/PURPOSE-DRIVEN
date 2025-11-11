@@ -58,7 +58,10 @@ export default async function DashboardPage() {
     }),
     db.volunteer.count({
       where: { 
-        churchId: session.user.churchId,
+        member: {
+          churchId: session.user.churchId,
+          isActive: true
+        },
         isActive: true 
       }
     }),

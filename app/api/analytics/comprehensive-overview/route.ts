@@ -117,12 +117,15 @@ export async function GET(request: NextRequest) {
       // Enhanced Volunteer Analytics  
       Promise.all([
         db.volunteer.aggregate({
-          where: { churchId, isActive: true },
+          where: { 
+            member: { churchId, isActive: true },
+            isActive: true 
+          },
           _count: { id: true }
         }),
         db.volunteerAssignment.aggregate({
           where: { 
-            churchId,
+            volunteer: { member: { churchId } },
             date: { gte: startDate, lte: endDate },
             status: { in: ['CONFIRMADO', 'COMPLETADO'] }
           },

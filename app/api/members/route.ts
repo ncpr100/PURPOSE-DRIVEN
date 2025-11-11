@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
     }
 
     // ✅ SECURITY: Role-based access control
-    const allowedRoles = ['SUPER_ADMIN', 'ADMIN', 'PASTOR', 'LIDER']
+    const allowedRoles = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER']
     if (!allowedRoles.includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }

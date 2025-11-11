@@ -80,7 +80,10 @@ export async function GET(request: NextRequest) {
 
       // Volunteer Analytics
       db.volunteer.aggregate({
-        where: { churchId, isActive: true },
+        where: { 
+          member: { churchId, isActive: true },
+          isActive: true 
+        },
         _count: { id: true }
       })
     ]);
