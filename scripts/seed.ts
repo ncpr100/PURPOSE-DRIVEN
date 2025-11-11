@@ -586,7 +586,7 @@ async function main() {
           birthDate: miembro.birthDate,
           baptismDate: miembro.baptismDate,
           membershipDate: miembro.membershipDate,
-          spiritualGifts: miembro.spiritualGiftsStructured ? JSON.stringify(miembro.spiritualGiftsStructured) : null,
+          spiritualGifts: miembro.spiritualGiftsStructured ? JSON.stringify(miembro.spiritualGiftsStructured) : undefined,
           leadershipStage: (miembro.leadershipStage as any) || 'VOLUNTEER',
           churchId: church.id,
           address: 'Calle Ejemplo 456',
