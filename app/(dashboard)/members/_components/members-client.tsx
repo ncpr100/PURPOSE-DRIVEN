@@ -909,7 +909,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
               <div className="flex items-center gap-2">
                 <Users className="h-8 w-8 text-blue-500" />
                 <div>
-                  <p className="text-2xl font-bold">{totalMemberCount}</p>
+                  <p className="text-2xl font-bold">{activeSmartList !== 'all' || searchTerm || genderFilter !== 'all' || ageFilter !== 'all' || maritalStatusFilter !== 'all' ? filteredMembers.length : totalMemberCount}</p>
                   <p className="text-sm text-muted-foreground">
                     {activeSmartList !== 'all' ? 'En Lista' : 'Total Miembros'}
                   </p>
@@ -925,7 +925,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {members.filter(m => m.gender?.toLowerCase() === 'masculino').length}
+                    {filteredMembers.filter(m => m.gender?.toLowerCase() === 'masculino').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Hombres</p>
                 </div>
@@ -940,7 +940,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {members.filter(m => m.gender?.toLowerCase() === 'femenino').length}
+                    {filteredMembers.filter(m => m.gender?.toLowerCase() === 'femenino').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Mujeres</p>
                 </div>
