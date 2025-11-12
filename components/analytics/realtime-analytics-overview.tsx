@@ -33,7 +33,6 @@ export function RealTimeAnalyticsOverview({
   showDetails = true,
   autoRefresh = true 
 }: RealTimeAnalyticsOverviewProps) {
-  // Mock data for now - will be connected to real-time system later
   const [analyticsData, setAnalyticsData] = useState({
     memberCount: 0,
     donationCount: 0,
@@ -44,22 +43,61 @@ export function RealTimeAnalyticsOverview({
       donations: 0,
       events: 0,
       volunteers: 0
-    }
+    },
+    lastUpdated: null as string | null
   })
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [lastUpdateTime, setLastUpdateTime] = useState(new Date())
   const [isConnected, setIsConnected] = useState(true)
   const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(autoRefresh)
   const [hasRecentChanges, setHasRecentChanges] = useState(false)
   const [totalChanges, setTotalChanges] = useState(0)
 
-  const refreshData = async () => {
-    setIsLoading(true)
-    // Simulate data refresh
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setLastUpdateTime(new Date())
-    setIsLoading(false)
+  const fetchRealTimeData = async () => {
+    try {
+      setIsLoading(true)
+      const response = await fetch('/api/analytics/realtime-overview')
+      if (response.ok) {
+        const data = await response.json()
+        setAnalyticsData(data)
+        setLastUpdateTime(new Date(data.lastUpdated || Date.now()))
+        setIsConnected(true)
+        
+        // Calculate total changes for notification
+        const totalChanges = data.changes.members + data.changes.donations + data.changes.events + data.changes.volunteers
+        setTotalChanges(Math.abs(totalChanges))
+        setHasRecentChanges(totalChanges > 0)
+      } else {
+        setIsConnected(false)
+        console.error('Failed to fetch real-time data:', response.statusText)
+      }
+    } catch (error) {
+      setIsConnected(false)
+      console.error('Error fetching real-time data:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
+
+  const refreshData = async () => {
+    await fetchRealTimeData()
+  }
+
+  // Initial data fetch
+  useEffect(() => {
+    fetchRealTimeData()
+  }, [])
+
+  // Auto-refresh interval
+  useEffect(() => {
+    if (!isRealTimeEnabled) return
+
+    const interval = setInterval(() => {
+      fetchRealTimeData()
+    }, 30000) // Refresh every 30 seconds
+
+    return () => clearInterval(interval)
+  }, [isRealTimeEnabled])
 
   const getChangeIcon = (change: number) => {
     if (change > 0) return <TrendingUp className="h-3 w-3 text-green-500" />

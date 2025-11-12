@@ -41,7 +41,10 @@ export async function GET(request: NextRequest) {
     // Get current counts
     const [memberCount, donationCount, eventCount, volunteerCount] = await Promise.all([
       prisma.member.count({
-        where: { churchId: user.churchId }
+        where: { 
+          churchId: user.churchId,
+          isActive: true 
+        }
       }),
       prisma.donation.count({
         where: { 
@@ -57,7 +60,11 @@ export async function GET(request: NextRequest) {
       }),
       prisma.volunteer.count({
         where: { 
-          member: { churchId: user.churchId }
+          member: { 
+            churchId: user.churchId,
+            isActive: true 
+          },
+          isActive: true
         }
       })
     ])
@@ -70,6 +77,7 @@ export async function GET(request: NextRequest) {
       prisma.member.count({
         where: { 
           churchId: user.churchId,
+          isActive: true,
           createdAt: { gte: yesterday, lt: startOfDay }
         }
       }),
@@ -87,7 +95,11 @@ export async function GET(request: NextRequest) {
       }),
       prisma.volunteer.count({
         where: { 
-          member: { churchId: user.churchId },
+          member: { 
+            churchId: user.churchId,
+            isActive: true 
+          },
+          isActive: true,
           createdAt: { gte: yesterday, lt: startOfDay }
         }
       })
