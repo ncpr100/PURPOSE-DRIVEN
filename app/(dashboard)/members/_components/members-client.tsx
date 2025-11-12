@@ -123,7 +123,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       console.log('🔍 Starting fetchMembers...')
       console.log('🔍 About to call /api/members with credentials')
       
-      const response = await fetch('/api/no-security-members', {
+      const response = await fetch('/api/members', {
         method: 'GET',
         credentials: 'include', // Include session cookies
         headers: {

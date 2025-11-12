@@ -61,9 +61,11 @@ export async function GET(request: NextRequest) {
 
     // ✅ SECURITY: Query parameter validation
     const url = new URL(request.url)
+    
+    // Handle pagination with proper defaults
     const paginationParams = paginationSchema.parse({
-      page: url.searchParams.get('page'),
-      limit: url.searchParams.get('limit')
+      page: url.searchParams.get('page') || '1',
+      limit: url.searchParams.get('limit') || '100'
     })
     
     // Parse search params with member-specific validation
