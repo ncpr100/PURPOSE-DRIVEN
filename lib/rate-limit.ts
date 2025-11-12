@@ -54,6 +54,18 @@ const rateLimitConfigs = {
     windowMs: 60 * 1000, // 1 minute
     blockDuration: 2 * 60 * 1000, // 2 minutes block
     message: 'Límite de solicitudes excedido. Intente nuevamente pronto.'
+  },
+  'members-read': {
+    maxRequests: 60,
+    windowMs: 60 * 1000, // 1 minute
+    blockDuration: 2 * 60 * 1000, // 2 minutes block
+    message: 'Límite de consultas de miembros excedido. Intente nuevamente pronto.'
+  },
+  'members-create': {
+    maxRequests: 10,
+    windowMs: 60 * 1000, // 1 minute  
+    blockDuration: 5 * 60 * 1000, // 5 minutes block
+    message: 'Límite de creación de miembros excedido. Intente nuevamente más tarde.'
   }
 }
 
