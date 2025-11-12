@@ -101,6 +101,8 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const [showLeadershipTrack, setShowLeadershipTrack] = useState(false)
 
   useEffect(() => {
+    console.log('🚀 MembersClient component mounted')
+    console.log('🚀 Initial state - isLoading:', isLoading, 'members.length:', members.length)
     fetchMembers()
     fetchVolunteers()
     fetchQualificationSettings()
@@ -119,29 +121,40 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const fetchMembers = async () => {
     try {
       console.log('🔍 Starting fetchMembers...')
+      console.log('🔍 About to call /api/members')
+      
       const response = await fetch('/api/members')
       console.log('📡 Members API response status:', response.status)
+      console.log('📡 Members API response ok:', response.ok)
       
       if (response.ok) {
         const data = await response.json()
-        console.log('📊 Members API response data structure:', data)
-        console.log('📊 Members array length:', data.members?.length || data.length || 0)
-        console.log('📊 First member sample:', data.members?.[0] || data[0])
+        console.log('📊 Members API response data structure:', {
+          hasMembers: !!data.members,
+          membersLength: data.members?.length,
+          hasPagination: !!data.pagination,
+          totalFromPagination: data.pagination?.total,
+          dataKeys: Object.keys(data)
+        })
+        console.log('📊 First member sample:', data.members?.[0])
+        console.log('📊 Raw data:', data)
         
         // API returns { members: [...], pagination: {...} }
         const membersArray = data.members || data
+        console.log('🎯 Setting members state with:', membersArray.length, 'members')
         setMembers(membersArray)
-        console.log('✅ Members state updated with', membersArray.length, 'members')
+        console.log('✅ Members state updated successfully')
       } else {
         console.error('❌ Members API failed with status:', response.status)
         const errorText = await response.text()
         console.error('❌ Error response:', errorText)
       }
     } catch (error) {
-      console.error('💥 Error fetching members:', error)
+      console.error('💥 Error in fetchMembers:', error.message)
+      console.error('💥 Full error:', error)
     } finally {
+      console.log('🏁 Setting isLoading to false')
       setIsLoading(false)
-      console.log('🏁 fetchMembers completed, isLoading set to false')
     }
   }
 
@@ -953,13 +966,37 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
             {isLoading ? (
               <div className="text-center py-8">
                 <p>Cargando miembros...</p>
+                <div className="text-sm text-gray-500 mt-2">
+                  Debugging: isLoading={isLoading.toString()}, members.length={members.length}, filteredMembers.length={filteredMembers.length}
+                </div>
+              </div>
+            ) : filteredMembers.length === 0 && members.length === 0 ? (
+              <div className="text-center py-8">
+                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No se pudieron cargar los miembros</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Debug: members={members.length}, filtered={filteredMembers.length}, 
+                  activeFilter={activeSmartList}, searchTerm="{searchTerm}"
+                </p>
+                <Button 
+                  onClick={() => {
+                    console.log('🔄 Manual refresh triggered')
+                    fetchMembers()
+                  }} 
+                  className="mt-4"
+                >
+                  Recargar Miembros
+                </Button>
               </div>
             ) : filteredMembers.length === 0 ? (
               <div className="text-center py-8">
                 <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No hay miembros en esta lista</p>
+                <p className="text-muted-foreground">No hay miembros en esta lista filtrada</p>
                 <p className="text-sm text-muted-foreground mt-2">
-                  {activeSmartList !== 'all' ? 'Prueba con otra lista inteligente' : 'Agrega tu primer miembro'}
+                  {activeSmartList !== 'all' ? 'Prueba con otra lista inteligente' : 'Revisa los filtros aplicados'}
+                </p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Total miembros: {members.length}, Filtrados: {filteredMembers.length}
                 </p>
               </div>
             ) : (
