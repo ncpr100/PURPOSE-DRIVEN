@@ -121,9 +121,15 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const fetchMembers = async () => {
     try {
       console.log('🔍 Starting fetchMembers...')
-      console.log('🔍 About to call /api/members')
+      console.log('🔍 About to call /api/members with credentials')
       
-      const response = await fetch('/api/members')
+      const response = await fetch('/api/members', {
+        method: 'GET',
+        credentials: 'include', // Include session cookies
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       console.log('📡 Members API response status:', response.status)
       console.log('📡 Members API response ok:', response.ok)
       
@@ -148,6 +154,10 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         console.error('❌ Members API failed with status:', response.status)
         const errorText = await response.text()
         console.error('❌ Error response:', errorText)
+        
+        if (response.status === 401) {
+          console.error('🚨 AUTHENTICATION ERROR: Session may have expired')
+        }
       }
     } catch (error) {
       console.error('💥 Error in fetchMembers:', error.message)
