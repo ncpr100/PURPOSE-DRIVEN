@@ -107,21 +107,41 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   }, [])
 
   useEffect(() => {
+    console.log('🔄 useEffect triggered - members changed:', members.length)
     filterMembers()
   }, [members, searchTerm, genderFilter, ageFilter, maritalStatusFilter, activeSmartList])
 
+  // Debug effect to monitor state changes
+  useEffect(() => {
+    console.log('📊 State update - members:', members.length, 'filteredMembers:', filteredMembers.length)
+  }, [members, filteredMembers])
+
   const fetchMembers = async () => {
     try {
+      console.log('🔍 Starting fetchMembers...')
       const response = await fetch('/api/members')
+      console.log('📡 Members API response status:', response.status)
+      
       if (response.ok) {
         const data = await response.json()
+        console.log('📊 Members API response data structure:', data)
+        console.log('📊 Members array length:', data.members?.length || data.length || 0)
+        console.log('📊 First member sample:', data.members?.[0] || data[0])
+        
         // API returns { members: [...], pagination: {...} }
-        setMembers(data.members || data)
+        const membersArray = data.members || data
+        setMembers(membersArray)
+        console.log('✅ Members state updated with', membersArray.length, 'members')
+      } else {
+        console.error('❌ Members API failed with status:', response.status)
+        const errorText = await response.text()
+        console.error('❌ Error response:', errorText)
       }
     } catch (error) {
-      console.error('Error fetching members:', error)
+      console.error('💥 Error fetching members:', error)
     } finally {
       setIsLoading(false)
+      console.log('🏁 fetchMembers completed, isLoading set to false')
     }
   }
 
