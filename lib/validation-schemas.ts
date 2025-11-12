@@ -269,7 +269,7 @@ export const paginationSchema = z.object({
     .default('1'),
   limit: z.string()
     .regex(/^\d+$/, 'Límite debe ser un número')
-    .transform(val => Math.min(100, Math.max(1, parseInt(val))))
+    .transform(val => Math.min(2000, Math.max(1, parseInt(val))))
     .default('10')
 })
 

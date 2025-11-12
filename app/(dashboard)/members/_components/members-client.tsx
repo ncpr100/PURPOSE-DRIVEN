@@ -925,7 +925,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filteredMembers.filter(m => m.gender?.toLowerCase() === 'masculino').length}
+                    {members.filter(m => m.gender?.toLowerCase() === 'masculino').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Hombres</p>
                 </div>
@@ -940,7 +940,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filteredMembers.filter(m => m.gender?.toLowerCase() === 'femenino').length}
+                    {members.filter(m => m.gender?.toLowerCase() === 'femenino').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Mujeres</p>
                 </div>

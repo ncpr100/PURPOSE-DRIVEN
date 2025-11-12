@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     // Handle pagination with proper defaults
     const paginationParams = paginationSchema.parse({
       page: url.searchParams.get('page') || '1',
-      limit: url.searchParams.get('limit') || '100'
+      limit: url.searchParams.get('limit') || '2000'
     })
     
     // Parse search params with member-specific validation
