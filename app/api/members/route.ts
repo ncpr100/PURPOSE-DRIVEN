@@ -61,17 +61,33 @@ export async function GET(request: NextRequest) {
 
     // ✅ SECURITY: Query parameter validation
     const url = new URL(request.url)
+    const paginationParams = paginationSchema.parse({
+      page: url.searchParams.get('page'),
+      limit: url.searchParams.get('limit')
+    })
+    
+    // Parse search params with member-specific validation
+    const rawSearchParams = {
+      q: url.searchParams.get('q'),
+      status: url.searchParams.get('status'),
+      sortBy: url.searchParams.get('sortBy'),
+      sortOrder: url.searchParams.get('sortOrder')
+    }
+    
+    // Map sortBy values to actual Member model columns
+    const sortByMapping: { [key: string]: string } = {
+      'name': 'firstName',
+      'date': 'createdAt',
+      'status': 'isActive',
+      'category': 'ministryId'
+    }
+    
     const queryParams = {
-      ...paginationSchema.parse({
-        page: url.searchParams.get('page'),
-        limit: url.searchParams.get('limit')
-      }),
-      ...searchSchema.parse({
-        q: url.searchParams.get('q'),
-        status: url.searchParams.get('status'),
-        sortBy: url.searchParams.get('sortBy'),
-        sortOrder: url.searchParams.get('sortOrder')
-      })
+      ...paginationParams,
+      q: rawSearchParams.q?.trim(),
+      status: rawSearchParams.status || 'all',
+      sortBy: sortByMapping[rawSearchParams.sortBy || 'date'] || 'createdAt',
+      sortOrder: (rawSearchParams.sortOrder === 'asc' ? 'asc' : 'desc') as 'asc' | 'desc'
     }
 
     // ✅ SECURITY: Build secure where clause
@@ -134,6 +150,7 @@ export async function GET(request: NextRequest) {
     console.log('📊 Members API returning:', members.length, 'of', totalCount, 'members')
     
     return NextResponse.json({
+      success: true,
       members,
       pagination: {
         page: queryParams.page,
@@ -143,7 +160,25 @@ export async function GET(request: NextRequest) {
       }
     })
   } catch (error) {
-    console.error('Error fetching members:', error)
+    console.error('❌ Error in Members API:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      type: typeof error,
+      details: error
+    })
+    
+    // Send more specific error information in development
+    if (process.env.NODE_ENV === 'development') {
+      return NextResponse.json(
+        { 
+          error: 'Error interno del servidor',
+          debug: error instanceof Error ? error.message : 'Unknown error',
+          type: typeof error
+        },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }
