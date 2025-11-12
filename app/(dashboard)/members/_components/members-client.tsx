@@ -80,6 +80,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const [filteredMembers, setFilteredMembers] = useState<any[]>([])
   const [volunteers, setVolunteers] = useState<any[]>([])
   const [qualificationSettings, setQualificationSettings] = useState<any>(null)
+  const [totalMemberCount, setTotalMemberCount] = useState(0) // Track total count from API
   const [isLoading, setIsLoading] = useState(true)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isImportOpen, setIsImportOpen] = useState(false)
@@ -147,8 +148,11 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         
         // API returns { members: [...], pagination: {...} }
         const membersArray = data.members || data
+        const totalCount = data.pagination?.total || membersArray.length
         console.log('🎯 Setting members state with:', membersArray.length, 'members')
+        console.log('📊 Total count from API:', totalCount)
         setMembers(membersArray)
+        setTotalMemberCount(totalCount) // Store total count for display
         console.log('✅ Members state updated successfully')
       } else {
         console.error('❌ Members API failed with status:', response.status)
@@ -698,7 +702,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
   // Smart List Definitions
   const smartLists = [
-    { id: 'all', name: 'Todos los Miembros', icon: Users, count: members.length },
+    { id: 'all', name: 'Todos los Miembros', icon: Users, count: totalMemberCount },
     { id: 'new-members', name: 'Nuevos Miembros (30d)', icon: UserCheck, count: 0 },
     { id: 'inactive-members', name: 'Miembros Inactivos', icon: UserX, count: 0 },
     { id: 'volunteer-candidates', name: 'Candidatos Voluntarios', icon: UserPlus, count: members.filter(m => !getMemberVolunteerStatus(m.id)).length },
@@ -905,7 +909,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
               <div className="flex items-center gap-2">
                 <Users className="h-8 w-8 text-blue-500" />
                 <div>
-                  <p className="text-2xl font-bold">{filteredMembers.length}</p>
+                  <p className="text-2xl font-bold">{totalMemberCount}</p>
                   <p className="text-sm text-muted-foreground">
                     {activeSmartList !== 'all' ? 'En Lista' : 'Total Miembros'}
                   </p>
@@ -963,7 +967,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>
-                {smartLists.find(l => l.id === activeSmartList)?.name || 'Lista de Miembros'} ({filteredMembers.length})
+                {smartLists.find(l => l.id === activeSmartList)?.name || 'Lista de Miembros'} ({activeSmartList === 'all' ? totalMemberCount : filteredMembers.length})
               </CardTitle>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={() => handleSelectAll(selectedMembers.length !== filteredMembers.length)}>
