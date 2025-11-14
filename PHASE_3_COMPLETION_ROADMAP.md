@@ -76,19 +76,19 @@ Member Profile Enhancements:
 
 ### 🔧 Implementation Plan - Member Journey
 
-**Week 1: Dashboard Components**
+## Week 1: Dashboard Components
 - [ ] Create member lifecycle funnel component
 - [ ] Build engagement scoring visualization
 - [ ] Implement retention risk dashboard
 - [ ] Add ministry recommendations panel
 
-**Week 2: Integration & Testing**
+## Week 2: Integration & Testing
 - [ ] Integrate with existing analytics system
 - [ ] Add member journey to export reports
 - [ ] Implement real-time updates
 - [ ] Comprehensive testing and optimization
 
-**Week 3: Member Profile Enhancement**
+## Week 3: Member Profile Enhancement
 - [ ] Enhanced member detail pages
 - [ ] Journey timeline visualization
 - [ ] Pathway recommendation UI

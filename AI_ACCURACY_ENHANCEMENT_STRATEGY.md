@@ -20,7 +20,7 @@
 
 ## 🚀 **15 Key Enhancement Strategies Implemented**
 
-### **1. Advanced Feature Engineering** 
+### 1. Advanced Feature Engineering
 **Impact**: +8-12% accuracy improvement
 
 #### **Enhanced Data Points (50+ Features)**
@@ -308,6 +308,7 @@ async autoTuneModel(): Promise<{
 - ****Target Achievement**: 90-95% accuracy**
 
 ### **By Prediction Type**
+
 | Prediction Type | Current | Target | Improvement |
 |----------------|---------|---------|-------------|
 | Retention Risk | 70% | **87%** | +17% |

@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -92,7 +92,7 @@ export default function AnalyticsClient() {
   const [aiInsightsLoading, setAiInsightsLoading] = useState(false);
   const [exportingReport, setExportingReport] = useState(false);
 
-  const fetchAnalyticsData = async (showLoader = true) => {
+  const fetchAnalyticsData = useCallback(async (showLoader = true) => {
     if (showLoader) setLoading(true);
     setRefreshing(!showLoader);
     setError(null);
@@ -137,9 +137,9 @@ export default function AnalyticsClient() {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [period, granularity]);
 
-  const fetchAIInsights = async () => {
+  const fetchAIInsights = useCallback(async () => {
     // Skip AI insights during build/SSG
     if (typeof window === 'undefined') return;
     
@@ -157,7 +157,7 @@ export default function AnalyticsClient() {
     } finally {
       setAiInsightsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (session) {
@@ -167,7 +167,7 @@ export default function AnalyticsClient() {
         fetchAIInsights();
       }
     }
-  }, [session, period, granularity, activeTab]);
+  }, [session, period, granularity, activeTab, fetchAnalyticsData, fetchAIInsights]);
 
   // Export Utilities
   const convertToCSV = (data: any) => {
@@ -517,7 +517,7 @@ export default function AnalyticsClient() {
 
         <TabsContent value="overview" className="space-y-6">
           {/* KPI Cards */}
-          {overview && (
+          {Boolean(overview) && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card>
                 <CardHeader className="pb-2">
@@ -654,7 +654,7 @@ export default function AnalyticsClient() {
               </Card>
 
               {/* Enhanced Analytics Cards - Only show if comprehensive data is available */}
-              {overview.comprehensive && (
+              {Boolean(overview?.comprehensive) && (
                 <>
                   <Card>
                     <CardHeader className="pb-2">
@@ -742,7 +742,7 @@ export default function AnalyticsClient() {
         </TabsContent>
 
         <TabsContent value="trends" className="space-y-6">
-          {trends && (
+          {Boolean(trends) && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
@@ -991,7 +991,7 @@ export default function AnalyticsClient() {
                     <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-600 mb-2">Generando Insights Inteligentes</h3>
                     <p className="text-sm text-gray-500 mb-4">
-                      Haz clic en "Actualizar IA" para generar análisis automático de patrones
+                      Haz clic en &quot;Actualizar IA&quot; para generar análisis automático de patrones
                     </p>
                     <Button onClick={fetchAIInsights} disabled={aiInsightsLoading}>
                       <Sparkles className="h-4 w-4 mr-2" />

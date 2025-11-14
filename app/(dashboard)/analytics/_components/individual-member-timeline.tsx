@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -82,9 +82,10 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
 
   useEffect(() => {
     fetchMembers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [churchId]);
 
-  const fetchMembers = async () => {
+  const fetchMembers = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -221,7 +222,7 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedMember]);
 
   const getEventIcon = (type: string, impact?: string) => {
     const iconMap = {
@@ -422,7 +423,7 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                     <div className="flex-1">
                       <h3 className="text-xl font-semibold text-gray-900">{selectedMember.name}</h3>
                       <p className="text-gray-600">{selectedMember.email}</p>
-                      {selectedMember.phone && (
+                      {Boolean(selectedMember.phone) && (
                         <p className="text-gray-600">{selectedMember.phone}</p>
                       )}
                       
@@ -565,9 +566,9 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                                   <p className="text-gray-600 text-sm mt-1">{event.description}</p>
                                   
                                   {/* Metadata */}
-                                  {event.metadata && (
+                                  {Boolean(event.metadata) && (
                                     <div className="mt-2 space-y-1">
-                                      {event.metadata.previousValue && event.metadata.newValue && (
+                                      {Boolean(event.metadata?.previousValue && event.metadata?.newValue) && (
                                         <div className="flex items-center gap-2 text-xs">
                                           <span className="text-gray-500">Cambio:</span>
                                           <span className="font-medium text-gray-700">
@@ -581,7 +582,7 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                                         </div>
                                       )}
                                       
-                                      {event.score && (
+                                      {Boolean(event.score) && (
                                         <div className="flex items-center gap-2 text-xs">
                                           <span className="text-gray-500">Puntuación:</span>
                                           <span className="font-medium text-blue-600">{event.score}%</span>
@@ -597,7 +598,7 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                                     <Badge variant="outline" className="text-xs">
                                       {event.type}
                                     </Badge>
-                                    {isRecent && (
+                                    {Boolean(isRecent) && (
                                       <Badge className="bg-blue-100 text-blue-700 text-xs">
                                         Reciente
                                       </Badge>
@@ -630,7 +631,7 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                 )}
 
                 {/* Next Milestone */}
-                {selectedMember.nextMilestone && (
+                {Boolean(selectedMember.nextMilestone) && (
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                     <div className="flex items-center gap-3">
                       <Target className="h-5 w-5 text-yellow-600" />

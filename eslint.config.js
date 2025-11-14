@@ -6,6 +6,16 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
+  {
+    ignores: [
+      ".next/**",
+      "out/**", 
+      "build/**",
+      "node_modules/**",
+      "*.config.js",
+      "public/**/*.js"
+    ]
+  },
   ...compat.extends("next/core-web-vitals"),
   {
     languageOptions: {
@@ -16,8 +26,7 @@ module.exports = [
     },
     rules: {
       "@next/next/no-duplicate-head": "off",
-      // Prevent state vs. props confusion in UI components
-      // Warns when rendering props directly that might need state-based conditional logic
+      // Maintain enterprise-grade code quality standards
       "react/jsx-no-leaked-render": "warn",
     },
   },

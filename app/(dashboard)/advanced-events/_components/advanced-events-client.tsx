@@ -495,7 +495,7 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    {event.description && (
+                    {Boolean(event.description) && (
                       <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
                     )}
                     
@@ -504,7 +504,7 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
                       <span>{new Date(event.startDate).toLocaleString('es-ES')}</span>
                     </div>
                     
-                    {event.location && (
+                    {Boolean(event.location) && (
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <MapPin className="w-4 h-4" />
                         <span>{event.location}</span>
@@ -563,11 +563,11 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    {resource.description && (
+                    {Boolean(resource.description) && (
                       <p className="text-sm text-gray-600 line-clamp-2">{resource.description}</p>
                     )}
                     
-                    {resource.capacity && (
+                    {Boolean(resource.capacity) && (
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <Users className="w-4 h-4" />
                         <span>Capacidad: {resource.capacity}</span>

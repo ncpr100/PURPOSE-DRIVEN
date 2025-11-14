@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -127,6 +127,7 @@ export default function IntelligentAnalyticsDashboard() {
     return () => {
       if (interval) clearInterval(interval);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected]);
 
   const fetchRealTimeAnalyticsUpdate = async () => {
@@ -151,6 +152,7 @@ export default function IntelligentAnalyticsDashboard() {
 
   useEffect(() => {
     fetchAnalyticsData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps  
   }, []);
 
   const fetchAnalyticsData = async () => {

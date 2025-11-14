@@ -3,7 +3,9 @@
 ## Problem Statement
 The Members page shows "Todos los Miembros (0)" with no actual member list displayed, despite:
 - Analytics dashboard correctly showing 1,027 active members
-- Database containing active member data 
+- Database containing active member data
+
+## Database Analysis 
 - API endpoints configured correctly
 
 ## Investigation Results
@@ -44,7 +46,7 @@ ORDER BY "createdAt" DESC LIMIT $3 OFFSET $4
 ```
 
 ### API Structure (✅ Verified)
-- **Route**: `/api/members` 
+- **Route**: `/api/members`
 - **Authentication**: Session-based with church scoping
 - **Response Format**: `{ members: [], pagination: {...} }`
 - **Permissions**: ADMIN_IGLESIA role has access

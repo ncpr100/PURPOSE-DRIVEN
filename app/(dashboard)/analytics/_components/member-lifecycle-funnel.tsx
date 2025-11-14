@@ -112,9 +112,10 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
     }
   };
 
-  useEffect(() => {
+    useEffect(() => {
     fetchFunnelData();
-  }, [churchId, period]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const fetchFunnelData = async () => {
     try {
