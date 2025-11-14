@@ -156,10 +156,36 @@ export default function IntelligentAnalyticsDashboard() {
   const fetchAnalyticsData = async () => {
     setLoading(true);
     try {
+      // Add cache-busting for mobile devices and force refresh
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const appVersion = '1.1.0';
+      const cacheBuster = `?t=${Date.now()}&mobile=${isMobile}&v=${appVersion}`;
+      
       const [predictiveRes, journeyRes, executiveRes] = await Promise.all([
-        fetch('/api/analytics/predictive'),
-        fetch('/api/analytics/member-journey'),
-        fetch('/api/analytics/executive-report?type=monthly')
+        fetch(`/api/analytics/predictive${cacheBuster}`, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'X-Mobile-Request': isMobile.toString(),
+            'X-App-Version': appVersion
+          }
+        }),
+        fetch(`/api/analytics/member-journey${cacheBuster}`, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'X-Mobile-Request': isMobile.toString(),
+            'X-App-Version': appVersion
+          }
+        }),
+        fetch(`/api/analytics/executive-report?type=monthly${cacheBuster.replace('?', '&')}`, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'X-Mobile-Request': isMobile.toString(),
+            'X-App-Version': appVersion
+          }
+        })
       ]);
 
       let successCount = 0;
@@ -256,13 +282,13 @@ export default function IntelligentAnalyticsDashboard() {
   return (
     <div className="container mx-auto py-6 space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <Brain className="h-8 w-8 text-purple-600" />
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
+            <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
             Analíticas Inteligentes
             {/* Real-time status indicator */}
-            <div className="flex items-center gap-2 ml-4">
+            <div className="flex items-center gap-2 ml-2 sm:ml-4">
               {isConnected ? (
                 <Badge variant="secondary" className="flex items-center gap-1 bg-green-100 text-green-800">
                   <Wifi className="h-3 w-3" />
@@ -280,27 +306,30 @@ export default function IntelligentAnalyticsDashboard() {
                 </Badge>
               )}
               {lastUpdate && (
-                <span className="text-xs text-gray-500">
+                <span className="hidden sm:inline text-xs text-gray-500">
                   Actualizado: {lastUpdate.toLocaleTimeString()}
                 </span>
               )}
             </div>
           </h1>
-          <p className="text-gray-600">Insights avanzados y predicciones para el crecimiento de la iglesia</p>
+          <p className="text-sm sm:text-base text-gray-600">Insights avanzados y predicciones para el crecimiento de la iglesia</p>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full sm:w-auto">
           <Button 
             variant="outline" 
             onClick={refreshData}
             disabled={refreshing}
+            className="flex-1 sm:flex-initial"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-            Actualizar
+            <span className="hidden sm:inline">Actualizar</span>
+            <span className="sm:hidden">Refrescar</span>
           </Button>
-          <Button onClick={generateExecutiveReport}>
+          <Button onClick={generateExecutiveReport} className="flex-1 sm:flex-initial">
             <Download className="h-4 w-4 mr-2" />
-            Reporte Ejecutivo
+            <span className="hidden sm:inline">Reporte Ejecutivo</span>
+            <span className="sm:hidden">Reporte</span>
           </Button>
         </div>
       </div>
@@ -315,7 +344,7 @@ export default function IntelligentAnalyticsDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4">
               <div className="md:col-span-2">
                 <div className="text-center">
                                     <div className="text-4xl font-bold text-purple-900 mb-2">
@@ -446,7 +475,7 @@ export default function IntelligentAnalyticsDashboard() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center">
                       <div className="text-2xl font-bold text-green-900">
                         ${predictiveData.givingTrends.predictedNextMonth.toLocaleString()}
@@ -531,7 +560,7 @@ export default function IntelligentAnalyticsDashboard() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Engagement Metrics */}
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
@@ -799,7 +828,7 @@ export default function IntelligentAnalyticsDashboard() {
           {executiveData && executiveData.summary ? (
             <>
               {/* Key Metrics Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2">
@@ -873,7 +902,7 @@ export default function IntelligentAnalyticsDashboard() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                       <div className="flex items-center justify-between">
                         <div>

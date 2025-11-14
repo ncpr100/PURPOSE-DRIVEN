@@ -7,8 +7,9 @@ import { authOptions } from "@/lib/auth"
 
 export const metadata: Metadata = {
   title: "Kḥesed-tek Church Management Systems",
-  description: "Sistema completo de gestión para iglesias",
-  manifest: "/manifest.json?v=2024",
+  description: "Sistema completo de gestión para iglesias con analíticas inteligentes",
+  manifest: `/manifest.json?v=1.1.0&t=${Date.now()}`,
+  applicationName: "Kḥesed-tek v1.1.0",
   icons: {
     icon: "/logo.png?v=2025",
     apple: "/logo.png?v=2025",
@@ -16,6 +17,10 @@ export const metadata: Metadata = {
   },
   other: {
     'cache-control': 'no-cache, no-store, must-revalidate',
+    'pragma': 'no-cache',
+    'expires': '0',
+    'mobile-web-app-capable': 'yes',
+    'mobile-web-app-status-bar-style': 'default',
   },
 }
 
@@ -37,6 +42,9 @@ export default async function RootLayout({
 
   return (
     <html lang="es" suppressHydrationWarning>
+      <head>
+        <script src="/cache-invalidation.js" defer></script>
+      </head>
       <body className="font-sans">
         <Providers session={session}>
           {children}

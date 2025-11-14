@@ -58,35 +58,39 @@ function AnalyticsLoadingSkeleton() {
 
 export default function AnalyticsPage() {
   return (
-    <div className="container mx-auto py-6">
+    <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
       {/* Enhanced Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Centro de Analíticas</h1>
-        <p className="text-gray-600">Insights y métricas para el crecimiento de la iglesia</p>
+      <div className="mb-4 md:mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">Centro de Analíticas</h1>
+        <p className="text-sm md:text-base text-gray-600">Insights y métricas para el crecimiento de la iglesia</p>
       </div>
 
       {/* Real-time Analytics Overview */}
-      <div className="mb-6">
+      <div className="mb-4 md:mb-6">
         <RealTimeAnalyticsOverview />
       </div>
 
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="realtime" className="flex items-center gap-2">
-            <Activity className="h-4 w-4" />
-            Tiempo Real
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+          <TabsTrigger value="realtime" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+            <Activity className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Tiempo Real</span>
+            <span className="sm:hidden">Real</span>
           </TabsTrigger>
-          <TabsTrigger value="overview" className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4" />
-            Analíticas Generales
+          <TabsTrigger value="overview" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+            <BarChart3 className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Analíticas Generales</span>
+            <span className="sm:hidden">General</span>
           </TabsTrigger>
-          <TabsTrigger value="intelligent-analytics" className="flex items-center gap-2">
-            <Brain className="h-4 w-4" />
-            Analíticas Inteligentes
+          <TabsTrigger value="intelligent-analytics" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+            <Brain className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Analíticas Inteligentes</span>
+            <span className="sm:hidden">IA</span>
           </TabsTrigger>
-          <TabsTrigger value="member-journey" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Recorrido de Miembros
+          <TabsTrigger value="member-journey" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+            <Users className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Recorrido de Miembros</span>
+            <span className="sm:hidden">Miembros</span>
           </TabsTrigger>
         </TabsList>
 

@@ -2,8 +2,9 @@
 {
   "name": "Kḥesed-tek Church Management Systems",
   "short_name": "Kḥesed-tek",
-  "description": "Sistema completo de gestión para iglesias",
-  "start_url": "/",
+  "version": "1.1.0",
+  "description": "Sistema completo de gestión para iglesias con analíticas inteligentes",
+  "start_url": "/?pwa=true&v=1.1.0",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
@@ -12,6 +13,7 @@
   "lang": "es-ES",
   "dir": "ltr",
   "categories": ["productivity", "utilities"],
+  "prefer_related_applications": false,
   
   "icons": [
     {

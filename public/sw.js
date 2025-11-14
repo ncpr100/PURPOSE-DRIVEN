@@ -2,7 +2,7 @@
 // Service Worker for Push Notifications
 // Kḥesed-tek Church Management Systems
 
-const CACHE_NAME = 'khesed-tek-v1'
+const CACHE_NAME = 'khesed-tek-v1.1.0'
 const OFFLINE_URL = '/offline'
 
 // Import security utilities
