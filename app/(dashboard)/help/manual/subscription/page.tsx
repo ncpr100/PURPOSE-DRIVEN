@@ -82,7 +82,7 @@ export default function SubscriptionManual() {
                   </ul>
                   <p><strong>1.3.</strong> Para cambiar plan:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• Haga clic en "🔄 Cambiar Plan"</li>
+                    <li>• Haga clic en &quot;🔄 Cambiar Plan&quot;</li>
                     <li>• Seleccione nuevo plan</li>
                     <li>• Configure método de pago</li>
                     <li>• Confirme cambio</li>
@@ -137,7 +137,7 @@ export default function SubscriptionManual() {
               <div>
                 <h4 className="font-semibold mb-3">🔌 Complementos Disponibles</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> En Mi Suscripción, haga clic en "🔌 Complementos"</p>
+                  <p><strong>2.1.</strong> En Mi Suscripción, haga clic en &quot;🔌 Complementos&quot;</p>
                   <p><strong>2.2.</strong> Opciones disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
                     <li>• <strong>📱 SMS Premium (+$10/mes):</strong>
@@ -158,9 +158,9 @@ export default function SubscriptionManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Para activar/desactivar:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"✅ Activar":</strong> Se cobra en próxima factura</li>
-                    <li>• <strong>"❌ Desactivar":</strong> Válido hasta fin del período</li>
-                    <li>• <strong>"⏰ Programar":</strong> Activar en fecha específica</li>
+                    <li>• <strong>&quot;✅ Activar&quot;:</strong> Se cobra en próxima factura</li>
+                    <li>• <strong>&quot;❌ Desactivar&quot;:</strong> Válido hasta fin del período</li>
+                    <li>• <strong>&quot;⏰ Programar&quot;:</strong> Activar en fecha específica</li>
                   </ul>
                   <p><strong>Facturación de complementos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -232,7 +232,7 @@ export default function SubscriptionManual() {
               <div>
                 <h4 className="font-semibold mb-3">📊 Monitorear Uso</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>4.1.</strong> En Mi Suscripción, vea la sección "📊 Uso Actual"</p>
+                  <p><strong>4.1.</strong> En Mi Suscripción, vea la sección &quot;📊 Uso Actual&quot;</p>
                   <p><strong>4.2.</strong> Métricas monitoreadas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Miembros registrados:</strong> vs. límite del plan</li>
@@ -306,10 +306,10 @@ export default function SubscriptionManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Antes de contactar soporte:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"📖 Manual Completo":</strong> Guía detallada paso a paso</li>
-                    <li>• <strong>"❓ Preguntas Frecuentes":</strong> Soluciones comunes</li>
-                    <li>• <strong>"🎥 Videotutoriales":</strong> Demostraciones visuales</li>
-                    <li>• <strong>"💡 Guías Interactivas":</strong> Tutoriales paso a paso</li>
+                    <li>• <strong>&quot;📖 Manual Completo&quot;:</strong> Guía detallada paso a paso</li>
+                    <li>• <strong>&quot;❓ Preguntas Frecuentes&quot;:</strong> Soluciones comunes</li>
+                    <li>• <strong>&quot;🎥 Videotutoriales&quot;:</strong> Demostraciones visuales</li>
+                    <li>• <strong>&quot;💡 Guías Interactivas&quot;:</strong> Tutoriales paso a paso</li>
                   </ul>
                   <p><strong>Para emergencias:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -333,28 +333,28 @@ export default function SubscriptionManual() {
               <div>
                 <h4 className="font-semibold mb-2">💳 Botones de Suscripción</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"📦 Ver Planes":</strong> Comparar opciones</li>
-                  <li>• <strong>"🔄 Cambiar Plan":</strong> Upgrade/downgrade</li>
-                  <li>• <strong>"💳 Actualizar Pago":</strong> Cambiar tarjeta</li>
-                  <li>• <strong>"📊 Ver Uso":</strong> Límites actuales</li>
+                  <li>• <strong>&quot;📦 Ver Planes&quot;:</strong> Comparar opciones</li>
+                  <li>• <strong>&quot;🔄 Cambiar Plan&quot;:</strong> Upgrade/downgrade</li>
+                  <li>• <strong>&quot;💳 Actualizar Pago&quot;:</strong> Cambiar tarjeta</li>
+                  <li>• <strong>&quot;📊 Ver Uso&quot;:</strong> Límites actuales</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">🔌 Botones de Complementos</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"✅ Activar":</strong> Agregar complemento</li>
-                  <li>• <strong>"❌ Desactivar":</strong> Cancelar complemento</li>
-                  <li>• <strong>"⏰ Programar":</strong> Activar después</li>
-                  <li>• <strong>"📊 Ver Detalles":</strong> Información completa</li>
+                  <li>• <strong>&quot;✅ Activar&quot;:</strong> Agregar complemento</li>
+                  <li>• <strong>&quot;❌ Desactivar&quot;:</strong> Cancelar complemento</li>
+                  <li>• <strong>&quot;⏰ Programar&quot;:</strong> Activar después</li>
+                  <li>• <strong>&quot;📊 Ver Detalles&quot;:</strong> Información completa</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">🧾 Botones de Facturación</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"🧾 Ver Facturas":</strong> Historial completo</li>
-                  <li>• <strong>"📥 Descargar PDF":</strong> Factura específica</li>
-                  <li>• <strong>"🔄 Reintentar Pago":</strong> Si falló</li>
-                  <li>• <strong>"📧 Contactar Soporte":</strong> Ayuda directa</li>
+                  <li>• <strong>&quot;🧾 Ver Facturas&quot;:</strong> Historial completo</li>
+                  <li>• <strong>&quot;📥 Descargar PDF&quot;:</strong> Factura específica</li>
+                  <li>• <strong>&quot;🔄 Reintentar Pago&quot;:</strong> Si falló</li>
+                  <li>• <strong>&quot;📧 Contactar Soporte&quot;:</strong> Ayuda directa</li>
                 </ul>
               </div>
             </div>

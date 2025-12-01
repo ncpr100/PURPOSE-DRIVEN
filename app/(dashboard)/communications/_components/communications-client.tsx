@@ -1160,10 +1160,10 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                   Mailgun Email Service
                 </h3>
                 <div className="bg-slate-100 p-3 rounded text-sm font-mono text-slate-700">
-                  MAILGUN_API_KEY="key-xxxxx"<br/>
-                  MAILGUN_DOMAIN="mg.tudominio.com"<br/>
-                  MAILGUN_FROM_EMAIL="noreply@tudominio.com"<br/>
-                  ENABLE_MAILGUN="true"
+                  MAILGUN_API_KEY=&quot;key-xxxxx&quot;<br/>
+                  MAILGUN_DOMAIN=&quot;mg.tudominio.com&quot;<br/>
+                  MAILGUN_FROM_EMAIL=&quot;noreply@tudominio.com&quot;<br/>
+                  ENABLE_MAILGUN=&quot;true&quot;
                 </div>
               </div>
 
@@ -1176,10 +1176,10 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                   Twilio SMS/WhatsApp
                 </h3>
                 <div className="bg-slate-100 p-3 rounded text-sm font-mono text-slate-700">
-                  TWILIO_ACCOUNT_SID="ACxxxxx"<br/>
-                  TWILIO_AUTH_TOKEN="xxxxx"<br/>
-                  TWILIO_PHONE_NUMBER="+1234567890"<br/>
-                  ENABLE_TWILIO_SMS="true"
+                  TWILIO_ACCOUNT_SID=&quot;ACxxxxx&quot;<br/>
+                  TWILIO_AUTH_TOKEN=&quot;xxxxx&quot;<br/>
+                  TWILIO_PHONE_NUMBER=&quot;+1234567890&quot;<br/>
+                  ENABLE_TWILIO_SMS=&quot;true&quot;
                 </div>
               </div>
 
@@ -1192,11 +1192,11 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                   WhatsApp Business API
                 </h3>
                 <div className="bg-slate-100 p-3 rounded text-sm font-mono text-slate-700">
-                  WHATSAPP_BUSINESS_ACCOUNT_ID="xxxxx"<br/>
-                  WHATSAPP_ACCESS_TOKEN="xxxxx"<br/>
-                  WHATSAPP_PHONE_NUMBER_ID="xxxxx"<br/>
-                  WHATSAPP_WEBHOOK_VERIFY_TOKEN="xxxxx"<br/>
-                  ENABLE_WHATSAPP="true"
+                  WHATSAPP_BUSINESS_ACCOUNT_ID=&quot;xxxxx&quot;<br/>
+                  WHATSAPP_ACCESS_TOKEN=&quot;xxxxx&quot;<br/>
+                  WHATSAPP_PHONE_NUMBER_ID=&quot;xxxxx&quot;<br/>
+                  WHATSAPP_WEBHOOK_VERIFY_TOKEN=&quot;xxxxx&quot;<br/>
+                  ENABLE_WHATSAPP=&quot;true&quot;
                 </div>
               </div>
             </CardContent>

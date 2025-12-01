@@ -700,26 +700,91 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
     setShowBulkActions(false)
   }
 
+  // Calculate Smart List Counts
+  const calculateSmartListCounts = () => {
+    const counts = {
+      'new-members': 0,
+      'inactive-members': 0,
+      'leadership-ready': 0,
+      'birthdays': 0,
+      'anniversaries': 0,
+      'ministry-leaders': 0,
+      'visitors-becoming-members': 0,
+      'prayer-needed': 0
+    }
+
+    members.forEach(member => {
+      // New members (30 days)
+      const thirtyDaysAgo = new Date()
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+      if (new Date(member.membershipDate || member.createdAt) >= thirtyDaysAgo) {
+        counts['new-members']++
+      }
+
+      // Inactive members
+      const sixMonthsAgo = new Date()
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
+      if (!member.isActive || new Date(member.updatedAt) <= sixMonthsAgo) {
+        counts['inactive-members']++
+      }
+
+      // Birthday this month
+      if (member.birthDate) {
+        const currentMonth = new Date().getMonth()
+        if (new Date(member.birthDate).getMonth() === currentMonth) {
+          counts['birthdays']++
+        }
+      }
+
+      // Membership anniversary this month
+      if (member.membershipDate) {
+        const currentMonth = new Date().getMonth()
+        if (new Date(member.membershipDate).getMonth() === currentMonth) {
+          counts['anniversaries']++
+        }
+      }
+
+      // Ministry leaders
+      if (member.ministryId || (member.spiritualGifts && Array.isArray(member.spiritualGifts) && member.spiritualGifts.length > 0)) {
+        counts['ministry-leaders']++
+      }
+
+      // Visitors becoming members (last 90 days)
+      const ninetyDaysAgo = new Date()
+      ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
+      if (member.membershipDate && new Date(member.membershipDate) >= ninetyDaysAgo && !member.baptismDate) {
+        counts['visitors-becoming-members']++
+      }
+
+      // Prayer needed
+      if (member.notes && member.notes.toLowerCase().includes('oración')) {
+        counts['prayer-needed']++
+      }
+
+      // Leadership ready (can be enhanced with more criteria)
+      if (member.isActive && member.leadershipReadiness && member.leadershipReadiness > 70) {
+        counts['leadership-ready']++
+      }
+    })
+
+    return counts
+  }
+
   // Smart List Definitions
+  const smartListCounts = calculateSmartListCounts()
   const smartLists = [
     { id: 'all', name: 'Todos los Miembros', icon: Users, count: totalMemberCount },
-    { id: 'new-members', name: 'Nuevos Miembros (30d)', icon: UserCheck, count: 0 },
-    { id: 'inactive-members', name: 'Miembros Inactivos', icon: UserX, count: 0 },
+    { id: 'new-members', name: 'Nuevos Miembros (30d)', icon: UserCheck, count: smartListCounts['new-members'] },
+    { id: 'inactive-members', name: 'Miembros Inactivos', icon: UserX, count: smartListCounts['inactive-members'] },
     { id: 'volunteer-candidates', name: 'Candidatos Voluntarios', icon: UserPlus, count: members.filter(m => !getMemberVolunteerStatus(m.id)).length },
     { id: 'active-volunteers', name: 'Son Voluntarios', icon: Target, count: volunteers.filter(v => v.memberId).length },
-    { id: 'leadership-ready', name: 'Listos para Liderazgo', icon: Crown, count: 0 },
-    { id: 'birthdays', name: 'Cumpleaños este Mes', icon: Calendar, count: 0 },
-    { id: 'anniversaries', name: 'Aniversarios de Membresía', icon: Gift, count: 0 },
-    { id: 'ministry-leaders', name: 'Líderes de Ministerio', icon: Star, count: 0 },
-    { id: 'visitors-becoming-members', name: 'Visitantes → Miembros', icon: TrendingUp, count: 0 },
-    { id: 'prayer-needed', name: 'Necesitan Oración', icon: Heart, count: 0 }
+    { id: 'leadership-ready', name: 'Listos para Liderazgo', icon: Crown, count: smartListCounts['leadership-ready'] },
+    { id: 'birthdays', name: 'Cumpleaños este Mes', icon: Calendar, count: smartListCounts['birthdays'] },
+    { id: 'anniversaries', name: 'Aniversarios de Membresía', icon: Gift, count: smartListCounts['anniversaries'] },
+    { id: 'ministry-leaders', name: 'Líderes de Ministerio', icon: Star, count: smartListCounts['ministry-leaders'] },
+    { id: 'visitors-becoming-members', name: 'Visitantes → Miembros', icon: TrendingUp, count: smartListCounts['visitors-becoming-members'] },
+    { id: 'prayer-needed', name: 'Necesitan Oración', icon: Heart, count: smartListCounts['prayer-needed'] }
   ]
-
-  // Calculate Smart List Counts
-  useEffect(() => {
-    // This would normally be calculated in the filtering logic or backend
-    // For now, we'll keep it simple
-  }, [members])
 
   const canEdit = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(userRole)
   const canDelete = ['SUPER_ADMIN', 'ADMIN_IGLESIA'].includes(userRole)
@@ -990,7 +1055,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 <p className="text-muted-foreground">No se pudieron cargar los miembros</p>
                 <p className="text-sm text-muted-foreground mt-2">
                   Debug: members={members.length}, filtered={filteredMembers.length}, 
-                  activeFilter={activeSmartList}, searchTerm="{searchTerm}"
+                  activeFilter={activeSmartList}, searchTerm=&quot;{searchTerm}&quot;
                 </p>
                 <Button 
                   onClick={() => {

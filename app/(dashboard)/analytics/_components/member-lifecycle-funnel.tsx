@@ -376,7 +376,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
                         <div className="mt-2 space-y-1">
                           <p className="text-xs">📊 {stage.count} personas ({stage.percentage}%)</p>
                           <p className="text-xs">⏱ Duración promedio: {formatDuration(stage.averageDuration)}</p>
-                          {conversionRate && (
+                          {Boolean(conversionRate) && (
                             <p className="text-xs">🔄 Tasa de conversión: {conversionRate}%</p>
                           )}
                         </div>
@@ -389,7 +389,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
           </div>
 
           {/* Detailed Stage Info (when selected) */}
-          {selectedStage !== null && funnelData.stages[selectedStage] && (
+          {Boolean(selectedStage !== null && funnelData.stages[selectedStage]) && (
             <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-gray-900">

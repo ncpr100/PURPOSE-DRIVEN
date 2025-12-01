@@ -64,7 +64,7 @@ export default function GettingStartedManual() {
               <div>
                 <h4 className="font-semibold mb-3">📝 Registro Inicial</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>1.1.</strong> Haga clic en "Crear Cuenta" en la página principal</p>
+                  <p><strong>1.1.</strong> Haga clic en &quot;Crear Cuenta&quot; en la página principal</p>
                   <p><strong>1.2.</strong> Complete el formulario con:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Email válido (será su usuario de acceso)</li>
@@ -114,7 +114,7 @@ export default function GettingStartedManual() {
                     <li>• Horarios de servicios</li>
                   </ul>
                   <p><strong>2.3.</strong> Suba el logo de su iglesia (formato PNG/JPG recomendado)</p>
-                  <p><strong>2.4.</strong> Haga clic en "Guardar Cambios"</p>
+                  <p><strong>2.4.</strong> Haga clic en &quot;Guardar Cambios&quot;</p>
                 </div>
               </div>
               <div className="bg-yellow-50 p-4 rounded-lg">
@@ -169,10 +169,10 @@ export default function GettingStartedManual() {
                 <h4 className="font-semibold mb-2">🔧 Cómo Configurar</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>3.1.</strong> Vaya a <code>Configuración → Permisos</code></p>
-                  <p><strong>3.2.</strong> Haga clic en "Inicializar Sistema" (Solo SUPER_ADMIN)</p>
-                  <p><strong>3.3.</strong> En la pestaña "Asignaciones":</p>
+                  <p><strong>3.2.</strong> Haga clic en &quot;Inicializar Sistema&quot; (Solo SUPER_ADMIN)</p>
+                  <p><strong>3.3.</strong> En la pestaña &quot;Asignaciones&quot;:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• Haga clic en "Asignar Rol"</li>
+                    <li>• Haga clic en &quot;Asignar Rol&quot;</li>
                     <li>• Seleccione el usuario</li>
                     <li>• Escoja el rol apropiado</li>
                     <li>• Confirme la asignación</li>

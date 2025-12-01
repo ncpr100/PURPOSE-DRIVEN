@@ -79,12 +79,12 @@ export default function EventsManual() {
                   </ul>
                   <p><strong>1.3.</strong> Configure opciones avanzadas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• Registro requerido (Sí/No)</li>
+                    <li>• <strong>&quot;Registro Requerido&quot;</strong></li>
                     <li>• Check-in con QR</li>
                     <li>• Notificaciones automáticas</li>
                     <li>• Requiere aprobación</li>
                   </ul>
-                  <p><strong>1.4.</strong> Haga clic en "💾 Crear Evento"</p>
+                  <p><strong>1.4.</strong> Haga clic en &quot;💾 Crear Evento&quot;</p>
                 </div>
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
@@ -117,7 +117,7 @@ export default function EventsManual() {
               <div>
                 <h4 className="font-semibold mb-3">📝 Configurar Registro</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> Al crear evento, active "Registro Requerido"</p>
+                  <p><strong>2.1.</strong> Al crear evento, active &quot;Registro Requerido&quot;</p>
                   <p><strong>2.2.</strong> Configure campos del formulario:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Obligatorios:</strong> Nombre, email, teléfono</li>
@@ -138,12 +138,12 @@ export default function EventsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Desde la página del evento:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"👁️ Ver Registrados":</strong> Lista completa</li>
-                    <li>• <strong>"➕ Registro Manual":</strong> Agregar directamente</li>
-                    <li>• <strong>"📧 Comunicar":</strong> Enviar mensaje a registrados</li>
-                    <li>• <strong>"📊 Exportar Lista":</strong> Descargar Excel/CSV</li>
-                    <li>• <strong>"✅ Aprobar Pendientes":</strong> Si requiere aprobación</li>
-                    <li>• <strong>"❌ Cancelar Registro":</strong> Remover asistente</li>
+                    <li>• <strong>&quot;👁️ Ver Registrados&quot;:</strong> Lista completa</li>
+                    <li>• <strong>&quot;➕ Registro Manual&quot;:</strong> Agregar directamente</li>
+                    <li>• <strong>&quot;📧 Comunicar&quot;:</strong> Enviar mensaje a registrados</li>
+                    <li>• <strong>&quot;📈 Exportar Lista&quot;:</strong> Descargar Excel/CSV</li>
+                    <li>• <strong>&quot;✅ Aprobar Pendientes&quot;:</strong> Si requiere aprobación</li>
+                    <li>• <strong>&quot;❌ Cancelar Registro&quot;:</strong> Remover asistente</li>
                   </ul>
                 </div>
               </div>
@@ -164,7 +164,7 @@ export default function EventsManual() {
               <div>
                 <h4 className="font-semibold mb-3">📱 Configuración de QR</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>3.1.</strong> En el evento, active "Check-in con QR"</p>
+                  <p><strong>3.1.</strong> En el evento, active &quot;Check-in con QR&quot;</p>
                   <p><strong>3.2.</strong> El sistema genera automáticamente:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Código QR único por evento</li>
@@ -229,7 +229,7 @@ export default function EventsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Para modificar plantillas:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"⚙️ Configurar Plantillas":</strong> Desde página de eventos</li>
+                    <li>• <strong>&quot;⚙️ Configurar Plantillas&quot;:</strong> Desde página de eventos</li>
                     <li>• <strong>Modificar campos:</strong> Agregar/quitar información</li>
                     <li>• <strong>Establecer valores por defecto:</strong> Duración, ubicación</li>
                     <li>• <strong>Guardar plantilla custom:</strong> Para uso futuro</li>
@@ -262,18 +262,18 @@ export default function EventsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Desde la página principal de eventos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"📅 Calendario":</strong> Vista mensual/semanal</li>
-                    <li>• <strong>"📋 Lista":</strong> Todos los eventos próximos</li>
-                    <li>• <strong>"📊 Estadísticas":</strong> Métricas de asistencia</li>
-                    <li>• <strong>"🔍 Buscar":</strong> Filtrar por fecha/tipo</li>
+                    <li>• <strong>&quot;📅 Calendario&quot;:</strong> Vista mensual/semanal</li>
+                    <li>• <strong>&quot;📋 Lista&quot;:</strong> Todos los eventos próximos</li>
+                    <li>• <strong>&quot;📊 Estadísticas&quot;:</strong> Métricas de asistencia</li>
+                    <li>• <strong>&quot;🔍 Buscar&quot;:</strong> Filtrar por fecha/tipo</li>
                   </ul>
                   <p><strong>Para cada evento individual:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"👁️ Ver Detalles":</strong> Información completa</li>
-                    <li>• <strong>"✏️ Editar":</strong> Modificar configuración</li>
-                    <li>• <strong>"👥 Ver Asistentes":</strong> Lista de registrados</li>
-                    <li>• <strong>"📱 QR Check-in":</strong> Activar registro</li>
-                    <li>• <strong>"📧 Comunicar":</strong> Mensaje a asistentes</li>
+                    <li>• <strong>&quot;👁️ Ver Detalles&quot;:</strong> Información completa</li>
+                    <li>• <strong>&quot;✏️ Editar&quot;:</strong> Modificar configuración</li>
+                    <li>• <strong>&quot;👥 Ver Asistentes&quot;:</strong> Lista de registrados</li>
+                    <li>• <strong>&quot;📱 QR Check-in&quot;:</strong> Activar registro</li>
+                    <li>• <strong>&quot;📧 Comunicar&quot;:</strong> Mensaje a asistentes</li>
                   </ul>
                 </div>
               </div>
@@ -282,10 +282,10 @@ export default function EventsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Botones de acción rápida:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"🚀 Evento Rápido":</strong> Crear servicio dominical automático</li>
-                    <li>• <strong>"📂 Duplicar Evento":</strong> Copiar configuración existente</li>
-                    <li>• <strong>"📅 Serie de Eventos":</strong> Crear eventos recurrentes</li>
-                    <li>• <strong>"📊 Reporte Rápido":</strong> Estadísticas instantáneas</li>
+                    <li>• <strong>&quot;🚀 Evento Rápido&quot;:</strong> Crear servicio dominical automático</li>
+                    <li>• <strong>&quot;📂 Duplicar Evento&quot;:</strong> Copiar configuración existente</li>
+                    <li>• <strong>&quot;📅 Serie de Eventos&quot;:</strong> Crear eventos recurrentes</li>
+                    <li>• <strong>&quot;📊 Reporte Rápido&quot;:</strong> Estadísticas instantáneas</li>
                   </ul>
                   <p><strong>Estados de eventos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -313,7 +313,7 @@ export default function EventsManual() {
               <div>
                 <h4 className="font-semibold mb-3">🔐 Seguridad Infantil</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>6.1.</strong> Para eventos con niños, active "Seguridad Infantil"</p>
+                  <p><strong>6.1.</strong> Para eventos con niños, active &quot;Seguridad Infantil&quot;</p>
                   <p><strong>6.2.</strong> Funcionalidades incluidas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>WebRTC Biométrico:</strong> Verificación de identidad</li>
@@ -406,28 +406,28 @@ export default function EventsManual() {
               <div>
                 <h4 className="font-semibold mb-2">📅 Botones Principales</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"➕ Nuevo Evento":</strong> Crear evento desde cero</li>
-                  <li>• <strong>"🚀 Evento Rápido":</strong> Servicio dominical automático</li>
-                  <li>• <strong>"📊 Estadísticas":</strong> Ver analíticas generales</li>
-                  <li>• <strong>"📅 Vista Calendario":</strong> Cambiar a calendario</li>
+                  <li>• <strong>&quot;➕ Nuevo Evento&quot;:</strong> Crear evento desde cero</li>
+                  <li>• <strong>&quot;🚀 Evento Rápido&quot;:</strong> Servicio dominical automático</li>
+                  <li>• <strong>&quot;📊 Estadísticas&quot;:</strong> Ver analíticas generales</li>
+                  <li>• <strong>&quot;📅 Vista Calendario&quot;:</strong> Cambiar a calendario</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">🛠️ Botones de Gestión</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"👁️ Ver Detalles":</strong> Información completa</li>
-                  <li>• <strong>"✏️ Editar":</strong> Modificar evento</li>
-                  <li>• <strong>"📂 Duplicar":</strong> Copiar configuración</li>
-                  <li>• <strong>"❌ Cancelar":</strong> Cancelar evento</li>
+                  <li>• <strong>&quot;👁️ Ver Detalles&quot;:</strong> Información completa</li>
+                  <li>• <strong>&quot;✏️ Editar&quot;:</strong> Modificar evento</li>
+                  <li>• <strong>&quot;📂 Duplicar&quot;:</strong> Copiar configuración</li>
+                  <li>• <strong>&quot;❌ Cancelar&quot;:</strong> Cancelar evento</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">👥 Botones de Asistentes</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"👥 Ver Registrados":</strong> Lista de asistentes</li>
-                  <li>• <strong>"➕ Registro Manual":</strong> Agregar directamente</li>
-                  <li>• <strong>"📧 Comunicar":</strong> Mensaje a grupo</li>
-                  <li>• <strong>"📊 Exportar":</strong> Descargar lista</li>
+                  <li>• <strong>&quot;👥 Ver Registrados&quot;:</strong> Lista de asistentes</li>
+                  <li>• <strong>&quot;➕ Registro Manual&quot;:</strong> Agregar directamente</li>
+                  <li>• <strong>&quot;📧 Comunicar&quot;:</strong> Mensaje a grupo</li>
+                  <li>• <strong>&quot;📊 Exportar&quot;:</strong> Descargar lista</li>
                 </ul>
               </div>
             </div>

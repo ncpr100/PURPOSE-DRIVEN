@@ -262,7 +262,7 @@ export default function FAQHelp() {
             <HelpCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No encontramos resultados</h3>
             <p className="text-muted-foreground mb-4">
-              No hay preguntas que coincidan con "{searchTerm}"
+              No hay preguntas que coincidan con &quot;{searchTerm}&quot;
             </p>
             <div className="flex gap-2 justify-center">
               <Button onClick={() => setSearchTerm('')}>

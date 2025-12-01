@@ -213,7 +213,7 @@ export default function VisitorAutomationManual() {
                     Busca reglas activas que coincidan con la categoría:
                   </p>
                   <div className="bg-white p-2 rounded text-xs">
-                    <strong>Ejemplo:</strong> Para FIRST_TIME, busca reglas con trigger "VISITOR_FIRST_TIME"
+                    <strong>Ejemplo:</strong> Para FIRST_TIME, busca reglas con trigger &quot;VISITOR_FIRST_TIME&quot;
                   </div>
                 </div>
               </div>
@@ -275,7 +275,7 @@ export default function VisitorAutomationManual() {
                 <div><strong>Bypass Approval:</strong> ✅ Sí</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
-                  <li>• Mensaje de "¡Qué bueno verte de nuevo!"</li>
+                  <li>• Mensaje de &quot;¡Qué bueno verte de nuevo!&quot;</li>
                   <li>• Invitación personalizada basada en intereses</li>
                   <li>• Conexión con alguien de su edad/situación</li>
                   <li>• Invitación a evento social</li>
@@ -430,7 +430,7 @@ export default function VisitorAutomationManual() {
               </li>
               <li className="flex gap-2">
                 <span className="font-bold text-blue-600">2.</span>
-                <span>Filtre por categoría <strong>"Seguimiento de Visitantes"</strong></span>
+                <span>Filtre por categoría <strong>&quot;Seguimiento de Visitantes&quot;</strong></span>
               </li>
               <li className="flex gap-2">
                 <span className="font-bold text-blue-600">3.</span>

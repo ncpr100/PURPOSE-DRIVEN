@@ -179,9 +179,9 @@ export default function AutomationRulesManual() {
               <ol className="text-sm text-blue-800 space-y-2">
                 <li><strong>1.</strong> Vaya a <strong>Automatización → Plantillas</strong></li>
                 <li><strong>2.</strong> Navegue por categorías: Peticiones de Oración, Visitantes, Redes Sociales, Eventos</li>
-                <li><strong>3.</strong> Haga clic en <strong>"Ver Detalles"</strong> para ver el flujo completo</li>
+                <li><strong>3.</strong> Haga clic en <strong>&quot;Ver Detalles&quot;</strong> para ver el flujo completo</li>
                 <li><strong>4.</strong> Personalice el nombre, prioridad, horarios y canales</li>
-                <li><strong>5.</strong> Haga clic en <strong>"Activar Plantilla"</strong></li>
+                <li><strong>5.</strong> Haga clic en <strong>&quot;Activar Plantilla&quot;</strong></li>
               </ol>
             </div>
           </CardContent>
@@ -316,7 +316,7 @@ export default function AutomationRulesManual() {
                 <h4 className="font-semibold mb-2">❓ Quiero desactivar una regla temporalmente</h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• Vaya a <strong>Automatización → Mis Reglas</strong></li>
-                  <li>• Haga clic en el toggle <strong>"Activo"</strong> para desactivar</li>
+                  <li>• Haga clic en el toggle <strong>&quot;Activo&quot;</strong> para desactivar</li>
                   <li>• La regla permanece configurada pero no se ejecutará</li>
                 </ul>
               </div>

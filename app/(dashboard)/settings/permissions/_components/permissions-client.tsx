@@ -291,7 +291,7 @@ export function PermissionsClient() {
           <Alert>
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
-              Sistema no inicializado. Usa "Inicializar Sistema" para comenzar.
+              Sistema no inicializado. Usa &quot;Inicializar Sistema&quot; para comenzar.
             </AlertDescription>
           </Alert>
         )}

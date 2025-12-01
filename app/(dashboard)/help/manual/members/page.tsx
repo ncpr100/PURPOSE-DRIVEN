@@ -108,7 +108,7 @@ export default function MembersManual() {
                   
                   <div className="p-3 bg-gray-50 rounded-lg">
                     <p><strong>Paso 2:</strong> Descargar Plantilla</p>
-                    <p className="text-muted-foreground">Haga clic en "📥 Descargar Plantilla CSV" para obtener formato correcto</p>
+                    <p className="text-muted-foreground">Haga clic en &quot;📅 Descargar Plantilla CSV&quot; para obtener formato correcto</p>
                   </div>
                   
                   <div className="p-3 bg-gray-50 rounded-lg">
@@ -118,12 +118,12 @@ export default function MembersManual() {
                   
                   <div className="p-3 bg-gray-50 rounded-lg">
                     <p><strong>Paso 4:</strong> Configurar Opciones</p>
-                    <p className="text-muted-foreground">✅ Marque "Actualizar miembros existentes" si desea sobreescribir</p>
+                    <p className="text-muted-foreground">✅ Marque &quot;Actualizar miembros existentes&quot; si desea sobreescribir</p>
                   </div>
                   
                   <div className="p-3 bg-gray-50 rounded-lg">
                     <p><strong>Paso 5:</strong> Subir y Procesar</p>
-                    <p className="text-muted-foreground">Seleccione archivo y haga clic en "Iniciar Importación"</p>
+                    <p className="text-muted-foreground">Seleccione archivo y haga clic en &quot;Iniciar Importación&quot;</p>
                   </div>
                   
                   <div className="p-3 bg-green-50 rounded-lg border border-green-200">
@@ -139,7 +139,7 @@ export default function MembersManual() {
                   <ul className="text-sm space-y-2">
                     <li>
                       <p><strong>Email duplicado:</strong></p>
-                      <p className="text-muted-foreground">✅ Active "Actualizar existentes" o use emails únicos</p>
+                      <p className="text-muted-foreground">✅ Active &quot;Actualizar existentes&quot; o use emails únicos</p>
                     </li>
                     <li>
                       <p><strong>Formato de fecha inválido:</strong></p>
@@ -234,7 +234,7 @@ export default function MembersManual() {
               <div>
                 <h4 className="font-semibold mb-3">➕ Nuevo Miembro</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> En la página de Miembros, haga clic en "➕ Nuevo Miembro"</p>
+                  <p><strong>2.1.</strong> En la página de Miembros, haga clic en &quot;➕ Nuevo Miembro&quot;</p>
                   <p><strong>2.2.</strong> Complete el formulario:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Información Personal:</strong> Nombre, apellidos, email, teléfono</li>
@@ -244,7 +244,7 @@ export default function MembersManual() {
                   </ul>
                   <p><strong>2.3.</strong> Suba foto del miembro (opcional pero recomendado)</p>
                   <p><strong>2.4.</strong> Asigne a ministerios existentes</p>
-                  <p><strong>2.5.</strong> Haga clic en "💾 Guardar Miembro"</p>
+                  <p><strong>2.5.</strong> Haga clic en &quot;💾 Guardar Miembro&quot;</p>
                 </div>
               </div>
               <div className="bg-green-50 p-4 rounded-lg">
@@ -277,14 +277,14 @@ export default function MembersManual() {
                   <p><strong>Barra de Búsqueda:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Busque por nombre, email o teléfono</li>
-                    <li>• Use palabras parciales (ej: "juan" encuentra "Juan Carlos")</li>
+                    <li>• Use palabras parciales (ej: &quot;juan&quot; encuentra &quot;Juan Carlos&quot;)</li>
                   </ul>
                   <p><strong>Filtros Disponibles:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"Todos los Miembros":</strong> Vista completa</li>
-                    <li>• <strong>"Nuevos Miembros (30d)":</strong> Incorporaciones recientes</li>
-                    <li>• <strong>"Cumpleaños este Mes":</strong> Celebraciones próximas</li>
-                    <li>• <strong>"Líderes de Ministerio":</strong> Personal ministerial</li>
+                    <li>• <strong>&quot;Todos los Miembros&quot;:</strong> Vista completa</li>
+                    <li>• <strong>&quot;Nuevos Miembros (30d)&quot;:</strong> Incorporaciones recientes</li>
+                    <li>• <strong>&quot;Cumpleaños este Mes&quot;:</strong> Celebraciones próximas</li>
+                    <li>• <strong>&quot;Líderes de Ministerio&quot;:</strong> Personal ministerial</li>
                   </ul>
                 </div>
               </div>
@@ -335,12 +335,12 @@ export default function MembersManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Botones disponibles:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"✏️ Editar Información":</strong> Modificar datos</li>
-                    <li>• <strong>"📧 Enviar Email":</strong> Comunicación directa</li>
-                    <li>• <strong>"📞 Registrar Llamada":</strong> Log de contactos</li>
-                    <li>• <strong>"🏷️ Asignar Etiquetas":</strong> Clasificación custom</li>
-                    <li>• <strong>"📝 Agregar Nota":</strong> Seguimiento pastoral</li>
-                    <li>• <strong>"🔄 Ver Historial":</strong> Actividad completa</li>
+                    <li>• <strong>&quot;✏️ Editar Información&quot;:</strong> Modificar datos</li>
+                    <li>• <strong>&quot;📧 Enviar Email&quot;:</strong> Comunicación directa</li>
+                    <li>• <strong>&quot;📞 Registrar Llamada&quot;:</strong> Log de contactos</li>
+                    <li>• <strong>&quot;🏷️ Asignar Etiquetas&quot;:</strong> Clasificación custom</li>
+                    <li>• <strong>&quot;📝 Agregar Nota&quot;:</strong> Seguimiento pastoral</li>
+                    <li>• <strong>&quot;🔄 Ver Historial&quot;:</strong> Actividad completa</li>
                   </ul>
                 </div>
               </div>
@@ -361,8 +361,8 @@ export default function MembersManual() {
               <div>
                 <h4 className="font-semibold mb-3">🏛️ Crear Ministerios</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>5.1.</strong> En Miembros, haga clic en "🏛️ Ministerios"</p>
-                  <p><strong>5.2.</strong> Haga clic en "➕ Nuevo Ministerio"</p>
+                  <p><strong>5.1.</strong> En Miembros, haga clic en &quot;🏛️ Ministerios&quot;</p>
+                  <p><strong>5.2.</strong> Haga clic en &quot;➕ Nuevo Ministerio&quot;</p>
                   <p><strong>5.3.</strong> Complete la información:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Nombre del ministerio</li>
@@ -380,11 +380,11 @@ export default function MembersManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Desde el perfil del ministerio:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"➕ Agregar Miembro":</strong> Invitar nuevos</li>
-                    <li>• <strong>"🔄 Cambiar Rol":</strong> Líder, participante</li>
-                    <li>• <strong>"📊 Ver Estadísticas":</strong> Participación</li>
-                    <li>• <strong>"📅 Programar Reunión":</strong> Crear eventos</li>
-                    <li>• <strong>"📧 Comunicar":</strong> Mensaje al grupo</li>
+                    <li>• <strong>&quot;➕ Agregar Miembro&quot;:</strong> Invitar nuevos</li>
+                    <li>• <strong>&quot;🔄 Cambiar Rol&quot;:</strong> Líder, participante</li>
+                    <li>• <strong>&quot;📊 Ver Estadísticas&quot;:</strong> Participación</li>
+                    <li>• <strong>&quot;📅 Programar Reunión&quot;:</strong> Crear eventos</li>
+                    <li>• <strong>&quot;📧 Comunicar&quot;:</strong> Mensaje al grupo</li>
                   </ul>
                 </div>
               </div>
@@ -408,14 +408,14 @@ export default function MembersManual() {
                   <p><strong>6.1.</strong> Navegue a <code>Dones Espirituales</code></p>
                   <p><strong>6.2.</strong> Filtros disponibles:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"Todos (X)":</strong> Lista completa</li>
-                    <li>• <strong>"Con Perfil (0)":</strong> Evaluaciones completadas</li>
-                    <li>• <strong>"Sin Evaluar":</strong> Pendientes de test</li>
+                    <li>• <strong>&quot;Todos (X)&quot;:</strong> Lista completa</li>
+                    <li>• <strong>&quot;Con Perfil (0)&quot;:</strong> Evaluaciones completadas</li>
+                    <li>• <strong>&quot;Sin Evaluar&quot;:</strong> Pendientes de test</li>
                   </ul>
                   <p><strong>6.3.</strong> Para crear evaluación:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Seleccione miembro</li>
-                    <li>• Haga clic en "📝 Evaluar Dones"</li>
+                    <li>• Haga clic en &quot;📝 Evaluar Dones&quot;</li>
                     <li>• Complete el cuestionario</li>
                     <li>• Revise resultados y recomendaciones</li>
                   </ul>
@@ -457,7 +457,7 @@ export default function MembersManual() {
                   <p><strong>Comunicación Masiva:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Seleccione múltiples miembros</li>
-                    <li>• Haga clic en "📧 Enviar Mensaje"</li>
+                    <li>• Haga clic en &quot;📧 Enviar Mensaje&quot;</li>
                     <li>• Escoja plantilla o escriba mensaje custom</li>
                     <li>• Programe envío o envíe inmediatamente</li>
                   </ul>
@@ -548,31 +548,31 @@ export default function MembersManual() {
               <div>
                 <h4 className="font-semibold mb-2">📋 Botones de Lista</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"Todos los Miembros":</strong> Reset filtros</li>
-                  <li>• <strong>"Nuevos Miembros":</strong> Últimos 30 días</li>
-                  <li>• <strong>"Cumpleaños":</strong> Este mes</li>
-                  <li>• <strong>"Líderes":</strong> Personal ministerial</li>
+                  <li>• <strong>&quot;Todos los Miembros&quot;:</strong> Reset filtros</li>
+                  <li>• <strong>&quot;Nuevos Miembros&quot;:</strong> Últimos 30 días</li>
+                  <li>• <strong>&quot;Cumpleaños&quot;:</strong> Este mes</li>
+                  <li>• <strong>&quot;Líderes&quot;:</strong> Personal ministerial</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">🛠️ Botones de Acción</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"➕ Agregar Miembro":</strong> Formulario individual</li>
-                  <li>• <strong>"📥 Importar Miembros":</strong> 🆕 Carga masiva Excel/CSV/Sistemas</li>
-                  <li>• <strong>"📊 Exportar":</strong> Descarga lista actual</li>
-                  <li>• <strong>"🏛️ Ministerios":</strong> Gestión de grupos</li>
+                  <li>• <strong>&quot;➕ Agregar Miembro&quot;:</strong> Formulario individual</li>
+                  <li>• <strong>&quot;📥 Importar Miembros&quot;:</strong> 🆕 Carga masiva Excel/CSV/Sistemas</li>
+                  <li>• <strong>&quot;📊 Exportar&quot;:</strong> Descarga lista actual</li>
+                  <li>• <strong>&quot;🏦 Ministerios&quot;:</strong> Gestión de grupos</li>
                 </ul>
                 <div className="mt-2 p-2 bg-blue-50 rounded border border-blue-200">
-                  <p className="text-xs text-blue-700"><strong>🆕 NUEVO:</strong> El botón "Importar Miembros" permite migrar desde ChurchTrac, Planning Center, Rock RMS y más!</p>
+                  <p className="text-xs text-blue-700"><strong>🆕 NUEVO:</strong> El botón &quot;Importar Miembros&quot; permite migrar desde ChurchTrac, Planning Center, Rock RMS y más!</p>
                 </div>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">👤 Botones de Perfil</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"👁️ Ver":</strong> Perfil completo</li>
-                  <li>• <strong>"✏️ Editar":</strong> Modificar datos</li>
-                  <li>• <strong>"📧 Email":</strong> Contacto directo</li>
-                  <li>• <strong>"🗑️ Archivar":</strong> Inactivar miembro</li>
+                  <li>• <strong>&quot;👁️ Ver&quot;:</strong> Perfil completo</li>
+                  <li>• <strong>&quot;✏️ Editar&quot;:</strong> Modificar datos</li>
+                  <li>• <strong>&quot;📧 Email&quot;:</strong> Contacto directo</li>
+                  <li>• <strong>&quot;🗑️ Archivar&quot;:</strong> Inactivar miembro</li>
                 </ul>
               </div>
             </div>

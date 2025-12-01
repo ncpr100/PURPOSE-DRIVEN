@@ -82,7 +82,7 @@ export default function DonationsManual() {
                     <li>• Formato de números</li>
                     <li>• Idioma de recibos</li>
                   </ul>
-                  <p><strong>1.4.</strong> Haga clic en "💾 Guardar Configuración"</p>
+                  <p><strong>1.4.</strong> Haga clic en &quot;💾 Guardar Configuración&quot;</p>
                 </div>
               </div>
               <div className="bg-yellow-50 p-4 rounded-lg">
@@ -114,11 +114,11 @@ export default function DonationsManual() {
               <div>
                 <h4 className="font-semibold mb-3">🏷️ Crear Categorías</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> En Donaciones, haga clic en "🏷️ Categorías"</p>
-                  <p><strong>2.2.</strong> Haga clic en "➕ Nueva Categoría"</p>
+                  <p><strong>2.1.</strong> En Donaciones, haga clic en &quot;🏷️ Categorías&quot;</p>
+                  <p><strong>2.2.</strong> Haga clic en &quot;➕ Nueva Categoría&quot;</p>
                   <p><strong>2.3.</strong> Complete la información:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>Nombre:</strong> Ej: "Diezmos", "Ofrendas", "Misiones"</li>
+                    <li>• <strong>Nombre:</strong> Ej: &quot;Diezmos&quot;, &quot;Ofrendas&quot;, &quot;Misiones&quot;</li>
                     <li>• <strong>Descripción:</strong> Propósito específico</li>
                     <li>• <strong>Color de identificación:</strong> Para reportes</li>
                     <li>• <strong>Meta mensual:</strong> Objetivo financiero (opcional)</li>
@@ -161,7 +161,7 @@ export default function DonationsManual() {
                 <h4 className="font-semibold mb-3">💳 Configurar Métodos</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>3.1.</strong> Vaya a <code>Donaciones → 💳 Métodos de Pago</code></p>
-                  <p><strong>3.2.</strong> Haga clic en "➕ Nuevo Método"</p>
+                  <p><strong>3.2.</strong> Haga clic en &quot;➕ Nuevo Método&quot;</p>
                   <p><strong>3.3.</strong> Opciones disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
                     <li>• <strong>💵 Efectivo:</strong> Donaciones en persona
@@ -210,7 +210,7 @@ export default function DonationsManual() {
               <div>
                 <h4 className="font-semibold mb-3">📝 Registro Manual</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>4.1.</strong> Haga clic en "➕ Nueva Donación"</p>
+                  <p><strong>4.1.</strong> Haga clic en &quot;➕ Nueva Donación&quot;</p>
                   <p><strong>4.2.</strong> Complete el formulario:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Donador:</strong> Seleccione de lista o agregue nuevo</li>
@@ -221,7 +221,7 @@ export default function DonationsManual() {
                     <li>• <strong>Notas:</strong> Información adicional</li>
                   </ul>
                   <p><strong>4.3.</strong> Adjunte comprobante si es transferencia</p>
-                  <p><strong>4.4.</strong> Haga clic en "💾 Registrar Donación"</p>
+                  <p><strong>4.4.</strong> Haga clic en &quot;💾 Registrar Donación&quot;</p>
                   <p><strong>4.5.</strong> El sistema genera recibo automáticamente</p>
                 </div>
               </div>
@@ -230,9 +230,9 @@ export default function DonationsManual() {
                 <div className="text-sm space-y-2">
                   <p><strong>Para donaciones frecuentes:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"⚡ Diezmo Rápido":</strong> Registro de diezmo con información predefinida</li>
-                    <li>• <strong>"🎁 Ofrenda Rápida":</strong> Ofrenda dominical estándar</li>
-                    <li>• <strong>"📋 Importar Lote":</strong> Carga masiva desde Excel</li>
+                    <li>• <strong>&quot;⚡ Diezmo Rápido&quot;:</strong> Registro de diezmo con información predefinida</li>
+                    <li>• <strong>&quot;🎁 Ofrenda Rápida&quot;:</strong> Ofrenda dominical estándar</li>
+                    <li>• <strong>&quot;📋 Importar Lote&quot;:</strong> Carga masiva desde Excel</li>
                   </ul>
                   <div className="mt-3 p-2 bg-white rounded border-l-4 border-blue-400">
                     <p className="text-xs"><strong>💡 Tip:</strong> Configure donadores frecuentes para autocompletar</p>
@@ -279,7 +279,7 @@ export default function DonationsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Al final del año fiscal:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"📄 Generar Certificados":</strong> Resumen anual por donador</li>
+                    <li>• <strong>&quot;📄 Generar Certificados&quot;:</strong> Resumen anual por donador</li>
                     <li>• <strong>Filtrar por período:</strong> Enero-Diciembre</li>
                     <li>• <strong>Incluir solo deducibles:</strong> Según normativa fiscal</li>
                     <li>• <strong>Envío masivo:</strong> Email a todos los donadores</li>
@@ -367,28 +367,28 @@ export default function DonationsManual() {
               <div>
                 <h4 className="font-semibold mb-2">💰 Botones Principales</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"➕ Nueva Donación":</strong> Registro individual</li>
-                  <li>• <strong>"⚡ Diezmo Rápido":</strong> Registro rápido diezmo</li>
-                  <li>• <strong>"📊 Reportes":</strong> Ver analíticas financieras</li>
-                  <li>• <strong>"⚙️ Configuración":</strong> Ajustes del sistema</li>
+                  <li>• <strong>&quot;➕ Nueva Donación&quot;:</strong> Registro individual</li>
+                  <li>• <strong>&quot;⚡ Diezmo Rápido&quot;:</strong> Registro rápido diezmo</li>
+                  <li>• <strong>&quot;📊 Reportes&quot;:</strong> Ver analíticas financieras</li>
+                  <li>• <strong>&quot;⚙️ Configuración&quot;:</strong> Ajustes del sistema</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">🛠️ Botones de Gestión</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"🏷️ Categorías":</strong> Gestionar tipos de donación</li>
-                  <li>• <strong>"💳 Métodos":</strong> Configurar formas de pago</li>
-                  <li>• <strong>"📥 Importar":</strong> Carga masiva Excel</li>
-                  <li>• <strong>"📊 Exportar":</strong> Descargar reportes</li>
+                  <li>• <strong>&quot;🏷️ Categorías&quot;:</strong> Gestionar tipos de donación</li>
+                  <li>• <strong>&quot;💳 Métodos&quot;:</strong> Configurar formas de pago</li>
+                  <li>• <strong>&quot;📥 Importar&quot;:</strong> Carga masiva Excel</li>
+                  <li>• <strong>&quot;📊 Exportar&quot;:</strong> Descargar reportes</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">🧾 Botones de Recibos</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"🧾 Ver Recibo":</strong> Mostrar PDF</li>
-                  <li>• <strong>"📧 Enviar Email":</strong> Reenviar recibo</li>
-                  <li>• <strong>"🖨️ Imprimir":</strong> Copia física</li>
-                  <li>• <strong>"📄 Certificado Anual":</strong> Resumen fiscal</li>
+                  <li>• <strong>&quot;🧾 Ver Recibo&quot;:</strong> Mostrar PDF</li>
+                  <li>• <strong>&quot;📧 Enviar Email&quot;:</strong> Reenviar recibo</li>
+                  <li>• <strong>&quot;🖨️ Imprimir&quot;:</strong> Copia física</li>
+                  <li>• <strong>&quot;📄 Certificado Anual&quot;:</strong> Resumen fiscal</li>
                 </ul>
               </div>
             </div>

@@ -70,6 +70,9 @@ model Church {
   themePreferences          UserThemePreference[]
   users                     User[]
   visitorsFollowUp          VisitorFollowUp[]
+  visitorForms              VisitorForm[]
+  visitorQRCodes            VisitorQRCode[]
+  visitorSubmissions        VisitorSubmission[]
   volunteers                Volunteer[]
   websites                  Website[]
   websiteRequests           WebsiteRequest[]             @relation("ChurchWebsiteRequests")
@@ -2685,4 +2688,61 @@ model AIModelPerformance {
   @@index([churchId, modelVersion])
   @@index([metricType, calculatedAt])
   @@map("ai_model_performance")
+}
+
+// Visitor Forms System
+model VisitorForm {
+  id          String           @id @default(cuid())
+  name        String
+  description String?
+  fields      Json             // Array of form field definitions
+  style       Json?            // Form styling options
+  settings    Json?            // Form behavior settings (redirect, notifications, etc.)
+  isActive    Boolean          @default(true)
+  isPublic    Boolean          @default(true)
+  slug        String           @unique
+  churchId    String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @default(now())
+  church      Church           @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  qrCodes     VisitorQRCode[]
+  submissions VisitorSubmission[]
+
+  @@map("visitor_forms")
+}
+
+model VisitorQRCode {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  formId      String
+  code        String      @unique
+  design      Json?       // QR code styling and branding
+  isActive    Boolean     @default(true)
+  scanCount   Int         @default(0)
+  lastScan    DateTime?
+  churchId    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now())
+  church      Church      @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  form        VisitorForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@map("visitor_qr_codes")
+}
+
+model VisitorSubmission {
+  id          String      @id @default(cuid())
+  formId      String
+  data        Json        // Form submission data
+  submittedAt DateTime    @default(now())
+  ipAddress   String?
+  userAgent   String?
+  status      String      @default("pending") // pending, processed, follow_up_sent
+  churchId    String
+  church      Church      @relation(fields: [churchId], references: [id])
+  form        VisitorForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@index([churchId, submittedAt])
+  @@index([formId, status])
+  @@map("visitor_submissions")
 }

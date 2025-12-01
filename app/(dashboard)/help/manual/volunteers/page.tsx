@@ -98,9 +98,9 @@ export default function VolunteersManualPage() {
               <div>
                 <h4 className="font-semibold">Usar Listas Inteligentes (Con Criterios Personalizados)</h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
-                  <li>• <strong>"Candidatos Voluntarios"</strong> - Basado en tus criterios configurados</li>
-                  <li>• <strong>"Son Voluntarios"</strong> - Voluntarios actuales</li>
-                  <li>• <strong>"Listos para Liderazgo"</strong> - Basado en criterios de liderazgo personalizados</li>
+                  <li>• <strong>&quot;Candidatos Voluntarios&quot;</strong> - Basado en tus criterios configurados</li>
+                  <li>• <strong>&quot;Son Voluntarios&quot;</strong> - Voluntarios actuales</li>
+                  <li>• <strong>&quot;Listos para Liderazgo&quot;</strong> - Basado en criterios de liderazgo personalizados</li>
                 </ul>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function VolunteersManualPage() {
                 <h4 className="font-semibold">Reclutar Miembros como Voluntarios</h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• Busca un miembro que no sea voluntario</li>
-                  <li>• Haz clic en el <strong>ícono verde "+"</strong> junto a su nombre</li>
+                  <li>• Haz clic en el <strong>ícono verde &quot;+&quot;</strong> junto a su nombre</li>
                   <li>• Se abre el diálogo de recomendaciones de IA mejorado</li>
                   <li>• Elige ministerio basado en puntuaciones de compatibilidad</li>
                 </ul>

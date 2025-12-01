@@ -117,7 +117,7 @@ export default function SetupManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>2.1.</strong> <span className="text-red-600 font-bold">IMPORTANTE:</span> Solo SUPER_ADMIN puede hacer esto</p>
                   <p><strong>2.2.</strong> Vaya a <code>Configuración → Permisos</code></p>
-                  <p><strong>2.3.</strong> Haga clic en "🗄️ Inicializar Sistema"</p>
+                  <p><strong>2.3.</strong> Haga clic en &quot;🗄️ Inicializar Sistema&quot;</p>
                   <p><strong>2.4.</strong> El sistema creará automáticamente:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• 5 roles de iglesia predefinidos</li>
@@ -212,7 +212,7 @@ export default function SetupManual() {
                   <p><strong>4.1.</strong> Vaya a <code>Comunicaciones → ⚙️ Configuración</code></p>
                   <p><strong>4.2.</strong> Configure servidor de email:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• Email "desde": iglesia@sudominio.com</li>
+                    <li>• Email &quot;desde&quot;: iglesia@sudominio.com</li>
                     <li>• Nombre de remitente: Nombre de la Iglesia</li>
                     <li>• Servidor SMTP (si tiene)</li>
                   </ul>
@@ -327,13 +327,13 @@ export default function SetupManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Para eventos con niños:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• Active "Seguridad Infantil WebRTC"</li>
+                    <li>• Active &quot;Seguridad Infantil WebRTC&quot;</li>
                     <li>• Configure códigos PIN de 6 dígitos</li>
                     <li>• Establezca protocolos de emergencia</li>
                   </ul>
                   <p><strong>Para visitantes:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• Active "Sistema de Automatización"</li>
+                    <li>• Active &quot;Sistema de Automatización&quot;</li>
                     <li>• Configure seguimiento de 5 toques</li>
                     <li>• Conecte con ministerios apropiados</li>
                   </ul>

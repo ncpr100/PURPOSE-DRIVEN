@@ -14,7 +14,7 @@ export default function DonationsHelp() {
       description: "Método tradicional y confiable",
       setup: [
         "Configurar cuenta bancaria de la iglesia",
-        "Proporcionar número de cuenta y banco",
+        "Proporcionar número de cuenta y banco", 
         "Los donantes transfieren directamente"
       ]
     },
@@ -134,8 +134,8 @@ export default function DonationsHelp() {
             </CardHeader>
             <CardContent>
               <ol className="space-y-2 text-sm">
-                <li><span className="font-bold">1.</span> Ir a sección "Donaciones"</li>
-                <li><span className="font-bold">2.</span> Hacer clic en "Nueva Donación"</li>
+                <li><span className="font-bold">1.</span> Ir a sección &quot;Donaciones&quot;</li>
+                <li><span className="font-bold">2.</span> Hacer clic en &quot;Nueva Donación&quot;</li>
                 <li><span className="font-bold">3.</span> Seleccionar donante de la lista</li>
                 <li><span className="font-bold">4.</span> Especificar monto y categoría</li>
                 <li><span className="font-bold">5.</span> Elegir método de pago</li>

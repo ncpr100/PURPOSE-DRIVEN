@@ -69,7 +69,7 @@ export default function CommunicationsManual() {
                 <h4 className="font-semibold mb-3">📝 Crear Plantillas</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>1.1.</strong> Navegue a <code>Comunicaciones → 📝 Plantillas</code></p>
-                  <p><strong>1.2.</strong> Haga clic en "➕ Nueva Plantilla"</p>
+                  <p><strong>1.2.</strong> Haga clic en &quot;➕ Nueva Plantilla&quot;</p>
                   <p><strong>1.3.</strong> Complete la información:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Nombre de plantilla:</strong> Identificación interna</li>
@@ -118,14 +118,14 @@ export default function CommunicationsManual() {
               <div>
                 <h4 className="font-semibold mb-3">📢 Envío Masivo</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> Haga clic en "📧 Nuevo Mensaje"</p>
+                  <p><strong>2.1.</strong> Haga clic en &quot;📧 Nuevo Mensaje&quot;</p>
                   <p><strong>2.2.</strong> Seleccione destinatarios:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"Todos los Miembros":</strong> Congregación completa</li>
-                    <li>• <strong>"Por Ministerio":</strong> Grupo específico</li>
-                    <li>• <strong>"Por Edad":</strong> Jóvenes, adultos, niños</li>
-                    <li>• <strong>"Líderes":</strong> Personal ministerial</li>
-                    <li>• <strong>"Custom":</strong> Selección manual</li>
+                    <li>• <strong>&quot;Todos los Miembros&quot;:</strong> Congregación completa</li>
+                    <li>• <strong>&quot;Por Ministerio&quot;:</strong> Grupo específico</li>
+                    <li>• <strong>&quot;Por Edad&quot;:</strong> Jóvenes, adultos, niños</li>
+                    <li>• <strong>&quot;Líderes&quot;:</strong> Personal ministerial</li>
+                    <li>• <strong>&quot;Custom&quot;:</strong> Selección manual</li>
                   </ul>
                   <p><strong>2.3.</strong> Escoja plantilla o escriba mensaje</p>
                   <p><strong>2.4.</strong> Configure opciones de envío:</p>
@@ -141,9 +141,9 @@ export default function CommunicationsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Para programar envíos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"⏰ Programar Envío":</strong> Fecha y hora específica</li>
-                    <li>• <strong>"🔄 Recurrente":</strong> Mensajes repetitivos</li>
-                    <li>• <strong>"📅 Basado en Eventos":</strong> Antes/después de servicios</li>
+                    <li>• <strong>&quot;⏰ Programar Envío&quot;:</strong> Fecha y hora específica</li>
+                    <li>• <strong>&quot;🔄 Recurrente&quot;:</strong> Mensajes repetitivos</li>
+                    <li>• <strong>&quot;📅 Basado en Eventos&quot;:</strong> Antes/después de servicios</li>
                   </ul>
                   <p><strong>Opciones de recurrencia:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -242,10 +242,10 @@ export default function CommunicationsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Gestionar notificaciones recibidas:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"📥 Bandeja de Entrada":</strong> Mensajes recibidos</li>
-                    <li>• <strong>"✉️ No Leídos":</strong> Filtrar pendientes</li>
-                    <li>• <strong>"📧 Responder":</strong> Contestar directamente</li>
-                    <li>• <strong>"🗑️ Archivar":</strong> Organizar mensajes</li>
+                    <li>• <strong>&quot;📥 Bandeja de Entrada&quot;:</strong> Mensajes recibidos</li>
+                    <li>• <strong>&quot;✉️ No Leídos&quot;:</strong> Filtrar pendientes</li>
+                    <li>• <strong>&quot;📧 Responder&quot;:</strong> Contestar directamente</li>
+                    <li>• <strong>&quot;🗑️ Archivar&quot;:</strong> Organizar mensajes</li>
                   </ul>
                   <p><strong>Métodos de entrega disponibles:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -274,11 +274,11 @@ export default function CommunicationsManual() {
               <div>
                 <h4 className="font-semibold mb-3">🎯 Crear Campañas</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>5.1.</strong> En Comunicaciones, haga clic en "📈 Campañas"</p>
-                  <p><strong>5.2.</strong> Haga clic en "➕ Nueva Campaña"</p>
+                  <p><strong>5.1.</strong> En Comunicaciones, haga clic en &quot;📈 Campañas&quot;</p>
+                  <p><strong>5.2.</strong> Haga clic en &quot;➕ Nueva Campaña&quot;</p>
                   <p><strong>5.3.</strong> Configure la campaña:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>Nombre de campaña:</strong> Ej: "Bienvenida 2025"</li>
+                    <li>• <strong>Nombre de campaña:</strong> Ej: &quot;Bienvenida 2025&quot;</li>
                     <li>• <strong>Objetivo:</strong> Meta de la campaña</li>
                     <li>• <strong>Duración:</strong> Fecha inicio y fin</li>
                     <li>• <strong>Público objetivo:</strong> Segmento específico</li>
@@ -337,7 +337,7 @@ export default function CommunicationsManual() {
                   <p><strong>6.2.</strong> Para activar integraciones:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Vaya a Configuración → Integraciones</li>
-                    <li>• Haga clic en "🔗 Conectar [Plataforma]"</li>
+                    <li>• Haga clic en &quot;🔗 Conectar [Plataforma]&quot;</li>
                     <li>• Autentique con sus credenciales</li>
                     <li>• Configure sincronización automática</li>
                   </ul>
@@ -356,7 +356,7 @@ export default function CommunicationsManual() {
                   </ul>
                   <p><strong>Para configurar:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"🤖 Reglas de Automatización"</strong></li>
+                    <li>• <strong>&quot;🤖 Reglas de Automatización&quot;</strong></li>
                     <li>• Seleccione trigger</li>
                     <li>• Configure acción (email, SMS, etc.)</li>
                     <li>• Establezca condiciones</li>
@@ -435,28 +435,28 @@ export default function CommunicationsManual() {
               <div>
                 <h4 className="font-semibold mb-2">📧 Botones de Email</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"📧 Nuevo Mensaje":</strong> Crear comunicación</li>
-                  <li>• <strong>"📝 Plantillas":</strong> Gestionar plantillas</li>
-                  <li>• <strong>"📈 Campañas":</strong> Marketing automation</li>
-                  <li>• <strong>"📊 Estadísticas":</strong> Ver métricas</li>
+                  <li>• <strong>&quot;📧 Nuevo Mensaje&quot;:</strong> Crear comunicación</li>
+                  <li>• <strong>&quot;📝 Plantillas&quot;:</strong> Gestionar plantillas</li>
+                  <li>• <strong>&quot;📈 Campañas&quot;:</strong> Marketing automation</li>
+                  <li>• <strong>&quot;📊 Estadísticas&quot;:</strong> Ver métricas</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">📱 Botones de SMS/WhatsApp</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"📱 Enviar SMS":</strong> Mensaje de texto masivo</li>
-                  <li>• <strong>"💚 WhatsApp":</strong> Envío por WhatsApp</li>
-                  <li>• <strong>"👥 Grupos":</strong> Gestionar grupos de chat</li>
-                  <li>• <strong>"⚙️ Configurar":</strong> APIs y límites</li>
+                  <li>• <strong>&quot;📱 Enviar SMS&quot;:</strong> Mensaje de texto masivo</li>
+                  <li>• <strong>&quot;💚 WhatsApp&quot;:</strong> Envío por WhatsApp</li>
+                  <li>• <strong>&quot;👥 Grupos&quot;:</strong> Gestionar grupos de chat</li>
+                  <li>• <strong>&quot;⚙️ Configurar&quot;:</strong> APIs y límites</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold mb-2">🔔 Botones de Notificaciones</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"📥 Bandeja de Entrada":</strong> Mensajes recibidos</li>
-                  <li>• <strong>"🔔 Configurar":</strong> Notificaciones automáticas</li>
-                  <li>• <strong>"🤖 Automatización":</strong> Reglas inteligentes</li>
-                  <li>• <strong>"📊 Métricas de Entrega":</strong> Rendimiento</li>
+                  <li>• <strong>&quot;📥 Bandeja de Entrada&quot;:</strong> Mensajes recibidos</li>
+                  <li>• <strong>&quot;🔔 Configurar&quot;:</strong> Notificaciones automáticas</li>
+                  <li>• <strong>&quot;🤖 Automatización&quot;:</strong> Reglas inteligentes</li>
+                  <li>• <strong>&quot;📊 Métricas de Entrega&quot;:</strong> Rendimiento</li>
                 </ul>
               </div>
             </div>

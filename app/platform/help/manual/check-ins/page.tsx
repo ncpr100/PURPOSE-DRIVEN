@@ -290,7 +290,7 @@ export default function SuperAdminCheckInsManual() {
                 <h4 className="font-semibold mb-2">Comando de Limpieza Manual</h4>
                 <p className="text-sm mb-2">Para ejecutar limpieza de fotos manualmente:</p>
                 <code className="bg-gray-100 px-2 py-1 rounded text-sm">
-                  curl -X POST /api/child-security/cleanup -H "Authorization: Bearer [CRON_SECRET]"
+                  curl -X POST /api/child-security/cleanup -H &quot;Authorization: Bearer [CRON_SECRET]&quot;
                 </code>
               </div>
             </div>

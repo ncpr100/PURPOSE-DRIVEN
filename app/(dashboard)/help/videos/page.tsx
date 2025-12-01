@@ -266,7 +266,7 @@ export default function VideosHelp() {
                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-bold text-sm">1</div>
                 <div>
                   <h4 className="font-semibold">Configuración Inicial (15 min)</h4>
-                  <p className="text-sm text-muted-foreground">Comience con los videos de "Primeros Pasos" para configurar su iglesia correctamente.</p>
+                  <p className="text-sm text-muted-foreground">Comience con los videos de &quot;Primeros Pasos&quot; para configurar su iglesia correctamente.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">

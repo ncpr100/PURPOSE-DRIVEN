@@ -96,12 +96,52 @@ export default function HelpCenterSuperAdmin() {
       category: "Sistema"
     },
     {
+      title: "🆕 Sistema de Formularios de Visitantes",
+      icon: Users,
+      href: "/platform/help/manual/visitor-forms",
+      description: "Administrar formularios y QR codes globalmente",
+      time: "30 min",
+      category: "Nuevos Sistemas"
+    },
+    {
+      title: "🆕 Sistema de Analíticas Inteligentes",
+      icon: BarChart3,
+      href: "/platform/help/manual/intelligent-analytics",
+      description: "IA predictiva y análisis avanzado global",
+      time: "40 min",
+      category: "IA y Analytics"
+    },
+    {
+      title: "🆕 Sistema de Automatización Social",
+      icon: Settings,
+      href: "/platform/help/manual/social-automation",
+      description: "Gestión global de automatización redes sociales",
+      time: "35 min",
+      category: "Automatización"
+    },
+    {
+      title: "🆕 Sistema de Dones Espirituales Global",
+      icon: Package,
+      href: "/platform/help/manual/spiritual-gifts-global",
+      description: "Administrar evaluaciones de dones globalmente",
+      time: "25 min",
+      category: "Sistema"
+    },
+    {
       title: "🆕 Criterios de Calificación Personalizables",
       icon: Settings,
       href: "/platform/help/manual/qualification-settings", 
       description: "Configurar criterios de voluntarios y liderazgo",
       time: "20 min",
       category: "Configuración"
+    },
+    {
+      title: "🆕 Manual de Troubleshooting",
+      icon: Settings,
+      href: "/platform/help/troubleshooting", 
+      description: "Resolución de problemas y escalamiento crítico",
+      time: "60 min",
+      category: "Soporte Técnico"
     }
   ]
 
@@ -109,7 +149,9 @@ export default function HelpCenterSuperAdmin() {
     { title: "🏢 Gestión de Plataforma", items: [
       { name: "Administrar Iglesias", href: "/platform/help/manual/churches", icon: "🏛️" },
       { name: "Analytics Globales", href: "/platform/help/manual/analytics", icon: "📊" },
+      { name: "🆕 Analíticas Inteligentes Globales", href: "/platform/help/manual/global-intelligent-analytics", icon: "🤖" },
       { name: "Gestión de Usuarios", href: "/platform/help/manual/users", icon: "👥" },
+      { name: "🆕 Sistema de Formularios Globales", href: "/platform/help/manual/global-visitor-forms", icon: "📝" },
       { name: "Monitoreo del Sistema", href: "/platform/help/manual/monitoring", icon: "🔍" }
     ]},
     { title: "💰 Configuración de Negocio", items: [
@@ -123,6 +165,7 @@ export default function HelpCenterSuperAdmin() {
     { title: "🔧 Herramientas Técnicas", items: [
       { name: "🆕 Sistema Check-In Avanzado", href: "/platform/help/manual/check-ins", icon: "🔐" },
       { name: "🆕 Criterios de Calificación", href: "/platform/help/manual/qualification-settings", icon: "🎯" },
+      { name: "🆕 Manual de Troubleshooting", href: "/platform/help/troubleshooting", icon: "🛠️" },
       { name: "Respaldos de BD", href: "/platform/help/manual/backups", icon: "🗄️" },
       { name: "Regenerar Claves", href: "/platform/help/manual/keys", icon: "🔑" },
       { name: "Logs del Sistema", href: "/platform/help/manual/logs", icon: "📊" },

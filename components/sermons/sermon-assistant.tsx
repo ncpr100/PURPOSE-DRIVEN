@@ -873,7 +873,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                   <BookOpen className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No hay sermón para editar</h3>
                   <p className="text-muted-foreground mb-4">
-                    Genera un sermón primero usando la pestaña "Generador IA"
+                                        Genera un sermón primero usando la pestaña &quot;Generador IA&quot;
                   </p>
                   <Button onClick={() => setActiveTab('generator')}>
                     <Sparkles className="h-4 w-4 mr-2" />

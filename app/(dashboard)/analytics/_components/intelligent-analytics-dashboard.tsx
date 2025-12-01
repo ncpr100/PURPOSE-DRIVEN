@@ -307,7 +307,7 @@ export default function IntelligentAnalyticsDashboard() {
                   Sin Conexión
                 </Badge>
               )}
-              {lastUpdate && (
+              {Boolean(lastUpdate) && (
                 <span className="hidden sm:inline text-xs text-gray-500">
                   Actualizado: {lastUpdate.toLocaleTimeString()}
                 </span>
@@ -337,7 +337,7 @@ export default function IntelligentAnalyticsDashboard() {
       </div>
 
       {/* Church Health Score */}
-      {executiveData && executiveData.summary && (
+      {Boolean(executiveData?.summary) && (
         <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

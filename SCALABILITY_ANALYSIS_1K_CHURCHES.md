@@ -16,7 +16,7 @@ For a **1,000 churches deployment** with our advanced analytics and 100% cache h
 **Per Church Cache Allocation** (~225MB each):
 - **Executive Reports**: 50MB (15-minute TTL)
   - Church health metrics, KPI dashboards, leadership insights
-- **Member Journey Analytics**: 30MB (5-minute TTL) 
+- **Member Journey Analytics**: 30MB (5-minute TTL)
   - Lifecycle stages, conversion funnels, retention predictions
 - **Dashboard Quick Stats**: 5MB (1-minute TTL)
   - Real-time counters, attendance, engagement scores
@@ -122,7 +122,7 @@ For cost optimization, consider hybrid approach:
 - Implement core caching strategies
 - Test with 10-50 churches
 
-### Phase 2: Scaling (Months 3-4) 
+### Phase 2: Scaling (Months 3-4)
 - Scale to 250 churches
 - Optimize memory usage patterns
 - Implement advanced compression

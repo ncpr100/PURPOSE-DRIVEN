@@ -388,10 +388,10 @@ export default function UserMembersManual() {
               <div className="grid md:grid-cols-2 gap-4 text-sm">
                 <div>
                   <p><strong>Nombres Completos:</strong></p>
-                  <p className="text-muted-foreground">"Juan Carlos Pérez" → firstName: "Juan Carlos", lastName: "Pérez"</p>
+                  <p className="text-muted-foreground">&quot;Juan Carlos Pérez&quot; → firstName: &quot;Juan Carlos&quot;, lastName: &quot;Pérez&quot;</p>
                   
                   <p className="mt-2"><strong>Géneros:</strong></p>
-                  <p className="text-muted-foreground">M/Male/H/Hombre → "Masculino", F/Female/W/Woman → "Femenino"</p>
+                  <p className="text-muted-foreground">M/Male/H/Hombre → &quot;Masculino&quot;, F/Female/W/Woman → &quot;Femenino&quot;</p>
                 </div>
                 <div>
                   <p><strong>Fechas Flexibles:</strong></p>
@@ -446,17 +446,17 @@ export default function UserMembersManual() {
                   <p><strong>Problemas Comunes:</strong></p>
                   
                   <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-                    <p><strong>Error: "Archivo muy grande"</strong></p>
+                    <p><strong>Error: &quot;Archivo muy grande&quot;</strong></p>
                     <p className="text-muted-foreground">Solución: Dividir en lotes de máximo 1000 registros</p>
                   </div>
                   
                   <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                    <p><strong>Error: "Muchos duplicados"</strong></p>
-                    <p className="text-muted-foreground">Solución: Activar "Actualizar existentes" o limpiar datos</p>
+                    <p><strong>Error: &quot;Muchos duplicados&quot;</strong></p>
+                    <p className="text-muted-foreground">Solución: Activar &quot;Actualizar existentes&quot; o limpiar datos</p>
                   </div>
                   
                   <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <p><strong>Error: "Campos no reconocidos"</strong></p>
+                    <p><strong>Error: &quot;Campos no reconocidos&quot;</strong></p>
                     <p className="text-muted-foreground">Solución: Usar plantilla o mapear manualmente</p>
                   </div>
                   
@@ -611,7 +611,7 @@ export default function UserMembersManual() {
                   <li>• <code>GET /api/members?churchId=X</code> - Listar miembros</li>
                   <li>• <code>POST /api/members/import</code> - Procesar importación</li>
                   <li>• <code>GET /api/platform/churches/[id]/stats</code> - Stats iglesia</li>
-                  <li>• Database query: <code>SELECT COUNT(*) FROM members WHERE churchId='X'</code></li>
+                  <li>• Database query: <code>SELECT COUNT(*) FROM members WHERE churchId=&apos;X&apos;</code></li>
                 </ul>
               </div>
               <div>

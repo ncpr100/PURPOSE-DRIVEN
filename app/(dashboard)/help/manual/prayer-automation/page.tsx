@@ -111,7 +111,7 @@ export default function PrayerAutomationManual() {
                   <div className="bg-white p-3 rounded mt-2 border">
                     <p className="text-xs font-mono text-gray-600">
                       SI prioridad = URGENTE Y categoría = Salud<br/>
-                      ENTONCES ejecutar: "Notificación Urgente al Equipo"
+                      ENTONCES ejecutar: &quot;Notificación Urgente al Equipo&quot;
                     </p>
                   </div>
                 </div>
@@ -216,7 +216,7 @@ export default function PrayerAutomationManual() {
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• Email/SMS de confirmación (inmediato)</li>
-                  <li>• Incluye: "Hemos recibido tu petición. Nuestro equipo está orando por ti."</li>
+                  <li>• Incluye: &quot;Hemos recibido tu petición. Nuestro equipo está orando por ti.&quot;</li>
                   <li>• Link para actualizar la petición</li>
                 </ul>
                 <div><strong>Canal preferido:</strong> Usa el canal que la persona indicó (SMS, Email, WhatsApp)</div>
@@ -253,7 +253,7 @@ export default function PrayerAutomationManual() {
                 Programa una llamada telefónica personal para peticiones muy sensibles.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
-                <div><strong>Disparador:</strong> Petición URGENTE con categoría "Salud" o "Duelo"</div>
+                <div><strong>Disparador:</strong> Petición URGENTE con categoría &quot;Salud&quot; o &quot;Duelo&quot;</div>
                 <div><strong>Bypass Approval:</strong> ❌ No</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
@@ -347,7 +347,7 @@ export default function PrayerAutomationManual() {
               </li>
               <li className="flex gap-2">
                 <span className="font-bold text-purple-600">2.</span>
-                <span>Filtre por categoría <strong>"Peticiones de Oración"</strong></span>
+                <span>Filtre por categoría <strong>&quot;Peticiones de Oración&quot;</strong></span>
               </li>
               <li className="flex gap-2">
                 <span className="font-bold text-purple-600">3.</span>

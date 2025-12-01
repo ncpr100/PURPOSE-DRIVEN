@@ -217,7 +217,7 @@ export function PushNotificationSettings() {
                   <br />
                   1. Haz clic en el ícono del candado en la barra de direcciones
                   <br />
-                  2. Cambia los permisos de notificaciones a "Permitir"
+                  2. Cambia los permisos de notificaciones a &quot;Permitir&quot;
                   <br />
                   3. Recarga la página
                 </AlertDescription>

@@ -191,7 +191,7 @@ María,García,maria@email.com,555-0124,"Carrera 67, #89",Medellín,Antioquia,05
                 <div>
                   <h4 className="font-medium mb-2">Campos Reconocidos:</h4>
                   <ul className="text-sm space-y-1 text-muted-foreground">
-                    <li>• <strong>Requeridos:</strong> firstName, lastName (o "name")</li>
+                    <li>• <strong>Requeridos:</strong> firstName, lastName (o &quot;name&quot;)</li>
                     <li>• <strong>Contacto:</strong> email, phone, address, city, state, zipCode</li>
                     <li>• <strong>Personal:</strong> birthDate, gender, maritalStatus, occupation</li>
                     <li>• <strong>Iglesia:</strong> membershipDate, baptismDate, notes</li>
@@ -202,7 +202,7 @@ María,García,maria@email.com,555-0124,"Carrera 67, #89",Medellín,Antioquia,05
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• <strong>Fechas:</strong> YYYY-MM-DD, DD/MM/YYYY</li>
                     <li>• <strong>Género:</strong> Masculino/M/H, Femenino/F/W</li>
-                    <li>• <strong>Nombres:</strong> "Juan Pérez" se divide automáticamente</li>
+                    <li>• <strong>Nombres:</strong> &quot;Juan Pérez&quot; se divide automáticamente</li>
                     <li>• <strong>Límite:</strong> 1000 registros máximo</li>
                   </ul>
                 </div>

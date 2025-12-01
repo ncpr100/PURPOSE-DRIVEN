@@ -78,6 +78,29 @@ export function ThemeSettingsClient() {
   const [themePreference, setThemePreference] = useState<ThemePreference | null>(null)
   const [showPreview, setShowPreview] = useState(false)
 
+  const fetchThemePreferences = async () => {
+    try {
+      const response = await fetch('/api/theme-preferences')
+      if (response.ok) {
+        const data = await response.json()
+        setThemePreference(data)
+      }
+    } catch (error) {
+      console.error('Error fetching theme preferences:', error)
+      toast.error('Error al cargar configuración de tema')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (session?.user?.role === 'SUPER_ADMIN') {
+      fetchThemePreferences()
+    } else {
+      setLoading(false)
+    }
+  }, [session])
+
   // SUPER_ADMIN only access control
   if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
     return (
@@ -96,25 +119,6 @@ export function ThemeSettingsClient() {
         </Card>
       </div>
     )
-  }
-
-  useEffect(() => {
-    fetchThemePreferences()
-  }, [session])
-
-  const fetchThemePreferences = async () => {
-    try {
-      const response = await fetch('/api/theme-preferences')
-      if (response.ok) {
-        const data = await response.json()
-        setThemePreference(data)
-      }
-    } catch (error) {
-      console.error('Error fetching theme preferences:', error)
-      toast.error('Error al cargar configuración de tema')
-    } finally {
-      setLoading(false)
-    }
   }
 
   const saveThemePreferences = async () => {

@@ -61,7 +61,7 @@ export default function AnalyticsPastoralInsightsPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
-              Tab "Analíticas Ministeriales" - Métricas Operacionales
+              Tab &quot;Analíticas Ministeriales&quot; - Métricas Operacionales
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -69,7 +69,7 @@ export default function AnalyticsPastoralInsightsPage() {
               <div>
                 <h4 className="font-semibold mb-3">📈 Métricas Diarias</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>1.1.</strong> Acceda a <code>Analíticas → Tab "Analíticas Ministeriales"</code></p>
+                  <p><strong>1.1.</strong> Acceda a <code>Analíticas → Tab &quot;Analíticas Ministeriales&quot;</code></p>
                   <p><strong>1.2.</strong> Métricas disponibles en tiempo real:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Miembros Activos:</strong> Total y crecimiento</li>
@@ -81,9 +81,9 @@ export default function AnalyticsPastoralInsightsPage() {
                   </ul>
                   <p><strong>1.3.</strong> Acciones Rápidas disponibles:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>"📊 Exportar Excel":</strong> Reporte completo</li>
-                    <li>• <strong>"📋 Exportar CSV":</strong> Datos para análisis</li>
-                    <li>• <strong>"📄 Exportar JSON":</strong> Datos técnicos</li>
+                    <li>• <strong>&quot;📊 Exportar Excel&quot;:</strong> Reporte completo</li>
+                    <li>• <strong>&quot;📋 Exportar CSV&quot;:</strong> Datos para análisis</li>
+                    <li>• <strong>&quot;📄 Exportar JSON&quot;:</strong> Datos técnicos</li>
                   </ul>
                 </div>
               </div>
@@ -108,7 +108,7 @@ export default function AnalyticsPastoralInsightsPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
-              Tab "Perspectivas Pastorales" - Análisis Estratégico
+              Tab &quot;Perspectivas Pastorales&quot; - Análisis Estratégico
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -116,7 +116,7 @@ export default function AnalyticsPastoralInsightsPage() {
               <div>
                 <h4 className="font-semibold mb-3">🎯 Análisis a Largo Plazo</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> Cambie al tab <code>"Perspectivas Pastorales"</code></p>
+                  <p><strong>2.1.</strong> Cambie al tab <code>&quot;Perspectivas Pastorales&quot;</code></p>
                   <p><strong>2.2.</strong> Análisis disponibles:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Engagement Score:</strong> Puntuación 0-100 de participación</li>
@@ -329,21 +329,21 @@ export default function AnalyticsPastoralInsightsPage() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">📊 Tab "Analíticas Ministeriales"</h4>
+                <h4 className="font-semibold mb-2">📊 Tab &quot;Analíticas Ministeriales&quot;</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"📊 Exportar Excel":</strong> Reporte con gráficos</li>
-                  <li>• <strong>"📋 Exportar CSV":</strong> Datos para análisis</li>
-                  <li>• <strong>"📄 Exportar JSON":</strong> Integración técnica</li>
-                  <li>• <strong>"🔄 Actualizar":</strong> Refrescar datos</li>
+                  <li>• <strong>&quot;📊 Exportar Excel&quot;:</strong> Reporte con gráficos</li>
+                  <li>• <strong>&quot;📋 Exportar CSV&quot;:</strong> Datos para análisis</li>
+                  <li>• <strong>&quot;📄 Exportar JSON&quot;:</strong> Integración técnica</li>
+                  <li>• <strong>&quot;🔄 Actualizar&quot;:</strong> Refrescar datos</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🎯 Tab "Perspectivas Pastorales"</h4>
+                <h4 className="font-semibold mb-2">🎯 Tab &quot;Perspectivas Pastorales&quot;</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>"📈 Ver Tendencias":</strong> Análisis histórico</li>
-                  <li>• <strong>"🎯 Configurar KPIs":</strong> Metas ministeriales</li>
-                  <li>• <strong>"📊 Proyecciones":</strong> Crecimiento estimado</li>
-                  <li>• <strong>"💡 Recomendaciones":</strong> Acciones sugeridas</li>
+                  <li>• <strong>&quot;📈 Ver Tendencias&quot;:</strong> Análisis histórico</li>
+                  <li>• <strong>&quot;🎯 Configurar KPIs&quot;:</strong> Metas ministeriales</li>
+                  <li>• <strong>&quot;📊 Proyecciones&quot;:</strong> Crecimiento estimado</li>
+                  <li>• <strong>&quot;💡 Recomendaciones&quot;:</strong> Acciones sugeridas</li>
                 </ul>
               </div>
             </div>

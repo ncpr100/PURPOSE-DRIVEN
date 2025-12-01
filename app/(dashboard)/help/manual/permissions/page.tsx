@@ -214,14 +214,14 @@ export default function PermissionsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>2.1.</strong> Solo SUPER_ADMIN puede inicializar el sistema</p>
                   <p><strong>2.2.</strong> Vaya a <code>Configuración → Permisos</code></p>
-                  <p><strong>2.3.</strong> Haga clic en "🗄️ Inicializar Sistema"</p>
+                  <p><strong>2.3.</strong> Haga clic en &quot;🗄️ Inicializar Sistema&quot;</p>
                   <p><strong>2.4.</strong> El sistema creará automáticamente:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Permisos base para todos los recursos</li>
                     <li>• Roles predefinidos de la iglesia</li>
                     <li>• Asignaciones por defecto</li>
                   </ul>
-                  <p><strong>2.5.</strong> Verifique que aparezca "Sistema activo: X permisos, X roles"</p>
+                  <p><strong>2.5.</strong> Verifique que aparezca &quot;Sistema activo: X permisos, X roles&quot;</p>
                 </div>
               </div>
               <div className="bg-red-50 p-4 rounded-lg">
@@ -297,8 +297,8 @@ export default function PermissionsManual() {
               <div>
                 <h4 className="font-semibold mb-3">👥 Proceso de Asignación</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>4.1.</strong> En Permisos, vaya a la pestaña "Asignaciones"</p>
-                  <p><strong>4.2.</strong> Haga clic en "👤 Asignar Rol"</p>
+                  <p><strong>4.1.</strong> En Permisos, vaya a la pestaña &quot;Asignaciones&quot;</p>
+                  <p><strong>4.2.</strong> Haga clic en &quot;👤 Asignar Rol&quot;</p>
                   <p><strong>4.3.</strong> Seleccione el usuario de la lista</p>
                   <p><strong>4.4.</strong> Escoja el rol apropiado:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -339,13 +339,13 @@ export default function PermissionsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>El sistema muestra botones según su rol:</strong></p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>"➕ Crear Permiso":</strong> Solo SUPER_ADMIN</li>
-                    <li>• <strong>"🛡️ Crear Rol":</strong> SUPER_ADMIN + ADMIN_IGLESIA</li>
-                    <li>• <strong>"👤 Asignar Rol":</strong> SUPER_ADMIN + ADMIN_IGLESIA</li>
-                    <li>• <strong>"❤️ Gestionar Ministerio":</strong> Hasta PASTOR</li>
-                    <li>• <strong>"👥 Gestionar Equipo":</strong> Hasta LIDER</li>
-                    <li>• <strong>"📄 Ver Auditoría":</strong> Solo SUPER_ADMIN</li>
-                    <li>• <strong>"⚠️ Anulación Emergencia":</strong> Solo SUPER_ADMIN</li>
+                    <li>• <strong>&quot;➕ Crear Permiso&quot;:</strong> Solo SUPER_ADMIN</li>
+                    <li>• <strong>&quot;🛡️ Crear Rol&quot;:</strong> SUPER_ADMIN + ADMIN_IGLESIA</li>
+                    <li>• <strong>&quot;👤 Asignar Rol&quot;:</strong> SUPER_ADMIN + ADMIN_IGLESIA</li>
+                    <li>• <strong>&quot;❤️ Gestionar Ministerio&quot;:</strong> Hasta PASTOR</li>
+                    <li>• <strong>&quot;👥 Gestionar Equipo&quot;:</strong> Hasta LIDER</li>
+                    <li>• <strong>&quot;📄 Ver Auditoría&quot;:</strong> Solo SUPER_ADMIN</li>
+                    <li>• <strong>&quot;⚠️ Anulación Emergencia&quot;:</strong> Solo SUPER_ADMIN</li>
                   </ul>
                 </div>
               </div>
@@ -400,7 +400,7 @@ export default function PermissionsManual() {
                   <li>• Modificaciones inesperadas de datos</li>
                 </ul>
                 <div className="mt-3 p-2 bg-white rounded border-l-4 border-red-400">
-                  <p className="text-xs"><strong>🚨 En caso de compromiso:</strong> Use "Anulación de Emergencia" para revocar todos los accesos temporalmente</p>
+                  <p className="text-xs"><strong>🚨 En caso de compromiso:</strong> Use &quot;Anulación de Emergencia&quot; para revocar todos los accesos temporalmente</p>
                 </div>
               </div>
             </div>
@@ -418,7 +418,7 @@ export default function PermissionsManual() {
           <CardContent>
             <div className="space-y-4 text-sm">
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-red-600 mb-2">❌ "No tienes permisos para acceder a esta sección"</h4>
+                <h4 className="font-semibold text-red-600 mb-2">❌ &quot;No tienes permisos para acceder a esta sección&quot;</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Causa:</strong> Su rol no tiene acceso a esa funcionalidad específica.
                 </p>
@@ -429,7 +429,7 @@ export default function PermissionsManual() {
               </div>
               
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-red-600 mb-2">❌ "No puedo asignar roles a otros usuarios"</h4>
+                <h4 className="font-semibold text-red-600 mb-2">❌ &quot;No puedo asignar roles a otros usuarios&quot;</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Causa:</strong> Solo puede asignar roles de menor prioridad que el suyo.
                 </p>
@@ -440,7 +440,7 @@ export default function PermissionsManual() {
               </div>
 
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-red-600 mb-2">❌ "Los botones no aparecen"</h4>
+                <h4 className="font-semibold text-red-600 mb-2">❌ &quot;Los botones no aparecen&quot;</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Causa:</strong> Su rol no tiene acceso a esas acciones específicas.
                 </p>

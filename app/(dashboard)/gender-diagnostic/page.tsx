@@ -68,11 +68,11 @@ export default function GenderDiagnosticPage() {
           <div key={member.id} className="p-4 border rounded">
             <div className="font-medium">{index + 1}. {member.firstName} {member.lastName}</div>
             <div className="text-sm text-gray-600">
-              gender = "<span className="font-mono bg-yellow-100 px-1">{member.gender}</span>" 
+              gender = &quot;<span className="font-mono bg-yellow-100 px-1">{member.gender}</span>&quot; 
               (type: {typeof member.gender})
             </div>
             <div className="text-sm text-gray-600">
-              toLowerCase() = "<span className="font-mono bg-blue-100 px-1">{member.gender?.toLowerCase()}</span>"
+              toLowerCase() = &quot;<span className="font-mono bg-blue-100 px-1">{member.gender?.toLowerCase()}</span>&quot;
             </div>
           </div>
         ))}

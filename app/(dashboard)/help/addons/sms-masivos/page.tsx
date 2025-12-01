@@ -144,7 +144,7 @@ export default function SMSMasivosAddon() {
                   <div>
                     <h4 className="font-semibold text-sm mb-1">{useCase.scenario}</h4>
                     <div className="bg-gray-100 p-3 rounded-lg text-sm">
-                      "{useCase.example}"
+                      &quot;{useCase.example}&quot;
                     </div>
                   </div>
                 </div>

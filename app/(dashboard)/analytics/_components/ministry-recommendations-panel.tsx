@@ -352,7 +352,7 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                       <p className="text-gray-600 text-sm mb-3">{recommendation.description}</p>
 
                       {/* Progress Bar */}
-                      {recommendation.maxCapacity && (
+                      {Boolean(recommendation.maxCapacity) && (
                         <div className="mb-3">
                           <div className="flex justify-between text-xs text-gray-600 mb-1">
                             <span>Capacidad</span>
@@ -372,7 +372,7 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                           <span className="text-gray-500">Tipo:</span>
                           <p className="font-medium capitalize">{recommendation.type}</p>
                         </div>
-                        {recommendation.mentor && (
+                        {Boolean(recommendation.mentor) && (
                           <div>
                             <span className="text-gray-500">Mentor:</span>
                             <p className="font-medium">{recommendation.mentor.name}</p>

@@ -327,7 +327,7 @@ export default function BibleVersionComparison() {
               <Card>
                 <CardContent className="py-8">
                   <div className="text-center">
-                    <p>No se encontraron versículos para "{comparisonResult.reference}"</p>
+                    <p>No se encontraron versículos para &quot;{comparisonResult.reference}&quot;</p>
                   </div>
                 </CardContent>
               </Card>
@@ -375,12 +375,12 @@ export default function BibleVersionComparison() {
           <div className="text-sm text-muted-foreground space-y-2">
             <h4 className="font-medium text-foreground">Instrucciones de uso:</h4>
             <ul className="list-disc list-inside space-y-1">
-              <li>Ingresa una referencia bíblica (ej: "Juan 3:16", "1 Corintios 13:4-7")</li>
+              <li>Ingresa una referencia bíblica (ej: &quot;Juan 3:16&quot;, &quot;1 Corintios 13:4-7&quot;)</li>
               <li>Selecciona las versiones que deseas comparar haciendo clic en las etiquetas</li>
               <li>Opcionalmente añade un tema para obtener referencias cruzadas más precisas</li>
               <li>Las diferencias entre versiones se resaltan en amarillo cuando está activado</li>
               <li>Haz clic en las referencias cruzadas para buscarlas automáticamente</li>
-              <li>Usa el botón "Copiar" para copiar cualquier versículo al portapapeles</li>
+              <li>Usa el botón &quot;Copiar&quot; para copiar cualquier versículo al portapapeles</li>
             </ul>
           </div>
         </CardContent>

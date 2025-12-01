@@ -135,6 +135,19 @@ export async function GET(request: NextRequest) {
         birthDate: true,
         baptismDate: true,
         ministryId: true,
+        spiritualProfile: {
+          select: {
+            id: true,
+            primaryGifts: true,
+            secondaryGifts: true,
+            spiritualCalling: true,
+            ministryPassions: true,
+            experienceLevel: true,
+            volunteerReadinessScore: true,
+            leadershipReadinessScore: true,
+            assessmentDate: true
+          }
+        }
         // Exclude sensitive fields like notes, emergency contacts for list view
       },
       orderBy: {

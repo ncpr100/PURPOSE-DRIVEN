@@ -210,8 +210,8 @@ export default function QualificationSettingsManual() {
           <Alert>
             <Save className="h-4 w-4" />
             <AlertDescription>
-              <strong>Importante:</strong> Los cambios no se aplican hasta hacer clic en "Guardar Cambios". 
-              El botón "Restaurar" restablece valores predeterminados.
+              <strong>Importante:</strong> Los cambios no se aplican hasta hacer clic en &quot;Guardar Cambios&quot;. 
+              El botón &quot;Restaurar&quot; restablece valores predeterminados.
             </AlertDescription>
           </Alert>
         </CardContent>
@@ -247,7 +247,7 @@ export default function QualificationSettingsManual() {
                 Los cambios en criterios se reflejan inmediatamente en:
               </p>
               <ul className="text-sm space-y-1 ml-4 mt-2">
-                <li>• Listas inteligentes de miembros ("Candidatos Voluntarios", "Listos para Liderazgo")</li>
+                <li>• Listas inteligentes de miembros (&quot;Candidatos Voluntarios&quot;, &quot;Listos para Liderazgo&quot;)</li>
                 <li>• Contadores de smart lists</li>
                 <li>• Recomendaciones de IA para voluntarios</li>
                 <li>• Algoritmos de matching ministerio-voluntario</li>
@@ -370,7 +370,7 @@ export default function QualificationSettingsManual() {
         <CardContent className="space-y-4">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-red-600">❌ No aparece la opción "Criterios de Calificación"</h4>
+              <h4 className="font-semibold text-red-600">❌ No aparece la opción &quot;Criterios de Calificación&quot;</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Verificar que el usuario tenga rol SUPER_ADMIN, ADMIN_IGLESIA o PASTOR
               </p>

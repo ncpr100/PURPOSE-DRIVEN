@@ -87,6 +87,34 @@ export default function HelpCenterUsers() {
       href: "/help/subscription", 
       description: "Gestionar plan y complementos",
       time: "5 min"
+    },
+    {
+      title: "🆕 Formularios de Visitantes",
+      icon: UserPlus,
+      href: "/help/manual/visitor-forms",
+      description: "Crear formularios y códigos QR para visitantes",
+      time: "20 min"
+    },
+    {
+      title: "🆕 Analíticas Inteligentes",
+      icon: HelpCircle,
+      href: "/help/manual/intelligent-analytics",
+      description: "IA para análisis predictivo y recomendaciones",
+      time: "15 min"
+    },
+    {
+      title: "🆕 Automatización Redes Sociales",
+      icon: Mail,
+      href: "/help/manual/social-media-automation",
+      description: "Publicación automática en redes sociales",
+      time: "25 min"
+    },
+    {
+      title: "🆕 Sistema de Dones Espirituales",
+      icon: Settings,
+      href: "/help/manual/spiritual-gifts",
+      description: "Evaluación y gestión de dones espirituales",
+      time: "30 min"
     }
   ]
 
@@ -95,10 +123,22 @@ export default function HelpCenterUsers() {
     { title: "Gestión de Miembros", href: "/help/manual/members", icon: "👥" },
     { title: "Gestión de Voluntarios", href: "/help/manual/volunteers", icon: "🙋‍♂️" },
     { title: "🆕 Criterios de Calificación", href: "/settings/qualification", icon: "🎯" },
+    { title: "🆕 Sistema de Dones Espirituales", href: "/help/manual/spiritual-gifts", icon: "🧠" },
     { title: "Sistema de Donaciones", href: "/help/manual/donations", icon: "💰" },
     { title: "Gestión de Eventos", href: "/help/manual/events", icon: "📅" },
     { title: "🆕 Sistema Check-In Avanzado", href: "/help/manual/check-ins", icon: "🔐" },
+    { title: "🆕 Formularios de Visitantes", href: "/help/manual/visitor-forms", icon: "📋" },
+    { title: "🆕 Códigos QR para Visitantes", href: "/help/manual/visitor-qr-codes", icon: "📱" },
     { title: "Comunicaciones", href: "/help/manual/communications", icon: "📢" },
+    { title: "🆕 Automatización de Redes Sociales", href: "/help/manual/social-media-automation", icon: "📲" },
+    { title: "🆕 Reglas de Automatización", href: "/help/manual/automation-rules", icon: "⚡" },
+    { title: "🆕 Analíticas Generales", href: "/help/manual/general-analytics", icon: "📊" },
+    { title: "🆕 Analíticas Inteligentes", href: "/help/manual/intelligent-analytics", icon: "🤖" },
+    { title: "🆕 Perspectivas Pastorales", href: "/help/manual/analytics-pastoral-insights", icon: "⛪" },
+    { title: "🆕 Sistema de Exportación Avanzado", href: "/help/manual/advanced-export-system", icon: "📤" },
+    { title: "🆕 Muro de Oración", href: "/help/manual/prayer-wall", icon: "🙏" },
+    { title: "🆕 Asistente de Sermones", href: "/help/manual/sermon-assistant", icon: "📖" },
+    { title: "🆕 Construcción de Sitios Web", href: "/help/manual/website-builder", icon: "🌐" },
     { title: "Usuarios y Permisos", href: "/help/manual/permissions", icon: "👨‍💼" },
     { title: "Mi Suscripción", href: "/help/manual/subscription", icon: "💳" }
   ]

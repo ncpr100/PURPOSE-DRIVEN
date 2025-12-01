@@ -507,7 +507,7 @@ export function CreateNotificationDialog({ open, onClose, onNotificationCreated 
                 <div className="p-3 border rounded-lg bg-muted/50">
                   <p className="text-sm text-muted-foreground">
                     La selección específica de usuarios estará disponible en una próxima actualización.
-                    Por ahora, usa "Por rol" o "Toda la iglesia".
+                    Por ahora, usa &quot;Por rol&quot; o &quot;Toda la iglesia&quot;.
                   </p>
                 </div>
               )}
