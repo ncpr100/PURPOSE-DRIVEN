@@ -66,6 +66,12 @@ const navigationItems = [
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },
   {
+    title: 'Formularios de Visitantes',
+    href: '/forms',
+    icon: QrCode,
+    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+  },
+  {
     title: 'Seguimiento',
     href: '/follow-ups',
     icon: Phone,
