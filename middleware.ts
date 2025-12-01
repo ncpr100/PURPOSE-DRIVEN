@@ -14,6 +14,7 @@ const PROTECTED_ROUTES = [
   '/communications',
   '/reports',
   '/analytics',
+  '/intelligent-analytics',
   '/social-media',
   '/marketing-campaigns',
   '/business-intelligence',
@@ -25,6 +26,7 @@ const PROTECTED_ROUTES = [
   '/forms',
   '/platform',
   '/automation-rules',
+  '/help',
   '/test-assessment',
   '/test-member-integration'
 ];
@@ -39,6 +41,7 @@ const PROTECTED_API_ROUTES = [
   '/api/communications',
   '/api/reports',
   '/api/analytics',
+  '/api/intelligent-analytics',
   '/api/social-media',
   '/api/marketing-campaigns',
   '/api/business-intelligence',
