@@ -148,28 +148,41 @@ export default function ChurchProfilePage() {
   ]
 
   useEffect(() => {
-    if (session?.user?.church) {
-      console.log('🏠 Loading church data from session...')
-      console.log('📋 Church name:', session.user.church.name)
-      console.log('🖼️  Logo exists:', !!session.user.church.logo)
-      if (session.user.church.logo) {
-        console.log('📏 Logo length:', session.user.church.logo.length)
-        console.log('🎨 Logo preview:', session.user.church.logo.substring(0, 50))
+    const loadChurchData = async () => {
+      if (session?.user?.churchId) {
+        try {
+          // Fetch church data from API since it's not in session anymore
+          const response = await fetch('/api/church/profile')
+          if (response.ok) {
+            const data = await response.json()
+            console.log('🏠 Loading church data from API...')
+            console.log('📋 Church name:', data.church?.name)
+            console.log('🖼️  Logo exists:', !!data.church?.logo)
+            if (data.church?.logo) {
+              console.log('📏 Logo length:', data.church.logo.length)
+              console.log('🎨 Logo preview:', data.church.logo.substring(0, 50))
+            }
+            
+            setChurchData({
+              name: data.church?.name || '',
+              address: data.church?.address || '',
+              phone: data.church?.phone || '',
+              email: data.church?.email || '',
+              website: data.church?.website || '',
+              description: data.church?.description || '',
+              logo: data.church?.logo || ''
+            })
+          }
+        } catch (error) {
+          console.error('Error loading church data:', error)
+        }
+      } else {
+        console.log('⚠️  No churchId in session')
+        console.log('Session user:', session?.user)
       }
-      
-      setChurchData({
-        name: session.user.church.name || '',
-        address: session.user.church.address || '',
-        phone: session.user.church.phone || '',
-        email: session.user.church.email || '',
-        website: session.user.church.website || '',
-        description: session.user.church.description || '',
-        logo: session.user.church.logo || ''
-      })
-    } else {
-      console.log('⚠️  No church data in session')
-      console.log('Session user:', session?.user)
     }
+    
+    loadChurchData()
   }, [session])
 
   const handleInputChange = (field: string, value: string) => {

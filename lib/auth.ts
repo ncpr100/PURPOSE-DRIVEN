@@ -85,27 +85,14 @@ export const authOptions: NextAuthOptions = {
             email: true, 
             name: true,
             role: true,
-            churchId: true,
-            church: {
-              select: {
-                id: true,
-                name: true,
-                address: true,
-                phone: true,
-                email: true,
-                website: true,
-                description: true,
-                logo: true,
-                founded: true,
-                isActive: true,
-                createdAt: true,
-                updatedAt: true
-              }
-            }
+            churchId: true
           }
         })
         if (user) {
-          session.user = user
+          session.user = {
+            ...user,
+            church: undefined // Don't include church in session to keep JWT small
+          }
         }
       }
       return session
