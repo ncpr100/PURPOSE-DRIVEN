@@ -73,31 +73,22 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id
-        // Store minimal data in JWT to avoid 431 errors
+        token.email = user.email
+        token.name = user.name
+        token.role = user.role
+        token.churchId = user.churchId
       }
       return token
     },
     async session({ session, token }) {
+      // Use data from JWT token directly - no database call needed
       if (token.sub) {
-        // Fetch only essential user data - no church object to minimize size
-        const user = await db.user.findUnique({
-          where: { id: token.sub },
-          select: {
-            id: true,
-            email: true, 
-            name: true,
-            role: true,
-            churchId: true
-          }
-        })
-        if (user) {
-          session.user = {
-            id: user.id,
-            email: user.email || '',
-            name: user.name || '',
-            role: user.role,
-            churchId: user.churchId || ''
-          }
+        session.user = {
+          id: token.sub as string,
+          email: token.email as string || '',
+          name: token.name as string || '',
+          role: token.role as any,
+          churchId: token.churchId as string || ''
         }
       }
       return session
