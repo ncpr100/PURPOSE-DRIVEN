@@ -57,6 +57,7 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
   const [gapAnalyses, setGapAnalyses] = useState<GapAnalysis[]>([])
   const [recommendations, setRecommendations] = useState<Recommendation[]>([])
   const [selectedMinistryId, setSelectedMinistryId] = useState<string>('all')
+  const [efficiencyStats, setEfficiencyStats] = useState({ efficiency: 0, totalPositions: 0, filledPositions: 0 })
   
   // Loading states
   const [generatingRecommendations, setGeneratingRecommendations] = useState(false)
@@ -68,9 +69,10 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
   const fetchData = async () => {
     setLoading(true)
     try {
-      const [ministriesResponse, recommendationsResponse] = await Promise.all([
+      const [ministriesResponse, recommendationsResponse, statisticsResponse] = await Promise.all([
         fetch('/api/ministries'),
-        fetch('/api/volunteer-matching')
+        fetch('/api/volunteer-matching'),
+        fetch('/api/volunteer-statistics')
       ])
 
       if (ministriesResponse.ok) {
@@ -81,6 +83,18 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
       if (recommendationsResponse.ok) {
         const recommendationsData = await recommendationsResponse.json()
         setRecommendations(recommendationsData.recommendations || [])
+      }
+
+      // Use real volunteer statistics
+      if (statisticsResponse.ok) {
+        const statsData = await statisticsResponse.json()
+        const stats = statsData.statistics
+        
+        setEfficiencyStats({ 
+          efficiency: stats.efficiency.overallScore,
+          totalPositions: stats.volunteers.total,
+          filledPositions: stats.volunteers.withMinistries
+        })
       }
 
       // Simulate gap analysis data (would be real API call)
@@ -248,9 +262,11 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
                 <TrendingUp className="h-4 w-4 text-green-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">85%</div>
+                <div className={`text-2xl font-bold ${efficiencyStats.efficiency >= 80 ? 'text-green-600' : efficiencyStats.efficiency >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
+                  {efficiencyStats.efficiency}%
+                </div>
                 <p className="text-xs text-muted-foreground">
-                  Cobertura ministerial
+                  {efficiencyStats.filledPositions}/{efficiencyStats.totalPositions} posiciones cubiertas
                 </p>
               </CardContent>
             </Card>
