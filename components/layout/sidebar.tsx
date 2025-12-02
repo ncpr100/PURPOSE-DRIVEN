@@ -66,8 +66,8 @@ const navigationItems = [
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },
   {
-    title: 'Formularios de Visitantes',
-    href: '/forms',
+    title: 'Constructor de Formularios',
+    href: '/form-builder',
     icon: QrCode,
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },

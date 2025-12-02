@@ -73,6 +73,8 @@ model Church {
   visitorForms              VisitorForm[]
   visitorQRCodes            VisitorQRCode[]
   visitorSubmissions        VisitorSubmission[]
+  customForms               CustomForm[]
+  customFormSubmissions     CustomFormSubmission[]
   volunteers                Volunteer[]
   websites                  Website[]
   websiteRequests           WebsiteRequest[]             @relation("ChurchWebsiteRequests")
@@ -267,6 +269,7 @@ model User {
   createdRuleTemplates       AutomationRuleTemplate[]             @relation("TemplateCreator")
   installedTemplates         AutomationRuleTemplateInstallation[]
   assignedVisitorProfiles    VisitorProfile[]
+  createdCustomForms         CustomForm[]
   createdEvents              Event[]                              @relation("EventCreator")
   notificationDeliveries     NotificationDelivery[]               @relation("UserNotificationDeliveries")
 
@@ -2745,4 +2748,46 @@ model VisitorSubmission {
   @@index([churchId, submittedAt])
   @@index([formId, status])
   @@map("visitor_submissions")
+}
+
+// Custom Form Builder - Branded Forms with QR Codes
+model CustomForm {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  fields      Json     // Array of form fields with validation
+  config      Json     // Visual configuration (colors, fonts, background)
+  qrConfig    Json     // QR code styling and settings
+  qrCodeUrl   String?  // Generated QR code data URL
+  slug        String   @unique
+  isActive    Boolean  @default(true)
+  churchId    String
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  
+  church      Church   @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  creator     User     @relation(fields: [createdBy], references: [id])
+  submissions CustomFormSubmission[]
+
+  @@index([churchId, isActive])
+  @@index([slug])
+  @@map("custom_forms")
+}
+
+model CustomFormSubmission {
+  id          String     @id @default(cuid())
+  formId      String
+  data        Json       // Submitted form data
+  submittedAt DateTime   @default(now())
+  ipAddress   String?
+  userAgent   String?
+  churchId    String
+  
+  church      Church     @relation(fields: [churchId], references: [id])
+  form        CustomForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@index([churchId, submittedAt])
+  @@index([formId])
+  @@map("custom_form_submissions")
 }
