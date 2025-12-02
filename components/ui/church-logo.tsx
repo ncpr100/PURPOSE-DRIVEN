@@ -37,6 +37,7 @@ export function ChurchLogo({
   const { data: session } = useSession() || {}
   const church = session?.user?.church
   const [theme, setTheme] = useState<any>(null)
+  const [logoUrl, setLogoUrl] = useState<string | null>(null)
 
   // Load church theme
   useEffect(() => {
@@ -56,6 +57,22 @@ export function ChurchLogo({
     
     loadTheme()
   }, [session?.user?.churchId])
+
+  // Load church logo separately to avoid JWT size issues
+  useEffect(() => {
+    const loadLogo = async () => {
+      if (church?.id) {
+        try {
+          setLogoUrl(`/api/logo/${church.id}`)
+        } catch (error) {
+          console.error('Error setting logo URL:', error)
+          setLogoUrl(null)
+        }
+      }
+    }
+    
+    loadLogo()
+  }, [church?.id])
 
   // Parse theme colors
   const getThemeColors = () => {
@@ -106,16 +123,16 @@ export function ChurchLogo({
     <div className={cn('flex items-center gap-3', className)}>
       {/* Church Logo */}
       <div className={cn('relative', sizeClasses[size])}>
-        {church?.logo ? (
+        {logoUrl ? (
           <Image
-            src={church.logo}
+            src={logoUrl}
             alt={`${church.name} logo`}
             fill
             className="object-contain rounded-lg"
             priority
             onError={(e) => {
-              const img = e.target as HTMLImageElement
-              img.style.display = 'none'
+              console.error('❌ Logo failed to load:', logoUrl)
+              setLogoUrl(null)
             }}
           />
         ) : (

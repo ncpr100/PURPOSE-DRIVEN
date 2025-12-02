@@ -148,17 +148,43 @@ export default function ChurchProfilePage() {
   ]
 
   useEffect(() => {
-    if (session?.user?.church) {
-      setChurchData({
-        name: session.user.church.name || '',
-        address: session.user.church.address || '',
-        phone: session.user.church.phone || '',
-        email: session.user.church.email || '',
-        website: session.user.church.website || '',
-        description: session.user.church.description || '',
-        logo: session.user.church.logo || ''
-      })
+    const loadChurchData = async () => {
+      if (session?.user?.churchId) {
+        try {
+          // Fetch church profile from API to get all data including logo
+          const response = await fetch('/api/church/profile')
+          if (response.ok) {
+            const data = await response.json()
+            setChurchData({
+              name: data.church.name || '',
+              address: data.church.address || '',
+              phone: data.church.phone || '',
+              email: data.church.email || '',
+              website: data.church.website || '',
+              description: data.church.description || '',
+              logo: data.church.logo || ''
+            })
+          } else {
+            // Fallback to session data if API fails
+            if (session?.user?.church) {
+              setChurchData({
+                name: session.user.church.name || '',
+                address: session.user.church.address || '',
+                phone: session.user.church.phone || '',
+                email: session.user.church.email || '',
+                website: session.user.church.website || '',
+                description: session.user.church.description || '',
+                logo: '' // Never use logo from session
+              })
+            }
+          }
+        } catch (error) {
+          console.error('Error loading church data:', error)
+        }
+      }
     }
+    
+    loadChurchData()
   }, [session])
 
   const handleInputChange = (field: string, value: string) => {

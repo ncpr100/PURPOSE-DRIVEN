@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
           churchId: user.churchId,
           church: user.church ? {
             ...user.church,
-            logo: user.church.logo ? `/api/logo/${user.church.id}` : null
+            logo: null // Never include logo in JWT to prevent 431 errors
           } : null
         }
       }
@@ -84,7 +84,7 @@ export const authOptions: NextAuthOptions = {
           churchId: token.churchId,
           church: token.church ? {
             ...token.church,
-            logo: token.church?.logo ? `/api/logo/${token.church.id}` : null
+            logo: null // Never include logo in session to prevent 431 errors
           } : null,
         }
       }
