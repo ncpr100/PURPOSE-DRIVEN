@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { toast } from 'sonner'
 
 export default function SimpleLoginPage() {
-  const [email, setEmail] = useState('admin@comunidadfe.com')
+  const [email, setEmail] = useState('admin@iglesiacentral.com')
   const [password, setPassword] = useState('password123')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
