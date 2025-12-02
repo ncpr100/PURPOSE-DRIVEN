@@ -32,6 +32,7 @@ import {
   HelpCircle,
   Brain,
   Building2,
+  FileText,
 } from 'lucide-react'
 
 const navigationItems = [
@@ -69,6 +70,12 @@ const navigationItems = [
     title: 'Constructor de Formularios',
     href: '/form-builder',
     icon: QrCode,
+    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+  },
+  {
+    title: 'Submissions de Formularios',
+    href: '/form-submissions',
+    icon: FileText,
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },
   {
