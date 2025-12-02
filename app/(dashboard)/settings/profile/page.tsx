@@ -246,10 +246,12 @@ export default function ChurchProfilePage() {
         handleInputChange('logo', data.url)
         toast.success(`${data.message || 'Logo subido exitosamente'}`)
         
-        // Refresh the session data to immediately show the new logo
-        setTimeout(() => {
-          window.location.reload()
-        }, 1000)
+        // Update the session data manually instead of refreshing
+        if (session?.user?.church) {
+          session.user.church.logo = data.url
+        }
+        
+        console.log('🔄 Session updated with new logo:', data.url)
       } else {
         const errorData = await response.text()
         console.error('❌ Upload failed:', response.status, errorData)
@@ -292,8 +294,16 @@ export default function ChurchProfilePage() {
 
       if (profileResponse.ok && themeResponse.ok) {
         toast.success('Perfil y tema de la iglesia actualizados exitosamente')
-        // Refresh session to get updated data
-        window.location.reload()
+        
+        // Update session data manually instead of refreshing
+        if (session?.user?.church) {
+          session.user.church = {
+            ...session.user.church,
+            ...churchData
+          }
+        }
+        
+        console.log('🔄 Session updated with saved data')
       } else {
         const profileError = profileResponse.ok ? null : await profileResponse.json()
         const themeError = themeResponse.ok ? null : await themeResponse.json()
