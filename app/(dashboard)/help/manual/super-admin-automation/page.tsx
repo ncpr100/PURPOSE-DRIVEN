@@ -45,9 +45,41 @@ export default function SuperAdminAutomationManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Database className="h-5 w-5" />
-              🏗️ Arquitectura del Sistema
+              🏠 Arquitectura del Ecosistema Completo
             </CardTitle>
           </CardHeader>
+          <CardContent className="space-y-6">
+            <p className="text-muted-foreground">
+              <strong>Ecosistema Integrado:</strong> El sistema combina 5 componentes principales que trabajan 
+              en sinergia para automatizar completamente el flujo de trabajo de la iglesia.
+            </p>
+
+            {/* Architecture Diagram */}
+            <div className="p-4 bg-gray-50 rounded-lg border">
+              <h4 className="font-semibold mb-4">📋 Flujo de Arquitectura:</h4>
+              <div className="space-y-2 text-sm font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="bg-green-500 text-white px-2 py-1 rounded text-xs">1</span>
+                  <span>FORM BUILDER → Crea formularios dinámicos</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="bg-blue-500 text-white px-2 py-1 rounded text-xs">2</span>
+                  <span>QR GENERATOR → Genera códigos QR únicos</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="bg-purple-500 text-white px-2 py-1 rounded text-xs">3</span>
+                  <span>FORM SUBMISSION → Captura y almacena datos</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="bg-red-500 text-white px-2 py-1 rounded text-xs">4</span>
+                  <span>AUTOMATION ENGINE → Ejecuta reglas automáticas</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="bg-orange-500 text-white px-2 py-1 rounded text-xs">5</span>
+                  <span>MULTI-CHANNEL OUTPUT → SMS/Email/WhatsApp/Push</span>
+                </div>
+              </div>
+            </div>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground mb-4">
               El sistema de automatización consta de 4 componentes principales:
@@ -112,6 +144,212 @@ export default function SuperAdminAutomationManual() {
                   <li>• <strong>Push Notifications:</strong> Firebase Cloud Messaging</li>
                   <li>• <strong>Phone Calls:</strong> Twilio Voice API</li>
                 </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Technical Implementation */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Code className="h-5 w-5" />
+              🚀 Implementación Técnica Completa del Ecosistema
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <p className="text-muted-foreground">
+              <strong>Ecosistema Técnico Completo:</strong> Documentación técnica detallada de todos los componentes 
+              del sistema de automatización integrado con formularios y códigos QR.
+            </p>
+            
+            <div className="grid gap-6">
+              <div className="p-4 border rounded-lg">
+                <h4 className="font-semibold mb-3">📝 1. FORM BUILDER SYSTEM</h4>
+                <div className="text-sm space-y-2">
+                  <p><strong>Ubicación:</strong> <code>/app/(dashboard)/form-builder/</code></p>
+                  <p><strong>Modelos de Base de Datos:</strong></p>
+                  <div className="bg-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+{`// Formularios de visitantes
+model VisitorForm {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  fields      Json    // Configuración dinámica
+  style       Json?   // Estilos personalizados  
+  settings    Json?   // Configuraciones avanzadas
+  isActive    Boolean @default(true)
+  isPublic    Boolean @default(true)
+  churchId    String
+}
+
+// Formularios personalizados
+model CustomForm {
+  id          String  @id @default(cuid())
+  title       String
+  slug        String  @unique
+  fields      Json    // Array de campos dinámicos
+  settings    Json?   
+  churchId    String
+}`}</div>
+                  <p><strong>Características Técnicas:</strong></p>
+                  <ul className="ml-4 space-y-1 text-xs">
+                    <li>• Constructor visual drag-and-drop con React DnD</li>
+                    <li>• Validación dinámica con Zod schemas</li>
+                    <li>• Campos condicionales basados en lógica JavaScript</li>
+                    <li>• Integración automática con CRM y automatización</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="p-4 border rounded-lg">
+                <h4 className="font-semibold mb-3">📱 2. QR CODE SYSTEM</h4>
+                <div className="text-sm space-y-2">
+                  <p><strong>Tecnologías:</strong> <code>qrcode.js + sharp</code> para generación dinámica</p>
+                  <div className="bg-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+{`// Generación automática de QR
+const generateQR = async (form) => {
+  const qrCode = generateUniqueCode()
+  const qrUrl = \`\${baseUrl}/visitor-form/\${form.slug}?qr=\${qrCode}\`
+  
+  await db.visitorQRCode.create({
+    data: { code: qrCode, formId: form.id, churchId: form.churchId }
+  })
+  
+  return { qrCode, qrUrl }
+}
+
+// Modelo de seguimiento
+model VisitorQRCode {
+  id         String   @id @default(cuid())
+  code       String   @unique  
+  formId     String
+  scanCount  Int      @default(0)
+  lastScan   DateTime?
+  churchId   String
+}`}</div>
+                  <p><strong>Funcionalidades:</strong></p>
+                  <ul className="ml-4 space-y-1 text-xs">
+                    <li>• Generación instantánea al crear formulario</li>
+                    <li>• Seguimiento de escaneos en tiempo real</li>
+                    <li>• URLs con parámetros de tracking automático</li>
+                    <li>• Analytics de uso por ubicación geográfica</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="p-4 border rounded-lg">
+                <h4 className="font-semibold mb-3">⚡ 3. FORM AUTOMATION ENGINE</h4>
+                <div className="text-sm space-y-2">
+                  <p><strong>Archivo:</strong> <code>/lib/automation-engine.ts</code> (1,215+ líneas)</p>
+                  <div className="bg-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+{`// Motor principal de automatización
+export class FormAutomationEngine {
+  // Automatizaciones por tipo de formulario
+  static async handleVisitorFormAutomation(formId, data, churchId)
+  static async handlePrayerFormAutomation(formId, data, churchId) 
+  static async handleVolunteerFormAutomation(formId, data, churchId)
+  static async handleEventFormAutomation(formId, data, churchId)
+  
+  // Utilidades de procesamiento
+  static extractVisitorInfo(submissionData)
+  static calculateEngagementScore(visitorData)
+  static autoMatchVolunteerOpportunities(volunteer)
+  static sendMultiChannelWelcome(visitor, church)
+}
+
+// Integración automática en form submission
+POST /api/visitor-form/[slug] → FormAutomationEngine.handleVisitorFormAutomation()`}</div>
+                  <p><strong>Integraciones Automáticas:</strong></p>
+                  <ul className="ml-4 space-y-1 text-xs">
+                    <li>• <strong>CRM:</strong> Crea Member, CheckIn, PrayerContact automáticamente</li>
+                    <li>• <strong>Comunicaciones:</strong> SMS, Email, WhatsApp, Push notifications</li>
+                    <li>• <strong>Seguimiento:</strong> Programa tareas y recordatorios automáticos</li>
+                    <li>• <strong>Analytics:</strong> Calcula engagement scores y métricas</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="p-4 border rounded-lg">
+                <h4 className="font-semibold mb-3">🤖 4. AUTOMATION TEMPLATES</h4>
+                <div className="text-sm space-y-2">
+                  <p><strong>Templates Disponibles:</strong> 8+ plantillas pre-configuradas</p>
+                  <div className="bg-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+{`// Plantillas del sistema
+const SYSTEM_TEMPLATES = [
+  'template_prayer_church_notification',     // Notificación inmediata
+  'template_prayer_auto_acknowledgment',     // Auto-confirmación
+  'template_prayer_message_response',        // Respuesta por mensaje
+  'template_prayer_call_assignment',         // Asignación de llamadas
+  'template_visitor_first_time_welcome',     // Bienvenida primera vez
+  'template_visitor_returning_engagement',   // Re-engagement
+  'template_visitor_regular_invitation',     // Invitación membership
+  'template_visitor_urgent_prayer_24x7'      // Sistema 24/7
+]
+
+// Activación API
+POST /api/automation-templates/[templateId]/activate
+{
+  customizations: { name, triggerConfig, actionsConfig, ... },
+  churchId: "church_id"
+}`}</div>
+                  <p><strong>Configuraciones Avanzadas:</strong></p>
+                  <ul className="ml-4 space-y-1 text-xs">
+                    <li>• <strong>Triggers:</strong> FORM_SUBMISSION, PRAYER_REQUEST, MEMBER_SIGNUP</li>
+                    <li>• <strong>Condiciones:</strong> Lógica AND/OR con múltiples criterios</li>
+                    <li>• <strong>Acciones:</strong> Multi-canal con fallback automático</li>
+                    <li>• <strong>Horarios:</strong> Business hours, 24/7, programación custom</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="p-4 border rounded-lg">
+                <h4 className="font-semibold mb-3">📊 5. SUBMISSIONS DASHBOARD</h4>
+                <div className="text-sm space-y-2">
+                  <p><strong>Dashboard Unificado:</strong> <code>/app/(dashboard)/form-submissions/</code></p>
+                  <div className="bg-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+{`// APIs de datos
+GET /api/visitor-submissions        // Todas las submisiones de visitantes
+GET /api/custom-form-submissions    // Todas las submisiones personalizadas
+
+// Modelos de submisiones
+model VisitorSubmission {
+  id            String   @id @default(cuid())
+  formId        String
+  data          Json     // Datos completos del formulario
+  ipAddress     String   // Tracking de origen
+  userAgent     String   // Info del dispositivo
+  submittedAt   DateTime @default(now())
+  churchId      String   // Multi-tenant scoping
+}
+
+model CustomFormSubmission {
+  id            String   @id @default(cuid()) 
+  formId        String
+  data          Json     // Estructura dinámica
+  submittedAt   DateTime @default(now())
+  churchId      String
+}`}</div>
+                  <p><strong>Funcionalidades del Dashboard:</strong></p>
+                  <ul className="ml-4 space-y-1 text-xs">
+                    <li>• <strong>Vista Unificada:</strong> Visitor + Custom forms en una sola interfaz</li>
+                    <li>• <strong>Filtrado Avanzado:</strong> Por fecha, formulario, email, estado</li>
+                    <li>• <strong>Exportación CSV:</strong> Con branding personalizado de iglesia</li>
+                    <li>• <strong>Vista de Detalles:</strong> Modal completo con toda la información</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-6">
+              <h4 className="font-semibold text-blue-900 mb-2">🎯 Flujo Técnico Completo</h4>
+              <div className="text-xs text-blue-800 space-y-1">
+                <p><strong>1.</strong> Usuario escanea QR → Abre formulario público</p>
+                <p><strong>2.</strong> Submite formulario → POST /api/visitor-form/[slug]</p>
+                <p><strong>3.</strong> Sistema guarda submisión → Dispara FormAutomationEngine</p>
+                <p><strong>4.</strong> Engine busca templates activos → Ejecuta automatizaciones</p>
+                <p><strong>5.</strong> Envía mensajes multi-canal → Crea registros CRM</p>
+                <p><strong>6.</strong> Todo visible en dashboard → Analytics y seguimiento</p>
               </div>
             </div>
           </CardContent>

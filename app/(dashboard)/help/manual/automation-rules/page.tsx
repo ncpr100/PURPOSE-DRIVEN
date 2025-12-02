@@ -29,14 +29,39 @@ export default function AutomationRulesManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-blue-600" />
-              🎉 NUEVO: Sistema de Automatización Inteligente
+              🎉 NUEVO: Ecosistema de Automatización Completo
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
-              El sistema de automatización permite que su iglesia responda automáticamente a peticiones de oración 
-              y visitantes nuevos con mensajes personalizados por SMS, Email, WhatsApp y notificaciones push.
+              <strong>Sistema Completo Integrado:</strong> Formularios + Códigos QR + Plantillas de Automatización = 
+              Seguimiento automático 24/7 de visitantes, peticiones de oración, voluntarios y eventos.
             </p>
+            <div className="p-4 bg-white rounded-lg border border-blue-200 my-4">
+              <h4 className="font-semibold text-blue-900 mb-2">🔄 Flujo de Trabajo Completo:</h4>
+              <div className="text-sm space-y-1 text-blue-800">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">1. FORMULARIOS:</span>
+                  <span>Crear formularios personalizados para cualquier propósito</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">2. CÓDIGOS QR:</span>
+                  <span>Cada formulario genera un QR único para fácil acceso</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">3. PLANTILLAS:</span>
+                  <span>8+ plantillas de automatización listas para activar</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">4. AUTOMATIZACIÓN:</span>
+                  <span>Respuestas automáticas por SMS/Email/WhatsApp/Push</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold">5. SEGUIMIENTO:</span>
+                  <span>Dashboard de todas las respuestas y acciones ejecutadas</span>
+                </div>
+              </div>
+            </div>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                 <h4 className="font-semibold">⚡ Velocidad</h4>
@@ -136,7 +161,191 @@ export default function AutomationRulesManual() {
           </CardContent>
         </Card>
 
-        {/* Template Browser */}
+        {/* Complete Ecosystem Guide */}
+        <Card>
+          <CardHeader>
+            <CardTitle>🎯 Ecosistema Completo: Formularios + QR + Automatización</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <p className="text-muted-foreground">
+              Su iglesia ahora tiene un sistema completo e integrado que automatiza todo el proceso desde 
+              la captura inicial hasta el seguimiento personalizado.
+            </p>
+
+            {/* Ecosystem Flow */}
+            <div className="grid gap-4">
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-blue-50">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+                  📝 CREACIÓN DE FORMULARIOS
+                </h4>
+                <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
+                  <li>• <strong>Constructor de Formularios:</strong> Cree formularios personalizados para visitantes, peticiones de oración, voluntarios, eventos</li>
+                  <li>• <strong>Campos Dinámicos:</strong> Texto, email, teléfono, selección múltiple, fechas, archivos</li>
+                  <li>• <strong>Configuraciones Avanzadas:</strong> Mensajes de agradecimiento, redirecciones, notificaciones</li>
+                </ul>
+              </div>
+
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-purple-50">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+                  📱 GENERACIÓN DE CÓDIGOS QR
+                </h4>
+                <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
+                  <li>• <strong>QR Automático:</strong> Cada formulario genera un código QR único</li>
+                  <li>• <strong>Fácil Distribución:</strong> Imprima y coloque en bancos, boletines, pantallas</li>
+                  <li>• <strong>Seguimiento:</strong> Vea cuántas personas escanean cada código</li>
+                </ul>
+              </div>
+
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-pink-50">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+                  🤖 PLANTILLAS DE AUTOMATIZACIÓN
+                </h4>
+                <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
+                  <li>• <strong>8 Plantillas Listas:</strong> Flujos pre-construidos para casos comunes</li>
+                  <li>• <strong>Activación 1-Clic:</strong> No necesita programar, solo activar</li>
+                  <li>• <strong>Personalización:</strong> Ajuste mensajes, horarios, canales de comunicación</li>
+                </ul>
+              </div>
+
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-pink-50 to-red-50">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  <span className="bg-pink-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+                  ⚡ AUTOMATIZACIÓN INTELIGENTE
+                </h4>
+                <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
+                  <li>• <strong>Respuesta Instantánea:</strong> Automación se ejecuta en segundos</li>
+                  <li>• <strong>Multi-Canal:</strong> SMS, Email, WhatsApp, Push notifications</li>
+                  <li>• <strong>Seguimiento Inteligente:</strong> Crea registros CRM, asigna tareas, programa recordatorios</li>
+                </ul>
+              </div>
+
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-red-50 to-orange-50">
+                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                  <span className="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+                  📊 DASHBOARD DE SEGUIMIENTO
+                </h4>
+                <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
+                  <li>• <strong>Envíos de Formularios:</strong> Vea todos los datos enviados</li>
+                  <li>• <strong>Ejecuciones de Automatización:</strong> Monitoree qué automatizaciones se ejecutaron</li>
+                  <li>• <strong>Análisis Completo:</strong> Tasas de respuesta, engagement, conversión</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+              <h4 className="font-semibold mb-2 text-orange-900">🚀 Ejemplo Práctico: Visitante Primera Vez</h4>
+              <ol className="text-sm text-orange-800 space-y-2">
+                <li><strong>1.</strong> Visitante escanea QR en banco → Abre formulario de visitante</li>
+                <li><strong>2.</strong> Completa formulario → Datos guardados automáticamente</li>
+                <li><strong>3.</strong> Sistema detecta nueva submisión → Ejecuta plantilla "Visitante Primera Vez"</li>
+                <li><strong>4.</strong> Automatización envía:</li>
+                <div className="ml-6 space-y-1">
+                  <li>• SMS de bienvenida al visitante (30 segundos)</li>
+                  <li>• Email con información de la iglesia (1 minuto)</li>
+                  <li>• Notificación al pastor (inmediato)</li>
+                  <li>• Registro en CRM como "Visitante Primera Vez" (automático)</li>
+                  <li>• Recordatorio para llamada de seguimiento (programado 2 días)</li>
+                </div>
+                <li><strong>5.</strong> Todo sucede automáticamente ¡sin intervención manual!</li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Quick Start Guide */}
+        <Card className="border-green-200 bg-green-50">
+          <CardHeader>
+            <CardTitle className="text-green-900">🚀 Guía de Inicio Rápido (5 Minutos)</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4">
+              <div className="bg-white p-4 rounded-lg border border-green-200">
+                <h4 className="font-semibold mb-2 text-green-900">🛠️ PASO 1: Crear Primer Formulario</h4>
+                <ol className="text-sm text-green-800 space-y-1">
+                  <li><strong>1.</strong> Vaya a <Link href="/form-builder" className="text-blue-600 underline">Constructor de Formularios</Link></li>
+                  <li><strong>2.</strong> Cree "Formulario de Visitantes" con campos: Nombre, Email, Teléfono</li>
+                  <li><strong>3.</strong> Genere código QR automáticamente</li>
+                  <li><strong>4.</strong> Publique y copie el enlace del formulario</li>
+                </ol>
+              </div>
+              <div className="bg-white p-4 rounded-lg border border-green-200">
+                <h4 className="font-semibold mb-2 text-green-900">⚡ PASO 2: Activar Primera Automatización</h4>
+                <ol className="text-sm text-green-800 space-y-1">
+                  <li><strong>1.</strong> Vaya a <Link href="/automation-rules/templates" className="text-blue-600 underline">Plantillas de Automatización</Link></li>
+                  <li><strong>2.</strong> Busque "Visitor: First-Time Welcome"</li>
+                  <li><strong>3.</strong> Haga clic en "Ver Detalles" → "Activar Plantilla"</li>
+                  <li><strong>4.</strong> Personalice mensajes (opcional) → "Activar"</li>
+                </ol>
+              </div>
+              <div className="bg-white p-4 rounded-lg border border-green-200">
+                <h4 className="font-semibold mb-2 text-green-900">🧪 PASO 3: Probar el Sistema</h4>
+                <ol className="text-sm text-green-800 space-y-1">
+                  <li><strong>1.</strong> Abra el enlace de su formulario de visitantes</li>
+                  <li><strong>2.</strong> Complete el formulario con sus datos de prueba</li>
+                  <li><strong>3.</strong> Envíe → Verifique que recibe SMS/Email de bienvenida</li>
+                  <li><strong>4.</strong> Revise el <Link href="/form-submissions" className="text-blue-600 underline">Dashboard de Envíos</Link> para ver el registro</li>
+                </ol>
+              </div>
+            </div>
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-4">
+              <h4 className="font-semibold mb-2 text-blue-900">🎉 ¡Felicitaciones!</h4>
+              <p className="text-sm text-blue-800">
+                Su sistema de automatización ahora está funcionando. Cada nuevo visitante recibirá 
+                una respuesta automática y será registrado en su CRM para seguimiento pastoral.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Quick Start Guide */}
+        <Card className="border-green-200 bg-green-50">
+          <CardHeader>
+            <CardTitle className="text-green-900">🚀 Guía de Inicio Rápido (5 Minutos)</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4">
+              <div className="bg-white p-4 rounded-lg border border-green-200">
+                <h4 className="font-semibold mb-2 text-green-900">🛠️ PASO 1: Crear Primer Formulario</h4>
+                <ol className="text-sm text-green-800 space-y-1">
+                  <li><strong>1.</strong> Vaya a <Link href="/form-builder" className="text-blue-600 underline">Constructor de Formularios</Link></li>
+                  <li><strong>2.</strong> Cree "Formulario de Visitantes" con campos: Nombre, Email, Teléfono</li>
+                  <li><strong>3.</strong> Genere código QR automáticamente</li>
+                  <li><strong>4.</strong> Publique y copie el enlace del formulario</li>
+                </ol>
+              </div>
+              <div className="bg-white p-4 rounded-lg border border-green-200">
+                <h4 className="font-semibold mb-2 text-green-900">⚡ PASO 2: Activar Primera Automatización</h4>
+                <ol className="text-sm text-green-800 space-y-1">
+                  <li><strong>1.</strong> Vaya a <Link href="/automation-rules/templates" className="text-blue-600 underline">Plantillas de Automatización</Link></li>
+                  <li><strong>2.</strong> Busque "Visitor: First-Time Welcome"</li>
+                  <li><strong>3.</strong> Haga clic en "Ver Detalles" → "Activar Plantilla"</li>
+                  <li><strong>4.</strong> Personalice mensajes (opcional) → "Activar"</li>
+                </ol>
+              </div>
+              <div className="bg-white p-4 rounded-lg border border-green-200">
+                <h4 className="font-semibold mb-2 text-green-900">🧪 PASO 3: Probar el Sistema</h4>
+                <ol className="text-sm text-green-800 space-y-1">
+                  <li><strong>1.</strong> Abra el enlace de su formulario de visitantes</li>
+                  <li><strong>2.</strong> Complete el formulario con sus datos de prueba</li>
+                  <li><strong>3.</strong> Envíe → Verifique que recibe SMS/Email de bienvenida</li>
+                  <li><strong>4.</strong> Revise el <Link href="/form-submissions" className="text-blue-600 underline">Dashboard de Envíos</Link> para ver el registro</li>
+                </ol>
+              </div>
+            </div>
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-4">
+              <h4 className="font-semibold mb-2 text-blue-900">🎉 ¡Felicitaciones!</h4>
+              <p className="text-sm text-blue-800">
+                Su sistema de automatización ahora está funcionando. Cada nuevo visitante recibirá 
+                una respuesta automática y será registrado en su CRM para seguimiento pastoral.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Template Browser */}}
         <Card>
           <CardHeader>
             <CardTitle>📚 Explorador de Plantillas</CardTitle>
@@ -366,31 +575,147 @@ export default function AutomationRulesManual() {
         {/* Next Steps */}
         <Card className="border-blue-200 bg-blue-50">
           <CardHeader>
-            <CardTitle className="text-blue-900">🚀 Próximos Pasos</CardTitle>
+            <CardTitle className="text-blue-900">🚀 Siguientes Pasos Recomendados</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <ol className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="font-bold text-blue-600">1.</span>
-                <span>Vaya a <Link href="/automation-rules/templates" className="text-blue-600 underline">Plantillas de Automatización</Link></span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="font-bold text-blue-600">2.</span>
-                <span>Active 2-3 plantillas relevantes para su iglesia</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="font-bold text-blue-600">3.</span>
-                <span>Pruebe enviando una petición de oración o registrando un visitante</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="font-bold text-blue-600">4.</span>
-                <span>Revise el dashboard de automatización para ver el historial</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="font-bold text-blue-600">5.</span>
-                <span>Personalice las reglas según las necesidades de su iglesia</span>
-              </li>
-            </ol>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4">
+              <div className="bg-white p-4 rounded-lg border">
+                <h4 className="font-semibold mb-2">📝 Ampliar Formularios</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• <strong>Peticiones de Oración:</strong> Cree formulario para peticiones urgentes y programadas</li>
+                  <li>• <strong>Voluntarios:</strong> Formulario de registro con habilidades y disponibilidad</li>
+                  <li>• <strong>Eventos:</strong> Formularios de inscripción para eventos especiales</li>
+                  <li>• <strong>Testimonios:</strong> Recopile testimonios de miembros para compartir</li>
+                </ul>
+              </div>
+              <div className="bg-white p-4 rounded-lg border">
+                <h4 className="font-semibold mb-2">⚡ Activar Más Automatizaciones</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• <strong>"Prayer Request: Church Notification":</strong> Notifica pastores de peticiones urgentes</li>
+                  <li>• <strong>"Prayer Request: Auto-Acknowledgment":</strong> Confirma recepción de peticiones</li>
+                  <li>• <strong>"Visitor: Returning Engagement":</strong> Seguimiento de visitantes recurrentes</li>
+                  <li>• <strong>"Prayer Request: 24/7 Urgent":</strong> Sistema de alertas 24 horas</li>
+                </ul>
+              </div>
+              <div className="bg-white p-4 rounded-lg border">
+                <h4 className="font-semibold mb-2">📊 Monitoreo y Optimización</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• <strong>Dashboard de Envíos:</strong> Revise <Link href="/form-submissions" className="text-blue-600 underline">todos los formularios enviados</Link></li>
+                  <li>• <strong>Estadísticas de QR:</strong> Vea qué códigos son más utilizados</li>
+                  <li>• <strong>Tasas de Automatización:</strong> Monitoree éxito de envíos automáticos</li>
+                  <li>• <strong>Seguimiento de Conversión:</strong> Visitantes que se vuelven miembros</li>
+                </ul>
+              </div>
+              <div className="bg-white p-4 rounded-lg border">
+                <h4 className="font-semibold mb-2">🌐 Distribución de QR</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• <strong>Bancos de Iglesia:</strong> Imprima QR de visitantes en tarjetas pequeñas</li>
+                  <li>• <strong>Boletines:</strong> Incluya QR para peticiones de oración</li>
+                  <li>• <strong>Redes Sociales:</strong> Comparta QR en Facebook/Instagram/WhatsApp</li>
+                  <li>• <strong>Eventos:</strong> QR específicos para inscripciones de eventos</li>
+                </ul>
+              </div>
+            </div>
+            <div className="bg-green-50 p-4 rounded-lg border border-green-200 mt-4">
+              <h4 className="font-semibold mb-2 text-green-900">🏆 Meta de Implementación Completa</h4>
+              <p className="text-sm text-green-800">
+                <strong>Objetivo:</strong> Que el 100% de las interacciones de su iglesia (visitantes, peticiones, voluntarios, eventos) 
+                sean capturadas automáticamente y reciban seguimiento personalizado sin intervención manual.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Advanced Tips */}
+        <Card>
+          <CardHeader>
+            <CardTitle>🧠 Consejos Avanzados de Automatización</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4">
+              <div className="p-4 border rounded-lg">
+                <h4 className="font-semibold mb-2">🔗 Integración con Sistemas Existentes</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• <strong>CRM Automático:</strong> Todos los formularios crean registros CRM automáticamente</li>
+                  <li>• <strong>Check-ins Inteligentes:</strong> Visitantes se registran automáticamente para seguimiento</li>
+                  <li>• <strong>Sistema de Miembros:</strong> Integración completa con perfiles de miembros</li>
+                  <li>• <strong>Calendario de Eventos:</strong> Formularios de eventos crean entradas de calendario</li>
+                </ul>
+              </div>
+              <div className="p-4 border rounded-lg">
+                <h4 className="font-semibold mb-2">📋 Personalización de Plantillas</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• <strong>Mensajes Dinámicos:</strong> Use variables como {nombre}, {iglesia}, {fecha}</li>
+                  <li>• <strong>Horarios Personalizados:</strong> Configure horarios de envío por tipo de mensaje</li>
+                  <li>• <strong>Canales Preferenciales:</strong> SMS para urgente, Email para información detallada</li>
+                  <li>• <strong>Escalación Inteligente:</strong> Si SMS falla, intenta WhatsApp, luego Email</li>
+                </ul>
+              </div>
+              <div className="p-4 border rounded-lg">
+                <h4 className="font-semibold mb-2">📈 Métricas de Éxito</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• <strong>Tasa de Respuesta:</strong> % de visitantes que responden a automatizaciones</li>
+                  <li>• <strong>Tasa de Conversión:</strong> % de visitantes que se vuelven miembros regulares</li>
+                  <li>• <strong>Tiempo de Respuesta:</strong> Rapidez promedio de respuestas automáticas</li>
+                  <li>• <strong>Engagement Score:</strong> Nivel de compromiso basado en interacciones</li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Troubleshooting */}
+        <Card>
+          <CardHeader>
+            <CardTitle>🔧 Solución de Problemas Comunes</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-4">
+              <div className="p-4 border rounded-lg bg-yellow-50">
+                <h4 className="font-semibold mb-2">⚠️ Problema: No se envían mensajes automáticos</h4>
+                <div className="text-sm space-y-1">
+                  <p><strong>Solución:</strong></p>
+                  <ul className="ml-4 space-y-1">
+                    <li>1. Verifique que la plantilla está <strong>"Activa"</strong> en el dashboard</li>
+                    <li>2. Revise que los campos del formulario coinciden con los esperados</li>
+                    <li>3. Confirme que las credenciales de SMS/Email están configuradas</li>
+                    <li>4. Vaya a <Link href="/settings/integrations" className="text-blue-600 underline">Configuración de Integraciones</Link></li>
+                  </ul>
+                </div>
+              </div>
+              <div className="p-4 border rounded-lg bg-blue-50">
+                <h4 className="font-semibold mb-2">📱 Problema: Código QR no funciona</h4>
+                <div className="text-sm space-y-1">
+                  <p><strong>Solución:</strong></p>
+                  <ul className="ml-4 space-y-1">
+                    <li>1. Verifique que el formulario está <strong>"Público"</strong> y <strong>"Activo"</strong></li>
+                    <li>2. Pruebe el enlace directo del formulario primero</li>
+                    <li>3. Regenere el código QR si es necesario</li>
+                    <li>4. Use cámara del teléfono o app QR reader para probar</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="p-4 border rounded-lg bg-green-50">
+                <h4 className="font-semibold mb-2">📋 Problema: Datos no aparecen en dashboard</h4>
+                <div className="text-sm space-y-1">
+                  <p><strong>Solución:</strong></p>
+                  <ul className="ml-4 space-y-1">
+                    <li>1. Refresque la página del <Link href="/form-submissions" className="text-blue-600 underline">Dashboard de Envíos</Link></li>
+                    <li>2. Verifique filtros de fecha y tipo de formulario</li>
+                    <li>3. Confirme que el envío fue exitoso (mensaje de confirmación)</li>
+                    <li>4. Revise la consola del navegador para errores JavaScript</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="bg-gray-100 p-4 rounded-lg mt-4">
+              <h4 className="font-semibold mb-2">📞 Soporte Técnico</h4>
+              <p className="text-sm text-muted-foreground">
+                Para problemas técnicos avanzados, contacte al equipo de soporte en 
+                <Link href="/help/support/ticket" className="text-blue-600 underline">Crear Ticket de Soporte</Link> 
+                con detalles específicos del problema.
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
