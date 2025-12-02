@@ -50,11 +50,9 @@ export async function POST(request: NextRequest) {
 
       console.log('✅ Church logo updated successfully')
       
-      // Return a URL to our logo serving endpoint instead of the full base64
-      const logoUrl = `/api/logo/${session.user.churchId}`
-      
+      // Return the actual base64 data URL so the image displays immediately
       return NextResponse.json({ 
-        url: logoUrl,
+        url: dataUrl,
         filename: file.name,
         size: file.size,
         type: file.type,

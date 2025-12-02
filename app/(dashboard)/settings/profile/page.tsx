@@ -148,30 +148,28 @@ export default function ChurchProfilePage() {
   ]
 
   useEffect(() => {
-    const loadChurchData = async () => {
-      if (session?.user?.churchId) {
-        try {
-          // Always fetch church profile from API since it's not in session anymore
-          const response = await fetch('/api/church/profile')
-          if (response.ok) {
-            const data = await response.json()
-            setChurchData({
-              name: data.church.name || '',
-              address: data.church.address || '',
-              phone: data.church.phone || '',
-              email: data.church.email || '',
-              website: data.church.website || '',
-              description: data.church.description || '',
-              logo: data.church.logo || ''
-            })
-          }
-        } catch (error) {
-          console.error('Error loading church data:', error)
-        }
+    if (session?.user?.church) {
+      console.log('🏠 Loading church data from session...')
+      console.log('📋 Church name:', session.user.church.name)
+      console.log('🖼️  Logo exists:', !!session.user.church.logo)
+      if (session.user.church.logo) {
+        console.log('📏 Logo length:', session.user.church.logo.length)
+        console.log('🎨 Logo preview:', session.user.church.logo.substring(0, 50))
       }
+      
+      setChurchData({
+        name: session.user.church.name || '',
+        address: session.user.church.address || '',
+        phone: session.user.church.phone || '',
+        email: session.user.church.email || '',
+        website: session.user.church.website || '',
+        description: session.user.church.description || '',
+        logo: session.user.church.logo || ''
+      })
+    } else {
+      console.log('⚠️  No church data in session')
+      console.log('Session user:', session?.user)
     }
-    
-    loadChurchData()
   }, [session])
 
   const handleInputChange = (field: string, value: string) => {
@@ -214,28 +212,19 @@ export default function ChurchProfilePage() {
     const file = event.target.files?.[0]
     if (!file) return
 
-    console.log('🔍 DEBUG: File upload started:', {
-      name: file.name,
-      size: file.size,
-      type: file.type
-    })
-
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      console.error('❌ Invalid file type:', file.type)
       toast.error('Por favor selecciona un archivo de imagen')
       return
     }
 
     // Validate file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      console.error('❌ File too large:', file.size)
       toast.error('El archivo debe ser menor a 2MB')
       return
     }
 
     setLoading(true)
-    console.log('📤 Starting upload...')
 
     try {
       // Create FormData for file upload
@@ -243,39 +232,27 @@ export default function ChurchProfilePage() {
       formData.append('file', file)
       formData.append('type', 'church-logo')
 
-      console.log('🌐 Sending request to /api/upload')
-
       // Upload to your file upload API
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData
       })
 
-      console.log('📡 Response status:', response.status)
-      
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ Upload successful:', data)
+        console.log('✅ Upload successful, URL:', data.url?.substring(0, 50) + '...')
+        // Update the state immediately with the base64 data URL
         handleInputChange('logo', data.url)
-        toast.success(`${data.message || 'Logo subido exitosamente'}`)
-        
-        // Update the session data manually instead of refreshing
-        if (session?.user?.church) {
-          session.user.church.logo = data.url
-        }
-        
-        console.log('🔄 Session updated with new logo:', data.url)
+        toast.success('Logo subido exitosamente')
       } else {
-        const errorData = await response.text()
-        console.error('❌ Upload failed:', response.status, errorData)
-        toast.error(`Error al subir: ${response.status} - ${errorData}`)
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Error al subir el archivo')
       }
     } catch (error) {
-      console.error('❌ Upload error:', error)
-      toast.error(`Error de conexión: ${error.message}`)
+      console.error('Error uploading file:', error)
+      toast.error('Error al subir el logo')
     } finally {
       setLoading(false)
-      console.log('🏁 Upload process finished')
     }
   }
 
@@ -307,8 +284,8 @@ export default function ChurchProfilePage() {
 
       if (profileResponse.ok && themeResponse.ok) {
         toast.success('Perfil y tema de la iglesia actualizados exitosamente')
-        // Note: Church data is no longer in session, so no need to update it
-        console.log('🔄 Profile and theme saved successfully')
+        // Refresh session to get updated data
+        window.location.reload()
       } else {
         const profileError = profileResponse.ok ? null : await profileResponse.json()
         const themeError = themeResponse.ok ? null : await themeResponse.json()
@@ -373,13 +350,6 @@ export default function ChurchProfilePage() {
                         src={churchData.logo}
                         alt="Church Logo"
                         className="w-full h-full object-cover rounded-lg"
-                        onError={(e) => {
-                          console.error('❌ Logo image failed to load:', churchData.logo)
-                          toast.error('Error al cargar la imagen')
-                        }}
-                        onLoad={() => {
-                          console.log('✅ Logo image loaded successfully:', churchData.logo)
-                        }}
                       />
                       <Button
                         variant="destructive"
@@ -398,13 +368,6 @@ export default function ChurchProfilePage() {
                   )}
                 </div>
               </div>
-
-              {/* Debug Info */}
-              {churchData.logo && (
-                <div className="text-xs text-gray-600 p-2 bg-gray-100 rounded">
-                  <strong>URL actual:</strong> {churchData.logo}
-                </div>
-              )}
 
               {/* Upload Button */}
               <div className="text-center">

@@ -88,6 +88,18 @@ export const authOptions: NextAuthOptions = {
             name: true,
             role: true,
             churchId: true,
+            church: {
+              select: {
+                id: true,
+                name: true,
+                address: true,
+                phone: true,
+                email: true,
+                website: true,
+                description: true,
+                logo: true
+              }
+            }
           }
         })
         if (user) {
