@@ -125,18 +125,20 @@ export async function middleware(request: NextRequest) {
   const isProtectedApiRoute = PROTECTED_API_ROUTES.some(route => pathname.startsWith(route));
 
   if (isProtectedRoute || isProtectedApiRoute) {
-    const token = await getToken({ 
-      req: request, 
-      secret: process.env.NEXTAUTH_SECRET 
-    });
+    try {
+      const token = await getToken({ 
+        req: request, 
+        secret: process.env.NEXTAUTH_SECRET,
+        cookieName: "session"
+      });
 
-    if (!token) {
-      if (isProtectedApiRoute) {
-        return NextResponse.json(
-          { error: 'No autorizado' },
-          { status: 401 }
-        );
-      }
+      if (!token) {
+        if (isProtectedApiRoute) {
+          return NextResponse.json(
+            { error: 'No autorizado' },
+            { status: 401 }
+          );
+        }
       
       // Redirect to signin for protected pages
       const signInUrl = new URL('/auth/signin', request.url);
@@ -156,6 +158,16 @@ export async function middleware(request: NextRequest) {
         // Redirect non-SUPER_ADMIN users to their appropriate dashboard
         return NextResponse.redirect(new URL('/home', request.url));
       }
+    }
+    } catch (error) {
+      console.error('Auth middleware error:', error);
+      if (isProtectedApiRoute) {
+        return NextResponse.json(
+          { error: 'Error de autenticación' },
+          { status: 500 }
+        );
+      }
+      return NextResponse.redirect(new URL('/auth/signin', request.url));
     }
 
     // SUPER_ADMIN has access to everything (including church-level routes)

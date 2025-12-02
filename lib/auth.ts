@@ -8,20 +8,19 @@ import bcrypt from "bcryptjs"
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
   pages: {
     signIn: "/auth/signin",
   },
   cookies: {
     sessionToken: {
-      name: "auth-token",
+      name: "session",
       options: {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+        secure: false, // Disable secure for testing
       },
     },
   },
@@ -73,27 +72,29 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // Store only user ID in JWT, keep minimal structure
         return {
-          ...token,
           sub: user.id,
-          id: user.id, // Keep for compatibility
-          role: user.role,
-          churchId: user.churchId,
         }
       }
       return token
     },
     async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id as string,
-          role: token.role,
-          churchId: token.churchId,
+      if (token.sub) {
+        const user = await db.user.findUnique({
+          where: { id: token.sub },
+          select: {
+            id: true,
+            email: true, 
+            name: true,
+            role: true,
+            churchId: true,
+          }
+        })
+        if (user) {
+          session.user = user
         }
       }
+      return session
     },
   }
 }
