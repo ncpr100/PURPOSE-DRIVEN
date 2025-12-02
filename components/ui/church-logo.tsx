@@ -35,9 +35,29 @@ export function ChurchLogo({
   fallbackToPlatform = false
 }: ChurchLogoProps) {
   const { data: session } = useSession() || {}
-  const church = session?.user?.church
+  const [church, setChurch] = useState<any>(null)
   const [theme, setTheme] = useState<any>(null)
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
+
+  // Load church data from API instead of session
+  useEffect(() => {
+    const loadChurchData = async () => {
+      if (session?.user?.churchId) {
+        try {
+          const response = await fetch('/api/church/profile')
+          if (response.ok) {
+            const data = await response.json()
+            setChurch(data.church)
+            setLogoUrl(data.church.logo)
+          }
+        } catch (error) {
+          console.error('Error loading church data:', error)
+        }
+      }
+    }
+    
+    loadChurchData()
+  }, [session?.user?.churchId])
 
   // Load church theme
   useEffect(() => {
@@ -57,22 +77,6 @@ export function ChurchLogo({
     
     loadTheme()
   }, [session?.user?.churchId])
-
-  // Load church logo separately to avoid JWT size issues
-  useEffect(() => {
-    const loadLogo = async () => {
-      if (church?.id) {
-        try {
-          setLogoUrl(`/api/logo/${church.id}`)
-        } catch (error) {
-          console.error('Error setting logo URL:', error)
-          setLogoUrl(null)
-        }
-      }
-    }
-    
-    loadLogo()
-  }, [church?.id])
 
   // Parse theme colors
   const getThemeColors = () => {

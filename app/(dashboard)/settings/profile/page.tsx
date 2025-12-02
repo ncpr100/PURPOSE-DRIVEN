@@ -151,7 +151,7 @@ export default function ChurchProfilePage() {
     const loadChurchData = async () => {
       if (session?.user?.churchId) {
         try {
-          // Fetch church profile from API to get all data including logo
+          // Always fetch church profile from API since it's not in session anymore
           const response = await fetch('/api/church/profile')
           if (response.ok) {
             const data = await response.json()
@@ -164,19 +164,6 @@ export default function ChurchProfilePage() {
               description: data.church.description || '',
               logo: data.church.logo || ''
             })
-          } else {
-            // Fallback to session data if API fails
-            if (session?.user?.church) {
-              setChurchData({
-                name: session.user.church.name || '',
-                address: session.user.church.address || '',
-                phone: session.user.church.phone || '',
-                email: session.user.church.email || '',
-                website: session.user.church.website || '',
-                description: session.user.church.description || '',
-                logo: '' // Never use logo from session
-              })
-            }
           }
         } catch (error) {
           console.error('Error loading church data:', error)
@@ -320,16 +307,8 @@ export default function ChurchProfilePage() {
 
       if (profileResponse.ok && themeResponse.ok) {
         toast.success('Perfil y tema de la iglesia actualizados exitosamente')
-        
-        // Update session data manually instead of refreshing
-        if (session?.user?.church) {
-          session.user.church = {
-            ...session.user.church,
-            ...churchData
-          }
-        }
-        
-        console.log('🔄 Session updated with saved data')
+        // Note: Church data is no longer in session, so no need to update it
+        console.log('🔄 Profile and theme saved successfully')
       } else {
         const profileError = profileResponse.ok ? null : await profileResponse.json()
         const themeError = themeResponse.ok ? null : await themeResponse.json()

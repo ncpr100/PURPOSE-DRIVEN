@@ -8,7 +8,9 @@ import bcrypt from "bcryptjs"
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   session: {
-    strategy: "jwt",
+    strategy: "database", // Use database sessions instead of JWT to avoid header size issues
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
   },
   pages: {
     signIn: "/auth/signin",
@@ -53,41 +55,25 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           role: user.role,
           churchId: user.churchId,
-          church: user.church ? {
-            ...user.church,
-            logo: null // Never include logo in JWT to prevent 431 errors
-          } : null
+          // Remove church object entirely to minimize JWT size
         }
       }
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async session({ session, user }) {
       if (user) {
         return {
-          ...token,
-          id: user.id,
-          role: user.role,
-          churchId: user.churchId,
-          church: user.church,
+          ...session,
+          user: {
+            ...session.user,
+            id: user.id,
+            role: user.role,
+            churchId: user.churchId,
+          }
         }
       }
-      return token
-    },
-    async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id as string,
-          role: token.role,
-          churchId: token.churchId,
-          church: token.church ? {
-            ...token.church,
-            logo: null // Never include logo in session to prevent 431 errors
-          } : null,
-        }
-      }
+      return session
     },
   }
 }
