@@ -95,7 +95,11 @@ export const authOptions: NextAuthOptions = {
                 email: true,
                 website: true,
                 description: true,
-                logo: true
+                logo: true,
+                founded: true,
+                isActive: true,
+                createdAt: true,
+                updatedAt: true
               }
             }
           }
