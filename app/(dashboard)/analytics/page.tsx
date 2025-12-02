@@ -1,5 +1,7 @@
 
-import { Suspense } from 'react';
+'use client'
+
+import { Suspense, useEffect, useState } from 'react';
 import AnalyticsClient from './_components/analytics-client';
 import IntelligentAnalyticsDashboard from './_components/intelligent-analytics-dashboard';
 import MemberJourneyAnalytics from './_components/member-journey-analytics';
@@ -57,6 +59,18 @@ function AnalyticsLoadingSkeleton() {
 }
 
 export default function AnalyticsPage() {
+  const [activeTab, setActiveTab] = useState('overview')
+
+  // Handle hash-based navigation (for direct links to specific tabs)
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '')
+    if (hash && ['overview', 'intelligent-analytics', 'member-journey', 'realtime'].includes(hash)) {
+      setActiveTab(hash)
+      // Clear the hash after setting the tab
+      window.history.replaceState(null, '', window.location.pathname)
+    }
+  }, [])
+
   return (
     <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
       {/* Enhanced Header */}
@@ -70,7 +84,7 @@ export default function AnalyticsPage() {
         <RealTimeAnalyticsOverview />
       </div>
 
-      <Tabs defaultValue="overview" className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
           <TabsTrigger value="realtime" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
             <Activity className="h-3 w-3 md:h-4 md:w-4" />
