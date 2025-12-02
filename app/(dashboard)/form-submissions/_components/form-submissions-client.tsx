@@ -45,7 +45,7 @@ interface FormSubmission {
   data: any
   ipAddress: string
   userAgent: string
-  createdAt: string
+  submittedAt: string
   form?: {
     id: string
     name: string
@@ -59,7 +59,7 @@ interface VisitorSubmission {
   data: any
   ipAddress: string
   userAgent: string
-  createdAt: string
+  submittedAt: string
   form?: {
     id: string
     name: string
@@ -73,7 +73,7 @@ interface CustomFormSubmission {
   data: any
   ipAddress: string
   userAgent: string
-  createdAt: string
+  submittedAt: string
   form?: {
     id: string
     title: string
@@ -150,7 +150,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
       + data.map(submission => {
           const formData = submission.data
           return [
-            format(new Date(submission.createdAt), 'dd/MM/yyyy HH:mm', { locale: es }),
+            format(new Date(submission.submittedAt), 'dd/MM/yyyy HH:mm', { locale: es }),
             type === 'visitor' ? submission.form?.name : submission.form?.title,
             `${formData.firstName || ''} ${formData.lastName || ''}`.trim(),
             formData.email || '',
@@ -232,7 +232,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
             </div>
             <div>
               <label className="text-sm font-medium text-muted-foreground">Fecha de Envío</label>
-              <p className="text-xs">{format(new Date(submission.createdAt), 'dd/MM/yyyy HH:mm:ss', { locale: es })}</p>
+              <p className="text-xs">{format(new Date(submission.submittedAt), 'dd/MM/yyyy HH:mm:ss', { locale: es })}</p>
             </div>
             <div className="col-span-2">
               <label className="text-sm font-medium text-muted-foreground">User Agent</label>
@@ -360,7 +360,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
                 {filteredVisitorSubmissions.map((submission) => (
                   <TableRow key={submission.id}>
                     <TableCell className="font-mono text-sm">
-                      {format(new Date(submission.createdAt), 'dd/MM HH:mm', { locale: es })}
+                      {format(new Date(submission.submittedAt), 'dd/MM HH:mm', { locale: es })}
                     </TableCell>
                     <TableCell>{submission.form?.name || 'N/A'}</TableCell>
                     <TableCell>
@@ -424,7 +424,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
                 {filteredCustomSubmissions.map((submission) => (
                   <TableRow key={submission.id}>
                     <TableCell className="font-mono text-sm">
-                      {format(new Date(submission.createdAt), 'dd/MM HH:mm', { locale: es })}
+                      {format(new Date(submission.submittedAt), 'dd/MM HH:mm', { locale: es })}
                     </TableCell>
                     <TableCell>{submission.form?.title || 'N/A'}</TableCell>
                     <TableCell>

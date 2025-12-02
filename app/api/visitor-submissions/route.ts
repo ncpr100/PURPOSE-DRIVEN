@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
           }
         }
       },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { submittedAt: 'desc' }
     })
 
     return NextResponse.json(submissions)
