@@ -244,7 +244,12 @@ export default function ChurchProfilePage() {
         const data = await response.json()
         console.log('✅ Upload successful:', data)
         handleInputChange('logo', data.url)
-        toast.success(`Logo subido exitosamente: ${data.url}`)
+        toast.success(`${data.message || 'Logo subido exitosamente'}`)
+        
+        // Refresh the session data to immediately show the new logo
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
       } else {
         const errorData = await response.text()
         console.error('❌ Upload failed:', response.status, errorData)
