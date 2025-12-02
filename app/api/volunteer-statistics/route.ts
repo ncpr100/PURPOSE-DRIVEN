@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
       totalVolunteers,
       volunteersWithMinistries,
       volunteersWithAvailability,
+      volunteersWithSpiritualProfiles,
       totalMembers,
       membersWithSpiritualProfiles,
       activeMinistries,
@@ -49,6 +50,17 @@ export async function GET(request: NextRequest) {
           member: { 
             churchId,
             availabilityMatrix: { isNot: null }
+          },
+          isActive: true
+        }
+      }),
+
+      // Volunteers with spiritual profiles
+      db.volunteer.count({
+        where: {
+          member: { 
+            churchId,
+            spiritualProfile: { isNot: null }
           },
           isActive: true
         }
@@ -92,6 +104,9 @@ export async function GET(request: NextRequest) {
     const spiritualProfileCompletionRate = totalMembers > 0 ? 
       Math.round((membersWithSpiritualProfiles / totalMembers) * 100) : 0
 
+    const volunteerProfileCompletionRate = totalVolunteers > 0 ? 
+      Math.round((volunteersWithSpiritualProfiles / totalVolunteers) * 100) : 0
+
     // Calculate efficiency metrics
     const efficiencyScore = totalVolunteers > 0 ? 
       Math.round(((volunteersWithMinistries / totalVolunteers) * 0.6 + 
@@ -104,6 +119,7 @@ export async function GET(request: NextRequest) {
           total: totalVolunteers,
           withMinistries: volunteersWithMinistries,
           withAvailability: volunteersWithAvailability,
+          withProfiles: volunteersWithSpiritualProfiles,
           ministryAssignmentRate,
           availabilityCompletionRate,
           participationRate: volunteerParticipationRate
@@ -121,7 +137,9 @@ export async function GET(request: NextRequest) {
           overallScore: efficiencyScore,
           ministryFillRate: ministryAssignmentRate,
           availabilityDataRate: availabilityCompletionRate
-        }
+        },
+        profileCompletion: volunteerProfileCompletionRate,
+        availabilityCompletion: availabilityCompletionRate
       }
     })
 

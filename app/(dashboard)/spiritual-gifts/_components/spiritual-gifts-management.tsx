@@ -256,7 +256,10 @@ export default function SpiritualGiftsManagement() {
       {/* Tabs */}
       <Tabs defaultValue="all" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="all">Todos los Miembros ({filteredMembers.length})</TabsTrigger>
+          <TabsTrigger value="all">Total: {filteredMembers.length} | Con Perfil: {membersWithProfiles.length} | Sin Evaluación: {membersWithoutProfiles.length} | {members.length > 0 ? (() => {
+            const percentage = (membersWithProfiles.length / members.length) * 100;
+            return percentage < 1 ? percentage.toFixed(1) : Math.round(percentage);
+          })() : 0}% Completado</TabsTrigger>
           <TabsTrigger value="with-profile">Con Perfil ({membersWithProfiles.length})</TabsTrigger>
           <TabsTrigger value="without-profile">Sin Evaluación ({membersWithoutProfiles.length})</TabsTrigger>
         </TabsList>

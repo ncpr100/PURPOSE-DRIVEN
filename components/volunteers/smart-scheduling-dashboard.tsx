@@ -48,6 +48,14 @@ interface Recommendation {
   status: string
 }
 
+interface VolunteerStats {
+  profileCompletion: number
+  availabilityCompletion: number
+  totalVolunteers: number
+  volunteersWithProfiles: number
+  volunteersWithAvailability: number
+}
+
 export function SmartSchedulingDashboard({ churchId, userRole }: SmartSchedulingDashboardProps) {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('overview')
@@ -58,6 +66,13 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
   const [recommendations, setRecommendations] = useState<Recommendation[]>([])
   const [selectedMinistryId, setSelectedMinistryId] = useState<string>('all')
   const [efficiencyStats, setEfficiencyStats] = useState({ efficiency: 0, totalPositions: 0, filledPositions: 0 })
+  const [volunteerStats, setVolunteerStats] = useState<VolunteerStats>({ 
+    profileCompletion: 0, 
+    availabilityCompletion: 0, 
+    totalVolunteers: 0,
+    volunteersWithProfiles: 0,
+    volunteersWithAvailability: 0
+  })
   
   // Loading states
   const [generatingRecommendations, setGeneratingRecommendations] = useState(false)
@@ -94,6 +109,15 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
           efficiency: stats.efficiency.overallScore,
           totalPositions: stats.volunteers.total,
           filledPositions: stats.volunteers.withMinistries
+        })
+        
+        // Set volunteer profile completion statistics
+        setVolunteerStats({
+          profileCompletion: stats.profileCompletion || 0,
+          availabilityCompletion: stats.availabilityCompletion || 0,
+          totalVolunteers: stats.volunteers.total,
+          volunteersWithProfiles: Math.round((stats.profileCompletion / 100) * stats.volunteers.total),
+          volunteersWithAvailability: Math.round((stats.availabilityCompletion / 100) * stats.volunteers.total)
         })
       }
 
@@ -267,6 +291,54 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
                 </div>
                 <p className="text-xs text-muted-foreground">
                   {efficiencyStats.filledPositions}/{efficiencyStats.totalPositions} posiciones cubiertas
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Volunteer Profile Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">% Perfiles Completados</CardTitle>
+                <Brain className="h-4 w-4 text-blue-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-blue-600">
+                  {volunteerStats.profileCompletion}%
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {volunteerStats.volunteersWithProfiles}/{volunteerStats.totalVolunteers} voluntarios con perfil espiritual
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">% Con Disponibilidad</CardTitle>
+                <Calendar className="h-4 w-4 text-green-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">
+                  {volunteerStats.availabilityCompletion}%
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {volunteerStats.volunteersWithAvailability}/{volunteerStats.totalVolunteers} voluntarios con horarios
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Voluntarios</CardTitle>
+                <Users className="h-4 w-4 text-purple-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-purple-600">
+                  {volunteerStats.totalVolunteers}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Voluntarios activos registrados
                 </p>
               </CardContent>
             </Card>
