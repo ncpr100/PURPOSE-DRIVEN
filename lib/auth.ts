@@ -8,9 +8,21 @@ import bcrypt from "bcryptjs"
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   session: {
-    strategy: "database", // Use database sessions instead of JWT to avoid header size issues
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
+  },
+  useSecureCookies: process.env.NODE_ENV === "production",
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+      }
+    }
   },
   pages: {
     signIn: "/auth/signin",
@@ -61,19 +73,28 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async session({ session, user }) {
+    async jwt({ token, user }) {
       if (user) {
+        // Keep only absolutely essential data in JWT
         return {
-          ...session,
-          user: {
-            ...session.user,
-            id: user.id,
-            role: user.role,
-            churchId: user.churchId,
-          }
+          ...token,
+          id: user.id,
+          role: user.role,
+          churchId: user.churchId,
         }
       }
-      return session
+      return token
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id as string,
+          role: token.role,
+          churchId: token.churchId,
+        }
+      }
     },
   }
 }
