@@ -1,7 +1,6 @@
 
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { db } from "./db"
 import bcrypt from "bcryptjs"
 
@@ -73,11 +72,13 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id
+        // Store minimal data in JWT to avoid 431 errors
       }
       return token
     },
     async session({ session, token }) {
       if (token.sub) {
+        // Fetch only essential user data - no church object to minimize size
         const user = await db.user.findUnique({
           where: { id: token.sub },
           select: {
@@ -90,8 +91,11 @@ export const authOptions: NextAuthOptions = {
         })
         if (user) {
           session.user = {
-            ...user,
-            church: undefined // Don't include church in session to keep JWT small
+            id: user.id,
+            email: user.email || '',
+            name: user.name || '',
+            role: user.role,
+            churchId: user.churchId || ''
           }
         }
       }
