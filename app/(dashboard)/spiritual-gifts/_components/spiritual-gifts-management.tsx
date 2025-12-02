@@ -67,13 +67,18 @@ export default function SpiritualGiftsManagement() {
 
   const fetchMembers = async () => {
     try {
-      console.log('🔄 Fetching members from /api/members...')
-      const response = await fetch('/api/members')
+      console.log('🔄 Fetching members from /api/members (SAME AS OTHER DASHBOARDS)...')
+      const response = await fetch('/api/members?limit=10000') // Get all members for consistency
       if (response.ok) {
         const data = await response.json()
-        console.log('📊 Members fetched:', data.length, 'members')
-        console.log('🔍 Members with spiritual gifts:', data.filter((m: any) => m.spiritualGifts && m.spiritualGifts.length > 0).length)
-        setMembers(data)
+        console.log('📊 Members fetched from SAME API as other dashboards:', data.members?.length || data.length, 'members')
+        
+        // Use the same data structure as other parts of the app
+        const membersArray = data.members || data
+        console.log('🔍 Members with spiritual gifts:', membersArray.filter((m: any) => m.spiritualGifts && m.spiritualGifts.length > 0).length)
+        console.log('🔍 Members with spiritual profiles:', membersArray.filter((m: any) => m.spiritualProfile).length)
+        
+        setMembers(membersArray)
       } else {
         console.error('❌ Failed to fetch members:', response.status)
         toast.error('Error al cargar miembros')

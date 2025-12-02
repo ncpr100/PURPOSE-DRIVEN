@@ -16,17 +16,34 @@ export async function GET(request: NextRequest) {
 
     const churchId = session.user.churchId
 
-    // Get comprehensive volunteer statistics
+    // Get comprehensive volunteer statistics using the same data source as /api/members
     const [
+      // Use the same member query structure as /api/members for consistency
+      allMembers,
       totalVolunteers,
       volunteersWithMinistries,
       volunteersWithAvailability,
       volunteersWithSpiritualProfiles,
-      totalMembers,
-      membersWithSpiritualProfiles,
       activeMinistries,
       totalAssignments
     ] = await Promise.all([
+      // Get all members with the same structure as /api/members
+      db.member.findMany({
+        where: { churchId, isActive: true },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          spiritualProfile: {
+            select: {
+              id: true,
+              primaryGifts: true,
+              secondaryGifts: true
+            }
+          }
+        }
+      }),
+
       // Total active volunteers
       db.volunteer.count({
         where: { 
@@ -66,20 +83,6 @@ export async function GET(request: NextRequest) {
         }
       }),
 
-      // Total active members for comparison
-      db.member.count({
-        where: { churchId, isActive: true }
-      }),
-
-      // Members with spiritual profiles (new system)
-      db.member.count({
-        where: { 
-          churchId, 
-          isActive: true,
-          spiritualProfile: { isNot: null }
-        }
-      }),
-
       // Active ministries
       db.ministry.count({
         where: { churchId, isActive: true }
@@ -91,7 +94,11 @@ export async function GET(request: NextRequest) {
       })
     ])
 
-    // Calculate rates
+    // Use the actual member data count (same as /api/members)
+    const totalMembers = allMembers.length
+    const membersWithSpiritualProfiles = allMembers.filter(m => m.spiritualProfile).length
+
+    // Calculate rates based on real data
     const ministryAssignmentRate = totalVolunteers > 0 ? 
       Math.round((volunteersWithMinistries / totalVolunteers) * 100) : 0
 
@@ -125,7 +132,7 @@ export async function GET(request: NextRequest) {
           participationRate: volunteerParticipationRate
         },
         members: {
-          total: totalMembers,
+          total: totalMembers, // This should now match /api/members count exactly
           withSpiritualProfiles: membersWithSpiritualProfiles,
           spiritualProfileCompletionRate
         },
