@@ -201,19 +201,28 @@ export default function ChurchProfilePage() {
     const file = event.target.files?.[0]
     if (!file) return
 
+    console.log('🔍 DEBUG: File upload started:', {
+      name: file.name,
+      size: file.size,
+      type: file.type
+    })
+
     // Validate file type
     if (!file.type.startsWith('image/')) {
+      console.error('❌ Invalid file type:', file.type)
       toast.error('Por favor selecciona un archivo de imagen')
       return
     }
 
     // Validate file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
+      console.error('❌ File too large:', file.size)
       toast.error('El archivo debe ser menor a 2MB')
       return
     }
 
     setLoading(true)
+    console.log('📤 Starting upload...')
 
     try {
       // Create FormData for file upload
@@ -221,24 +230,32 @@ export default function ChurchProfilePage() {
       formData.append('file', file)
       formData.append('type', 'church-logo')
 
+      console.log('🌐 Sending request to /api/upload')
+
       // Upload to your file upload API
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData
       })
 
+      console.log('📡 Response status:', response.status)
+      
       if (response.ok) {
         const data = await response.json()
+        console.log('✅ Upload successful:', data)
         handleInputChange('logo', data.url)
-        toast.success('Logo subido exitosamente')
+        toast.success(`Logo subido exitosamente: ${data.url}`)
       } else {
-        throw new Error('Error al subir el archivo')
+        const errorData = await response.text()
+        console.error('❌ Upload failed:', response.status, errorData)
+        toast.error(`Error al subir: ${response.status} - ${errorData}`)
       }
     } catch (error) {
-      console.error('Error uploading file:', error)
-      toast.error('Error al subir el logo')
+      console.error('❌ Upload error:', error)
+      toast.error(`Error de conexión: ${error.message}`)
     } finally {
       setLoading(false)
+      console.log('🏁 Upload process finished')
     }
   }
 
@@ -336,6 +353,13 @@ export default function ChurchProfilePage() {
                         src={churchData.logo}
                         alt="Church Logo"
                         className="w-full h-full object-cover rounded-lg"
+                        onError={(e) => {
+                          console.error('❌ Logo image failed to load:', churchData.logo)
+                          toast.error('Error al cargar la imagen')
+                        }}
+                        onLoad={() => {
+                          console.log('✅ Logo image loaded successfully:', churchData.logo)
+                        }}
                       />
                       <Button
                         variant="destructive"
@@ -354,6 +378,13 @@ export default function ChurchProfilePage() {
                   )}
                 </div>
               </div>
+
+              {/* Debug Info */}
+              {churchData.logo && (
+                <div className="text-xs text-gray-600 p-2 bg-gray-100 rounded">
+                  <strong>URL actual:</strong> {churchData.logo}
+                </div>
+              )}
 
               {/* Upload Button */}
               <div className="text-center">

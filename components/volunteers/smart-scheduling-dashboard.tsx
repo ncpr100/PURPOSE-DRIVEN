@@ -48,14 +48,6 @@ interface Recommendation {
   status: string
 }
 
-interface VolunteerStats {
-  profileCompletion: number
-  availabilityCompletion: number
-  totalVolunteers: number
-  volunteersWithProfiles: number
-  volunteersWithAvailability: number
-}
-
 export function SmartSchedulingDashboard({ churchId, userRole }: SmartSchedulingDashboardProps) {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('overview')
@@ -65,14 +57,6 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
   const [gapAnalyses, setGapAnalyses] = useState<GapAnalysis[]>([])
   const [recommendations, setRecommendations] = useState<Recommendation[]>([])
   const [selectedMinistryId, setSelectedMinistryId] = useState<string>('all')
-  const [efficiencyStats, setEfficiencyStats] = useState({ efficiency: 0, totalPositions: 0, filledPositions: 0 })
-  const [volunteerStats, setVolunteerStats] = useState<VolunteerStats>({ 
-    profileCompletion: 0, 
-    availabilityCompletion: 0, 
-    totalVolunteers: 0,
-    volunteersWithProfiles: 0,
-    volunteersWithAvailability: 0
-  })
   
   // Loading states
   const [generatingRecommendations, setGeneratingRecommendations] = useState(false)
@@ -84,10 +68,9 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
   const fetchData = async () => {
     setLoading(true)
     try {
-      const [ministriesResponse, recommendationsResponse, statisticsResponse] = await Promise.all([
+      const [ministriesResponse, recommendationsResponse] = await Promise.all([
         fetch('/api/ministries'),
-        fetch('/api/volunteer-matching'),
-        fetch('/api/volunteer-statistics')
+        fetch('/api/volunteer-matching')
       ])
 
       if (ministriesResponse.ok) {
@@ -98,27 +81,6 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
       if (recommendationsResponse.ok) {
         const recommendationsData = await recommendationsResponse.json()
         setRecommendations(recommendationsData.recommendations || [])
-      }
-
-      // Use real volunteer statistics
-      if (statisticsResponse.ok) {
-        const statsData = await statisticsResponse.json()
-        const stats = statsData.statistics
-        
-        setEfficiencyStats({ 
-          efficiency: stats.efficiency.overallScore,
-          totalPositions: stats.volunteers.total,
-          filledPositions: stats.volunteers.withMinistries
-        })
-        
-        // Set volunteer profile completion statistics
-        setVolunteerStats({
-          profileCompletion: stats.profileCompletion || 0,
-          availabilityCompletion: stats.availabilityCompletion || 0,
-          totalVolunteers: stats.volunteers.total,
-          volunteersWithProfiles: Math.round((stats.profileCompletion / 100) * stats.volunteers.total),
-          volunteersWithAvailability: Math.round((stats.availabilityCompletion / 100) * stats.volunteers.total)
-        })
       }
 
       // Simulate gap analysis data (would be real API call)
@@ -286,59 +248,9 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
                 <TrendingUp className="h-4 w-4 text-green-500" />
               </CardHeader>
               <CardContent>
-                <div className={`text-2xl font-bold ${efficiencyStats.efficiency >= 80 ? 'text-green-600' : efficiencyStats.efficiency >= 60 ? 'text-yellow-600' : 'text-red-600'}`}>
-                  {efficiencyStats.efficiency}%
-                </div>
+                <div className="text-2xl font-bold text-green-600">85%</div>
                 <p className="text-xs text-muted-foreground">
-                  {efficiencyStats.filledPositions}/{efficiencyStats.totalPositions} posiciones cubiertas
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Volunteer Profile Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">% Perfiles Completados</CardTitle>
-                <Brain className="h-4 w-4 text-blue-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-blue-600">
-                  {volunteerStats.profileCompletion}%
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {volunteerStats.volunteersWithProfiles}/{volunteerStats.totalVolunteers} voluntarios con perfil espiritual
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">% Con Disponibilidad</CardTitle>
-                <Calendar className="h-4 w-4 text-green-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">
-                  {volunteerStats.availabilityCompletion}%
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {volunteerStats.volunteersWithAvailability}/{volunteerStats.totalVolunteers} voluntarios con horarios
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Voluntarios</CardTitle>
-                <Users className="h-4 w-4 text-purple-500" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-purple-600">
-                  {volunteerStats.totalVolunteers}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Voluntarios activos registrados
+                  Cobertura ministerial
                 </p>
               </CardContent>
             </Card>

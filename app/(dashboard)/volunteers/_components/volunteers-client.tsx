@@ -768,7 +768,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Voluntarios</CardTitle>
@@ -800,6 +800,23 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
             <div className="text-2xl font-bold">
               {new Set(volunteers.filter(v => v.ministry).map(v => v.ministry!.name)).size}
             </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">% Con Disponibilidad</CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {volunteers.length > 0 ? (
+                Math.round((volunteers.filter(v => v.availability && v.availability !== '').length / volunteers.length) * 100)
+              ) : 0}%
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {volunteers.filter(v => v.availability && v.availability !== '').length} de {volunteers.length} tienen disponibilidad
+            </p>
           </CardContent>
         </Card>
       </div>
