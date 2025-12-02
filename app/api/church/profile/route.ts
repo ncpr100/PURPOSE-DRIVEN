@@ -34,7 +34,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    return NextResponse.json({ church })
+    // Replace base64 logo with API endpoint URL
+    const churchData = {
+      ...church,
+      logo: church.logo ? `/api/logo/${church.id}` : null
+    }
+
+    return NextResponse.json({ church: churchData })
   } catch (error) {
     console.error('Error fetching church profile:', error)
     return NextResponse.json(

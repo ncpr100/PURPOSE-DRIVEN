@@ -49,15 +49,18 @@ export async function POST(request: NextRequest) {
       })
 
       console.log('✅ Church logo updated successfully')
+      
+      // Return a URL to our logo serving endpoint instead of the full base64
+      const logoUrl = `/api/logo/${session.user.churchId}`
+      
+      return NextResponse.json({ 
+        url: logoUrl,
+        filename: file.name,
+        size: file.size,
+        type: file.type,
+        message: 'Logo guardado exitosamente en la base de datos'
+      })
     }
-
-    return NextResponse.json({ 
-      url: dataUrl,
-      filename: file.name,
-      size: file.size,
-      type: file.type,
-      message: 'Logo guardado exitosamente en la base de datos'
-    })
 
   } catch (error) {
     console.error('❌ Error uploading file:', error)

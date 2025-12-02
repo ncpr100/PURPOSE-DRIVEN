@@ -53,7 +53,10 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           role: user.role,
           churchId: user.churchId,
-          church: user.church
+          church: user.church ? {
+            ...user.church,
+            logo: user.church.logo ? `/api/logo/${user.church.id}` : null
+          } : null
         }
       }
     })
@@ -79,7 +82,10 @@ export const authOptions: NextAuthOptions = {
           id: token.id as string,
           role: token.role,
           churchId: token.churchId,
-          church: token.church,
+          church: token.church ? {
+            ...token.church,
+            logo: token.church?.logo ? `/api/logo/${token.church.id}` : null
+          } : null,
         }
       }
     },
