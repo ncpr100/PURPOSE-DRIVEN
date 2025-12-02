@@ -73,43 +73,27 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // Store only user ID in JWT, fetch everything else from DB as needed
+        // Store only user ID in JWT, keep minimal structure
         return {
-          sub: user.id, // Standard JWT claim for user ID
-          exp: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60), // 30 days
+          ...token,
+          sub: user.id,
+          id: user.id, // Keep for compatibility
+          role: user.role,
+          churchId: user.churchId,
         }
       }
       return token
     },
     async session({ session, token }) {
-      if (token.sub) {
-        // Fetch fresh user data from database for each request
-        const user = await db.user.findUnique({
-          where: { id: token.sub as string },
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            role: true,
-            churchId: true,
-          }
-        })
-        
-        if (user) {
-          return {
-            ...session,
-            user: {
-              ...session.user,
-              id: user.id,
-              email: user.email,
-              name: user.name,
-              role: user.role,
-              churchId: user.churchId,
-            }
-          }
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id as string,
+          role: token.role,
+          churchId: token.churchId,
         }
       }
-      return session
     },
   }
 }
