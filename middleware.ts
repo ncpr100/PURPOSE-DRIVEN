@@ -114,7 +114,7 @@ export async function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
   // Advanced Authorization for Phase 2
-  const pathname = request.nextUrl.pathname;
+  // pathname already declared above at line 90
 
   // Skip auth for public routes
   if (pathname.startsWith('/auth/') || 
