@@ -220,12 +220,53 @@ const navigationItems = [
 ]
 
 export function Sidebar() {
-  const { data: session } = useSession() || {}
+  const { data: session, status } = useSession()
   const pathname = usePathname()
+
+  // Debug logging
+  console.log('🔍 SIDEBAR: Session status:', status, 'Session data:', {
+    hasSession: !!session,
+    userRole: session?.user?.role,
+    userEmail: session?.user?.email,
+    pathname: pathname
+  })
+
+  // Show loading state while session is loading
+  if (status === 'loading') {
+    return (
+      <aside className="w-64 border-r bg-muted/40 p-6">
+        <div className="mb-8 pb-4 border-b border-border">
+          <ChurchLogo size="lg" />
+        </div>
+        <div className="space-y-2">
+          <div className="h-8 bg-muted animate-pulse rounded"></div>
+          <div className="h-8 bg-muted animate-pulse rounded"></div>
+          <div className="h-8 bg-muted animate-pulse rounded"></div>
+        </div>
+      </aside>
+    )
+  }
+
+  // If no session, show minimal navigation
+  if (!session?.user) {
+    console.log('🔍 SIDEBAR: No session found')
+    return (
+      <aside className="w-64 border-r bg-muted/40 p-6">
+        <div className="mb-8 pb-4 border-b border-border">
+          <ChurchLogo size="lg" />
+        </div>
+        <div className="text-center text-sm text-muted-foreground">
+          No hay sesión activa
+        </div>
+      </aside>
+    )
+  }
 
   const filteredItems = navigationItems.filter(item =>
     item.roles.includes(session?.user?.role as string)
   )
+
+  console.log('🔍 SIDEBAR: Filtered items count:', filteredItems.length, 'for role:', session?.user?.role)
 
   return (
     <aside className="w-64 border-r bg-muted/40 p-6">
@@ -235,6 +276,13 @@ export function Sidebar() {
       </div>
       
       <nav className="space-y-2">
+        {filteredItems.length === 0 && (
+          <div className="text-center text-sm text-muted-foreground p-4">
+            No tienes permisos para ninguna sección
+            <br />
+            <small>Rol actual: {session?.user?.role}</small>
+          </div>
+        )}
         {filteredItems?.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href

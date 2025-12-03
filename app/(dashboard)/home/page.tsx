@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { DashboardClient } from './_components/dashboard-client'
+import { TestNavigation } from '@/components/test-navigation'
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions)
@@ -240,13 +241,16 @@ export default async function DashboardPage() {
   })
 
   return (
-    <DashboardClient 
-      stats={kpiData}
-      recentMembers={recentMembers}
-      recentSermons={recentSermons}
-      recentCheckIns={recentCheckIns}
-      recentWebsiteRequests={websiteRequests}
-      userRole={session.user.role}
-    />
+    <div>
+      <TestNavigation />
+      <DashboardClient 
+        stats={kpiData}
+        recentMembers={recentMembers}
+        recentSermons={recentSermons}
+        recentCheckIns={recentCheckIns}
+        recentWebsiteRequests={websiteRequests}
+        userRole={session.user.role}
+      />
+    </div>
   )
 }
