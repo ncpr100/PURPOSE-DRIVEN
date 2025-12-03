@@ -26,6 +26,7 @@ import { MinistryRecommendationsPanel } from './ministry-recommendations-panel';
 import { IndividualMemberTimeline } from './individual-member-timeline';
 
 interface MemberJourneyAnalyticsProps {
+  userRole: string;
   churchId: string;
   className?: string;
 }
@@ -42,7 +43,7 @@ interface AnalyticsSummary {
   lastUpdated: string;
 }
 
-export function MemberJourneyAnalytics({ churchId, className }: MemberJourneyAnalyticsProps) {
+export function MemberJourneyAnalytics({ userRole, churchId, className }: MemberJourneyAnalyticsProps) {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
