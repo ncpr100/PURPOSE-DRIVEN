@@ -200,7 +200,14 @@ function checkBasicRoleAccess(role: string, resource: string): boolean {
   } as const;
 
   const permissions = rolePermissions[role as keyof typeof rolePermissions] || [];
-  return permissions.includes('*' as never) || permissions.includes(resource as never);
+  
+  // Check for wildcard access first
+  if (permissions.includes('*' as never)) {
+    return true;
+  }
+  
+  // Check for specific resource access
+  return permissions.includes(resource as never);
 }
 
 export const config = {
