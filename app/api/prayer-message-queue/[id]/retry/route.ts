@@ -26,7 +26,7 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
     }
 
     // Check permissions
-    if (!['SUPER_ADMIN', 'ADMIN', 'PASTOR'].includes(user.role)) {
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR'].includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }
 

@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check permissions
-    if (!['SUPER_ADMIN', 'ADMIN', 'PASTOR', 'LIDER'].includes(user.role)) {
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER'].includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }
 

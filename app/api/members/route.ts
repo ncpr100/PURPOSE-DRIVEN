@@ -244,7 +244,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ✅ SECURITY: Role-based access control for creation
-    const allowedRoles = ['SUPER_ADMIN', 'ADMIN', 'PASTOR', 'LIDER']
+    const allowedRoles = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER']
     if (!allowedRoles.includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes para crear miembros' }, { status: 403 })
     }

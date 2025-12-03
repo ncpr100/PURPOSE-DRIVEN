@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check permissions - only SUPER_ADMIN, ADMIN, PASTOR, LIDER can manage automation
-    if (!['SUPER_ADMIN', 'ADMIN', 'PASTOR', 'LIDER'].includes(user.role)) {
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER'].includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }
 
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check permissions
-    if (!['SUPER_ADMIN', 'ADMIN', 'PASTOR'].includes(user.role)) {
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR'].includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }
 
