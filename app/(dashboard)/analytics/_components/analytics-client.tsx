@@ -76,7 +76,12 @@ interface AIInsightsResponse {
   generatedAt: string;
 }
 
-export default function AnalyticsClient() {
+interface AnalyticsClientProps {
+  userRole: string;
+  churchId: string;
+}
+
+export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const [overview, setOverview] = useState<AnalyticsOverview | null>(null);
