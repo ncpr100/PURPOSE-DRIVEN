@@ -125,10 +125,15 @@ export async function middleware(request: NextRequest) {
   const isProtectedApiRoute = PROTECTED_API_ROUTES.some(route => pathname.startsWith(route));
 
   if (isProtectedRoute || isProtectedApiRoute) {
+    console.log('🔐 MIDDLEWARE: Checking protected route:', pathname);
+    
     const token = await getToken({ 
       req: request, 
       secret: process.env.NEXTAUTH_SECRET 
     });
+
+    console.log('🔐 MIDDLEWARE: Token exists:', !!token);
+    console.log('🔐 MIDDLEWARE: Token role:', token?.role);
 
     if (!token) {
       if (isProtectedApiRoute) {
@@ -146,7 +151,9 @@ export async function middleware(request: NextRequest) {
 
     // Platform routes are restricted to SUPER_ADMIN only
     if (pathname.startsWith('/platform')) {
+      console.log('🔐 MIDDLEWARE: Platform route check, role:', token.role);
       if (token.role !== 'SUPER_ADMIN') {
+        console.log('🔐 MIDDLEWARE: Not SUPER_ADMIN, redirecting to /home');
         if (isProtectedApiRoute) {
           return NextResponse.json(
             { error: 'Acceso denegado. Solo el SUPER_ADMIN puede acceder a la plataforma.' },
@@ -160,19 +167,26 @@ export async function middleware(request: NextRequest) {
 
     // SUPER_ADMIN and ADMIN_IGLESIA have access to everything (including church-level routes)
     if (token.role === 'SUPER_ADMIN' || token.role === 'ADMIN_IGLESIA') {
+      console.log('🔐 MIDDLEWARE: User is SUPER_ADMIN or ADMIN_IGLESIA, allowing access');
       return response;
     }
 
+    console.log('🔐 MIDDLEWARE: Checking specific route permissions for role:', token.role);
+    
     // Check basic role permissions for specific routes (only for other roles)
     const requiredPermission = ROUTE_PERMISSIONS[pathname as keyof typeof ROUTE_PERMISSIONS];
     
     if (requiredPermission) {
+      console.log('🔐 MIDDLEWARE: Route requires permission:', requiredPermission);
       const userRole = token.role as string;
       
       // Basic role check - this will be enhanced with the new permission system
       const hasAccess = checkBasicRoleAccess(userRole, requiredPermission.resource);
       
+      console.log('🔐 MIDDLEWARE: Has access:', hasAccess);
+      
       if (!hasAccess) {
+        console.log('🔐 MIDDLEWARE: No access, redirecting to /home');
         if (isProtectedApiRoute) {
           return NextResponse.json(
             { error: 'Sin permisos para acceder a este recurso' },
