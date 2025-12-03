@@ -96,7 +96,12 @@ interface ExecutiveReport {
   predictiveInsights: any;
 }
 
-export default function IntelligentAnalyticsDashboard() {
+interface IntelligentAnalyticsDashboardProps {
+  userRole: string;
+  churchId: string;
+}
+
+export default function IntelligentAnalyticsDashboard({ userRole, churchId }: IntelligentAnalyticsDashboardProps) {
   const [predictiveData, setPredictiveData] = useState<PredictiveAnalytics | null>(null);
   const [journeyData, setJourneyData] = useState<MemberJourneyAnalytics | null>(null);
   const [executiveData, setExecutiveData] = useState<ExecutiveReport | null>(null);
