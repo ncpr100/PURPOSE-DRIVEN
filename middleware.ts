@@ -174,8 +174,13 @@ export async function middleware(request: NextRequest) {
     if (requiredPermission) {
       const userRole = token.role as string;
       
+      // DEBUG: Enhanced logging for role checking
+      console.log(`🔍 ROLE CHECK: User role="${userRole}", Required resource="${requiredPermission.resource}", Path="${pathname}"`);
+      
       // Basic role check - this will be enhanced with the new permission system
       const hasAccess = checkBasicRoleAccess(userRole, requiredPermission.resource);
+      
+      console.log(`🔍 ACCESS RESULT: hasAccess=${hasAccess} for role="${userRole}" resource="${requiredPermission.resource}"`);
       
       if (!hasAccess) {
         if (isProtectedApiRoute) {
