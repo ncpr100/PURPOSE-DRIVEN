@@ -1,23 +1,21 @@
-'use client'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Loader2, Brain } from 'lucide-react'
+export default async function IntelligentAnalyticsPage() {
+  const session = await getServerSession(authOptions)
 
-export default function IntelligentAnalyticsRedirectPage() {
-  const router = useRouter()
+  if (!session?.user) {
+    redirect('/auth/signin')
+  }
 
-  useEffect(() => {
-    // Redirect to analytics page with intelligent analytics tab
-    // We'll use a hash to indicate the tab, then update analytics page to handle it
-    router.push('/analytics#intelligent-analytics')
-  }, [router])
+  if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
+    redirect('/home')
+  }
 
-  return (
-    <div className="flex items-center justify-center min-h-[400px]">
-      <div className="text-center space-y-4">
-        <div className="flex justify-center">
-          <div className="relative">
+  // Redirect to analytics page with intelligent analytics tab
+  redirect('/analytics#intelligent-analytics')
+}
             <Brain className="h-12 w-12 text-primary animate-pulse" />
             <Loader2 className="h-6 w-6 absolute -top-1 -right-1 text-primary animate-spin" />
           </div>

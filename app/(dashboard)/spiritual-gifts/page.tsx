@@ -1,19 +1,18 @@
 
-'use client'
-
-import { useSession } from 'next-auth/react'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import SpiritualGiftsManagement from './_components/spiritual-gifts-management'
 
-export default function SpiritualGiftsPage() {
-  const { data: session, status } = useSession()
+export default async function SpiritualGiftsPage() {
+  const session = await getServerSession(authOptions)
 
-  if (status === 'loading') {
-    return <div>Cargando...</div>
+  if (!session?.user) {
+    redirect('/auth/signin')
   }
 
-  if (!session) {
-    redirect('/auth/signin')
+  if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
+    redirect('/home')
   }
 
   return <SpiritualGiftsManagement />
