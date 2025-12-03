@@ -220,12 +220,57 @@ const navigationItems = [
 ]
 
 export function Sidebar() {
-  const { data: session } = useSession() || {}
+  const { data: session, status } = useSession()
   const pathname = usePathname()
 
-  const filteredItems = navigationItems.filter(item =>
-    item.roles.includes(session?.user?.role as string)
-  )
+  console.log('🔍 SIDEBAR DEBUG:', {
+    status,
+    hasSession: !!session,
+    userRole: session?.user?.role,
+    userEmail: session?.user?.email
+  })
+
+  const filteredItems = navigationItems.filter(item => {
+    const hasRole = session?.user?.role && item.roles.includes(session.user.role as string)
+    console.log(`🔍 Item "${item.title}":`, {
+      roles: item.roles,
+      userRole: session?.user?.role,
+      hasRole
+    })
+    return hasRole
+  })
+
+  console.log('🔍 SIDEBAR: Filtered items count:', filteredItems.length)
+
+  // Show loading state while session is loading
+  if (status === 'loading') {
+    return (
+      <aside className="w-64 border-r bg-muted/40 p-6">
+        <div className="mb-8 pb-4 border-b border-border">
+          <ChurchLogo size="lg" />
+        </div>
+        <div className="space-y-2">
+          <div className="h-8 bg-muted animate-pulse rounded"></div>
+          <div className="h-8 bg-muted animate-pulse rounded"></div>
+          <div className="h-8 bg-muted animate-pulse rounded"></div>
+        </div>
+      </aside>
+    )
+  }
+
+  // If no session, show minimal navigation
+  if (!session?.user) {
+    return (
+      <aside className="w-64 border-r bg-muted/40 p-6">
+        <div className="mb-8 pb-4 border-b border-border">
+          <ChurchLogo size="lg" />
+        </div>
+        <div className="text-center text-sm text-muted-foreground">
+          No hay sesión activa
+        </div>
+      </aside>
+    )
+  }
 
   return (
     <aside className="w-64 border-r bg-muted/40 p-6">
