@@ -158,12 +158,12 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    // SUPER_ADMIN has access to everything (including church-level routes)
-    if (token.role === 'SUPER_ADMIN') {
+    // SUPER_ADMIN and ADMIN_IGLESIA have access to everything (including church-level routes)
+    if (token.role === 'SUPER_ADMIN' || token.role === 'ADMIN_IGLESIA') {
       return response;
     }
 
-    // Check basic role permissions for specific routes
+    // Check basic role permissions for specific routes (only for other roles)
     const requiredPermission = ROUTE_PERMISSIONS[pathname as keyof typeof ROUTE_PERMISSIONS];
     
     if (requiredPermission) {
