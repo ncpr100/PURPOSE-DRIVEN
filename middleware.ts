@@ -73,9 +73,8 @@ const ROUTE_PERMISSIONS = {
   '/communications': { resource: 'communications', action: 'read' },
   '/reports': { resource: 'reports', action: 'read' },
   '/analytics': { resource: 'analytics', action: 'read' },
-  '/intelligent-analytics': { resource: 'analytics', action: 'read' },
-  '/social-media': { resource: 'communications', action: 'read' },
-  '/marketing-campaigns': { resource: 'communications', action: 'read' },
+  '/social-media': { resource: 'social_media', action: 'read' },
+  '/marketing-campaigns': { resource: 'marketing', action: 'read' },
   '/business-intelligence': { resource: 'analytics', action: 'read' },
   '/website-builder': { resource: 'website_builder', action: 'read' },
   '/settings': { resource: 'settings', action: 'read' },
@@ -87,10 +86,6 @@ const ROUTE_PERMISSIONS = {
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
-  const pathname = request.nextUrl.pathname;
-  
-  // DEBUG: Log every request
-  console.log(`🔍 MIDDLEWARE: ${request.method} ${pathname}`);
 
   // Add compression headers
   if (request.headers.get('accept-encoding')?.includes('gzip')) {
@@ -114,7 +109,7 @@ export async function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
   // Advanced Authorization for Phase 2
-  // pathname already declared above at line 90
+  const pathname = request.nextUrl.pathname;
 
   // Skip auth for public routes
   if (pathname.startsWith('/auth/') || 
@@ -174,13 +169,8 @@ export async function middleware(request: NextRequest) {
     if (requiredPermission) {
       const userRole = token.role as string;
       
-      // DEBUG: Enhanced logging for role checking
-      console.log(`🔍 ROLE CHECK: User role="${userRole}", Required resource="${requiredPermission.resource}", Path="${pathname}"`);
-      
       // Basic role check - this will be enhanced with the new permission system
       const hasAccess = checkBasicRoleAccess(userRole, requiredPermission.resource);
-      
-      console.log(`🔍 ACCESS RESULT: hasAccess=${hasAccess} for role="${userRole}" resource="${requiredPermission.resource}"`);
       
       if (!hasAccess) {
         if (isProtectedApiRoute) {
@@ -203,21 +193,13 @@ export async function middleware(request: NextRequest) {
 function checkBasicRoleAccess(role: string, resource: string): boolean {
   const rolePermissions = {
     'ADMIN_IGLESIA': ['*'], // All resources
-    'CHURCH_ADMIN': ['*'], // All resources - CRITICAL FIX FOR USER ROLE
-    'PASTOR': ['members', 'volunteers', 'donations', 'events', 'sermons', 'communications', 'reports', 'analytics', 'automation', 'website_builder', 'settings'],
-    'LIDER': ['members', 'volunteers', 'events', 'sermons', 'communications', 'analytics'],
+    'PASTOR': ['members', 'volunteers', 'donations', 'events', 'sermons', 'communications', 'reports', 'analytics'],
+    'LIDER': ['members', 'volunteers', 'events', 'sermons', 'communications'],
     'MIEMBRO': ['events', 'sermons']
   } as const;
 
   const permissions = rolePermissions[role as keyof typeof rolePermissions] || [];
-  
-  // Check for wildcard access first
-  if (permissions.includes('*' as never)) {
-    return true;
-  }
-  
-  // Check for specific resource access
-  return permissions.includes(resource as never);
+  return permissions.includes('*' as never) || permissions.includes(resource as never);
 }
 
 export const config = {

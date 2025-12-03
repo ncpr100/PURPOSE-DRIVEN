@@ -130,36 +130,42 @@ export function useRealTime(options: UseRealTimeOptions = {}) {
               break
           }
         } catch (error) {
-          console.error('Error parsing SSE message:', error)
+          console.warn('Error parsing SSE message (non-critical):', error)
         }
       }
 
       eventSource.onerror = (event) => {
-        console.error('📡 SSE connection error:', event)
+        console.warn('📡 SSE connection error (non-critical):', event)
         
-        // Safely handle the error event object
-        const errorMessage = event && typeof event === 'object' && 'message' in event 
-          ? (event as any).message 
-          : 'Conexión perdida con el servidor'
-        
-        updateState({ 
-          isConnected: false, 
-          connectionId: null 
-        })
-
-        if (eventSource.readyState === EventSource.CLOSED) {
+        // Prevent errors from propagating and breaking navigation
+        try {
+          // Safely handle the error event object
+          const errorMessage = event && typeof event === 'object' && 'message' in event 
+            ? (event as any).message 
+            : 'Conexión perdida con el servidor'
+          
           updateState({ 
-            isConnecting: false, 
-            error: errorMessage
+            isConnected: false, 
+            connectionId: null 
           })
-          scheduleReconnect()
+
+          if (eventSource.readyState === EventSource.CLOSED) {
+            updateState({ 
+              isConnecting: false, 
+              error: null // Don't show errors to user, just reconnect silently
+            })
+            scheduleReconnect()
+          }
+        } catch (err) {
+          // Swallow any errors during error handling to prevent navigation breakage
+          console.warn('Error handling SSE error (swallowing):', err)
         }
       }
     } catch (error) {
-      console.error('Error creating EventSource:', error)
+      console.warn('Error creating EventSource (non-critical):', error)
       updateState({ 
         isConnecting: false, 
-        error: 'Error al conectar con el servidor' 
+        error: null // Don't show errors, just allow normal navigation
       })
       scheduleReconnect()
     }
