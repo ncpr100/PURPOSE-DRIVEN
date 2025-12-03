@@ -87,6 +87,10 @@ const ROUTE_PERMISSIONS = {
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
+  const pathname = request.nextUrl.pathname;
+  
+  // DEBUG: Log every request
+  console.log(`🔍 MIDDLEWARE: ${request.method} ${pathname}`);
 
   // Add compression headers
   if (request.headers.get('accept-encoding')?.includes('gzip')) {
