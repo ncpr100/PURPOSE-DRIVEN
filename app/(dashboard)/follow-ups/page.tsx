@@ -13,7 +13,7 @@ export default async function FollowUpsPage() {
   }
 
   if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
-    redirect('/dashboard')
+    redirect('/home')
   }
 
   return (

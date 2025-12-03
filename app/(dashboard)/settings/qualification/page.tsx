@@ -13,7 +13,7 @@ export default async function QualificationSettingsPage() {
   }
 
   if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
-    redirect('/dashboard')
+    redirect('/home')
   }
 
   return (

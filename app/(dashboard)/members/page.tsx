@@ -16,8 +16,8 @@ export default async function MembersPage() {
   }
 
   if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
-    console.log('❌ MEMBERS PAGE: Insufficient role, redirecting to dashboard')
-    redirect('/dashboard')
+    console.log('❌ MEMBERS PAGE: Insufficient role, redirecting to home')
+    redirect('/home')
   }
 
   console.log('✅ MEMBERS PAGE: Rendering MembersClient with role:', session.user.role, 'churchId:', session.user.churchId)

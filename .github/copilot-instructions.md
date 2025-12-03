@@ -1,7 +1,7 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 2.3  
-**Last Updated**: December 1, 2025  
+**Document Version**: 2.4  
+**Last Updated**: December 3, 2025  
 **Project Status**: Production Active - Phase 3 Complete, Phase 4 Planning (95% Complete)  
 
 ## Project State & Current Focus
@@ -18,7 +18,7 @@ This is an **enterprise-grade church management platform** actively deployed in 
 
 ### Tech Stack
 - **Framework**: Next.js 14 with App Router (`app/` directory structure)
-- **Database**: PostgreSQL with Prisma ORM (`prisma/schema.prisma` - 2,397 lines, ~50 tables)
+- **Database**: PostgreSQL with Prisma ORM (`prisma/schema.prisma` - 2,794 lines, ~50 tables)
 - **Authentication**: NextAuth.js with custom providers (`lib/auth.ts`)
 - **UI**: Radix UI primitives + Tailwind CSS with shadcn/ui components
 - **Analytics**: Dual analytics system with AI-powered insights
@@ -47,17 +47,44 @@ This is an **enterprise-grade church management platform** actively deployed in 
 
 **1. Centralized Access Control**
 - `middleware.ts` is the **most important file** - controls all routing and permissions
-- Protected routes arrays: `PROTECTED_ROUTES` and `PROTECTED_API_ROUTES`
+- Protected routes arrays: `PROTECTED_ROUTES` (25+ routes) and `PROTECTED_API_ROUTES` 
 - Role hierarchy: `SUPER_ADMIN` → `ADMIN_IGLESIA` → `PASTOR` → `LIDER` → `MIEMBRO`
 - **Never bypass middleware** - all auth/permissions must flow through it
 
-**2. Multi-Tenant Pattern**
-- Church-scoped data isolation via `churchId` foreign keys
+**2. Multi-Tenant Architecture**
+- Church-scoped data isolation via `churchId` foreign keys in all models
 - Platform-level routes: `/platform/*` (super admin only)
 - Church-level routes: `/(dashboard)/*` (church members)
 - Tenant credentials managed in `/platform/tenant-credentials`
 
-**3. Path Aliases & Imports**
+**3. App Router Structure**
+```
+app/
+├── (dashboard)/          # Church-scoped routes (auth required)
+│   ├── analytics/        # Analíticas Generales
+│   ├── intelligent-analytics/  # AI-powered analytics
+│   ├── members/         # Member management
+│   └── layout.tsx       # Dashboard layout wrapper
+├── (platform)/         # Multi-tenant admin (super admin only)
+├── api/                # API routes following REST patterns
+└── auth/               # Authentication routes
+```
+
+**4. Database Patterns**
+```typescript
+// Always use the shared Prisma client
+import { db } from '@/lib/db'
+
+// Church-scoped queries (CRITICAL for multi-tenancy)
+const churchData = await db.member.findMany({
+  where: { churchId: user.churchId }
+})
+
+// Connection pooling configured for production
+// Graceful shutdown on beforeExit event
+```
+
+**5. Path Aliases & Imports**
 Always use `@/*` for imports:
 ```typescript
 import { db } from '@/lib/db'
@@ -120,6 +147,7 @@ npx prisma studio           # Database GUI
 - UI components: `/components/ui/*` (shadcn/ui based)
 - Feature components: `/components/{feature}/*` (analytics, members, volunteers)
 - Page components: `app/(dashboard)/{feature}/_components/*-client.tsx`
+- Client components always end with `-client.tsx` for distinction
 
 ### Data Fetching Pattern
 ```typescript
@@ -131,6 +159,12 @@ const members = await db.member.findMany({
 // Client components use API routes
 const response = await fetch('/api/analytics/executive-report')
 ```
+
+### Authentication Flow
+1. User signs in via NextAuth.js (`app/api/auth/[...nextauth]/route.ts`)
+2. Session includes: `id`, `role`, `churchId`, `church` object
+3. Middleware validates route access on every request
+4. Components access session via `useSession()` hook
 
 ## Module Organization
 
@@ -153,12 +187,16 @@ const response = await fetch('/api/analytics/executive-report')
 ### **CRITICAL PROTOCOL CHECK** (NON-NEGOTIABLE)
 Before implementing or deleting ANY code, **ALWAYS** ask yourself:
 
-1. **IS THIS THE RIGHT APPROACH?** - Verify the implementation strategy aligns with existing patterns
-2. **WHAT ARE THE REPERCUSSIONS?** - Consider impact on existing functionality and dependencies  
-3. **DO WE ALREADY HAVE THIS?** - Check for existing implementations to avoid duplication
-4. **DOUBLE-CHECK THE WORK** - Validate logic and syntax before assuming correctness
-5. **AM I CREATING NEW ERRORS?** - Forward-thinking approach to prevent regressions
-6. **WILL WE NEED THIS LATER?** - Consider future application workflow dependencies
+1. **IS THIS STEP THAT I AM ABOUT TO TAKE THE RIGHT APPROACH?** - Verify the implementation strategy aligns with existing patterns
+2. **WHAT ARE THE REPERCUSSIONS OF THIS STEP THAT I AM ABOUT TO TAKE?** - Consider impact on existing functionality and dependencies  
+3. **DO WE HAVE WHAT I AM ABOUT TO IMPLEMENT ALREADY IN THE SYSTEM?** - Check for existing implementations to avoid duplication
+4. **DOUBLE CHECKING MY WORK BEFORE ASSUMING IS CORRECT** - Validate logic and syntax before assuming correctness
+5. **DID I CREATE NEW ERRORS? I NEED TO AVOID THEM NOT CREATE THEM. I NEED TO BE FORWARD THINKING** - Forward-thinking approach to prevent regressions
+6. **MAY WE NEED THIS FILE LATER IN THE APP WORKFLOW APPLICATION?** - Consider future application workflow dependencies
+7. **WHAT ARE NEXT STEPS AND ENHANCEMENTS OPPORTUNITIES?** - Consider future improvements and optimization potential
+
+### **DEPLOYMENT PROTOCOL** (MANDATORY)
+**AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. This ensures all updates are automatically deployed to the live production environment without delay.
 
 ### Production Deployment Standards
 - **TypeScript Coverage**: 100% with zero compilation errors (ENFORCED)
@@ -179,12 +217,6 @@ Before implementing or deleting ANY code, **ALWAYS** ask yourself:
 - **Multi-tenant Security**: All data must be church-scoped
 
 ## Critical Integration Points
-
-### Authentication Flow
-1. User signs in via NextAuth.js (`app/api/auth/[...nextauth]/route.ts`)
-2. Session includes: `id`, `role`, `churchId`, `church` object
-3. Middleware validates route access on every request
-4. Components access session via `useSession()` hook
 
 ### Database Access Pattern
 ```typescript

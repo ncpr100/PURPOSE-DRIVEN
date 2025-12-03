@@ -12,7 +12,7 @@ export default async function SermonsPage() {
   }
 
   if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
-    redirect('/dashboard')
+    redirect('/home')
   }
 
   return (

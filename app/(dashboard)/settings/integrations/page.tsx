@@ -19,7 +19,7 @@ export default async function IntegrationsPage() {
 
   // Only admins can access integrations
   if (!['SUPER_ADMIN', 'ADMIN_IGLESIA'].includes(session.user.role)) {
-    redirect('/dashboard')
+    redirect('/home')
   }
 
   return <IntegrationsClient userRole={session.user.role} />
