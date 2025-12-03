@@ -198,7 +198,7 @@ export async function middleware(request: NextRequest) {
 function checkBasicRoleAccess(role: string, resource: string): boolean {
   const rolePermissions = {
     'ADMIN_IGLESIA': ['*'], // All resources
-    'PASTOR': ['members', 'volunteers', 'donations', 'events', 'sermons', 'communications', 'reports', 'analytics', 'automation'],
+    'PASTOR': ['members', 'volunteers', 'donations', 'events', 'sermons', 'communications', 'reports', 'analytics', 'automation', 'website_builder', 'settings'],
     'LIDER': ['members', 'volunteers', 'events', 'sermons', 'communications', 'analytics'],
     'MIEMBRO': ['events', 'sermons']
   } as const;
