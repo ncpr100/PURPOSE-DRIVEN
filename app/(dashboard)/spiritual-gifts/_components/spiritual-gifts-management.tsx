@@ -141,17 +141,6 @@ export default function SpiritualGiftsManagement() {
     // 🔄 OLD SYSTEM - Check legacy fields (fallback)
     const hasOldGifts = member.spiritualGifts && member.spiritualGifts.length > 0
     
-    // Debug logging for specific members
-    if (member.firstName === 'Pedro' || member.firstName === 'Juan') {
-      console.log(`🔍 ${member.firstName} ${member.lastName} spiritual gifts check:`, {
-        newProfile: !!member.spiritualProfile,
-        newPrimaryGifts: member.spiritualProfile?.primaryGifts?.length || 0,
-        oldGifts: member.spiritualGifts?.length || 0,
-        hasNewProfile,
-        hasOldGifts
-      })
-    }
-    
     // Use NEW system if available, fallback to OLD system
     return hasNewProfile || hasOldGifts
   })
