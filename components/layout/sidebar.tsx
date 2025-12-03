@@ -223,14 +223,6 @@ export function Sidebar() {
   const { data: session, status } = useSession()
   const pathname = usePathname()
 
-  // Debug logging
-  console.log('🔍 SIDEBAR: Session status:', status, 'Session data:', {
-    hasSession: !!session,
-    userRole: session?.user?.role,
-    userEmail: session?.user?.email,
-    pathname: pathname
-  })
-
   // Show loading state while session is loading
   if (status === 'loading') {
     return (
@@ -249,7 +241,6 @@ export function Sidebar() {
 
   // If no session, show minimal navigation
   if (!session?.user) {
-    console.log('🔍 SIDEBAR: No session found')
     return (
       <aside className="w-64 border-r bg-muted/40 p-6">
         <div className="mb-8 pb-4 border-b border-border">
@@ -265,8 +256,6 @@ export function Sidebar() {
   const filteredItems = navigationItems.filter(item =>
     item.roles.includes(session?.user?.role as string)
   )
-
-  console.log('🔍 SIDEBAR: Filtered items count:', filteredItems.length, 'for role:', session?.user?.role)
 
   return (
     <aside className="w-64 border-r bg-muted/40 p-6">
