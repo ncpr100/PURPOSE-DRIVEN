@@ -7,23 +7,12 @@ import bcrypt from "bcryptjs"
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 7 * 24 * 60 * 60, // Reduced to 7 days
   },
   pages: {
     signIn: "/auth/signin",
   },
-  cookies: {
-    sessionToken: {
-      name: "next-auth.session-token",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 30 * 24 * 60 * 60,
-      },
-    },
-  },
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -72,23 +61,33 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        // Store only user ID - fetch rest when needed
         token.sub = user.id
-        token.email = user.email
-        token.name = user.name
-        token.role = user.role
-        token.churchId = user.churchId
       }
       return token
     },
     async session({ session, token }) {
-      // Use data from JWT token directly - no database call needed
+      // Fetch user data fresh each time to keep JWT minimal
       if (token.sub) {
-        session.user = {
-          id: token.sub as string,
-          email: token.email as string || '',
-          name: token.name as string || '',
-          role: token.role as any,
-          churchId: token.churchId as string || ''
+        const user = await db.user.findUnique({
+          where: { id: token.sub },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+            churchId: true
+          }
+        })
+        
+        if (user) {
+          session.user = {
+            id: user.id,
+            email: user.email || '',
+            name: user.name || '',
+            role: user.role,
+            churchId: user.churchId || ''
+          }
         }
       }
       return session
