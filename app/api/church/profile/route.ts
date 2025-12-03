@@ -34,13 +34,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    // Replace base64 logo with API endpoint URL
-    const churchData = {
-      ...church,
-      logo: church.logo ? `/api/logo/${church.id}` : null
-    }
-
-    return NextResponse.json({ church: churchData })
+    // Return church data with logo as-is (base64 or URL)
+    return NextResponse.json({ church })
   } catch (error) {
     console.error('Error fetching church profile:', error)
     return NextResponse.json(
@@ -90,7 +85,7 @@ export async function PUT(request: NextRequest) {
         email: email?.trim() || null,
         website: website?.trim() || null,
         description: description?.trim() || null,
-        logo: logo?.trim() || null
+        logo: logo || null // Don't trim logo - it's base64 data
       },
       select: {
         id: true,
