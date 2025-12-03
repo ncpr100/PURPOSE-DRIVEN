@@ -73,8 +73,9 @@ const ROUTE_PERMISSIONS = {
   '/communications': { resource: 'communications', action: 'read' },
   '/reports': { resource: 'reports', action: 'read' },
   '/analytics': { resource: 'analytics', action: 'read' },
-  '/social-media': { resource: 'social_media', action: 'read' },
-  '/marketing-campaigns': { resource: 'marketing', action: 'read' },
+  '/intelligent-analytics': { resource: 'analytics', action: 'read' },
+  '/social-media': { resource: 'communications', action: 'read' },
+  '/marketing-campaigns': { resource: 'communications', action: 'read' },
   '/business-intelligence': { resource: 'analytics', action: 'read' },
   '/website-builder': { resource: 'website_builder', action: 'read' },
   '/settings': { resource: 'settings', action: 'read' },
@@ -193,8 +194,8 @@ export async function middleware(request: NextRequest) {
 function checkBasicRoleAccess(role: string, resource: string): boolean {
   const rolePermissions = {
     'ADMIN_IGLESIA': ['*'], // All resources
-    'PASTOR': ['members', 'volunteers', 'donations', 'events', 'sermons', 'communications', 'reports', 'analytics'],
-    'LIDER': ['members', 'volunteers', 'events', 'sermons', 'communications'],
+    'PASTOR': ['members', 'volunteers', 'donations', 'events', 'sermons', 'communications', 'reports', 'analytics', 'automation'],
+    'LIDER': ['members', 'volunteers', 'events', 'sermons', 'communications', 'analytics'],
     'MIEMBRO': ['events', 'sermons']
   } as const;
 
