@@ -15,7 +15,7 @@ export default async function MembersPage() {
     redirect('/auth/signin')
   }
 
-  if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
+  if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER'].includes(session.user.role)) {
     console.log('❌ MEMBERS PAGE: Insufficient role, redirecting to home')
     redirect('/home')
   }

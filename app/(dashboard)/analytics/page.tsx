@@ -10,7 +10,7 @@ export default async function AnalyticsPage() {
     redirect('/auth/signin')
   }
 
-  if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
+  if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER'].includes(session.user.role)) {
     redirect('/home')
   }
 
