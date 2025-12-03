@@ -166,10 +166,14 @@ export async function middleware(request: NextRequest) {
     }
 
     // SUPER_ADMIN and ADMIN_IGLESIA have access to everything (including church-level routes)
+    console.log('🔐 ADMIN CHECK - token.role:', token.role, 'type:', typeof token.role);
+    console.log('🔐 ADMIN CHECK - equals ADMIN_IGLESIA?', token.role === 'ADMIN_IGLESIA');
+    console.log('🔐 ADMIN CHECK - equals SUPER_ADMIN?', token.role === 'SUPER_ADMIN');
     if (token.role === 'SUPER_ADMIN' || token.role === 'ADMIN_IGLESIA') {
-      console.log('🔐 MIDDLEWARE: User is SUPER_ADMIN or ADMIN_IGLESIA, allowing access');
+      console.log('✅ MIDDLEWARE: User is SUPER_ADMIN or ADMIN_IGLESIA, allowing access to', pathname);
       return response;
     }
+    console.log('❌ MIDDLEWARE: User is NOT admin, role is:', token.role);
 
     console.log('🔐 MIDDLEWARE: Checking specific route permissions for role:', token.role);
     
