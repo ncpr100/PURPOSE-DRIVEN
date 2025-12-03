@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limpiar Sesión - Khesed-tek</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .container {
+      background: white;
+      padding: 3rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 500px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    .status {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin: 1rem 0;
+      font-weight: 500;
+    }
+    .loading {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 1rem auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background: #5568d3;
+    }
+    .instructions {
+      text-align: left;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 0.5rem;
+    }
+    .instructions h3 {
+      margin-top: 0;
+      color: #667eea;
+    }
+    .instructions ol {
+      margin: 0.5rem 0;
+      padding-left: 1.5rem;
+    }
+    .instructions li {
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 Limpiar Sesión</h1>
+    
+    <div id="status" class="status loading">
+      <div class="spinner"></div>
+      <p>Limpiando cookies y caché...</p>
+    </div>
+
+    <div class="instructions">
+      <h3>Si aún tienes el error 431:</h3>
+      <ol>
+        <li><strong>Chrome:</strong> Presiona Ctrl+Shift+Delete (Windows) o Cmd+Shift+Delete (Mac)</li>
+        <li>Selecciona "Todo el tiempo"</li>
+        <li>Marca: Cookies y Datos del sitio</li>
+        <li>Haz clic en "Borrar datos"</li>
+        <li>Cierra y vuelve a abrir Chrome</li>
+      </ol>
+      
+      <button onclick="window.location.href='/auth/signin'">Ir a Iniciar Sesión</button>
+    </div>
+  </div>
+
+  <script>
+    async function clearEverything() {
+      try {
+        // Clear all cookies
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          const eqPos = cookie.indexOf('=');
+          const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+          
+          // Delete for all possible paths and domains
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.${window.location.hostname}`;
+        }
+
+        // Clear storage
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Clear indexedDB
+        if (window.indexedDB) {
+          const dbs = await window.indexedDB.databases();
+          for (let db of dbs) {
+            if (db.name) {
+              window.indexedDB.deleteDatabase(db.name);
+            }
+          }
+        }
+
+        // Clear cache if available
+        if ('caches' in window) {
+          const cacheNames = await caches.keys();
+          await Promise.all(cacheNames.map(name => caches.delete(name)));
+        }
+
+        document.getElementById('status').className = 'status success';
+        document.getElementById('status').innerHTML = `
+          <p>✅ Cookies limpiadas exitosamente</p>
+          <p>Redirigiendo al inicio de sesión...</p>
+        `;
+
+        setTimeout(() => {
+          window.location.href = '/auth/signin';
+        }, 2000);
+
+      } catch (error) {
+        document.getElementById('status').className = 'status error';
+        document.getElementById('status').innerHTML = `
+          <p>⚠️ Limpieza parcial completada</p>
+          <p>Sigue las instrucciones manuales abajo</p>
+        `;
+        console.error('Error clearing:', error);
+      }
+    }
+
+    // Auto-run on page load
+    clearEverything();
+  </script>
+</body>
+</html>
