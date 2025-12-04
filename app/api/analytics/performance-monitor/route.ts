@@ -167,7 +167,7 @@ async function getDatabaseMetrics(): Promise<PerformanceMetrics['database']> {
 
     // Get query performance metrics (simplified)
     const queryStartTime = Date.now();
-    const memberCount = await db.member.count();
+    const memberCount = await db.members.count();
     const queryTime = Date.now() - queryStartTime;
 
     // Calculate performance metrics based on recent operations

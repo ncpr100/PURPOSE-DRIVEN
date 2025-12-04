@@ -217,7 +217,7 @@ export async function GET(request: NextRequest) {
             count: item._count.id
           };
         }
-        const member = await db.member.findUnique({
+        const member = await db.members.findUnique({
           where: { id: item.memberId },
           select: { firstName: true, lastName: true }
         })

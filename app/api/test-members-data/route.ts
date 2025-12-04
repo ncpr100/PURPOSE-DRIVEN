@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Test member count
-    const memberCount = await db.member.count({
+    const memberCount = await db.members.count({
       where: { 
         churchId: user.churchId,
         isActive: true 
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     console.log('🔍 Member count for church', user.churchId, ':', memberCount)
 
     // Test getting first few members
-    const sampleMembers = await db.member.findMany({
+    const sampleMembers = await db.members.findMany({
       where: { 
         churchId: user.churchId,
         isActive: true 

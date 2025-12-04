@@ -293,7 +293,7 @@ export async function POST(request: NextRequest) {
         // Check if member exists (by email or name combination)
         let existingMember = null
         if (mappedData.email) {
-          existingMember = await db.member.findFirst({
+          existingMember = await db.members.findFirst({
             where: {
               churchId: session.user.churchId,
               email: mappedData.email,
@@ -304,7 +304,7 @@ export async function POST(request: NextRequest) {
 
         // If not found by email, try by name
         if (!existingMember && mappedData.firstName && mappedData.lastName) {
-          existingMember = await db.member.findFirst({
+          existingMember = await db.members.findFirst({
             where: {
               churchId: session.user.churchId,
               firstName: mappedData.firstName,
@@ -327,13 +327,13 @@ export async function POST(request: NextRequest) {
 
         // Create or update member
         if (existingMember && updateExisting) {
-          await db.member.update({
+          await db.members.update({
             where: { id: existingMember.id },
             data: mappedData
           })
           result.updated++
         } else {
-          const member = await db.member.create({
+          const member = await db.members.create({
             data: mappedData
           })
 

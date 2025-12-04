@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       volunteerStats
     ] = await Promise.all([
       // Member Analytics
-      db.member.aggregate({
+      db.members.aggregate({
         where: { churchId, isActive: true },
         _count: { id: true }
       }),

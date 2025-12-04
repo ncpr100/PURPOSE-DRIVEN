@@ -74,7 +74,7 @@ async function getRecipients(targetGroup: string, churchId: string, recipientIds
 
   switch (targetGroup) {
     case 'TODOS':
-      const allMembers = await db.member.findMany({
+      const allMembers = await db.members.findMany({
         where: { churchId, isActive: true },
         select: { firstName: true, lastName: true, phone: true, email: true }
       })
@@ -96,7 +96,7 @@ async function getRecipients(targetGroup: string, churchId: string, recipientIds
       }))
       break
     case 'leaders':
-      const leaders = await db.member.findMany({
+      const leaders = await db.members.findMany({
         where: {
           churchId: churchId,
           isActive: true,
@@ -116,7 +116,7 @@ async function getRecipients(targetGroup: string, churchId: string, recipientIds
         return []
       }
 
-      const customRecipients = await db.member.findMany({
+      const customRecipients = await db.members.findMany({
         where: {
           id: { in: recipientIds },
           churchId,

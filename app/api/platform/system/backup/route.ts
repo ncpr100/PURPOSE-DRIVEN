@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     const stats = await Promise.all([
       db.church.count(),
       db.user.count(),
-      db.member.count(),
+      db.members.count(),
       db.donation.count(),
       db.event.count()
     ])

@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
     }
 
     // ✅ SECURITY: Limited data exposure with secure select
-    const members = await db.member.findMany({
+    const members = await db.members.findMany({
       where: whereClause,
       select: {
         id: true,
@@ -158,7 +158,7 @@ export async function GET(request: NextRequest) {
     })
 
     // ✅ SECURITY: Get total count for pagination
-    const totalCount = await db.member.count({
+    const totalCount = await db.members.count({
       where: whereClause
     })
 
@@ -271,7 +271,7 @@ export async function POST(request: NextRequest) {
 
     // ✅ SECURITY: Check for duplicate email within church
     if (validatedData.email) {
-      const existingMember = await db.member.findFirst({
+      const existingMember = await db.members.findFirst({
         where: {
           email: validatedData.email,
           churchId: user.churchId,
@@ -292,7 +292,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ✅ SECURITY: Create member with validated data
-    const member = await db.member.create({
+    const member = await db.members.create({
       data: {
         ...validatedData,
         churchId: user.churchId,

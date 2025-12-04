@@ -30,7 +30,7 @@ export default async function DashboardPage() {
     firstTimeVisitorsThisMonth,
     completedFollowUpsThisMonth
   ] = await Promise.all([
-    db.member.count({
+    db.members.count({
       where: { 
         churchId: session.user.churchId,
         isActive: true 
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
         }
       }
     }),
-    db.member.count({
+    db.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,
@@ -186,7 +186,7 @@ export default async function DashboardPage() {
   }
 
   // Fetch recent members
-  const recentMembers = await db.member.findMany({
+  const recentMembers = await db.members.findMany({
     where: {
       churchId: session.user.churchId,
       isActive: true

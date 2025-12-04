@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       db.user.count({ where: { isActive: true } }),
       
       // Total de miembros
-      db.member.count(),
+      db.members.count(),
       
       // Estadísticas de donaciones
       db.donation.aggregate({

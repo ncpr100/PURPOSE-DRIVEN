@@ -81,7 +81,7 @@ export async function POST(
           break;
 
         case 'MEMBER':
-          data = await db.member.findMany({
+          data = await db.members.findMany({
             ...query,
             include: {
               ministry: true,

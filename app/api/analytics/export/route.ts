@@ -142,7 +142,7 @@ async function getAnalyticsData(churchId: string, reportType: string, period: nu
 
   // Base analytics data
   const [members, events, donations, communications] = await Promise.all([
-    db.member.findMany({
+    db.members.findMany({
       where: { churchId }
     }),
     db.event.findMany({

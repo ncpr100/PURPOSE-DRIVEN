@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
 
     // If refresh requested, update member journeys and clear cache
     if (refreshAnalysis) {
-      const members = await db.member.findMany({
+      const members = await db.members.findMany({
         where: { churchId, isActive: true },
         select: { id: true }
       });
@@ -212,7 +212,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
         isFirstTime: true
       }
     }),
-    db.member.findMany({
+    db.members.findMany({
       where: { churchId },
       include: { spiritualProfile: true }
     }),

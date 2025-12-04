@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
       engagementData
     ] = await Promise.all([
       // Member growth history
-      db.member.findMany({
+      db.members.findMany({
         where: { 
           churchId,
           createdAt: { gte: startDate, lte: endDate }

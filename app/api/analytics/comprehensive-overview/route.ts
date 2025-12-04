@@ -39,11 +39,11 @@ export async function GET(request: NextRequest) {
     ] = await Promise.all([
       // Enhanced Member Analytics
       Promise.all([
-        db.member.aggregate({
+        db.members.aggregate({
           where: { churchId, isActive: true },
           _count: { id: true }
         }),
-        db.member.findMany({
+        db.members.findMany({
           where: { 
             churchId, 
             isActive: true,

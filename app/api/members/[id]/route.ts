@@ -25,7 +25,7 @@ export async function PUT(
     const memberId = params.id
 
     // Verify member belongs to user's church
-    const existingMember = await db.member.findFirst({
+    const existingMember = await db.members.findFirst({
       where: {
         id: memberId,
         churchId: session.user.churchId
@@ -36,7 +36,7 @@ export async function PUT(
       return NextResponse.json({ message: 'Miembro no encontrado' }, { status: 404 })
     }
 
-    const updatedMember = await db.member.update({
+    const updatedMember = await db.members.update({
       where: { id: memberId },
       data: data
     })
@@ -69,7 +69,7 @@ export async function DELETE(
     const memberId = params.id
 
     // Verify member belongs to user's church
-    const existingMember = await db.member.findFirst({
+    const existingMember = await db.members.findFirst({
       where: {
         id: memberId,
         churchId: session.user.churchId
@@ -81,7 +81,7 @@ export async function DELETE(
     }
 
     // Soft delete
-    await db.member.update({
+    await db.members.update({
       where: { id: memberId },
       data: { isActive: false }
     })
