@@ -322,6 +322,58 @@ npm run dev
 
 ---
 
+## 🔄 MANDATORY BACKUP REPLICATION PROTOCOL
+
+**⚠️ CRITICAL REQUIREMENT**: Any update performed in the KHESED-TEK app **MUST** be replicated to the backup `KHESED-TEK-BACKUP-20251204`.
+
+### **PROTOCOL CHECK - NON-NEGOTIABLE (8 STEPS)**
+**Before implementing or deleting ANY code, ALWAYS ask yourself:**
+
+1. **IS THIS STEP THAT I AM ABOUT TO TAKE THE RIGHT APPROACH?**
+2. **WHAT ARE THE REPERCUSSIONS OF THIS STEP THAT I AM ABOUT TO TAKE?**
+3. **DO WE HAVE WHAT I AM ABOUT TO IMPLEMENT ALREADY IN THE SYSTEM?**
+4. **DOUBLE CHECK MY WORK BEFORE ASSUMING IS CORRECT**
+5. **DID I CREATE NEW ERRORS? I NEED TO AVOID THEM NOT CREATE THEM. I NEED TO BE FORWARD THINKING**
+6. **MAY WE NEED THIS FILE LATER IN THE APP WORKFLOW APPLICATION?**
+7. **WHAT ARE NEXT STEPS AND ENHANCEMENTS OPPORTUNITIES?**
+8. **LEARN FROM YOUR MISTAKE TO AVOID REPEATING THEM**
+
+### Replication Workflow
+
+**For EVERY change to `/workspaces/PURPOSE-DRIVEN/`:**
+
+1. **Make the change** in the main app
+2. **Immediately replicate** to backup:
+   ```bash
+   # Copy specific file
+   cp /workspaces/PURPOSE-DRIVEN/path/to/changed-file.ts \
+      /workspaces/KHESED-TEK-BACKUP-20251204/path/to/changed-file.ts
+   
+   # Or sync entire directory
+   rsync -av /workspaces/PURPOSE-DRIVEN/app/ \
+             /workspaces/KHESED-TEK-BACKUP-20251204/app/
+   ```
+3. **Update backup manifest** with change details
+4. **Verify synchronization** is complete
+
+### Auto-Sync Command
+```bash
+# Quick sync script
+cp /workspaces/PURPOSE-DRIVEN/$CHANGED_FILE \
+   /workspaces/KHESED-TEK-BACKUP-20251204/$CHANGED_FILE
+```
+
+### Validation
+```bash
+# Verify files are identical
+diff /workspaces/PURPOSE-DRIVEN/$FILE \
+     /workspaces/KHESED-TEK-BACKUP-20251204/$FILE
+```
+
+**NON-NEGOTIABLE**: Backup must stay synchronized with main application at ALL times.
+
+---
+
 ## 📚 Related Documentation
 
 - `AUTH_ARCHITECTURE_CRITICAL.md` - Auth system details
