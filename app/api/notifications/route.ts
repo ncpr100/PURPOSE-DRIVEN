@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
           take: limit,
           skip: offset,
           include: {
-            church: { select: { name: true } },
+            churches: { select: { name: true } },
             creator: { select: { name: true } },
             deliveries: {
               select: {
@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
           include: {
             notification: {
               include: {
-                church: { select: { name: true } },
+                churches: { select: { name: true } },
                 creator: { select: { name: true } }
               }
             }
@@ -207,7 +207,7 @@ export async function POST(request: NextRequest) {
         createdBy: user.id,
       },
       include: {
-        church: { select: { name: true } },
+        churches: { select: { name: true } },
         creator: { select: { name: true } }
       }
     })

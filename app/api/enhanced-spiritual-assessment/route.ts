@@ -158,7 +158,7 @@ export async function GET(request: NextRequest) {
     const profile = await prisma.member_spiritual_profiles.findUnique({
       where: { memberId },
       include: {
-        member: {
+        members: {
           select: {
             firstName: true,
             lastName: true,

@@ -190,7 +190,7 @@ async function getAnalyticsData(churchId: string, reportType: string, period: nu
     reportType,
     period,
     generatedAt: new Date().toISOString(),
-    church: { id: churchId },
+    churches: { id: churchId },
     summary: {
       totalMembers: members.length,
       newMembers: members.filter(m => m.createdAt >= startDate).length,

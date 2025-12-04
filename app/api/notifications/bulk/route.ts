@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
         notificationData.isGlobal = true
         const globalNotification = await prisma.notification.create({
           data: notificationData,
-          include: { church: { select: { name: true } } }
+          include: { churches: { select: { name: true } } }
         })
         createdNotifications.push(globalNotification)
 
@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
         notificationData.targetRole = validatedData.targetRole
         const roleNotification = await prisma.notification.create({
           data: notificationData,
-          include: { church: { select: { name: true } } }
+          include: { churches: { select: { name: true } } }
         })
         createdNotifications.push(roleNotification)
 
@@ -229,7 +229,7 @@ export async function POST(request: NextRequest) {
               ...notificationData,
               targetUser: targetUser.id
             },
-            include: { church: { select: { name: true } } }
+            include: { churches: { select: { name: true } } }
           })
           createdNotifications.push(userNotification)
 
@@ -268,7 +268,7 @@ export async function POST(request: NextRequest) {
               ...notificationData,
               targetUser: churchUser.id
             },
-            include: { church: { select: { name: true } } }
+            include: { churches: { select: { name: true } } }
           })
           createdNotifications.push(userNotification)
 

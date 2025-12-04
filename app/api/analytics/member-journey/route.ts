@@ -349,7 +349,7 @@ async function getMemberSpecificActions(churchId: string): Promise<any[]> {
       ]
     },
     include: {
-      member: { select: { firstName: true, lastName: true, email: true } }
+      members: { select: { firstName: true, lastName: true, email: true } }
     },
     take: 10
   });

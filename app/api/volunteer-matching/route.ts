@@ -180,7 +180,7 @@ export async function POST(request: NextRequest) {
             validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Valid for 7 days
           },
           include: {
-            member: {
+            members: {
               select: {
                 firstName: true,
                 lastName: true,
@@ -251,7 +251,7 @@ export async function GET(request: NextRequest) {
     })
 
     const where: any = {
-      member: { churchId: session.user.churchId },
+      members: { churchId: session.user.churchId },
       status,
       validUntil: { gte: new Date() }
     }
@@ -271,7 +271,7 @@ export async function GET(request: NextRequest) {
     const recommendations = await prisma.volunteerRecommendation.findMany({
       where,
       include: {
-        member: {
+        members: {
           select: {
             firstName: true,
             lastName: true,
@@ -284,7 +284,7 @@ export async function GET(request: NextRequest) {
             name: true
           }
         },
-        event: {
+        events: {
           select: {
             title: true,
             startDate: true

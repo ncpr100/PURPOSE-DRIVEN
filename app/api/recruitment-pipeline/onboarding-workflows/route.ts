@@ -217,7 +217,7 @@ export async function GET(request: NextRequest) {
     // In production, you'd have a dedicated onboarding_workflows table
     
     let whereClause: any = {
-      member: { churchId: session.user.churchId },
+      members: { churchId: session.user.churchId },
       recommendationType: 'ONBOARDING_WORKFLOW'
     }
 
@@ -227,7 +227,7 @@ export async function GET(request: NextRequest) {
     const workflows = await prisma.volunteerRecommendation.findMany({
       where: whereClause,
       include: {
-        member: {
+        members: {
           select: {
             firstName: true,
             lastName: true,
@@ -515,7 +515,7 @@ async function findAvailableMentor(ministryId: string, churchId: string) {
       ministryId,
       churchId,
       isActive: true,
-      member: {
+      members: {
         isActive: true,
         experienceLevel: { gte: 5 }, // At least experience level 5
         leadershipReadiness: { gte: 6 } // Some leadership potential

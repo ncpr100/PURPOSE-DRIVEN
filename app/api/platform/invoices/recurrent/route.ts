@@ -20,7 +20,7 @@ export async function GET() {
         status: { in: ['PAID', 'SENT'] } // Only active recurrent invoices
       },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         },
         subscription: {
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
         }
       },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         },
         lineItems: true

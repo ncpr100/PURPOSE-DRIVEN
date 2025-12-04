@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit,
         include: {
-          church: {
+          churches: {
             select: {
               id: true,
               name: true
@@ -110,7 +110,7 @@ export async function PUT(request: NextRequest) {
       where: { id: userId },
       data: updateData,
       include: {
-        church: {
+        churches: {
           select: { name: true }
         }
       }

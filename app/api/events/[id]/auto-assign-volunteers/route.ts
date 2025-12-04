@@ -53,7 +53,7 @@ export async function POST(
         isActive: true
       },
       include: {
-        member: {
+        members: {
           include: {
             member_spiritual_profiles: true,
             availabilityMatrix: true
@@ -113,7 +113,7 @@ export async function POST(
               churchId: session.user.churchId
             },
             include: {
-              volunteer: {
+              volunteers: {
                 include: {
                   member: true
                 }

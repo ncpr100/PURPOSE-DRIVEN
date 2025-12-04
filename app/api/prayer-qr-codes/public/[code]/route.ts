@@ -16,7 +16,7 @@ export async function GET(
       include: {
         form: {
           include: {
-            church: {
+            churches: {
               select: {
                 id: true,
                 name: true,

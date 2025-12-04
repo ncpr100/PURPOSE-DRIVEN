@@ -54,7 +54,7 @@ export async function GET(request: Request) {
         ...(dateRange !== 'all' && { createdAt: dateFilter })
       },
       include: {
-        member: {
+        members: {
           select: {
             id: true,
             firstName: true,

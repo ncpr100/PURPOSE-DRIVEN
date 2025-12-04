@@ -51,7 +51,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         ]
       },
       include: {
-        church: {
+        churches: {
           select: { name: true }
         }
       }
@@ -134,7 +134,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         updatedAt: new Date()
       },
       include: {
-        church: {
+        churches: {
           select: { name: true }
         }
       }

@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
       // Volunteer Analytics
       db.volunteers.aggregate({
         where: { 
-          member: { churchId, isActive: true },
+          members: { churchId, isActive: true },
           isActive: true 
         },
         _count: { id: true }

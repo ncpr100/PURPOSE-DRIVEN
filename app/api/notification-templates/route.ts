@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
         { name: 'asc' }
       ],
       include: {
-        church: {
+        churches: {
           select: { name: true }
         }
       }
@@ -126,7 +126,7 @@ export async function POST(request: NextRequest) {
         isSystem: false, // User-created templates are never system templates
       },
       include: {
-        church: {
+        churches: {
           select: { name: true }
         }
       }

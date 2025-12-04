@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         travelWillingness: travelWillingness || 1,
       },
       include: {
-        member: {
+        members: {
           select: {
             firstName: true,
             lastName: true,
@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
     const matrix = await prisma.availabilityMatrix.findUnique({
       where: { memberId },
       include: {
-        member: {
+        members: {
           select: {
             firstName: true,
             lastName: true,

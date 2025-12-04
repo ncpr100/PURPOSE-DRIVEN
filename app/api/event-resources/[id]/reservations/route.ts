@@ -35,7 +35,7 @@ export async function GET(
     const reservations = await db.event_resourcesReservation.findMany({
       where: whereClause,
       include: {
-        event: {
+        events: {
           select: { id: true, title: true }
         }
       },
@@ -119,7 +119,7 @@ export async function POST(
       },
       include: {
         resource: true,
-        event: {
+        events: {
           select: { id: true, title: true }
         }
       }

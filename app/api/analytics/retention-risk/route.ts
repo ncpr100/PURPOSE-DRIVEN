@@ -32,12 +32,12 @@ export async function GET(request: Request) {
       where: {
         churchId,
         retentionRisk: { in: ['HIGH', 'VERY_HIGH'] },
-        member: { 
+        members: { 
           isActive: true 
         }
       },
       include: {
-        member: {
+        members: {
           select: {
             id: true,
             firstName: true,
@@ -66,12 +66,12 @@ export async function GET(request: Request) {
         churchId,
         retentionRisk: 'MEDIUM',
         retentionScore: { lt: 60 },
-        member: { 
+        members: { 
           isActive: true 
         }
       },
       include: {
-        member: {
+        members: {
           select: {
             id: true,
             firstName: true,
@@ -93,7 +93,7 @@ export async function GET(request: Request) {
       by: ['retentionRisk'],
       where: {
         churchId,
-        member: { isActive: true }
+        members: { isActive: true }
       },
       _count: true
     });
@@ -147,10 +147,10 @@ export async function GET(request: Request) {
         lastAnalysisDate: {
           gte: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000) // Last 2 weeks
         },
-        member: { isActive: true }
+        members: { isActive: true }
       },
       include: {
-        member: {
+        members: {
           select: {
             id: true,
             firstName: true,
@@ -218,7 +218,7 @@ export async function GET(request: Request) {
       
       return {
         id: journey.id,
-        member: {
+        members: {
           id: journey.member?.id,
           name: `${journey.member?.firstName} ${journey.member?.lastName}`,
           email: journey.member?.email,
@@ -267,7 +267,7 @@ export async function GET(request: Request) {
       highRiskAlerts: alertsWithStrategies,
       mediumRiskWatch: mediumRiskMembers.map(journey => ({
         id: journey.id,
-        member: {
+        members: {
           id: journey.member?.id,
           name: `${journey.member?.firstName} ${journey.member?.lastName}`,
           email: journey.member?.email

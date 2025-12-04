@@ -15,7 +15,7 @@ export async function GET(
         isPublic: true
       },
       include: {
-        church: {
+        churches: {
           select: {
             id: true,
             name: true,

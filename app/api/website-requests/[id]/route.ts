@@ -31,7 +31,7 @@ export async function GET(
         )
       },
       include: {
-        church: {
+        churches: {
           select: {
             name: true,
             email: true,
@@ -84,7 +84,7 @@ export async function PUT(
           ...(body.status === 'completed' && { completedAt: new Date() })
         },
         include: {
-          church: {
+          churches: {
             select: {
               name: true,
               email: true

@@ -155,7 +155,7 @@ export async function POST(request: NextRequest) {
             email: user.email,
             name: user.name || undefined
           },
-          church: {
+          churches: {
             name: churchDetails.name,
             id: church.id
           },

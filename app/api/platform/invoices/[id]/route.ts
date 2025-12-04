@@ -20,7 +20,7 @@ export async function GET(
     const invoice = await prisma.invoice.findUnique({
       where: { id: params.id },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true, phone: true }
         },
         subscription: {
@@ -85,7 +85,7 @@ export async function PUT(
       where: { id: params.id },
       data: updateData,
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         }
       }

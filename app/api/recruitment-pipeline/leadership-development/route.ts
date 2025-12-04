@@ -212,7 +212,7 @@ async function generateLeadershipOpportunities(member: any, leadershipScore: num
       volunteers: {
         where: { isActive: true },
         include: { 
-          member: {
+          members: {
             include: { member_spiritual_profiles: true }
           }
         }

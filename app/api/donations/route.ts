@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
         include: {
           category: true,
           paymentMethod: true,
-          member: {
+          members: {
             select: {
               id: true,
               firstName: true,
@@ -206,7 +206,7 @@ export async function POST(request: NextRequest) {
         include: {
           category: true,
           paymentMethod: true,
-          member: {
+          members: {
             select: {
               id: true,
               firstName: true,

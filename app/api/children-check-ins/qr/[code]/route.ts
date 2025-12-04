@@ -48,7 +48,7 @@ export async function GET(
         title: children_check_ins.event.title,
         startDate: children_check_ins.event.startDate
       } : null,
-      church: {
+      churches: {
         name: children_check_ins.church.name
       },
       // Security info (non-sensitive)

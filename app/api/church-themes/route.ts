@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     let church_themes = await prisma.church_themes.findUnique({
       where: { churchId: user.churchId },
       include: {
-        church: {
+        churches: {
           select: {
             id: true,
             name: true,
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
           allowLayoutChanges: false,
         },
         include: {
-          church: {
+          churches: {
             select: {
               id: true,
               name: true,
@@ -142,7 +142,7 @@ export async function PUT(request: NextRequest) {
         ...validatedData,
       },
       include: {
-        church: {
+        churches: {
           select: {
             id: true,
             name: true,

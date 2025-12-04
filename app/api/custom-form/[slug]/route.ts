@@ -14,7 +14,7 @@ export async function GET(
     const form = await db.custom_forms.findUnique({
       where: { slug },
       include: {
-        church: {
+        churches: {
           select: {
             id: true,
             name: true,
@@ -68,7 +68,7 @@ export async function POST(
     const form = await db.custom_forms.findUnique({
       where: { slug },
       include: {
-        church: {
+        churches: {
           select: {
             id: true,
             name: true

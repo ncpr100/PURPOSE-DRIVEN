@@ -39,7 +39,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         ]
       },
       include: {
-        church: {
+        churches: {
           select: { name: true }
         }
       }
@@ -116,7 +116,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const updatedNotification = await prisma.notification.findUnique({
       where: { id: params.id },
       include: {
-        church: { select: { name: true } },
+        churches: { select: { name: true } },
         deliveries: {
           where: { userId: user.id },
           select: {

@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
           }
         },
         include: {
-          church: {
+          churches: {
             select: { id: true, name: true, email: true }
           },
           lineItems: true

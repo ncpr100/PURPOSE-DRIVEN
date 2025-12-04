@@ -20,7 +20,7 @@ export async function POST(
     const credentials = await prisma.tenantCredentials.findUnique({
       where: { churchId: params.churchId },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         }
       }

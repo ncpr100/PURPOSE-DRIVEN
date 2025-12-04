@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     const credentials = await prisma.tenantCredentials.findMany({
       where,
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true, isActive: true }
         },
         creator: {
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
         createdBy: session.user.id
       },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         }
       }

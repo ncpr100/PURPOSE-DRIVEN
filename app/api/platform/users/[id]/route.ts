@@ -28,7 +28,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         role: true,
         isActive: true,
         createdAt: true,
-        church: {
+        churches: {
           select: {
             id: true,
             name: true

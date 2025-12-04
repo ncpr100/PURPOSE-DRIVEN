@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     let form = await db.custom_forms.findUnique({
       where: { slug: formSlug },
       include: {
-        church: { select: { id: true, name: true } }
+        churches: { select: { id: true, name: true } }
       }
     })
 
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
           createdBy: 'system'
         },
         include: {
-          church: { select: { id: true, name: true } }
+          churches: { select: { id: true, name: true } }
         }
       })
     }

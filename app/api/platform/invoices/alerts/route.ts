@@ -24,7 +24,7 @@ export async function GET() {
         dueDate: { lt: today }
       },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         }
       },
@@ -41,7 +41,7 @@ export async function GET() {
         }
       },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         }
       },
@@ -58,7 +58,7 @@ export async function GET() {
         }
       },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         },
         plan: {
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
     const invoices = await prisma.invoice.findMany({
       where: { id: { in: invoiceIds } },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         }
       }

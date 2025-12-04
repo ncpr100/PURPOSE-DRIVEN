@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
             status: 'CONFIRMADA'
           },
           include: {
-            event: {
+            events: {
               select: { title: true, startDate: true, endDate: true }
             }
           }

@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
         take: 10,
         orderBy: { createdAt: 'desc' },
         include: {
-          church: {
+          churches: {
             select: { name: true }
           }
         }

@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       prisma.invoice.findMany({
         where,
         include: {
-          church: {
+          churches: {
             select: { id: true, name: true, email: true }
           },
           subscription: {
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
         }
       },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         },
         lineItems: true

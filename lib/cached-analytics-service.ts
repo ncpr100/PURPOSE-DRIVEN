@@ -423,7 +423,7 @@ export class CachedAnalyticsService {
       }),
       db.volunteer.count({ 
         where: { 
-          member: { churchId: this.churchId },
+          members: { churchId: this.churchId },
           isActive: true
         }
       }),
@@ -445,7 +445,7 @@ export class CachedAnalyticsService {
           engagementScore: true,
           retentionScore: true,
           currentStage: true,
-          member: {
+          members: {
             select: {
               birthDate: true,
               gender: true
@@ -696,7 +696,7 @@ export class CachedAnalyticsService {
         retentionRisk: { in: [RetentionRisk.HIGH, RetentionRisk.VERY_HIGH] }
       },
       include: {
-        member: {
+        members: {
           select: {
             id: true,
             firstName: true,

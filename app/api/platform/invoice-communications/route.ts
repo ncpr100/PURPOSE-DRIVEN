@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     const invoice = await prisma.invoice.findUnique({
       where: { id: invoiceId },
       include: {
-        church: {
+        churches: {
           select: { id: true, name: true, email: true }
         }
       }

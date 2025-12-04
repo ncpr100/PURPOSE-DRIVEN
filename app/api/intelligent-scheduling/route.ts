@@ -44,7 +44,7 @@ async function calculateWorkloadScore(memberId: string, targetDate: Date, church
   // Count assignments in the same week
   const weeklyAssignments = await prisma.volunteer_assignments.count({
     where: {
-      volunteer: { 
+      volunteers: { 
         memberId,
         churchId 
       },
@@ -59,7 +59,7 @@ async function calculateWorkloadScore(memberId: string, targetDate: Date, church
   // Count assignments in the last 30 days for fatigue analysis
   const monthlyAssignments = await prisma.volunteer_assignments.count({
     where: {
-      volunteer: { 
+      volunteers: { 
         memberId,
         churchId 
       },
@@ -88,7 +88,7 @@ async function calculateWorkloadScore(memberId: string, targetDate: Date, church
 async function checkSchedulingConflicts(memberId: string, date: Date, startTime: string, endTime: string, churchId: string) {
   const conflicts = await prisma.volunteer_assignments.findMany({
     where: {
-      volunteer: { 
+      volunteers: { 
         memberId,
         churchId 
       },
@@ -405,7 +405,7 @@ export async function POST(request: NextRequest) {
                 churchId: session.user.churchId
               },
               include: {
-                volunteer: {
+                volunteers: {
                   include: {
                     member: true
                   }

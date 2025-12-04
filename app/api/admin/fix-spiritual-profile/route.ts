@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Spiritual profile successfully linked to Juan Herrera',
       data: {
-        member: {
+        members: {
           id: verification?.id,
           name: `${verification?.firstName} ${verification?.lastName}`,
           email: verification?.email

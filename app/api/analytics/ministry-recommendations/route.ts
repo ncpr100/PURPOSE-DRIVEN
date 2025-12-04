@@ -36,7 +36,7 @@ export async function GET(request: Request) {
       include: {
         member_journeys: {
           include: {
-            member: {
+            members: {
               select: {
                 id: true,
                 firstName: true,
@@ -92,10 +92,10 @@ export async function GET(request: Request) {
         churchId,
         currentStage: { in: ['ESTABLISHED_MEMBER', 'LEADING_MEMBER', 'SERVING_MEMBER'] },
         engagementScore: { gte: 60 },
-        member: { isActive: true }
+        members: { isActive: true }
       },
       include: {
-        member: {
+        members: {
           select: {
             id: true,
             firstName: true,

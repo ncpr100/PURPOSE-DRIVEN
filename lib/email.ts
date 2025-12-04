@@ -35,7 +35,7 @@ export interface NotificationEmailData {
     email: string
     name?: string
   }
-  church: {
+  churches: {
     name: string
     id: string
   }
@@ -56,7 +56,7 @@ export interface DigestEmailData {
     email: string
     name?: string
   }
-  church: {
+  churches: {
     name: string
     id: string
   }

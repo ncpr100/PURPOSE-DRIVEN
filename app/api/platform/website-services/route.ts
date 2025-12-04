@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     // Obtener todas las solicitudes de sitios web
     const website_requestss = await prisma.website_requests.findMany({
       include: {
-        church: {
+        churches: {
           select: {
             name: true,
             email: true
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     // Obtener sitios web activos
     const activeWebsites = await prisma.websites.findMany({
       include: {
-        church: {
+        churches: {
           select: {
             name: true
           }
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
         })
       },
       include: {
-        church: {
+        churches: {
           select: {
             name: true,
             email: true

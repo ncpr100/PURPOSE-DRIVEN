@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
         id: true, 
         churchId: true, 
         role: true,
-        church: {
+        churches: {
           select: {
             id: true,
             name: true
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       }),
       prisma.donation.count({
         where: { 
-          member: { churchId: user.churchId },
+          members: { churchId: user.churchId },
           donationDate: { gte: startOfDay }
         }
       }),
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       }),
       prisma.volunteer.count({
         where: { 
-          member: { churchId: user.churchId }
+          members: { churchId: user.churchId }
         }
       })
     ])
