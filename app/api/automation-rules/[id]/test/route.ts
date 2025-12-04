@@ -18,7 +18,7 @@ export async function POST(request: NextRequest, { params }: RouteContext) {
 
     const user = await prisma.users.findUnique({
       where: { id: session.user.id },
-      include: { church: true }
+      include: { churches: true }
     })
 
     if (!user?.churchId) {
