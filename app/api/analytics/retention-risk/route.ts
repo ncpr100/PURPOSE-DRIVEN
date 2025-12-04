@@ -47,7 +47,7 @@ export async function GET(request: Request) {
             membershipDate: true
           }
         },
-        behavioralPatterns: {
+        member_behavioral_patterns: {
           orderBy: {
             analyzedAt: 'desc'
           },
@@ -163,7 +163,7 @@ export async function GET(request: Request) {
 
     // Calculate intervention recommendations
     const getInterventionStrategy = (journey: any) => {
-      const behavioral = journey.behavioralPatterns[0];
+      const behavioral = journey.member_behavioral_patterns[0];
       
       if (!behavioral) {
         return {
