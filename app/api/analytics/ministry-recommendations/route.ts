@@ -106,7 +106,7 @@ export async function GET(request: Request) {
             leadershipStage: true
           }
         },
-        behavioralPatterns: {
+        member_behavioral_patterns: {
           orderBy: { analyzedAt: 'desc' },
           take: 1
         }
@@ -118,7 +118,7 @@ export async function GET(request: Request) {
       const memberData = member.members;
       const spiritualGifts = memberData.spiritualGiftsStructured ? 
         JSON.parse(memberData.spiritualGiftsStructured as string) : { primary: [], secondary: [] };
-      const behavioral = member.behavioralPatterns[0];
+      const behavioral = member.member_behavioral_patterns[0];
 
       const recommendations: any[] = [];
 
