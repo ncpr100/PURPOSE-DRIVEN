@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     const inactiveRules = totalRules - activeRules
 
     // Fetch today's executions from AutomationExecution table
-    const executions = await prisma.automationExecution.findMany({
+    const executions = await prisma.automation_executions.findMany({
       where: {
         churchId,
         executedAt: {
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
       : 0
 
     // Fetch recent executions (last 100) with full details
-    const recentExecutions = await prisma.automationExecution.findMany({
+    const recentExecutions = await prisma.automation_executions.findMany({
       where: { churchId },
       orderBy: { executedAt: 'desc' },
       take: 100,
