@@ -18,7 +18,10 @@
     "cleanup": "./scripts/memory-cleanup.sh",
     "cleanup:memory": "tsx scripts/memory-monitor-test.ts",
     "memory:assess": "tsx scripts/memory-assessment.ts",
-    "optimize": "npm run cleanup && npm run build:memory-optimized"
+    "optimize": "npm run cleanup && npm run build:memory-optimized",
+    "verify:patterns": "node scripts/verify-critical-patterns.js",
+    "fix:patterns": "bash scripts/apply-critical-fixes.sh",
+    "pre-deploy": "npm run verify:patterns && npm run build"
   },
   "prisma": {
     "seed": "tsx --require dotenv/config scripts/seed.ts"

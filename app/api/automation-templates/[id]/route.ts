@@ -29,7 +29,7 @@ export async function GET(
       return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 });
     }
 
-    const template = await prisma.automation_rulesTemplate.findUnique({
+    const template = await prisma.automation_rule_templates.findUnique({
       where: { id: params.id },
       include: {
         creator: {
@@ -46,7 +46,7 @@ export async function GET(
     }
 
     // Check if church has already installed this template
-    const installation = await prisma.automation_rulesTemplateInstallation.findUnique({
+    const installation = await prisma.automation_rule_template_installations.findUnique({
       where: {
         templateId_churchId: {
           templateId: template.id,
@@ -109,7 +109,7 @@ export async function POST(
     const { customizations } = body;
 
     // Get the template
-    const template = await prisma.automation_rulesTemplate.findUnique({
+    const template = await prisma.automation_rule_templates.findUnique({
       where: { id: params.id }
     });
 
@@ -118,7 +118,7 @@ export async function POST(
     }
 
     // Check if already installed
-    const existingInstallation = await prisma.automation_rulesTemplateInstallation.findUnique({
+    const existingInstallation = await prisma.automation_rule_template_installations.findUnique({
       where: {
         templateId_churchId: {
           templateId: template.id,
@@ -195,18 +195,18 @@ export async function POST(
     });
 
     // Create installation record
-    const installation = await prisma.automation_rulesTemplateInstallation.create({
+    const installation = await prisma.automation_rule_template_installations.create({
       data: {
         churchId: user.churchId,
         templateId: template.id,
-        automation_rulesId: automation_rules.id,
+        automation_rules_id: automation_rules.id,
         customizations: customizations || {},
         installedBy: user.id
       }
     });
 
     // Update template stats
-    await prisma.automation_rulesTemplate.update({
+    await prisma.automation_rule_templates.update({
       where: { id: template.id },
       data: {
         installCount: { increment: 1 },
