@@ -30,11 +30,11 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // Get executions from last 24 hours using AutomationExecution table
+    // Get executions from last 24 hours using automation_executions table
     const last24Hours = new Date()
     last24Hours.setHours(last24Hours.getHours() - 24)
 
-    const executions = await prisma.automationExecution.findMany({
+    const executions = await prisma.automation_executions.findMany({
       where: {
         churchId: user.churchId,
         executedAt: {
