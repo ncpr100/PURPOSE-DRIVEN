@@ -288,6 +288,15 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={(e) => {
+                console.log('🔗 SIDEBAR CLICK:', {
+                  title: item.title,
+                  href: item.href,
+                  currentPath: pathname,
+                  userRole: session?.user?.role,
+                  timestamp: new Date().toISOString()
+                })
+              }}
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent hover:text-accent-foreground',
                 isActive && 'bg-accent text-accent-foreground font-medium'
