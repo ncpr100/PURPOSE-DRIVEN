@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (type === 'church-logo') {
       console.log('🏠 Updating church logo in database...')
       
-      await db.church.update({
+      await db.churches.update({
         where: { id: session.user.churchId },
         data: { logo: dataUrl }
       })

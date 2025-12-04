@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
     // Fetch trend data for each interval
     const trends = await Promise.all(intervals.map(async (interval) => {
       const [donations, events, communications, checkIns] = await Promise.all([
-        db.donation.aggregate({
+        db.donations.aggregate({
           where: {
             churchId,
             donationDate: { gte: interval.start, lt: interval.end },
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
           _count: { id: true }
         }),
         
-        db.event.aggregate({
+        db.events.aggregate({
           where: {
             churchId,
             startDate: { gte: interval.start, lt: interval.end }
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
           _count: { id: true }
         }),
         
-        db.communication.aggregate({
+        db.communications.aggregate({
           where: {
             churchId,
             sentAt: { gte: interval.start, lt: interval.end }

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
     }
 
-    const ministries = await db.ministry.findMany({
+    const ministries = await db.ministries.findMany({
       where: {
         churchId: session.user.churchId,
         isActive: true
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const ministry = await db.ministry.create({
+    const ministry = await db.ministries.create({
       data: {
         name,
         description,

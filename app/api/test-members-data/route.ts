@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { id: session.user.id },
       select: { id: true, churchId: true, role: true, email: true }
     })

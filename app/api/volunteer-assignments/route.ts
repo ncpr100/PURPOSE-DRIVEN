@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     const validated = volunteerAssignmentSchema.parse(body)
 
     // Verify volunteer belongs to the church
-    const volunteer = await db.volunteer.findFirst({
+    const volunteer = await db.volunteers.findFirst({
       where: {
         id: validated.volunteerId,
         churchId: session.user.churchId

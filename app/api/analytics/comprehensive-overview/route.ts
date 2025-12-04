@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       
       // Enhanced Donation Analytics
       Promise.all([
-        db.donation.aggregate({
+        db.donations.aggregate({
           where: { 
             churchId,
             donationDate: { gte: startDate, lte: endDate },
@@ -80,14 +80,14 @@ export async function GET(request: NextRequest) {
 
       // Enhanced Event Analytics
       Promise.all([
-        db.event.aggregate({
+        db.events.aggregate({
           where: { 
             churchId,
             startDate: { gte: startDate, lte: endDate }
           },
           _count: { id: true }
         }),
-        db.event.findMany({
+        db.events.findMany({
           where: { 
             churchId,
             startDate: { gte: startDate, lte: endDate }
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
 
       // Enhanced Communication Analytics
       Promise.all([
-        db.communication.aggregate({
+        db.communications.aggregate({
           where: { 
             churchId,
             sentAt: { gte: startDate, lte: endDate }
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
 
       // Enhanced Volunteer Analytics  
       Promise.all([
-        db.volunteer.aggregate({
+        db.volunteers.aggregate({
           where: { 
             member: { churchId, isActive: true },
             isActive: true 

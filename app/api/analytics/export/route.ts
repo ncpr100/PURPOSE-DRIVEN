@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     const { format, reportType, period, includeCharts, includeAI }: ExportRequest = await request.json();
 
     // Get church branding information
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { id: session.user.id },
       include: {
         church: {
@@ -145,7 +145,7 @@ async function getAnalyticsData(churchId: string, reportType: string, period: nu
     db.members.findMany({
       where: { churchId }
     }),
-    db.event.findMany({
+    db.events.findMany({
       where: {
         churchId,
         startDate: { gte: startDate }
@@ -154,13 +154,13 @@ async function getAnalyticsData(churchId: string, reportType: string, period: nu
         checkIns: true
       }
     }),
-    db.donation.findMany({
+    db.donations.findMany({
       where: {
         churchId,
         createdAt: { gte: startDate }
       }
     }),
-    db.communication.findMany({
+    db.communications.findMany({
       where: {
         churchId,
         createdAt: { gte: startDate }

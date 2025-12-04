@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     }
 
     // Verificar que el usuario existe
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { id: userId }
     })
 

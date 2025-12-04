@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     }
 
     const [donations, total] = await Promise.all([
-      db.donation.findMany({
+      db.donations.findMany({
         where: whereClause,
         include: {
           category: true,
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
         skip: (page - 1) * limit,
         take: limit
       }),
-      db.donation.count({ where: whereClause })
+      db.donations.count({ where: whereClause })
     ])
 
     return NextResponse.json({

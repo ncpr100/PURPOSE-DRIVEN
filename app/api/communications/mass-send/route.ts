@@ -85,7 +85,7 @@ async function getRecipients(targetGroup: string, churchId: string, recipientIds
       }))
       break
     case 'volunteers':
-      const volunteers = await db.volunteer.findMany({
+      const volunteers = await db.volunteers.findMany({
         where: { churchId: churchId, isActive: true },
         include: { member: true }
       })
@@ -232,7 +232,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Crear el registro de comunicación with message delivery status tracking
-    const communication = await db.communication.create({
+    const communication = await db.communications.create({
       data: {
         title: sanitizedTitle,
         content: finalContent,
@@ -255,7 +255,7 @@ export async function POST(req: NextRequest) {
           const twilioConfig = await getTwilioConfig(session.user.churchId)
           
           if (!twilioConfig) {
-            await db.communication.update({
+            await db.communications.update({
               where: { id: communication.id },
               data: { status: 'FALLIDO' }
             })
@@ -292,7 +292,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Actualizar estado a enviado con message delivery status tracking
-        await db.communication.update({
+        await db.communications.update({
           where: { id: communication.id },
           data: { 
             status: 'ENVIADO',
@@ -307,7 +307,7 @@ export async function POST(req: NextRequest) {
         console.error('Error sending communications:', error)
         
         // Update status to failed for message delivery status tracking
-        await db.communication.update({
+        await db.communications.update({
           where: { id: communication.id },
           data: { status: 'FALLIDO' }
         })

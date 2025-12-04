@@ -31,7 +31,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Verificar que el usuario existe
-    const existingUser = await db.user.findUnique({
+    const existingUser = await db.users.findUnique({
       where: { id: userId },
       select: {
         id: true,
@@ -59,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     // Verificar que no sea el último SUPER_ADMIN si se está cambiando el rol
     if (existingUser.role === 'SUPER_ADMIN' && role !== 'SUPER_ADMIN') {
-      const totalSuperAdmins = await db.user.count({
+      const totalSuperAdmins = await db.users.count({
         where: {
           role: 'SUPER_ADMIN',
           isActive: true,
@@ -76,7 +76,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     // Actualizar el rol del usuario
-    const updatedUser = await db.user.update({
+    const updatedUser = await db.users.update({
       where: { id: userId },
       data: { role },
       select: {
@@ -100,7 +100,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         }
       })
 
-      const churchUsers = await db.user.findMany({
+      const churchUsers = await db.users.findMany({
         where: { churchId: existingUser.churchId, isActive: true },
         select: { id: true }
       })

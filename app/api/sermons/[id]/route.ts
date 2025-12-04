@@ -24,7 +24,7 @@ export async function DELETE(
     const sermonId = params.id
 
     // Verify sermon belongs to user's church
-    const existingSermon = await db.sermon.findFirst({
+    const existingSermon = await db.sermons.findFirst({
       where: {
         id: sermonId,
         churchId: session.user.churchId
@@ -35,7 +35,7 @@ export async function DELETE(
       return NextResponse.json({ message: 'Sermón no encontrado' }, { status: 404 })
     }
 
-    await db.sermon.delete({
+    await db.sermons.delete({
       where: { id: sermonId }
     })
 

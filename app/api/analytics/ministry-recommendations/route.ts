@@ -55,7 +55,7 @@ export async function GET(request: Request) {
     });
 
     // Get ministry information from ministries table
-    const ministries = await db.ministry.findMany({
+    const ministries = await db.ministries.findMany({
       where: {
         churchId,
         isActive: true
@@ -68,7 +68,7 @@ export async function GET(request: Request) {
     });
 
     // Get volunteer information to calculate current capacity
-    const activeVolunteers = await db.volunteer.findMany({
+    const activeVolunteers = await db.volunteers.findMany({
       where: {
         churchId,
         isActive: true,

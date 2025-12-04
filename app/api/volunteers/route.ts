@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
     }
 
-    const volunteers = await db.volunteer.findMany({
+    const volunteers = await db.volunteers.findMany({
       where: {
         churchId: session.user.churchId,
         isActive: true
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     // Prevents: XSS attacks, SQL injection, data corruption, invalid emails
     const validated = volunteerCreateSchema.parse(body)
 
-    const volunteer = await db.volunteer.create({
+    const volunteer = await db.volunteers.create({
       data: {
         memberId: validated.memberId || null,
         firstName: validated.firstName,

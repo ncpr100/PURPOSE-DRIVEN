@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const userId = params.id
 
     // Buscar el usuario con información de su iglesia
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { id: userId },
       select: {
         id: true,

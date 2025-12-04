@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const churchId = params.id
 
     // Obtener iglesia con datos completos
-    const church = await db.church.findUnique({
+    const church = await db.churches.findUnique({
       where: { id: churchId },
       include: {
         _count: {
@@ -42,11 +42,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     // Calcular estadísticas adicionales
     const [totalDonations, activeUsers] = await Promise.all([
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: { churchId: church.id },
         _sum: { amount: true }
       }),
-      db.user.count({
+      db.users.count({
         where: { churchId: church.id, isActive: true }
       })
     ])
@@ -97,7 +97,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     } = body
 
     // Verificar que la iglesia existe
-    const existingChurch = await db.church.findUnique({
+    const existingChurch = await db.churches.findUnique({
       where: { id: churchId }
     })
 
@@ -109,7 +109,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     // Actualizar iglesia
-    const updatedChurch = await db.church.update({
+    const updatedChurch = await db.churches.update({
       where: { id: churchId },
       data: {
         name: name || existingChurch.name,
@@ -143,7 +143,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       }
     })
 
-    const churchUsers = await db.user.findMany({
+    const churchUsers = await db.users.findMany({
       where: { churchId: updatedChurch.id, isActive: true },
       select: { id: true }
     })
@@ -185,7 +185,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     const churchId = params.id
 
     // Verificar que la iglesia existe
-    const existingChurch = await db.church.findUnique({
+    const existingChurch = await db.churches.findUnique({
       where: { id: churchId },
       include: {
         _count: {
@@ -205,13 +205,13 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 
     // En lugar de eliminar, desactivar la iglesia para preservar datos
-    const deactivatedChurch = await db.church.update({
+    const deactivatedChurch = await db.churches.update({
       where: { id: churchId },
       data: { isActive: false }
     })
 
     // También desactivar usuarios asociados
-    await db.user.updateMany({
+    await db.users.updateMany({
       where: { churchId: churchId },
       data: { isActive: false }
     })
@@ -226,7 +226,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       }
     })
 
-    const churchUsers = await db.user.findMany({
+    const churchUsers = await db.users.findMany({
       where: { churchId: existingChurch.id, isActive: true },
       select: { id: true }
     })

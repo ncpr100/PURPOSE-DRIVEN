@@ -69,7 +69,7 @@ export async function POST(
       // Execute query based on report type
       switch (report.reportType) {
         case 'FINANCIAL':
-          data = await db.donation.findMany({
+          data = await db.donations.findMany({
             ...query,
             include: {
               member: true,
@@ -92,7 +92,7 @@ export async function POST(
           break;
 
         case 'EVENT':
-          data = await db.event.findMany({
+          data = await db.events.findMany({
             ...query,
             include: {
               checkIns: true,
@@ -106,7 +106,7 @@ export async function POST(
           break;
 
         case 'COMMUNICATION':
-          data = await db.communication.findMany({
+          data = await db.communications.findMany({
             ...query,
             orderBy: { createdAt: 'desc' }
           });

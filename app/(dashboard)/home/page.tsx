@@ -36,10 +36,10 @@ export default async function DashboardPage() {
         isActive: true 
       }
     }),
-    db.sermon.count({
+    db.sermons.count({
       where: { churchId: session.user.churchId }
     }),
-    db.event.count({
+    db.events.count({
       where: {
         churchId: session.user.churchId,
         startDate: {
@@ -56,7 +56,7 @@ export default async function DashboardPage() {
         }
       }
     }),
-    db.volunteer.count({
+    db.volunteers.count({
       where: { 
         member: {
           churchId: session.user.churchId,
@@ -205,7 +205,7 @@ export default async function DashboardPage() {
   })
 
   // Fetch recent sermons
-  const recentSermons = await db.sermon.findMany({
+  const recentSermons = await db.sermons.findMany({
     where: {
       churchId: session.user.churchId
     },

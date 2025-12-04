@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 
     // Obtener iglesias con datos agregados
     const [churches, total] = await Promise.all([
-      db.church.findMany({
+      db.churches.findMany({
         where,
         skip,
         take: limit,
@@ -57,18 +57,18 @@ export async function GET(request: NextRequest) {
         },
         orderBy: { createdAt: 'desc' }
       }),
-      db.church.count({ where })
+      db.churches.count({ where })
     ])
 
     // Calcular estadísticas para cada iglesia
     const churchesWithStats = await Promise.all(
       churches.map(async (church) => {
         const [totalDonations, activeUsers] = await Promise.all([
-          db.donation.aggregate({
+          db.donations.aggregate({
             where: { churchId: church.id },
             _sum: { amount: true }
           }),
-          db.user.count({
+          db.users.count({
             where: { churchId: church.id, isActive: true }
           })
         ])
@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar que el email del admin no exista
-    const existingUser = await db.user.findUnique({
+    const existingUser = await db.users.findUnique({
       where: { email: adminUser.email }
     })
 

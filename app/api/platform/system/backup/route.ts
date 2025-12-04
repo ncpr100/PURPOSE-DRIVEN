@@ -31,11 +31,11 @@ export async function POST(request: NextRequest) {
 
     // Get basic database stats for backup summary
     const stats = await Promise.all([
-      db.church.count(),
-      db.user.count(),
+      db.churches.count(),
+      db.users.count(),
       db.members.count(),
-      db.donation.count(),
-      db.event.count()
+      db.donations.count(),
+      db.events.count()
     ])
 
     const backupSummary = {

@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
       }),
 
       // Donation history
-      db.donation.findMany({
+      db.donations.findMany({
         where: { 
           churchId,
           donationDate: { gte: startDate, lte: endDate },
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       }),
 
       // Event attendance history
-      db.event.findMany({
+      db.events.findMany({
         where: { 
           churchId,
           startDate: { gte: startDate, lte: endDate }
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
             createdAt: { gte: startDate, lte: endDate }
           }
         }),
-        db.communication.count({
+        db.communications.count({
           where: { 
             churchId,
             sentAt: { gte: startDate, lte: endDate }

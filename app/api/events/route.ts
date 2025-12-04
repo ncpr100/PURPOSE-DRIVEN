@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       whereClause.category = category
     }
 
-    const events = await db.event.findMany({
+    const events = await db.events.findMany({
       where: whereClause,
       include: {
         church: {
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    const event = await db.event.create({
+    const event = await db.events.create({
       data: {
         title: validatedData.title,
         description: validatedData.description,
@@ -212,7 +212,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Church isolation in events - verify ownership
-    const existingEvent = await db.event.findFirst({
+    const existingEvent = await db.events.findFirst({
       where: {
         id: eventId,
         churchId: session.user.churchId
@@ -235,7 +235,7 @@ export async function PUT(request: NextRequest) {
       }
     }
 
-    const updatedEvent = await db.event.update({
+    const updatedEvent = await db.events.update({
       where: { id: eventId },
       data: {
         ...sanitizedData,
@@ -283,7 +283,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Church isolation in events - verify ownership
-    const existingEvent = await db.event.findFirst({
+    const existingEvent = await db.events.findFirst({
       where: {
         id: eventId,
         churchId: session.user.churchId
@@ -295,7 +295,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Event cancellation safety - soft delete by updating status
-    const deletedEvent = await db.event.update({
+    const deletedEvent = await db.events.update({
       where: { id: eventId },
       data: {
         status: 'CANCELADO',

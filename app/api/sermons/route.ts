@@ -14,7 +14,7 @@ export async function GET() {
       return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
     }
 
-    const sermons = await db.sermon.findMany({
+    const sermons = await db.sermons.findMany({
       where: {
         churchId: session.user.churchId
       },
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const sermon = await db.sermon.create({
+    const sermon = await db.sermons.create({
       data: {
         title: data.title,
         content: data.content || '',

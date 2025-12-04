@@ -50,22 +50,22 @@ export async function GET(request: NextRequest) {
       totalAmountThisWeek
     ] = await Promise.all([
       // All time
-      db.donation.count({
+      db.donations.count({
         where: { churchId, status: 'COMPLETADA' }
       }),
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: { churchId, status: 'COMPLETADA' },
         _sum: { amount: true }
       }),
       // This month
-      db.donation.count({
+      db.donations.count({
         where: {
           churchId,
           status: 'COMPLETADA',
           donationDate: { gte: startOfMonth, lte: endOfMonth }
         }
       }),
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: {
           churchId,
           status: 'COMPLETADA',
@@ -74,14 +74,14 @@ export async function GET(request: NextRequest) {
         _sum: { amount: true }
       }),
       // This year
-      db.donation.count({
+      db.donations.count({
         where: {
           churchId,
           status: 'COMPLETADA',
           donationDate: { gte: startOfYear, lte: endOfYear }
         }
       }),
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: {
           churchId,
           status: 'COMPLETADA',
@@ -90,14 +90,14 @@ export async function GET(request: NextRequest) {
         _sum: { amount: true }
       }),
       // This week
-      db.donation.count({
+      db.donations.count({
         where: {
           churchId,
           status: 'COMPLETADA',
           donationDate: { gte: startOfWeek, lte: endOfWeek }
         }
       }),
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: {
           churchId,
           status: 'COMPLETADA',
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
     ])
 
     // Donaciones por categoría (este mes)
-    const donationsByCategory = await db.donation.groupBy({
+    const donationsByCategory = await db.donations.groupBy({
       by: ['categoryId'],
       where: {
         churchId,
@@ -120,7 +120,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Donaciones por campaña (este mes)
-    const donationsByCampaign = await db.donation.groupBy({
+    const donationsByCampaign = await db.donations.groupBy({
       by: ['campaignId'],
       _sum: { amount: true },
       _count: { id: true },
@@ -132,7 +132,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Donaciones por método de pago (este mes)
-    const donationsByPaymentMethod = await db.donation.groupBy({
+    const donationsByPaymentMethod = await db.donations.groupBy({
       by: ['paymentMethodId'],
       where: {
         churchId,
@@ -144,7 +144,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Top donantes (este año)
-    const topDonorsQuery = await db.donation.groupBy({
+    const topDonorsQuery = await db.donations.groupBy({
       by: ['memberId'],
       where: {
         churchId,

@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Obtener usuario actual de la base de datos
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { id: session.user.id },
       select: { id: true, email: true, password: true }
     })
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     const hashedNewPassword = await bcrypt.hash(newPassword, 10)
 
     // Actualizar contraseña en la base de datos
-    await db.user.update({
+    await db.users.update({
       where: { id: user.id },
       data: { 
         password: hashedNewPassword,

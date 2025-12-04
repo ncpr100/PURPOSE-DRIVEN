@@ -9,7 +9,7 @@ async function cleanupOldCommunications(churchId: string) {
   const sixMonthsAgo = new Date()
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
   
-  const deletedCount = await db.communication.deleteMany({
+  const deletedCount = await db.communications.deleteMany({
     where: {
       churchId: churchId,
       createdAt: {
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Get communication history/logs
-    const communications = await db.communication.findMany({
+    const communications = await db.communications.findMany({
       where: {
         churchId: churchId,
       },
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
     const sanitizedContent = content ? content.trim().replace(/[<>\"'&]/g, '').substring(0, 1600) : ''
 
     // Create mass communication entry with message delivery status tracking
-    const communication = await db.communication.create({
+    const communication = await db.communications.create({
       data: {
         title: sanitizedTitle,
         content: sanitizedContent,

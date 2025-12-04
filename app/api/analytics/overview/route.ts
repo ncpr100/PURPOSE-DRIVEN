@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
       }),
       
       // Donation Analytics
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: { 
           churchId,
           donationDate: { gte: startDate, lte: endDate },
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       }),
 
       // Event Analytics
-      db.event.aggregate({
+      db.events.aggregate({
         where: { 
           churchId,
           startDate: { gte: startDate, lte: endDate }
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
       }),
 
       // Communication Analytics
-      db.communication.aggregate({
+      db.communications.aggregate({
         where: { 
           churchId,
           sentAt: { gte: startDate, lte: endDate }
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
       }),
 
       // Volunteer Analytics
-      db.volunteer.aggregate({
+      db.volunteers.aggregate({
         where: { 
           member: { churchId, isActive: true },
           isActive: true 
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
       previousCommunications,
       previousSocialPosts
     ] = await Promise.all([
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: { 
           churchId,
           donationDate: { gte: previousStartDate, lt: startDate },
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
         _count: { id: true }
       }),
       
-      db.event.aggregate({
+      db.events.aggregate({
         where: { 
           churchId,
           startDate: { gte: previousStartDate, lt: startDate }
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
         _count: { id: true }
       }),
 
-      db.communication.aggregate({
+      db.communications.aggregate({
         where: { 
           churchId,
           sentAt: { gte: previousStartDate, lt: startDate }

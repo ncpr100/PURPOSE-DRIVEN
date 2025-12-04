@@ -27,7 +27,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const skip = (page - 1) * limit
 
     // Verificar que la iglesia existe
-    const church = await db.church.findUnique({
+    const church = await db.churches.findUnique({
       where: { id: churchId },
       select: { id: true, name: true, isActive: true }
     })
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     // Obtener usuarios
     const [users, total] = await Promise.all([
-      db.user.findMany({
+      db.users.findMany({
         where,
         skip,
         take: limit,
@@ -77,7 +77,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         },
         orderBy: { createdAt: 'desc' }
       }),
-      db.user.count({ where })
+      db.users.count({ where })
     ])
 
     // Formatear datos para incluir lastLogin simulado (puedes implementar tracking real más tarde)
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     }
 
     // Verificar que la iglesia existe
-    const church = await db.church.findUnique({
+    const church = await db.churches.findUnique({
       where: { id: churchId }
     })
 
@@ -146,7 +146,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     }
 
     // Verificar que el email no existe
-    const existingUser = await db.user.findUnique({
+    const existingUser = await db.users.findUnique({
       where: { email }
     })
 

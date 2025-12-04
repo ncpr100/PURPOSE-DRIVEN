@@ -19,7 +19,7 @@ export async function GET(
       return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
     }
 
-    const volunteer = await db.volunteer.findFirst({
+    const volunteer = await db.volunteers.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -80,7 +80,7 @@ export async function PUT(
       isActive
     } = await request.json()
 
-    const volunteer = await db.volunteer.findFirst({
+    const volunteer = await db.volunteers.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -94,7 +94,7 @@ export async function PUT(
       )
     }
 
-    const updatedVolunteer = await db.volunteer.update({
+    const updatedVolunteer = await db.volunteers.update({
       where: { id: params.id },
       data: {
         firstName,
@@ -140,7 +140,7 @@ export async function DELETE(
       return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
     }
 
-    const volunteer = await db.volunteer.findFirst({
+    const volunteer = await db.volunteers.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -155,7 +155,7 @@ export async function DELETE(
     }
 
     // Soft delete
-    await db.volunteer.update({
+    await db.volunteers.update({
       where: { id: params.id },
       data: { isActive: false }
     })

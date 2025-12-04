@@ -222,7 +222,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
         checkedInAt: { gte: startDate, lte: endDate }
       }
     }),
-    db.volunteer.findMany({
+    db.volunteers.findMany({
       where: { churchId }
     }),
     db.prayerRequest.findMany({
@@ -231,13 +231,13 @@ async function getLegacyAnalytics(churchId: string, period: number) {
         createdAt: { gte: startDate, lte: endDate }
       }
     }),
-    db.event.findMany({
+    db.events.findMany({
       where: { 
         churchId,
         startDate: { gte: startDate, lte: endDate }
       }
     }),
-    db.communication.findMany({
+    db.communications.findMany({
       where: { 
         churchId,
         sentAt: { gte: startDate, lte: endDate }

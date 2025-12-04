@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     }
 
     // ✅ SECURITY: Church membership validation
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { id: session.user.id },
       select: { id: true, churchId: true, role: true }
     })
@@ -234,7 +234,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ✅ SECURITY: User validation and role check
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { id: session.user.id },
       select: { id: true, churchId: true, role: true }
     })

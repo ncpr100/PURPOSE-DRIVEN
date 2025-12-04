@@ -31,22 +31,22 @@ export async function GET(request: NextRequest) {
       recentActivity
     ] = await Promise.all([
       // Total de iglesias
-      db.church.count(),
+      db.churches.count(),
       
       // Iglesias activas
-      db.church.count({ where: { isActive: true } }),
+      db.churches.count({ where: { isActive: true } }),
       
       // Total de usuarios
-      db.user.count(),
+      db.users.count(),
       
       // Usuarios activos
-      db.user.count({ where: { isActive: true } }),
+      db.users.count({ where: { isActive: true } }),
       
       // Total de miembros
       db.members.count(),
       
       // Estadísticas de donaciones
-      db.donation.aggregate({
+      db.donations.aggregate({
         _sum: { amount: true },
         _count: true
       }),
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
     const twelveMonthsAgo = new Date()
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12)
     
-    const recentChurches = await db.church.findMany({
+    const recentChurches = await db.churches.findMany({
       where: {
         createdAt: {
           gte: twelveMonthsAgo
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
     })).sort((a, b) => a.month.localeCompare(b.month))
 
     // Top 5 iglesias por miembros
-    const topChurchesByMembers = await db.church.findMany({
+    const topChurchesByMembers = await db.churches.findMany({
       where: { isActive: true },
       include: {
         _count: {
@@ -112,7 +112,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Donaciones por mes - Fixed with Prisma
-    const recentDonations = await db.donation.findMany({
+    const recentDonations = await db.donations.findMany({
       where: {
         donationDate: {
           gte: twelveMonthsAgo
@@ -142,7 +142,7 @@ export async function GET(request: NextRequest) {
     })).sort((a, b) => a.month.localeCompare(b.month))
 
     // Distribución de usuarios por rol
-    const usersByRole = await db.user.groupBy({
+    const usersByRole = await db.users.groupBy({
       by: ['role'],
       where: { isActive: true },
       _count: true

@@ -29,7 +29,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     // Verificar que la iglesia existe
-    const church = await db.church.findUnique({
+    const church = await db.churches.findUnique({
       where: { id: churchId }
     })
 
@@ -41,7 +41,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     // Verificar que el usuario existe y pertenece a esta iglesia
-    const user = await db.user.findFirst({
+    const user = await db.users.findFirst({
       where: { 
         id: userId,
         churchId: churchId
@@ -57,7 +57,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     // No permitir desactivar al último admin de la iglesia
     if (!isActive && user.role === 'ADMIN_IGLESIA') {
-      const activeAdmins = await db.user.count({
+      const activeAdmins = await db.users.count({
         where: {
           churchId: churchId,
           role: 'ADMIN_IGLESIA',
@@ -75,7 +75,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     // Actualizar estado del usuario
-    const updatedUser = await db.user.update({
+    const updatedUser = await db.users.update({
       where: { id: userId },
       data: { isActive },
       select: {
@@ -98,7 +98,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       }
     })
 
-    const churchUsers = await db.user.findMany({
+    const churchUsers = await db.users.findMany({
       where: { churchId: churchId, isActive: true },
       select: { id: true }
     })

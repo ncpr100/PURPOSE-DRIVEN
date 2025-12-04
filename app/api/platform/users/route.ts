@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     }
 
     const [users, total] = await Promise.all([
-      db.user.findMany({
+      db.users.findMany({
         where,
         skip,
         take: limit,
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
         },
         orderBy: { createdAt: 'desc' }
       }),
-      db.user.count({ where })
+      db.users.count({ where })
     ])
 
     return NextResponse.json({
@@ -106,7 +106,7 @@ export async function PUT(request: NextRequest) {
       updateData.role = role
     }
 
-    const user = await db.user.update({
+    const user = await db.users.update({
       where: { id: userId },
       data: updateData,
       include: {
@@ -132,7 +132,7 @@ export async function PUT(request: NextRequest) {
     })
 
     if (user.churchId) {
-      const churchUsers = await db.user.findMany({
+      const churchUsers = await db.users.findMany({
         where: { churchId: user.churchId, isActive: true },
         select: { id: true }
       })
