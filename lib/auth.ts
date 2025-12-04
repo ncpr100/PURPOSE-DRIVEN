@@ -61,8 +61,10 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // Store only user ID - fetch rest when needed
+        // Store user data in JWT for middleware access
         token.sub = user.id
+        token.role = user.role  // CRITICAL: Middleware needs this!
+        token.churchId = user.churchId
       }
       return token
     },
