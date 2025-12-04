@@ -368,13 +368,13 @@ async function getMemberSpecificActions(churchId: string): Promise<any[]> {
 }
 
 // Legacy helper functions for backwards compatibility
-function calculateConversionFunnel(visitors: any[], members: any[], check_ins: any[]) {
+function calculateConversionFunnel(visitors: any[], members: any[], checkIns: any[]) {
   const totalVisitors = visitors.length;
   const totalMembers = members.length;
 
   // Create attendance map
   const attendanceMap = new Map();
-  check_ins.forEach(checkIn => {
+  checkIns.forEach(checkIn => {
     const id = checkIn.memberId || checkIn.visitorId;
     if (id) {
       if (!attendanceMap.has(id)) {
