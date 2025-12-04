@@ -31,7 +31,7 @@ export async function GET(request: Request) {
     const engagementStats = await db.member_journeys.aggregate({
       where: {
         churchId,
-        member: { isActive: true }
+        members: { isActive: true }
       },
       _avg: {
         engagementScore: true,
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
       by: ['engagementLevel'],
       where: {
         churchId,
-        member: { isActive: true }
+        members: { isActive: true }
       },
       _count: true
     });
@@ -55,7 +55,7 @@ export async function GET(request: Request) {
       by: ['currentStage'],
       where: {
         churchId,
-        member: { isActive: true }
+        members: { isActive: true }
       },
       _avg: {
         engagementScore: true
@@ -133,7 +133,7 @@ export async function GET(request: Request) {
     await db.member_journeys.findMany({
       where: {
         churchId,
-        member: { isActive: true }
+        members: { isActive: true }
       },
       select: { engagementScore: true }
     }).then(journeys => {
@@ -150,10 +150,10 @@ export async function GET(request: Request) {
     const topEngagedMembers = await db.member_journeys.findMany({
       where: {
         churchId,
-        member: { isActive: true }
+        members: { isActive: true }
       },
       include: {
-        member: {
+        members: {
           select: {
             id: true,
             firstName: true,
@@ -173,7 +173,7 @@ export async function GET(request: Request) {
       where: {
         churchId,
         engagementScore: { lt: 50 },
-        member: { isActive: true }
+        members: { isActive: true }
       }
     });
 
@@ -181,7 +181,7 @@ export async function GET(request: Request) {
       where: {
         churchId,
         engagementLevel: 'LOW',
-        member: { isActive: true }
+        members: { isActive: true }
       }
     });
 
