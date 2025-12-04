@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     const availabilityScore = calculateAvailabilityScore(matrix)
     console.log('📊 Calculated availability score:', availabilityScore)
     
-    await prisma.member.update({
+    await prisma.members.update({
       where: { id: memberId },
       data: { availabilityScore }
     })

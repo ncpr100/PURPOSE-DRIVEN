@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
     // BEFORE: Member query + (availabilityMatrix × 500) + (assignments × 500) = 1,001+ queries
     // AFTER: 1 query with all includes
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-    const members = await prisma.member.findMany({
+    const members = await prisma.members.findMany({
       where: {
         churchId: session.user.churchId,
         isActive: true,

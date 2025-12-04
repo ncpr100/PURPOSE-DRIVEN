@@ -239,7 +239,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
 // Find optimal volunteer matches for identified gaps
 async function findOptimalMatches(gaps: SchedulingGap[], churchId: string): Promise<OptimalMatch[]> {
   // Get all active members with spiritual profiles
-  const members = await prisma.member.findMany({
+  const members = await prisma.members.findMany({
     where: {
       churchId,
       isActive: true

@@ -597,7 +597,7 @@ export async function POST(request: NextRequest) {
       delete memberFilter.spiritualProfile // Remove filter for specific member
     }
 
-    const members = await prisma.member.findMany({
+    const members = await prisma.members.findMany({
       where: memberFilter,
       include: {
         volunteers: {
@@ -700,11 +700,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const totalMembers = await prisma.member.count({
+    const totalMembers = await prisma.members.count({
       where: { churchId: session.user.churchId, isActive: true }
     })
 
-    const potentialLeaders = await prisma.member.count({
+    const potentialLeaders = await prisma.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,
@@ -714,7 +714,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    const currentLeaders = await prisma.member.count({
+    const currentLeaders = await prisma.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,

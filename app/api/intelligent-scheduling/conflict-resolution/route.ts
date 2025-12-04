@@ -183,7 +183,7 @@ async function findAlternativeVolunteers(assignments: any[], churchId: string) {
   const alternatives: { memberId: string, name: string, score: number }[] = []
 
   // Get available members who aren't overloaded
-  const availableMembers = await prisma.member.findMany({
+  const availableMembers = await prisma.members.findMany({
     where: {
       churchId,
       isActive: true,
@@ -320,7 +320,7 @@ export async function POST(request: NextRequest) {
       allConflicts = conflicts
     } else {
       // Detect conflicts for all members
-      const activeMembers = await prisma.member.findMany({
+      const activeMembers = await prisma.members.findMany({
         where: {
           churchId: session.user.churchId,
           isActive: true,
@@ -414,7 +414,7 @@ export async function GET(request: NextRequest) {
       conflicts = await detectMemberConflicts(memberId, session.user.churchId)
     } else {
       // Quick summary for all active volunteers
-      const activeVolunteers = await prisma.member.count({
+      const activeVolunteers = await prisma.members.count({
         where: {
           churchId: session.user.churchId,
           isActive: true,

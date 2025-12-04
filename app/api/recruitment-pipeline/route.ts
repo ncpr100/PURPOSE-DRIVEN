@@ -414,7 +414,7 @@ export async function POST(request: NextRequest) {
       memberFilter.id = targetMemberId
     }
 
-    const members = await prisma.member.findMany({
+    const members = await prisma.members.findMany({
       where: memberFilter,
       include: {
         volunteers: {
@@ -565,7 +565,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get basic pipeline metrics
-    const totalMembers = await prisma.member.count({
+    const totalMembers = await prisma.members.count({
       where: { churchId: session.user.churchId, isActive: true }
     })
 
@@ -573,7 +573,7 @@ export async function GET(request: NextRequest) {
       where: { churchId: session.user.churchId, isActive: true }
     })
 
-    const membersWithSpiritualProfiles = await prisma.member.count({
+    const membersWithSpiritualProfiles = await prisma.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,
@@ -581,7 +581,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    const membersWithAvailability = await prisma.member.count({
+    const membersWithAvailability = await prisma.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,

@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
 
     const [memberCount, donationCount, eventCount, volunteerCount] = await Promise.all([
-      prisma.member.count({
+      prisma.members.count({
         where: { churchId: user.churchId }
       }),
       prisma.donation.count({

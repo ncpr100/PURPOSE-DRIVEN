@@ -96,7 +96,7 @@ export async function POST(
     }
 
     // Verify member exists
-    const member = await prisma.member.findUnique({
+    const member = await prisma.members.findUnique({
       where: { id: memberId }
     })
 

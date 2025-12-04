@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     const targetMemberId = validatedData.memberId || session.user.id
 
     // Find the member record
-    const member = await prisma.member.findUnique({
+    const member = await prisma.members.findUnique({
       where: { id: targetMemberId }
     })
 
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Update member record with spiritual assessment data
-    const updatedMember = await prisma.member.update({
+    const updatedMember = await prisma.members.update({
       where: { id: targetMemberId },
       data: {
         spiritualGiftsStructured: spiritualGiftsStructured,
@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const memberId = searchParams.get('memberId') || session.user.id
 
-    const member = await prisma.member.findUnique({
+    const member = await prisma.members.findUnique({
       where: { id: memberId },
       select: {
         id: true,

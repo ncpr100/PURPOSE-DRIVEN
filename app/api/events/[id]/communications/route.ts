@@ -40,7 +40,7 @@ export async function POST(
     
     switch (targetAudience) {
       case 'ALL':
-        const allMembers = await prisma.member.count({
+        const allMembers = await prisma.members.count({
           where: { 
             churchId: session.user.churchId,
             isActive: true

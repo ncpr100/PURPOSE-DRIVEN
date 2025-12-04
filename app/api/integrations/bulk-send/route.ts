@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
           break
       }
 
-      const members = await prisma.member.findMany({
+      const members = await prisma.members.findMany({
         ...memberQuery,
         select: {
           email: true,

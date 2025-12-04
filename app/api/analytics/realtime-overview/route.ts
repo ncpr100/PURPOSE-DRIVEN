@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
 
     // Get current counts
     const [memberCount, donationCount, eventCount, volunteerCount] = await Promise.all([
-      prisma.member.count({
+      prisma.members.count({
         where: { 
           churchId: user.churchId,
           isActive: true 
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     const dayBeforeYesterday = new Date(yesterday.getTime() - 24 * 60 * 60 * 1000)
 
     const [yesterdayMembers, yesterdayDonations, yesterdayEvents, yesterdayVolunteers] = await Promise.all([
-      prisma.member.count({
+      prisma.members.count({
         where: { 
           churchId: user.churchId,
           isActive: true,

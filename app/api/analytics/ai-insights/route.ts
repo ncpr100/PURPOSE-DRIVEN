@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch data for AI analysis
     const [members, donations, events, communications] = await Promise.all([
-      prisma.member.findMany({
+      prisma.members.findMany({
         where: { churchId: user.churchId, isActive: true },
         select: {
           id: true,

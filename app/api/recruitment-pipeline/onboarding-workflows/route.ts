@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     } = await request.json()
 
     // Verify member exists
-    const member = await prisma.member.findFirst({
+    const member = await prisma.members.findFirst({
       where: {
         id: memberId,
         churchId: session.user.churchId,
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Store workflow data (simplified - in production you'd want a dedicated table)
-    await prisma.member.update({
+    await prisma.members.update({
       where: { id: memberId },
       data: {
         notes: `${member.notes || ''}\n[ONBOARDING] Workflow iniciado para ${ministry.name}`

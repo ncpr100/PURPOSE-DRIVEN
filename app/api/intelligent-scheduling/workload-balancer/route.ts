@@ -45,7 +45,7 @@ async function analyzeVolunteerWorkloads(churchId: string): Promise<VolunteerWor
   const monthEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
 
   // Get all active volunteers with their assignments
-  const volunteers = await prisma.member.findMany({
+  const volunteers = await prisma.members.findMany({
     where: {
       churchId,
       isActive: true,
