@@ -52,7 +52,7 @@ export async function GET(
     }).catch(() => {}) // Don't fail if update fails
 
     // Get prayer categories for this church
-    const categories = await prisma.prayerCategory.findMany({
+    const categories = await prisma.prayer_categories.findMany({
       where: {
         churchId: qrCode.form.churchId,
         isActive: true

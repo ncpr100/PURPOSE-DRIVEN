@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       mentoringExperience: mentoringExperience || false
     })
 
-    const profile = await prisma.memberSpiritualProfile.upsert({
+    const profile = await prisma.member_spiritual_profiles.upsert({
       where: { memberId },
       update: {
         primaryGifts,
@@ -155,7 +155,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Member ID is required' }, { status: 400 })
     }
 
-    const profile = await prisma.memberSpiritualProfile.findUnique({
+    const profile = await prisma.member_spiritual_profiles.findUnique({
       where: { memberId },
       include: {
         member: {

@@ -55,7 +55,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
   const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(null)
   const [spiritualGifts, setSpiritualGifts] = useState<any[]>([])
-  const [memberSpiritualProfile, setMemberSpiritualProfile] = useState<any>(null)
+  const [member_spiritual_profiles, setMemberSpiritualProfile] = useState<any>(null)
   const [volunteerProfiles, setVolunteerProfiles] = useState<Map<string, any>>(new Map())
   const [memberAvailabilityMatrix, setMemberAvailabilityMatrix] = useState<any>(null)
 
@@ -1157,14 +1157,14 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 <div>
                   <Label className="text-sm font-medium text-muted-foreground">Dones Espirituales</Label>
                   <div className="mt-2">
-                    {memberSpiritualProfile ? (
+                    {member_spiritual_profiles ? (
                       <div className="space-y-3">
                         {/* Primary Gifts */}
-                        {memberSpiritualProfile.primaryGifts && memberSpiritualProfile.primaryGifts.length > 0 && (
+                        {member_spiritual_profiles.primaryGifts && member_spiritual_profiles.primaryGifts.length > 0 && (
                           <div>
                             <Label className="text-xs font-medium text-muted-foreground">Dones Primarios</Label>
                             <div className="flex flex-wrap gap-1 mt-1">
-                              {memberSpiritualProfile.primaryGifts.map((giftId: string, index: number) => {
+                              {member_spiritual_profiles.primaryGifts.map((giftId: string, index: number) => {
                                 const gift = spiritualGifts.find(g => g.id === giftId)
                                 return (
                                   <Badge key={index} variant="default" className="text-xs bg-blue-100 text-blue-800">
@@ -1177,11 +1177,11 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                         )}
                         
                         {/* Secondary Gifts */}
-                        {memberSpiritualProfile.secondaryGifts && memberSpiritualProfile.secondaryGifts.length > 0 && (
+                        {member_spiritual_profiles.secondaryGifts && member_spiritual_profiles.secondaryGifts.length > 0 && (
                           <div>
                             <Label className="text-xs font-medium text-muted-foreground">Dones Secundarios</Label>
                             <div className="flex flex-wrap gap-1 mt-1">
-                              {memberSpiritualProfile.secondaryGifts.map((giftId: string, index: number) => {
+                              {member_spiritual_profiles.secondaryGifts.map((giftId: string, index: number) => {
                                 const gift = spiritualGifts.find(g => g.id === giftId)
                                 return (
                                   <Badge key={index} variant="outline" className="text-xs">
@@ -1194,19 +1194,19 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                         )}
 
                         {/* Spiritual Calling */}
-                        {memberSpiritualProfile.spiritualCalling && (
+                        {member_spiritual_profiles.spiritualCalling && (
                           <div>
                             <Label className="text-xs font-medium text-muted-foreground">Llamado Espiritual</Label>
-                            <p className="text-sm mt-1">{memberSpiritualProfile.spiritualCalling}</p>
+                            <p className="text-sm mt-1">{member_spiritual_profiles.spiritualCalling}</p>
                           </div>
                         )}
 
                         {/* Ministry Passions */}
-                        {memberSpiritualProfile.ministryPassions && memberSpiritualProfile.ministryPassions.length > 0 && (
+                        {member_spiritual_profiles.ministryPassions && member_spiritual_profiles.ministryPassions.length > 0 && (
                           <div>
                             <Label className="text-xs font-medium text-muted-foreground">Pasiones Ministeriales</Label>
                             <div className="flex flex-wrap gap-1 mt-1">
-                              {memberSpiritualProfile.ministryPassions.map((passion: string, index: number) => (
+                              {member_spiritual_profiles.ministryPassions.map((passion: string, index: number) => (
                                 <Badge key={index} variant="secondary" className="text-xs bg-green-100 text-green-800">
                                   {passion}
                                 </Badge>
@@ -1268,13 +1268,13 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               <div>
                 <Label className="text-sm font-medium text-muted-foreground">Recomendaciones Inteligentes</Label>
                 <div className="mt-2 space-y-2">
-                  {memberSpiritualProfile ? (
+                  {member_spiritual_profiles ? (
                     <>
                       {/* Calculate real match score based on spiritual profile */}
                       {(() => {
-                        const primaryGifts = memberSpiritualProfile.primaryGifts || []
-                        const secondaryGifts = memberSpiritualProfile.secondaryGifts || []
-                        const ministryPassions = memberSpiritualProfile.ministryPassions || []
+                        const primaryGifts = member_spiritual_profiles.primaryGifts || []
+                        const secondaryGifts = member_spiritual_profiles.secondaryGifts || []
+                        const ministryPassions = member_spiritual_profiles.ministryPassions || []
                         const hasLeadershipGifts = primaryGifts.some((giftId: string) => 
                           ['leadership', 'administration', 'wisdom', 'teaching'].includes(giftId)
                         )

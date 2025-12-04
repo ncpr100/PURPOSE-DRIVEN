@@ -33,7 +33,7 @@ export async function GET(
     }
 
     // Get prayer categories for this church
-    const categories = await prisma.prayerCategory.findMany({
+    const categories = await prisma.prayer_categories.findMany({
       where: {
         churchId: form.churchId,
         isActive: true

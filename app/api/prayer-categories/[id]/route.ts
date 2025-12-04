@@ -24,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    const category = await prisma.prayerCategory.findFirst({
+    const category = await prisma.prayer_categories.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -81,7 +81,7 @@ export async function PUT(
     const body = await request.json()
     const { name, description, icon, color, isActive } = body
 
-    const category = await prisma.prayerCategory.findFirst({
+    const category = await prisma.prayer_categories.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -94,7 +94,7 @@ export async function PUT(
 
     // Check for duplicate name if changed
     if (name && name !== category.name) {
-      const existing = await prisma.prayerCategory.findFirst({
+      const existing = await prisma.prayer_categories.findFirst({
         where: {
           churchId: user.churchId,
           name: name.trim(),
@@ -107,7 +107,7 @@ export async function PUT(
       }
     }
 
-    const updatedCategory = await prisma.prayerCategory.update({
+    const updatedCategory = await prisma.prayer_categories.update({
       where: { id: params.id },
       data: {
         name: name?.trim() || category.name,
@@ -150,7 +150,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Sin permisos suficientes' }, { status: 403 })
     }
 
-    const category = await prisma.prayerCategory.findFirst({
+    const category = await prisma.prayer_categories.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -172,7 +172,7 @@ export async function DELETE(
       }, { status: 409 })
     }
 
-    await prisma.prayerCategory.delete({
+    await prisma.prayer_categories.delete({
       where: { id: params.id }
     })
 

@@ -30,7 +30,7 @@ async function detectMemberConflicts(memberId: string, churchId: string): Promis
   const conflicts: SchedulingConflict[] = []
 
   // Get all upcoming assignments for this member
-  const assignments = await prisma.volunteerAssignment.findMany({
+  const assignments = await prisma.volunteer_assignments.findMany({
     where: {
       volunteer: {
         memberId,
@@ -265,7 +265,7 @@ function getWeekKey(date: Date): string {
 }
 
 async function checkSchedulingConflicts(memberId: string, date: Date, startTime: string, endTime: string, churchId: string): Promise<boolean> {
-  const conflicts = await prisma.volunteerAssignment.findMany({
+  const conflicts = await prisma.volunteer_assignments.findMany({
     where: {
       volunteer: { 
         memberId,
@@ -351,7 +351,7 @@ export async function POST(request: NextRequest) {
             const assignmentId = conflict.conflictingAssignments[0]
             const [newStart, newEnd] = resolution.timeAdjustments.suggestedTime.split('-')
             
-            await prisma.volunteerAssignment.update({
+            await prisma.volunteer_assignments.update({
               where: { id: assignmentId },
               data: {
                 startTime: newStart,
@@ -432,7 +432,7 @@ export async function GET(request: NextRequest) {
         }
       })
 
-      const totalAssignments = await prisma.volunteerAssignment.count({
+      const totalAssignments = await prisma.volunteer_assignments.count({
         where: {
           volunteer: {
             churchId: session.user.churchId

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const theme = await prisma.churchTheme.findUnique({
+    const theme = await prisma.church_themes.findUnique({
       where: {
         churchId: session.user.churchId
       }
@@ -60,7 +60,7 @@ export async function PUT(request: NextRequest) {
     })
 
     // Upsert church theme (create or update)
-    const updatedTheme = await prisma.churchTheme.upsert({
+    const updatedTheme = await prisma.church_themes.upsert({
       where: {
         churchId: session.user.churchId
       },

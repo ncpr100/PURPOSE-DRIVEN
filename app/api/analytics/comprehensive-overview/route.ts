@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
           },
           _count: { id: true }
         }),
-        db.volunteerAssignment.aggregate({
+        db.volunteer_assignments.aggregate({
           where: { 
             volunteer: { member: { churchId } },
             date: { gte: startDate, lte: endDate },
@@ -159,7 +159,7 @@ export async function GET(request: NextRequest) {
       Promise.resolve({ _count: { id: 0 } }),
 
       // Social Media Analytics
-      db.socialMediaPost.aggregate({
+      db.social_media_posts.aggregate({
         where: { 
           churchId,
           createdAt: { gte: startDate, lte: endDate }

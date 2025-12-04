@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     const status = searchParams.get('status');
     const campaignId = searchParams.get('campaignId');
 
-    const posts = await prisma.socialMediaPost.findMany({
+    const posts = await prisma.social_media_posts.findMany({
       where: {
         churchId: user.churchId,
         ...(status && { status }),
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const post = await prisma.socialMediaPost.create({
+    const post = await prisma.social_media_posts.create({
       data: {
         title,
         content,

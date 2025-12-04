@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     console.log('🔧 Starting spiritual profile fix...')
 
     // Find JUAN PACHANGA spiritual profile
-    const orphanedProfile = await prisma.memberSpiritualProfile.findFirst({
+    const orphanedProfile = await prisma.member_spiritual_profiles.findFirst({
       where: {
         member: {
           OR: [
@@ -58,19 +58,19 @@ export async function POST(request: NextRequest) {
     console.log('✅ Found Juan Herrera:', juanHerrera.id)
 
     // Check if Juan Herrera already has a profile
-    const existingProfile = await prisma.memberSpiritualProfile.findUnique({
+    const existingProfile = await prisma.member_spiritual_profiles.findUnique({
       where: { memberId: juanHerrera.id }
     })
 
     if (existingProfile && existingProfile.id !== orphanedProfile.id) {
       console.log('⚠️ Juan Herrera already has a different spiritual profile, deleting it...')
-      await prisma.memberSpiritualProfile.delete({
+      await prisma.member_spiritual_profiles.delete({
         where: { memberId: juanHerrera.id }
       })
     }
 
     // Update the orphaned profile to point to Juan Herrera
-    const updatedProfile = await prisma.memberSpiritualProfile.update({
+    const updatedProfile = await prisma.member_spiritual_profiles.update({
       where: { id: orphanedProfile.id },
       data: { memberId: juanHerrera.id }
     })

@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
       }),
 
       // Social Media Analytics
-      db.socialMediaPost.aggregate({
+      db.social_media_posts.aggregate({
         where: { 
           churchId,
           createdAt: { gte: startDate, lte: endDate }
@@ -124,7 +124,7 @@ export async function GET(request: NextRequest) {
         _count: { id: true }
       }),
 
-      db.socialMediaPost.aggregate({
+      db.social_media_posts.aggregate({
         where: { 
           churchId,
           createdAt: { gte: previousStartDate, lt: startDate }

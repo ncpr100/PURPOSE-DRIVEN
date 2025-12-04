@@ -146,7 +146,7 @@ const CHURCH_KPI_TEMPLATES = [
     metricType: "COUNT",
     dataSource: JSON.stringify({
       type: "count",
-      model: "volunteerAssignment",
+      model: "volunteer_assignments",
       filters: {
         status: { in: ["CONFIRMADO", "COMPLETADO"] },
         date: { gte: "PERIOD_START", lte: "PERIOD_END" }

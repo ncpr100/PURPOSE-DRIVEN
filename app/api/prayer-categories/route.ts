@@ -22,7 +22,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    const categories = await prisma.prayerCategory.findMany({
+    const categories = await prisma.prayer_categories.findMany({
       where: {
         churchId: user.churchId,
         isActive: true
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
     }
 
     // Check if category already exists
-    const existing = await prisma.prayerCategory.findFirst({
+    const existing = await prisma.prayer_categories.findFirst({
       where: {
         churchId: user.churchId,
         name: name.trim()
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Categoría ya existe' }, { status: 409 })
     }
 
-    const category = await prisma.prayerCategory.create({
+    const category = await prisma.prayer_categories.create({
       data: {
         name: name.trim(),
         description: description?.trim(),

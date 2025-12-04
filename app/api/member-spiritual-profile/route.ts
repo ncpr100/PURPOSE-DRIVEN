@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       console.log('🔄 TRANSACTION: Step 1 - Upsert spiritual profile...')
       
       // Step 1: Create or update spiritual profile
-      const profile = await tx.memberSpiritualProfile.upsert({
+      const profile = await tx.member_spiritual_profiles.upsert({
         where: { memberId: validated.memberId },
         update: {
           primaryGifts: validated.primaryGifts,
@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Member ID is required' }, { status: 400 })
     }
 
-    const profile = await prisma.memberSpiritualProfile.findUnique({
+    const profile = await prisma.member_spiritual_profiles.findUnique({
       where: { memberId },
       include: {
         member: {

@@ -85,7 +85,7 @@ export async function POST(request: Request) {
     }
 
     // Verify category exists and belongs to church
-    const category = await prisma.prayerCategory.findFirst({
+    const category = await prisma.prayer_categories.findFirst({
       where: {
         id: categoryId,
         churchId: user.churchId,

@@ -100,7 +100,7 @@ export async function POST(
       if (bestMatch) {
         try {
           // Create volunteer assignment
-          const assignment = await prisma.volunteerAssignment.create({
+          const assignment = await prisma.volunteer_assignments.create({
             data: {
               volunteerId: bestMatch.id,
               eventId: event.id,

@@ -56,7 +56,7 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
   // Get campaign if specified
   let campaign = null
   if (searchParams.campaign) {
-    const campaignData = await prisma.donationCampaign.findFirst({
+    const campaignData = await prisma.donation_campaigns.findFirst({
       where: {
         id: searchParams.campaign,
         churchId: params.churchId,
@@ -91,7 +91,7 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
   }
 
   // Get active campaigns
-  const campaignData = await prisma.donationCampaign.findMany({
+  const campaignData = await prisma.donation_campaigns.findMany({
     where: {
       churchId: params.churchId,
       status: 'ACTIVA',

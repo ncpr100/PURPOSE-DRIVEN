@@ -19,7 +19,7 @@ export async function GET(
     const memberId = params.id
 
     // Get spiritual profile
-    const spiritualProfile = await prisma.memberSpiritualProfile.findUnique({
+    const spiritualProfile = await prisma.member_spiritual_profiles.findUnique({
       where: { memberId }
     })
 
@@ -133,7 +133,7 @@ export async function POST(
     ))
 
     // Upsert spiritual profile
-    const spiritualProfile = await prisma.memberSpiritualProfile.upsert({
+    const spiritualProfile = await prisma.member_spiritual_profiles.upsert({
       where: { memberId },
       create: {
         memberId,

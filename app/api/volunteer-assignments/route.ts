@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     if (eventId) whereClause.eventId = eventId
     if (status) whereClause.status = status
 
-    const assignments = await db.volunteerAssignment.findMany({
+    const assignments = await db.volunteer_assignments.findMany({
       where: whereClause,
       include: {
         volunteer: true,
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     // ✅ BUSINESS LOGIC FIX: Check for scheduling conflicts
     // Prevents: Double-booking volunteers at the same time
     const assignmentDate = new Date(validated.date)
-    const conflicts = await db.volunteerAssignment.findMany({
+    const conflicts = await db.volunteer_assignments.findMany({
       where: {
         volunteerId: validated.volunteerId,
         date: assignmentDate,
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ✅ No conflicts - proceed with creation
-    const assignment = await db.volunteerAssignment.create({
+    const assignment = await db.volunteer_assignments.create({
       data: {
         volunteerId: validated.volunteerId,
         eventId: validated.eventId || null,

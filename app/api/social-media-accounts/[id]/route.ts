@@ -25,7 +25,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
     const { isActive, accessToken, refreshToken, tokenExpiresAt, accountData } = await request.json();
 
-    const account = await prisma.socialMediaAccount.update({
+    const account = await prisma.social_media_accounts.update({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -75,7 +75,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    await prisma.socialMediaAccount.delete({
+    await prisma.social_media_accounts.delete({
       where: {
         id: params.id,
         churchId: user.churchId

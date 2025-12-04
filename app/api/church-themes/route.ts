@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get church theme configuration
-    let churchTheme = await prisma.churchTheme.findUnique({
+    let church_themes = await prisma.church_themes.findUnique({
       where: { churchId: user.churchId },
       include: {
         church: {
@@ -53,8 +53,8 @@ export async function GET(request: NextRequest) {
     })
 
     // If no church theme exists, create default one
-    if (!churchTheme) {
-      churchTheme = await prisma.churchTheme.create({
+    if (!church_themes) {
+      church_themes = await prisma.church_themes.create({
         data: {
           churchId: user.churchId,
           themeName: 'church-default',
@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    return NextResponse.json(churchTheme)
+    return NextResponse.json(church_themes)
   } catch (error) {
     console.error('Error fetching church theme:', error)
     return NextResponse.json(
@@ -122,7 +122,7 @@ export async function PUT(request: NextRequest) {
     const validatedData = churchThemeSchema.parse(body)
 
     // Upsert church theme
-    const churchTheme = await prisma.churchTheme.upsert({
+    const church_themes = await prisma.church_themes.upsert({
       where: { churchId: user.churchId },
       update: {
         ...validatedData,
@@ -152,7 +152,7 @@ export async function PUT(request: NextRequest) {
       }
     })
 
-    return NextResponse.json(churchTheme)
+    return NextResponse.json(church_themes)
   } catch (error) {
     console.error('Error updating church theme:', error)
     

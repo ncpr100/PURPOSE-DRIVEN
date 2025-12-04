@@ -198,7 +198,7 @@ export async function POST(request: NextRequest) {
 
     // Verify campaign exists if provided
     if (campaignId) {
-      const campaign = await prisma.donationCampaign.findFirst({
+      const campaign = await prisma.donation_campaigns.findFirst({
         where: { 
           id: campaignId,
           churchId: churchId,

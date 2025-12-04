@@ -25,7 +25,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    const accounts = await prisma.socialMediaAccount.findMany({
+    const accounts = await prisma.social_media_accounts.findMany({
       where: {
         churchId: user.churchId,
         isActive: true
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
     }
 
     // Check if account already exists
-    const existingAccount = await prisma.socialMediaAccount.findUnique({
+    const existingAccount = await prisma.social_media_accounts.findUnique({
       where: {
         platform_accountId_churchId: {
           platform,
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Account already connected' }, { status: 409 });
     }
 
-    const account = await prisma.socialMediaAccount.create({
+    const account = await prisma.social_media_accounts.create({
       data: {
         platform,
         accountId,

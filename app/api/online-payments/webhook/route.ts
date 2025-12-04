@@ -225,7 +225,7 @@ async function sendDonationConfirmationEmail(onlinePaymentId: string) {
 async function updateCampaignTotal(categoryId: string, amount: number) {
   try {
     // Find active campaigns using this category
-    const campaigns = await prisma.donationCampaign.findMany({
+    const campaigns = await prisma.donation_campaigns.findMany({
       where: {
         categoryId,
         status: 'ACTIVA'

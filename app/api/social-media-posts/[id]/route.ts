@@ -23,7 +23,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    const post = await prisma.socialMediaPost.findUnique({
+    const post = await prisma.social_media_posts.findUnique({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -78,7 +78,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       campaignId 
     } = await request.json();
 
-    const post = await prisma.socialMediaPost.update({
+    const post = await prisma.social_media_posts.update({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -128,7 +128,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    await prisma.socialMediaPost.delete({
+    await prisma.social_media_posts.delete({
       where: {
         id: params.id,
         churchId: user.churchId

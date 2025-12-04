@@ -110,7 +110,7 @@ export async function GET(request: NextRequest) {
             checkedInAt: { gte: startDate, lte: endDate }
           }
         }),
-        db.volunteerAssignment.count({
+        db.volunteer_assignments.count({
           where: { 
             churchId,
             createdAt: { gte: startDate, lte: endDate }

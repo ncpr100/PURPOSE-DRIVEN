@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
 
     // ✅ SECURITY: Validate category belongs to user's church
     if (queryParams.category !== 'all') {
-      const validCategory = await prisma.prayerCategory.findFirst({
+      const validCategory = await prisma.prayer_categories.findFirst({
         where: {
           id: queryParams.category,
           churchId: user.churchId
@@ -228,7 +228,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get prayer categories
-    const categories = await prisma.prayerCategory.findMany({
+    const categories = await prisma.prayer_categories.findMany({
       where: { churchId: user.churchId },
       include: {
         _count: {

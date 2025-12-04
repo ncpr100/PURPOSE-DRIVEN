@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     }
 
     const [campaigns, total] = await Promise.all([
-      prisma.donationCampaign.findMany({
+      prisma.donation_campaigns.findMany({
         where,
         include: {
           category: {
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit
       }),
-      prisma.donationCampaign.count({ where })
+      prisma.donation_campaigns.count({ where })
     ])
 
     return NextResponse.json({
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const campaign = await prisma.donationCampaign.create({
+    const campaign = await prisma.donation_campaigns.create({
       data: {
         name: campaignName,
         description,

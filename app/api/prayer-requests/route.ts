@@ -128,7 +128,7 @@ export async function POST(request: Request) {
       prisma.church.findFirst({
         where: { id: churchId, isActive: true }
       }),
-      prisma.prayerCategory.findFirst({
+      prisma.prayer_categories.findFirst({
         where: { id: categoryId, churchId: churchId, isActive: true }
       })
     ]);

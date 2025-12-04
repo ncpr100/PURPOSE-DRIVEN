@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
             count: item._count.id
           };
         }
-        const campaign = await db.donationCampaign.findUnique({
+        const campaign = await db.donation_campaigns.findUnique({
           where: { id: item.campaignId },
         });
         return {

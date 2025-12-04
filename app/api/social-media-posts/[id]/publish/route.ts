@@ -25,7 +25,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     }
 
     // Get the post
-    const post = await prisma.socialMediaPost.findUnique({
+    const post = await prisma.social_media_posts.findUnique({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -42,7 +42,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
 
     // Get connected accounts
     const accountIds = JSON.parse(post.accountIds || '[]');
-    const accounts = await prisma.socialMediaAccount.findMany({
+    const accounts = await prisma.social_media_accounts.findMany({
       where: {
         id: { in: accountIds },
         churchId: user.churchId,
@@ -71,7 +71,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
     }
 
     // Update post status
-    const updatedPost = await prisma.socialMediaPost.update({
+    const updatedPost = await prisma.social_media_posts.update({
       where: { id: params.id },
       data: {
         status: 'PUBLISHED',
