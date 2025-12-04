@@ -785,7 +785,7 @@ export class FormAutomationEngine {
         checkedInAt: new Date(),
         visitorType: 'form_submission',
         engagementScore: 85, // High score for digital form submissions
-        prayerRequest: visitorInfo.prayerRequest,
+        prayer_requests: visitorInfo.prayer_requests,
         visitReason: `Custom Form: ${visitorInfo.formTitle}`,
         ministryInterest: visitorInfo.interests ? [visitorInfo.interests] : [],
         ageGroup: visitorInfo.ageRange,
@@ -795,14 +795,14 @@ export class FormAutomationEngine {
     })
 
     // 🎯 AUTO-CREATE HIGH-PRIORITY FOLLOW-UP TASK
-    const followUpTask = await db.visitorFollowUp.create({
+    const followUpTask = await db.visitor_follow_ups.create({
       data: {
         checkInId: visitor.id,
         followUpType: 'first_time_visitor',
         priority: 'high',
         status: 'pending',
         scheduledAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // Next day
-        notes: `🔥 NUEVO VISITANTE AUTO-REGISTRADO via formulario personalizado\\n\\n📋 ACCIÓN REQUERIDA: Contactar dentro de 24 horas\\n\\n📝 Detalles del visitante:\\n• Nombre: ${visitorInfo.firstName} ${visitorInfo.lastName}\\n• Email: ${visitorInfo.email}\\n• Teléfono: ${visitorInfo.phone}\\n• Intereses ministeriales: ${visitorInfo.interests}\\n• Petición de oración: ${visitorInfo.prayerRequest}\\n• Fuente: ${visitorInfo.formTitle}\\n\\n⚡ Generado automáticamente por el sistema`,
+        notes: `🔥 NUEVO VISITANTE AUTO-REGISTRADO via formulario personalizado\\n\\n📋 ACCIÓN REQUERIDA: Contactar dentro de 24 horas\\n\\n📝 Detalles del visitante:\\n• Nombre: ${visitorInfo.firstName} ${visitorInfo.lastName}\\n• Email: ${visitorInfo.email}\\n• Teléfono: ${visitorInfo.phone}\\n• Intereses ministeriales: ${visitorInfo.interests}\\n• Petición de oración: ${visitorInfo.prayer_requests}\\n• Fuente: ${visitorInfo.formTitle}\\n\\n⚡ Generado automáticamente por el sistema`,
         assignedTo: await this.getNextAvailablePastor(churchId),
         churchId: churchId,
       }
@@ -811,9 +811,9 @@ export class FormAutomationEngine {
     console.log(`✅ VISITOR AUTOMATION COMPLETED: Created visitor ${visitor.id} with follow-up task ${followUpTask.id}`)
 
     // 🎯 AUTO-CREATE PRAYER REQUEST IF PROVIDED
-    if (visitorInfo.prayerRequest) {
+    if (visitorInfo.prayer_requests) {
       await this.handlePrayerRequestFormAutomation(formId, {
-        request: visitorInfo.prayerRequest,
+        request: visitorInfo.prayer_requests,
         requesterName: `${visitorInfo.firstName} ${visitorInfo.lastName}`,
         requesterEmail: visitorInfo.email,
         source: 'visitor_form',
@@ -872,7 +872,7 @@ export class FormAutomationEngine {
     }
     
     // 🎯 AUTO-CREATE PRAYER REQUEST
-    const prayerRequest = await db.prayerRequest.create({
+    const prayer_requests = await db.prayer_requests.create({
       data: {
         message: prayerInfo.request || prayerInfo.title || 'Petición de Oración',
         contactId: prayerContact.id,
@@ -886,10 +886,10 @@ export class FormAutomationEngine {
       }
     })
 
-    console.log(`✅ PRAYER REQUEST AUTOMATION COMPLETE: Created prayer request ${prayerRequest.id}`)
+    console.log(`✅ PRAYER REQUEST AUTOMATION COMPLETE: Created prayer request ${prayer_requests.id}`)
     
     // TODO: Implement prayer-specific follow-up system (not visitor follow-up)
-    console.log(`📋 PRAYER FOLLOW-UP: Would schedule follow-up for prayer request ${prayerRequest.id}`)
+    console.log(`📋 PRAYER FOLLOW-UP: Would schedule follow-up for prayer request ${prayer_requests.id}`)
   }
 
   // 🎯 3. VOLUNTEER FORM AUTOMATION
@@ -1050,7 +1050,7 @@ export class FormAutomationEngine {
       lastName: data.lastName || data.name?.split(' ').slice(1).join(' ') || data.apellido || '',
       email: data.email || data.correo || '',
       phone: data.phone || data.telefono || data.celular || '',
-      prayerRequest: data.prayerRequest || data.oracion || data.peticion || '',
+      prayer_requests: data.prayer_requests || data.oracion || data.peticion || '',
       interests: data.interests || data.intereses || data.ministryInterest || '',
       ageRange: data.ageRange || data.edad || data.age || null,
       visitReason: data.visitReason || data.motivo || 'Digital form submission',
@@ -1157,13 +1157,13 @@ export class FormAutomationEngine {
     // TODO: Implement actual notification system
   }
 
-  static async notifyPrayerTeam(prayerRequest: any, churchId: string): Promise<void> {
-    console.log(`🙏 Prayer team notified for request: ${prayerRequest.id}`)
+  static async notifyPrayerTeam(prayer_requests: any, churchId: string): Promise<void> {
+    console.log(`🙏 Prayer team notified for request: ${prayer_requests.id}`)
     // TODO: Implement prayer team notification
   }
 
-  static async addToPrayerChainDistribution(prayerRequest: any, churchId: string): Promise<void> {
-    console.log(`⛓️ Added to prayer chain: ${prayerRequest.id}`)
+  static async addToPrayerChainDistribution(prayer_requests: any, churchId: string): Promise<void> {
+    console.log(`⛓️ Added to prayer chain: ${prayer_requests.id}`)
     // TODO: Implement prayer chain distribution
   }
 

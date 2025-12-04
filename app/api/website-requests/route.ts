@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const requests = await prisma.websiteRequest.findMany({
+    const requests = await prisma.website_requests.findMany({
       where: {
         churchId: session.user.churchId
       },
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     const estimatedCompletion = new Date()
     estimatedCompletion.setDate(estimatedCompletion.getDate() + estimatedDays)
 
-    const websiteRequest = await prisma.websiteRequest.create({
+    const website_requests = await prisma.website_requests.create({
       data: {
         churchId: session.user.churchId,
         requestType: requestTypeLabel || requestType,
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
     // TODO: Enviar notificación a SUPER_ADMIN
     // TODO: Enviar email de confirmación al cliente
 
-    return NextResponse.json(websiteRequest)
+    return NextResponse.json(website_requests)
   } catch (error) {
     console.error('Error creating website request:', error)
     return NextResponse.json(

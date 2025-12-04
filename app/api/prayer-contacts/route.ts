@@ -48,7 +48,7 @@ export async function GET(request: Request) {
         include: {
           _count: {
             select: {
-              prayerRequests: true
+              prayer_requestss: true
             }
           }
         },

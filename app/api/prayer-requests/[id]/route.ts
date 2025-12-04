@@ -24,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    const prayerRequest = await prisma.prayerRequest.findFirst({
+    const prayer_requests = await prisma.prayer_requests.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -64,11 +64,11 @@ export async function GET(
       }
     })
 
-    if (!prayerRequest) {
+    if (!prayer_requests) {
       return NextResponse.json({ error: 'Petición no encontrada' }, { status: 404 })
     }
 
-    return NextResponse.json({ request: prayerRequest })
+    return NextResponse.json({ request: prayer_requests })
   } catch (error) {
     console.error('Error fetching prayer request:', error)
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
@@ -103,22 +103,22 @@ export async function PUT(
     const body = await request.json()
     const { status, priority, scheduledAt, notes } = body
 
-    const prayerRequest = await prisma.prayerRequest.findFirst({
+    const prayer_requests = await prisma.prayer_requests.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
       }
     })
 
-    if (!prayerRequest) {
+    if (!prayer_requests) {
       return NextResponse.json({ error: 'Petición no encontrada' }, { status: 404 })
     }
 
-    const updatedRequest = await prisma.prayerRequest.update({
+    const updatedRequest = await prisma.prayer_requests.update({
       where: { id: params.id },
       data: {
-        status: status || prayerRequest.status,
-        priority: priority || prayerRequest.priority
+        status: status || prayer_requests.status,
+        priority: priority || prayer_requests.priority
       }
     })
 
@@ -168,18 +168,18 @@ export async function DELETE(
       return NextResponse.json({ error: 'Sin permisos suficientes' }, { status: 403 })
     }
 
-    const prayerRequest = await prisma.prayerRequest.findFirst({
+    const prayer_requests = await prisma.prayer_requests.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
       }
     })
 
-    if (!prayerRequest) {
+    if (!prayer_requests) {
       return NextResponse.json({ error: 'Petición no encontrada' }, { status: 404 })
     }
 
-    await prisma.prayerRequest.delete({
+    await prisma.prayer_requests.delete({
       where: { id: params.id }
     })
 

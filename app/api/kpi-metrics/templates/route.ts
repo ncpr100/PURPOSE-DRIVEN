@@ -206,7 +206,7 @@ const CHURCH_KPI_TEMPLATES = [
     metricType: "COUNT",
     dataSource: JSON.stringify({
       type: "count",
-      model: "prayerRequest",
+      model: "prayer_requests",
       filters: {
         createdAt: { gte: "PERIOD_START", lte: "PERIOD_END" }
       }

@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
     const mockMessages = [
       {
         id: '1',
-        prayerRequestId: 'req1',
+        prayer_requestsId: 'req1',
         contactId: 'contact1',
         messageType: 'email' as const,
         content: {
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
       },
       {
         id: '2',
-        prayerRequestId: 'req2',
+        prayer_requestsId: 'req2',
         contactId: 'contact2',
         messageType: 'sms' as const,
         content: {
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
       },
       {
         id: '3',
-        prayerRequestId: 'req3',
+        prayer_requestsId: 'req3',
         contactId: 'contact3',
         messageType: 'whatsapp' as const,
         content: {
@@ -136,7 +136,7 @@ export async function POST(request: NextRequest) {
     }
 
     const {
-      prayerRequestId,
+      prayer_requestsId,
       contactId,
       messageType,
       content,
@@ -144,9 +144,9 @@ export async function POST(request: NextRequest) {
       automationRuleId
     } = await request.json()
 
-    if (!prayerRequestId || !contactId || !messageType || !content) {
+    if (!prayer_requestsId || !contactId || !messageType || !content) {
       return NextResponse.json(
-        { error: 'Campos requeridos: prayerRequestId, contactId, messageType, content' },
+        { error: 'Campos requeridos: prayer_requestsId, contactId, messageType, content' },
         { status: 400 }
       )
     }
@@ -159,14 +159,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify the prayer request exists and belongs to this church
-    const prayerRequest = await prisma.prayerRequest.findFirst({
+    const prayer_requests = await prisma.prayer_requests.findFirst({
       where: {
-        id: prayerRequestId,
+        id: prayer_requestsId,
         churchId: user.churchId
       }
     })
 
-    if (!prayerRequest) {
+    if (!prayer_requests) {
       return NextResponse.json(
         { error: 'Petición de oración no encontrada' },
         { status: 404 }
@@ -195,7 +195,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: {
         id: messageId,
-        prayerRequestId,
+        prayer_requestsId,
         contactId,
         messageType,
         content,

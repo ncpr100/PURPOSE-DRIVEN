@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Obtener todas las solicitudes de sitios web
-    const websiteRequests = await prisma.websiteRequest.findMany({
+    const website_requestss = await prisma.website_requests.findMany({
       include: {
         church: {
           select: {
@@ -55,13 +55,13 @@ export async function GET(request: NextRequest) {
     })
 
     return NextResponse.json({
-      requests: websiteRequests,
+      requests: website_requestss,
       activeWebsites: activeWebsites,
       stats: {
-        pendingRequests: websiteRequests.filter(r => r.status === 'pending').length,
-        inProgress: websiteRequests.filter(r => r.status === 'in_progress').length,
+        pendingRequests: website_requestss.filter(r => r.status === 'pending').length,
+        inProgress: website_requestss.filter(r => r.status === 'in_progress').length,
         totalActive: activeWebsites.length,
-        monthlyRevenue: websiteRequests
+        monthlyRevenue: website_requestss
           .filter(r => r.status === 'completed' && r.completedAt && 
             new Date(r.completedAt).getMonth() === new Date().getMonth())
           .reduce((sum, r) => sum + (r.finalPrice || r.estimatedPrice || 0), 0)
@@ -176,7 +176,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Crear entrada en el log de proyectos
-    await prisma.websiteRequest.create({
+    await prisma.website_requests.create({
       data: {
         churchId: church.id,
         requestType: 'admin_created',

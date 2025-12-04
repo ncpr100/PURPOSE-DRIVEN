@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       activeUsers,
       newChurchesThisMonth,
       newUsersThisMonth,
-      websiteRequests,
+      website_requestss,
       completedWebsiteRequests,
       totalWebsiteRevenue
     ] = await Promise.all([
@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
       }),
       
       // Website requests by status
-      prisma.websiteRequest.groupBy({
+      prisma.website_requests.groupBy({
         by: ['status'],
         _count: {
           status: true
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
       }).catch(() => []), // Gracefully handle if table doesn't exist
       
       // Completed website requests
-      prisma.websiteRequest.findMany({
+      prisma.website_requests.findMany({
         where: {
           status: 'completed',
           completedAt: {
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
       }).catch(() => []),
       
       // Total website revenue
-      prisma.websiteRequest.aggregate({
+      prisma.website_requests.aggregate({
         _sum: {
           finalPrice: true,
           estimatedPrice: true
@@ -138,7 +138,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Count requests by status
-    websiteRequests.forEach((group: { status: string; _count: { status: number } }) => {
+    website_requestss.forEach((group: { status: string; _count: { status: number } }) => {
       const status = group.status.toLowerCase().replace('_', '')
       if (status === 'pending') websiteStats.pending = group._count.status
       if (status === 'inprogress') websiteStats.inProgress = group._count.status
@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
       activeUsers,
       newChurchesThisMonth,
       newUsersThisMonth,
-      websiteRequests: websiteStats,
+      website_requestss: websiteStats,
       systemHealth,
       growth: {
         churchGrowthRate,

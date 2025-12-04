@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: { code: string } }
 ) {
   try {
-    const childCheckIn = await db.children_check_ins.findUnique({
+    const children_check_ins = await db.children_check_ins.findUnique({
       where: {
         qrCode: params.code
       },
@@ -21,7 +21,7 @@ export async function GET(
       }
     })
 
-    if (!childCheckIn) {
+    if (!children_check_ins) {
       return NextResponse.json(
         { message: 'Check-in de niño no encontrado' },
         { status: 404 }
@@ -30,30 +30,30 @@ export async function GET(
 
     // Return public-safe data for QR form completion
     return NextResponse.json({
-      id: childCheckIn.id,
-      qrCode: childCheckIn.qrCode,
-      childName: childCheckIn.childName,
-      childAge: childCheckIn.childAge,
-      parentName: childCheckIn.parentName,
-      parentPhone: childCheckIn.parentPhone,
-      parentEmail: childCheckIn.parentEmail,
-      emergencyContact: childCheckIn.emergencyContact,
-      emergencyPhone: childCheckIn.emergencyPhone,
-      allergies: childCheckIn.allergies,
-      specialNeeds: childCheckIn.specialNeeds,
-      checkedIn: childCheckIn.checkedIn,
-      checkedOut: childCheckIn.checkedOut,
-      checkedInAt: childCheckIn.checkedInAt,
-      event: childCheckIn.event ? {
-        title: childCheckIn.event.title,
-        startDate: childCheckIn.event.startDate
+      id: children_check_ins.id,
+      qrCode: children_check_ins.qrCode,
+      childName: children_check_ins.childName,
+      childAge: children_check_ins.childAge,
+      parentName: children_check_ins.parentName,
+      parentPhone: children_check_ins.parentPhone,
+      parentEmail: children_check_ins.parentEmail,
+      emergencyContact: children_check_ins.emergencyContact,
+      emergencyPhone: children_check_ins.emergencyPhone,
+      allergies: children_check_ins.allergies,
+      specialNeeds: children_check_ins.specialNeeds,
+      checkedIn: children_check_ins.checkedIn,
+      checkedOut: children_check_ins.checkedOut,
+      checkedInAt: children_check_ins.checkedInAt,
+      event: children_check_ins.event ? {
+        title: children_check_ins.event.title,
+        startDate: children_check_ins.event.startDate
       } : null,
       church: {
-        name: childCheckIn.church.name
+        name: children_check_ins.church.name
       },
       // Security info (non-sensitive)
-      securityPin: childCheckIn.securityPin,
-      requiresBothAuth: childCheckIn.requiresBothAuth
+      securityPin: children_check_ins.securityPin,
+      requiresBothAuth: children_check_ins.requiresBothAuth
     })
 
   } catch (error) {
@@ -98,7 +98,7 @@ export async function POST(
     const securityPin = Math.floor(100000 + Math.random() * 900000).toString()
 
     // Create complete child check-in via QR
-    const childCheckIn = await db.children_check_ins.create({
+    const children_check_ins = await db.children_check_ins.create({
       data: {
         childName,
         childAge: childAge ? parseInt(childAge) : null,
@@ -132,8 +132,8 @@ export async function POST(
 
     return NextResponse.json({
       success: true,
-      check_ins: childCheckIn,
-      securityPin: childCheckIn.securityPin,
+      check_ins: children_check_ins,
+      securityPin: children_check_ins.securityPin,
       message: '✅ Check-in completado exitosamente via QR'
     }, { status: 201 })
 

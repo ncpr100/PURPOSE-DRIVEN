@@ -165,7 +165,7 @@ export async function POST(request: Request) {
 
     // Update prayer requests status
     const requestIds = validApprovals.map(a => a.requestId)
-    await prisma.prayerRequest.updateMany({
+    await prisma.prayer_requests.updateMany({
       where: {
         id: { in: requestIds }
       },
@@ -179,7 +179,7 @@ export async function POST(request: Request) {
       const randomDelay = Math.floor(Math.random() * 3 + 1) * 60 * 60 * 1000 // 1-4 hours
       const scheduledAt = new Date(Date.now() + randomDelay)
 
-      await prisma.prayerRequest.updateMany({
+      await prisma.prayer_requests.updateMany({
         where: {
           id: { in: requestIds }
         },

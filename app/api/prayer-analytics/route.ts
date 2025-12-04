@@ -137,7 +137,7 @@ export async function GET(request: NextRequest) {
 
     // ✅ SECURITY: Enhanced query building with sanitized parameters
     // Get all prayer requests for the period with secure filtering
-    const prayerRequests = await prisma.prayerRequest.findMany({
+    const prayer_requestss = await prisma.prayer_requests.findMany({
       where: whereClause,
       select: {
         id: true,
@@ -202,7 +202,7 @@ export async function GET(request: NextRequest) {
         preferredContact: true,
         createdAt: true,
         updatedAt: true,
-        prayerRequests: {
+        prayer_requestss: {
           where: {
             createdAt: {
               gte: startDate,
@@ -251,10 +251,10 @@ export async function GET(request: NextRequest) {
 
     // Calculate overview metrics
     const overview = {
-      totalRequests: prayerRequests.length,
-      approvedRequests: prayerRequests.filter((req: any) => req.status === 'approved').length,
-      rejectedRequests: prayerRequests.filter((req: any) => req.status === 'rejected').length,
-      pendingRequests: prayerRequests.filter((req: any) => req.status === 'pending').length,
+      totalRequests: prayer_requestss.length,
+      approvedRequests: prayer_requestss.filter((req: any) => req.status === 'approved').length,
+      rejectedRequests: prayer_requestss.filter((req: any) => req.status === 'rejected').length,
+      pendingRequests: prayer_requestss.filter((req: any) => req.status === 'pending').length,
       totalContacts: allContacts.length,
       activeContacts: allContacts.length, // All contacts are considered active for now
       totalResponses: 0, // Would be calculated from actual message data
@@ -262,7 +262,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Calculate average response time from approval data
-    const approvedWithTimes = prayerRequests.filter((req: any) => 
+    const approvedWithTimes = prayer_requestss.filter((req: any) => 
       req.status === 'approved' && req.approval?.approvedAt
     )
 
@@ -289,7 +289,7 @@ export async function GET(request: NextRequest) {
       const dayStart = startOfDay(date)
       const dayEnd = endOfDay(date)
 
-      const dayRequests = prayerRequests.filter((req: any) => {
+      const dayRequests = prayer_requestss.filter((req: any) => {
         const reqDate = new Date(req.createdAt)
         return reqDate >= dayStart && reqDate <= dayEnd
       })
@@ -325,7 +325,7 @@ export async function GET(request: NextRequest) {
 
     // Process categories analytics
     const categoryAnalytics = categories.map((category: any) => {
-      const categoryRequests = prayerRequests.filter((req: any) => req.categoryId === category.id)
+      const categoryRequests = prayer_requestss.filter((req: any) => req.categoryId === category.id)
       const approvedInCategory = categoryRequests.filter((req: any) => req.status === 'approved').length
       
       return {
@@ -365,7 +365,7 @@ export async function GET(request: NextRequest) {
     // Engagement metrics
     const repeatRequesters = allContacts.filter((contact: any) => contact.requests.length > 1).length
     const avgRequestsPerContact = totalContacts > 0 
-      ? prayerRequests.length / totalContacts
+      ? prayer_requestss.length / totalContacts
       : 0
 
     // Mock active hours and days data

@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       eventStats,
       communicationStats,
       volunteerStats,
-      prayerRequestStats,
+      prayer_requestsStats,
       checkInStats,
       followUpStats,
       socialMediaStats,
@@ -234,10 +234,10 @@ export async function GET(request: NextRequest) {
       },
 
       prayerMinistry: {
-        requestsReceived: prayerRequestStats[0]._count.id,
-        responsesGiven: prayerRequestStats[1]._count.id,
-        responseRate: prayerRequestStats[0]._count.id > 0 ?
-          (prayerRequestStats[1]._count.id / prayerRequestStats[0]._count.id) * 100 : 0
+        requestsReceived: prayer_requestsStats[0]._count.id,
+        responsesGiven: prayer_requestsStats[1]._count.id,
+        responseRate: prayer_requestsStats[0]._count.id > 0 ?
+          (prayer_requestsStats[1]._count.id / prayer_requestsStats[0]._count.id) * 100 : 0
       },
 
       engagement: {
@@ -256,7 +256,7 @@ export async function GET(request: NextRequest) {
             ((communicationStats[0]._sum.recipients || 0) / memberStats[0]._count.id) * 100 : 0
         },
         ministryEffectiveness: {
-          prayerEngagement: prayerRequestStats[0]._count.id + prayerRequestStats[1]._count.id,
+          prayerEngagement: prayer_requestsStats[0]._count.id + prayer_requestsStats[1]._count.id,
           volunteerUtilization: volunteerStats[0]._count.id > 0 ? 
             (volunteerStats[1]._count.id / volunteerStats[0]._count.id) * 100 : 0,
           eventParticipation: eventStats[0]._count.id > 0 ? 

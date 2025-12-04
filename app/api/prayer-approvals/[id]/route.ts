@@ -152,7 +152,7 @@ export async function PUT(
       updateData.scheduledAt = new Date(Date.now() + randomDelay)
     }
 
-    await prisma.prayerRequest.update({
+    await prisma.prayer_requests.update({
       where: { id: approval.requestId },
       data: updateData
     })

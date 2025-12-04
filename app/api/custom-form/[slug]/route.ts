@@ -103,7 +103,7 @@ export async function POST(
         visitorType: 'custom_form',
         engagementScore: 85, // High engagement for custom form submissions
         visitReason: `Form: ${form.title}`,
-        prayerRequest: visitorInfo.prayerRequest,
+        prayer_requests: visitorInfo.prayer_requests,
         churchId: form.churchId,
       }
     })
@@ -171,7 +171,7 @@ function extractVisitorInfo(formData: any) {
     phone: ['phone', 'telefono', 'celular', 'mobile'],
     address: ['address', 'direccion'],
     interests: ['interests', 'intereses', 'ministerios'],
-    prayerRequest: ['prayerRequest', 'prayer', 'oracion', 'peticion'],
+    prayer_requests: ['prayer_requests', 'prayer', 'oracion', 'peticion'],
     preferredContact: ['preferredContact', 'contacto_preferido', 'contact_preference']
   }
 

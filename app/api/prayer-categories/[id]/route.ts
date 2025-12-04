@@ -162,7 +162,7 @@ export async function DELETE(
     }
 
     // Check if category has prayer requests
-    const requestCount = await prisma.prayerRequest.count({
+    const requestCount = await prisma.prayer_requests.count({
       where: { categoryId: params.id }
     })
 

@@ -21,7 +21,7 @@ export async function GET(
       )
     }
 
-    const websiteRequest = await prisma.websiteRequest.findFirst({
+    const website_requests = await prisma.website_requests.findFirst({
       where: {
         id: params.id,
         // Solo permitir acceso si es SUPER_ADMIN o es de su iglesia
@@ -41,14 +41,14 @@ export async function GET(
       }
     })
 
-    if (!websiteRequest) {
+    if (!website_requests) {
       return NextResponse.json(
         { error: 'Solicitud no encontrada' },
         { status: 404 }
       )
     }
 
-    return NextResponse.json(websiteRequest)
+    return NextResponse.json(website_requests)
   } catch (error) {
     console.error('Error fetching website request:', error)
     return NextResponse.json(
@@ -77,7 +77,7 @@ export async function PUT(
     
     // Solo SUPER_ADMIN puede actualizar el estado y notas administrativas
     if (session.user.role === 'SUPER_ADMIN') {
-      const updatedRequest = await prisma.websiteRequest.update({
+      const updatedRequest = await prisma.website_requests.update({
         where: { id: params.id },
         data: {
           ...body,
@@ -98,14 +98,14 @@ export async function PUT(
     
     // Los usuarios regulares solo pueden actualizar ciertos campos de sus propias solicitudes
     else if (session.user.churchId) {
-      const websiteRequest = await prisma.websiteRequest.findFirst({
+      const website_requests = await prisma.website_requests.findFirst({
         where: {
           id: params.id,
           churchId: session.user.churchId
         }
       })
 
-      if (!websiteRequest) {
+      if (!website_requests) {
         return NextResponse.json(
           { error: 'Solicitud no encontrada' },
           { status: 404 }
@@ -122,7 +122,7 @@ export async function PUT(
         }
       }
 
-      const updatedRequest = await prisma.websiteRequest.update({
+      const updatedRequest = await prisma.website_requests.update({
         where: { id: params.id },
         data: updateData
       })
@@ -159,7 +159,7 @@ export async function DELETE(
     }
 
     // Solo SUPER_ADMIN o la iglesia propietaria puede eliminar
-    const websiteRequest = await prisma.websiteRequest.findFirst({
+    const website_requests = await prisma.website_requests.findFirst({
       where: {
         id: params.id,
         ...(session.user.role === 'SUPER_ADMIN' 
@@ -169,14 +169,14 @@ export async function DELETE(
       }
     })
 
-    if (!websiteRequest) {
+    if (!website_requests) {
       return NextResponse.json(
         { error: 'Solicitud no encontrada' },
         { status: 404 }
       )
     }
 
-    await prisma.websiteRequest.delete({
+    await prisma.website_requests.delete({
       where: { id: params.id }
     })
 

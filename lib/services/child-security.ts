@@ -43,7 +43,7 @@ export class ChildSecurityService {
       const parentPhotoUrl = await this.storeEncryptedPhoto(data.parentPhoto, 'parent')
 
       // Create enhanced child check-in record
-      const checkIn = await prisma.childCheckIn.create({
+      const checkIn = await prisma.children_check_ins.create({
         data: {
           childName: data.childId,
           securityPin,
@@ -90,7 +90,7 @@ export class ChildSecurityService {
     reason?: string,
     requiresManagerOverride?: boolean 
   }> {
-    const checkIn = await prisma.childCheckIn.findUnique({
+    const checkIn = await prisma.children_check_ins.findUnique({
       where: { id: checkInId }
     })
 
@@ -137,7 +137,7 @@ export class ChildSecurityService {
 
     if (success) {
       // Successful pickup - update record
-      await prisma.childCheckIn.update({
+      await prisma.children_check_ins.update({
         where: { id: checkInId },
         data: {
           checkedOut: true,
@@ -154,7 +154,7 @@ export class ChildSecurityService {
 
     } else {
       // Failed attempt - log and continue
-      await prisma.childCheckIn.update({
+      await prisma.children_check_ins.update({
         where: { id: checkInId },
         data: { pickupAttempts: updatedAttempts as any }
       })
@@ -180,7 +180,7 @@ export class ChildSecurityService {
     overrideReason: string
   ): Promise<{ success: boolean }> {
     try {
-      await prisma.childCheckIn.update({
+      await prisma.children_check_ins.update({
         where: { id: checkInId },
         data: {
           checkedOut: true,
@@ -300,7 +300,7 @@ export class ChildSecurityService {
    */
   private async cleanupPhotos(checkInId: string): Promise<void> {
     try {
-      const checkIn = await prisma.childCheckIn.findUnique({
+      const checkIn = await prisma.children_check_ins.findUnique({
         where: { id: checkInId }
       })
 
@@ -314,7 +314,7 @@ export class ChildSecurityService {
         }
 
         // Clear photo URLs from database
-        await prisma.childCheckIn.update({
+        await prisma.children_check_ins.update({
           where: { id: checkInId },
           data: {
             childPhotoUrl: null,
@@ -347,7 +347,7 @@ export class ChildSecurityService {
    * Get pickup attempt history for audit
    */
   async getPickupHistory(checkInId: string): Promise<PickupAttempt[]> {
-    const checkIn = await prisma.childCheckIn.findUnique({
+    const checkIn = await prisma.children_check_ins.findUnique({
       where: { id: checkInId },
       select: { pickupAttempts: true }
     })
@@ -362,7 +362,7 @@ export class ChildSecurityService {
     const cutoffDate = new Date()
     cutoffDate.setDate(cutoffDate.getDate() - this.PHOTO_RETENTION_DAYS)
 
-    const expiredCheckIns = await prisma.childCheckIn.findMany({
+    const expiredCheckIns = await prisma.children_check_ins.findMany({
       where: {
         photoTakenAt: { lte: cutoffDate },
         OR: [

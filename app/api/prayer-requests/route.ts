@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     };
 
     const [requests, total] = await prisma.$transaction([
-      prisma.prayerRequest.findMany({
+      prisma.prayer_requests.findMany({
         where,
         include: {
           contact: {
@@ -81,7 +81,7 @@ export async function GET(request: Request) {
         skip,
         take: limit,
       }),
-      prisma.prayerRequest.count({ where }),
+      prisma.prayer_requests.count({ where }),
     ]);
 
     return NextResponse.json({
@@ -165,7 +165,7 @@ export async function POST(request: Request) {
     });
 
     // Create prayer request
-    const prayerRequest = await prisma.prayerRequest.create({
+    const prayer_requests = await prisma.prayer_requests.create({
       data: {
         contactId: contact.id,
         churchId,
@@ -187,14 +187,14 @@ export async function POST(request: Request) {
     // TRIGGER AUTOMATION: Process through automation rules
     try {
       const { PrayerAutomation } = await import('@/lib/services/prayer-automation');
-      await PrayerAutomation.processPrayerRequest(prayerRequest.id);
-      console.log(`[Prayer Request API] Automation triggered for prayer request: ${prayerRequest.id}`);
+      await PrayerAutomation.processPrayerRequest(prayer_requests.id);
+      console.log(`[Prayer Request API] Automation triggered for prayer request: ${prayer_requests.id}`);
     } catch (automationError) {
       // Don't fail the request if automation fails, just log it
       console.error('[Prayer Request API] Automation trigger failed:', automationError);
     }
 
-    return NextResponse.json(prayerRequest, { status: 201 });
+    return NextResponse.json(prayer_requests, { status: 201 });
 
   } catch (error) {
     console.error('Error creating prayer request:', error);

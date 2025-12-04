@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get prayer requests for export
-    const prayerRequests = await prisma.prayerRequest.findMany({
+    const prayer_requestss = await prisma.prayer_requests.findMany({
       where: whereClause,
       include: {
         category: true,
@@ -72,9 +72,9 @@ export async function GET(request: NextRequest) {
     })
 
     // Filter by contact method if specified
-    let filteredRequests = prayerRequests
+    let filteredRequests = prayer_requestss
     if (contactMethod !== 'all') {
-      filteredRequests = prayerRequests.filter((req: any) => 
+      filteredRequests = prayer_requestss.filter((req: any) => 
         req.contact?.preferredContact === contactMethod
       )
     }

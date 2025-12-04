@@ -27,21 +27,21 @@ export async function POST(
     const body = await request.json().catch(() => ({}))
     const { securityPin, parentPhoto, notes } = body
 
-    const childCheckIn = await db.children_check_ins.findFirst({
+    const children_check_ins = await db.children_check_ins.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
       }
     })
 
-    if (!childCheckIn) {
+    if (!children_check_ins) {
       return NextResponse.json(
         { message: 'Check-in de niño no encontrado' },
         { status: 404 }
       )
     }
 
-    if (childCheckIn.checkedOut) {
+    if (children_check_ins.checkedOut) {
       return NextResponse.json(
         { message: 'El niño ya fue retirado' },
         { status: 400 }
@@ -54,7 +54,7 @@ export async function POST(
       authorizedBy: session.user.id,
       authorizedByName: session.user.name || session.user.email || 'Unknown',
       securityPinProvided: !!securityPin,
-      securityPinValid: securityPin === childCheckIn.securityPin,
+      securityPinValid: securityPin === children_check_ins.securityPin,
       parentPhotoProvided: !!parentPhoto,
       notes: notes || 'Checkout authorized by staff',
       ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
@@ -62,7 +62,7 @@ export async function POST(
     }
 
     // Update pickup attempts log
-    const currentAttempts = Array.isArray(childCheckIn.pickupAttempts) ? childCheckIn.pickupAttempts : []
+    const currentAttempts = Array.isArray(children_check_ins.pickupAttempts) ? children_check_ins.pickupAttempts : []
     const updatedAttempts = [...currentAttempts, pickupAttempt]
 
     const updatedCheckIn = await db.children_check_ins.update({

@@ -434,7 +434,7 @@ export async function createManualTask(
     });
     
     // Create a follow-up task
-    await prisma.visitorFollowUp.create({
+    await prisma.visitor_follow_ups.create({
       data: {
         churchId: context.churchId,
         checkInId: 'MANUAL_TASK', // Placeholder for manual tasks

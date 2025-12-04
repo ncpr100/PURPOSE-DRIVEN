@@ -28,7 +28,7 @@ export async function GET(
             email: true
           }
         },
-        prayerRequest: {
+        prayer_requests: {
           select: {
             id: true,
             message: true,
@@ -140,7 +140,7 @@ export async function PUT(
             email: true
           }
         },
-        prayerRequest: {
+        prayer_requests: {
           select: {
             id: true,
             message: true,

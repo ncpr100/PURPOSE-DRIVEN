@@ -41,7 +41,7 @@ export interface MLModelFeatures {
   // Spiritual Growth Indicators
   spiritualAssessmentScore: number;
   bibleStudyParticipation: number;
-  prayerRequestFrequency: number;
+  prayer_requestsFrequency: number;
   testimonySharing: number;
   discipleshipPrograms: number;
   
@@ -186,7 +186,7 @@ export class EnhancedAIInsightsEngine {
       // Spiritual Growth
       spiritualAssessmentScore: member.spiritualProfile?.spiritualMaturityScore || 50,
       bibleStudyParticipation: 0, // Would need Bible study data
-      prayerRequestFrequency: 0, // Would need prayer data
+      prayer_requestsFrequency: 0, // Would need prayer data
       testimonySharing: 0, // Would need testimony data
       discipleshipPrograms: 0, // Would need discipleship data
 

@@ -197,7 +197,7 @@ export class VisitorAutomationService {
     if (checkIn.phone) score += 5;
 
     // Prayer request or special needs
-    if (checkIn.prayerRequest) score += 10;
+    if (checkIn.prayer_requests) score += 10;
     if (checkIn.specialNeeds) score += 10;
 
     return Math.min(100, score);
@@ -234,7 +234,7 @@ export class VisitorAutomationService {
         }
 
         // Keywords in prayer request or visit reason
-        const textToAnalyze = `${checkIn.prayerRequest || ''} ${checkIn.visitReason || ''}`.toLowerCase();
+        const textToAnalyze = `${checkIn.prayer_requests || ''} ${checkIn.visitReason || ''}`.toLowerCase();
         const ministryKeywords = this.getMinistryKeywords(ministry.name);
         
         for (const keyword of ministryKeywords) {
@@ -391,7 +391,7 @@ export class VisitorAutomationService {
     // Calculate scheduled follow-up time (24 hours default)
     const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-    await prisma.visitorFollowUp.create({
+    await prisma.visitor_follow_ups.create({
       data: {
         checkInId: checkIn.id,
         churchId: checkIn.churchId,

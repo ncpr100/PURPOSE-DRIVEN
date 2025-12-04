@@ -80,7 +80,7 @@ export const passwordChangeSchema = z.object({
 
 // ===== PRAYER REQUEST SCHEMAS =====
 
-export const prayerRequestSchema = z.object({
+export const prayer_requestsSchema = z.object({
   title: z.string()
     .min(5, 'Título muy corto')
     .max(200, 'Título muy largo')
@@ -97,7 +97,7 @@ export const prayerRequestSchema = z.object({
   followUpRequested: z.boolean().default(false)
 })
 
-export const prayerRequestUpdateSchema = z.object({
+export const prayer_requestsUpdateSchema = z.object({
   title: z.string()
     .min(5, 'Título muy corto')
     .max(200, 'Título muy largo')
@@ -116,7 +116,7 @@ export const prayerRequestUpdateSchema = z.object({
   followUpRequested: z.boolean().optional()
 })
 
-export const prayerRequestApprovalSchema = z.object({
+export const prayer_requestsApprovalSchema = z.object({
   approved: z.boolean(),
   reason: z.string()
     .max(500, 'Razón muy larga')
@@ -131,7 +131,7 @@ export const prayerRequestApprovalSchema = z.object({
 // ===== PRAYER SCHEMAS =====
 
 export const prayerSchema = z.object({
-  prayerRequestId: z.string().uuid('ID de petición inválido'),
+  prayer_requestsId: z.string().uuid('ID de petición inválido'),
   note: z.string()
     .max(500, 'Nota muy larga')
     .trim()
@@ -442,9 +442,9 @@ export default {
   passwordChangeSchema,
   
   // Prayer Requests
-  prayerRequestSchema,
-  prayerRequestUpdateSchema,
-  prayerRequestApprovalSchema,
+  prayer_requestsSchema,
+  prayer_requestsUpdateSchema,
+  prayer_requestsApprovalSchema,
   
   // Prayers
   prayerSchema,

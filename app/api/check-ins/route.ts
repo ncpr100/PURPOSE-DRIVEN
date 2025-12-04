@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
       phone,
       isFirstTime,
       visitReason,
-      prayerRequest,
+      prayer_requests,
       eventId,
     } = validatedData.data
 
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
         phone,
         isFirstTime: isFirstTime || false,
         visitReason,
-        prayerRequest,
+        prayer_requests,
         qrCode: qrData,
         eventId,
         churchId: session.user.churchId,

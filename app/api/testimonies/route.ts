@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
             email: true
           }
         },
-        prayerRequest: {
+        prayer_requests: {
           select: {
             id: true,
             message: true,
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
       title,
       message,
       contactId,
-      prayerRequestId,
+      prayer_requestsId,
       category = 'general',
       isAnonymous = false,
       imageUrl,
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
         title: title.trim(),
         message: message.trim(),
         contactId: contactId || null,
-        prayerRequestId: prayerRequestId || null,
+        prayer_requestsId: prayer_requestsId || null,
         category,
         isAnonymous,
         imageUrl: imageUrl || null,
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
             email: true
           }
         },
-        prayerRequest: {
+        prayer_requests: {
           select: {
             id: true,
             message: true,

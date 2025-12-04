@@ -30,7 +30,7 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        prayerRequests: {
+        prayer_requestss: {
           include: {
             category: {
               select: {
@@ -46,7 +46,7 @@ export async function GET(
         },
         _count: {
           select: {
-            prayerRequests: true
+            prayer_requestss: true
           }
         }
       }
@@ -176,7 +176,7 @@ export async function DELETE(
     }
 
     // Check if contact has prayer requests
-    const requestCount = await prisma.prayerRequest.count({
+    const requestCount = await prisma.prayer_requests.count({
       where: { contactId: params.id }
     })
 

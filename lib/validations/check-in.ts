@@ -7,7 +7,7 @@ export const createCheckInSchema = z.object({
   phone: z.string().optional(),
   isFirstTime: z.boolean().default(false),
   visitReason: z.string().optional(),
-  prayerRequest: z.string().optional(),
+  prayer_requests: z.string().optional(),
   eventId: z.string().uuid().optional(),
   visitorType: z.enum(['FIRST_TIME', 'RETURN', 'MINISTRY_INTEREST', 'PRAYER_REQUEST']).optional(),
   ministryInterest: z.array(z.string()).default([]),

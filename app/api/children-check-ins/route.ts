@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
     const qrData = `CHILD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     const qrUrl = `${getServerBaseUrl()}/public/children-checkin/${qrData}`
 
-    const childCheckIn = await db.children_check_ins.create({
+    const children_check_ins = await db.children_check_ins.create({
       data: {
         childName,
         childAge,
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json({
-      ...childCheckIn,
+      ...children_check_ins,
       qrUrl, // Include URL for QR code generation
       qrDisplayUrl: `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrUrl)}&format=png`
     }, { status: 201 })

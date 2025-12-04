@@ -201,7 +201,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
     members,
     checkIns,
     volunteers,
-    prayerRequests,
+    prayer_requestss,
     events,
     communications
   ] = await Promise.all([
@@ -247,7 +247,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
 
   return {
     conversionFunnel: calculateConversionFunnel(visitors, members, checkIns),
-    spiritualGrowth: calculateSpiritualGrowth(members, volunteers, prayerRequests),
+    spiritualGrowth: calculateSpiritualGrowth(members, volunteers, prayer_requestss),
     pathwayAnalysis: calculatePathwayAnalysis(visitors, members, checkIns),
     segmentAnalysis: calculateSegmentAnalysis(members, checkIns, volunteers)
   };
@@ -442,7 +442,7 @@ function calculateConversionFunnel(visitors: any[], members: any[], check_ins: a
   };
 }
 
-function calculateSpiritualGrowth(members: any[], volunteers: any[], prayerRequests: any[]): SpiritualGrowthMetrics {
+function calculateSpiritualGrowth(members: any[], volunteers: any[], prayer_requestss: any[]): SpiritualGrowthMetrics {
   const now = new Date();
   const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
@@ -486,7 +486,7 @@ function calculateSpiritualGrowth(members: any[], volunteers: any[], prayerReque
   ).length;
 
   // Engagement metrics
-  const prayerParticipants = new Set(prayerRequests.map(pr => pr.member?.id)).size;
+  const prayerParticipants = new Set(prayer_requestss.map(pr => pr.member?.id)).size;
   const activeMembers = members.filter(m => m.isActive).length;
   const prayerParticipationRate = activeMembers > 0 
     ? Math.round((prayerParticipants / activeMembers) * 100)

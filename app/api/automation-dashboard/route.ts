@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Fetch pending follow-ups that require manual intervention
-    const pendingFollowUps = await prisma.visitorFollowUp.findMany({
+    const pendingFollowUps = await prisma.visitor_follow_ups.findMany({
       where: {
         churchId,
         status: 'PENDING'
