@@ -18,7 +18,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 
     const user = await prisma.users.findUnique({
       where: { id: session.user.id },
-      include: { church: true }
+      include: { churches: true }
     })
 
     if (!user?.churchId) {
@@ -111,7 +111,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
 
     const user = await prisma.users.findUnique({
       where: { id: session.user.id },
-      include: { church: true }
+      include: { churches: true }
     })
 
     if (!user?.churchId) {
