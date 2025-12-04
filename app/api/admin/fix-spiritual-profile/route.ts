@@ -18,14 +18,14 @@ export async function POST(request: NextRequest) {
     // Find JUAN PACHANGA spiritual profile
     const orphanedProfile = await prisma.member_spiritual_profiles.findFirst({
       where: {
-        member: {
+        members: {
           OR: [
             { firstName: { contains: 'JUAN', mode: 'insensitive' }, lastName: { contains: 'PACHANGA', mode: 'insensitive' } },
           ]
         }
       },
       include: {
-        member: true
+        members: true
       }
     })
 
@@ -37,10 +37,10 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('✅ Found orphaned profile:', orphanedProfile.id)
-    console.log('   Current member:', orphanedProfile.member.firstName, orphanedProfile.member.lastName)
+    console.log('   Current member:', orphanedProfile.members.firstName, orphanedProfile.members.lastName)
 
     // Find Juan Herrera (the target member)
-    const juanHerrera = await prisma.member.findFirst({
+    const juanHerrera = await prisma.members.findFirst({
       where: {
         firstName: { contains: 'Juan', mode: 'insensitive' },
         lastName: { contains: 'Herrera', mode: 'insensitive' },
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     console.log('✅ Spiritual profile linked to Juan Herrera!')
 
     // Verify the fix
-    const verification = await prisma.member.findUnique({
+    const verification = await prisma.members.findUnique({
       where: { id: juanHerrera.id },
       include: { spiritualProfile: true }
     })
