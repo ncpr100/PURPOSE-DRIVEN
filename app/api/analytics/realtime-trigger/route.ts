@@ -48,19 +48,19 @@ export async function POST(request: NextRequest) {
       prisma.members.count({
         where: { churchId: user.churchId }
       }),
-      prisma.donation.count({
+      prisma.donations.count({
         where: { 
           members: { churchId: user.churchId },
           donationDate: { gte: startOfDay }
         }
       }),
-      prisma.event.count({
+      prisma.events.count({
         where: { 
           churchId: user.churchId,
           startDate: { gte: startOfDay }
         }
       }),
-      prisma.volunteer.count({
+      prisma.volunteers.count({
         where: { 
           members: { churchId: user.churchId }
         }
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     // Send to all church members
     broadcastToChurch(user.churchId, realtimeMessage)
 
-    console.log(`📊 Analytics update broadcast to church ${user.church?.name}: ${validatedData.type}`)
+    console.log(`📊 Analytics update broadcast to church ${user.churches?.name}: ${validatedData.type}`)
 
     return NextResponse.json({
       success: true,
