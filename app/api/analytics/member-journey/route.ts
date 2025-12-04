@@ -626,7 +626,7 @@ function calculateSegmentAnalysis(members: any[], check_ins: any[], volunteers: 
   };
 }
 
-function calculateAverageDuration(stage: string, visitors: any[], members: any[], check_ins: any[]) {
+function calculateAverageDuration(stage: string, visitors: any[], members: any[], checkIns: any[]) {
   // Simplified calculation - would need more detailed tracking
   const durations = {
     'Visitante': 7,
