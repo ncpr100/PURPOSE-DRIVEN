@@ -51,25 +51,25 @@ export async function GET(request: NextRequest) {
           },
           volunteers: {
             select: { 
-              assignments: { select: { id: true } }
+              volunteer_assignments: { select: { id: true } }
             }
           }
         }
       }),
-      prisma.donation.findMany({
+      prisma.donations.findMany({
         where: { churchId: user.churchId },
         select: { amount: true, donationDate: true, memberId: true }
       }),
-      prisma.event.findMany({
+      prisma.events.findMany({
         where: { churchId: user.churchId },
         select: { 
           id: true, 
           startDate: true, 
           category: true,
-          checkIns: { select: { id: true } }
+          check_ins: { select: { id: true } }
         }
       }),
-      prisma.communication.findMany({
+      prisma.communications.findMany({
         where: { churchId: user.churchId },
         take: 100,
         orderBy: { sentAt: 'desc' },
@@ -153,7 +153,7 @@ export async function GET(request: NextRequest) {
 
     // 3. VOLUNTEER ENGAGEMENT ANALYSIS
     const activeVolunteers = members.filter(m => 
-      m.volunteers.some(v => v.assignments.length > 0)
+      m.volunteers.some(v => v.volunteer_assignments.length > 0)
     )
     const volunteerRate = (activeVolunteers.length / members.length) * 100
 
@@ -183,7 +183,7 @@ export async function GET(request: NextRequest) {
     const recentEvents = events.filter(e => 
       new Date(e.startDate) > new Date(Date.now() - 60 * 24 * 60 * 60 * 1000)
     )
-    const avgAttendance = recentEvents.reduce((sum, e) => sum + e.checkIns.length, 0) / recentEvents.length
+    const avgAttendance = recentEvents.reduce((sum, e) => sum + e.check_ins.length, 0) / recentEvents.length
 
     if (avgAttendance > 50) {
       insights.push({

@@ -48,7 +48,7 @@ export async function GET(request: Request) {
     }
 
     // Get member journey data with optimized query
-    const memberJourneys = await db.memberJourney.findMany({
+    const memberJourneys = await db.member_journeys.findMany({
       where: {
         churchId,
         ...(dateRange !== 'all' && { createdAt: dateFilter })
@@ -106,7 +106,7 @@ export async function GET(request: Request) {
     });
 
     // Calculate stage transitions and average time
-    const stageTransitions = await db.memberJourney.groupBy({
+    const stageTransitions = await db.member_journeys.groupBy({
       by: ['currentStage', 'previousStage'],
       where: {
         churchId,
@@ -117,7 +117,7 @@ export async function GET(request: Request) {
     });
 
     // Calculate average time in each stage
-    const averageTimeInStage = await db.memberJourney.groupBy({
+    const averageTimeInStage = await db.member_journeys.groupBy({
       by: ['currentStage'],
       where: {
         churchId,
@@ -129,7 +129,7 @@ export async function GET(request: Request) {
     });
 
     // Get engagement metrics by stage
-    const engagementByStage = await db.memberJourney.groupBy({
+    const engagementByStage = await db.member_journeys.groupBy({
       by: ['currentStage'],
       where: {
         churchId,

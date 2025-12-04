@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    const dashboards = await db.analyticsDashboard.findMany({
+    const dashboards = await db.analytics_dashboards.findMany({
       where: {
         churchId,
         OR: [
@@ -81,13 +81,13 @@ export async function POST(request: NextRequest) {
 
     // If setting as default, unset other defaults
     if (isDefault) {
-      await db.analyticsDashboard.updateMany({
+      await db.analytics_dashboards.updateMany({
         where: { churchId, isDefault: true },
         data: { isDefault: false }
       });
     }
 
-    const dashboard = await db.analyticsDashboard.create({
+    const dashboard = await db.analytics_dashboards.create({
       data: {
         name,
         description,

@@ -19,7 +19,7 @@ export async function GET(
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    const dashboard = await db.analyticsDashboard.findFirst({
+    const dashboard = await db.analytics_dashboards.findFirst({
       where: {
         id: params.id,
         churchId
@@ -73,13 +73,13 @@ export async function PUT(
 
     // If setting as default, unset other defaults
     if (isDefault) {
-      await db.analyticsDashboard.updateMany({
+      await db.analytics_dashboards.updateMany({
         where: { churchId, isDefault: true, id: { not: params.id } },
         data: { isDefault: false }
       });
     }
 
-    const dashboard = await db.analyticsDashboard.update({
+    const dashboard = await db.analytics_dashboards.update({
       where: {
         id: params.id,
         churchId
@@ -125,7 +125,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    await db.analyticsDashboard.delete({
+    await db.analytics_dashboards.delete({
       where: {
         id: params.id,
         churchId

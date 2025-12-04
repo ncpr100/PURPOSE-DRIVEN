@@ -182,7 +182,7 @@ export async function POST(req: NextRequest) {
     // Obtener contenido final (desde template o directo)
     let finalContent = sanitizedContent
     if (templateId) {
-      const template = await db.communicationTemplate.findFirst({
+      const template = await db.communication_templates.findFirst({
         where: {
           id: templateId,
           churchId: session.user.churchId,

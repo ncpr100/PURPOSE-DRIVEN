@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     }
 
     // Get high-risk members needing intervention
-    const highRiskMembers = await db.memberJourney.findMany({
+    const highRiskMembers = await db.member_journeys.findMany({
       where: {
         churchId,
         retentionRisk: { in: ['HIGH', 'VERY_HIGH'] },
@@ -61,7 +61,7 @@ export async function GET(request: Request) {
     });
 
     // Get medium risk members for monitoring
-    const mediumRiskMembers = await db.memberJourney.findMany({
+    const mediumRiskMembers = await db.member_journeys.findMany({
       where: {
         churchId,
         retentionRisk: 'MEDIUM',
@@ -89,7 +89,7 @@ export async function GET(request: Request) {
     });
 
     // Calculate risk distribution
-    const riskDistribution = await db.memberJourney.groupBy({
+    const riskDistribution = await db.member_journeys.groupBy({
       by: ['retentionRisk'],
       where: {
         churchId,
@@ -104,7 +104,7 @@ export async function GET(request: Request) {
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
-    const retentionTrends = await db.memberJourney.findMany({
+    const retentionTrends = await db.member_journeys.findMany({
       where: {
         churchId,
         lastAnalysisDate: {
@@ -140,7 +140,7 @@ export async function GET(request: Request) {
     }));
 
     // Get members who recently moved to higher risk
-    const recentRiskIncrease = await db.memberJourney.findMany({
+    const recentRiskIncrease = await db.member_journeys.findMany({
       where: {
         churchId,
         retentionRisk: { in: ['HIGH', 'VERY_HIGH'] },

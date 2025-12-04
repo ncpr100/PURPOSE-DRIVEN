@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const forms = await db.customForm.findMany({
+    const forms = await db.custom_forms.findMany({
       where: {
         churchId: session.user.churchId
       },
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = formBuilderSchema.parse(body)
 
-    const form = await db.customForm.create({
+    const form = await db.custom_forms.create({
       data: {
         title: validatedData.title,
         description: validatedData.description || '',

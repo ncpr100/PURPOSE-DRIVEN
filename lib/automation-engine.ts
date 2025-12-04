@@ -4,10 +4,10 @@ import {
   AutomationTriggerType, 
   AutomationConditionType, 
   AutomationActionType,
-  AutomationRule,
-  AutomationTrigger,
-  AutomationCondition,
-  AutomationAction
+  automation_rules,
+  automation_triggers,
+  automation_conditions,
+  automation_actions
 } from '@prisma/client'
 import { broadcastToUser, broadcastToChurch, broadcastToRole } from '@/lib/sse-broadcast'
 import { PushNotificationService, NotificationTemplates } from '@/lib/push-notifications'
@@ -91,7 +91,7 @@ export class AutomationEngine {
         return [];
       }
 
-      const rules = await db.automationRule.findMany({
+      const rules = await db.automation_rules.findMany({
         where: {
           churchId: triggerData.churchId,
           isActive: true,
@@ -130,7 +130,7 @@ export class AutomationEngine {
    */
   private static async executeRule(rule: AutomationRuleWithDetails, triggerData: TriggerData): Promise<void> {
     // Create execution record
-    const execution = await db.automationExecution.create({
+    const execution = await db.automation_executions.create({
       data: {
         automationId: rule.id,
         triggerData: triggerData as any,
@@ -173,7 +173,7 @@ export class AutomationEngine {
       await this.updateExecution(execution.id, 'SUCCESS', actionResults, null, duration)
 
       // Update rule execution count and last executed time
-      await db.automationRule.update({
+      await db.automation_rules.update({
         where: { id: rule.id },
         data: {
           executionCount: { increment: 1 },
@@ -187,7 +187,7 @@ export class AutomationEngine {
       console.error(`Error executing automation rule ${rule.name}:`, error)
       
       // Update execution record with error
-      await db.automationExecution.update({
+      await db.automation_executions.update({
         where: { id: execution.id },
         data: {
           status: 'FAILED',
@@ -396,7 +396,7 @@ export class AutomationEngine {
   private static async executeNotificationAction(config: any, triggerData: TriggerData): Promise<any> {
     try {
       // Create notification in database
-      const notification = await db.notification.create({
+      const notification = await db.notifications.create({
         data: {
           title: this.interpolateTemplate(config.title, triggerData),
           message: this.interpolateTemplate(config.message, triggerData),
@@ -416,7 +416,7 @@ export class AutomationEngine {
       // Create NotificationDelivery records for proper tracking
       if (config.targetUser) {
         // Single user notification
-        await db.notificationDelivery.create({
+        await db.notification_deliveries.create({
           data: {
             notificationId: notification.id,
             userId: config.targetUser,
@@ -436,7 +436,7 @@ export class AutomationEngine {
           select: { id: true }
         })
 
-        await db.notificationDelivery.createMany({
+        await db.notification_deliveries.createMany({
           data: roleUsers.map(roleUser => ({
             notificationId: notification.id,
             userId: roleUser.id,
@@ -455,7 +455,7 @@ export class AutomationEngine {
           select: { id: true }
         })
 
-        await db.notificationDelivery.createMany({
+        await db.notification_deliveries.createMany({
           data: churchUsers.map(churchUser => ({
             notificationId: notification.id,
             userId: churchUser.id,
@@ -624,7 +624,7 @@ export class AutomationEngine {
     error?: string | null,
     duration?: number
   ): Promise<void> {
-    await db.automationExecution.update({
+    await db.automation_executions.update({
       where: { id: executionId },
       data: {
         status,
@@ -1024,7 +1024,7 @@ export class FormAutomationEngine {
   ): Promise<void> {
     
     // 🎯 AUTO-CREATE GENERIC FORM SUBMISSION RECORD
-    const submission = await db.customFormSubmission.create({
+    const submission = await db.custom_form_submissions.create({
       data: {
         formId: formId,
         data: {

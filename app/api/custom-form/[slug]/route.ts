@@ -11,7 +11,7 @@ export async function GET(
   try {
     const { slug } = params
 
-    const form = await db.customForm.findUnique({
+    const form = await db.custom_forms.findUnique({
       where: { slug },
       include: {
         church: {
@@ -65,7 +65,7 @@ export async function POST(
     const body = await request.json()
 
     // Get the form
-    const form = await db.customForm.findUnique({
+    const form = await db.custom_forms.findUnique({
       where: { slug },
       include: {
         church: {
@@ -109,7 +109,7 @@ export async function POST(
     })
 
     // Save form submission
-    const submission = await db.customFormSubmission.create({
+    const submission = await db.custom_form_submissions.create({
       data: {
         formId: form.id,
         data: {

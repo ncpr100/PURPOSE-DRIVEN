@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     console.log(`🔥 CUSTOM FORM SUBMISSION RECEIVED: ${formType} (${formSlug})`)
 
     // Get the custom form (fallback to creating if not exists)
-    let form = await db.customForm.findUnique({
+    let form = await db.custom_forms.findUnique({
       where: { slug: formSlug },
       include: {
         church: { select: { id: true, name: true } }
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     // If form doesn't exist, create it (for legacy compatibility)
     if (!form) {
-      form = await db.customForm.create({
+      form = await db.custom_forms.create({
         data: {
           title: formTitle,
           slug: formSlug,
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     )
 
     // Save submission record for tracking
-    const submission = await db.customFormSubmission.create({
+    const submission = await db.custom_form_submissions.create({
       data: {
         formId: form.id,
         data: enrichedData,

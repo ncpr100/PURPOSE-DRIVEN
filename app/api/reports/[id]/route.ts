@@ -19,7 +19,7 @@ export async function GET(
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    const report = await db.customReport.findFirst({
+    const report = await db.custom_reports.findFirst({
       where: {
         id: params.id,
         churchId
@@ -77,7 +77,7 @@ export async function PUT(
       isTemplate
     } = body;
 
-    const report = await db.customReport.update({
+    const report = await db.custom_reports.update({
       where: {
         id: params.id,
         churchId
@@ -129,7 +129,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    await db.customReport.delete({
+    await db.custom_reports.delete({
       where: {
         id: params.id,
         churchId

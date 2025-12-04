@@ -15,7 +15,7 @@ export async function GET(
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const template = await db.communicationTemplate.findFirst({
+    const template = await db.communication_templates.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -51,7 +51,7 @@ export async function PUT(
     const body = await req.json()
     const { name, subject, content, type, variables, category, isActive } = body
 
-    const template = await db.communicationTemplate.findFirst({
+    const template = await db.communication_templates.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -62,7 +62,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Template no encontrado' }, { status: 404 })
     }
 
-    const updatedTemplate = await db.communicationTemplate.update({
+    const updatedTemplate = await db.communication_templates.update({
       where: { id: params.id },
       data: {
         name: name || template.name,
@@ -97,7 +97,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Sin permisos' }, { status: 403 })
     }
 
-    const template = await db.communicationTemplate.findFirst({
+    const template = await db.communication_templates.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -108,7 +108,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Template no encontrado' }, { status: 404 })
     }
 
-    await db.communicationTemplate.delete({
+    await db.communication_templates.delete({
       where: { id: params.id }
     })
 

@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     const reportType = searchParams.get('type');
     const isTemplate = searchParams.get('template') === 'true';
 
-    const reports = await db.customReport.findMany({
+    const reports = await db.custom_reports.findMany({
       where: {
         churchId,
         ...(reportType && { reportType }),
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const report = await db.customReport.create({
+    const report = await db.custom_reports.create({
       data: {
         name,
         description,

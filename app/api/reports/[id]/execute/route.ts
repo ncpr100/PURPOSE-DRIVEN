@@ -23,7 +23,7 @@ export async function POST(
     const { format = 'JSON', parameters } = body;
 
     // Get the report configuration
-    const report = await db.customReport.findFirst({
+    const report = await db.custom_reports.findFirst({
       where: {
         id: params.id,
         churchId
@@ -150,7 +150,7 @@ export async function POST(
       });
 
       // Update report last run info
-      await db.customReport.update({
+      await db.custom_reports.update({
         where: { id: params.id },
         data: {
           lastRunAt: new Date(),

@@ -447,7 +447,7 @@ export class MemberJourneyAnalytics {
     const recommendations = await this.generatePathwayRecommendations(memberId);
 
     // Get or create member journey
-    let journey = await db.memberJourney.findFirst({
+    let journey = await db.member_journeys.findFirst({
       where: { memberId }
     });
 
@@ -480,7 +480,7 @@ export class MemberJourneyAnalytics {
           duration: Math.floor((Date.now() - journey.stageStartDate.getTime()) / (1000 * 60 * 60 * 24))
         });
 
-        await db.memberJourney.update({
+        await db.member_journeys.update({
           where: { id: journey.id },
           data: {
             ...journeyData,
@@ -493,7 +493,7 @@ export class MemberJourneyAnalytics {
       } else {
         const daysInStage = Math.floor((Date.now() - journey.stageStartDate.getTime()) / (1000 * 60 * 60 * 24));
         
-        await db.memberJourney.update({
+        await db.member_journeys.update({
           where: { id: journey.id },
           data: {
             ...journeyData,
@@ -503,7 +503,7 @@ export class MemberJourneyAnalytics {
       }
     } else {
       // Create new journey
-      await db.memberJourney.create({
+      await db.member_journeys.create({
         data: {
           memberId,
           churchId: this.churchId,
@@ -540,7 +540,7 @@ export class MemberJourneyAnalytics {
     startDate.setDate(endDate.getDate() - period);
 
     // Get all member journeys
-    const journeys = await db.memberJourney.findMany({
+    const journeys = await db.member_journeys.findMany({
       where: { 
         churchId: this.churchId,
         updatedAt: { gte: startDate }
@@ -933,7 +933,7 @@ export class MemberJourneyAnalytics {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
-    const historicalJourneys = await db.memberJourney.findMany({
+    const historicalJourneys = await db.member_journeys.findMany({
       where: {
         churchId: this.churchId,
         updatedAt: { gte: oneYearAgo }

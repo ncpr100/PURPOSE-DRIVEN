@@ -176,7 +176,7 @@ export async function GET(request: NextRequest) {
       // Metadata
       lastUpdated: new Date().toISOString(),
       analysisAccuracy: enhancedData.retentionAnalytics.predictiveAccuracy,
-      totalMembersAnalyzed: await db.memberJourney.count({ where: { churchId } })
+      totalMembersAnalyzed: await db.member_journeys.count({ where: { churchId } })
     };
 
     return NextResponse.json(response);
@@ -339,7 +339,7 @@ async function generateSystemRecommendations(churchId: string, data: any): Promi
 
 async function getMemberSpecificActions(churchId: string): Promise<any[]> {
   // Get members needing immediate attention
-  const memberJourneys = await db.memberJourney.findMany({
+  const memberJourneys = await db.member_journeys.findMany({
     where: {
       churchId,
       OR: [

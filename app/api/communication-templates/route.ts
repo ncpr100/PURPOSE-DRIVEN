@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       whereClause.type = type
     }
 
-    const templates = await db.communicationTemplate.findMany({
+    const templates = await db.communication_templates.findMany({
       where: whereClause,
       orderBy: { createdAt: 'desc' }
     })
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Datos requeridos faltantes' }, { status: 400 })
     }
 
-    const template = await db.communicationTemplate.create({
+    const template = await db.communication_templates.create({
       data: {
         name,
         subject,

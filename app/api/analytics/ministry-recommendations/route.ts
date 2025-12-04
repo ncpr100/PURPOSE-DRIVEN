@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     }
 
     // Get existing ministry recommendations
-    const existingRecommendations = await db.ministryPathwayRecommendation.findMany({
+    const existingRecommendations = await db.ministry_pathway_recommendations.findMany({
       where: {
         churchId,
         status: 'pending'
@@ -87,7 +87,7 @@ export async function GET(request: Request) {
     }, {} as Record<string, number>);
 
     // Get members ready for ministry involvement
-    const readyMembers = await db.memberJourney.findMany({
+    const readyMembers = await db.member_journeys.findMany({
       where: {
         churchId,
         currentStage: { in: ['ESTABLISHED_MEMBER', 'LEADING_MEMBER', 'SERVING_MEMBER'] },
@@ -217,7 +217,7 @@ export async function GET(request: Request) {
 
     // Generate recommendations for ready members who don't have existing recommendations
     const membersWithRecommendations = new Set(
-      existingRecommendations.map(rec => rec.memberJourney.member?.id)
+      existingRecommendations.map(rec => rec.member_journeys.member?.id)
     );
 
     const newRecommendations: any[] = [];
@@ -248,10 +248,10 @@ export async function GET(request: Request) {
       requiredSkills: rec.requiredSkills ? JSON.parse(rec.requiredSkills as string) : [],
       basedOnFactors: rec.basedOnFactors ? JSON.parse(rec.basedOnFactors as string) : [],
       status: rec.status,
-      memberId: rec.memberJourney.member?.id,
-      memberName: `${rec.memberJourney.member?.firstName} ${rec.memberJourney.member?.lastName}`,
-      memberEmail: rec.memberJourney.member?.email,
-      currentStage: rec.memberJourney.currentStage,
+      memberId: rec.member_journeys.member?.id,
+      memberName: `${rec.member_journeys.member?.firstName} ${rec.member_journeys.member?.lastName}`,
+      memberEmail: rec.member_journeys.member?.email,
+      currentStage: rec.member_journeys.currentStage,
       spiritualGiftsMatch: rec.spiritualGiftsMatch,
       experienceMatch: rec.experienceMatch,
       createdAt: rec.createdAt
@@ -272,7 +272,7 @@ export async function GET(request: Request) {
     // Get member recommendations grouped by member
     const memberRecommendations = readyMembers.slice(0, 10).map(member => {
       const memberRecs = existingRecommendations.filter(rec => 
-        rec.memberJourney.member?.id === member.member?.id
+        rec.member_journeys.member?.id === member.member?.id
       );
       
       if (memberRecs.length === 0) {

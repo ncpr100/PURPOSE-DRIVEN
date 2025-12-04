@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
           _count: { id: true },
           _avg: { amount: true }
         }),
-        db.donationCategory.findMany({
+        db.donation_categories.findMany({
           where: { churchId },
           include: {
             donations: {
@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
             startDate: { gte: startDate, lte: endDate }
           },
           include: {
-            resourceReservations: true
+            event_resource_reservations: true
           }
         })
       ]),
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
           _count: { id: true },
           _sum: { recipients: true }
         }),
-        db.communicationTemplate.aggregate({
+        db.communication_templates.aggregate({
           where: { churchId, isActive: true },
           _count: { id: true }
         })
@@ -118,14 +118,14 @@ export async function GET(request: NextRequest) {
       Promise.all([
         db.volunteers.aggregate({
           where: { 
-            member: { churchId, isActive: true },
+            churchId,
             isActive: true 
           },
           _count: { id: true }
         }),
         db.volunteer_assignments.aggregate({
           where: { 
-            volunteer: { member: { churchId } },
+            churchId,
             date: { gte: startDate, lte: endDate },
             status: { in: ['CONFIRMADO', 'COMPLETADO'] }
           },
@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
       }),
 
       // Automation Analytics
-      db.automationRule.aggregate({
+      db.automation_rules.aggregate({
         where: { churchId, isActive: true },
         _count: { id: true }
       })

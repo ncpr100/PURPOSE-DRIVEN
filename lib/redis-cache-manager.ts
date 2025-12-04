@@ -704,7 +704,7 @@ export class RedisCacheManager {
 
   private async warmEngagementDistribution(churchId: string): Promise<void> {
     try {
-      const engagementData = await db.memberJourney.groupBy({
+      const engagementData = await db.member_journeys.groupBy({
         where: { churchId },
         by: ['engagementLevel'],
         _count: { engagementLevel: true }

@@ -284,7 +284,7 @@ export class EnhancedAIInsightsEngine {
    */
   async predictNextLifecycleStage(memberId: string): Promise<EnhancedPrediction> {
     const features = await this.extractMemberFeatures(memberId);
-    const currentJourney = await db.memberJourney.findFirst({
+    const currentJourney = await db.member_journeys.findFirst({
       where: { memberId }
     });
 

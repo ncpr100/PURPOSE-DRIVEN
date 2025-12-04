@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     }
 
     // Get overall engagement metrics
-    const engagementStats = await db.memberJourney.aggregate({
+    const engagementStats = await db.member_journeys.aggregate({
       where: {
         churchId,
         member: { isActive: true }
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
     });
 
     // Get engagement distribution
-    const engagementDistribution = await db.memberJourney.groupBy({
+    const engagementDistribution = await db.member_journeys.groupBy({
       by: ['engagementLevel'],
       where: {
         churchId,
@@ -51,7 +51,7 @@ export async function GET(request: Request) {
     });
 
     // Get engagement by lifecycle stage
-    const engagementByStage = await db.memberJourney.groupBy({
+    const engagementByStage = await db.member_journeys.groupBy({
       by: ['currentStage'],
       where: {
         churchId,
@@ -64,7 +64,7 @@ export async function GET(request: Request) {
     });
 
     // Get behavioral pattern metrics
-    const behavioralMetrics = await db.memberBehavioralPattern.aggregate({
+    const behavioralMetrics = await db.member_behavioral_patterns.aggregate({
       where: {
         churchId,
         analyzedAt: {
@@ -87,7 +87,7 @@ export async function GET(request: Request) {
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
-    const engagementTrends = await db.memberJourney.findMany({
+    const engagementTrends = await db.member_journeys.findMany({
       where: {
         churchId,
         lastAnalysisDate: {
@@ -130,7 +130,7 @@ export async function GET(request: Request) {
       atRisk: 0 // Below 30
     };
 
-    await db.memberJourney.findMany({
+    await db.member_journeys.findMany({
       where: {
         churchId,
         member: { isActive: true }
@@ -147,7 +147,7 @@ export async function GET(request: Request) {
     });
 
     // Get top engaged members
-    const topEngagedMembers = await db.memberJourney.findMany({
+    const topEngagedMembers = await db.member_journeys.findMany({
       where: {
         churchId,
         member: { isActive: true }
@@ -169,7 +169,7 @@ export async function GET(request: Request) {
     });
 
     // Calculate engagement improvement recommendations
-    const lowEngagementMembers = await db.memberJourney.count({
+    const lowEngagementMembers = await db.member_journeys.count({
       where: {
         churchId,
         engagementScore: { lt: 50 },
@@ -177,7 +177,7 @@ export async function GET(request: Request) {
       }
     });
 
-    const inactiveMembers = await db.memberJourney.count({
+    const inactiveMembers = await db.member_journeys.count({
       where: {
         churchId,
         engagementLevel: 'LOW',

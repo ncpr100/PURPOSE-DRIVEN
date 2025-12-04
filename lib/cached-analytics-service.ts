@@ -439,7 +439,7 @@ export class CachedAnalyticsService {
           sentAt: { gte: startDate, lte: endDate }
         }
       }),
-      db.memberJourney.findMany({
+      db.member_journeys.findMany({
         where: { churchId: this.churchId },
         select: {
           engagementScore: true,
@@ -690,7 +690,7 @@ export class CachedAnalyticsService {
   }
 
   private async getHighRiskMembers(): Promise<any[]> {
-    const riskMembers = await db.memberJourney.findMany({
+    const riskMembers = await db.member_journeys.findMany({
       where: {
         churchId: this.churchId,
         retentionRisk: { in: [RetentionRisk.HIGH, RetentionRisk.VERY_HIGH] }
