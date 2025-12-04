@@ -566,7 +566,7 @@ function calculatePathwayAnalysis(visitors: any[], members: any[], check_ins: an
   };
 }
 
-function calculateSegmentAnalysis(members: any[], check_ins: any[]) {
+function calculateSegmentAnalysis(members: any[], check_ins: any[], volunteers: any[]) {
   // Demographic analysis
   const demographics = [
     {
