@@ -32,7 +32,7 @@ export async function GET(
     const template = await prisma.automation_rule_templates.findUnique({
       where: { id: params.id },
       include: {
-        creator: {
+        users: {
           select: {
             id: true,
             name: true
