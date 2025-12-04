@@ -355,7 +355,7 @@ async function getMemberSpecificActions(churchId: string): Promise<any[]> {
   });
 
   return member_journeyss.map(journey => ({
-    memberId: journey.membersId,
+    memberId: journey.memberId,
     memberName: journey.members ? `${journey.members.firstName} ${journey.members.lastName}` : 'Unknown',
     issue: journey.retentionRisk === 'VERY_HIGH' ? 'High retention risk' 
            : journey.engagementScore < 30 ? 'Low engagement'

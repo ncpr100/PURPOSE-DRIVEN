@@ -812,7 +812,7 @@ export class MemberJourneyAnalytics {
       const interventionUrgency = this.calculateInterventionUrgency(riskFactors);
       
       const alert = {
-        memberId: journey.membersId,
+        memberId: journey.memberId,
         memberName: journey.members?.firstName + ' ' + journey.members?.lastName,
         riskLevel: journey.retentionRisk,
         riskScore: journey.retentionScore || 0,
