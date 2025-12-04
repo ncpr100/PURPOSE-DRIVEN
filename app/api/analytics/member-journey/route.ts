@@ -368,13 +368,13 @@ async function getMemberSpecificActions(churchId: string): Promise<any[]> {
 }
 
 // Legacy helper functions for backwards compatibility
-function calculateConversionFunnel(visitors: any[], members: any[], check_ins: any[]): any {
+function calculateConversionFunnel(visitors: any[], members: any[], check_ins: any[]) {
   const totalVisitors = visitors.length;
   const totalMembers = members.length;
 
   // Create attendance map
   const attendanceMap = new Map();
-  checkIns.forEach(checkIn => {
+  check_ins.forEach(checkIn => {
     const id = checkIn.memberId || checkIn.visitorId;
     if (id) {
       if (!attendanceMap.has(id)) {
@@ -516,7 +516,7 @@ function calculateSpiritualGrowth(members: any[], volunteers: any[], prayer_requ
   };
 }
 
-function calculatePathwayAnalysis(visitors: any[], members: any[], check_ins: any[]): any {
+function calculatePathwayAnalysis(visitors: any[], members: any[], check_ins: any[]) {
   // Simplified pathway analysis
   const mostCommonPath = [
     'Visitante',
@@ -566,7 +566,7 @@ function calculatePathwayAnalysis(visitors: any[], members: any[], check_ins: an
   };
 }
 
-function calculateSegmentAnalysis(members: any[], check_ins: any[], volunteers: any[]): any {
+function calculateSegmentAnalysis(members: any[], check_ins: any[]) {
   // Demographic analysis
   const demographics = [
     {
@@ -626,7 +626,7 @@ function calculateSegmentAnalysis(members: any[], check_ins: any[], volunteers: 
   };
 }
 
-function calculateAverageDuration(stage: string, visitors: any[], members: any[], check_ins: any[]): number {
+function calculateAverageDuration(stage: string, visitors: any[], members: any[], check_ins: any[]) {
   // Simplified calculation - would need more detailed tracking
   const durations = {
     'Visitante': 7,
