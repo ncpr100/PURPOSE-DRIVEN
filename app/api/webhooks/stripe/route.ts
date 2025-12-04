@@ -163,7 +163,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
         categoryId = defaultCategory.id;
       }
 
-      donation = await prisma.donation.create({
+      donation = await prisma.donations.create({
         data: {
           churchId: onlinePayment.churchId,
           amount: onlinePayment.amount,

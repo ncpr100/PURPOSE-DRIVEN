@@ -164,7 +164,7 @@ export async function POST(
         createManualTaskOnFail: customizations?.createManualTaskOnFail !== undefined ? customizations.createManualTaskOnFail : template.createManualTaskOnFail,
         createdBy: user.id,
         // Create triggers
-        triggers: {
+        automation_triggers: {
           create: {
             type: (template.triggerConfig as any).type,
             eventSource: (template.triggerConfig as any).eventSource || null,

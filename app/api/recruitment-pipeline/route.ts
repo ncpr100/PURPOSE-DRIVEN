@@ -105,7 +105,7 @@ async function calculateRecruitmentScore(member: any, churchId: string): Promise
   factors.push({ factor: 'Liderazgo', score: leadershipScore, max: 15 })
 
   // 5. Current Engagement (10% weight)
-  const isAlreadyVolunteer = await prisma.volunteer.findFirst({
+  const isAlreadyVolunteer = await prisma.volunteers.findFirst({
     where: { memberId: member.id, isActive: true }
   })
   
@@ -114,7 +114,7 @@ async function calculateRecruitmentScore(member: any, churchId: string): Promise
     engagementScore = 5 // Bonus for being an active volunteer
   } else {
     // Check for donations or other engagement
-    const recentDonations = await prisma.donation.count({
+    const recentDonations = await prisma.donations.count({
       where: {
         memberId: member.id,
         createdAt: { gte: addDays(new Date(), -90) }
@@ -569,7 +569,7 @@ export async function GET(request: NextRequest) {
       where: { churchId: session.user.churchId, isActive: true }
     })
 
-    const currentVolunteers = await prisma.volunteer.count({
+    const currentVolunteers = await prisma.volunteers.count({
       where: { churchId: session.user.churchId, isActive: true }
     })
 
