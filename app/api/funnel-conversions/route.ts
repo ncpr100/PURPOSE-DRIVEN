@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
       whereClause.funnelId = funnelId
     } else if (websiteId) {
       // Verificar que el sitio web pertenece a la iglesia
-      const website = await prisma.website.findFirst({
+      const website = await prisma.websites.findFirst({
         where: {
           id: websiteId,
           churchId: session.user.churchId

@@ -107,7 +107,7 @@ export default async function DashboardPage() {
       }
     }).catch(() => []), // Gracefully handle if table doesn't exist yet
     // Existing websites
-    db.website.count({
+    db.websites.count({
       where: {
         churchId: session.user.churchId,
         isActive: true

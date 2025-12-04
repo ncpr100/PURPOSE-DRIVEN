@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const websites = await prisma.website.findMany({
+    const websites = await prisma.websites.findMany({
       where: {
         churchId: session.user.churchId
       },
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     const { name, description, slug, theme, primaryColor, secondaryColor } = body
 
     // Verificar que el slug no existe
-    const existingWebsite = await prisma.website.findUnique({
+    const existingWebsite = await prisma.websites.findUnique({
       where: { slug }
     })
 
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const website = await prisma.website.create({
+    const website = await prisma.websites.create({
       data: {
         name,
         description,

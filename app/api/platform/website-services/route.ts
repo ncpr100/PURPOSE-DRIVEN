@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Obtener sitios web activos
-    const activeWebsites = await prisma.website.findMany({
+    const activeWebsites = await prisma.websites.findMany({
       include: {
         church: {
           select: {
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
 
     // Verificar que el slug no existe
     if (slug) {
-      const existingWebsite = await prisma.website.findUnique({
+      const existingWebsite = await prisma.websites.findUnique({
         where: { slug }
       })
 
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Crear el sitio web directamente
-    const website = await prisma.website.create({
+    const website = await prisma.websites.create({
       data: {
         name: websiteName,
         slug: slug || websiteName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, ''),

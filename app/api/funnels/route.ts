@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Verificar que el sitio web pertenece a la iglesia
-    const website = await prisma.website.findFirst({
+    const website = await prisma.websites.findFirst({
       where: {
         id: websiteId,
         churchId: session.user.churchId
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     const { websiteId, name, slug, description, type, config } = body
 
     // Verificar que el sitio web pertenece a la iglesia
-    const website = await prisma.website.findFirst({
+    const website = await prisma.websites.findFirst({
       where: {
         id: websiteId,
         churchId: session.user.churchId

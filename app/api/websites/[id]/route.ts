@@ -21,7 +21,7 @@ export async function GET(
       )
     }
 
-    const website = await prisma.website.findFirst({
+    const website = await prisma.websites.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -74,7 +74,7 @@ export async function PUT(
 
     const body = await request.json()
     
-    const website = await prisma.website.updateMany({
+    const website = await prisma.websites.updateMany({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -90,7 +90,7 @@ export async function PUT(
     }
 
     // Obtener el sitio web actualizado
-    const updatedWebsite = await prisma.website.findFirst({
+    const updatedWebsite = await prisma.websites.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -126,7 +126,7 @@ export async function DELETE(
       )
     }
 
-    const website = await prisma.website.deleteMany({
+    const website = await prisma.websites.deleteMany({
       where: {
         id: params.id,
         churchId: session.user.churchId
