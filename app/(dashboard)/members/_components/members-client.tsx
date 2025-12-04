@@ -76,6 +76,18 @@ interface MembersClientProps {
 }
 
 export function MembersClient({ userRole, churchId }: MembersClientProps) {
+  // DIAGNOSTIC: Log component mount
+  useEffect(() => {
+    console.log('🎯 MEMBERS CLIENT COMPONENT MOUNTED!', {
+      userRole,
+      churchId,
+      timestamp: new Date().toISOString()
+    })
+    return () => {
+      console.log('❌ MEMBERS CLIENT COMPONENT UNMOUNTED')
+    }
+  }, [])
+  
   const [members, setMembers] = useState<any[]>([])
   const [filteredMembers, setFilteredMembers] = useState<any[]>([])
   const [volunteers, setVolunteers] = useState<any[]>([])
