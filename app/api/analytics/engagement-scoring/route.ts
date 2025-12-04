@@ -227,9 +227,9 @@ export async function GET(request: Request) {
         }
       },
       topMembers: topEngagedMembers.map(journey => ({
-        id: journey.members?.id,
-        name: `${journey.members?.firstName} ${journey.members?.lastName}`,
-        email: journey.members?.email,
+        id: journey.memberss?.id,
+        name: `${journey.memberss?.firstName} ${journey.memberss?.lastName}`,
+        email: journey.memberss?.email,
         engagementScore: journey.engagementScore,
         stage: journey.currentStage,
         retentionScore: journey.retentionScore

@@ -219,11 +219,11 @@ export async function GET(request: Request) {
       return {
         id: journey.id,
         members: {
-          id: journey.member?.id,
-          name: `${journey.member?.firstName} ${journey.member?.lastName}`,
-          email: journey.member?.email,
-          phone: journey.member?.phone,
-          membershipDate: journey.member?.membershipDate
+          id: journey.members?.id,
+          name: `${journey.members?.firstName} ${journey.members?.lastName}`,
+          email: journey.members?.email,
+          phone: journey.members?.phone,
+          membershipDate: journey.members?.membershipDate
         },
         riskLevel: journey.retentionRisk,
         retentionScore: journey.retentionScore,
@@ -232,9 +232,9 @@ export async function GET(request: Request) {
         lastAnalysis: journey.lastAnalysisDate,
         intervention: strategy,
         contactInfo: {
-          hasPhone: Boolean(journey.member?.phone),
-          hasEmail: Boolean(journey.member?.email),
-          preferredContact: journey.member?.phone ? 'phone' : 'email'
+          hasPhone: Boolean(journey.members?.phone),
+          hasEmail: Boolean(journey.members?.email),
+          preferredContact: journey.members?.phone ? 'phone' : 'email'
         }
       };
     });
@@ -268,9 +268,9 @@ export async function GET(request: Request) {
       mediumRiskWatch: mediumRiskMembers.map(journey => ({
         id: journey.id,
         members: {
-          id: journey.member?.id,
-          name: `${journey.member?.firstName} ${journey.member?.lastName}`,
-          email: journey.member?.email
+          id: journey.members?.id,
+          name: `${journey.members?.firstName} ${journey.members?.lastName}`,
+          email: journey.members?.email
         },
         retentionScore: journey.retentionScore,
         currentStage: journey.currentStage,
@@ -279,8 +279,8 @@ export async function GET(request: Request) {
       trends: {
         monthly: monthlyTrends.slice(-6),
         recentChanges: recentRiskIncrease.map(journey => ({
-          memberId: journey.member?.id,
-          memberName: `${journey.member?.firstName} ${journey.member?.lastName}`,
+          memberId: journey.members?.id,
+          memberName: `${journey.members?.firstName} ${journey.members?.lastName}`,
           newRiskLevel: journey.retentionRisk,
           analysisDate: journey.lastAnalysisDate
         }))

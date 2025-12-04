@@ -90,9 +90,9 @@ async function getRecipients(targetGroup: string, churchId: string, recipientIds
         include: { member: true }
       })
       recipients = volunteers.map((v: any) => ({
-        name: `${v.member.firstName} ${v.member.lastName}`,
-        phone: v.member.phone || undefined,
-        email: v.member.email || undefined
+        name: `${v.members.firstName} ${v.members.lastName}`,
+        phone: v.members.phone || undefined,
+        email: v.members.email || undefined
       }))
       break
     case 'leaders':

@@ -319,7 +319,7 @@ export async function POST(request: NextRequest) {
         lastName: member.lastName,
         email: member.email,
         phone: member.phone,
-        membershipDate: member.membershipDate,
+        membershipDate: member.membersshipDate,
         isActive: member.isActive
       }, user.churchId)
       

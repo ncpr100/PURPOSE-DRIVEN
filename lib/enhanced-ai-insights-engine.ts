@@ -184,7 +184,7 @@ export class EnhancedAIInsightsEngine {
       servingConsistency: this.calculateServingConsistency(member.volunteers),
 
       // Spiritual Growth
-      spiritualAssessmentScore: member.member_spiritual_profiles?.spiritualMaturityScore || 50,
+      spiritualAssessmentScore: member.members_spiritual_profiles?.spiritualMaturityScore || 50,
       bibleStudyParticipation: 0, // Would need Bible study data
       prayer_requestsFrequency: 0, // Would need prayer data
       testimonySharing: 0, // Would need testimony data
@@ -202,8 +202,8 @@ export class EnhancedAIInsightsEngine {
       geographicStability: 1, // Would need address history
 
       // Historical
-      membershipDuration: member.membershipDate ? 
-        Math.floor((now.getTime() - member.membershipDate.getTime()) / (24 * 60 * 60 * 1000)) : 0,
+      membershipDuration: member.membersshipDate ? 
+        Math.floor((now.getTime() - member.membersshipDate.getTime()) / (24 * 60 * 60 * 1000)) : 0,
       previousChurchExperience: 0, // Would need church history
       conversionStoryType: 'unknown',
 

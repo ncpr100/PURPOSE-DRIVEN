@@ -198,14 +198,14 @@ function findBestVolunteerForRole(volunteers: any[], role: string, event: any): 
     }
 
     // Experience level
-    if (volunteer.member?.experienceLevel) {
-      score += volunteer.member.experienceLevel * 2
+    if (volunteer.members?.experienceLevel) {
+      score += volunteer.members.experienceLevel * 2
     }
 
     // Spiritual gifts alignment
-    if (volunteer.member?.spiritualGifts) {
-      const gifts = Array.isArray(volunteer.member.spiritualGifts) 
-        ? volunteer.member.spiritualGifts 
+    if (volunteer.members?.spiritualGifts) {
+      const gifts = Array.isArray(volunteer.members.spiritualGifts) 
+        ? volunteer.members.spiritualGifts 
         : []
       
       const serviceGifts = ['servicio', 'ayuda', 'administración', 'liderazgo']

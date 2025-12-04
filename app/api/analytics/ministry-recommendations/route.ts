@@ -115,7 +115,7 @@ export async function GET(request: Request) {
 
     // Calculate AI-powered recommendations based on spiritual gifts and behavioral patterns
     const generateRecommendations = (member: any) => {
-      const memberData = member.member;
+      const memberData = member.members;
       const spiritualGifts = memberData.spiritualGiftsStructured ? 
         JSON.parse(memberData.spiritualGiftsStructured as string) : { primary: [], secondary: [] };
       const behavioral = member.behavioralPatterns[0];
@@ -217,18 +217,18 @@ export async function GET(request: Request) {
 
     // Generate recommendations for ready members who don't have existing recommendations
     const membersWithRecommendations = new Set(
-      existingRecommendations.map(rec => rec.member_journeys.member?.id)
+      existingRecommendations.map(rec => rec.member_journeys.members?.id)
     );
 
     const newRecommendations: any[] = [];
     readyMembers.forEach(member => {
-      if (!membersWithRecommendations.has(member.member?.id)) {
+      if (!membersWithRecommendations.has(member.members?.id)) {
         const memberRecs = generateRecommendations(member);
         memberRecs.forEach(rec => {
           newRecommendations.push({
             ...rec,
-            memberId: member.member?.id,
-            memberName: `${member.member?.firstName} ${member.member?.lastName}`,
+            memberId: member.members?.id,
+            memberName: `${member.members?.firstName} ${member.members?.lastName}`,
             currentStage: member.currentStage,
             engagementScore: member.engagementScore
           });
@@ -248,9 +248,9 @@ export async function GET(request: Request) {
       requiredSkills: rec.requiredSkills ? JSON.parse(rec.requiredSkills as string) : [],
       basedOnFactors: rec.basedOnFactors ? JSON.parse(rec.basedOnFactors as string) : [],
       status: rec.status,
-      memberId: rec.member_journeys.member?.id,
-      memberName: `${rec.member_journeys.member?.firstName} ${rec.member_journeys.member?.lastName}`,
-      memberEmail: rec.member_journeys.member?.email,
+      memberId: rec.member_journeys.members?.id,
+      memberName: `${rec.member_journeys.members?.firstName} ${rec.member_journeys.members?.lastName}`,
+      memberEmail: rec.member_journeys.members?.email,
       currentStage: rec.member_journeys.currentStage,
       spiritualGiftsMatch: rec.spiritualGiftsMatch,
       experienceMatch: rec.experienceMatch,
@@ -272,30 +272,30 @@ export async function GET(request: Request) {
     // Get member recommendations grouped by member
     const memberRecommendations = readyMembers.slice(0, 10).map(member => {
       const memberRecs = existingRecommendations.filter(rec => 
-        rec.member_journeys.member?.id === member.member?.id
+        rec.member_journeys.members?.id === member.members?.id
       );
       
       if (memberRecs.length === 0) {
         // Generate new recommendations
         const generated = generateRecommendations(member).slice(0, 2);
         return {
-          id: member.member?.id,
-          name: `${member.member?.firstName} ${member.member?.lastName}`,
+          id: member.members?.id,
+          name: `${member.members?.firstName} ${member.members?.lastName}`,
           currentStage: member.currentStage,
           engagementScore: member.engagementScore,
-          spiritualGifts: member.member?.spiritualGiftsStructured ? 
-            JSON.parse(member.member.spiritualGiftsStructured as string).primary || [] : [],
+          spiritualGifts: member.members?.spiritualGiftsStructured ? 
+            JSON.parse(member.members.spiritualGiftsStructured as string).primary || [] : [],
           recommendations: generated
         };
       }
 
       return {
-        id: member.member?.id,
-        name: `${member.member?.firstName} ${member.member?.lastName}`,
+        id: member.members?.id,
+        name: `${member.members?.firstName} ${member.members?.lastName}`,
         currentStage: member.currentStage,
         engagementScore: member.engagementScore,
-        spiritualGifts: member.member?.spiritualGiftsStructured ? 
-          JSON.parse(member.member.spiritualGiftsStructured as string).primary || [] : [],
+        spiritualGifts: member.members?.spiritualGiftsStructured ? 
+          JSON.parse(member.members.spiritualGiftsStructured as string).primary || [] : [],
         recommendations: memberRecs.slice(0, 2).map(rec => ({
           id: rec.id,
           type: rec.recommendationType,

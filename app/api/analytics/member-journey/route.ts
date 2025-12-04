@@ -355,8 +355,8 @@ async function getMemberSpecificActions(churchId: string): Promise<any[]> {
   });
 
   return member_journeyss.map(journey => ({
-    memberId: journey.memberId,
-    memberName: journey.member ? `${journey.member.firstName} ${journey.member.lastName}` : 'Unknown',
+    memberId: journey.membersId,
+    memberName: journey.members ? `${journey.members.firstName} ${journey.members.lastName}` : 'Unknown',
     issue: journey.retentionRisk === 'VERY_HIGH' ? 'High retention risk' 
            : journey.engagementScore < 30 ? 'Low engagement'
            : 'Stagnated progress',
@@ -486,7 +486,7 @@ function calculateSpiritualGrowth(members: any[], volunteers: any[], prayer_requ
   ).length;
 
   // Engagement metrics
-  const prayerParticipants = new Set(prayer_requestss.map(pr => pr.member?.id)).size;
+  const prayerParticipants = new Set(prayer_requestss.map(pr => pr.members?.id)).size;
   const activeMembers = members.filter(m => m.isActive).length;
   const prayerParticipationRate = activeMembers > 0 
     ? Math.round((prayerParticipants / activeMembers) * 100)
