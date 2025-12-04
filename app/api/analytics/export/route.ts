@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     const user = await db.users.findUnique({
       where: { id: session.user.id },
       include: {
-        church: {
+        churches: {
           select: {
             id: true,
             name: true,
@@ -63,18 +63,18 @@ export async function POST(request: NextRequest) {
     }
 
     const branding: ChurchBranding = {
-      name: user.church.name,
+      name: user.churches.name,
       colors: {
         primary: '#2563eb',
         secondary: '#64748b',
         accent: '#0f766e'
       },
-      address: user.church.address || undefined,
-      contact: user.church.email || user.church.phone || undefined
+      address: user.churches.address || undefined,
+      contact: user.churches.email || user.churches.phone || undefined
     };
 
     // Get analytics data based on report type
-    const analyticsData = await getAnalyticsData(user.church.id, reportType, period, includeAI);
+    const analyticsData = await getAnalyticsData(user.churches.id, reportType, period, includeAI);
 
     // Generate export based on format
     let exportData: Uint8Array | string;
