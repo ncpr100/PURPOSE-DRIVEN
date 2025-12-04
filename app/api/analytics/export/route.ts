@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    if (!user?.church) {
+    if (!user?.churches) {
       return NextResponse.json(
         { error: 'Iglesia no encontrada' },
         { status: 404 }
