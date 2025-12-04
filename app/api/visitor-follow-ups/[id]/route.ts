@@ -31,7 +31,7 @@ export async function PUT(
       completedAt
     } = await request.json()
 
-    const followUp = await db.visitorFollowUp.findFirst({
+    const followUp = await db.visitor_follow_ups.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -45,7 +45,7 @@ export async function PUT(
       )
     }
 
-    const updatedFollowUp = await db.visitorFollowUp.update({
+    const updatedFollowUp = await db.visitor_follow_ups.update({
       where: { id: params.id },
       data: {
         status,

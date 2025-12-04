@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
           _count: { id: true }
         }),
         
-        db.checkIn.aggregate({
+        db.check_ins.aggregate({
           where: {
             churchId,
             createdAt: { gte: interval.start, lt: interval.end }

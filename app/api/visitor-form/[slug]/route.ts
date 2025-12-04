@@ -125,7 +125,7 @@ export async function POST(
     // If form has auto-follow-up enabled, create a visitor check-in
     if (form.settings && (form.settings as any).autoFollowUp && data.email) {
       try {
-        await db.checkIn.create({
+        await db.check_ins.create({
           data: {
             firstName: data.firstName || data.name || 'Visitante',
             lastName: data.lastName || '',

@@ -92,7 +92,7 @@ export async function POST(
     const visitorInfo = extractVisitorInfo(formData)
 
     // Create visitor in check-ins table (visitor database)
-    const visitor = await db.checkIn.create({
+    const visitor = await db.check_ins.create({
       data: {
         firstName: visitorInfo.firstName,
         lastName: visitorInfo.lastName,
@@ -126,7 +126,7 @@ export async function POST(
 
     // Create automatic follow-up task
     try {
-      await db.visitorFollowUp.create({
+      await db.visitor_follow_ups.create({
         data: {
           checkInId: visitor.id,
           followUpType: 'custom_form_submission',

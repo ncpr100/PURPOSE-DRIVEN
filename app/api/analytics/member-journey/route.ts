@@ -205,7 +205,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
     events,
     communications
   ] = await Promise.all([
-    db.checkIn.findMany({
+    db.check_ins.findMany({
       where: { 
         churchId,
         checkedInAt: { gte: startDate, lte: endDate },
@@ -216,7 +216,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
       where: { churchId },
       include: { spiritualProfile: true }
     }),
-    db.checkIn.findMany({
+    db.check_ins.findMany({
       where: { 
         churchId,
         checkedInAt: { gte: startDate, lte: endDate }
@@ -225,7 +225,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
     db.volunteers.findMany({
       where: { churchId }
     }),
-    db.prayerRequest.findMany({
+    db.prayer_requests.findMany({
       where: { 
         churchId,
         createdAt: { gte: startDate, lte: endDate }

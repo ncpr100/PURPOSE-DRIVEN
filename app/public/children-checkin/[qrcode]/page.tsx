@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default async function QRChildrenCheckInPage({ params }: PageProps) {
   try {
     // Verify QR code exists and get basic info
-    const qrInfo = await db.childCheckIn.findUnique({
+    const qrInfo = await db.children_check_ins.findUnique({
       where: {
         qrCode: params.qrcode
       },

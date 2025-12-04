@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const childrenCheckIns = await db.childCheckIn.findMany({
+    const childrenCheckIns = await db.children_check_ins.findMany({
       where: whereClause,
       include: {
         event: true
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
     const qrData = `CHILD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     const qrUrl = `${getServerBaseUrl()}/public/children-checkin/${qrData}`
 
-    const childCheckIn = await db.childCheckIn.create({
+    const childCheckIn = await db.children_check_ins.create({
       data: {
         childName,
         childAge,

@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
 
       // Prayer Request Analytics
       Promise.all([
-        db.prayerRequest.aggregate({
+        db.prayer_requests.aggregate({
           where: { 
             churchId,
             createdAt: { gte: startDate, lte: endDate }
@@ -147,7 +147,7 @@ export async function GET(request: NextRequest) {
       ]),
 
       // Check-In Analytics (using correct field name)
-      db.checkIn.aggregate({
+      db.check_ins.aggregate({
         where: { 
           churchId,
           createdAt: { gte: startDate, lte: endDate }

@@ -104,7 +104,7 @@ export async function GET(request: NextRequest) {
 
       // Engagement metrics
       Promise.all([
-        db.checkIn.count({
+        db.check_ins.count({
           where: { 
             churchId,
             checkedInAt: { gte: startDate, lte: endDate }

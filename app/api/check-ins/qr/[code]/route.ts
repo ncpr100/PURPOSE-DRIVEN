@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: { code: string } }
 ) {
   try {
-    const checkIn = await db.checkIn.findUnique({
+    const checkIn = await db.check_ins.findUnique({
       where: {
         qrCode: params.code
       },

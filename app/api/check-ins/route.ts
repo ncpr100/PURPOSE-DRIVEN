@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     }
 
     const [checkIns, total] = await db.$transaction([
-      db.checkIn.findMany({
+      db.check_ins.findMany({
         where: whereClause,
         include: {
           event: true,
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
         skip,
         take: limit,
       }),
-      db.checkIn.count({ where: whereClause })
+      db.check_ins.count({ where: whereClause })
     ])
 
     return NextResponse.json({
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     // Generate QR code data
     const qrData = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
-    const checkIn = await db.checkIn.create({
+    const checkIn = await db.check_ins.create({
       data: {
         firstName,
         lastName,

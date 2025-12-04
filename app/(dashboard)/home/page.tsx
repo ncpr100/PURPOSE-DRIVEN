@@ -58,14 +58,14 @@ export default async function DashboardPage() {
     }),
     db.volunteers.count({
       where: { 
-        member: {
+        members: {
           churchId: session.user.churchId,
           isActive: true
         },
         isActive: true 
       }
     }),
-    db.checkIn.count({
+    db.check_ins.count({
       where: {
         churchId: session.user.churchId,
         checkedInAt: {
@@ -74,13 +74,13 @@ export default async function DashboardPage() {
         }
       }
     }),
-    db.visitorFollowUp.count({
+    db.visitor_follow_ups.count({
       where: {
         churchId: session.user.churchId,
         status: 'PENDIENTE'
       }
     }),
-    db.childCheckIn.count({
+    db.children_check_ins.count({
       where: {
         churchId: session.user.churchId,
         checkedIn: true,
@@ -88,7 +88,7 @@ export default async function DashboardPage() {
       }
     }),
     // Website requests
-    db.websiteRequest.findMany({
+    db.website_requests.findMany({
       where: {
         churchId: session.user.churchId
       },
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
       }
     }).catch(() => 0), // Gracefully handle if issues
     // Visitor engagement analytics
-    db.checkIn.findMany({
+    db.check_ins.findMany({
       where: {
         churchId: session.user.churchId,
         engagementScore: { gt: 0 }
@@ -127,7 +127,7 @@ export default async function DashboardPage() {
       }
     }).catch(() => []),
     // First-time visitors this month
-    db.checkIn.count({
+    db.check_ins.count({
       where: {
         churchId: session.user.churchId,
         isFirstTime: true,
@@ -137,7 +137,7 @@ export default async function DashboardPage() {
       }
     }).catch(() => 0),
     // Completed follow-ups this month
-    db.visitorFollowUp.count({
+    db.visitor_follow_ups.count({
       where: {
         churchId: session.user.churchId,
         status: 'COMPLETADO',
@@ -222,7 +222,7 @@ export default async function DashboardPage() {
   })
 
   // Fetch recent check-ins
-  const recentCheckIns = await db.checkIn.findMany({
+  const recentCheckIns = await db.check_ins.findMany({
     where: {
       churchId: session.user.churchId
     },

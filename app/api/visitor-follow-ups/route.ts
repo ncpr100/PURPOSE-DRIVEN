@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     if (followUpType) whereClause.followUpType = followUpType
     if (assignedTo) whereClause.assignedTo = assignedTo
 
-    const followUps = await db.visitorFollowUp.findMany({
+    const followUps = await db.visitor_follow_ups.findMany({
       where: whereClause,
       include: {
         checkIn: true,
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify checkIn belongs to the church
-    const checkIn = await db.checkIn.findFirst({
+    const checkIn = await db.check_ins.findFirst({
       where: {
         id: checkInId,
         churchId: session.user.churchId
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const followUp = await db.visitorFollowUp.create({
+    const followUp = await db.visitor_follow_ups.create({
       data: {
         checkInId,
         followUpType,

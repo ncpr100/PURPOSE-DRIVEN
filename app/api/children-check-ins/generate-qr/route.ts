@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const qrUrl = `${baseUrl}/public/children-checkin/${qrCode}`
 
     // Create an empty child check-in record for QR tracking
-    const emptyCheckIn = await db.childCheckIn.create({
+    const emptyCheckIn = await db.children_check_ins.create({
       data: {
         childName: 'Pendiente de QR', // Placeholder until QR is scanned
         parentName: 'Pendiente de QR',

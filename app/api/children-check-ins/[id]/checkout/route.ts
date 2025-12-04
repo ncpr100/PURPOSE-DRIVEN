@@ -27,7 +27,7 @@ export async function POST(
     const body = await request.json().catch(() => ({}))
     const { securityPin, parentPhoto, notes } = body
 
-    const childCheckIn = await db.childCheckIn.findFirst({
+    const childCheckIn = await db.children_check_ins.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -65,7 +65,7 @@ export async function POST(
     const currentAttempts = Array.isArray(childCheckIn.pickupAttempts) ? childCheckIn.pickupAttempts : []
     const updatedAttempts = [...currentAttempts, pickupAttempt]
 
-    const updatedCheckIn = await db.childCheckIn.update({
+    const updatedCheckIn = await db.children_check_ins.update({
       where: { id: params.id },
       data: {
         checkedOut: true,

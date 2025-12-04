@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: { code: string } }
 ) {
   try {
-    const childCheckIn = await db.childCheckIn.findUnique({
+    const childCheckIn = await db.children_check_ins.findUnique({
       where: {
         qrCode: params.code
       },
@@ -98,7 +98,7 @@ export async function POST(
     const securityPin = Math.floor(100000 + Math.random() * 900000).toString()
 
     // Create complete child check-in via QR
-    const childCheckIn = await db.childCheckIn.create({
+    const childCheckIn = await db.children_check_ins.create({
       data: {
         childName,
         childAge: childAge ? parseInt(childAge) : null,
