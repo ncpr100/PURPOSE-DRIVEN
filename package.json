@@ -13,6 +13,7 @@
     "test:validate": "npm run test:compile && node dist/lib/validations/cuid.js",
     "test:cuid": "npm run test:compile && node -e \"const {isValidCUID, analyzeCUID} = require('./dist/lib/validations/cuid'); console.log('Legacy CUID test:', isValidCUID('cm59coeho001etlext1ozmo')); console.log('Current CUID test:', isValidCUID('cmgu3bf1s000s78lth2hxr5uy'));\"",
     "validate:system": "npm run test:cuid && echo 'VAL-02 AUTOMATED: CUID validation system verified'",
+    "validate:auth": "node scripts/validate-auth.js",
     "cleanup": "./scripts/memory-cleanup.sh",
     "cleanup:memory": "tsx scripts/memory-monitor-test.ts",
     "memory:assess": "tsx scripts/memory-assessment.ts",
