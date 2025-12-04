@@ -118,8 +118,8 @@ export async function GET(request: NextRequest) {
         volunteers: yesterdayVolunteers
       },
       churches: {
-        id: user.church?.id,
-        name: user.church?.name
+        id: user.churches?.id,
+        name: user.churches?.name
       },
       trend: {
         members: memberCount > 0 ? ((yesterdayMembers / Math.max(memberCount - yesterdayMembers, 1)) * 100).toFixed(1) : '0',
