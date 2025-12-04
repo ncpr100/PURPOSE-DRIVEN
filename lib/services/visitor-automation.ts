@@ -39,7 +39,7 @@ export class VisitorAutomationService {
       // Find active automation rules for this visitor category
       const triggerType = this.getTriggerTypeForCategory(category);
       
-      const automationRules = await prisma.automationRule.findMany({
+      const automation_ruless = await prisma.automation_rules.findMany({
         where: {
           churchId: checkIn.churchId,
           isActive: true,
@@ -60,13 +60,13 @@ export class VisitorAutomationService {
         }
       });
 
-      if (automationRules.length === 0) {
+      if (automation_ruless.length === 0) {
         console.log(`[Visitor Automation] No active automation rules found for ${category} visitors`);
         return;
       }
 
       // Execute each matching automation rule
-      for (const rule of automationRules) {
+      for (const rule of automation_ruless) {
         // Check if conditions match
         const conditionsMatch = await this.evaluateConditions(rule.conditions, checkIn, visitorProfile);
         

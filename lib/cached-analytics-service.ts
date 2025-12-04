@@ -100,10 +100,10 @@ export interface ExecutiveReportData {
 }
 
 export class CachedAnalyticsService {
-  private memberJourneyAnalytics: MemberJourneyAnalytics;
+  private member_journeysAnalytics: MemberJourneyAnalytics;
 
   constructor(private churchId: string) {
-    this.memberJourneyAnalytics = new MemberJourneyAnalytics(churchId);
+    this.member_journeysAnalytics = new MemberJourneyAnalytics(churchId);
   }
 
   /**
@@ -132,10 +132,10 @@ export class CachedAnalyticsService {
     return await cacheManager.get(
       cacheKey,
       async () => {
-        const currentStage = await this.memberJourneyAnalytics.determineMemberLifecycleStage(memberId);
-        const engagementScore = await this.memberJourneyAnalytics.calculateEngagementScore(memberId);
-        const retentionAnalysis = await this.memberJourneyAnalytics.calculateRetentionRisk(memberId);
-        const recommendations = await this.memberJourneyAnalytics.generatePathwayRecommendations(memberId);
+        const currentStage = await this.member_journeysAnalytics.determineMemberLifecycleStage(memberId);
+        const engagementScore = await this.member_journeysAnalytics.calculateEngagementScore(memberId);
+        const retentionAnalysis = await this.member_journeysAnalytics.calculateRetentionRisk(memberId);
+        const recommendations = await this.member_journeysAnalytics.generatePathwayRecommendations(memberId);
 
         return {
           memberId,
@@ -164,7 +164,7 @@ export class CachedAnalyticsService {
 
     return await cacheManager.get(
       cacheKey,
-      async () => this.memberJourneyAnalytics.getComprehensiveAnalytics(period),
+      async () => this.member_journeysAnalytics.getComprehensiveAnalytics(period),
       {
         ttl: CACHE_TTL.RETENTION_ANALYTICS,
         forceRefresh: options.forceRefresh,
@@ -183,7 +183,7 @@ export class CachedAnalyticsService {
     return await cacheManager.get(
       cacheKey,
       async () => {
-        const analytics = await this.memberJourneyAnalytics.getComprehensiveAnalytics(period);
+        const analytics = await this.member_journeysAnalytics.getComprehensiveAnalytics(period);
         return {
           retentionAnalytics: analytics.retentionAnalytics,
           riskMembers: await this.getHighRiskMembers(),
@@ -208,7 +208,7 @@ export class CachedAnalyticsService {
     return await cacheManager.get(
       cacheKey,
       async () => {
-        const analytics = await this.memberJourneyAnalytics.getComprehensiveAnalytics(period);
+        const analytics = await this.member_journeysAnalytics.getComprehensiveAnalytics(period);
         return {
           conversionFunnel: analytics.conversionFunnel,
           stageProgression: analytics.stageProgression,
@@ -232,7 +232,7 @@ export class CachedAnalyticsService {
     return await cacheManager.get(
       cacheKey,
       async () => {
-        const analytics = await this.memberJourneyAnalytics.getComprehensiveAnalytics();
+        const analytics = await this.member_journeysAnalytics.getComprehensiveAnalytics();
         return {
           engagementDistribution: analytics.engagementDistribution,
           engagementTrends: await this.calculateEngagementTrends(),
@@ -261,7 +261,7 @@ export class CachedAnalyticsService {
           db.member.count({ 
             where: { 
               churchId: this.churchId,
-              memberJourney: {
+              member_journeys: {
                 engagementScore: { gte: 50 }
               }
             } 
@@ -308,7 +308,7 @@ export class CachedAnalyticsService {
     return await cacheManager.get(
       cacheKey,
       async () => {
-        const analytics = await this.memberJourneyAnalytics.getComprehensiveAnalytics();
+        const analytics = await this.member_journeysAnalytics.getComprehensiveAnalytics();
         const retentionRisks = await this.getHighRiskMembers();
         
         return {
@@ -380,7 +380,7 @@ export class CachedAnalyticsService {
       activeVolunteers,
       totalEvents,
       totalCommunications,
-      memberJourneys
+      member_journeyss
     ] = await Promise.all([
       db.member.count({ where: { churchId: this.churchId } }),
       db.member.count({ 
@@ -464,7 +464,7 @@ export class CachedAnalyticsService {
     );
 
     // Calculate engagement and health scores
-    const engagementScores = memberJourneys.map(j => j.engagementScore || 0);
+    const engagementScores = member_journeyss.map(j => j.engagementScore || 0);
     const avgEngagementScore = engagementScores.length > 0 
       ? Math.round(engagementScores.reduce((sum, score) => sum + score, 0) / engagementScores.length)
       : 0;
@@ -478,17 +478,17 @@ export class CachedAnalyticsService {
     });
 
     // Generate detailed metrics
-    const membershipMetrics = await this.generateMembershipMetrics(totalMembers, memberJourneys);
+    const membershipMetrics = await this.generateMembershipMetrics(totalMembers, member_journeyss);
     const attendanceMetrics = await this.generateAttendanceMetrics(periodDays);
     const financialMetrics = await this.generateFinancialMetrics(periodDays);
-    const engagementMetrics = await this.generateEngagementMetrics(memberJourneys);
+    const engagementMetrics = await this.generateEngagementMetrics(member_journeyss);
     const predictiveInsights = await this.generatePredictiveInsightsData();
 
     return {
       summary: {
         totalMembers,
-        totalActiveMembersDisplay: memberJourneys.filter(j => (j.engagementScore || 0) >= 50).length.toString(),
-        totalEngagedMembers: memberJourneys.filter(j => (j.engagementScore || 0) >= 70).length,
+        totalActiveMembersDisplay: member_journeyss.filter(j => (j.engagementScore || 0) >= 50).length.toString(),
+        totalEngagedMembers: member_journeyss.filter(j => (j.engagementScore || 0) >= 70).length,
         memberGrowthThisMonth: newMembersThisMonth,
         memberGrowthLastMonth: newMembersPreviousMonth,
         memberGrowthPercentage,
@@ -552,15 +552,15 @@ export class CachedAnalyticsService {
     return Math.round(score);
   }
 
-  private async generateMembershipMetrics(totalMembers: number, memberJourneys: any[]): Promise<any> {
+  private async generateMembershipMetrics(totalMembers: number, member_journeyss: any[]): Promise<any> {
     // Generate age and gender distributions
-    const ageDistribution = this.calculateAgeDistribution(memberJourneys);
-    const genderDistribution = this.calculateGenderDistribution(memberJourneys);
-    const stageDistribution = this.calculateStageDistribution(memberJourneys);
+    const ageDistribution = this.calculateAgeDistribution(member_journeyss);
+    const genderDistribution = this.calculateGenderDistribution(member_journeyss);
+    const stageDistribution = this.calculateStageDistribution(member_journeyss);
 
     return {
       totalMembers,
-      activeMembersDisplay: memberJourneys.filter(j => (j.engagementScore || 0) >= 50).length.toString(),
+      activeMembersDisplay: member_journeyss.filter(j => (j.engagementScore || 0) >= 50).length.toString(),
       newMembersThisMonth: 0, // Would calculate from actual data
       memberRetentionRate: "85%", // Would calculate from retention analysis
       membershipGrowthTrend: [], // Would generate from historical data
@@ -593,9 +593,9 @@ export class CachedAnalyticsService {
     };
   }
 
-  private async generateEngagementMetrics(memberJourneys: any[]): Promise<any> {
-    const avgEngagement = memberJourneys.length > 0 
-      ? Math.round(memberJourneys.reduce((sum, j) => sum + (j.engagementScore || 0), 0) / memberJourneys.length)
+  private async generateEngagementMetrics(member_journeyss: any[]): Promise<any> {
+    const avgEngagement = member_journeyss.length > 0 
+      ? Math.round(member_journeyss.reduce((sum, j) => sum + (j.engagementScore || 0), 0) / member_journeyss.length)
       : 0;
 
     return {

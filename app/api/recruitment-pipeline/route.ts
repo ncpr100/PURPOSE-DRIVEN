@@ -420,7 +420,7 @@ export async function POST(request: NextRequest) {
         volunteers: {
           where: { isActive: true }
         },
-        spiritualProfile: true,
+        member_spiritual_profiles: true,
         availabilityMatrix: true
       }
     })
@@ -577,7 +577,7 @@ export async function GET(request: NextRequest) {
       where: {
         churchId: session.user.churchId,
         isActive: true,
-        spiritualProfile: { isNot: null }
+        member_spiritual_profiles: { isNot: null }
       }
     })
 

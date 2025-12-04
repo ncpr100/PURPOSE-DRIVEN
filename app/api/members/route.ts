@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
         birthDate: true,
         baptismDate: true,
         ministryId: true,
-        spiritualProfile: {
+        member_spiritual_profiles: {
           select: {
             id: true,
             primaryGifts: true,

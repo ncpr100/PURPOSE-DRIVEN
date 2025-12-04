@@ -50,7 +50,7 @@ export type VolunteerCreateInput = z.infer<typeof volunteerCreateSchema>
  * Validation schema for volunteer assignments
  * Addresses HIGH-012: No Scheduling Conflict Detection (validation layer)
  */
-export const volunteerAssignmentSchema = z.object({
+export const volunteer_assignmentsSchema = z.object({
   volunteerId: cuidSchema,
   
   eventId: optionalCuidSchema,
@@ -86,7 +86,7 @@ export const volunteerAssignmentSchema = z.object({
     path: ['endTime']
   })
 
-export type VolunteerAssignmentInput = z.infer<typeof volunteerAssignmentSchema>
+export type VolunteerAssignmentInput = z.infer<typeof volunteer_assignmentsSchema>
 
 /**
  * Validation schema for spiritual profile assessment

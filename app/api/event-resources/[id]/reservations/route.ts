@@ -32,7 +32,7 @@ export async function GET(
       }
     }
 
-    const reservations = await db.eventResourceReservation.findMany({
+    const reservations = await db.event_resourcesReservation.findMany({
       where: whereClause,
       include: {
         event: {
@@ -72,7 +72,7 @@ export async function POST(
     }
 
     // Verificar que el recurso existe y pertenece a la iglesia
-    const resource = await db.eventResource.findFirst({
+    const resource = await db.event_resources.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -84,7 +84,7 @@ export async function POST(
     }
 
     // Verificar disponibilidad del recurso
-    const conflictingReservations = await db.eventResourceReservation.findMany({
+    const conflictingReservations = await db.event_resourcesReservation.findMany({
       where: {
         resourceId: params.id,
         status: 'CONFIRMADA',
@@ -107,7 +107,7 @@ export async function POST(
       }, { status: 409 })
     }
 
-    const reservation = await db.eventResourceReservation.create({
+    const reservation = await db.event_resourcesReservation.create({
       data: {
         resourceId: params.id,
         eventId,

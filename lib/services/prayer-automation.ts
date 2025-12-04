@@ -28,7 +28,7 @@ export class PrayerAutomation {
       }
 
       // Find active automation rules for prayer requests
-      const automationRules = await prisma.automationRule.findMany({
+      const automation_ruless = await prisma.automation_rules.findMany({
         where: {
           churchId: prayer_requests.churchId,
           isActive: true,
@@ -49,13 +49,13 @@ export class PrayerAutomation {
         }
       });
 
-      if (automationRules.length === 0) {
+      if (automation_ruless.length === 0) {
         console.log('[Prayer Automation] No active automation rules found for prayer requests');
         return;
       }
 
       // Execute each matching automation rule
-      for (const rule of automationRules) {
+      for (const rule of automation_ruless) {
         // Check if conditions match
         const conditionsMatch = await this.evaluateConditions(rule.conditions, prayer_requests);
         
@@ -237,7 +237,7 @@ export class PrayerAutomation {
       });
 
       // Find the automation rule that created this approval
-      const automationRule = await prisma.automationRule.findFirst({
+      const automation_rules = await prisma.automation_rules.findFirst({
         where: {
           churchId: approval.churchId,
           isActive: true,
@@ -256,9 +256,9 @@ export class PrayerAutomation {
         }
       });
 
-      if (automationRule && approval.request) {
+      if (automation_rules && approval.request) {
         // Execute rule actions now that it's approved
-        await this.executeRuleActions(automationRule, approval.request);
+        await this.executeRuleActions(automation_rules, approval.request);
       }
 
     } catch (error) {

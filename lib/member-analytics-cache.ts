@@ -2,7 +2,7 @@ import { Redis } from '@upstash/redis';
 
 interface CacheConfig {
   defaultTTL: number;
-  memberJourneyTTL: number;
+  member_journeysTTL: number;
   engagementTTL: number;
   retentionTTL: number;
   recommendationsTTL: number;
@@ -28,7 +28,7 @@ class MemberAnalyticsCache {
 
     this.config = {
       defaultTTL: 300, // 5 minutes
-      memberJourneyTTL: 1800, // 30 minutes - member journey changes less frequently
+      member_journeysTTL: 1800, // 30 minutes - member journey changes less frequently
       engagementTTL: 600, // 10 minutes - engagement scores update periodically
       retentionTTL: 3600, // 1 hour - retention analysis is computationally expensive
       recommendationsTTL: 1800, // 30 minutes - recommendations change based on patterns
@@ -58,7 +58,7 @@ class MemberAnalyticsCache {
   private getTTL(type: AnalyticsCacheKey['type']): number {
     switch (type) {
       case 'lifecycle':
-        return this.config.memberJourneyTTL;
+        return this.config.member_journeysTTL;
       case 'engagement':
         return this.config.engagementTTL;
       case 'retention':
@@ -66,7 +66,7 @@ class MemberAnalyticsCache {
       case 'recommendations':
         return this.config.recommendationsTTL;
       case 'timeline':
-        return this.config.memberJourneyTTL;
+        return this.config.member_journeysTTL;
       case 'behavioral':
         return this.config.retentionTTL;
       default:

@@ -55,7 +55,7 @@ interface PerformanceMetrics {
   };
   analytics: {
     executiveReportPerformance: number;
-    memberJourneyPerformance: number;
+    member_journeysPerformance: number;
     comprehensiveAnalyticsPerformance: number;
     cachingEffectiveness: number;
   };
@@ -272,7 +272,7 @@ async function getAnalyticsMetrics(): Promise<PerformanceMetrics['analytics']> {
     // Member journey performance test
     const memberStartTime = Date.now();
     // Would make actual test call here
-    const memberJourneyPerformance = Date.now() - memberStartTime;
+    const member_journeysPerformance = Date.now() - memberStartTime;
 
     // Comprehensive analytics performance test
     const compStartTime = Date.now();
@@ -285,7 +285,7 @@ async function getAnalyticsMetrics(): Promise<PerformanceMetrics['analytics']> {
 
     return {
       executiveReportPerformance: executiveReportPerformance || 800,
-      memberJourneyPerformance: memberJourneyPerformance || 600,
+      member_journeysPerformance: member_journeysPerformance || 600,
       comprehensiveAnalyticsPerformance: comprehensiveAnalyticsPerformance || 1200,
       cachingEffectiveness
     };
@@ -293,7 +293,7 @@ async function getAnalyticsMetrics(): Promise<PerformanceMetrics['analytics']> {
     console.error('Analytics metrics error:', error);
     return {
       executiveReportPerformance: 0,
-      memberJourneyPerformance: 0,
+      member_journeysPerformance: 0,
       comprehensiveAnalyticsPerformance: 0,
       cachingEffectiveness: 0
     };

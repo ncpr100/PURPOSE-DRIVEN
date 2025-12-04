@@ -40,7 +40,7 @@ interface ExecutionResult {
 }
 
 interface ActionExecutionContext {
-  automationRuleId: string;
+  automation_rulesId: string;
   actionId: string;
   churchId: string;
   recipientId?: string;
@@ -369,9 +369,9 @@ async function logExecutionSuccess(
   fallbackUsed: boolean = false
 ): Promise<void> {
   try {
-    await prisma.automationRuleExecution.create({
+    await prisma.automation_rulesExecution.create({
       data: {
-        ruleId: context.automationRuleId,
+        ruleId: context.automation_rulesId,
         triggerData: context.data,
         status: 'SUCCESS',
         result: {
@@ -398,9 +398,9 @@ async function logExecutionFailure(
   error?: string
 ): Promise<void> {
   try {
-    await prisma.automationRuleExecution.create({
+    await prisma.automation_rulesExecution.create({
       data: {
-        ruleId: context.automationRuleId,
+        ruleId: context.automation_rulesId,
         triggerData: context.data,
         status: 'FAILED',
         error: error || 'All channels failed',
@@ -428,8 +428,8 @@ export async function createManualTask(
     console.log(`[Automation] Creating manual task for failed action ${context.actionId}`);
     
     // Get automation rule details
-    const rule = await prisma.automationRule.findUnique({
-      where: { id: context.automationRuleId },
+    const rule = await prisma.automation_rules.findUnique({
+      where: { id: context.automation_rulesId },
       select: { name: true, description: true }
     });
     
@@ -458,12 +458,12 @@ export async function createManualTask(
  * Handle escalation when no response is received
  */
 export async function handleEscalation(
-  automationRuleId: string,
+  automation_rulesId: string,
   escalationConfig: EscalationConfig,
   churchId: string
 ): Promise<void> {
   try {
-    console.log(`[Automation] Handling escalation for rule ${automationRuleId}`);
+    console.log(`[Automation] Handling escalation for rule ${automation_rulesId}`);
     
     // Find the escalation target (role or user)
     const escalationTarget = escalationConfig.escalateTo;
@@ -482,7 +482,7 @@ export async function handleEscalation(
       // Notify each pastor
       for (const pastor of pastors) {
         await sendEmail({
-          automationRuleId,
+          automation_rulesId,
           actionId: 'escalation',
           churchId,
           recipientId: pastor.id,
@@ -499,9 +499,9 @@ export async function handleEscalation(
     }
     
     // Log escalation
-    await prisma.automationRuleExecution.create({
+    await prisma.automation_rulesExecution.create({
       data: {
-        ruleId: automationRuleId,
+        ruleId: automation_rulesId,
         triggerData: {},
         status: 'ESCALATED',
         result: {
@@ -520,14 +520,14 @@ export async function handleEscalation(
  * Main automation execution entry point
  */
 export async function executeAutomationAction(
-  automationRule: any,
+  automation_rules: any,
   action: any,
   context: Record<string, any>
 ): Promise<ExecutionResult> {
   const executionContext: ActionExecutionContext = {
-    automationRuleId: automationRule.id,
+    automation_rulesId: automation_rules.id,
     actionId: action.id,
-    churchId: automationRule.churchId,
+    churchId: automation_rules.churchId,
     recipientId: context.recipientId,
     recipientEmail: context.recipientEmail,
     recipientPhone: context.recipientPhone,
@@ -535,8 +535,8 @@ export async function executeAutomationAction(
   };
   
   // Check business hours (unless urgent 24/7 mode)
-  if (automationRule.businessHoursOnly && !automationRule.urgentMode24x7) {
-    const businessHoursConfig = automationRule.businessHoursConfig as BusinessHoursConfig | null;
+  if (automation_rules.businessHoursOnly && !automation_rules.urgentMode24x7) {
+    const businessHoursConfig = automation_rules.businessHoursConfig as BusinessHoursConfig | null;
     
     if (businessHoursConfig && !isWithinBusinessHours(businessHoursConfig)) {
       console.log('[Automation] Outside business hours, deferring execution');
@@ -559,8 +559,8 @@ export async function executeAutomationAction(
   };
   
   const primaryChannel = channelMap[action.type] || 'EMAIL';
-  const retryConfig = automationRule.retryConfig as RetryConfig | null;
-  const fallbackChannels = (automationRule.fallbackChannels as any)?.channels || [];
+  const retryConfig = automation_rules.retryConfig as RetryConfig | null;
+  const fallbackChannels = (automation_rules.fallbackChannels as any)?.channels || [];
   
   // Execute with retry and fallback
   const result = await executeActionWithRetry(
@@ -571,7 +571,7 @@ export async function executeAutomationAction(
   );
   
   // If all channels failed and createManualTaskOnFail is enabled
-  if (!result.success && automationRule.createManualTaskOnFail) {
+  if (!result.success && automation_rules.createManualTaskOnFail) {
     await createManualTask(executionContext, result.error || 'All channels failed');
   }
   

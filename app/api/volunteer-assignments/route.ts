@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { volunteerAssignmentSchema } from '@/lib/validations/volunteer'
+import { volunteer_assignmentsSchema } from '@/lib/validations/volunteer'
 import { ZodError } from 'zod'
 
 export const dynamic = 'force-dynamic'
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     
     // ✅ SECURITY FIX: Validate all assignment data with Zod
     // Prevents: Invalid dates, malformed times, XSS attacks
-    const validated = volunteerAssignmentSchema.parse(body)
+    const validated = volunteer_assignmentsSchema.parse(body)
 
     // Verify volunteer belongs to the church
     const volunteer = await db.volunteers.findFirst({

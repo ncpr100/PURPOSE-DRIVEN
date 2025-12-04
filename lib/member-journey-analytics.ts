@@ -175,7 +175,7 @@ export class MemberJourneyAnalytics {
       include: {
         user: true,
         volunteers: true,
-        memberJourney: true
+        member_journeys: true
       }
     });
 
@@ -216,7 +216,7 @@ export class MemberJourneyAnalytics {
     const engagementScore = await this.calculateEngagementScore(memberId);
     const member = await db.member.findUnique({
       where: { id: memberId },
-      include: { memberJourney: true }
+      include: { member_journeys: true }
     });
 
     if (!member) return { risk: RetentionRisk.VERY_HIGH, score: 100, factors: ['Member not found'] };
@@ -287,7 +287,7 @@ export class MemberJourneyAnalytics {
     const member = await db.member.findUnique({
       where: { id: memberId },
       include: {
-        spiritualProfile: true,
+        member_spiritual_profiles: true,
         volunteers: true
       }
     });
@@ -1014,7 +1014,7 @@ export class MemberJourneyAnalytics {
 
     // Leadership prediction is more complex, requires spiritual assessment data
     const membersWithAssessment = servingMembers.filter(m => 
-      m.member?.spiritualProfile?.spiritualMaturityScore > 0
+      m.member?.member_spiritual_profiles?.spiritualMaturityScore > 0
     );
     
     const assessmentCoverage = membersWithAssessment.length / servingMembers.length;

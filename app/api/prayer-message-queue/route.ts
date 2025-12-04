@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
       messageType,
       content,
       scheduledAt,
-      automationRuleId
+      automation_rulesId
     } = await request.json()
 
     if (!prayer_requestsId || !contactId || !messageType || !content) {
@@ -201,7 +201,7 @@ export async function POST(request: NextRequest) {
         content,
         status: scheduledAt ? 'scheduled' : 'pending',
         scheduledAt,
-        automationRuleId,
+        automation_rulesId,
         retryCount: 0,
         createdAt: new Date().toISOString()
       }

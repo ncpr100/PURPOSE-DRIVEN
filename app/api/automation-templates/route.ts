@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
       ]
     }
 
-    const templates = await prisma.automationRuleTemplate.findMany({
+    const templates = await prisma.automation_rulesTemplate.findMany({
       where,
       orderBy: [
         { isSystemTemplate: 'desc' }, // System templates first
@@ -123,7 +123,7 @@ export async function GET(request: NextRequest) {
     }))
 
     // Get categories for filtering
-    const categories = await prisma.automationRuleTemplate.groupBy({
+    const categories = await prisma.automation_rulesTemplate.groupBy({
       by: ['category'],
       where: { isActive: true },
       _count: {
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = createTemplateSchema.parse(body)
 
-    const template = await prisma.automationRuleTemplate.create({
+    const template = await prisma.automation_rulesTemplate.create({
       data: {
         name: validatedData.name,
         description: validatedData.description,

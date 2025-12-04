@@ -34,7 +34,7 @@ export async function GET(request: Request) {
         status: 'pending'
       },
       include: {
-        memberJourney: {
+        member_journeys: {
           include: {
             member: {
               select: {

@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     tomorrow.setDate(tomorrow.getDate() + 1)
 
     // Fetch all automation rules
-    const allRules = await prisma.automationRule.findMany({
+    const allRules = await prisma.automation_rules.findMany({
       where: { churchId },
       select: {
         id: true,

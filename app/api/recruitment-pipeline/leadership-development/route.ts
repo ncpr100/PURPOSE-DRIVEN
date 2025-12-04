@@ -72,12 +72,12 @@ async function analyzeLeadershipPotential(member: any, churchId: string): Promis
   const factors = []
 
   // 1. Current Leadership Readiness (25% weight)
-  const baseReadiness = (member.spiritualProfile?.leadershipScore || 1) * 2.5
+  const baseReadiness = (member.member_spiritual_profiles?.leadershipScore || 1) * 2.5
   leadershipScore += baseReadiness
   factors.push({ factor: 'Preparación Base', score: baseReadiness })
 
   // 2. Experience and Track Record (20% weight)
-  const experienceScore = (member.spiritualProfile?.experienceLevel || 1) * 2
+  const experienceScore = (member.member_spiritual_profiles?.experienceLevel || 1) * 2
   leadershipScore += experienceScore
   factors.push({ factor: 'Experiencia', score: experienceScore })
 
@@ -141,7 +141,7 @@ async function analyzeLeadershipPotential(member: any, churchId: string): Promis
 
   // Determine leadership readiness timeline
   let leadershipReadiness: LeadershipProfile['leadershipReadiness'] = 'NEEDS_DEVELOPMENT'
-  if (leadershipScore >= 85 && (member.spiritualProfile?.experienceLevel || 1) >= 7) {
+  if (leadershipScore >= 85 && (member.member_spiritual_profiles?.experienceLevel || 1) >= 7) {
     leadershipReadiness = 'READY_NOW'
   } else if (leadershipScore >= 75) {
     leadershipReadiness = 'READY_6_MONTHS'
@@ -172,7 +172,7 @@ async function analyzeLeadershipPotential(member: any, churchId: string): Promis
   const developmentPath = generateDevelopmentPath(member, leadershipPotential, developmentAreas)
 
   // Calculate detailed skill scores
-  const spiritualMaturity = Math.min(100, (member.spiritualProfile?.experienceLevel || 1) * 10 + (leadershipGiftMatches.length * 15))
+  const spiritualMaturity = Math.min(100, (member.member_spiritual_profiles?.experienceLevel || 1) * 10 + (leadershipGiftMatches.length * 15))
   const communicationSkillsScore = Math.min(100, influenceScore * 10)
   const experienceDepth = Math.min(100, experienceScore * 5)
   const teamLeadership = Math.min(100, performanceScore * 6)
@@ -213,7 +213,7 @@ async function generateLeadershipOpportunities(member: any, leadershipScore: num
         where: { isActive: true },
         include: { 
           member: {
-            include: { spiritualProfile: true }
+            include: { member_spiritual_profiles: true }
           }
         }
       }
@@ -225,7 +225,7 @@ async function generateLeadershipOpportunities(member: any, leadershipScore: num
 
   for (const ministry of ministries) {
     const currentLeaders = ministry.volunteers.filter(v => 
-      (v.member?.spiritualProfile?.leadershipScore || 10) >= 70
+      (v.member?.member_spiritual_profiles?.leadershipScore || 10) >= 70
     )
     
     const needsLeadership = currentLeaders.length < Math.max(1, Math.ceil(ministry.volunteers.length / 5))
@@ -587,14 +587,14 @@ export async function POST(request: NextRequest) {
     let memberFilter: any = {
       churchId: session.user.churchId,
       isActive: true,
-      spiritualProfile: {
+      member_spiritual_profiles: {
         leadershipScore: { gte: 30 } // Minimum leadership interest (30% score)
       }
     }
 
     if (targetMemberId) {
       memberFilter.id = targetMemberId
-      delete memberFilter.spiritualProfile // Remove filter for specific member
+      delete memberFilter.member_spiritual_profiles // Remove filter for specific member
     }
 
     const members = await prisma.members.findMany({
@@ -604,7 +604,7 @@ export async function POST(request: NextRequest) {
           where: { isActive: true },
           include: { ministry: true }
         },
-        spiritualProfile: true
+        member_spiritual_profiles: true
       }
     })
 
@@ -708,7 +708,7 @@ export async function GET(request: NextRequest) {
       where: {
         churchId: session.user.churchId,
         isActive: true,
-        spiritualProfile: {
+        member_spiritual_profiles: {
           leadershipScore: { gte: 50 } // 50% leadership score threshold
         }
       }
@@ -723,7 +723,7 @@ export async function GET(request: NextRequest) {
             isActive: true
           }
         },
-        spiritualProfile: {
+        member_spiritual_profiles: {
           leadershipScore: { gte: 70 } // 70% leadership score for current leaders
         }
       }

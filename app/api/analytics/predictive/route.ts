@@ -315,7 +315,7 @@ function getSeasonalMultiplier(month: number): number {
 }
 
 function calculateEngagementForecast(eventData: any[], engagementMetrics: number[]): PredictiveAnalytics['engagementForecast'] {
-  const [checkIns, volunteerAssignments, communications] = engagementMetrics;
+  const [checkIns, volunteer_assignmentss, communications] = engagementMetrics;
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
   const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
@@ -348,8 +348,8 @@ function calculateEngagementForecast(eventData: any[], engagementMetrics: number
     Math.round(totalAttendanceRate / categoryCount) : 75;
 
   // Enhanced volunteer participation trend
-  const volunteerGrowthRate = volunteerAssignments > 0 ? 
-    Math.min(100, Math.max(20, (volunteerAssignments / Math.max(1, recentEvents.length)) * 25)) : 45;
+  const volunteerGrowthRate = volunteer_assignmentss > 0 ? 
+    Math.min(100, Math.max(20, (volunteer_assignmentss / Math.max(1, recentEvents.length)) * 25)) : 45;
 
   // Sophisticated communication engagement
   const communicationEffectiveness = communications > 0 ? 

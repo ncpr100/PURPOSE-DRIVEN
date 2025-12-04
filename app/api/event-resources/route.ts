@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       whereClause.type = type
     }
 
-    const resources = await db.eventResource.findMany({
+    const resources = await db.event_resources.findMany({
       where: whereClause,
       include: {
         reservations: {
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
     const sanitizedDescription = description?.trim() || ''
     const sanitizedType = type.trim()
 
-    const resource = await db.eventResource.create({
+    const resource = await db.event_resources.create({
       data: {
         name: sanitizedName,
         description: sanitizedDescription,

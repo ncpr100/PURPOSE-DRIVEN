@@ -112,8 +112,8 @@ export class EnhancedAIInsightsEngine {
             ministry: true // Include the ministry relation
           }
         },
-        spiritualProfile: true,
-        memberJourney: true,
+        member_spiritual_profiles: true,
+        member_journeys: true,
       }
     });
 
@@ -184,7 +184,7 @@ export class EnhancedAIInsightsEngine {
       servingConsistency: this.calculateServingConsistency(member.volunteers),
 
       // Spiritual Growth
-      spiritualAssessmentScore: member.spiritualProfile?.spiritualMaturityScore || 50,
+      spiritualAssessmentScore: member.member_spiritual_profiles?.spiritualMaturityScore || 50,
       bibleStudyParticipation: 0, // Would need Bible study data
       prayer_requestsFrequency: 0, // Would need prayer data
       testimonySharing: 0, // Would need testimony data
@@ -315,7 +315,7 @@ export class EnhancedAIInsightsEngine {
     const features = await this.extractMemberFeatures(memberId);
     const member = await db.member.findUnique({
       where: { id: memberId },
-      include: { spiritualProfile: true }
+      include: { member_spiritual_profiles: true }
     });
 
     const ministries = await db.ministry.findMany({
@@ -324,7 +324,7 @@ export class EnhancedAIInsightsEngine {
 
     const recommendations = await Promise.all(
       ministries.map(async ministry => {
-        const match = await this.calculateMLMinistryMatch(features, ministry, member?.spiritualProfile);
+        const match = await this.calculateMLMinistryMatch(features, ministry, member?.member_spiritual_profiles);
         return {
           ministryId: ministry.id,
           ministryName: ministry.name,
@@ -678,7 +678,7 @@ export class EnhancedAIInsightsEngine {
     return [];
   }
 
-  private async calculateMLMinistryMatch(features: MLModelFeatures, ministry: any, spiritualProfile: any): Promise<any> {
+  private async calculateMLMinistryMatch(features: MLModelFeatures, ministry: any, member_spiritual_profiles: any): Promise<any> {
     return {
       score: 75,
       confidence: 80,

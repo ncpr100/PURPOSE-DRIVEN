@@ -29,7 +29,7 @@ export async function POST(
         churchId: session.user.churchId 
       },
       include: {
-        volunteerAssignments: {
+        volunteer_assignmentss: {
           include: {
             volunteer: true
           }
@@ -55,7 +55,7 @@ export async function POST(
       include: {
         member: {
           include: {
-            spiritualProfile: true,
+            member_spiritual_profiles: true,
             availabilityMatrix: true
           }
         },
@@ -71,7 +71,7 @@ export async function POST(
     // Filter volunteers who are not already assigned and available
     const eligibleVolunteers = availableVolunteers.filter(volunteer => {
       // Not already assigned to this event
-      const alreadyAssigned = event.volunteerAssignments.some((ev: any) => ev.volunteerId === volunteer.id)
+      const alreadyAssigned = event.volunteer_assignmentss.some((ev: any) => ev.volunteerId === volunteer.id)
       if (alreadyAssigned) return false
 
       // Not double-booked

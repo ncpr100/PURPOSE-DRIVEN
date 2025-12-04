@@ -138,7 +138,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
       }
     },
     include: {
-      volunteerAssignments: {
+      volunteer_assignmentss: {
         include: {
           volunteer: true
         }
@@ -172,7 +172,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
 
   // Analyze event gaps
   for (const event of upcomingEvents) {
-    const currentVolunteers = event.volunteerAssignments.length
+    const currentVolunteers = event.volunteer_assignmentss.length
     const estimatedNeed = Math.max(2, Math.ceil(currentVolunteers * 1.2)) // 20% buffer
     
     if (currentVolunteers < estimatedNeed) {
@@ -245,7 +245,7 @@ async function findOptimalMatches(gaps: SchedulingGap[], churchId: string): Prom
       isActive: true
     },
     include: {
-      spiritualProfile: true,
+      member_spiritual_profiles: true,
       availabilityMatrix: true,
       volunteers: {
         include: {

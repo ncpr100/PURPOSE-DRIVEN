@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
           name: `${verification?.firstName} ${verification?.lastName}`,
           email: verification?.email
         },
-        spiritualProfile: {
+        member_spiritual_profiles: {
           id: verification?.member_spiritual_profiles?.id,
           primaryGiftsCount: Array.isArray(verification?.member_spiritual_profiles?.primaryGifts) 
             ? verification?.member_spiritual_profiles?.primaryGifts.length : 0,

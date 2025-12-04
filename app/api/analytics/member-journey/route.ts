@@ -214,7 +214,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
     }),
     db.members.findMany({
       where: { churchId },
-      include: { spiritualProfile: true }
+      include: { member_spiritual_profiles: true }
     }),
     db.check_ins.findMany({
       where: { 
@@ -339,7 +339,7 @@ async function generateSystemRecommendations(churchId: string, data: any): Promi
 
 async function getMemberSpecificActions(churchId: string): Promise<any[]> {
   // Get members needing immediate attention
-  const memberJourneys = await db.member_journeys.findMany({
+  const member_journeyss = await db.member_journeys.findMany({
     where: {
       churchId,
       OR: [
@@ -354,7 +354,7 @@ async function getMemberSpecificActions(churchId: string): Promise<any[]> {
     take: 10
   });
 
-  return memberJourneys.map(journey => ({
+  return member_journeyss.map(journey => ({
     memberId: journey.memberId,
     memberName: journey.member ? `${journey.member.firstName} ${journey.member.lastName}` : 'Unknown',
     issue: journey.retentionRisk === 'VERY_HIGH' ? 'High retention risk' 
@@ -449,14 +449,14 @@ function calculateSpiritualGrowth(members: any[], volunteers: any[], prayer_requ
 
   // Baptism tracking (simplified - you might have a specific baptism model)
   const baptismsThisMonth = members.filter(m => 
-    m.spiritualProfile?.baptismDate && 
-    new Date(m.spiritualProfile.baptismDate) >= thisMonth
+    m.member_spiritual_profiles?.baptismDate && 
+    new Date(m.member_spiritual_profiles.baptismDate) >= thisMonth
   ).length;
 
   const baptismsLastMonth = members.filter(m => 
-    m.spiritualProfile?.baptismDate && 
-    new Date(m.spiritualProfile.baptismDate) >= lastMonth &&
-    new Date(m.spiritualProfile.baptismDate) < thisMonth
+    m.member_spiritual_profiles?.baptismDate && 
+    new Date(m.member_spiritual_profiles.baptismDate) >= lastMonth &&
+    new Date(m.member_spiritual_profiles.baptismDate) < thisMonth
   ).length;
 
   const baptismGrowthRate = baptismsLastMonth > 0 
@@ -465,13 +465,13 @@ function calculateSpiritualGrowth(members: any[], volunteers: any[], prayer_requ
 
   // Discipleship metrics
   const membersInDiscipleship = members.filter(m => 
-    m.spiritualProfile?.discipleshipLevel && 
-    m.spiritualProfile.discipleshipLevel !== 'NUEVO'
+    m.member_spiritual_profiles?.discipleshipLevel && 
+    m.member_spiritual_profiles.discipleshipLevel !== 'NUEVO'
   ).length;
 
   const completedDiscipleship = members.filter(m => 
-    m.spiritualProfile?.discipleshipLevel === 'MADURO' ||
-    m.spiritualProfile?.discipleshipLevel === 'LIDER'
+    m.member_spiritual_profiles?.discipleshipLevel === 'MADURO' ||
+    m.member_spiritual_profiles?.discipleshipLevel === 'LIDER'
   ).length;
 
   const discipleshipCompletionRate = membersInDiscipleship > 0 
@@ -481,8 +481,8 @@ function calculateSpiritualGrowth(members: any[], volunteers: any[], prayer_requ
   // Ministry involvement
   const totalVolunteers = new Set(volunteers.map(v => v.volunteer?.member?.id)).size;
   const leadershipDevelopment = members.filter(m => 
-    m.spiritualProfile?.leadershipLevel &&
-    m.spiritualProfile.leadershipLevel !== 'NINGUNO'
+    m.member_spiritual_profiles?.leadershipLevel &&
+    m.member_spiritual_profiles.leadershipLevel !== 'NINGUNO'
   ).length;
 
   // Engagement metrics

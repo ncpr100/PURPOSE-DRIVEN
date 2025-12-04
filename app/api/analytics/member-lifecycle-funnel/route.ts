@@ -48,7 +48,7 @@ export async function GET(request: Request) {
     }
 
     // Get member journey data with optimized query
-    const memberJourneys = await db.member_journeys.findMany({
+    const member_journeyss = await db.member_journeys.findMany({
       where: {
         churchId,
         ...(dateRange !== 'all' && { createdAt: dateFilter })
@@ -80,13 +80,13 @@ export async function GET(request: Request) {
     };
 
     // Count members in each stage
-    memberJourneys.forEach(journey => {
+    member_journeyss.forEach(journey => {
       if (stages[journey.currentStage as keyof typeof stages]) {
         stages[journey.currentStage as keyof typeof stages].count++;
       }
     });
 
-    const totalMembers = memberJourneys.length;
+    const totalMembers = member_journeyss.length;
 
     // Calculate percentages and conversion rates
     let previousStageCount = totalMembers;

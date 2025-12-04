@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
         isActive: true,
       },
       include: {
-        spiritualProfile: true,
+        member_spiritual_profiles: true,
         volunteers: {
           include: {
             assignments: {

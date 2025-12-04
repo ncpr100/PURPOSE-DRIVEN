@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get active rules count
-    const activeRulesCount = await prisma.automationRule.count({
+    const activeRulesCount = await prisma.automation_rules.count({
       where: {
         churchId: user.churchId,
         isActive: true
@@ -80,8 +80,8 @@ export async function GET(request: NextRequest) {
       stats,
       executions: executions.map(exec => ({
         id: exec.id,
-        automationRuleId: exec.automationId,
-        automationRule: {
+        automation_rulesId: exec.automationId,
+        automation_rules: {
           name: exec.automation?.name || 'Unknown Automation',
           priorityLevel: 'NORMAL'
         },
