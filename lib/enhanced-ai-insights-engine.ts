@@ -202,8 +202,8 @@ export class EnhancedAIInsightsEngine {
       geographicStability: 1, // Would need address history
 
       // Historical
-      membershipDuration: member.membersshipDate ? 
-        Math.floor((now.getTime() - member.membersshipDate.getTime()) / (24 * 60 * 60 * 1000)) : 0,
+      membershipDuration: member.membershipDate ? 
+        Math.floor((now.getTime() - member.membershipDate.getTime()) / (24 * 60 * 60 * 1000)) : 0,
       previousChurchExperience: 0, // Would need church history
       conversionStoryType: 'unknown',
 

@@ -346,7 +346,7 @@ export async function POST(request: NextRequest) {
               lastName: member.lastName,
               email: member.email,
               phone: member.phone,
-              membershipDate: member.membersshipDate,
+              membershipDate: member.membershipDate,
               isActive: member.isActive
             }, session.user.churchId)
           } catch (automationError) {

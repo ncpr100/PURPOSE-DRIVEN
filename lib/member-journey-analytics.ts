@@ -181,8 +181,8 @@ export class MemberJourneyAnalytics {
 
     if (!member) return MemberLifecycleStage.VISITOR;
 
-    const membershipDuration = member.membersshipDate 
-      ? Math.floor((Date.now() - member.membersshipDate.getTime()) / (1000 * 60 * 60 * 24))
+    const membershipDuration = member.membershipDate 
+      ? Math.floor((Date.now() - member.membershipDate.getTime()) / (1000 * 60 * 60 * 24))
       : 0;
 
     const engagementScore = await this.calculateEngagementScore(memberId);
@@ -195,7 +195,7 @@ export class MemberJourneyAnalytics {
     if (hasMinistryRole && engagementScore > 70) return MemberLifecycleStage.SERVING_MEMBER;
     if (membershipDuration > 180 && engagementScore > 60) return MemberLifecycleStage.GROWING_MEMBER;
     if (membershipDuration > 30 && engagementScore > 50) return MemberLifecycleStage.ESTABLISHED_MEMBER;
-    if (member.membersshipDate && membershipDuration <= 180) return MemberLifecycleStage.NEW_MEMBER;
+    if (member.membershipDate && membershipDuration <= 180) return MemberLifecycleStage.NEW_MEMBER;
     if (engagementScore < 20 && membershipDuration > 90) return MemberLifecycleStage.INACTIVE_MEMBER;
     if (engagementScore < 10 && membershipDuration > 180) return MemberLifecycleStage.DISCONNECTED_MEMBER;
     
