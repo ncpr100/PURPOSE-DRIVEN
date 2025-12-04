@@ -36,7 +36,7 @@ async function getDonationCategories(churchId: string) {
 
 async function getPaymentMethods(churchId: string) {
   try {
-    return await prisma.paymentMethod.findMany({
+    return await prisma.payment_methods.findMany({
       where: { churchId },
       orderBy: { name: 'asc' }
     });
