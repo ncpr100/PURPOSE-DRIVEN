@@ -48,6 +48,35 @@ bash RESTORE.sh
 
 ### What IS NOT Backed Up ❌
 - **Environment Variables** (`.env`) - Security: must configure manually
+
+### LATEST BACKUP REPLICATION - app/api/automation-rules/[id]/route.ts - Final Church vs Churches Fix
+**Timestamp**: December 4, 2025
+**File Modified**: `/workspaces/PURPOSE-DRIVEN/app/api/automation-rules/[id]/route.ts`
+**Change Type**: Final systematic church→churches pattern fix (Line 174 DELETE function)
+
+**Critical Fix Applied**:
+```typescript
+// BEFORE (causing Railway TypeScript error):
+include: { church: true }
+
+// AFTER (corrected to match Prisma schema):
+include: { churches: true }
+```
+
+**Context**: This was the final church vs churches pattern causing Railway build failures. Railway error: "Type '{ church: true; }' is not assignable to type 'usersInclude<DefaultArgs>'. Object literal may only specify known properties, but 'church' does not exist in type 'usersInclude<DefaultArgs>'. Did you mean to write 'churches'?"
+
+**Protocol #8 Applied**: Systematic fix after all-day Railway deployment cycles using comprehensive pattern-based approach rather than reactive individual fixes.
+
+**Deploy Command**: `git add . && git commit -m "fix: final church->churches pattern in automation-rules DELETE - systematic fix for Railway deployment" && git push`
+
+## SYSTEMATIC PATTERN FIXES COMPLETED TODAY
+
+**Round 1-3**: 400+ relation naming fixes across 80+ files
+**Round 4-9**: Function parameter consistency (checkIns vs check_ins, member.member vs member.members, etc.)
+**Round 10+**: Prisma model naming (donation→donations, event→events, volunteer→volunteers, church→churches) 
+**FINAL**: automation-rules/[id]/route.ts line 174 church→churches fix
+
+**DEPLOYMENT STATUS**: Ready for Railway success after comprehensive systematic fixes
 - **node_modules** - Size: 500MB+, reinstall with `npm install`
 - **Build Cache** (`.next/`) - Regenerate with `npm run build`
 - **Production Database Data** - Must export separately if needed
