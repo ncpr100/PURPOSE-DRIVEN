@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
         }
       },
       include: {
-        automation: {
+        automations: {
           select: {
             name: true
           }
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
         id: exec.id,
         automation_rulesId: exec.automationId,
         automation_rules: {
-          name: exec.automation?.name || 'Unknown Automation',
+          name: exec.automations?.name || 'Unknown Automation',
           priorityLevel: 'NORMAL'
         },
         status: exec.status,
