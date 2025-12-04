@@ -93,14 +93,14 @@ export async function POST(request: NextRequest) {
           email: verification?.email
         },
         spiritualProfile: {
-          id: verification?.spiritualProfile?.id,
-          primaryGiftsCount: Array.isArray(verification?.spiritualProfile?.primaryGifts) 
-            ? verification?.spiritualProfile?.primaryGifts.length : 0,
-          secondaryGiftsCount: Array.isArray(verification?.spiritualProfile?.secondaryGifts) 
-            ? verification?.spiritualProfile?.secondaryGifts.length : 0,
-          ministryPassionsCount: Array.isArray(verification?.spiritualProfile?.ministryPassions) 
-            ? verification?.spiritualProfile?.ministryPassions.length : 0,
-          readinessScore: verification?.spiritualProfile?.volunteerReadinessScore
+          id: verification?.member_spiritual_profiles?.id,
+          primaryGiftsCount: Array.isArray(verification?.member_spiritual_profiles?.primaryGifts) 
+            ? verification?.member_spiritual_profiles?.primaryGifts.length : 0,
+          secondaryGiftsCount: Array.isArray(verification?.member_spiritual_profiles?.secondaryGifts) 
+            ? verification?.member_spiritual_profiles?.secondaryGifts.length : 0,
+          ministryPassionsCount: Array.isArray(verification?.member_spiritual_profiles?.ministryPassions) 
+            ? verification?.member_spiritual_profiles?.ministryPassions.length : 0,
+          readinessScore: verification?.member_spiritual_profiles?.volunteerReadinessScore
         }
       }
     })
