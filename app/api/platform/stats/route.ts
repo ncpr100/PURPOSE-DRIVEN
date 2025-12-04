@@ -52,10 +52,10 @@ export async function GET(request: NextRequest) {
       }),
       
       // Total users
-      prisma.user.count(),
+      prisma.users.count(),
       
       // Active users (logged in within last 30 days or created within last 30 days)
-      prisma.user.count({
+      prisma.users.count({
         where: {
           isActive: true,
           OR: [
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
       }),
       
       // New users this month
-      prisma.user.count({
+      prisma.users.count({
         where: {
           createdAt: {
             gte: startOfMonth

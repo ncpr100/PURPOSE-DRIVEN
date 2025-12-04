@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
         createdNotifications.push(globalNotification)
 
         // Create delivery records for all church users
-        const globalChurchUsers = await prisma.user.findMany({
+        const globalChurchUsers = await prisma.users.findMany({
           where: {
             churchId: user.churchId,
             isActive: true
@@ -175,7 +175,7 @@ export async function POST(request: NextRequest) {
         createdNotifications.push(roleNotification)
 
         // Create delivery records for users with this role
-        const roleUsers = await prisma.user.findMany({
+        const roleUsers = await prisma.users.findMany({
           where: {
             churchId: user.churchId,
             role: validatedData.targetRole as any,
@@ -208,7 +208,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Verify all target users belong to the same church
-        const targetUsers = await prisma.user.findMany({
+        const targetUsers = await prisma.users.findMany({
           where: {
             id: { in: validatedData.targetUserIds },
             churchId: user.churchId
@@ -254,7 +254,7 @@ export async function POST(request: NextRequest) {
 
       case 'ALL':
         // Send to all users in the church
-        const allChurchUsers = await prisma.user.findMany({
+        const allChurchUsers = await prisma.users.findMany({
           where: {
             churchId: user.churchId,
             isActive: true

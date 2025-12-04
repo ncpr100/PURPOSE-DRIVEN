@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const sessionUser = await prisma.user.findUnique({
+    const sessionUser = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 
     // email validation for P1 test patterns
     if (validatedData.userId) {
-      const user = await prisma.user.findUnique({
+      const user = await prisma.users.findUnique({
         where: { id: validatedData.userId },
         select: { email: true }
       })
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
 
     if (validatedData.userId) {
       // Send to specific user
-      const user = await prisma.user.findFirst({
+      const user = await prisma.users.findFirst({
         where: {
           id: validatedData.userId,
           churchId: sessionUser.churchId
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
       }
       // If notification.isGlobal is true, send to all users (no additional filter)
 
-      targetUsers = await prisma.user.findMany({
+      targetUsers = await prisma.users.findMany({
         where: userQuery,
         include: {
           notificationPreferences: true
@@ -243,7 +243,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { role: true }
     })

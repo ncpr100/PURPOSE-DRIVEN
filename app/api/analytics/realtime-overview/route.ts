@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     // Ensure cache optimization is initialized for 100% hit rates
     await AnalyticsCacheInitializer.initialize();
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { 
         id: true, 

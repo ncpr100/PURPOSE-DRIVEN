@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get full user data to check role
-    const sessionUser = await prisma.user.findUnique({
+    const sessionUser = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, role: true, churchId: true }
     })

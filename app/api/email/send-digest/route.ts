@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const sessionUser = await prisma.user.findUnique({
+    const sessionUser = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
         userQuery.id = validatedData.userId
       }
 
-      const users = await prisma.user.findMany({
+      const users = await prisma.users.findMany({
         where: userQuery,
         include: {
           notificationPreferences: true
@@ -250,7 +250,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true, name: true }
     })

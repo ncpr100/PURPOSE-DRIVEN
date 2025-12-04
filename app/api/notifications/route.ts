@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })
@@ -185,7 +185,7 @@ export async function POST(request: NextRequest) {
 
     // Validate targetUser exists in the same church if specified
     if (validatedData.targetUser) {
-      const targetUser = await prisma.user.findUnique({
+      const targetUser = await prisma.users.findUnique({
         where: { id: validatedData.targetUser },
         select: { churchId: true }
       })
@@ -226,7 +226,7 @@ export async function POST(request: NextRequest) {
       })
     } else if (validatedData.targetRole) {
       // Role-based notification
-      const roleUsers = await prisma.user.findMany({
+      const roleUsers = await prisma.users.findMany({
         where: {
           churchId: user.churchId,
           role: validatedData.targetRole as any,
@@ -246,7 +246,7 @@ export async function POST(request: NextRequest) {
       })
     } else if (validatedData.isGlobal) {
       // Global notification for entire church
-      const churchUsers = await prisma.user.findMany({
+      const churchUsers = await prisma.users.findMany({
         where: {
           churchId: user.churchId,
           isActive: true
@@ -292,7 +292,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })

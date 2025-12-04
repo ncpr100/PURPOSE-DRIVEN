@@ -15,7 +15,7 @@ export async function PUT(request: NextRequest) {
     const data = await request.json()
     
     // Update user profile
-    const updatedUser = await prisma.user.update({
+    const updatedUser = await prisma.users.update({
       where: { id: session.user.id },
       data: {
         name: data.name,

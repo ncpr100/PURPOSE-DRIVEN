@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user data from database to ensure we have the latest churchId
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: session.user.email! },
       select: { id: true, churchId: true, role: true }
     })

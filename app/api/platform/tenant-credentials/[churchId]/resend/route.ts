@@ -48,7 +48,7 @@ export async function POST(
     })
 
     // Update user password
-    await prisma.user.updateMany({
+    await prisma.users.updateMany({
       where: { 
         email: credentials.loginEmail,
         churchId: params.churchId 

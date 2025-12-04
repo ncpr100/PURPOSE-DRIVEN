@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Create or update the user account for the church
-    await prisma.user.upsert({
+    await prisma.users.upsert({
       where: { email: loginEmail },
       update: {
         password: hashedPassword,
