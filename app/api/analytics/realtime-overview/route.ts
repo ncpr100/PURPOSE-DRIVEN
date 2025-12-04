@@ -46,19 +46,19 @@ export async function GET(request: NextRequest) {
           isActive: true 
         }
       }),
-      prisma.donation.count({
+      prisma.donations.count({
         where: { 
           members: { churchId: user.churchId },
           donationDate: { gte: startOfDay }
         }
       }),
-      prisma.event.count({
+      prisma.events.count({
         where: { 
           churchId: user.churchId,
           startDate: { gte: startOfDay }
         }
       }),
-      prisma.volunteer.count({
+      prisma.volunteers.count({
         where: { 
           members: { 
             churchId: user.churchId,
@@ -81,19 +81,19 @@ export async function GET(request: NextRequest) {
           createdAt: { gte: yesterday, lt: startOfDay }
         }
       }),
-      prisma.donation.count({
+      prisma.donations.count({
         where: { 
           members: { churchId: user.churchId },
           donationDate: { gte: yesterday, lt: startOfDay }
         }
       }),
-      prisma.event.count({
+      prisma.events.count({
         where: { 
           churchId: user.churchId,
           startDate: { gte: yesterday, lt: startOfDay }
         }
       }),
-      prisma.volunteer.count({
+      prisma.volunteers.count({
         where: { 
           members: { 
             churchId: user.churchId,
