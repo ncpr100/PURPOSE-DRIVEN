@@ -95,7 +95,7 @@ export async function POST(
           data = await db.events.findMany({
             ...query,
             include: {
-              checkIns: true,
+              check_ins: true,
               childrenCheckIns: true,
               resourceReservations: {
                 include: { resource: true }

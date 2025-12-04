@@ -125,7 +125,7 @@ export class EnhancedAIInsightsEngine {
     const ninetyDaysAgo = new Date(now.getTime() - (90 * 24 * 60 * 60 * 1000));
 
     // Get attendance data from CheckIn records (the correct way)
-    const checkIns = await db.checkIn.findMany({
+    const checkIns = await db.check_ins.findMany({
       where: {
         churchId: this.churchId,
         checkedInAt: { gte: ninetyDaysAgo },
@@ -496,7 +496,7 @@ export class EnhancedAIInsightsEngine {
   }
 
   // Calculation helper methods
-  private calculateAttendanceConsistency(checkIns: any[]): number {
+  private calculateAttendanceConsistency(check_ins: any[]): number {
     if (checkIns.length < 2) return 0;
     
     const intervals = [];
@@ -512,12 +512,12 @@ export class EnhancedAIInsightsEngine {
     return Math.max(0, 1 - (variance / 100));
   }
 
-  private calculateAverageServiceDuration(checkIns: any[]): number {
+  private calculateAverageServiceDuration(check_ins: any[]): number {
     // Simplified - would need checkout times
     return 120; // Default 2 hours
   }
 
-  private calculatePreferredTimes(checkIns: any[]): string[] {
+  private calculatePreferredTimes(check_ins: any[]): string[] {
     const timePreferences = new Map<string, number>();
     
     checkIns.forEach(checkIn => {
@@ -550,7 +550,7 @@ export class EnhancedAIInsightsEngine {
     return 0.2;
   }
 
-  private calculateEventPreferences(checkIns: any[]): string[] {
+  private calculateEventPreferences(check_ins: any[]): string[] {
     // Analyze event types from CheckIn records
     if (checkIns.length === 0) return [];
     
@@ -699,7 +699,7 @@ export class EnhancedAIInsightsEngine {
     return [];
   }
 
-  private calculateConsecutiveAbsences(checkIns: any[]): number {
+  private calculateConsecutiveAbsences(check_ins: any[]): number {
     // Calculate consecutive weeks without attendance
     return 0;
   }
@@ -729,7 +729,7 @@ export class EnhancedAIInsightsEngine {
     return volunteers.length > 0 ? 0.7 : 0;
   }
 
-  private calculateSeasonalPatterns(checkIns: any[]): { [month: string]: number } {
+  private calculateSeasonalPatterns(check_ins: any[]): { [month: string]: number } {
     const patterns: { [month: string]: number } = {};
     checkIns.forEach(checkIn => {
       const month = checkIn.checkedInAt.toLocaleDateString('en-US', { month: 'long' });

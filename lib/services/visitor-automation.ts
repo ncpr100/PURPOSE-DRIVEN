@@ -16,7 +16,7 @@ export class VisitorAutomationService {
   static async processVisitor(checkInId: string): Promise<void> {
     try {
       // Fetch check-in with related data
-      const checkIn = await prisma.checkIn.findUnique({
+      const checkIn = await prisma.check_ins.findUnique({
         where: { id: checkInId },
         include: {
           church: true,
@@ -99,9 +99,9 @@ export class VisitorAutomationService {
   /**
    * AUTO-CATEGORIZE visitor based on behavior and history
    */
-  private static async categorizeVisitor(checkIn: any): Promise<VisitorCategory> {
+  private static async categorizeVisitor(check_ins: any): Promise<VisitorCategory> {
     // Check if first-time visitor
-    const previousVisits = await prisma.checkIn.count({
+    const previousVisits = await prisma.check_ins.count({
       where: {
         email: checkIn.email,
         churchId: checkIn.churchId,
@@ -131,7 +131,7 @@ export class VisitorAutomationService {
   /**
    * Create or update VisitorProfile in database
    */
-  private static async upsertVisitorProfile(checkIn: any, category: VisitorCategory) {
+  private static async upsertVisitorProfile(check_ins: any, category: VisitorCategory) {
     // Try to find existing profile by email or phone
     const existingProfile = await prisma.visitorProfile.findFirst({
       where: {
@@ -174,7 +174,7 @@ export class VisitorAutomationService {
   /**
    * Calculate engagement score (0-100)
    */
-  private static calculateEngagementScore(checkIn: any, category: VisitorCategory): number {
+  private static calculateEngagementScore(check_ins: any, category: VisitorCategory): number {
     let score = 50; // Base score
 
     // Category bonuses
@@ -206,7 +206,7 @@ export class VisitorAutomationService {
   /**
    * Match visitor to suitable ministries based on interests and profile
    */
-  private static async matchMinistries(checkIn: any, visitorProfile: any): Promise<string[]> {
+  private static async matchMinistries(check_ins: any, visitorProfile: any): Promise<string[]> {
     try {
       // Get available ministries for the church
       const ministries = await prisma.ministry.findMany({
@@ -329,7 +329,7 @@ export class VisitorAutomationService {
   /**
    * Execute all actions for a rule (when bypassApproval is true)
    */
-  private static async executeRuleActions(rule: any, checkIn: any, visitorProfile: any): Promise<void> {
+  private static async executeRuleActions(rule: any, check_ins: any, visitorProfile: any): Promise<void> {
     for (const action of rule.actions) {
       try {
         // Prepare context for action execution
@@ -368,7 +368,7 @@ export class VisitorAutomationService {
   /**
    * Create follow-up task (when bypassApproval is false)
    */
-  private static async createFollowUpTask(rule: any, checkIn: any, visitorProfile: any): Promise<void> {
+  private static async createFollowUpTask(rule: any, check_ins: any, visitorProfile: any): Promise<void> {
     // Find a pastor or admin to assign task
     const staff = await prisma.user.findMany({
       where: {
@@ -411,14 +411,14 @@ export class VisitorAutomationService {
   /**
    * Evaluate rule conditions against check-in and visitor profile
    */
-  private static async evaluateConditions(conditions: any[], checkIn: any, visitorProfile: any): Promise<boolean> {
+  private static async evaluateConditions(conditions: any[], check_ins: any, visitorProfile: any): Promise<boolean> {
     if (!conditions || conditions.length === 0) {
       return true; // No conditions = always match
     }
 
     for (const condition of conditions) {
       // Merge checkIn and visitorProfile for field lookup
-      const data = { ...checkIn, ...visitorProfile };
+      const data = { ...check_ins, ...visitorProfile };
       const fieldValue = this.getFieldValue(data, condition.field);
       const conditionValue = condition.value;
 

@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
 
     const { db: prisma } = await import('@/lib/db')
     
-    const checkIn = await prisma.checkIn.findUnique({
+    const checkIn = await prisma.check_ins.findUnique({
       where: { id: checkInId },
       include: {
         followUps: {

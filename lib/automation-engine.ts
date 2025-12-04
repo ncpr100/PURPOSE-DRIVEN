@@ -775,7 +775,7 @@ export class FormAutomationEngine {
     const visitorInfo = this.extractVisitorInfo(submissionData)
     
     // 🎯 AUTO-CREATE VISITOR RECORD IN CHECK-IN SYSTEM
-    const visitor = await db.checkIn.create({
+    const visitor = await db.check_ins.create({
       data: {
         firstName: visitorInfo.firstName,
         lastName: visitorInfo.lastName,
@@ -956,7 +956,7 @@ export class FormAutomationEngine {
     const eventInfo = this.extractEventRegistrationInfo(submissionData)
     
     // 🎯 AUTO-CREATE EVENT REGISTRATION
-    const checkIn = await db.checkIn.create({
+    const checkIn = await db.check_ins.create({
       data: {
         firstName: eventInfo.firstName || 'Invitado',
         lastName: eventInfo.lastName || '',

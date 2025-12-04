@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
       case 'verify_pickup':
         const verification = await childSecurity.verifyPickup(
-          data.checkInId,
+          data.check_insId,
           data.pickupPhoto,
           data.pinAttempt,
           data.attemptedBy
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
         }
         
         const override = await childSecurity.emergencyOverride(
-          data.checkInId,
+          data.check_insId,
           session.user.id,
           data.reason
         )

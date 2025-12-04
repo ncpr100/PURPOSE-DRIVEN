@@ -132,7 +132,7 @@ export async function POST(
 
     return NextResponse.json({
       success: true,
-      checkIn: childCheckIn,
+      check_ins: childCheckIn,
       securityPin: childCheckIn.securityPin,
       message: '✅ Check-in completado exitosamente via QR'
     }, { status: 201 })

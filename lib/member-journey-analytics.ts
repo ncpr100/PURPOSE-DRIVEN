@@ -112,7 +112,7 @@ export class MemberJourneyAnalytics {
     if (!member) return 0;
 
     // Get check-ins (attendance)
-    const checkIns = await db.checkIn.findMany({
+    const checkIns = await db.check_ins.findMany({
       where: {
         churchId: this.churchId,
         checkedInAt: { gte: sixtyDaysAgo },
@@ -346,7 +346,7 @@ export class MemberJourneyAnalytics {
   // Helper methods
   private calculateEngagementMetrics(
     member: any,
-    checkIns: any[],
+    check_ins: any[],
     communications: any[],
     donations: any[],
     assignments: any[]
@@ -367,7 +367,7 @@ export class MemberJourneyAnalytics {
     const member = await db.member.findUnique({ where: { id: memberId } });
     if (!member) return 0;
 
-    return db.checkIn.count({
+    return db.check_ins.count({
       where: {
         churchId: this.churchId,
         OR: [
@@ -390,7 +390,7 @@ export class MemberJourneyAnalytics {
     const dateThreshold = new Date();
     dateThreshold.setDate(dateThreshold.getDate() - days);
 
-    return db.checkIn.count({
+    return db.check_ins.count({
       where: {
         churchId: this.churchId,
         checkedInAt: { gte: dateThreshold },

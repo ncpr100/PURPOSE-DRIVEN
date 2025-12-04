@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     const followUps = await db.visitor_follow_ups.findMany({
       where: whereClause,
       include: {
-        checkIn: true,
+        check_ins: true,
         assignedUser: true
       },
       orderBy: {
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
         status: 'PENDIENTE'
       },
       include: {
-        checkIn: true,
+        check_ins: true,
         assignedUser: true
       }
     })

@@ -395,13 +395,13 @@ export class CachedAnalyticsService {
           createdAt: { gte: previousPeriodStart, lte: startDate }
         }
       }),
-      db.checkIn.count({ 
+      db.check_ins.count({ 
         where: { 
           churchId: this.churchId,
           checkedInAt: { gte: startDate, lte: endDate }
         }
       }),
-      db.checkIn.count({ 
+      db.check_ins.count({ 
         where: { 
           churchId: this.churchId,
           checkedInAt: { gte: previousPeriodStart, lte: startDate }

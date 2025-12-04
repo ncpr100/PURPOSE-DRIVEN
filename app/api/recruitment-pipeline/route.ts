@@ -74,7 +74,7 @@ async function calculateRecruitmentScore(member: any, churchId: string): Promise
   }
   
   // Check attendance patterns (simplified)
-  const recentCheckIns = await prisma.checkIn.count({
+  const recentCheckIns = await prisma.check_ins.count({
     where: {
       churchId,
       firstName: member.firstName,

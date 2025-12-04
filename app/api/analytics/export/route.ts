@@ -151,7 +151,7 @@ async function getAnalyticsData(churchId: string, reportType: string, period: nu
         startDate: { gte: startDate }
       },
       include: {
-        checkIns: true
+        check_ins: true
       }
     }),
     db.donations.findMany({
@@ -195,7 +195,7 @@ async function getAnalyticsData(churchId: string, reportType: string, period: nu
       totalMembers: members.length,
       newMembers: members.filter(m => m.createdAt >= startDate).length,
       totalEvents: events.length,
-      totalAttendance: events.reduce((sum, e) => sum + e.checkIns.length, 0),
+      totalAttendance: events.reduce((sum, e) => sum + e.check_ins.length, 0),
       totalDonations: donations.reduce((sum, d) => sum + d.amount, 0),
       averageDonation: donations.length > 0 ? donations.reduce((sum, d) => sum + d.amount, 0) / donations.length : 0,
       totalCommunications: communications.length

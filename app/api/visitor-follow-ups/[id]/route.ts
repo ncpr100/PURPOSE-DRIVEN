@@ -56,7 +56,7 @@ export async function PUT(
                     (status === 'COMPLETADO' ? new Date() : followUp.completedAt)
       },
       include: {
-        checkIn: true,
+        check_ins: true,
         assignedUser: true
       }
     })

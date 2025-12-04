@@ -241,7 +241,7 @@ export async function GET(request: NextRequest) {
       },
 
       engagement: {
-        checkIns: checkInStats._count.id,
+        check_ins: checkInStats._count.id,
         followUps: followUpStats._count.id,
         socialMediaPosts: socialMediaStats._count.id,
         activeAutomations: automationStats._count.id
