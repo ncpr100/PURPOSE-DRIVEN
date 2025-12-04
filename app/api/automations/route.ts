@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { randomUUID } from 'crypto'
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,12 +13,12 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const automations = await db.automation.findMany({
+    const automations = await db.automations.findMany({
       where: {
         churchId: session.user.churchId
       },
       include: {
-        executions: {
+        automation_executions: {
           orderBy: { executedAt: 'desc' },
           take: 5
         }
@@ -51,8 +52,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Datos requeridos faltantes' }, { status: 400 })
     }
 
-    const automation = await db.automation.create({
+    const automation = await db.automations.create({
       data: {
+        id: randomUUID(),
         name,
         description,
         trigger,

@@ -18,18 +18,18 @@ export async function GET(request: NextRequest) {
     }
 
     // Get events analytics
-    const totalEvents = await prisma.event.count({
+    const totalEvents = await prisma.events.count({
       where: { churchId: session.user.churchId }
     })
 
-    const activeEvents = await prisma.event.count({
+    const activeEvents = await prisma.events.count({
       where: { 
         churchId: session.user.churchId,
         startDate: { gte: new Date() }
       }
     })
 
-    const completedEvents = await prisma.event.count({
+    const completedEvents = await prisma.events.count({
       where: { 
         churchId: session.user.churchId,
         endDate: { lt: new Date() }

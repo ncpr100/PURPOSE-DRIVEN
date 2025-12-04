@@ -510,7 +510,7 @@ function generateDefaultWorkflowSteps(member: any, ministry: any): OnboardingWor
 
 async function findAvailableMentor(ministryId: string, churchId: string) {
   // Find experienced volunteers in the same ministry who could serve as mentors
-  const potentialMentors = await prisma.volunteer.findMany({
+  const potentialMentors = await prisma.volunteers.findMany({
     where: {
       ministryId,
       churchId,

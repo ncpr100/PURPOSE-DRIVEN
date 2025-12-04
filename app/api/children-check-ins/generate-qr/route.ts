@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { randomUUID } from 'crypto'
 import { getServerBaseUrl } from '@/lib/server-url'
 
 export const dynamic = 'force-dynamic'
@@ -30,6 +31,7 @@ export async function POST(request: NextRequest) {
     // Create an empty child check-in record for QR tracking
     const emptyCheckIn = await db.children_check_ins.create({
       data: {
+        id: randomUUID(),
         childName: 'Pendiente de QR', // Placeholder until QR is scanned
         parentName: 'Pendiente de QR',
         parentPhone: 'Pendiente de QR',

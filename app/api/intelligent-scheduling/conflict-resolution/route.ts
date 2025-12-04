@@ -45,7 +45,7 @@ async function detectMemberConflicts(memberId: string, churchId: string): Promis
           member: true
         }
       },
-      event: true
+      events: true
     },
     orderBy: {
       date: 'asc'

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { randomUUID } from 'crypto'
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     console.log('🔄 Upserting availability matrix for member:', memberId)
 
-    const matrix = await prisma.availabilityMatrix.upsert({
+    const matrix = await prisma.availability_matrices.upsert({
       where: { memberId },
       update: {
         recurringAvailability: recurringAvailability || {},
@@ -44,6 +45,7 @@ export async function POST(request: NextRequest) {
         lastUpdated: new Date(),
       },
       create: {
+        id: randomUUID(),
         memberId,
         recurringAvailability: recurringAvailability || {},
         blackoutDates: blackoutDates || [],
@@ -106,7 +108,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Member ID is required' }, { status: 400 })
     }
 
-    const matrix = await prisma.availabilityMatrix.findUnique({
+    const matrix = await prisma.availability_matrices.findUnique({
       where: { memberId },
       include: {
         members: {

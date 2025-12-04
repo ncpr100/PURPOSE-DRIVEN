@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { db as prisma } from '@/lib/db';
+import { randomUUID } from 'crypto';
 
 // GET /api/automation-templates/[id] - Get full template details
 export async function GET(
@@ -148,6 +149,7 @@ export async function POST(
     // Create the automation rule from template
     const automation_rules = await prisma.automation_rules.create({
       data: {
+        id: randomUUID(),
         name: customizations?.name || template.name,
         description: template.description,
         churchId: user.churchId,
@@ -165,28 +167,33 @@ export async function POST(
         createdBy: user.id,
         // Create triggers
         automation_triggers: {
-          create: {
+          create: [{
+            id: randomUUID(),
             type: (template.triggerConfig as any).type,
             eventSource: (template.triggerConfig as any).eventSource || null,
             configuration: template.triggerConfig as any,
             isActive: true
-          }
+          }]
         },
         // Create conditions
-        conditions: {
-          create: (finalConfig.conditionsConfig || []).map((condition: any) => ({
+        automation_conditions: {
+          create: (finalConfig.conditionsConfig || []).map((condition: any, index: number) => ({
+            id: randomUUID(),
+            type: condition.type || 'FIELD_COMPARISON',
             field: condition.field,
             operator: condition.operator,
-            value: JSON.stringify(condition.value),
-            metadata: condition
+            value: condition.value,
+            orderIndex: index,
+            isActive: true
           }))
         },
         // Create actions
-        actions: {
+        automation_actions: {
           create: (finalConfig.actionsConfig || []).map((action: any, index: number) => ({
+            id: randomUUID(),
             type: action.type,
             configuration: action.configuration || {},
-            order: index,
+            orderIndex: index,
             delay: action.delay || 0,
             isActive: true
           }))
@@ -197,9 +204,10 @@ export async function POST(
     // Create installation record
     const installation = await prisma.automation_rule_template_installations.create({
       data: {
+        id: randomUUID(),
         churchId: user.churchId,
         templateId: template.id,
-        automation_rules_id: automation_rules.id,
+        automationRuleId: automation_rules.id,
         customizations: customizations || {},
         installedBy: user.id
       }

@@ -160,7 +160,7 @@ async function createDonationFromPayment(onlinePaymentId: string) {
   }
 
   // Create donation record
-  const donation = await prisma.donation.create({
+  const donation = await prisma.donations.create({
     data: {
       amount: payment.amount,
       currency: payment.currency,
@@ -193,7 +193,7 @@ async function sendDonationConfirmationEmail(onlinePaymentId: string) {
     const payment = await prisma.onlinePayment.findUnique({
       where: { id: onlinePaymentId },
       include: {
-        church: true,
+        churches: true,
         category: true,
         donation: true
       }

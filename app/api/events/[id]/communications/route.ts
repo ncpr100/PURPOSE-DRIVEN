@@ -24,7 +24,7 @@ export async function POST(
     const { type, subject, content, scheduledFor, targetAudience } = await request.json()
 
     // Get event details
-    const event = await prisma.event.findUnique({
+    const event = await prisma.events.findUnique({
       where: { 
         id: eventId,
         churchId: session.user.churchId 
@@ -50,7 +50,7 @@ export async function POST(
         break
         
       case 'VOLUNTEERS':
-        const volunteers = await prisma.volunteer.count({
+        const volunteers = await prisma.volunteers.count({
           where: { 
             churchId: session.user.churchId,
             isActive: true

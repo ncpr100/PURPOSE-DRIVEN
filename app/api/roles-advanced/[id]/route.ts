@@ -33,7 +33,7 @@ export async function GET(
     const role = await db.role.findFirst({
       where: whereCondition,
       include: {
-        church: true,
+        churches: true,
         rolePermissions: {
           include: {
             permission: true
@@ -152,7 +152,7 @@ export async function PUT(
     const roleWithRelations = await db.role.findUnique({
       where: { id: updatedRole.id },
       include: {
-        church: true,
+        churches: true,
         rolePermissions: {
           include: {
             permission: true

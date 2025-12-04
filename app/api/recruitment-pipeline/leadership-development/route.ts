@@ -82,7 +82,7 @@ async function analyzeLeadershipPotential(member: any, churchId: string): Promis
   factors.push({ factor: 'Experiencia', score: experienceScore })
 
   // 3. Current Volunteer Performance (15% weight)
-  const volunteer = await prisma.volunteer.findFirst({
+  const volunteer = await prisma.volunteers.findFirst({
     where: { memberId: member.id, isActive: true },
     include: {
       assignments: {

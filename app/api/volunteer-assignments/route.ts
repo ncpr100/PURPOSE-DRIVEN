@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       where: whereClause,
       include: {
         volunteer: true,
-        event: true
+        events: true
       },
       orderBy: {
         date: 'desc'
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
       },
       include: {
         volunteer: true,
-        event: true
+        events: true
       }
     })
 

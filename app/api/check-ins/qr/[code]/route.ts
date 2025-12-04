@@ -16,9 +16,9 @@ export async function GET(
         qrCode: params.code
       },
       include: {
-        event: true,
-        church: true,
-        followUps: true
+        events: true,
+        churches: true,
+        visitor_follow_ups: true
       }
     })
 

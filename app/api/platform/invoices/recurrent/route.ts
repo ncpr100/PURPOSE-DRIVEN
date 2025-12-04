@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       where: { id: invoiceId },
       include: {
         lineItems: true,
-        church: true
+        churches: true
       }
     })
 

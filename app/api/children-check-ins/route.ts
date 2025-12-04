@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     const childrenCheckIns = await db.children_check_ins.findMany({
       where: whereClause,
       include: {
-        event: true
+        events: true
       },
       orderBy: {
         checkedInAt: 'desc'
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
         checkedOut: false
       },
       include: {
-        event: true
+        events: true
       }
     })
 

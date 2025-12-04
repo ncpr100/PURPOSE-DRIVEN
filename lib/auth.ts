@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
             email: credentials.email
           },
           include: {
-            church: true
+            churches: true
           }
         })
 

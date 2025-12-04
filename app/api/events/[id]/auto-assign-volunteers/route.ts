@@ -23,7 +23,7 @@ export async function POST(
     const eventId = params.id
 
     // Get event details
-    const event = await prisma.event.findUnique({
+    const event = await prisma.events.findUnique({
       where: { 
         id: eventId,
         churchId: session.user.churchId 
@@ -47,7 +47,7 @@ export async function POST(
     }
 
     // Get available volunteers with their skills and availability
-    const availableVolunteers = await prisma.volunteer.findMany({
+    const availableVolunteers = await prisma.volunteers.findMany({
       where: {
         churchId: session.user.churchId,
         isActive: true

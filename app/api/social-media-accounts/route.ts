@@ -18,7 +18,7 @@ export async function GET() {
 
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
-      include: { church: true }
+      include: { churches: true }
     });
 
     if (!user?.churchId) {
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
-      include: { church: true }
+      include: { churches: true }
     });
 
     if (!user?.churchId) {

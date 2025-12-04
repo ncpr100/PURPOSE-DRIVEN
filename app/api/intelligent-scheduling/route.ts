@@ -129,7 +129,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
   const endDate = addDays(new Date(), daysAhead)
   
   // Get upcoming events that need volunteers
-  const upcomingEvents = await prisma.event.findMany({
+  const upcomingEvents = await prisma.events.findMany({
     where: {
       churchId,
       startDate: {
@@ -383,7 +383,7 @@ export async function POST(request: NextRequest) {
           const topMatch = recommendations[0]
           
           // Get or create volunteer record
-          const volunteer = await prisma.volunteer.findFirst({
+          const volunteer = await prisma.volunteers.findFirst({
             where: {
               memberId: topMatch.memberId,
               churchId: session.user.churchId

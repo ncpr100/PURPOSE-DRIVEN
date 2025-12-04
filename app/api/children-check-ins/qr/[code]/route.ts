@@ -16,8 +16,8 @@ export async function GET(
         qrCode: params.code
       },
       include: {
-        event: true,
-        church: true
+        events: true,
+        churches: true
       }
     })
 
@@ -125,8 +125,8 @@ export async function POST(
         ]
       },
       include: {
-        event: true,
-        church: true
+        events: true,
+        churches: true
       }
     })
 

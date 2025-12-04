@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
 import { z } from 'zod'
+import { randomUUID } from 'crypto'
 
 const createTemplateSchema = z.object({
   name: z.string().min(1),
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
       ]
     }
 
-    const templates = await prisma.automation_rulesTemplate.findMany({
+    const templates = await prisma.automation_rule_templates.findMany({
       where,
       orderBy: [
         { isSystemTemplate: 'desc' }, // System templates first
@@ -90,7 +91,7 @@ export async function GET(request: NextRequest) {
         tags: true,
         createdAt: true,
         updatedAt: true,
-        creator: {
+        users: {
           select: {
             id: true,
             name: true
@@ -119,11 +120,11 @@ export async function GET(request: NextRequest) {
         conditions: t.conditionsConfig,
         actions: t.actionsConfig
       },
-      creator: t.creator
+      creator: t.users
     }))
 
     // Get categories for filtering
-    const categories = await prisma.automation_rulesTemplate.groupBy({
+    const categories = await prisma.automation_rule_templates.groupBy({
       by: ['category'],
       where: { isActive: true },
       _count: {
@@ -174,8 +175,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = createTemplateSchema.parse(body)
 
-    const template = await prisma.automation_rulesTemplate.create({
+    const template = await prisma.automation_rule_templates.create({
       data: {
+        id: randomUUID(),
         name: validatedData.name,
         description: validatedData.description,
         category: validatedData.category,
@@ -200,7 +202,7 @@ export async function POST(request: NextRequest) {
         tags: validatedData.tags || []
       },
       include: {
-        creator: {
+        users: {
           select: {
             id: true,
             name: true

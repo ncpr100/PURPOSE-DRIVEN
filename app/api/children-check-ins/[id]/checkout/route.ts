@@ -74,7 +74,7 @@ export async function POST(
         pickupAttempts: updatedAttempts as any
       },
       include: {
-        event: true
+        events: true
       }
     })
 

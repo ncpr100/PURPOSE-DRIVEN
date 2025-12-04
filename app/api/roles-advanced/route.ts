@@ -30,7 +30,7 @@ export async function GET() {
     const roles = await db.role.findMany({
       where: whereCondition,
       include: {
-        church: true,
+        churches: true,
         rolePermissions: {
           include: {
             permission: true
@@ -124,7 +124,7 @@ export async function POST(request: Request) {
     const roleWithRelations = await db.role.findUnique({
       where: { id: role.id },
       include: {
-        church: true,
+        churches: true,
         rolePermissions: {
           include: {
             permission: true

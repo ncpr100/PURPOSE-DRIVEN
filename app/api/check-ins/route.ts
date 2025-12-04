@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { createCheckInSchema } from '@/lib/validations/check-in'
+import { randomUUID } from 'crypto'
 import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
@@ -49,10 +50,10 @@ export async function GET(request: NextRequest) {
       db.check_ins.findMany({
         where: whereClause,
         include: {
-          event: true,
-          followUps: {
+          events: true,
+          visitor_follow_ups: {
             include: {
-              assignedUser: true
+              users: true
             }
           }
         },
@@ -122,20 +123,21 @@ export async function POST(request: NextRequest) {
 
     const checkIn = await db.check_ins.create({
       data: {
+        id: randomUUID(),
         firstName,
         lastName,
         email: email || null,
         phone,
         isFirstTime: isFirstTime || false,
         visitReason,
-        prayer_requests,
+        prayerRequest: prayer_requests,
         qrCode: qrData,
         eventId,
         churchId: session.user.churchId,
       },
       include: {
-        event: true,
-        followUps: true
+        events: true,
+        visitor_follow_ups: true
       }
     })
 
