@@ -38,7 +38,7 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
   }
 
   // Get donation categories
-  const categories = await prisma.donationCategory.findMany({
+  const categories = await prisma.donation_categories.findMany({
     where: {
       churchId: params.churchId,
       isActive: true

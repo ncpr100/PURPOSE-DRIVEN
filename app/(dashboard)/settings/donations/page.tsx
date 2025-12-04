@@ -24,7 +24,7 @@ function DonationsSettingsLoadingSkeleton() {
 
 async function getDonationCategories(churchId: string) {
   try {
-    return await prisma.donationCategory.findMany({
+    return await prisma.donation_categories.findMany({
       where: { churchId },
       orderBy: { name: 'asc' }
     });

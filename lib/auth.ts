@@ -3,13 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { db } from "./db"
 import bcrypt from "bcryptjs"
 
-// CRITICAL: JWT must include these fields for middleware authorization
-declare module "next-auth/jwt" {
-  interface JWT {
-    role: string      // Required by middleware.ts line 171
-    churchId?: string // Required for multi-tenant data scoping
-  }
-}
+// NOTE: JWT type extensions are in lib/types.ts to avoid duplication
 
 export const authOptions: NextAuthOptions = {
   session: {
