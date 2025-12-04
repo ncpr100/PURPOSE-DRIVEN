@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     // Verify the fix
     const verification = await prisma.members.findUnique({
       where: { id: juanHerrera.id },
-      include: { spiritualProfile: true }
+      include: { member_spiritual_profiles: true }
     })
 
     return NextResponse.json({
