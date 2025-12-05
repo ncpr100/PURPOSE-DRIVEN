@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { getServerBaseUrl } from '@/lib/server-url'
+import { randomUUID } from 'crypto'
 
 export const dynamic = 'force-dynamic'
 
@@ -99,6 +100,7 @@ export async function POST(request: NextRequest) {
 
     const children_check_ins = await db.children_check_ins.create({
       data: {
+        id: randomUUID(),
         childName,
         childAge,
         parentName,

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
 import { z } from 'zod'
+import { randomUUID } from 'crypto'
 
 const churchThemeSchema = z.object({
   themeName: z.string().optional(),
@@ -54,8 +55,9 @@ export async function GET(request: NextRequest) {
 
     // If no church theme exists, create default one
     if (!church_themes) {
-      church_themes = await prisma.church_themes.create({
+      await prisma.church_themes.create({
         data: {
+          id: randomUUID(),
           churchId: user.churchId,
           themeName: 'church-default',
           themeConfig: JSON.stringify({
@@ -72,7 +74,12 @@ export async function GET(request: NextRequest) {
           allowColorChanges: true,
           allowFontChanges: true,
           allowLayoutChanges: false,
-        },
+        }
+      })
+      
+      // Query the created theme with includes
+      church_themes = await prisma.church_themes.findUnique({
+        where: { churchId: user.churchId },
         include: {
           churches: {
             select: {

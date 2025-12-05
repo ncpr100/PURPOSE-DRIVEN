@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { randomUUID } from 'crypto'
 
 export const dynamic = 'force-dynamic'
 
@@ -44,12 +45,12 @@ export async function GET(
       checkedIn: children_check_ins.checkedIn,
       checkedOut: children_check_ins.checkedOut,
       checkedInAt: children_check_ins.checkedInAt,
-      event: children_check_ins.event ? {
-        title: children_check_ins.event.title,
-        startDate: children_check_ins.event.startDate
+      event: children_check_ins.events ? {
+        title: children_check_ins.events.title,
+        startDate: children_check_ins.events.startDate
       } : null,
       churches: {
-        name: children_check_ins.church.name
+        name: children_check_ins.churches.name
       },
       // Security info (non-sensitive)
       securityPin: children_check_ins.securityPin,
@@ -100,6 +101,7 @@ export async function POST(
     // Create complete child check-in via QR
     const children_check_ins = await db.children_check_ins.create({
       data: {
+        id: randomUUID(),
         childName,
         childAge: childAge ? parseInt(childAge) : null,
         parentName,
