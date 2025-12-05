@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     // If form doesn't exist, create it (for legacy compatibility)
     if (!form) {
-      form = await db.custom_forms.create({
+      const createdForm = await db.custom_forms.create({
         data: {
           title: formTitle,
           slug: formSlug,
@@ -39,10 +39,12 @@ export async function POST(request: NextRequest) {
           qrConfig: {},
           churchId: 'default-church-id', // TODO: Extract from session
           createdBy: 'system'
-        },
-        include: {
-          churches: { select: { id: true, name: true } }
-        },
+        }
+      })
+      
+      // Fetch the created form with includes to maintain type consistency
+      form = await db.custom_forms.findUnique({
+        where: { id: createdForm.id },
         include: {
           churches: { select: { id: true, name: true } }
         }
