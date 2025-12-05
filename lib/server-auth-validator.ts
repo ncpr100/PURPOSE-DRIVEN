@@ -19,7 +19,7 @@ export async function validateSuperAdminAccess() {
 
   try {
     // Re-validate against database to prevent token manipulation
-    const dbUser = await db.user.findUnique({
+    const dbUser = await db.users.findUnique({
       where: { id: session.user.id },
       select: { 
         id: true, 
@@ -75,7 +75,7 @@ export async function validateUserRole(requiredRole: string) {
   }
 
   try {
-    const dbUser = await db.user.findUnique({
+    const dbUser = await db.users.findUnique({
       where: { id: session.user.id },
       select: { 
         id: true, 

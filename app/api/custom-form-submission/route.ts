@@ -10,13 +10,14 @@ const submissionSchema = z.object({
   formType: z.string().optional().default('generic'),
   formTitle: z.string(),
   formData: z.record(z.any()),
-  timestamp: z.string()
+  timestamp: z.string(),
+  churchId: z.string().optional() // Optional for public forms
 })
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { formSlug, formType, formTitle, formData, timestamp } = submissionSchema.parse(body)
+    const { formSlug, formType, formTitle, formData, timestamp, churchId } = submissionSchema.parse(body)
     
     console.log(`🔥 CUSTOM FORM SUBMISSION RECEIVED: ${formType} (${formSlug})`)
 
@@ -30,6 +31,14 @@ export async function POST(request: NextRequest) {
 
     // If form doesn't exist, create it (for legacy compatibility)
     if (!form) {
+      // Require churchId for form creation
+      if (!churchId) {
+        return NextResponse.json(
+          { error: 'Church ID required for form creation' },
+          { status: 400 }
+        )
+      }
+
       const createdForm = await db.custom_forms.create({
         data: {
           title: formTitle,
@@ -37,7 +46,7 @@ export async function POST(request: NextRequest) {
           fields: [],
           config: {},
           qrConfig: {},
-          churchId: 'default-church-id', // TODO: Extract from session
+          churchId: churchId,
           createdBy: 'system'
         }
       })

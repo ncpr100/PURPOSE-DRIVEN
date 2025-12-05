@@ -93,7 +93,7 @@ export class MemberJourneyAnalytics {
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
 
     // Get member data
-    const member = await db.member.findUnique({
+    const member = await db.members.findUnique({
       where: { id: memberId },
       include: {
         donations: {
@@ -170,7 +170,7 @@ export class MemberJourneyAnalytics {
    * Determine member lifecycle stage based on engagement patterns
    */
   async determineMemberLifecycleStage(memberId: string): Promise<MemberLifecycleStage> {
-    const member = await db.member.findUnique({
+    const member = await db.members.findUnique({
       where: { id: memberId },
       include: {
         user: true,
@@ -214,7 +214,7 @@ export class MemberJourneyAnalytics {
    */
   async calculateRetentionRisk(memberId: string): Promise<{ risk: RetentionRisk; score: number; factors: string[] }> {
     const engagementScore = await this.calculateEngagementScore(memberId);
-    const member = await db.member.findUnique({
+    const member = await db.members.findUnique({
       where: { id: memberId },
       include: { member_journeys: true }
     });
@@ -284,7 +284,7 @@ export class MemberJourneyAnalytics {
    * Generate ministry pathway recommendations
    */
   async generatePathwayRecommendations(memberId: string): Promise<PathwayRecommendation[]> {
-    const member = await db.member.findUnique({
+    const member = await db.members.findUnique({
       where: { id: memberId },
       include: {
         member_spiritual_profiles: true,
@@ -364,7 +364,7 @@ export class MemberJourneyAnalytics {
   }
 
   private async getCheckInCount(memberId: string): Promise<number> {
-    const member = await db.member.findUnique({ where: { id: memberId } });
+    const member = await db.members.findUnique({ where: { id: memberId } });
     if (!member) return 0;
 
     return db.check_ins.count({
@@ -384,7 +384,7 @@ export class MemberJourneyAnalytics {
   }
 
   private async getRecentCheckInCount(memberId: string, days: number): Promise<number> {
-    const member = await db.member.findUnique({ where: { id: memberId } });
+    const member = await db.members.findUnique({ where: { id: memberId } });
     if (!member) return 0;
 
     const dateThreshold = new Date();

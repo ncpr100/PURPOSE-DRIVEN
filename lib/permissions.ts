@@ -49,7 +49,7 @@ export async function hasPermission(
 ): Promise<boolean> {
   try {
     // Obtener usuario con roles y permisos
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { id: userId },
       include: {
         userRoles: {
@@ -158,7 +158,7 @@ export async function getUserPermissions(userId: string): Promise<{
     roleName: string
   }>
 }> {
-  const user = await db.user.findUnique({
+  const user = await db.users.findUnique({
     where: { id: userId },
     include: {
       userRoles: {

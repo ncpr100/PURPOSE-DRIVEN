@@ -671,7 +671,7 @@ export class RedisCacheManager {
   // Private helper methods
   private async warmQuickStats(churchId: string): Promise<void> {
     try {
-      const quickStats = await db.member.aggregate({
+      const quickStats = await db.members.aggregate({
         where: { churchId },
         _count: { id: true }
       });
@@ -722,7 +722,7 @@ export class RedisCacheManager {
 
   private async warmRecentMembers(churchId: string): Promise<void> {
     try {
-      const recentMembers = await db.member.findMany({
+      const recentMembers = await db.members.findMany({
         where: { churchId },
         take: 50,
         orderBy: { createdAt: 'desc' },
