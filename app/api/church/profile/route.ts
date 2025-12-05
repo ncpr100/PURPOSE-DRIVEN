@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const church = await prisma.church.findUnique({
+    const church = await prisma.churches.findUnique({
       where: {
         id: session.user.churchId
       },
@@ -74,7 +74,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update church profile
-    const updatedChurch = await prisma.church.update({
+    const updatedChurch = await prisma.churches.update({
       where: {
         id: session.user.churchId
       },
