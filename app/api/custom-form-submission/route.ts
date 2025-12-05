@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
           fields: [],
           config: {},
           qrConfig: {},
-          churchId: churchId,
+          churchId: churchId!, // Non-null assertion since we validated above
           createdBy: 'system'
         }
       })
