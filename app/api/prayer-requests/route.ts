@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { createPrayerRequestSchema, getPrayerRequestsSchema } from '@/lib/validations/prayer-request';
 import { z } from 'zod';
+import { randomUUID } from 'crypto';
 
 // GET /api/prayer-requests - List prayer requests with filters
 export async function GET(request: Request) {
@@ -125,7 +126,7 @@ export async function POST(request: Request) {
 
     // Verify church and category in a single transaction to be more efficient
     const [church, category] = await prisma.$transaction([
-      prisma.church.findFirst({
+      prisma.churches.findFirst({
         where: { id: churchId, isActive: true }
       }),
       prisma.prayer_categories.findFirst({
@@ -155,6 +156,7 @@ export async function POST(request: Request) {
         preferredContact,
       },
       create: {
+        id: randomUUID(),
         fullName: fullName.trim(),
         phone: phone?.trim(),
         email: email?.trim().toLowerCase(),
@@ -167,6 +169,7 @@ export async function POST(request: Request) {
     // Create prayer request
     const prayer_requests = await prisma.prayer_requests.create({
       data: {
+        id: randomUUID(),
         contactId: contact.id,
         churchId,
         categoryId,

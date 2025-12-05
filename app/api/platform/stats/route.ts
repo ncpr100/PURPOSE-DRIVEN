@@ -37,10 +37,10 @@ export async function GET(request: NextRequest) {
       totalWebsiteRevenue
     ] = await Promise.all([
       // Total churches
-      prisma.church.count(),
+      prisma.churches.count(),
       
       // Active churches (with at least one active user)
-      prisma.church.count({
+      prisma.churches.count({
         where: {
           isActive: true,
           users: {
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
       }),
       
       // New churches this month
-      prisma.church.count({
+      prisma.churches.count({
         where: {
           createdAt: {
             gte: startOfMonth

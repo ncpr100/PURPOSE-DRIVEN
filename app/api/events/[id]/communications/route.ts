@@ -69,7 +69,7 @@ export async function POST(
     }
 
     // Create communication record (using existing communication structure)
-    const communication = await prisma.communication.create({
+    const communication = await prisma.communications.create({
       data: {
         title: subject,
         content: content,
@@ -91,7 +91,7 @@ export async function POST(
       console.log(`Content: ${content}`)
       
       // Update status to sent
-      await prisma.communication.update({
+      await prisma.communications.update({
         where: { id: communication.id },
         data: { 
           status: 'ENVIADO',
@@ -131,7 +131,7 @@ export async function GET(
     const eventId = params.id
 
     // Get all communications for this event (filtering by title containing event info)
-    const communications = await prisma.communication.findMany({
+    const communications = await prisma.communications.findMany({
       where: {
         churchId: session.user.churchId
       },

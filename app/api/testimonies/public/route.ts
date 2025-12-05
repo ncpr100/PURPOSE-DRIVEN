@@ -1,6 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { randomUUID } from 'crypto'
 
 export async function POST(request: NextRequest) {
   try {
@@ -82,6 +83,7 @@ export async function POST(request: NextRequest) {
         if (!contact) {
           contact = await prisma.prayerContact.create({
             data: {
+              id: randomUUID(),
               fullName: fullName.trim(),
               phone: phone || null,
               email: email || null,

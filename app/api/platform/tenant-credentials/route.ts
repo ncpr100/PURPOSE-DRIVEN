@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if church exists
-    const church = await prisma.church.findUnique({
+    const church = await prisma.churches.findUnique({
       where: { id: churchId }
     })
 

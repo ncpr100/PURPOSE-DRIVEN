@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
                 isRead: true,
                 readAt: true,
                 deliveryStatus: true,
-                user: { select: { name: true, email: true } }
+                users: { select: { name: true, email: true } }
               }
             }
           }

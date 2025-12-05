@@ -167,7 +167,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Verify church exists and is active
-    const church = await prisma.church.findUnique({
+    const church = await prisma.churches.findUnique({
       where: { id: sanitizedData.churchId, isActive: true }
     })
 

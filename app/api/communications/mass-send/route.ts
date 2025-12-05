@@ -100,7 +100,7 @@ async function getRecipients(targetGroup: string, churchId: string, recipientIds
         where: {
           churchId: churchId,
           isActive: true,
-          user: {
+          users: {
             role: { in: ['PASTOR', 'LIDER'] },
           },
         },

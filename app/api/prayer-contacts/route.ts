@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { randomUUID } from 'crypto'
 
 // GET /api/prayer-contacts - List prayer contacts
 export async function GET(request: Request) {
@@ -137,6 +138,7 @@ export async function POST(request: Request) {
 
     const contact = await prisma.prayerContact.create({
       data: {
+        id: randomUUID(),
         fullName: fullName.trim(),
         phone: phone?.trim(),
         email: email?.trim().toLowerCase(),

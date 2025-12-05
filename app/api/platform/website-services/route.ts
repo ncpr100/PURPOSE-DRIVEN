@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Buscar o crear iglesia
-    let church = await prisma.church.findFirst({
+    let church = await prisma.churches.findFirst({
       where: {
         OR: [
           { name: churchName },
@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
 
     if (!church) {
       // Crear iglesia básica para el proyecto
-      church = await prisma.church.create({
+      church = await prisma.churches.create({
         data: {
           name: churchName,
           email: contactEmail,

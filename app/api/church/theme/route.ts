@@ -60,37 +60,52 @@ export async function PUT(request: NextRequest) {
       accent: accentColor
     })
 
-    // Upsert church theme (create or update)
-    // TODO: Fix TypeScript @unique constraint issue with church_themes model
-    /*
-    const updatedTheme = await prisma.church_themes.upsert({
-      where: {
-        churchId: session.user.churchId
-      },
-      update: {
-        themeConfig,
-        brandColors,
-        primaryFont,
-        headingFont,
-        themeName: 'custom'
-      },
-      create: {
-        id: randomUUID(),
-        churchId: session.user.churchId,
-        themeConfig,
-        brandColors,
-        primaryFont,
-        headingFont,
-        themeName: 'custom'
-      }
-    })
-    */
+    // Upsert church theme (create or update) - Fixed for unique constraint
+    let updatedTheme
+    try {
+      // Try to find existing theme first
+      updatedTheme = await prisma.church_themes.findUnique({
+        where: { churchId: session.user.churchId }
+      })
 
-    // Temporary response until TypeScript issue is resolved
+      if (updatedTheme) {
+        // Update existing theme
+        updatedTheme = await prisma.church_themes.update({
+          where: { churchId: session.user.churchId },
+          data: {
+            themeConfig,
+            brandColors,
+            primaryFont,
+            headingFont,
+            themeName: 'custom'
+          }
+        })
+      } else {
+        // Create new theme
+        updatedTheme = await prisma.church_themes.create({
+          data: {
+            id: randomUUID(),
+            churchId: session.user.churchId,
+            themeConfig,
+            brandColors,
+            primaryFont,
+            headingFont,
+            themeName: 'custom'
+          }
+        })
+      }
+    } catch (error) {
+      console.error('Church theme operation error:', error)
+      return NextResponse.json({ 
+        message: 'Error al actualizar tema de iglesia',
+        success: false
+      }, { status: 500 })
+    }
+
     return NextResponse.json({ 
-      message: 'Tema temporalmente deshabilitado para resolución de TypeScript',
-      success: false
-    })
+      message: 'Tema actualizado exitosamente',
+      success: true,
+      theme: updatedTheme
   } catch (error) {
     console.error('Error updating church theme:', error)
     return NextResponse.json(

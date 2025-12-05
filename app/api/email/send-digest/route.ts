@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     const churches = validatedData.churchId 
       ? [{ id: validatedData.churchId }]
       : sessionUser.role === 'SUPER_ADMIN' 
-        ? await prisma.church.findMany({ select: { id: true, name: true } })
+        ? await prisma.churches.findMany({ select: { id: true, name: true } })
         : [{ id: sessionUser.churchId!, name: '' }]
 
     let totalSent = 0
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     for (const church of churches) {
       // Get church details
-      const churchDetails = await prisma.church.findUnique({
+      const churchDetails = await prisma.churches.findUnique({
         where: { id: church.id },
         select: { name: true }
       })
@@ -273,8 +273,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Get church details
-    const church = await prisma.church.findUnique({
-      where: { id: user.churchId },
+    const church = await prisma.churches.findUnique({
+      where: { id: churchId },
       select: { name: true }
     })
 
