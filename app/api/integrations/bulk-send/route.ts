@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log the bulk send activity
-    await prisma.notification.create({
+    await prisma.notifications.create({
       data: {
         title: `Envío masivo ${validatedData.service}`,
         message: `Se enviaron ${result.successful} mensajes de ${result.total} intentos`,

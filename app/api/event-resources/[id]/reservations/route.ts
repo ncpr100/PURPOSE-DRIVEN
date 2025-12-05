@@ -32,7 +32,7 @@ export async function GET(
       }
     }
 
-    const reservations = await db.event_resourcesReservation.findMany({
+    const reservations = await db.event_resource_reservations.findMany({
       where: whereClause,
       include: {
         events: {
@@ -84,7 +84,7 @@ export async function POST(
     }
 
     // Verificar disponibilidad del recurso
-    const conflictingReservations = await db.event_resourcesReservation.findMany({
+    const conflictingReservations = await db.event_resource_reservations.findMany({
       where: {
         resourceId: params.id,
         status: 'CONFIRMADA',
@@ -107,7 +107,7 @@ export async function POST(
       }, { status: 409 })
     }
 
-    const reservation = await db.event_resourcesReservation.create({
+    const reservation = await db.event_resource_reservations.create({
       data: {
         resourceId: params.id,
         eventId,

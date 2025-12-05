@@ -44,7 +44,7 @@ export async function GET(request: Request) {
     }
 
     const [contacts, total] = await Promise.all([
-      prisma.prayerContact.findMany({
+      prisma.prayer_contacts.findMany({
         where,
         include: {
           _count: {
@@ -59,7 +59,7 @@ export async function GET(request: Request) {
         skip,
         take: limit
       }),
-      prisma.prayerContact.count({ where })
+      prisma.prayer_contacts.count({ where })
     ])
 
     return NextResponse.json({
@@ -120,7 +120,7 @@ export async function POST(request: Request) {
     }
 
     // Check for duplicates
-    const existing = await prisma.prayerContact.findFirst({
+    const existing = await prisma.prayer_contacts.findFirst({
       where: {
         churchId: user.churchId,
         OR: [
@@ -136,7 +136,7 @@ export async function POST(request: Request) {
       }, { status: 409 })
     }
 
-    const contact = await prisma.prayerContact.create({
+    const contact = await prisma.prayer_contacts.create({
       data: {
         id: randomUUID(),
         fullName: fullName.trim(),

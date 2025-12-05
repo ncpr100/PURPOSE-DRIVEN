@@ -91,7 +91,7 @@ export async function PUT(
     const body = await request.json()
     const { fullName, phone, email, preferredContact } = body
 
-    const contact = await prisma.prayerContact.findFirst({
+    const contact = await prisma.prayer_contacts.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -104,7 +104,7 @@ export async function PUT(
 
     // Check for duplicates if phone/email changed
     if (phone || email) {
-      const existing = await prisma.prayerContact.findFirst({
+      const existing = await prisma.prayer_contacts.findFirst({
         where: {
           churchId: user.churchId,
           id: { not: params.id },
@@ -122,7 +122,7 @@ export async function PUT(
       }
     }
 
-    const updatedContact = await prisma.prayerContact.update({
+    const updatedContact = await prisma.prayer_contacts.update({
       where: { id: params.id },
       data: {
         fullName: fullName?.trim() || contact.fullName,
@@ -164,7 +164,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Sin permisos suficientes' }, { status: 403 })
     }
 
-    const contact = await prisma.prayerContact.findFirst({
+    const contact = await prisma.prayer_contacts.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -186,7 +186,7 @@ export async function DELETE(
       }, { status: 409 })
     }
 
-    await prisma.prayerContact.delete({
+    await prisma.prayer_contacts.delete({
       where: { id: params.id }
     })
 

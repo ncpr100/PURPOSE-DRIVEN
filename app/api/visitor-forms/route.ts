@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const forms = await db.visitorForm.findMany({
+    const forms = await db.visitor_forms.findMany({
       where: { churchId: session.user.churchId },
       include: {
         _count: {
@@ -96,12 +96,12 @@ export async function POST(request: NextRequest) {
     let slug = baseSlug
     let counter = 1
     
-    while (await db.visitorForm.findUnique({ where: { slug } })) {
+    while (await db.visitor_forms.findUnique({ where: { slug } })) {
       slug = `${baseSlug}-${counter}`
       counter++
     }
 
-    const form = await db.visitorForm.create({
+    const form = await db.visitor_forms.create({
       data: {
         name: validatedData.name,
         description: validatedData.description,
@@ -163,7 +163,7 @@ export async function PUT(request: NextRequest) {
     const validatedData = visitorFormSchema.parse(updateData)
 
     // Check if form exists and belongs to church
-    const existingForm = await db.visitorForm.findFirst({
+    const existingForm = await db.visitor_forms.findFirst({
       where: { id, churchId: session.user.churchId }
     })
 
@@ -171,7 +171,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
     }
 
-    const updatedForm = await db.visitorForm.update({
+    const updatedForm = await db.visitor_forms.update({
       where: { id },
       data: {
         ...validatedData,
@@ -227,7 +227,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Check if form exists and belongs to church
-    const existingForm = await db.visitorForm.findFirst({
+    const existingForm = await db.visitor_forms.findFirst({
       where: { id, churchId: session.user.churchId }
     })
 
@@ -235,7 +235,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
     }
 
-    await db.visitorForm.delete({
+    await db.visitor_forms.delete({
       where: { id }
     })
 

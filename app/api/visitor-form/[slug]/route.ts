@@ -19,7 +19,7 @@ export async function GET(
     const { searchParams } = new URL(request.url)
     const qrCode = searchParams.get('qr')
 
-    const form = await db.visitorForm.findUnique({
+    const form = await db.visitor_forms.findUnique({
       where: { slug },
       include: {
         churches: {
@@ -85,7 +85,7 @@ export async function POST(
     const { data, qrCode } = submissionSchema.parse(body)
 
     // Get the form
-    const form = await db.visitorForm.findUnique({
+    const form = await db.visitor_forms.findUnique({
       where: { slug },
       include: {
         churches: {

@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Create volunteer recommendation record
-    await prisma.volunteerRecommendation.create({
+    await prisma.volunteer_recommendations.create({
       data: {
         memberId,
         ministryId: targetMinistryId,
@@ -224,7 +224,7 @@ export async function GET(request: NextRequest) {
     if (memberId) whereClause.memberId = memberId
     if (ministryId) whereClause.ministryId = ministryId
 
-    const workflows = await prisma.volunteerRecommendation.findMany({
+    const workflows = await prisma.volunteer_recommendations.findMany({
       where: whereClause,
       include: {
         members: {

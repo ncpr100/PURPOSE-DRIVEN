@@ -143,7 +143,7 @@ export async function POST(request: Request) {
     }
 
     // Upsert contact: find existing or create a new one
-    const contact = await prisma.prayerContact.upsert({
+    const contact = await prisma.prayer_contacts.upsert({
       where: {
         churchId_phone_email: {
           churchId,

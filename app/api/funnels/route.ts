@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const funnel = await prisma.funnel.create({
+    const funnel = await prisma.funnels.create({
       data: {
         name,
         slug,

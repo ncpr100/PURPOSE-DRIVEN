@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
     // Create recommendation records
     const createdRecommendations = await Promise.all(
       topRecommendations.map(async (rec) => {
-        return prisma.volunteerRecommendation.create({
+        return prisma.volunteer_recommendations.create({
           data: {
             memberId: rec.memberId,
             ministryId: validated.ministryId,
@@ -268,7 +268,7 @@ export async function GET(request: NextRequest) {
 
     console.log('🔍 [DEBUG] Final where clause:', where)
 
-    const recommendations = await prisma.volunteerRecommendation.findMany({
+    const recommendations = await prisma.volunteer_recommendations.findMany({
       where,
       include: {
         members: {

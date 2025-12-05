@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     const validatedData = qrCodeSchema.parse(body)
 
     // Check if form exists and belongs to church
-    const form = await db.visitorForm.findFirst({
+    const form = await db.visitor_forms.findFirst({
       where: { 
         id: validatedData.formId, 
         churchId: session.user.churchId 

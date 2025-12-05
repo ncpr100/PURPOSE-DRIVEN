@@ -24,7 +24,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    const campaigns = await prisma.marketingCampaign.findMany({
+    const campaigns = await prisma.marketing_campaigns.findMany({
       where: {
         churchId: user.churchId
       },
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const campaign = await prisma.marketingCampaign.create({
+    const campaign = await prisma.marketing_campaigns.create({
       data: {
         name,
         description,

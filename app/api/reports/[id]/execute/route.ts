@@ -35,7 +35,7 @@ export async function POST(
     }
 
     // Create execution record
-    const execution = await db.reportExecution.create({
+    const execution = await db.report_executions.create({
       data: {
         reportId: params.id,
         status: 'RUNNING',
@@ -139,7 +139,7 @@ export async function POST(
       const executionTime = Date.now() - startTime;
 
       // Update execution with results
-      const completedExecution = await db.reportExecution.update({
+      const completedExecution = await db.report_executions.update({
         where: { id: execution.id },
         data: {
           status: 'COMPLETED',
@@ -167,7 +167,7 @@ export async function POST(
 
     } catch (error) {
       // Update execution with error
-      await db.reportExecution.update({
+      await db.report_executions.update({
         where: { id: execution.id },
         data: {
           status: 'FAILED',
