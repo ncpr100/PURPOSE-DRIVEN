@@ -245,7 +245,7 @@ export async function POST(req: NextRequest) {
         sentBy: session.user.id!,
         templateId: templateId || undefined,
         churchId: session.user.churchId
-      }
+      } as any
     })
 
     // Si no está programado, enviar inmediatamente

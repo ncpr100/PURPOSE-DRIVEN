@@ -80,7 +80,7 @@ export async function POST(
         status: scheduledFor ? 'PROGRAMADO' : 'ENVIADO',
         sentBy: session.user.id,
         churchId: session.user.churchId
-      }
+      } as any
     })
 
     // If not scheduled, simulate sending immediately
