@@ -69,10 +69,7 @@ export async function POST(request: NextRequest) {
         data: enrichedData,
         ipAddress: clientIp,
         userAgent: userAgent,
-        // churchId will be inherited from form relation
-        churches: {
-          connect: { id: form.churchId }
-        }
+        churchId: form.churchId // Direct churchId assignment (not relation)
       }
     })
 
