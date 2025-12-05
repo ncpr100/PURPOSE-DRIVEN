@@ -41,7 +41,7 @@ function sanitizeTemplateVariables(variables: Record<string, string>): Record<st
 
 // Función para obtener la configuración de Twilio
 async function getTwilioConfig(churchId: string) {
-  const config = await db.integrationConfig.findFirst({
+  const config = await db.integration_configs.findFirst({
     where: {
       churchId,
       service: 'TWILIO',
