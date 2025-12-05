@@ -94,7 +94,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Notificación no encontrada' }, { status: 404 })
     }
 
-    const updatedDelivery = await prisma.notificationDelivery.updateMany({
+    const updatedDelivery = await prisma.notification_deliveries.updateMany({
       where: {
         notificationId: params.id,
         userId: user.id,

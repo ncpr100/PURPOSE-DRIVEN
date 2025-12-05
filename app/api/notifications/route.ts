@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
       }
 
       const [deliveries, totalCount] = await Promise.all([
-        prisma.notificationDelivery.findMany({
+        prisma.notification_deliveries.findMany({
           where: deliveryWhereClause,
           orderBy: { createdAt: 'desc' },
           take: limit,
@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
             }
           }
         }),
-        prisma.notificationDelivery.count({ where: deliveryWhereClause })
+        prisma.notification_deliveries.count({ where: deliveryWhereClause })
       ])
 
       // Transform deliveries to include read state
@@ -133,7 +133,7 @@ export async function GET(request: NextRequest) {
       }))
 
       // Get unread count
-      const unreadCount = await prisma.notificationDelivery.count({
+      const unreadCount = await prisma.notification_deliveries.count({
         where: {
           userId: user.id,
           isRead: false,
@@ -215,7 +215,7 @@ export async function POST(request: NextRequest) {
     // Create NotificationDelivery records based on targeting
     if (validatedData.targetUser) {
       // Single user notification
-      await prisma.notificationDelivery.create({
+      await prisma.notification_deliveries.create({
         data: {
           notificationId: notification.id,
           userId: validatedData.targetUser,
@@ -235,7 +235,7 @@ export async function POST(request: NextRequest) {
         select: { id: true }
       })
 
-      await prisma.notificationDelivery.createMany({
+      await prisma.notification_deliveries.createMany({
         data: roleUsers.map(roleUser => ({
           notificationId: notification.id,
           userId: roleUser.id,
@@ -254,7 +254,7 @@ export async function POST(request: NextRequest) {
         select: { id: true }
       })
 
-      await prisma.notificationDelivery.createMany({
+      await prisma.notification_deliveries.createMany({
         data: churchUsers.map(churchUser => ({
           notificationId: notification.id,
           userId: churchUser.id,
@@ -306,7 +306,7 @@ export async function PUT(request: NextRequest) {
 
     if (markAllAsRead) {
       // Mark all user's notification deliveries as read
-      const updatedDeliveries = await prisma.notificationDelivery.updateMany({
+      const updatedDeliveries = await prisma.notification_deliveries.updateMany({
         where: {
           userId: user.id,
           isRead: false,
@@ -326,7 +326,7 @@ export async function PUT(request: NextRequest) {
       })
     } else if (notificationIds && Array.isArray(notificationIds)) {
       // Mark specific notifications as read via delivery records
-      const updatedDeliveries = await prisma.notificationDelivery.updateMany({
+      const updatedDeliveries = await prisma.notification_deliveries.updateMany({
         where: {
           userId: user.id,
           notificationId: { in: notificationIds },

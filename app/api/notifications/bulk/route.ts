@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
           select: { id: true }
         })
 
-        const globalDeliveries = await prisma.notificationDelivery.createMany({
+        const globalDeliveries = await prisma.notification_deliveries.createMany({
           data: globalChurchUsers.map(churchUser => ({
             notificationId: globalNotification.id,
             userId: churchUser.id,
@@ -184,7 +184,7 @@ export async function POST(request: NextRequest) {
           select: { id: true }
         })
 
-        const roleDeliveries = await prisma.notificationDelivery.createMany({
+        const roleDeliveries = await prisma.notification_deliveries.createMany({
           data: roleUsers.map(roleUser => ({
             notificationId: roleNotification.id,
             userId: roleUser.id,
@@ -234,7 +234,7 @@ export async function POST(request: NextRequest) {
           createdNotifications.push(userNotification)
 
           // Create delivery record for this user
-          await prisma.notificationDelivery.create({
+          await prisma.notification_deliveries.create({
             data: {
               notificationId: userNotification.id,
               userId: targetUser.id,
@@ -273,7 +273,7 @@ export async function POST(request: NextRequest) {
           createdNotifications.push(userNotification)
 
           // Create delivery record for this user
-          await prisma.notificationDelivery.create({
+          await prisma.notification_deliveries.create({
             data: {
               notificationId: userNotification.id,
               userId: churchUser.id,

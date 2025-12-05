@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
         recipients: 0 // Will be updated after sending
       } as any,
       include: {
-        template: true
+        communication_templates: true
       }
     })
 

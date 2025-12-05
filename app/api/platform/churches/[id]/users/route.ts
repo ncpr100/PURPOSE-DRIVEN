@@ -215,7 +215,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       })
 
       if (churchUsers.length > 0) {
-        await tx.notificationDelivery.createMany({
+        await tx.notification_deliveries.createMany({
           data: churchUsers.map(u => ({
             notificationId: activityNotification.id,
             userId: u.id,

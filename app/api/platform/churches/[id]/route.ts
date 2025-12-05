@@ -149,7 +149,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     })
 
     if (churchUsers.length > 0) {
-      await db.notificationDelivery.createMany({
+      await db.notification_deliveries.createMany({
         data: churchUsers.map(u => ({
           notificationId: activityNotification.id,
           userId: u.id,
@@ -232,7 +232,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     })
 
     if (churchUsers.length > 0) {
-      await db.notificationDelivery.createMany({
+      await db.notification_deliveries.createMany({
         data: churchUsers.map(u => ({
           notificationId: activityNotification.id,
           userId: u.id,

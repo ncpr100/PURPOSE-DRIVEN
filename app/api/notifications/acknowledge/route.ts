@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const { notificationId } = acknowledgeSchema.parse(body)
 
     // Update the user's delivery record for this notification
-    const updatedDelivery = await prisma.notificationDelivery.updateMany({
+    const updatedDelivery = await prisma.notification_deliveries.updateMany({
       where: {
         notificationId: notificationId,
         userId: user.id,
