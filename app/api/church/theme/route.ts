@@ -81,9 +81,17 @@ export async function PUT(request: NextRequest) {
           }
         })
       } else {
-        // Create new theme
-        updatedTheme = await prisma.church_themes.create({
-          data: {
+        // Upsert theme (update if exists, create if not)
+        updatedTheme = await prisma.church_themes.upsert({
+          where: { churchId: session.user.churchId },
+          update: {
+            themeConfig,
+            brandColors,
+            primaryFont,
+            headingFont,
+            themeName: 'custom'
+          },
+          create: {
             id: randomUUID(),
             churchId: session.user.churchId,
             themeConfig,
