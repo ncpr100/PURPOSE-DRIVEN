@@ -93,7 +93,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     // Find the online payment record
     const onlinePayment = await prisma.onlinePayment.findFirst({
       where: { paymentId: paymentIntent.id },
-      include: { donation: true }
+      include: { donations: true }
     });
 
     if (!onlinePayment) {

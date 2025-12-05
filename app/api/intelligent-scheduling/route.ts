@@ -147,7 +147,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
   })
 
   // Get ministries and their typical volunteer needs
-  const ministries = await prisma.ministry.findMany({
+  const ministries = await prisma.ministries.findMany({
     where: {
       churchId,
       isActive: true

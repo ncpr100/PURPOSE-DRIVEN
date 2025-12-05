@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
       }
 
       const [notifications, totalCount] = await Promise.all([
-        prisma.notification.findMany({
+        prisma.notifications.findMany({
           where: whereClause,
           orderBy: { createdAt: 'desc' },
           take: limit,
@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
             }
           }
         }),
-        prisma.notification.count({ where: whereClause })
+        prisma.notifications.count({ where: whereClause })
       ])
 
       return NextResponse.json({
@@ -195,7 +195,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const notification = await prisma.notification.create({
+    const notification = await prisma.notifications.create({
       data: {
         title: validatedData.title,
         message: validatedData.message,

@@ -206,7 +206,7 @@ async function generateLeadershipOpportunities(member: any, leadershipScore: num
   const opportunities = []
 
   // Get ministries that might need leadership
-  const ministries = await prisma.ministry.findMany({
+  const ministries = await prisma.ministries.findMany({
     where: { churchId, isActive: true },
     include: {
       volunteers: {
@@ -602,7 +602,7 @@ export async function POST(request: NextRequest) {
       include: {
         volunteers: {
           where: { isActive: true },
-          include: { ministry: true }
+          include: { ministries: true }
         },
         member_spiritual_profiles: true
       }

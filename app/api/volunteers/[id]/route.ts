@@ -26,7 +26,7 @@ export async function GET(
       },
       include: {
         member: true,
-        ministry: true,
+        ministries: true,
         assignments: {
           orderBy: {
             date: 'desc'
@@ -108,7 +108,7 @@ export async function PUT(
       },
       include: {
         member: true,
-        ministry: true,
+        ministries: true,
         assignments: true
       }
     })

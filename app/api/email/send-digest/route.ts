@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Get notifications for the period for this church
-      const notifications = await prisma.notification.findMany({
+      const notifications = await prisma.notifications.findMany({
         where: {
           churchId: church.id,
           createdAt: {
@@ -283,7 +283,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get notifications for the period
-    const notifications = await prisma.notification.findMany({
+    const notifications = await prisma.notifications.findMany({
       where: {
         churchId: user.churchId,
         createdAt: {

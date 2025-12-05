@@ -84,8 +84,8 @@ export async function POST(
           data = await db.members.findMany({
             ...query,
             include: {
-              ministry: true,
-              user: true
+              ministries: true,
+              users: true
             },
             orderBy: { createdAt: 'desc' }
           });
@@ -98,7 +98,7 @@ export async function POST(
               check_ins: true,
               childrenCheckIns: true,
               resourceReservations: {
-                include: { resource: true }
+                include: { event_resources: true }
               }
             },
             orderBy: { startDate: 'desc' }

@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const funnels = await prisma.funnel.findMany({
+    const funnels = await prisma.funnels.findMany({
       where: {
         websiteId: websiteId
       },

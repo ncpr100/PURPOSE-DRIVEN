@@ -164,7 +164,7 @@ function analyzeLeadershipPotential(member: any, recruitmentScore: number): 'HIG
 
 // Generate ministry recommendations based on member profile
 async function generateMinistryRecommendations(member: any, churchId: string): Promise<RecommendedMinistry[]> {
-  const ministries = await prisma.ministry.findMany({
+  const ministries = await prisma.ministries.findMany({
     where: { churchId, isActive: true },
     include: {
       volunteers: {

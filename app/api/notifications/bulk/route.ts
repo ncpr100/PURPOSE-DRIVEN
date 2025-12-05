@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
       case 'GLOBAL':
         // Global notification for entire church
         notificationData.isGlobal = true
-        const globalNotification = await prisma.notification.create({
+        const globalNotification = await prisma.notifications.create({
           data: notificationData,
           include: { churches: { select: { name: true } } }
         })
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
         }
         
         notificationData.targetRole = validatedData.targetRole
-        const roleNotification = await prisma.notification.create({
+        const roleNotification = await prisma.notifications.create({
           data: notificationData,
           include: { churches: { select: { name: true } } }
         })
@@ -224,7 +224,7 @@ export async function POST(request: NextRequest) {
 
         // Create individual notifications for each user
         for (const targetUser of targetUsers) {
-          const userNotification = await prisma.notification.create({
+          const userNotification = await prisma.notifications.create({
             data: {
               ...notificationData,
               targetUser: targetUser.id
@@ -263,7 +263,7 @@ export async function POST(request: NextRequest) {
         })
 
         for (const churchUser of allChurchUsers) {
-          const userNotification = await prisma.notification.create({
+          const userNotification = await prisma.notifications.create({
             data: {
               ...notificationData,
               targetUser: churchUser.id

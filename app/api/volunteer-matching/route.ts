@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
     // ✅ PERFORMANCE FIX: Fetch ministry ONCE before loop (eliminates N+1)
     // BEFORE: 1 query × 500 members = 500 queries
     // AFTER: 1 query total
-    const ministry = await prisma.ministry.findUnique({ 
+    const ministry = await prisma.ministries.findUnique({ 
       where: { id: validated.ministryId },
       select: { id: true, name: true }
     })

@@ -28,7 +28,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
     }
 
-    const notification = await prisma.notification.findFirst({
+    const notification = await prisma.notifications.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId,
@@ -78,7 +78,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     // Verify user has access to this notification
-    const notification = await prisma.notification.findFirst({
+    const notification = await prisma.notifications.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId,
@@ -113,7 +113,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     // Return the notification with updated delivery status
-    const updatedNotification = await prisma.notification.findUnique({
+    const updatedNotification = await prisma.notifications.findUnique({
       where: { id: params.id },
       include: {
         churches: { select: { name: true } },
@@ -166,7 +166,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     }
 
     // Verify notification belongs to user's church
-    const notification = await prisma.notification.findFirst({
+    const notification = await prisma.notifications.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -177,7 +177,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Notificación no encontrada' }, { status: 404 })
     }
 
-    await prisma.notification.delete({
+    await prisma.notifications.delete({
       where: { id: params.id }
     })
 

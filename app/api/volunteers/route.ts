@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       },
       include: {
         member: true,
-        ministry: true,
+        ministries: true,
         assignments: {
           orderBy: {
             date: 'desc'
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
       },
       include: {
         member: true,
-        ministry: true,
+        ministries: true,
         assignments: true
       }
     })

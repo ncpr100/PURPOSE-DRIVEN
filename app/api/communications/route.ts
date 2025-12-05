@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
         createdAt: 'desc'
       },
       include: {
-        template: true
+        communication_templates: true
       }
     })
 

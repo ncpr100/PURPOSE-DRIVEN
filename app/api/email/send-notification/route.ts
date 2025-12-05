@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get notification details
-    const notification = await prisma.notification.findFirst({
+    const notification = await prisma.notifications.findFirst({
       where: {
         id: validatedData.notificationId,
         churchId: sessionUser.churchId

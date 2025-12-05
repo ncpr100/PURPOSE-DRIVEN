@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify ministry exists
-    const ministry = await prisma.ministry.findFirst({
+    const ministry = await prisma.ministries.findFirst({
       where: {
         id: targetMinistryId,
         churchId: session.user.churchId
