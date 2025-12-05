@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
+import { randomUUID } from 'crypto'
 
 export const dynamic = 'force-dynamic';
 
@@ -25,6 +26,7 @@ export async function GET(request: NextRequest) {
     if (!settings) {
       settings = await prisma.churchQualificationSettings.create({
         data: {
+          id: randomUUID(),
           churchId: session.user.churchId
         }
       })
@@ -97,6 +99,7 @@ export async function PUT(request: NextRequest) {
         activityWeight
       },
       create: {
+        id: randomUUID(),
         churchId: session.user.churchId,
         volunteerMinMembershipDays,
         volunteerRequireActiveStatus,
