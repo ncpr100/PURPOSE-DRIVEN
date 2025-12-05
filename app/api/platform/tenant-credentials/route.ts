@@ -5,6 +5,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { getServerBaseUrl } from '@/lib/server-url'
+import { randomUUID } from 'crypto'
 
 // GET - Fetch tenant credentials (SUPER_ADMIN only)
 export async function GET(request: NextRequest) {
@@ -83,6 +84,7 @@ export async function POST(request: NextRequest) {
         lastSentAt: sendEmail ? new Date() : null
       },
       create: {
+        id: randomUUID(),
         churchId,
         loginEmail,
         tempPassword: hashedPassword,
