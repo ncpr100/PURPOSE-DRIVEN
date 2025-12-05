@@ -106,6 +106,7 @@ export async function PUT(request: NextRequest) {
       message: 'Tema actualizado exitosamente',
       success: true,
       theme: updatedTheme
+    })
   } catch (error) {
     console.error('Error updating church theme:', error)
     return NextResponse.json(
