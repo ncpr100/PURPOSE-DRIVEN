@@ -118,7 +118,7 @@ export async function POST(
         churchId: session.user.churchId
       },
       include: {
-        resource: true,
+        event_resources: true,
         events: {
           select: { id: true, title: true }
         }

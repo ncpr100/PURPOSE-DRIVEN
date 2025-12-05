@@ -6,6 +6,7 @@ import { db } from '@/lib/db'
 import { getServerUrl } from '@/lib/server-url'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { randomUUID } from 'crypto'
 
 const bulkNotificationSchema = z.object({
   templateId: z.string().optional(),
@@ -77,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     // If using a template, fetch and apply it
     if (validatedData.templateId) {
-      const template = await prisma.notificationTemplate.findFirst({
+      const template = await prisma.notification_templates.findFirst({
         where: {
           id: validatedData.templateId,
           OR: [
@@ -147,11 +148,13 @@ export async function POST(request: NextRequest) {
 
         const globalDeliveries = await prisma.notification_deliveries.createMany({
           data: globalChurchUsers.map(churchUser => ({
+            id: randomUUID(),
             notificationId: globalNotification.id,
             userId: churchUser.id,
             deliveryMethod: 'in-app',
             deliveryStatus: 'PENDING',
-            deliveredAt: new Date()
+            deliveredAt: new Date(),
+            updatedAt: new Date()
           }))
         })
         
@@ -186,11 +189,13 @@ export async function POST(request: NextRequest) {
 
         const roleDeliveries = await prisma.notification_deliveries.createMany({
           data: roleUsers.map(roleUser => ({
+            id: randomUUID(),
             notificationId: roleNotification.id,
             userId: roleUser.id,
             deliveryMethod: 'in-app',
             deliveryStatus: 'PENDING',
-            deliveredAt: new Date()
+            deliveredAt: new Date(),
+            updatedAt: new Date()
           }))
         })
 
@@ -236,11 +241,13 @@ export async function POST(request: NextRequest) {
           // Create delivery record for this user
           await prisma.notification_deliveries.create({
             data: {
+              id: randomUUID(),
               notificationId: userNotification.id,
               userId: targetUser.id,
               deliveryMethod: 'in-app',
               deliveryStatus: 'PENDING',
-              deliveredAt: new Date()
+              deliveredAt: new Date(),
+              updatedAt: new Date()
             }
           })
 
@@ -275,11 +282,13 @@ export async function POST(request: NextRequest) {
           // Create delivery record for this user
           await prisma.notification_deliveries.create({
             data: {
+              id: randomUUID(),
               notificationId: userNotification.id,
               userId: churchUser.id,
               deliveryMethod: 'in-app',
               deliveryStatus: 'PENDING',
-              deliveredAt: new Date()
+              deliveredAt: new Date(),
+              updatedAt: new Date()
             }
           })
 

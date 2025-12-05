@@ -180,7 +180,7 @@ export async function POST(request: NextRequest) {
 
         const emailComponent = DigestEmail({
           userName: emailData.user.name,
-          churchName: emailData.church.name,
+          churchName: emailData.churches.name,
           notifications: emailData.notifications,
           period: emailData.period,
           date: emailData.date
@@ -274,7 +274,7 @@ export async function GET(request: NextRequest) {
 
     // Get church details
     const church = await prisma.churches.findUnique({
-      where: { id: churchId },
+      where: { id: user.churchId },
       select: { name: true }
     })
 
