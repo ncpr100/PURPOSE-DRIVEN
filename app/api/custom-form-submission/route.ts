@@ -42,6 +42,9 @@ export async function POST(request: NextRequest) {
         },
         include: {
           churches: { select: { id: true, name: true } }
+        },
+        include: {
+          churches: { select: { id: true, name: true } }
         }
       })
     }
