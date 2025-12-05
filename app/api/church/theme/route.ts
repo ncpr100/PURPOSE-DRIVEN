@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
+import { randomUUID } from 'crypto'
 
 export const dynamic = 'force-dynamic';
 
@@ -72,6 +73,7 @@ export async function PUT(request: NextRequest) {
         themeName: 'custom'
       },
       create: {
+        id: randomUUID(),
         churchId: session.user.churchId,
         themeConfig,
         brandColors,
