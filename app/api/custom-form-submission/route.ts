@@ -29,35 +29,12 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // If form doesn't exist, create it (for legacy compatibility)
+    // If form doesn't exist, return error (for security - don't auto-create forms from public API)
     if (!form) {
-      // Require churchId for form creation
-      if (!churchId) {
-        return NextResponse.json(
-          { error: 'Church ID required for form creation' },
-          { status: 400 }
-        )
-      }
-
-      const createdForm = await db.custom_forms.create({
-        data: {
-          title: formTitle,
-          slug: formSlug,
-          fields: [],
-          config: {},
-          qrConfig: {},
-          churchId: churchId!, // Non-null assertion since we validated above
-          createdBy: 'system'
-        }
-      })
-      
-      // Fetch the created form with includes to maintain type consistency
-      form = await db.custom_forms.findUnique({
-        where: { id: createdForm.id },
-        include: {
-          churches: { select: { id: true, name: true } }
-        }
-      })
+      return NextResponse.json(
+        { error: 'Form not found. Please contact administrator to create this form.' },
+        { status: 404 }
+      )
     }
 
     // Get client info
