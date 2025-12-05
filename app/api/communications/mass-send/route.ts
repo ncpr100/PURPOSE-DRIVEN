@@ -87,7 +87,7 @@ async function getRecipients(targetGroup: string, churchId: string, recipientIds
     case 'volunteers':
       const volunteers = await db.volunteers.findMany({
         where: { churchId: churchId, isActive: true },
-        include: { member: true }
+        include: { members: true }
       })
       recipients = volunteers.map((v: any) => ({
         name: `${v.members.firstName} ${v.members.lastName}`,
