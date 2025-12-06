@@ -48,6 +48,22 @@ const CRITICAL_PATTERNS = [
     replacement: 'prisma.events',
     description: 'event → events model naming'
   },
+  // NEW PATTERNS FROM RECENT DEPLOYMENTS
+  {
+    pattern: /volunteer_assignmentss/g,
+    replacement: 'volunteer_assignments',
+    description: 'volunteer_assignmentss → volunteer_assignments (remove double s)'
+  },
+  {
+    pattern: /resourceReservations/g,
+    replacement: 'event_resource_reservations',
+    description: 'resourceReservations → event_resource_reservations'
+  },
+  {
+    pattern: /\.create\(\s*\{\s*data:\s*\{(?![^}]*id:)/g,
+    replacement: '.create({ data: { id: nanoid(),',
+    description: 'Missing id: nanoid() in create operations'
+  },
   {
     pattern: /prisma\.volunteer\b/g,
     replacement: 'prisma.volunteers',

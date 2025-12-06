@@ -215,7 +215,7 @@ export async function GET(request: NextRequest) {
       events: {
         total: eventStats[0]._count.id,
         resourceUtilization: eventUtilization,
-        averageResourcesPerEvent: Math.round(eventUtilization.averageResourcesPerEvent * 100) / 100
+        averageResourcesPerEvent: Math.round(eventUtilization.avgResourcesPerEvent * 100) / 100
       },
 
       communications: {
