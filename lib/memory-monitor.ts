@@ -26,7 +26,7 @@ export class MemoryMonitor {
     
     this.intervalId = setInterval(() => {
       this.checkMemoryUsage();
-    }, this.check_insterval);
+    }, this.checkInterval);
 
     // Initial check
     this.checkMemoryUsage();

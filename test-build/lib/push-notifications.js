@@ -4,6 +4,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotificationTemplates = exports.PushNotificationService = void 0;
 const db_1 = require("@/lib/db");
+const nanoid_1 = require("nanoid");
 // VAPID keys configuration (you should generate these and store in environment variables)
 const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || '';
 const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || '';
@@ -21,7 +22,7 @@ class PushNotificationService {
     static async saveSubscription(userId, churchId, subscription, deviceInfo) {
         try {
             // Check if subscription already exists
-            const existingSubscription = await db_1.db.pushSubscription.findFirst({
+            const existingSubscription = await db_1.db.push_subscriptions.findFirst({
                 where: {
                     userId,
                     endpoint: subscription.endpoint
@@ -29,7 +30,7 @@ class PushNotificationService {
             });
             if (existingSubscription) {
                 // Update existing subscription
-                await db_1.db.pushSubscription.update({
+                await db_1.db.push_subscriptions.update({
                     where: { id: existingSubscription.id },
                     data: {
                         p256dh: subscription.keys.p256dh,
@@ -44,8 +45,9 @@ class PushNotificationService {
             }
             else {
                 // Create new subscription
-                await db_1.db.pushSubscription.create({
+                await db_1.db.push_subscriptions.create({
                     data: {
+                        id: (0, nanoid_1.nanoid)(),
                         userId,
                         churchId,
                         endpoint: subscription.endpoint,
@@ -54,7 +56,8 @@ class PushNotificationService {
                         isActive: true,
                         userAgent: deviceInfo?.userAgent,
                         platform: deviceInfo?.platform,
-                        language: deviceInfo?.language
+                        language: deviceInfo?.language,
+                        updatedAt: new Date()
                     }
                 });
             }
@@ -70,7 +73,7 @@ class PushNotificationService {
      */
     static async removeSubscription(userId, endpoint) {
         try {
-            await db_1.db.pushSubscription.updateMany({
+            await db_1.db.push_subscriptions.updateMany({
                 where: {
                     userId,
                     endpoint
@@ -92,7 +95,7 @@ class PushNotificationService {
     static async sendToUser(userId, payload) {
         try {
             // Get user's active subscriptions
-            const subscriptions = await db_1.db.pushSubscription.findMany({
+            const subscriptions = await db_1.db.push_subscriptions.findMany({
                 where: {
                     userId,
                     isActive: true
@@ -159,7 +162,7 @@ class PushNotificationService {
                     in: targetRoles
                 };
             }
-            const users = await db_1.db.user.findMany({
+            const users = await db_1.db.users.findMany({
                 where: whereClause,
                 select: { id: true }
             });
@@ -216,13 +219,13 @@ class PushNotificationService {
     static async getStats(churchId) {
         try {
             const [totalSubscriptions, activeSubscriptions, platformStats, recentActivity] = await Promise.all([
-                db_1.db.pushSubscription.count({
+                db_1.db.push_subscriptions.count({
                     where: { churchId }
                 }),
-                db_1.db.pushSubscription.count({
+                db_1.db.push_subscriptions.count({
                     where: { churchId, isActive: true }
                 }),
-                db_1.db.pushSubscription.groupBy({
+                db_1.db.push_subscriptions.groupBy({
                     by: ['platform'],
                     where: { churchId, isActive: true },
                     _count: true

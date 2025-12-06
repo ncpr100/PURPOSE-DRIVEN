@@ -18,7 +18,7 @@ class VisitorAutomationService {
             const checkIn = await prisma_1.prisma.check_ins.findUnique({
                 where: { id: checkInId },
                 include: {
-                    church: true,
+                    churches: true,
                     event: true,
                 }
             });

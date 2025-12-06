@@ -46,8 +46,9 @@ export class AIPredictionAccuracyEngine {
     confidence: number,
     factors: string[]
   ): Promise<string> {
-    const predictionRecord = await db.aIPredictionRecord.create({
+    const predictionRecord = await db.ai_prediction_records.create({
       data: {
+        id: nanoid(),
         predictionType: type,
         memberId,
         churchId: this.churchId,
@@ -66,7 +67,7 @@ export class AIPredictionAccuracyEngine {
    * Validate a prediction against actual outcomes
    */
   async validatePrediction(predictionId: string, actualOutcome: any): Promise<number> {
-    const record = await db.aIPredictionRecord.findUnique({
+    const record = await db.ai_prediction_records.findUnique({
       where: { id: predictionId }
     });
 
@@ -75,7 +76,7 @@ export class AIPredictionAccuracyEngine {
     const predictedValue = JSON.parse(record.predictedValue as string);
     const accuracy = this.calculateAccuracy(predictedValue, actualOutcome, record.predictionType);
 
-    await db.aIPredictionRecord.update({
+    await db.ai_prediction_records.update({
       where: { id: predictionId },
       data: {
         actualValue: JSON.stringify(actualOutcome),

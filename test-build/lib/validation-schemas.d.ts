@@ -127,7 +127,7 @@ export declare const prayer_requestsUpdateSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     description?: string | undefined;
     title?: string | undefined;
-    status?: "fulfilled" | "rejected" | "pending" | "approved" | undefined;
+    status?: "rejected" | "fulfilled" | "pending" | "approved" | undefined;
     isAnonymous?: boolean | undefined;
     categoryId?: string | undefined;
     isUrgent?: boolean | undefined;
@@ -136,7 +136,7 @@ export declare const prayer_requestsUpdateSchema: z.ZodObject<{
 }, {
     description?: string | undefined;
     title?: string | undefined;
-    status?: "fulfilled" | "rejected" | "pending" | "approved" | undefined;
+    status?: "rejected" | "fulfilled" | "pending" | "approved" | undefined;
     isAnonymous?: boolean | undefined;
     categoryId?: string | undefined;
     isUrgent?: boolean | undefined;
@@ -409,12 +409,12 @@ export declare const analyticsQuerySchema: z.ZodObject<{
     contactMethod: z.ZodDefault<z.ZodEnum<["all", "email", "phone", "whatsapp", "sms"]>>;
 }, "strip", z.ZodTypeAny, {
     category: string;
-    status: "fulfilled" | "rejected" | "pending" | "all" | "approved";
+    status: "rejected" | "fulfilled" | "pending" | "all" | "approved";
     days: number | null;
     contactMethod: "email" | "phone" | "all" | "whatsapp" | "sms";
 }, {
     category?: string | undefined;
-    status?: "fulfilled" | "rejected" | "pending" | "all" | "approved" | undefined;
+    status?: "rejected" | "fulfilled" | "pending" | "all" | "approved" | undefined;
     days?: string | null | undefined;
     contactMethod?: "email" | "phone" | "all" | "whatsapp" | "sms" | undefined;
 }>;
@@ -667,7 +667,7 @@ declare const _default: {
     }, "strip", z.ZodTypeAny, {
         description?: string | undefined;
         title?: string | undefined;
-        status?: "fulfilled" | "rejected" | "pending" | "approved" | undefined;
+        status?: "rejected" | "fulfilled" | "pending" | "approved" | undefined;
         isAnonymous?: boolean | undefined;
         categoryId?: string | undefined;
         isUrgent?: boolean | undefined;
@@ -676,7 +676,7 @@ declare const _default: {
     }, {
         description?: string | undefined;
         title?: string | undefined;
-        status?: "fulfilled" | "rejected" | "pending" | "approved" | undefined;
+        status?: "rejected" | "fulfilled" | "pending" | "approved" | undefined;
         isAnonymous?: boolean | undefined;
         categoryId?: string | undefined;
         isUrgent?: boolean | undefined;
@@ -949,12 +949,12 @@ declare const _default: {
         contactMethod: z.ZodDefault<z.ZodEnum<["all", "email", "phone", "whatsapp", "sms"]>>;
     }, "strip", z.ZodTypeAny, {
         category: string;
-        status: "fulfilled" | "rejected" | "pending" | "all" | "approved";
+        status: "rejected" | "fulfilled" | "pending" | "all" | "approved";
         days: number | null;
         contactMethod: "email" | "phone" | "all" | "whatsapp" | "sms";
     }, {
         category?: string | undefined;
-        status?: "fulfilled" | "rejected" | "pending" | "all" | "approved" | undefined;
+        status?: "rejected" | "fulfilled" | "pending" | "all" | "approved" | undefined;
         days?: string | null | undefined;
         contactMethod?: "email" | "phone" | "all" | "whatsapp" | "sms" | undefined;
     }>;

@@ -17,7 +17,7 @@ export class PrayerAutomation {
       const prayer_requests = await prisma.prayer_requests.findUnique({
         where: { id: prayer_requestsId },
         include: {
-          contact: true,
+          contacts: true,
           category: true,
         }
       });

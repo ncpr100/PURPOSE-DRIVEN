@@ -52,7 +52,7 @@ export async function hasPermission(
     const user = await db.users.findUnique({
       where: { id: userId },
       include: {
-        userRoles: {
+        user_roles: {
           where: { isActive: true },
           include: {
             role: {
@@ -94,7 +94,7 @@ export async function hasPermission(
     }
 
     // Verificar permisos a través de roles
-    for (const userRole of user.userRoles || []) {
+    for (const userRole of user.user_roles || []) {
       if (!userRole.role || !userRole.role.isActive) continue
       
       const rolePermission = userRole.role.rolePermissions.find((rp: any) => 
@@ -161,7 +161,7 @@ export async function getUserPermissions(userId: string): Promise<{
   const user = await db.users.findUnique({
     where: { id: userId },
     include: {
-      userRoles: {
+      user_roles: {
         where: { isActive: true },
         include: {
           role: {
@@ -194,7 +194,7 @@ export async function getUserPermissions(userId: string): Promise<{
     conditions: up.conditions || up.permission.conditions
   })) || []
 
-  const rolePermissions = user.userRoles?.flatMap((ur: any) =>
+  const rolePermissions = user.user_roles?.flatMap((ur: any) =>
     ur.role?.rolePermissions
       ?.filter((rp: any) => rp.permission?.isActive)
       ?.map((rp: any) => ({

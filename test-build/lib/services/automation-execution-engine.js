@@ -30,6 +30,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.executeAutomationAction = exports.handleEscalation = exports.createManualTask = exports.executeActionWithRetry = exports.calculateRetryDelay = exports.isWithinBusinessHours = void 0;
 const db_1 = require("@/lib/db");
+const nanoid_1 = require("nanoid");
 /**
  * Check if current time is within business hours
  */
@@ -360,6 +361,7 @@ async function createManualTask(context, reason) {
         // Create a follow-up task
         await db_1.db.visitor_follow_ups.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 churchId: context.churchId,
                 checkInId: 'MANUAL_TASK',
                 assignedTo: 'AUTO_ASSIGNED',

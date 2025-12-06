@@ -15,8 +15,9 @@ class AIPredictionAccuracyEngine {
      * Record a new prediction for future validation
      */
     async recordPrediction(type, memberId, prediction, confidence, factors) {
-        const predictionRecord = await db_1.db.aIPredictionRecord.create({
+        const predictionRecord = await db_1.db.ai_prediction_records.create({
             data: {
+                id: nanoid(),
                 predictionType: type,
                 memberId,
                 churchId: this.churchId,
@@ -33,14 +34,14 @@ class AIPredictionAccuracyEngine {
      * Validate a prediction against actual outcomes
      */
     async validatePrediction(predictionId, actualOutcome) {
-        const record = await db_1.db.aIPredictionRecord.findUnique({
+        const record = await db_1.db.ai_prediction_records.findUnique({
             where: { id: predictionId }
         });
         if (!record)
             throw new Error('Prediction record not found');
         const predictedValue = JSON.parse(record.predictedValue);
         const accuracy = this.calculateAccuracy(predictedValue, actualOutcome, record.predictionType);
-        await db_1.db.aIPredictionRecord.update({
+        await db_1.db.ai_prediction_records.update({
             where: { id: predictionId },
             data: {
                 actualValue: JSON.stringify(actualOutcome),

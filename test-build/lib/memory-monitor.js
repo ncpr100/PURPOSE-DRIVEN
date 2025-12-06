@@ -23,7 +23,7 @@ class MemoryMonitor {
         console.log('🔍 Starting memory monitoring...');
         this.intervalId = setInterval(() => {
             this.checkMemoryUsage();
-        }, this.check_insterval);
+        }, this.checkInterval);
         // Initial check
         this.checkMemoryUsage();
     }

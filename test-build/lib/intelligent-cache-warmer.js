@@ -54,7 +54,7 @@ class IntelligentCacheWarmer {
         console.log('🔥 Starting initial cache warm-up for 100% hit rate...');
         try {
             // Get all churches for multi-tenant warming
-            const churches = await db_1.db.church.findMany({
+            const churches = await db_1.db.churches.findMany({
                 select: { id: true, name: true }
             });
             console.log(`📊 Warming cache for ${churches.length} churches`);
@@ -109,7 +109,7 @@ class IntelligentCacheWarmer {
     async warmRecentMemberJourneys(churchId, analyticsService) {
         try {
             // Get recently active members (most likely to be viewed)
-            const recentMembers = await db_1.db.member.findMany({
+            const recentMembers = await db_1.db.members.findMany({
                 where: {
                     churchId,
                     OR: [
@@ -201,7 +201,7 @@ class IntelligentCacheWarmer {
         try {
             // This would analyze cache miss patterns and proactively warm them
             // For now, we'll warm common scenarios
-            const churches = await db_1.db.church.findMany({
+            const churches = await db_1.db.churches.findMany({
                 select: { id: true },
                 take: 10 // Limit for performance
             });
@@ -258,7 +258,7 @@ class IntelligentCacheWarmer {
      */
     async warmBusinessHoursData() {
         // Most active churches during business hours
-        const activeChurches = await db_1.db.church.findMany({
+        const activeChurches = await db_1.db.churches.findMany({
             select: { id: true },
             take: 5
         });
@@ -273,7 +273,7 @@ class IntelligentCacheWarmer {
      */
     async warmMorningData() {
         // Prepare dashboard data for first users of the day
-        const churches = await db_1.db.church.findMany({
+        const churches = await db_1.db.churches.findMany({
             select: { id: true },
             take: 10
         });
@@ -292,7 +292,7 @@ class IntelligentCacheWarmer {
      */
     async warmEveningData() {
         // Prepare for evening events and activities
-        const churches = await db_1.db.church.findMany({
+        const churches = await db_1.db.churches.findMany({
             select: { id: true },
             take: 10
         });
@@ -323,7 +323,7 @@ class IntelligentCacheWarmer {
         const insights = [];
         try {
             // Analyze patterns and generate predictions
-            const churches = await db_1.db.church.findMany({
+            const churches = await db_1.db.churches.findMany({
                 select: { id: true },
                 take: 20
             });

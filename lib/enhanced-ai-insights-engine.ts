@@ -102,7 +102,7 @@ export class EnhancedAIInsightsEngine {
    * Extract comprehensive ML features for a member
    */
   async extractMemberFeatures(memberId: string): Promise<MLModelFeatures> {
-    const member = await db.member.findUnique({
+    const member = await db.members.findUnique({
       where: { id: memberId },
       include: {
         donations: { orderBy: { createdAt: 'desc' }, take: 100 },
@@ -143,7 +143,7 @@ export class EnhancedAIInsightsEngine {
     });
 
     // Get communication data (count-based, not email-specific)
-    const communications = await db.communication.findMany({
+    const communications = await db.communications.findMany({
       where: {
         churchId: this.churchId,
         createdAt: { gte: ninetyDaysAgo },
@@ -313,12 +313,12 @@ export class EnhancedAIInsightsEngine {
    */
   async generateMLMinistryRecommendations(memberId: string): Promise<EnhancedPrediction> {
     const features = await this.extractMemberFeatures(memberId);
-    const member = await db.member.findUnique({
+    const member = await db.members.findUnique({
       where: { id: memberId },
       include: { member_spiritual_profiles: true }
     });
 
-    const ministries = await db.ministry.findMany({
+    const ministries = await db.ministries.findMany({
       where: { churchId: this.churchId, isActive: true }
     });
 

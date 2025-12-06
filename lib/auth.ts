@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const user = await db.user.findUnique({
+        const user = await db.users.findUnique({
           where: {
             email: credentials.email
           },
@@ -72,7 +72,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       // Fetch user data fresh each time to keep JWT minimal
       if (token.sub) {
-        const user = await db.user.findUnique({
+        const user = await db.users.findUnique({
           where: { id: token.sub },
           select: {
             id: true,

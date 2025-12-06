@@ -5,6 +5,7 @@
  */
 
 import { db as prisma } from '@/lib/db';
+import { nanoid } from 'nanoid';
 import { Prisma } from '@prisma/client';
 
 // Communication channel types
@@ -436,6 +437,7 @@ export async function createManualTask(
     // Create a follow-up task
     await prisma.visitor_follow_ups.create({
       data: {
+        id: nanoid(),
         churchId: context.churchId,
         checkInId: 'MANUAL_TASK', // Placeholder for manual tasks
         assignedTo: 'AUTO_ASSIGNED', // Will be assigned to available staff

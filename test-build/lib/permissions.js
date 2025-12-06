@@ -34,7 +34,7 @@ async function hasPermission(userId, resource, action, context) {
         const user = await db_1.db.users.findUnique({
             where: { id: userId },
             include: {
-                userRoles: {
+                user_roles: {
                     where: { isActive: true },
                     include: {
                         role: {
@@ -70,7 +70,7 @@ async function hasPermission(userId, resource, action, context) {
             return evaluateConditions(directPermission.conditions, context);
         }
         // Verificar permisos a través de roles
-        for (const userRole of user.userRoles || []) {
+        for (const userRole of user.user_roles || []) {
             if (!userRole.role || !userRole.role.isActive)
                 continue;
             const rolePermission = userRole.role.rolePermissions.find((rp) => rp.permission?.resource === resource &&
@@ -118,7 +118,7 @@ async function getUserPermissions(userId) {
     const user = await db_1.db.users.findUnique({
         where: { id: userId },
         include: {
-            userRoles: {
+            user_roles: {
                 where: { isActive: true },
                 include: {
                     role: {
@@ -148,7 +148,7 @@ async function getUserPermissions(userId) {
         action: up.permission.action,
         conditions: up.conditions || up.permission.conditions
     })) || [];
-    const rolePermissions = user.userRoles?.flatMap((ur) => ur.role?.rolePermissions
+    const rolePermissions = user.user_roles?.flatMap((ur) => ur.role?.rolePermissions
         ?.filter((rp) => rp.permission?.isActive)
         ?.map((rp) => ({
         resource: rp.permission.resource,

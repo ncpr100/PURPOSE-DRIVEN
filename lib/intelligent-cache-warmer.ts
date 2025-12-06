@@ -90,7 +90,7 @@ export class IntelligentCacheWarmer {
     
     try {
       // Get all churches for multi-tenant warming
-      const churches = await db.church.findMany({
+      const churches = await db.churches.findMany({
         select: { id: true, name: true }
       });
 
@@ -160,7 +160,7 @@ export class IntelligentCacheWarmer {
   private async warmRecentMemberJourneys(churchId: string, analyticsService: any): Promise<void> {
     try {
       // Get recently active members (most likely to be viewed)
-      const recentMembers = await db.member.findMany({
+      const recentMembers = await db.members.findMany({
         where: { 
           churchId,
           OR: [
@@ -268,7 +268,7 @@ export class IntelligentCacheWarmer {
       // This would analyze cache miss patterns and proactively warm them
       // For now, we'll warm common scenarios
       
-      const churches = await db.church.findMany({
+      const churches = await db.churches.findMany({
         select: { id: true },
         take: 10 // Limit for performance
       });
@@ -331,7 +331,7 @@ export class IntelligentCacheWarmer {
    */
   private async warmBusinessHoursData(): Promise<void> {
     // Most active churches during business hours
-    const activeChurches = await db.church.findMany({
+    const activeChurches = await db.churches.findMany({
       select: { id: true },
       take: 5
     });
@@ -348,7 +348,7 @@ export class IntelligentCacheWarmer {
    */
   private async warmMorningData(): Promise<void> {
     // Prepare dashboard data for first users of the day
-    const churches = await db.church.findMany({
+    const churches = await db.churches.findMany({
       select: { id: true },
       take: 10
     });
@@ -370,7 +370,7 @@ export class IntelligentCacheWarmer {
    */
   private async warmEveningData(): Promise<void> {
     // Prepare for evening events and activities
-    const churches = await db.church.findMany({
+    const churches = await db.churches.findMany({
       select: { id: true },
       take: 10
     });
@@ -405,7 +405,7 @@ export class IntelligentCacheWarmer {
     
     try {
       // Analyze patterns and generate predictions
-      const churches = await db.church.findMany({
+      const churches = await db.churches.findMany({
         select: { id: true },
         take: 20
       });

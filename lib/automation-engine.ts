@@ -1,5 +1,6 @@
 
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 import { 
   AutomationTriggerType, 
   AutomationConditionType, 
@@ -32,10 +33,10 @@ export interface FormSubmissionTrigger extends TriggerData {
 }
 
 // Types for expanded rule data
-export interface AutomationRuleWithDetails extends AutomationRule {
-  triggers: AutomationTrigger[]
-  conditions: AutomationCondition[]
-  actions: AutomationAction[]
+export interface AutomationRuleWithDetails extends automation_rules {
+  triggers: automation_triggers[]
+  conditions: automation_conditions[]
+  actions: automation_actions[]
 }
 
 export class AutomationEngine {
@@ -132,6 +133,7 @@ export class AutomationEngine {
     // Create execution record
     const execution = await db.automation_executions.create({
       data: {
+        id: nanoid(),
         automationId: rule.id,
         triggerData: triggerData as any,
         status: 'RUNNING',
@@ -427,7 +429,7 @@ export class AutomationEngine {
         })
       } else if (config.targetRole) {
         // Role-based notification
-        const roleUsers = await db.user.findMany({
+        const roleUsers = await db.users.findMany({
           where: {
             churchId: triggerData.churchId,
             role: config.targetRole as any,
@@ -447,7 +449,7 @@ export class AutomationEngine {
         })
       } else if (config.isGlobal) {
         // Global church notification
-        const churchUsers = await db.user.findMany({
+        const churchUsers = await db.users.findMany({
           where: {
             churchId: triggerData.churchId,
             isActive: true
@@ -902,13 +904,14 @@ export class FormAutomationEngine {
     const volunteerInfo = this.extractVolunteerInfo(submissionData)
     
     // Find or create member record
-    let member = await db.member.findFirst({
+    let member = await db.members.findFirst({
       where: { email: volunteerInfo.email, churchId }
     })
     
     if (!member) {
-      member = await db.member.create({
+      member = await db.members.create({
         data: {
+          id: nanoid(),
           firstName: volunteerInfo.firstName,
           lastName: volunteerInfo.lastName,
           email: volunteerInfo.email,
@@ -921,8 +924,9 @@ export class FormAutomationEngine {
     }
 
     // 🎯 AUTO-CREATE VOLUNTEER RECORD
-    const volunteer = await db.volunteer.create({
+    const volunteer = await db.volunteers.create({
       data: {
+        id: nanoid(),
         memberId: member.id,
         firstName: volunteerInfo.firstName || member.firstName,
         lastName: volunteerInfo.lastName || member.lastName,

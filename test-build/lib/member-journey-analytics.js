@@ -7,6 +7,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemberJourneyAnalytics = void 0;
 const db_1 = require("./db");
+const nanoid_1 = require("nanoid");
 const client_1 = require("@prisma/client");
 class MemberJourneyAnalytics {
     constructor(churchId) {
@@ -53,7 +54,7 @@ class MemberJourneyAnalytics {
             }
         });
         // Get communication engagement
-        const communications = await db_1.db.communication.findMany({
+        const communications = await db_1.db.communications.findMany({
             where: {
                 churchId: this.churchId,
                 sentAt: { gte: sixtyDaysAgo }
@@ -97,7 +98,7 @@ class MemberJourneyAnalytics {
             : 0;
         const engagementScore = await this.calculateEngagementScore(memberId);
         const hasMinistryRole = member.volunteers && member.volunteers.length > 0;
-        const isLeader = member.user?.role && ['PASTOR', 'LIDER', 'ADMIN_IGLESIA'].includes(member.user.role);
+        const isLeader = member.users?.role && ['PASTOR', 'LIDER', 'ADMIN_IGLESIA'].includes(member.users.role);
         // Determine stage based on comprehensive criteria
         if (isLeader)
             return client_1.MemberLifecycleStage.MATURE_LEADER;
@@ -307,7 +308,7 @@ class MemberJourneyAnalytics {
         });
     }
     async hasMinistryInvolvement(memberId) {
-        const volunteerCount = await db_1.db.volunteer.count({
+        const volunteerCount = await db_1.db.volunteers.count({
             where: { memberId }
         });
         return volunteerCount > 0;
@@ -315,7 +316,7 @@ class MemberJourneyAnalytics {
     async hasRecentDonations(memberId, days) {
         const dateThreshold = new Date();
         dateThreshold.setDate(dateThreshold.getDate() - days);
-        const donationCount = await db_1.db.donation.count({
+        const donationCount = await db_1.db.donations.count({
             where: {
                 memberId,
                 createdAt: { gte: dateThreshold }
@@ -395,6 +396,7 @@ class MemberJourneyAnalytics {
             // Create new journey
             await db_1.db.member_journeys.create({
                 data: {
+                    id: (0, nanoid_1.nanoid)(),
                     memberId,
                     churchId: this.churchId,
                     ...journeyData,
@@ -428,7 +430,7 @@ class MemberJourneyAnalytics {
                 updatedAt: { gte: startDate }
             },
             include: {
-                member: true
+                members: true
             }
         });
         // Calculate conversion funnel

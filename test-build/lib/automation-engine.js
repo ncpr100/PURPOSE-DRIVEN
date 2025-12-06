@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormAutomationEngine = exports.AutomationTriggers = exports.triggerAutomation = exports.AutomationEngine = void 0;
 const db_1 = require("@/lib/db");
+const nanoid_1 = require("nanoid");
 const sse_broadcast_1 = require("@/lib/sse-broadcast");
 const push_notifications_1 = require("@/lib/push-notifications");
 const feature_flags_1 = require("@/lib/feature-flags");
@@ -90,6 +91,7 @@ class AutomationEngine {
         // Create execution record
         const execution = await db_1.db.automation_executions.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 automationId: rule.id,
                 triggerData: triggerData,
                 status: 'RUNNING',
@@ -340,7 +342,7 @@ class AutomationEngine {
             }
             else if (config.targetRole) {
                 // Role-based notification
-                const roleUsers = await db_1.db.user.findMany({
+                const roleUsers = await db_1.db.users.findMany({
                     where: {
                         churchId: triggerData.churchId,
                         role: config.targetRole,
@@ -360,7 +362,7 @@ class AutomationEngine {
             }
             else if (config.isGlobal) {
                 // Global church notification
-                const churchUsers = await db_1.db.user.findMany({
+                const churchUsers = await db_1.db.users.findMany({
                     where: {
                         churchId: triggerData.churchId,
                         isActive: true
@@ -713,12 +715,13 @@ class FormAutomationEngine {
     static async handleVolunteerFormAutomation(formId, submissionData, churchId) {
         const volunteerInfo = this.extractVolunteerInfo(submissionData);
         // Find or create member record
-        let member = await db_1.db.member.findFirst({
+        let member = await db_1.db.members.findFirst({
             where: { email: volunteerInfo.email, churchId }
         });
         if (!member) {
-            member = await db_1.db.member.create({
+            member = await db_1.db.members.create({
                 data: {
+                    id: (0, nanoid_1.nanoid)(),
                     firstName: volunteerInfo.firstName,
                     lastName: volunteerInfo.lastName,
                     email: volunteerInfo.email,
@@ -730,8 +733,9 @@ class FormAutomationEngine {
             });
         }
         // 🎯 AUTO-CREATE VOLUNTEER RECORD
-        const volunteer = await db_1.db.volunteer.create({
+        const volunteer = await db_1.db.volunteers.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 memberId: member.id,
                 firstName: volunteerInfo.firstName || member.firstName,
                 lastName: volunteerInfo.lastName || member.lastName,

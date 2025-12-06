@@ -3,6 +3,8 @@
 // Kḥesed-tek Church Management Systems
 
 import { db } from '@/lib/db';
+import webpush from 'web-push';
+import { nanoid } from 'nanoid';
 
 // Types for push notifications
 export interface PushSubscription {
@@ -61,16 +63,16 @@ export class PushNotificationService {
   ): Promise<void> {
     try {
       // Check if subscription already exists
-      const existingSubscription = await db.pushSubscription.findFirst({
+      const existingSubscription = await db.push_subscriptions.findFirst({
         where: {
           userId,
           endpoint: subscription.endpoint
         }
-      })
+      });
 
       if (existingSubscription) {
         // Update existing subscription
-        await db.pushSubscription.update({
+        await db.push_subscriptions.update({
           where: { id: existingSubscription.id },
           data: {
             p256dh: subscription.keys.p256dh,
@@ -84,8 +86,9 @@ export class PushNotificationService {
         })
       } else {
         // Create new subscription
-        await db.pushSubscription.create({
+        await db.push_subscriptions.create({
           data: {
+            id: nanoid(),
             userId,
             churchId,
             endpoint: subscription.endpoint,
@@ -94,7 +97,8 @@ export class PushNotificationService {
             isActive: true,
             userAgent: deviceInfo?.userAgent,
             platform: deviceInfo?.platform,
-            language: deviceInfo?.language
+            language: deviceInfo?.language,
+            updatedAt: new Date()
           }
         })
       }
@@ -111,7 +115,7 @@ export class PushNotificationService {
    */
   static async removeSubscription(userId: string, endpoint: string): Promise<void> {
     try {
-      await db.pushSubscription.updateMany({
+      await db.push_subscriptions.updateMany({
         where: {
           userId,
           endpoint
@@ -137,7 +141,7 @@ export class PushNotificationService {
   ): Promise<{ success: number; failed: number }> {
     try {
       // Get user's active subscriptions
-      const subscriptions = await db.pushSubscription.findMany({
+      const subscriptions = await db.push_subscriptions.findMany({
         where: {
           userId,
           isActive: true
@@ -227,7 +231,7 @@ export class PushNotificationService {
         }
       }
 
-      const users = await db.user.findMany({
+      const users = await db.users.findMany({
         where: whereClause,
         select: { id: true }
       })
@@ -313,13 +317,13 @@ export class PushNotificationService {
         platformStats,
         recentActivity
       ] = await Promise.all([
-        db.pushSubscription.count({
+        db.push_subscriptions.count({
           where: { churchId }
         }),
-        db.pushSubscription.count({
+        db.push_subscriptions.count({
           where: { churchId, isActive: true }
         }),
-        db.pushSubscription.groupBy({
+        db.push_subscriptions.groupBy({
           by: ['platform'],
           where: { churchId, isActive: true },
           _count: true

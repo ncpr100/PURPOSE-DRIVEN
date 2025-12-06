@@ -5,6 +5,7 @@
  */
 
 import { db } from './db';
+import { nanoid } from 'nanoid';
 import { 
   MemberLifecycleStage, 
   EngagementLevel, 
@@ -129,7 +130,7 @@ export class MemberJourneyAnalytics {
     });
 
     // Get communication engagement
-    const communications = await db.communication.findMany({
+    const communications = await db.communications.findMany({
       where: {
         churchId: this.churchId,
         sentAt: { gte: sixtyDaysAgo }
@@ -187,7 +188,7 @@ export class MemberJourneyAnalytics {
 
     const engagementScore = await this.calculateEngagementScore(memberId);
     const hasMinistryRole = member.volunteers && member.volunteers.length > 0;
-    const isLeader = member.user?.role && ['PASTOR', 'LIDER', 'ADMIN_IGLESIA'].includes(member.user.role);
+    const isLeader = member.users?.role && ['PASTOR', 'LIDER', 'ADMIN_IGLESIA'].includes(member.users.role);
 
     // Determine stage based on comprehensive criteria
     if (isLeader) return MemberLifecycleStage.MATURE_LEADER;
@@ -408,7 +409,7 @@ export class MemberJourneyAnalytics {
   }
 
   private async hasMinistryInvolvement(memberId: string): Promise<boolean> {
-    const volunteerCount = await db.volunteer.count({
+    const volunteerCount = await db.volunteers.count({
       where: { memberId }
     });
     return volunteerCount > 0;
@@ -418,7 +419,7 @@ export class MemberJourneyAnalytics {
     const dateThreshold = new Date();
     dateThreshold.setDate(dateThreshold.getDate() - days);
 
-    const donationCount = await db.donation.count({
+    const donationCount = await db.donations.count({
       where: {
         memberId,
         createdAt: { gte: dateThreshold }
@@ -505,6 +506,7 @@ export class MemberJourneyAnalytics {
       // Create new journey
       await db.member_journeys.create({
         data: {
+          id: nanoid(),
           memberId,
           churchId: this.churchId,
           ...journeyData,
@@ -546,7 +548,7 @@ export class MemberJourneyAnalytics {
         updatedAt: { gte: startDate }
       },
       include: {
-        member: true
+        members: true
       }
     });
 
