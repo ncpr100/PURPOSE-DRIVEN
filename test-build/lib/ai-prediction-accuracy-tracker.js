@@ -180,6 +180,7 @@ class AIPredictionAccuracyEngine {
     async setupABTest(testName, controlModel, testModel, trafficSplit = 0.5) {
         const abTest = await db_1.db.ai_model_ab_tests.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 testName,
                 churchId: this.churchId,
                 controlModel,
@@ -198,13 +199,13 @@ class AIPredictionAccuracyEngine {
         const test = await db_1.db.ai_model_ab_tests.findUnique({
             where: { id: testId },
             include: {
-                predictions: true
+                ai_prediction_records: true
             }
         });
         if (!test)
             throw new Error('A/B test not found');
-        const controlPredictions = test.predictions.filter(p => p.modelVersion === test.controlModel);
-        const testPredictions = test.predictions.filter(p => p.modelVersion === test.testModel);
+        const controlPredictions = test.ai_prediction_records.filter((p) => p.modelVersion === test.controlModel);
+        const testPredictions = test.ai_prediction_records.filter((p) => p.modelVersion === test.testModel);
         const controlAccuracy = this.calculateAverageAccuracy(controlPredictions);
         const testAccuracy = this.calculateAverageAccuracy(testPredictions);
         const improvement = testAccuracy - controlAccuracy;

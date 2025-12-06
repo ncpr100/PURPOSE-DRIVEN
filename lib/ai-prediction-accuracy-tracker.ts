@@ -253,6 +253,7 @@ export class AIPredictionAccuracyEngine {
   ): Promise<string> {
     const abTest = await db.ai_model_ab_tests.create({
       data: {
+        id: nanoid(),
         testName,
         churchId: this.churchId,
         controlModel,
@@ -279,14 +280,14 @@ export class AIPredictionAccuracyEngine {
     const test = await db.ai_model_ab_tests.findUnique({
       where: { id: testId },
       include: {
-        predictions: true
+        ai_prediction_records: true
       }
     });
 
     if (!test) throw new Error('A/B test not found');
 
-    const controlPredictions = test.predictions.filter(p => p.modelVersion === test.controlModel);
-    const testPredictions = test.predictions.filter(p => p.modelVersion === test.testModel);
+    const controlPredictions = test.ai_prediction_records.filter((p: any) => p.modelVersion === test.controlModel);
+    const testPredictions = test.ai_prediction_records.filter((p: any) => p.modelVersion === test.testModel);
 
     const controlAccuracy = this.calculateAverageAccuracy(controlPredictions);
     const testAccuracy = this.calculateAverageAccuracy(testPredictions);

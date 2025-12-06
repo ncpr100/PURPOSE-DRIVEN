@@ -354,6 +354,7 @@ class AutomationEngine {
                 });
                 await db_1.db.notification_deliveries.createMany({
                     data: roleUsers.map(roleUser => ({
+                        id: (0, nanoid_1.nanoid)(),
                         notificationId: notification.id,
                         userId: roleUser.id,
                         deliveryMethod: 'in-app',
@@ -373,6 +374,7 @@ class AutomationEngine {
                 });
                 await db_1.db.notification_deliveries.createMany({
                     data: churchUsers.map(churchUser => ({
+                        id: (0, nanoid_1.nanoid)(),
                         notificationId: notification.id,
                         userId: churchUser.id,
                         deliveryMethod: 'in-app',
