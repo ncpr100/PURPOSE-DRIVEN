@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
       targetUsers = await prisma.users.findMany({
         where: userQuery,
         include: {
-          notificationPreferences: true
+          notification_preferences: true
         }
       })
     }
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Default preferences if user has none
-      const preferences = user.notificationPreferences || {
+      const preferences = user.notification_preferences || {
         emailEnabled: true,
         emailEvents: true,
         emailDonations: true,
@@ -169,7 +169,7 @@ export async function POST(request: NextRequest) {
           name: user.name || undefined
         },
         churches: {
-          name: notification.church.name,
+          name: notification.churches.name,
           id: sessionUser.churchId!
         },
         notification: {
@@ -186,7 +186,7 @@ export async function POST(request: NextRequest) {
 
       const emailComponent = NotificationEmail({
         userName: emailData.user.name,
-        churchName: emailData.church.name,
+        churchName: emailData.churches.name,
         notification: emailData.notification
       })
       const emailHtml = renderEmailTemplate(emailComponent)
