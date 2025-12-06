@@ -194,9 +194,9 @@ export async function POST(request: NextRequest) {
 
       return {
         to: user.email,
-        subject: `${subjectPrefix}${notification.title} - ${notification.church.name}`,
+        subject: `${subjectPrefix}${notification.title} - ${notification.churches.name}`,
         html: emailHtml,
-        churchName: notification.church.name,
+        churchName: notification.churches.name,
         userName: user.name || 'Estimado miembro'
       }
     })
