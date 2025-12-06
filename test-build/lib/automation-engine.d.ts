@@ -14,9 +14,9 @@ export interface FormSubmissionTrigger extends TriggerData {
     submissionData: Record<string, any>;
 }
 export interface AutomationRuleWithDetails extends automation_rules {
-    triggers: automation_triggers[];
-    conditions: automation_conditions[];
-    actions: automation_actions[];
+    automation_triggers: automation_triggers[];
+    automation_conditions: automation_conditions[];
+    automation_actions: automation_actions[];
 }
 export declare class AutomationEngine {
     /**

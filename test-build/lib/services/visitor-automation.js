@@ -6,7 +6,8 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VisitorAutomationService = void 0;
-const prisma_1 = require("@/lib/prisma");
+const db_1 = require("@/lib/db");
+const nanoid_1 = require("nanoid");
 const automation_execution_engine_1 = require("./automation-execution-engine");
 class VisitorAutomationService {
     /**
@@ -15,7 +16,7 @@ class VisitorAutomationService {
     static async processVisitor(checkInId) {
         try {
             // Fetch check-in with related data
-            const checkIn = await prisma_1.prisma.check_ins.findUnique({
+            const checkIn = await db_1.db.check_ins.findUnique({
                 where: { id: checkInId },
                 include: {
                     churches: true,
@@ -33,7 +34,7 @@ class VisitorAutomationService {
             const visitorProfile = await this.upsertVisitorProfile(checkIn, category);
             // Find active automation rules for this visitor category
             const triggerType = this.getTriggerTypeForCategory(category);
-            const automation_ruless = await prisma_1.prisma.automation_rules.findMany({
+            const automation_ruless = await db_1.db.automation_rules.findMany({
                 where: {
                     churchId: checkIn.churchId,
                     isActive: true,
@@ -86,9 +87,9 @@ class VisitorAutomationService {
     /**
      * AUTO-CATEGORIZE visitor based on behavior and history
      */
-    static async categorizeVisitor(check_ins) {
+    static async categorizeVisitor(checkIn) {
         // Check if first-time visitor
-        const previousVisits = await prisma_1.prisma.check_ins.count({
+        const previousVisits = await db_1.db.check_ins.count({
             where: {
                 email: checkIn.email,
                 churchId: checkIn.churchId,
@@ -115,7 +116,7 @@ class VisitorAutomationService {
      */
     static async upsertVisitorProfile(check_ins, category) {
         // Try to find existing profile by email or phone
-        const existingProfile = await prisma_1.prisma.visitorProfile.findFirst({
+        const existingProfile = await db_1.db.visitorProfile.findFirst({
             where: {
                 OR: [
                     { email: checkIn.email },
@@ -125,7 +126,7 @@ class VisitorAutomationService {
         });
         if (existingProfile) {
             // Update existing profile
-            return await prisma_1.prisma.visitorProfile.update({
+            return await db_1.db.visitorProfile.update({
                 where: { id: existingProfile.id },
                 data: {
                     category,
@@ -137,8 +138,9 @@ class VisitorAutomationService {
         }
         else {
             // Create new profile
-            return await prisma_1.prisma.visitorProfile.create({
+            return await db_1.db.visitor_profiles.create({
                 data: {
+                    id: (0, nanoid_1.nanoid)(),
                     checkInId: checkIn.id,
                     fullName: `${checkIn.firstName} ${checkIn.lastName}`,
                     email: checkIn.email,
@@ -188,7 +190,7 @@ class VisitorAutomationService {
     static async matchMinistries(check_ins, visitorProfile) {
         try {
             // Get available ministries for the church
-            const ministries = await prisma_1.prisma.ministry.findMany({
+            const ministries = await db_1.db.ministries.findMany({
                 where: {
                     churchId: checkIn.churchId,
                     isActive: true
@@ -328,7 +330,7 @@ class VisitorAutomationService {
      */
     static async createFollowUpTask(rule, check_ins, visitorProfile) {
         // Find a pastor or admin to assign task
-        const staff = await prisma_1.prisma.user.findMany({
+        const staff = await db_1.db.users.findMany({
             where: {
                 churchId: checkIn.churchId,
                 role: {
@@ -346,7 +348,7 @@ class VisitorAutomationService {
         }
         // Calculate scheduled follow-up time (24 hours default)
         const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-        await prisma_1.prisma.visitor_follow_ups.create({
+        await db_1.db.visitor_follow_ups.create({
             data: {
                 checkInId: checkIn.id,
                 churchId: checkIn.churchId,

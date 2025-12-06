@@ -4,7 +4,8 @@
  * Handles auto-categorization and bypass approval logic
  */
 
-import { prisma } from '@/lib/prisma';
+import { db as prisma } from '@/lib/db';
+import { nanoid } from 'nanoid';
 import { executeAutomationAction } from './automation-execution-engine';
 
 type VisitorCategory = 'FIRST_TIME' | 'RETURNING' | 'REGULAR' | 'NON_MEMBER' | 'MEMBER_CANDIDATE';
@@ -99,7 +100,7 @@ export class VisitorAutomationService {
   /**
    * AUTO-CATEGORIZE visitor based on behavior and history
    */
-  private static async categorizeVisitor(check_ins: any): Promise<VisitorCategory> {
+  private static async categorizeVisitor(checkIn: any): Promise<VisitorCategory> {
     // Check if first-time visitor
     const previousVisits = await prisma.check_ins.count({
       where: {
@@ -155,8 +156,9 @@ export class VisitorAutomationService {
       });
     } else {
       // Create new profile
-      return await prisma.visitorProfile.create({
+      return await prisma.visitor_profiles.create({
         data: {
+          id: nanoid(),
           checkInId: checkIn.id,
           fullName: `${checkIn.firstName} ${checkIn.lastName}`,
           email: checkIn.email,
@@ -209,7 +211,7 @@ export class VisitorAutomationService {
   private static async matchMinistries(check_ins: any, visitorProfile: any): Promise<string[]> {
     try {
       // Get available ministries for the church
-      const ministries = await prisma.ministry.findMany({
+      const ministries = await prisma.ministries.findMany({
         where: {
           churchId: checkIn.churchId,
           isActive: true
@@ -370,7 +372,7 @@ export class VisitorAutomationService {
    */
   private static async createFollowUpTask(rule: any, check_ins: any, visitorProfile: any): Promise<void> {
     // Find a pastor or admin to assign task
-    const staff = await prisma.user.findMany({
+    const staff = await prisma.users.findMany({
       where: {
         churchId: checkIn.churchId,
         role: {

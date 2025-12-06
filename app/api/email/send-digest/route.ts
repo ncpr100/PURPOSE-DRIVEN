@@ -91,13 +91,13 @@ export async function POST(request: NextRequest) {
       const users = await prisma.users.findMany({
         where: userQuery,
         include: {
-          notificationPreferences: true
+          notification_preferences: true
         }
       })
 
       // Filter users that should receive digest
       const eligibleUsers = users.filter((user: any) => {
-        const preferences = user.notificationPreferences
+        const preferences = user.notification_preferences
         if (!preferences) return false
         
         return shouldSendDigest(preferences, validatedData.period)

@@ -59,7 +59,7 @@ class AIPredictionAccuracyEngine {
     async getAccuracyMetrics(period = 90) {
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - period);
-        const validatedPredictions = await db_1.db.aIPredictionRecord.findMany({
+        const validatedPredictions = await db_1.db.ai_prediction_records.findMany({
             where: {
                 churchId: this.churchId,
                 validationDate: { gte: startDate },

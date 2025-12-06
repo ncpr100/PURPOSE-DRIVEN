@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
+import { nanoid } from 'nanoid'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
     }
 
-    const categories = await db.donationCategory.findMany({
+    const categories = await db.donation_categories.findMany({
       where: {
         churchId: session.user.churchId,
         isActive: true
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar que no exista otra categoría con el mismo nombre
-    const existingCategory = await db.donationCategory.findFirst({
+    const existingCategory = await db.donation_categories.findFirst({
       where: {
         name,
         churchId: session.user.churchId,
@@ -75,8 +76,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const category = await db.donationCategory.create({
+    const category = await db.donation_categories.create({
       data: {
+        id: nanoid(),
         name,
         description,
         churchId: session.user.churchId

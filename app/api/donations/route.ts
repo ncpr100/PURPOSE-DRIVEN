@@ -2,6 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
+import { nanoid } from 'nanoid'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db';
 import DonationSecurity from '@/lib/donations/security'
@@ -47,8 +48,8 @@ export async function GET(request: NextRequest) {
       db.donations.findMany({
         where: whereClause,
         include: {
-          category: true,
-          paymentMethod: true,
+          donation_categories: true,
+          payment_methods: true,
           members: {
             select: {
               id: true,
@@ -167,10 +168,10 @@ export async function POST(request: NextRequest) {
 
     // Verificar que la categoría y método de pago pertenezcan a la iglesia
     const [category, paymentMethod] = await Promise.all([
-      db.donationCategory.findFirst({
+      db.donation_categories.findFirst({
         where: { id: categoryId, churchId: session.user.churchId, isActive: true }
       }),
-      db.paymentMethod.findFirst({
+      db.payment_methods.findFirst({
         where: { id: paymentMethodId, churchId: session.user.churchId, isActive: true }
       })
     ])
@@ -186,8 +187,9 @@ export async function POST(request: NextRequest) {
     // Use database transaction to ensure atomicity
     const donation = await db.$transaction(async (tx) => {
       // Create the donation within transaction
-      const newDonation = await tx.donation.create({
+      const newDonation = await tx.donations.create({
         data: {
+          id: nanoid(),
           amount: parseFloat(amount),
           currency,
           donorName: isAnonymous ? null : (donorName ? DonationSecurity.sanitizeInput(donorName) : null),
@@ -204,8 +206,8 @@ export async function POST(request: NextRequest) {
           status: 'COMPLETADA' // Status tracking for donations
         },
         include: {
-          category: true,
-          paymentMethod: true,
+          donation_categories: true,
+          payment_methods: true,
           members: {
             select: {
               id: true,
@@ -229,8 +231,8 @@ export async function POST(request: NextRequest) {
         currency: donation.currency,
         donorName: donation.donorName,
         donorEmail: donation.donorEmail,
-        categoryName: donation.category?.name,
-        paymentMethod: donation.paymentMethod?.name,
+        categoryName: donation.donation_categories?.name,
+        paymentMethod: donation.payment_methods?.name,
         donationDate: donation.donationDate,
         isAnonymous: donation.isAnonymous
       }, session.user.churchId!)

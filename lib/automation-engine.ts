@@ -34,9 +34,9 @@ export interface FormSubmissionTrigger extends TriggerData {
 
 // Types for expanded rule data
 export interface AutomationRuleWithDetails extends automation_rules {
-  triggers: automation_triggers[]
-  conditions: automation_conditions[]
-  actions: automation_actions[]
+  automation_triggers: automation_triggers[]
+  automation_conditions: automation_conditions[]
+  automation_actions: automation_actions[]
 }
 
 export class AutomationEngine {
@@ -96,7 +96,7 @@ export class AutomationEngine {
         where: {
           churchId: triggerData.churchId,
           isActive: true,
-          triggers: {
+          automation_triggers: {
             some: {
               type: triggerData.type as AutomationTriggerType,
               isActive: true
@@ -104,14 +104,14 @@ export class AutomationEngine {
           }
         },
         include: {
-          triggers: {
+          automation_triggers: {
             where: { isActive: true }
         },
-        conditions: {
+        automation_conditions: {
           where: { isActive: true },
           orderBy: { orderIndex: 'asc' }
         },
-        actions: {
+        automation_actions: {
           where: { isActive: true },
           orderBy: { orderIndex: 'asc' }
         }
@@ -159,7 +159,7 @@ export class AutomationEngine {
       }
 
       // Evaluate conditions
-      const conditionsMet = await this.evaluateConditions(rule.conditions, triggerData)
+      const conditionsMet = await this.evaluateConditions(rule.automation_conditions, triggerData)
       if (!conditionsMet) {
         await this.updateExecution(execution.id, 'FAILED', null, 'Conditions not met')
         return
@@ -168,7 +168,7 @@ export class AutomationEngine {
       console.log(`✅ Conditions met for rule: ${rule.name}`)
 
       // Execute actions
-      const actionResults = await this.executeActions(rule.actions, triggerData)
+      const actionResults = await this.executeActions(rule.automation_actions, triggerData)
 
       // Update execution record
       const duration = Date.now() - startTime

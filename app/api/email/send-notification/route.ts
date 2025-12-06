@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
         churches: {
           select: { name: true }
         },
-        creator: {
+        users: {
           select: { name: true, email: true }
         }
       }
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
           churchId: sessionUser.churchId
         },
         include: {
-          notificationPreferences: true
+          notification_preferences: true
         }
       })
 

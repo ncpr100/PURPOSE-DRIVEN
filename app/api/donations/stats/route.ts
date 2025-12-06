@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
             amount: item._sum.amount || 0,
           };
         }
-        const category = await db.donationCategory.findUnique({
+        const category = await db.donation_categories.findUnique({
           where: { id: item.categoryId },
           select: { name: true }
         })
