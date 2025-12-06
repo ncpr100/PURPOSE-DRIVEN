@@ -1,4 +1,4 @@
-
+import { nanoid } from 'nanoid'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
@@ -109,6 +109,7 @@ export async function POST(
 
     const reservation = await db.event_resource_reservations.create({
       data: {
+        id: nanoid(),
         resourceId: params.id,
         eventId,
         startTime: new Date(startTime),
