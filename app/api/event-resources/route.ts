@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     const resources = await db.event_resources.findMany({
       where: whereClause,
       include: {
-        reservations: {
+        event_resource_reservations: {
           where: {
             status: 'CONFIRMADA'
           },
