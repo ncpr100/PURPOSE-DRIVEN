@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const submissions = await db.custom_form_submissions.findMany({
       where: { churchId: session.user.churchId },
       include: {
-        form: {
+        custom_forms: {
           select: {
             id: true,
             title: true,
