@@ -5,17 +5,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authOptions = void 0;
 const credentials_1 = __importDefault(require("next-auth/providers/credentials"));
-const prisma_adapter_1 = require("@next-auth/prisma-adapter");
 const db_1 = require("./db");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+// NOTE: JWT type extensions are in lib/types.ts to avoid duplication
 exports.authOptions = {
-    adapter: (0, prisma_adapter_1.PrismaAdapter)(db_1.db),
     session: {
         strategy: "jwt",
+        maxAge: 7 * 24 * 60 * 60, // Reduced to 7 days
     },
     pages: {
         signIn: "/auth/signin",
     },
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         (0, credentials_1.default)({
             name: "credentials",
@@ -32,7 +33,7 @@ exports.authOptions = {
                         email: credentials.email
                     },
                     include: {
-                        church: true
+                        churches: true
                     }
                 });
                 if (!user || !user.password) {
@@ -48,7 +49,7 @@ exports.authOptions = {
                     name: user.name,
                     role: user.role,
                     churchId: user.churchId,
-                    church: user.church
+                    // Remove church object entirely to minimize JWT size
                 };
             }
         })
@@ -56,27 +57,37 @@ exports.authOptions = {
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                return {
-                    ...token,
-                    id: user.id,
-                    role: user.role,
-                    churchId: user.churchId,
-                    church: user.church,
-                };
+                // Store user data in JWT for middleware access
+                token.sub = user.id;
+                token.role = user.role; // CRITICAL: Middleware needs this!
+                token.churchId = user.churchId;
             }
             return token;
         },
         async session({ session, token }) {
-            return {
-                ...session,
-                user: {
-                    ...session.user,
-                    id: token.id,
-                    role: token.role,
-                    churchId: token.churchId,
-                    church: token.church,
+            // Fetch user data fresh each time to keep JWT minimal
+            if (token.sub) {
+                const user = await db_1.db.user.findUnique({
+                    where: { id: token.sub },
+                    select: {
+                        id: true,
+                        email: true,
+                        name: true,
+                        role: true,
+                        churchId: true
+                    }
+                });
+                if (user) {
+                    session.user = {
+                        id: user.id,
+                        email: user.email || '',
+                        name: user.name || '',
+                        role: user.role,
+                        churchId: user.churchId || ''
+                    };
                 }
-            };
+            }
+            return session;
         },
     }
 };

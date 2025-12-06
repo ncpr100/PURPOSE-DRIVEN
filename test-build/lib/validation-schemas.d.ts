@@ -87,7 +87,7 @@ export declare const passwordChangeSchema: z.ZodEffects<z.ZodObject<{
     currentPassword: string;
     newPassword: string;
 }>;
-export declare const prayerRequestSchema: z.ZodObject<{
+export declare const prayer_requestsSchema: z.ZodObject<{
     title: z.ZodString;
     description: z.ZodString;
     categoryId: z.ZodString;
@@ -99,8 +99,8 @@ export declare const prayerRequestSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     description: string;
     title: string;
-    categoryId: string;
     isAnonymous: boolean;
+    categoryId: string;
     isUrgent: boolean;
     followUpRequested: boolean;
     contactId?: string | undefined;
@@ -109,13 +109,13 @@ export declare const prayerRequestSchema: z.ZodObject<{
     description: string;
     title: string;
     categoryId: string;
-    isAnonymous?: boolean | undefined;
     contactId?: string | undefined;
+    isAnonymous?: boolean | undefined;
     isUrgent?: boolean | undefined;
     expectedDuration?: "medium" | "long" | "short" | undefined;
     followUpRequested?: boolean | undefined;
 }>;
-export declare const prayerRequestUpdateSchema: z.ZodObject<{
+export declare const prayer_requestsUpdateSchema: z.ZodObject<{
     title: z.ZodOptional<z.ZodString>;
     description: z.ZodOptional<z.ZodString>;
     categoryId: z.ZodOptional<z.ZodString>;
@@ -126,24 +126,24 @@ export declare const prayerRequestUpdateSchema: z.ZodObject<{
     followUpRequested: z.ZodOptional<z.ZodBoolean>;
 }, "strip", z.ZodTypeAny, {
     description?: string | undefined;
-    status?: "rejected" | "fulfilled" | "pending" | "approved" | undefined;
     title?: string | undefined;
-    categoryId?: string | undefined;
+    status?: "fulfilled" | "rejected" | "pending" | "approved" | undefined;
     isAnonymous?: boolean | undefined;
+    categoryId?: string | undefined;
     isUrgent?: boolean | undefined;
     expectedDuration?: "medium" | "long" | "short" | undefined;
     followUpRequested?: boolean | undefined;
 }, {
     description?: string | undefined;
-    status?: "rejected" | "fulfilled" | "pending" | "approved" | undefined;
     title?: string | undefined;
-    categoryId?: string | undefined;
+    status?: "fulfilled" | "rejected" | "pending" | "approved" | undefined;
     isAnonymous?: boolean | undefined;
+    categoryId?: string | undefined;
     isUrgent?: boolean | undefined;
     expectedDuration?: "medium" | "long" | "short" | undefined;
     followUpRequested?: boolean | undefined;
 }>;
-export declare const prayerRequestApprovalSchema: z.ZodObject<{
+export declare const prayer_requestsApprovalSchema: z.ZodObject<{
     approved: z.ZodBoolean;
     reason: z.ZodOptional<z.ZodString>;
     modifications: z.ZodOptional<z.ZodString>;
@@ -157,13 +157,13 @@ export declare const prayerRequestApprovalSchema: z.ZodObject<{
     modifications?: string | undefined;
 }>;
 export declare const prayerSchema: z.ZodObject<{
-    prayerRequestId: z.ZodString;
+    prayer_requestsId: z.ZodString;
     note: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    prayerRequestId: string;
+    prayer_requestsId: string;
     note?: string | undefined;
 }, {
-    prayerRequestId: string;
+    prayer_requestsId: string;
     note?: string | undefined;
 }>;
 export declare const prayerUpdateSchema: z.ZodObject<{
@@ -182,18 +182,18 @@ export declare const contactSchema: z.ZodObject<{
     notes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     name: string;
-    preferredContact: "phone" | "email" | "whatsapp" | "sms";
-    address?: string | undefined;
-    phone?: string | undefined;
+    preferredContact: "email" | "phone" | "whatsapp" | "sms";
     email?: string | undefined;
     notes?: string | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
 }, {
     name: string;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
     notes?: string | undefined;
-    preferredContact?: "phone" | "email" | "whatsapp" | "sms" | undefined;
+    phone?: string | undefined;
+    preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
+    address?: string | undefined;
 }>;
 export declare const contactUpdateSchema: z.ZodObject<{
     name: z.ZodOptional<z.ZodString>;
@@ -204,18 +204,18 @@ export declare const contactUpdateSchema: z.ZodObject<{
     notes: z.ZodOptional<z.ZodOptional<z.ZodString>>;
 }, "strip", z.ZodTypeAny, {
     name?: string | undefined;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
     notes?: string | undefined;
-    preferredContact?: "phone" | "email" | "whatsapp" | "sms" | undefined;
+    phone?: string | undefined;
+    preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
+    address?: string | undefined;
 }, {
     name?: string | undefined;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
     notes?: string | undefined;
-    preferredContact?: "phone" | "email" | "whatsapp" | "sms" | undefined;
+    phone?: string | undefined;
+    preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
+    address?: string | undefined;
 }>;
 export declare const categorySchema: z.ZodObject<{
     name: z.ZodString;
@@ -231,8 +231,8 @@ export declare const categorySchema: z.ZodObject<{
     description?: string | undefined;
 }, {
     name: string;
-    description?: string | undefined;
     isActive?: boolean | undefined;
+    description?: string | undefined;
     color?: string | undefined;
     sortOrder?: number | undefined;
 }>;
@@ -244,14 +244,14 @@ export declare const categoryUpdateSchema: z.ZodObject<{
     sortOrder: z.ZodOptional<z.ZodDefault<z.ZodNumber>>;
 }, "strip", z.ZodTypeAny, {
     name?: string | undefined;
-    description?: string | undefined;
     isActive?: boolean | undefined;
+    description?: string | undefined;
     color?: string | undefined;
     sortOrder?: number | undefined;
 }, {
     name?: string | undefined;
-    description?: string | undefined;
     isActive?: boolean | undefined;
+    description?: string | undefined;
     color?: string | undefined;
     sortOrder?: number | undefined;
 }>;
@@ -265,14 +265,14 @@ export declare const responseTemplateSchema: z.ZodObject<{
     name: string;
     isActive: boolean;
     content: string;
-    variables?: string[] | undefined;
     categoryId?: string | undefined;
+    variables?: string[] | undefined;
 }, {
     name: string;
     content: string;
     isActive?: boolean | undefined;
-    variables?: string[] | undefined;
     categoryId?: string | undefined;
+    variables?: string[] | undefined;
 }>;
 export declare const responseTemplateUpdateSchema: z.ZodObject<{
     name: z.ZodOptional<z.ZodString>;
@@ -283,15 +283,15 @@ export declare const responseTemplateUpdateSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name?: string | undefined;
     isActive?: boolean | undefined;
+    categoryId?: string | undefined;
     content?: string | undefined;
     variables?: string[] | undefined;
-    categoryId?: string | undefined;
 }, {
     name?: string | undefined;
     isActive?: boolean | undefined;
+    categoryId?: string | undefined;
     content?: string | undefined;
     variables?: string[] | undefined;
-    categoryId?: string | undefined;
 }>;
 export declare const memberSchema: z.ZodObject<{
     firstName: z.ZodString;
@@ -307,14 +307,14 @@ export declare const memberSchema: z.ZodObject<{
     address: z.ZodOptional<z.ZodString>;
     notes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    status: "active" | "inactive" | "visitor";
+    role: "member" | "leader" | "pastor" | "admin";
+    status: "visitor" | "active" | "inactive";
     firstName: string;
     lastName: string;
-    role: "member" | "leader" | "pastor" | "admin";
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
     notes?: string | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
     maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
@@ -322,16 +322,16 @@ export declare const memberSchema: z.ZodObject<{
 }, {
     firstName: string;
     lastName: string;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
-    status?: "active" | "inactive" | "visitor" | undefined;
+    role?: "member" | "leader" | "pastor" | "admin" | undefined;
+    status?: "visitor" | "active" | "inactive" | undefined;
     notes?: string | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
     maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
     gender?: "other" | "male" | "female" | undefined;
-    role?: "member" | "leader" | "pastor" | "admin" | undefined;
 }>;
 export declare const memberUpdateSchema: z.ZodObject<{
     firstName: z.ZodOptional<z.ZodString>;
@@ -347,31 +347,31 @@ export declare const memberUpdateSchema: z.ZodObject<{
     address: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     notes: z.ZodOptional<z.ZodOptional<z.ZodString>>;
 }, "strip", z.ZodTypeAny, {
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
-    status?: "active" | "inactive" | "visitor" | undefined;
+    role?: "member" | "leader" | "pastor" | "admin" | undefined;
+    status?: "visitor" | "active" | "inactive" | undefined;
+    notes?: string | undefined;
+    phone?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    notes?: string | undefined;
+    address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
     maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
     gender?: "other" | "male" | "female" | undefined;
-    role?: "member" | "leader" | "pastor" | "admin" | undefined;
 }, {
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
-    status?: "active" | "inactive" | "visitor" | undefined;
+    role?: "member" | "leader" | "pastor" | "admin" | undefined;
+    status?: "visitor" | "active" | "inactive" | undefined;
+    notes?: string | undefined;
+    phone?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    notes?: string | undefined;
+    address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
     maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
     gender?: "other" | "male" | "female" | undefined;
-    role?: "member" | "leader" | "pastor" | "admin" | undefined;
 }>;
 export declare const paginationSchema: z.ZodObject<{
     page: z.ZodDefault<z.ZodEffects<z.ZodString, number, string>>;
@@ -390,15 +390,15 @@ export declare const searchSchema: z.ZodObject<{
     sortBy: z.ZodDefault<z.ZodEnum<["name", "date", "status", "category"]>>;
     sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
 }, "strip", z.ZodTypeAny, {
-    status: "rejected" | "active" | "inactive" | "all" | "pending" | "approved";
     category: string;
-    sortBy: "name" | "status" | "category" | "date";
+    status: "rejected" | "pending" | "active" | "inactive" | "all" | "approved";
+    sortBy: "name" | "category" | "status" | "date";
     sortOrder: "asc" | "desc";
     q?: string | undefined;
 }, {
-    status?: "rejected" | "active" | "inactive" | "all" | "pending" | "approved" | undefined;
     category?: string | undefined;
-    sortBy?: "name" | "status" | "category" | "date" | undefined;
+    status?: "rejected" | "pending" | "active" | "inactive" | "all" | "approved" | undefined;
+    sortBy?: "name" | "category" | "status" | "date" | undefined;
     sortOrder?: "asc" | "desc" | undefined;
     q?: string | undefined;
 }>;
@@ -408,15 +408,15 @@ export declare const analyticsQuerySchema: z.ZodObject<{
     status: z.ZodDefault<z.ZodEnum<["all", "pending", "approved", "rejected", "fulfilled"]>>;
     contactMethod: z.ZodDefault<z.ZodEnum<["all", "email", "phone", "whatsapp", "sms"]>>;
 }, "strip", z.ZodTypeAny, {
-    status: "rejected" | "fulfilled" | "all" | "pending" | "approved";
     category: string;
+    status: "fulfilled" | "rejected" | "pending" | "all" | "approved";
     days: number | null;
-    contactMethod: "phone" | "email" | "all" | "whatsapp" | "sms";
+    contactMethod: "email" | "phone" | "all" | "whatsapp" | "sms";
 }, {
-    status?: "rejected" | "fulfilled" | "all" | "pending" | "approved" | undefined;
     category?: string | undefined;
+    status?: "fulfilled" | "rejected" | "pending" | "all" | "approved" | undefined;
     days?: string | null | undefined;
-    contactMethod?: "phone" | "email" | "all" | "whatsapp" | "sms" | undefined;
+    contactMethod?: "email" | "phone" | "all" | "whatsapp" | "sms" | undefined;
 }>;
 export declare const fileUploadSchema: z.ZodObject<{
     filename: z.ZodString;
@@ -443,23 +443,23 @@ export declare const churchConfigSchema: z.ZodObject<{
     currency: z.ZodDefault<z.ZodEnum<["CRC", "USD", "EUR"]>>;
 }, "strip", z.ZodTypeAny, {
     name: string;
-    currency: "USD" | "EUR" | "CRC";
     slug: string;
+    currency: "USD" | "EUR" | "CRC";
     language: "es" | "en";
     timezone: string;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
     website?: string | undefined;
 }, {
     name: string;
     slug: string;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
-    website?: string | undefined;
     currency?: "USD" | "EUR" | "CRC" | undefined;
     language?: "es" | "en" | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
+    website?: string | undefined;
     timezone?: string | undefined;
 }>;
 export declare const churchConfigUpdateSchema: z.ZodObject<{
@@ -474,23 +474,23 @@ export declare const churchConfigUpdateSchema: z.ZodObject<{
     currency: z.ZodOptional<z.ZodDefault<z.ZodEnum<["CRC", "USD", "EUR"]>>>;
 }, "strip", z.ZodTypeAny, {
     name?: string | undefined;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
-    website?: string | undefined;
-    currency?: "USD" | "EUR" | "CRC" | undefined;
     slug?: string | undefined;
+    currency?: "USD" | "EUR" | "CRC" | undefined;
     language?: "es" | "en" | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
+    website?: string | undefined;
     timezone?: string | undefined;
 }, {
     name?: string | undefined;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
-    website?: string | undefined;
-    currency?: "USD" | "EUR" | "CRC" | undefined;
     slug?: string | undefined;
+    currency?: "USD" | "EUR" | "CRC" | undefined;
     language?: "es" | "en" | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
+    website?: string | undefined;
     timezone?: string | undefined;
 }>;
 export declare const spiritualAssessmentSchema: z.ZodObject<{
@@ -520,14 +520,14 @@ export declare const spiritualAssessmentUpdateSchema: z.ZodObject<{
     assessorId: z.ZodOptional<z.ZodOptional<z.ZodString>>;
 }, "strip", z.ZodTypeAny, {
     type?: "initial" | "annual" | "special" | undefined;
-    memberId?: string | undefined;
     notes?: string | undefined;
+    memberId?: string | undefined;
     responses?: Record<string, string | number | boolean> | undefined;
     assessorId?: string | undefined;
 }, {
     type?: "initial" | "annual" | "special" | undefined;
-    memberId?: string | undefined;
     notes?: string | undefined;
+    memberId?: string | undefined;
     responses?: Record<string, string | number | boolean> | undefined;
     assessorId?: string | undefined;
 }>;
@@ -627,7 +627,7 @@ declare const _default: {
         currentPassword: string;
         newPassword: string;
     }>;
-    prayerRequestSchema: z.ZodObject<{
+    prayer_requestsSchema: z.ZodObject<{
         title: z.ZodString;
         description: z.ZodString;
         categoryId: z.ZodString;
@@ -639,8 +639,8 @@ declare const _default: {
     }, "strip", z.ZodTypeAny, {
         description: string;
         title: string;
-        categoryId: string;
         isAnonymous: boolean;
+        categoryId: string;
         isUrgent: boolean;
         followUpRequested: boolean;
         contactId?: string | undefined;
@@ -649,13 +649,13 @@ declare const _default: {
         description: string;
         title: string;
         categoryId: string;
-        isAnonymous?: boolean | undefined;
         contactId?: string | undefined;
+        isAnonymous?: boolean | undefined;
         isUrgent?: boolean | undefined;
         expectedDuration?: "medium" | "long" | "short" | undefined;
         followUpRequested?: boolean | undefined;
     }>;
-    prayerRequestUpdateSchema: z.ZodObject<{
+    prayer_requestsUpdateSchema: z.ZodObject<{
         title: z.ZodOptional<z.ZodString>;
         description: z.ZodOptional<z.ZodString>;
         categoryId: z.ZodOptional<z.ZodString>;
@@ -666,24 +666,24 @@ declare const _default: {
         followUpRequested: z.ZodOptional<z.ZodBoolean>;
     }, "strip", z.ZodTypeAny, {
         description?: string | undefined;
-        status?: "rejected" | "fulfilled" | "pending" | "approved" | undefined;
         title?: string | undefined;
-        categoryId?: string | undefined;
+        status?: "fulfilled" | "rejected" | "pending" | "approved" | undefined;
         isAnonymous?: boolean | undefined;
+        categoryId?: string | undefined;
         isUrgent?: boolean | undefined;
         expectedDuration?: "medium" | "long" | "short" | undefined;
         followUpRequested?: boolean | undefined;
     }, {
         description?: string | undefined;
-        status?: "rejected" | "fulfilled" | "pending" | "approved" | undefined;
         title?: string | undefined;
-        categoryId?: string | undefined;
+        status?: "fulfilled" | "rejected" | "pending" | "approved" | undefined;
         isAnonymous?: boolean | undefined;
+        categoryId?: string | undefined;
         isUrgent?: boolean | undefined;
         expectedDuration?: "medium" | "long" | "short" | undefined;
         followUpRequested?: boolean | undefined;
     }>;
-    prayerRequestApprovalSchema: z.ZodObject<{
+    prayer_requestsApprovalSchema: z.ZodObject<{
         approved: z.ZodBoolean;
         reason: z.ZodOptional<z.ZodString>;
         modifications: z.ZodOptional<z.ZodString>;
@@ -697,13 +697,13 @@ declare const _default: {
         modifications?: string | undefined;
     }>;
     prayerSchema: z.ZodObject<{
-        prayerRequestId: z.ZodString;
+        prayer_requestsId: z.ZodString;
         note: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
-        prayerRequestId: string;
+        prayer_requestsId: string;
         note?: string | undefined;
     }, {
-        prayerRequestId: string;
+        prayer_requestsId: string;
         note?: string | undefined;
     }>;
     prayerUpdateSchema: z.ZodObject<{
@@ -722,18 +722,18 @@ declare const _default: {
         notes: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
         name: string;
-        preferredContact: "phone" | "email" | "whatsapp" | "sms";
-        address?: string | undefined;
-        phone?: string | undefined;
+        preferredContact: "email" | "phone" | "whatsapp" | "sms";
         email?: string | undefined;
         notes?: string | undefined;
+        phone?: string | undefined;
+        address?: string | undefined;
     }, {
         name: string;
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
         notes?: string | undefined;
-        preferredContact?: "phone" | "email" | "whatsapp" | "sms" | undefined;
+        phone?: string | undefined;
+        preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
+        address?: string | undefined;
     }>;
     contactUpdateSchema: z.ZodObject<{
         name: z.ZodOptional<z.ZodString>;
@@ -744,18 +744,18 @@ declare const _default: {
         notes: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     }, "strip", z.ZodTypeAny, {
         name?: string | undefined;
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
         notes?: string | undefined;
-        preferredContact?: "phone" | "email" | "whatsapp" | "sms" | undefined;
+        phone?: string | undefined;
+        preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
+        address?: string | undefined;
     }, {
         name?: string | undefined;
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
         notes?: string | undefined;
-        preferredContact?: "phone" | "email" | "whatsapp" | "sms" | undefined;
+        phone?: string | undefined;
+        preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
+        address?: string | undefined;
     }>;
     categorySchema: z.ZodObject<{
         name: z.ZodString;
@@ -771,8 +771,8 @@ declare const _default: {
         description?: string | undefined;
     }, {
         name: string;
-        description?: string | undefined;
         isActive?: boolean | undefined;
+        description?: string | undefined;
         color?: string | undefined;
         sortOrder?: number | undefined;
     }>;
@@ -784,14 +784,14 @@ declare const _default: {
         sortOrder: z.ZodOptional<z.ZodDefault<z.ZodNumber>>;
     }, "strip", z.ZodTypeAny, {
         name?: string | undefined;
-        description?: string | undefined;
         isActive?: boolean | undefined;
+        description?: string | undefined;
         color?: string | undefined;
         sortOrder?: number | undefined;
     }, {
         name?: string | undefined;
-        description?: string | undefined;
         isActive?: boolean | undefined;
+        description?: string | undefined;
         color?: string | undefined;
         sortOrder?: number | undefined;
     }>;
@@ -805,14 +805,14 @@ declare const _default: {
         name: string;
         isActive: boolean;
         content: string;
-        variables?: string[] | undefined;
         categoryId?: string | undefined;
+        variables?: string[] | undefined;
     }, {
         name: string;
         content: string;
         isActive?: boolean | undefined;
-        variables?: string[] | undefined;
         categoryId?: string | undefined;
+        variables?: string[] | undefined;
     }>;
     responseTemplateUpdateSchema: z.ZodObject<{
         name: z.ZodOptional<z.ZodString>;
@@ -823,15 +823,15 @@ declare const _default: {
     }, "strip", z.ZodTypeAny, {
         name?: string | undefined;
         isActive?: boolean | undefined;
+        categoryId?: string | undefined;
         content?: string | undefined;
         variables?: string[] | undefined;
-        categoryId?: string | undefined;
     }, {
         name?: string | undefined;
         isActive?: boolean | undefined;
+        categoryId?: string | undefined;
         content?: string | undefined;
         variables?: string[] | undefined;
-        categoryId?: string | undefined;
     }>;
     memberSchema: z.ZodObject<{
         firstName: z.ZodString;
@@ -847,14 +847,14 @@ declare const _default: {
         address: z.ZodOptional<z.ZodString>;
         notes: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
-        status: "active" | "inactive" | "visitor";
+        role: "member" | "leader" | "pastor" | "admin";
+        status: "visitor" | "active" | "inactive";
         firstName: string;
         lastName: string;
-        role: "member" | "leader" | "pastor" | "admin";
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
         notes?: string | undefined;
+        phone?: string | undefined;
+        address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
         maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
@@ -862,16 +862,16 @@ declare const _default: {
     }, {
         firstName: string;
         lastName: string;
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
-        status?: "active" | "inactive" | "visitor" | undefined;
+        role?: "member" | "leader" | "pastor" | "admin" | undefined;
+        status?: "visitor" | "active" | "inactive" | undefined;
         notes?: string | undefined;
+        phone?: string | undefined;
+        address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
         maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
         gender?: "other" | "male" | "female" | undefined;
-        role?: "member" | "leader" | "pastor" | "admin" | undefined;
     }>;
     memberUpdateSchema: z.ZodObject<{
         firstName: z.ZodOptional<z.ZodString>;
@@ -887,31 +887,31 @@ declare const _default: {
         address: z.ZodOptional<z.ZodOptional<z.ZodString>>;
         notes: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     }, "strip", z.ZodTypeAny, {
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
-        status?: "active" | "inactive" | "visitor" | undefined;
+        role?: "member" | "leader" | "pastor" | "admin" | undefined;
+        status?: "visitor" | "active" | "inactive" | undefined;
+        notes?: string | undefined;
+        phone?: string | undefined;
         firstName?: string | undefined;
         lastName?: string | undefined;
-        notes?: string | undefined;
+        address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
         maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
         gender?: "other" | "male" | "female" | undefined;
-        role?: "member" | "leader" | "pastor" | "admin" | undefined;
     }, {
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
-        status?: "active" | "inactive" | "visitor" | undefined;
+        role?: "member" | "leader" | "pastor" | "admin" | undefined;
+        status?: "visitor" | "active" | "inactive" | undefined;
+        notes?: string | undefined;
+        phone?: string | undefined;
         firstName?: string | undefined;
         lastName?: string | undefined;
-        notes?: string | undefined;
+        address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
         maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
         gender?: "other" | "male" | "female" | undefined;
-        role?: "member" | "leader" | "pastor" | "admin" | undefined;
     }>;
     paginationSchema: z.ZodObject<{
         page: z.ZodDefault<z.ZodEffects<z.ZodString, number, string>>;
@@ -930,15 +930,15 @@ declare const _default: {
         sortBy: z.ZodDefault<z.ZodEnum<["name", "date", "status", "category"]>>;
         sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
     }, "strip", z.ZodTypeAny, {
-        status: "rejected" | "active" | "inactive" | "all" | "pending" | "approved";
         category: string;
-        sortBy: "name" | "status" | "category" | "date";
+        status: "rejected" | "pending" | "active" | "inactive" | "all" | "approved";
+        sortBy: "name" | "category" | "status" | "date";
         sortOrder: "asc" | "desc";
         q?: string | undefined;
     }, {
-        status?: "rejected" | "active" | "inactive" | "all" | "pending" | "approved" | undefined;
         category?: string | undefined;
-        sortBy?: "name" | "status" | "category" | "date" | undefined;
+        status?: "rejected" | "pending" | "active" | "inactive" | "all" | "approved" | undefined;
+        sortBy?: "name" | "category" | "status" | "date" | undefined;
         sortOrder?: "asc" | "desc" | undefined;
         q?: string | undefined;
     }>;
@@ -948,15 +948,15 @@ declare const _default: {
         status: z.ZodDefault<z.ZodEnum<["all", "pending", "approved", "rejected", "fulfilled"]>>;
         contactMethod: z.ZodDefault<z.ZodEnum<["all", "email", "phone", "whatsapp", "sms"]>>;
     }, "strip", z.ZodTypeAny, {
-        status: "rejected" | "fulfilled" | "all" | "pending" | "approved";
         category: string;
+        status: "fulfilled" | "rejected" | "pending" | "all" | "approved";
         days: number | null;
-        contactMethod: "phone" | "email" | "all" | "whatsapp" | "sms";
+        contactMethod: "email" | "phone" | "all" | "whatsapp" | "sms";
     }, {
-        status?: "rejected" | "fulfilled" | "all" | "pending" | "approved" | undefined;
         category?: string | undefined;
+        status?: "fulfilled" | "rejected" | "pending" | "all" | "approved" | undefined;
         days?: string | null | undefined;
-        contactMethod?: "phone" | "email" | "all" | "whatsapp" | "sms" | undefined;
+        contactMethod?: "email" | "phone" | "all" | "whatsapp" | "sms" | undefined;
     }>;
     fileUploadSchema: z.ZodObject<{
         filename: z.ZodString;
@@ -983,23 +983,23 @@ declare const _default: {
         currency: z.ZodDefault<z.ZodEnum<["CRC", "USD", "EUR"]>>;
     }, "strip", z.ZodTypeAny, {
         name: string;
-        currency: "USD" | "EUR" | "CRC";
         slug: string;
+        currency: "USD" | "EUR" | "CRC";
         language: "es" | "en";
         timezone: string;
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
+        phone?: string | undefined;
+        address?: string | undefined;
         website?: string | undefined;
     }, {
         name: string;
         slug: string;
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
-        website?: string | undefined;
         currency?: "USD" | "EUR" | "CRC" | undefined;
         language?: "es" | "en" | undefined;
+        phone?: string | undefined;
+        address?: string | undefined;
+        website?: string | undefined;
         timezone?: string | undefined;
     }>;
     churchConfigUpdateSchema: z.ZodObject<{
@@ -1014,23 +1014,23 @@ declare const _default: {
         currency: z.ZodOptional<z.ZodDefault<z.ZodEnum<["CRC", "USD", "EUR"]>>>;
     }, "strip", z.ZodTypeAny, {
         name?: string | undefined;
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
-        website?: string | undefined;
-        currency?: "USD" | "EUR" | "CRC" | undefined;
         slug?: string | undefined;
+        currency?: "USD" | "EUR" | "CRC" | undefined;
         language?: "es" | "en" | undefined;
+        phone?: string | undefined;
+        address?: string | undefined;
+        website?: string | undefined;
         timezone?: string | undefined;
     }, {
         name?: string | undefined;
-        address?: string | undefined;
-        phone?: string | undefined;
         email?: string | undefined;
-        website?: string | undefined;
-        currency?: "USD" | "EUR" | "CRC" | undefined;
         slug?: string | undefined;
+        currency?: "USD" | "EUR" | "CRC" | undefined;
         language?: "es" | "en" | undefined;
+        phone?: string | undefined;
+        address?: string | undefined;
+        website?: string | undefined;
         timezone?: string | undefined;
     }>;
     spiritualAssessmentSchema: z.ZodObject<{
@@ -1060,14 +1060,14 @@ declare const _default: {
         assessorId: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     }, "strip", z.ZodTypeAny, {
         type?: "initial" | "annual" | "special" | undefined;
-        memberId?: string | undefined;
         notes?: string | undefined;
+        memberId?: string | undefined;
         responses?: Record<string, string | number | boolean> | undefined;
         assessorId?: string | undefined;
     }, {
         type?: "initial" | "annual" | "special" | undefined;
-        memberId?: string | undefined;
         notes?: string | undefined;
+        memberId?: string | undefined;
         responses?: Record<string, string | number | boolean> | undefined;
         assessorId?: string | undefined;
     }>;

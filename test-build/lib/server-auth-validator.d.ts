@@ -8,8 +8,8 @@ export declare function validateSuperAdminAccess(): Promise<{
         name: string | null;
         id: string;
         email: string;
-        isActive: boolean;
         role: import(".prisma/client").$Enums.UserRole;
+        isActive: boolean;
     };
     session: import("next-auth").Session;
 }>;
@@ -20,7 +20,7 @@ export declare function validateSuperAdminAccess(): Promise<{
 export declare function validateUserRole(requiredRole: string): Promise<{
     id: string;
     email: string;
-    isActive: boolean;
     role: import(".prisma/client").$Enums.UserRole;
+    isActive: boolean;
 }>;
 //# sourceMappingURL=server-auth-validator.d.ts.map

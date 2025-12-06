@@ -118,6 +118,32 @@ export declare class MemberJourneyAnalytics {
     private calculateEngagementDistribution;
     private calculateStageProgression;
     private generatePredictiveInsights;
+    private generateMLGrowthPredictions;
+    private generateMLRetentionAlerts;
+    private generateMLRecommendedActions;
+    private getHistoricalConversionRates;
+    private calculateSeasonalAdjustment;
+    private calculateTrendAdjustment;
+    private calculateGrowthPredictionConfidence;
+    private calculateLeaderPredictionConfidence;
+    private calculatePredictiveAccuracy;
+    private calculateConfidenceMetrics;
+    private analyzeDetailedRiskFactors;
+    private calculateInterventionUrgency;
+    private selectOptimalIntervention;
+    private predictDepartureTimeframe;
+    private calculateInterventionSuccessProbability;
+    private calculateRetentionHealthScore;
+    private analyzeRetentionTrends;
+    private calculateActionSuccessProbability;
+    private analyzeStageTransitions;
+    private calculateDataRecency;
+    private calculateDataCompleteness;
+    private calculateAverageDataRecency;
+    private calculatePredictionReliability;
+    private calculateOverallConfidence;
+    private generateConfidenceRecommendations;
+    private generateQuarterlyProjections;
     private calculateAverageDuration;
 }
 //# sourceMappingURL=member-journey-analytics.d.ts.map

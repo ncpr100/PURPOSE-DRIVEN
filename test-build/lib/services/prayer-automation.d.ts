@@ -7,7 +7,7 @@ export declare class PrayerAutomation {
     /**
      * Process a new prayer request through automation rules
      */
-    static processPrayerRequest(prayerRequestId: string): Promise<void>;
+    static processPrayerRequest(prayer_requestsId: string): Promise<void>;
     /**
      * Execute all actions for a rule (when bypassApproval is true)
      */

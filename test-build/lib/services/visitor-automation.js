@@ -15,7 +15,7 @@ class VisitorAutomationService {
     static async processVisitor(checkInId) {
         try {
             // Fetch check-in with related data
-            const checkIn = await prisma_1.prisma.checkIn.findUnique({
+            const checkIn = await prisma_1.prisma.check_ins.findUnique({
                 where: { id: checkInId },
                 include: {
                     church: true,
@@ -33,7 +33,7 @@ class VisitorAutomationService {
             const visitorProfile = await this.upsertVisitorProfile(checkIn, category);
             // Find active automation rules for this visitor category
             const triggerType = this.getTriggerTypeForCategory(category);
-            const automationRules = await prisma_1.prisma.automationRule.findMany({
+            const automation_ruless = await prisma_1.prisma.automation_rules.findMany({
                 where: {
                     churchId: checkIn.churchId,
                     isActive: true,
@@ -53,12 +53,12 @@ class VisitorAutomationService {
                     triggers: true
                 }
             });
-            if (automationRules.length === 0) {
+            if (automation_ruless.length === 0) {
                 console.log(`[Visitor Automation] No active automation rules found for ${category} visitors`);
                 return;
             }
             // Execute each matching automation rule
-            for (const rule of automationRules) {
+            for (const rule of automation_ruless) {
                 // Check if conditions match
                 const conditionsMatch = await this.evaluateConditions(rule.conditions, checkIn, visitorProfile);
                 if (!conditionsMatch) {
@@ -86,9 +86,9 @@ class VisitorAutomationService {
     /**
      * AUTO-CATEGORIZE visitor based on behavior and history
      */
-    static async categorizeVisitor(checkIn) {
+    static async categorizeVisitor(check_ins) {
         // Check if first-time visitor
-        const previousVisits = await prisma_1.prisma.checkIn.count({
+        const previousVisits = await prisma_1.prisma.check_ins.count({
             where: {
                 email: checkIn.email,
                 churchId: checkIn.churchId,
@@ -113,7 +113,7 @@ class VisitorAutomationService {
     /**
      * Create or update VisitorProfile in database
      */
-    static async upsertVisitorProfile(checkIn, category) {
+    static async upsertVisitorProfile(check_ins, category) {
         // Try to find existing profile by email or phone
         const existingProfile = await prisma_1.prisma.visitorProfile.findFirst({
             where: {
@@ -155,7 +155,7 @@ class VisitorAutomationService {
     /**
      * Calculate engagement score (0-100)
      */
-    static calculateEngagementScore(checkIn, category) {
+    static calculateEngagementScore(check_ins, category) {
         let score = 50; // Base score
         // Category bonuses
         const categoryBonus = {
@@ -176,7 +176,7 @@ class VisitorAutomationService {
         if (checkIn.phone)
             score += 5;
         // Prayer request or special needs
-        if (checkIn.prayerRequest)
+        if (checkIn.prayer_requests)
             score += 10;
         if (checkIn.specialNeeds)
             score += 10;
@@ -185,7 +185,7 @@ class VisitorAutomationService {
     /**
      * Match visitor to suitable ministries based on interests and profile
      */
-    static async matchMinistries(checkIn, visitorProfile) {
+    static async matchMinistries(check_ins, visitorProfile) {
         try {
             // Get available ministries for the church
             const ministries = await prisma_1.prisma.ministry.findMany({
@@ -209,7 +209,7 @@ class VisitorAutomationService {
                         matchScore += 20;
                 }
                 // Keywords in prayer request or visit reason
-                const textToAnalyze = `${checkIn.prayerRequest || ''} ${checkIn.visitReason || ''}`.toLowerCase();
+                const textToAnalyze = `${checkIn.prayer_requests || ''} ${checkIn.visitReason || ''}`.toLowerCase();
                 const ministryKeywords = this.getMinistryKeywords(ministry.name);
                 for (const keyword of ministryKeywords) {
                     if (textToAnalyze.includes(keyword.toLowerCase())) {
@@ -289,7 +289,7 @@ class VisitorAutomationService {
     /**
      * Execute all actions for a rule (when bypassApproval is true)
      */
-    static async executeRuleActions(rule, checkIn, visitorProfile) {
+    static async executeRuleActions(rule, check_ins, visitorProfile) {
         for (const action of rule.actions) {
             try {
                 // Prepare context for action execution
@@ -326,7 +326,7 @@ class VisitorAutomationService {
     /**
      * Create follow-up task (when bypassApproval is false)
      */
-    static async createFollowUpTask(rule, checkIn, visitorProfile) {
+    static async createFollowUpTask(rule, check_ins, visitorProfile) {
         // Find a pastor or admin to assign task
         const staff = await prisma_1.prisma.user.findMany({
             where: {
@@ -346,7 +346,7 @@ class VisitorAutomationService {
         }
         // Calculate scheduled follow-up time (24 hours default)
         const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-        await prisma_1.prisma.visitorFollowUp.create({
+        await prisma_1.prisma.visitor_follow_ups.create({
             data: {
                 checkInId: checkIn.id,
                 churchId: checkIn.churchId,
@@ -364,13 +364,13 @@ class VisitorAutomationService {
     /**
      * Evaluate rule conditions against check-in and visitor profile
      */
-    static async evaluateConditions(conditions, checkIn, visitorProfile) {
+    static async evaluateConditions(conditions, check_ins, visitorProfile) {
         if (!conditions || conditions.length === 0) {
             return true; // No conditions = always match
         }
         for (const condition of conditions) {
             // Merge checkIn and visitorProfile for field lookup
-            const data = { ...checkIn, ...visitorProfile };
+            const data = { ...check_ins, ...visitorProfile };
             const fieldValue = this.getFieldValue(data, condition.field);
             const conditionValue = condition.value;
             switch (condition.operator) {

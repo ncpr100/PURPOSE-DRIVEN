@@ -13,7 +13,7 @@
  * - Length and format restrictions
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateRateLimitWindow = exports.sanitizeFilePath = exports.sanitizeSearchQuery = exports.isValidUUID = exports.sanitizeHtml = exports.spiritualAssessmentUpdateSchema = exports.spiritualAssessmentSchema = exports.churchConfigUpdateSchema = exports.churchConfigSchema = exports.fileUploadSchema = exports.analyticsQuerySchema = exports.searchSchema = exports.paginationSchema = exports.memberUpdateSchema = exports.memberSchema = exports.responseTemplateUpdateSchema = exports.responseTemplateSchema = exports.categoryUpdateSchema = exports.categorySchema = exports.contactUpdateSchema = exports.contactSchema = exports.prayerUpdateSchema = exports.prayerSchema = exports.prayerRequestApprovalSchema = exports.prayerRequestUpdateSchema = exports.prayerRequestSchema = exports.passwordChangeSchema = exports.passwordResetSchema = exports.registerSchema = exports.loginSchema = void 0;
+exports.validateRateLimitWindow = exports.sanitizeFilePath = exports.sanitizeSearchQuery = exports.isValidUUID = exports.sanitizeHtml = exports.spiritualAssessmentUpdateSchema = exports.spiritualAssessmentSchema = exports.churchConfigUpdateSchema = exports.churchConfigSchema = exports.fileUploadSchema = exports.analyticsQuerySchema = exports.searchSchema = exports.paginationSchema = exports.memberUpdateSchema = exports.memberSchema = exports.responseTemplateUpdateSchema = exports.responseTemplateSchema = exports.categoryUpdateSchema = exports.categorySchema = exports.contactUpdateSchema = exports.contactSchema = exports.prayerUpdateSchema = exports.prayerSchema = exports.prayer_requestsApprovalSchema = exports.prayer_requestsUpdateSchema = exports.prayer_requestsSchema = exports.passwordChangeSchema = exports.passwordResetSchema = exports.registerSchema = exports.loginSchema = void 0;
 const zod_1 = require("zod");
 // ===== AUTHENTICATION & USER SCHEMAS =====
 exports.loginSchema = zod_1.z.object({
@@ -75,7 +75,7 @@ exports.passwordChangeSchema = zod_1.z.object({
     path: ["confirmPassword"],
 });
 // ===== PRAYER REQUEST SCHEMAS =====
-exports.prayerRequestSchema = zod_1.z.object({
+exports.prayer_requestsSchema = zod_1.z.object({
     title: zod_1.z.string()
         .min(5, 'Título muy corto')
         .max(200, 'Título muy largo')
@@ -91,7 +91,7 @@ exports.prayerRequestSchema = zod_1.z.object({
     expectedDuration: zod_1.z.enum(['short', 'medium', 'long']).optional(),
     followUpRequested: zod_1.z.boolean().default(false)
 });
-exports.prayerRequestUpdateSchema = zod_1.z.object({
+exports.prayer_requestsUpdateSchema = zod_1.z.object({
     title: zod_1.z.string()
         .min(5, 'Título muy corto')
         .max(200, 'Título muy largo')
@@ -109,7 +109,7 @@ exports.prayerRequestUpdateSchema = zod_1.z.object({
     expectedDuration: zod_1.z.enum(['short', 'medium', 'long']).optional(),
     followUpRequested: zod_1.z.boolean().optional()
 });
-exports.prayerRequestApprovalSchema = zod_1.z.object({
+exports.prayer_requestsApprovalSchema = zod_1.z.object({
     approved: zod_1.z.boolean(),
     reason: zod_1.z.string()
         .max(500, 'Razón muy larga')
@@ -122,7 +122,7 @@ exports.prayerRequestApprovalSchema = zod_1.z.object({
 });
 // ===== PRAYER SCHEMAS =====
 exports.prayerSchema = zod_1.z.object({
-    prayerRequestId: zod_1.z.string().uuid('ID de petición inválido'),
+    prayer_requestsId: zod_1.z.string().uuid('ID de petición inválido'),
     note: zod_1.z.string()
         .max(500, 'Nota muy larga')
         .trim()
@@ -245,7 +245,7 @@ exports.paginationSchema = zod_1.z.object({
         .default('1'),
     limit: zod_1.z.string()
         .regex(/^\d+$/, 'Límite debe ser un número')
-        .transform(val => Math.min(100, Math.max(1, parseInt(val))))
+        .transform(val => Math.min(2000, Math.max(1, parseInt(val))))
         .default('10')
 });
 exports.searchSchema = zod_1.z.object({
@@ -403,9 +403,9 @@ exports.default = {
     passwordResetSchema: exports.passwordResetSchema,
     passwordChangeSchema: exports.passwordChangeSchema,
     // Prayer Requests
-    prayerRequestSchema: exports.prayerRequestSchema,
-    prayerRequestUpdateSchema: exports.prayerRequestUpdateSchema,
-    prayerRequestApprovalSchema: exports.prayerRequestApprovalSchema,
+    prayer_requestsSchema: exports.prayer_requestsSchema,
+    prayer_requestsUpdateSchema: exports.prayer_requestsUpdateSchema,
+    prayer_requestsApprovalSchema: exports.prayer_requestsApprovalSchema,
     // Prayers
     prayerSchema: exports.prayerSchema,
     prayerUpdateSchema: exports.prayerUpdateSchema,

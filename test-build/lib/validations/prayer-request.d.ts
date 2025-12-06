@@ -15,52 +15,52 @@ export declare const createPrayerRequestSchema: z.ZodEffects<z.ZodObject<{
     qrCodeId: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     churchId: string;
-    priority: "high" | "low" | "normal" | "urgent";
-    categoryId: string;
-    isAnonymous: boolean;
+    priority: "high" | "low" | "urgent" | "normal";
     message: string;
+    isAnonymous: boolean;
     fullName: string;
     preferredContact: "email" | "sms" | "phone_call";
-    phone?: string | undefined;
+    categoryId: string;
     email?: string | undefined;
     formId?: string | undefined;
     qrCodeId?: string | undefined;
+    phone?: string | undefined;
 }, {
     churchId: string;
-    categoryId: string;
     message: string;
     fullName: string;
-    phone?: string | undefined;
+    categoryId: string;
     email?: string | undefined;
-    priority?: "high" | "low" | "normal" | "urgent" | undefined;
+    priority?: "high" | "low" | "urgent" | "normal" | undefined;
     isAnonymous?: boolean | undefined;
-    preferredContact?: "email" | "sms" | "phone_call" | undefined;
     formId?: string | undefined;
     qrCodeId?: string | undefined;
+    phone?: string | undefined;
+    preferredContact?: "email" | "sms" | "phone_call" | undefined;
 }>, {
     churchId: string;
-    priority: "high" | "low" | "normal" | "urgent";
-    categoryId: string;
-    isAnonymous: boolean;
+    priority: "high" | "low" | "urgent" | "normal";
     message: string;
+    isAnonymous: boolean;
     fullName: string;
     preferredContact: "email" | "sms" | "phone_call";
-    phone?: string | undefined;
+    categoryId: string;
     email?: string | undefined;
     formId?: string | undefined;
     qrCodeId?: string | undefined;
+    phone?: string | undefined;
 }, {
     churchId: string;
-    categoryId: string;
     message: string;
     fullName: string;
-    phone?: string | undefined;
+    categoryId: string;
     email?: string | undefined;
-    priority?: "high" | "low" | "normal" | "urgent" | undefined;
+    priority?: "high" | "low" | "urgent" | "normal" | undefined;
     isAnonymous?: boolean | undefined;
-    preferredContact?: "email" | "sms" | "phone_call" | undefined;
     formId?: string | undefined;
     qrCodeId?: string | undefined;
+    phone?: string | undefined;
+    preferredContact?: "email" | "sms" | "phone_call" | undefined;
 }>;
 export declare const getPrayerRequestsSchema: z.ZodObject<{
     status: z.ZodOptional<z.ZodEnum<["pending", "approved", "answered", "rejected"]>>;
@@ -71,12 +71,12 @@ export declare const getPrayerRequestsSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
+    priority?: "high" | "low" | "urgent" | "normal" | undefined;
     status?: "rejected" | "pending" | "approved" | "answered" | undefined;
-    priority?: "high" | "low" | "normal" | "urgent" | undefined;
     categoryId?: string | undefined;
 }, {
+    priority?: "high" | "low" | "urgent" | "normal" | undefined;
     status?: "rejected" | "pending" | "approved" | "answered" | undefined;
-    priority?: "high" | "low" | "normal" | "urgent" | undefined;
     categoryId?: string | undefined;
     limit?: number | undefined;
     page?: number | undefined;

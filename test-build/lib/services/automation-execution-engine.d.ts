@@ -30,7 +30,7 @@ interface ExecutionResult {
     fallbackUsed?: boolean;
 }
 interface ActionExecutionContext {
-    automationRuleId: string;
+    automation_rulesId: string;
     actionId: string;
     churchId: string;
     recipientId?: string;
@@ -57,10 +57,10 @@ export declare function createManualTask(context: ActionExecutionContext, reason
 /**
  * Handle escalation when no response is received
  */
-export declare function handleEscalation(automationRuleId: string, escalationConfig: EscalationConfig, churchId: string): Promise<void>;
+export declare function handleEscalation(automation_rulesId: string, escalationConfig: EscalationConfig, churchId: string): Promise<void>;
 /**
  * Main automation execution entry point
  */
-export declare function executeAutomationAction(automationRule: any, action: any, context: Record<string, any>): Promise<ExecutionResult>;
+export declare function executeAutomationAction(automation_rules: any, action: any, context: Record<string, any>): Promise<ExecutionResult>;
 export {};
 //# sourceMappingURL=automation-execution-engine.d.ts.map

@@ -303,9 +303,9 @@ async function initiatePhoneCall(context) {
  */
 async function logExecutionSuccess(context, channel, attempts, fallbackUsed = false) {
     try {
-        await db_1.db.automationRuleExecution.create({
+        await db_1.db.automation_rulesExecution.create({
             data: {
-                ruleId: context.automationRuleId,
+                ruleId: context.automation_rulesId,
                 triggerData: context.data,
                 status: 'SUCCESS',
                 result: {
@@ -327,9 +327,9 @@ async function logExecutionSuccess(context, channel, attempts, fallbackUsed = fa
  */
 async function logExecutionFailure(context, channel, attempts, error) {
     try {
-        await db_1.db.automationRuleExecution.create({
+        await db_1.db.automation_rulesExecution.create({
             data: {
-                ruleId: context.automationRuleId,
+                ruleId: context.automation_rulesId,
                 triggerData: context.data,
                 status: 'FAILED',
                 error: error || 'All channels failed',
@@ -353,12 +353,12 @@ async function createManualTask(context, reason) {
     try {
         console.log(`[Automation] Creating manual task for failed action ${context.actionId}`);
         // Get automation rule details
-        const rule = await db_1.db.automationRule.findUnique({
-            where: { id: context.automationRuleId },
+        const rule = await db_1.db.automation_rules.findUnique({
+            where: { id: context.automation_rulesId },
             select: { name: true, description: true }
         });
         // Create a follow-up task
-        await db_1.db.visitorFollowUp.create({
+        await db_1.db.visitor_follow_ups.create({
             data: {
                 churchId: context.churchId,
                 checkInId: 'MANUAL_TASK',
@@ -381,9 +381,9 @@ exports.createManualTask = createManualTask;
 /**
  * Handle escalation when no response is received
  */
-async function handleEscalation(automationRuleId, escalationConfig, churchId) {
+async function handleEscalation(automation_rulesId, escalationConfig, churchId) {
     try {
-        console.log(`[Automation] Handling escalation for rule ${automationRuleId}`);
+        console.log(`[Automation] Handling escalation for rule ${automation_rulesId}`);
         // Find the escalation target (role or user)
         const escalationTarget = escalationConfig.escalateTo;
         // Send notification to escalation target
@@ -399,7 +399,7 @@ async function handleEscalation(automationRuleId, escalationConfig, churchId) {
             // Notify each pastor
             for (const pastor of pastors) {
                 await sendEmail({
-                    automationRuleId,
+                    automation_rulesId,
                     actionId: 'escalation',
                     churchId,
                     recipientId: pastor.id,
@@ -416,9 +416,9 @@ async function handleEscalation(automationRuleId, escalationConfig, churchId) {
             // TODO: Implement role-based or user-specific notification
         }
         // Log escalation
-        await db_1.db.automationRuleExecution.create({
+        await db_1.db.automation_rulesExecution.create({
             data: {
-                ruleId: automationRuleId,
+                ruleId: automation_rulesId,
                 triggerData: {},
                 status: 'ESCALATED',
                 result: {
@@ -437,19 +437,19 @@ exports.handleEscalation = handleEscalation;
 /**
  * Main automation execution entry point
  */
-async function executeAutomationAction(automationRule, action, context) {
+async function executeAutomationAction(automation_rules, action, context) {
     const executionContext = {
-        automationRuleId: automationRule.id,
+        automation_rulesId: automation_rules.id,
         actionId: action.id,
-        churchId: automationRule.churchId,
+        churchId: automation_rules.churchId,
         recipientId: context.recipientId,
         recipientEmail: context.recipientEmail,
         recipientPhone: context.recipientPhone,
         data: { ...action.configuration, ...context }
     };
     // Check business hours (unless urgent 24/7 mode)
-    if (automationRule.businessHoursOnly && !automationRule.urgentMode24x7) {
-        const businessHoursConfig = automationRule.businessHoursConfig;
+    if (automation_rules.businessHoursOnly && !automation_rules.urgentMode24x7) {
+        const businessHoursConfig = automation_rules.businessHoursConfig;
         if (businessHoursConfig && !isWithinBusinessHours(businessHoursConfig)) {
             console.log('[Automation] Outside business hours, deferring execution');
             // TODO: Schedule for next business hours
@@ -469,12 +469,12 @@ async function executeAutomationAction(automationRule, action, context) {
         'SEND_NOTIFICATION': 'PUSH'
     };
     const primaryChannel = channelMap[action.type] || 'EMAIL';
-    const retryConfig = automationRule.retryConfig;
-    const fallbackChannels = automationRule.fallbackChannels?.channels || [];
+    const retryConfig = automation_rules.retryConfig;
+    const fallbackChannels = automation_rules.fallbackChannels?.channels || [];
     // Execute with retry and fallback
     const result = await executeActionWithRetry(executionContext, primaryChannel, retryConfig, fallbackChannels);
     // If all channels failed and createManualTaskOnFail is enabled
-    if (!result.success && automationRule.createManualTaskOnFail) {
+    if (!result.success && automation_rules.createManualTaskOnFail) {
         await createManualTask(executionContext, result.error || 'All channels failed');
     }
     return result;

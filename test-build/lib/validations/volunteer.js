@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parsePaginationParams = exports.paginationSchema = exports.volunteerMatchingSchema = exports.enhancedSpiritualProfileSchema = exports.spiritualProfileSchema = exports.volunteerAssignmentSchema = exports.volunteerCreateSchema = void 0;
+exports.parsePaginationParams = exports.paginationSchema = exports.volunteerMatchingSchema = exports.enhancedSpiritualProfileSchema = exports.spiritualProfileSchema = exports.volunteer_assignmentsSchema = exports.volunteerCreateSchema = void 0;
 const zod_1 = require("zod");
 const cuid_1 = require("./cuid");
 /**
@@ -42,7 +42,7 @@ exports.volunteerCreateSchema = zod_1.z.object({
  * Validation schema for volunteer assignments
  * Addresses HIGH-012: No Scheduling Conflict Detection (validation layer)
  */
-exports.volunteerAssignmentSchema = zod_1.z.object({
+exports.volunteer_assignmentsSchema = zod_1.z.object({
     volunteerId: cuid_1.cuidSchema,
     eventId: cuid_1.optionalCuidSchema,
     title: zod_1.z.string()

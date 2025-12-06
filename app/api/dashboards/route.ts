@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { nanoid } from 'nanoid';
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
         ]
       },
       include: {
-        widgets: {
+        dashboard_widgets: {
           where: { isVisible: true },
           orderBy: [
             { position: 'asc' }
@@ -89,6 +90,7 @@ export async function POST(request: NextRequest) {
 
     const dashboard = await db.analytics_dashboards.create({
       data: {
+        id: nanoid(),
         name,
         description,
         layout: JSON.stringify(layout),
@@ -99,7 +101,7 @@ export async function POST(request: NextRequest) {
         churchId
       },
       include: {
-        widgets: true
+        dashboard_widgets: true
       }
     });
 

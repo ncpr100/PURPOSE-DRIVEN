@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
       prisma.donation_campaigns.findMany({
         where,
         include: {
-          category: {
+          donation_categories: {
             select: {
               id: true,
               name: true
@@ -123,7 +124,7 @@ export async function POST(request: NextRequest) {
 
     // Verify category exists if provided
     if (categoryId) {
-      const category = await prisma.donationCategory.findUnique({
+      const category = await prisma.donation_categories.findUnique({
         where: { 
           id: categoryId,
           churchId: session.user.churchId 
@@ -140,6 +141,7 @@ export async function POST(request: NextRequest) {
 
     const campaign = await prisma.donation_campaigns.create({
       data: {
+        id: nanoid(),
         name: campaignName,
         description,
         goal: parseFloat(campaignGoal.toString()),
@@ -150,7 +152,7 @@ export async function POST(request: NextRequest) {
         churchId: session.user.churchId
       },
       include: {
-        category: {
+        donation_categories: {
           select: {
             id: true,
             name: true

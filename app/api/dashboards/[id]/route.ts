@@ -25,7 +25,7 @@ export async function GET(
         churchId
       },
       include: {
-        widgets: {
+        dashboard_widgets: {
           where: { isVisible: true },
           orderBy: { position: 'asc' }
         }
@@ -93,7 +93,7 @@ export async function PUT(
         userRole
       },
       include: {
-        widgets: {
+        dashboard_widgets: {
           where: { isVisible: true },
           orderBy: { position: 'asc' }
         }

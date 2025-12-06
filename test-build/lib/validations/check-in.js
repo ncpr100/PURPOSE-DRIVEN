@@ -9,7 +9,7 @@ exports.createCheckInSchema = zod_1.z.object({
     phone: zod_1.z.string().optional(),
     isFirstTime: zod_1.z.boolean().default(false),
     visitReason: zod_1.z.string().optional(),
-    prayerRequest: zod_1.z.string().optional(),
+    prayer_requests: zod_1.z.string().optional(),
     eventId: zod_1.z.string().uuid().optional(),
     visitorType: zod_1.z.enum(['FIRST_TIME', 'RETURN', 'MINISTRY_INTEREST', 'PRAYER_REQUEST']).optional(),
     ministryInterest: zod_1.z.array(zod_1.z.string()).default([]),

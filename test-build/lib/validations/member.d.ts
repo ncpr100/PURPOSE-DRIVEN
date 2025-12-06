@@ -31,11 +31,10 @@ export declare const createMemberSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     firstName: string;
     lastName: string;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
-    emergencyContact?: string | undefined;
     notes?: string | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
     city?: string | undefined;
     state?: string | undefined;
     zipCode?: string | undefined;
@@ -57,14 +56,14 @@ export declare const createMemberSchema: z.ZodObject<{
     personalityType?: string | undefined;
     transportationOwned?: boolean | undefined;
     childcareAvailable?: boolean | undefined;
+    emergencyContact?: string | undefined;
 }, {
     firstName: string;
     lastName: string;
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
-    emergencyContact?: string | undefined;
     notes?: string | undefined;
+    phone?: string | undefined;
+    address?: string | undefined;
     city?: string | undefined;
     state?: string | undefined;
     zipCode?: string | undefined;
@@ -86,6 +85,7 @@ export declare const createMemberSchema: z.ZodObject<{
     personalityType?: string | undefined;
     transportationOwned?: boolean | undefined;
     childcareAvailable?: boolean | undefined;
+    emergencyContact?: string | undefined;
 }>;
 export declare const updateMemberSchema: z.ZodObject<{
     firstName: z.ZodOptional<z.ZodString>;
@@ -117,13 +117,12 @@ export declare const updateMemberSchema: z.ZodObject<{
     childcareAvailable: z.ZodOptional<z.ZodOptional<z.ZodBoolean>>;
     emergencyContact: z.ZodOptional<z.ZodOptional<z.ZodString>>;
 }, "strip", z.ZodTypeAny, {
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
+    notes?: string | undefined;
+    phone?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    emergencyContact?: string | undefined;
-    notes?: string | undefined;
+    address?: string | undefined;
     city?: string | undefined;
     state?: string | undefined;
     zipCode?: string | undefined;
@@ -145,14 +144,14 @@ export declare const updateMemberSchema: z.ZodObject<{
     personalityType?: string | undefined;
     transportationOwned?: boolean | undefined;
     childcareAvailable?: boolean | undefined;
+    emergencyContact?: string | undefined;
 }, {
-    address?: string | undefined;
-    phone?: string | undefined;
     email?: string | undefined;
+    notes?: string | undefined;
+    phone?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
-    emergencyContact?: string | undefined;
-    notes?: string | undefined;
+    address?: string | undefined;
     city?: string | undefined;
     state?: string | undefined;
     zipCode?: string | undefined;
@@ -174,5 +173,6 @@ export declare const updateMemberSchema: z.ZodObject<{
     personalityType?: string | undefined;
     transportationOwned?: boolean | undefined;
     childcareAvailable?: boolean | undefined;
+    emergencyContact?: string | undefined;
 }>;
 //# sourceMappingURL=member.d.ts.map

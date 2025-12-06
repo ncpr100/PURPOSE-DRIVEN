@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutomationTriggers = exports.triggerAutomation = exports.AutomationEngine = void 0;
+exports.FormAutomationEngine = exports.AutomationTriggers = exports.triggerAutomation = exports.AutomationEngine = void 0;
 const db_1 = require("@/lib/db");
 const sse_broadcast_1 = require("@/lib/sse-broadcast");
 const push_notifications_1 = require("@/lib/push-notifications");
@@ -50,7 +50,7 @@ class AutomationEngine {
                 console.log(`⚠️ Social media trigger ${triggerData.type} - database schema not yet updated`);
                 return [];
             }
-            const rules = await db_1.db.automationRule.findMany({
+            const rules = await db_1.db.automation_rules.findMany({
                 where: {
                     churchId: triggerData.churchId,
                     isActive: true,
@@ -88,7 +88,7 @@ class AutomationEngine {
      */
     static async executeRule(rule, triggerData) {
         // Create execution record
-        const execution = await db_1.db.automationExecution.create({
+        const execution = await db_1.db.automation_executions.create({
             data: {
                 automationId: rule.id,
                 triggerData: triggerData,
@@ -122,7 +122,7 @@ class AutomationEngine {
             const duration = Date.now() - startTime;
             await this.updateExecution(execution.id, 'SUCCESS', actionResults, null, duration);
             // Update rule execution count and last executed time
-            await db_1.db.automationRule.update({
+            await db_1.db.automation_rules.update({
                 where: { id: rule.id },
                 data: {
                     executionCount: { increment: 1 },
@@ -134,7 +134,7 @@ class AutomationEngine {
         catch (error) {
             console.error(`Error executing automation rule ${rule.name}:`, error);
             // Update execution record with error
-            await db_1.db.automationExecution.update({
+            await db_1.db.automation_executions.update({
                 where: { id: execution.id },
                 data: {
                     status: 'FAILED',
@@ -309,7 +309,7 @@ class AutomationEngine {
     static async executeNotificationAction(config, triggerData) {
         try {
             // Create notification in database
-            const notification = await db_1.db.notification.create({
+            const notification = await db_1.db.notifications.create({
                 data: {
                     title: this.interpolateTemplate(config.title, triggerData),
                     message: this.interpolateTemplate(config.message, triggerData),
@@ -328,7 +328,7 @@ class AutomationEngine {
             // Create NotificationDelivery records for proper tracking
             if (config.targetUser) {
                 // Single user notification
-                await db_1.db.notificationDelivery.create({
+                await db_1.db.notification_deliveries.create({
                     data: {
                         notificationId: notification.id,
                         userId: config.targetUser,
@@ -348,7 +348,7 @@ class AutomationEngine {
                     },
                     select: { id: true }
                 });
-                await db_1.db.notificationDelivery.createMany({
+                await db_1.db.notification_deliveries.createMany({
                     data: roleUsers.map(roleUser => ({
                         notificationId: notification.id,
                         userId: roleUser.id,
@@ -367,7 +367,7 @@ class AutomationEngine {
                     },
                     select: { id: true }
                 });
-                await db_1.db.notificationDelivery.createMany({
+                await db_1.db.notification_deliveries.createMany({
                     data: churchUsers.map(churchUser => ({
                         notificationId: notification.id,
                         userId: churchUser.id,
@@ -520,7 +520,7 @@ class AutomationEngine {
      * Update automation execution record
      */
     static async updateExecution(executionId, status, result, error, duration) {
-        await db_1.db.automationExecution.update({
+        await db_1.db.automation_executions.update({
             where: { id: executionId },
             data: {
                 status,
@@ -565,4 +565,410 @@ exports.AutomationTriggers = {
     socialMediaCampaignCompleted: (campaignData, churchId) => triggerAutomation('SOCIAL_MEDIA_CAMPAIGN_COMPLETED', campaignData, churchId, campaignData.id, 'marketingCampaign'),
     socialMediaAnalyticsReport: (reportData, churchId) => triggerAutomation('SOCIAL_MEDIA_ANALYTICS_REPORT', reportData, churchId, reportData.id, 'analyticsReport')
 };
+// 🔥 COMPLETE FORM AUTOMATION INTEGRATION SYSTEM
+class FormAutomationEngine {
+    /**
+     * Process custom form submission with full automation integration
+     */
+    static async processCustomFormSubmission(formId, formType, submissionData, churchId) {
+        try {
+            console.log(`🔥 PROCESSING FORM AUTOMATION: ${formType} for church ${churchId}`);
+            // Route to specific automation based on form type
+            switch (formType.toLowerCase()) {
+                case 'visitor':
+                case 'visitor_form':
+                    await this.handleVisitorFormAutomation(formId, submissionData, churchId);
+                    break;
+                case 'prayer':
+                case 'prayer_request':
+                    await this.handlePrayerRequestFormAutomation(formId, submissionData, churchId);
+                    break;
+                case 'volunteer':
+                case 'volunteer_signup':
+                    await this.handleVolunteerFormAutomation(formId, submissionData, churchId);
+                    break;
+                case 'event':
+                case 'event_registration':
+                    await this.handleEventFormAutomation(formId, submissionData, churchId);
+                    break;
+                case 'member':
+                case 'member_update':
+                    await this.handleMemberFormAutomation(formId, submissionData, churchId);
+                    break;
+                default:
+                    // Generic form processing
+                    await this.handleGenericFormAutomation(formId, formType, submissionData, churchId);
+            }
+            console.log(`✅ FORM AUTOMATION COMPLETED: ${formType}`);
+        }
+        catch (error) {
+            console.error('Form automation processing error:', error);
+            await this.logFormAutomationError(formId, formType, submissionData, error);
+        }
+    }
+    // 🎯 1. VISITOR FORM AUTOMATION
+    static async handleVisitorFormAutomation(formId, submissionData, churchId) {
+        const visitorInfo = this.extractVisitorInfo(submissionData);
+        // 🎯 AUTO-CREATE VISITOR RECORD IN CHECK-IN SYSTEM
+        const visitor = await db_1.db.check_ins.create({
+            data: {
+                firstName: visitorInfo.firstName,
+                lastName: visitorInfo.lastName,
+                email: visitorInfo.email,
+                phone: visitorInfo.phone,
+                isFirstTime: true,
+                checkedInAt: new Date(),
+                visitorType: 'form_submission',
+                engagementScore: 85,
+                prayer_requests: visitorInfo.prayer_requests,
+                visitReason: `Custom Form: ${visitorInfo.formTitle}`,
+                ministryInterest: visitorInfo.interests ? [visitorInfo.interests] : [],
+                ageGroup: visitorInfo.ageRange,
+                referredBy: 'Digital Form Builder',
+                churchId: churchId,
+            }
+        });
+        // 🎯 AUTO-CREATE HIGH-PRIORITY FOLLOW-UP TASK
+        const followUpTask = await db_1.db.visitor_follow_ups.create({
+            data: {
+                checkInId: visitor.id,
+                followUpType: 'first_time_visitor',
+                priority: 'high',
+                status: 'pending',
+                scheduledAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+                notes: `🔥 NUEVO VISITANTE AUTO-REGISTRADO via formulario personalizado\\n\\n📋 ACCIÓN REQUERIDA: Contactar dentro de 24 horas\\n\\n📝 Detalles del visitante:\\n• Nombre: ${visitorInfo.firstName} ${visitorInfo.lastName}\\n• Email: ${visitorInfo.email}\\n• Teléfono: ${visitorInfo.phone}\\n• Intereses ministeriales: ${visitorInfo.interests}\\n• Petición de oración: ${visitorInfo.prayer_requests}\\n• Fuente: ${visitorInfo.formTitle}\\n\\n⚡ Generado automáticamente por el sistema`,
+                assignedTo: await this.getNextAvailablePastor(churchId),
+                churchId: churchId,
+            }
+        });
+        console.log(`✅ VISITOR AUTOMATION COMPLETED: Created visitor ${visitor.id} with follow-up task ${followUpTask.id}`);
+        // 🎯 AUTO-CREATE PRAYER REQUEST IF PROVIDED
+        if (visitorInfo.prayer_requests) {
+            await this.handlePrayerRequestFormAutomation(formId, {
+                request: visitorInfo.prayer_requests,
+                requesterName: `${visitorInfo.firstName} ${visitorInfo.lastName}`,
+                requesterEmail: visitorInfo.email,
+                source: 'visitor_form',
+                category: 'visitor_prayer'
+            }, churchId);
+        }
+        // 🎯 AUTO-NOTIFY PASTORAL TEAM
+        await this.notifyPastoralTeam('new_visitor', {
+            visitorName: `${visitor.firstName} ${visitor.lastName}`,
+            visitorEmail: visitor.email,
+            interests: visitorInfo.interests,
+            formSource: visitorInfo.formTitle
+        }, churchId);
+        console.log(`✅ VISITOR AUTOMATION COMPLETE: ${visitor.firstName} ${visitor.lastName} (ID: ${visitor.id})`);
+    }
+    // 🎯 2. PRAYER REQUEST FORM AUTOMATION  
+    static async handlePrayerRequestFormAutomation(formId, submissionData, churchId) {
+        const prayerInfo = this.extractPrayerRequestInfo(submissionData);
+        // 🎯 AUTO-CREATE PRAYER CONTACT FIRST
+        const prayerContact = await db_1.db.prayerContact.create({
+            data: {
+                fullName: prayerInfo.requesterName || 'Anónimo',
+                email: prayerInfo.requesterEmail || '',
+                phone: prayerInfo.requesterPhone || '',
+                source: 'custom_form',
+                churchId: churchId
+            }
+        });
+        // 🎯 GET OR CREATE PRAYER CATEGORY
+        let prayerCategory = await db_1.db.prayerCategory.findFirst({
+            where: {
+                name: prayerInfo.category || 'General',
+                churchId: churchId
+            }
+        });
+        if (!prayerCategory) {
+            prayerCategory = await db_1.db.prayerCategory.create({
+                data: {
+                    name: prayerInfo.category || 'General',
+                    color: '#6B7280',
+                    description: 'Categoría creada automáticamente',
+                    churchId: churchId
+                }
+            });
+        }
+        // 🎯 AUTO-CREATE PRAYER REQUEST
+        const prayer_requests = await db_1.db.prayer_requests.create({
+            data: {
+                message: prayerInfo.request || prayerInfo.title || 'Petición de Oración',
+                contactId: prayerContact.id,
+                categoryId: prayerCategory.id,
+                isAnonymous: prayerInfo.isAnonymous || false,
+                priority: this.calculatePrayerPriority(prayerInfo.request),
+                source: 'custom_form',
+                formId: formId,
+                churchId: churchId,
+                status: 'pending'
+            }
+        });
+        console.log(`✅ PRAYER REQUEST AUTOMATION COMPLETE: Created prayer request ${prayer_requests.id}`);
+        // TODO: Implement prayer-specific follow-up system (not visitor follow-up)
+        console.log(`📋 PRAYER FOLLOW-UP: Would schedule follow-up for prayer request ${prayer_requests.id}`);
+    }
+    // 🎯 3. VOLUNTEER FORM AUTOMATION
+    static async handleVolunteerFormAutomation(formId, submissionData, churchId) {
+        const volunteerInfo = this.extractVolunteerInfo(submissionData);
+        // Find or create member record
+        let member = await db_1.db.member.findFirst({
+            where: { email: volunteerInfo.email, churchId }
+        });
+        if (!member) {
+            member = await db_1.db.member.create({
+                data: {
+                    firstName: volunteerInfo.firstName,
+                    lastName: volunteerInfo.lastName,
+                    email: volunteerInfo.email,
+                    phone: volunteerInfo.phone,
+                    churchId: churchId,
+                    membershipDate: new Date(),
+                    isActive: true
+                }
+            });
+        }
+        // 🎯 AUTO-CREATE VOLUNTEER RECORD
+        const volunteer = await db_1.db.volunteer.create({
+            data: {
+                memberId: member.id,
+                firstName: volunteerInfo.firstName || member.firstName,
+                lastName: volunteerInfo.lastName || member.lastName,
+                email: volunteerInfo.email || member.email,
+                phone: volunteerInfo.phone || member.phone,
+                skills: JSON.stringify(volunteerInfo.skills || []),
+                availability: JSON.stringify(volunteerInfo.availability || {}),
+                churchId: churchId
+            }
+        });
+        // 🎯 AUTO-MATCH WITH VOLUNTEER OPPORTUNITIES
+        await this.autoMatchVolunteerOpportunities(volunteer, churchId);
+        // 🎯 AUTO-SEND VOLUNTEER WELCOME PACKAGE
+        await this.sendVolunteerWelcomePackage(volunteer, member, churchId);
+        // 🎯 AUTO-NOTIFY MINISTRY LEADERS
+        await this.notifyMinistryLeaders(volunteer, volunteerInfo.ministryInterests, churchId);
+        console.log(`✅ VOLUNTEER AUTOMATION COMPLETE: ${member.firstName} ${member.lastName} (ID: ${volunteer.id})`);
+    }
+    // 🎯 4. EVENT REGISTRATION FORM AUTOMATION
+    static async handleEventFormAutomation(formId, submissionData, churchId) {
+        const eventInfo = this.extractEventRegistrationInfo(submissionData);
+        // 🎯 AUTO-CREATE EVENT REGISTRATION
+        const checkIn = await db_1.db.check_ins.create({
+            data: {
+                firstName: eventInfo.firstName || 'Invitado',
+                lastName: eventInfo.lastName || '',
+                email: eventInfo.email || '',
+                phone: eventInfo.phone || '',
+                eventId: eventInfo.eventId,
+                isFirstTime: false,
+                checkedInAt: new Date(),
+                visitorType: 'event_registration',
+                engagementScore: 75,
+                visitReason: `Registro para evento via formulario`,
+                churchId: churchId
+            }
+        });
+        console.log(`✅ EVENT REGISTRATION AUTOMATION COMPLETE: Created check-in ${checkIn.id} for event ${eventInfo.eventId}`);
+        // TODO: Implement event confirmation emails and reminders
+        console.log(`📋 EVENT SETUP: Would send confirmation and schedule reminders for registration ${checkIn.id}`);
+    }
+    // 🎯 5. MEMBER UPDATE FORM AUTOMATION
+    static async handleMemberFormAutomation(formId, submissionData, churchId) {
+        const memberInfo = this.extractMemberUpdateInfo(submissionData);
+        // 🎯 FIND MEMBER BY EMAIL
+        const member = await db_1.db.member.findFirst({
+            where: {
+                email: memberInfo.email,
+                churchId: churchId
+            }
+        });
+        if (!member) {
+            console.log(`⚠️ MEMBER NOT FOUND: ${memberInfo.email} - Skipping member update automation`);
+            return;
+        }
+        // 🎯 AUTO-UPDATE MEMBER PROFILE
+        const updatedMember = await db_1.db.member.update({
+            where: { id: member.id },
+            data: {
+                ...memberInfo.updates,
+                updatedAt: new Date()
+            }
+        });
+        console.log(`✅ MEMBER UPDATE AUTOMATION COMPLETE: ${updatedMember.firstName} ${updatedMember.lastName} (ID: ${updatedMember.id})`);
+        // TODO: Implement member lifecycle and ministry involvement automation
+        console.log(`📋 MEMBER LIFECYCLE: Would trigger lifecycle update and ministry involvement for member ${updatedMember.id}`);
+    }
+    // 🎯 6. GENERIC FORM AUTOMATION
+    static async handleGenericFormAutomation(formId, formType, submissionData, churchId) {
+        // 🎯 AUTO-CREATE GENERIC FORM SUBMISSION RECORD
+        const submission = await db_1.db.custom_form_submissions.create({
+            data: {
+                formId: formId,
+                data: {
+                    ...submissionData,
+                    submittedAt: new Date().toISOString(),
+                    formType: formType
+                },
+                churchId: churchId
+            }
+        });
+        // 🎯 AUTO-NOTIFY FORM ADMINISTRATOR
+        await this.notifyFormAdministrator(formId, submission, churchId);
+        console.log(`✅ GENERIC FORM AUTOMATION COMPLETE: ${formType} (ID: ${submission.id})`);
+    }
+    // 🔧 HELPER METHODS
+    static extractVisitorInfo(data) {
+        return {
+            firstName: data.firstName || data.name?.split(' ')[0] || data.nombre || 'Visitante',
+            lastName: data.lastName || data.name?.split(' ').slice(1).join(' ') || data.apellido || '',
+            email: data.email || data.correo || '',
+            phone: data.phone || data.telefono || data.celular || '',
+            prayer_requests: data.prayer_requests || data.oracion || data.peticion || '',
+            interests: data.interests || data.intereses || data.ministryInterest || '',
+            ageRange: data.ageRange || data.edad || data.age || null,
+            visitReason: data.visitReason || data.motivo || 'Digital form submission',
+            formTitle: data.formTitle || 'Custom Form'
+        };
+    }
+    static extractPrayerRequestInfo(data) {
+        return {
+            title: data.title || data.titulo || 'Petición de Oración',
+            request: data.request || data.peticion || data.prayer || '',
+            requesterName: data.requesterName || data.nombre || `${data.firstName || ''} ${data.lastName || ''}`.trim(),
+            requesterEmail: data.requesterEmail || data.email || '',
+            requesterPhone: data.requesterPhone || data.phone || '',
+            isAnonymous: data.isAnonymous || data.anonymous || false,
+            category: data.category || data.categoria || 'general'
+        };
+    }
+    static extractVolunteerInfo(data) {
+        return {
+            firstName: data.firstName || data.name?.split(' ')[0] || '',
+            lastName: data.lastName || data.name?.split(' ').slice(1).join(' ') || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            skills: data.skills || data.habilidades || [],
+            availability: data.availability || data.disponibilidad || {},
+            ministryInterests: data.ministryInterests || data.ministries || [],
+            experience: data.experience || data.experiencia || '',
+            formTitle: data.formTitle || 'Volunteer Form'
+        };
+    }
+    static extractEventRegistrationInfo(data) {
+        return {
+            firstName: data.firstName || data.name?.split(' ')[0] || '',
+            lastName: data.lastName || data.name?.split(' ').slice(1).join(' ') || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            eventId: data.eventId || '',
+            additionalInfo: data.additionalInfo || data.notes || '',
+            dietaryRestrictions: data.dietaryRestrictions || '',
+            emergencyContact: data.emergencyContact || ''
+        };
+    }
+    static extractMemberUpdateInfo(data) {
+        return {
+            email: data.email || '',
+            updates: {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phone: data.phone,
+                address: data.address,
+                city: data.city,
+                state: data.state,
+                zipCode: data.zipCode,
+                maritalStatus: data.maritalStatus,
+                occupation: data.occupation
+            },
+            ministryChanges: data.ministryChanges || null
+        };
+    }
+    static async getNextAvailablePastor(churchId) {
+        const pastors = await db_1.db.user.findMany({
+            where: {
+                churchId: churchId,
+                role: { in: ['PASTOR', 'ADMIN_IGLESIA'] },
+                isActive: true
+            },
+            orderBy: { createdAt: 'asc' }
+        });
+        if (pastors.length > 0) {
+            // Update assignment tracking (remove this since field doesn't exist)
+            // await db.user.update({
+            //   where: { id: pastors[0].id },
+            //   data: { lastAssignedFollowUp: new Date() }
+            // })
+            return pastors[0].id;
+        }
+        return null;
+    }
+    static calculatePrayerPriority(request) {
+        const urgentKeywords = ['urgente', 'emergency', 'hospital', 'surgery', 'cancer', 'death', 'crisis', 'emergencia'];
+        const highKeywords = ['enfermo', 'sick', 'job', 'trabajo', 'familia', 'family', 'relationship', 'depresion', 'anxiety'];
+        const text = request.toLowerCase();
+        if (urgentKeywords.some(keyword => text.includes(keyword)))
+            return 'urgent';
+        if (highKeywords.some(keyword => text.includes(keyword)))
+            return 'high';
+        return 'normal';
+    }
+    static isUrgentPrayer(request) {
+        return this.calculatePrayerPriority(request) === 'urgent';
+    }
+    // Integration methods (to be implemented with actual services)
+    static async notifyPastoralTeam(type, data, churchId) {
+        console.log(`📧 Notifying pastoral team: ${type}`, data);
+        // TODO: Implement actual notification system
+    }
+    static async notifyPrayerTeam(prayer_requests, churchId) {
+        console.log(`🙏 Prayer team notified for request: ${prayer_requests.id}`);
+        // TODO: Implement prayer team notification
+    }
+    static async addToPrayerChainDistribution(prayer_requests, churchId) {
+        console.log(`⛓️ Added to prayer chain: ${prayer_requests.id}`);
+        // TODO: Implement prayer chain distribution
+    }
+    static async autoMatchVolunteerOpportunities(volunteer, churchId) {
+        console.log(`🎯 Auto-matching volunteer opportunities: ${volunteer.id}`);
+        // TODO: Implement AI-powered skill matching
+    }
+    static async sendVolunteerWelcomePackage(volunteer, member, churchId) {
+        console.log(`📚 Volunteer welcome package sent: ${volunteer.id}`);
+        // TODO: Send welcome materials and training info
+    }
+    static async notifyMinistryLeaders(volunteer, interests, churchId) {
+        console.log(`👥 Ministry leaders notified for volunteer: ${volunteer.id}`);
+        // TODO: Notify relevant ministry leaders
+    }
+    static async sendEventConfirmationEmail(registration, eventInfo, churchId) {
+        console.log(`✅ Event confirmation sent: ${registration.id}`);
+        // TODO: Send event confirmation email
+    }
+    static async scheduleEventReminders(registration, eventInfo, churchId) {
+        console.log(`⏰ Event reminders scheduled: ${registration.id}`);
+        // TODO: Schedule automated reminders
+    }
+    static async updateEventCapacityTracking(eventId, churchId) {
+        console.log(`📊 Event capacity updated: ${eventId}`);
+        // TODO: Update event capacity tracking
+    }
+    static async triggerMemberLifecycleUpdate(member, churchId) {
+        console.log(`🔄 Member lifecycle check triggered: ${member.id}`);
+        // TODO: Check and update member lifecycle stage
+    }
+    static async updateMemberMinistryInvolvement(member, changes, churchId) {
+        console.log(`🏛️ Ministry involvement updated: ${member.id}`);
+        // TODO: Update ministry involvement
+    }
+    static async notifyFormAdministrator(formId, submission, churchId) {
+        console.log(`📋 Form administrator notified: ${formId}`);
+        // TODO: Notify form administrator
+    }
+    static async logFormAutomationError(formId, formType, data, error) {
+        console.error(`❌ Form automation error for ${formType} (${formId}):`, error);
+        // TODO: Log to automation audit trail
+    }
+}
+exports.FormAutomationEngine = FormAutomationEngine;
 //# sourceMappingURL=automation-engine.js.map

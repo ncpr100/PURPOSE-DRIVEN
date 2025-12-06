@@ -6,7 +6,7 @@ export declare const createCheckInSchema: z.ZodObject<{
     phone: z.ZodOptional<z.ZodString>;
     isFirstTime: z.ZodDefault<z.ZodBoolean>;
     visitReason: z.ZodOptional<z.ZodString>;
-    prayerRequest: z.ZodOptional<z.ZodString>;
+    prayer_requests: z.ZodOptional<z.ZodString>;
     eventId: z.ZodOptional<z.ZodString>;
     visitorType: z.ZodOptional<z.ZodEnum<["FIRST_TIME", "RETURN", "MINISTRY_INTEREST", "PRAYER_REQUEST"]>>;
     ministryInterest: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
@@ -18,10 +18,10 @@ export declare const createCheckInSchema: z.ZodObject<{
     lastName: string;
     isFirstTime: boolean;
     ministryInterest: string[];
-    phone?: string | undefined;
     email?: string | undefined;
+    phone?: string | undefined;
+    prayer_requests?: string | undefined;
     visitReason?: string | undefined;
-    prayerRequest?: string | undefined;
     eventId?: string | undefined;
     visitorType?: "FIRST_TIME" | "RETURN" | "MINISTRY_INTEREST" | "PRAYER_REQUEST" | undefined;
     ageGroup?: "CHILDREN" | "YOUTH" | "ADULTS" | "SENIORS" | undefined;
@@ -30,11 +30,11 @@ export declare const createCheckInSchema: z.ZodObject<{
 }, {
     firstName: string;
     lastName: string;
-    phone?: string | undefined;
     email?: string | undefined;
+    phone?: string | undefined;
+    prayer_requests?: string | undefined;
     isFirstTime?: boolean | undefined;
     visitReason?: string | undefined;
-    prayerRequest?: string | undefined;
     eventId?: string | undefined;
     visitorType?: "FIRST_TIME" | "RETURN" | "MINISTRY_INTEREST" | "PRAYER_REQUEST" | undefined;
     ministryInterest?: string[] | undefined;
@@ -52,15 +52,15 @@ export declare const getCheckInsSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    isFirstTime?: boolean | undefined;
-    eventId?: string | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
+    isFirstTime?: boolean | undefined;
+    eventId?: string | undefined;
 }, {
-    isFirstTime?: boolean | undefined;
-    eventId?: string | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
+    isFirstTime?: boolean | undefined;
+    eventId?: string | undefined;
     limit?: number | undefined;
     page?: number | undefined;
 }>;

@@ -1,0 +1,195 @@
+/**
+ * Cached Analytics Service
+ * High-performance analytics service with Redis caching integration
+ * Implements intelligent caching strategies for optimal performance
+ */
+export interface CachedAnalyticsOptions {
+    forceRefresh?: boolean;
+    cacheWarm?: boolean;
+    period?: number;
+}
+export interface ExecutiveReportData {
+    summary: {
+        totalMembers: number;
+        totalActiveMembersDisplay: string;
+        totalEngagedMembers: number;
+        memberGrowthThisMonth: number;
+        memberGrowthLastMonth: number;
+        memberGrowthPercentage: string;
+        newMembersThisMonth: number;
+        avgAttendanceThisMonth: number;
+        avgAttendanceLastMonth: number;
+        attendanceGrowthPercentage: string;
+        totalDonationsThisMonth: number;
+        totalDonationsLastMonth: number;
+        donationGrowthPercentage: string;
+        activeVolunteersThisMonth: number;
+        totalEvents: number;
+        totalCommunications: number;
+        engagementScore: number;
+        churchHealthScore: number;
+    };
+    membershipMetrics: {
+        totalMembers: number;
+        activeMembersDisplay: string;
+        newMembersThisMonth: number;
+        memberRetentionRate: string;
+        membershipGrowthTrend: Array<{
+            month: string;
+            count: number;
+        }>;
+        ageDistribution: Array<{
+            ageGroup: string;
+            count: number;
+            percentage: number;
+        }>;
+        genderDistribution: Array<{
+            gender: string;
+            count: number;
+            percentage: number;
+        }>;
+        membersByLifecycleStage: Array<{
+            stage: string;
+            count: number;
+            percentage: number;
+        }>;
+    };
+    attendanceMetrics: {
+        avgAttendanceThisMonth: number;
+        attendanceGrowthPercentage: string;
+        attendanceTrend: Array<{
+            date: string;
+            count: number;
+        }>;
+        eventTypeAttendance: Array<{
+            type: string;
+            count: number;
+            avgAttendance: number;
+        }>;
+        peakAttendanceDays: Array<{
+            day: string;
+            count: number;
+        }>;
+    };
+    financialMetrics: {
+        totalDonationsThisMonth: number;
+        donationGrowthPercentage: string;
+        donationsTrend: Array<{
+            month: string;
+            amount: number;
+        }>;
+        donationSources: Array<{
+            source: string;
+            amount: number;
+            percentage: number;
+        }>;
+        avgDonationAmount: number;
+        recurringDonorsCount: number;
+    };
+    engagementMetrics: {
+        overallEngagementScore: number;
+        engagementByStage: Array<{
+            stage: string;
+            score: number;
+        }>;
+        communicationEngagement: {
+            emailOpenRate: number;
+            emailClickRate: number;
+            totalCommunications: number;
+        };
+        eventParticipation: {
+            avgParticipationRate: number;
+            mostPopularEvents: Array<{
+                name: string;
+                attendees: number;
+            }>;
+        };
+        volunteerEngagement: {
+            activeVolunteers: number;
+            totalVolunteerHours: number;
+            volunteerRetentionRate: number;
+        };
+    };
+    predictiveInsights: {
+        churchHealthScore: number;
+        retentionRiskMembers: number;
+        growthPredictions: {
+            nextMonthMembers: number;
+            nextMonthDonations: number;
+        };
+        recommendations: Array<{
+            category: string;
+            priority: 'high' | 'medium' | 'low';
+            action: string;
+            expectedImpact: string;
+        }>;
+    };
+}
+export declare class CachedAnalyticsService {
+    private churchId;
+    private member_journeysAnalytics;
+    constructor(churchId: string);
+    /**
+     * Get executive report with intelligent caching
+     */
+    getExecutiveReport(options?: CachedAnalyticsOptions): Promise<ExecutiveReportData>;
+    /**
+     * Get member journey analytics with caching
+     */
+    getMemberJourneyAnalytics(memberId: string, options?: CachedAnalyticsOptions): Promise<any>;
+    /**
+     * Get comprehensive church analytics with caching
+     */
+    getComprehensiveAnalytics(options?: CachedAnalyticsOptions): Promise<any>;
+    /**
+     * Get retention analytics with caching
+     */
+    getRetentionAnalytics(options?: CachedAnalyticsOptions): Promise<any>;
+    /**
+     * Get conversion funnel analytics with caching
+     */
+    getConversionFunnelAnalytics(options?: CachedAnalyticsOptions): Promise<any>;
+    /**
+     * Get engagement distribution with caching
+     */
+    getEngagementDistribution(options?: CachedAnalyticsOptions): Promise<any>;
+    /**
+     * Get quick stats with high-frequency caching
+     */
+    getQuickStats(): Promise<any>;
+    /**
+     * Get predictive insights with caching
+     */
+    getPredictiveInsights(options?: CachedAnalyticsOptions): Promise<any>;
+    /**
+     * Invalidate cache after data updates
+     */
+    invalidateMemberCache(memberId: string): Promise<void>;
+    invalidateEventCache(): Promise<void>;
+    invalidateDonationCache(): Promise<void>;
+    invalidateCheckInCache(): Promise<void>;
+    /**
+     * Warm cache for church analytics
+     */
+    warmCache(): Promise<void>;
+    private generateExecutiveReport;
+    private calculateGrowthPercentage;
+    private calculateChurchHealthScore;
+    private generateMembershipMetrics;
+    private generateAttendanceMetrics;
+    private generateFinancialMetrics;
+    private generateEngagementMetrics;
+    private generatePredictiveInsightsData;
+    private calculateAgeDistribution;
+    private calculateGenderDistribution;
+    private calculateStageDistribution;
+    private getHighRiskMembers;
+    private generateRetentionStrategies;
+    private identifyConversionOpportunities;
+    private calculateEngagementTrends;
+    private generateEngagementActions;
+    private identifyGrowthOpportunities;
+    private generateStrategicRecommendations;
+}
+export declare function createCachedAnalyticsService(churchId: string): CachedAnalyticsService;
+//# sourceMappingURL=cached-analytics-service.d.ts.map

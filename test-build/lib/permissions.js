@@ -31,7 +31,7 @@ exports.ACTIONS = {
 async function hasPermission(userId, resource, action, context) {
     try {
         // Obtener usuario con roles y permisos
-        const user = await db_1.db.user.findUnique({
+        const user = await db_1.db.users.findUnique({
             where: { id: userId },
             include: {
                 userRoles: {
@@ -115,7 +115,7 @@ function evaluateConditions(conditions, context) {
 }
 // Obtener todos los permisos de un usuario
 async function getUserPermissions(userId) {
-    const user = await db_1.db.user.findUnique({
+    const user = await db_1.db.users.findUnique({
         where: { id: userId },
         include: {
             userRoles: {

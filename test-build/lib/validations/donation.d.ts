@@ -11,15 +11,15 @@ export declare const getDonationsSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    status?: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA" | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
+    status?: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA" | undefined;
     categoryId?: string | undefined;
     paymentMethodId?: string | undefined;
 }, {
-    status?: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA" | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
+    status?: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA" | undefined;
     categoryId?: string | undefined;
     paymentMethodId?: string | undefined;
     limit?: number | undefined;
@@ -42,32 +42,32 @@ export declare const createDonationSchema: z.ZodObject<{
     campaignId: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     status: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA";
-    currency: string;
-    categoryId: string;
     amount: number;
-    paymentMethodId: string;
+    currency: string;
     isAnonymous: boolean;
+    categoryId: string;
+    paymentMethodId: string;
+    reference?: string | undefined;
+    notes?: string | undefined;
+    memberId?: string | undefined;
     donorName?: string | undefined;
     donorEmail?: string | undefined;
     donorPhone?: string | undefined;
-    memberId?: string | undefined;
-    reference?: string | undefined;
-    notes?: string | undefined;
     donationDate?: string | undefined;
     campaignId?: string | undefined;
 }, {
-    categoryId: string;
     amount: number;
+    categoryId: string;
     paymentMethodId: string;
     status?: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA" | undefined;
     currency?: string | undefined;
-    donorName?: string | undefined;
-    donorEmail?: string | undefined;
-    donorPhone?: string | undefined;
-    memberId?: string | undefined;
     reference?: string | undefined;
     notes?: string | undefined;
     isAnonymous?: boolean | undefined;
+    memberId?: string | undefined;
+    donorName?: string | undefined;
+    donorEmail?: string | undefined;
+    donorPhone?: string | undefined;
     donationDate?: string | undefined;
     campaignId?: string | undefined;
 }>;

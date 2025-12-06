@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,7 +33,7 @@ export async function GET(
     }
 
     // Track form access
-    console.log(`Form accessed: ${form.title} (${form.slug}) by church: ${form.church.name}`)
+    console.log(`Form accessed: ${form.title} (${form.slug}) by church: ${form.churches.name}`)
 
     return NextResponse.json({
       form: {
@@ -43,7 +44,7 @@ export async function GET(
         config: form.config,
         qrConfig: form.qrConfig
       },
-      church: form.church
+      church: form.churches
     })
 
   } catch (error) {
@@ -94,6 +95,7 @@ export async function POST(
     // Create visitor in check-ins table (visitor database)
     const visitor = await db.check_ins.create({
       data: {
+        id: nanoid(),
         firstName: visitorInfo.firstName,
         lastName: visitorInfo.lastName,
         email: visitorInfo.email,
@@ -103,7 +105,7 @@ export async function POST(
         visitorType: 'custom_form',
         engagementScore: 85, // High engagement for custom form submissions
         visitReason: `Form: ${form.title}`,
-        prayer_requests: visitorInfo.prayer_requests,
+        prayerRequest: visitorInfo.prayer_requests,
         churchId: form.churchId,
       }
     })
@@ -111,6 +113,7 @@ export async function POST(
     // Save form submission
     const submission = await db.custom_form_submissions.create({
       data: {
+        id: nanoid(),
         formId: form.id,
         data: {
           ...formData,
@@ -128,6 +131,7 @@ export async function POST(
     try {
       await db.visitor_follow_ups.create({
         data: {
+          id: nanoid(),
           checkInId: visitor.id,
           followUpType: 'custom_form_submission',
           priority: 'high',
@@ -146,10 +150,10 @@ export async function POST(
 
     return NextResponse.json({
       success: true,
-      message: `¡Gracias por contactar a ${form.church.name}! Nos pondremos en contacto pronto.`,
+      message: `¡Gracias por contactar a ${form.churches.name}! Nos pondremos en contacto pronto.`,
       submissionId: submission.id,
       visitorId: visitor.id,
-      church: form.church.name
+      church: form.churches.name
     }, { status: 201 })
 
   } catch (error) {

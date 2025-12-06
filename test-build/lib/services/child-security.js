@@ -25,7 +25,7 @@ class ChildSecurityService {
             const childPhotoUrl = await this.storeEncryptedPhoto(data.childPhoto, 'child');
             const parentPhotoUrl = await this.storeEncryptedPhoto(data.parentPhoto, 'parent');
             // Create enhanced child check-in record
-            const checkIn = await prisma_1.prisma.childCheckIn.create({
+            const checkIn = await prisma_1.prisma.children_check_ins.create({
                 data: {
                     childName: data.childId,
                     securityPin,
@@ -60,7 +60,7 @@ class ChildSecurityService {
      * Verify pickup with BOTH photo matching AND PIN code
      */
     async verifyPickup(checkInId, pickupPhoto, pinAttempt, attemptedBy) {
-        const checkIn = await prisma_1.prisma.childCheckIn.findUnique({
+        const checkIn = await prisma_1.prisma.children_check_ins.findUnique({
             where: { id: checkInId }
         });
         if (!checkIn || checkIn.checkedOut) {
@@ -98,7 +98,7 @@ class ChildSecurityService {
         const updatedAttempts = [...checkIn.pickupAttempts, attempt];
         if (success) {
             // Successful pickup - update record
-            await prisma_1.prisma.childCheckIn.update({
+            await prisma_1.prisma.children_check_ins.update({
                 where: { id: checkInId },
                 data: {
                     checkedOut: true,
@@ -113,7 +113,7 @@ class ChildSecurityService {
         }
         else {
             // Failed attempt - log and continue
-            await prisma_1.prisma.childCheckIn.update({
+            await prisma_1.prisma.children_check_ins.update({
                 where: { id: checkInId },
                 data: { pickupAttempts: updatedAttempts }
             });
@@ -134,7 +134,7 @@ class ChildSecurityService {
      */
     async emergencyOverride(checkInId, managerId, overrideReason) {
         try {
-            await prisma_1.prisma.childCheckIn.update({
+            await prisma_1.prisma.children_check_ins.update({
                 where: { id: checkInId },
                 data: {
                     checkedOut: true,
@@ -236,7 +236,7 @@ class ChildSecurityService {
      */
     async cleanupPhotos(checkInId) {
         try {
-            const checkIn = await prisma_1.prisma.childCheckIn.findUnique({
+            const checkIn = await prisma_1.prisma.children_check_ins.findUnique({
                 where: { id: checkInId }
             });
             if (checkIn) {
@@ -248,7 +248,7 @@ class ChildSecurityService {
                     await this.deleteSecurePhoto(checkIn.parentPhotoUrl);
                 }
                 // Clear photo URLs from database
-                await prisma_1.prisma.childCheckIn.update({
+                await prisma_1.prisma.children_check_ins.update({
                     where: { id: checkInId },
                     data: {
                         childPhotoUrl: null,
@@ -279,7 +279,7 @@ class ChildSecurityService {
      * Get pickup attempt history for audit
      */
     async getPickupHistory(checkInId) {
-        const checkIn = await prisma_1.prisma.childCheckIn.findUnique({
+        const checkIn = await prisma_1.prisma.children_check_ins.findUnique({
             where: { id: checkInId },
             select: { pickupAttempts: true }
         });
@@ -291,7 +291,7 @@ class ChildSecurityService {
     async cleanupExpiredPhotos() {
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - this.PHOTO_RETENTION_DAYS);
-        const expiredCheckIns = await prisma_1.prisma.childCheckIn.findMany({
+        const expiredCheckIns = await prisma_1.prisma.children_check_ins.findMany({
             where: {
                 photoTakenAt: { lte: cutoffDate },
                 OR: [
