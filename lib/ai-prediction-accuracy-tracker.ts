@@ -3,6 +3,7 @@
  * Continuously monitors and improves AI prediction accuracy
  */
 
+import { nanoid } from 'nanoid';
 import { db } from './db';
 
 export interface PredictionRecord {
@@ -250,7 +251,7 @@ export class AIPredictionAccuracyEngine {
     testModel: string,
     trafficSplit: number = 0.5
   ): Promise<string> {
-    const abTest = await db.aIModelABTest.create({
+    const abTest = await db.ai_model_ab_tests.create({
       data: {
         testName,
         churchId: this.churchId,
@@ -275,7 +276,7 @@ export class AIPredictionAccuracyEngine {
     significance: number;
     recommendation: 'adopt' | 'reject' | 'continue';
   }> {
-    const test = await db.aIModelABTest.findUnique({
+    const test = await db.ai_model_ab_tests.findUnique({
       where: { id: testId },
       include: {
         predictions: true
