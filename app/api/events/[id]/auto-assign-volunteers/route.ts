@@ -31,7 +31,7 @@ export async function POST(
       include: {
         volunteer_assignments: {
           include: {
-            volunteer: true
+            volunteers: true
           }
         },
         event_resource_reservations: {
