@@ -313,6 +313,7 @@ class AutomationEngine {
             // Create notification in database
             const notification = await db_1.db.notifications.create({
                 data: {
+                    id: (0, nanoid_1.nanoid)(),
                     title: this.interpolateTemplate(config.title, triggerData),
                     message: this.interpolateTemplate(config.message, triggerData),
                     type: config.type || 'INFO',
@@ -332,6 +333,7 @@ class AutomationEngine {
                 // Single user notification
                 await db_1.db.notification_deliveries.create({
                     data: {
+                        id: (0, nanoid_1.nanoid)(),
                         notificationId: notification.id,
                         userId: config.targetUser,
                         deliveryMethod: 'in-app',
@@ -614,6 +616,7 @@ class FormAutomationEngine {
         // 🎯 AUTO-CREATE VISITOR RECORD IN CHECK-IN SYSTEM
         const visitor = await db_1.db.check_ins.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 firstName: visitorInfo.firstName,
                 lastName: visitorInfo.lastName,
                 email: visitorInfo.email,
@@ -633,6 +636,7 @@ class FormAutomationEngine {
         // 🎯 AUTO-CREATE HIGH-PRIORITY FOLLOW-UP TASK
         const followUpTask = await db_1.db.visitor_follow_ups.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 checkInId: visitor.id,
                 followUpType: 'first_time_visitor',
                 priority: 'high',
@@ -667,7 +671,7 @@ class FormAutomationEngine {
     static async handlePrayerRequestFormAutomation(formId, submissionData, churchId) {
         const prayerInfo = this.extractPrayerRequestInfo(submissionData);
         // 🎯 AUTO-CREATE PRAYER CONTACT FIRST
-        const prayerContact = await db_1.db.prayerContact.create({
+        const prayerContact = await db_1.db.prayer_contacts.create({
             data: {
                 fullName: prayerInfo.requesterName || 'Anónimo',
                 email: prayerInfo.requesterEmail || '',
@@ -677,14 +681,14 @@ class FormAutomationEngine {
             }
         });
         // 🎯 GET OR CREATE PRAYER CATEGORY
-        let prayerCategory = await db_1.db.prayerCategory.findFirst({
+        let prayerCategory = await db_1.db.prayer_categories.findFirst({
             where: {
                 name: prayerInfo.category || 'General',
                 churchId: churchId
             }
         });
         if (!prayerCategory) {
-            prayerCategory = await db_1.db.prayerCategory.create({
+            prayerCategory = await db_1.db.prayer_categories.create({
                 data: {
                     name: prayerInfo.category || 'General',
                     color: '#6B7280',

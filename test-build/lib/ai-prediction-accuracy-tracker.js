@@ -5,6 +5,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AIPredictionAccuracyEngine = void 0;
+const nanoid_1 = require("nanoid");
 const db_1 = require("./db");
 class AIPredictionAccuracyEngine {
     constructor(churchId) {
@@ -17,7 +18,7 @@ class AIPredictionAccuracyEngine {
     async recordPrediction(type, memberId, prediction, confidence, factors) {
         const predictionRecord = await db_1.db.ai_prediction_records.create({
             data: {
-                id: nanoid(),
+                id: (0, nanoid_1.nanoid)(),
                 predictionType: type,
                 memberId,
                 churchId: this.churchId,
@@ -177,7 +178,7 @@ class AIPredictionAccuracyEngine {
      * A/B test new prediction models
      */
     async setupABTest(testName, controlModel, testModel, trafficSplit = 0.5) {
-        const abTest = await db_1.db.aIModelABTest.create({
+        const abTest = await db_1.db.ai_model_ab_tests.create({
             data: {
                 testName,
                 churchId: this.churchId,
@@ -194,7 +195,7 @@ class AIPredictionAccuracyEngine {
      * Analyze A/B test results
      */
     async analyzeABTest(testId) {
-        const test = await db_1.db.aIModelABTest.findUnique({
+        const test = await db_1.db.ai_model_ab_tests.findUnique({
             where: { id: testId },
             include: {
                 predictions: true

@@ -203,11 +203,11 @@ export class AutomationEngine {
   /**
    * Evaluate rule conditions
    */
-  private static async evaluateConditions(conditions: AutomationCondition[], triggerData: TriggerData): Promise<boolean> {
+  private static async evaluateConditions(conditions: automation_conditions[], triggerData: TriggerData): Promise<boolean> {
     if (conditions.length === 0) return true
 
     // Group conditions by groupId for proper logical evaluation
-    const conditionGroups = new Map<string, AutomationCondition[]>()
+    const conditionGroups = new Map<string, automation_conditions[]>()
     
     conditions.forEach(condition => {
       const groupKey = condition.groupId || 'default'
@@ -235,7 +235,7 @@ export class AutomationEngine {
   /**
    * Evaluate a group of conditions
    */
-  private static async evaluateConditionGroup(conditions: AutomationCondition[], triggerData: TriggerData): Promise<boolean> {
+  private static async evaluateConditionGroup(conditions: automation_conditions[], triggerData: TriggerData): Promise<boolean> {
     if (conditions.length === 0) return true
 
     let result = true
@@ -262,7 +262,7 @@ export class AutomationEngine {
   /**
    * Evaluate a single condition
    */
-  private static async evaluateCondition(condition: AutomationCondition, triggerData: TriggerData): Promise<boolean> {
+  private static async evaluateCondition(condition: automation_conditions, triggerData: TriggerData): Promise<boolean> {
     try {
       // Get the value from trigger data
       const fieldValue = this.getFieldValue(condition.field, triggerData)
@@ -341,7 +341,7 @@ export class AutomationEngine {
   /**
    * Execute automation actions
    */
-  private static async executeActions(actions: AutomationAction[], triggerData: TriggerData): Promise<any[]> {
+  private static async executeActions(actions: automation_actions[], triggerData: TriggerData): Promise<any[]> {
     const results: any[] = []
 
     for (const action of actions) {
@@ -370,7 +370,7 @@ export class AutomationEngine {
   /**
    * Execute a single action
    */
-  private static async executeAction(action: AutomationAction, triggerData: TriggerData): Promise<any> {
+  private static async executeAction(action: automation_actions, triggerData: TriggerData): Promise<any> {
     const config = action.configuration as any
 
     switch (action.type) {
@@ -400,6 +400,7 @@ export class AutomationEngine {
       // Create notification in database
       const notification = await db.notifications.create({
         data: {
+          id: nanoid(),
           title: this.interpolateTemplate(config.title, triggerData),
           message: this.interpolateTemplate(config.message, triggerData),
           type: config.type || 'INFO',
@@ -420,6 +421,7 @@ export class AutomationEngine {
         // Single user notification
         await db.notification_deliveries.create({
           data: {
+            id: nanoid(),
             notificationId: notification.id,
             userId: config.targetUser,
             deliveryMethod: 'in-app',
@@ -779,6 +781,7 @@ export class FormAutomationEngine {
     // 🎯 AUTO-CREATE VISITOR RECORD IN CHECK-IN SYSTEM
     const visitor = await db.check_ins.create({
       data: {
+        id: nanoid(),
         firstName: visitorInfo.firstName,
         lastName: visitorInfo.lastName,
         email: visitorInfo.email,
@@ -799,6 +802,7 @@ export class FormAutomationEngine {
     // 🎯 AUTO-CREATE HIGH-PRIORITY FOLLOW-UP TASK
     const followUpTask = await db.visitor_follow_ups.create({
       data: {
+        id: nanoid(),
         checkInId: visitor.id,
         followUpType: 'first_time_visitor',
         priority: 'high',
@@ -844,7 +848,7 @@ export class FormAutomationEngine {
     const prayerInfo = this.extractPrayerRequestInfo(submissionData)
     
     // 🎯 AUTO-CREATE PRAYER CONTACT FIRST
-    const prayerContact = await db.prayerContact.create({
+    const prayerContact = await db.prayer_contacts.create({
       data: {
         fullName: prayerInfo.requesterName || 'Anónimo',
         email: prayerInfo.requesterEmail || '',
@@ -855,7 +859,7 @@ export class FormAutomationEngine {
     })
 
     // 🎯 GET OR CREATE PRAYER CATEGORY
-    let prayerCategory = await db.prayerCategory.findFirst({
+    let prayerCategory = await db.prayer_categories.findFirst({
       where: { 
         name: prayerInfo.category || 'General',
         churchId: churchId
@@ -863,7 +867,7 @@ export class FormAutomationEngine {
     })
 
     if (!prayerCategory) {
-      prayerCategory = await db.prayerCategory.create({
+      prayerCategory = await db.prayer_categories.create({
         data: {
           name: prayerInfo.category || 'General',
           color: '#6B7280',
