@@ -36,7 +36,7 @@ export async function POST(
         },
         event_resource_reservations: {
           include: {
-            resource: true
+            event_resources: true
           }
         }
       }
