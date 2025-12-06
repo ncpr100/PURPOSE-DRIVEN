@@ -1,5 +1,5 @@
 
-
+import { nanoid } from 'nanoid'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
@@ -96,6 +96,7 @@ export async function POST(request: NextRequest) {
         assessmentDate: new Date()
       },
       create: {
+        id: nanoid(),
         memberId,
         primaryGifts,
         secondaryGifts,
