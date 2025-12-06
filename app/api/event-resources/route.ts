@@ -1,4 +1,4 @@
-
+import { nanoid } from 'nanoid'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
@@ -79,6 +79,7 @@ export async function POST(req: NextRequest) {
 
     const resource = await db.event_resources.create({
       data: {
+        id: nanoid(),
         name: sanitizedName,
         description: sanitizedDescription,
         type: sanitizedType,
