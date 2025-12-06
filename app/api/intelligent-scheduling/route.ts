@@ -138,7 +138,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
       }
     },
     include: {
-      volunteer_assignmentss: {
+      volunteer_assignments: {
         include: {
           volunteer: true
         }
@@ -172,7 +172,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
 
   // Analyze event gaps
   for (const event of upcomingEvents) {
-    const currentVolunteers = event.volunteer_assignmentss.length
+    const currentVolunteers = event.volunteer_assignments.length
     const estimatedNeed = Math.max(2, Math.ceil(currentVolunteers * 1.2)) // 20% buffer
     
     if (currentVolunteers < estimatedNeed) {

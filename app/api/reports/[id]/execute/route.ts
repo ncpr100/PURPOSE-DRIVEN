@@ -97,7 +97,7 @@ export async function POST(
             include: {
               check_ins: true,
               childrenCheckIns: true,
-              resourceReservations: {
+              event_resource_reservations: {
                 include: { event_resources: true }
               }
             },

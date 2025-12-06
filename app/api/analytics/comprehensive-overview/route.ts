@@ -187,9 +187,9 @@ export async function GET(request: NextRequest) {
     // Process event utilization
     const eventUtilization = {
       totalEvents: eventStats[0]._count.id,
-      resourcesBooked: eventStats[1].reduce((sum: number, e: any) => sum + e.resourceReservations.length, 0),
-      averageResourcesPerEvent: eventStats[1].length > 0 ? 
-        eventStats[1].reduce((sum: number, e: any) => sum + e.resourceReservations.length, 0) / eventStats[1].length : 0
+      resourcesBooked: eventStats[1].reduce((sum: number, e: any) => sum + e.event_resource_reservations.length, 0),
+      avgResourcesPerEvent: eventStats[1].length > 0 ? 
+        eventStats[1].reduce((sum: number, e: any) => sum + e.event_resource_reservations.length, 0) / eventStats[1].length : 0
     };
 
     // Comprehensive overview response
