@@ -181,7 +181,7 @@ export async function GET(request: NextRequest) {
             email: true,
             phone: true,
             ministryId: true,
-            ministry: {
+            ministries: {
               select: {
                 name: true
               }
