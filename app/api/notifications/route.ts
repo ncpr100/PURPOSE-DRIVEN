@@ -124,7 +124,7 @@ export async function GET(request: NextRequest) {
 
       // Transform deliveries to include read state
       const notifications = deliveries.map(delivery => ({
-        ...delivery.notification,
+        ...delivery.notifications,
         isRead: delivery.isRead,
         readAt: delivery.readAt,
         deliveryId: delivery.id,
