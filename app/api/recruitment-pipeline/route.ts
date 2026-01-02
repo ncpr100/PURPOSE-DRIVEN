@@ -456,7 +456,7 @@ export async function POST(request: NextRequest) {
         if ((member.experienceLevel || 1) < 3) {
           barriers.push('Experiencia limitada en ministerio')
         }
-        if (!member.availabilityMatrix) {
+        if (!member.availability_matrices) {
           barriers.push('Disponibilidad no definida')
         }
         if (member.volunteers.length === 0 && !member.backgroundCheckDate) {

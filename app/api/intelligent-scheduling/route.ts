@@ -281,9 +281,9 @@ async function findOptimalMatches(gaps: SchedulingGap[], churchId: string): Prom
       
       // Availability score based on availability matrix
       let availabilityScore = 50 // Default if no matrix
-      if (member.availabilityMatrix) {
+      if (member.availability_matrices) {
         const dayOfWeek = gap.date.getDay()
-        const availability = (member.availabilityMatrix as any).weeklyAvailability
+        const availability = (member.availability_matrices as any).weeklyAvailability
         if (availability && availability[dayOfWeek]) {
           availabilityScore = 90
         }

@@ -34,8 +34,8 @@ function calculateVolunteerScore(
   }
 
   // Availability Score (25% weight)
-  // Data already loaded via member.availabilityMatrix relation
-  if (member.availabilityMatrix) {
+  // Data already loaded via member.availability_matrices relation
+  if (member.availability_matrices) {
     score += 25
     reasoning.push('Tiene matriz de disponibilidad configurada')
   } else {

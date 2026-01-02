@@ -111,8 +111,8 @@ async function analyzeVolunteerWorkloads(churchId: string): Promise<VolunteerWor
 
     // Extract availability windows
     const availabilityWindows: TimeWindow[] = []
-    if (volunteer.availabilityMatrix) {
-      const matrix = volunteer.availabilityMatrix as any
+    if (volunteer.availability_matrices) {
+      const matrix = volunteer.availability_matrices as any
       if (matrix.weeklyAvailability) {
         Object.entries(matrix.weeklyAvailability).forEach(([day, times]: [string, any]) => {
           if (times && times.available) {
