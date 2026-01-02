@@ -128,7 +128,7 @@ export async function PUT(request: NextRequest) {
       notificationData.churchId = user.churchId
     }
     
-    const activityNotification = await db.notification.create({
+    const activityNotification = await db.notifications.create({
       data: notificationData
     })
 

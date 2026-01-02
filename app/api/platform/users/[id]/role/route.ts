@@ -92,7 +92,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     // Crear notificación de actividad (solo si el usuario tiene iglesia)
     if (existingUser.churchId) {
-      const activityNotification = await db.notification.create({
+      const activityNotification = await db.notifications.create({
         data: {
           title: 'Rol de usuario modificado',
           message: `El rol del usuario "${existingUser.name}" ha sido cambiado de "${existingUser.role}" a "${role}" por SUPER_ADMIN`,
