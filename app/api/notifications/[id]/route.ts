@@ -130,8 +130,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({
       ...updatedNotification,
-      isRead: updatedNotification?.deliveries[0]?.isRead || false,
-      readAt: updatedNotification?.deliveries[0]?.readAt
+      isRead: updatedNotification?.notification_deliveries[0]?.isRead || false,
+      readAt: updatedNotification?.notification_deliveries[0]?.readAt
     })
   } catch (error) {
     console.error('Error updating notification:', error)
