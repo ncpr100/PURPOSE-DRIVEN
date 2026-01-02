@@ -212,10 +212,13 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       // Log de actividad: crear notificación y entregas por usuario dentro de la transacción
       const activityNotification = await tx.notifications.create({
         data: {
+          id: nanoid(),
           title: 'Nuevo usuario creado',
           message: `Usuario "${name}" (${role}) creado por SUPER_ADMIN`,
           type: 'info',
-          churchId
+          churches: {
+            connect: { id: churchId }
+          }
         }
       })
 
