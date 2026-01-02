@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { hasPermission } from '@/lib/permissions'
+import { nanoid } from 'nanoid'
 
 // GET /api/permissions - Obtener todos los permisos
 export async function GET() {
@@ -63,6 +64,7 @@ export async function POST(request: Request) {
 
     const permission = await db.permissions.create({
       data: {
+        id: nanoid(),
         name,
         description,
         resource,

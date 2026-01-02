@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { nanoid } from 'nanoid'
 
 const notificationTemplateSchema = z.object({
   name: z.string().min(1, 'Nombre es requerido'),
@@ -121,6 +122,7 @@ export async function POST(request: NextRequest) {
 
     const template = await prisma.notification_templates.create({
       data: {
+        id: nanoid(),
         ...templateData,
         churchId: user.churchId,
         isSystem: false, // User-created templates are never system templates

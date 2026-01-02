@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { db as prisma } from '@/lib/db';
+import { nanoid } from 'nanoid';
 import { randomUUID } from 'crypto';
 
 // GET /api/automation-templates/[id] - Get full template details

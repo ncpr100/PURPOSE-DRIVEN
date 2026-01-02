@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-
+import { nanoid } from 'nanoid'
 export const dynamic = 'force-dynamic'
 
 // GET all subscription addons

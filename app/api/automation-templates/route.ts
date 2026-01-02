@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
+import { nanoid } from 'nanoid'
 
 const createTemplateSchema = z.object({
   name: z.string().min(1),
