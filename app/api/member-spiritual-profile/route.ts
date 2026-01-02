@@ -5,6 +5,7 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { spiritualProfileSchema } from '@/lib/validations/volunteer'
 import { ZodError } from 'zod'
+import { nanoid } from 'nanoid'
 
 export async function POST(request: NextRequest) {
   try {
@@ -57,6 +58,7 @@ export async function POST(request: NextRequest) {
           assessmentDate: new Date(),
         },
         create: {
+          id: nanoid(),
           memberId: validated.memberId,
           primaryGifts: validated.primaryGifts,
           secondaryGifts: validated.secondaryGifts,
@@ -67,6 +69,7 @@ export async function POST(request: NextRequest) {
           servingMotivation: validated.servingMotivation,
           previousExperience: validated.previousExperience,
           trainingCompleted: validated.trainingCompleted,
+          updatedAt: new Date()
         },
         include: {
           members: {
