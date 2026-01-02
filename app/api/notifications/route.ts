@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
           include: {
             churches: { select: { name: true } },
             users: { select: { name: true } },
-            deliveries: {
+            notification_deliveries: {
               select: {
                 isRead: true,
                 readAt: true,

@@ -117,7 +117,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       where: { id: params.id },
       include: {
         churches: { select: { name: true } },
-        deliveries: {
+        notification_deliveries: {
           where: { userId: user.id },
           select: {
             isRead: true,
