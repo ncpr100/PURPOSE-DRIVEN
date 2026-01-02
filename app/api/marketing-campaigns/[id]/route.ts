@@ -109,7 +109,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       },
       include: {
         marketing_campaign_posts: {
-          select: { id: true, title: true, status: true }
+          select: { id: true, postId: true, accountId: true, status: true, scheduledAt: true }
         },
         _count: {
           select: { marketing_campaign_posts: true }

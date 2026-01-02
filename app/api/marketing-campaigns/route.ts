@@ -30,7 +30,7 @@ export async function GET() {
       },
       include: {
         marketing_campaign_posts: {
-          select: { id: true, title: true, status: true }
+          select: { id: true, postId: true, accountId: true, status: true, scheduledAt: true }
         },
         _count: {
           select: { marketing_campaign_posts: true }
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
       },
       include: {
         marketing_campaign_posts: {
-          select: { id: true, title: true, status: true }
+          select: { id: true, postId: true, accountId: true, status: true, scheduledAt: true }
         },
         _count: {
           select: { marketing_campaign_posts: true }
