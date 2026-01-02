@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { nanoid } from \'nanoid\'
+import { nanoid } from 'nanoid'
 import { randomUUID } from 'crypto'
 
 export const dynamic = 'force-dynamic'

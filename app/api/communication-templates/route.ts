@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
-import { nanoid } from \'nanoid\'
+import { nanoid } from 'nanoid'
 import { db } from '@/lib/db'
 import { randomUUID } from 'crypto'
 
