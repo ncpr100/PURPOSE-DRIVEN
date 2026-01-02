@@ -133,11 +133,14 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
         paymentMethod = await prisma.payment_methods.create({
           data: {
             id: nanoid(),
-            churchId: onlinePayment.churchId,
+            churches: {
+              connect: { id: onlinePayment.churchId }
+            },
             name: 'Stripe',
             description: 'Pagos online via Stripe',
             isDigital: true,
-            isActive: true
+            isActive: true,
+            updatedAt: new Date()
           }
         });
       }
@@ -159,7 +162,10 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
               name: 'General',
               description: 'Donaciones generales',
               isActive: true,
-              churchId: onlinePayment.churchId
+              churches: {
+                connect: { id: onlinePayment.churchId }
+              },
+              updatedAt: new Date()
             }
           });
         }
@@ -169,7 +175,9 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
       donation = await prisma.donations.create({
         data: {
           id: nanoid(),
-          churchId: onlinePayment.churchId,
+          churches: {
+            connect: { id: onlinePayment.churchId }
+          },
           amount: onlinePayment.amount,
           currency: onlinePayment.currency,
           donorName: onlinePayment.donorName,
@@ -178,6 +186,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
           categoryId: categoryId,
           paymentMethodId: paymentMethod.id,
           reference: paymentIntent.id,
+          updatedAt: new Date(),
           notes: `Donación online procesada via Stripe - ${paymentIntent.id}`,
           donationDate: new Date(),
           isAnonymous: false

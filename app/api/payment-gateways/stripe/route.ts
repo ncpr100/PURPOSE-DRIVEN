@@ -87,10 +87,13 @@ export async function POST(request: NextRequest) {
       },
       create: {
         id: nanoid(),
-        churchId: session.user.church.id,
+        churches: {
+          connect: { id: session.user.church.id }
+        },
         gatewayType: 'STRIPE',
         configuration: stripeConfig,
-        isEnabled: stripeConfig.enabled ?? true
+        isEnabled: stripeConfig.enabled ?? true,
+        updatedAt: new Date()
       }
     });
 

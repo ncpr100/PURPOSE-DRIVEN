@@ -104,7 +104,9 @@ export async function POST(request: NextRequest) {
       },
       create: {
         id: nanoid(),
-        churchId: session.user.churchId,
+        churches: {
+          connect: { id: session.user.churchId }
+        },
         gatewayType: gatewayType.toLowerCase(),
         isEnabled: Boolean(isEnabled),
         isTestMode: Boolean(isTestMode),

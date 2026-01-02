@@ -202,8 +202,11 @@ export async function POST(request: NextRequest) {
           notes: notes ? DonationSecurity.sanitizeInput(notes) : null,
           isAnonymous,
           donationDate: donationDate ? new Date(donationDate) : new Date(),
-          churchId: session.user.churchId!,
-          status: 'COMPLETADA' // Status tracking for donations
+          churches: {
+            connect: { id: session.user.churchId! }
+          },
+          status: 'COMPLETADA', // Status tracking for donations
+          updatedAt: new Date()
         },
         include: {
           donation_categories: true,
