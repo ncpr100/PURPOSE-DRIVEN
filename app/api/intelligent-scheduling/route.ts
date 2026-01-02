@@ -247,7 +247,7 @@ async function findOptimalMatches(gaps: SchedulingGap[], churchId: string): Prom
     },
     include: {
       member_spiritual_profiles: true,
-      availabilityMatrix: true,
+      availability_matrices: true,
       volunteers: {
         include: {
           volunteer_assignments: {

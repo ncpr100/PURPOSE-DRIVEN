@@ -421,7 +421,7 @@ export async function POST(request: NextRequest) {
           where: { isActive: true }
         },
         member_spiritual_profiles: true,
-        availabilityMatrix: true
+        availability_matrices: true
       }
     })
 

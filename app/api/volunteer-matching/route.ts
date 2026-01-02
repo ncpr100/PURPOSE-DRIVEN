@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
             }
           }
         },
-        availabilityMatrix: true
+        availability_matrices: true
       }
     })
 

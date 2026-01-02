@@ -66,7 +66,7 @@ async function analyzeVolunteerWorkloads(churchId: string): Promise<VolunteerWor
           }
         }
       },
-      availabilityMatrix: true
+      availability_matrices: true
     }
   })
 
