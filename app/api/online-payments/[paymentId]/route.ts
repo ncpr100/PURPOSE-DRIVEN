@@ -15,7 +15,7 @@ export async function PATCH(
     const { status, metadata } = body
 
     // Find existing payment
-    const existingPayment = await prisma.onlinePayment.findUnique({
+    const existingPayment = await prisma.online_payments.findUnique({
       where: { paymentId }
     })
 

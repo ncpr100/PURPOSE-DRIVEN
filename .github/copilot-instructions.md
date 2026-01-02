@@ -1,8 +1,22 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 2.7  
+**Document Version**: 2.8  
 **Last Updated**: January 2, 2026  
 **Project Status**: Production Active - Phase 3 Complete, Phase 4 Planning (95% Complete)  
+
+---
+
+## Quick Navigation
+- [Project State & Current Focus](#project-state--current-focus)
+- [Core Architecture & Context](#core-architecture--context)
+- [Critical Architectural Patterns](#critical-architectural-patterns)
+- [Development Guidelines](#development-guidelines)
+- [Key Workflows & Commands](#key-workflows--commands)
+- [Essential Project Patterns](#essential-project-patterns)
+- [Critical Integration Points](#critical-integration-points)
+- [Success Metrics & Targets](#success-metrics--targets)
+
+---
 
 ## Project State & Current Focus
 
@@ -225,12 +239,18 @@ git push origin main  # → Triggers Railway build → Nixpacks detects Next.js 
 npm run dev                    # Start dev server (0.0.0.0:3000)
 npm run build                  # Production build (MUST pass 189/189 pages)
 npm run build:memory-optimized # Memory-optimized build (CRITICAL for production)
+npm run build:incremental      # Experimental incremental build mode
 npx prisma db seed            # Populate database (scripts/seed.ts - 1596 lines)
 npm run cleanup               # Memory cleanup scripts (3.4MB freed)
-npm run memory:assess         # Memory assessment and optimization
+npm run cleanup:memory        # Run memory monitor test (uses tsx)
+npm run memory:assess         # Memory assessment and optimization (uses tsx)
+npm run optimize              # Combined cleanup + memory-optimized build
 npm run validate:system       # Validate CUID system integrity
 npm run validate:auth         # Validate authentication configuration
+npm run backup                # Backup system state
 ```
+
+**Note**: Scripts using `tsx` (TypeScript Execute) run TypeScript files directly without compilation step.
 
 ### Database Operations
 ```bash
@@ -238,7 +258,10 @@ npx prisma generate          # Regenerate Prisma client after schema changes
 npx prisma db push          # Push schema changes (dev only - no migrations)
 npx prisma studio           # Database GUI (localhost:5555)
 npx prisma migrate dev      # Create and apply migration (production workflow)
+npx prisma migrate deploy   # Apply migrations in production (runs automatically on Railway)
 ```
+
+**CRITICAL**: Never use `npx prisma db push` in production. Always create migrations with `npx prisma migrate dev` for version-controlled schema changes.
 
 ### Production Deployment
 ```bash
@@ -252,8 +275,16 @@ npm run fix:patterns        # Apply critical fixes automatically
 ```bash
 npm run test:compile        # Compile TypeScript for validation
 npm run test:cuid          # Test CUID validation system
+npm run test:validate      # Combined TypeScript + CUID validation
 node scripts/check-*.ts    # Various diagnostic scripts in /scripts
+node scripts/test-analytics-apis.js     # Test analytics endpoints
 ```
+
+**Available diagnostic scripts** (in `/scripts` directory):
+- `check-existing-data.ts` - Verify data consistency across tables
+- `check-member-filters.ts` - Test member query filters
+- `verify-migration.ts` - Post-migration database validation
+- `check-automation-rules.ts` - Validate automation rule integrity
 
 ## Essential Project Patterns
 

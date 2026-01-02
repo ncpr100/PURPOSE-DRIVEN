@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Find payment record
-    const payment = await prisma.onlinePayment.findUnique({
+    const payment = await prisma.online_payments.findUnique({
       where: { paymentId: paymentId.toString() }
     })
 
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       const statusResult = await gateway.verifyPayment(paymentId.toString())
       
       // Update payment record
-      const updatedPayment = await prisma.onlinePayment.update({
+      const updatedPayment = await prisma.online_payments.update({
         where: { id: payment.id },
         data: {
           status: statusResult.status,
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
       console.error(`Error verifying payment ${paymentId}:`, error)
       
       // Still mark webhook as received even if verification failed
-      await prisma.onlinePayment.update({
+      await prisma.online_payments.update({
         where: { id: payment.id },
         data: {
           webhookReceived: true,
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
 
 // Helper function to create donation from completed payment
 async function createDonationFromPayment(onlinePaymentId: string) {
-  const payment = await prisma.onlinePayment.findUnique({
+  const payment = await prisma.online_payments.findUnique({
     where: { id: onlinePaymentId }
   })
 
@@ -179,7 +179,7 @@ async function createDonationFromPayment(onlinePaymentId: string) {
   })
 
   // Link payment to donation
-  await prisma.onlinePayment.update({
+  await prisma.online_payments.update({
     where: { id: onlinePaymentId },
     data: { donationId: donation.id }
   })
@@ -190,7 +190,7 @@ async function createDonationFromPayment(onlinePaymentId: string) {
 // Helper function to send confirmation email
 async function sendDonationConfirmationEmail(onlinePaymentId: string) {
   try {
-    const payment = await prisma.onlinePayment.findUnique({
+    const payment = await prisma.online_payments.findUnique({
       where: { id: onlinePaymentId },
       include: {
         churches: true,

@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json([]) // Return empty array instead of error
     }
 
-    const payments = await prisma.onlinePayment.findMany({
+    const payments = await prisma.online_payments.findMany({
       where: {
         churchId: churchId,
         status: { in: ['completed', 'pending', 'failed'] }

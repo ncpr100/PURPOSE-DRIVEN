@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
 async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
   try {
     // Find the online payment record
-    const onlinePayment = await prisma.onlinePayment.findFirst({
+    const onlinePayment = await prisma.online_payments.findFirst({
       where: { paymentId: paymentIntent.id },
       include: { donations: true }
     });
@@ -102,7 +102,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     }
 
     // Update payment status
-    await prisma.onlinePayment.update({
+    await prisma.online_payments.update({
       where: { id: onlinePayment.id },
       data: {
         status: 'completed',
@@ -195,12 +195,12 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
 
 async function handlePaymentFailed(paymentIntent: Stripe.PaymentIntent) {
   try {
-    const onlinePayment = await prisma.onlinePayment.findFirst({
+    const onlinePayment = await prisma.online_payments.findFirst({
       where: { paymentId: paymentIntent.id }
     });
 
     if (onlinePayment) {
-      await prisma.onlinePayment.update({
+      await prisma.online_payments.update({
         where: { id: onlinePayment.id },
         data: {
           status: 'failed',
@@ -229,12 +229,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.log('Checkout session completed:', session.id);
     
     // Find and update online payment
-    const onlinePayment = await prisma.onlinePayment.findFirst({
+    const onlinePayment = await prisma.online_payments.findFirst({
       where: { paymentId: session.id }
     });
 
     if (onlinePayment) {
-      await prisma.onlinePayment.update({
+      await prisma.online_payments.update({
         where: { id: onlinePayment.id },
         data: {
           status: 'completed',
