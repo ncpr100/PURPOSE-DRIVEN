@@ -72,7 +72,7 @@ export async function POST(
           data = await db.donations.findMany({
             ...query,
             include: {
-              member: true,
+              members: true,
               category: true,
               paymentMethod: true
             },

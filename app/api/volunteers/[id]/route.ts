@@ -25,7 +25,7 @@ export async function GET(
         churchId: session.user.churchId
       },
       include: {
-        member: true,
+        members: true,
         ministries: true,
         assignments: {
           orderBy: {
@@ -107,7 +107,7 @@ export async function PUT(
         isActive
       },
       include: {
-        member: true,
+        members: true,
         ministries: true,
         assignments: true
       }

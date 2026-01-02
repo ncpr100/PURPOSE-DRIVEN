@@ -522,7 +522,7 @@ async function findAvailableMentor(ministryId: string, churchId: string) {
       }
     },
     include: {
-      member: true,
+      members: true,
       assignments: {
         where: {
           date: { gte: new Date() }

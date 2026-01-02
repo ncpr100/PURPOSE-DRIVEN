@@ -42,7 +42,7 @@ async function detectMemberConflicts(memberId: string, churchId: string): Promis
     include: {
       volunteers: {
         include: {
-          member: true
+          members: true
         }
       },
       events: true

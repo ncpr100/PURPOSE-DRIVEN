@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
         isActive: true
       },
       include: {
-        member: true,
+        members: true,
         ministries: true,
         assignments: {
           orderBy: {
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
         isActive: true
       },
       include: {
-        member: true,
+        members: true,
         ministries: true,
         assignments: true
       }
