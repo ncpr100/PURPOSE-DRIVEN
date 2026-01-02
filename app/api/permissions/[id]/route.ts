@@ -25,7 +25,7 @@ export async function GET(
       include: {
         role_permissions: {
           include: {
-            role: true
+            roles: true
           }
         },
         user_permissions: {
