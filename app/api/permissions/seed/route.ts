@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { RESOURCES, ACTIONS, DEFAULT_ROLE_PERMISSIONS } from '@/lib/permissions'
+import { nanoid } from 'nanoid'
 
 // POST /api/permissions/seed - Inicializar permisos y roles del sistema
 export async function POST() {
@@ -23,12 +24,13 @@ export async function POST() {
       const permissions = []
       for (const resource of Object.values(RESOURCES)) {
         for (const action of Object.values(ACTIONS)) {
-          const permission = await prisma.permissions.upsert({
+          const permission = await db.permissions.upsert({
             where: {
               resource_action: { resource, action }
             },
             update: {},
             create: {
+              id: nanoid(),
               name: `${resource}.${action}`,
               description: `${action.charAt(0).toUpperCase() + action.slice(1)} ${resource}`,
               resource,
@@ -45,7 +47,7 @@ export async function POST() {
       for (const [roleName, rolePermissions] of Object.entries(DEFAULT_ROLE_PERMISSIONS)) {
         if (roleName === 'SUPER_ADMIN') continue // SUPER_ADMIN no necesita rol específico
         
-        const role = await prisma.roles.upsert({
+        const role = await db.roles.upsert({
           where: {
             name_churchId: { 
               name: roleName, 
@@ -54,6 +56,7 @@ export async function POST() {
           },
           update: {},
           create: {
+            id: nanoid(),
             name: roleName,
             description: `Rol del sistema: ${roleName}`,
             isSystem: true,
@@ -70,7 +73,7 @@ export async function POST() {
               p.resource === perm.resource && p.action === perm.action
             )
             if (permission) {
-              await prisma.role_permissions.upsert({
+              await db.role_permissions.upsert({
                 where: {
                   roleId_permissionId: {
                     roleId: role.id,
@@ -79,6 +82,7 @@ export async function POST() {
                 },
                 update: {},
                 create: {
+                  id: nanoid(),
                   roleId: role.id,
                   permissionId: permission.id,
                 }
