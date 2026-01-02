@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar que el slug no existe en este sitio web
-    const existingFunnel = await prisma.funnel.findFirst({
+    const existingFunnel = await prisma.funnels.findFirst({
       where: {
         websiteId,
         slug
