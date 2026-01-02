@@ -30,7 +30,7 @@ export async function GET(
         },
         user_permissions: {
           include: {
-            user: {
+            users: {
               select: {
                 id: true,
                 name: true,

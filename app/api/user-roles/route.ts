@@ -131,7 +131,7 @@ export async function DELETE(request: Request) {
         roleId,
       },
       include: {
-        role: true
+        roless: true
       }
     })
 
