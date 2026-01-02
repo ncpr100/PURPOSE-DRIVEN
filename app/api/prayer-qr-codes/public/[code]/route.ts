@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { code: string } }
 ) {
   try {
-    const qrCode = await prisma.prayerQRCode.findFirst({
+    const qrCode = await prisma.prayer_qr_codes.findFirst({
       where: {
         code: params.code,
         isActive: true
@@ -43,7 +43,7 @@ export async function GET(
     }
 
     // Update scan count and last scan time
-    await prisma.prayerQRCode.update({
+    await prisma.prayer_qr_codes.update({
       where: { id: qrCode.id },
       data: {
         scanCount: { increment: 1 },

@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get platform settings
-    const settings = await prisma.platformSettings.findFirst()
+    const settings = await prisma.platform_settings.findFirst()
     const taxRate = settings?.taxRate || 0
     const currency = settings?.currency || 'USD'
 

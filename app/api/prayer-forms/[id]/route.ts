@@ -24,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    const form = await prisma.prayerForm.findFirst({
+    const form = await prisma.prayer_forms.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -75,7 +75,7 @@ export async function PUT(
     const body = await request.json()
     const { name, description, fields, style, isActive, isPublic } = body
 
-    const form = await prisma.prayerForm.findFirst({
+    const form = await prisma.prayer_forms.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -86,7 +86,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
     }
 
-    const updatedForm = await prisma.prayerForm.update({
+    const updatedForm = await prisma.prayer_forms.update({
       where: { id: params.id },
       data: {
         name: name?.trim() || form.name,
@@ -130,7 +130,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Sin permisos suficientes' }, { status: 403 })
     }
 
-    const form = await prisma.prayerForm.findFirst({
+    const form = await prisma.prayer_forms.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -142,7 +142,7 @@ export async function DELETE(
     }
 
     // Check if form has QR codes
-    const qrCodeCount = await prisma.prayerQRCode.count({
+    const qrCodeCount = await prisma.prayer_qr_codes.count({
       where: { formId: params.id }
     })
 
@@ -152,7 +152,7 @@ export async function DELETE(
       }, { status: 409 })
     }
 
-    await prisma.prayerForm.delete({
+    await prisma.prayer_forms.delete({
       where: { id: params.id }
     })
 

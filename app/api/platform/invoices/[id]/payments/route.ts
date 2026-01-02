@@ -50,7 +50,7 @@ export async function POST(
     const newTotalPaid = totalPaid + amount
 
     // Create payment record
-    const payment = await prisma.invoicePayment.create({
+    const payment = await prisma.invoice_payments.create({
       data: {
         invoiceId: params.id,
         amount,

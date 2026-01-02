@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
-    const form = await prisma.prayerForm.findFirst({
+    const form = await prisma.prayer_forms.findFirst({
       where: {
         slug: params.slug,
         isActive: true,

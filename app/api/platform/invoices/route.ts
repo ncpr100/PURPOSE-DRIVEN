@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
 
     // Calculate totals
     const subtotal = lineItems.reduce((sum: number, item: any) => sum + (item.quantity * item.unitPrice), 0)
-    const settings = await prisma.platformSettings.findFirst()
+    const settings = await prisma.platform_settings.findFirst()
     const taxRate = settings?.taxRate || 0
     const taxAmount = subtotal * (taxRate / 100)
     const totalAmount = subtotal + taxAmount

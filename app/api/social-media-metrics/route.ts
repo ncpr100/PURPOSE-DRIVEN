@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     const endDate = searchParams.get('endDate');
     const periodType = searchParams.get('periodType') || 'DAILY';
 
-    const metrics = await prisma.socialMediaMetrics.findMany({
+    const metrics = await prisma.social_media_metrics.findMany({
       where: {
         churchId: user.churchId,
         ...(platform && { platform }),
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const metric = await prisma.socialMediaMetrics.create({
+    const metric = await prisma.social_media_metrics.create({
       data: {
         id: nanoid(),
         accountId,

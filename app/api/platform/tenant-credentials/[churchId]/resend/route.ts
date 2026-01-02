@@ -17,7 +17,7 @@ export async function POST(
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
     }
 
-    const credentials = await prisma.tenantCredentials.findUnique({
+    const credentials = await prisma.tenant_credentials.findUnique({
       where: { churchId: params.churchId },
       include: {
         churches: {
@@ -38,7 +38,7 @@ export async function POST(
     const hashedPassword = await bcrypt.hash(newPassword, 12)
 
     // Update credentials
-    await prisma.tenantCredentials.update({
+    await prisma.tenant_credentials.update({
       where: { churchId: params.churchId },
       data: {
         tempPassword: hashedPassword,

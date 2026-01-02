@@ -18,13 +18,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    let settings = await prisma.churchQualificationSettings.findUnique({
+    let settings = await prisma.church_qualification_settings.findUnique({
       where: { churchId: session.user.churchId }
     })
 
     // Create default settings if none exist
     if (!settings) {
-      settings = await prisma.churchQualificationSettings.create({
+      settings = await prisma.church_qualification_settings.create({
         data: {
           id: randomUUID(),
           churchId: session.user.churchId
@@ -76,7 +76,7 @@ export async function PUT(request: NextRequest) {
       activityWeight
     } = body
 
-    const settings = await prisma.churchQualificationSettings.upsert({
+    const settings = await prisma.church_qualification_settings.upsert({
       where: { churchId: session.user.churchId },
       update: {
         volunteerMinMembershipDays,

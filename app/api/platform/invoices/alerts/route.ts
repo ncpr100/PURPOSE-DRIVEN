@@ -49,7 +49,7 @@ export async function GET() {
     })
 
     // Get trial expirations
-    const trialExpirations = await prisma.churchSubscription.findMany({
+    const trialExpirations = await prisma.church_subscriptions.findMany({
       where: {
         status: 'TRIAL',
         trialEnd: {
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
     for (const invoice of invoices) {
       try {
         // Create communication record
-        await prisma.invoiceCommunication.create({
+        await prisma.invoice_communications.create({
           data: {
             invoiceId: invoice.id,
             type: 'EMAIL',

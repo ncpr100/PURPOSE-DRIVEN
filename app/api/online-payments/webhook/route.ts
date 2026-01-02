@@ -140,7 +140,7 @@ async function createDonationFromPayment(onlinePaymentId: string) {
   }
 
   // Find or create payment method for this gateway
-  let paymentMethod = await prisma.paymentMethod.findFirst({
+  let paymentMethod = await prisma.payment_methods.findFirst({
     where: {
       churchId: payment.churchId,
       name: payment.gatewayType.toUpperCase(),
@@ -149,7 +149,7 @@ async function createDonationFromPayment(onlinePaymentId: string) {
   })
 
   if (!paymentMethod) {
-    paymentMethod = await prisma.paymentMethod.create({
+    paymentMethod = await prisma.payment_methods.create({
       data: {
         name: payment.gatewayType.toUpperCase(),
         description: `Pago online ${payment.gatewayType}`,

@@ -24,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    const contact = await prisma.prayerContact.findFirst({
+    const contact = await prisma.prayer_contacts.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId

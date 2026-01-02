@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
       where.status = 'approved'
     }
 
-    const testimonies = await prisma.prayerTestimony.findMany({
+    const testimonies = await prisma.prayer_testimonies.findMany({
       where,
       include: {
         contact: {
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
       skip: offset
     })
 
-    const totalCount = await prisma.prayerTestimony.count({ where })
+    const totalCount = await prisma.prayer_testimonies.count({ where })
 
     return NextResponse.json({
       testimonies,
@@ -122,13 +122,13 @@ export async function POST(request: NextRequest) {
     // If no session (public submission), get churchId from contact or form
     if (!churchId) {
       if (contactId) {
-        const contact = await prisma.prayerContact.findUnique({
+        const contact = await prisma.prayer_contacts.findUnique({
           where: { id: contactId },
           select: { churchId: true }
         })
         churchId = contact?.churchId
       } else if (formId) {
-        const form = await prisma.testimonyForm.findUnique({
+        const form = await prisma.testimony_forms.findUnique({
           where: { id: formId },
           select: { churchId: true }
         })
@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const testimony = await prisma.prayerTestimony.create({
+    const testimony = await prisma.prayer_testimonies.create({
       data: {
         title: title.trim(),
         message: message.trim(),

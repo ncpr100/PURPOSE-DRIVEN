@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const forms = await prisma.testimonyForm.findMany({
+    const forms = await prisma.testimony_forms.findMany({
       where: {
         churchId: session.user.churchId
       },
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     const finalSlug = slug?.trim() || name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-')
 
     // Check for duplicate slug
-    const existingForm = await prisma.testimonyForm.findFirst({
+    const existingForm = await prisma.testimony_forms.findFirst({
       where: {
         slug: finalSlug,
         churchId: session.user.churchId
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const form = await prisma.testimonyForm.create({
+    const form = await prisma.testimony_forms.create({
       data: {
         name: name.trim(),
         description: description?.trim() || null,

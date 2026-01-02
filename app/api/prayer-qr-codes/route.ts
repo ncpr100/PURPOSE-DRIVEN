@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     const formId = searchParams.get('formId')
     const isActive = searchParams.get('isActive')
 
-    const qrCodes = await prisma.prayerQRCode.findMany({
+    const qrCodes = await prisma.prayer_qr_codes.findMany({
       where: {
         churchId: user.churchId,
         ...(formId && { formId }),
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     }
 
     // Verify form exists and belongs to church
-    const form = await prisma.prayerForm.findFirst({
+    const form = await prisma.prayer_forms.findFirst({
       where: {
         id: formId,
         churchId: user.churchId,
@@ -100,11 +100,11 @@ export async function POST(request: Request) {
 
     // Generate unique QR code
     let code = nanoid(12)
-    while (await prisma.prayerQRCode.findFirst({ where: { code } })) {
+    while (await prisma.prayer_qr_codes.findFirst({ where: { code } })) {
       code = nanoid(12)
     }
 
-    const qrCode = await prisma.prayerQRCode.create({
+    const qrCode = await prisma.prayer_qr_codes.create({
       data: {
         name: name.trim(),
         description: description?.trim(),

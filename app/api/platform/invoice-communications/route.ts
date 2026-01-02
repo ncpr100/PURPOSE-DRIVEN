@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Invoice ID requerido' }, { status: 400 })
     }
 
-    const communications = await prisma.invoiceCommunication.findMany({
+    const communications = await prisma.invoice_communications.findMany({
       where: { invoiceId },
       include: {
         sender: {
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create communication record
-    const communication = await prisma.invoiceCommunication.create({
+    const communication = await prisma.invoice_communications.create({
       data: {
         invoiceId,
         type,
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
     } catch (commError) {
       console.error('Error sending communication:', commError)
       // Update communication status to failed
-      await prisma.invoiceCommunication.update({
+      await prisma.invoice_communications.update({
         where: { id: communication.id },
         data: { status: 'FAILED' }
       })

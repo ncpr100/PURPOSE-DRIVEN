@@ -119,7 +119,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
 
     if (!donation) {
       // Get payment method for Stripe
-      let paymentMethod = await prisma.paymentMethod.findFirst({
+      let paymentMethod = await prisma.payment_methods.findFirst({
         where: {
           churchId: onlinePayment.churchId,
           name: 'Stripe',
@@ -129,7 +129,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
 
       // Create default Stripe payment method if it doesn't exist
       if (!paymentMethod) {
-        paymentMethod = await prisma.paymentMethod.create({
+        paymentMethod = await prisma.payment_methods.create({
           data: {
             churchId: onlinePayment.churchId,
             name: 'Stripe',

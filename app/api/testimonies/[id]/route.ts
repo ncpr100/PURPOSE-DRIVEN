@@ -14,7 +14,7 @@ export async function GET(
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const testimony = await prisma.prayerTestimony.findFirst({
+    const testimony = await prisma.prayer_testimonies.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -91,7 +91,7 @@ export async function PUT(
     } = body
 
     // Check if testimony exists and belongs to this church
-    const existingTestimony = await prisma.prayerTestimony.findFirst({
+    const existingTestimony = await prisma.prayer_testimonies.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -128,7 +128,7 @@ export async function PUT(
       }
     }
 
-    const testimony = await prisma.prayerTestimony.update({
+    const testimony = await prisma.prayer_testimonies.update({
       where: { id: params.id },
       data: updatedData,
       include: {
@@ -184,7 +184,7 @@ export async function DELETE(
     }
 
     // Check if testimony exists and belongs to this church
-    const existingTestimony = await prisma.prayerTestimony.findFirst({
+    const existingTestimony = await prisma.prayer_testimonies.findFirst({
       where: {
         id: params.id,
         churchId: session.user.churchId
@@ -198,7 +198,7 @@ export async function DELETE(
       )
     }
 
-    await prisma.prayerTestimony.delete({
+    await prisma.prayer_testimonies.delete({
       where: { id: params.id }
     })
 

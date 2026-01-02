@@ -192,7 +192,7 @@ export async function GET(request: NextRequest) {
     })
 
     // ✅ SECURITY: Get contacts with secure filtering and limited data exposure
-    const allContacts = await prisma.prayerContact.findMany({
+    const allContacts = await prisma.prayer_contacts.findMany({
       where: { churchId: user.churchId },
       select: {
         id: true,

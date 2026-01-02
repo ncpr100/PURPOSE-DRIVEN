@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     const isActive = searchParams.get('isActive')
     const isPublic = searchParams.get('isPublic')
 
-    const forms = await prisma.prayerForm.findMany({
+    const forms = await prisma.prayer_forms.findMany({
       where: {
         churchId: user.churchId,
         ...(isActive !== null && { isActive: isActive === 'true' }),
@@ -98,12 +98,12 @@ export async function POST(request: Request) {
     let slug = baseSlug
     let counter = 1
     
-    while (await prisma.prayerForm.findFirst({ where: { slug } })) {
+    while (await prisma.prayer_forms.findFirst({ where: { slug } })) {
       slug = `${baseSlug}-${counter}`
       counter++
     }
 
-    const form = await prisma.prayerForm.create({
+    const form = await prisma.prayer_forms.create({
       data: {
         name: name.trim(),
         description: description?.trim(),

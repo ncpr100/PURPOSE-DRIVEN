@@ -73,14 +73,14 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const conversions = await prisma.funnelConversion.findMany({
+    const conversions = await prisma.funnel_conversions.findMany({
       where: whereClause,
       include: {
-        funnel: {
+        funnels: {
           select: {
             name: true,
             slug: true,
-            website: {
+            websites: {
               select: {
                 name: true,
                 slug: true
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
                      request.headers.get('x-real-ip') || 
                      'unknown'
 
-    const conversion = await prisma.funnelConversion.create({
+    const conversion = await prisma.funnel_conversions.create({
       data: {
         funnelId,
         stepId,

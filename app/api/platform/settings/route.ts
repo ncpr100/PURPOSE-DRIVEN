@@ -14,10 +14,10 @@ export async function GET() {
     }
 
     // Get platform settings (create default if doesn't exist)
-    let settings = await prisma.platformSettings.findFirst()
+    let settings = await prisma.platform_settings.findFirst()
     
     if (!settings) {
-      settings = await prisma.platformSettings.create({
+      settings = await prisma.platform_settings.create({
         data: {
           currency: 'USD',
           taxRate: 0.0,
@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest) {
     const data = await request.json()
     
     // Update or create platform settings
-    const settings = await prisma.platformSettings.upsert({
+    const settings = await prisma.platform_settings.upsert({
       where: { id: data.id || 'default' },
       update: {
         currency: data.currency,

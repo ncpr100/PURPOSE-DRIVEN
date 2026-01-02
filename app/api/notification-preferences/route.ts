@@ -57,13 +57,13 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user's notification preferences or create default ones
-    let preferences = await prisma.notificationPreference.findUnique({
+    let preferences = await prisma.notification_preferences.findUnique({
       where: { userId: user.id }
     })
 
     // If no preferences exist, create default ones
     if (!preferences) {
-      preferences = await prisma.notificationPreference.create({
+      preferences = await prisma.notification_preferences.create({
         data: {
           userId: user.id,
           // All defaults are set in the schema
@@ -112,7 +112,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Upsert notification preferences
-    const preferences = await prisma.notificationPreference.upsert({
+    const preferences = await prisma.notification_preferences.upsert({
       where: { userId: user.id },
       update: {
         ...validatedData,
@@ -161,7 +161,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Reset to default preferences
-    const defaultPreferences = await prisma.notificationPreference.upsert({
+    const defaultPreferences = await prisma.notification_preferences.upsert({
       where: { userId: user.id },
       update: {
         // Email Notifications

@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     const where: any = {}
     if (churchId) where.churchId = churchId
 
-    const credentials = await prisma.tenantCredentials.findMany({
+    const credentials = await prisma.tenant_credentials.findMany({
       where,
       include: {
         churches: {
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(password, 12)
 
     // Create or update credentials
-    const credentials = await prisma.tenantCredentials.upsert({
+    const credentials = await prisma.tenant_credentials.upsert({
       where: { churchId },
       update: {
         loginEmail,

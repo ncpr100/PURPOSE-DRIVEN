@@ -33,13 +33,13 @@ export async function POST(request: NextRequest) {
 
     // Get church ID from form or QR code
     if (formId) {
-      const form = await prisma.testimonyForm.findUnique({
+      const form = await prisma.testimony_forms.findUnique({
         where: { id: formId },
         select: { churchId: true }
       })
       churchId = form?.churchId
     } else if (qrCodeId) {
-      const qrCode = await prisma.testimonyQRCode.findUnique({
+      const qrCode = await prisma.testimony_qr_codes.findUnique({
         where: { id: qrCodeId },
         select: { churchId: true }
       })
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
         let contact = null
         
         if (phone) {
-          contact = await prisma.prayerContact.findFirst({
+          contact = await prisma.prayer_contacts.findFirst({
             where: {
               churchId,
               phone
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
         }
         
         if (!contact && email) {
-          contact = await prisma.prayerContact.findFirst({
+          contact = await prisma.prayer_contacts.findFirst({
             where: {
               churchId,
               email
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
 
         // Create new contact if not found
         if (!contact) {
-          contact = await prisma.prayerContact.create({
+          contact = await prisma.prayer_contacts.create({
             data: {
               id: randomUUID(),
               fullName: fullName.trim(),
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the testimony
-    const testimony = await prisma.prayerTestimony.create({
+    const testimony = await prisma.prayer_testimonies.create({
       data: {
         title: title.trim(),
         message: message.trim(),
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
 
     // Update QR code scan count if applicable
     if (qrCodeId) {
-      await prisma.testimonyQRCode.update({
+      await prisma.testimony_qr_codes.update({
         where: { id: qrCodeId },
         data: {
           scanCount: { increment: 1 },

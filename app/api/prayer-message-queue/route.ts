@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify the contact exists and belongs to this church
-    const contact = await prisma.prayerContact.findFirst({
+    const contact = await prisma.prayer_contacts.findFirst({
       where: {
         id: contactId,
         churchId: user.churchId

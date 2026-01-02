@@ -24,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    const qrCode = await prisma.prayerQRCode.findFirst({
+    const qrCode = await prisma.prayer_qr_codes.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -83,7 +83,7 @@ export async function PUT(
     const body = await request.json()
     const { name, description, design, isActive } = body
 
-    const qrCode = await prisma.prayerQRCode.findFirst({
+    const qrCode = await prisma.prayer_qr_codes.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -94,7 +94,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Código QR no encontrado' }, { status: 404 })
     }
 
-    const updatedQRCode = await prisma.prayerQRCode.update({
+    const updatedQRCode = await prisma.prayer_qr_codes.update({
       where: { id: params.id },
       data: {
         name: name?.trim() || qrCode.name,
@@ -145,7 +145,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Sin permisos suficientes' }, { status: 403 })
     }
 
-    const qrCode = await prisma.prayerQRCode.findFirst({
+    const qrCode = await prisma.prayer_qr_codes.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -156,7 +156,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Código QR no encontrado' }, { status: 404 })
     }
 
-    await prisma.prayerQRCode.delete({
+    await prisma.prayer_qr_codes.delete({
       where: { id: params.id }
     })
 
