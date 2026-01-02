@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { nanoid } from 'nanoid'
 
 const notificationPreferencesSchema = z.object({
   // Email Notifications
@@ -65,7 +66,9 @@ export async function GET(request: NextRequest) {
     if (!preferences) {
       preferences = await prisma.notification_preferences.create({
         data: {
+          id: nanoid(),
           userId: user.id,
+          updatedAt: new Date()
           // All defaults are set in the schema
         }
       })
