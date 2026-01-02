@@ -5,6 +5,7 @@ import { PaymentGatewayFactory, DonationPaymentData } from '@/lib/payments/colom
 import { getServerBaseUrl } from '@/lib/server-url'
 import { cache } from '@/lib/cache'
 import DonationSecurity from '@/lib/donations/security'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -249,6 +250,7 @@ export async function POST(request: NextRequest) {
       // Create online payment record within transaction
       const onlinePayment = await tx.online_payments.create({
         data: {
+          id: nanoid(),
           paymentId: paymentResult.paymentId!,
           amount: paymentData.amount,
           currency: paymentData.currency,
