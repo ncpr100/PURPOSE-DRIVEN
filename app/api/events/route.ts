@@ -246,7 +246,7 @@ export async function PUT(request: NextRequest) {
         updatedAt: new Date()
       },
       include: {
-        creator: {
+        users: {
           select: { name: true, email: true }
         }
       }

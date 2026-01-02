@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
         churches: {
           select: { id: true, name: true, email: true, isActive: true }
         },
-        creator: {
+        users: {
           select: { id: true, name: true }
         }
       },
