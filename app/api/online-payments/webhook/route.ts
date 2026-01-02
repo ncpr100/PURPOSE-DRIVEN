@@ -211,7 +211,7 @@ async function sendDonationConfirmationEmail(onlinePaymentId: string) {
     console.log('Donation confirmation email should be sent to:', {
       email: payment.donorEmail,
       donor: payment.donorName,
-      church: payment.church.name,
+      church: payment.churches.name,
       amount: payment.amount,
       currency: payment.currency,
       reference: payment.reference
