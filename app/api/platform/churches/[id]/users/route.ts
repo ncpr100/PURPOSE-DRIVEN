@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -217,11 +218,13 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       if (churchUsers.length > 0) {
         await tx.notification_deliveries.createMany({
           data: churchUsers.map(u => ({
+            id: nanoid(),
             notificationId: activityNotification.id,
             userId: u.id,
             deliveryMethod: 'in-app',
             deliveryStatus: 'PENDING',
-            deliveredAt: new Date()
+            deliveredAt: new Date(),
+            updatedAt: new Date()
           }))
         })
       }

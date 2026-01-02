@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -151,11 +152,13 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     if (churchUsers.length > 0) {
       await db.notification_deliveries.createMany({
         data: churchUsers.map(u => ({
+          id: nanoid(),
           notificationId: activityNotification.id,
           userId: u.id,
           deliveryMethod: 'in-app',
           deliveryStatus: 'PENDING',
-          deliveredAt: new Date()
+          deliveredAt: new Date(),
+          updatedAt: new Date()
         }))
       })
     }
@@ -234,11 +237,13 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     if (churchUsers.length > 0) {
       await db.notification_deliveries.createMany({
         data: churchUsers.map(u => ({
+          id: nanoid(),
           notificationId: activityNotification.id,
           userId: u.id,
           deliveryMethod: 'in-app',
           deliveryStatus: 'PENDING',
-          deliveredAt: new Date()
+          deliveredAt: new Date(),
+          updatedAt: new Date()
         }))
       })
     }

@@ -5,6 +5,7 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { sendEmail, emailQueue } from '@/lib/email'
 import { getServerBaseUrl } from '@/lib/server-url'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -208,11 +209,13 @@ export async function POST(request: NextRequest) {
       if (churchUsers.length > 0) {
         await tx.notification_deliveries.createMany({
           data: churchUsers.map(u => ({
+            id: nanoid(),
             notificationId: activityNotification.id,
             userId: u.id,
             deliveryMethod: 'in-app',
             deliveryStatus: 'PENDING',
-            deliveredAt: new Date()
+            deliveredAt: new Date(),
+            updatedAt: new Date()
           }))
         })
       }

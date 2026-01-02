@@ -242,11 +242,13 @@ export async function POST(request: NextRequest) {
 
       await prisma.notification_deliveries.createMany({
         data: roleUsers.map(roleUser => ({
+          id: nanoid(),
           notificationId: notification.id,
           userId: roleUser.id,
           deliveryMethod: 'in-app',
           deliveryStatus: 'PENDING',
-          deliveredAt: new Date()
+          deliveredAt: new Date(),
+          updatedAt: new Date()
         }))
       })
     } else if (validatedData.isGlobal) {
@@ -261,11 +263,13 @@ export async function POST(request: NextRequest) {
 
       await prisma.notification_deliveries.createMany({
         data: churchUsers.map(churchUser => ({
+          id: nanoid(),
           notificationId: notification.id,
           userId: churchUser.id,
           deliveryMethod: 'in-app',
           deliveryStatus: 'PENDING',
-          deliveredAt: new Date()
+          deliveredAt: new Date(),
+          updatedAt: new Date()
         }))
       })
     }
