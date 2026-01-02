@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { nanoid } from 'nanoid';
 
 export async function GET(request: NextRequest) {
   try {
@@ -85,6 +86,7 @@ export async function POST(request: NextRequest) {
         updatedAt: new Date()
       },
       create: {
+        id: nanoid(),
         churchId: session.user.church.id,
         gatewayType: 'STRIPE',
         configuration: stripeConfig,
