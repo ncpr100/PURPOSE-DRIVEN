@@ -536,7 +536,7 @@ async function findAvailableMentor(ministryId: string, churchId: string) {
   let lowestWorkload = Infinity
 
   for (const mentor of potentialMentors) {
-    const currentAssignments = mentor.assignments.length
+    const currentAssignments = mentor.volunteer_assignments.length
     if (currentAssignments < lowestWorkload) {
       lowestWorkload = currentAssignments
       bestMentor = mentor.member

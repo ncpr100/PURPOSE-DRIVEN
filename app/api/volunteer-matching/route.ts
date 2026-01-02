@@ -58,7 +58,7 @@ function calculateVolunteerScore(
   // Calculate from pre-loaded volunteers.assignments data
   const recentAssignments = member.volunteers.reduce((total: number, volunteer: any) => {
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-    const recentCount = volunteer.assignments.filter((a: any) => new Date(a.date) >= thirtyDaysAgo).length
+    const recentCount = volunteer.volunteer_assignments.filter((a: any) => new Date(a.date) >= thirtyDaysAgo).length
     return total + recentCount
   }, 0)
 
@@ -155,7 +155,7 @@ export async function POST(request: NextRequest) {
           spiritualGifts: member.spiritualGifts || [],
           experienceLevel: member.experienceLevel || 1,
           isCurrentVolunteer: member.volunteers.length > 0,
-          currentAssignments: member.volunteers.reduce((total, v) => total + v.assignments.length, 0)
+          currentAssignments: member.volunteers.reduce((total, v) => total + v.volunteer_assignments.length, 0)
         })
       }
     }

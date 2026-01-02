@@ -96,7 +96,7 @@ async function analyzeLeadershipPotential(member: any, churchId: string): Promis
 
   let performanceScore = 0
   if (volunteer) {
-    const completedAssignments = volunteer.assignments.length
+    const completedAssignments = volunteer.volunteer_assignments.length
     performanceScore = Math.min(15, completedAssignments * 2.5)
     factors.push({ factor: 'Desempeño', score: performanceScore })
   }

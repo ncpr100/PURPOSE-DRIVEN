@@ -213,7 +213,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
   // Analyze ministry gaps (weekly services, regular activities)
   for (const ministry of ministries) {
     const activeVolunteers = ministry.volunteers.filter(v => v.isActive).length
-    const avgAssignments = ministry.volunteers.reduce((sum, v) => sum + v.assignments.length, 0) / Math.max(1, ministry.volunteers.length)
+    const avgAssignments = ministry.volunteers.reduce((sum, v) => sum + v.volunteer_assignments.length, 0) / Math.max(1, ministry.volunteers.length)
     
     // If ministry has low volunteer engagement, flag for recruitment
     if (activeVolunteers < 3 || avgAssignments < 1) {

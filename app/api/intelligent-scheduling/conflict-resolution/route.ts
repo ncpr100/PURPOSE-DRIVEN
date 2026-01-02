@@ -208,7 +208,7 @@ async function findAlternativeVolunteers(assignments: any[], churchId: string) {
   })
 
   for (const member of availableMembers) {
-    const currentLoad = member.volunteers.reduce((total, v) => total + v.assignments.length, 0)
+    const currentLoad = member.volunteers.reduce((total, v) => total + v.volunteer_assignments.length, 0)
     
     // Skip overloaded members
     if (currentLoad > 3) continue
