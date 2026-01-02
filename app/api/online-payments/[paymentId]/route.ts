@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import DonationSecurity from '@/lib/donations/security'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -58,6 +59,7 @@ export async function PATCH(
         if (!onlinePaymentMethod) {
           onlinePaymentMethod = await tx.payment_methods.create({
             data: {
+              id: nanoid(),
               name: 'ONLINE',
               description: 'Pagos en línea',
               isDigital: true,
@@ -80,6 +82,7 @@ export async function PATCH(
           if (!defaultCategory) {
             defaultCategory = await tx.donation_categories.create({
               data: {
+                id: nanoid(),
                 name: 'General',
                 description: 'Donaciones generales',
                 isActive: true,
@@ -90,8 +93,9 @@ export async function PATCH(
           categoryId = defaultCategory.id
         }
 
-        await tx.donation.create({
+        await tx.donations.create({
           data: {
+            id: nanoid(),
             amount: payment.amount,
             currency: payment.currency,
             donorName: payment.donorName,
@@ -100,6 +104,8 @@ export async function PATCH(
             churchId: payment.churchId,
             categoryId: categoryId,
             paymentMethodId: onlinePaymentMethod.id,
+            status: 'COMPLETADA',
+            donationDate: new Date(),
             notes: `Donación online - ${payment.gatewayType.toUpperCase()} - ID: ${payment.paymentId}`,
             reference: payment.reference
           }
