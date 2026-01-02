@@ -21,22 +21,24 @@ class MemberJourneyAnalytics {
         sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
         // Get member data
         const member = await db_1.db.members.findUnique({
-            where: { id: memberId },
-            include: {
-                donations: {
-                    where: { createdAt: { gte: sixtyDaysAgo } }
-                },
-                volunteers: {
-                    include: {
-                        assignments: {
-                            where: { createdAt: { gte: sixtyDaysAgo } }
-                        }
-                    }
-                }
-            }
+            where: { id: memberId }
         });
         if (!member)
             return 0;
+        // Get donations separately
+        const donations = await db_1.db.donations.findMany({
+            where: {
+                memberId: memberId,
+                createdAt: { gte: sixtyDaysAgo }
+            }
+        });
+        // Get volunteer assignments separately
+        const volunteerAssignments = await db_1.db.volunteer_assignments.findMany({
+            where: {
+                volunteerId: memberId,
+                createdAt: { gte: sixtyDaysAgo }
+            }
+        });
         // Get check-ins (attendance)
         const checkIns = await db_1.db.check_ins.findMany({
             where: {
@@ -61,7 +63,7 @@ class MemberJourneyAnalytics {
             }
         });
         // Calculate metrics
-        const metrics = this.calculateEngagementMetrics(member, checkIns, communications, member.donations, member.volunteers[0]?.assignments || []);
+        const metrics = this.calculateEngagementMetrics(member, checkIns, communications, donations, volunteerAssignments);
         // Weight different factors
         const weights = {
             attendance: 0.25,
@@ -86,7 +88,7 @@ class MemberJourneyAnalytics {
         const member = await db_1.db.members.findUnique({
             where: { id: memberId },
             include: {
-                user: true,
+                users: true,
                 volunteers: true,
                 member_journeys: true
             }
@@ -258,12 +260,12 @@ class MemberJourneyAnalytics {
     calculateEngagementMetrics(member, check_ins, communications, donations, assignments) {
         const weeksInPeriod = 8; // 60 days / 7.5 days per week
         return {
-            averageWeeklyAttendance: Math.min(1, checkIns.length / weeksInPeriod) * 100,
+            averageWeeklyAttendance: Math.min(1, check_ins.length / weeksInPeriod) * 100,
             eventParticipationRate: Math.min(1, assignments.length / 4) * 100,
             communicationResponseRate: communications.length > 0 ? 75 : 0,
             ministryInvolvementLevel: assignments.length > 0 ? 80 : 0,
             givingConsistency: donations.length > 0 ? Math.min(100, donations.length * 12.5) : 0,
-            socialConnectionScore: checkIns.length > 0 ? 60 : 0 // Simplified
+            socialConnectionScore: check_ins.length > 0 ? 60 : 0 // Simplified
         };
     }
     async getCheckInCount(memberId) {

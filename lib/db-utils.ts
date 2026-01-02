@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 export const optimizedQueries = {
   // Get social media accounts with minimal data
   getSocialMediaAccountsMinimal: async (churchId: string) => {
-    return prisma.socialMediaAccount.findMany({
+    return prisma.social_media_accounts.findMany({
       where: {
         churchId,
         isActive: true
@@ -56,10 +56,10 @@ export const optimizedQueries = {
     };
 
     const [posts, total] = await Promise.all([
-      prisma.socialMediaPost.findMany({
+      prisma.social_media_posts.findMany({
         where,
         include: {
-          campaign: {
+          marketing_campaigns: {
             select: { id: true, name: true }
           }
         },
@@ -67,7 +67,7 @@ export const optimizedQueries = {
         skip,
         take: limit
       }),
-      prisma.socialMediaPost.count({ where })
+      prisma.social_media_posts.count({ where })
     ]);
 
     return {
@@ -83,20 +83,20 @@ export const optimizedQueries = {
 
   // Get campaign stats efficiently
   getCampaignStats: async (churchId: string) => {
-    const campaigns = await prisma.marketingCampaign.findMany({
+    const campaigns = await prisma.marketing_campaigns.findMany({
       where: { churchId },
       include: {
         _count: {
-          select: { posts: true }
+          select: { social_media_posts: true }
         }
       }
     });
 
-    const stats = campaigns.reduce((acc, campaign) => {
+    const stats = campaigns.reduce((acc: any, campaign: any) => {
       acc.total += 1;
       acc.statuses[campaign.status] = (acc.statuses[campaign.status] || 0) + 1;
       acc.totalBudget += campaign.budget || 0;
-      acc.totalPosts += campaign._count?.posts || 0;
+      acc.totalPosts += campaign._count?.social_media_posts || 0;
       
       if (campaign.platforms) {
         const platforms = JSON.parse(campaign.platforms);
@@ -142,10 +142,10 @@ export const optimizedQueries = {
     };
 
     // Get raw metrics and account info in one query
-    const metrics = await prisma.socialMediaMetrics.findMany({
+      const metrics = await prisma.social_media_metrics.findMany({
       where,
       include: {
-        account: {
+        social_media_accounts: {
           select: {
             platform: true,
             username: true,
@@ -168,7 +168,7 @@ export const dbCleanup = {
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
-    const deleted = await prisma.socialMediaMetrics.deleteMany({
+    const deleted = await prisma.social_media_metrics.deleteMany({
       where: {
         date: {
           lt: sixMonthsAgo
@@ -181,7 +181,7 @@ export const dbCleanup = {
 
   // Clean up orphaned posts
   cleanupOrphanedPosts: async () => {
-    const deleted = await prisma.socialMediaPost.deleteMany({
+    const deleted = await prisma.social_media_posts.deleteMany({
       where: {
         AND: [
           { status: 'DRAFT' },

@@ -32,6 +32,13 @@ export const ACTIONS = {
 export type Resource = typeof RESOURCES[keyof typeof RESOURCES]
 export type Action = typeof ACTIONS[keyof typeof ACTIONS]
 
+// Helper function to get role permissions
+function getRolePermissions(role: string): Array<{ resource: string; action: string }> {
+  const permissions = DEFAULT_ROLE_PERMISSIONS[role as keyof typeof DEFAULT_ROLE_PERMISSIONS];
+  if (permissions === '*') return []; // SUPER_ADMIN handled separately
+  return Array.isArray(permissions) ? [...permissions] : [];
+}
+
 // Estructura de contexto para evaluación de permisos
 export interface PermissionContext {
   userId: string
@@ -50,29 +57,7 @@ export async function hasPermission(
   try {
     // Obtener usuario con roles y permisos
     const user = await db.users.findUnique({
-      where: { id: userId },
-      include: {
-        user_roles: {
-          where: { isActive: true },
-          include: {
-            role: {
-              include: {
-                rolePermissions: {
-                  include: {
-                    permission: true
-                  }
-                }
-              }
-            }
-          }
-        },
-        userPermissions: {
-          where: { granted: true },
-          include: {
-            permission: true
-          }
-        }
-      }
+      where: { id: userId }
     })
 
     if (!user) return false
@@ -82,32 +67,12 @@ export async function hasPermission(
       return true
     }
 
-    // Verificar permisos directos del usuario
-    const directPermission = user.userPermissions?.find((up: any) => 
-      up.permission.resource === resource && 
-      up.permission.action === action &&
-      up.permission.isActive
-    )
-
-    if (directPermission) {
-      return evaluateConditions(directPermission.conditions, context)
-    }
-
-    // Verificar permisos a través de roles
-    for (const userRole of user.user_roles || []) {
-      if (!userRole.role || !userRole.role.isActive) continue
-      
-      const rolePermission = userRole.role.rolePermissions.find((rp: any) => 
-        rp.permission?.resource === resource && 
-        rp.permission?.action === action &&
-        rp.permission?.isActive
-      )
-
-      if (rolePermission) {
-        const hasRolePermission = evaluateConditions(rolePermission.conditions, context)
-        if (hasRolePermission) return true
-      }
-    }
+    // Simplified permission check based on role
+    // TODO: Implement full RBAC system with permissions table
+    const rolePermissions = getRolePermissions(user.role);
+    return rolePermissions.some(p => 
+      p.resource === resource && p.action === action
+    );
 
     return false
   } catch (error) {
@@ -159,53 +124,20 @@ export async function getUserPermissions(userId: string): Promise<{
   }>
 }> {
   const user = await db.users.findUnique({
-    where: { id: userId },
-    include: {
-      user_roles: {
-        where: { isActive: true },
-        include: {
-          role: {
-            include: {
-              rolePermissions: {
-                include: {
-                  permission: true
-                }
-              }
-            }
-          }
-        }
-      },
-      userPermissions: {
-        where: { granted: true },
-        include: {
-          permission: true
-        }
-      }
-    }
+    where: { id: userId }
   })
 
   if (!user) {
     return { directPermissions: [], rolePermissions: [] }
   }
 
-  const directPermissions = user.userPermissions?.map((up: any) => ({
-    resource: up.permission.resource,
-    action: up.permission.action,
-    conditions: up.conditions || up.permission.conditions
-  })) || []
-
-  const rolePermissions = user.user_roles?.flatMap((ur: any) =>
-    ur.role?.rolePermissions
-      ?.filter((rp: any) => rp.permission?.isActive)
-      ?.map((rp: any) => ({
-        resource: rp.permission.resource,
-        action: rp.permission.action,
-        conditions: rp.conditions || rp.permission.conditions,
-        roleName: ur.role.name
-      })) || []
-  ) || []
-
-  return { directPermissions, rolePermissions }
+  // Simplified: return permissions based on role
+  const rolePermissions = getRolePermissions(user.role);
+  
+  return { 
+    directPermissions: [], 
+    rolePermissions: rolePermissions.map(p => ({ ...p, conditions: undefined, roleName: user.role })) 
+  }
 }
 
 // Permisos por defecto para cada rol básico

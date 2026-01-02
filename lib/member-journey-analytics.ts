@@ -95,22 +95,26 @@ export class MemberJourneyAnalytics {
 
     // Get member data
     const member = await db.members.findUnique({
-      where: { id: memberId },
-      include: {
-        donations: {
-          where: { createdAt: { gte: sixtyDaysAgo } }
-        },
-        volunteers: {
-          include: {
-            assignments: {
-              where: { createdAt: { gte: sixtyDaysAgo } }
-            }
-          }
-        }
-      }
+      where: { id: memberId }
     });
 
     if (!member) return 0;
+
+    // Get donations separately
+    const donations = await db.donations.findMany({
+      where: {
+        memberId: memberId,
+        createdAt: { gte: sixtyDaysAgo }
+      }
+    });
+
+    // Get volunteer assignments separately
+    const volunteerAssignments = await db.volunteer_assignments.findMany({
+      where: {
+        volunteerId: memberId,
+        createdAt: { gte: sixtyDaysAgo }
+      }
+    });
 
     // Get check-ins (attendance)
     const checkIns = await db.check_ins.findMany({
@@ -142,8 +146,8 @@ export class MemberJourneyAnalytics {
       member,
       checkIns,
       communications,
-      member.donations,
-      member.volunteers[0]?.assignments || []
+      donations,
+      volunteerAssignments
     );
 
     // Weight different factors
@@ -174,7 +178,7 @@ export class MemberJourneyAnalytics {
     const member = await db.members.findUnique({
       where: { id: memberId },
       include: {
-        user: true,
+        users: true,
         volunteers: true,
         member_journeys: true
       }
@@ -355,12 +359,12 @@ export class MemberJourneyAnalytics {
     const weeksInPeriod = 8; // 60 days / 7.5 days per week
 
     return {
-      averageWeeklyAttendance: Math.min(1, checkIns.length / weeksInPeriod) * 100,
+      averageWeeklyAttendance: Math.min(1, check_ins.length / weeksInPeriod) * 100,
       eventParticipationRate: Math.min(1, assignments.length / 4) * 100,
       communicationResponseRate: communications.length > 0 ? 75 : 0, // Simplified
       ministryInvolvementLevel: assignments.length > 0 ? 80 : 0,
       givingConsistency: donations.length > 0 ? Math.min(100, donations.length * 12.5) : 0,
-      socialConnectionScore: checkIns.length > 0 ? 60 : 0 // Simplified
+      socialConnectionScore: check_ins.length > 0 ? 60 : 0 // Simplified
     };
   }
 
@@ -921,7 +925,7 @@ export class MemberJourneyAnalytics {
 
     // Sort by priority and impact
     return actions.sort((a, b) => {
-      const priorityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
+      const priorityOrder: Record<string, number> = { critical: 4, high: 3, medium: 2, low: 1 };
       if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
         return priorityOrder[b.priority] - priorityOrder[a.priority];
       }
@@ -957,7 +961,7 @@ export class MemberJourneyAnalytics {
     const currentMonth = new Date().getMonth();
     
     // Seasonal factors based on typical church patterns
-    const seasonalFactors = {
+    const seasonalFactors: Record<number, number> = {
       0: 0.85,  // January (lower after holidays)
       1: 1.0,   // February
       2: 1.1,   // March (Spring growth)
@@ -1089,7 +1093,7 @@ export class MemberJourneyAnalytics {
   }
 
   private async calculateActionSuccessProbability(actionType: string, members: any[]): Promise<number> {
-    const baseProbabilities = {
+    const baseProbabilities: Record<string, number> = {
       emergency_intervention: 75,
       leadership_development: 85,
       engagement_revival: 65,

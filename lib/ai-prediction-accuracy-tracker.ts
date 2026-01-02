@@ -151,7 +151,13 @@ export class AIPredictionAccuracyEngine {
     timeframe: string;
   }>> {
     const metrics = await this.getAccuracyMetrics();
-    const recommendations = [];
+    const recommendations: Array<{
+      category: string;
+      recommendation: string;
+      impact: 'high' | 'medium' | 'low';
+      effort: 'high' | 'medium' | 'low';
+      timeframe: string;
+    }> = [];
 
     // Data quality improvements
     if (metrics.overall < 80) {

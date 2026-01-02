@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'production')
 exports.optimizedQueries = {
     // Get social media accounts with minimal data
     getSocialMediaAccountsMinimal: async (churchId) => {
-        return exports.prisma.socialMediaAccount.findMany({
+        return exports.prisma.social_media_accounts.findMany({
             where: {
                 churchId,
                 isActive: true
@@ -45,10 +45,10 @@ exports.optimizedQueries = {
             ...(filters?.campaignId && { campaignId: filters.campaignId })
         };
         const [posts, total] = await Promise.all([
-            exports.prisma.socialMediaPost.findMany({
+            exports.prisma.social_media_posts.findMany({
                 where,
                 include: {
-                    campaign: {
+                    marketing_campaigns: {
                         select: { id: true, name: true }
                     }
                 },
@@ -56,7 +56,7 @@ exports.optimizedQueries = {
                 skip,
                 take: limit
             }),
-            exports.prisma.socialMediaPost.count({ where })
+            exports.prisma.social_media_posts.count({ where })
         ]);
         return {
             posts,
@@ -70,11 +70,11 @@ exports.optimizedQueries = {
     },
     // Get campaign stats efficiently
     getCampaignStats: async (churchId) => {
-        const campaigns = await exports.prisma.marketingCampaign.findMany({
+        const campaigns = await exports.prisma.marketing_campaigns.findMany({
             where: { churchId },
             include: {
                 _count: {
-                    select: { posts: true }
+                    select: { social_media_posts: true }
                 }
             }
         });
@@ -82,7 +82,7 @@ exports.optimizedQueries = {
             acc.total += 1;
             acc.statuses[campaign.status] = (acc.statuses[campaign.status] || 0) + 1;
             acc.totalBudget += campaign.budget || 0;
-            acc.totalPosts += campaign._count?.posts || 0;
+            acc.totalPosts += campaign._count?.social_media_posts || 0;
             if (campaign.platforms) {
                 const platforms = JSON.parse(campaign.platforms);
                 platforms.forEach((platform) => {
@@ -114,10 +114,10 @@ exports.optimizedQueries = {
             })
         };
         // Get raw metrics and account info in one query
-        const metrics = await exports.prisma.socialMediaMetrics.findMany({
+        const metrics = await exports.prisma.social_media_metrics.findMany({
             where,
             include: {
-                account: {
+                social_media_accounts: {
                     select: {
                         platform: true,
                         username: true,
@@ -137,7 +137,7 @@ exports.dbCleanup = {
     cleanupOldMetrics: async () => {
         const sixMonthsAgo = new Date();
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-        const deleted = await exports.prisma.socialMediaMetrics.deleteMany({
+        const deleted = await exports.prisma.social_media_metrics.deleteMany({
             where: {
                 date: {
                     lt: sixMonthsAgo
@@ -148,7 +148,7 @@ exports.dbCleanup = {
     },
     // Clean up orphaned posts
     cleanupOrphanedPosts: async () => {
-        const deleted = await exports.prisma.socialMediaPost.deleteMany({
+        const deleted = await exports.prisma.social_media_posts.deleteMany({
             where: {
                 AND: [
                     { status: 'DRAFT' },

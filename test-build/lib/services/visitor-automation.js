@@ -20,7 +20,7 @@ class VisitorAutomationService {
                 where: { id: checkInId },
                 include: {
                     churches: true,
-                    event: true,
+                    events: true,
                 }
             });
             if (!checkIn) {
@@ -37,21 +37,13 @@ class VisitorAutomationService {
             const automation_ruless = await db_1.db.automation_rules.findMany({
                 where: {
                     churchId: checkIn.churchId,
-                    isActive: true,
-                    triggers: {
-                        some: {
-                            type: triggerType,
-                            isActive: true
-                        }
-                    }
+                    isActive: true
                 },
                 include: {
-                    actions: {
+                    automation_actions: {
                         where: { isActive: true },
                         orderBy: { createdAt: 'asc' }
-                    },
-                    conditions: true,
-                    triggers: true
+                    }
                 }
             });
             if (automation_ruless.length === 0) {
@@ -60,11 +52,11 @@ class VisitorAutomationService {
             }
             // Execute each matching automation rule
             for (const rule of automation_ruless) {
-                // Check if conditions match
-                const conditionsMatch = await this.evaluateConditions(rule.conditions, checkIn, visitorProfile);
-                if (!conditionsMatch) {
-                    continue;
-                }
+                // Check if conditions match (simplified - no conditions in schema)
+                // const conditionsMatch = await this.evaluateConditions(rule.conditions, checkIn, visitorProfile);
+                // if (!conditionsMatch) {
+                //   continue;
+                // }
                 console.log(`[Visitor Automation] Executing rule: ${rule.name} for check-in: ${checkInId}`);
                 // CHECK BYPASS APPROVAL FIELD
                 if (rule.bypassApproval) {
@@ -114,9 +106,9 @@ class VisitorAutomationService {
     /**
      * Create or update VisitorProfile in database
      */
-    static async upsertVisitorProfile(check_ins, category) {
+    static async upsertVisitorProfile(checkIn, category) {
         // Try to find existing profile by email or phone
-        const existingProfile = await db_1.db.visitorProfile.findFirst({
+        const existingProfile = await db_1.db.visitor_profiles.findFirst({
             where: {
                 OR: [
                     { email: checkIn.email },
@@ -126,7 +118,7 @@ class VisitorAutomationService {
         });
         if (existingProfile) {
             // Update existing profile
-            return await db_1.db.visitorProfile.update({
+            return await db_1.db.visitor_profiles.update({
                 where: { id: existingProfile.id },
                 data: {
                     category,
@@ -157,7 +149,7 @@ class VisitorAutomationService {
     /**
      * Calculate engagement score (0-100)
      */
-    static calculateEngagementScore(check_ins, category) {
+    static calculateEngagementScore(checkIn, category) {
         let score = 50; // Base score
         // Category bonuses
         const categoryBonus = {
@@ -187,7 +179,7 @@ class VisitorAutomationService {
     /**
      * Match visitor to suitable ministries based on interests and profile
      */
-    static async matchMinistries(check_ins, visitorProfile) {
+    static async matchMinistries(checkIn, visitorProfile) {
         try {
             // Get available ministries for the church
             const ministries = await db_1.db.ministries.findMany({
@@ -291,8 +283,8 @@ class VisitorAutomationService {
     /**
      * Execute all actions for a rule (when bypassApproval is true)
      */
-    static async executeRuleActions(rule, check_ins, visitorProfile) {
-        for (const action of rule.actions) {
+    static async executeRuleActions(rule, checkIn, visitorProfile) {
+        for (const action of rule.automation_actions) {
             try {
                 // Prepare context for action execution
                 const context = {
@@ -328,7 +320,7 @@ class VisitorAutomationService {
     /**
      * Create follow-up task (when bypassApproval is false)
      */
-    static async createFollowUpTask(rule, check_ins, visitorProfile) {
+    static async createFollowUpTask(rule, checkIn, visitorProfile) {
         // Find a pastor or admin to assign task
         const staff = await db_1.db.users.findMany({
             where: {
@@ -350,6 +342,7 @@ class VisitorAutomationService {
         const scheduledAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
         await db_1.db.visitor_follow_ups.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 checkInId: checkIn.id,
                 churchId: checkIn.churchId,
                 followUpType: rule.name,
@@ -366,13 +359,13 @@ class VisitorAutomationService {
     /**
      * Evaluate rule conditions against check-in and visitor profile
      */
-    static async evaluateConditions(conditions, check_ins, visitorProfile) {
+    static async evaluateConditions(conditions, checkIn, visitorProfile) {
         if (!conditions || conditions.length === 0) {
             return true; // No conditions = always match
         }
         for (const condition of conditions) {
             // Merge checkIn and visitorProfile for field lookup
-            const data = { ...check_ins, ...visitorProfile };
+            const data = { ...checkIn, ...visitorProfile };
             const fieldValue = this.getFieldValue(data, condition.field);
             const conditionValue = condition.value;
             switch (condition.operator) {

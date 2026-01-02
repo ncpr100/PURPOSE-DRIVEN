@@ -426,7 +426,8 @@ export class AutomationEngine {
             userId: config.targetUser,
             deliveryMethod: 'in-app',
             deliveryStatus: 'PENDING',
-            deliveredAt: new Date()
+            deliveredAt: new Date(),
+            updatedAt: new Date()
           }
         })
       } else if (config.targetRole) {
@@ -447,7 +448,8 @@ export class AutomationEngine {
             userId: roleUser.id,
             deliveryMethod: 'in-app',
             deliveryStatus: 'PENDING',
-            deliveredAt: new Date()
+            deliveredAt: new Date(),
+            updatedAt: new Date()
           }))
         })
       } else if (config.isGlobal) {
@@ -467,7 +469,8 @@ export class AutomationEngine {
             userId: churchUser.id,
             deliveryMethod: 'in-app',
             deliveryStatus: 'PENDING',
-            deliveredAt: new Date()
+            deliveredAt: new Date(),
+            updatedAt: new Date()
           }))
         })
       }
@@ -792,7 +795,7 @@ export class FormAutomationEngine {
         checkedInAt: new Date(),
         visitorType: 'form_submission',
         engagementScore: 85, // High score for digital form submissions
-        prayer_requests: visitorInfo.prayer_requests,
+        prayerRequest: visitorInfo.prayer_requests,
         visitReason: `Custom Form: ${visitorInfo.formTitle}`,
         ministryInterest: visitorInfo.interests ? [visitorInfo.interests] : [],
         ageGroup: visitorInfo.ageRange,
@@ -852,6 +855,7 @@ export class FormAutomationEngine {
     // 🎯 AUTO-CREATE PRAYER CONTACT FIRST
     const prayerContact = await db.prayer_contacts.create({
       data: {
+        id: nanoid(),
         fullName: prayerInfo.requesterName || 'Anónimo',
         email: prayerInfo.requesterEmail || '',
         phone: prayerInfo.requesterPhone || '',
@@ -871,6 +875,7 @@ export class FormAutomationEngine {
     if (!prayerCategory) {
       prayerCategory = await db.prayer_categories.create({
         data: {
+          id: nanoid(),
           name: prayerInfo.category || 'General',
           color: '#6B7280',
           description: 'Categoría creada automáticamente',
@@ -882,6 +887,7 @@ export class FormAutomationEngine {
     // 🎯 AUTO-CREATE PRAYER REQUEST
     const prayer_requests = await db.prayer_requests.create({
       data: {
+        id: nanoid(),
         message: prayerInfo.request || prayerInfo.title || 'Petición de Oración',
         contactId: prayerContact.id,
         categoryId: prayerCategory.id,
@@ -968,6 +974,7 @@ export class FormAutomationEngine {
     // 🎯 AUTO-CREATE EVENT REGISTRATION
     const checkIn = await db.check_ins.create({
       data: {
+        id: nanoid(),
         firstName: eventInfo.firstName || 'Invitado',
         lastName: eventInfo.lastName || '',
         email: eventInfo.email || '',
@@ -998,7 +1005,7 @@ export class FormAutomationEngine {
     const memberInfo = this.extractMemberUpdateInfo(submissionData)
     
     // 🎯 FIND MEMBER BY EMAIL
-    const member = await db.member.findFirst({
+    const member = await db.members.findFirst({
       where: { 
         email: memberInfo.email,
         churchId: churchId
@@ -1011,7 +1018,7 @@ export class FormAutomationEngine {
     }
 
     // 🎯 AUTO-UPDATE MEMBER PROFILE
-    const updatedMember = await db.member.update({
+    const updatedMember = await db.members.update({
       where: { id: member.id },
       data: {
         ...memberInfo.updates,
@@ -1036,6 +1043,7 @@ export class FormAutomationEngine {
     // 🎯 AUTO-CREATE GENERIC FORM SUBMISSION RECORD
     const submission = await db.custom_form_submissions.create({
       data: {
+        id: nanoid(),
         formId: formId,
         data: {
           ...submissionData,
@@ -1126,7 +1134,7 @@ export class FormAutomationEngine {
   }
 
   static async getNextAvailablePastor(churchId: string): Promise<string | null> {
-    const pastors = await db.user.findMany({
+    const pastors = await db.users.findMany({
       where: {
         churchId: churchId,
         role: { in: ['PASTOR', 'ADMIN_IGLESIA'] },

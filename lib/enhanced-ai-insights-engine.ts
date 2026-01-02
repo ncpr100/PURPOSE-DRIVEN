@@ -108,8 +108,8 @@ export class EnhancedAIInsightsEngine {
         donations: { orderBy: { createdAt: 'desc' }, take: 100 },
         volunteers: {
           include: {
-            assignments: true,
-            ministry: true // Include the ministry relation
+            volunteer_assignments: true,
+            ministries: true // Include the ministry relation
           }
         },
         member_spiritual_profiles: true,
@@ -172,19 +172,19 @@ export class EnhancedAIInsightsEngine {
       eventTypePreferences: this.calculateEventPreferences(checkIns),
 
       // Financial Patterns
-      givingFrequency: member.donations.filter(d => d.createdAt >= ninetyDaysAgo).length / 13,
-      givingConsistency: this.calculateGivingConsistency(member.donations, ninetyDaysAgo),
-      givingAmount: this.calculateAverageGiving(member.donations, ninetyDaysAgo),
-      givingChannelPreference: this.calculateGivingChannel(member.donations),
+      givingFrequency: (member as any).donations.filter((d: any) => d.createdAt >= ninetyDaysAgo).length / 13,
+      givingConsistency: this.calculateGivingConsistency((member as any).donations, ninetyDaysAgo),
+      givingAmount: this.calculateAverageGiving((member as any).donations, ninetyDaysAgo),
+      givingChannelPreference: this.calculateGivingChannel((member as any).donations),
 
       // Ministry & Leadership
       volunteerHours: this.calculateVolunteerHours(member.volunteers),
-      leadershipRoles: member.volunteers.filter(v => v.ministry?.name?.toLowerCase().includes('lider')).length,
+      leadershipRoles: member.volunteers.filter(v => v.ministries?.name?.toLowerCase().includes('lider')).length,
       mentorshipActivity: 0, // Would need mentorship data
       servingConsistency: this.calculateServingConsistency(member.volunteers),
 
       // Spiritual Growth
-      spiritualAssessmentScore: member.members_spiritual_profiles?.spiritualMaturityScore || 50,
+      spiritualAssessmentScore: member.member_spiritual_profiles?.spiritualMaturityScore || 50,
       bibleStudyParticipation: 0, // Would need Bible study data
       prayer_requestsFrequency: 0, // Would need prayer data
       testimonySharing: 0, // Would need testimony data
@@ -497,11 +497,11 @@ export class EnhancedAIInsightsEngine {
 
   // Calculation helper methods
   private calculateAttendanceConsistency(check_ins: any[]) {
-    if (checkIns.length < 2) return 0;
+    if (check_ins.length < 2) return 0;
     
     const intervals = [];
-    for (let i = 1; i < checkIns.length; i++) {
-      const days = Math.floor((checkIns[i-1].checkedInAt.getTime() - checkIns[i].checkedInAt.getTime()) / (24 * 60 * 60 * 1000));
+    for (let i = 1; i < check_ins.length; i++) {
+      const days = Math.floor((check_ins[i-1].checkedInAt.getTime() - check_ins[i].checkedInAt.getTime()) / (24 * 60 * 60 * 1000));
       intervals.push(days);
     }
     
@@ -552,13 +552,13 @@ export class EnhancedAIInsightsEngine {
 
   private calculateEventPreferences(check_ins: any[]) {
     // Analyze event types from CheckIn records
-    if (checkIns.length === 0) return [];
+    if (check_ins.length === 0) return [];
     
     // Get unique event types from check-ins with events
-    const eventTypes = checkIns
-      .filter(checkIn => checkIn.event)
-      .map(checkIn => checkIn.event.category || 'GENERAL')
-      .filter((type, index, arr) => arr.indexOf(type) === index);
+    const eventTypes = check_ins
+      .filter((checkIn: any) => checkIn.event)
+      .map((checkIn: any) => checkIn.event.category || 'GENERAL')
+      .filter((type: any, index: any, arr: any) => arr.indexOf(type) === index);
     
     return eventTypes.length > 0 ? eventTypes : ['worship', 'social'];
   }

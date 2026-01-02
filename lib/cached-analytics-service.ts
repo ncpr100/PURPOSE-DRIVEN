@@ -257,8 +257,8 @@ export class CachedAnalyticsService {
       cacheKey,
       async () => {
         const [totalMembers, activeMembers, recentEvents, monthlyDonations] = await Promise.all([
-          db.member.count({ where: { churchId: this.churchId } }),
-          db.member.count({ 
+          db.members.count({ where: { churchId: this.churchId } }),
+          db.members.count({ 
             where: { 
               churchId: this.churchId,
               member_journeys: {
@@ -266,7 +266,7 @@ export class CachedAnalyticsService {
               }
             } 
           }),
-          db.event.count({ 
+          db.events.count({ 
             where: { 
               churchId: this.churchId,
               startDate: { 
@@ -274,7 +274,7 @@ export class CachedAnalyticsService {
               }
             } 
           }),
-          db.donation.aggregate({
+          db.donations.aggregate({
             where: {
               churchId: this.churchId,
               createdAt: {
@@ -382,14 +382,14 @@ export class CachedAnalyticsService {
       totalCommunications,
       member_journeyss
     ] = await Promise.all([
-      db.member.count({ where: { churchId: this.churchId } }),
-      db.member.count({ 
+      db.members.count({ where: { churchId: this.churchId } }),
+      db.members.count({ 
         where: { 
           churchId: this.churchId,
           createdAt: { gte: startDate, lte: endDate }
         }
       }),
-      db.member.count({ 
+      db.members.count({ 
         where: { 
           churchId: this.churchId,
           createdAt: { gte: previousPeriodStart, lte: startDate }
@@ -407,33 +407,33 @@ export class CachedAnalyticsService {
           checkedInAt: { gte: previousPeriodStart, lte: startDate }
         }
       }),
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: {
           churchId: this.churchId,
           createdAt: { gte: startDate, lte: endDate }
         },
         _sum: { amount: true }
       }),
-      db.donation.aggregate({
+      db.donations.aggregate({
         where: {
           churchId: this.churchId,
           createdAt: { gte: previousPeriodStart, lte: startDate }
         },
         _sum: { amount: true }
       }),
-      db.volunteer.count({ 
+      db.volunteers.count({ 
         where: { 
           members: { churchId: this.churchId },
           isActive: true
         }
       }),
-      db.event.count({ 
+      db.events.count({ 
         where: { 
           churchId: this.churchId,
           startDate: { gte: startDate, lte: endDate }
         }
       }),
-      db.communication.count({ 
+      db.communications.count({ 
         where: { 
           churchId: this.churchId,
           sentAt: { gte: startDate, lte: endDate }
@@ -654,7 +654,7 @@ export class CachedAnalyticsService {
   }
 
   private calculateGenderDistribution(journeys: any[]): any[] {
-    const genderCounts = { 'Masculino': 0, 'Femenino': 0, 'Otro': 0 };
+    const genderCounts: { [key: string]: number } = { 'Masculino': 0, 'Femenino': 0, 'Otro': 0 };
     
     journeys.forEach(j => {
       const gender = j.member?.gender || 'Otro';
@@ -708,9 +708,9 @@ export class CachedAnalyticsService {
     });
 
     return riskMembers.map(r => ({
-      memberId: r.member.id,
-      name: `${r.member.firstName} ${r.member.lastName}`,
-      email: r.member.email,
+      memberId: r.members?.id || '',
+      name: `${r.members?.firstName || ''} ${r.members?.lastName || ''}`,
+      email: r.members?.email || '',
       riskLevel: r.retentionRisk,
       retentionScore: r.retentionScore,
       recommendedActions: typeof r.recommendedActions === 'string' 

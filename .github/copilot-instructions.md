@@ -1,7 +1,7 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 2.5  
-**Last Updated**: December 6, 2025  
+**Document Version**: 2.7  
+**Last Updated**: January 2, 2026  
 **Project Status**: Production Active - Phase 3 Complete, Phase 4 Planning (95% Complete)  
 
 ## Project State & Current Focus
@@ -207,7 +207,16 @@ Before implementing or deleting ANY code, **ALWAYS** ask yourself:
 
 ### **DEPLOYMENT PROTOCOL** (MANDATORY)
 1. **KHESED-TEK BACKUP SYNC**: All updates made to this app **MUST** be replicated into the KHESED-TEK backup latest file **BEFORE** the git push to Railway
-2. **AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. This ensures all updates are automatically deployed to the live production environment without delay.
+2. **AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. Railway will automatically build and deploy.
+
+**Railway Deployment Flow**:
+```bash
+git add .
+git commit -m "descriptive message"
+git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (must pass 189/189) → next start
+```
+
+**CRITICAL: Never use `npx prisma db push` in production**. Use `npx prisma migrate dev` to create migrations, then migrations run automatically on Railway deployment.
 
 ## Key Workflows & Commands
 
@@ -306,6 +315,11 @@ const data = await response.json()
 5. Components access session via `useSession()` hook (client) or `getServerSession()` (server)
 6. Token stored in httpOnly cookie with 7-day expiration
 
+**CRITICAL: Session Management**
+- Never store large objects in JWT (causes header overflow errors)
+- Always fetch fresh data in session callbacks - DO NOT embed church objects
+- Use `session.user.churchId` to query church data when needed
+
 ### Feature Flag Pattern
 ```typescript
 // lib/feature-flags.ts - Safe feature rollout
@@ -352,9 +366,17 @@ Before implementing or deleting ANY code, **ALWAYS** ask yourself:
 5. **DID I CREATE NEW ERRORS? I NEED TO AVOID THEM NOT CREATE THEM. I NEED TO BE FORWARD THINKING** - Forward-thinking approach to prevent regressions
 6. **MAY WE NEED THIS FILE LATER IN THE APP WORKFLOW APPLICATION?** - Consider future application workflow dependencies
 7. **WHAT ARE NEXT STEPS AND ENHANCEMENTS OPPORTUNITIES?** - Consider future improvements and optimization potential
+8. **LEARN FROM YOUR MISTAKE TO AVOID REPEATING THEM** - Apply lessons learned from previous development cycles
 
 ### **DEPLOYMENT PROTOCOL** (MANDATORY)
 **AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. This ensures all updates are automatically deployed to the live production environment without delay.
+
+**Railway Deployment Flow**:
+```bash
+git add .
+git commit -m "descriptive message"
+git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (must pass 189/189) → next start
+```
 
 ### Production Deployment Standards
 - **TypeScript Coverage**: 100% with zero compilation errors (ENFORCED)

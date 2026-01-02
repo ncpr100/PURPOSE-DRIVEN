@@ -286,7 +286,7 @@ class MemberAnalyticsCache {
         const results = await pipeline.exec();
         // Parse JSON results for get operations
         return results.map((result, index) => {
-            if (operations[index].operation === 'get' && result[1]) {
+            if (operations[index].operation === 'get' && result && result[1]) {
                 try {
                     return JSON.parse(result[1]);
                 }

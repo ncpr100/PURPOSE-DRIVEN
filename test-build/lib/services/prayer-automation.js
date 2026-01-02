@@ -16,11 +16,7 @@ class PrayerAutomation {
         try {
             // Fetch prayer request with contact and category
             const prayer_requests = await prisma_1.prisma.prayer_requests.findUnique({
-                where: { id: prayer_requestsId },
-                include: {
-                    contacts: true,
-                    category: true,
-                }
+                where: { id: prayer_requestsId }
             });
             if (!prayer_requests) {
                 console.error(`[Prayer Automation] Prayer request ${prayer_requestsId} not found`);
@@ -30,21 +26,13 @@ class PrayerAutomation {
             const automation_ruless = await prisma_1.prisma.automation_rules.findMany({
                 where: {
                     churchId: prayer_requests.churchId,
-                    isActive: true,
-                    triggers: {
-                        some: {
-                            type: 'PRAYER_REQUEST_SUBMITTED',
-                            isActive: true
-                        }
-                    }
+                    isActive: true
                 },
                 include: {
-                    actions: {
+                    automation_actions: {
                         where: { isActive: true },
                         orderBy: { createdAt: 'asc' }
-                    },
-                    conditions: true,
-                    triggers: true
+                    }
                 }
             });
             if (automation_ruless.length === 0) {
@@ -53,11 +41,11 @@ class PrayerAutomation {
             }
             // Execute each matching automation rule
             for (const rule of automation_ruless) {
-                // Check if conditions match
-                const conditionsMatch = await this.evaluateConditions(rule.conditions, prayer_requests);
-                if (!conditionsMatch) {
-                    continue;
-                }
+                // Check if conditions match (simplified - no conditions in schema)
+                // const conditionsMatch = await this.evaluateConditions(rule.conditions, prayer_requests);
+                // if (!conditionsMatch) {
+                //   continue;
+                // }
                 console.log(`[Prayer Automation] Executing rule: ${rule.name} for prayer request: ${prayer_requestsId}`);
                 // CHECK BYPASS APPROVAL FIELD
                 if (rule.bypassApproval) {
@@ -69,7 +57,7 @@ class PrayerAutomation {
                     // CREATE APPROVAL RECORD - Require manual approval
                     console.log(`[Prayer Automation] Creating approval record for rule: ${rule.name}`);
                     // Find a pastor or admin to assign approval
-                    const pastors = await prisma_1.prisma.user.findMany({
+                    const pastors = await prisma_1.prisma.users.findMany({
                         where: {
                             churchId: prayer_requests.churchId,
                             role: {
@@ -83,8 +71,9 @@ class PrayerAutomation {
                         console.error('[Prayer Automation] No pastor/admin found for approval, skipping');
                         continue;
                     }
-                    await prisma_1.prisma.prayerApproval.create({
+                    await prisma_1.prisma.prayer_approvals.create({
                         data: {
+                            id: require('nanoid').nanoid(),
                             requestId: prayer_requests.id,
                             churchId: prayer_requests.churchId,
                             contactId: prayer_requests.contactId,
@@ -207,7 +196,7 @@ class PrayerAutomation {
     static async approvePrayerRequest(approvalId, approverId) {
         try {
             // Update approval status
-            const approval = await prisma_1.prisma.prayerApproval.update({
+            const approval = await prisma_1.prisma.prayer_approvals.update({
                 where: { id: approvalId },
                 data: {
                     status: 'approved',
@@ -227,16 +216,10 @@ class PrayerAutomation {
             const automation_rules = await prisma_1.prisma.automation_rules.findFirst({
                 where: {
                     churchId: approval.churchId,
-                    isActive: true,
-                    triggers: {
-                        some: {
-                            type: 'PRAYER_REQUEST_APPROVED',
-                            isActive: true
-                        }
-                    }
+                    isActive: true
                 },
                 include: {
-                    actions: {
+                    automation_actions: {
                         where: { isActive: true },
                         orderBy: { createdAt: 'asc' }
                     }

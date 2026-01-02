@@ -126,8 +126,8 @@ class CachedAnalyticsService {
         const cacheKey = redis_cache_manager_1.CACHE_KEYS.QUICK_STATS(this.churchId);
         return await redis_cache_manager_1.cacheManager.get(cacheKey, async () => {
             const [totalMembers, activeMembers, recentEvents, monthlyDonations] = await Promise.all([
-                db_1.db.member.count({ where: { churchId: this.churchId } }),
-                db_1.db.member.count({
+                db_1.db.members.count({ where: { churchId: this.churchId } }),
+                db_1.db.members.count({
                     where: {
                         churchId: this.churchId,
                         member_journeys: {
@@ -135,7 +135,7 @@ class CachedAnalyticsService {
                         }
                     }
                 }),
-                db_1.db.event.count({
+                db_1.db.events.count({
                     where: {
                         churchId: this.churchId,
                         startDate: {
@@ -143,7 +143,7 @@ class CachedAnalyticsService {
                         }
                     }
                 }),
-                db_1.db.donation.aggregate({
+                db_1.db.donations.aggregate({
                     where: {
                         churchId: this.churchId,
                         createdAt: {
@@ -220,14 +220,14 @@ class CachedAnalyticsService {
         previousPeriodStart.setDate(previousPeriodStart.getDate() - periodDays);
         // Get base metrics
         const [totalMembers, newMembersThisMonth, newMembersPreviousMonth, checkInsThisMonth, checkInsPreviousMonth, donationsThisMonth, donationsPreviousMonth, activeVolunteers, totalEvents, totalCommunications, member_journeyss] = await Promise.all([
-            db_1.db.member.count({ where: { churchId: this.churchId } }),
-            db_1.db.member.count({
+            db_1.db.members.count({ where: { churchId: this.churchId } }),
+            db_1.db.members.count({
                 where: {
                     churchId: this.churchId,
                     createdAt: { gte: startDate, lte: endDate }
                 }
             }),
-            db_1.db.member.count({
+            db_1.db.members.count({
                 where: {
                     churchId: this.churchId,
                     createdAt: { gte: previousPeriodStart, lte: startDate }
@@ -245,33 +245,33 @@ class CachedAnalyticsService {
                     checkedInAt: { gte: previousPeriodStart, lte: startDate }
                 }
             }),
-            db_1.db.donation.aggregate({
+            db_1.db.donations.aggregate({
                 where: {
                     churchId: this.churchId,
                     createdAt: { gte: startDate, lte: endDate }
                 },
                 _sum: { amount: true }
             }),
-            db_1.db.donation.aggregate({
+            db_1.db.donations.aggregate({
                 where: {
                     churchId: this.churchId,
                     createdAt: { gte: previousPeriodStart, lte: startDate }
                 },
                 _sum: { amount: true }
             }),
-            db_1.db.volunteer.count({
+            db_1.db.volunteers.count({
                 where: {
                     members: { churchId: this.churchId },
                     isActive: true
                 }
             }),
-            db_1.db.event.count({
+            db_1.db.events.count({
                 where: {
                     churchId: this.churchId,
                     startDate: { gte: startDate, lte: endDate }
                 }
             }),
-            db_1.db.communication.count({
+            db_1.db.communications.count({
                 where: {
                     churchId: this.churchId,
                     sentAt: { gte: startDate, lte: endDate }
@@ -515,9 +515,9 @@ class CachedAnalyticsService {
             }
         });
         return riskMembers.map(r => ({
-            memberId: r.member.id,
-            name: `${r.member.firstName} ${r.member.lastName}`,
-            email: r.member.email,
+            memberId: r.members?.id || '',
+            name: `${r.members?.firstName || ''} ${r.members?.lastName || ''}`,
+            email: r.members?.email || '',
             riskLevel: r.retentionRisk,
             retentionScore: r.retentionScore,
             recommendedActions: typeof r.recommendedActions === 'string'

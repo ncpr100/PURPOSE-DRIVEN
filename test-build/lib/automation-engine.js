@@ -338,7 +338,8 @@ class AutomationEngine {
                         userId: config.targetUser,
                         deliveryMethod: 'in-app',
                         deliveryStatus: 'PENDING',
-                        deliveredAt: new Date()
+                        deliveredAt: new Date(),
+                        updatedAt: new Date()
                     }
                 });
             }
@@ -359,7 +360,8 @@ class AutomationEngine {
                         userId: roleUser.id,
                         deliveryMethod: 'in-app',
                         deliveryStatus: 'PENDING',
-                        deliveredAt: new Date()
+                        deliveredAt: new Date(),
+                        updatedAt: new Date()
                     }))
                 });
             }
@@ -379,7 +381,8 @@ class AutomationEngine {
                         userId: churchUser.id,
                         deliveryMethod: 'in-app',
                         deliveryStatus: 'PENDING',
-                        deliveredAt: new Date()
+                        deliveredAt: new Date(),
+                        updatedAt: new Date()
                     }))
                 });
             }
@@ -627,7 +630,7 @@ class FormAutomationEngine {
                 checkedInAt: new Date(),
                 visitorType: 'form_submission',
                 engagementScore: 85,
-                prayer_requests: visitorInfo.prayer_requests,
+                prayerRequest: visitorInfo.prayer_requests,
                 visitReason: `Custom Form: ${visitorInfo.formTitle}`,
                 ministryInterest: visitorInfo.interests ? [visitorInfo.interests] : [],
                 ageGroup: visitorInfo.ageRange,
@@ -675,6 +678,7 @@ class FormAutomationEngine {
         // 🎯 AUTO-CREATE PRAYER CONTACT FIRST
         const prayerContact = await db_1.db.prayer_contacts.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 fullName: prayerInfo.requesterName || 'Anónimo',
                 email: prayerInfo.requesterEmail || '',
                 phone: prayerInfo.requesterPhone || '',
@@ -692,6 +696,7 @@ class FormAutomationEngine {
         if (!prayerCategory) {
             prayerCategory = await db_1.db.prayer_categories.create({
                 data: {
+                    id: (0, nanoid_1.nanoid)(),
                     name: prayerInfo.category || 'General',
                     color: '#6B7280',
                     description: 'Categoría creada automáticamente',
@@ -702,6 +707,7 @@ class FormAutomationEngine {
         // 🎯 AUTO-CREATE PRAYER REQUEST
         const prayer_requests = await db_1.db.prayer_requests.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 message: prayerInfo.request || prayerInfo.title || 'Petición de Oración',
                 contactId: prayerContact.id,
                 categoryId: prayerCategory.id,
@@ -766,6 +772,7 @@ class FormAutomationEngine {
         // 🎯 AUTO-CREATE EVENT REGISTRATION
         const checkIn = await db_1.db.check_ins.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 firstName: eventInfo.firstName || 'Invitado',
                 lastName: eventInfo.lastName || '',
                 email: eventInfo.email || '',
@@ -787,7 +794,7 @@ class FormAutomationEngine {
     static async handleMemberFormAutomation(formId, submissionData, churchId) {
         const memberInfo = this.extractMemberUpdateInfo(submissionData);
         // 🎯 FIND MEMBER BY EMAIL
-        const member = await db_1.db.member.findFirst({
+        const member = await db_1.db.members.findFirst({
             where: {
                 email: memberInfo.email,
                 churchId: churchId
@@ -798,7 +805,7 @@ class FormAutomationEngine {
             return;
         }
         // 🎯 AUTO-UPDATE MEMBER PROFILE
-        const updatedMember = await db_1.db.member.update({
+        const updatedMember = await db_1.db.members.update({
             where: { id: member.id },
             data: {
                 ...memberInfo.updates,
@@ -814,6 +821,7 @@ class FormAutomationEngine {
         // 🎯 AUTO-CREATE GENERIC FORM SUBMISSION RECORD
         const submission = await db_1.db.custom_form_submissions.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 formId: formId,
                 data: {
                     ...submissionData,
@@ -895,7 +903,7 @@ class FormAutomationEngine {
         };
     }
     static async getNextAvailablePastor(churchId) {
-        const pastors = await db_1.db.user.findMany({
+        const pastors = await db_1.db.users.findMany({
             where: {
                 churchId: churchId,
                 role: { in: ['PASTOR', 'ADMIN_IGLESIA'] },
