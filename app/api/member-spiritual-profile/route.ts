@@ -83,10 +83,10 @@ export async function POST(request: NextRequest) {
       })
       
       console.log('✅ TRANSACTION: Step 1 complete - Profile ID:', profile.id)
-      console.log('� TRANSACTION: Step 2 - Update member table...')
+      console.log('📝 TRANSACTION: Step 2 - Update member table...')
       
       // Step 2: Update corresponding fields in Member table
-      const updatedMember = await tx.member.update({
+      const updatedMember = await tx.members.update({
         where: { id: validated.memberId },
         data: {
           spiritualGifts: validated.primaryGifts,
