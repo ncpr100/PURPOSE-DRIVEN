@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { nanoid } from 'nanoid'
 
 const themePreferenceSchema = z.object({
   themeName: z.string().optional(),
@@ -121,11 +122,13 @@ export async function PUT(request: NextRequest) {
         updatedAt: new Date(),
       },
       create: {
+        id: nanoid(),
         userId: user.id,
         churchId: user.churchId,
         themeName: 'custom',
         themeMode: 'light',
         ...validatedData,
+        updatedAt: new Date()
       },
       include: {
         churches: {
@@ -202,6 +205,7 @@ export async function DELETE(request: NextRequest) {
         updatedAt: new Date(),
       },
       create: {
+        id: nanoid(),
         userId: user.id,
         churchId: user.churchId,
         themeName: 'default',
@@ -211,6 +215,7 @@ export async function DELETE(request: NextRequest) {
         borderRadius: '0.5rem',
         compactMode: false,
         isPublic: false,
+        updatedAt: new Date()
       }
     })
 

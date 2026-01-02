@@ -122,8 +122,10 @@ export async function PUT(request: NextRequest) {
         updatedAt: new Date(),
       },
       create: {
+        id: nanoid(),
         userId: user.id,
         ...validatedData,
+        updatedAt: new Date()
       }
     })
 
@@ -201,7 +203,9 @@ export async function DELETE(request: NextRequest) {
         updatedAt: new Date(),
       },
       create: {
+        id: nanoid(),
         userId: user.id,
+        updatedAt: new Date()
         // Defaults are already set in schema
       }
     })

@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 // POST /api/user-roles - Asignar rol a usuario
 export async function POST(request: Request) {
@@ -72,9 +73,11 @@ export async function POST(request: Request) {
         expiresAt: expiresAt ? new Date(expiresAt) : null,
       },
       create: {
+        id: nanoid(),
         userId,
         roleId,
         expiresAt: expiresAt ? new Date(expiresAt) : null,
+        updatedAt: new Date()
       },
       include: {
         user: {
