@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { nanoid } from 'nanoid'
 
 export async function POST(
   request: NextRequest,
@@ -102,6 +103,7 @@ export async function POST(
           // Create volunteer assignment
           const assignment = await prisma.volunteer_assignments.create({
             data: {
+              id: nanoid(),
               volunteerId: bestMatch.id,
               eventId: event.id,
               title: `${role} - ${event.title}`,
