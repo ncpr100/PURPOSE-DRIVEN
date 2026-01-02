@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { PaymentGatewayFactory } from '@/lib/payments/colombian-gateways'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -151,6 +152,7 @@ async function createDonationFromPayment(onlinePaymentId: string) {
   if (!paymentMethod) {
     paymentMethod = await prisma.payment_methods.create({
       data: {
+        id: nanoid(),
         name: payment.gatewayType.toUpperCase(),
         description: `Pago online ${payment.gatewayType}`,
         isDigital: true,
@@ -162,6 +164,7 @@ async function createDonationFromPayment(onlinePaymentId: string) {
   // Create donation record
   const donation = await prisma.donations.create({
     data: {
+      id: nanoid(),
       amount: payment.amount,
       currency: payment.currency,
       donorName: payment.donorName,
