@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { db } from "@/lib/db"
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
+import { nanoid } from 'nanoid'
 
 // Validation schemas for events
 const createEventSchema = z.object({
@@ -120,6 +121,7 @@ export async function POST(request: NextRequest) {
 
     const event = await db.events.create({
       data: {
+        id: nanoid(),
         title: validatedData.title,
         description: validatedData.description,
         startDate: startDate,
