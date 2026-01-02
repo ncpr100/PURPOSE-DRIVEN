@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -136,6 +137,7 @@ export async function POST(
     const spiritualProfile = await prisma.member_spiritual_profiles.upsert({
       where: { memberId },
       create: {
+        id: nanoid(),
         memberId,
         primaryGifts,
         secondaryGifts,
@@ -146,7 +148,8 @@ export async function POST(
         servingMotivation: motivation,
         volunteerReadinessScore,
         leadershipReadinessScore: Math.round(volunteerReadinessScore * 0.7),
-        assessmentDate: new Date()
+        assessmentDate: new Date(),
+        updatedAt: new Date()
       },
       update: {
         primaryGifts,
