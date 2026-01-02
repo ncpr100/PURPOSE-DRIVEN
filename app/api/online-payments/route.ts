@@ -247,7 +247,7 @@ export async function POST(request: NextRequest) {
         }
 
       // Create online payment record within transaction
-      const onlinePayment = await tx.onlinePayment.create({
+      const onlinePayment = await tx.online_payments.create({
         data: {
           paymentId: paymentResult.paymentId!,
           amount: paymentData.amount,

@@ -36,7 +36,7 @@ export async function PATCH(
 
     // Update payment status with transaction
     const updatedPayment = await prisma.$transaction(async (tx) => {
-      const payment = await tx.onlinePayment.update({
+      const payment = await tx.online_payments.update({
         where: { paymentId },
         data: {
           status,
@@ -48,7 +48,7 @@ export async function PATCH(
       // If payment completed, create donation record
       if (status === 'completed' && existingPayment.status !== 'completed') {
         // Find or create ONLINE payment method
-        let onlinePaymentMethod = await tx.paymentMethod.findFirst({
+        let onlinePaymentMethod = await tx.payment_methods.findFirst({
           where: {
             churchId: payment.churchId,
             name: 'ONLINE'
@@ -56,7 +56,7 @@ export async function PATCH(
         })
 
         if (!onlinePaymentMethod) {
-          onlinePaymentMethod = await tx.paymentMethod.create({
+          onlinePaymentMethod = await tx.payment_methods.create({
             data: {
               name: 'ONLINE',
               description: 'Pagos en línea',
@@ -70,7 +70,7 @@ export async function PATCH(
         // Find or create default donation category if not provided
         let categoryId = payment.categoryId
         if (!categoryId) {
-          let defaultCategory = await tx.donationCategory.findFirst({
+          let defaultCategory = await tx.donation_categories.findFirst({
             where: {
               churchId: payment.churchId,
               name: 'General'
@@ -78,7 +78,7 @@ export async function PATCH(
           })
 
           if (!defaultCategory) {
-            defaultCategory = await tx.donationCategory.create({
+            defaultCategory = await tx.donation_categories.create({
               data: {
                 name: 'General',
                 description: 'Donaciones generales',
