@@ -30,10 +30,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
       },
       include: {
         marketing_campaign_posts: {
-          include: {
-            campaign: {
-              select: { id: true, name: true }
-            }
+          select: { 
+            id: true, 
+            postId: true, 
+            accountId: true, 
+            status: true, 
+            scheduledAt: true,
+            publishedAt: true 
           }
         },
         _count: {
