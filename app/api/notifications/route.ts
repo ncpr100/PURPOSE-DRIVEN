@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
 const notificationSchema = z.object({
@@ -197,6 +198,7 @@ export async function POST(request: NextRequest) {
 
     const notification = await prisma.notifications.create({
       data: {
+        id: nanoid(),
         title: validatedData.title,
         message: validatedData.message,
         type: validatedData.type,
@@ -205,6 +207,7 @@ export async function POST(request: NextRequest) {
         isGlobal: validatedData.isGlobal,
         churchId: user.churchId,
         createdBy: user.id,
+        updatedAt: new Date()
       },
       include: {
         churches: { select: { name: true } },
@@ -217,11 +220,13 @@ export async function POST(request: NextRequest) {
       // Single user notification
       await prisma.notification_deliveries.create({
         data: {
+          id: nanoid(),
           notificationId: notification.id,
           userId: validatedData.targetUser,
           deliveryMethod: 'in-app',
           deliveryStatus: 'PENDING',
-          deliveredAt: new Date()
+          deliveredAt: new Date(),
+          updatedAt: new Date()
         }
       })
     } else if (validatedData.targetRole) {
