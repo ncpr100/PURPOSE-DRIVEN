@@ -174,9 +174,12 @@ export async function POST(request: NextRequest) {
           email: adminUser.email,
           password: hashedPassword,
           role: 'ADMIN_IGLESIA',
-          churchId: church.id,
+          churches: {
+            connect: { id: church.id }
+          },
           isActive: true,
-          emailVerified: new Date()
+          emailVerified: new Date(),
+          updatedAt: new Date()
         }
       })
 
@@ -188,15 +191,20 @@ export async function POST(request: NextRequest) {
           lastName: adminUser.name.split(' ').slice(1).join(' ') || '',
           email: adminUser.email,
           phone: adminUser.phone || '',
-          churchId: church.id,
-          userId: admin.id,
+          churches: {
+            connect: { id: church.id }
+          },
+          users: {
+            connect: { id: admin.id }
+          },
           membershipDate: new Date(),
-          isActive: true
+          isActive: true,
+          updatedAt: new Date()
         }
       })
 
       // Log de actividad: crear notificación y entregas por usuario dentro de la transacción
-      const activityNotification = await tx.notification.create({
+      const activityNotification = await tx.notifications.create({
         data: {
           title: 'Nueva iglesia creada',
           message: `Iglesia "${name}" creada por SUPER_ADMIN`,
