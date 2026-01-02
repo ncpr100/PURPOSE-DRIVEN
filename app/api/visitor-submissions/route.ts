@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const submissions = await db.visitorSubmission.findMany({
+    const submissions = await db.visitor_submissions.findMany({
       where: { churchId: session.user.churchId },
       include: {
         form: {

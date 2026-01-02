@@ -109,6 +109,7 @@ export async function POST(
 
     const reservation = await db.event_resource_reservations.create({
       data: {
+  id: nanoid(),
         id: nanoid(),
         resourceId: params.id,
         eventId,

@@ -64,7 +64,7 @@ async function calculateRecruitmentScore(member: any, churchId: string): Promise
   factors.push({ factor: 'Preparación Espiritual', score: spiritualScore, max: 30 })
 
   // 2. Availability & Commitment (25% weight)
-  const availabilityMatrix = await prisma.availabilityMatrix.findUnique({
+  const availabilityMatrix = await prisma.availability_matrices.findUnique({
     where: { memberId: member.id }
   })
   

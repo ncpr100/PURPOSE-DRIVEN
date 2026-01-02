@@ -98,7 +98,7 @@ export async function POST(request: Request) {
 
     const role = await db.$transaction(async (prisma) => {
       // Crear el rol
-      const newRole = await prisma.role.create({
+      const newRole = await prisma.roles.create({
         data: {
           name,
           description,
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
 
       // Asignar permisos si se proporcionaron
       if (permissions && Array.isArray(permissions)) {
-        await prisma.rolePermission.createMany({
+        await prisma.role_permissions.createMany({
           data: permissions.map((permissionId: string) => ({
             roleId: newRole.id,
             permissionId,

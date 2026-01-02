@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get Stripe configuration for the church
-    const config = await prisma.paymentGatewayConfig.findFirst({
+    const config = await prisma.payment_gateway_configs.findFirst({
       where: {
         churchId: session.user.church.id,
         gatewayType: 'STRIPE'
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Upsert payment gateway configuration
-    const config = await prisma.paymentGatewayConfig.upsert({
+    const config = await prisma.payment_gateway_configs.upsert({
       where: {
         churchId_gatewayType: {
           churchId: session.user.church.id,

@@ -14,7 +14,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
     }
 
-    const recurrentInvoices = await prisma.invoice.findMany({
+    const recurrentInvoices = await prisma.invoices.findMany({
       where: { 
         isRecurrent: true,
         status: { in: ['PAID', 'SENT'] } // Only active recurrent invoices
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const { invoiceId, forceGenerate = false } = body
 
     // Get the base recurrent invoice
-    const baseInvoice = await prisma.invoice.findUnique({
+    const baseInvoice = await prisma.invoices.findUnique({
       where: { id: invoiceId },
       include: {
         lineItems: true,
@@ -108,11 +108,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate invoice number
-    const invoiceCount = await prisma.invoice.count()
+    const invoiceCount = await prisma.invoices.count()
     const invoiceNumber = `INV-${new Date().getFullYear()}-${String(invoiceCount + 1).padStart(4, '0')}`
 
     // Create new recurrent invoice
-    const newInvoice = await prisma.invoice.create({
+    const newInvoice = await prisma.invoices.create({
       data: {
         invoiceNumber,
         churchId: baseInvoice.churchId,
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
       })
 
       // Mark invoice as sent
-      await prisma.invoice.update({
+      await prisma.invoices.update({
         where: { id: newInvoice.id },
         data: { 
           status: 'SENT',

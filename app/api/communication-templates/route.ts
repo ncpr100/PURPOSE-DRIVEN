@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from \'nanoid\'
 import { db } from '@/lib/db'
 import { randomUUID } from 'crypto'
 
@@ -58,6 +59,7 @@ export async function POST(req: NextRequest) {
 
     const template = await db.communication_templates.create({
       data: {
+  id: nanoid(),
         id: randomUUID(),
         name,
         subject,

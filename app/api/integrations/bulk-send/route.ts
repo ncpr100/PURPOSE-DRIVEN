@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from \'nanoid\'
 import { communicationService } from '@/lib/integrations/communication'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
@@ -127,6 +128,7 @@ export async function POST(request: NextRequest) {
     // Log the bulk send activity
     await prisma.notifications.create({
       data: {
+  id: nanoid(),
         title: `Envío masivo ${validatedData.service}`,
         message: `Se enviaron ${result.successful} mensajes de ${result.total} intentos`,
         type: 'SYSTEM',

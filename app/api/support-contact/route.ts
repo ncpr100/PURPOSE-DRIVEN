@@ -9,13 +9,13 @@ export const dynamic = 'force-dynamic';
 // GET - Fetch support contact information
 export async function GET() {
   try {
-    let contactInfo = await prisma.supportContactInfo.findFirst({
+    let contactInfo = await prisma.support_contact_info.findFirst({
       where: { id: 'default' }
     })
 
     // If no record exists, create default one
     if (!contactInfo) {
-      contactInfo = await prisma.supportContactInfo.create({
+      contactInfo = await prisma.support_contact_info.create({
         data: {
           id: 'default',
           whatsappNumber: '+57 300 KHESED (543733)',
@@ -123,7 +123,7 @@ export async function PUT(request: NextRequest) {
     console.log('📝 Updating support contact with data:', { whatsappNumber, email, companyName, location, website })
 
     // Update or create contact info
-    const contactInfo = await prisma.supportContactInfo.upsert({
+    const contactInfo = await prisma.support_contact_info.upsert({
       where: { id: 'default' },
       update: {
         whatsappNumber,

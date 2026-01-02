@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get invoice details
-    const invoice = await prisma.invoice.findUnique({
+    const invoice = await prisma.invoices.findUnique({
       where: { id: invoiceId },
       include: {
         churches: {

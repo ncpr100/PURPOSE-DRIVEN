@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     // Public endpoint for registration - no authentication required
     // Only returns basic plan information needed for signup
     
-    const plans = await db.subscriptionPlan.findMany({
+    const plans = await db.subscription_plans.findMany({
       where: {
         isActive: true
       },

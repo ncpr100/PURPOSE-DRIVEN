@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Sin permisos' }, { status: 403 })
     }
 
-    const userPermissions = await db.userPermission.findMany({
+    const userPermissions = await db.user_permissions.findMany({
       where: { userId },
       include: {
         permission: true
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     }
 
     // Verificar que el permiso existe
-    const permission = await db.permission.findUnique({
+    const permission = await db.permissions.findUnique({
       where: { id: permissionId }
     })
 
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
     }
 
     // Crear o actualizar el permiso de usuario
-    const userPermission = await db.userPermission.upsert({
+    const userPermission = await db.user_permissions.upsert({
       where: {
         userId_permissionId: {
           userId,
@@ -162,7 +162,7 @@ export async function DELETE(request: Request) {
       )
     }
 
-    await db.userPermission.delete({
+    await db.user_permissions.delete({
       where: {
         userId_permissionId: {
           userId,

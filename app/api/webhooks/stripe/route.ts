@@ -143,7 +143,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
       // Ensure we have a category ID
       let categoryId = onlinePayment.categoryId;
       if (!categoryId) {
-        let defaultCategory = await prisma.donationCategory.findFirst({
+        let defaultCategory = await prisma.donation_categories.findFirst({
           where: {
             churchId: onlinePayment.churchId,
             name: 'General'
@@ -151,7 +151,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
         });
 
         if (!defaultCategory) {
-          defaultCategory = await prisma.donationCategory.create({
+          defaultCategory = await prisma.donation_categories.create({
             data: {
               name: 'General',
               description: 'Donaciones generales',

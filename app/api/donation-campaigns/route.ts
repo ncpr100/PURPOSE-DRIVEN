@@ -141,6 +141,7 @@ export async function POST(request: NextRequest) {
 
     const campaign = await prisma.donation_campaigns.create({
       data: {
+  id: nanoid(),
         id: nanoid(),
         name: campaignName,
         description,

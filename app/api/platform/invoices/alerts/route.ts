@@ -18,7 +18,7 @@ export async function GET() {
     const weekFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)
 
     // Get overdue invoices
-    const overdueInvoices = await prisma.invoice.findMany({
+    const overdueInvoices = await prisma.invoices.findMany({
       where: {
         status: 'SENT',
         dueDate: { lt: today }
@@ -32,7 +32,7 @@ export async function GET() {
     })
 
     // Get invoices due soon
-    const dueSoonInvoices = await prisma.invoice.findMany({
+    const dueSoonInvoices = await prisma.invoices.findMany({
       where: {
         status: 'SENT',
         dueDate: { 
@@ -69,7 +69,7 @@ export async function GET() {
     })
 
     // Get pending payments count
-    const pendingPaymentsCount = await prisma.invoice.count({
+    const pendingPaymentsCount = await prisma.invoices.count({
       where: { status: 'SENT' }
     })
 
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    const invoices = await prisma.invoice.findMany({
+    const invoices = await prisma.invoices.findMany({
       where: { id: { in: invoiceIds } },
       include: {
         churches: {

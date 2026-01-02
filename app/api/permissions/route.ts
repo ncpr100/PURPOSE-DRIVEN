@@ -18,7 +18,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Sin permisos' }, { status: 403 })
     }
 
-    const permissions = await db.permission.findMany({
+    const permissions = await db.permissions.findMany({
       where: {
         isActive: true,
       },
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const permission = await db.permission.create({
+    const permission = await db.permissions.create({
       data: {
         name,
         description,

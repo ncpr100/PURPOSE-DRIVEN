@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     if (churchId) where.churchId = churchId
 
     const [invoices, total] = await Promise.all([
-      prisma.invoice.findMany({
+      prisma.invoices.findMany({
         where,
         include: {
           churches: {
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
         skip: (page - 1) * limit,
         take: limit
       }),
-      prisma.invoice.count({ where })
+      prisma.invoices.count({ where })
     ])
 
     return NextResponse.json({
@@ -101,11 +101,11 @@ export async function POST(request: NextRequest) {
     const totalAmount = subtotal + taxAmount
 
     // Generate invoice number
-    const invoiceCount = await prisma.invoice.count()
+    const invoiceCount = await prisma.invoices.count()
     const invoiceNumber = `INV-${new Date().getFullYear()}-${String(invoiceCount + 1).padStart(4, '0')}`
 
     // Create invoice with line items
-    const invoice = await prisma.invoice.create({
+    const invoice = await prisma.invoices.create({
       data: {
         invoiceNumber,
         churchId,

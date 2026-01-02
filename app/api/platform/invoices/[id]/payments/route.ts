@@ -34,7 +34,7 @@ export async function POST(
     }
 
     // Check if invoice exists
-    const invoice = await prisma.invoice.findUnique({
+    const invoice = await prisma.invoices.findUnique({
       where: { id: params.id },
       include: {
         payments: true
@@ -65,7 +65,7 @@ export async function POST(
 
     // Update invoice status if fully paid
     if (newTotalPaid >= invoice.totalAmount) {
-      await prisma.invoice.update({
+      await prisma.invoices.update({
         where: { id: params.id },
         data: {
           status: 'PAID',

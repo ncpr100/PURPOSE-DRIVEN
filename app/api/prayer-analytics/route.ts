@@ -242,7 +242,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Get prayer response templates
-    const templates = await prisma.prayerResponseTemplate.findMany({
+    const templates = await prisma.prayer_response_templates.findMany({
       where: { churchId: user.churchId },
       include: {
         category: true

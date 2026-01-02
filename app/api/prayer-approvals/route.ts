@@ -38,7 +38,7 @@ export async function GET(request: Request) {
     }
 
     const [approvals, total] = await Promise.all([
-      prisma.prayerApproval.findMany({
+      prisma.prayer_approvals.findMany({
         where,
         include: {
           request: {
@@ -77,7 +77,7 @@ export async function GET(request: Request) {
         skip,
         take: limit
       }),
-      prisma.prayerApproval.count({ where })
+      prisma.prayer_approvals.count({ where })
     ])
 
     return NextResponse.json({
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
     }
 
     // Verify all approvals belong to this church and are pending
-    const validApprovals = await prisma.prayerApproval.findMany({
+    const validApprovals = await prisma.prayer_approvals.findMany({
       where: {
         id: { in: approvalIds },
         churchId: user.churchId,
@@ -150,7 +150,7 @@ export async function POST(request: Request) {
     const newStatus = action === 'approve' ? 'approved' : 'rejected'
 
     // Update approvals
-    await prisma.prayerApproval.updateMany({
+    await prisma.prayer_approvals.updateMany({
       where: {
         id: { in: approvalIds },
         churchId: user.churchId

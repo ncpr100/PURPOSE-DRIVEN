@@ -42,7 +42,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
     }
 
-    const template = await prisma.notificationTemplate.findFirst({
+    const template = await prisma.notification_templates.findFirst({
       where: {
         id: params.id,
         OR: [
@@ -95,7 +95,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     // Verify template exists and belongs to user's church (or is not a system template)
-    const existingTemplate = await prisma.notificationTemplate.findFirst({
+    const existingTemplate = await prisma.notification_templates.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId, // Only church-specific templates can be edited
@@ -114,7 +114,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     // Check if new name conflicts with existing templates
     if (validatedData.name && validatedData.name !== existingTemplate.name) {
-      const nameConflict = await prisma.notificationTemplate.findFirst({
+      const nameConflict = await prisma.notification_templates.findFirst({
         where: {
           name: validatedData.name,
           churchId: user.churchId,
@@ -127,7 +127,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       }
     }
 
-    const updatedTemplate = await prisma.notificationTemplate.update({
+    const updatedTemplate = await prisma.notification_templates.update({
       where: { id: params.id },
       data: {
         ...validatedData,
@@ -182,7 +182,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     }
 
     // Verify template exists and can be deleted
-    const template = await prisma.notificationTemplate.findFirst({
+    const template = await prisma.notification_templates.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId,
@@ -196,7 +196,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       }, { status: 404 })
     }
 
-    await prisma.notificationTemplate.delete({
+    await prisma.notification_templates.delete({
       where: { id: params.id }
     })
 

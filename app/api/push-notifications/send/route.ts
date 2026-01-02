@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log the notification send
-    await prisma.pushNotificationLog.create({
+    await prisma.push_notification_logs.create({
       data: {
         churchId: user.churchId,
         title: payload.title,

@@ -20,7 +20,7 @@ export async function GET(
       return NextResponse.json({ error: 'Sin permisos' }, { status: 403 })
     }
 
-    const permission = await db.permission.findUnique({
+    const permission = await db.permissions.findUnique({
       where: { id: params.id },
       include: {
         rolePermissions: {
@@ -78,7 +78,7 @@ export async function PUT(
     const body = await request.json()
     const { name, description, resource, action, conditions, isActive } = body
 
-    const permission = await db.permission.update({
+    const permission = await db.permissions.update({
       where: { id: params.id },
       data: {
         ...(name && { name }),
@@ -122,7 +122,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Sin permisos' }, { status: 403 })
     }
 
-    await db.permission.delete({
+    await db.permissions.delete({
       where: { id: params.id },
     })
 

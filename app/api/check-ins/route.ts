@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from \'nanoid\'
 import { db } from '@/lib/db'
 import { createCheckInSchema } from '@/lib/validations/check-in'
 import { randomUUID } from 'crypto'
@@ -123,6 +124,7 @@ export async function POST(request: NextRequest) {
 
     const checkIn = await db.check_ins.create({
       data: {
+  id: nanoid(),
         id: randomUUID(),
         firstName,
         lastName,

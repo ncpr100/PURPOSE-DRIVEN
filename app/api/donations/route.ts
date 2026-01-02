@@ -189,6 +189,7 @@ export async function POST(request: NextRequest) {
       // Create the donation within transaction
       const newDonation = await tx.donations.create({
         data: {
+  id: nanoid(),
           id: nanoid(),
           amount: parseFloat(amount),
           currency,

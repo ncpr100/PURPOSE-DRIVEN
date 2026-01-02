@@ -78,6 +78,7 @@ export async function POST(request: NextRequest) {
 
     const category = await db.donation_categories.create({
       data: {
+  id: nanoid(),
         id: nanoid(),
         name,
         description,

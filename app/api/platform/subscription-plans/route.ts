@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Acceso denegado' }, { status: 403 })
     }
 
-    const plans = await db.subscriptionPlan.findMany({
+    const plans = await db.subscription_plans.findMany({
       orderBy: { sortOrder: 'asc' }
     })
 
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if plan with same name already exists
-    const existingPlan = await db.subscriptionPlan.findUnique({
+    const existingPlan = await db.subscription_plans.findUnique({
       where: { name: name.toUpperCase() }
     })
 
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const plan = await db.subscriptionPlan.create({
+    const plan = await db.subscription_plans.create({
       data: {
         name: name.toUpperCase(),
         displayName,
@@ -142,7 +142,7 @@ export async function PUT(request: NextRequest) {
     }
 
     console.log('🔄 Updating subscription plan with ID:', id)
-    const plan = await db.subscriptionPlan.update({
+    const plan = await db.subscription_plans.update({
       where: { id },
       data: {
         ...(name && { name: name.toUpperCase() }),
@@ -209,7 +209,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    await db.subscriptionPlan.delete({
+    await db.subscription_plans.delete({
       where: { id }
     })
 

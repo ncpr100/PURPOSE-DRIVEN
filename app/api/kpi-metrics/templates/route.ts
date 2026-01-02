@@ -325,7 +325,7 @@ export async function POST(request: NextRequest) {
       if (!template) continue;
 
       try {
-        const kpiMetric = await db.kPIMetric.create({
+        const kpiMetric = await db.kpi_metrics.create({
           data: {
             ...template,
             churchId,

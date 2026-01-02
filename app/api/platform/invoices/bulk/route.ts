@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     const totalAmount = subtotal + taxAmount
 
     // Get invoice count for numbering
-    const invoiceCount = await prisma.invoice.count()
+    const invoiceCount = await prisma.invoices.count()
     
     // Create invoices for all churches
     const createdInvoices = []
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       const churchId = churchIds[i]
       const invoiceNumber = `INV-${new Date().getFullYear()}-${String(invoiceCount + i + 1).padStart(4, '0')}`
 
-      const invoice = await prisma.invoice.create({
+      const invoice = await prisma.invoices.create({
         data: {
           invoiceNumber,
           churchId,

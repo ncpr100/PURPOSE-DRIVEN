@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
     }
 
-    const configs = await prisma.paymentGatewayConfig.findMany({
+    const configs = await prisma.payment_gateway_configs.findMany({
       where: {
         churchId: session.user.churchId
       },
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Upsert gateway configuration
-    const config = await prisma.paymentGatewayConfig.upsert({
+    const config = await prisma.payment_gateway_configs.upsert({
       where: {
         churchId_gatewayType: {
           churchId: session.user.churchId,

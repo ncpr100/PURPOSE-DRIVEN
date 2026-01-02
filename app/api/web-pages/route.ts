@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const pages = await prisma.webPage.findMany({
+    const pages = await prisma.web_pages.findMany({
       where: {
         websiteId: websiteId
       },
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar que el slug no existe en este sitio web
-    const existingPage = await prisma.webPage.findFirst({
+    const existingPage = await prisma.web_pages.findFirst({
       where: {
         websiteId,
         slug
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
 
     // Si es página de inicio, desmarcar otras como homepage
     if (isHomePage) {
-      await prisma.webPage.updateMany({
+      await prisma.web_pages.updateMany({
         where: {
           websiteId,
           isHomePage: true
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const page = await prisma.webPage.create({
+    const page = await prisma.web_pages.create({
       data: {
         title,
         slug,

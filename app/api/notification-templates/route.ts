@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       whereClause.isActive = true
     }
 
-    const templates = await prisma.notificationTemplate.findMany({
+    const templates = await prisma.notification_templates.findMany({
       where: whereClause,
       orderBy: [
         { isSystem: 'desc' }, // System templates first
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
     const { churchId: _, ...templateData } = validatedData as any
 
     // Check if template name already exists for this church
-    const existingTemplate = await prisma.notificationTemplate.findFirst({
+    const existingTemplate = await prisma.notification_templates.findFirst({
       where: {
         name: validatedData.name,
         churchId: user.churchId
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Ya existe una plantilla con ese nombre' }, { status: 400 })
     }
 
-    const template = await prisma.notificationTemplate.create({
+    const template = await prisma.notification_templates.create({
       data: {
         ...templateData,
         churchId: user.churchId,

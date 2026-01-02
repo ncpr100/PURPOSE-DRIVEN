@@ -24,7 +24,7 @@ export async function GET(
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
-    const template = await prisma.prayerResponseTemplate.findFirst({
+    const template = await prisma.prayer_response_templates.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -80,7 +80,7 @@ export async function PUT(
     const body = await request.json()
     const { title, message, smsMessage, isDefault, isActive } = body
 
-    const template = await prisma.prayerResponseTemplate.findFirst({
+    const template = await prisma.prayer_response_templates.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -93,7 +93,7 @@ export async function PUT(
 
     // If setting as default, unset other defaults for this category
     if (isDefault && !template.isDefault) {
-      await prisma.prayerResponseTemplate.updateMany({
+      await prisma.prayer_response_templates.updateMany({
         where: {
           categoryId: template.categoryId,
           churchId: user.churchId,
@@ -104,7 +104,7 @@ export async function PUT(
       })
     }
 
-    const updatedTemplate = await prisma.prayerResponseTemplate.update({
+    const updatedTemplate = await prisma.prayer_response_templates.update({
       where: { id: params.id },
       data: {
         title: title?.trim() || template.title,
@@ -157,7 +157,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Sin permisos suficientes' }, { status: 403 })
     }
 
-    const template = await prisma.prayerResponseTemplate.findFirst({
+    const template = await prisma.prayer_response_templates.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -168,7 +168,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Plantilla no encontrada' }, { status: 404 })
     }
 
-    await prisma.prayerResponseTemplate.delete({
+    await prisma.prayer_response_templates.delete({
       where: { id: params.id }
     })
 

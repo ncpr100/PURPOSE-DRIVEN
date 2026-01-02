@@ -17,7 +17,7 @@ export async function GET(
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
     }
 
-    const invoice = await prisma.invoice.findUnique({
+    const invoice = await prisma.invoices.findUnique({
       where: { id: params.id },
       include: {
         churches: {
@@ -81,7 +81,7 @@ export async function PUT(
     if (status === 'SENT') updateData.sentAt = new Date()
     if (status === 'PAID') updateData.paidAt = new Date()
 
-    const invoice = await prisma.invoice.update({
+    const invoice = await prisma.invoices.update({
       where: { id: params.id },
       data: updateData,
       include: {

@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user's theme preference
-    let themePreference = await prisma.userThemePreference.findUnique({
+    let themePreference = await prisma.user_theme_preferences.findUnique({
       where: { userId: user.id },
       include: {
         churches: {
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
 
     // If no user preference exists, create default one
     if (!themePreference) {
-      themePreference = await prisma.userThemePreference.create({
+      themePreference = await prisma.user_theme_preferences.create({
         data: {
           userId: user.id,
           churchId: user.churchId,
@@ -114,7 +114,7 @@ export async function PUT(request: NextRequest) {
     const validatedData = themePreferenceSchema.parse(body)
 
     // Upsert theme preference
-    const themePreference = await prisma.userThemePreference.upsert({
+    const themePreference = await prisma.user_theme_preferences.upsert({
       where: { userId: user.id },
       update: {
         ...validatedData,
@@ -175,7 +175,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Reset to default theme
-    const defaultTheme = await prisma.userThemePreference.upsert({
+    const defaultTheme = await prisma.user_theme_preferences.upsert({
       where: { userId: user.id },
       update: {
         themeName: 'default',

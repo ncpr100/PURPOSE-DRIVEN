@@ -108,7 +108,7 @@ export async function POST(
     const userAgent = request.headers.get('user-agent') || 'unknown'
 
     // Save submission
-    const submission = await db.visitorSubmission.create({
+    const submission = await db.visitor_submissions.create({
       data: {
         formId: form.id,
         data: {

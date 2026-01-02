@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from \'nanoid\'
 import { db } from '@/lib/db'
 import { randomUUID } from 'crypto'
 import { getServerBaseUrl } from '@/lib/server-url'
@@ -31,6 +32,7 @@ export async function POST(request: NextRequest) {
     // Create an empty child check-in record for QR tracking
     const emptyCheckIn = await db.children_check_ins.create({
       data: {
+  id: nanoid(),
         id: randomUUID(),
         childName: 'Pendiente de QR', // Placeholder until QR is scanned
         parentName: 'Pendiente de QR',

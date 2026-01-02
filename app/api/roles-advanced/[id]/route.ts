@@ -117,7 +117,7 @@ export async function PUT(
 
     const updatedRole = await db.$transaction(async (prisma) => {
       // Actualizar el rol
-      const role = await prisma.role.update({
+      const role = await prisma.roles.update({
         where: { id: params.id },
         data: {
           ...(name && { name }),
@@ -130,13 +130,13 @@ export async function PUT(
       // Actualizar permisos si se proporcionaron
       if (permissions && Array.isArray(permissions)) {
         // Eliminar permisos existentes
-        await prisma.rolePermission.deleteMany({
+        await prisma.role_permissions.deleteMany({
           where: { roleId: params.id }
         })
 
         // Agregar nuevos permisos
         if (permissions.length > 0) {
-          await prisma.rolePermission.createMany({
+          await prisma.role_permissions.createMany({
             data: permissions.map((permissionId: string) => ({
               roleId: params.id,
               permissionId,

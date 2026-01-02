@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from \'nanoid\'
 import { db } from '@/lib/db'
 
 // Data retention policies - cleanup old communications
@@ -102,6 +103,7 @@ export async function POST(req: NextRequest) {
     // Create mass communication entry with message delivery status tracking
     const communication = await db.communications.create({
       data: {
+  id: nanoid(),
         title: sanitizedTitle,
         content: sanitizedContent,
         type,

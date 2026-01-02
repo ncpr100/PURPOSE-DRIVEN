@@ -34,7 +34,7 @@ export async function PUT(
       isActive
     } = body;
 
-    const kpiMetric = await db.kPIMetric.update({
+    const kpiMetric = await db.kpi_metrics.update({
       where: {
         id: params.id,
         churchId
@@ -79,7 +79,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    await db.kPIMetric.delete({
+    await db.kpi_metrics.delete({
       where: {
         id: params.id,
         churchId

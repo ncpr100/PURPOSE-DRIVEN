@@ -23,7 +23,7 @@ export async function POST() {
       const permissions = []
       for (const resource of Object.values(RESOURCES)) {
         for (const action of Object.values(ACTIONS)) {
-          const permission = await prisma.permission.upsert({
+          const permission = await prisma.permissions.upsert({
             where: {
               resource_action: { resource, action }
             },
@@ -45,7 +45,7 @@ export async function POST() {
       for (const [roleName, rolePermissions] of Object.entries(DEFAULT_ROLE_PERMISSIONS)) {
         if (roleName === 'SUPER_ADMIN') continue // SUPER_ADMIN no necesita rol específico
         
-        const role = await prisma.role.upsert({
+        const role = await prisma.roles.upsert({
           where: {
             name_churchId: { 
               name: roleName, 
@@ -70,7 +70,7 @@ export async function POST() {
               p.resource === perm.resource && p.action === perm.action
             )
             if (permission) {
-              await prisma.rolePermission.upsert({
+              await prisma.role_permissions.upsert({
                 where: {
                   roleId_permissionId: {
                     roleId: role.id,

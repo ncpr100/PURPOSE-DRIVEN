@@ -180,7 +180,7 @@ export async function POST(request: NextRequest) {
 
     // Verify category exists if provided
     if (categoryId) {
-      const category = await prisma.donationCategory.findUnique({
+      const category = await prisma.donation_categories.findUnique({
         where: { 
           id: categoryId,
           churchId: churchId,

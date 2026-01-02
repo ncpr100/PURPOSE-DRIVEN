@@ -29,7 +29,7 @@ export async function GET(
       return NextResponse.json({ error: 'Sin permisos suficientes' }, { status: 403 })
     }
 
-    const approval = await prisma.prayerApproval.findFirst({
+    const approval = await prisma.prayer_approvals.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
@@ -110,7 +110,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Acción inválida' }, { status: 400 })
     }
 
-    const approval = await prisma.prayerApproval.findFirst({
+    const approval = await prisma.prayer_approvals.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId,
@@ -131,7 +131,7 @@ export async function PUT(
     const newStatus = action === 'approve' ? 'approved' : 'rejected'
 
     // Update approval
-    const updatedApproval = await prisma.prayerApproval.update({
+    const updatedApproval = await prisma.prayer_approvals.update({
       where: { id: params.id },
       data: {
         status: newStatus,

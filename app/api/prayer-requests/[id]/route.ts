@@ -124,7 +124,7 @@ export async function PUT(
 
     // Update approval if notes provided
     if (notes) {
-      await prisma.prayerApproval.updateMany({
+      await prisma.prayer_approvals.updateMany({
         where: {
           requestId: params.id,
           churchId: user.churchId

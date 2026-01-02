@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { nanoid } from \'nanoid\'
 import { z } from 'zod'
 import { FormAutomationEngine } from '@/lib/automation-engine'
 import { randomUUID } from 'crypto'
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
     // Save submission record for tracking
     const submission = await db.custom_form_submissions.create({
       data: {
+  id: nanoid(),
         id: randomUUID(),
         formId: form.id,
         data: enrichedData,

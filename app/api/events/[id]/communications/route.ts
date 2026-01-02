@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from \'nanoid\'
 import { prisma } from '@/lib/prisma'
 
 export async function POST(
@@ -71,6 +72,7 @@ export async function POST(
     // Create communication record (using existing communication structure)
     const communication = await prisma.communications.create({
       data: {
+  id: nanoid(),
         title: subject,
         content: content,
         type: type as any,

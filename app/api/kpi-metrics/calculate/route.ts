@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     const { metricIds } = body;
 
     // Get KPI metrics to recalculate
-    const metrics = await db.kPIMetric.findMany({
+    const metrics = await db.kpi_metrics.findMany({
       where: {
         churchId,
         ...(metricIds && { id: { in: metricIds } }),
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Update the metric
-        const updatedMetric = await db.kPIMetric.update({
+        const updatedMetric = await db.kpi_metrics.update({
           where: { id: metric.id },
           data: {
             currentValue,

@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const categoryId = searchParams.get('categoryId')
 
-    const templates = await prisma.prayerResponseTemplate.findMany({
+    const templates = await prisma.prayer_response_templates.findMany({
       where: {
         churchId: user.churchId,
         isActive: true,
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
 
     // If setting as default, unset other defaults for this category
     if (isDefault) {
-      await prisma.prayerResponseTemplate.updateMany({
+      await prisma.prayer_response_templates.updateMany({
         where: {
           categoryId,
           churchId: user.churchId,
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
       })
     }
 
-    const template = await prisma.prayerResponseTemplate.create({
+    const template = await prisma.prayer_response_templates.create({
       data: {
         categoryId,
         title: title.trim(),

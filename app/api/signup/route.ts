@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate subscription plan exists
-    const selectedPlan = await db.subscriptionPlan.findFirst({
+    const selectedPlan = await db.subscription_plans.findFirst({
       where: { 
         name: subscriptionPlan.toUpperCase(),
         isActive: true 

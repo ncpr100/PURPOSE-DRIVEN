@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category');
     const period = searchParams.get('period');
 
-    const kpiMetrics = await db.kPIMetric.findMany({
+    const kpiMetrics = await db.kpi_metrics.findMany({
       where: {
         churchId,
         isActive: true,
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
       console.warn('Could not calculate initial KPI value:', error);
     }
 
-    const kpiMetric = await db.kPIMetric.create({
+    const kpiMetric = await db.kpi_metrics.create({
       data: {
         name,
         description,

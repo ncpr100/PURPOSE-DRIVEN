@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from \'nanoid\'
 import { db } from "@/lib/db"
 
 export async function GET(req: NextRequest) {
@@ -27,7 +28,7 @@ export async function GET(req: NextRequest) {
       whereClause.service = service
     }
 
-    const configs = await db.integrationConfig.findMany({
+    const configs = await db.integration_configs.findMany({
       where: whereClause,
       select: {
         id: true,
@@ -67,7 +68,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Verificar si ya existe una configuración para este servicio
-    const existingConfig = await db.integrationConfig.findFirst({
+    const existingConfig = await db.integration_configs.findFirst({
       where: {
         churchId: session.user.churchId,
         service
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
     let integrationConfig
     if (existingConfig) {
       // Actualizar configuración existente
-      integrationConfig = await db.integrationConfig.update({
+      integrationConfig = await db.integration_configs.update({
         where: { id: existingConfig.id },
         data: {
           config: JSON.stringify(config),
@@ -86,8 +87,9 @@ export async function POST(req: NextRequest) {
       })
     } else {
       // Crear nueva configuración
-      integrationConfig = await db.integrationConfig.create({
+      integrationConfig = await db.integration_configs.create({
         data: {
+  id: nanoid(),
           service,
           config: JSON.stringify(config),
           isActive: isActive !== undefined ? isActive : true,
