@@ -158,7 +158,8 @@ export async function POST(request: NextRequest) {
           website,
           founded: founded ? new Date(founded) : null,
           description,
-          isActive: true
+          isActive: true,
+          updatedAt: new Date()
         }
       })
 
