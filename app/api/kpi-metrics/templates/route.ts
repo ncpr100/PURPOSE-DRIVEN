@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth";
+import { nanoid } from 'nanoid';
 
 const CHURCH_KPI_TEMPLATES = [
   // Membership & Growth KPIs
@@ -327,11 +328,13 @@ export async function POST(request: NextRequest) {
       try {
         const kpiMetric = await db.kpi_metrics.create({
           data: {
+            id: nanoid(),
             ...template,
             churchId,
             isActive: true,
             currentValue: 0,
-            lastCalculated: new Date()
+            lastCalculated: new Date(),
+            updatedAt: new Date()
           }
         });
         createdKPIs.push(kpiMetric);
