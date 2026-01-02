@@ -89,11 +89,12 @@ export async function POST(req: NextRequest) {
       // Crear nueva configuración
       integrationConfig = await db.integration_configs.create({
         data: {
-  id: nanoid(),
+          id: nanoid(),
           service,
           config: JSON.stringify(config),
           isActive: isActive !== undefined ? isActive : true,
-          churchId: session.user.churchId
+          churchId: session.user.churchId,
+          updatedAt: new Date()
         }
       })
     }
