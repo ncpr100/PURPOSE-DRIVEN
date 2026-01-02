@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { addDays, format, parseISO, isSameDay } from 'date-fns'
+import { nanoid } from 'nanoid'
 
 // Intelligent Scheduling Engine - Phase 2
 interface SchedulingGap {
@@ -393,6 +394,7 @@ export async function POST(request: NextRequest) {
           if (volunteer) {
             const assignment = await prisma.volunteer_assignments.create({
               data: {
+                id: nanoid(),
                 volunteerId: volunteer.id,
                 eventId: gap.eventId || undefined,
                 title: gap.title,
@@ -407,7 +409,7 @@ export async function POST(request: NextRequest) {
               include: {
                 volunteers: {
                   include: {
-                    member: true
+                    members: true
                   }
                 }
               }

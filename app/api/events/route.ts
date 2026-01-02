@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       },
       include: {
         churches: { select: { name: true } },
-        creator: { select: { name: true, email: true } }
+        users: { select: { name: true, email: true } }
       }
     })
 

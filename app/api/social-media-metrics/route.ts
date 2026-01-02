@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
+import { nanoid } from 'nanoid';
 
 const prisma = new PrismaClient();
 
@@ -103,6 +104,7 @@ export async function POST(request: Request) {
 
     const metric = await prisma.socialMediaMetrics.create({
       data: {
+        id: nanoid(),
         accountId,
         postId: postId || null,
         campaignId: campaignId || null,
