@@ -58,7 +58,7 @@ async function analyzeVolunteerWorkloads(churchId: string): Promise<VolunteerWor
     include: {
       volunteers: {
         include: {
-          assignments: {
+          volunteer_assignments: {
             where: {
               date: { gte: currentDate }
             },

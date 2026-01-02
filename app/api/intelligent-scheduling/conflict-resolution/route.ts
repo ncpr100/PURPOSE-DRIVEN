@@ -196,7 +196,7 @@ async function findAlternativeVolunteers(assignments: any[], churchId: string) {
     include: {
       volunteers: {
         include: {
-          assignments: {
+          volunteer_assignments: {
             where: {
               date: { gte: new Date() },
               status: { in: ['ASIGNADO', 'CONFIRMADO'] }
@@ -421,7 +421,7 @@ export async function GET(request: NextRequest) {
           volunteers: {
             some: {
               isActive: true,
-              assignments: {
+              volunteer_assignments: {
                 some: {
                   date: { gte: new Date() },
                   status: { in: ['ASIGNADO', 'CONFIRMADO'] }

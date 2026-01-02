@@ -156,7 +156,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
     include: {
       volunteers: {
         include: {
-          assignments: {
+          volunteer_assignments: {
             where: {
               date: {
                 gte: new Date(),
@@ -250,7 +250,7 @@ async function findOptimalMatches(gaps: SchedulingGap[], churchId: string): Prom
       availabilityMatrix: true,
       volunteers: {
         include: {
-          assignments: {
+          volunteer_assignments: {
             where: {
               date: { gte: new Date() },
               status: { in: ['ASIGNADO', 'CONFIRMADO'] }

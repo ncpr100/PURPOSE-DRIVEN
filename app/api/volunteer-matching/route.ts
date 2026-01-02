@@ -126,7 +126,7 @@ export async function POST(request: NextRequest) {
         member_spiritual_profiles: true,
         volunteers: {
           include: {
-            assignments: {
+            volunteer_assignments: {
               where: {
                 date: { gte: thirtyDaysAgo } // Last 30 days (optimized with index)
               }

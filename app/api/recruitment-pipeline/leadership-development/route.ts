@@ -85,7 +85,7 @@ async function analyzeLeadershipPotential(member: any, churchId: string): Promis
   const volunteer = await prisma.volunteers.findFirst({
     where: { memberId: member.id, isActive: true },
     include: {
-      assignments: {
+      volunteer_assignments: {
         where: {
           status: 'COMPLETADO',
           date: { gte: addMonths(new Date(), -6) }

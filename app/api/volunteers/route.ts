@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       include: {
         members: true,
         ministries: true,
-        assignments: {
+        volunteer_assignments: {
           orderBy: {
             date: 'desc'
           },

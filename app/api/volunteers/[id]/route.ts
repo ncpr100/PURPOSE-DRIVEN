@@ -27,7 +27,7 @@ export async function GET(
       include: {
         members: true,
         ministries: true,
-        assignments: {
+        volunteer_assignments: {
           orderBy: {
             date: 'desc'
           }
