@@ -45,6 +45,7 @@ export class ChildSecurityService {
       // Create enhanced child check-in record
       const checkIn = await prisma.children_check_ins.create({
         data: {
+          id: require('nanoid').nanoid(),
           childName: data.childId,
           securityPin,
           qrCode,

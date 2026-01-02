@@ -32,7 +32,7 @@ function getRolePermissions(role) {
     const permissions = exports.DEFAULT_ROLE_PERMISSIONS[role];
     if (permissions === '*')
         return []; // SUPER_ADMIN handled separately
-    return permissions || [];
+    return Array.isArray(permissions) ? [...permissions] : [];
 }
 // Verificar si un usuario tiene un permiso específico
 async function hasPermission(userId, resource, action, context) {

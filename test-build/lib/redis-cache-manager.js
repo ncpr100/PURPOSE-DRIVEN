@@ -491,13 +491,16 @@ class RedisCacheManager {
             };
         }
         try {
-            const [hits, misses, errors, responseTimes, size] = await Promise.all([
-                this.metricsRedis.get('cache:hits') || '0',
-                this.metricsRedis.get('cache:misses') || '0',
-                this.metricsRedis.get('cache:errors') || '0',
+            const [hitsResult, missesResult, errorsResult, responseTimes, size] = await Promise.all([
+                this.metricsRedis.get('cache:hits'),
+                this.metricsRedis.get('cache:misses'),
+                this.metricsRedis.get('cache:errors'),
                 this.metricsRedis.lrange('cache:response_times', 0, -1),
                 this.redis.dbsize()
             ]);
+            const hits = hitsResult || '0';
+            const misses = missesResult || '0';
+            const errors = errorsResult || '0';
             const totalHits = parseInt(hits);
             const totalMisses = parseInt(misses);
             const totalErrors = parseInt(errors);
@@ -565,11 +568,12 @@ class RedisCacheManager {
             };
         }
         catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             return {
                 status: 'unhealthy',
                 details: {
                     connected: false,
-                    error: error.message,
+                    error: errorMessage,
                     retries: this.connectionRetries
                 }
             };

@@ -3,7 +3,8 @@
 // Kḥesed-tek Church Management Systems
 
 import { db } from '@/lib/db';
-import webpush from 'web-push';
+// TODO: Install web-push dependency: npm install web-push @types/web-push
+// import webpush from 'web-push';
 import { nanoid } from 'nanoid';
 
 // Types for push notifications
@@ -328,7 +329,7 @@ export class PushNotificationService {
           where: { churchId, isActive: true },
           _count: true
         }),
-        db.pushSubscription.count({
+        db.push_subscriptions.count({
           where: {
             churchId,
             isActive: true,
@@ -340,7 +341,7 @@ export class PushNotificationService {
       ])
 
       const subscriptionsByPlatform = platformStats.reduce(
-        (acc, stat) => {
+        (acc: Record<string, number>, stat: any) => {
           acc[stat.platform || 'unknown'] = stat._count
           return acc
         },

@@ -370,8 +370,9 @@ async function logExecutionSuccess(
   fallbackUsed: boolean = false
 ): Promise<void> {
   try {
-    await prisma.automation_rulesExecution.create({
+    await prisma.automation_rule_executions.create({
       data: {
+        id: nanoid(),
         ruleId: context.automation_rulesId,
         triggerData: context.data,
         status: 'SUCCESS',
@@ -399,8 +400,9 @@ async function logExecutionFailure(
   error?: string
 ): Promise<void> {
   try {
-    await prisma.automation_rulesExecution.create({
+    await prisma.automation_rule_executions.create({
       data: {
+        id: nanoid(),
         ruleId: context.automation_rulesId,
         triggerData: context.data,
         status: 'FAILED',
@@ -473,7 +475,7 @@ export async function handleEscalation(
     // Send notification to escalation target
     if (escalationConfig.notifyAllPastors) {
       // Get all pastors
-      const pastors = await prisma.user.findMany({
+      const pastors = await prisma.users.findMany({
         where: {
           churchId,
           role: { in: ['PASTOR'] }
@@ -501,8 +503,9 @@ export async function handleEscalation(
     }
     
     // Log escalation
-    await prisma.automation_rulesExecution.create({
+    await prisma.automation_rule_executions.create({
       data: {
+        id: nanoid(),
         ruleId: automation_rulesId,
         triggerData: {},
         status: 'ESCALATED',

@@ -214,15 +214,12 @@ export class PrayerAutomation {
           status: 'approved',
           approvedBy: approverId,
           approvedAt: new Date()
-        },
-        include: {
-          request: {
-            include: {
-              contact: true,
-              category: true
-            }
-          }
         }
+      });
+
+      // Fetch the prayer request separately
+      const prayerRequest = await prisma.prayer_requests.findUnique({
+        where: { id: approval.requestId }
       });
 
       // Find the automation rule that created this approval
@@ -239,9 +236,9 @@ export class PrayerAutomation {
         }
       });
 
-      if (automation_rules && approval.request) {
+      if (automation_rules && prayerRequest) {
         // Execute rule actions now that it's approved
-        await this.executeRuleActions(automation_rules, approval.request);
+        await this.executeRuleActions(automation_rules, prayerRequest);
       }
 
     } catch (error) {

@@ -304,8 +304,9 @@ async function initiatePhoneCall(context) {
  */
 async function logExecutionSuccess(context, channel, attempts, fallbackUsed = false) {
     try {
-        await db_1.db.automation_rulesExecution.create({
+        await db_1.db.automation_rule_executions.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 ruleId: context.automation_rulesId,
                 triggerData: context.data,
                 status: 'SUCCESS',
@@ -328,8 +329,9 @@ async function logExecutionSuccess(context, channel, attempts, fallbackUsed = fa
  */
 async function logExecutionFailure(context, channel, attempts, error) {
     try {
-        await db_1.db.automation_rulesExecution.create({
+        await db_1.db.automation_rule_executions.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 ruleId: context.automation_rulesId,
                 triggerData: context.data,
                 status: 'FAILED',
@@ -391,7 +393,7 @@ async function handleEscalation(automation_rulesId, escalationConfig, churchId) 
         // Send notification to escalation target
         if (escalationConfig.notifyAllPastors) {
             // Get all pastors
-            const pastors = await db_1.db.user.findMany({
+            const pastors = await db_1.db.users.findMany({
                 where: {
                     churchId,
                     role: { in: ['PASTOR'] }
@@ -418,8 +420,9 @@ async function handleEscalation(automation_rulesId, escalationConfig, churchId) 
             // TODO: Implement role-based or user-specific notification
         }
         // Log escalation
-        await db_1.db.automation_rulesExecution.create({
+        await db_1.db.automation_rule_executions.create({
             data: {
+                id: (0, nanoid_1.nanoid)(),
                 ruleId: automation_rulesId,
                 triggerData: {},
                 status: 'ESCALATED',

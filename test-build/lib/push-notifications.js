@@ -4,6 +4,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotificationTemplates = exports.PushNotificationService = void 0;
 const db_1 = require("@/lib/db");
+// TODO: Install web-push dependency: npm install web-push @types/web-push
+// import webpush from 'web-push';
 const nanoid_1 = require("nanoid");
 // VAPID keys configuration (you should generate these and store in environment variables)
 const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || '';
@@ -230,7 +232,7 @@ class PushNotificationService {
                     where: { churchId, isActive: true },
                     _count: true
                 }),
-                db_1.db.pushSubscription.count({
+                db_1.db.push_subscriptions.count({
                     where: {
                         churchId,
                         isActive: true,
