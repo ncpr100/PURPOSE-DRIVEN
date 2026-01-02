@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 
     if (funnelId) {
       // Verificar que el funnel pertenece a un sitio web de la iglesia
-      const funnel = await prisma.funnel.findFirst({
+      const funnel = await prisma.funnels.findFirst({
         where: {
           id: funnelId,
           website: {
