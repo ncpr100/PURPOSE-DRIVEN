@@ -176,7 +176,8 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
             connect: { id: churchId }
           },
           isActive,
-          emailVerified: new Date()
+          emailVerified: new Date(),
+          updatedAt: new Date()
         },
         select: {
           id: true,
