@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       }),
       
       // Actividad reciente
-      db.notification.findMany({
+      db.notifications.findMany({
         where: {
           createdAt: { gte: startDate }
         },
