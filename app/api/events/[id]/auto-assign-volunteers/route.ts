@@ -56,7 +56,7 @@ export async function POST(
         members: {
           include: {
             member_spiritual_profiles: true,
-            availabilityMatrix: true
+            availability_matrices: true
           }
         },
         assignments: {
