@@ -59,7 +59,7 @@ export async function POST(
             availability_matrices: true
           }
         },
-        assignments: {
+        volunteer_assignments: {
           where: {
             date: event.startDate,
             status: { in: ['ASIGNADO', 'CONFIRMADO'] }
@@ -75,7 +75,7 @@ export async function POST(
       if (alreadyAssigned) return false
 
       // Not double-booked
-      const hasConflict = volunteer.assignments.some(assignment => {
+      const hasConflict = volunteer.volunteer_assignments.some(assignment => {
         const eventStart = new Date(event.startDate)
         const eventEnd = event.endDate ? new Date(event.endDate) : new Date(eventStart.getTime() + 2 * 60 * 60 * 1000) // Default 2 hours
         const assignmentStart = new Date(`${assignment.date.toISOString().split('T')[0]}T${assignment.startTime}`)
@@ -115,7 +115,7 @@ export async function POST(
             include: {
               volunteers: {
                 include: {
-                  member: true
+                  members: true
                 }
               }
             }
@@ -216,7 +216,7 @@ function findBestVolunteerForRole(volunteers: any[], role: string, event: any): 
     }
 
     // Prefer less loaded volunteers (those with fewer current assignments)
-    const currentAssignments = volunteer.assignments?.length || 0
+    const currentAssignments = volunteer.volunteer_assignments?.length || 0
     score -= currentAssignments * 3
 
     return { volunteer, score }
