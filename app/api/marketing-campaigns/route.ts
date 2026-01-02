@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { AutomationTriggers } from '@/lib/automation-engine';
+import { nanoid } from 'nanoid';
 
 const prisma = new PrismaClient();
 
@@ -84,6 +85,7 @@ export async function POST(request: Request) {
 
     const campaign = await prisma.marketing_campaigns.create({
       data: {
+        id: nanoid(),
         name,
         description,
         objectives: Array.isArray(objectives) ? JSON.stringify(objectives) : null,
@@ -95,7 +97,8 @@ export async function POST(request: Request) {
         platforms: Array.isArray(platforms) ? JSON.stringify(platforms) : JSON.stringify([]),
         tags: Array.isArray(tags) ? JSON.stringify(tags) : null,
         managerId: user.id,
-        churchId: user.churchId
+        churchId: user.churchId,
+        updatedAt: new Date()
       },
       include: {
         marketing_campaign_posts: {
