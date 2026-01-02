@@ -172,7 +172,9 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
           email,
           password: hashedPassword,
           role,
-          churchId,
+          churches: {
+            connect: { id: churchId }
+          },
           isActive,
           emailVerified: new Date()
         },
