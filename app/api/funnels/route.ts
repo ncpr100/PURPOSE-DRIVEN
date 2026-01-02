@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from \'nanoid\'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -55,7 +56,7 @@ export async function GET(request: NextRequest) {
         },
         _count: {
           select: {
-            conversions: true
+            funnel_conversions: true
           }
         }
       },
@@ -121,6 +122,7 @@ export async function POST(request: NextRequest) {
 
     const funnel = await prisma.funnels.create({
       data: {
+  id: nanoid(),
         name,
         slug,
         description,
@@ -132,7 +134,7 @@ export async function POST(request: NextRequest) {
         steps: true,
         _count: {
           select: {
-            conversions: true
+            funnel_conversions: true
           }
         }
       }
