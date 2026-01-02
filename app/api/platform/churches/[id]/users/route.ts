@@ -193,11 +193,16 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       if (role !== 'ADMIN_IGLESIA') {
         await tx.members.create({
           data: {
+            id: nanoid(),
             firstName: name.split(' ')[0] || name,
             lastName: name.split(' ').slice(1).join(' ') || '',
             email,
-            churchId,
-            userId: user.id,
+            churches: {
+              connect: { id: churchId }
+            },
+            users: {
+              connect: { id: user.id }
+            },
             membershipDate: new Date(),
             isActive: true
           }
@@ -205,7 +210,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       }
 
       // Log de actividad: crear notificación y entregas por usuario dentro de la transacción
-      const activityNotification = await tx.notification.create({
+      const activityNotification = await tx.notifications.create({
         data: {
           title: 'Nuevo usuario creado',
           message: `Usuario "${name}" (${role}) creado por SUPER_ADMIN`,
