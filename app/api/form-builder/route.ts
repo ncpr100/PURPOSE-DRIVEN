@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { z } from 'zod'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -73,6 +74,7 @@ export async function POST(request: NextRequest) {
 
     const form = await db.custom_forms.create({
       data: {
+        id: nanoid(),
         title: validatedData.title,
         description: validatedData.description || '',
         fields: validatedData.fields,
