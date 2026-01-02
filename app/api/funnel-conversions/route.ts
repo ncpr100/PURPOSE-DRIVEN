@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { nanoid } from \'nanoid\'
+import { nanoid } from 'nanoid'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
