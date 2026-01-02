@@ -79,7 +79,6 @@ export async function POST(req: NextRequest) {
 
     const resource = await db.event_resources.create({
       data: {
-  id: nanoid(),
         id: nanoid(),
         name: sanitizedName,
         description: sanitizedDescription,
