@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       const funnel = await prisma.funnels.findFirst({
         where: {
           id: funnelId,
-          website: {
+          websites: {
             churchId: session.user.churchId
           }
         }
