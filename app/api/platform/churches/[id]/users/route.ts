@@ -165,7 +165,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       const hashedPassword = await bcrypt.hash(password, 12)
 
       // Crear usuario
-      const user = await tx.user.create({
+      const user = await tx.users.create({
         data: {
           name,
           email,
@@ -187,7 +187,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
       // Crear miembro correspondiente si es necesario
       if (role !== 'ADMIN_IGLESIA') {
-        await tx.member.create({
+        await tx.members.create({
           data: {
             firstName: name.split(' ')[0] || name,
             lastName: name.split(' ').slice(1).join(' ') || '',
@@ -210,7 +210,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
         }
       })
 
-      const churchUsers = await tx.user.findMany({
+      const churchUsers = await tx.users.findMany({
         where: { churchId, isActive: true },
         select: { id: true }
       })

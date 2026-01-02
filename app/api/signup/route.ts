@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     // Create church, user and subscription in a transaction
     const result = await db.$transaction(async (tx) => {
       // Create church
-      const church = await tx.church.create({
+      const church = await tx.churches.create({
         data: {
           name: churchName,
           isActive: true
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
       })
 
       // Create admin user
-      const user = await tx.user.create({
+      const user = await tx.users.create({
         data: {
           name: `${firstName} ${lastName}`,
           email,
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
       })
 
       // Create a member record for the admin
-      await tx.member.create({
+      await tx.members.create({
         data: {
           firstName,
           lastName,

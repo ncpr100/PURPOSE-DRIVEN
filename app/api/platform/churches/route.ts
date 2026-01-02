@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
     // Crear iglesia y usuario admin en una transacción
     const result = await db.$transaction(async (tx) => {
       // Crear iglesia
-      const church = await tx.church.create({
+      const church = await tx.churches.create({
         data: {
           name,
           address,
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
       const bcrypt = require('bcryptjs')
       const hashedPassword = await bcrypt.hash(adminUser.password || 'cambiarpassword123', 12)
 
-      const admin = await tx.user.create({
+      const admin = await tx.users.create({
         data: {
           name: adminUser.name,
           email: adminUser.email,
@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
       })
 
       // Crear miembro correspondiente
-      await tx.member.create({
+      await tx.members.create({
         data: {
           firstName: adminUser.name.split(' ')[0] || adminUser.name,
           lastName: adminUser.name.split(' ').slice(1).join(' ') || '',
@@ -201,7 +201,7 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      const churchUsers = await tx.user.findMany({
+      const churchUsers = await tx.users.findMany({
         where: { churchId: church.id, isActive: true },
         select: { id: true }
       })
