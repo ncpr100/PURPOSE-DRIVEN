@@ -190,7 +190,7 @@ export async function GET(request: NextRequest) {
         title: activity.title,
         message: activity.message,
         type: activity.type,
-        church: activity.church?.name,
+        church: activity.churches?.name,
         createdAt: activity.createdAt
       }))
     })
