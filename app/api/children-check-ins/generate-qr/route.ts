@@ -32,8 +32,7 @@ export async function POST(request: NextRequest) {
     // Create an empty child check-in record for QR tracking
     const emptyCheckIn = await db.children_check_ins.create({
       data: {
-  id: nanoid(),
-        id: randomUUID(),
+        id: nanoid(),
         childName: 'Pendiente de QR', // Placeholder until QR is scanned
         parentName: 'Pendiente de QR',
         parentPhone: 'Pendiente de QR',

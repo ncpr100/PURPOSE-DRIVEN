@@ -65,8 +65,7 @@ export async function POST(request: NextRequest) {
     // Save submission record for tracking
     const submission = await db.custom_form_submissions.create({
       data: {
-  id: nanoid(),
-        id: randomUUID(),
+        id: nanoid(),
         formId: form.id,
         data: enrichedData,
         ipAddress: clientIp,

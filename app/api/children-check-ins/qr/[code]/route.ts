@@ -102,8 +102,7 @@ export async function POST(
     // Create complete child check-in via QR
     const children_check_ins = await db.children_check_ins.create({
       data: {
-  id: nanoid(),
-        id: randomUUID(),
+        id: nanoid(),
         childName,
         childAge: childAge ? parseInt(childAge) : null,
         parentName,
