@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       // For received notifications - use NotificationDelivery system
       const deliveryWhereClause = {
         userId: user.id,
-        notification: {
+        notifications: {
           churchId: user.churchId,
           ...(search && {
             OR: [
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
           take: limit,
           skip: offset,
           include: {
-            notification: {
+            notifications: {
               include: {
                 churches: { select: { name: true } },
                 users: { select: { name: true } }
@@ -137,7 +137,7 @@ export async function GET(request: NextRequest) {
         where: {
           userId: user.id,
           isRead: false,
-          notification: { churchId: user.churchId }
+          notifications: { churchId: user.churchId }
         }
       })
 
@@ -310,7 +310,7 @@ export async function PUT(request: NextRequest) {
         where: {
           userId: user.id,
           isRead: false,
-          notification: {
+          notifications: {
             churchId: user.churchId
           }
         },
@@ -330,7 +330,7 @@ export async function PUT(request: NextRequest) {
         where: {
           userId: user.id,
           notificationId: { in: notificationIds },
-          notification: {
+          notifications: {
             churchId: user.churchId
           }
         },

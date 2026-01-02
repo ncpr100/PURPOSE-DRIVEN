@@ -98,7 +98,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       where: {
         notificationId: params.id,
         userId: user.id,
-        notification: {
+        notifications: {
           churchId: user.churchId
         }
       },

@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       where: {
         notificationId: notificationId,
         userId: user.id,
-        notification: {
+        notifications: {
           churchId: user.churchId
         }
       },
