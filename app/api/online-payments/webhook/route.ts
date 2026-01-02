@@ -197,8 +197,8 @@ async function sendDonationConfirmationEmail(onlinePaymentId: string) {
       where: { id: onlinePaymentId },
       include: {
         churches: true,
-        category: true,
-        donation: true
+        donation_categories: true,
+        donations: true
       }
     })
 
