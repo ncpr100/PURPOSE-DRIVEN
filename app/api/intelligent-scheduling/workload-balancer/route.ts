@@ -73,7 +73,7 @@ async function analyzeVolunteerWorkloads(churchId: string): Promise<VolunteerWor
   const workloadAnalysis: VolunteerWorkload[] = []
 
   for (const volunteer of volunteers) {
-    const allAssignments = volunteer.volunteers.flatMap(v => v.assignments)
+    const allAssignments = volunteer.volunteers.flatMap(v => v.volunteer_assignments)
     
     // Current assignments (future)
     const currentAssignments = allAssignments.filter(a => 
