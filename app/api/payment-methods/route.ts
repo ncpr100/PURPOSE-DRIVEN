@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
     }
 
-    const paymentMethods = await db.paymentMethod.findMany({
+    const paymentMethods = await db.payment_methods.findMany({
       where: {
         churchId: session.user.churchId,
         isActive: true
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar que no exista otro método con el mismo nombre
-    const existingMethod = await db.paymentMethod.findFirst({
+    const existingMethod = await db.payment_methods.findFirst({
       where: {
         name,
         churchId: session.user.churchId,
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const paymentMethod = await db.paymentMethod.create({
+    const paymentMethod = await db.payment_methods.create({
       data: {
         id: nanoid(),
         name,
