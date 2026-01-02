@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
     // Create mass communication entry with message delivery status tracking
     const communication = await db.communications.create({
       data: {
-  id: nanoid(),
+        id: nanoid(),
         title: sanitizedTitle,
         content: sanitizedContent,
         type,

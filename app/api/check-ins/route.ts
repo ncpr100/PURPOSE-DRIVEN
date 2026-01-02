@@ -124,8 +124,7 @@ export async function POST(request: NextRequest) {
 
     const checkIn = await db.check_ins.create({
       data: {
-  id: nanoid(),
-        id: randomUUID(),
+        id: nanoid(),
         firstName,
         lastName,
         email: email || null,

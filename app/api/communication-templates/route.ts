@@ -59,8 +59,7 @@ export async function POST(req: NextRequest) {
 
     const template = await db.communication_templates.create({
       data: {
-  id: nanoid(),
-        id: randomUUID(),
+        id: nanoid(),
         name,
         subject,
         content,

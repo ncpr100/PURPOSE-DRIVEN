@@ -101,8 +101,7 @@ export async function POST(request: NextRequest) {
 
     const children_check_ins = await db.children_check_ins.create({
       data: {
-  id: nanoid(),
-        id: randomUUID(),
+        id: nanoid(),
         childName,
         childAge,
         parentName,
