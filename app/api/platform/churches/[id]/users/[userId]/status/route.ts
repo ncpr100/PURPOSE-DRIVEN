@@ -92,6 +92,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     // Log de actividad: crear notificación y entregas por usuario
     const activityNotification = await db.notifications.create({
       data: {
+        id: nanoid(),
         title: `Usuario ${isActive ? 'activado' : 'desactivado'}`,
         message: `Usuario "${user.name}" (${user.role}) ${isActive ? 'activado' : 'desactivado'} por SUPER_ADMIN`,
         type: isActive ? 'info' : 'warning',

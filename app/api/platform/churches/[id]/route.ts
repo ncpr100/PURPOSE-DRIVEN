@@ -137,6 +137,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     // Log de actividad: crear notificación y entregas para usuarios activos de la iglesia
     const activityNotification = await db.notifications.create({
       data: {
+        id: nanoid(),
         title: 'Iglesia actualizada',
         message: `Iglesia "${updatedChurch.name}" actualizada por SUPER_ADMIN`,
         type: 'info',
@@ -222,6 +223,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     // Log de actividad: crear notificación y entregas para usuarios activos de la iglesia
     const activityNotification = await db.notifications.create({
       data: {
+        id: nanoid(),
         title: 'Iglesia desactivada',
         message: `Iglesia "${existingChurch.name}" desactivada por SUPER_ADMIN`,
         type: 'warning',
