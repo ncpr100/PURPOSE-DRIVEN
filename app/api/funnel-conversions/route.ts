@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
             }
           }
         },
-        step: {
+        funnel_steps: {
           select: {
             name: true,
             slug: true
