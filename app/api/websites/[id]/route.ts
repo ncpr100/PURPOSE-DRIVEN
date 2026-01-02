@@ -34,7 +34,7 @@ export async function GET(
         },
         funnels: {
           include: {
-            steps: true
+            funnel_steps: true
           }
         }
       }

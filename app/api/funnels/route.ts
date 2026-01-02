@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
         websiteId: websiteId
       },
       include: {
-        steps: {
+        funnel_steps: {
           orderBy: {
             order: 'asc'
           }
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
         websiteId,
       },
       include: {
-        steps: true,
+        funnel_steps: true,
         _count: {
           select: {
             funnel_conversions: true
