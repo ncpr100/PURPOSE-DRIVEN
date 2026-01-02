@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { nanoid } from 'nanoid';
 
 export async function GET(request: NextRequest) {
   try {
@@ -102,6 +103,7 @@ export async function POST(request: NextRequest) {
 
     const kpiMetric = await db.kpi_metrics.create({
       data: {
+        id: nanoid(),
         name,
         description,
         category,
@@ -113,7 +115,8 @@ export async function POST(request: NextRequest) {
         icon,
         unit,
         period: period || 'MONTHLY',
-        churchId
+        churchId,
+        updatedAt: new Date()
       }
     });
 
