@@ -23,12 +23,12 @@ export async function GET(
     const permission = await db.permissions.findUnique({
       where: { id: params.id },
       include: {
-        rolePermissions: {
+        role_permissions: {
           include: {
             role: true
           }
         },
-        userPermissions: {
+        user_permissions: {
           include: {
             user: {
               select: {

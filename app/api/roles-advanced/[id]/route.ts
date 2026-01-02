@@ -34,7 +34,7 @@ export async function GET(
       where: whereCondition,
       include: {
         churches: true,
-        rolePermissions: {
+        role_permissions: {
           include: {
             permission: true
           }
@@ -153,7 +153,7 @@ export async function PUT(
       where: { id: updatedRole.id },
       include: {
         churches: true,
-        rolePermissions: {
+        role_permissions: {
           include: {
             permission: true
           }
