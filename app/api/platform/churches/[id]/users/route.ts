@@ -167,6 +167,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       // Crear usuario
       const user = await tx.users.create({
         data: {
+          id: nanoid(),
           name,
           email,
           password: hashedPassword,

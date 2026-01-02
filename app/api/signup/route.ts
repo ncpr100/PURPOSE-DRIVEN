@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
       // Create church
       const church = await tx.churches.create({
         data: {
+          id: nanoid(),
           name: churchName,
           isActive: true
         }
@@ -97,6 +98,7 @@ export async function POST(request: NextRequest) {
       // Create admin user
       const user = await tx.users.create({
         data: {
+          id: nanoid(),
           name: `${firstName} ${lastName}`,
           email,
           password: hashedPassword,
@@ -109,6 +111,7 @@ export async function POST(request: NextRequest) {
       // Create a member record for the admin
       await tx.members.create({
         data: {
+          id: nanoid(),
           firstName,
           lastName,
           email,

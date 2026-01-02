@@ -150,6 +150,7 @@ export async function POST(request: NextRequest) {
       // Crear iglesia
       const church = await tx.churches.create({
         data: {
+          id: nanoid(),
           name,
           address,
           phone,
@@ -167,6 +168,7 @@ export async function POST(request: NextRequest) {
 
       const admin = await tx.users.create({
         data: {
+          id: nanoid(),
           name: adminUser.name,
           email: adminUser.email,
           password: hashedPassword,
@@ -180,6 +182,7 @@ export async function POST(request: NextRequest) {
       // Crear miembro correspondiente
       await tx.members.create({
         data: {
+          id: nanoid(),
           firstName: adminUser.name.split(' ')[0] || adminUser.name,
           lastName: adminUser.name.split(' ').slice(1).join(' ') || '',
           email: adminUser.email,
