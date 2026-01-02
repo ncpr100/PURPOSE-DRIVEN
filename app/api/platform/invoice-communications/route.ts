@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const communications = await prisma.invoice_communications.findMany({
       where: { invoiceId },
       include: {
-        sender: {
+        users: {
           select: { id: true, name: true, role: true }
         }
       },
