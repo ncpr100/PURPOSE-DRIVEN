@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -61,10 +62,12 @@ export async function POST(request: NextRequest) {
 
     const ministry = await db.ministries.create({
       data: {
+        id: nanoid(),
         name,
         description,
         churchId: session.user.churchId,
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       }
     })
 
