@@ -29,7 +29,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
         churchId: user.churchId
       },
       include: {
-        posts: {
+        marketing_campaign_posts: {
           include: {
             campaign: {
               select: { id: true, name: true }
@@ -37,7 +37,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
           }
         },
         _count: {
-          select: { posts: true }
+          select: { marketing_campaign_posts: true }
         }
       }
     });
@@ -105,11 +105,11 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         ...(tags !== undefined && { tags: Array.isArray(tags) ? JSON.stringify(tags) : null }),
       },
       include: {
-        posts: {
+        marketing_campaign_posts: {
           select: { id: true, title: true, status: true }
         },
         _count: {
-          select: { posts: true }
+          select: { marketing_campaign_posts: true }
         }
       }
     });

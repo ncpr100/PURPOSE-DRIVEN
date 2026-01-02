@@ -29,11 +29,11 @@ export async function GET() {
         churchId: user.churchId
       },
       include: {
-        posts: {
+        marketing_campaign_posts: {
           select: { id: true, title: true, status: true }
         },
         _count: {
-          select: { posts: true }
+          select: { marketing_campaign_posts: true }
         }
       },
       orderBy: { createdAt: 'desc' }
@@ -98,11 +98,11 @@ export async function POST(request: Request) {
         churchId: user.churchId
       },
       include: {
-        posts: {
+        marketing_campaign_posts: {
           select: { id: true, title: true, status: true }
         },
         _count: {
-          select: { posts: true }
+          select: { marketing_campaign_posts: true }
         }
       }
     });
