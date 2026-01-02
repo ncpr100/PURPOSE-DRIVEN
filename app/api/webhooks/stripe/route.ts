@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import Stripe from 'stripe';
+import { nanoid } from 'nanoid';
 
 // Force dynamic rendering to avoid build-time errors with tenant-specific Stripe keys
 export const dynamic = 'force-dynamic';
@@ -131,6 +132,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
       if (!paymentMethod) {
         paymentMethod = await prisma.payment_methods.create({
           data: {
+            id: nanoid(),
             churchId: onlinePayment.churchId,
             name: 'Stripe',
             description: 'Pagos online via Stripe',
@@ -153,6 +155,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
         if (!defaultCategory) {
           defaultCategory = await prisma.donation_categories.create({
             data: {
+              id: nanoid(),
               name: 'General',
               description: 'Donaciones generales',
               isActive: true,
@@ -165,6 +168,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
 
       donation = await prisma.donations.create({
         data: {
+          id: nanoid(),
           churchId: onlinePayment.churchId,
           amount: onlinePayment.amount,
           currency: onlinePayment.currency,

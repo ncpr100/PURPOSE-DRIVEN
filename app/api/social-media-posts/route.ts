@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { AutomationTriggers } from '@/lib/automation-engine';
+import { nanoid } from 'nanoid';
 
 const prisma = new PrismaClient();
 
@@ -86,6 +87,7 @@ export async function POST(request: Request) {
 
     const post = await prisma.social_media_posts.create({
       data: {
+        id: nanoid(),
         title,
         content,
         mediaUrls: Array.isArray(mediaUrls) ? JSON.stringify(mediaUrls) : null,
