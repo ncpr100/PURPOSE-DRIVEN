@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     const assignments = await db.volunteer_assignments.findMany({
       where: whereClause,
       include: {
-        volunteer: true,
+        volunteers: true,
         events: true
       },
       orderBy: {
@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
         status: 'ASIGNADO'
       },
       include: {
-        volunteer: true,
+        volunteers: true,
         events: true
       }
     })

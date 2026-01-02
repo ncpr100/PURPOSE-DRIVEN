@@ -141,7 +141,7 @@ async function identifySchedulingGaps(churchId: string, daysAhead: number = 30) 
     include: {
       volunteer_assignments: {
         include: {
-          volunteer: true
+          volunteers: true
         }
       }
     }
