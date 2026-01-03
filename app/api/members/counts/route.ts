@@ -183,34 +183,69 @@ export async function GET(request: NextRequest) {
         femenino: members.filter(m => {
           const gender = m.gender?.toLowerCase()
           return gender === 'femenino' || gender === 'female' || gender === 'f'
+        }).length,
+        sinEspecificar: members.filter(m => {
+          const gender = m.gender?.toLowerCase()
+          return !gender || gender === 'null' || gender === ''
         }).length
       },
       ageCounts: {
         '0-17': members.filter(m => {
           if (!m.birthDate) return false
-          const age = new Date().getFullYear() - new Date(m.birthDate).getFullYear()
+          const today = new Date()
+          const birthDate = new Date(m.birthDate)
+          let age = today.getFullYear() - birthDate.getFullYear()
+          const monthDiff = today.getMonth() - birthDate.getMonth()
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+          }
           return age >= 0 && age <= 17
         }).length,
         '18-25': members.filter(m => {
           if (!m.birthDate) return false
-          const age = new Date().getFullYear() - new Date(m.birthDate).getFullYear()
+          const today = new Date()
+          const birthDate = new Date(m.birthDate)
+          let age = today.getFullYear() - birthDate.getFullYear()
+          const monthDiff = today.getMonth() - birthDate.getMonth()
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+          }
           return age >= 18 && age <= 25
         }).length,
         '26-35': members.filter(m => {
           if (!m.birthDate) return false
-          const age = new Date().getFullYear() - new Date(m.birthDate).getFullYear()
+          const today = new Date()
+          const birthDate = new Date(m.birthDate)
+          let age = today.getFullYear() - birthDate.getFullYear()
+          const monthDiff = today.getMonth() - birthDate.getMonth()
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+          }
           return age >= 26 && age <= 35
         }).length,
         '36-50': members.filter(m => {
           if (!m.birthDate) return false
-          const age = new Date().getFullYear() - new Date(m.birthDate).getFullYear()
+          const today = new Date()
+          const birthDate = new Date(m.birthDate)
+          let age = today.getFullYear() - birthDate.getFullYear()
+          const monthDiff = today.getMonth() - birthDate.getMonth()
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+          }
           return age >= 36 && age <= 50
         }).length,
         '51+': members.filter(m => {
           if (!m.birthDate) return false
-          const age = new Date().getFullYear() - new Date(m.birthDate).getFullYear()
+          const today = new Date()
+          const birthDate = new Date(m.birthDate)
+          let age = today.getFullYear() - birthDate.getFullYear()
+          const monthDiff = today.getMonth() - birthDate.getMonth()
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+          }
           return age >= 51
-        }).length
+        }).length,
+        sinEspecificar: members.filter(m => !m.birthDate).length
       },
       maritalStatusCounts: {
         soltero: members.filter(m => {
@@ -228,6 +263,10 @@ export async function GET(request: NextRequest) {
         viudo: members.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'viudo' || status === 'widowed'
+        }).length,
+        sinEspecificar: members.filter(m => {
+          const status = m.maritalStatus?.toLowerCase()
+          return !status || status === 'null' || status === ''
         }).length
       }
     }

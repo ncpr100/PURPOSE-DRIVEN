@@ -856,7 +856,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         </Card>
 
         {/* Real-time Filter Statistics */}
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-5">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-2">
@@ -902,6 +902,24 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                     }).length}
                   </p>
                   <p className="text-sm text-muted-foreground">Mujeres</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-gray-500 flex items-center justify-center text-white text-sm font-bold">
+                  ?
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">
+                    {filterCounts?.genderCounts?.sinEspecificar || filteredMembers.filter(m => {
+                      const gender = m.gender?.toLowerCase()
+                      return !gender || gender === 'null' || gender === ''
+                    }).length}
+                  </p>
+                  <p className="text-sm text-muted-foreground">Sin Especificar</p>
                 </div>
               </div>
             </CardContent>
