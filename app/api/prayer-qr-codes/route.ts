@@ -118,7 +118,9 @@ export async function POST(request: Request) {
           logo: null,
           logoSize: 0.2
         },
-        churchId: user.churchId
+        churches: {
+          connect: { id: user.churchId }
+        }
       },
       include: {
         form: {

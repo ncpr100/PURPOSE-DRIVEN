@@ -115,7 +115,9 @@ export async function POST(request: NextRequest) {
         icon,
         unit,
         period: period || 'MONTHLY',
-        churchId,
+        churches: {
+          connect: { id: churchId }
+        },
         updatedAt: new Date()
       }
     });

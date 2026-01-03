@@ -171,7 +171,9 @@ export async function POST(request: Request) {
       data: {
         id: randomUUID(),
         contactId: contact.id,
-        churchId,
+        churches: {
+          connect: { id: churchId }
+        },
         categoryId,
         message,
         isAnonymous,
