@@ -7,6 +7,7 @@
 import { MemberJourneyAnalytics } from './member-journey-analytics';
 import { cacheManager, CACHE_KEYS, CACHE_TTL, CacheOptions } from './redis-cache-manager';
 import { db } from './db';
+import { getEffectiveGender } from './gender-utils';
 import { 
   MemberLifecycleStage, 
   EngagementLevel, 
@@ -657,12 +658,16 @@ export class CachedAnalyticsService {
     const genderCounts: { [key: string]: number } = { 'Masculino': 0, 'Femenino': 0, 'Otro': 0 };
     
     journeys.forEach(j => {
-      const gender = j.member?.gender || 'Otro';
-      if (gender in genderCounts) {
-        genderCounts[gender]++;
-      } else {
-        genderCounts['Otro']++;
+      const effectiveGender = getEffectiveGender(j.member || {});
+      let displayGender = 'Otro';
+      
+      if (effectiveGender === 'masculino') {
+        displayGender = 'Masculino';
+      } else if (effectiveGender === 'femenino') {
+        displayGender = 'Femenino';
       }
+      
+      genderCounts[displayGender]++;
     });
 
     const total = journeys.length;

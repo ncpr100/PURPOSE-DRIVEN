@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { categorizeGender, matchesGenderFilter } from '@/lib/gender-utils'
 
 export async function GET(request: NextRequest) {
   try {
@@ -51,6 +52,8 @@ export async function GET(request: NextRequest) {
 
     // Copy for filtering (preserve original for dashboard counts)
     let members = [...allMembers]
+
+
     const baseMembers = [...members] // Keep a copy of unfiltered data for count calculations
 
     // Apply search filter
@@ -63,17 +66,9 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Apply gender filter
+    // Apply gender filter with inference
     if (gender !== 'all') {
-      members = members.filter(member => {
-        const memberGender = member.gender?.toLowerCase()
-        if (gender === 'masculino') {
-          return memberGender === 'masculino' || memberGender === 'male' || memberGender === 'm'
-        } else if (gender === 'femenino') {
-          return memberGender === 'femenino' || memberGender === 'female' || memberGender === 'f'
-        }
-        return false
-      })
+      members = members.filter(member => matchesGenderFilter(member, gender))
     }
 
     // Apply age filter
@@ -183,18 +178,9 @@ export async function GET(request: NextRequest) {
     const counts = {
       totalCount: baseTotalCount, // Always show total active members, not filtered count
       genderCounts: {
-        masculino: allMembers.filter(m => {
-          const gender = m.gender?.toLowerCase()
-          return gender === 'masculino' || gender === 'male' || gender === 'm'
-        }).length,
-        femenino: allMembers.filter(m => {
-          const gender = m.gender?.toLowerCase()
-          return gender === 'femenino' || gender === 'female' || gender === 'f'
-        }).length,
-        sinEspecificar: allMembers.filter(m => {
-          const gender = m.gender?.toLowerCase()
-          return !gender || gender === 'null' || gender === ''
-        }).length
+        masculino: allMembers.filter(m => categorizeGender(m) === 'masculino').length,
+        femenino: allMembers.filter(m => categorizeGender(m) === 'femenino').length,
+        sinEspecificar: allMembers.filter(m => categorizeGender(m) === 'sinEspecificar').length
       },
       ageCounts: {
         '0-17': allMembers.filter(m => {

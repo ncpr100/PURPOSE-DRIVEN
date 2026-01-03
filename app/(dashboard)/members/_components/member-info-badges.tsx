@@ -2,6 +2,7 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Star, UserPlus } from 'lucide-react'
+import { getEffectiveGender } from '@/lib/gender-utils'
 
 /**
  * Centralized component for rendering member information badges
@@ -12,6 +13,7 @@ type MaritalStatusFilter = 'all' | 'soltero' | 'casado' | 'divorciado' | 'viudo'
 
 interface MemberInfoBadgesProps {
   member: {
+    firstName?: string
     gender?: string
     maritalStatus?: string
     ministryId?: string
@@ -25,12 +27,16 @@ export function MemberInfoBadges({
   activeMaritalStatusFilter,
   isVolunteer 
 }: MemberInfoBadgesProps) {
+  
+  // Use actual gender or infer from first name
+  const displayGender = getEffectiveGender(member)
+
   return (
     <div className="space-y-1">
-      {/* Gender Badge - Always shows member's actual gender */}
-      {member.gender && (
-        <Badge variant="secondary" className="text-xs">
-          {member.gender}
+      {/* Gender Badge - Shows member's actual gender or inferred gender */}
+      {displayGender && (
+        <Badge variant={member.gender ? "secondary" : "outline"} className="text-xs">
+          {displayGender}
         </Badge>
       )}
 

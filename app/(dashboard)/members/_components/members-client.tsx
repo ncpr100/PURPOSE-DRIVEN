@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { categorizeGender } from '@/lib/gender-utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -888,10 +889,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filterCounts?.genderCounts?.masculino || filteredMembers.filter(m => {
-                      const gender = m.gender?.toLowerCase()
-                      return gender === 'masculino' || gender === 'male' || gender === 'm'
-                    }).length}
+                    {filterCounts?.genderCounts?.masculino || filteredMembers.filter(m => 
+                      categorizeGender(m) === 'masculino'
+                    ).length}
                   </p>
                   <p className="text-sm text-muted-foreground">Hombres</p>
                 </div>
@@ -906,10 +906,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filterCounts?.genderCounts?.femenino || filteredMembers.filter(m => {
-                      const gender = m.gender?.toLowerCase()
-                      return gender === 'femenino' || gender === 'female' || gender === 'f'
-                    }).length}
+                    {filterCounts?.genderCounts?.femenino || filteredMembers.filter(m => 
+                      categorizeGender(m) === 'femenino'
+                    ).length}
                   </p>
                   <p className="text-sm text-muted-foreground">Mujeres</p>
                 </div>
@@ -924,10 +923,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filterCounts?.genderCounts?.sinEspecificar || filteredMembers.filter(m => {
-                      const gender = m.gender?.toLowerCase()
-                      return !gender || gender === 'null' || gender === ''
-                    }).length}
+                    {filterCounts?.genderCounts?.sinEspecificar || filteredMembers.filter(m => 
+                      categorizeGender(m) === 'sinEspecificar'
+                    ).length}
                   </p>
                   <p className="text-sm text-muted-foreground">Sin Especificar</p>
                 </div>
@@ -1053,6 +1051,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                         <TableCell>
                           <MemberInfoBadges
                             member={{
+                              firstName: member.firstName,
                               gender: member.gender,
                               maritalStatus: member.maritalStatus,
                               ministryId: member.ministryId
