@@ -102,7 +102,7 @@ export default function PostComposer({
       return data.files.map((file: any) => file.url);
     } catch (error) {
       console.error('Error uploading media:', error);
-      toast.error('Failed to upload media files');
+      toast.error('Error al subir archivos multimedia');
       return [];
     } finally {
       setIsUploading(false);
@@ -178,7 +178,7 @@ export default function PostComposer({
       }
     } catch (error) {
       console.error('Error saving post:', error);
-      toast.error('Failed to save post');
+      toast.error('Error al guardar post');
     } finally {
       setIsSubmitting(false);
     }
@@ -197,11 +197,11 @@ export default function PostComposer({
       }
 
       const result = await response.json();
-      toast.success('Post published successfully!');
+      toast.success('¡Post publicado exitosamente!');
       onPostUpdated(result.post);
     } catch (error) {
       console.error('Error publishing post:', error);
-      toast.error('Failed to publish post');
+      toast.error('Error al publicar post');
     }
   };
 
@@ -222,7 +222,7 @@ export default function PostComposer({
               id="title"
               value={formData.title}
               onChange={(e) => handleInputChange('title', e.target.value)}
-              placeholder="Enter post title..."
+              placeholder="Ingresa el título del post..."
             />
           </div>
 
@@ -233,7 +233,7 @@ export default function PostComposer({
               id="content"
               value={formData.content}
               onChange={(e) => handleInputChange('content', e.target.value)}
-              placeholder="What's on your mind?"
+              placeholder="¿En qué estás pensando?"
               rows={4}
               required
             />
@@ -367,7 +367,7 @@ export default function PostComposer({
           {/* Actions */}
           <div className="flex justify-between pt-4">
             <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
+              Cancelar
             </Button>
             
             <div className="space-x-2">

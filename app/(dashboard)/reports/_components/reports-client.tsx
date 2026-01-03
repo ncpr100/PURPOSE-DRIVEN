@@ -101,7 +101,7 @@ export default function ReportsClient() {
       setReports(data);
     } catch (error) {
       console.error('Error fetching reports:', error);
-      setError('Failed to load reports. Please try again.');
+      setError('Error al cargar reportes. Por favor intenta de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -136,7 +136,7 @@ export default function ReportsClient() {
       fetchReports();
     } catch (error) {
       console.error('Error creating report:', error);
-      setError('Failed to create report. Please try again.');
+      setError('Error al crear reporte. Por favor intenta de nuevo.');
     }
   };
 
@@ -164,7 +164,7 @@ export default function ReportsClient() {
 
     } catch (error) {
       console.error('Error executing report:', error);
-      setError('Failed to execute report. Please try again.');
+      setError('Error al ejecutar reporte. Por favor intenta de nuevo.');
     } finally {
       setExecutingReports(prev => {
         const newSet = new Set(prev);
@@ -213,7 +213,7 @@ export default function ReportsClient() {
       <div className="flex items-center justify-center h-64">
         <div className="flex items-center gap-2">
           <Loader2 className="h-6 w-6 animate-spin" />
-          <span>Loading reports...</span>
+          <span>Cargando reportes...</span>
         </div>
       </div>
     );
@@ -234,12 +234,12 @@ export default function ReportsClient() {
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Create Report
+              Crear Reporte
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Create New Report</DialogTitle>
+              <DialogTitle>Crear Nuevo Reporte</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
@@ -248,7 +248,7 @@ export default function ReportsClient() {
                   id="name"
                   value={newReport.name}
                   onChange={(e) => setNewReport(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Enter report name"
+                  placeholder="Ingresa nombre del reporte"
                 />
               </div>
               
@@ -258,7 +258,7 @@ export default function ReportsClient() {
                   id="description"
                   value={newReport.description}
                   onChange={(e) => setNewReport(prev => ({ ...prev, description: e.target.value }))}
-                  placeholder="Describe what this report shows"
+                  placeholder="Describe qué muestra este reporte"
                   rows={3}
                 />
               </div>
@@ -317,16 +317,16 @@ export default function ReportsClient() {
                     checked={newReport.isTemplate}
                     onChange={(e) => setNewReport(prev => ({ ...prev, isTemplate: e.target.checked }))}
                   />
-                  <span className="text-sm">Use as Template</span>
+                  <span className="text-sm">Usar como Plantilla</span>
                 </label>
               </div>
 
               <div className="flex justify-end gap-2">
                 <Button variant="outline" onClick={() => setCreateDialogOpen(false)}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button onClick={createReport} disabled={!newReport.name}>
-                  Create Report
+                  Crear Reporte
                 </Button>
               </div>
             </div>
@@ -339,7 +339,7 @@ export default function ReportsClient() {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
-            placeholder="Search reports..."
+            placeholder="Buscar reportes..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -348,7 +348,7 @@ export default function ReportsClient() {
 
         <Select value={filterType} onValueChange={setFilterType}>
           <SelectTrigger className="w-40">
-            <SelectValue placeholder="Filter by type" />
+            <SelectValue placeholder="Filtrar por tipo" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Types</SelectItem>

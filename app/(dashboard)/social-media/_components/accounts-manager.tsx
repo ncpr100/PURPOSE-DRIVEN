@@ -107,13 +107,13 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
         throw new Error(errorData.error || 'Failed to connect account');
       }
 
-      toast.success('Account connected successfully');
+      toast.success('Cuenta conectada exitosamente');
       setShowAddDialog(false);
       resetForm();
       onAccountsChanged();
     } catch (error: any) {
       console.error('Error connecting account:', error);
-      toast.error(error.message || 'Failed to connect account');
+      toast.error(error.message || 'Error al conectar cuenta');
     } finally {
       setIsSubmitting(false);
     }
@@ -133,11 +133,11 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
         throw new Error('Failed to disconnect account');
       }
 
-      toast.success('Account disconnected successfully');
+      toast.success('Cuenta desconectada exitosamente');
       onAccountsChanged();
     } catch (error) {
       console.error('Error disconnecting account:', error);
-      toast.error('Failed to disconnect account');
+      toast.error('Error al desconectar cuenta');
     }
   };
 
@@ -153,11 +153,11 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
         throw new Error('Failed to update account status');
       }
 
-      toast.success(`Account ${!currentStatus ? 'activated' : 'deactivated'} successfully`);
+      toast.success(`Cuenta ${!currentStatus ? 'activada' : 'desactivada'} exitosamente`);
       onAccountsChanged();
     } catch (error) {
       console.error('Error updating account status:', error);
-      toast.error('Failed to update account status');
+      toast.error('Error al actualizar estado de cuenta');
     }
   };
 
@@ -267,7 +267,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                 <Label htmlFor="platform">Platform *</Label>
                 <Select value={formData.platform} onValueChange={(value) => handleInputChange('platform', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select platform" />
+                    <SelectValue placeholder="Seleccionar plataforma" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="FACEBOOK">Facebook</SelectItem>
@@ -306,7 +306,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                   id="accountId"
                   value={formData.accountId}
                   onChange={(e) => handleInputChange('accountId', e.target.value)}
-                  placeholder="Platform-specific account ID"
+                  placeholder="ID de cuenta específico de la plataforma"
                   required
                 />
               </div>
@@ -317,7 +317,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                   id="username"
                   value={formData.username}
                   onChange={(e) => handleInputChange('username', e.target.value)}
-                  placeholder="@username or handle"
+                  placeholder="@usuario o nombre"
                 />
               </div>
 
@@ -327,7 +327,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                   id="displayName"
                   value={formData.displayName}
                   onChange={(e) => handleInputChange('displayName', e.target.value)}
-                  placeholder="Account display name"
+                  placeholder="Nombre de visualización de la cuenta"
                 />
               </div>
 
@@ -338,7 +338,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                   type="password"
                   value={formData.accessToken}
                   onChange={(e) => handleInputChange('accessToken', e.target.value)}
-                  placeholder="OAuth access token"
+                  placeholder="Token de acceso OAuth"
                   required
                 />
               </div>
@@ -350,7 +350,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                   type="password"
                   value={formData.refreshToken}
                   onChange={(e) => handleInputChange('refreshToken', e.target.value)}
-                  placeholder="OAuth refresh token (optional)"
+                  placeholder="Token de actualización OAuth (opcional)"
                 />
               </div>
 
@@ -363,10 +363,10 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                     resetForm();
                   }}
                 >
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Connecting...' : 'Connect Account'}
+                  {isSubmitting ? 'Conectando...' : 'Conectar Cuenta'}
                 </Button>
               </div>
             </form>

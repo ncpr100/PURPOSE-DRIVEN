@@ -208,7 +208,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
       <div className="flex flex-wrap gap-4">
         <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
           <SelectTrigger className="w-48">
-            <SelectValue placeholder="All Platforms" />
+            <SelectValue placeholder="Todas las Plataformas" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Platforms</SelectItem>
@@ -222,7 +222,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
 
         <Select value={selectedAccount} onValueChange={setSelectedAccount}>
           <SelectTrigger className="w-48">
-            <SelectValue placeholder="All Accounts" />
+            <SelectValue placeholder="Todas las Cuentas" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Accounts</SelectItem>
@@ -236,7 +236,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
 
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger className="w-32">
-            <SelectValue placeholder="30 days" />
+            <SelectValue placeholder="30 días" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="7">7 days</SelectItem>

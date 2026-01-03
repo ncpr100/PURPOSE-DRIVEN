@@ -626,7 +626,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">Correo Electrónico</Label>
                   <Input
                     id="email"
                     type="email"

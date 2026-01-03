@@ -55,7 +55,7 @@ export default function SocialMediaClient() {
       }
     } catch (error) {
       console.error('Error fetching accounts:', error);
-      toast.error('Failed to fetch social media accounts');
+      toast.error('Error al cargar cuentas de redes sociales');
     }
   };
 
@@ -69,7 +69,7 @@ export default function SocialMediaClient() {
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
-      toast.error('Failed to fetch social media posts');
+      toast.error('Error al cargar posts de redes sociales');
     } finally {
       setIsLoading(false);
     }
@@ -78,19 +78,19 @@ export default function SocialMediaClient() {
   const handlePostCreated = (newPost: SocialMediaPost) => {
     setPosts(prev => [newPost, ...prev]);
     setShowComposer(false);
-    toast.success('Post created successfully');
+    toast.success('Post creado exitosamente');
   };
 
   const handlePostUpdated = (updatedPost: SocialMediaPost) => {
     setPosts(prev => prev.map(post => post.id === updatedPost.id ? updatedPost : post));
     setSelectedPost(null);
     setShowComposer(false);
-    toast.success('Post updated successfully');
+    toast.success('Post actualizado exitosamente');
   };
 
   const handlePostDeleted = (postId: string) => {
     setPosts(prev => prev.filter(post => post.id !== postId));
-    toast.success('Post deleted successfully');
+    toast.success('Post eliminado exitosamente');
   };
 
   const activeAccounts = accounts.filter(acc => acc.isActive);
