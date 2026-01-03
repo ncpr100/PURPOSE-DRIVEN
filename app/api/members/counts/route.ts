@@ -46,6 +46,10 @@ export async function GET(request: NextRequest) {
       }
     })
 
+    // Store the base total before any filters are applied
+    const baseTotalCount = members.length
+    const baseMembers = [...members] // Keep a copy of unfiltered data for count calculations
+
     // Apply search filter
     if (q.trim()) {
       const searchTerm = q.toLowerCase()
@@ -174,7 +178,7 @@ export async function GET(request: NextRequest) {
 
     // Calculate different count metrics
     const counts = {
-      totalCount: members.length,
+      totalCount: baseTotalCount, // Always show total active members, not filtered count
       genderCounts: {
         masculino: members.filter(m => {
           const gender = m.gender?.toLowerCase()

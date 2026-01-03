@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -62,7 +63,8 @@ import {
   UserPlus,
   Crown,
   PlayCircle,
-  Target
+  Target,
+  Settings
 } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -722,10 +724,18 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
             </Button>
           )}
           {canEdit && (
-            <Button variant="outline" onClick={() => setIsImportOpen(true)}>
-              <Upload className="h-4 w-4 mr-2" />
-              Importar Miembros
-            </Button>
+            <>
+              <Link href="/members/bulk-gender-update">
+                <Button variant="outline">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Actualizar Género
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={() => setIsImportOpen(true)}>
+                <Upload className="h-4 w-4 mr-2" />
+                Importar Miembros
+              </Button>
+            </>
           )}
           <Button onClick={handleAdd}>
             <Plus className="h-4 w-4 mr-2" />
