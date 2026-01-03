@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     const smartList = searchParams.get('smartList') || 'all'
 
     // Base query - get all active members for this church
-    let members = await db.members.findMany({
+    let allMembers = await db.members.findMany({
       where: {
         churchId,
         isActive: true
@@ -47,7 +47,10 @@ export async function GET(request: NextRequest) {
     })
 
     // Store the base total before any filters are applied
-    const baseTotalCount = members.length
+    const baseTotalCount = allMembers.length
+
+    // Copy for filtering (preserve original for dashboard counts)
+    let members = [...allMembers]
     const baseMembers = [...members] // Keep a copy of unfiltered data for count calculations
 
     // Apply search filter
@@ -180,21 +183,21 @@ export async function GET(request: NextRequest) {
     const counts = {
       totalCount: baseTotalCount, // Always show total active members, not filtered count
       genderCounts: {
-        masculino: members.filter(m => {
+        masculino: allMembers.filter(m => {
           const gender = m.gender?.toLowerCase()
           return gender === 'masculino' || gender === 'male' || gender === 'm'
         }).length,
-        femenino: members.filter(m => {
+        femenino: allMembers.filter(m => {
           const gender = m.gender?.toLowerCase()
           return gender === 'femenino' || gender === 'female' || gender === 'f'
         }).length,
-        sinEspecificar: members.filter(m => {
+        sinEspecificar: allMembers.filter(m => {
           const gender = m.gender?.toLowerCase()
           return !gender || gender === 'null' || gender === ''
         }).length
       },
       ageCounts: {
-        '0-17': members.filter(m => {
+        '0-17': allMembers.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -205,7 +208,7 @@ export async function GET(request: NextRequest) {
           }
           return age >= 0 && age <= 17
         }).length,
-        '18-25': members.filter(m => {
+        '18-25': allMembers.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -216,7 +219,7 @@ export async function GET(request: NextRequest) {
           }
           return age >= 18 && age <= 25
         }).length,
-        '26-35': members.filter(m => {
+        '26-35': allMembers.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -227,7 +230,7 @@ export async function GET(request: NextRequest) {
           }
           return age >= 26 && age <= 35
         }).length,
-        '36-50': members.filter(m => {
+        '36-50': allMembers.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -238,7 +241,7 @@ export async function GET(request: NextRequest) {
           }
           return age >= 36 && age <= 50
         }).length,
-        '51+': members.filter(m => {
+        '51+': allMembers.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -249,26 +252,26 @@ export async function GET(request: NextRequest) {
           }
           return age >= 51
         }).length,
-        sinEspecificar: members.filter(m => !m.birthDate).length
+        sinEspecificar: allMembers.filter(m => !m.birthDate).length
       },
       maritalStatusCounts: {
-        soltero: members.filter(m => {
+        soltero: allMembers.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'soltero' || status === 'single'
         }).length,
-        casado: members.filter(m => {
+        casado: allMembers.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'casado' || status === 'married'
         }).length,
-        divorciado: members.filter(m => {
+        divorciado: allMembers.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'divorciado' || status === 'divorced'
         }).length,
-        viudo: members.filter(m => {
+        viudo: allMembers.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'viudo' || status === 'widowed'
         }).length,
-        sinEspecificar: members.filter(m => {
+        sinEspecificar: allMembers.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return !status || status === 'null' || status === ''
         }).length
