@@ -110,7 +110,9 @@ export async function POST(request: NextRequest) {
     const website_requests = await prisma.website_requests.create({
       data: {
         id: nanoid(),
-        churchId: session.user.churchId,
+        churches: {
+          connect: { id: session.user.churchId }
+        },
         requestType: requestTypeLabel || requestType,
         projectName,
         description,

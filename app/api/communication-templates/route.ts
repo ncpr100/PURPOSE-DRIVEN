@@ -66,7 +66,10 @@ export async function POST(req: NextRequest) {
         type,
         variables: variables ? JSON.stringify(variables) : null,
         category,
-        churchId: session.user.churchId
+        churches: {
+          connect: { id: session.user.churchId }
+        },
+        updatedAt: new Date()
       }
     })
 

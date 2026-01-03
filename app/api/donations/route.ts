@@ -195,7 +195,10 @@ export async function POST(request: NextRequest) {
           donorName: isAnonymous ? null : (donorName ? DonationSecurity.sanitizeInput(donorName) : null),
           donorEmail: isAnonymous ? null : (donorEmail ? DonationSecurity.sanitizeInput(donorEmail.toLowerCase()) : null),
           donorPhone: isAnonymous ? null : (donorPhone ? DonationSecurity.sanitizeInput(donorPhone) : null),
-          memberId: isAnonymous ? null : memberId,
+          memberId: isAnonymous || !memberId ? null : undefined,
+          members: isAnonymous || !memberId ? undefined : {
+            connect: { id: memberId }
+          },
           categoryId,
           paymentMethodId,
           reference: reference ? DonationSecurity.sanitizeInput(reference) : DonationSecurity.generatePaymentReference(),
