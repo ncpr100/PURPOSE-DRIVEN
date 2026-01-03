@@ -73,6 +73,10 @@ export async function GET(request: NextRequest) {
     const rawSearchParams = {
       q: url.searchParams.get('q'),
       status: url.searchParams.get('status'),
+      gender: url.searchParams.get('gender'),
+      ageFilter: url.searchParams.get('ageFilter'),
+      maritalStatus: url.searchParams.get('maritalStatus'),
+      smartList: url.searchParams.get('smartList'),
       sortBy: url.searchParams.get('sortBy'),
       sortOrder: url.searchParams.get('sortOrder')
     }
@@ -89,6 +93,10 @@ export async function GET(request: NextRequest) {
       ...paginationParams,
       q: rawSearchParams.q?.trim(),
       status: rawSearchParams.status || 'all',
+      gender: rawSearchParams.gender || 'all',
+      ageFilter: rawSearchParams.ageFilter || 'all',
+      maritalStatus: rawSearchParams.maritalStatus || 'all',
+      smartList: rawSearchParams.smartList || 'all',
       sortBy: sortByMapping[rawSearchParams.sortBy || 'date'] || 'createdAt',
       sortOrder: (rawSearchParams.sortOrder === 'asc' ? 'asc' : 'desc') as 'asc' | 'desc'
     }
@@ -108,8 +116,51 @@ export async function GET(request: NextRequest) {
       ]
     }
 
+    // Apply gender filter
+    if (queryParams.gender && queryParams.gender !== 'all') {
+      whereClause.gender = { equals: queryParams.gender, mode: 'insensitive' }
+    }
+
+    // Apply marital status filter
+    if (queryParams.maritalStatus && queryParams.maritalStatus !== 'all') {
+      if (queryParams.maritalStatus === 'family-group') {
+        // Family grouping will be handled post-query
+      } else {
+        whereClause.maritalStatus = { equals: queryParams.maritalStatus, mode: 'insensitive' }
+      }
+    }
+
+    // Apply smart list filters
+    if (queryParams.smartList && queryParams.smartList !== 'all') {
+      const today = new Date()
+      switch (queryParams.smartList) {
+        case 'new-members':
+          const thirtyDaysAgo = new Date()
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+          whereClause.OR = [
+            { membershipDate: { gte: thirtyDaysAgo } },
+            { createdAt: { gte: thirtyDaysAgo } }
+          ]
+          break
+        case 'inactive-members':
+          const sixMonthsAgo = new Date()
+          sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
+          whereClause.OR = [
+            { isActive: false },
+            { updatedAt: { lte: sixMonthsAgo } }
+          ]
+          break
+        case 'birthdays':
+          // Handle birthday filtering - need raw SQL for month extraction
+          break
+        case 'anniversaries':
+          // Handle anniversary filtering - need raw SQL for month extraction
+          break
+      }
+    }
+
     // ✅ SECURITY: Limited data exposure with secure select
-    const members = await db.members.findMany({
+    let members = await db.members.findMany({
       where: whereClause,
       select: {
         id: true,
@@ -158,10 +209,106 @@ export async function GET(request: NextRequest) {
       take: queryParams.limit
     })
 
-    // ✅ SECURITY: Get total count for pagination
-    const totalCount = await db.members.count({
+    // Apply post-query filters that require JavaScript logic
+    if (queryParams.ageFilter && queryParams.ageFilter !== 'all') {
+      members = members.filter(member => {
+        if (!member.birthDate) return false
+        const age = new Date().getFullYear() - new Date(member.birthDate).getFullYear()
+        switch (queryParams.ageFilter) {
+          case '0-17': return age >= 0 && age <= 17
+          case '18-25': return age >= 18 && age <= 25
+          case '26-35': return age >= 26 && age <= 35
+          case '36-50': return age >= 36 && age <= 50
+          case '51+': return age >= 51
+          default: return true
+        }
+      })
+    }
+
+    // Handle family grouping post-query
+    if (queryParams.maritalStatus === 'family-group') {
+      const lastNameCounts = members.reduce((acc, member) => {
+        acc[member.lastName] = (acc[member.lastName] || 0) + 1
+        return acc
+      }, {} as Record<string, number>)
+      members = members.filter(member => lastNameCounts[member.lastName] > 1)
+    }
+
+    // Handle complex smart list filters that need post-query processing
+    if (queryParams.smartList && queryParams.smartList !== 'all') {
+      const today = new Date()
+      switch (queryParams.smartList) {
+        case 'birthdays':
+          const currentMonth = today.getMonth()
+          members = members.filter(member => 
+            member.birthDate && new Date(member.birthDate).getMonth() === currentMonth
+          )
+          break
+        case 'anniversaries':
+          const currentMonth2 = today.getMonth()
+          members = members.filter(member => 
+            member.membershipDate && new Date(member.membershipDate).getMonth() === currentMonth2
+          )
+          break
+      }
+    }
+
+    // ✅ SECURITY: Get total count for pagination (adjusted for post-query filters)
+    let totalCount = await db.members.count({
       where: whereClause
     })
+
+    // Adjust count for post-query filters if needed
+    if (queryParams.ageFilter !== 'all' || queryParams.maritalStatus === 'family-group' || 
+        ['birthdays', 'anniversaries'].includes(queryParams.smartList || '')) {
+      // For complex filters, we need to get all data to count accurately
+      const allMembers = await db.members.findMany({
+        where: whereClause,
+        select: { id: true, birthDate: true, lastName: true, membershipDate: true }
+      })
+      
+      let filteredCount = allMembers
+      
+      // Apply same post-query filters for counting
+      if (queryParams.ageFilter && queryParams.ageFilter !== 'all') {
+        filteredCount = filteredCount.filter(member => {
+          if (!member.birthDate) return false
+          const age = new Date().getFullYear() - new Date(member.birthDate).getFullYear()
+          switch (queryParams.ageFilter) {
+            case '0-17': return age >= 0 && age <= 17
+            case '18-25': return age >= 18 && age <= 25
+            case '26-35': return age >= 26 && age <= 35
+            case '36-50': return age >= 36 && age <= 50
+            case '51+': return age >= 51
+            default: return true
+          }
+        })
+      }
+      
+      if (queryParams.maritalStatus === 'family-group') {
+        const lastNameCounts = filteredCount.reduce((acc, member) => {
+          acc[member.lastName] = (acc[member.lastName] || 0) + 1
+          return acc
+        }, {} as Record<string, number>)
+        filteredCount = filteredCount.filter(member => lastNameCounts[member.lastName] > 1)
+      }
+      
+      if (['birthdays', 'anniversaries'].includes(queryParams.smartList || '')) {
+        const today = new Date()
+        const currentMonth = today.getMonth()
+        if (queryParams.smartList === 'birthdays') {
+          filteredCount = filteredCount.filter(member => 
+            member.birthDate && new Date(member.birthDate).getMonth() === currentMonth
+          )
+        } else if (queryParams.smartList === 'anniversaries') {
+          filteredCount = filteredCount.filter(member => 
+            member.membershipDate && new Date(member.membershipDate).getMonth() === currentMonth
+          )
+        }
+      }
+      
+      totalCount = filteredCount.length
+    }
 
     console.log('📊 Members API returning:', members.length, 'of', totalCount, 'members')
     

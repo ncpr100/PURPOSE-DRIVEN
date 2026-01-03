@@ -93,6 +93,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const [volunteers, setVolunteers] = useState<any[]>([])
   const [qualificationSettings, setQualificationSettings] = useState<any>(null)
   const [totalMemberCount, setTotalMemberCount] = useState(0) // Track total count from API
+  const [filterCounts, setFilterCounts] = useState<any>(null) // Track filtered counts
   const [isLoading, setIsLoading] = useState(true)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isImportOpen, setIsImportOpen] = useState(false)
@@ -117,14 +118,22 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
     console.log('🚀 MembersClient component mounted')
     console.log('🚀 Initial state - isLoading:', isLoading, 'members.length:', members.length)
     fetchMembers()
+    fetchFilterCounts()
     fetchVolunteers()
     fetchQualificationSettings()
   }, [])
 
+  // Re-fetch data when filters change (server-side filtering)
   useEffect(() => {
-    console.log('🔄 useEffect triggered - members changed:', members.length)
-    filterMembers()
-  }, [members, searchTerm, genderFilter, ageFilter, maritalStatusFilter, activeSmartList])
+    console.log('🔄 Filters changed, re-fetching data from server')
+    setIsLoading(true)
+    Promise.all([
+      fetchMembers(),
+      fetchFilterCounts()
+    ]).finally(() => {
+      setIsLoading(false)
+    })
+  }, [searchTerm, genderFilter, ageFilter, maritalStatusFilter, activeSmartList])
 
   // Debug effect to monitor state changes
   useEffect(() => {
@@ -134,9 +143,21 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const fetchMembers = async () => {
     try {
       console.log('🔍 Starting fetchMembers...')
-      console.log('🔍 About to call /api/members with credentials')
+      console.log('🔍 About to call /api/members with credentials and filters')
       
-      const response = await fetch('/api/members', {
+      // Build URL with current filter parameters for server-side filtering
+      const params = new URLSearchParams()
+      if (searchTerm) params.set('q', searchTerm)
+      if (genderFilter !== 'all') params.set('gender', genderFilter)
+      if (ageFilter !== 'all') params.set('ageFilter', ageFilter)
+      if (maritalStatusFilter !== 'all') params.set('maritalStatus', maritalStatusFilter)
+      if (activeSmartList !== 'all') params.set('smartList', activeSmartList)
+      params.set('limit', '2000') // Get all members for now
+      
+      const url = `/api/members?${params.toString()}`
+      console.log('🔍 Fetching URL:', url)
+      
+      const response = await fetch(url, {
         method: 'GET',
         credentials: 'include', // Include session cookies
         headers: {
@@ -165,6 +186,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         console.log('📊 Total count from API:', totalCount)
         setMembers(membersArray)
         setTotalMemberCount(totalCount) // Store total count for display
+        
+        // Since server-side filtering is now active, set filtered members to the same data
+        setFilteredMembers(membersArray)
         console.log('✅ Members state updated successfully')
       } else {
         console.error('❌ Members API failed with status:', response.status)
@@ -365,184 +389,36 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
     }
   }
 
-  const filterMembers = () => {
-    console.log('🔍 filterMembers called')
-    console.log('📊 Total members:', members.length)
-    console.log('🎯 Active filters:', { 
-      searchTerm, 
-      genderFilter, 
-      ageFilter, 
-      maritalStatusFilter, 
-      activeSmartList 
-    })
-    
-    let filtered = members
+  // Server-side filtering is now handled in fetchMembers() through API parameters
+  // No client-side filtering function needed
 
-    // Apply Smart List Filters First
-    switch (activeSmartList) {
-      case 'new-members':
-        const thirtyDaysAgo = new Date()
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-        filtered = filtered.filter(member => 
-          new Date(member.membershipDate || member.createdAt) >= thirtyDaysAgo
-        )
-        break
-        
-      case 'inactive-members':
-        const sixMonthsAgo = new Date()
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
-        filtered = filtered.filter(member => 
-          !member.isActive || new Date(member.updatedAt) <= sixMonthsAgo
-        )
-        break
-        
-      case 'birthdays':
-        const today = new Date()
-        const currentMonth = today.getMonth()
-        filtered = filtered.filter(member => 
-          member.birthDate && new Date(member.birthDate).getMonth() === currentMonth
-        )
-        break
-        
-      case 'anniversaries':
-        const currentMonth2 = new Date().getMonth()
-        filtered = filtered.filter(member => 
-          member.membershipDate && new Date(member.membershipDate).getMonth() === currentMonth2
-        )
-        break
-        
-      case 'ministry-leaders':
-        filtered = filtered.filter(member => 
-          member.ministryId || (member.spiritualGifts && Array.isArray(member.spiritualGifts) && member.spiritualGifts.length > 0)
-        )
-        break
-        
-      case 'visitors-becoming-members':
-        const ninetyDaysAgo = new Date()
-        ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
-        filtered = filtered.filter(member => 
-          member.membershipDate && new Date(member.membershipDate) >= ninetyDaysAgo && !member.baptismDate
-        )
-        break
-        
-      case 'prayer-needed':
-        filtered = filtered.filter(member => 
-          member.notes && member.notes.toLowerCase().includes('oración')
-        )
-        break
-        
-      case 'volunteer-candidates':
-        // Show members who are eligible to be volunteers using custom criteria
-        const volunteerMinDays = qualificationSettings?.volunteerMinMembershipDays || 0
-        const volunteerMinSpiritualScore = qualificationSettings?.volunteerMinSpiritualScore || 0
-        const requireActiveStatus = qualificationSettings?.volunteerRequireActiveStatus || true
-        const requireSpiritualAssessment = qualificationSettings?.volunteerRequireSpiritualAssessment || false
-        
-        filtered = filtered.filter(member => {
-          // Must not already be a volunteer
-          if (getMemberVolunteerStatus(member.id)) return false
-          
-          // Check active status if required
-          if (requireActiveStatus && !member.isActive) return false
-          
-          // Check membership duration
-          if (member.membershipDate) {
-            const membershipDuration = Date.now() - new Date(member.membershipDate).getTime()
-            const daysSinceMembership = membershipDuration / (24 * 60 * 60 * 1000)
-            if (daysSinceMembership < volunteerMinDays) return false
-          }
-          
-          // Additional checks would include spiritual assessment requirements
-          // TODO: Check for completed spiritual assessment if required
-          
-          return true
-        })
-        break
-        
-      case 'active-volunteers':
-        // Show members who ARE volunteers
-        filtered = filtered.filter(member => getMemberVolunteerStatus(member.id))
-        break
-        
-      case 'leadership-ready':
-        // Show members ready for leadership using custom criteria
-        const leadershipMinDays = qualificationSettings?.leadershipMinMembershipDays || 365
-        const leadershipMinSpiritualScore = qualificationSettings?.leadershipMinSpiritualScore || 70
-        const requireVolunteerExp = qualificationSettings?.leadershipRequireVolunteerExp || false
-        const requireTraining = qualificationSettings?.leadershipRequireTraining || false
-        
-        filtered = filtered.filter(member => {
-          // Basic criteria
-          if (!member.isActive || !member.membershipDate) return false
-          
-          // Check membership duration
-          const membershipDuration = Date.now() - new Date(member.membershipDate).getTime()
-          const daysSinceMembership = membershipDuration / (24 * 60 * 60 * 1000)
-          if (daysSinceMembership < leadershipMinDays) return false
-          
-          // Check volunteer experience if required
-          if (requireVolunteerExp && !getMemberVolunteerStatus(member.id)) return false
-          
-          // Additional checks would include spiritual assessment scores
-          // TODO: Integrate with member spiritual profiles for scoring
-          
-          return true
-        })
-        break
-        
-      case 'all':
-      default:
-        // No additional filtering
-        break
-    }
-
-    // Apply Search Filter
-    if (searchTerm) {
-      filtered = filtered.filter(member =>
-        `${member.firstName} ${member.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.phone?.includes(searchTerm)
-      )
-    }
-
-    // Apply Gender Filter (case-insensitive)
-    if (genderFilter !== 'all') {
-      filtered = filtered.filter(member => member.gender?.toLowerCase() === genderFilter.toLowerCase())
-    }
-
-    // Apply Age Filter
-    if (ageFilter !== 'all') {
-      filtered = filtered.filter(member => {
-        if (!member.birthDate) return false
-        const age = new Date().getFullYear() - new Date(member.birthDate).getFullYear()
-        switch (ageFilter) {
-          case '0-17': return age >= 0 && age <= 17
-          case '18-25': return age >= 18 && age <= 25
-          case '26-35': return age >= 26 && age <= 35
-          case '36-50': return age >= 36 && age <= 50
-          case '51+': return age >= 51
-          default: return true
-        }
+  const fetchFilterCounts = async () => {
+    try {
+      // Build URL with current filter parameters
+      const params = new URLSearchParams()
+      if (searchTerm) params.set('q', searchTerm)
+      if (genderFilter !== 'all') params.set('gender', genderFilter)
+      if (ageFilter !== 'all') params.set('ageFilter', ageFilter)
+      if (maritalStatusFilter !== 'all') params.set('maritalStatus', maritalStatusFilter)
+      if (activeSmartList !== 'all') params.set('smartList', activeSmartList)
+      
+      const url = `/api/members/counts?${params.toString()}`
+      const response = await fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-    }
-
-    // Apply Marital Status Filter (case-insensitive to handle mixed case data) + Family Filter
-    if (maritalStatusFilter !== 'all') {
-      if (maritalStatusFilter === 'family-group') {
-        // Show only members whose last name appears multiple times (families)
-        const lastNameCounts = filtered.reduce((acc, member) => {
-          acc[member.lastName] = (acc[member.lastName] || 0) + 1
-          return acc
-        }, {} as Record<string, number>)
-        filtered = filtered.filter(member => lastNameCounts[member.lastName] > 1)
-      } else {
-        // Regular marital status filter
-        filtered = filtered.filter(member => member.maritalStatus?.toLowerCase() === maritalStatusFilter.toLowerCase())
+      
+      if (response.ok) {
+        const data = await response.json()
+        setFilterCounts(data.counts)
+        console.log('📊 Filter counts updated:', data.counts)
       }
+    } catch (error) {
+      console.error('💥 Error fetching filter counts:', error)
     }
-
-    console.log('✅ Filtered result:', filtered.length, 'members')
-    setFilteredMembers(filtered)
   }
 
   const handleSaveMember = async (memberData: any) => {
@@ -979,16 +855,16 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           </CardContent>
         </Card>
 
-        {/* Stats */}
+        {/* Real-time Filter Statistics */}
         <div className="grid gap-4 md:grid-cols-4">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-2">
                 <Users className="h-8 w-8 text-blue-500" />
                 <div>
-                  <p className="text-2xl font-bold">{activeSmartList !== 'all' || searchTerm || genderFilter !== 'all' || ageFilter !== 'all' || maritalStatusFilter !== 'all' ? filteredMembers.length : totalMemberCount}</p>
+                  <p className="text-2xl font-bold">{filterCounts?.totalCount || filteredMembers.length}</p>
                   <p className="text-sm text-muted-foreground">
-                    {activeSmartList !== 'all' ? 'En Lista' : 'Total Miembros'}
+                    {activeSmartList === 'all' && !searchTerm && genderFilter === 'all' && ageFilter === 'all' && maritalStatusFilter === 'all' ? 'Total Miembros' : 'Resultados Filtrados'}
                   </p>
                 </div>
               </div>
@@ -1002,7 +878,10 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filteredMembers.filter(m => m.gender?.toLowerCase() === 'masculino').length}
+                    {filterCounts?.genderCounts?.masculino || filteredMembers.filter(m => {
+                      const gender = m.gender?.toLowerCase()
+                      return gender === 'masculino' || gender === 'male' || gender === 'm'
+                    }).length}
                   </p>
                   <p className="text-sm text-muted-foreground">Hombres</p>
                 </div>
@@ -1017,7 +896,10 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filteredMembers.filter(m => m.gender?.toLowerCase() === 'femenino').length}
+                    {filterCounts?.genderCounts?.femenino || filteredMembers.filter(m => {
+                      const gender = m.gender?.toLowerCase()
+                      return gender === 'femenino' || gender === 'female' || gender === 'f'
+                    }).length}
                   </p>
                   <p className="text-sm text-muted-foreground">Mujeres</p>
                 </div>
