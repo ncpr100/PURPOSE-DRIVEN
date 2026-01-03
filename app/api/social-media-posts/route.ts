@@ -36,7 +36,7 @@ export async function GET(request: Request) {
         ...(campaignId && { campaignId })
       },
       include: {
-        campaign: {
+        marketing_campaigns: {
           select: { id: true, name: true }
         }
       },
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
         churchId: user.churchId
       },
       include: {
-        campaign: {
+        marketing_campaigns: {
           select: { id: true, name: true }
         }
       }

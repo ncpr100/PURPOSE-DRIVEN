@@ -29,7 +29,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
         churchId: user.churchId
       },
       include: {
-        campaign: {
+        marketing_campaigns: {
           select: { id: true, name: true }
         }
       }
@@ -96,7 +96,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         ...(campaignId !== undefined && { campaignId: campaignId || null }),
       },
       include: {
-        campaign: {
+        marketing_campaigns: {
           select: { id: true, name: true }
         }
       }

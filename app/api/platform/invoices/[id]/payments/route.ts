@@ -38,7 +38,7 @@ export async function POST(
     const invoice = await prisma.invoices.findUnique({
       where: { id: params.id },
       include: {
-        payments: true
+        invoice_payments: true
       }
     })
 
@@ -47,12 +47,13 @@ export async function POST(
     }
 
     // Calculate total payments
-    const totalPaid = invoice.payments.reduce((sum, payment) => sum + payment.amount, 0)
+    const totalPaid = invoice.invoice_payments.reduce((sum, payment) => sum + payment.amount, 0)
     const newTotalPaid = totalPaid + amount
 
     // Create payment record
     const payment = await prisma.invoice_payments.create({
       data: {
+        id: nanoid(),
         invoiceId: params.id,
         amount,
         currency,

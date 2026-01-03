@@ -180,9 +180,7 @@ async function createDonationFromPayment(onlinePaymentId: string) {
       isAnonymous: false,
       status: 'COMPLETADA',
       donationDate: payment.completedAt || new Date(),
-      churches: {
-        connect: { id: payment.churchId }
-      },
+      churchId: payment.churchId,
       updatedAt: new Date()
     }
   })

@@ -57,13 +57,15 @@ export async function POST(request: NextRequest) {
 
     const sermon = await db.sermons.create({
       data: {
+        id: nanoid(),
         title: data.title,
         content: data.content || '',
         outline: data.outline || '',
         scripture: data.scripture || '',
         speaker: session.user.name || '',
         churchId: session.user.churchId,
-        isPublic: false
+        isPublic: false,
+        updatedAt: new Date()
       }
     })
 

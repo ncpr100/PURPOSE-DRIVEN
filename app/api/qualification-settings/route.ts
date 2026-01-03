@@ -27,8 +27,9 @@ export async function GET(request: NextRequest) {
     if (!settings) {
       settings = await prisma.church_qualification_settings.create({
         data: {
-          id: randomUUID(),
-          churchId: session.user.churchId
+          id: nanoid(),
+          churchId: session.user.churchId,
+          updatedAt: new Date()
         }
       })
     }
@@ -100,7 +101,7 @@ export async function PUT(request: NextRequest) {
         activityWeight
       },
       create: {
-        id: randomUUID(),
+        id: nanoid(),
         churchId: session.user.churchId,
         volunteerMinMembershipDays,
         volunteerRequireActiveStatus,
@@ -119,7 +120,8 @@ export async function PUT(request: NextRequest) {
         availabilityWeight,
         experienceWeight,
         ministryPassionWeight,
-        activityWeight
+        activityWeight,
+        updatedAt: new Date()
       }
     })
 

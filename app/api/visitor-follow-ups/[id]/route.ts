@@ -57,7 +57,7 @@ export async function PUT(
       },
       include: {
         check_ins: true,
-        assignedUser: true
+        users: true
       }
     })
 

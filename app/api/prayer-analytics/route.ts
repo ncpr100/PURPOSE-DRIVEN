@@ -147,14 +147,14 @@ export async function GET(request: NextRequest) {
         createdAt: true,
         updatedAt: true,
         categoryId: true,
-        category: {
+        prayer_categories: {
           select: {
             id: true,
             name: true,
             color: true
           }
         },
-        contact: {
+        prayer_contacts: {
           select: {
             id: true,
             fullName: true, // ✅ Correct field name from schema
@@ -163,12 +163,12 @@ export async function GET(request: NextRequest) {
             preferredContact: true
           }
         },
-        approval: {
+        prayer_approvals: {
           select: {
             id: true,
             status: true, // ✅ Correct field name from schema
             approvedAt: true,
-            approver: {
+            users: {
               select: {
                 id: true,
                 name: true,
@@ -177,7 +177,7 @@ export async function GET(request: NextRequest) {
             }
           }
         },
-        testimonies: { // ✅ Following clarification: prayer requests have testimonios
+        prayer_testimonies: { // ✅ Following clarification: prayer requests have testimonios
           select: {
             id: true,
             title: true,
@@ -202,7 +202,7 @@ export async function GET(request: NextRequest) {
         preferredContact: true,
         createdAt: true,
         updatedAt: true,
-        prayer_requestss: {
+        prayer_requests: {
           where: {
             createdAt: {
               gte: startDate,
@@ -233,7 +233,7 @@ export async function GET(request: NextRequest) {
       include: {
         _count: {
           select: {
-            requests: {
+            prayer_requests: {
               where: whereClause
             }
           }
@@ -245,7 +245,7 @@ export async function GET(request: NextRequest) {
     const templates = await prisma.prayer_response_templates.findMany({
       where: { churchId: user.churchId },
       include: {
-        category: true
+        prayer_categories: true
       }
     })
 

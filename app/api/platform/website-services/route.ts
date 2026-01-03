@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
         },
         _count: {
           select: {
-            pages: true,
+            web_pages: true,
             funnels: true
           }
         }
@@ -136,11 +136,13 @@ export async function POST(request: NextRequest) {
       // Crear iglesia básica para el proyecto
       church = await prisma.churches.create({
         data: {
+          id: nanoid(),
           name: churchName,
           email: contactEmail,
           phone: phone || '',
           address: address || '',
-          isActive: true
+          isActive: true,
+          updatedAt: new Date()
         }
       })
     }
@@ -148,6 +150,7 @@ export async function POST(request: NextRequest) {
     // Crear el sitio web directamente
     const website = await prisma.websites.create({
       data: {
+        id: nanoid(),
         name: websiteName,
         slug: slug || websiteName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, ''),
         description: description,
@@ -157,6 +160,7 @@ export async function POST(request: NextRequest) {
         accentColor: accentColor || primaryColor,
         churchId: church.id,
         isActive: true,
+        updatedAt: new Date(),
         metadata: JSON.stringify({
           template: template,
           templateName: templateName,
@@ -179,6 +183,7 @@ export async function POST(request: NextRequest) {
     // Crear entrada en el log de proyectos
     await prisma.website_requests.create({
       data: {
+        id: nanoid(),
         churchId: church.id,
         requestType: 'admin_created',
         projectName: websiteName,

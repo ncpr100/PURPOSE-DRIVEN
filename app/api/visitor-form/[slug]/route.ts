@@ -41,7 +41,7 @@ export async function GET(
 
     // Update QR scan count if accessed via QR
     if (qrCode) {
-      await db.visitorQRCode.updateMany({
+      await db.visitor_qr_codes.updateMany({
         where: { 
           code: qrCode,
           formId: form.id 
@@ -62,7 +62,7 @@ export async function GET(
         style: form.style,
         settings: form.settings
       },
-      church: form.church,
+      church: form.churches,
       qrCode
     })
 
@@ -111,6 +111,7 @@ export async function POST(
     // Save submission
     const submission = await db.visitor_submissions.create({
       data: {
+        id: nanoid(),
         formId: form.id,
         data: {
           ...data,
@@ -128,6 +129,7 @@ export async function POST(
       try {
         await db.check_ins.create({
           data: {
+            id: nanoid(),
             firstName: data.firstName || data.name || 'Visitante',
             lastName: data.lastName || '',
             email: data.email,

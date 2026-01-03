@@ -133,10 +133,8 @@ export async function POST(request: NextRequest) {
         visitReason,
         prayerRequest: prayer_requests,
         qrCode: qrData,
-        eventId,
-        churches: {
-          connect: { id: session.user.churchId }
-        },
+        eventId: eventId || null,
+        churchId: session.user.churchId,
       },
       include: {
         events: true,

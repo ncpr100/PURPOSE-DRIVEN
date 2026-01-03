@@ -25,8 +25,8 @@ export async function GET(
         churchId
       },
       include: {
-        schedules: true,
-        executions: {
+        report_schedules: true,
+        report_executions: {
           orderBy: { createdAt: 'desc' },
           take: 10
         }
@@ -96,8 +96,8 @@ export async function PUT(
         isTemplate: isTemplate || false
       },
       include: {
-        schedules: true,
-        executions: {
+        report_schedules: true,
+        report_executions: {
           orderBy: { createdAt: 'desc' },
           take: 5
         }

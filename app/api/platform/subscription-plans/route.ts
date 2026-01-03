@@ -75,6 +75,7 @@ export async function POST(request: NextRequest) {
 
     const plan = await db.subscription_plans.create({
       data: {
+        id: nanoid(),
         name: name.toUpperCase(),
         displayName,
         description,
@@ -195,7 +196,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Check if plan has active subscriptions
-    const activeSubscriptions = await db.churchSubscription.count({
+    const activeSubscriptions = await db.church_subscriptions.count({
       where: {
         planId: id,
         status: 'ACTIVE'

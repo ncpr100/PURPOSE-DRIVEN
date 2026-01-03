@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
 
       const invoice = await prisma.invoices.create({
         data: {
+          id: nanoid(),
           invoiceNumber,
           churchId,
           type,
@@ -72,8 +73,9 @@ export async function POST(request: NextRequest) {
           recurrentConfig,
           notes,
           createdBy: session.user.id,
-          lineItems: {
+          invoice_line_items: {
             create: lineItems.map((item: any) => ({
+              id: nanoid(),
               description: item.description,
               quantity: item.quantity,
               unitPrice: item.unitPrice,
@@ -86,7 +88,7 @@ export async function POST(request: NextRequest) {
           churches: {
             select: { id: true, name: true, email: true }
           },
-          lineItems: true
+          invoice_line_items: true
         }
       })
 

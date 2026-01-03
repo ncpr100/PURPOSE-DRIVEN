@@ -49,7 +49,7 @@ export async function GET(request: Request) {
         periodType
       },
       include: {
-        account: {
+        social_media_accounts: {
           select: {
             platform: true,
             username: true,
@@ -117,7 +117,7 @@ export async function POST(request: Request) {
         churchId: user.churchId
       },
       include: {
-        account: {
+        social_media_accounts: {
           select: {
             platform: true,
             username: true,

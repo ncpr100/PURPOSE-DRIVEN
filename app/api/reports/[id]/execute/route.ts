@@ -2,7 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";import { nanoid } from 'nanoid';
+import { db } from "@/lib/db";
+import { nanoid } from 'nanoid';
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -36,6 +37,7 @@ export async function POST(
     // Create execution record
     const execution = await db.report_executions.create({
       data: {
+        id: nanoid(),
         reportId: params.id,
         status: 'RUNNING',
         format,

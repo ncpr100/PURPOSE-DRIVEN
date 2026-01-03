@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Acceso denegado' }, { status: 403 })
     }
 
-    const features = await db.planFeature.findMany({
+    const features = await db.plan_features.findMany({
       orderBy: [
         { category: 'asc' },
         { name: 'asc' }
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if feature with same key already exists
-    const existingFeature = await db.planFeature.findUnique({
+    const existingFeature = await db.plan_features.findUnique({
       where: { key }
     })
 
@@ -65,8 +65,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const feature = await db.planFeature.create({
+    const feature = await db.plan_features.create({
       data: {
+        id: nanoid(),
         key,
         name,
         description,
@@ -103,7 +104,7 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const feature = await db.planFeature.update({
+    const feature = await db.plan_features.update({
       where: { id },
       data: {
         ...(key && { key }),
@@ -144,7 +145,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    await db.planFeature.delete({
+    await db.plan_features.delete({
       where: { id }
     })
 

@@ -39,10 +39,10 @@ export async function GET(request: NextRequest) {
       whereClause.formId = formId
     }
 
-    const qrCodes = await db.visitorQRCode.findMany({
+    const qrCodes = await db.visitor_qr_codes.findMany({
       where: whereClause,
       include: {
-        form: {
+        visitor_forms: {
           select: {
             id: true,
             name: true,
@@ -94,17 +94,19 @@ export async function POST(request: NextRequest) {
     // Generate unique QR code
     const qrCodeValue = `qr-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     
-    const qrCode = await db.visitorQRCode.create({
+    const qrCode = await db.visitor_qr_codes.create({
       data: {
+        id: nanoid(),
         name: validatedData.name,
         description: validatedData.description,
         formId: validatedData.formId,
         code: qrCodeValue,
         design: validatedData.design || {},
         churchId: session.user.churchId,
+        updatedAt: new Date()
       },
       include: {
-        form: {
+        visitor_forms: {
           select: {
             id: true,
             name: true,
@@ -160,7 +162,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Check if QR code exists and belongs to church
-    const existingQR = await db.visitorQRCode.findFirst({
+    const existingQR = await db.visitor_qr_codes.findFirst({
       where: { id, churchId: session.user.churchId }
     })
 
@@ -168,7 +170,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Código QR no encontrado' }, { status: 404 })
     }
 
-    await db.visitorQRCode.delete({
+    await db.visitor_qr_codes.delete({
       where: { id }
     })
 

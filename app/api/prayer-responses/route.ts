@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from 'nanoid'
 
 // GET /api/prayer-responses - List prayer response templates
 export async function GET(request: Request) {
@@ -31,7 +32,7 @@ export async function GET(request: Request) {
         ...(categoryId && { categoryId })
       },
       include: {
-        category: {
+        prayer_categories: {
           select: {
             id: true,
             name: true,
@@ -111,15 +112,17 @@ export async function POST(request: Request) {
 
     const template = await prisma.prayer_response_templates.create({
       data: {
+        id: nanoid(),
         categoryId,
         title: title.trim(),
         message: message.trim(),
         smsMessage: smsMessage?.trim(),
         isDefault: !!isDefault,
-        churchId: user.churchId
+        churchId: user.churchId,
+        updatedAt: new Date()
       },
       include: {
-        category: {
+        prayer_categories: {
           select: {
             id: true,
             name: true,

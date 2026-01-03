@@ -28,10 +28,10 @@ export async function GET(request: NextRequest) {
         ...(isTemplate !== undefined && { isTemplate })
       },
       include: {
-        schedules: {
+        report_schedules: {
           where: { isActive: true }
         },
-        executions: {
+        report_executions: {
           orderBy: { createdAt: 'desc' },
           take: 5
         }
@@ -86,6 +86,7 @@ export async function POST(request: NextRequest) {
 
     const report = await db.custom_reports.create({
       data: {
+        id: nanoid(),
         name,
         description,
         reportType,
@@ -98,11 +99,12 @@ export async function POST(request: NextRequest) {
         isPublic: isPublic || false,
         isTemplate: isTemplate || false,
         createdBy: session.user.id,
-        churchId
+        churchId,
+        updatedAt: new Date()
       },
       include: {
-        schedules: true,
-        executions: {
+        report_schedules: true,
+        report_executions: {
           orderBy: { createdAt: 'desc' },
           take: 5
         }

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { PrismaClient } from '@prisma/client'
+import { nanoid } from 'nanoid'
 
 const prisma = new PrismaClient()
 
@@ -48,7 +49,7 @@ export async function GET(request: NextRequest) {
         websiteId: websiteId
       },
       include: {
-        sections: {
+        web_page_sections: {
           orderBy: {
             order: 'asc'
           }
@@ -130,6 +131,7 @@ export async function POST(request: NextRequest) {
 
     const page = await prisma.web_pages.create({
       data: {
+        id: nanoid(),
         title,
         slug,
         content: content || {},
@@ -137,9 +139,10 @@ export async function POST(request: NextRequest) {
         metaTitle,
         metaDescription,
         websiteId,
+        updatedAt: new Date()
       },
       include: {
-        sections: true
+        web_page_sections: true
       }
     })
 

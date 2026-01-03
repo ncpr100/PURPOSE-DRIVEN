@@ -41,9 +41,9 @@ export async function GET(request: Request) {
       prisma.prayer_approvals.findMany({
         where,
         include: {
-          request: {
+          prayer_requests: {
             include: {
-              category: {
+              prayer_categories: {
                 select: {
                   id: true,
                   name: true,
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
               }
             }
           },
-          contact: {
+          prayer_contacts: {
             select: {
               id: true,
               fullName: true,
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
               preferredContact: true
             }
           },
-          approver: {
+          users: {
             select: {
               id: true,
               name: true,
@@ -71,7 +71,7 @@ export async function GET(request: Request) {
           }
         },
         orderBy: [
-          { request: { priority: 'desc' } },
+          { prayer_requests: { priority: 'desc' } },
           { createdAt: 'desc' }
         ],
         skip,
@@ -136,7 +136,7 @@ export async function POST(request: Request) {
         status: 'pending'
       },
       include: {
-        request: true
+        prayer_requests: true
       }
     })
 

@@ -30,7 +30,7 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        qrCodes: {
+        prayer_qr_codes: {
           orderBy: { createdAt: 'desc' }
         }
       }

@@ -20,7 +20,7 @@ export async function GET(
         churchId: session.user.churchId
       },
       include: {
-        contact: {
+        prayer_contacts: {
           select: {
             id: true,
             fullName: true,
@@ -32,7 +32,7 @@ export async function GET(
           select: {
             id: true,
             message: true,
-            category: {
+            prayer_categories: {
               select: {
                 id: true,
                 name: true,
@@ -41,7 +41,7 @@ export async function GET(
             }
           }
         },
-        approver: {
+        users: {
           select: {
             id: true,
             name: true,
@@ -132,7 +132,7 @@ export async function PUT(
       where: { id: params.id },
       data: updatedData,
       include: {
-        contact: {
+        prayer_contacts: {
           select: {
             id: true,
             fullName: true,
@@ -144,7 +144,7 @@ export async function PUT(
           select: {
             id: true,
             message: true,
-            category: {
+            prayer_categories: {
               select: {
                 id: true,
                 name: true,
@@ -153,7 +153,7 @@ export async function PUT(
             }
           }
         },
-        approver: {
+        users: {
           select: {
             id: true,
             name: true,

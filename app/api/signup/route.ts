@@ -67,7 +67,8 @@ export async function POST(request: NextRequest) {
         data: {
           id: nanoid(),
           name: churchName,
-          isActive: true
+          isActive: true,
+          updatedAt: new Date()
         }
       })
 
@@ -79,8 +80,9 @@ export async function POST(request: NextRequest) {
       const currentPeriodEnd = new Date()
       currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1)
 
-      const subscription = await tx.churchSubscription.create({
+      const subscription = await tx.church_subscriptions.create({
         data: {
+          id: nanoid(),
           churchId: church.id,
           planId: selectedPlan.id,
           billingCycle: 'MONTHLY',
@@ -91,7 +93,8 @@ export async function POST(request: NextRequest) {
           metadata: {
             signupDate: new Date().toISOString(),
             selectedPlan: subscriptionPlan.toUpperCase()
-          }
+          },
+          updatedAt: new Date()
         }
       })
 
@@ -104,7 +107,8 @@ export async function POST(request: NextRequest) {
           password: hashedPassword,
           role: 'ADMIN_IGLESIA',
           churchId: church.id,
-          isActive: true
+          isActive: true,
+          updatedAt: new Date()
         }
       })
 
@@ -118,7 +122,8 @@ export async function POST(request: NextRequest) {
           churchId: church.id,
           userId: user.id,
           membershipDate: new Date(),
-          isActive: true
+          isActive: true,
+          updatedAt: new Date()
         }
       })
 
@@ -134,12 +139,14 @@ export async function POST(request: NextRequest) {
       const testHashedPassword = await bcrypt.hash('johndoe123', 12)
       await db.users.create({
         data: {
+          id: nanoid(),
           name: 'John Doe',
           email: 'john@doe.com',
           password: testHashedPassword,
           role: 'ADMIN_IGLESIA',
           churchId: result.church.id,
-          isActive: true
+          isActive: true,
+          updatedAt: new Date()
         }
       })
     }

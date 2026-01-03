@@ -5,6 +5,7 @@ import { authOptions } from '@/lib/auth';
 import { createPrayerRequestSchema, getPrayerRequestsSchema } from '@/lib/validations/prayer-request';
 import { z } from 'zod';
 import { randomUUID } from 'crypto';
+import { nanoid } from 'nanoid';
 
 // GET /api/prayer-requests - List prayer requests with filters
 export async function GET(request: Request) {
@@ -46,7 +47,7 @@ export async function GET(request: Request) {
       prisma.prayer_requests.findMany({
         where,
         include: {
-          contact: {
+          prayer_contacts: {
             select: {
               id: true,
               fullName: true,
@@ -55,7 +56,7 @@ export async function GET(request: Request) {
               preferredContact: true,
             },
           },
-          category: {
+          prayer_categories: {
             select: {
               id: true,
               name: true,
@@ -63,9 +64,9 @@ export async function GET(request: Request) {
               color: true,
             },
           },
-          approval: {
+          prayer_approvals: {
             include: {
-              approver: {
+              users: {
                 select: {
                   id: true,
                   name: true,
@@ -169,11 +170,9 @@ export async function POST(request: Request) {
     // Create prayer request
     const prayer_requests = await prisma.prayer_requests.create({
       data: {
-        id: randomUUID(),
+        id: nanoid(),
         contactId: contact.id,
-        churches: {
-          connect: { id: churchId }
-        },
+        churchId: churchId,
         categoryId,
         message,
         isAnonymous,
@@ -182,10 +181,11 @@ export async function POST(request: Request) {
         source: formId ? 'prayer_form' : (qrCodeId ? 'qr_code' : 'direct'),
         formId,
         qrCodeId,
+        updatedAt: new Date()
       },
       include: {
-        contact: true,
-        category: true,
+        prayer_contacts: true,
+        prayer_categories: true,
       }
     });
 

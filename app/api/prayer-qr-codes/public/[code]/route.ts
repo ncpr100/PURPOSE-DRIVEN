@@ -14,7 +14,7 @@ export async function GET(
         isActive: true
       },
       include: {
-        form: {
+        prayer_forms: {
           include: {
             churches: {
               select: {
@@ -30,13 +30,13 @@ export async function GET(
     })
 
     // Check if form is active and public
-    if (qrCode && (!qrCode.form.isActive || !qrCode.form.isPublic)) {
+    if (qrCode && (!qrCode.prayer_forms.isActive || !qrCode.prayer_forms.isPublic)) {
       return NextResponse.json({ 
         error: 'Código QR no válido o formulario no disponible' 
       }, { status: 404 })
     }
 
-    if (!qrCode || !qrCode.form) {
+    if (!qrCode || !qrCode.prayer_forms) {
       return NextResponse.json({ 
         error: 'Código QR no válido o formulario no disponible' 
       }, { status: 404 })
@@ -54,7 +54,7 @@ export async function GET(
     // Get prayer categories for this church
     const categories = await prisma.prayer_categories.findMany({
       where: {
-        churchId: qrCode.form.churchId,
+        churchId: qrCode.prayer_forms.churchId,
         isActive: true
       },
       select: {
@@ -72,8 +72,8 @@ export async function GET(
     return NextResponse.json({ 
       qrCode: {
         ...qrCode,
-        form: {
-          ...qrCode.form,
+        prayer_forms: {
+          ...qrCode.prayer_forms,
           categories
         }
       }

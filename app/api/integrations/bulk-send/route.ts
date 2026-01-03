@@ -133,9 +133,7 @@ export async function POST(request: NextRequest) {
         message: `Se enviaron ${result.successful} mensajes de ${result.total} intentos`,
         type: 'SYSTEM',
         priority: 'NORMAL',
-        churches: {
-          connect: { id: sessionUser.churchId }
-        },
+        churchId: sessionUser.churchId,
         createdBy: sessionUser.id
       }
     })

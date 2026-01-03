@@ -120,13 +120,15 @@ export async function POST(request: NextRequest) {
     // Log the notification send
     await prisma.push_notification_logs.create({
       data: {
+        id: nanoid(),
         churchId: user.churchId,
         title: payload.title,
         body: payload.body,
         payload: payload as any,
         status: result.success > 0 ? 'SENT' : 'FAILED',
         deliveryAttempts: 1,
-        lastAttempt: new Date()
+        lastAttempt: new Date(),
+        updatedAt: new Date()
       }
     })
 

@@ -30,9 +30,9 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        prayer_requestss: {
+        prayer_requests: {
           include: {
-            category: {
+            prayer_categories: {
               select: {
                 id: true,
                 name: true,
@@ -46,7 +46,7 @@ export async function GET(
         },
         _count: {
           select: {
-            prayer_requestss: true
+            prayer_requests: true
           }
         }
       }

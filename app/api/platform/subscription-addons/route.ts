@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Acceso denegado' }, { status: 403 })
     }
 
-    const addons = await db.subscriptionAddon.findMany({
+    const addons = await db.subscription_addons.findMany({
       orderBy: { name: 'asc' }
     })
 
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if addon with same key already exists
-    const existingAddon = await db.subscriptionAddon.findUnique({
+    const existingAddon = await db.subscription_addons.findUnique({
       where: { key }
     })
 
@@ -71,8 +71,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const addon = await db.subscriptionAddon.create({
+    const addon = await db.subscription_addons.create({
       data: {
+        id: nanoid(),
         key,
         name,
         description,
@@ -124,7 +125,7 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const addon = await db.subscriptionAddon.update({
+    const addon = await db.subscription_addons.update({
       where: { id },
       data: {
         ...(key && { key }),
@@ -170,7 +171,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Check if addon has active subscriptions
-    const activeSubscriptions = await db.churchSubscriptionAddon.count({
+    const activeSubscriptions = await db.church_subscription_addons.count({
       where: {
         addonId: id,
         isActive: true
@@ -184,7 +185,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    await db.subscriptionAddon.delete({
+    await db.subscription_addons.delete({
       where: { id }
     })
 

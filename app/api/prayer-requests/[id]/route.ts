@@ -30,7 +30,7 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        contact: {
+        prayer_contacts: {
           select: {
             id: true,
             fullName: true,
@@ -41,7 +41,7 @@ export async function GET(
             createdAt: true
           }
         },
-        category: {
+        prayer_categories: {
           select: {
             id: true,
             name: true,
@@ -50,9 +50,9 @@ export async function GET(
             color: true
           }
         },
-        approval: {
+        prayer_approvals: {
           include: {
-            approver: {
+            users: {
               select: {
                 id: true,
                 name: true,

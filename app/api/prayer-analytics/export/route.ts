@@ -60,11 +60,11 @@ export async function GET(request: NextRequest) {
     const prayer_requestss = await prisma.prayer_requests.findMany({
       where: whereClause,
       include: {
-        category: true,
-        contact: true,
-        approval: {
+        prayer_categories: true,
+        prayer_contacts: true,
+        prayer_approvals: {
           include: {
-            approver: true
+            users: true
           }
         }
       },
@@ -141,7 +141,7 @@ export async function GET(request: NextRequest) {
             status: status === 'all' ? 'Todos' : status,
             contactMethod: contactMethod === 'all' ? 'Todos' : contactMethod
           },
-          church: user.church?.name || 'Iglesia',
+          church: user.churches?.name || 'Iglesia',
           exportedBy: user.name || 'Usuario'
         },
         summary: {

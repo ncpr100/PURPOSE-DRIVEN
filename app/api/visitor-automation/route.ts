@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
     const checkIn = await prisma.check_ins.findUnique({
       where: { id: checkInId },
       include: {
-        followUps: {
+        visitor_follow_ups: {
           orderBy: { createdAt: 'desc' }
         }
       }
@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
       visitorType: checkIn.visitorType,
       automationTriggered: checkIn.automationTriggered,
       engagementScore: checkIn.engagementScore,
-      followUps: checkIn.followUps,
+      followUps: checkIn.visitor_follow_ups,
       lastContactDate: checkIn.lastContactDate
     })
 

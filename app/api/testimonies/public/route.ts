@@ -101,10 +101,11 @@ export async function POST(request: NextRequest) {
     // Create the testimony
     const testimony = await prisma.prayer_testimonies.create({
       data: {
+        id: nanoid(),
         title: title.trim(),
         message: message.trim(),
         contactId: contactId || null,
-        prayer_requestsId: prayer_requestsId || null,
+        prayerRequestId: prayer_requestsId || null,
         category,
         isAnonymous,
         imageUrl: imageUrl || null,
@@ -112,7 +113,8 @@ export async function POST(request: NextRequest) {
         churchId,
         formId: formId || null,
         qrCodeId: qrCodeId || null,
-        status: 'pending' // All public submissions need approval
+        status: 'pending', // All public submissions need approval
+        updatedAt: new Date()
       }
     })
 

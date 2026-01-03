@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 // GET /api/user-permissions?userId=x - Obtener permisos de usuario
 export async function GET(request: Request) {
@@ -32,11 +33,11 @@ export async function GET(request: Request) {
     const userPermissions = await db.user_permissions.findMany({
       where: { userId },
       include: {
-        permission: true
+        permissions: true
       },
       orderBy: [
-        { permission: { resource: 'asc' } },
-        { permission: { action: 'asc' } }
+        { permissions: { resource: 'asc' } },
+        { permissions: { action: 'asc' } }
       ]
     })
 
@@ -111,21 +112,23 @@ export async function POST(request: Request) {
         expiresAt: expiresAt ? new Date(expiresAt) : null,
       },
       create: {
+        id: nanoid(),
         userId,
         permissionId,
         granted: granted !== undefined ? granted : true,
         conditions,
         expiresAt: expiresAt ? new Date(expiresAt) : null,
+        updatedAt: new Date()
       },
       include: {
-        user: {
+        users: {
           select: {
             id: true,
             name: true,
             email: true
           }
         },
-        permission: true
+        permissions: true
       }
     })
 

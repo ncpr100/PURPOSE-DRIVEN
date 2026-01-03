@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from 'nanoid'
 
 // GET /api/prayer-categories - List prayer categories for a church
 export async function GET(request: Request) {
@@ -18,7 +19,7 @@ export async function GET(request: Request) {
       include: { churches: true }
     })
 
-    if (!user?.churchId || !user.church) {
+    if (!user?.churchId || !user.churches) {
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
         isActive: true
       },
       include: {
-        responseTemplates: {
+        prayer_response_templates: {
           where: { isActive: true },
           select: {
             id: true,
@@ -38,7 +39,7 @@ export async function GET(request: Request) {
         },
         _count: {
           select: {
-            requests: true
+            prayer_requests: true
           }
         }
       },
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
       include: { churches: true }
     })
 
-    if (!user?.churchId || !user.church) {
+    if (!user?.churchId || !user.churches) {
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
     }
 
@@ -98,11 +99,13 @@ export async function POST(request: Request) {
 
     const category = await prisma.prayer_categories.create({
       data: {
+        id: nanoid(),
         name: name.trim(),
         description: description?.trim(),
         icon: icon?.trim(),
         color: color?.trim(),
-        churchId: user.churchId
+        churchId: user.churchId,
+        updatedAt: new Date()
       }
     })
 

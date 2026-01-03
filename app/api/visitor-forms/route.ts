@@ -54,8 +54,8 @@ export async function GET(request: NextRequest) {
       include: {
         _count: {
           select: {
-            submissions: true,
-            qrCodes: true
+            visitor_submissions: true,
+            visitor_qr_codes: true
           }
         }
       },
@@ -118,8 +118,8 @@ export async function POST(request: NextRequest) {
       include: {
         _count: {
           select: {
-            submissions: true,
-            qrCodes: true
+            visitor_submissions: true,
+            visitor_qr_codes: true
           }
         }
       }
@@ -184,8 +184,8 @@ export async function PUT(request: NextRequest) {
       include: {
         _count: {
           select: {
-            submissions: true,
-            qrCodes: true
+            visitor_submissions: true,
+            visitor_qr_codes: true
           }
         }
       }

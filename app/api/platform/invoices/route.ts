@@ -32,19 +32,19 @@ export async function GET(request: NextRequest) {
           churches: {
             select: { id: true, name: true, email: true }
           },
-          subscription: {
+          church_subscriptions: {
             select: { id: true, planId: true }
           },
-          lineItems: true,
-          payments: {
+          invoice_line_items: true,
+          invoice_payments: {
             include: {
-              verifier: {
+              users: {
                 select: { id: true, name: true }
               }
             }
           },
           _count: {
-            select: { communications: true }
+            select: { invoice_communications: true }
           }
         },
         orderBy: { createdAt: 'desc' },
@@ -108,6 +108,7 @@ export async function POST(request: NextRequest) {
     // Create invoice with line items
     const invoice = await prisma.invoices.create({
       data: {
+        id: nanoid(),
         invoiceNumber,
         churchId,
         subscriptionId,
@@ -121,8 +122,9 @@ export async function POST(request: NextRequest) {
         recurrentConfig,
         notes,
         createdBy: session.user.id,
-        lineItems: {
+        invoice_line_items: {
           create: lineItems.map((item: any) => ({
+            id: nanoid(),
             description: item.description,
             quantity: item.quantity,
             unitPrice: item.unitPrice,
@@ -135,7 +137,7 @@ export async function POST(request: NextRequest) {
         churches: {
           select: { id: true, name: true, email: true }
         },
-        lineItems: true
+        invoice_line_items: true
       }
     })
 

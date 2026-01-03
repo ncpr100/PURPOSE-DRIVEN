@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { AutomationTriggers } from '@/lib/automation-engine';
+import { nanoid } from 'nanoid';
 
 const prisma = new PrismaClient();
 
@@ -93,6 +94,7 @@ export async function POST(request: Request) {
 
     const account = await prisma.social_media_accounts.create({
       data: {
+        id: nanoid(),
         platform,
         accountId,
         username,
@@ -103,7 +105,8 @@ export async function POST(request: Request) {
         accountData: accountData ? JSON.stringify(accountData) : null,
         churchId: user.churchId,
         connectedBy: user.id,
-        lastSync: new Date()
+        lastSync: new Date(),
+        updatedAt: new Date()
       },
       select: {
         id: true,

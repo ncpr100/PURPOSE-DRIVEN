@@ -70,9 +70,7 @@ export async function POST(request: NextRequest) {
         data: enrichedData,
         ipAddress: clientIp,
         userAgent: userAgent,
-        churches: {
-          connect: { id: form.churchId }
-        } // Church relation connection
+        churchId: form.churchId // Direct churchId assignment (matches Prisma schema)
       }
     })
 

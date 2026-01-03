@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     const testimonies = await prisma.prayer_testimonies.findMany({
       where,
       include: {
-        contact: {
+        prayer_contacts: {
           select: {
             id: true,
             fullName: true,
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
           select: {
             id: true,
             message: true,
-            category: {
+            prayer_categories: {
               select: {
                 id: true,
                 name: true,
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
             }
           }
         },
-        approver: {
+        users: {
           select: {
             id: true,
             name: true,
@@ -145,20 +145,22 @@ export async function POST(request: NextRequest) {
 
     const testimony = await prisma.prayer_testimonies.create({
       data: {
+        id: nanoid(),
         title: title.trim(),
         message: message.trim(),
         contactId: contactId || null,
-        prayer_requestsId: prayer_requestsId || null,
+        prayerRequestId: prayer_requestsId || null,
         category,
         isAnonymous,
         imageUrl: imageUrl || null,
         tags: tags,
         churchId,
         formId: formId || null,
-        qrCodeId: qrCodeId || null
+        qrCodeId: qrCodeId || null,
+        updatedAt: new Date()
       },
       include: {
-        contact: {
+        prayer_contacts: {
           select: {
             id: true,
             fullName: true,
@@ -170,7 +172,7 @@ export async function POST(request: NextRequest) {
           select: {
             id: true,
             message: true,
-            category: {
+            prayer_categories: {
               select: {
                 id: true,
                 name: true,

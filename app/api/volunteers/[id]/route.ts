@@ -109,7 +109,7 @@ export async function PUT(
       include: {
         members: true,
         ministries: true,
-        assignments: true
+        volunteer_assignments: true
       }
     })
 

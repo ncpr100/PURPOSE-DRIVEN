@@ -62,7 +62,7 @@ export async function GET() {
         churches: {
           select: { id: true, name: true, email: true }
         },
-        plan: {
+        subscription_plans: {
           select: { displayName: true }
         }
       },
@@ -125,13 +125,14 @@ export async function POST(request: NextRequest) {
         // Create communication record
         await prisma.invoice_communications.create({
           data: {
+            id: nanoid(),
             invoiceId: invoice.id,
             type: 'EMAIL',
             direction: 'OUTBOUND',
             subject: `Recordatorio de Pago - Factura ${invoice.invoiceNumber}`,
-            message: `Estimado equipo de ${invoice.church.name}, \n\nEste es un recordatorio amigable sobre el pago pendiente de la factura ${invoice.invoiceNumber} por $${invoice.totalAmount} USD.\n\nFecha de vencimiento: ${new Date(invoice.dueDate).toLocaleDateString()}\n\nPor favor, proceda con el pago a la brevedad posible.`,
+            message: `Estimado equipo de ${invoice.churches.name}, \n\nEste es un recordatorio amigable sobre el pago pendiente de la factura ${invoice.invoiceNumber} por $${invoice.totalAmount} USD.\n\nFecha de vencimiento: ${new Date(invoice.dueDate).toLocaleDateString()}\n\nPor favor, proceda con el pago a la brevedad posible.`,
             sentBy: session.user.id,
-            sentTo: invoice.church.email
+            sentTo: invoice.churches.email
           }
         })
 
@@ -141,12 +142,12 @@ export async function POST(request: NextRequest) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             type: 'PAYMENT_REMINDER',
-            recipientEmail: invoice.church.email,
-            recipientName: invoice.church.name,
+            recipientEmail: invoice.churches.email,
+            recipientName: invoice.churches.name,
             subject: `Recordatorio de Pago - Factura ${invoice.invoiceNumber}`,
             template: 'payment-reminder',
             data: {
-              churchName: invoice.church.name,
+              churchName: invoice.churches.name,
               invoiceNumber: invoice.invoiceNumber,
               totalAmount: invoice.totalAmount,
               currency: invoice.currency,
@@ -159,14 +160,14 @@ export async function POST(request: NextRequest) {
         results.push({ 
           invoiceId: invoice.id, 
           status: 'sent', 
-          church: invoice.church.name 
+          church: invoice.churches.name 
         })
       } catch (error) {
         console.error(`Error sending reminder for invoice ${invoice.invoiceNumber}:`, error)
         results.push({ 
           invoiceId: invoice.id, 
           status: 'failed', 
-          church: invoice.church.name,
+          church: invoice.churches.name,
           error: 'Email failed' 
         })
       }

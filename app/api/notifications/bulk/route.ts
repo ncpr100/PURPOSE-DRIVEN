@@ -149,12 +149,8 @@ export async function POST(request: NextRequest) {
         const globalDeliveries = await prisma.notification_deliveries.createMany({
           data: globalChurchUsers.map(churchUser => ({
             id: randomUUID(),
-            notifications: {
-              connect: { id: globalNotification.id }
-            },
-            users: {
-              connect: { id: churchUser.id }
-            },
+            notificationId: globalNotification.id,
+            userId: churchUser.id,
             deliveryMethod: 'in-app',
             deliveryStatus: 'PENDING',
             deliveredAt: new Date(),

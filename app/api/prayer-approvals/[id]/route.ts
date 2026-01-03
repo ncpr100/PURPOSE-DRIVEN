@@ -35,9 +35,9 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        request: {
+        prayer_requests: {
           include: {
-            category: {
+            prayer_categories: {
               select: {
                 id: true,
                 name: true,
@@ -48,7 +48,7 @@ export async function GET(
             }
           }
         },
-        contact: {
+        prayer_contacts: {
           select: {
             id: true,
             fullName: true,
@@ -57,7 +57,7 @@ export async function GET(
             preferredContact: true
           }
         },
-        approver: {
+        users: {
           select: {
             id: true,
             name: true,
@@ -117,7 +117,7 @@ export async function PUT(
         status: 'pending'
       },
       include: {
-        request: true
+        prayer_requests: true
       }
     })
 

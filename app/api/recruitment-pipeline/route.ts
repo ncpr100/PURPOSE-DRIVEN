@@ -585,7 +585,7 @@ export async function GET(request: NextRequest) {
       where: {
         churchId: session.user.churchId,
         isActive: true,
-        availabilityMatrix: { isNot: null }
+        availability_matrices: { isNot: null }
       }
     })
 

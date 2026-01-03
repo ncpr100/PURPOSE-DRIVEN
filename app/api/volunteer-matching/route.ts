@@ -171,6 +171,7 @@ export async function POST(request: NextRequest) {
       topRecommendations.map(async (rec) => {
         return prisma.volunteer_recommendations.create({
           data: {
+            id: nanoid(),
             memberId: rec.memberId,
             ministryId: validated.ministryId,
             eventId: validated.eventId || null,
@@ -189,7 +190,7 @@ export async function POST(request: NextRequest) {
                 phone: true
               }
             },
-            ministry: {
+            ministries: {
               select: {
                 name: true
               }
@@ -280,7 +281,7 @@ export async function GET(request: NextRequest) {
             phone: true
           }
         },
-        ministry: {
+        ministries: {
           select: {
             name: true
           }

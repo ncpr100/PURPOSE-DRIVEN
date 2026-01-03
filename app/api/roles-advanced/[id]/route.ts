@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 // GET /api/roles-advanced/[id] - Obtener rol específico
 export async function GET(
@@ -30,18 +31,18 @@ export async function GET(
           ]
         }
 
-    const role = await db.role.findFirst({
+    const role = await db.roles.findFirst({
       where: whereCondition,
       include: {
         churches: true,
         role_permissions: {
           include: {
-            permission: true
+            permissions: true
           }
         },
-        userRoles: {
+        user_roles_advanced: {
           include: {
-            user: {
+            users: {
               select: {
                 id: true,
                 name: true,
@@ -91,7 +92,7 @@ export async function PUT(
     const { name, description, permissions, priority, isActive } = body
 
     // Verificar que el usuario puede editar este rol
-    const existingRole = await db.role.findFirst({
+    const existingRole = await db.roles.findFirst({
       where: session.user.role === 'SUPER_ADMIN' 
         ? { id: params.id }
         : { 
@@ -138,8 +139,10 @@ export async function PUT(
         if (permissions.length > 0) {
           await prisma.role_permissions.createMany({
             data: permissions.map((permissionId: string) => ({
+              id: nanoid(),
               roleId: params.id,
               permissionId,
+              updatedAt: new Date()
             })),
             skipDuplicates: true,
           })
@@ -149,13 +152,13 @@ export async function PUT(
       return role
     })
 
-    const roleWithRelations = await db.role.findUnique({
+    const roleWithRelations = await db.roles.findUnique({
       where: { id: updatedRole.id },
       include: {
         churches: true,
         role_permissions: {
           include: {
-            permission: true
+            permissions: true
           }
         }
       }
@@ -194,7 +197,7 @@ export async function DELETE(
     }
 
     // Verificar que el usuario puede eliminar este rol
-    const existingRole = await db.role.findFirst({
+    const existingRole = await db.roles.findFirst({
       where: session.user.role === 'SUPER_ADMIN' 
         ? { id: params.id }
         : { 
@@ -202,7 +205,7 @@ export async function DELETE(
             churchId: session.user.churchId
           },
       include: {
-        userRoles: true
+        user_roles_advanced: true
       }
     })
 
@@ -222,14 +225,14 @@ export async function DELETE(
     }
 
     // Verificar que no hay usuarios asignados al rol
-    if (existingRole.userRoles.length > 0) {
+    if (existingRole.user_roles_advanced.length > 0) {
       return NextResponse.json(
         { error: 'No se puede eliminar un rol que tiene usuarios asignados' },
         { status: 400 }
       )
     }
 
-    await db.role.delete({
+    await db.roles.delete({
       where: { id: params.id },
     })
 

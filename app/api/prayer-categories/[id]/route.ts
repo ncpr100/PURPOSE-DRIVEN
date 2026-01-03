@@ -30,13 +30,13 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        responseTemplates: {
+        prayer_response_templates: {
           where: { isActive: true },
           orderBy: { isDefault: 'desc' }
         },
         _count: {
           select: {
-            requests: true
+            prayer_requests: true
           }
         }
       }

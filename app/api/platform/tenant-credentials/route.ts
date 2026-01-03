@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { getServerBaseUrl } from '@/lib/server-url'
 import { randomUUID } from 'crypto'
+import { nanoid } from 'nanoid'
 
 // GET - Fetch tenant credentials (SUPER_ADMIN only)
 export async function GET(request: NextRequest) {
@@ -107,12 +108,14 @@ export async function POST(request: NextRequest) {
         isActive: true
       },
       create: {
+        id: nanoid(),
         email: loginEmail,
         password: hashedPassword,
         name: `Admin ${church.name}`,
         role: 'ADMIN_IGLESIA',
         churchId: churchId,
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       }
     })
 

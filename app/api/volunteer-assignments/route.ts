@@ -140,6 +140,7 @@ export async function POST(request: NextRequest) {
     // ✅ No conflicts - proceed with creation
     const assignment = await db.volunteer_assignments.create({
       data: {
+        id: nanoid(),
         volunteerId: validated.volunteerId,
         eventId: validated.eventId || null,
         title: validated.title,
@@ -149,7 +150,8 @@ export async function POST(request: NextRequest) {
         endTime: validated.endTime,
         notes: validated.notes,
         churchId: session.user.churchId,
-        status: 'ASIGNADO'
+        status: 'ASIGNADO',
+        updatedAt: new Date()
       },
       include: {
         volunteers: true,

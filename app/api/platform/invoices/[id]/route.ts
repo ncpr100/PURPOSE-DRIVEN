@@ -23,25 +23,25 @@ export async function GET(
         churches: {
           select: { id: true, name: true, email: true, phone: true }
         },
-        subscription: {
+        church_subscriptions: {
           include: {
-            plan: {
+            subscription_plans: {
               select: { displayName: true }
             }
           }
         },
-        lineItems: true,
-        payments: {
+        invoice_line_items: true,
+        invoice_payments: {
           include: {
-            verifier: {
+            users: {
               select: { id: true, name: true }
             }
           },
           orderBy: { createdAt: 'desc' }
         },
-        communications: {
+        invoice_communications: {
           include: {
-            sender: {
+            users: {
               select: { id: true, name: true }
             }
           },

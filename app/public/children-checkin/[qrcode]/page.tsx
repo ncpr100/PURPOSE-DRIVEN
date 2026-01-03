@@ -22,14 +22,14 @@ export default async function QRChildrenCheckInPage({ params }: PageProps) {
         qrCode: params.qrcode
       },
       include: {
-        church: {
+        churches: {
           select: {
             id: true,
             name: true,
             logo: true
           }
         },
-        event: {
+        events: {
           select: {
             id: true,
             title: true,
@@ -41,8 +41,8 @@ export default async function QRChildrenCheckInPage({ params }: PageProps) {
     })
 
     // If QR code doesn't exist, allow creation of new check-in
-    const churchInfo = qrInfo?.church || null
-    const eventInfo = qrInfo?.event || null
+    const churchInfo = qrInfo?.churches || null
+    const eventInfo = qrInfo?.events || null
 
     return (
       <QRChildrenCheckInClient 

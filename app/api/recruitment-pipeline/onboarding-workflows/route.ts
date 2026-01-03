@@ -155,6 +155,7 @@ export async function POST(request: NextRequest) {
     // Create volunteer recommendation record
     await prisma.volunteer_recommendations.create({
       data: {
+        id: nanoid(),
         memberId,
         ministryId: targetMinistryId,
         recommendationType: 'ONBOARDING_WORKFLOW',
@@ -165,7 +166,8 @@ export async function POST(request: NextRequest) {
           mentor: mentorName || 'Sin mentor asignado'
         },
         priority: 'HIGH',
-        validUntil: workflowData.estimatedCompletionDate
+        validUntil: workflowData.estimatedCompletionDate,
+        updatedAt: new Date()
       }
     })
 
@@ -235,7 +237,7 @@ export async function GET(request: NextRequest) {
             phone: true
           }
         },
-        ministry: {
+        ministries: {
           select: {
             name: true
           }
@@ -250,10 +252,10 @@ export async function GET(request: NextRequest) {
     const workflowSummaries = workflows.map(workflow => ({
       id: workflow.id,
       memberId: workflow.memberId,
-      memberName: `${workflow.member.firstName} ${workflow.member.lastName}`,
-      memberEmail: workflow.member.email,
+      memberName: `${workflow.members.firstName} ${workflow.members.lastName}`,
+      memberEmail: workflow.members.email,
       targetMinistryId: workflow.ministryId,
-      targetMinistryName: workflow.ministry?.name,
+      targetMinistryName: workflow.ministries?.name,
       status: workflow.status,
       priority: workflow.priority,
       matchScore: workflow.matchScore,
@@ -539,7 +541,7 @@ async function findAvailableMentor(ministryId: string, churchId: string) {
     const currentAssignments = mentor.volunteer_assignments.length
     if (currentAssignments < lowestWorkload) {
       lowestWorkload = currentAssignments
-      bestMentor = mentor.member
+      bestMentor = mentor.members
     }
   }
 

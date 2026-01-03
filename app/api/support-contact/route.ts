@@ -24,7 +24,8 @@ export async function GET() {
           schedule: 'Lun-Vie 8AM-8PM (Colombia)',
           companyName: 'Khesed-tek Systems',
           location: 'Bogotá, Colombia',
-          website: 'https://khesedtek.com'
+          website: 'https://khesedtek.com',
+          updatedAt: new Date()
         }
       })
     }
@@ -145,7 +146,8 @@ export async function PUT(request: NextRequest) {
         schedule,
         companyName,
         location,
-        website
+        website,
+        updatedAt: new Date()
       }
     })
 

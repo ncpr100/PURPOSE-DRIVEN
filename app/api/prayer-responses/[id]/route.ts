@@ -30,7 +30,7 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        category: {
+        prayer_categories: {
           select: {
             id: true,
             name: true,
@@ -114,7 +114,7 @@ export async function PUT(
         isActive: isActive ?? template.isActive
       },
       include: {
-        category: {
+        prayer_categories: {
           select: {
             id: true,
             name: true,

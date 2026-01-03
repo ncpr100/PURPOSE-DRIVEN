@@ -75,6 +75,7 @@ export async function POST(request: NextRequest) {
 
     const volunteer = await db.volunteers.create({
       data: {
+        id: nanoid(),
         memberId: validated.memberId || null,
         firstName: validated.firstName,
         lastName: validated.lastName,
@@ -86,12 +87,13 @@ export async function POST(request: NextRequest) {
         availability: validated.availability ? JSON.stringify(validated.availability) : null,
         ministryId: validated.ministryId === 'no-ministry' ? null : validated.ministryId,
         churchId: session.user.churchId,
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       include: {
         members: true,
         ministries: true,
-        assignments: true
+        volunteer_assignments: true
       }
     })
 

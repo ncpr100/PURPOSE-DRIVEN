@@ -16,7 +16,7 @@ interface PublicDonatePageProps {
 
 export default async function PublicDonatePage({ params, searchParams }: PublicDonatePageProps) {
   // Get church information
-  const church = await prisma.church.findUnique({
+  const church = await prisma.churches.findUnique({
     where: { 
       id: params.churchId,
       isActive: true 
@@ -297,7 +297,7 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
 }
 
 export async function generateMetadata({ params }: PublicDonatePageProps) {
-  const church = await prisma.church.findUnique({
+  const church = await prisma.churches.findUnique({
     where: { 
       id: params.churchId,
       isActive: true 

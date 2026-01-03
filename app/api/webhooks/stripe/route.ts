@@ -116,7 +116,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     });
 
     // Check if donation already exists for this payment
-    let donation = onlinePayment.donation;
+    let donation = onlinePayment.donations;
 
     if (!donation) {
       // Get payment method for Stripe
@@ -133,9 +133,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
         paymentMethod = await prisma.payment_methods.create({
           data: {
             id: nanoid(),
-            churches: {
-              connect: { id: onlinePayment.churchId }
-            },
+            churchId: onlinePayment.churchId,
             name: 'Stripe',
             description: 'Pagos online via Stripe',
             isDigital: true,
@@ -162,9 +160,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
               name: 'General',
               description: 'Donaciones generales',
               isActive: true,
-              churches: {
-                connect: { id: onlinePayment.churchId }
-              },
+              churchId: onlinePayment.churchId,
               updatedAt: new Date()
             }
           });
@@ -175,9 +171,7 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
       donation = await prisma.donations.create({
         data: {
           id: nanoid(),
-          churches: {
-            connect: { id: onlinePayment.churchId }
-          },
+          churchId: onlinePayment.churchId,
           amount: onlinePayment.amount,
           currency: onlinePayment.currency,
           donorName: onlinePayment.donorName,

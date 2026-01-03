@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
     // Create communication record
     const communication = await prisma.invoice_communications.create({
       data: {
+        id: nanoid(),
         invoiceId,
         type,
         direction: 'OUTBOUND',
@@ -101,11 +102,11 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify({
             type: 'INVOICE_COMMUNICATION',
             recipientEmail: sentTo,
-            recipientName: invoice.church.name,
+            recipientName: invoice.churches.name,
             subject: subject || `Factura ${invoice.invoiceNumber}`,
             template: 'invoice-communication',
             data: {
-              churchName: invoice.church.name,
+              churchName: invoice.churches.name,
               invoiceNumber: invoice.invoiceNumber,
               totalAmount: invoice.totalAmount,
               currency: invoice.currency,

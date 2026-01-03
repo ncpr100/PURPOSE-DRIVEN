@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 // GET /api/roles-advanced - Obtener todos los roles avanzados
 export async function GET() {
@@ -27,18 +28,18 @@ export async function GET() {
           ]
         }
 
-    const roles = await db.role.findMany({
+    const roles = await db.roles.findMany({
       where: whereCondition,
       include: {
         churches: true,
-        rolePermissions: {
+        role_permissions: {
           include: {
-            permission: true
+            permissions: true
           }
         },
-        userRoles: {
+        user_roles_advanced: {
           include: {
-            user: {
+            users: {
               select: {
                 id: true,
                 name: true,
@@ -49,7 +50,7 @@ export async function GET() {
         },
         _count: {
           select: {
-            userRoles: true,
+            user_roles_advanced: true,
             role_permissions: true
           }
         }
@@ -100,10 +101,12 @@ export async function POST(request: Request) {
       // Crear el rol
       const newRole = await prisma.roles.create({
         data: {
+          id: nanoid(),
           name,
           description,
           churchId,
           priority: priority || 0,
+          updatedAt: new Date()
         },
       })
 
@@ -111,8 +114,10 @@ export async function POST(request: Request) {
       if (permissions && Array.isArray(permissions)) {
         await prisma.role_permissions.createMany({
           data: permissions.map((permissionId: string) => ({
+            id: nanoid(),
             roleId: newRole.id,
             permissionId,
+            updatedAt: new Date()
           })),
           skipDuplicates: true,
         })
@@ -121,13 +126,13 @@ export async function POST(request: Request) {
       return newRole
     })
 
-    const roleWithRelations = await db.role.findUnique({
+    const roleWithRelations = await db.roles.findUnique({
       where: { id: role.id },
       include: {
         churches: true,
-        rolePermissions: {
+        role_permissions: {
           include: {
-            permission: true
+            permissions: true
           }
         }
       }

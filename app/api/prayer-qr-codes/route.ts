@@ -33,7 +33,7 @@ export async function GET(request: Request) {
         ...(isActive !== null && { isActive: isActive === 'true' })
       },
       include: {
-        form: {
+        prayer_forms: {
           select: {
             id: true,
             name: true,
@@ -106,6 +106,7 @@ export async function POST(request: Request) {
 
     const qrCode = await prisma.prayer_qr_codes.create({
       data: {
+        id: nanoid(),
         name: name.trim(),
         description: description?.trim(),
         formId,
@@ -118,12 +119,11 @@ export async function POST(request: Request) {
           logo: null,
           logoSize: 0.2
         },
-        churches: {
-          connect: { id: user.churchId }
-        }
+        churchId: user.churchId,
+        updatedAt: new Date()
       },
       include: {
-        form: {
+        prayer_forms: {
           select: {
             id: true,
             name: true,

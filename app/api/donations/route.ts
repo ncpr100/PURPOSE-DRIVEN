@@ -195,19 +195,14 @@ export async function POST(request: NextRequest) {
           donorName: isAnonymous ? null : (donorName ? DonationSecurity.sanitizeInput(donorName) : null),
           donorEmail: isAnonymous ? null : (donorEmail ? DonationSecurity.sanitizeInput(donorEmail.toLowerCase()) : null),
           donorPhone: isAnonymous ? null : (donorPhone ? DonationSecurity.sanitizeInput(donorPhone) : null),
-          memberId: isAnonymous || !memberId ? null : undefined,
-          members: isAnonymous || !memberId ? undefined : {
-            connect: { id: memberId }
-          },
+          memberId: isAnonymous || !memberId ? null : memberId,
           categoryId,
           paymentMethodId,
           reference: reference ? DonationSecurity.sanitizeInput(reference) : DonationSecurity.generatePaymentReference(),
           notes: notes ? DonationSecurity.sanitizeInput(notes) : null,
           isAnonymous,
           donationDate: donationDate ? new Date(donationDate) : new Date(),
-          churches: {
-            connect: { id: session.user.churchId! }
-          },
+          churchId: session.user.churchId!,
           status: 'COMPLETADA', // Status tracking for donations
           updatedAt: new Date()
         },

@@ -67,11 +67,11 @@ export async function POST(
         body: JSON.stringify({
           type: 'TENANT_CREDENTIALS_RESEND',
           recipientEmail: credentials.loginEmail,
-          recipientName: credentials.church.name,
-          subject: `Nuevas Credenciales de Acceso - ${credentials.church.name}`,
+          recipientName: credentials.churches.name,
+          subject: `Nuevas Credenciales de Acceso - ${credentials.churches.name}`,
           template: 'tenant-credentials',
           data: {
-            churchName: credentials.church.name,
+            churchName: credentials.churches.name,
             loginEmail: credentials.loginEmail,
             tempPassword: newPassword,
             platformUrl: getServerBaseUrl(),

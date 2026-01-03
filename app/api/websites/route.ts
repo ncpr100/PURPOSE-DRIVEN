@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { PrismaClient } from '@prisma/client'
+import { nanoid } from 'nanoid'
 
 const prisma = new PrismaClient()
 
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
         churchId: session.user.churchId
       },
       include: {
-        pages: {
+        web_pages: {
           select: {
             id: true,
             title: true,
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
         },
         _count: {
           select: {
-            pages: true,
+            web_pages: true,
             funnels: true
           }
         }
@@ -91,6 +92,7 @@ export async function POST(request: NextRequest) {
 
     const website = await prisma.websites.create({
       data: {
+        id: nanoid(),
         name,
         description,
         slug,
@@ -98,13 +100,14 @@ export async function POST(request: NextRequest) {
         primaryColor: primaryColor || '#3B82F6',
         secondaryColor: secondaryColor || '#64748B',
         churchId: session.user.churchId,
+        updatedAt: new Date(),
       },
       include: {
-        pages: true,
+        web_pages: true,
         funnels: true,
         _count: {
           select: {
-            pages: true,
+            web_pages: true,
             funnels: true
           }
         }

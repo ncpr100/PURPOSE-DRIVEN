@@ -30,7 +30,7 @@ export async function GET(
         churchId: user.churchId
       },
       include: {
-        form: {
+        prayer_forms: {
           select: {
             id: true,
             name: true,
@@ -103,7 +103,7 @@ export async function PUT(
         isActive: isActive ?? qrCode.isActive
       },
       include: {
-        form: {
+        prayer_forms: {
           select: {
             id: true,
             name: true,

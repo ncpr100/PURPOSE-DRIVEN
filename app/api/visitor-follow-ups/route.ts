@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
       where: whereClause,
       include: {
         check_ins: true,
-        assignedUser: true
+        users: true
       },
       orderBy: {
         scheduledAt: 'asc'
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
       },
       include: {
         check_ins: true,
-        assignedUser: true
+        users: true
       }
     })
 

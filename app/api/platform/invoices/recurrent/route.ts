@@ -24,12 +24,12 @@ export async function GET() {
         churches: {
           select: { id: true, name: true, email: true }
         },
-        subscription: {
+        church_subscriptions: {
           include: {
-            plan: { select: { displayName: true } }
+            subscription_plans: { select: { displayName: true } }
           }
         },
-        lineItems: true
+        invoice_line_items: true
       },
       orderBy: { createdAt: 'desc' }
     })
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     const baseInvoice = await prisma.invoices.findUnique({
       where: { id: invoiceId },
       include: {
-        lineItems: true,
+        invoice_line_items: true,
         churches: true
       }
     })
@@ -115,6 +115,7 @@ export async function POST(request: NextRequest) {
     // Create new recurrent invoice
     const newInvoice = await prisma.invoices.create({
       data: {
+        id: nanoid(),
         invoiceNumber,
         churchId: baseInvoice.churchId,
         subscriptionId: baseInvoice.subscriptionId,
@@ -128,8 +129,9 @@ export async function POST(request: NextRequest) {
         recurrentConfig: recurrentConfig,
         notes: `Factura recurrente generada automáticamente`,
         createdBy: session.user.id,
-        lineItems: {
-          create: baseInvoice.lineItems.map(item => ({
+        invoice_line_items: {
+          create: baseInvoice.invoice_line_items.map(item => ({
+            id: nanoid(),
             description: item.description,
             quantity: item.quantity,
             unitPrice: item.unitPrice,
@@ -142,7 +144,7 @@ export async function POST(request: NextRequest) {
         churches: {
           select: { id: true, name: true, email: true }
         },
-        lineItems: true
+        invoice_line_items: true
       }
     })
 
@@ -153,12 +155,12 @@ export async function POST(request: NextRequest) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'INVOICE_GENERATED',
-          recipientEmail: baseInvoice.church.email,
-          recipientName: baseInvoice.church.name,
-          subject: `Nueva Factura ${invoiceNumber} - ${baseInvoice.church.name}`,
+          recipientEmail: baseInvoice.churches.email,
+          recipientName: baseInvoice.churches.name,
+          subject: `Nueva Factura ${invoiceNumber} - ${baseInvoice.churches.name}`,
           template: 'invoice-generated',
           data: {
-            churchName: baseInvoice.church.name,
+            churchName: baseInvoice.churches.name,
             invoiceNumber: invoiceNumber,
             totalAmount: baseInvoice.totalAmount,
             currency: baseInvoice.currency,

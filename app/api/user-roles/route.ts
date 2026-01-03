@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     }
 
     // Verificar que el rol existe y el usuario puede asignarlo
-    const role = await db.role.findFirst({
+    const role = await db.roles.findFirst({
       where: session.user.role === 'SUPER_ADMIN'
         ? { id: roleId }
         : {
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     }
 
     // Crear la asignación
-    const userRole = await db.userRole_Advanced.upsert({
+    const userRole = await db.user_roles_advanced.upsert({
       where: {
         userId_roleId: {
           userId,
@@ -80,14 +80,14 @@ export async function POST(request: Request) {
         updatedAt: new Date()
       },
       include: {
-        user: {
+        users: {
           select: {
             id: true,
             name: true,
             email: true
           }
         },
-        role: true
+        roles: true
       }
     })
 
@@ -125,13 +125,13 @@ export async function DELETE(request: Request) {
     }
 
     // Verificar que la asignación existe y el usuario puede modificarla
-    const userRole = await db.userRole_Advanced.findFirst({
+    const userRole = await db.user_roles_advanced.findFirst({
       where: {
         userId,
         roleId,
       },
       include: {
-        roless: true
+        roles: true
       }
     })
 
@@ -144,15 +144,15 @@ export async function DELETE(request: Request) {
 
     // Verificar permisos sobre el rol
     if (session.user.role !== 'SUPER_ADMIN' && 
-        userRole.role.churchId !== session.user.churchId &&
-        !userRole.role.isSystem) {
+        userRole.roles.churchId !== session.user.churchId &&
+        !userRole.roles.isSystem) {
       return NextResponse.json(
         { error: 'Sin permisos para esta asignación' },
         { status: 403 }
       )
     }
 
-    await db.userRole_Advanced.delete({
+    await db.user_roles_advanced.delete({
       where: {
         userId_roleId: {
           userId,

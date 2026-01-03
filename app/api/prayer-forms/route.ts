@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { nanoid } from 'nanoid'
 
 // GET /api/prayer-forms - List prayer forms
 export async function GET(request: Request) {
@@ -32,7 +33,7 @@ export async function GET(request: Request) {
         ...(isPublic !== null && { isPublic: isPublic === 'true' })
       },
       include: {
-        qrCodes: {
+        prayer_qr_codes: {
           select: {
             id: true,
             name: true,
@@ -43,7 +44,7 @@ export async function GET(request: Request) {
         },
         _count: {
           select: {
-            qrCodes: true
+            prayer_qr_codes: true
           }
         }
       },
@@ -105,13 +106,15 @@ export async function POST(request: Request) {
 
     const form = await prisma.prayer_forms.create({
       data: {
+        id: nanoid(),
         name: name.trim(),
         description: description?.trim(),
         fields,
         style: style || {},
         isPublic: isPublic ?? true,
         slug,
-        churchId: user.churchId
+        churchId: user.churchId,
+        updatedAt: new Date()
       }
     })
 

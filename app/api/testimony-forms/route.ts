@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       include: {
         _count: {
           select: {
-            qrCodes: true
+            testimony_qr_codes: true
           }
         }
       },
@@ -83,6 +83,7 @@ export async function POST(request: NextRequest) {
 
     const form = await prisma.testimony_forms.create({
       data: {
+        id: nanoid(),
         name: name.trim(),
         description: description?.trim() || null,
         fields,
@@ -90,12 +91,13 @@ export async function POST(request: NextRequest) {
         isActive,
         isPublic,
         slug: finalSlug,
-        churchId: session.user.churchId
+        churchId: session.user.churchId,
+        updatedAt: new Date()
       },
       include: {
         _count: {
           select: {
-            qrCodes: true
+            testimony_qr_codes: true
           }
         }
       }

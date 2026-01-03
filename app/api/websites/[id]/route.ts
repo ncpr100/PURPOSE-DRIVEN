@@ -27,9 +27,9 @@ export async function GET(
         churchId: session.user.churchId
       },
       include: {
-        pages: {
+        web_pages: {
           include: {
-            sections: true
+            web_page_sections: true
           }
         },
         funnels: {
@@ -96,7 +96,7 @@ export async function PUT(
         churchId: session.user.churchId
       },
       include: {
-        pages: true,
+        web_pages: true,
         funnels: true
       }
     })

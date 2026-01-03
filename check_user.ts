@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 
 async function checkUser() {
   try {
-    const user = await db.user.findUnique({
+    const user = await db.users.findUnique({
       where: { email: 'soporte@khesed-tek.com' }
     })
     

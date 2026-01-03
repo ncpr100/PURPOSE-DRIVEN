@@ -1,7 +1,7 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 2.8  
-**Last Updated**: January 2, 2026  
+**Document Version**: 2.9  
+**Last Updated**: January 3, 2026  
 **Project Status**: Production Active - Phase 3 Complete, Phase 4 Planning (95% Complete)  
 
 ---
@@ -15,6 +15,20 @@
 - [Essential Project Patterns](#essential-project-patterns)
 - [Critical Integration Points](#critical-integration-points)
 - [Success Metrics & Targets](#success-metrics--targets)
+
+---
+
+## 🚨 AI Agent Quick Start (READ FIRST)
+
+**Essential Facts for Immediate Productivity:**
+- **Production System**: 189 Next.js pages deployed on Railway with automatic CD pipeline
+- **Multi-Tenant**: Every DB query MUST include `churchId` filtering (except SUPER_ADMIN operations)
+- **Authentication Gate**: `middleware.ts` (229 lines) controls ALL routing - never bypass
+- **Database**: Prisma singleton via `import { db } from '@/lib/db'` - ~50 tables, 2,476 schema lines
+- **Caching**: Redis via `lib/redis-cache-manager.ts` (800+ lines) - 90%+ hit rate target
+- **Real-time**: SSE via `lib/sse-broadcast.ts` for live dashboard updates
+- **TypeScript**: `strict: false` but `ignoreBuildErrors: false` - compilation must pass
+- **Deployment**: `git push origin main` → Railway auto-deploy (NO staging environment)
 
 ---
 
@@ -190,20 +204,20 @@ await cacheManager.invalidatePattern(
 
 ### Current Development Priorities (Next 2-4 Weeks)
 
-### **PRIORITY 1: Phase 4 Architecture & Planning** (ACTIVE)
+### **PRIORITY 1: Phase 4 Architecture & Planning** (ACTIVE - Q1 2026)
 Preparing for AI & Mobile Apps development phase:
-- AI integration architecture design and machine learning model planning
-- Mobile app technical specifications and API optimization for mobile consumption
-- Advanced analytics AI enhancement planning for predictive capabilities
-- Enterprise scalability testing and stress testing for 1K+ churches
-- Performance monitoring and alerting systems for production environments
+- **AI Integration**: Machine learning model architecture for predictive analytics enhancement
+- **Mobile API Optimization**: REST endpoints optimization for mobile app consumption patterns
+- **Advanced Analytics AI**: Enhanced predictive capabilities for member retention and engagement
+- **Enterprise Scalability**: Stress testing for 1K+ churches, performance monitoring systems
+- **Production Monitoring**: Comprehensive alerting and dashboard systems for enterprise deployment
 
 ### **PRIORITY 2: System Optimization & Enterprise Readiness**
 Finalizing production system for maximum enterprise scalability:
-- Advanced caching strategies optimization and Redis performance tuning
-- Database performance monitoring and automated scaling preparations
-- Memory management and resource optimization for high-traffic scenarios
-- Production monitoring dashboards and comprehensive alerting systems
+- **Redis Performance**: Advanced caching strategies optimization and Redis cluster preparation  
+- **Database Scaling**: Performance monitoring, connection pooling optimization, read replicas planning
+- **Memory Management**: Resource optimization for high-traffic scenarios, memory leak prevention
+- **Monitoring Stack**: Production monitoring dashboards, alerting systems, health checks
 
 ## Development Guidelines
 
@@ -220,8 +234,7 @@ Before implementing or deleting ANY code, **ALWAYS** ask yourself:
 8. **LEARN FROM YOUR MISTAKE TO AVOID REPEATING THEM** - Apply lessons learned from previous development cycles
 
 ### **DEPLOYMENT PROTOCOL** (MANDATORY)
-1. **KHESED-TEK BACKUP SYNC**: All updates made to this app **MUST** be replicated into the KHESED-TEK backup latest file **BEFORE** the git push to Railway
-2. **AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. Railway will automatically build and deploy.
+**AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. This ensures all updates are automatically deployed to the live production environment without delay.
 
 **Railway Deployment Flow**:
 ```bash

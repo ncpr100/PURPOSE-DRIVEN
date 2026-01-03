@@ -27,7 +27,8 @@ export async function GET() {
           platformName: 'Kḥesed-tek Church Management Systems',
           supportEmail: 'soporte@khesedtek.com',
           maintenanceMode: false,
-          allowRegistrations: true
+          allowRegistrations: true,
+          updatedAt: new Date()
         }
       })
     }
@@ -71,7 +72,8 @@ export async function PUT(request: NextRequest) {
         platformName: data.platformName || 'Kḥesed-tek Church Management Systems',
         supportEmail: data.supportEmail || 'soporte@khesedtek.com',
         maintenanceMode: data.maintenanceMode || false,
-        allowRegistrations: data.allowRegistrations || true
+        allowRegistrations: data.allowRegistrations || true,
+        updatedAt: new Date()
       }
     })
 

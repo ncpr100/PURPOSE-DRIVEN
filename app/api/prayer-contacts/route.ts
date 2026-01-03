@@ -49,7 +49,7 @@ export async function GET(request: Request) {
         include: {
           _count: {
             select: {
-              prayer_requestss: true
+              prayer_requests: true
             }
           }
         },
