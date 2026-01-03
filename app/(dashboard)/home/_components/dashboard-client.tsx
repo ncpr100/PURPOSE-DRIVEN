@@ -202,21 +202,14 @@ export function DashboardClient({
       </div>
 
       {/* Secondary Stats - Daily Operations */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <StatsCard
           title="Check-ins Hoy"
           value={stats.totalCheckIns}
           icon={UserCheck}
-          description="Visitantes registrados"
+          description={`${stats.childrenPresent} niños presentes | Visitantes registrados`}
           trend={stats.firstTimeVisitorsThisMonth > 0 ? `${stats.firstTimeVisitorsThisMonth} nuevos este mes` : undefined}
           index={0}
-        />
-        <StatsCard
-          title="Niños Presentes"
-          value={stats.childrenPresent}
-          icon={Users}
-          description="En instalaciones"
-          index={1}
         />
         <StatsCard
           title="Seguimientos"
@@ -224,7 +217,7 @@ export function DashboardClient({
           icon={Phone}
           description={`${stats.completedFollowUpsThisMonth} completados este mes`}
           trend={stats.pendingFollowUps > 0 ? "⚠️ Requiere atención" : "✅ Al día"}
-          index={2}
+          index={1}
         />
         <StatsCard
           title="Participación"
@@ -232,7 +225,7 @@ export function DashboardClient({
           icon={Target}
           description="Puntuación promedio"
           trend={stats.averageEngagementScore >= 70 ? "🎯 Excelente" : stats.averageEngagementScore >= 50 ? "⚡ Bueno" : "📈 Mejorar"}
-          index={3}
+          index={2}
         />
       </div>
 
