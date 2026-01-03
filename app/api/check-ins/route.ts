@@ -137,7 +137,6 @@ export async function POST(request: NextRequest) {
         churches: {
           connect: { id: session.user.churchId }
         },
-        updatedAt: new Date(),
       },
       include: {
         events: true,

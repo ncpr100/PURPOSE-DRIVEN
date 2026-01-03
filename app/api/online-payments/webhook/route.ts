@@ -156,7 +156,10 @@ async function createDonationFromPayment(onlinePaymentId: string) {
         name: payment.gatewayType.toUpperCase(),
         description: `Pago online ${payment.gatewayType}`,
         isDigital: true,
-        churchId: payment.churchId
+        churches: {
+          connect: { id: payment.churchId }
+        },
+        updatedAt: new Date()
       }
     })
   }
@@ -177,7 +180,10 @@ async function createDonationFromPayment(onlinePaymentId: string) {
       isAnonymous: false,
       status: 'COMPLETADA',
       donationDate: payment.completedAt || new Date(),
-      churchId: payment.churchId
+      churches: {
+        connect: { id: payment.churchId }
+      },
+      updatedAt: new Date()
     }
   })
 

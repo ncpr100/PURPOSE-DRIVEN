@@ -45,8 +45,12 @@ export async function GET(request: NextRequest) {
       
       // Store connection
       addConnection(connectionId, {
-        userId: user.id,
-        churchId: user.churchId || '',
+        churches: {
+          connect: { id: user.churchId || '' }
+        },
+        users: {
+          connect: { id: user.id }
+        },
         role: user.role,
         name: user.name || user.email,
         controller,

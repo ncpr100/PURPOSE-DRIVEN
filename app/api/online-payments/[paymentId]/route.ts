@@ -64,7 +64,10 @@ export async function PATCH(
               description: 'Pagos en línea',
               isDigital: true,
               isActive: true,
-              churchId: payment.churchId
+              churches: {
+                connect: { id: payment.churchId }
+              },
+              updatedAt: new Date()
             }
           })
         }

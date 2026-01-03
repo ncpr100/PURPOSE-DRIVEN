@@ -50,7 +50,9 @@ export async function PUT(request: NextRequest) {
       user: session?.user,
       userRole: session?.user?.role,
       userEmail: session?.user?.email,
-      userId: session?.user?.id,
+      users: {
+        connect: { id: session?.user?.id }
+      },
       timestamp: new Date().toISOString()
     })
 

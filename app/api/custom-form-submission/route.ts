@@ -70,7 +70,9 @@ export async function POST(request: NextRequest) {
         data: enrichedData,
         ipAddress: clientIp,
         userAgent: userAgent,
-        churchId: form.churchId // Direct churchId assignment (not relation)
+        churches: {
+          connect: { id: form.churchId }
+        } // Church relation connection
       }
     })
 

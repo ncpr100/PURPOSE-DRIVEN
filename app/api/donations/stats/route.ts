@@ -125,7 +125,9 @@ export async function GET(request: NextRequest) {
       _sum: { amount: true },
       _count: { id: true },
       where: {
-        churchId: session.user.churchId,
+        churches: {
+          connect: { id: session.user.churchId }
+        },
         status: 'COMPLETADA',
         donationDate: { gte: startOfMonth, lte: endOfMonth }
       }

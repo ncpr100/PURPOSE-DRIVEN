@@ -67,7 +67,9 @@ export async function GET(request: NextRequest) {
       preferences = await prisma.notification_preferences.create({
         data: {
           id: nanoid(),
-          userId: user.id,
+          users: {
+            connect: { id: user.id }
+          },
           updatedAt: new Date()
           // All defaults are set in the schema
         }

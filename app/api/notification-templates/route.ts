@@ -124,7 +124,9 @@ export async function POST(request: NextRequest) {
       data: {
         id: nanoid(),
         ...templateData,
-        churchId: user.churchId,
+        churches: {
+          connect: { id: user.churchId }
+        },
         isSystem: false, // User-created templates are never system templates
       },
       include: {

@@ -66,10 +66,16 @@ export async function GET(request: NextRequest) {
     if (!themePreference) {
       themePreference = await prisma.user_theme_preferences.create({
         data: {
-          userId: user.id,
-          churchId: user.churchId,
+          id: nanoid(),
+          users: {
+            connect: { id: user.id }
+          },
+          churches: {
+            connect: { id: user.churchId }
+          },
           themeName: 'default',
           themeMode: 'light',
+          updatedAt: new Date(),
         },
         include: {
           churches: {
