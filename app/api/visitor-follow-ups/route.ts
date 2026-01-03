@@ -45,7 +45,33 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    return NextResponse.json(followUps)
+    // Transform the data to match client expectations
+    const transformedFollowUps = followUps.map(followUp => ({
+      id: followUp.id,
+      followUpType: followUp.followUpType,
+      status: followUp.status,
+      scheduledAt: followUp.scheduledAt,
+      completedAt: followUp.completedAt,
+      notes: followUp.notes,
+      checkIn: followUp.check_ins ? {
+        firstName: followUp.check_ins.firstName || '',
+        lastName: followUp.check_ins.lastName || '',
+        email: followUp.check_ins.email,
+        phone: followUp.check_ins.phone,
+        isFirstTime: followUp.check_ins.isFirstTime || false
+      } : {
+        firstName: '',
+        lastName: '',
+        email: null,
+        phone: null,
+        isFirstTime: false
+      },
+      assignedUser: followUp.users ? {
+        name: followUp.users.name || ''
+      } : null
+    }))
+
+    return NextResponse.json(transformedFollowUps)
 
   } catch (error) {
     console.error('Error fetching visitor follow-ups:', error)
@@ -116,7 +142,33 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    return NextResponse.json(followUp, { status: 201 })
+    // Transform the data to match client expectations
+    const transformedFollowUp = {
+      id: followUp.id,
+      followUpType: followUp.followUpType,
+      status: followUp.status,
+      scheduledAt: followUp.scheduledAt,
+      completedAt: followUp.completedAt,
+      notes: followUp.notes,
+      checkIn: followUp.check_ins ? {
+        firstName: followUp.check_ins.firstName || '',
+        lastName: followUp.check_ins.lastName || '',
+        email: followUp.check_ins.email,
+        phone: followUp.check_ins.phone,
+        isFirstTime: followUp.check_ins.isFirstTime || false
+      } : {
+        firstName: '',
+        lastName: '',
+        email: null,
+        phone: null,
+        isFirstTime: false
+      },
+      assignedUser: followUp.users ? {
+        name: followUp.users.name || ''
+      } : null
+    }
+
+    return NextResponse.json(transformedFollowUp, { status: 201 })
 
   } catch (error) {
     console.error('Error creating visitor follow-up:', error)

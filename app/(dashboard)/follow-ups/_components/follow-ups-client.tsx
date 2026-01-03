@@ -62,12 +62,15 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
       const response = await fetch('/api/visitor-follow-ups')
       if (response.ok) {
         const data = await response.json()
-        setFollowUps(data)
+        // Ensure data is an array to prevent .map() errors
+        setFollowUps(Array.isArray(data) ? data : [])
       } else {
         toast.error('Error al cargar seguimientos')
+        setFollowUps([]) // Set empty array on error
       }
     } catch (error) {
       toast.error('Error al cargar seguimientos')
+      setFollowUps([]) // Set empty array on error
     } finally {
       setLoading(false)
     }
@@ -142,7 +145,7 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
     }
   }
 
-  const filteredFollowUps = followUps.filter(followUp => {
+  const filteredFollowUps = (followUps || []).filter(followUp => {
     const statusMatch = filterStatus === 'all' || followUp.status === filterStatus
     const typeMatch = filterType === 'all' || followUp.followUpType === filterType
     return statusMatch && typeMatch
@@ -198,7 +201,7 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{followUps.length}</div>
+            <div className="text-2xl font-bold">{(followUps || []).length}</div>
           </CardContent>
         </Card>
         
@@ -209,7 +212,7 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {followUps.filter(f => f.status === 'PENDIENTE').length}
+              {(followUps || []).filter(f => f.status === 'PENDIENTE').length}
             </div>
           </CardContent>
         </Card>
@@ -221,7 +224,7 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {followUps.filter(f => f.status === 'COMPLETADO').length}
+              {(followUps || []).filter(f => f.status === 'COMPLETADO').length}
             </div>
           </CardContent>
         </Card>
@@ -233,7 +236,7 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {followUps.filter(f => f.status === 'FALLIDO').length}
+              {(followUps || []).filter(f => f.status === 'FALLIDO').length}
             </div>
           </CardContent>
         </Card>
