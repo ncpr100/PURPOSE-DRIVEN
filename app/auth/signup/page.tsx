@@ -303,21 +303,33 @@ export default function SignUpPage() {
                     <SelectContent className="min-w-[400px]">
                       {subscriptionPlans.map((plan) => {
                         const IconComponent = PLAN_ICONS[plan.name as keyof typeof PLAN_ICONS] || Package
+                        const isCustomPlan = plan.priceMonthly.toLowerCase().includes('personalizado')
                         return (
                           <SelectItem key={plan.id} value={plan.name}>
                             <div className="flex items-center justify-between w-full">
                               <div className="flex items-center space-x-3">
                                 <IconComponent className="h-5 w-5 text-blue-500" />
                                 <div className="flex flex-col">
-                                  <span className="font-medium text-base">{plan.displayName}</span>
+                                  <span className="font-medium text-base">
+                                    {plan.displayName}
+                                    {plan.name === 'MEDIANA' && (
+                                      <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Más popular</span>
+                                    )}
+                                  </span>
                                   <span className="text-xs text-muted-foreground">
-                                    {plan.maxMembers} miembros • {plan.maxUsers} usuarios
+                                    {plan.maxMembers >= 999999 ? 'Ilimitados' : plan.maxMembers.toLocaleString()} miembros • {plan.maxUsers >= 999 ? 'Ilimitados' : plan.maxUsers} usuarios
                                   </span>
                                 </div>
                               </div>
                               <div className="text-right">
-                                <div className="font-bold text-blue-600">${plan.priceMonthly}</div>
-                                <div className="text-xs text-blue-500">USD/mes</div>
+                                {isCustomPlan ? (
+                                  <div className="font-bold text-blue-600">Personalizado</div>
+                                ) : (
+                                  <>
+                                    <div className="font-bold text-blue-600">{plan.priceMonthly}</div>
+                                    <div className="text-xs text-blue-500">USD/mes</div>
+                                  </>
+                                )}
                               </div>
                             </div>
                           </SelectItem>

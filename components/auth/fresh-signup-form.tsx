@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Church, Loader2, Eye, EyeOff, Crown, Zap, Package, Building, Users, Settings } from 'lucide-react'
 import Link from 'next/link'
@@ -426,6 +427,7 @@ export default function FreshSignupForm() {
                       <SelectContent>
                         {subscriptionPlans.map((plan) => {
                           const IconComponent = PLAN_ICONS[plan.name as keyof typeof PLAN_ICONS] || Crown
+                          const isCustomPlan = plan.priceMonthly.toLowerCase().includes('personalizado')
                           return (
                             <SelectItem key={plan.id} value={plan.name}>
                               <div className="flex items-center gap-2">
@@ -433,8 +435,11 @@ export default function FreshSignupForm() {
                                 <div>
                                   <span className="font-medium">{plan.displayName}</span>
                                   <span className="text-sm text-gray-500 ml-2">
-                                    ${plan.priceMonthly} USD/mes
+                                    {isCustomPlan ? 'Cotización personalizada' : `${plan.priceMonthly}/mes`}
                                   </span>
+                                  {plan.name === 'MEDIANA' && (
+                                    <Badge variant="secondary" className="ml-2 text-xs bg-blue-100 text-blue-800">Más popular</Badge>
+                                  )}
                                 </div>
                               </div>
                             </SelectItem>
@@ -455,35 +460,49 @@ export default function FreshSignupForm() {
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-1">
                               <h3 className="font-semibold text-blue-900">
-{selectedPlan.displayName}
+                                {selectedPlan.displayName}
+                                {selectedPlan.name === 'MEDIANA' && (
+                                  <Badge variant="secondary" className="ml-2 text-xs bg-gradient-to-r from-blue-500 to-purple-500 text-white">Más popular</Badge>
+                                )}
                               </h3>
                               <div className="text-right">
-                                <div className="text-lg font-bold text-blue-600">
-                                  ${selectedPlan.priceMonthly} USD/mes
-                                </div>
-                                <div className="text-sm text-blue-500 whitespace-nowrap">
-                                  ${selectedPlan.priceYearly} USD/año ({(() => {
-                                    const monthly = parseFloat(selectedPlan.priceMonthly.replace(/[^0-9.]/g, ''))
-                                    const yearly = parseFloat(selectedPlan.priceYearly.replace(/[^0-9.]/g, ''))
-                                    const savings = Math.round(((monthly * 12 - yearly) / (monthly * 12)) * 100)
-                                    return `${savings}% ahorro`
-                                  })()})
-                                </div>
+                                {selectedPlan.priceMonthly.toLowerCase().includes('personalizado') ? (
+                                  <div className="text-lg font-bold text-blue-600">
+                                    Cotización personalizada
+                                  </div>
+                                ) : (
+                                  <>
+                                    <div className="text-lg font-bold text-blue-600">
+                                      {selectedPlan.priceMonthly}/mes
+                                    </div>
+                                    {selectedPlan.priceYearly && (
+                                      <div className="text-sm text-blue-500 whitespace-nowrap">
+                                        {selectedPlan.priceYearly}/año
+                                      </div>
+                                    )}
+                                  </>
+                                )}
                               </div>
                             </div>
                             <p className="text-sm text-blue-700 mb-3">{selectedPlan.description}</p>
                             <div className="flex items-center gap-4 text-sm text-blue-600">
                               <div className="flex items-center gap-1">
                                 <Building className="h-4 w-4" />
-                                <span>{selectedPlan.maxChurches} iglesia{selectedPlan.maxChurches !== 1 ? 's' : ''}</span>
+                                <span>
+                                  {selectedPlan.maxChurches >= 999 ? 'Ilimitadas' : `${selectedPlan.maxChurches}`} iglesia{selectedPlan.maxChurches !== 1 ? 's' : ''}
+                                </span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Users className="h-4 w-4" />
-                                <span>{selectedPlan.maxMembers} miembros</span>
+                                <span>
+                                  {selectedPlan.maxMembers >= 999999 ? 'Ilimitados' : selectedPlan.maxMembers.toLocaleString()} miembros
+                                </span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Settings className="h-4 w-4" />
-                                <span>{selectedPlan.maxUsers} usuario{selectedPlan.maxUsers !== 1 ? 's' : ''}</span>
+                                <span>
+                                  {selectedPlan.maxUsers >= 999 ? 'Ilimitados' : `${selectedPlan.maxUsers}`} usuario{selectedPlan.maxUsers !== 1 ? 's' : ''}
+                                </span>
                               </div>
                             </div>
                           </div>

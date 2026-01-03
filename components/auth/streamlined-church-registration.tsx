@@ -372,7 +372,7 @@ export default function StreamlinedChurchRegistration() {
                                 <div>
                                   <span className="font-medium">{plan.displayName}</span>
                                   <span className="text-sm text-gray-500 ml-2">
-                                    ${plan.priceMonthly} USD/mes
+                                    {plan.priceMonthly.toLowerCase().includes('personalizado') ? 'Cotización personalizada' : `${plan.priceMonthly}/mes`}
                                   </span>
                                 </div>
                               </div>
@@ -397,32 +397,43 @@ export default function StreamlinedChurchRegistration() {
                                 {selectedPlan.displayName}
                               </h3>
                               <div className="text-right">
-                                <div className="text-lg font-bold text-blue-600">
-                                  ${selectedPlan.priceMonthly} USD/mes
-                                </div>
-                                <div className="text-sm text-blue-500 whitespace-nowrap">
-                                  ${selectedPlan.priceYearly} USD/año ({(() => {
-                                    const monthly = parseFloat(selectedPlan.priceMonthly.replace(/[^0-9.]/g, ''))
-                                    const yearly = parseFloat(selectedPlan.priceYearly.replace(/[^0-9.]/g, ''))
-                                    const savings = Math.round(((monthly * 12 - yearly) / (monthly * 12)) * 100)
-                                    return `${savings}% ahorro`
-                                  })()})
-                                </div>
+                                {selectedPlan.priceMonthly.toLowerCase().includes('personalizado') ? (
+                                  <div className="text-lg font-bold text-blue-600">
+                                    Cotización personalizada
+                                  </div>
+                                ) : (
+                                  <>
+                                    <div className="text-lg font-bold text-blue-600">
+                                      {selectedPlan.priceMonthly}/mes
+                                    </div>
+                                    {selectedPlan.priceYearly && (
+                                      <div className="text-sm text-blue-500 whitespace-nowrap">
+                                        {selectedPlan.priceYearly}/año
+                                      </div>
+                                    )}
+                                  </>
+                                )}
                               </div>
                             </div>
                             <p className="text-sm text-blue-700 mb-3">{selectedPlan.description}</p>
                             <div className="flex items-center gap-4 text-sm text-blue-600">
                               <div className="flex items-center gap-1">
                                 <Building className="h-4 w-4" />
-                                <span>{selectedPlan.maxChurches} iglesia{selectedPlan.maxChurches !== 1 ? 's' : ''}</span>
+                                <span>
+                                  {selectedPlan.maxChurches >= 999 ? 'Ilimitadas' : `${selectedPlan.maxChurches}`} iglesia{selectedPlan.maxChurches !== 1 ? 's' : ''}
+                                </span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Users className="h-4 w-4" />
-                                <span>{selectedPlan.maxMembers} miembros</span>
+                                <span>
+                                  {selectedPlan.maxMembers >= 999999 ? 'Ilimitados' : selectedPlan.maxMembers.toLocaleString()} miembros
+                                </span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Settings className="h-4 w-4" />
-                                <span>{selectedPlan.maxUsers} usuario{selectedPlan.maxUsers !== 1 ? 's' : ''}</span>
+                                <span>
+                                  {selectedPlan.maxUsers >= 999 ? 'Ilimitados' : `${selectedPlan.maxUsers}`} usuario{selectedPlan.maxUsers !== 1 ? 's' : ''}
+                                </span>
                               </div>
                             </div>
                           </div>
