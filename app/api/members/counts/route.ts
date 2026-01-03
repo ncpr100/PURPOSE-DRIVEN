@@ -174,16 +174,16 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Calculate different count metrics
+    // Calculate different count metrics based on FILTERED results
     const counts = {
-      totalCount: baseTotalCount, // Always show total active members, not filtered count
+      totalCount: members.length, // Show filtered count, not base total
       genderCounts: {
-        masculino: allMembers.filter(m => categorizeGender(m) === 'masculino').length,
-        femenino: allMembers.filter(m => categorizeGender(m) === 'femenino').length,
-        sinEspecificar: allMembers.filter(m => categorizeGender(m) === 'sinEspecificar').length
+        masculino: members.filter(m => categorizeGender(m) === 'masculino').length,
+        femenino: members.filter(m => categorizeGender(m) === 'femenino').length,
+        sinEspecificar: members.filter(m => categorizeGender(m) === 'sinEspecificar').length
       },
       ageCounts: {
-        '0-17': allMembers.filter(m => {
+        '0-17': members.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -194,7 +194,7 @@ export async function GET(request: NextRequest) {
           }
           return age >= 0 && age <= 17
         }).length,
-        '18-25': allMembers.filter(m => {
+        '18-25': members.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -205,7 +205,7 @@ export async function GET(request: NextRequest) {
           }
           return age >= 18 && age <= 25
         }).length,
-        '26-35': allMembers.filter(m => {
+        '26-35': members.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -216,7 +216,7 @@ export async function GET(request: NextRequest) {
           }
           return age >= 26 && age <= 35
         }).length,
-        '36-50': allMembers.filter(m => {
+        '36-50': members.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -227,7 +227,7 @@ export async function GET(request: NextRequest) {
           }
           return age >= 36 && age <= 50
         }).length,
-        '51+': allMembers.filter(m => {
+        '51+': members.filter(m => {
           if (!m.birthDate) return false
           const today = new Date()
           const birthDate = new Date(m.birthDate)
@@ -238,26 +238,26 @@ export async function GET(request: NextRequest) {
           }
           return age >= 51
         }).length,
-        sinEspecificar: allMembers.filter(m => !m.birthDate).length
+        sinEspecificar: members.filter(m => !m.birthDate).length
       },
       maritalStatusCounts: {
-        soltero: allMembers.filter(m => {
+        soltero: members.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'soltero' || status === 'single'
         }).length,
-        casado: allMembers.filter(m => {
+        casado: members.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'casado' || status === 'married'
         }).length,
-        divorciado: allMembers.filter(m => {
+        divorciado: members.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'divorciado' || status === 'divorced'
         }).length,
-        viudo: allMembers.filter(m => {
+        viudo: members.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return status === 'viudo' || status === 'widowed'
         }).length,
-        sinEspecificar: allMembers.filter(m => {
+        sinEspecificar: members.filter(m => {
           const status = m.maritalStatus?.toLowerCase()
           return !status || status === 'null' || status === ''
         }).length
