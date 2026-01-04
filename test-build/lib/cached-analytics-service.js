@@ -9,6 +9,7 @@ exports.createCachedAnalyticsService = exports.CachedAnalyticsService = void 0;
 const member_journey_analytics_1 = require("./member-journey-analytics");
 const redis_cache_manager_1 = require("./redis-cache-manager");
 const db_1 = require("./db");
+const gender_utils_1 = require("./gender-utils");
 const client_1 = require("@prisma/client");
 class CachedAnalyticsService {
     constructor(churchId) {
@@ -469,13 +470,15 @@ class CachedAnalyticsService {
     calculateGenderDistribution(journeys) {
         const genderCounts = { 'Masculino': 0, 'Femenino': 0, 'Otro': 0 };
         journeys.forEach(j => {
-            const gender = j.member?.gender || 'Otro';
-            if (gender in genderCounts) {
-                genderCounts[gender]++;
+            const effectiveGender = (0, gender_utils_1.getEffectiveGender)(j.member || {});
+            let displayGender = 'Otro';
+            if (effectiveGender === 'masculino') {
+                displayGender = 'Masculino';
             }
-            else {
-                genderCounts['Otro']++;
+            else if (effectiveGender === 'femenino') {
+                displayGender = 'Femenino';
             }
+            genderCounts[displayGender]++;
         });
         const total = journeys.length;
         return Object.entries(genderCounts).map(([gender, count]) => ({

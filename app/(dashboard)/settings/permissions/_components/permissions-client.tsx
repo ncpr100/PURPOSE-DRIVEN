@@ -347,7 +347,7 @@ export function PermissionsClient() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {roles.reduce((sum, role) => sum + role._count.userRoles, 0)}
+              {roles.reduce((sum, role) => sum + (role._count?.userRoles || 0), 0)}
             </div>
           </CardContent>
         </Card>
@@ -433,7 +433,7 @@ export function PermissionsClient() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Usuarios con Roles</span>
                     <Badge variant="outline">
-                      {roles.reduce((sum, role) => sum + role._count.userRoles, 0)}
+                      {roles.reduce((sum, role) => sum + (role._count?.userRoles || 0), 0)}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">

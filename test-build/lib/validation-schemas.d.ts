@@ -391,13 +391,13 @@ export declare const searchSchema: z.ZodObject<{
     sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
 }, "strip", z.ZodTypeAny, {
     category: string;
-    status: "rejected" | "pending" | "active" | "inactive" | "all" | "approved";
+    status: "all" | "rejected" | "pending" | "active" | "inactive" | "approved";
     sortBy: "name" | "category" | "status" | "date";
     sortOrder: "asc" | "desc";
     q?: string | undefined;
 }, {
     category?: string | undefined;
-    status?: "rejected" | "pending" | "active" | "inactive" | "all" | "approved" | undefined;
+    status?: "all" | "rejected" | "pending" | "active" | "inactive" | "approved" | undefined;
     sortBy?: "name" | "category" | "status" | "date" | undefined;
     sortOrder?: "asc" | "desc" | undefined;
     q?: string | undefined;
@@ -409,12 +409,12 @@ export declare const analyticsQuerySchema: z.ZodObject<{
     contactMethod: z.ZodDefault<z.ZodEnum<["all", "email", "phone", "whatsapp", "sms"]>>;
 }, "strip", z.ZodTypeAny, {
     category: string;
-    status: "rejected" | "fulfilled" | "pending" | "all" | "approved";
+    status: "all" | "rejected" | "fulfilled" | "pending" | "approved";
     days: number | null;
     contactMethod: "email" | "phone" | "all" | "whatsapp" | "sms";
 }, {
     category?: string | undefined;
-    status?: "rejected" | "fulfilled" | "pending" | "all" | "approved" | undefined;
+    status?: "all" | "rejected" | "fulfilled" | "pending" | "approved" | undefined;
     days?: string | null | undefined;
     contactMethod?: "email" | "phone" | "all" | "whatsapp" | "sms" | undefined;
 }>;
@@ -931,13 +931,13 @@ declare const _default: {
         sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
     }, "strip", z.ZodTypeAny, {
         category: string;
-        status: "rejected" | "pending" | "active" | "inactive" | "all" | "approved";
+        status: "all" | "rejected" | "pending" | "active" | "inactive" | "approved";
         sortBy: "name" | "category" | "status" | "date";
         sortOrder: "asc" | "desc";
         q?: string | undefined;
     }, {
         category?: string | undefined;
-        status?: "rejected" | "pending" | "active" | "inactive" | "all" | "approved" | undefined;
+        status?: "all" | "rejected" | "pending" | "active" | "inactive" | "approved" | undefined;
         sortBy?: "name" | "category" | "status" | "date" | undefined;
         sortOrder?: "asc" | "desc" | undefined;
         q?: string | undefined;
@@ -949,12 +949,12 @@ declare const _default: {
         contactMethod: z.ZodDefault<z.ZodEnum<["all", "email", "phone", "whatsapp", "sms"]>>;
     }, "strip", z.ZodTypeAny, {
         category: string;
-        status: "rejected" | "fulfilled" | "pending" | "all" | "approved";
+        status: "all" | "rejected" | "fulfilled" | "pending" | "approved";
         days: number | null;
         contactMethod: "email" | "phone" | "all" | "whatsapp" | "sms";
     }, {
         category?: string | undefined;
-        status?: "rejected" | "fulfilled" | "pending" | "all" | "approved" | undefined;
+        status?: "all" | "rejected" | "fulfilled" | "pending" | "approved" | undefined;
         days?: string | null | undefined;
         contactMethod?: "email" | "phone" | "all" | "whatsapp" | "sms" | undefined;
     }>;

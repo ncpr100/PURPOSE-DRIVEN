@@ -163,11 +163,19 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
       const response = await fetch('/api/volunteers')
       if (response.ok) {
         const data = await response.json()
-        setVolunteers(data)
+        // Ensure all volunteers have proper structure
+        const safeVolunteers = data.map((volunteer: any) => ({
+          ...volunteer,
+          assignments: volunteer.assignments || [],
+          member: volunteer.member || null,
+          ministry: volunteer.ministry || null
+        }))
+        setVolunteers(safeVolunteers)
       } else {
         toast.error('Error al cargar voluntarios')
       }
     } catch (error) {
+      console.error('Error fetching volunteers:', error)
       toast.error('Error al cargar voluntarios')
     } finally {
       setLoading(false)
@@ -356,7 +364,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
         },
         body: JSON.stringify({
           ...assignmentData,
-          volunteerId: selectedVolunteer.id
+          volunteerId: selectedVolunteer?.id
         }),
       })
 
@@ -786,7 +794,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {volunteers.reduce((acc, v) => acc + v.assignments.length, 0)}
+              {volunteers.reduce((acc, v) => acc + (v.assignments?.length || 0), 0)}
             </div>
           </CardContent>
         </Card>
@@ -798,7 +806,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {new Set(volunteers.filter(v => v.ministry).map(v => v.ministry!.name)).size}
+              {new Set(volunteers.filter(v => v.ministry?.name).map(v => v.ministry?.name)).size}
             </div>
           </CardContent>
         </Card>

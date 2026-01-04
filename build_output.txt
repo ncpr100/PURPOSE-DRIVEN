@@ -1,0 +1,722 @@
+
+> khesed-tek@1.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+[Upstash Redis] The 'url' property is missing or undefined in your Redis config.
+[Upstash Redis] The 'token' property is missing or undefined in your Redis config.
+🚀 Intelligent Cache Warmer started - targeting 100% hit rate
+🔥 Starting initial cache warm-up for 100% hit rate...
+🚀 Initializing analytics cache optimization for 100% hit rates...
+🚀 Intelligent Cache Warmer started - targeting 100% hit rate
+🔥 Starting initial cache warm-up for 100% hit rate...
+📊 Warming cache for 4 churches
+📊 Warming cache for 4 churches
+🎯 Warmed 0 member journeys for church: demo-church
+✅ Critical data warmed for church: demo-church
+🎯 Warmed 0 member journeys for church: cmiqk269500005y4t2sezi3wg
+✅ Critical data warmed for church: cmiqk269500005y4t2sezi3wg
+🎯 Warmed 0 member journeys for church: cmiqk2un900005ydaw3ddz235
+✅ Critical data warmed for church: cmiqk2un900005ydaw3ddz235
+🎯 Warmed 0 member journeys for church: demo-church
+✅ Critical data warmed for church: demo-church
+🎯 Warmed 0 member journeys for church: cmiqk3ak400005yjq898dwrp0
+✅ Critical data warmed for church: cmiqk3ak400005yjq898dwrp0
+🎯 Warmed 0 member journeys for church: cmiqk2un900005ydaw3ddz235
+✅ Critical data warmed for church: cmiqk2un900005ydaw3ddz235
+🎯 Warmed 0 member journeys for church: cmiqk3ak400005yjq898dwrp0
+✅ Critical data warmed for church: cmiqk3ak400005yjq898dwrp0
+🔄 Warming common access patterns...
+✅ Common patterns warmed
+🧠 Pre-loading predictive data...
+🎯 Warmed 0 member journeys for church: cmiqk269500005y4t2sezi3wg
+✅ Critical data warmed for church: cmiqk269500005y4t2sezi3wg
+🔄 Warming common access patterns...
+✅ Common patterns warmed
+🧠 Pre-loading predictive data...
+✅ Pre-loaded 8 predictive cache entries
+✅ Initial cache warm-up completed - 100% hit rate target achieved
+✅ Pre-loaded 8 predictive cache entries
+✅ Initial cache warm-up completed - 100% hit rate target achieved
+🚀 Force warming all cache for 100% hit rate...
+🔥 Starting initial cache warm-up for 100% hit rate...
+📊 Warming cache for 4 churches
+🎯 Warmed 0 member journeys for church: cmiqk269500005y4t2sezi3wg
+✅ Critical data warmed for church: cmiqk269500005y4t2sezi3wg
+🎯 Warmed 0 member journeys for church: demo-church
+✅ Critical data warmed for church: demo-church
+🎯 Warmed 0 member journeys for church: cmiqk2un900005ydaw3ddz235
+✅ Critical data warmed for church: cmiqk2un900005ydaw3ddz235
+🎯 Warmed 0 member journeys for church: cmiqk3ak400005yjq898dwrp0
+✅ Critical data warmed for church: cmiqk3ak400005yjq898dwrp0
+🔄 Warming common access patterns...
+✅ Common patterns warmed
+🧠 Pre-loading predictive data...
+✅ Pre-loaded 8 predictive cache entries
+✅ Initial cache warm-up completed - 100% hit rate target achieved
+✅ Force warm-up completed
+🚨 Emergency optimization executed for analytics:executive:*
+🚀 Force warming all cache for 100% hit rate...
+🔥 Starting initial cache warm-up for 100% hit rate...
+📊 Warming cache for 4 churches
+📄 MEMBERS PAGE FILE LOADING - Server-side execution
+🎯 Warmed 0 member journeys for church: demo-church
+✅ Critical data warmed for church: demo-church
+🎯 Warmed 0 member journeys for church: cmiqk269500005y4t2sezi3wg
+✅ Critical data warmed for church: cmiqk269500005y4t2sezi3wg
+🎯 Warmed 0 member journeys for church: cmiqk2un900005ydaw3ddz235
+✅ Critical data warmed for church: cmiqk2un900005ydaw3ddz235
+🎯 Warmed 0 member journeys for church: cmiqk3ak400005yjq898dwrp0
+✅ Critical data warmed for church: cmiqk3ak400005yjq898dwrp0
+🔄 Warming common access patterns...
+✅ Common patterns warmed
+🧠 Pre-loading predictive data...
+✅ Pre-loaded 8 predictive cache entries
+✅ Initial cache warm-up completed - 100% hit rate target achieved
+✅ Force warm-up completed
+🚨 Emergency optimization executed for analytics:dashboard:*
+🚀 Force warming all cache for 100% hit rate...
+🔥 Starting initial cache warm-up for 100% hit rate...
+📊 Warming cache for 4 churches
+🎯 Warmed 0 member journeys for church: demo-church
+✅ Critical data warmed for church: demo-church
+🎯 Warmed 0 member journeys for church: cmiqk269500005y4t2sezi3wg
+✅ Critical data warmed for church: cmiqk269500005y4t2sezi3wg
+🎯 Warmed 0 member journeys for church: cmiqk2un900005ydaw3ddz235
+✅ Critical data warmed for church: cmiqk2un900005ydaw3ddz235
+🎯 Warmed 0 member journeys for church: cmiqk3ak400005yjq898dwrp0
+✅ Critical data warmed for church: cmiqk3ak400005yjq898dwrp0
+🔄 Warming common access patterns...
+✅ Common patterns warmed
+🧠 Pre-loading predictive data...
+✅ Pre-loaded 8 predictive cache entries
+✅ Initial cache warm-up completed - 100% hit rate target achieved
+✅ Force warm-up completed
+🚨 Emergency optimization executed for members:active:*
+🚀 Force warming all cache for 100% hit rate...
+🔥 Starting initial cache warm-up for 100% hit rate...
+📊 Warming cache for 4 churches
+🎯 Warmed 0 member journeys for church: cmiqk2un900005ydaw3ddz235
+✅ Critical data warmed for church: cmiqk2un900005ydaw3ddz235
+🎯 Warmed 0 member journeys for church: demo-church
+✅ Critical data warmed for church: demo-church
+🎯 Warmed 0 member journeys for church: cmiqk269500005y4t2sezi3wg
+✅ Critical data warmed for church: cmiqk269500005y4t2sezi3wg
+🎯 Warmed 0 member journeys for church: cmiqk3ak400005yjq898dwrp0
+✅ Critical data warmed for church: cmiqk3ak400005yjq898dwrp0
+🔄 Warming common access patterns...
+✅ Common patterns warmed
+🧠 Pre-loading predictive data...
+✅ Pre-loaded 8 predictive cache entries
+✅ Initial cache warm-up completed - 100% hit rate target achieved
+✅ Force warm-up completed
+🚨 Emergency optimization executed for events:upcoming:*
+✅ Optimization cycle completed in 2474ms - Status: critical
+✅ Cache optimization controller initialized
+✅ Added optimization target: analytics:executive:* (critical)
+✅ Added optimization target: analytics:dashboard:real_time:* (critical)
+✅ Added optimization target: analytics:member_journey:* (high)
+✅ Added optimization target: analytics:predictive:* (high)
+🚀 Force warming all cache for 100% hit rate...
+🔥 Starting initial cache warm-up for 100% hit rate...
+📊 Warming cache for 4 churches
+🎯 Warmed 0 member journeys for church: demo-church
+✅ Critical data warmed for church: demo-church
+🎯 Warmed 0 member journeys for church: cmiqk2un900005ydaw3ddz235
+✅ Critical data warmed for church: cmiqk2un900005ydaw3ddz235
+🎯 Warmed 0 member journeys for church: cmiqk3ak400005yjq898dwrp0
+✅ Critical data warmed for church: cmiqk3ak400005yjq898dwrp0
+🎯 Warmed 0 member journeys for church: cmiqk269500005y4t2sezi3wg
+✅ Critical data warmed for church: cmiqk269500005y4t2sezi3wg
+🔄 Warming common access patterns...
+✅ Common patterns warmed
+🧠 Pre-loading predictive data...
+✅ Pre-loaded 8 predictive cache entries
+✅ Initial cache warm-up completed - 100% hit rate target achieved
+✅ Force warm-up completed
+🔥 Forced optimization completed for pattern: analytics:executive:*
+🚀 Force warming all cache for 100% hit rate...
+🔥 Starting initial cache warm-up for 100% hit rate...
+📊 Warming cache for 4 churches
+🎯 Warmed 0 member journeys for church: cmiqk269500005y4t2sezi3wg
+✅ Critical data warmed for church: cmiqk269500005y4t2sezi3wg
+🎯 Warmed 0 member journeys for church: cmiqk3ak400005yjq898dwrp0
+✅ Critical data warmed for church: cmiqk3ak400005yjq898dwrp0
+🎯 Warmed 0 member journeys for church: cmiqk2un900005ydaw3ddz235
+✅ Critical data warmed for church: cmiqk2un900005ydaw3ddz235
+🎯 Warmed 0 member journeys for church: demo-church
+✅ Critical data warmed for church: demo-church
+🔄 Warming common access patterns...
+✅ Common patterns warmed
+🧠 Pre-loading predictive data...
+✅ Pre-loaded 8 predictive cache entries
+✅ Initial cache warm-up completed - 100% hit rate target achieved
+✅ Force warm-up completed
+🔥 Forced optimization completed for pattern: analytics:dashboard:real_time:*
+✅ Analytics cache optimization initialized successfully
+🎯 Target: 100% cache hit rate for critical analytics operations
+⚡ Real-time monitoring and auto-optimization enabled
+   Generating static pages (0/215) ...
+Error generating AI insights: n [Error]: Dynamic server usage: Route /api/analytics/ai-insights couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at u (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/analytics/ai-insights/route.js:1:1306)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/analytics/ai-insights couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching engagement dashboard: n [Error]: Dynamic server usage: Route /api/analytics/engagement-scoring couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at g (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/analytics/engagement-scoring/route.js:1:1359)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/analytics/engagement-scoring couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Enhanced AI insights error: n [Error]: Dynamic server usage: Route /api/analytics/enhanced-ai-insights couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at p (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/analytics/enhanced-ai-insights/route.js:1:17398)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/analytics/enhanced-ai-insights couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching member lifecycle funnel: n [Error]: Dynamic server usage: Route /api/analytics/member-lifecycle-funnel couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at d (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/analytics/member-lifecycle-funnel/route.js:1:1359)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/analytics/member-lifecycle-funnel couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching ministry recommendations: n [Error]: Dynamic server usage: Route /api/analytics/ministry-recommendations couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at u (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/analytics/ministry-recommendations/route.js:1:1359)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/analytics/ministry-recommendations couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching real-time analytics: n [Error]: Dynamic server usage: Route /api/analytics/realtime-overview couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at d (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/analytics/realtime-overview/route.js:1:1696)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/analytics/realtime-overview couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error fetching retention risk alerts: n [Error]: Dynamic server usage: Route /api/analytics/retention-risk couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at d (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/analytics/retention-risk/route.js:1:1359)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/analytics/retention-risk couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+Error in /api/members/counts: n [Error]: Dynamic server usage: Route /api/members/counts couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at m (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/members/counts/route.js:1:1316)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/members/counts couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (53/215) 
+Sending email via internal system: Test Email
+🧪 Testing external fetch from server...
+🔍 TEST ENDPOINT: /api/test-members-data called
+💥 Test endpoint error: n [Error]: Dynamic server usage: Route /api/test-members-data couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at l (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/8948.js:1:37220)
+    at h (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/webhooks/stripe/route.js:1:94227)
+    at s (/workspaces/PURPOSE-DRIVEN/.next/server/chunks/2857.js:25:19236)
+    at d (/workspaces/PURPOSE-DRIVEN/.next/server/app/api/test-members-data/route.js:1:1378)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/workspaces/PURPOSE-DRIVEN/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /workspaces/PURPOSE-DRIVEN/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29925
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:63:14) {
+  description: "Route /api/test-members-data couldn't be rendered statically because it used `headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (107/215) 
+🔥 MEMBERS PAGE FUNCTION EXECUTING
+🔥 MEMBERS PAGE FUNCTION EXECUTING
+   Generating static pages (161/215) 
+ ✓ Generating static pages (215/215)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                             Size     First Load JS
+┌ ƒ /                                                   769 B          98.2 kB
+├ ƒ /_not-found                                         880 B          88.6 kB
+├ ƒ /advanced-events                                    152 B          87.8 kB
+├ ƒ /analytics                                          41.4 kB         309 kB
+├ ƒ /api/admin/fix-spiritual-profile                    0 B                0 B
+├ ƒ /api/analytics/ai-insights                          0 B                0 B
+├ ƒ /api/analytics/cache                                0 B                0 B
+├ ƒ /api/analytics/comprehensive-overview               0 B                0 B
+├ ƒ /api/analytics/engagement-scoring                   0 B                0 B
+├ ƒ /api/analytics/enhanced-ai-insights                 0 B                0 B
+├ ƒ /api/analytics/executive-report                     0 B                0 B
+├ ƒ /api/analytics/export                               0 B                0 B
+├ ƒ /api/analytics/member-journey                       0 B                0 B
+├ ƒ /api/analytics/member-lifecycle-funnel              0 B                0 B
+├ ƒ /api/analytics/ministry-recommendations             0 B                0 B
+├ ƒ /api/analytics/overview                             0 B                0 B
+├ ƒ /api/analytics/performance-monitor                  0 B                0 B
+├ ƒ /api/analytics/predictive                           0 B                0 B
+├ ƒ /api/analytics/realtime-overview                    0 B                0 B
+├ ƒ /api/analytics/realtime-trigger                     0 B                0 B
+├ ƒ /api/analytics/retention-risk                       0 B                0 B
+├ ƒ /api/analytics/trends                               0 B                0 B
+├ ƒ /api/auth/[...nextauth]                             0 B                0 B
+├ ƒ /api/auth/change-password                           0 B                0 B
+├ ƒ /api/auth/request-church-account                    0 B                0 B
+├ ƒ /api/automation-dashboard                           0 B                0 B
+├ ƒ /api/automation-rules                               0 B                0 B
+├ ƒ /api/automation-rules/[id]                          0 B                0 B
+├ ƒ /api/automation-rules/[id]/test                     0 B                0 B
+├ ƒ /api/automation-rules/dashboard                     0 B                0 B
+├ ƒ /api/automation-templates                           0 B                0 B
+├ ƒ /api/automation-templates/[id]                      0 B                0 B
+├ ƒ /api/automations                                    0 B                0 B
+├ ƒ /api/availability-matrix                            0 B                0 B
+├ ƒ /api/bible-debug                                    0 B                0 B
+├ ƒ /api/bible-premium/compare                          0 B                0 B
+├ ƒ /api/bible-premium/search                           0 B                0 B
+├ ƒ /api/bible-premium/subscription                     0 B                0 B
+├ ƒ /api/bible/books                                    0 B                0 B
+├ ƒ /api/bible/cross-references                         0 B                0 B
+├ ƒ /api/bible/health                                   0 B                0 B
+├ ƒ /api/bible/topical-concordance                      0 B                0 B
+├ ƒ /api/cache-optimization                             0 B                0 B
+├ ƒ /api/check-ins                                      0 B                0 B
+├ ƒ /api/check-ins/qr/[code]                            0 B                0 B
+├ ƒ /api/child-security                                 0 B                0 B
+├ ƒ /api/child-security/cleanup                         0 B                0 B
+├ ƒ /api/children-check-ins                             0 B                0 B
+├ ƒ /api/children-check-ins/[id]/checkout               0 B                0 B
+├ ƒ /api/children-check-ins/generate-qr                 0 B                0 B
+├ ƒ /api/children-check-ins/qr/[code]                   0 B                0 B
+├ ƒ /api/church-themes                                  0 B                0 B
+├ ƒ /api/church/profile                                 0 B                0 B
+├ ƒ /api/church/theme                                   0 B                0 B
+├ ƒ /api/communication-templates                        0 B                0 B
+├ ƒ /api/communication-templates/[id]                   0 B                0 B
+├ ƒ /api/communications                                 0 B                0 B
+├ ƒ /api/communications/mass-send                       0 B                0 B
+├ ƒ /api/custom-form-submission                         0 B                0 B
+├ ƒ /api/custom-form-submissions                        0 B                0 B
+├ ƒ /api/custom-form/[slug]                             0 B                0 B
+├ ƒ /api/dashboards                                     0 B                0 B
+├ ƒ /api/dashboards/[id]                                0 B                0 B
+├ ƒ /api/donation-campaigns                             0 B                0 B
+├ ƒ /api/donation-categories                            0 B                0 B
+├ ƒ /api/donations                                      0 B                0 B
+├ ƒ /api/donations/stats                                0 B                0 B
+├ ƒ /api/email/send-digest                              0 B                0 B
+├ ƒ /api/email/send-notification                        0 B                0 B
+├ ƒ /api/enhanced-spiritual-assessment                  0 B                0 B
+├ ƒ /api/event-resources                                0 B                0 B
+├ ƒ /api/event-resources/[id]/reservations              0 B                0 B
+├ ƒ /api/events                                         0 B                0 B
+├ ƒ /api/events/[id]/auto-assign-volunteers             0 B                0 B
+├ ƒ /api/events/[id]/communications                     0 B                0 B
+├ ƒ /api/events/ai-suggestions                          0 B                0 B
+├ ƒ /api/events/analytics                               0 B                0 B
+├ ƒ /api/files/social-media/[...filename]               0 B                0 B
+├ ƒ /api/form-builder                                   0 B                0 B
+├ ƒ /api/funnel-conversions                             0 B                0 B
+├ ƒ /api/funnels                                        0 B                0 B
+├ ƒ /api/integration-configs                            0 B                0 B
+├ ƒ /api/integrations/bulk-send                         0 B                0 B
+├ ƒ /api/integrations/status                            0 B                0 B
+├ ƒ /api/integrations/test                              0 B                0 B
+├ ƒ /api/integrations/whatsapp/webhook                  0 B                0 B
+├ ƒ /api/intelligent-scheduling                         0 B                0 B
+├ ƒ /api/intelligent-scheduling/conflict-resolution     0 B                0 B
+├ ƒ /api/intelligent-scheduling/workload-balancer       0 B                0 B
+├ ƒ /api/kpi-metrics                                    0 B                0 B
+├ ƒ /api/kpi-metrics/[id]                               0 B                0 B
+├ ƒ /api/kpi-metrics/calculate                          0 B                0 B
+├ ƒ /api/kpi-metrics/templates                          0 B                0 B
+├ ƒ /api/marketing-campaigns                            0 B                0 B
+├ ƒ /api/marketing-campaigns/[id]                       0 B                0 B
+├ ƒ /api/member-spiritual-profile                       0 B                0 B
+├ ƒ /api/members                                        0 B                0 B
+├ ƒ /api/members/[id]                                   0 B                0 B
+├ ƒ /api/members/[id]/spiritual-profile                 0 B                0 B
+├ ƒ /api/members/bulk-gender-update                     0 B                0 B
+├ ƒ /api/members/counts                                 0 B                0 B
+├ ƒ /api/members/import                                 0 B                0 B
+├ ƒ /api/ministries                                     0 B                0 B
+├ ƒ /api/notification-preferences                       0 B                0 B
+├ ƒ /api/notification-templates                         0 B                0 B
+├ ƒ /api/notification-templates/[id]                    0 B                0 B
+├ ƒ /api/notifications                                  0 B                0 B
+├ ƒ /api/notifications/[id]                             0 B                0 B
+├ ƒ /api/notifications/acknowledge                      0 B                0 B
+├ ƒ /api/notifications/bulk                             0 B                0 B
+├ ƒ /api/online-payments                                0 B                0 B
+├ ƒ /api/online-payments/[paymentId]                    0 B                0 B
+├ ƒ /api/online-payments/webhook                        0 B                0 B
+├ ƒ /api/payment-gateways                               0 B                0 B
+├ ƒ /api/payment-gateways/stripe                        0 B                0 B
+├ ƒ /api/payment-methods                                0 B                0 B
+├ ƒ /api/permissions                                    0 B                0 B
+├ ƒ /api/permissions/[id]                               0 B                0 B
+├ ƒ /api/permissions/seed                               0 B                0 B
+├ ƒ /api/platform/analytics                             0 B                0 B
+├ ƒ /api/platform/churches                              0 B                0 B
+├ ƒ /api/platform/churches/[id]                         0 B                0 B
+├ ƒ /api/platform/churches/[id]/users                   0 B                0 B
+├ ƒ /api/platform/churches/[id]/users/[userId]/status   0 B                0 B
+├ ƒ /api/platform/invoice-communications                0 B                0 B
+├ ƒ /api/platform/invoices                              0 B                0 B
+├ ƒ /api/platform/invoices/[id]                         0 B                0 B
+├ ƒ /api/platform/invoices/[id]/payments                0 B                0 B
+├ ƒ /api/platform/invoices/alerts                       0 B                0 B
+├ ƒ /api/platform/invoices/bulk                         0 B                0 B
+├ ƒ /api/platform/invoices/recurrent                    0 B                0 B
+├ ƒ /api/platform/plan-features                         0 B                0 B
+├ ƒ /api/platform/settings                              0 B                0 B
+├ ƒ /api/platform/stats                                 0 B                0 B
+├ ƒ /api/platform/subscription-addons                   0 B                0 B
+├ ƒ /api/platform/subscription-plans                    0 B                0 B
+├ ƒ /api/platform/system/backup                         0 B                0 B
+├ ƒ /api/platform/system/cache                          0 B                0 B
+├ ƒ /api/platform/system/keys                           0 B                0 B
+├ ƒ /api/platform/tenant-credentials                    0 B                0 B
+├ ƒ /api/platform/tenant-credentials/[churchId]/resend  0 B                0 B
+├ ƒ /api/platform/users                                 0 B                0 B
+├ ƒ /api/platform/users/[id]                            0 B                0 B
+├ ƒ /api/platform/users/[id]/role                       0 B                0 B
+├ ƒ /api/platform/users/profile                         0 B                0 B
+├ ƒ /api/platform/website-services                      0 B                0 B
+├ ƒ /api/prayer-analytics                               0 B                0 B
+├ ƒ /api/prayer-analytics/export                        0 B                0 B
+├ ƒ /api/prayer-approvals                               0 B                0 B
+├ ƒ /api/prayer-approvals/[id]                          0 B                0 B
+├ ƒ /api/prayer-categories                              0 B                0 B
+├ ƒ /api/prayer-categories/[id]                         0 B                0 B
+├ ƒ /api/prayer-contacts                                0 B                0 B
+├ ƒ /api/prayer-contacts/[id]                           0 B                0 B
+├ ƒ /api/prayer-forms                                   0 B                0 B
+├ ƒ /api/prayer-forms/[id]                              0 B                0 B
+├ ƒ /api/prayer-forms/public/[slug]                     0 B                0 B
+├ ƒ /api/prayer-message-queue                           0 B                0 B
+├ ƒ /api/prayer-message-queue/[id]/retry                0 B                0 B
+├ ƒ /api/prayer-messaging-stats                         0 B                0 B
+├ ƒ /api/prayer-qr-codes                                0 B                0 B
+├ ƒ /api/prayer-qr-codes/[id]                           0 B                0 B
+├ ƒ /api/prayer-qr-codes/public/[code]                  0 B                0 B
+├ ƒ /api/prayer-requests                                0 B                0 B
+├ ƒ /api/prayer-requests/[id]                           0 B                0 B
+├ ƒ /api/prayer-responses                               0 B                0 B
+├ ƒ /api/prayer-responses/[id]                          0 B                0 B
+├ ƒ /api/public/subscription-plans                      0 B                0 B
+├ ƒ /api/push-notifications/send                        0 B                0 B
+├ ƒ /api/push-notifications/stats                       0 B                0 B
+├ ƒ /api/push-notifications/subscribe                   0 B                0 B
+├ ƒ /api/push-notifications/unsubscribe                 0 B                0 B
+├ ƒ /api/push-notifications/vapid-key                   0 B                0 B
+├ ƒ /api/qr-generator                                   0 B                0 B
+├ ƒ /api/qualification-settings                         0 B                0 B
+├ ƒ /api/realtime/broadcast                             0 B                0 B
+├ ƒ /api/realtime/events                                0 B                0 B
+├ ƒ /api/realtime/message                               0 B                0 B
+├ ƒ /api/recruitment-pipeline                           0 B                0 B
+├ ƒ /api/recruitment-pipeline/leadership-development    0 B                0 B
+├ ƒ /api/recruitment-pipeline/onboarding-workflows      0 B                0 B
+├ ƒ /api/reports                                        0 B                0 B
+├ ƒ /api/reports/[id]                                   0 B                0 B
+├ ƒ /api/reports/[id]/execute                           0 B                0 B
+├ ƒ /api/roles-advanced                                 0 B                0 B
+├ ƒ /api/roles-advanced/[id]                            0 B                0 B
+├ ƒ /api/sermons                                        0 B                0 B
+├ ƒ /api/sermons/[id]                                   0 B                0 B
+├ ƒ /api/sermons/generate                               0 B                0 B
+├ ƒ /api/signup                                         0 B                0 B
+├ ƒ /api/social-media-accounts                          0 B                0 B
+├ ƒ /api/social-media-accounts/[id]                     0 B                0 B
+├ ƒ /api/social-media-metrics                           0 B                0 B
+├ ƒ /api/social-media-posts                             0 B                0 B
+├ ƒ /api/social-media-posts/[id]                        0 B                0 B
+├ ƒ /api/social-media-posts/[id]/publish                0 B                0 B
+├ ƒ /api/socket                                         0 B                0 B
+├ ƒ /api/spiritual-assessment                           0 B                0 B
+├ ƒ /api/spiritual-gifts                                0 B                0 B
+├ ƒ /api/support-contact                                0 B                0 B
+├ ○ /api/test-all-integrations                          0 B                0 B
+├ ƒ /api/test-bible                                     0 B                0 B
+├ ○ /api/test-fetch                                     0 B                0 B
+├ ○ /api/test-integration-compile                       0 B                0 B
+├ ○ /api/test-mailgun-send                              0 B                0 B
+├ ƒ /api/test-members-data                              0 B                0 B
+├ ○ /api/test-twilio-send                               0 B                0 B
+├ ○ /api/test-whatsapp-business-send                    0 B                0 B
+├ ƒ /api/testimonies                                    0 B                0 B
+├ ƒ /api/testimonies/[id]                               0 B                0 B
+├ ƒ /api/testimonies/public                             0 B                0 B
+├ ƒ /api/testimony-forms                                0 B                0 B
+├ ƒ /api/theme-preferences                              0 B                0 B
+├ ƒ /api/upload                                         0 B                0 B
+├ ƒ /api/upload/social-media                            0 B                0 B
+├ ƒ /api/user-permissions                               0 B                0 B
+├ ƒ /api/user-roles                                     0 B                0 B
+├ ƒ /api/users/change-password                          0 B                0 B
+├ ƒ /api/version-debug                                  0 B                0 B
+├ ƒ /api/visitor-automation                             0 B                0 B
+├ ƒ /api/visitor-follow-ups                             0 B                0 B
+├ ƒ /api/visitor-follow-ups/[id]                        0 B                0 B
+├ ƒ /api/visitor-form/[slug]                            0 B                0 B
+├ ƒ /api/visitor-forms                                  0 B                0 B
+├ ƒ /api/visitor-qr-codes                               0 B                0 B
+├ ƒ /api/visitor-submissions                            0 B                0 B
+├ ƒ /api/volunteer-assignments                          0 B                0 B
+├ ƒ /api/volunteer-matching                             0 B                0 B
+├ ƒ /api/volunteers                                     0 B                0 B
+├ ƒ /api/volunteers/[id]                                0 B                0 B
+├ ƒ /api/web-pages                                      0 B                0 B
+├ ƒ /api/webhooks/stripe                                0 B                0 B
+├ ƒ /api/website-requests                               0 B                0 B
+├ ƒ /api/website-requests/[id]                          0 B                0 B
+├ ƒ /api/websites                                       0 B                0 B
+├ ƒ /api/websites/[id]                                  0 B                0 B
+├ ƒ /auth/fresh-signup                                  11.5 kB         147 kB
+├ ƒ /auth/signin                                        3.61 kB         123 kB
+├ ƒ /auth/signup                                        6.45 kB         146 kB
+├ ƒ /automation-rules                                   8.69 kB         153 kB
+├ ƒ /automation-rules/dashboard                         4.84 kB         100 kB
+├ ƒ /automation-rules/templates                         2.39 kB         137 kB
+├ ƒ /business-intelligence                              10.4 kB         249 kB
+├ ƒ /check-ins                                          19 kB           146 kB
+├ ƒ /clear-cookies                                      809 B          98.2 kB
+├ ƒ /communications                                     12.8 kB         140 kB
+├ ƒ /donate/[churchId]                                  6.33 kB         131 kB
+├ ƒ /donate/thank-you                                   4.66 kB         104 kB
+├ ƒ /donations                                          13.2 kB         141 kB
+├ ƒ /donations/settings                                 9.57 kB         120 kB
+├ ƒ /events                                             14.4 kB         142 kB
+├ ƒ /follow-ups                                         8.94 kB         133 kB
+├ ƒ /form-builder                                       52 kB           187 kB
+├ ƒ /form-submissions                                   10.6 kB         131 kB
+├ ƒ /form-viewer                                        4.95 kB         104 kB
+├ ƒ /forms                                              8.23 kB         153 kB
+├ ƒ /gender-diagnostic                                  1.06 kB        88.7 kB
+├ ƒ /help                                               6.96 kB         111 kB
+├ ƒ /help/addons/donaciones-online                      5.69 kB         110 kB
+├ ƒ /help/addons/sms-masivos                            4.04 kB         109 kB
+├ ƒ /help/addons/transmision-en-vivo                    4.18 kB        99.4 kB
+├ ƒ /help/addons/transmisión-en-vivo                    4.18 kB        99.4 kB
+├ ƒ /help/communications                                3.77 kB         108 kB
+├ ƒ /help/donations                                     3.54 kB         108 kB
+├ ƒ /help/events                                        3.71 kB         108 kB
+├ ƒ /help/faq                                           5.61 kB         110 kB
+├ ƒ /help/manual/advanced-export-system                 5.4 kB          101 kB
+├ ƒ /help/manual/analytics-pastoral-insights            5.05 kB         110 kB
+├ ƒ /help/manual/automation-rules                       8.62 kB         113 kB
+├ ƒ /help/manual/check-ins                              4.7 kB          109 kB
+├ ƒ /help/manual/communications                         5.54 kB         110 kB
+├ ƒ /help/manual/complete                               5.3 kB          110 kB
+├ ƒ /help/manual/donations                              5.15 kB         110 kB
+├ ƒ /help/manual/events                                 5.43 kB         110 kB
+├ ƒ /help/manual/getting-started                        4.39 kB         109 kB
+├ ƒ /help/manual/intelligent-analytics                  4.74 kB        99.9 kB
+├ ƒ /help/manual/members                                6.75 kB         111 kB
+├ ƒ /help/manual/permissions                            5.24 kB         110 kB
+├ ƒ /help/manual/prayer-automation                      5.28 kB         110 kB
+├ ƒ /help/manual/setup                                  5.75 kB         110 kB
+├ ƒ /help/manual/social-media-automation                5.38 kB         101 kB
+├ ƒ /help/manual/spiritual-gifts                        7.04 kB         102 kB
+├ ƒ /help/manual/subscription                           4.89 kB         109 kB
+├ ƒ /help/manual/super-admin-automation                 4.87 kB         109 kB
+├ ƒ /help/manual/visitor-automation                     5.73 kB         110 kB
+├ ƒ /help/manual/visitor-forms                          4.4 kB         99.6 kB
+├ ƒ /help/manual/volunteers                             152 B          87.8 kB
+├ ƒ /help/manual/whats-new-august-2025                  4.49 kB        99.7 kB
+├ ƒ /help/members                                       3.2 kB          108 kB
+├ ƒ /help/setup                                         2.79 kB         107 kB
+├ ƒ /help/subscription                                  4.05 kB         109 kB
+├ ƒ /help/support/ticket                                5.3 kB          135 kB
+├ ƒ /help/videos                                        4.5 kB          109 kB
+├ ƒ /home                                               5.33 kB         143 kB
+├ ƒ /intelligent-analytics                              152 B          87.8 kB
+├ ƒ /marketing-campaigns                                16.6 kB         261 kB
+├ ƒ /members                                            44.3 kB         205 kB
+├ ƒ /members/bulk-gender-update                         9.47 kB         134 kB
+├ ƒ /notifications                                      20.2 kB         213 kB
+├ ƒ /platform/analytics                                 6.43 kB         114 kB
+├ ƒ /platform/churches                                  15.9 kB         151 kB
+├ ƒ /platform/churches/[id]/details                     5.16 kB         110 kB
+├ ƒ /platform/churches/[id]/settings                    12.4 kB         117 kB
+├ ƒ /platform/churches/[id]/users                       15.9 kB         151 kB
+├ ƒ /platform/churches/fresh-onboard                    9.96 kB         105 kB
+├ ƒ /platform/churches/onboard                          11.5 kB         116 kB
+├ ƒ /platform/dashboard                                 7.7 kB          129 kB
+├ ƒ /platform/help                                      6.36 kB         111 kB
+├ ƒ /platform/help/manual/check-ins                     5.32 kB         110 kB
+├ ƒ /platform/help/manual/complete                      5 kB            109 kB
+├ ƒ /platform/help/manual/online-donations              5.13 kB         110 kB
+├ ƒ /platform/help/manual/qualification-settings        6.88 kB         111 kB
+├ ƒ /platform/help/manual/user-members                  7.23 kB         112 kB
+├ ƒ /platform/help/troubleshooting                      5.93 kB         101 kB
+├ ƒ /platform/invoices                                  14.4 kB         145 kB
+├ ƒ /platform/profile                                   14.1 kB         119 kB
+├ ƒ /platform/settings                                  20 kB           153 kB
+├ ƒ /platform/support-settings                          5.8 kB          110 kB
+├ ƒ /platform/tenant-credentials                        12.5 kB         125 kB
+├ ƒ /platform/users                                     11.8 kB         147 kB
+├ ƒ /platform/users/[id]/details                        8.84 kB         104 kB
+├ ƒ /platform/users/[id]/role                           10.2 kB         131 kB
+├ ƒ /platform/website-services                          6.2 kB          114 kB
+├ ƒ /platform/website-services/create                   7.73 kB         119 kB
+├ ƒ /prayer-form/[slug]                                 157 B           134 kB
+├ ƒ /prayer-requests                                    27.7 kB         174 kB
+├ ƒ /prayer-wall                                        8.44 kB         216 kB
+├ ƒ /prayer/[code]                                      157 B           134 kB
+├ ƒ /profile                                            8.23 kB         145 kB
+├ ƒ /public/children-checkin/[qrcode]                   9.01 kB         108 kB
+├ ƒ /reports                                            9.34 kB         146 kB
+├ ƒ /sermons                                            150 kB          281 kB
+├ ƒ /settings/donations                                 9.57 kB         120 kB
+├ ƒ /settings/integrations                              7.53 kB         131 kB
+├ ƒ /settings/notifications                             7.69 kB         150 kB
+├ ƒ /settings/permissions                               17.2 kB         160 kB
+├ ƒ /settings/profile                                   13.3 kB         146 kB
+├ ƒ /settings/qualification                             8.92 kB         115 kB
+├ ƒ /settings/theme                                     12.4 kB         152 kB
+├ ƒ /social-media                                       15.5 kB         274 kB
+├ ƒ /spiritual-gifts                                    6.98 kB         109 kB
+├ ƒ /test-assessment                                    3.66 kB         139 kB
+├ ƒ /test-member-integration                            6.34 kB         146 kB
+├ ƒ /test-members-api                                   1.28 kB        98.7 kB
+├ ƒ /visitor-form/[slug]                                9.48 kB         134 kB
+├ ƒ /volunteers                                         30.1 kB         165 kB
+├ ƒ /volunteers/spiritual-assessment                    4.13 kB         153 kB
+├ ƒ /website-builder                                    11.3 kB         157 kB
+└ ƒ /website-requests                                   14.3 kB         149 kB
++ First Load JS shared by all                           87.7 kB
+  ├ chunks/2117-a0502780cbeb325a.js                     31.9 kB
+  ├ chunks/fd9d1056-4c7c47cd4dd0ca36.js                 53.6 kB
+  └ other shared chunks (total)                         2.15 kB
+
+
+ƒ Middleware                                            49.1 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,7 +1,7 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 2.9  
-**Last Updated**: January 3, 2026  
+**Document Version**: 3.0  
+**Last Updated**: January 4, 2026  
 **Project Status**: Production Active - Phase 3 Complete, Phase 4 Planning (95% Complete)  
 
 ---
@@ -21,7 +21,8 @@
 ## 🚨 AI Agent Quick Start (READ FIRST)
 
 **Essential Facts for Immediate Productivity:**
-- **Production System**: 189 Next.js pages deployed on Railway with automatic CD pipeline
+- **Production System**: 348 total routes (116 pages + 232 API routes) deployed on Railway with automatic CD pipeline
+- **Previous Achievement**: 212/212 pages compiled successfully (commit 74839c1), system has expanded significantly
 - **Multi-Tenant**: Every DB query MUST include `churchId` filtering (except SUPER_ADMIN operations)
 - **Authentication Gate**: `middleware.ts` (229 lines) controls ALL routing - never bypass
 - **Database**: Prisma singleton via `import { db } from '@/lib/db'` - ~50 tables, 2,476 schema lines
@@ -43,7 +44,8 @@ This is an **enterprise-grade church management platform** actively deployed in 
 - **Phase 4**: AI & Mobile Apps 🔄 **PLANNING** - Target Q1 2026
 
 ### Quick Context (READ THIS FIRST)
-- **189 Next.js pages** in production with strict TypeScript enforcement (`ignoreBuildErrors: false`)
+- **348 total routes** (116 pages + 232 API routes) in production with strict TypeScript enforcement (`ignoreBuildErrors: false`)
+- **Historical Achievement**: 212/212 pages successfully compiled (system has grown beyond this)
 - **~2,476 lines** Prisma schema (~50 tables) with multi-tenant church scoping
 - **Railway deployment** with automatic builds on `git push` to main branch
 - **Production database**: PostgreSQL with connection pooling (`lib/db.ts` singleton pattern)
@@ -240,7 +242,7 @@ Before implementing or deleting ANY code, **ALWAYS** ask yourself:
 ```bash
 git add .
 git commit -m "descriptive message"
-git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (must pass 189/189) → next start
+git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (348 routes) → next start
 ```
 
 **CRITICAL: Never use `npx prisma db push` in production**. Use `npx prisma migrate dev` to create migrations, then migrations run automatically on Railway deployment.
@@ -250,7 +252,7 @@ git push origin main  # → Triggers Railway build → Nixpacks detects Next.js 
 ### Development
 ```bash
 npm run dev                    # Start dev server (0.0.0.0:3000)
-npm run build                  # Production build (MUST pass 189/189 pages)
+npm run build                  # Production build (348 total routes: 116 pages + 232 API routes)
 npm run build:memory-optimized # Memory-optimized build (CRITICAL for production)
 npm run build:incremental      # Experimental incremental build mode
 npx prisma db seed            # Populate database (scripts/seed.ts - 1596 lines)
@@ -425,7 +427,7 @@ git push origin main  # → Triggers Railway build → Nixpacks detects Next.js 
 ### Production Deployment Standards
 - **TypeScript Coverage**: 100% with zero compilation errors (ENFORCED)
 - **Memory Optimization**: Use `npm run build:memory-optimized` for production
-- **Railway Deployment**: All builds must pass 189/189 pages successfully
+- **Railway Deployment**: All builds must compile 348 total routes successfully (116 pages + 232 API routes)
 - **Feature Flags**: Use for safe deployment of new features
 
 ### Analytics Development
@@ -500,7 +502,7 @@ git push origin main  # Triggers Railway build & deploy
 - Nixpacks detects Next.js application
 - Installs dependencies with npm ci
 - Runs Prisma generate
-- Executes next build (must pass 189/189 pages)
+- Executes next build (compiles 348 total routes)
 - Starts production server with next start
 ```
 
@@ -648,7 +650,7 @@ console.log(`API ${pathname} completed in ${duration}ms`)
 - Feature flags enable safe rollouts (ENABLE_SOCIAL_MEDIA_AUTOMATION)
 - Pre-deployment validation scripts catch issues before production
 - Memory optimization scripts prevent resource exhaustion
-- 189 pages build successfully validates entire application
+- 348 total routes (116 pages + 232 API routes) build successfully validates entire application
 
 ⚠️ **Cons:**
 - No formal test suite - relies on TypeScript compilation and manual testing

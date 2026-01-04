@@ -763,7 +763,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {checkIns.reduce((acc, c) => acc + c.followUps.filter(f => f.status === 'PENDIENTE').length, 0)}
+                  {checkIns.reduce((acc, c) => acc + (c.followUps?.filter(f => f.status === 'PENDIENTE')?.length || 0), 0)}
                 </div>
               </CardContent>
             </Card>
