@@ -50,6 +50,21 @@ export default function SpiritualGiftsManagement() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
 
+  // Helper function to safely get spiritual gifts array
+  const getSafeGiftsArray = (gifts: any) => {
+    try {
+      if (Array.isArray(gifts)) {
+        return gifts
+      } else if (typeof gifts === 'string') {
+        const parsed = JSON.parse(gifts)
+        return Array.isArray(parsed) ? parsed : []
+      }
+    } catch (e) {
+      console.warn('Error parsing spiritual gifts:', e)
+    }
+    return []
+  }
+
   useEffect(() => {
     fetchData()
   }, [])
@@ -75,7 +90,7 @@ export default function SpiritualGiftsManagement() {
         
         // Use the same data structure as other parts of the app
         const membersArray = data.members || data
-        console.log('🔍 Members with spiritual gifts:', membersArray.filter((m: any) => m.spiritualGifts && m.spiritualGifts.length > 0).length)
+        console.log('🔍 Members with spiritual gifts:', membersArray.filter((m: any) => getSafeGiftsArray(m.spiritualGifts).length > 0).length)
         console.log('🔍 Members with spiritual profiles:', membersArray.filter((m: any) => m.spiritualProfile).length)
         
         setMembers(membersArray)
@@ -139,7 +154,7 @@ export default function SpiritualGiftsManagement() {
                          member.spiritualProfile.primaryGifts.length > 0
     
     // 🔄 OLD SYSTEM - Check legacy fields (fallback)
-    const hasOldGifts = member.spiritualGifts && member.spiritualGifts.length > 0
+    const hasOldGifts = getSafeGiftsArray(member.spiritualGifts).length > 0
     
     // Use NEW system if available, fallback to OLD system
     return hasNewProfile || hasOldGifts
@@ -152,7 +167,7 @@ export default function SpiritualGiftsManagement() {
                          member.spiritualProfile.primaryGifts.length > 0
     
     // 🔄 OLD SYSTEM - Check legacy fields (fallback)
-    const hasOldGifts = member.spiritualGifts && member.spiritualGifts.length > 0
+    const hasOldGifts = getSafeGiftsArray(member.spiritualGifts).length > 0
     
     // Member lacks profile if NEITHER system has data
     return !hasNewProfile && !hasOldGifts
@@ -291,21 +306,12 @@ export default function SpiritualGiftsManagement() {
                         </p>
                       )}
                     </div>
-                  ) : member.spiritualGifts && member.spiritualGifts.length > 0 ? (
+                  ) : getSafeGiftsArray(member.spiritualGifts).length > 0 ? (
                     <div>
                       <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Sistema Anterior)</p>
                       <div className="flex flex-wrap gap-1">
                         {(() => {
-                          let gifts = []
-                          try {
-                            if (Array.isArray(member.spiritualGifts)) {
-                              gifts = member.spiritualGifts
-                            } else if (typeof member.spiritualGifts === 'string') {
-                              gifts = JSON.parse(member.spiritualGifts)
-                            }
-                          } catch (e) {
-                            gifts = []
-                          }
+                          const gifts = getSafeGiftsArray(member.spiritualGifts)
                           return gifts.slice(0, 3).map((giftId, index) => (
                             <Badge key={index} variant="default" className="text-xs">
                               {getGiftName(giftId)}
@@ -313,16 +319,7 @@ export default function SpiritualGiftsManagement() {
                           ))
                         })()}
                         {(() => {
-                          let gifts = []
-                          try {
-                            if (Array.isArray(member.spiritualGifts)) {
-                              gifts = member.spiritualGifts
-                            } else if (typeof member.spiritualGifts === 'string') {
-                              gifts = JSON.parse(member.spiritualGifts)
-                            }
-                          } catch (e) {
-                            gifts = []
-                          }
+                          const gifts = getSafeGiftsArray(member.spiritualGifts)
                           return gifts.length > 3 && (
                             <Badge variant="outline" className="text-xs">
                               +{gifts.length - 3} más
@@ -341,7 +338,7 @@ export default function SpiritualGiftsManagement() {
                   <div className="flex gap-2">
                     {/* Check if member has profile in EITHER system */}
                     {(member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0) || 
-                     (member.spiritualGifts && member.spiritualGifts.length > 0) ? (
+                  ) : getSafeGiftsArray(member.spiritualGifts).length > 0 ? (
                       <Button 
                         size="sm" 
                         variant="outline" 
