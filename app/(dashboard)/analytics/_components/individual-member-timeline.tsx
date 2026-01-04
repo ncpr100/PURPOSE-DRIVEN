@@ -400,14 +400,14 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                       Riesgo {selectedMember.riskLevel === 'low' ? 'Bajo' : 
                               selectedMember.riskLevel === 'medium' ? 'Medio' : 'Alto'}
                     </Badge>
-                    {selectedMember.spiritualGifts.slice(0, 2).map((gift, index) => (
+                    {(selectedMember.spiritualGifts || []).slice(0, 2).map((gift, index) => (
                       <Badge key={index} variant="secondary">
                         {gift}
                       </Badge>
                     ))}
-                    {selectedMember.spiritualGifts.length > 2 && (
+                    {(selectedMember.spiritualGifts || []).length > 2 && (
                       <Badge variant="secondary">
-                        +{selectedMember.spiritualGifts.length - 2} más
+                        +{(selectedMember.spiritualGifts || []).length - 2} más
                       </Badge>
                     )}
                   </div>

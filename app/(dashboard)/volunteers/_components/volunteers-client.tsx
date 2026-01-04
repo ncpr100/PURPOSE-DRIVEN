@@ -858,11 +858,18 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
               {volunteer.skills && (
                 <div className="flex flex-wrap gap-1">
-                  {JSON.parse(volunteer.skills).slice(0, 3).map((skill: string, index: number) => (
-                    <Badge key={index} variant="secondary" className="text-xs">
-                      {skill}
-                    </Badge>
-                  ))}
+                  {(() => {
+                    try {
+                      const skills = JSON.parse(volunteer.skills)
+                      return (skills || []).slice(0, 3).map((skill: string, index: number) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {skill}
+                        </Badge>
+                      ))
+                    } catch {
+                      return null
+                    }
+                  })()}
                 </div>
               )}
 
@@ -1251,16 +1258,16 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   Historial de Asignaciones ({selectedVolunteer.assignments.length})
                 </Label>
                 <div className="mt-2">
-                  {selectedVolunteer.assignments.length > 0 ? (
+                  {(selectedVolunteer.assignments || []).length > 0 ? (
                     <div className="space-y-2">
-                      {selectedVolunteer.assignments.slice(0, 3).map((assignment: any, index: number) => (
+                      {(selectedVolunteer.assignments || []).slice(0, 3).map((assignment: any, index: number) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
                           <Calendar className="h-4 w-4 text-blue-500" />
                           <span className="text-sm">Asignación {index + 1}</span>
                           <Badge variant="outline" className="ml-auto text-xs">Activa</Badge>
                         </div>
                       ))}
-                      {selectedVolunteer.assignments.length > 3 && (
+                      {(selectedVolunteer.assignments || []).length > 3 && (
                         <div className="text-sm text-muted-foreground">
                           +{selectedVolunteer.assignments.length - 3} asignaciones más
                         </div>

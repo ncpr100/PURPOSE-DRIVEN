@@ -180,10 +180,10 @@ export function DonationStats() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {stats.byCategory.length === 0 ? (
+              {!stats?.byCategory?.length ? (
                 <p className="text-muted-foreground text-sm">No hay datos disponibles</p>
               ) : (
-                stats.byCategory.slice(0, 5).map((item, index) => (
+                (stats.byCategory || []).slice(0, 5).map((item, index) => (
                   <div key={index} className="flex justify-between items-center">
                     <div>
                       <p className="font-medium">{item.categoryName}</p>
@@ -206,10 +206,10 @@ export function DonationStats() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {stats.byPaymentMethod.length === 0 ? (
+              {!stats?.byPaymentMethod?.length ? (
                 <p className="text-muted-foreground text-sm">No hay datos disponibles</p>
               ) : (
-                stats.byPaymentMethod.slice(0, 5).map((item, index) => (
+                (stats.byPaymentMethod || []).slice(0, 5).map((item, index) => (
                   <div key={index} className="flex justify-between items-center">
                     <div>
                       <p className="font-medium">{item.paymentMethodName}</p>
@@ -232,10 +232,10 @@ export function DonationStats() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {stats.topDonors.length === 0 ? (
+              {!stats?.topDonors?.length ? (
                 <p className="text-muted-foreground text-sm">No hay datos disponibles</p>
               ) : (
-                stats.topDonors.slice(0, 5).map((item, index) => (
+                (stats.topDonors || []).slice(0, 5).map((item, index) => (
                   <div key={index} className="flex justify-between items-center">
                     <div>
                       <p className="font-medium">{item.memberName}</p>
