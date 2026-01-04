@@ -331,7 +331,7 @@ export function DashboardClient({
           <CardContent>
             {recentMembers?.length > 0 ? (
               <div className="space-y-4">
-                {recentMembers.map((member) => (
+                {(recentMembers || []).map((member) => (
                   <div key={member.id} className="flex items-center justify-between">
                     <div>
                       <p className="font-medium">
@@ -391,7 +391,7 @@ export function DashboardClient({
           <CardContent>
             {recentSermons?.length > 0 ? (
               <div className="space-y-4">
-                {recentSermons.map((sermon) => (
+                {(recentSermons || []).map((sermon) => (
                   <div key={sermon.id} className="flex items-center justify-between">
                     <div className="flex-1">
                       <p className="font-medium line-clamp-1">
@@ -455,7 +455,7 @@ export function DashboardClient({
           <CardContent>
             {recentCheckIns?.length > 0 ? (
               <div className="space-y-4">
-                {recentCheckIns.map((checkIn) => (
+                {(recentCheckIns || []).map((checkIn) => (
                   <div key={checkIn.id} className="flex items-center justify-between">
                     <div>
                       <p className="font-medium flex items-center gap-2">
@@ -525,7 +525,7 @@ export function DashboardClient({
               </div>
             ) : recentWebsiteRequests?.length > 0 ? (
               <div className="space-y-4">
-                {recentWebsiteRequests.map((request) => (
+                {(recentWebsiteRequests || []).map((request) => (
                   <div key={request.id} className="flex items-center justify-between">
                     <div>
                       <p className="font-medium flex items-center gap-2">

@@ -63,7 +63,7 @@ export function BulkGenderUpdateClient({ userRole }: { userRole: string }) {
         setMembers(data.members || [])
         
         // Initialize updates array with suggested genders
-        const initialUpdates = data.members.map((member: Member) => ({
+        const initialUpdates = (data.members || []).map((member: Member) => ({
           id: member.id,
           firstName: member.firstName,
           lastName: member.lastName,

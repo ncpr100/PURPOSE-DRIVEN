@@ -894,7 +894,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                       <div className="text-center p-3 bg-purple-50 rounded-lg">
                         <div className="text-2xl font-bold text-purple-600">
-                          {aiInsights.insights.length}
+                          {aiInsights?.insights?.length || 0}
                         </div>
                         <div className="text-xs text-purple-700">Total Insights</div>
                       </div>
@@ -920,7 +920,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
                     {/* AI Insights */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {aiInsights.insights.slice(0, 6).map((insight: any, index: number) => {
+                      {(aiInsights?.insights || []).slice(0, 6).map((insight: any, index: number) => {
                         const getInsightIcon = (type: string) => {
                           switch (type) {
                             case 'pattern': return <Target className="h-4 w-4" />
@@ -968,7 +968,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                               <div className="space-y-1">
                                 <div className="text-xs font-medium text-gray-600">Acciones recomendadas:</div>
                                 <ul className="text-xs text-gray-600 space-y-1">
-                                  {insight.actionItems.slice(0, 2).map((action: string, i: number) => (
+                                  {(insight.actionItems || []).slice(0, 2).map((action: string, i: number) => (
                                     <li key={i} className="flex items-start gap-1">
                                       <span className="text-green-600 mt-0.5">•</span>
                                       <span>{action}</span>
@@ -982,11 +982,11 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       })}
                     </div>
 
-                    {aiInsights.insights.length > 6 && (
+                    {(aiInsights?.insights?.length || 0) > 6 && (
                       <div className="text-center">
                         <Button variant="outline" size="sm">
                           <Eye className="h-4 w-4 mr-2" />
-                          Ver todos los insights ({aiInsights.insights.length})
+                          Ver todos los insights ({aiInsights?.insights?.length || 0})
                         </Button>
                       </div>
                     )}
