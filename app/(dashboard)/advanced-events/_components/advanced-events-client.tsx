@@ -514,7 +514,7 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <Settings className="w-4 h-4" />
-                        <span>{event.resourceReservations.length} recursos reservados</span>
+                        <span>{(event.resourceReservations || []).length} recursos reservados</span>
                       </div>
                       
                       <Button 
