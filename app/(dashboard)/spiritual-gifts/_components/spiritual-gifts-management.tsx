@@ -274,14 +274,14 @@ export default function SpiritualGiftsManagement() {
                     <div>
                       <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Nuevo Sistema)</p>
                       <div className="flex flex-wrap gap-1">
-                        {member.spiritualProfile.primaryGifts.slice(0, 3).map((giftId, index) => (
+                        {(member.spiritualProfile?.primaryGifts || []).slice(0, 3).map((giftId, index) => (
                           <Badge key={index} variant="default" className="text-xs">
                             {getGiftName(giftId)}
                           </Badge>
                         ))}
-                        {member.spiritualProfile.primaryGifts.length > 3 && (
+                        {(member.spiritualProfile?.primaryGifts || []).length > 3 && (
                           <Badge variant="outline" className="text-xs">
-                            +{member.spiritualProfile.primaryGifts.length - 3} más
+                            +{(member.spiritualProfile?.primaryGifts || []).length - 3} más
                           </Badge>
                         )}
                       </div>

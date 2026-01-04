@@ -450,7 +450,7 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                 <div className="mb-3">
                   <span className="text-xs text-gray-500">Dones espirituales:</span>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {member.spiritualGifts.map((gift, index) => (
+                    {(member.spiritualGifts || []).map((gift, index) => (
                       <Badge key={index} variant="secondary" className="text-xs">
                         {gift}
                       </Badge>

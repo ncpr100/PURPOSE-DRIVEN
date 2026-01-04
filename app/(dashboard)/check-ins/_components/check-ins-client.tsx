@@ -832,7 +832,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                   <div className="flex items-center justify-between">
                     <Badge variant="outline">
-                      {checkIn.followUps.length} seguimientos
+                      {(checkIn.followUps || []).length} seguimientos
                     </Badge>
                     
                     {checkIn.qrCode && (
