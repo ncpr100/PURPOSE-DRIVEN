@@ -337,8 +337,8 @@ export default function SpiritualGiftsManagement() {
                   
                   <div className="flex gap-2">
                     {/* Check if member has profile in EITHER system */}
-                    {(member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0) || 
-                  ) : getSafeGiftsArray(member.spiritualGifts).length > 0 ? (
+                    {((member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0) || 
+                      getSafeGiftsArray(member.spiritualGifts).length > 0) ? (
                       <Button 
                         size="sm" 
                         variant="outline" 
