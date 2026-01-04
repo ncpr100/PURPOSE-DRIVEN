@@ -295,16 +295,40 @@ export default function SpiritualGiftsManagement() {
                     <div>
                       <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Sistema Anterior)</p>
                       <div className="flex flex-wrap gap-1">
-                        {(member.spiritualGifts || []).slice(0, 3).map((giftId, index) => (
-                          <Badge key={index} variant="default" className="text-xs">
-                            {getGiftName(giftId)}
-                          </Badge>
-                        ))}
-                        {(member.spiritualGifts || []).length > 3 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{(member.spiritualGifts || []).length - 3} más
-                          </Badge>
-                        )}
+                        {(() => {
+                          let gifts = []
+                          try {
+                            if (Array.isArray(member.spiritualGifts)) {
+                              gifts = member.spiritualGifts
+                            } else if (typeof member.spiritualGifts === 'string') {
+                              gifts = JSON.parse(member.spiritualGifts)
+                            }
+                          } catch (e) {
+                            gifts = []
+                          }
+                          return gifts.slice(0, 3).map((giftId, index) => (
+                            <Badge key={index} variant="default" className="text-xs">
+                              {getGiftName(giftId)}
+                            </Badge>
+                          ))
+                        })()}
+                        {(() => {
+                          let gifts = []
+                          try {
+                            if (Array.isArray(member.spiritualGifts)) {
+                              gifts = member.spiritualGifts
+                            } else if (typeof member.spiritualGifts === 'string') {
+                              gifts = JSON.parse(member.spiritualGifts)
+                            }
+                          } catch (e) {
+                            gifts = []
+                          }
+                          return gifts.length > 3 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{gifts.length - 3} más
+                            </Badge>
+                          )
+                        })()}
                       </div>
                     </div>
                   ) : (

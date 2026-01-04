@@ -400,10 +400,10 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-medium">{donation.category.name}</div>
+                    <div className="text-sm font-medium">{donation.category?.name || 'Sin categoría'}</div>
                     <div className="text-sm text-muted-foreground flex items-center">
                       <CreditCard className="h-3 w-3 mr-1" />
-                      {donation.paymentMethod.name}
+                      {donation.paymentMethod?.name || 'Sin método'}
                     </div>
                     <div className="text-sm text-muted-foreground flex items-center">
                       <Calendar className="h-3 w-3 mr-1" />

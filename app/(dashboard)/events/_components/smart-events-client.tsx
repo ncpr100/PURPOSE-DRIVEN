@@ -988,7 +988,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       <p className="text-sm">Capacidad: {resource.capacity}</p>
                     )}
                     <p className="text-sm text-muted-foreground">
-                      {resource.reservations.length} reservaciones activas
+                      {(resource.reservations || []).length} reservaciones activas
                     </p>
                   </CardContent>
                 </Card>
