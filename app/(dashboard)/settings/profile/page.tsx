@@ -155,7 +155,7 @@ export default function ChurchProfilePage() {
           const response = await fetch('/api/church/profile')
           if (response.ok) {
             const data = await response.json()
-            console.log('🏠 Loading church data from API...')
+            console.log('Loading church data from API...')
             console.log('📋 Church name:', data.church?.name)
             console.log('🖼️  Logo exists:', !!data.church?.logo)
             if (data.church?.logo) {

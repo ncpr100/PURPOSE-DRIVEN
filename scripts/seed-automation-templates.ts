@@ -10,7 +10,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Seeding automation rule templates...\n');
+  console.log('Seeding automation rule templates...\n');
 
   // ============================================================================
   // PRAYER REQUEST WORKFLOW TEMPLATES
@@ -26,7 +26,7 @@ async function main() {
       description: 'Notifies all pastors and prayer coordinators immediately when a new prayer request is submitted. Configurable to notify specific roles or users.',
       category: 'PRAYER_REQUEST',
       subcategory: 'CHURCH_NOTIFICATION',
-      icon: '🙏',
+      icon: 'MESSAGE_SQUARE',
       color: '#3B82F6',
       isSystemTemplate: true,
       isActive: true,
@@ -147,7 +147,7 @@ async function main() {
             recipient: 'REQUESTER',
             condition: 'preferredContact === "whatsapp"',
             template: 'prayer-acknowledgment-whatsapp',
-            message: 'Paz de Cristo {{name}}! Recibimos tu petición de oración. Nuestro equipo orará por ti y se pondrá en contacto pronto. 🙏'
+            message: 'Paz de Cristo {{name}}! Recibimos tu petición de oración. Nuestro equipo orará por ti y se pondrá en contacto pronto.'
           }
         }
       ],

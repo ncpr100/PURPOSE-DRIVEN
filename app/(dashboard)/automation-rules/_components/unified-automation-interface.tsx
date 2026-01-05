@@ -19,6 +19,7 @@ import {
   Users,
   Calendar,
   MessageCircle,
+  MessageSquare,
   ArrowRight
 } from 'lucide-react'
 
@@ -47,15 +48,15 @@ interface Template {
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case 'PRAYER_REQUEST':
-      return <Heart className="h-5 w-5" />
+      return <MessageSquare className="h-5 w-5 text-purple-600" />
     case 'VISITOR_FOLLOWUP':
-      return <Users className="h-5 w-5" />
+      return <Users className="h-5 w-5 text-blue-600" />
     case 'SOCIAL_MEDIA':
-      return <MessageCircle className="h-5 w-5" />
+      return <MessageCircle className="h-5 w-5 text-green-600" />
     case 'EVENTS':
-      return <Calendar className="h-5 w-5" />
+      return <Calendar className="h-5 w-5 text-orange-600" />
     default:
-      return <Zap className="h-5 w-5" />
+      return <Zap className="h-5 w-5 text-gray-600" />
   }
 }
 
@@ -427,14 +428,22 @@ export function UnifiedAutomationInterface() {
             }
             const iconGradient = iconGradients[template.category] || 'from-gray-500 to-gray-600'
 
-            // Emoji mapping for categories
-            const categoryEmojis: Record<string, string> = {
-              'PRAYER_REQUEST': '🙏',
-              'VISITOR_FOLLOWUP': '👥',
-              'SOCIAL_MEDIA': '💬',
-              'EVENTS': '📅'
+            // Icon mapping for categories with brand colors
+            const getCategoryIconForTemplate = (category: string) => {
+              switch (category) {
+                case 'PRAYER_REQUEST':
+                  return <MessageSquare className="h-6 w-6 text-purple-600" />
+                case 'VISITOR_FOLLOWUP':
+                  return <Users className="h-6 w-6 text-blue-600" />
+                case 'SOCIAL_MEDIA':
+                  return <MessageCircle className="h-6 w-6 text-green-600" />
+                case 'EVENTS':
+                  return <Calendar className="h-6 w-6 text-orange-600" />
+                default:
+                  return <Zap className="h-6 w-6 text-gray-600" />
+              }
             }
-            const emoji = categoryEmojis[template.category] || '⚡'
+            const categoryIcon = getCategoryIconForTemplate(template.category)
 
             // Text colors matching button gradient
             const textColors: Record<string, string> = {
@@ -454,9 +463,11 @@ export function UnifiedAutomationInterface() {
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div 
-                        className={`flex h-14 w-14 items-center justify-center rounded-xl text-3xl bg-gradient-to-br ${iconGradient} shadow-lg`}
+                        className={`flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${iconGradient} shadow-lg`}
                       >
-                        <span>{emoji}</span>
+                        <div className="scale-110">
+                          {categoryIcon}
+                        </div>
                       </div>
                       <div className="flex flex-col gap-1">
                         <Badge variant="secondary" className="text-xs shadow-sm">
@@ -476,7 +487,9 @@ export function UnifiedAutomationInterface() {
 
                     <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">
                       <div className="flex items-center gap-1.5 text-xs font-bold">
-                        <span className="text-lg">{emoji}</span>
+                        <div className="scale-75">
+                          {getCategoryIconForTemplate(template.category)}
+                        </div>
                         <span className={`bg-gradient-to-r ${iconGradient} bg-clip-text text-transparent`}>
                           {getCategoryLabel(template.category)}
                         </span>

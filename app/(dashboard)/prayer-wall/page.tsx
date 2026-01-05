@@ -208,8 +208,9 @@ export default function PrayerWallPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-purple-800">
-            Muro de Oración 🙏
+          <h1 className="text-3xl font-bold text-purple-800 flex items-center gap-3">
+            <MessageSquare className="h-8 w-8" />
+            Muro de Oración
           </h1>
           <p className="text-gray-600 mt-1">
             {loading ? (
@@ -475,7 +476,10 @@ export default function PrayerWallPage() {
       <Card className="bg-gradient-to-r from-purple-50 to-blue-50">
         <CardContent className="p-6">
           <div className="text-center space-y-4">
-            <h2 className="text-xl font-bold text-purple-800">🙏 Muro de Oración</h2>
+            <h2 className="text-xl font-bold text-purple-800 flex items-center justify-center gap-2">
+              <MessageSquare className="h-6 w-6" />
+              Muro de Oración
+            </h2>
             <p className="text-purple-600">
               Sistema completo de peticiones de oración con análisis y estadísticas.
             </p>
