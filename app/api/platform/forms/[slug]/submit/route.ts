@@ -95,7 +95,8 @@ export async function POST(
                      validatedData.ipAddress || 'unknown'
 
     // Validate form data against form fields
-    const requiredFields = form.fields.filter((field: any) => field.required)
+    const formFields = Array.isArray(form.fields) ? form.fields : []
+    const requiredFields = formFields.filter((field: any) => field.required)
     const missingFields = requiredFields.filter((field: any) => 
       !validatedData.formData[field.id] || 
       (typeof validatedData.formData[field.id] === 'string' && 
