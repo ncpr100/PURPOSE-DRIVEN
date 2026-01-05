@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ✅ SECURITY: Check for existing user with parameterized query
-    const existingUser = await db.user.findUnique({
+    const existingUser = await db.users.findUnique({
       where: { email: sanitizedData.email },
       select: { id: true, email: true } // Limit data exposure
     })
