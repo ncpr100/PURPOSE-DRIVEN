@@ -249,7 +249,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Submissions de Formularios</h1>
+            <h1 className="text-2xl font-bold">Envíos de Formularios</h1>
             <p className="text-muted-foreground">Cargando datos...</p>
           </div>
         </div>

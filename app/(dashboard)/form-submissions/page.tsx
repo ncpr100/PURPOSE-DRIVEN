@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import { FormSubmissionsClient } from './_components/form-submissions-client'
 
 export const metadata: Metadata = {
-  title: 'Submissions de Formularios',
+  title: 'Envíos de Formularios',
   description: 'Ver todas las respuestas y datos enviados a través de formularios personalizados'
 }
 

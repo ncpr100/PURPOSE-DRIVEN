@@ -73,7 +73,7 @@ const navigationItems = [
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },
   {
-    title: 'Submissions de Formularios',
+    title: 'Envíos de Formularios',
     href: '/form-submissions',
     icon: FileText,
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
