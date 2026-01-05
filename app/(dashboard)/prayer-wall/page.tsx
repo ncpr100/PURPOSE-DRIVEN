@@ -9,26 +9,13 @@ import {
   MessageSquare,
   Clock,
   Send,
-  Zap,
-  Activity,
-  Grid3X3,
-  ExternalLink,
-  CheckCircle,
-  TrendingUp,
   Users,
   BarChart3,
   Loader2,
   LineChart,
   PieChart,
   Download,
-  Calendar,
-  Target,
-  Smartphone,
-  Wifi,
-  WifiOff,
-  Bell,
-  Share,
-  ArrowLeft
+  ExternalLink
 } from 'lucide-react'
 import {
   LineChart as RechartsLineChart,
@@ -99,66 +86,14 @@ interface PrayerAnalytics {
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#00ff00', '#ff00ff', '#00ffff']
 
 export default function PrayerWallPage() {
-  const [viewMode, setViewMode] = useState<'overview' | 'integrated'>('overview')
+  const [viewMode, setViewMode] = useState<'overview'>('overview')
   const [analytics, setAnalytics] = useState<PrayerAnalytics | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   
-  // PWA State Management
-  const [isOnline, setIsOnline] = useState(true)
-  const [isInstallable, setIsInstallable] = useState(false)
-  const [installPrompt, setInstallPrompt] = useState<any>(null)
-  const [notificationPermission, setNotificationPermission] = useState('default')
-  const [isInstalled, setIsInstalled] = useState(false)
+  // Removed PWA state management for cleaner user experience
 
-  // PWA Installation and Notifications Setup
-  useEffect(() => {
-    // Only run in browser environment
-    if (typeof window === 'undefined') return
-
-    // Check if already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true)
-    }
-
-    // Handle PWA install prompt
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault()
-      setInstallPrompt(e)
-      setIsInstallable(true)
-    }
-
-    // Handle app installed
-    const handleAppInstalled = () => {
-      setIsInstalled(true)
-      setIsInstallable(false)
-      setInstallPrompt(null)
-      console.log('PWA was installed')
-    }
-
-    // Online/Offline detection
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
-
-    // Check notification permission
-    if ('Notification' in window) {
-      setNotificationPermission(Notification.permission)
-    }
-
-    // Add event listeners
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-    window.addEventListener('appinstalled', handleAppInstalled)
-    window.addEventListener('online', handleOnline)
-    window.addEventListener('offline', handleOffline)
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-      window.removeEventListener('appinstalled', handleAppInstalled)
-      window.removeEventListener('online', handleOnline)
-      window.removeEventListener('offline', handleOffline)
-    }
-  }, [])
+  // Simplified for better user experience
 
   // PWA Installation Handler
   const handleInstallApp = async () => {
@@ -352,19 +287,19 @@ export default function PrayerWallPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-purple-800">
             Muro de Oración 🙏
           </h1>
           <p className="text-gray-600 mt-1">
             {loading ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Cargando información de peticiones...
+                Cargando peticiones de oración...
               </span>
             ) : error ? (
-              <span className="text-amber-600">⚠️ Modo sin conexión - {error}</span>
+              <span className="text-red-600">Error al cargar peticiones</span>
             ) : (
-              <span className="text-green-600">📱 Sistema móvil activo - Funciones disponibles</span>
+              <span className="text-green-600">Sistema de peticiones activo</span>
             )}
           </p>
         </div>
@@ -382,22 +317,14 @@ export default function PrayerWallPage() {
             onClick={() => handleModeSwitch('overview')}
           >
             <PieChart className="w-4 h-4 mr-2" />
-            Gráficos
-          </Button>
-          <Button 
-            variant={viewMode === 'integrated' ? 'default' : 'outline'}
-            onClick={() => handleModeSwitch('integrated')}
-            className={viewMode === 'integrated' ? 'bg-purple-600 hover:bg-purple-700' : ''}
-          >
-            <BarChart3 className="w-4 h-4 mr-2" />
-            Analytics
+            Estadísticas
           </Button>
           <Button 
             variant="outline"
             onClick={() => window.open('/prayer-requests', '_blank')}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
-            Sistema Completo
+            Ver Todas
           </Button>
         </div>
       </div>
@@ -500,85 +427,6 @@ export default function PrayerWallPage() {
       {/* Content based on mode */}
       {viewMode === 'overview' ? (
         <div className="space-y-6">
-          {/* Mobile Features Banner */}
-          <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-            <CardContent className="p-6">
-              <div className="text-center space-y-4">
-                <h2 className="text-2xl font-bold">📱 Muro de Oración Móvil</h2>
-                <p className="text-blue-100">
-                  Accede a las peticiones de oración desde cualquier dispositivo. Puedes instalar la aplicación, recibir notificaciones y usar el muro sin conexión.
-                </p>
-                <div className="flex justify-center gap-4 flex-wrap">
-                  <Badge className="bg-white text-blue-600 p-2">✅ Listo para móviles</Badge>
-                  <Badge className="bg-blue-100 text-blue-700 p-2">📱 Instalable</Badge>
-                  <Badge className="bg-purple-100 text-purple-700 p-2">🔔 Notificaciones</Badge>
-                  <Badge className="bg-indigo-100 text-indigo-700 p-2">📶 Funciona sin internet</Badge>
-                </div>
-                <Button 
-                  size="lg" 
-                  className="bg-white text-blue-600 hover:bg-gray-100"
-                  onClick={() => handleModeSwitch('integrated')}
-                >
-                  <Smartphone className="w-5 h-5 mr-2" />
-                  Ver Características Móviles
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* PWA Features Status */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Smartphone className="h-5 w-5 text-green-600" />
-                Estado de Características Mobile
-              </CardTitle>
-              <CardDescription>
-                Características móviles disponibles para acceso desde cualquier dispositivo
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="p-4 bg-green-50 rounded-lg text-center">
-                  <Smartphone className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <h4 className="font-semibold text-green-800">Instalación</h4>
-                  <p className="text-sm text-green-600 mt-1">
-                    {isInstalled ? '✅ Instalada' : isInstallable ? '🔄 Disponible' : '⏳ Pendiente'}
-                  </p>
-                </div>
-                
-                <div className="p-4 bg-blue-50 rounded-lg text-center">
-                  <Bell className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <h4 className="font-semibold text-blue-800">Notificaciones</h4>
-                  <p className="text-sm text-blue-600 mt-1">
-                    {notificationPermission === 'granted' ? '✅ Habilitadas' : 
-                     notificationPermission === 'denied' ? '❌ Bloqueadas' : '⏳ Pendientes'}
-                  </p>
-                </div>
-                
-                <div className="p-4 bg-purple-50 rounded-lg text-center">
-                  {isOnline ? (
-                    <Wifi className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                  ) : (
-                    <WifiOff className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                  )}
-                  <h4 className="font-semibold text-purple-800">Conectividad</h4>
-                  <p className="text-sm text-purple-600 mt-1">
-                    {isOnline ? '🟢 Online' : '🔴 Offline'}
-                  </p>
-                </div>
-                
-                <div className="p-4 bg-orange-50 rounded-lg text-center">
-                  <Share className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-                  <h4 className="font-semibold text-orange-800">Compartir</h4>
-                  <p className="text-sm text-orange-600 mt-1">
-                    {typeof navigator !== 'undefined' && 'share' in navigator ? '✅ Nativo' : '📋 Clipboard'}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Interactive Charts Section */}
           {analytics && analytics.trends && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -700,197 +548,24 @@ export default function PrayerWallPage() {
             </div>
           )}
         </div>
-      ) : (
-        <div className="space-y-6">
-          {/* Back Navigation */}
-          <div className="flex items-center gap-2 mb-4">
-            <Button 
-              onClick={() => setViewMode('overview')}
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Volver al Panel Principal
-            </Button>
-          </div>
-
-          {/* Mobile App Features Dashboard */}
-          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-700">
-                <Smartphone className="h-5 w-5" />
-                📱 Características Móviles Disponibles
-              </CardTitle>
-              <CardDescription>
-                Aplicación móvil con instalación, notificaciones, soporte sin conexión y optimización móvil
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="p-4 bg-blue-100 rounded-lg">
-                  <h4 className="font-semibold text-blue-800">📊 Panel Principal</h4>
-                  <p className="text-sm text-blue-600">Vista consolidada de peticiones</p>
-                </div>
-                <div className="p-4 bg-purple-100 rounded-lg">
-                  <h4 className="font-semibold text-purple-800">📱 Navegación Móvil</h4>
-                  <p className="text-sm text-purple-600">Optimizada para dispositivos móviles</p>
-                </div>
-                <div className="p-4 bg-indigo-100 rounded-lg">
-                  <h4 className="font-semibold text-indigo-800">📈 Estadísticas</h4>
-                  <p className="text-sm text-indigo-600">Gráficos interactivos en tiempo real</p>
-                </div>
-              </div>
-
-              {/* Mobile Analytics Features */}
-              <div className="bg-white p-6 rounded-lg border border-blue-200">
-                <h3 className="font-semibold text-blue-800 mb-4">📱 Características Móviles Implementadas</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <LineChart className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                    <p className="font-medium text-blue-800">Gráficos de Líneas</p>
-                    <p className="text-xs text-blue-600">Tendencias temporales</p>
-                  </div>
-                  <div className="text-center p-3 bg-green-50 rounded-lg">
-                    <PieChart className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                    <p className="font-medium text-green-800">Gráficos Circulares</p>
-                    <p className="text-xs text-green-600">Distribución categorías</p>
-                  </div>
-                  <div className="text-center p-3 bg-purple-50 rounded-lg">
-                    <BarChart3 className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                    <p className="font-medium text-purple-800">Gráficos de Barras</p>
-                    <p className="text-xs text-purple-600">Horas más activas</p>
-                  </div>
-                  <div className="text-center p-3 bg-orange-50 rounded-lg">
-                    <TrendingUp className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-                    <p className="font-medium text-orange-800">Gráficos de Área</p>
-                    <p className="text-xs text-orange-600">Crecimiento contactos</p>
-                  </div>
-                  <div className="text-center p-3 bg-indigo-50 rounded-lg">
-                    <Download className="w-8 h-8 text-indigo-600 mx-auto mb-2" />
-                    <p className="font-medium text-indigo-800">Exportación JSON</p>
-                    <p className="text-xs text-indigo-600">Datos completos</p>
-                  </div>
-                  <div className="text-center p-3 bg-teal-50 rounded-lg">
-                    <Activity className="w-8 h-8 text-teal-600 mx-auto mb-2" />
-                    <p className="font-medium text-teal-800">Interactividad</p>
-                    <p className="text-xs text-teal-600">Tooltips y leyendas</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* System Status */}
-              <div className="bg-white p-4 rounded-lg border border-purple-200">
-                <h3 className="font-semibold text-purple-800 mb-3">🔍 Estado del Sistema Analytics</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  <div className="text-center">
-                    <p className="text-gray-600">Recharts</p>
-                    <p className="text-green-600">✅ Cargado</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-gray-600">Datos API</p>
-                    <p className={loading ? "text-amber-600" : error ? "text-red-600" : "text-green-600"}>
-                      {loading ? "🔄 Cargando..." : error ? "❌ Error" : "✅ Activos"}
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-gray-600">Gráficos</p>
-                    <p className="text-blue-600">📊 4 Tipos</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-gray-600">Exportación</p>
-                    <p className="text-purple-600">💾 Disponible</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <h3 className="font-semibold text-purple-800 mb-2">📊 Analytics Completos</h3>
-                <p className="text-sm text-purple-600 mb-4">
-                  Sistema completo con gráficos interactivos, análisis de tendencias y capacidades de exportación
-                </p>
-                <div className="flex justify-center gap-4">
-                  <Button 
-                    onClick={() => window.open('/prayer-requests', '_blank')}
-                    className="bg-purple-600 hover:bg-purple-700"
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    Sistema Completo
-                  </Button>
-                  <Button 
-                    onClick={handleExportData}
-                    variant="outline"
-                    disabled={!analytics}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Exportar Analytics
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Advanced Response Metrics Chart */}
-          {analytics && analytics.trends && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5 text-green-600" />
-                  Métricas de Respuesta Detalladas
-                </CardTitle>
-                <CardDescription>
-                  Análisis de efectividad de respuestas y tasa de entrega
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <RechartsLineChart data={analytics.trends.responseMetrics}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis yAxisId="left" />
-                    <YAxis yAxisId="right" orientation="right" />
-                    <Tooltip />
-                    <Legend />
-                    <Bar yAxisId="left" dataKey="respuestasEnviadas" fill="#8884d8" name="Respuestas Enviadas" />
-                    <Line yAxisId="right" type="monotone" dataKey="tasaEntrega" stroke="#82ca9d" strokeWidth={2} name="Tasa de Entrega %" />
-                    <Line yAxisId="right" type="monotone" dataKey="tasaRespuesta" stroke="#ff7300" strokeWidth={2} name="Tasa de Respuesta %" />
-                  </RechartsLineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      )}
+      </div>
 
       {/* Sistema Completo */}
-      <Card className="bg-gradient-to-r from-purple-50 to-indigo-50">
+      <Card className="bg-gradient-to-r from-purple-50 to-blue-50">
         <CardContent className="p-6">
           <div className="text-center space-y-4">
-            <h2 className="text-xl font-bold text-blue-800">🙏 Muro de Oración - Sistema Completo</h2>
-            <div className="flex justify-center gap-4 flex-wrap">
-              <Badge className="bg-blue-100 text-blue-800 p-2">📊 Panel de Control</Badge>
-              <Badge className="bg-purple-100 text-purple-800 p-2">📱 Versión Móvil</Badge>
-              <Badge className="bg-indigo-100 text-indigo-800 p-2">📈 Estadísticas en Tiempo Real</Badge>
-              <Badge className="bg-green-100 text-green-800 p-2">📈 Análisis Avanzados</Badge>
-              <Badge className="bg-teal-100 text-teal-800 p-2">📲 Aplicación Instalable</Badge>
-            </div>
+            <h2 className="text-xl font-bold text-purple-800">🙏 Muro de Oración</h2>
+            <p className="text-purple-600">
+              Sistema completo de peticiones de oración con análisis y estadísticas.
+            </p>
             {analytics && !loading && (
-              <div className="mt-4 p-3 bg-white rounded-lg border border-blue-200">
-                <p className="text-sm text-blue-600">
-                  📊 Última actualización: {new Date().toLocaleTimeString()} | 
-                  🎯 {analytics.overview.totalRequestsCount} peticiones registradas | 
-                  📈 {analytics.trends?.requestsOverTime.length || 0} días de estadísticas | 
-                  💾 Exportación disponible
+              <div className="mt-4 p-3 bg-white rounded-lg border border-purple-200">
+                <p className="text-sm text-purple-700">
+                  {analytics.overview.totalRequestsCount} peticiones registradas | 
+                  {analytics.trends?.requestsOverTime.length || 0} días de estadísticas
                 </p>
               </div>
             )}
-            <div className="mt-4 p-4 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg">
-              <h3 className="font-semibold text-blue-800 mb-2">🎉 Muro de Oración Completado</h3>
-              <p className="text-sm text-blue-600">
-                Sistema completo de peticiones de oración: Panel principal, navegación móvil, 
-                datos en tiempo real y análisis avanzados con gráficos interactivos.
-              </p>
-            </div>
           </div>
         </CardContent>
       </Card>
