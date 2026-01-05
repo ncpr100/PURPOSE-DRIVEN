@@ -70,6 +70,7 @@ interface PlatformQRGeneratorProps {
   formSlug?: string
   isOpen: boolean
   onClose: () => void
+  onQRGenerated?: () => void
 }
 
 const CAMPAIGN_PRESETS = [
@@ -131,7 +132,8 @@ export function PlatformQRGenerator({
   formName = 'Formulario de Plataforma', 
   formSlug, 
   isOpen, 
-  onClose 
+  onClose,
+  onQRGenerated 
 }: PlatformQRGeneratorProps) {
   const [qrConfig, setQRConfig] = useState<QRConfig>({
     size: 300,
@@ -289,6 +291,11 @@ export function PlatformQRGenerator({
       }
 
       toast.success('Código QR generado exitosamente')
+      
+      // Call callback if provided
+      if (onQRGenerated) {
+        onQRGenerated()
+      }
     } catch (error) {
       console.error('Error generating QR code:', error)
       toast.error('Error al generar código QR')
