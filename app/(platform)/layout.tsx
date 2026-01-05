@@ -13,14 +13,17 @@ export default async function PlatformLayout({
   const { session } = await validateSuperAdminAccess()
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+      {/* Mobile-responsive sidebar */}
       <PlatformSidebar />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         <PlatformHeader user={session.user} />
         
-        <main className="flex-1 overflow-y-auto p-6">
-          {children}
+        <main className="flex-1 overflow-y-auto p-3 md:p-6">
+          <div className="max-w-full">
+            {children}
+          </div>
         </main>
       </div>
     </div>

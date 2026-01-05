@@ -346,10 +346,10 @@ export default function PlatformFormsClient() {
       </div>
 
       <Tabs defaultValue="forms" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="forms">Formularios</TabsTrigger>
-          <TabsTrigger value="templates">Plantillas de Marketing</TabsTrigger>
-          <TabsTrigger value="analytics">Analíticas</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:grid-cols-none lg:flex">
+          <TabsTrigger value="forms" className="text-sm">Formularios</TabsTrigger>
+          <TabsTrigger value="templates" className="text-sm">Plantillas</TabsTrigger>
+          <TabsTrigger value="analytics" className="text-sm">Analíticas</TabsTrigger>
         </TabsList>
 
         {/* Forms Tab */}
