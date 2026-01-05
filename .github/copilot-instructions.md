@@ -1,8 +1,8 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 3.0  
-**Last Updated**: January 4, 2026  
-**Project Status**: Production Active - Phase 3 Complete, Phase 4 Planning (95% Complete)  
+**Document Version**: 3.1  
+**Last Updated**: January 5, 2026  
+**Project Status**: Production Active - Phase 3 Complete, Phase 4 Architecture Ready (97% Complete)  
 
 ---
 
@@ -22,10 +22,10 @@
 
 **Essential Facts for Immediate Productivity:**
 - **Production System**: 348 total routes (116 pages + 232 API routes) deployed on Railway with automatic CD pipeline
-- **Previous Achievement**: 212/212 pages compiled successfully (commit 74839c1), system has expanded significantly
+- **Complete Prayer Wall**: 5-phase PWA implementation finished (analytics, mobile, offline-ready)
 - **Multi-Tenant**: Every DB query MUST include `churchId` filtering (except SUPER_ADMIN operations)
 - **Authentication Gate**: `middleware.ts` (229 lines) controls ALL routing - never bypass
-- **Database**: Prisma singleton via `import { db } from '@/lib/db'` - ~50 tables, 2,476 schema lines
+- **Database**: Prisma singleton via `import { db } from '@/lib/db'` - ~50 tables, 2,475 schema lines
 - **Caching**: Redis via `lib/redis-cache-manager.ts` (800+ lines) - 90%+ hit rate target
 - **Real-time**: SSE via `lib/sse-broadcast.ts` for live dashboard updates
 - **TypeScript**: `strict: false` but `ignoreBuildErrors: false` - compilation must pass
@@ -35,7 +35,7 @@
 
 ## Project State & Current Focus
 
-This is an **enterprise-grade church management platform** actively deployed in production with **95% overall completion** and **100% Phase 3 completion**. All **Member Journey Deep Analytics** and **Performance Optimization** systems have been successfully implemented, with focus now on Phase 4 preparation and advanced system optimization for enterprise scalability.
+This is an **enterprise-grade church management platform** actively deployed in production with **97% overall completion** and **100% Phase 3 completion**. All **Member Journey Deep Analytics** and **Performance Optimization** systems have been successfully implemented, with focus now on Phase 4 preparation and advanced system optimization for enterprise scalability.
 
 ### Current Phase Status
 - **Phase 1**: Core Foundation ✅ COMPLETE (Members, Events, Finance, Communication)
@@ -43,10 +43,16 @@ This is an **enterprise-grade church management platform** actively deployed in 
 - **Phase 3**: Advanced Analytics ✅ **100% COMPLETE** - Member Journey Deep Analytics & Performance Optimization Deployed
 - **Phase 4**: AI & Mobile Apps 🔄 **PLANNING** - Target Q1 2026
 
+### Recent Completions (Phase 3 Finalization)
+- **Prayer Wall**: 5-phase Progressive Web App implementation COMPLETE (analytics, mobile, offline support)
+- **Advanced Role System**: Enhanced RBAC with `roles-advanced` API endpoint
+- **PWA Infrastructure**: Service worker, push notifications, offline capabilities deployed
+- **Mobile-First Analytics**: Touch-optimized charts with Recharts integration
+
 ### Quick Context (READ THIS FIRST)
 - **348 total routes** (116 pages + 232 API routes) in production with strict TypeScript enforcement (`ignoreBuildErrors: false`)
 - **Historical Achievement**: 212/212 pages successfully compiled (system has grown beyond this)
-- **~2,476 lines** Prisma schema (~50 tables) with multi-tenant church scoping
+- **~2,475 lines** Prisma schema (~50 tables) with multi-tenant church scoping
 - **Railway deployment** with automatic builds on `git push` to main branch
 - **Production database**: PostgreSQL with connection pooling (`lib/db.ts` singleton pattern)
 
@@ -202,6 +208,40 @@ const analytics = await cacheManager.get(
 await cacheManager.invalidatePattern(
   INVALIDATION_PATTERNS.MEMBER_UPDATE(churchId, memberId)
 )
+```
+
+**9. Progressive Web App (PWA) Pattern**
+```typescript
+// PWA service worker implementation (Prayer Wall example)
+// Client-side PWA state management
+const [isOnline, setIsOnline] = useState(true)
+const [isInstallable, setIsInstallable] = useState(false)
+const [installPrompt, setInstallPrompt] = useState<any>(null)
+const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
+
+// PWA installation handler
+const handleInstallApp = async () => {
+  if (installPrompt) {
+    const result = await installPrompt.prompt()
+    if (result.outcome === 'accepted') {
+      setIsInstallable(false)
+      setIsInstalled(true)
+    }
+  }
+}
+
+// Service worker registration
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+}
+
+// Push notification setup
+const requestNotificationPermission = async () => {
+  if ('Notification' in window) {
+    const permission = await Notification.requestPermission()
+    setNotificationPermission(permission)
+  }
+}
 ```
 
 ### Current Development Priorities (Next 2-4 Weeks)
@@ -421,7 +461,7 @@ Before implementing or deleting ANY code, **ALWAYS** ask yourself:
 ```bash
 git add .
 git commit -m "descriptive message"
-git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (must pass 189/189) → next start
+git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (348 routes) → next start
 ```
 
 ### Production Deployment Standards
