@@ -286,7 +286,7 @@ git push origin main  # → Triggers Railway build → Nixpacks detects Next.js 
 ```
 
 **CRITICAL: Never use `npx prisma db push` in production**. Use `npx prisma migrate dev` to create migrations, then migrations run automatically on Railway deployment.
-
+**MANDATORY GIT PUSH**: Always execute `git push origin main` after completing any update, change, or task to ensure immediate deployment to Railway production environment.
 ## Key Workflows & Commands
 
 ### Development
