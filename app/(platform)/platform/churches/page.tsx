@@ -2,12 +2,14 @@
 
 'use client'
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import EnhancedChurchManagement from '../_components/enhanced-church-management'
 import { 
   Building2, 
   Plus, 
@@ -24,7 +26,8 @@ import {
   AlertCircle,
   ArrowLeft,
   Trash2,
-  Loader2
+  Loader2,
+  Zap
 } from 'lucide-react'
 import Link from 'next/link'
 import { 
@@ -199,7 +202,22 @@ export default function PlatformChurchesPage() {
         </div>
       </div>
 
-      {/* Filters and Search */}
+      <Tabs defaultValue="enhanced" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="enhanced">
+            <Zap className="h-4 w-4 mr-2" />
+            Gestión Avanzada
+          </TabsTrigger>
+          <TabsTrigger value="classic">Vista Clásica</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="enhanced">
+          <EnhancedChurchManagement />
+        </TabsContent>
+        
+        <TabsContent value="classic">
+          {/* Original classic view content */}
+          <div className="space-y-6">{/* Filters and Search */}
       <Card>
         <CardContent className="p-6">
           <div className="flex items-center justify-between gap-4">
@@ -429,6 +447,9 @@ export default function PlatformChurchesPage() {
           </Button>
         </div>
       )}
+          </div>
+        </TabsContent>
+      </Tabs>
       
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={!!deleteChurchId} onOpenChange={() => setDeleteChurchId(null)}>

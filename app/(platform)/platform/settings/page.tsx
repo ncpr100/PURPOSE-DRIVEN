@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
+import EnhancedSecurityMonitoring from '../_components/enhanced-security-monitoring'
 import {
   Settings,
   Shield,
@@ -238,7 +239,7 @@ export default function PlatformSettingsPage() {
 
       {/* Settings Tabs */}
       <Tabs defaultValue="platform" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="platform" className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
             Plataforma
@@ -255,12 +256,16 @@ export default function PlatformSettingsPage() {
             <Shield className="h-4 w-4" />
             Seguridad
           </TabsTrigger>
+          <TabsTrigger value="monitoring" className="flex items-center gap-2">
+            <Activity className="h-4 w-4" />
+            Monitoreo
+          </TabsTrigger>
           <TabsTrigger value="billing" className="flex items-center gap-2">
             <CreditCard className="h-4 w-4" />
             Facturación
           </TabsTrigger>
           <TabsTrigger value="system" className="flex items-center gap-2">
-            <Activity className="h-4 w-4" />
+            <Database className="h-4 w-4" />
             Sistema
           </TabsTrigger>
         </TabsList>
@@ -508,6 +513,10 @@ export default function PlatformSettingsPage() {
               </Button>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="monitoring" className="space-y-6">
+          <EnhancedSecurityMonitoring />
         </TabsContent>
 
         <TabsContent value="billing" className="space-y-6">

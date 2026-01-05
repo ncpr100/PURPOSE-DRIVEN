@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import EnhancedPlatformDashboard from '../_components/enhanced-platform-dashboard'
 import {
   Building2,
   Users,
@@ -23,7 +24,8 @@ import {
   Eye,
   FileText,
   CreditCard,
-  Calendar
+  Calendar,
+  Zap
 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -64,7 +66,7 @@ export default function PlatformDashboard() {
   const [websiteRequests, setWebsiteRequests] = useState<any[]>([])
   const [invoiceAlerts, setInvoiceAlerts] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState('overview')
+  const [activeTab, setActiveTab] = useState('enhanced')
 
   useEffect(() => {
     if (session?.user?.role === 'SUPER_ADMIN') {
@@ -219,12 +221,21 @@ export default function PlatformDashboard() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="enhanced">
+            <Zap className="h-4 w-4 mr-2" />
+            Panel Avanzado
+          </TabsTrigger>
           <TabsTrigger value="overview">Resumen General</TabsTrigger>
           <TabsTrigger value="websites">Servicios Web</TabsTrigger>
           <TabsTrigger value="churches">Iglesias</TabsTrigger>
           <TabsTrigger value="system">Sistema</TabsTrigger>
         </TabsList>
+
+        {/* Enhanced Platform Dashboard */}
+        <TabsContent value="enhanced">
+          <EnhancedPlatformDashboard />
+        </TabsContent>
 
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
