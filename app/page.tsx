@@ -2,41 +2,25 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 export default function HomePage() {
   const { data: session, status } = useSession()
-  const router = useRouter()
-  const [isRedirecting, setIsRedirecting] = useState(false)
 
   useEffect(() => {
-    if (status === 'loading') return // Still loading
+    if (status === 'loading') return
 
-    if (session?.user && !isRedirecting) {
-      setIsRedirecting(true)
-      // Add small delay to prevent middleware collision during redirect
-      const timer = setTimeout(() => {
-        try {
-          if (session.user.role === 'SUPER_ADMIN') {
-            router.replace('/platform/dashboard')
-          } else {
-            router.replace('/home')
-          }
-        } catch (error) {
-          console.error('Redirect error:', error)
-          // Fallback redirect
-          window.location.href = session.user.role === 'SUPER_ADMIN' ? '/platform/dashboard' : '/home'
-        }
-      }, 200)
-      return () => clearTimeout(timer)
-    } else if (!session?.user && !isRedirecting) {
-      setIsRedirecting(true)
-      router.replace('/auth/signin')
+    if (session?.user) {
+      // Immediate redirect based on role
+      const destination = session.user.role === 'SUPER_ADMIN' ? '/platform/dashboard' : '/home'
+      window.location.href = destination
+    } else {
+      // No session - redirect to signin
+      window.location.href = '/auth/signin'
     }
-  }, [session, status, router, isRedirecting])
+  }, [session, status])
 
-  // Show a safe loading state while redirecting
+  // Show loading state
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
@@ -47,16 +31,6 @@ export default function HomePage() {
         <p className="mt-2 text-gray-600">
           {status === 'loading' ? 'Verificando sesión...' : 'Redirigiendo...'}
         </p>
-        {!session && (
-          <div className="mt-6">
-            <a
-              href="/auth/signin"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-            >
-              🔐 Iniciar Sesión
-            </a>
-          </div>
-        )}
       </div>
     </div>
   )
