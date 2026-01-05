@@ -69,11 +69,12 @@ interface PlatformFormAnalyticsProps {
   isOpen?: boolean
   onClose?: () => void
   selectedForm?: any
+  detailed?: boolean
 }
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']
 
-export function PlatformFormAnalytics({ forms = [], isOpen = true, onClose, selectedForm }: PlatformFormAnalyticsProps) {
+export function PlatformFormAnalytics({ forms = [], isOpen = true, onClose, selectedForm, detailed = false }: PlatformFormAnalyticsProps) {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(false)
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d')
