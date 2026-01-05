@@ -92,87 +92,9 @@ export default function PrayerWallPage() {
   
   // Removed PWA state management for cleaner user experience
 
-  // Simplified for better user experience
+  // Simplified for better user experience - removed PWA complexity
 
-  // PWA Installation Handler
-  const handleInstallApp = async () => {
-    if (!installPrompt) return
-
-    installPrompt.prompt()
-    const result = await installPrompt.userChoice
-    
-    if (result.outcome === 'accepted') {
-      console.log('User accepted the install prompt')
-    } else {
-      console.log('User dismissed the install prompt')
-    }
-    
-    setInstallPrompt(null)
-    setIsInstallable(false)
-  }
-
-  // Notification Permission Handler
-  const handleEnableNotifications = async () => {
-    if (!('Notification' in window)) {
-      alert('This browser does not support notifications')
-      return
-    }
-
-    const permission = await Notification.requestPermission()
-    setNotificationPermission(permission)
-
-    if (permission === 'granted') {
-      // Subscribe to push notifications
-      if ('serviceWorker' in navigator && 'PushManager' in window) {
-        try {
-          const registration = await navigator.serviceWorker.ready
-          console.log('Service Worker ready for push notifications')
-        } catch (error) {
-          console.error('Error setting up push notifications:', error)
-        }
-      }
-    }
-  }
-
-  // Share API Handler - SECURITY ENHANCED
-  const handleShare = async () => {
-    if (typeof window === 'undefined') return
-
-    try {
-      // ✅ SECURITY: Create safe sharing data without sensitive parameters
-      const shareData = createSafeShareData('Muro de Oración', 'Sistema de gestión de peticiones de oración con analytics avanzados')
-      
-      // ✅ SECURITY: Sanitize URL before sharing
-      const originalUrl = window.location.href
-      const sanitizedUrl = sanitizeUrlForSharing(originalUrl)
-      
-      // Log sharing activity for security monitoring
-      logSharingActivity(originalUrl, sanitizedUrl)
-      
-      if (typeof navigator !== 'undefined' && 'share' in navigator) {
-        await (navigator as any).share({
-          ...shareData,
-          url: sanitizedUrl, // Use sanitized URL
-        })
-      } else {
-        // Fallback: copy sanitized URL to clipboard
-        if (typeof navigator !== 'undefined' && 'clipboard' in navigator) {
-          await (navigator as any).clipboard.writeText(sanitizedUrl)
-          alert('URL segura copiada al portapapeles')
-        }
-      }
-    } catch (error) {
-      console.error('Error sharing:', error)
-      // Fallback: provide a safe default URL
-      const fallbackUrl = typeof window !== 'undefined' ? `${window.location.origin}/prayer-wall` : '/prayer-wall'
-      if (typeof navigator !== 'undefined' && 'clipboard' in navigator) {
-        await (navigator as any).clipboard.writeText(fallbackUrl)
-        alert('URL copiada al portapapeles')
-      }
-    }
-  }
-
-  // Fetch real-time prayer analytics with enhanced data
+  // Fetch real-time prayer analytics
   useEffect(() => {
     async function fetchAnalytics() {
       try {
