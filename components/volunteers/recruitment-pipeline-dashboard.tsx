@@ -317,7 +317,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
             Candidatos ({recruitmentProfiles.length})
           </TabsTrigger>
           <TabsTrigger value="settings">Configuración</TabsTrigger>
-          <TabsTrigger value="insights">Insights</TabsTrigger>
+          <TabsTrigger value="insights">Análisis</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -410,7 +410,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                     }}
                   >
                     <PlayCircle className="h-4 w-4 mr-2" />
-                    Iniciar Workflows ({summary?.developingCandidates || 0})
+                    Iniciar Flujos de Trabajo ({summary?.developingCandidates || 0})
                   </Button>
                   
                   <Button 
@@ -726,7 +726,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                       <div className="flex items-center space-x-2">
                         <Switch id="autoStart" defaultChecked />
                         <Label htmlFor="autoStart" className="text-sm">
-                          Iniciar workflows automáticamente
+                          Iniciar flujos de trabajo automáticamente
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">

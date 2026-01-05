@@ -430,7 +430,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
       <Tabs defaultValue="recruitment" className="space-y-6">
         <TabsList className="grid w-full grid-cols-8">
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+          <TabsTrigger value="dashboard">Panel</TabsTrigger>
           <TabsTrigger value="recruitment" className="flex items-center gap-1">
             <UserPlus className="h-4 w-4" />
             Reclutamiento
@@ -445,7 +445,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           </TabsTrigger>
           <TabsTrigger value="onboarding" className="flex items-center gap-1">
             <PlayCircle className="h-4 w-4" />
-            Onboarding
+            Incorporación
           </TabsTrigger>
           <TabsTrigger value="intelligent" className="flex items-center gap-1">
             <Brain className="h-4 w-4" />
@@ -453,7 +453,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex items-center gap-1">
             <BarChart3 className="h-4 w-4" />
-            Analytics
+            Analíticas
           </TabsTrigger>
           <TabsTrigger value="volunteers">Gestión</TabsTrigger>
         </TabsList>
