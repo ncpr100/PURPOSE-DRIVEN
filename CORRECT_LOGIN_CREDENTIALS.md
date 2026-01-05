@@ -3,29 +3,23 @@
 
 ## CRITICAL AUTHENTICATION INFORMATION
 
-**❌ INCORRECT LOGIN (DOES NOT EXIST):**
-```
-Email: nelson.castro@khesedtek.com
-Status: NOT FOUND IN DATABASE
-```
+**Last Updated**: January 5, 2026
 
-**✅ CORRECT SUPER ADMIN LOGINS:**
+**✅ OFFICIAL SUPER ADMIN LOGIN:**
 
-### Option 1 (Primary Account):
+### Production SUPER_ADMIN Account:
 ```
-Email: soporte@khesedtek.com
-Password: SuperAdmin2024!
+Email: soporte@khesed-tek-systems.org
+Password: Bendecido100%$$%
 Role: SUPER_ADMIN
 Status: Active ✅
+Name: Khesed-Tek Support
 ```
 
-### Option 2 (Secondary Account):
-```
-Email: soport@khesed-tek.com
-Password: SuperAdmin2024!
-Role: SUPER_ADMIN  
-Status: Active ✅
-```
+**Access URLs**:
+- Login: `/auth/signin`
+- Platform Dashboard: `/platform/dashboard`
+- Enhanced Monitoring: `/platform` (with new admin features)
 
 ## AUTHENTICATION FLOW FIXED
 
