@@ -339,15 +339,44 @@ export default function PlatformFormsClient() {
           </div>
         </div>
         
-        <Button onClick={() => handleCreateForm()}>
-          <Plus className="w-4 h-4 mr-2" />
-          Crear Formulario
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button onClick={() => handleCreateForm()}>
+            <Plus className="w-4 h-4 mr-2" />
+            Crear Formulario
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={() => {
+              // Quick access to QR generator
+              const form = forms.find(f => f.isActive)
+              if (form) {
+                setSelectedForm(form)
+                setIsQRGeneratorOpen(true)
+              } else {
+                // No forms available, create custom QR
+                setSelectedForm({
+                  id: '',
+                  name: 'QR Personalizado',
+                  fields: [],
+                  isActive: true,
+                  isPublic: true,
+                  slug: '',
+                  createdAt: new Date().toISOString()
+                })
+                setIsQRGeneratorOpen(true)
+              }
+            }}
+          >
+            <QrCode className="w-4 h-4 mr-2" />
+            Generar QR
+          </Button>
+        </div>
       </div>
 
       <Tabs defaultValue="forms" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:grid-cols-none lg:flex">
+        <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-none lg:flex">
           <TabsTrigger value="forms" className="text-sm">Formularios</TabsTrigger>
+          <TabsTrigger value="qr-codes" className="text-sm">Códigos QR</TabsTrigger>
           <TabsTrigger value="templates" className="text-sm">Plantillas</TabsTrigger>
           <TabsTrigger value="analytics" className="text-sm">Analíticas</TabsTrigger>
         </TabsList>
@@ -485,6 +514,162 @@ export default function PlatformFormsClient() {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        {/* QR Codes Tab */}
+        <TabsContent value="qr-codes">
+          <div className="space-y-6">
+            {/* QR Generator Section */}
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-2 rounded-lg">
+                  <QrCode className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">Generador de Códigos QR</h2>
+                  <p className="text-muted-foreground text-sm">
+                    Crea códigos QR para tus formularios y campañas de marketing offline
+                  </p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      QR para Formularios
+                    </CardTitle>
+                    <CardDescription>
+                      Genera códigos QR que dirigen a tus formularios de marketing
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Select 
+                      value={selectedForm?.id || ''}
+                      onValueChange={(value) => {
+                        const form = forms.find(f => f.id === value)
+                        if (form) {
+                          setSelectedForm(form)
+                          setIsQRGeneratorOpen(true)
+                        }
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar formulario" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {forms.filter(f => f.isActive).map((form) => (
+                          <SelectItem key={form.id} value={form.id}>
+                            {form.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Target className="h-5 w-5" />
+                      QR Personalizado
+                    </CardTitle>
+                    <CardDescription>
+                      Crea códigos QR para URLs personalizadas o campañas específicas
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button 
+                      className="w-full"
+                      onClick={() => {
+                        // Create a dummy form for custom QR
+                        setSelectedForm({
+                          id: '',
+                          name: 'QR Personalizado',
+                          fields: [],
+                          isActive: true,
+                          isPublic: true,
+                          slug: '',
+                          createdAt: new Date().toISOString()
+                        })
+                        setIsQRGeneratorOpen(true)
+                      }}
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Crear QR Personalizado
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* QR Templates */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Plantillas de QR Populares</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  {
+                    name: 'Demo de Plataforma',
+                    description: 'QR para solicitar demo de Khesed-tek',
+                    campaign: 'demo_request',
+                    icon: Settings
+                  },
+                  {
+                    name: 'Información de Precios',
+                    description: 'QR para información de planes y precios',
+                    campaign: 'pricing_info',
+                    icon: TrendingUp
+                  },
+                  {
+                    name: 'Newsletter Suscripción',
+                    description: 'QR para suscribirse al newsletter',
+                    campaign: 'newsletter',
+                    icon: Megaphone
+                  }
+                ].map((template, index) => {
+                  const Icon = template.icon
+                  return (
+                    <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-base">
+                          <Icon className="h-5 w-5 text-primary" />
+                          {template.name}
+                        </CardTitle>
+                        <CardDescription className="text-sm">
+                          {template.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <Button 
+                          variant="outline" 
+                          className="w-full"
+                          onClick={() => {
+                            const templateForm = {
+                              id: '',
+                              name: template.name,
+                              description: template.description,
+                              fields: [],
+                              campaignTag: template.campaign,
+                              isActive: true,
+                              isPublic: true,
+                              slug: '',
+                              createdAt: new Date().toISOString()
+                            }
+                            setSelectedForm(templateForm)
+                            setIsQRGeneratorOpen(true)
+                          }}
+                        >
+                          <QrCode className="w-4 h-4 mr-2" />
+                          Generar QR
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Templates Tab */}
