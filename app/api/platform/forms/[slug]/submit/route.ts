@@ -117,7 +117,12 @@ export async function POST(
     // Calculate lead score based on form data and settings
     let calculatedLeadScore = form.leadScore || 50
     
-    if (form.settings?.leadScoring) {
+    // Safely cast form.settings as object
+    const settings = (form.settings && typeof form.settings === 'object' && !Array.isArray(form.settings)) 
+      ? form.settings as any 
+      : {}
+    
+    if (settings.leadScoring) {
       // Basic lead scoring algorithm
       let score = calculatedLeadScore
       
@@ -164,7 +169,7 @@ export async function POST(
     })
 
     // Send notification if enabled
-    if (form.settings?.sendNotification && form.settings?.notificationEmail) {
+    if (settings.sendNotification && settings.notificationEmail) {
       try {
         // Here you would integrate with your email service
         // For now, we'll just log it
@@ -172,7 +177,7 @@ export async function POST(
           formName: form.name,
           submissionId: submission.id,
           leadScore: calculatedLeadScore,
-          notificationEmail: form.settings.notificationEmail,
+          notificationEmail: settings.notificationEmail,
           campaignTag: form.campaignTag,
           data: validatedData.formData
         })
@@ -185,7 +190,7 @@ export async function POST(
     }
 
     // Schedule follow-up if enabled
-    if (form.settings?.autoFollowUp) {
+    if (settings.autoFollowUp) {
       try {
         // Here you would schedule follow-up emails
         console.log('Scheduling follow-up for submission:', submission.id)
@@ -198,10 +203,10 @@ export async function POST(
     // Response data
     const responseData = {
       submissionId: submission.id,
-      message: form.settings?.thankYouMessage || 'Gracias por tu envío. Nos pondremos en contacto pronto.',
-      redirectUrl: form.settings?.redirectUrl || null,
+      message: settings.thankYouMessage || 'Gracias por tu envío. Nos pondremos en contacto pronto.',
+      redirectUrl: settings.redirectUrl || null,
       campaignTag: form.campaignTag,
-      leadScore: form.settings?.leadScoring ? calculatedLeadScore : null
+      leadScore: settings.leadScoring ? calculatedLeadScore : null
     }
 
     return NextResponse.json({
