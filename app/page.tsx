@@ -30,7 +30,7 @@ export default function HomePage() {
         }
       }, 200)
       return () => clearTimeout(timer)
-    } else if (status !== 'loading' && !session?.user && !isRedirecting) {
+    } else if (!session?.user && !isRedirecting) {
       setIsRedirecting(true)
       router.replace('/auth/signin')
     }
