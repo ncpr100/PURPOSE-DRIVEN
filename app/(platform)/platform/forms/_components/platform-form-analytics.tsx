@@ -65,14 +65,15 @@ interface AnalyticsData {
 }
 
 interface PlatformFormAnalyticsProps {
-  isOpen: boolean
-  onClose: () => void
+  forms?: any[]
+  isOpen?: boolean
+  onClose?: () => void
   selectedForm?: any
 }
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4']
 
-export function PlatformFormAnalytics({ isOpen, onClose, selectedForm }: PlatformFormAnalyticsProps) {
+export function PlatformFormAnalytics({ forms = [], isOpen = true, onClose, selectedForm }: PlatformFormAnalyticsProps) {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(false)
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d')
@@ -130,17 +131,17 @@ export function PlatformFormAnalytics({ isOpen, onClose, selectedForm }: Platfor
   }
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen !== false) {
       setLoading(true)
-      // Simulate API call
+      // Simulate API call - in production, use real forms data
       setTimeout(() => {
         setAnalyticsData(mockAnalyticsData)
         setLoading(false)
       }, 1000)
     }
-  }, [isOpen, timeRange])
+  }, [isOpen, timeRange, forms])
 
-  if (!isOpen) return null
+  if (isOpen === false) return null
 
   if (loading || !analyticsData) {
     return (
