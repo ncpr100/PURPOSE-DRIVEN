@@ -2021,6 +2021,10 @@ model users {
   visitor_follow_ups                     visitor_follow_ups[]
   visitor_profiles                       visitor_profiles[]
   website_requests                       website_requests[]
+  // Platform form relationships
+  platformFormsCreated                   PlatformForm[]                           @relation("PlatformFormCreatedBy")
+  platformSubmissionsProcessed           PlatformFormSubmission[]                 @relation("PlatformSubmissionProcessedBy")
+  platformQRCodesGenerated               PlatformQRCode[]                         @relation("PlatformQRGeneratedBy")
 }
 
 model verification_tokens {
@@ -2472,4 +2476,107 @@ enum VisitorCategory {
   REGULAR
   NON_MEMBER
   MEMBER_CANDIDATE
+}
+
+// Platform-wide form models for marketing and lead generation
+model PlatformForm {
+  id           String    @id @default(cuid())
+  name         String
+  description  String?
+  slug         String    @unique // URL-friendly identifier for public forms
+  fields       Json      // Array of form field definitions
+  style        Json      // Form styling configuration
+  settings     Json      // Form settings (notifications, redirects, etc.)
+  isActive     Boolean   @default(true)
+  isPublic     Boolean   @default(true)  // Public forms accessible without auth
+  campaignTag  String?   // Marketing campaign identifier
+  leadScore    Int       @default(50)    // Base lead score for submissions
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime? // Soft delete support
+  createdById  String    // SUPER_ADMIN who created the form
+  
+  // Relationships
+  createdBy    users     @relation("PlatformFormCreatedBy", fields: [createdById], references: [id])
+  submissions  PlatformFormSubmission[]
+  qrCodes      PlatformQRCode[]
+  
+  @@index([slug])
+  @@index([campaignTag])
+  @@index([isActive, isPublic])
+  @@index([createdAt])
+}
+
+model PlatformFormSubmission {
+  id            String    @id @default(cuid())
+  formId        String
+  data          Json      // Submitted form data
+  leadScore     Int       @default(0)     // Calculated lead score
+  source        String    @default("direct") // Traffic source
+  referrer      String?   // HTTP referrer
+  userAgent     String?   // User agent string
+  ipAddress     String?   // Client IP address
+  campaignTag   String?   // Campaign tracking
+  status        String    @default("new") // new, contacted, converted, processed, rejected
+  notes         String?   // Admin notes
+  followUpDate  DateTime? // Scheduled follow-up date
+  processedAt   DateTime? // When lead was processed
+  processedById String?   // SUPER_ADMIN who processed the lead
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relationships
+  form          PlatformForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+  processedBy   users?       @relation("PlatformSubmissionProcessedBy", fields: [processedById], references: [id])
+  
+  @@index([formId])
+  @@index([status])
+  @@index([campaignTag])
+  @@index([leadScore])
+  @@index([createdAt])
+  @@index([followUpDate])
+}
+
+// Platform QR code models for marketing campaigns
+model PlatformQRCode {
+  id               String    @id @default(cuid())
+  formId           String
+  config           Json      // QR code visual configuration (size, colors, logo, etc.)
+  trackingParams   Json      // UTM and custom tracking parameters
+  placementContext String?   // Where QR code is placed (business_card, flyer, poster, etc.)
+  qrUrl            String    // The URL the QR code points to (with tracking params)
+  isActive         Boolean   @default(true)
+  scanCount        Int       @default(0)     // Total scan count
+  lastScannedAt    DateTime? // Last time QR was scanned
+  generatedById    String    // SUPER_ADMIN who generated the QR
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  // Relationships
+  form             PlatformForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+  generatedBy      users        @relation("PlatformQRGeneratedBy", fields: [generatedById], references: [id])
+  scans            PlatformQRScan[]
+  
+  @@index([formId])
+  @@index([placementContext])
+  @@index([scanCount])
+  @@index([createdAt])
+}
+
+model PlatformQRScan {
+  id             String    @id @default(cuid())
+  qrCodeId       String
+  scannedAt      DateTime  @default(now())
+  userAgent      String?   // Device/browser info
+  ipAddress      String?   // Scanner IP
+  location       Json?     // Geographic data if available
+  referrer       String?   // Page referrer
+  conversionData Json?     // Conversion tracking data
+  
+  // Relationships
+  qrCode         PlatformQRCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  
+  @@index([qrCodeId])
+  @@index([scannedAt])
+  @@index([ipAddress])
 }
