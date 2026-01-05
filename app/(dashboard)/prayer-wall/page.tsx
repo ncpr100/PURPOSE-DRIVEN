@@ -469,7 +469,7 @@ export default function PrayerWallPage() {
             </div>
           )}
         </div>
-      </div>
+      ) : null}
 
       {/* Sistema Completo */}
       <Card className="bg-gradient-to-r from-purple-50 to-blue-50">
