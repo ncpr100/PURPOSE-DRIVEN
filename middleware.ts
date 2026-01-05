@@ -14,7 +14,7 @@ const PROTECTED_ROUTES = [
   '/communications',
   '/reports',
   '/analytics',
-  '/intelligent-analytics',
+  '/intelligent-analytics', // Redirect route - kept for backward compatibility
   '/social-media',
   '/marketing-campaigns',
   '/business-intelligence',

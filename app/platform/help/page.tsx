@@ -106,7 +106,7 @@ export default function HelpCenterSuperAdmin() {
     {
       title: "🆕 Sistema de Analíticas Inteligentes",
       icon: BarChart3,
-      href: "/platform/help/manual/intelligent-analytics",
+      href: "/analytics#intelligent-analytics",
       description: "IA predictiva y análisis avanzado global",
       time: "40 min",
       category: "IA y Analytics"

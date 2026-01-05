@@ -96,7 +96,7 @@ export default function HelpCenterUsers() {
     {
       title: "🆕 Analíticas Inteligentes",
       icon: HelpCircle,
-      href: "/help/manual/intelligent-analytics",
+      href: "/analytics#intelligent-analytics",
       description: "IA para análisis predictivo y recomendaciones",
       time: "15 min"
     },
@@ -131,7 +131,7 @@ export default function HelpCenterUsers() {
     { title: "Automatización de Redes Sociales", href: "/help/manual/social-media-automation", icon: <Share2 className="h-5 w-5 text-green-600" /> },
     { title: "Reglas de Automatización", href: "/help/manual/automation-rules", icon: <Zap className="h-5 w-5 text-yellow-600" /> },
     { title: "Analíticas Generales", href: "/help/manual/general-analytics", icon: <BarChart3 className="h-5 w-5 text-blue-600" /> },
-    { title: "Analíticas Inteligentes", href: "/help/manual/intelligent-analytics", icon: <Bot className="h-5 w-5 text-purple-600" /> },
+    { title: "Analíticas Inteligentes", href: "/analytics#intelligent-analytics", icon: <Bot className="h-5 w-5 text-purple-600" /> },
     { title: "Perspectivas Pastorales", href: "/help/manual/analytics-pastoral-insights", icon: <Church className="h-5 w-5 text-purple-600" /> },
     { title: "Sistema de Exportación Avanzado", href: "/help/manual/advanced-export-system", icon: <Upload className="h-5 w-5 text-green-600" /> },
     { title: "Muro de Oración", href: "/help/manual/prayer-wall", icon: <MessageSquare className="h-5 w-5 text-purple-600" /> },

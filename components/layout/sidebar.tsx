@@ -151,12 +151,6 @@ const navigationItems = [
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },
   {
-    title: 'Analíticas Inteligentes',
-    href: '/intelligent-analytics',
-    icon: Brain,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
-  },
-  {
     title: 'Perspectivas Pastorales',
     href: '/business-intelligence',
     icon: TrendingUp,

@@ -12,8 +12,8 @@ const features = [
   },
   {
     name: "Intelligent Analytics", 
-    route: "/intelligent-analytics",
-    apiRoute: "/api/intelligent-analytics",
+    route: "/analytics",
+    apiRoute: "/api/analytics",
     description: "AI-powered predictive analytics and member journey insights"
   },
   {

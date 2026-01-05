@@ -35,7 +35,7 @@ const protectedRoutes = [
   '/social-media',
   '/marketing-campaigns',
   '/analytics',
-  '/intelligent-analytics',
+  '/analytics',
   '/pastoral-insights',
   '/check-ins',
   '/form-builder',
