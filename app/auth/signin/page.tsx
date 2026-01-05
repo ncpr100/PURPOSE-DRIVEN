@@ -71,16 +71,13 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
-          <div className="text-center">
-            <h1 className="text-5xl font-bold text-white mb-2">Kḥesed-tek</h1>
-            <p className="text-xl text-white/90">Church Management Systems</p>
-          </div>
+          <Logo size="xl" className="text-gray-900" />
         </div>
         
-        <Card className="shadow-2xl">
+        <Card>
           <CardHeader>
             <CardTitle>Iniciar Sesión</CardTitle>
             <CardDescription>
