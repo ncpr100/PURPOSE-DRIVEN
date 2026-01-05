@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       activeUsers,
       newChurchesThisMonth,
       newUsersThisMonth,
-      website_requestss,
+      websiteRequestsByStatus,
       completedWebsiteRequests,
       totalWebsiteRevenue
     ] = await Promise.all([
@@ -138,7 +138,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Count requests by status
-    website_requestss.forEach((group: { status: string; _count: { status: number } }) => {
+    websiteRequestsByStatus.forEach((group: { status: string; _count: { status: number } }) => {
       const status = group.status.toLowerCase().replace('_', '')
       if (status === 'pending') websiteStats.pending = group._count.status
       if (status === 'inprogress') websiteStats.inProgress = group._count.status
@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
       activeUsers,
       newChurchesThisMonth,
       newUsersThisMonth,
-      website_requestss: websiteStats,
+      websiteRequests: websiteStats,
       systemHealth,
       growth: {
         churchGrowthRate,

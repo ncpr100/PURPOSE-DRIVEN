@@ -137,23 +137,25 @@ export default function PlatformDashboard() {
   }
 
   // Mock stats for development (replace with real API data)
-  const mockStats: PlatformStats = stats || {
-    totalChurches: 147,
-    activeChurches: 132,
-    totalUsers: 2456,
-    activeUsers: 1834,
-    websiteRequests: {
-      pending: 12,
-      inProgress: 8,
-      completed: 156,
-      rejected: 3,
-      totalRevenue: 87650,
-      avgCompletionTime: 7.2
-    },
-    systemHealth: {
-      uptime: 99.7,
-      responseTime: 245,
-      errorRate: 0.03
+  const defaultWebsiteRequests = {
+    pending: 0,
+    inProgress: 0,
+    completed: 0,
+    rejected: 0,
+    totalRevenue: 0,
+    avgCompletionTime: 0
+  }
+
+  const mockStats: PlatformStats = {
+    totalChurches: stats?.totalChurches || 0,
+    activeChurches: stats?.activeChurches || 0,
+    totalUsers: stats?.totalUsers || 0,
+    activeUsers: stats?.activeUsers || 0,
+    websiteRequests: stats?.websiteRequests || defaultWebsiteRequests,
+    systemHealth: stats?.systemHealth || {
+      uptime: 0,
+      responseTime: 0,
+      errorRate: 0
     }
   }
 
