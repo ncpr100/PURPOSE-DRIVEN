@@ -15,7 +15,9 @@ import {
   LineChart,
   PieChart,
   Download,
-  ExternalLink
+  ExternalLink,
+  AlertCircle,
+  CheckCircle
 } from 'lucide-react'
 import {
   LineChart as RechartsLineChart,
@@ -94,23 +96,57 @@ export default function PrayerWallPage() {
 
   // Simplified for better user experience - removed PWA complexity
 
-  // Fetch real-time prayer analytics
+  // Fetch real-time prayer analytics with proper authentication
   useEffect(() => {
+    let eventSource: EventSource | null = null
+    
     async function fetchAnalytics() {
       try {
         setLoading(true)
-        const response = await fetch('/api/prayer-analytics?days=30')
+        setError(null)
+        
+        // Fetch initial data with proper headers
+        const response = await fetch('/api/prayer-analytics?days=30', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include'
+        })
         
         if (!response.ok) {
-          throw new Error('Error fetching prayer analytics')
+          const errorData = await response.json().catch(() => ({ error: 'Error de red' }))
+          throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`)
         }
         
         const data = await response.json()
-        setAnalytics(data.analytics || data) // Handle both response formats
-        setError(null)
+        setAnalytics(data.analytics || data)
+        
+        // Set up real-time updates via Server-Sent Events
+        try {
+          eventSource = new EventSource('/api/prayer-analytics/realtime-updates')
+          
+          eventSource.onmessage = (event) => {
+            try {
+              const updateData = JSON.parse(event.data)
+              if (updateData.type === 'prayer_analytics_update') {
+                setAnalytics(updateData.data)
+              }
+            } catch (e) {
+              console.warn('Error parsing SSE data:', e)
+            }
+          }
+          
+          eventSource.onerror = () => {
+            console.warn('SSE connection failed, continuing with periodic updates')
+          }
+        } catch (sseError) {
+          console.warn('SSE not available, using periodic updates:', sseError)
+        }
+        
       } catch (err) {
         console.error('Analytics fetch error:', err)
-        setError('Unable to load real-time data')
+        setError(err instanceof Error ? err.message : 'Error al cargar datos en tiempo real')
         // Enhanced fallback data with trends
         setAnalytics({
           overview: {
@@ -172,10 +208,15 @@ export default function PrayerWallPage() {
 
     fetchAnalytics()
     
-    // Set up auto-refresh every 30 seconds
-    const interval = setInterval(fetchAnalytics, 30000)
+    // Set up periodic refresh every 2 minutes as fallback
+    const interval = setInterval(fetchAnalytics, 120000)
     
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(interval)
+      if (eventSource) {
+        eventSource.close()
+      }
+    }
   }, [])
 
   const handleModeSwitch = async (mode: 'overview') => {
@@ -216,12 +257,23 @@ export default function PrayerWallPage() {
             {loading ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Cargando peticiones de oración...
+                Conectando con datos en tiempo real...
               </span>
             ) : error ? (
-              <span className="text-red-600">Error al cargar peticiones</span>
+              <div className="flex flex-col gap-1">
+                <span className="text-red-600 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4" />
+                  {error}
+                </span>
+                <span className="text-xs text-gray-500">
+                  Mostrando datos de ejemplo. La conexión se reintentará automáticamente.
+                </span>
+              </div>
             ) : (
-              <span className="text-green-600">Sistema de peticiones activo</span>
+              <span className="text-green-600 flex items-center gap-2">
+                <CheckCircle className="w-4 h-4" />
+                Sistema conectado en tiempo real
+              </span>
             )}
           </p>
         </div>
