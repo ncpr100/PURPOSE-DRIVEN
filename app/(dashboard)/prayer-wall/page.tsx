@@ -34,7 +34,6 @@ import {
   Area,
   AreaChart
 } from 'recharts'
-import { sanitizeUrlForSharing, createSafeShareData, logSharingActivity } from '@/lib/url-sanitizer'
 
 interface PrayerAnalytics {
   overview: {
@@ -257,7 +256,7 @@ export default function PrayerWallPage() {
     return () => clearInterval(interval)
   }, [])
 
-  const handleModeSwitch = async (mode: 'overview' | 'integrated') => {
+  const handleModeSwitch = async (mode: 'overview') => {
     setViewMode(mode)
   }
 
