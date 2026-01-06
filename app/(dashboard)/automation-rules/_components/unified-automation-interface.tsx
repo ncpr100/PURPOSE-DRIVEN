@@ -34,13 +34,13 @@ const DEFAULT_COLORS: ChurchBrandColors = {
   primary: '#DBEAFE', secondary: '#D1FAE5'
 }
 
-const getCategoryIcon = (category: string) => {
+const getCategoryIcon = (category: string, brightColor: string) => {
   switch (category) {
-    case 'PRAYER_REQUEST': return <MessageSquare className="h-5 w-5 text-white" />
-    case 'VISITOR_FOLLOWUP': return <Users className="h-5 w-5 text-white" />
-    case 'SOCIAL_MEDIA': return <MessageCircle className="h-5 w-5 text-white" />
-    case 'EVENTS': return <Calendar className="h-5 w-5 text-white" />
-    default: return <Zap className="h-5 w-5 text-white" />
+    case 'PRAYER_REQUEST': return <MessageSquare className="h-5 w-5" style={{ color: brightColor }} />
+    case 'VISITOR_FOLLOWUP': return <Users className="h-5 w-5" style={{ color: brightColor }} />
+    case 'SOCIAL_MEDIA': return <MessageCircle className="h-5 w-5" style={{ color: brightColor }} />
+    case 'EVENTS': return <Calendar className="h-5 w-5" style={{ color: brightColor }} />
+    default: return <Zap className="h-5 w-5" style={{ color: brightColor }} />
   }
 }
 
@@ -373,17 +373,16 @@ export function UnifiedAutomationInterface() {
             return (
               <Card 
                 key={template.id} 
-                className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-gray-200"
-                style={{ backgroundColor: pastelColor }}
+                className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-gray-200 bg-white"
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div 
                         className="flex h-14 w-14 items-center justify-center rounded-xl" 
-                        style={{ backgroundColor: brightColor }}
+                        style={{ backgroundColor: pastelColor }}
                       >
-                        <div className="scale-110">{getCategoryIcon(template.category)}</div>
+                        <div className="scale-110">{getCategoryIcon(template.category, brightColor)}</div>
                       </div>
                       <div className="flex flex-col gap-1">
                         <Badge variant="secondary" className="text-xs shadow-sm">Sistema</Badge>
@@ -404,9 +403,12 @@ export function UnifiedAutomationInterface() {
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">
-                      <div className="flex items-center gap-1.5 text-xs font-bold">
-                        <div className="scale-75">{getCategoryIcon(template.category)}</div>
-                        <span style={{ color: brightColor }}>{getCategoryLabel(template.category)}</span>
+                      <div 
+                        className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full" 
+                        style={{ backgroundColor: pastelColor, color: brightColor }}
+                      >
+                        <div className="scale-75">{getCategoryIcon(template.category, brightColor)}</div>
+                        <span>{getCategoryLabel(template.category)}</span>
                       </div>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
                         <TrendingUp className="h-3.5 w-3.5" />{template.installCount} usos
