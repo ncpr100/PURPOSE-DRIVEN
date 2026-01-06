@@ -199,20 +199,10 @@ export function UnifiedAutomationInterface() {
           <h1 className="text-3xl font-bold tracking-tight">Reglas de Automatización</h1>
           <p className="text-muted-foreground">Automatiza flujos de trabajo y ahorra tiempo con reglas inteligentes</p>
         </div>
-        <div className="flex gap-2">
-          <Button 
-            onClick={() => window.location.href = '/settings/branding'} 
-            variant="outline"
-            size="lg"
-          >
-            <Palette className="h-5 w-5 mr-2" />
-            Personalizar Colores
-          </Button>
-          <Button onClick={() => setCreateDialogOpen(true)} size="lg">
-            <Plus className="h-5 w-5 mr-2" />
-            Crear Regla Personalizada
-          </Button>
-        </div>
+        <Button onClick={() => setCreateDialogOpen(true)} size="lg">
+          <Plus className="h-5 w-5 mr-2" />
+          Crear Regla Personalizada
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -274,28 +264,27 @@ export function UnifiedAutomationInterface() {
       </div>
 
       {/* Branding Customization Banner */}
-      <Card className="bg-gradient-to-r from-purple-500 to-pink-500 border-0 shadow-xl">
+      <Card className="border-blue-200 bg-blue-50/50">
         <CardContent className="p-6">
-          <div className="flex items-center justify-between text-white">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-                <Palette className="h-6 w-6 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 border border-blue-200">
+                <Palette className="h-6 w-6 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold">¡Personaliza los Colores de tus Plantillas!</h3>
-                <p className="text-white/90 text-sm">
-                  Adapta las plantillas de automatización a los colores de tu marca. 
-                  Configura colores personalizados para cada categoría.
+                <h3 className="text-lg font-semibold text-gray-900">Personaliza los Colores de tus Plantillas</h3>
+                <p className="text-gray-600 text-sm">
+                  Configura colores personalizados para cada categoría de automatización.
                 </p>
               </div>
             </div>
             <Button 
               onClick={() => window.location.href = '/settings/branding'}
-              className="bg-white text-purple-600 hover:bg-white/90 font-semibold shadow-lg"
-              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              size="default"
             >
-              Personalizar Ahora
-              <ArrowRight className="ml-2 h-5 w-5" />
+              Configurar Colores
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </CardContent>

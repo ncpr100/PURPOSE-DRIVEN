@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Palette, Save, RotateCcw, Sparkles } from 'lucide-react'
+import { Palette, Save, RotateCcw, Sparkles, ArrowLeft } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 interface ChurchBrandColors {
@@ -58,6 +59,7 @@ interface BrandingPageClientProps {
 }
 
 export default function BrandingPageClient({ churchId }: BrandingPageClientProps) {
+  const router = useRouter()
   const [colors, setColors] = useState<ChurchBrandColors>(DEFAULT_COLORS)
   const [originalColors, setOriginalColors] = useState<ChurchBrandColors>(DEFAULT_COLORS)
   const [isLoading, setIsLoading] = useState(true)
@@ -148,15 +150,24 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6 p-6">
+      {/* Back Button */}
+      <Button
+        variant="ghost"
+        onClick={() => router.back()}
+        className="-ml-2 text-gray-600 hover:text-gray-900"
+      >
+        <ArrowLeft className="h-4 w-4 mr-2" />
+        Volver
+      </Button>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Palette className="h-8 w-8 text-purple-600" />
+          <h1 className="text-2xl font-semibold text-gray-900">
             Configuración de Marca
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 text-sm mt-1">
             Personaliza los colores de tu iglesia para automatizaciones y plantillas
           </p>
         </div>
@@ -175,7 +186,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
           <Button
             onClick={handleSave}
             disabled={!hasChanges || isSaving}
-            className="bg-purple-600 hover:bg-purple-700"
+            className="bg-blue-600 hover:bg-blue-700"
           >
             <Save className="h-4 w-4 mr-2" />
             {isSaving ? 'Guardando...' : 'Guardar Cambios'}
@@ -184,146 +195,148 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
       </div>
 
       {/* Color Pickers */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Colores de Categorías</CardTitle>
-          <CardDescription>
+      <Card className="border-gray-200">
+        <CardHeader className="border-b bg-gray-50/50">
+          <CardTitle className="text-lg font-semibold">Colores de Categorías</CardTitle>
+          <CardDescription className="text-sm">
             Estos colores se aplicarán automáticamente a las plantillas de automatización
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          {Object.entries(COLOR_DESCRIPTIONS).map(([key, { label, description }]) => {
-            const colorKey = key as keyof ChurchBrandColors
-            const colorValue = colors[colorKey]
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            {Object.entries(COLOR_DESCRIPTIONS).map(([key, { label, description }]) => {
+              const colorKey = key as keyof ChurchBrandColors
+              const colorValue = colors[colorKey]
 
-            return (
-              <div key={key} className="flex items-center gap-4 pb-4 border-b last:border-b-0">
-                {/* Color Preview */}
-                <div
-                  className="w-16 h-16 rounded-lg border-2 border-gray-300 shadow-sm"
-                  style={{ backgroundColor: colorValue }}
-                />
-
-                {/* Color Info */}
-                <div className="flex-1">
-                  <Label htmlFor={key} className="text-base font-semibold">
-                    {label}
-                  </Label>
-                  <p className="text-sm text-gray-600 mt-1">{description}</p>
-                </div>
-
-                {/* Color Picker */}
-                <div className="flex items-center gap-2">
-                  <Input
-                    id={key}
-                    type="color"
-                    value={colorValue}
-                    onChange={(e) => handleColorChange(colorKey, e.target.value)}
-                    className="w-20 h-10 cursor-pointer"
+              return (
+                <div key={key} className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 bg-white hover:border-gray-300 transition-colors">
+                  {/* Color Preview */}
+                  <div
+                    className="w-12 h-12 rounded-lg border-2 border-gray-200 shadow-sm flex-shrink-0"
+                    style={{ backgroundColor: colorValue }}
                   />
-                  <Input
-                    type="text"
-                    value={colorValue}
-                    onChange={(e) => handleColorChange(colorKey, e.target.value)}
-                    className="w-28 font-mono text-sm"
-                    placeholder="#000000"
-                    pattern="^#[0-9A-Fa-f]{6}$"
-                  />
+
+                  {/* Color Info */}
+                  <div className="flex-1 min-w-0">
+                    <Label htmlFor={key} className="text-sm font-medium text-gray-900">
+                      {label}
+                    </Label>
+                    <p className="text-xs text-gray-500 mt-0.5">{description}</p>
+                  </div>
+
+                  {/* Color Picker */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <Input
+                      id={key}
+                      type="color"
+                      value={colorValue}
+                      onChange={(e) => handleColorChange(colorKey, e.target.value)}
+                      className="w-14 h-9 cursor-pointer border-gray-300"
+                    />
+                    <Input
+                      type="text"
+                      value={colorValue}
+                      onChange={(e) => handleColorChange(colorKey, e.target.value)}
+                      className="w-24 h-9 font-mono text-xs border-gray-300"
+                      placeholder="#000000"
+                      pattern="^#[0-9A-Fa-f]{6}$"
+                    />
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </CardContent>
       </Card>
 
       {/* Preview */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-yellow-500" />
+      <Card className="border-gray-200">
+        <CardHeader className="border-b bg-gray-50/50">
+          <CardTitle className="text-lg font-semibold flex items-center gap-2">
             Vista Previa
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-sm">
             Así se verán las plantillas con tus colores personalizados
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <CardContent className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Prayer Request Preview */}
             <div
-              className="p-4 rounded-lg border-2"
+              className="p-4 rounded-lg border"
               style={{
-                backgroundColor: `${colors.prayerRequest}15`,
-                borderColor: colors.prayerRequest
+                backgroundColor: `${colors.prayerRequest}10`,
+                borderColor: `${colors.prayerRequest}40`
               }}
             >
-              <h3 className="font-semibold mb-2" style={{ color: colors.prayerRequest }}>
+              <h3 className="font-medium text-sm mb-1" style={{ color: colors.prayerRequest }}>
                 Solicitud de Oración
               </h3>
-              <p className="text-sm text-gray-600">Ejemplo de plantilla de oración</p>
+              <p className="text-xs text-gray-500">Ejemplo de plantilla</p>
             </div>
 
             {/* Visitor Followup Preview */}
             <div
-              className="p-4 rounded-lg border-2"
+              className="p-4 rounded-lg border"
               style={{
-                backgroundColor: `${colors.visitorFollowup}15`,
-                borderColor: colors.visitorFollowup
+                backgroundColor: `${colors.visitorFollowup}10`,
+                borderColor: `${colors.visitorFollowup}40`
               }}
             >
-              <h3 className="font-semibold mb-2" style={{ color: colors.visitorFollowup }}>
+              <h3 className="font-medium text-sm mb-1" style={{ color: colors.visitorFollowup }}>
                 Seguimiento de Visitante
               </h3>
-              <p className="text-sm text-gray-600">Ejemplo de plantilla de bienvenida</p>
+              <p className="text-xs text-gray-500">Ejemplo de plantilla</p>
             </div>
 
             {/* Social Media Preview */}
             <div
-              className="p-4 rounded-lg border-2"
+              className="p-4 rounded-lg border"
               style={{
-                backgroundColor: `${colors.socialMedia}15`,
-                borderColor: colors.socialMedia
+                backgroundColor: `${colors.socialMedia}10`,
+                borderColor: `${colors.socialMedia}40`
               }}
             >
-              <h3 className="font-semibold mb-2" style={{ color: colors.socialMedia }}>
+              <h3 className="font-medium text-sm mb-1" style={{ color: colors.socialMedia }}>
                 Redes Sociales
               </h3>
-              <p className="text-sm text-gray-600">Ejemplo de plantilla de marketing</p>
+              <p className="text-xs text-gray-500">Ejemplo de plantilla</p>
             </div>
 
             {/* Events Preview */}
             <div
-              className="p-4 rounded-lg border-2"
+              className="p-4 rounded-lg border"
               style={{
-                backgroundColor: `${colors.events}15`,
-                borderColor: colors.events
+                backgroundColor: `${colors.events}10`,
+                borderColor: `${colors.events}40`
               }}
             >
-              <h3 className="font-semibold mb-2" style={{ color: colors.events }}>
+              <h3 className="font-medium text-sm mb-1" style={{ color: colors.events }}>
                 Eventos
               </h3>
-              <p className="text-sm text-gray-600">Ejemplo de plantilla de eventos</p>
+              <p className="text-xs text-gray-500">Ejemplo de plantilla</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Reset to Defaults */}
-      <Card className="border-amber-200 bg-amber-50">
-        <CardContent className="pt-6">
+      <Card className="border-gray-200 bg-gray-50">
+        <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-semibold text-amber-900">Restablecer Colores</h3>
-              <p className="text-sm text-amber-700 mt-1">
+              <h3 className="text-sm font-medium text-gray-900">Restablecer Colores</h3>
+              <p className="text-xs text-gray-600 mt-0.5">
                 Volver a los colores predeterminados del sistema
               </p>
             </div>
             <Button
               variant="outline"
+              size="sm"
               onClick={handleResetToDefaults}
-              className="border-amber-300 text-amber-900 hover:bg-amber-100"
+              className="border-gray-300 text-gray-700 hover:bg-gray-100"
             >
-              <RotateCcw className="h-4 w-4 mr-2" />
+              <RotateCcw className="h-3 w-3 mr-2" />
               Restablecer
             </Button>
           </div>
