@@ -147,11 +147,15 @@ export async function PUT(request: NextRequest) {
       // Create new theme
       updatedTheme = await db.church_themes.create({
         data: {
-          churchId,
+          id: `theme_${churchId}_${Date.now()}`,
+          churches: {
+            connect: { id: churchId }
+          },
           brandColors: JSON.stringify(brandColors), // Store as JSON string
           themeName: 'custom',
           themeConfig: '{}',
-          isActive: true
+          isActive: true,
+          updatedAt: new Date()
         }
       })
     }
