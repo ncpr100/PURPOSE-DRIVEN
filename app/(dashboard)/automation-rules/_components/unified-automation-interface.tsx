@@ -44,6 +44,26 @@ const getCategoryIcon = (category: string) => {
   }
 }
 
+const getCategoryBrightColor = (category: string): string => {
+  switch (category) {
+    case 'PRAYER_REQUEST': return '#9333EA'    // purple-600
+    case 'VISITOR_FOLLOWUP': return '#2563EB'  // blue-600
+    case 'SOCIAL_MEDIA': return '#059669'      // green-600
+    case 'EVENTS': return '#EA580C'            // orange-600
+    default: return '#2563EB'                  // blue-600
+  }
+}
+
+const getCategoryPastelColor = (category: string): string => {
+  switch (category) {
+    case 'PRAYER_REQUEST': return '#DDD6FE'    // purple-200
+    case 'VISITOR_FOLLOWUP': return '#DBEAFE'  // blue-200
+    case 'SOCIAL_MEDIA': return '#D1FAE5'      // green-200
+    case 'EVENTS': return '#FED7AA'            // orange-200
+    default: return '#DBEAFE'                  // blue-200
+  }
+}
+
 const getCategoryLabel = (category: string) => {
   const labels: Record<string, string> = {
     'PRAYER_REQUEST': 'Peticiones de Oración', 'VISITOR_FOLLOWUP': 'Seguimiento de Visitantes',
@@ -347,20 +367,22 @@ export function UnifiedAutomationInterface() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {templates.map((template) => {
-            const color = getCategoryColor(template.category, template.color)
-            const lightColor = lightenColor(color, 0.9)
-            const mediumColor = lightenColor(color, 0.7)
+            const brightColor = getCategoryBrightColor(template.category)
+            const pastelColor = getCategoryPastelColor(template.category)
 
             return (
               <Card 
                 key={template.id} 
-                className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2"
-                style={{ backgroundColor: lightColor, borderColor: mediumColor }}
+                className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-gray-200"
+                style={{ backgroundColor: pastelColor }}
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-xl shadow-lg" style={{ backgroundColor: color }}>
+                      <div 
+                        className="flex h-14 w-14 items-center justify-center rounded-xl" 
+                        style={{ backgroundColor: brightColor }}
+                      >
                         <div className="scale-110">{getCategoryIcon(template.category)}</div>
                       </div>
                       <div className="flex flex-col gap-1">
@@ -372,8 +394,13 @@ export function UnifiedAutomationInterface() {
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-base leading-tight mb-2">{template.name}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2">{template.description}</p>
+                      <h3 
+                        className="font-bold text-base leading-tight mb-2" 
+                        style={{ color: brightColor }}
+                      >
+                        {template.name}
+                      </h3>
+                      <p className="text-sm text-gray-600 line-clamp-2">{template.description}</p>
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">

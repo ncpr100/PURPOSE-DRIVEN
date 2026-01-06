@@ -19,8 +19,8 @@ interface ChurchBrandColors {
 }
 
 const DEFAULT_COLORS: ChurchBrandColors = {
-  prayerRequest: '#DDD6FE',    // Purple-200 (pastel)
-  visitorFollowup: '#DBEAFE',  // Blue-200 (pastel)
+  prayerRequest: '#DDD6FE',    // Purple-200 (pastel) - para purple-600 icon
+  visitorFollowup: '#DBEAFE',  // Blue-200 (pastel) - para blue-600 icon
   socialMedia: '#D1FAE5',      // Green-200 (pastel)
   events: '#FED7AA',           // Orange-200 (pastel)
   primary: '#DBEAFE',          // Blue-200 (pastel)
