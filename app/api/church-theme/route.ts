@@ -27,8 +27,7 @@ export async function GET(request: NextRequest) {
         id: true,
         churchId: true,
         brandColors: true,
-        template: true,
-        customCss: true,
+        themeName: true,
         isActive: true,
         updatedAt: true
       }
@@ -49,8 +48,26 @@ export async function GET(request: NextRequest) {
       })
     }
 
+    // Parse brandColors from JSON string if exists
+    let parsedBrandColors = null
+    if (churchTheme.brandColors) {
+      try {
+        parsedBrandColors = JSON.parse(churchTheme.brandColors)
+      } catch (error) {
+        console.error('Error parsing brandColors:', error)
+      }
+    }
+
     return NextResponse.json({
       ...churchTheme,
+      brandColors: parsedBrandColors || {
+        prayerRequest: '#EC4899',
+        visitorFollowup: '#3B82F6',
+        socialMedia: '#8B5CF6',
+        events: '#F59E0B',
+        primary: '#8B5CF6',
+        secondary: '#3B82F6'
+      },
       isDefault: false
     })
 
@@ -122,7 +139,7 @@ export async function PUT(request: NextRequest) {
       updatedTheme = await db.church_themes.update({
         where: { id: existingTheme.id },
         data: {
-          brandColors: brandColors as any, // Prisma Json type
+          brandColors: JSON.stringify(brandColors), // Store as JSON string
           updatedAt: new Date()
         }
       })
@@ -131,8 +148,9 @@ export async function PUT(request: NextRequest) {
       updatedTheme = await db.church_themes.create({
         data: {
           churchId,
-          brandColors: brandColors as any, // Prisma Json type
-          template: 'default',
+          brandColors: JSON.stringify(brandColors), // Store as JSON string
+          themeName: 'custom',
+          themeConfig: '{}',
           isActive: true
         }
       })
