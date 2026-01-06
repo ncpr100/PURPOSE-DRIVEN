@@ -20,7 +20,7 @@ const SPANISH_TEMPLATES = {
   },
   'Prayer Request: Prayer via Message': {
     name: 'Petición de Oración: Oración por Mensaje',
-    description: 'Cuando el solicitante elige "oración por mensaje", envía una oración escrita personalizada o generada por IA por el canal preferido (SMS, WhatsApp, Email).',
+    description: 'Cuando el solicitante elige "oración por mensaje", envía una plantilla de oración pre-escrita inmediatamente O crea una tarea para que el personal escriba una oración personalizada. Completamente configurable.',
   },
   'Prayer Request: Prayer via Call Assignment': {
     name: 'Petición de Oración: Asignación de Llamada de Oración',
@@ -28,19 +28,31 @@ const SPANISH_TEMPLATES = {
   },
   'Visitor: First-Time Welcome (Immediate)': {
     name: 'Visitante: Bienvenida Primera Vez (Inmediato)',
-    description: 'Envía un mensaje de bienvenida inmediato a visitantes primerizos y crea su registro de visitante en el CRM. Configurable para enviar por SMS, Email o WhatsApp.',
+    description: 'Envía un mensaje de bienvenida inmediato a visitantes primerizos y crea su perfil de visitante en el CRM. Activa una secuencia de seguimiento de 7 días.',
   },
   'Visitor: Returning Visitor Engagement': {
     name: 'Visitante: Compromiso de Visitante Recurrente',
-    description: 'Reconoce y compromete a visitantes recurrentes (2-3 visitas). Actualiza categoría CRM y envía invitación personalizada a eventos/ministerios relevantes.',
+    description: 'Reconoce y compromete a visitantes recurrentes (2-3 visitas). Actualiza categoría CRM y envía seguimiento personalizado, actualizando su estado de visitante.',
   },
   'Visitor: Regular Non-Member (Membership Invitation)': {
     name: 'Visitante: Regular No-Miembro (Invitación a Membresía)',
-    description: 'Para visitantes que han asistido 4+ veces pero no son miembros. Invita automáticamente a la clase de membresía y programa seguimiento pastoral.',
+    description: 'Para visitantes que han asistido 4+ veces pero no son miembros. Invita automáticamente a la clase de membresía y programa seguimiento pastoral con invitación personalizada.',
   },
   'Visitor: Urgent Prayer Request (24/7)': {
     name: 'Visitante: Petición de Oración Urgente (24/7)',
     description: 'Para visitantes que envían peticiones de oración urgentes. Proporciona respuesta 24/7 con asignación inmediata de personal y contacto pastoral, ignorando horario laboral.',
+  },
+  'Petición de Oración: Confirmación Automática': {
+    name: 'Petición de Oración: Confirmación Automática',
+    description: 'Envía una confirmación inmediata al solicitante confirmando recepción y explicando los próximos pasos. Respeta el método de contacto preferido del solicitante.',
+  },
+  'Petición de Oración: Oración por Mensaje': {
+    name: 'Petición de Oración: Oración por Mensaje',
+    description: 'Cuando el solicitante elige "oración por mensaje", envía una plantilla de oración pre-escrita inmediatamente O crea una tarea para que el personal escriba una oración personalizada. Completamente configurable.',
+  },
+  'Visitante: Bienvenida Primera Vez (Inmediato)': {
+    name: 'Visitante: Bienvenida Primera Vez (Inmediato)',
+    description: 'Envía un mensaje de bienvenida inmediato a visitantes primerizos y crea su perfil de visitante en el CRM. Activa una secuencia de seguimiento de 7 días.',
   },
 };
 
@@ -52,7 +64,7 @@ async function updateTemplates() {
 
   for (const [englishName, spanish] of Object.entries(SPANISH_TEMPLATES)) {
     try {
-      const result = await prisma.automationRuleTemplate.updateMany({
+      const result = await prisma.automation_rule_templates.updateMany({
         where: { name: englishName },
         data: {
           name: spanish.name,
@@ -80,7 +92,7 @@ async function updateTemplates() {
 
   // Verificar resultado
   console.log('=== VERIFICACIÓN ===\n');
-  const allTemplates = await prisma.automationRuleTemplate.findMany({
+  const allTemplates = await prisma.automation_rule_templates.findMany({
     select: { name: true, category: true },
     orderBy: { category: 'asc' },
   });

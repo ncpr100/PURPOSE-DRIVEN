@@ -10,7 +10,7 @@ import { TemplateDetailModal } from '@/components/automation-rules/template-deta
 import { CreateAutomationRuleDialog } from './create-automation-rule-dialog'
 import { 
   Zap, Plus, CheckCircle, Clock, TrendingUp, Sparkles,
-  Users, Calendar, MessageCircle, MessageSquare, ArrowRight, Palette
+  Users, Calendar, MessageCircle, MessageSquare, ArrowRight, Palette, HandHeart
 } from 'lucide-react'
 
 interface AutomationRule {
@@ -36,7 +36,7 @@ const DEFAULT_COLORS: ChurchBrandColors = {
 
 const getCategoryIcon = (category: string, brightColor: string) => {
   switch (category) {
-    case 'PRAYER_REQUEST': return <MessageSquare className="h-5 w-5" style={{ color: brightColor }} />
+    case 'PRAYER_REQUEST': return <HandHeart className="h-5 w-5" style={{ color: brightColor }} />
     case 'VISITOR_FOLLOWUP': return <Users className="h-5 w-5" style={{ color: brightColor }} />
     case 'SOCIAL_MEDIA': return <MessageCircle className="h-5 w-5" style={{ color: brightColor }} />
     case 'EVENTS': return <Calendar className="h-5 w-5" style={{ color: brightColor }} />
