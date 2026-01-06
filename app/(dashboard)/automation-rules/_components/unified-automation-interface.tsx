@@ -2,73 +2,70 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'react-hot-toast'
 import { TemplateDetailModal } from '@/components/automation-rules/template-detail-modal'
 import { CreateAutomationRuleDialog } from './create-automation-rule-dialog'
 import { 
-  Zap, 
-  Plus, 
-  CheckCircle,
-  Clock,
-  TrendingUp,
-  AlertCircle,
-  Sparkles,
-  Heart,
-  Users,
-  Calendar,
-  MessageCircle,
-  MessageSquare,
-  ArrowRight
+  Zap, Plus, CheckCircle, Clock, TrendingUp, Sparkles,
+  Users, Calendar, MessageCircle, MessageSquare, ArrowRight, Palette
 } from 'lucide-react'
 
 interface AutomationRule {
-  id: string
-  name: string
-  description: string | null
-  isActive: boolean
-  priority: number
-  executionCount: number
-  lastExecuted: string | null
-  createdAt: string
+  id: string; name: string; description: string | null; isActive: boolean
+  priority: number; executionCount: number; lastExecuted: string | null; createdAt: string
 }
 
 interface Template {
-  id: string
-  name: string
-  description: string
-  category: string
-  icon: string
-  color: string
-  installCount: number
-  isSystemTemplate: boolean
+  id: string; name: string; description: string; category: string
+  icon: string; color: string; installCount: number; isSystemTemplate: boolean
+}
+
+interface ChurchBrandColors {
+  prayerRequest?: string; visitorFollowup?: string; socialMedia?: string
+  events?: string; primary?: string; secondary?: string
+}
+
+const DEFAULT_COLORS: ChurchBrandColors = {
+  prayerRequest: '#EC4899', visitorFollowup: '#3B82F6', 
+  socialMedia: '#8B5CF6', events: '#F59E0B',
+  primary: '#3B82F6', secondary: '#10B981'
 }
 
 const getCategoryIcon = (category: string) => {
   switch (category) {
-    case 'PRAYER_REQUEST':
-      return <MessageSquare className="h-5 w-5 text-purple-600" />
-    case 'VISITOR_FOLLOWUP':
-      return <Users className="h-5 w-5 text-blue-600" />
-    case 'SOCIAL_MEDIA':
-      return <MessageCircle className="h-5 w-5 text-green-600" />
-    case 'EVENTS':
-      return <Calendar className="h-5 w-5 text-orange-600" />
-    default:
-      return <Zap className="h-5 w-5 text-gray-600" />
+    case 'PRAYER_REQUEST': return <MessageSquare className="h-5 w-5 text-white" />
+    case 'VISITOR_FOLLOWUP': return <Users className="h-5 w-5 text-white" />
+    case 'SOCIAL_MEDIA': return <MessageCircle className="h-5 w-5 text-white" />
+    case 'EVENTS': return <Calendar className="h-5 w-5 text-white" />
+    default: return <Zap className="h-5 w-5 text-white" />
   }
 }
 
 const getCategoryLabel = (category: string) => {
   const labels: Record<string, string> = {
-    'PRAYER_REQUEST': 'Peticiones de Oración',
-    'VISITOR_FOLLOWUP': 'Seguimiento de Visitantes',
-    'SOCIAL_MEDIA': 'Redes Sociales',
-    'EVENTS': 'Eventos'
+    'PRAYER_REQUEST': 'Peticiones de Oración', 'VISITOR_FOLLOWUP': 'Seguimiento de Visitantes',
+    'SOCIAL_MEDIA': 'Redes Sociales', 'EVENTS': 'Eventos'
   }
   return labels[category] || category
+}
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  return result ? {
+    r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16)
+  } : null
+}
+
+function lightenColor(hex: string, percent: number): string {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return hex
+  const r = Math.min(255, Math.floor(rgb.r + (255 - rgb.r) * percent))
+  const g = Math.min(255, Math.floor(rgb.g + (255 - rgb.g) * percent))
+  const b = Math.min(255, Math.floor(rgb.b + (255 - rgb.b) * percent))
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
 }
 
 export function UnifiedAutomationInterface() {
@@ -79,24 +76,34 @@ export function UnifiedAutomationInterface() {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
-  const [stats, setStats] = useState({
-    total: 0,
-    active: 0,
-    totalExecutions: 0,
-    successRate: 0
-  })
+  const [brandColors, setBrandColors] = useState<ChurchBrandColors>(DEFAULT_COLORS)
+  const [stats, setStats] = useState({ total: 0, active: 0, totalExecutions: 0, successRate: 0 })
 
   useEffect(() => {
     if (session?.user) {
       fetchData()
+      fetchChurchBrandColors()
     }
   }, [session])
+
+  const fetchChurchBrandColors = async () => {
+    try {
+      const response = await fetch('/api/church-theme')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.brandColors) {
+          const colors = typeof data.brandColors === 'string' ? JSON.parse(data.brandColors) : data.brandColors
+          setBrandColors({ ...DEFAULT_COLORS, ...colors })
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching brand colors:', error)
+    }
+  }
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      
-      // Fetch rules and templates in parallel
       const [rulesResponse, templatesResponse] = await Promise.all([
         fetch('/api/automation-rules?limit=100'),
         fetch('/api/automation-templates')
@@ -106,17 +113,9 @@ export function UnifiedAutomationInterface() {
         const rulesData = await rulesResponse.json()
         const rules = rulesData.automationRules || []
         setAutomationRules(rules)
-        
-        // Calculate stats
         const active = rules.filter((r: AutomationRule) => r.isActive).length
         const totalExec = rules.reduce((sum: number, r: AutomationRule) => sum + r.executionCount, 0)
-        
-        setStats({
-          total: rules.length,
-          active,
-          totalExecutions: totalExec,
-          successRate: 93.5 // TODO: Calculate from execution logs
-        })
+        setStats({ total: rules.length, active, totalExecutions: totalExec, successRate: 93.5 })
       }
 
       if (templatesResponse.ok) {
@@ -138,7 +137,6 @@ export function UnifiedAutomationInterface() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: !currentStatus })
       })
-
       if (response.ok) {
         toast.success(currentStatus ? 'Regla pausada' : 'Regla activada')
         fetchData()
@@ -157,12 +155,32 @@ export function UnifiedAutomationInterface() {
 
   const handleActivateTemplate = async (templateId: string, customizations: any) => {
     try {
-      // TODO: Implement template activation API call
-      toast.success('Plantilla activada correctamente')
-      setModalOpen(false)
-      fetchData() // Refresh data
+      const response = await fetch('/api/automation-templates/activate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ templateId, customizations })
+      })
+      if (response.ok) {
+        toast.success('Plantilla activada correctamente')
+        setModalOpen(false)
+        setSelectedTemplateId(null)
+        fetchData()
+      } else {
+        toast.error('Error al activar plantilla')
+      }
     } catch (error) {
       toast.error('Error al activar plantilla')
+    }
+  }
+
+  const getCategoryColor = (category: string, templateColor?: string): string => {
+    if (templateColor && templateColor.startsWith('#')) return templateColor
+    switch (category) {
+      case 'PRAYER_REQUEST': return brandColors.prayerRequest || DEFAULT_COLORS.prayerRequest!
+      case 'VISITOR_FOLLOWUP': return brandColors.visitorFollowup || DEFAULT_COLORS.visitorFollowup!
+      case 'SOCIAL_MEDIA': return brandColors.socialMedia || DEFAULT_COLORS.socialMedia!
+      case 'EVENTS': return brandColors.events || DEFAULT_COLORS.events!
+      default: return brandColors.primary || DEFAULT_COLORS.primary!
     }
   }
 
@@ -176,17 +194,16 @@ export function UnifiedAutomationInterface() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Reglas de Automatización</h1>
-          <p className="text-muted-foreground">
-            Automatiza flujos de trabajo y ahorra tiempo con reglas inteligentes
-          </p>
+          <p className="text-muted-foreground">Automatiza flujos de trabajo y ahorra tiempo con reglas inteligentes</p>
         </div>
+        <Button onClick={() => setCreateDialogOpen(true)} size="lg">
+          <Plus className="h-5 w-5 mr-2" />Crear Regla Personalizada
+        </Button>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
           <CardContent className="p-6">
@@ -245,101 +262,13 @@ export function UnifiedAutomationInterface() {
         </Card>
       </div>
 
-      {/* Welcome Section (if no rules) */}
-      {!hasActiveRules && (
-        <Card className="border-dashed border-2 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-          <CardContent className="p-12">
-            <div className="text-center space-y-6">
-              <div className="flex justify-center">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 shadow-lg">
-                  <Zap className="h-10 w-10 text-white" />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  ¡Bienvenido al Sistema de Automatización!
-                </h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Parece que es tu primera vez aquí. Las automatizaciones te ayudan a ahorrar 
-                  tiempo respondiendo automáticamente a eventos importantes.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                <div className="p-4 rounded-lg bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 shadow-sm">
-                  <div className="flex items-center gap-2 mb-2 text-pink-600">
-                    <Heart className="h-5 w-5" />
-                    <h3 className="font-semibold text-sm">Peticiones de Oración</h3>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Confirmación automática y notificación al equipo
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 shadow-sm">
-                  <div className="flex items-center gap-2 mb-2 text-blue-600">
-                    <Users className="h-5 w-5" />
-                    <h3 className="font-semibold text-sm">Seguimiento de Visitantes</h3>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Bienvenida y seguimiento automático
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 shadow-sm">
-                  <div className="flex items-center gap-2 mb-2 text-purple-600">
-                    <Calendar className="h-5 w-5" />
-                    <h3 className="font-semibold text-sm">Cumpleaños</h3>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Felicitaciones automáticas
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 shadow-sm">
-                  <div className="flex items-center gap-2 mb-2 text-orange-600">
-                    <Sparkles className="h-5 w-5" />
-                    <h3 className="font-semibold text-sm">Y mucho más...</h3>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {templates.length} plantillas disponibles
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex justify-center gap-3">
-                <Button 
-                  size="lg" 
-                  className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg"
-                  onClick={() => setCreateDialogOpen(true)}
-                >
-                  <Plus className="h-5 w-5" />
-                  Crear Regla Personalizada
-                </Button>
-              </div>
-
-              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground bg-blue-50 rounded-lg p-3 max-w-2xl mx-auto border border-blue-100">
-                <AlertCircle className="h-4 w-4 text-blue-600" />
-                <span>💡 <strong>Consejo:</strong> Empieza con una plantilla pre-configurada abajo. Solo toma 30 segundos activarla.</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Active Rules Section (if has rules) */}
       {hasActiveRules && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">Mis Reglas Activas</h2>
-            <Button className="gap-2" onClick={() => setCreateDialogOpen(true)}>
-              <Plus className="h-4 w-4" />
-              Nueva Regla
-            </Button>
+            <Badge variant="secondary" className="text-lg px-4 py-2">{automationRules.length} reglas</Badge>
           </div>
-
-          <div className="grid grid-cols-1 gap-4">
+          <div className="space-y-3">
             {automationRules.map((rule) => (
               <Card key={rule.id}>
                 <CardContent className="p-6">
@@ -353,34 +282,23 @@ export function UnifiedAutomationInterface() {
                           <Badge variant="secondary">Pausada</Badge>
                         )}
                       </div>
-                      {rule.description && (
-                        <p className="text-sm text-muted-foreground">{rule.description}</p>
-                      )}
+                      {rule.description && <p className="text-sm text-muted-foreground">{rule.description}</p>}
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
-                          <TrendingUp className="h-4 w-4" />
-                          {rule.executionCount} ejecuciones
+                          <TrendingUp className="h-4 w-4" />{rule.executionCount} ejecuciones
                         </span>
                         {rule.lastExecuted && (
                           <span className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />
-                            Última: {new Date(rule.lastExecuted).toLocaleDateString('es-ES')}
+                            <Clock className="h-4 w-4" />Última: {new Date(rule.lastExecuted).toLocaleDateString('es-ES')}
                           </span>
                         )}
                       </div>
                     </div>
-
                     <div className="flex items-center gap-2">
-                      <Button
-                        variant={rule.isActive ? "outline" : "default"}
-                        size="sm"
-                        onClick={() => handleToggleRule(rule.id, rule.isActive)}
-                      >
+                      <Button variant={rule.isActive ? "outline" : "default"} size="sm" onClick={() => handleToggleRule(rule.id, rule.isActive)}>
                         {rule.isActive ? 'Pausar' : 'Activar'}
                       </Button>
-                      <Button variant="outline" size="sm">
-                        Editar
-                      </Button>
+                      <Button variant="outline" size="sm">Editar</Button>
                     </div>
                   </div>
                 </CardContent>
@@ -390,117 +308,58 @@ export function UnifiedAutomationInterface() {
         </div>
       )}
 
-      {/* Templates Section (always visible) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold">Plantillas Disponibles</h2>
-            <p className="text-muted-foreground">
-              Activa reglas pre-configuradas con un solo clic
-            </p>
+            <p className="text-muted-foreground">Activa reglas pre-configuradas con un solo clic</p>
           </div>
-          <Badge variant="secondary" className="text-lg px-4 py-2">
-            {templates.length} plantillas
-          </Badge>
+          <Badge variant="secondary" className="text-lg px-4 py-2">{templates.length} plantillas</Badge>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {templates.map((template) => {
-            const gradientColors: Record<string, string> = {
-              'PRAYER_REQUEST': 'from-pink-50 via-pink-100 to-rose-100 border-pink-200',
-              'VISITOR_FOLLOWUP': 'from-blue-50 via-blue-100 to-cyan-100 border-blue-200',
-              'SOCIAL_MEDIA': 'from-purple-50 via-purple-100 to-indigo-100 border-purple-200',
-              'EVENTS': 'from-orange-50 via-orange-100 to-amber-100 border-orange-200'
-            }
-            const gradient = gradientColors[template.category] || 'from-gray-50 to-gray-100 border-gray-200'
-            
-            const iconGradients: Record<string, string> = {
-              'PRAYER_REQUEST': 'from-pink-500 to-rose-600',
-              'VISITOR_FOLLOWUP': 'from-blue-500 to-cyan-600',
-              'SOCIAL_MEDIA': 'from-purple-500 to-indigo-600',
-              'EVENTS': 'from-orange-500 to-amber-600'
-            }
-            const iconGradient = iconGradients[template.category] || 'from-gray-500 to-gray-600'
-
-            // Icon mapping for categories with brand colors
-            const getCategoryIconForTemplate = (category: string) => {
-              switch (category) {
-                case 'PRAYER_REQUEST':
-                  return <MessageSquare className="h-6 w-6 text-purple-600" />
-                case 'VISITOR_FOLLOWUP':
-                  return <Users className="h-6 w-6 text-blue-600" />
-                case 'SOCIAL_MEDIA':
-                  return <MessageCircle className="h-6 w-6 text-green-600" />
-                case 'EVENTS':
-                  return <Calendar className="h-6 w-6 text-orange-600" />
-                default:
-                  return <Zap className="h-6 w-6 text-gray-600" />
-              }
-            }
-            const categoryIcon = getCategoryIconForTemplate(template.category)
-
-            // Text colors matching button gradient
-            const textColors: Record<string, string> = {
-              'PRAYER_REQUEST': 'text-pink-600',
-              'VISITOR_FOLLOWUP': 'text-blue-600',
-              'SOCIAL_MEDIA': 'text-purple-600',
-              'EVENTS': 'text-orange-600'
-            }
-            const textColor = textColors[template.category] || 'text-gray-600'
+            const color = getCategoryColor(template.category, template.color)
+            const lightColor = lightenColor(color, 0.9)
+            const mediumColor = lightenColor(color, 0.7)
 
             return (
               <Card 
                 key={template.id} 
-                className={`bg-gradient-to-br ${gradient} hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}
+                className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2"
+                style={{ backgroundColor: lightColor, borderColor: mediumColor }}
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
-                      <div 
-                        className={`flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${iconGradient} shadow-lg`}
-                      >
-                        <div className="scale-110">
-                          {categoryIcon}
-                        </div>
+                      <div className="flex h-14 w-14 items-center justify-center rounded-xl shadow-lg" style={{ backgroundColor: color }}>
+                        <div className="scale-110">{getCategoryIcon(template.category)}</div>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <Badge variant="secondary" className="text-xs shadow-sm">
-                          Sistema
-                        </Badge>
+                        <Badge variant="secondary" className="text-xs shadow-sm">Sistema</Badge>
+                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0" title="Personalizar colores">
+                          <Palette className="h-3 w-3" />
+                        </Button>
                       </div>
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-base leading-tight mb-2">
-                        {template.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2">
-                        {template.description}
-                      </p>
+                      <h3 className="font-bold text-base leading-tight mb-2">{template.name}</h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{template.description}</p>
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">
                       <div className="flex items-center gap-1.5 text-xs font-bold">
-                        <div className="scale-75">
-                          {getCategoryIconForTemplate(template.category)}
-                        </div>
-                        <span className={`bg-gradient-to-r ${iconGradient} bg-clip-text text-transparent`}>
-                          {getCategoryLabel(template.category)}
-                        </span>
+                        <div className="scale-75">{getCategoryIcon(template.category)}</div>
+                        <span style={{ color: color }}>{getCategoryLabel(template.category)}</span>
                       </div>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
-                        <TrendingUp className="h-3.5 w-3.5" />
-                        {template.installCount} usos
+                        <TrendingUp className="h-3.5 w-3.5" />{template.installCount} usos
                       </span>
                     </div>
 
-                    <Button 
-                      className={`w-full gap-2 bg-gradient-to-r ${iconGradient} hover:opacity-90 shadow-md text-white`}
-                      onClick={() => handleUseTemplate(template.id)}
-                    >
-                      <Sparkles className="h-4 w-4" />
-                      Usar Plantilla
-                      <ArrowRight className="h-4 w-4" />
+                    <Button className="w-full gap-2 shadow-md text-white hover:opacity-90" style={{ backgroundColor: color }} onClick={() => handleUseTemplate(template.id)}>
+                      <Sparkles className="h-4 w-4" />Usar Plantilla<ArrowRight className="h-4 w-4" />
                     </Button>
                   </div>
                 </CardContent>
@@ -510,59 +369,30 @@ export function UnifiedAutomationInterface() {
         </div>
       </div>
 
-      {/* Info Footer */}
       <Card className="bg-muted/50">
         <CardContent className="p-6">
           <div className="space-y-4">
-            <h3 className="font-semibold text-lg flex items-center gap-2">
-              💡 ¿Cómo funcionan las automatizaciones?
-            </h3>
+            <h3 className="font-semibold text-lg flex items-center gap-2">💡 ¿Cómo funcionan las automatizaciones?</h3>
             <div className="grid gap-4 md:grid-cols-3 text-sm">
               <div className="space-y-2">
                 <p className="font-medium">1️⃣ Disparador</p>
-                <p className="text-muted-foreground">
-                  La automatización se activa cuando ocurre un evento específico (nueva 
-                  petición de oración, visitante, etc.)
-                </p>
+                <p className="text-muted-foreground">La automatización se activa cuando ocurre un evento específico (nueva petición de oración, visitante, etc.)</p>
               </div>
               <div className="space-y-2">
                 <p className="font-medium">2️⃣ Condiciones</p>
-                <p className="text-muted-foreground">
-                  Se evalúan condiciones (ej: categoría URGENTE, primera visita) para 
-                  determinar si continuar
-                </p>
+                <p className="text-muted-foreground">Se evalúan condiciones (ej: categoría URGENTE, primera visita) para determinar si continuar</p>
               </div>
               <div className="space-y-2">
                 <p className="font-medium">3️⃣ Acciones</p>
-                <p className="text-muted-foreground">
-                  Se ejecutan acciones automáticas (enviar email, SMS, crear tarea, 
-                  notificar equipo)
-                </p>
+                <p className="text-muted-foreground">Se ejecutan acciones automáticas (enviar email, SMS, crear tarea, notificar equipo)</p>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Template Detail Modal */}
-      <TemplateDetailModal
-        templateId={selectedTemplateId}
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false)
-          setSelectedTemplateId(null)
-        }}
-        onActivate={handleActivateTemplate}
-      />
-
-      {/* Create Custom Rule Dialog */}
-      <CreateAutomationRuleDialog
-        open={createDialogOpen}
-        onClose={() => setCreateDialogOpen(false)}
-        onSuccess={() => {
-          fetchData()
-        }}
-      />
+      <TemplateDetailModal templateId={selectedTemplateId} open={modalOpen} onClose={() => { setModalOpen(false); setSelectedTemplateId(null) }} onActivate={handleActivateTemplate} />
+      <CreateAutomationRuleDialog open={createDialogOpen} onClose={() => setCreateDialogOpen(false)} onSuccess={() => { fetchData() }} />
     </div>
   )
 }
