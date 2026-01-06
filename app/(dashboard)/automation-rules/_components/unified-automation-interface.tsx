@@ -413,7 +413,11 @@ export function UnifiedAutomationInterface() {
                       </span>
                     </div>
 
-                    <Button className="w-full gap-2 shadow-md text-white hover:opacity-90" style={{ backgroundColor: color }} onClick={() => handleUseTemplate(template.id)}>
+                    <Button 
+                      className="w-full gap-2 shadow-md hover:opacity-90" 
+                      style={{ backgroundColor: pastelColor, color: brightColor }} 
+                      onClick={() => handleUseTemplate(template.id)}
+                    >
                       <Sparkles className="h-4 w-4" />Usar Plantilla<ArrowRight className="h-4 w-4" />
                     </Button>
                   </div>
