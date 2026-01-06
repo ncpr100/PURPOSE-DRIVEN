@@ -29,8 +29,8 @@ interface ChurchBrandColors {
 }
 
 const DEFAULT_COLORS: ChurchBrandColors = {
-  prayerRequest: '#EC4899', visitorFollowup: '#3B82F6', 
-  socialMedia: '#8B5CF6', events: '#F59E0B',
+  prayerRequest: '#8B5CF6', visitorFollowup: '#3B82F6', 
+  socialMedia: '#10B981', events: '#F59E0B',
   primary: '#3B82F6', secondary: '#10B981'
 }
 
@@ -206,57 +206,57 @@ export function UnifiedAutomationInterface() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+        <Card className="border border-gray-200 bg-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-700">Total Reglas</p>
-                <p className="text-3xl font-bold text-blue-900">{stats.total}</p>
+                <p className="text-sm font-medium text-gray-600">Total Reglas</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg">
-                <Zap className="h-7 w-7 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500">
+                <Zap className="h-6 w-6 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+        <Card className="border border-gray-200 bg-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-700">Activas</p>
-                <p className="text-3xl font-bold text-green-900">{stats.active}</p>
+                <p className="text-sm font-medium text-gray-600">Activas</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.active}</p>
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-green-600 shadow-lg">
-                <CheckCircle className="h-7 w-7 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500">
+                <CheckCircle className="h-6 w-6 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+        <Card className="border border-gray-200 bg-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-purple-700">Ejecuciones</p>
-                <p className="text-3xl font-bold text-purple-900">{stats.totalExecutions}</p>
+                <p className="text-sm font-medium text-gray-600">Ejecuciones</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.totalExecutions}</p>
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg">
-                <TrendingUp className="h-7 w-7 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500">
+                <TrendingUp className="h-6 w-6 text-white" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+        <Card className="border border-gray-200 bg-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-orange-700">Tasa de Éxito</p>
-                <p className="text-3xl font-bold text-orange-900">{stats.successRate}%</p>
+                <p className="text-sm font-medium text-gray-600">Tasa de Éxito</p>
+                <p className="text-3xl font-bold text-gray-900">{stats.successRate}%</p>
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg">
-                <Sparkles className="h-7 w-7 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-500">
+                <Sparkles className="h-6 w-6 text-white" />
               </div>
             </div>
           </CardContent>

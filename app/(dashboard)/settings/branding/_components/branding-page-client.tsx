@@ -19,38 +19,38 @@ interface ChurchBrandColors {
 }
 
 const DEFAULT_COLORS: ChurchBrandColors = {
-  prayerRequest: '#EC4899',    // Pink
-  visitorFollowup: '#3B82F6',  // Blue
-  socialMedia: '#8B5CF6',      // Purple
-  events: '#F59E0B',           // Orange
-  primary: '#8B5CF6',          // Purple
-  secondary: '#3B82F6'         // Blue
+  prayerRequest: '#8B5CF6',    // Purple-500 (platform stats)
+  visitorFollowup: '#3B82F6',  // Blue-500 (platform stats)
+  socialMedia: '#10B981',      // Green-500 (platform stats)
+  events: '#F59E0B',           // Orange-500 (platform stats)
+  primary: '#3B82F6',          // Blue-500
+  secondary: '#10B981'         // Green-500
 }
 
 const COLOR_DESCRIPTIONS = {
   prayerRequest: {
     label: 'Solicitudes de Oración',
-    description: 'Color para plantillas de oración y ministerio espiritual'
+    description: 'Color para plantillas de oración (default: azul sutil de plataforma)'
   },
   visitorFollowup: {
     label: 'Seguimiento de Visitantes',
-    description: 'Color para plantillas de bienvenida y visitantes'
+    description: 'Color para plantillas de bienvenida (default: verde sutil de plataforma)'
   },
   socialMedia: {
     label: 'Redes Sociales',
-    description: 'Color para plantillas de marketing y redes sociales'
+    description: 'Color para plantillas de marketing (default: morado sutil de plataforma)'
   },
   events: {
     label: 'Eventos',
-    description: 'Color para plantillas de eventos y actividades'
+    description: 'Color para plantillas de eventos (default: naranja sutil de plataforma)'
   },
   primary: {
     label: 'Color Primario',
-    description: 'Color principal de tu iglesia (botones, encabezados)'
+    description: 'Color principal de tu iglesia (default: azul sutil)'
   },
   secondary: {
     label: 'Color Secundario',
-    description: 'Color secundario para acentos y detalles'
+    description: 'Color secundario para acentos (default: verde sutil)'
   }
 }
 
