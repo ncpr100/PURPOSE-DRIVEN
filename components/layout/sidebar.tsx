@@ -199,6 +199,12 @@ const navigationItems = [
     roles: ['SUPER_ADMIN'],
   },
   {
+    title: 'Colores de Marca',
+    href: '/settings/branding',
+    icon: Palette,
+    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA'],
+  },
+  {
     title: 'Configuración de Notificaciones',
     href: '/settings/notifications',
     icon: Bell,

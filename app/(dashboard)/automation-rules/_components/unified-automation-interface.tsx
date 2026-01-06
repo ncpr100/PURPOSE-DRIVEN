@@ -199,9 +199,20 @@ export function UnifiedAutomationInterface() {
           <h1 className="text-3xl font-bold tracking-tight">Reglas de Automatización</h1>
           <p className="text-muted-foreground">Automatiza flujos de trabajo y ahorra tiempo con reglas inteligentes</p>
         </div>
-        <Button onClick={() => setCreateDialogOpen(true)} size="lg">
-          <Plus className="h-5 w-5 mr-2" />Crear Regla Personalizada
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={() => window.location.href = '/settings/branding'} 
+            variant="outline"
+            size="lg"
+          >
+            <Palette className="h-5 w-5 mr-2" />
+            Personalizar Colores
+          </Button>
+          <Button onClick={() => setCreateDialogOpen(true)} size="lg">
+            <Plus className="h-5 w-5 mr-2" />
+            Crear Regla Personalizada
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -261,6 +272,34 @@ export function UnifiedAutomationInterface() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Branding Customization Banner */}
+      <Card className="bg-gradient-to-r from-purple-500 to-pink-500 border-0 shadow-xl">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between text-white">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                <Palette className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold">¡Personaliza los Colores de tus Plantillas!</h3>
+                <p className="text-white/90 text-sm">
+                  Adapta las plantillas de automatización a los colores de tu marca. 
+                  Configura colores personalizados para cada categoría.
+                </p>
+              </div>
+            </div>
+            <Button 
+              onClick={() => window.location.href = '/settings/branding'}
+              className="bg-white text-purple-600 hover:bg-white/90 font-semibold shadow-lg"
+              size="lg"
+            >
+              Personalizar Ahora
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {hasActiveRules && (
         <div className="space-y-4">
