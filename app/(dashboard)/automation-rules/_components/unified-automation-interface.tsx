@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'react-hot-toast'
 import { TemplateDetailModal } from '@/components/automation-rules/template-detail-modal'
+import { CreateAutomationRuleDialog } from './create-automation-rule-dialog'
 import { 
   Zap, 
   Plus, 
@@ -77,6 +78,7 @@ export function UnifiedAutomationInterface() {
   const [templates, setTemplates] = useState<Template[]>([])
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
   const [stats, setStats] = useState({
     total: 0,
     active: 0,
@@ -173,21 +175,14 @@ export function UnifiedAutomationInterface() {
   const hasActiveRules = automationRules.length > 0
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">
-            <Zap className="h-6 w-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              Sistema de Automatización
-            </h1>
-            <p className="text-muted-foreground">
-              Automatiza respuestas a peticiones de oración, seguimiento de visitantes y más
-            </p>
-          </div>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Reglas de Automatización</h1>
+          <p className="text-muted-foreground">
+            Automatiza flujos de trabajo y ahorra tiempo con reglas inteligentes
+          </p>
         </div>
       </div>
 
@@ -316,9 +311,8 @@ export function UnifiedAutomationInterface() {
               <div className="flex justify-center gap-3">
                 <Button 
                   size="lg" 
-                  variant="outline" 
-                  className="gap-2"
-                  onClick={() => toast('Funcionalidad disponible próximamente', { icon: '🚧' })}
+                  className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg"
+                  onClick={() => setCreateDialogOpen(true)}
                 >
                   <Plus className="h-5 w-5" />
                   Crear Regla Personalizada
@@ -339,7 +333,7 @@ export function UnifiedAutomationInterface() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">Mis Reglas Activas</h2>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => setCreateDialogOpen(true)}>
               <Plus className="h-4 w-4" />
               Nueva Regla
             </Button>
@@ -559,6 +553,15 @@ export function UnifiedAutomationInterface() {
           setSelectedTemplateId(null)
         }}
         onActivate={handleActivateTemplate}
+      />
+
+      {/* Create Custom Rule Dialog */}
+      <CreateAutomationRuleDialog
+        open={createDialogOpen}
+        onClose={() => setCreateDialogOpen(false)}
+        onSuccess={() => {
+          fetchData()
+        }}
       />
     </div>
   )

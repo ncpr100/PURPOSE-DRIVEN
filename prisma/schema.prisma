@@ -1554,24 +1554,29 @@ model prayer_qr_codes {
 }
 
 model prayer_requests {
-  id                 String               @id
-  contactId          String
-  churchId           String
-  categoryId         String
-  message            String
-  isAnonymous        Boolean              @default(false)
-  status             String               @default("pending")
-  priority           String               @default("normal")
-  source             String?
-  formId             String?
-  qrCodeId           String?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now())
-  prayer_approvals   prayer_approvals?
-  prayer_categories  prayer_categories    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  churches           churches             @relation(fields: [churchId], references: [id], onDelete: Cascade)
-  prayer_contacts    prayer_contacts      @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  prayer_testimonies prayer_testimonies[]
+  id                    String               @id
+  contactId             String
+  churchId              String
+  categoryId            String
+  message               String
+  isAnonymous           Boolean              @default(false)
+  status                String               @default("pending")
+  priority              String               @default("normal")
+  source                String?
+  formId                String?
+  qrCodeId              String?
+  automationTriggered   Boolean              @default(false)
+  triggeredRuleIds      String[]             @default([])
+  lastAutomationRun     DateTime?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @default(now())
+  prayer_approvals      prayer_approvals?
+  prayer_categories     prayer_categories    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  churches              churches             @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  prayer_contacts       prayer_contacts      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  prayer_testimonies    prayer_testimonies[]
+  
+  @@index([automationTriggered])
 }
 
 model prayer_response_templates {
@@ -2137,19 +2142,23 @@ model visitor_qr_codes {
 }
 
 model visitor_submissions {
-  id            String        @id
-  formId        String
-  data          Json
-  submittedAt   DateTime      @default(now())
-  ipAddress     String?
-  userAgent     String?
-  status        String        @default("pending")
-  churchId      String
-  churches      churches      @relation(fields: [churchId], references: [id])
-  visitor_forms visitor_forms @relation(fields: [formId], references: [id], onDelete: Cascade)
+  id                    String        @id
+  formId                String
+  data                  Json
+  submittedAt           DateTime      @default(now())
+  ipAddress             String?
+  userAgent             String?
+  status                String        @default("pending")
+  churchId              String
+  automationTriggered   Boolean       @default(false)
+  triggeredRuleIds      String[]      @default([])
+  lastAutomationRun     DateTime?
+  churches              churches      @relation(fields: [churchId], references: [id])
+  visitor_forms         visitor_forms @relation(fields: [formId], references: [id], onDelete: Cascade)
 
   @@index([churchId, submittedAt])
   @@index([formId, status])
+  @@index([automationTriggered])
 }
 
 model volunteer_assignments {
@@ -2396,6 +2405,10 @@ enum AutomationTriggerType {
   SOCIAL_MEDIA_SCHEDULED_POST_READY
   SOCIAL_MEDIA_CAMPAIGN_COMPLETED
   SOCIAL_MEDIA_ANALYTICS_REPORT
+  FORM_SUBMITTED
+  QR_CODE_SCANNED
+  VISITOR_FORM_SUBMITTED
+  PRAYER_FORM_SUBMITTED
 }
 
 enum EngagementLevel {

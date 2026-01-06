@@ -142,14 +142,36 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // TRIGGER AUTOMATION: Process through automation rules with auto-categorization
+    // 🔥 TRIGGER AUTOMATION for visitor check-in
     try {
-      const { VisitorAutomationService } = await import('@/lib/services/visitor-automation');
-      await VisitorAutomationService.processVisitor(checkIn.id);
-      console.log(`[Check-In API] Automation triggered for check-in: ${checkIn.id}`);
+      const { triggerAutomations, markAutomationTriggered } = await import('@/lib/automation-trigger-service')
+      
+      const triggerType = isFirstTime ? 'VISITOR_FIRST_TIME' : 'VISITOR_CHECKED_IN'
+      
+      const result = await triggerAutomations({
+        type: triggerType,
+        churchId: session.user.churchId,
+        data: {
+          checkInId: checkIn.id,
+          qrCode: qrData,
+          visitorName: `${firstName} ${lastName}`,
+          visitorEmail: email,
+          visitorPhone: phone,
+          isFirstTime: isFirstTime || false,
+          visitReason,
+          prayerRequest: prayer_requests,
+          eventId: eventId || undefined,
+          source: 'check_in',
+          timestamp: new Date()
+        }
+      })
+      
+      if (result.success && result.rulesTriggered > 0) {
+        await markAutomationTriggered('check_in', checkIn.id, result.executionIds)
+        console.log(`✅ Triggered ${result.rulesTriggered} automation rule(s) for ${triggerType}`)
+      }
     } catch (automationError) {
-      // Don't fail the request if automation fails, just log it
-      console.error('[Check-In API] Automation trigger failed:', automationError);
+      console.error('❌ Automation trigger failed for check-in:', automationError)
     }
 
     return NextResponse.json(checkIn, { status: 201 })

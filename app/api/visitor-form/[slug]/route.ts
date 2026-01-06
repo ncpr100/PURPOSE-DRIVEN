@@ -124,6 +124,36 @@ export async function POST(
       }
     })
 
+    // 🔥 TRIGGER AUTOMATION for visitor form submission
+    try {
+      const { triggerAutomations, markAutomationTriggered } = await import('@/lib/automation-trigger-service')
+      
+      const result = await triggerAutomations({
+        type: 'VISITOR_FORM_SUBMITTED',
+        churchId: form.churchId,
+        data: {
+          submissionId: submission.id,
+          formId: form.id,
+          formName: form.name,
+          qrCode: qrCode || undefined,
+          visitorName: data.firstName || data.name || 'Visitante',
+          visitorEmail: data.email,
+          visitorPhone: data.phone,
+          preferredContact: data.preferredContact || 'email',
+          fields: data,
+          source: qrCode ? 'qr_code' : 'direct_link',
+          timestamp: new Date()
+        }
+      })
+      
+      if (result.success && result.rulesTriggered > 0) {
+        await markAutomationTriggered('visitor_submission', submission.id, result.executionIds)
+        console.log(`✅ Triggered ${result.rulesTriggered} automation rule(s) for visitor form ${form.name}`)
+      }
+    } catch (automationError) {
+      console.error('❌ Automation trigger failed for visitor submission:', automationError)
+    }
+
     // If form has auto-follow-up enabled, create a visitor check-in
     if (form.settings && (form.settings as any).autoFollowUp && data.email) {
       try {

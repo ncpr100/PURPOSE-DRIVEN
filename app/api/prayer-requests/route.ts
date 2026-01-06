@@ -191,12 +191,35 @@ export async function POST(request: Request) {
 
     // TRIGGER AUTOMATION: Process through automation rules
     try {
-      const { PrayerAutomation } = await import('@/lib/services/prayer-automation');
-      await PrayerAutomation.processPrayerRequest(prayer_requests.id);
-      console.log(`[Prayer Request API] Automation triggered for prayer request: ${prayer_requests.id}`);
+      const { triggerAutomations, markAutomationTriggered } = await import('@/lib/automation-trigger-service')
+      
+      const result = await triggerAutomations({
+        type: 'PRAYER_REQUEST_SUBMITTED',
+        churchId: prayer_requests.churchId,
+        data: {
+          prayerRequestId: prayer_requests.id,
+          formId: prayer_requests.formId,
+          qrCodeId: prayer_requests.qrCodeId,
+          prayerPriority: prayer_requests.priority,
+          prayerCategory: category.name,
+          contactName: contact.fullName,
+          contactEmail: contact.email,
+          contactPhone: contact.phone,
+          preferredContact: contact.preferredContact,
+          message: prayer_requests.message,
+          isAnonymous: prayer_requests.isAnonymous,
+          source: prayer_requests.source,
+          timestamp: new Date()
+        }
+      })
+      
+      if (result.success && result.rulesTriggered > 0) {
+        await markAutomationTriggered('prayer_request', prayer_requests.id, result.executionIds)
+        console.log(`✅ Triggered ${result.rulesTriggered} automation rule(s) for prayer request ${prayer_requests.id}`)
+      }
     } catch (automationError) {
       // Don't fail the request if automation fails, just log it
-      console.error('[Prayer Request API] Automation trigger failed:', automationError);
+      console.error('❌ Automation trigger failed:', automationError)
     }
 
     return NextResponse.json(prayer_requests, { status: 201 });

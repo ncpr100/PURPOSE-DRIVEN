@@ -407,6 +407,13 @@ export function CreateAutomationRuleDialog({
                                       <SelectItem value="ANNIVERSARY">Aniversario</SelectItem>
                                       <SelectItem value="SERMON_PUBLISHED">Sermón Publicado</SelectItem>
                                       <SelectItem value="ATTENDANCE_RECORDED">Asistencia Registrada</SelectItem>
+                                      <SelectItem value="PRAYER_REQUEST_SUBMITTED">📿 Petición de Oración Enviada</SelectItem>
+                                      <SelectItem value="PRAYER_FORM_SUBMITTED">🙏 Formulario de Oración</SelectItem>
+                                      <SelectItem value="VISITOR_CHECKED_IN">👋 Check-in de Visitante</SelectItem>
+                                      <SelectItem value="VISITOR_FIRST_TIME">✨ Primera Visita</SelectItem>
+                                      <SelectItem value="VISITOR_FORM_SUBMITTED">📝 Formulario de Visitante</SelectItem>
+                                      <SelectItem value="FORM_SUBMITTED">📋 Formulario Enviado (General)</SelectItem>
+                                      <SelectItem value="QR_CODE_SCANNED">📱 Código QR Escaneado</SelectItem>
                                     </SelectContent>
                                   </Select>
                                 </div>

@@ -17,7 +17,7 @@ async function main() {
   // ============================================================================
 
   // Template 1: Prayer Request - Immediate Church Notification
-  const prayerNotification = await prisma.automationRuleTemplate.upsert({
+  const prayerNotification = await prisma.automation_rule_templates.upsert({
     where: { id: 'template_prayer_church_notification' },
     update: {},
     create: {
@@ -92,7 +92,7 @@ async function main() {
   });
 
   // Template 2: Prayer Request - Auto-Acknowledgment to Requester
-  const prayerAcknowledgment = await prisma.automationRuleTemplate.upsert({
+  const prayerAcknowledgment = await prisma.automation_rule_templates.upsert({
     where: { id: 'template_prayer_acknowledgment' },
     update: {},
     create: {
@@ -165,7 +165,7 @@ async function main() {
   });
 
   // Template 3: Prayer Request - Prayer via Message (Auto or Custom)
-  const prayerViaMessage = await prisma.automationRuleTemplate.upsert({
+  const prayerViaMessage = await prisma.automation_rule_templates.upsert({
     where: { id: 'template_prayer_via_message' },
     update: {},
     create: {
@@ -253,7 +253,7 @@ async function main() {
   });
 
   // Template 4: Prayer Request - Prayer via Call Assignment
-  const prayerViaCall = await prisma.automationRuleTemplate.upsert({
+  const prayerViaCall = await prisma.automation_rule_templates.upsert({
     where: { id: 'template_prayer_via_call' },
     update: {},
     create: {
@@ -350,7 +350,7 @@ async function main() {
   // ============================================================================
 
   // Template 5: Visitor - First-Time Welcome (Immediate)
-  const visitorFirstTimeWelcome = await prisma.automationRuleTemplate.upsert({
+  const visitorFirstTimeWelcome = await prisma.automation_rule_templates.upsert({
     where: { id: 'template_visitor_first_time_welcome' },
     update: {},
     create: {
@@ -460,7 +460,7 @@ async function main() {
   });
 
   // Template 6: Visitor - Returning Visitor Engagement
-  const visitorReturningEngagement = await prisma.automationRuleTemplate.upsert({
+  const visitorReturningEngagement = await prisma.automation_rule_templates.upsert({
     where: { id: 'template_visitor_returning' },
     update: {},
     create: {
@@ -543,7 +543,7 @@ async function main() {
   });
 
   // Template 7: Visitor - Regular Non-Member (Membership Invitation)
-  const visitorRegularInvitation = await prisma.automationRuleTemplate.upsert({
+  const visitorRegularInvitation = await prisma.automation_rule_templates.upsert({
     where: { id: 'template_visitor_regular_membership' },
     update: {},
     create: {
@@ -643,7 +643,7 @@ async function main() {
   });
 
   // Template 8: Visitor - Urgent Prayer Request Follow-Up (24/7)
-  const visitorUrgentPrayer = await prisma.automationRuleTemplate.upsert({
+  const visitorUrgentPrayer = await prisma.automation_rule_templates.upsert({
     where: { id: 'template_visitor_urgent_prayer' },
     update: {},
     create: {
@@ -763,15 +763,15 @@ async function main() {
   console.log('   8. Visitor: Urgent Prayer Request (24/7)');
   
   console.log('\n📊 Template Statistics:');
-  const totalTemplates = await prisma.automationRuleTemplate.count();
+  const totalTemplates = await prisma.automation_rule_templates.count();
   console.log(`   Total templates: ${totalTemplates}`);
   
-  const prayerTemplates = await prisma.automationRuleTemplate.count({
+  const prayerTemplates = await prisma.automation_rule_templates.count({
     where: { category: 'PRAYER_REQUEST' }
   });
   console.log(`   Prayer request templates: ${prayerTemplates}`);
   
-  const visitorTemplates = await prisma.automationRuleTemplate.count({
+  const visitorTemplates = await prisma.automation_rule_templates.count({
     where: { category: 'VISITOR_FOLLOWUP' }
   });
   console.log(`   Visitor follow-up templates: ${visitorTemplates}`);
