@@ -406,7 +406,7 @@ export function UnifiedAutomationInterface() {
                     <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">
                       <div className="flex items-center gap-1.5 text-xs font-bold">
                         <div className="scale-75">{getCategoryIcon(template.category)}</div>
-                        <span style={{ color: color }}>{getCategoryLabel(template.category)}</span>
+                        <span style={{ color: brightColor }}>{getCategoryLabel(template.category)}</span>
                       </div>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground font-medium">
                         <TrendingUp className="h-3.5 w-3.5" />{template.installCount} usos
