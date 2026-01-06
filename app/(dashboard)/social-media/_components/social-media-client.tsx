@@ -99,7 +99,7 @@ export default function SocialMediaClient() {
   const publishedPosts = posts.filter(post => post.status === 'PUBLISHED');
 
   if (!session) {
-    return <div>Please log in to access social media management.</div>;
+    return <div>Por favor inicia sesión para acceder a la gestión de redes sociales.</div>;
   }
 
   return (
@@ -108,7 +108,7 @@ export default function SocialMediaClient() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Connected Accounts</CardTitle>
+            <CardTitle className="text-sm font-medium">Cuentas Conectadas</CardTitle>
             <Settings className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -132,39 +132,39 @@ export default function SocialMediaClient() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Scheduled Posts</CardTitle>
+            <CardTitle className="text-sm font-medium">Posts Programados</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{scheduledPosts.length}</div>
             <p className="text-xs text-muted-foreground">
-              Ready to publish
+              Listos para publicar
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Published Posts</CardTitle>
+            <CardTitle className="text-sm font-medium">Posts Publicados</CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{publishedPosts.length}</div>
             <p className="text-xs text-muted-foreground">
-              This month
+              Este mes
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
+            <CardTitle className="text-sm font-medium">Total de Posts</CardTitle>
             <Plus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{posts.length}</div>
             <p className="text-xs text-muted-foreground">
-              All time
+              Histórico
             </p>
           </CardContent>
         </Card>
@@ -175,14 +175,14 @@ export default function SocialMediaClient() {
         <div className="flex items-center justify-between">
           <TabsList>
             <TabsTrigger value="posts">Posts</TabsTrigger>
-            <TabsTrigger value="calendar">Calendar</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="accounts">Accounts</TabsTrigger>
+            <TabsTrigger value="calendar">Calendario</TabsTrigger>
+            <TabsTrigger value="analytics">Analíticas</TabsTrigger>
+            <TabsTrigger value="accounts">Cuentas</TabsTrigger>
           </TabsList>
           
           <Button onClick={() => setShowComposer(true)}>
             <Plus className="mr-2 h-4 w-4" />
-            New Post
+            Nuevo Post
           </Button>
         </div>
 
@@ -190,7 +190,7 @@ export default function SocialMediaClient() {
           {/* Recent Posts */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Posts</CardTitle>
+              <CardTitle>Posts Recientes</CardTitle>
             </CardHeader>
             <CardContent>
               {isLoading ? (
@@ -242,7 +242,7 @@ export default function SocialMediaClient() {
                             setShowComposer(true);
                           }}
                         >
-                          Edit
+                          Editar
                         </Button>
                       </div>
                     </div>
@@ -251,12 +251,12 @@ export default function SocialMediaClient() {
               ) : (
                 <div className="text-center py-8 text-gray-500">
                   <Plus className="mx-auto h-12 w-12 text-gray-300" />
-                  <h3 className="mt-2 text-sm font-medium">No posts yet</h3>
-                  <p className="mt-1 text-sm">Get started by creating your first social media post.</p>
+                  <h3 className="mt-2 text-sm font-medium">No hay posts aún</h3>
+                  <p className="mt-1 text-sm">Comienza creando tu primer post en redes sociales.</p>
                   <div className="mt-6">
                     <Button onClick={() => setShowComposer(true)}>
                       <Plus className="mr-2 h-4 w-4" />
-                      New Post
+                      Nuevo Post
                     </Button>
                   </div>
                 </div>

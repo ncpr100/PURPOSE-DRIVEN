@@ -1,7 +1,7 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 3.2  
-**Last Updated**: January 5, 2026  
+**Document Version**: 3.3  
+**Last Updated**: January 6, 2026  
 **Project Status**: Production Active - Phase 3 Complete, Phase 4 Architecture Ready (97% Complete)  
 
 ---
@@ -273,12 +273,59 @@ const requestNotificationPermission = async () => {
   },
   eslint: {
     ignoreDuringBuilds: true,  // ESLint warnings allowed
+  },
+  distDir: process.env.NEXT_DIST_DIR || '.next',
+  output: process.env.NEXT_OUTPUT_MODE,
+  experimental: {
+    outputFileTracingRoot: path.join(__dirname, '../'),
   }
 }
 
 // Build validation commands:
 npm run test:compile      // TypeScript compilation check
 npm run build             // Full production build (348 routes)
+```
+
+**12. Environment Variables Pattern (CRITICAL)**
+```bash
+# Required Environment Variables for Production:
+DATABASE_URL              # PostgreSQL connection string (Prisma)
+NEXTAUTH_SECRET          # NextAuth.js encryption key (minimum 32 chars)
+NEXTAUTH_URL             # Full application URL (https://your-domain.com)
+REDIS_URL                # Redis connection string for caching
+
+# Feature Flags (Optional - Default: disabled)
+ENABLE_SOCIAL_MEDIA_AUTOMATION=true    # Social media auto-posting
+ENABLE_ADVANCED_ANALYTICS=true         # AI-powered analytics
+ENABLE_PWA_FEATURES=true               # Progressive Web App features
+
+# External Service API Keys (Optional but recommended)
+STRIPE_SECRET_KEY        # Payment processing
+TWILIO_ACCOUNT_SID       # SMS messaging
+MAILGUN_API_KEY          # Email delivery
+```
+
+**13. Singleton Pattern for Services**
+```typescript
+// Standard service singleton pattern (lib/{service}.ts)
+import { PrismaClient } from '@prisma/client'
+
+// Global singleton to prevent multiple Prisma instances
+const globalForPrisma = global as unknown as { prisma: PrismaClient }
+
+export const db = globalForPrisma.prisma ?? new PrismaClient({
+  log: process.env.NODE_ENV === 'development' 
+    ? ['query', 'error', 'warn'] 
+    : ['error']
+})
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+
+// Other service singletons:
+// - lib/redis-cache-manager.ts: export const cacheManager
+// - lib/performance.ts: export const performanceMonitor
+// - lib/memory-monitor.ts: export const memoryMonitor
+// - lib/intelligent-cache-warmer.ts: export const intelligentCacheWarmer
 ```
 
 ### Current Development Priorities (Next 2-4 Weeks)

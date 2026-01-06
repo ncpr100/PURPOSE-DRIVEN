@@ -88,8 +88,8 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
         <CardContent className="flex items-center justify-center h-64">
           <div className="text-center text-gray-500">
             <BarChart3 className="mx-auto h-12 w-12 text-gray-300" />
-            <h3 className="mt-2 text-sm font-medium">No Campaign Data</h3>
-            <p className="mt-1 text-sm">Create campaigns to view analytics.</p>
+            <h3 className="mt-2 text-sm font-medium">No hay datos de campañas</h3>
+            <p className="mt-1 text-sm">Crea campañas para ver analíticas.</p>
           </div>
         </CardContent>
       </Card>
@@ -102,7 +102,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Budget</CardTitle>
+            <CardTitle className="text-sm font-medium">Presupuesto Total</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -115,39 +115,39 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
+            <CardTitle className="text-sm font-medium">Campañas Activas</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{activeCampaigns}</div>
             <p className="text-xs text-muted-foreground">
-              of {campaigns.length} total
+              de {campaigns.length} totales
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Campaign Posts</CardTitle>
+            <CardTitle className="text-sm font-medium">Posts de Campañas</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalPosts}</div>
             <p className="text-xs text-muted-foreground">
-              Avg: {Math.round(totalPosts / campaigns.length)} per campaign
+              Prom: {Math.round(totalPosts / campaigns.length)} por campaña
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Platforms</CardTitle>
+            <CardTitle className="text-sm font-medium">Plataformas</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{Object.keys(platformStats).length}</div>
             <p className="text-xs text-muted-foreground">
-              Different platforms
+              Plataformas diferentes
             </p>
           </CardContent>
         </Card>
@@ -158,7 +158,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
         {/* Campaign Status Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Campaign Status Distribution</CardTitle>
+            <CardTitle>Distribución de Estado de Campañas</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -188,7 +188,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
         {/* Platform Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Platform Usage</CardTitle>
+            <CardTitle>Uso de Plataformas</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -207,7 +207,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
         {budgetData.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Campaign Budgets</CardTitle>
+              <CardTitle>Presupuestos de Campañas</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -233,7 +233,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
         {monthlyData.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>Campaign Timeline</CardTitle>
+              <CardTitle>Línea de Tiempo de Campañas</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -277,19 +277,19 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
       {/* Campaign Performance Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Campaign Performance Overview</CardTitle>
+          <CardTitle>Resumen de Rendimiento de Campañas</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left p-2">Campaign</th>
-                  <th className="text-left p-2">Status</th>
-                  <th className="text-left p-2">Budget</th>
+                  <th className="text-left p-2">Campaña</th>
+                  <th className="text-left p-2">Estado</th>
+                  <th className="text-left p-2">Presupuesto</th>
                   <th className="text-left p-2">Posts</th>
-                  <th className="text-left p-2">Duration</th>
-                  <th className="text-left p-2">Platforms</th>
+                  <th className="text-left p-2">Duración</th>
+                  <th className="text-left p-2">Plataformas</th>
                 </tr>
               </thead>
               <tbody>
@@ -304,7 +304,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
                       <td className="p-2">
                         <div className="font-medium">{campaign.name}</div>
                         <div className="text-xs text-gray-500">
-                          Started {new Date(campaign.startDate).toLocaleDateString()}
+                          Inicio: {new Date(campaign.startDate).toLocaleDateString()}
                         </div>
                       </td>
                       <td className="p-2">
@@ -321,7 +321,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
                         {campaign.budget ? `$${campaign.budget.toLocaleString()}` : 'N/A'}
                       </td>
                       <td className="p-2">{campaign._count?.posts || 0}</td>
-                      <td className="p-2">{duration ? `${duration}d` : 'Ongoing'}</td>
+                      <td className="p-2">{duration ? `${duration}d` : 'En curso'}</td>
                       <td className="p-2">
                         <div className="flex flex-wrap gap-1">
                           {platforms.slice(0, 2).map((platform: string) => (

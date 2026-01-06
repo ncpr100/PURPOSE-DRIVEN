@@ -82,7 +82,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
     e.preventDefault();
 
     if (!formData.platform || !formData.accountId || !formData.accessToken) {
-      toast.error('Platform, Account ID, and Access Token are required');
+      toast.error('Plataforma, ID de Cuenta y Token de Acceso son requeridos');
       return;
     }
 
@@ -120,7 +120,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
   };
 
   const handleDisconnect = async (accountId: string) => {
-    if (!confirm('Are you sure you want to disconnect this account?')) {
+    if (!confirm('¿Estás seguro de que deseas desconectar esta cuenta?')) {
       return;
     }
 
@@ -180,11 +180,11 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center">
               <Settings className="mr-2 h-5 w-5" />
-              Connected Accounts
+              Cuentas Conectadas
             </CardTitle>
             <Button onClick={() => setShowAddDialog(true)}>
               <Plus className="mr-2 h-4 w-4" />
-              Connect Account
+              Conectar Cuenta
             </Button>
           </div>
         </CardHeader>
@@ -215,7 +215,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                     
                     <div className="flex items-center space-x-3">
                       <Badge variant={account.isActive ? 'default' : 'secondary'}>
-                        {account.isActive ? 'Active' : 'Inactive'}
+                        {account.isActive ? 'Activa' : 'Inactiva'}
                       </Badge>
                       
                       <Button
@@ -223,7 +223,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                         size="sm"
                         onClick={() => handleToggleActive(account.id, account.isActive)}
                       >
-                        {account.isActive ? 'Deactivate' : 'Activate'}
+                        {account.isActive ? 'Desactivar' : 'Activar'}
                       </Button>
                       
                       <Button
@@ -241,12 +241,12 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
           ) : (
             <div className="text-center py-8 text-gray-500">
               <Settings className="mx-auto h-12 w-12 text-gray-300" />
-              <h3 className="mt-2 text-sm font-medium">No accounts connected</h3>
-              <p className="mt-1 text-sm">Connect your social media accounts to start publishing posts.</p>
+              <h3 className="mt-2 text-sm font-medium">No hay cuentas conectadas</h3>
+              <p className="mt-1 text-sm">Conecta tus cuentas de redes sociales para comenzar a publicar posts.</p>
               <div className="mt-6">
                 <Button onClick={() => setShowAddDialog(true)}>
                   <Plus className="mr-2 h-4 w-4" />
-                  Connect Account
+                  Conectar Cuenta
                 </Button>
               </div>
             </div>
@@ -259,12 +259,12 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
         <Dialog open={true} onOpenChange={setShowAddDialog}>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Connect Social Media Account</DialogTitle>
+              <DialogTitle>Conectar Cuenta de Redes Sociales</DialogTitle>
             </DialogHeader>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="platform">Platform *</Label>
+                <Label htmlFor="platform">Plataforma *</Label>
                 <Select value={formData.platform} onValueChange={(value) => handleInputChange('platform', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccionar plataforma" />
@@ -280,13 +280,13 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
 
               <div className="p-3 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-800 mb-2">
-                  <strong>Setup Instructions:</strong>
+                  <strong>Instrucciones de Configuración:</strong>
                 </p>
                 <ol className="text-xs text-blue-700 space-y-1 list-decimal list-inside">
-                  <li>Visit the {platformNames[formData.platform as keyof typeof platformNames]} Developer Portal</li>
-                  <li>Create an app and get your API keys</li>
-                  <li>Complete OAuth flow to get access token</li>
-                  <li>Copy the required information below</li>
+                  <li>Visita el Portal de Desarrolladores de {platformNames[formData.platform as keyof typeof platformNames]}</li>
+                  <li>Crea una aplicación y obtén tus claves API</li>
+                  <li>Completa el flujo OAuth para obtener el token de acceso</li>
+                  <li>Copia la información requerida a continuación</li>
                 </ol>
                 <Button
                   type="button"
@@ -296,12 +296,12 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                   onClick={() => window.open(getOAuthUrl(formData.platform), '_blank')}
                 >
                   <ExternalLink className="mr-2 h-3 w-3" />
-                  OAuth Setup
+                  Configuración OAuth
                 </Button>
               </div>
 
               <div>
-                <Label htmlFor="accountId">Account ID *</Label>
+                <Label htmlFor="accountId">ID de Cuenta *</Label>
                 <Input
                   id="accountId"
                   value={formData.accountId}
@@ -312,7 +312,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
               </div>
 
               <div>
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">Nombre de Usuario</Label>
                 <Input
                   id="username"
                   value={formData.username}
@@ -322,7 +322,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
               </div>
 
               <div>
-                <Label htmlFor="displayName">Display Name</Label>
+                <Label htmlFor="displayName">Nombre para Mostrar</Label>
                 <Input
                   id="displayName"
                   value={formData.displayName}
@@ -332,7 +332,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
               </div>
 
               <div>
-                <Label htmlFor="accessToken">Access Token *</Label>
+                <Label htmlFor="accessToken">Token de Acceso *</Label>
                 <Input
                   id="accessToken"
                   type="password"
@@ -344,7 +344,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
               </div>
 
               <div>
-                <Label htmlFor="refreshToken">Refresh Token</Label>
+                <Label htmlFor="refreshToken">Token de Actualización</Label>
                 <Input
                   id="refreshToken"
                   type="password"

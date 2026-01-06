@@ -194,8 +194,8 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
         <CardContent className="flex items-center justify-center h-64">
           <div className="text-center text-gray-500">
             <BarChart3 className="mx-auto h-12 w-12 text-gray-300" />
-            <h3 className="mt-2 text-sm font-medium">No Analytics Available</h3>
-            <p className="mt-1 text-sm">Connect social media accounts to view analytics.</p>
+            <h3 className="mt-2 text-sm font-medium">No hay analíticas disponibles</h3>
+            <p className="mt-1 text-sm">Conecta cuentas de redes sociales para ver analíticas.</p>
           </div>
         </CardContent>
       </Card>
@@ -211,7 +211,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
             <SelectValue placeholder="Todas las Plataformas" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Platforms</SelectItem>
+            <SelectItem value="all">Todas las Plataformas</SelectItem>
             {accounts.map(account => (
               <SelectItem key={account.platform} value={account.platform}>
                 {account.platform}
@@ -225,7 +225,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
             <SelectValue placeholder="Todas las Cuentas" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Accounts</SelectItem>
+            <SelectItem value="all">Todas las Cuentas</SelectItem>
             {activeAccounts.map(account => (
               <SelectItem key={account.id} value={account.id}>
                 {account.displayName || account.username}
@@ -239,9 +239,9 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
             <SelectValue placeholder="30 días" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="7">7 days</SelectItem>
-            <SelectItem value="30">30 days</SelectItem>
-            <SelectItem value="90">90 days</SelectItem>
+            <SelectItem value="7">7 días</SelectItem>
+            <SelectItem value="30">30 días</SelectItem>
+            <SelectItem value="90">90 días</SelectItem>
           </SelectContent>
         </Select>
       </div>

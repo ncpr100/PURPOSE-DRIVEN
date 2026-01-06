@@ -78,7 +78,7 @@ export default function MarketingCampaignsClient() {
   const totalPosts = campaigns.reduce((sum, c) => sum + (c._count?.posts || 0), 0);
 
   if (!session) {
-    return <div>Please log in to access marketing campaigns.</div>;
+    return <div>Por favor inicia sesión para acceder a las campañas de marketing.</div>;
   }
 
   return (
@@ -87,52 +87,52 @@ export default function MarketingCampaignsClient() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Campaigns</CardTitle>
+            <CardTitle className="text-sm font-medium">Total de Campañas</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{campaigns.length}</div>
             <p className="text-xs text-muted-foreground">
-              {activeCampaigns.length} active
+              {activeCampaigns.length} activas
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
+            <CardTitle className="text-sm font-medium">Campañas Activas</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{activeCampaigns.length}</div>
             <p className="text-xs text-muted-foreground">
-              {completedCampaigns.length} completed
+              {completedCampaigns.length} completadas
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Budget</CardTitle>
+            <CardTitle className="text-sm font-medium">Presupuesto Total</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${totalBudget.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">
-              Across all campaigns
+              En todas las campañas
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
+            <CardTitle className="text-sm font-medium">Total de Posts</CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalPosts}</div>
             <p className="text-xs text-muted-foreground">
-              Campaign content
+              Contenido de campañas
             </p>
           </CardContent>
         </Card>
@@ -154,8 +154,8 @@ export default function MarketingCampaignsClient() {
         <Tabs defaultValue="campaigns" className="space-y-4">
           <div className="flex items-center justify-between">
             <TabsList>
-              <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="campaigns">Campañas</TabsTrigger>
+              <TabsTrigger value="analytics">Analíticas</TabsTrigger>
             </TabsList>
             
             <Button onClick={() => {
@@ -163,7 +163,7 @@ export default function MarketingCampaignsClient() {
               setShowForm(true);
             }}>
               <Plus className="mr-2 h-4 w-4" />
-              New Campaign
+              Nueva Campaña
             </Button>
           </div>
 
