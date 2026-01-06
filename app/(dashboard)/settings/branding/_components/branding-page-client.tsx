@@ -19,38 +19,38 @@ interface ChurchBrandColors {
 }
 
 const DEFAULT_COLORS: ChurchBrandColors = {
-  prayerRequest: '#8B5CF6',    // Purple-500 (platform stats)
-  visitorFollowup: '#3B82F6',  // Blue-500 (platform stats)
-  socialMedia: '#10B981',      // Green-500 (platform stats)
-  events: '#F59E0B',           // Orange-500 (platform stats)
-  primary: '#3B82F6',          // Blue-500
-  secondary: '#10B981'         // Green-500
+  prayerRequest: '#DDD6FE',    // Purple-200 (pastel)
+  visitorFollowup: '#DBEAFE',  // Blue-200 (pastel)
+  socialMedia: '#D1FAE5',      // Green-200 (pastel)
+  events: '#FED7AA',           // Orange-200 (pastel)
+  primary: '#DBEAFE',          // Blue-200 (pastel)
+  secondary: '#D1FAE5'         // Green-200 (pastel)
 }
 
 const COLOR_DESCRIPTIONS = {
   prayerRequest: {
     label: 'Solicitudes de Oración',
-    description: 'Color para plantillas de oración (default: azul sutil de plataforma)'
+    description: 'Color para plantillas de oración (default: morado pastel)'
   },
   visitorFollowup: {
     label: 'Seguimiento de Visitantes',
-    description: 'Color para plantillas de bienvenida (default: verde sutil de plataforma)'
+    description: 'Color para plantillas de bienvenida (default: azul pastel)'
   },
   socialMedia: {
     label: 'Redes Sociales',
-    description: 'Color para plantillas de marketing (default: morado sutil de plataforma)'
+    description: 'Color para plantillas de marketing (default: verde pastel)'
   },
   events: {
     label: 'Eventos',
-    description: 'Color para plantillas de eventos (default: naranja sutil de plataforma)'
+    description: 'Color para plantillas de eventos (default: naranja pastel)'
   },
   primary: {
     label: 'Color Primario',
-    description: 'Color principal de tu iglesia (default: azul sutil)'
+    description: 'Color principal de tu iglesia (default: azul pastel)'
   },
   secondary: {
     label: 'Color Secundario',
-    description: 'Color secundario para acentos (default: verde sutil)'
+    description: 'Color secundario para acentos (default: verde pastel)'
   }
 }
 

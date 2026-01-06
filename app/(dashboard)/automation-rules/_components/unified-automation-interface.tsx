@@ -29,9 +29,9 @@ interface ChurchBrandColors {
 }
 
 const DEFAULT_COLORS: ChurchBrandColors = {
-  prayerRequest: '#8B5CF6', visitorFollowup: '#3B82F6', 
-  socialMedia: '#10B981', events: '#F59E0B',
-  primary: '#3B82F6', secondary: '#10B981'
+  prayerRequest: '#DDD6FE', visitorFollowup: '#DBEAFE', 
+  socialMedia: '#D1FAE5', events: '#FED7AA',
+  primary: '#DBEAFE', secondary: '#D1FAE5'
 }
 
 const getCategoryIcon = (category: string) => {
@@ -213,8 +213,8 @@ export function UnifiedAutomationInterface() {
                 <p className="text-sm font-medium text-gray-600">Total Reglas</p>
                 <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500">
-                <Zap className="h-6 w-6 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50">
+                <Zap className="h-6 w-6 text-blue-600" />
               </div>
             </div>
           </CardContent>
@@ -227,8 +227,8 @@ export function UnifiedAutomationInterface() {
                 <p className="text-sm font-medium text-gray-600">Activas</p>
                 <p className="text-3xl font-bold text-gray-900">{stats.active}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500">
-                <CheckCircle className="h-6 w-6 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-50">
+                <CheckCircle className="h-6 w-6 text-green-600" />
               </div>
             </div>
           </CardContent>
@@ -241,8 +241,8 @@ export function UnifiedAutomationInterface() {
                 <p className="text-sm font-medium text-gray-600">Ejecuciones</p>
                 <p className="text-3xl font-bold text-gray-900">{stats.totalExecutions}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500">
-                <TrendingUp className="h-6 w-6 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-50">
+                <TrendingUp className="h-6 w-6 text-purple-600" />
               </div>
             </div>
           </CardContent>
@@ -255,8 +255,8 @@ export function UnifiedAutomationInterface() {
                 <p className="text-sm font-medium text-gray-600">Tasa de Éxito</p>
                 <p className="text-3xl font-bold text-gray-900">{stats.successRate}%</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-500">
-                <Sparkles className="h-6 w-6 text-white" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-50">
+                <Sparkles className="h-6 w-6 text-orange-600" />
               </div>
             </div>
           </CardContent>

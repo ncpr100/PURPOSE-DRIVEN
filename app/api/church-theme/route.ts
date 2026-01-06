@@ -34,15 +34,15 @@ export async function GET(request: NextRequest) {
     })
 
     if (!churchTheme) {
-      // Return default platform colors (from stats cards)
+      // Return default pastel colors (platform style)
       return NextResponse.json({
         brandColors: {
-          prayerRequest: '#8B5CF6',    // Purple-500 (platform stats)
-          visitorFollowup: '#3B82F6',  // Blue-500 (platform stats)
-          socialMedia: '#10B981',      // Green-500 (platform stats)
-          events: '#F59E0B',           // Orange-500 (platform stats)
-          primary: '#3B82F6',          // Blue-500
-          secondary: '#10B981'         // Green-500
+          prayerRequest: '#DDD6FE',    // Purple-200 (pastel)
+          visitorFollowup: '#DBEAFE',  // Blue-200 (pastel)
+          socialMedia: '#D1FAE5',      // Green-200 (pastel)
+          events: '#FED7AA',           // Orange-200 (pastel)
+          primary: '#DBEAFE',          // Blue-200 (pastel)
+          secondary: '#D1FAE5'         // Green-200 (pastel)
         },
         isDefault: true
       })
@@ -61,12 +61,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       ...churchTheme,
       brandColors: parsedBrandColors || {
-        prayerRequest: '#8B5CF6',
-        visitorFollowup: '#3B82F6',
-        socialMedia: '#10B981',
-        events: '#F59E0B',
-        primary: '#3B82F6',
-        secondary: '#10B981'
+        prayerRequest: '#DDD6FE',
+        visitorFollowup: '#DBEAFE',
+        socialMedia: '#D1FAE5',
+        events: '#FED7AA',
+        primary: '#DBEAFE',
+        secondary: '#D1FAE5'
       },
       isDefault: false
     })
