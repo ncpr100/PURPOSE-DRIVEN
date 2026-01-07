@@ -51,19 +51,29 @@ export default function SignInPage() {
     setError('')
 
     try {
+      console.log('🔐 CLIENT: Attempting login')
+      console.log('   Email:', email)
+      console.log('   Password length:', password.length)
+      console.log('   Password (first 3 chars):', password.substring(0, 3))
+      
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
       })
 
+      console.log('🔐 CLIENT: SignIn result:', result)
+
       if (result?.error) {
+        console.error('❌ CLIENT: Login failed with error:', result.error)
         setError('Email o contraseña incorrectos')
       } else if (result?.ok) {
+        console.log('✅ CLIENT: Login successful!')
         // Let useEffect handle the redirect to avoid double navigation
         return
       }
     } catch (error) {
+      console.error('❌ CLIENT: Exception during login:', error)
       setError('Error al iniciar sesión')
     } finally {
       setIsLoading(false)
