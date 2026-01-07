@@ -479,26 +479,41 @@ export default function ChurchUsersPage() {
                   </div>
 
                   {/* Actions */}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => {
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => {
                         setEditingUser(user)
                         setShowEditDialog(true)
-                      }}>
-                        <UserCheck className="h-4 w-4 mr-2" />
-                        Editar Usuario
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href={`/platform/churches/${params.id}/users/${user.id}/permissions`} className="flex items-center w-full">
-                          <Shield className="h-4 w-4 mr-2" />
-                          Editar Permisos
-                        </Link>
-                      </DropdownMenuItem>
+                      }}
+                    >
+                      <UserCheck className="h-4 w-4 mr-2" />
+                      Editar
+                    </Button>
+                    
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => {
+                          setEditingUser(user)
+                          setShowEditDialog(true)
+                        }}>
+                          <UserCheck className="h-4 w-4 mr-2" />
+                          Editar Usuario
+                        </DropdownMenuItem>
+                        {/* Permissions page not yet implemented
+                        <DropdownMenuItem asChild>
+                          <Link href={`/platform/churches/${params.id}/users/${user.id}/permissions`} className="flex items-center w-full">
+                            <Shield className="h-4 w-4 mr-2" />
+                            Editar Permisos
+                          </Link>
+                        </DropdownMenuItem>
+                        */}
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => handleSendEmail(user.email, user.name)}>
                         <Mail className="h-4 w-4 mr-2" />
