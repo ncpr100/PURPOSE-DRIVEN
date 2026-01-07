@@ -499,45 +499,30 @@ export default function ChurchUsersPage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => {
-                          setEditingUser(user)
-                          setShowEditDialog(true)
-                        }}>
-                          <UserCheck className="h-4 w-4 mr-2" />
-                          Editar Usuario
+                        <DropdownMenuItem onClick={() => handleSendEmail(user.email, user.name)}>
+                          <Mail className="h-4 w-4 mr-2" />
+                          Enviar Email
                         </DropdownMenuItem>
-                        {/* Permissions page not yet implemented
-                        <DropdownMenuItem asChild>
-                          <Link href={`/platform/churches/${params.id}/users/${user.id}/permissions`} className="flex items-center w-full">
-                            <Shield className="h-4 w-4 mr-2" />
-                            Editar Permisos
-                          </Link>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem 
+                          className={user.isActive ? "text-red-600" : "text-green-600"}
+                          onClick={() => handleToggleUserStatus(user.id, user.isActive)}
+                        >
+                          {user.isActive ? (
+                            <>
+                              <UserX className="h-4 w-4 mr-2" />
+                              Desactivar
+                            </>
+                          ) : (
+                            <>
+                              <UserCheck className="h-4 w-4 mr-2" />
+                              Activar
+                            </>
+                          )}
                         </DropdownMenuItem>
-                        */}
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => handleSendEmail(user.email, user.name)}>
-                        <Mail className="h-4 w-4 mr-2" />
-                        Enviar Email
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem 
-                        className={user.isActive ? "text-red-600" : "text-green-600"}
-                        onClick={() => handleToggleUserStatus(user.id, user.isActive)}
-                      >
-                        {user.isActive ? (
-                          <>
-                            <UserX className="h-4 w-4 mr-2" />
-                            Desactivar
-                          </>
-                        ) : (
-                          <>
-                            <UserCheck className="h-4 w-4 mr-2" />
-                            Activar
-                          </>
-                        )}
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
               </CardContent>
             </Card>
