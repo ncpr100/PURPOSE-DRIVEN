@@ -203,12 +203,29 @@ export default function ChurchUsersPage() {
     }
   }
 
-  const handleSendEmail = (userEmail: string, userName: string) => {
-    const subject = encodeURIComponent(`Mensaje de ${church?.name || 'la iglesia'}`)
-    const body = encodeURIComponent(`Hola ${userName},\n\n`)
-    const mailtoUrl = `mailto:${userEmail}?subject=${subject}&body=${body}`
-    window.open(mailtoUrl, '_blank')
-    toast.success('Cliente de email abierto')
+  const handleSendEmail = async (userEmail: string, userName: string) => {
+    try {
+      toast.loading('Enviando email...', { id: 'sending-email' })
+      
+      const response = await fetch('/api/platform/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: userEmail,
+          userName,
+          churchName: church?.name || 'la iglesia'
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Error al enviar email')
+      }
+
+      toast.success('Email enviado correctamente', { id: 'sending-email' })
+    } catch (error) {
+      console.error('Error sending email:', error)
+      toast.error('Error al enviar email', { id: 'sending-email' })
+    }
   }
 
   const getUserInitials = (name: string) => {
