@@ -329,7 +329,9 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
 // - lib/intelligent-cache-warmer.ts: export const intelligentCacheWarmer
 ```
 
-**14. Church Branding System Pattern**
+**14. Church Branding System Pattern (COMPREHENSIVE)**
+
+**Color System Architecture**
 ```typescript
 // Church-specific branding customization (settings/branding)
 interface ChurchBrandColors {
@@ -341,19 +343,330 @@ interface ChurchBrandColors {
   secondary: string          // Church secondary color
 }
 
-// Fetch church branding
-const response = await fetch('/api/church-theme')
-const { brandColors } = await response.json()
+// Default Platform Colors (Professional & Subtle)
+const DEFAULT_COLORS: ChurchBrandColors = {
+  prayerRequest: '#DDD6FE',    // Purple-200 (pastel) - for purple-600 icon
+  visitorFollowup: '#DBEAFE',  // Blue-200 (pastel) - for blue-600 icon
+  socialMedia: '#D1FAE5',      // Green-200 (pastel) - for green-600 icon
+  events: '#FED7AA',           // Orange-200 (pastel) - for orange-600 icon
+  primary: '#DBEAFE',          // Blue-200 (pastel)
+  secondary: '#D1FAE5'         // Green-200 (pastel)
+}
+```
 
-// Apply to components (analytics-style design pattern)
-<Card style={{ backgroundColor: brandColors.primary }}>
+**Branding API Integration**
+```typescript
+// Fetch church branding (server or client component)
+const response = await fetch('/api/church-theme')
+const { brandColors, isDefault } = await response.json()
+
+// Save/update church branding (PUT request)
+const updateBranding = async (colors: ChurchBrandColors) => {
+  const response = await fetch('/api/church-theme', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ brandColors: colors })
+  })
+  return response.json()
+}
+```
+
+**Icon System - STRICT GUIDELINES (NO EMOJIS)**
+```typescript
+// ALWAYS use lucide-react for icons - stroke-only SVG outline style
+import { 
+  Palette,      // Branding/theme icons
+  Save,         // Action icons
+  RotateCcw,    // Reset/refresh
+  Sparkles,     // AI/intelligent features
+  ArrowLeft,    // Navigation
+  Phone,        // Communication
+  Mail,         // Email
+  MessageSquare,// Messaging/chat
+  Calendar,     // Events/scheduling
+  Clock,        // Time-related
+  User,         // Members/users
+  CheckCircle,  // Success states
+  AlertCircle,  // Warning/error states
+  BarChart3,    // Analytics
+  Settings      // Configuration
+} from 'lucide-react'
+
+// Icon usage pattern with branding colors
+<Card>
   <CardHeader>
-    <Icon className="text-bright-color" /> {/* Bright icons on pastel */}
+    <Palette className="h-6 w-6 text-purple-600" /> {/* Bright icon */}
+    <CardTitle>Personalización de Marca</CardTitle>
   </CardHeader>
 </Card>
 
-// Design Pattern: Pastel backgrounds (#D-E range) with bright icons/text
-// Example: Purple-200 background (#DDD6FE) with purple-600 icon (#9333EA)
+// FORBIDDEN: NO emojis in production code
+// ❌ toast('Success', { icon: '🎨' })  // NEVER USE EMOJIS
+// ✅ toast.success('Success')          // Use toast variants
+// ✅ <CheckCircle className="text-green-600" /> // Use Lucide icons
+```
+
+**Color Application Patterns**
+```typescript
+// Pattern 1: Template Cards (automation-rules, communications)
+<Card className="border-l-4" style={{ borderLeftColor: brandColors.prayerRequest }}>
+  <CardHeader style={{ backgroundColor: brandColors.prayerRequest }}>
+    <div className="flex items-center gap-3">
+      <Sparkles className="h-6 w-6 text-purple-600" /> {/* Bright icon */}
+      <CardTitle className="text-gray-800">Prayer Request Template</CardTitle>
+    </div>
+  </CardHeader>
+  <CardContent className="bg-white">
+    {/* White background for content */}
+  </CardContent>
+</Card>
+
+// Pattern 2: Analytics Cards (dashboard widgets)
+<Card style={{ backgroundColor: brandColors.primary }}>
+  <CardHeader>
+    <BarChart3 className="h-8 w-8 text-blue-600" />
+    <CardTitle className="text-gray-800">Analytics Overview</CardTitle>
+  </CardHeader>
+</Card>
+
+// Pattern 3: Action Buttons with Branding
+<Button 
+  style={{ backgroundColor: brandColors.primary }}
+  className="text-gray-800 hover:opacity-90"
+>
+  <Save className="h-4 w-4 mr-2" />
+  Guardar Cambios
+</Button>
+
+// Pattern 4: Category Badges
+<span 
+  className="px-3 py-1 rounded-full text-sm font-medium text-gray-800"
+  style={{ backgroundColor: brandColors.socialMedia }}
+>
+  <MessageSquare className="inline h-4 w-4 mr-1 text-green-600" />
+  Social Media
+</span>
+```
+
+**Design Philosophy - Analytics-Style Pattern**
+- **Pastel Backgrounds**: Use #D-E hex range (200-300 opacity) for cards/containers
+- **Bright Accent Icons**: Use 600-weight colors for icons (contrast with pastel)
+- **Text Hierarchy**: Gray-800 for titles, Gray-600 for descriptions
+- **White Content Areas**: Always use white backgrounds for main content
+- **Stroke-Only Icons**: Lucide-react outline style ONLY (no filled icons, no emojis)
+- **Color Consistency**: Map categories to specific colors across all features
+  - Prayer: Purple (#DDD6FE background, #9333EA icon)
+  - Visitors: Blue (#DBEAFE background, #2563EB icon)
+  - Social: Green (#D1FAE5 background, #059669 icon)
+  - Events: Orange (#FED7AA background, #EA580C icon)
+
+**Branding Application Checklist**
+```typescript
+// Before creating new UI components, verify:
+// ✅ Using lucide-react icons (NOT emojis)
+// ✅ Pastel backgrounds with bright icons
+// ✅ Fetching brandColors from /api/church-theme
+// ✅ Applying colors via inline styles for dynamic church customization
+// ✅ White backgrounds for content readability
+// ✅ Consistent color-to-category mapping
+```
+
+### Service Layer Architecture (lib/ Registry)
+
+**Core Service Singletons**
+```typescript
+// Database & Caching Services (CRITICAL)
+import { db } from '@/lib/db'                              // Prisma client singleton
+import { cacheManager } from '@/lib/redis-cache-manager'   // Redis cache manager (800+ lines)
+import { cache } from '@/lib/cache'                        // Legacy cache utility
+import { intelligentCacheWarmer } from '@/lib/intelligent-cache-warmer'  // Auto cache warming
+
+// Authentication & Authorization
+import { authOptions } from '@/lib/auth'                   // NextAuth.js configuration
+import { checkBasicRoleAccess } from '@/lib/permissions'   // Role-based access control
+import { isFeatureEnabled } from '@/lib/feature-flags'     // Feature flag system
+
+// Analytics & AI Services
+import { } from '@/lib/enhanced-ai-insights-engine'        // AI-powered insights
+import { } from '@/lib/member-journey-analytics'           // Member lifecycle tracking
+import { } from '@/lib/ai-prediction-accuracy-tracker'     // ML model performance
+import { } from '@/lib/cached-analytics-service'           // Analytics with caching
+
+// Communication Services
+import { sendEmail } from '@/lib/email'                    // Email delivery (Mailgun)
+import { } from '@/lib/integrations/twilio'                // SMS messaging
+import { } from '@/lib/integrations/whatsapp'              // WhatsApp integration
+
+// Payment & Financial Services
+import { stripe } from '@/lib/stripe'                      // Stripe integration
+import { } from '@/lib/payments/'                          // Payment processing utilities
+import { formatCurrency } from '@/lib/currency'            // Currency formatting
+
+// Performance & Monitoring
+import { performanceMonitor } from '@/lib/performance'     // Performance tracking
+import { memoryMonitor } from '@/lib/memory-monitor'       // Memory usage monitoring
+import { MemoryAssessment } from '@/lib/memory-assessment' // Memory optimization tools
+import { } from '@/lib/database-performance-analysis'      // DB query optimization
+
+// Automation & Triggers
+import { automationEngine } from '@/lib/automation-engine' // Automation rule execution
+import { } from '@/lib/automation-trigger-service'         // Trigger event handling
+
+// Bible & Spiritual Content
+import { } from '@/lib/bible-api-service'                  // Bible verse lookup
+import { } from '@/lib/bible-integrations'                 // Multiple Bible API integrations
+import { SPIRITUAL_GIFTS_SUMMARY } from '@/lib/spiritual-gifts-config'  // Spiritual gifts data
+
+// Utilities & Helpers
+import { } from '@/lib/utils'                              // General utilities
+import { } from '@/lib/url-sanitizer'                      // URL validation/sanitization
+import { } from '@/lib/gender-utils'                       // Gender data utilities
+import { } from '@/lib/validation-schemas'                 // Zod validation schemas
+```
+
+**Service Integration Pattern**
+```typescript
+// Example: Creating a new feature with service dependencies
+import { db } from '@/lib/db'
+import { cacheManager, CACHE_KEYS, CACHE_TTL } from '@/lib/redis-cache-manager'
+import { sendEmail } from '@/lib/email'
+import { performanceMonitor } from '@/lib/performance'
+
+export async function processNewMember(memberId: string, churchId: string) {
+  // Start performance tracking
+  const startTime = performanceMonitor.start('process-new-member')
+  
+  try {
+    // Fetch from cache or database
+    const member = await cacheManager.get(
+      CACHE_KEYS.MEMBER(churchId, memberId),
+      async () => {
+        return await db.member.findUnique({
+          where: { id: memberId, churchId },
+          include: { spiritualAssessments: true }
+        })
+      },
+      { ttl: CACHE_TTL.MEMBER_PROFILE }  // 10 minutes
+    )
+    
+    // Send welcome email
+    await sendEmail({
+      to: member.email,
+      subject: 'Bienvenido a la Iglesia',
+      template: 'welcome-member',
+      data: { memberName: member.name }
+    })
+    
+    // Invalidate related caches
+    await cacheManager.invalidatePattern(`church:${churchId}:members:*`)
+    
+    // Track performance
+    performanceMonitor.end('process-new-member', startTime)
+    
+    return { success: true, member }
+  } catch (error) {
+    performanceMonitor.error('process-new-member', error)
+    throw error
+  }
+}
+```
+
+**Service Location Guide**
+```
+lib/
+├── Core Infrastructure
+│   ├── db.ts                           # Prisma singleton (PRIMARY data access)
+│   ├── redis-cache-manager.ts          # Redis caching (800+ lines, 90% hit rate)
+│   ├── cache.ts                        # Legacy cache (backward compatibility)
+│   └── performance.ts                  # Performance monitoring
+│
+├── Authentication & Security
+│   ├── auth.ts                         # NextAuth.js config (JWT strategy)
+│   ├── auth-validation.ts              # Auth middleware validation
+│   ├── permissions.ts                  # RBAC implementation
+│   ├── role-access-control.ts          # Role hierarchy enforcement
+│   ├── csrf.ts                         # CSRF protection
+│   └── server-auth-validator.ts        # Server-side auth checks
+│
+├── Analytics & Intelligence
+│   ├── enhanced-ai-insights-engine.ts  # AI-powered analytics
+│   ├── member-journey-analytics.ts     # Lifecycle tracking
+│   ├── ai-prediction-accuracy-tracker.ts  # ML performance
+│   ├── cached-analytics-service.ts     # Analytics with caching
+│   └── member-analytics-cache.ts       # Member-specific analytics cache
+│
+├── Communication
+│   ├── email.ts                        # Email service (Mailgun)
+│   ├── integrations/twilio.ts          # SMS messaging
+│   ├── integrations/whatsapp.ts        # WhatsApp messaging
+│   └── push-notifications.ts           # Push notification service
+│
+├── Automation & Workflows
+│   ├── automation-engine.ts            # Rule execution engine
+│   ├── automation-trigger-service.ts   # Event trigger handling
+│   └── feature-flags.ts                # Feature flag system
+│
+├── External Integrations
+│   ├── stripe.ts                       # Payment processing
+│   ├── bible-api-service.ts            # Bible verse API
+│   ├── bible-integrations.ts           # Multiple Bible API providers
+│   └── integrations/                   # Social media & external services
+│
+└── Utilities
+    ├── utils.ts                        # General utility functions
+    ├── validation-schemas.ts           # Zod validation schemas
+    ├── url-sanitizer.ts                # URL validation
+    ├── gender-utils.ts                 # Gender data helpers
+    └── currency.ts                     # Currency formatting
+```
+
+**Service Creation Guidelines**
+```typescript
+// When creating new services in lib/:
+
+// 1. Use singleton pattern for stateful services
+class MyService {
+  private static instance: MyService
+  
+  private constructor() {
+    // Initialize service
+  }
+  
+  public static getInstance(): MyService {
+    if (!MyService.instance) {
+      MyService.instance = new MyService()
+    }
+    return MyService.instance
+  }
+}
+
+export const myService = MyService.getInstance()
+
+// 2. Export named functions for stateless utilities
+export function processData(input: string): string {
+  // Utility function
+  return input.trim()
+}
+
+// 3. Use environment variables for configuration
+const API_KEY = process.env.MY_SERVICE_API_KEY || ''
+if (!API_KEY && process.env.NODE_ENV === 'production') {
+  console.warn('MY_SERVICE_API_KEY not configured')
+}
+
+// 4. Include TypeScript types
+export interface MyServiceConfig {
+  apiKey: string
+  timeout: number
+}
+
+// 5. Add error handling and logging
+try {
+  // Service logic
+} catch (error) {
+  console.error('[MyService] Error:', error)
+  throw error  // Re-throw for caller to handle
+}
 ```
 
 ### Current Development Priorities (Next 2-4 Weeks)
@@ -362,47 +675,595 @@ const { brandColors } = await response.json()
 Preparing for AI & Mobile Apps development phase:
 
 **🤖 AI Integration Architecture**
-- **GraphQL Migration**: Transition from REST to GraphQL for efficient data fetching
-  ```typescript
-  // Recommended GraphQL schema for church analytics
-  type AnalyticsQuery {
-    memberJourney(churchId: ID!, filters: MemberFilters): [MemberJourneyStep!]!
-    predictiveInsights(churchId: ID!, models: [AIModel!]): PredictiveReport!
-    executiveReport(churchId: ID!, dateRange: DateRange): ExecutiveReport!
+
+**GraphQL Migration Strategy (Replacing REST APIs)**
+```typescript
+// Recommended GraphQL schema architecture
+// File: lib/graphql/schema.ts
+
+import { gql } from 'graphql-tag'
+
+const typeDefs = gql`
+  # Core Church Data Types
+  type Church {
+    id: ID!
+    name: String!
+    members(filters: MemberFilters): [Member!]!
+    analytics(dateRange: DateRange!): ChurchAnalytics!
+    brandColors: ChurchBrandColors!
   }
-  ```
-- **Real-time WebSocket Updates**: Replace SSE with WebSocket for bi-directional communication
-  ```typescript
-  // WebSocket integration pattern
-  const wsConnection = new WebSocket(`wss://${process.env.WS_ENDPOINT}/church/${churchId}`)
-  wsConnection.on('analytics_update', (data) => {
-    // Instant dashboard refresh without polling
+
+  type Member {
+    id: ID!
+    name: String!
+    email: String!
+    phone: String
+    lifecycle: MemberLifecycle!
+    spiritualAssessments: [SpiritualAssessment!]!
+    checkIns(limit: Int): [CheckIn!]!
+    retentionScore: Float  # AI-predicted retention probability
+  }
+
+  # Analytics Types
+  type ChurchAnalytics {
+    memberJourney(filters: MemberFilters): [MemberJourneyStep!]!
+    predictiveInsights(models: [AIModel!]): PredictiveReport!
+    executiveReport: ExecutiveReport!
+    realTimeMetrics: RealtimeMetrics!
+  }
+
+  type MemberJourneyStep {
+    stage: LifecycleStage!
+    memberCount: Int!
+    avgDuration: Int  # days
+    conversionRate: Float
+    nextStagePredictor: Float  # AI prediction
+  }
+
+  # Query Root
+  type Query {
+    # Church-scoped queries (churchId from auth context)
+    church: Church!
+    members(filters: MemberFilters, pagination: Pagination): MemberConnection!
+    analytics(dateRange: DateRange!): ChurchAnalytics!
+    
+    # Single resource queries
+    member(id: ID!): Member
+    event(id: ID!): Event
+    
+    # AI-powered queries
+    predictMemberRetention(memberId: ID!): RetentionPrediction!
+    recommendMinistries(memberId: ID!): [MinistryRecommendation!]!
+  }
+
+  # Mutation Root
+  type Mutation {
+    # Member operations
+    createMember(input: CreateMemberInput!): Member!
+    updateMember(id: ID!, input: UpdateMemberInput!): Member!
+    deleteMember(id: ID!): Boolean!
+    
+    # Batch operations for offline sync
+    syncOfflineChanges(operations: [OfflineOperation!]!): SyncResult!
+  }
+
+  # Subscription Root (Real-time updates)
+  type Subscription {
+    analyticsUpdated(churchId: ID!): ChurchAnalytics!
+    newMemberAdded(churchId: ID!): Member!
+    checkInReceived(eventId: ID!): CheckIn!
+  }
+
+  # Input Types
+  input MemberFilters {
+    lifecycle: [LifecycleStage!]
+    dateRange: DateRange
+    searchQuery: String
+    hasAssessment: Boolean
+  }
+
+  input Pagination {
+    offset: Int
+    limit: Int
+    orderBy: String
+    direction: SortDirection
+  }
+
+  enum LifecycleStage {
+    VISITANTE
+    NUEVO_CREYENTE
+    CRECIMIENTO
+    MADURO
+    LIDER
+  }
+
+  enum SortDirection {
+    ASC
+    DESC
+  }
+`
+
+// GraphQL Resolver with Church Scoping
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/db'
+
+const resolvers = {
+  Query: {
+    church: async (_parent, _args, context) => {
+      // Extract churchId from auth context
+      const session = await getServerSession(authOptions)
+      if (!session?.user?.churchId) {
+        throw new Error('Unauthorized')
+      }
+      
+      return db.church.findUnique({
+        where: { id: session.user.churchId }
+      })
+    },
+    
+    members: async (_parent, { filters, pagination }, context) => {
+      const session = await getServerSession(authOptions)
+      if (!session?.user?.churchId) throw new Error('Unauthorized')
+      
+      const where = {
+        churchId: session.user.churchId,
+        ...(filters?.lifecycle && { lifecycle: { in: filters.lifecycle } }),
+        ...(filters?.searchQuery && {
+          OR: [
+            { name: { contains: filters.searchQuery, mode: 'insensitive' } },
+            { email: { contains: filters.searchQuery, mode: 'insensitive' } }
+          ]
+        })
+      }
+      
+      const [members, total] = await Promise.all([
+        db.member.findMany({
+          where,
+          skip: pagination?.offset || 0,
+          take: pagination?.limit || 50,
+          orderBy: { [pagination?.orderBy || 'name']: pagination?.direction || 'asc' }
+        }),
+        db.member.count({ where })
+      ])
+      
+      return {
+        edges: members.map(member => ({ node: member })),
+        pageInfo: {
+          total,
+          hasNextPage: (pagination?.offset || 0) + members.length < total
+        }
+      }
+    }
+  },
+  
+  Member: {
+    // Field-level resolver with AI prediction
+    retentionScore: async (member) => {
+      // Call AI prediction service
+      const prediction = await predictMemberRetention(member.id)
+      return prediction.score
+    }
+  },
+  
+  Subscription: {
+    analyticsUpdated: {
+      subscribe: async (_parent, { churchId }, context) => {
+        // WebSocket subscription for real-time updates
+        return pubsub.asyncIterator([`ANALYTICS_UPDATED_${churchId}`])
+      }
+    }
+  }
+}
+```
+
+**GraphQL Client Integration**
+```typescript
+// Client-side GraphQL queries (React components)
+import { gql, useQuery, useMutation } from '@apollo/client'
+
+const GET_MEMBERS = gql`
+  query GetMembers($filters: MemberFilters, $pagination: Pagination) {
+    members(filters: $filters, pagination: $pagination) {
+      edges {
+        node {
+          id
+          name
+          email
+          lifecycle
+          retentionScore  # AI prediction included
+        }
+      }
+      pageInfo {
+        total
+        hasNextPage
+      }
+    }
+  }
+`
+
+function MembersList() {
+  const { data, loading, error } = useQuery(GET_MEMBERS, {
+    variables: {
+      filters: { lifecycle: ['VISITANTE', 'NUEVO_CREYENTE'] },
+      pagination: { limit: 20, orderBy: 'name', direction: 'ASC' }
+    }
   })
-  ```
-- **AI Model A/B Testing**: Implement model comparison framework (already started in `ai_model_ab_tests` table)
-- **Enhanced Predictive Analytics**: Expand beyond basic retention to lifecycle predictions, engagement forecasting
+  
+  // Single query fetches all needed data - no multiple REST calls
+}
+```
+
+**Real-time WebSocket Updates (Replacing SSE)**
+```typescript
+// WebSocket integration pattern for bi-directional communication
+// Server: lib/websocket-server.ts
+import { WebSocketServer } from 'ws'
+
+const wss = new WebSocketServer({ port: 8080 })
+const churchConnections = new Map<string, Set<WebSocket>>()
+
+wss.on('connection', (ws, request) => {
+  // Extract churchId from auth token
+  const churchId = extractChurchIdFromToken(request.headers.authorization)
+  
+  if (!churchConnections.has(churchId)) {
+    churchConnections.set(churchId, new Set())
+  }
+  churchConnections.get(churchId)!.add(ws)
+  
+  ws.on('message', (message) => {
+    const data = JSON.parse(message.toString())
+    // Handle client messages (subscriptions, updates)
+  })
+  
+  ws.on('close', () => {
+    churchConnections.get(churchId)?.delete(ws)
+  })
+})
+
+// Broadcast to church members
+export function broadcastToChurchWS(churchId: string, event: string, data: any) {
+  const connections = churchConnections.get(churchId)
+  if (!connections) return
+  
+  connections.forEach(ws => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ event, data }))
+    }
+  })
+}
+
+// Client: Connect to WebSocket
+const ws = new WebSocket(`wss://${process.env.WS_ENDPOINT}/church/${churchId}`)
+
+ws.onopen = () => {
+  // Subscribe to analytics updates
+  ws.send(JSON.stringify({ 
+    type: 'subscribe', 
+    channel: 'analytics' 
+  }))
+}
+
+ws.onmessage = (event) => {
+  const { event: eventType, data } = JSON.parse(event.data)
+  
+  switch (eventType) {
+    case 'analytics_update':
+      // Update dashboard in real-time
+      updateAnalyticsDashboard(data)
+      break
+    case 'new_member':
+      // Add new member to list
+      addMemberToList(data)
+      break
+  }
+}
+```
+
+**AI Model A/B Testing Framework**
+```typescript
+// Leverage existing ai_model_ab_tests table for model comparison
+// lib/ai-model-testing.ts
+
+export async function runModelABTest({
+  modelA: 'retention_model_v1',
+  modelB: 'retention_model_v2',
+  churchId,
+  sampleSize: 100
+}) {
+  // Split members randomly
+  const members = await getRandomMembers(churchId, sampleSize)
+  const split = splitAB(members)
+  
+  // Run predictions with both models
+  const [resultsA, resultsB] = await Promise.all([
+    predictWithModel('retention_model_v1', split.groupA),
+    predictWithModel('retention_model_v2', split.groupB)
+  ])
+  
+  // Track results in ai_model_ab_tests table
+  await db.ai_model_ab_tests.create({
+    data: {
+      modelA: 'retention_model_v1',
+      modelB: 'retention_model_v2',
+      accuracyA: calculateAccuracy(resultsA),
+      accuracyB: calculateAccuracy(resultsB),
+      sampleSize,
+      winner: determineWinner(resultsA, resultsB)
+    }
+  })
+}
+```
 
 **📱 Mobile API Optimization**
-- **Optimized REST Endpoints**: Reduce payload sizes for mobile consumption
-  ```typescript
-  // Mobile-optimized analytics endpoint
-  GET /api/mobile/v1/analytics/summary?compact=true&churchId=${id}
-  // Returns compressed data structure: <2KB vs current 15KB+
-  ```
-- **Offline-First Architecture**: Build on existing PWA foundation for full offline capability
-- **Push Notification Infrastructure**: Enhance current push system for member engagement
-- **Mobile Authentication Flow**: JWT refresh token strategy for mobile apps
+
+**Mobile-Optimized REST Endpoints (Transition to GraphQL)**
+```typescript
+// New mobile API namespace: app/api/mobile/v1/
+// Mobile-specific endpoints with compressed payloads
+
+// app/api/mobile/v1/dashboard/route.ts
+export async function GET(request: NextRequest) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.churchId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const churchId = session.user.churchId
+  
+  // Single aggregated query instead of multiple REST calls
+  const [memberStats, eventStats, donationStats] = await Promise.all([
+    db.member.aggregate({
+      where: { churchId },
+      _count: true,
+      _avg: { retentionScore: true }
+    }),
+    db.event.count({ where: { churchId, date: { gte: new Date() } } }),
+    db.donation.aggregate({
+      where: { churchId, createdAt: { gte: startOfMonth(new Date()) } },
+      _sum: { amount: true }
+    })
+  ])
+  
+  // Compact response <2KB (vs 15KB+ in current REST)
+  return NextResponse.json({
+    m: memberStats._count,        // Members count
+    r: memberStats._avg.retentionScore,  // Avg retention
+    e: eventStats,                // Upcoming events
+    d: donationStats._sum.amount  // Monthly donations
+  })
+}
+
+// Client mobile app usage:
+const { m: members, r: retention, e: events, d: donations } = await fetch('/api/mobile/v1/dashboard').then(r => r.json())
+```
+
+**Offline-First Architecture**
+```typescript
+// Mobile app offline sync pattern
+// Uses existing PWA foundation + IndexedDB
+
+import { openDB } from 'idb'
+
+const db = await openDB('khesed-tek-mobile', 1, {
+  upgrade(db) {
+    // Offline storage for critical data
+    db.createObjectStore('members', { keyPath: 'id' })
+    db.createObjectStore('events', { keyPath: 'id' })
+    db.createObjectStore('pending-changes', { keyPath: 'id', autoIncrement: true })
+  }
+})
+
+// Queue changes for offline sync
+export async function createMemberOffline(memberData) {
+  // Save to local IndexedDB
+  await db.add('pending-changes', {
+    type: 'CREATE_MEMBER',
+    data: memberData,
+    timestamp: Date.now()
+  })
+  
+  // Attempt immediate sync if online
+  if (navigator.onLine) {
+    await syncPendingChanges()
+  }
+}
+
+// Sync when connection restored
+export async function syncPendingChanges() {
+  const changes = await db.getAll('pending-changes')
+  
+  // Batch sync via GraphQL mutation
+  const result = await graphqlClient.mutate({
+    mutation: SYNC_OFFLINE_CHANGES,
+    variables: { operations: changes }
+  })
+  
+  // Clear synced changes
+  if (result.data.syncOfflineChanges.success) {
+    const tx = db.transaction('pending-changes', 'readwrite')
+    await tx.objectStore('pending-changes').clear()
+  }
+}
+```
+
+**Mobile Authentication with Refresh Tokens**
+```typescript
+// Enhanced JWT strategy for mobile apps
+// lib/mobile-auth.ts
+
+export async function generateMobileTokens(userId: string, churchId: string) {
+  // Short-lived access token (15 minutes)
+  const accessToken = jwt.sign(
+    { userId, churchId, type: 'access' },
+    process.env.NEXTAUTH_SECRET!,
+    { expiresIn: '15m' }
+  )
+  
+  // Long-lived refresh token (7 days)
+  const refreshToken = jwt.sign(
+    { userId, churchId, type: 'refresh' },
+    process.env.NEXTAUTH_SECRET!,
+    { expiresIn: '7d' }
+  )
+  
+  // Store refresh token in database
+  await db.refreshToken.create({
+    data: {
+      token: refreshToken,
+      userId,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    }
+  })
+  
+  return { accessToken, refreshToken }
+}
+
+// Mobile app refresh pattern
+export async function refreshAccessToken(refreshToken: string) {
+  const decoded = jwt.verify(refreshToken, process.env.NEXTAUTH_SECRET!)
+  
+  // Verify token exists and not revoked
+  const storedToken = await db.refreshToken.findFirst({
+    where: { 
+      token: refreshToken,
+      expiresAt: { gte: new Date() },
+      revoked: false
+    }
+  })
+  
+  if (!storedToken) throw new Error('Invalid refresh token')
+  
+  // Generate new access token
+  return generateMobileTokens(decoded.userId, decoded.churchId)
+}
+```
 
 **🔍 Enterprise Scalability Testing**
-- **Load Testing**: 1K+ concurrent churches with realistic data volumes
-  ```bash
-  # Recommended load testing approach
-  npm run test:load:1k-churches  # Target: <2s response time
-  npm run test:stress:memory     # Memory usage under load
-  npm run test:database:scale    # PostgreSQL connection pooling limits
-  ```
-- **Performance Monitoring**: Real-time dashboard performance tracking
-- **Horizontal Scaling**: Redis cluster + database read replicas architecture
+
+**Load Testing Infrastructure**
+```bash
+# package.json scripts for Phase 4 testing
+"scripts": {
+  "test:load:1k-churches": "artillery run tests/load/1k-churches.yml",
+  "test:stress:memory": "node tests/stress/memory-stress.js",
+  "test:database:scale": "node tests/database/connection-pooling.js",
+  "test:graphql:performance": "artillery run tests/load/graphql-queries.yml"
+}
+```
+
+```yaml
+# tests/load/1k-churches.yml - Artillery load test
+config:
+  target: 'https://api.khesed-tek.com'
+  phases:
+    - duration: 300  # 5 minutes
+      arrivalRate: 100  # 100 requests/second
+      name: "Sustained load - 1K churches"
+  processor: "./load-test-processor.js"
+
+scenarios:
+  - name: "GraphQL Analytics Query"
+    weight: 40
+    flow:
+      - post:
+          url: "/graphql"
+          json:
+            query: "query { analytics(dateRange: { start: \"2026-01-01\", end: \"2026-01-31\" }) { memberJourney { stage memberCount } } }"
+          headers:
+            Authorization: "Bearer {{ $randomChurchToken }}"
+          capture:
+            - json: "$.data.analytics.memberJourney"
+              as: "journey"
+      - think: 2
+  
+  - name: "Mobile Dashboard API"
+    weight: 60
+    flow:
+      - get:
+          url: "/api/mobile/v1/dashboard"
+          headers:
+            Authorization: "Bearer {{ $randomChurchToken }}"
+```
+
+**Performance Monitoring Dashboard**
+```typescript
+// lib/performance-monitoring.ts - Real-time metrics
+import { performanceMonitor } from '@/lib/performance'
+
+export interface PerformanceMetrics {
+  // Response time targets
+  avgResponseTime: number     // Target: <2s
+  p95ResponseTime: number     // Target: <5s
+  p99ResponseTime: number     // Target: <10s
+  
+  // GraphQL specific
+  queryComplexity: number     // Monitor query depth
+  resolverTime: number        // Individual resolver performance
+  
+  // Database
+  dbConnectionPoolUtilization: number  // Target: <80%
+  slowQueryCount: number      // Queries >1s
+  
+  // Caching
+  cacheHitRate: number        // Target: >90%
+  cacheEvictionRate: number
+  
+  // Concurrency
+  activeChurches: number      // Concurrent church sessions
+  activeConnections: number   // WebSocket connections
+}
+
+// Real-time monitoring endpoint
+export async function GET() {
+  const metrics = await performanceMonitor.getMetrics()
+  return NextResponse.json({
+    timestamp: new Date(),
+    metrics,
+    alerts: metrics.avgResponseTime > 2000 ? ['High response time'] : []
+  })
+}
+```
+
+**Horizontal Scaling Architecture**
+```typescript
+// Redis Cluster Configuration (replacing single Redis instance)
+// lib/redis-cluster.ts
+
+import Redis from 'ioredis'
+
+const cluster = new Redis.Cluster([
+  { host: 'redis-node-1', port: 7000 },
+  { host: 'redis-node-2', port: 7001 },
+  { host: 'redis-node-3', port: 7002 }
+], {
+  redisOptions: {
+    password: process.env.REDIS_PASSWORD,
+    maxRetriesPerRequest: 3
+  },
+  clusterRetryStrategy: (times) => Math.min(times * 100, 2000)
+})
+
+export default cluster
+
+// Database Read Replicas (Prisma configuration)
+// datasources {
+//   db {
+//     provider = "postgresql"
+//     url      = env("DATABASE_URL")  // Primary (writes)
+//     directUrl = env("DATABASE_DIRECT_URL")  // Read replica
+//   }
+// }
+
+// Route read queries to replica
+export async function getMembers(churchId: string) {
+  // Use read replica for heavy analytics queries
+  return await db.$queryRaw`
+    SELECT * FROM members WHERE church_id = ${churchId}
+  `
+}
+```
 
 ### **PRIORITY 2: System Optimization & Enterprise Readiness**
 Current production optimization for maximum enterprise scalability:
@@ -732,6 +1593,227 @@ export async function GET(request: NextRequest) {
   const churchId = session.user.churchId  // ALWAYS use session churchId
   // Never trust request params for churchId in multi-tenant system
 }
+```
+
+### REST API Architecture Patterns
+
+**Standard API Route Structure (CRITICAL)**
+```typescript
+// app/api/{feature}/route.ts - Standard CRUD endpoint pattern
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/db'
+
+// GET - Fetch resources (church-scoped)
+export async function GET(request: NextRequest) {
+  try {
+    // STEP 1: Authentication (ALWAYS FIRST)
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.churchId) {
+      return NextResponse.json(
+        { error: 'Unauthorized - No church ID found' },
+        { status: 401 }
+      )
+    }
+
+    // STEP 2: Extract churchId from session (NEVER from request params)
+    const churchId = session.user.churchId
+
+    // STEP 3: Parse query parameters (optional)
+    const { searchParams } = new URL(request.url)
+    const filter = searchParams.get('filter')
+
+    // STEP 4: Database query with church scoping (CRITICAL)
+    const data = await db.model.findMany({
+      where: { 
+        churchId,  // ALWAYS include
+        ...(filter && { status: filter })
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+    // STEP 5: Return standardized success response
+    return NextResponse.json({ 
+      data, 
+      success: true,
+      meta: { total: data.length }
+    })
+  } catch (error) {
+    console.error('GET /api/feature error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error', code: 'INTERNAL_ERROR' },
+      { status: 500 }
+    )
+  }
+}
+
+// POST - Create resource
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.churchId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const churchId = session.user.churchId
+    const body = await request.json()
+
+    // Validate required fields
+    if (!body.name || !body.description) {
+      return NextResponse.json(
+        { error: 'Missing required fields', code: 'VALIDATION_ERROR' },
+        { status: 400 }
+      )
+    }
+
+    // Create with automatic churchId injection
+    const newResource = await db.model.create({
+      data: {
+        ...body,
+        churchId,  // ALWAYS inject from session
+      }
+    })
+
+    return NextResponse.json({ data: newResource, success: true }, { status: 201 })
+  } catch (error) {
+    console.error('POST /api/feature error:', error)
+    return NextResponse.json({ error: 'Creation failed' }, { status: 500 })
+  }
+}
+
+// PUT - Update resource
+export async function PUT(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.churchId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const churchId = session.user.churchId
+    const body = await request.json()
+    const { id, ...updateData } = body
+
+    // Verify ownership before update (SECURITY CRITICAL)
+    const existing = await db.model.findFirst({
+      where: { id, churchId }  // Double-check ownership
+    })
+
+    if (!existing) {
+      return NextResponse.json({ error: 'Resource not found' }, { status: 404 })
+    }
+
+    const updated = await db.model.update({
+      where: { id },
+      data: updateData
+    })
+
+    return NextResponse.json({ data: updated, success: true })
+  } catch (error) {
+    console.error('PUT /api/feature error:', error)
+    return NextResponse.json({ error: 'Update failed' }, { status: 500 })
+  }
+}
+
+// DELETE - Remove resource
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.churchId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const churchId = session.user.churchId
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing ID' }, { status: 400 })
+    }
+
+    // Verify ownership before deletion
+    const existing = await db.model.findFirst({
+      where: { id, churchId }
+    })
+
+    if (!existing) {
+      return NextResponse.json({ error: 'Resource not found' }, { status: 404 })
+    }
+
+    await db.model.delete({ where: { id } })
+
+    return NextResponse.json({ success: true, message: 'Resource deleted' })
+  } catch (error) {
+    console.error('DELETE /api/feature error:', error)
+    return NextResponse.json({ error: 'Deletion failed' }, { status: 500 })
+  }
+}
+```
+
+**Dynamic Route Parameters Pattern**
+```typescript
+// app/api/members/[id]/route.ts
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.churchId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const churchId = session.user.churchId
+  const memberId = params.id
+
+  // CRITICAL: Verify resource belongs to church
+  const member = await db.member.findFirst({
+    where: { 
+      id: memberId,
+      churchId  // Prevent cross-church data access
+    },
+    include: {
+      spiritualAssessments: true,
+      checkIns: { take: 10, orderBy: { createdAt: 'desc' } }
+    }
+  })
+
+  if (!member) {
+    return NextResponse.json({ error: 'Member not found' }, { status: 404 })
+  }
+
+  return NextResponse.json({ data: member, success: true })
+}
+```
+
+**API Response Standards**
+```typescript
+// Success Response Format
+{
+  "data": {},           // or [] for lists
+  "success": true,
+  "meta": {             // Optional metadata
+    "total": 100,
+    "page": 1,
+    "pageSize": 20
+  }
+}
+
+// Error Response Format
+{
+  "error": "Description",
+  "code": "ERROR_CODE",     // VALIDATION_ERROR, UNAUTHORIZED, NOT_FOUND, etc.
+  "details": {}              // Optional additional context
+}
+
+// HTTP Status Codes
+// 200: Success (GET, PUT)
+// 201: Created (POST)
+// 400: Bad Request (validation errors)
+// 401: Unauthorized (no session/churchId)
+// 403: Forbidden (insufficient permissions)
+// 404: Not Found
+// 409: Conflict (duplicate entries)
+// 500: Internal Server Error
 ```
 
 ### Component Architecture
