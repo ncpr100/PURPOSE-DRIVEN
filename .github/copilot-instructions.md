@@ -1,7 +1,7 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 3.3  
-**Last Updated**: January 6, 2026  
+**Document Version**: 3.4  
+**Last Updated**: January 7, 2026  
 **Project Status**: Production Active - Phase 3 Complete, Phase 4 Architecture Ready (97% Complete)  
 
 ---
@@ -21,7 +21,7 @@
 ## 🚨 AI Agent Quick Start (READ FIRST)
 
 **Essential Facts for Immediate Productivity:**
-- **Production System**: 348 total routes (116 pages + 232 API routes) deployed on Railway with automatic CD pipeline
+- **Production System**: 360 total routes (118 pages + 242 API routes) deployed on Railway with automatic CD pipeline
 - **Complete Prayer Wall**: 5-phase PWA implementation finished (analytics, mobile, offline-ready)
 - **Multi-Tenant**: Every DB query MUST include `churchId` filtering (except SUPER_ADMIN operations)
 - **Authentication Gate**: `middleware.ts` (229 lines) controls ALL routing - never bypass
@@ -30,6 +30,7 @@
 - **Real-time**: SSE via `lib/sse-broadcast.ts` for live dashboard updates
 - **TypeScript**: `strict: false` but `ignoreBuildErrors: false` - compilation must pass
 - **Deployment**: `git push origin main` → Railway auto-deploy (NO staging environment)
+- **Branding System**: Church-specific color customization in `settings/branding` with pastel defaults
 
 ---
 
@@ -50,8 +51,8 @@ This is an **enterprise-grade church management platform** actively deployed in 
 - **Mobile-First Analytics**: Touch-optimized charts with Recharts integration
 
 ### Quick Context (READ THIS FIRST)
-- **348 total routes** (116 pages + 232 API routes) in production with strict TypeScript enforcement (`ignoreBuildErrors: false`)
-- **Historical Achievement**: 212/212 pages successfully compiled (system has grown beyond this)
+- **360 total routes** (118 pages + 242 API routes) in production with strict TypeScript enforcement (`ignoreBuildErrors: false`)
+- **Historical Achievement**: 212/212 pages successfully compiled (system has grown to 360 routes)
 - **~2,475 lines** Prisma schema (~50 tables) with multi-tenant church scoping
 - **Railway deployment** with automatic builds on `git push` to main branch
 - **Production database**: PostgreSQL with connection pooling (`lib/db.ts` singleton pattern)
@@ -283,7 +284,7 @@ const requestNotificationPermission = async () => {
 
 // Build validation commands:
 npm run test:compile      // TypeScript compilation check
-npm run build             // Full production build (348 routes)
+npm run build             // Full production build (360 routes)
 ```
 
 **12. Environment Variables Pattern (CRITICAL)**
@@ -326,6 +327,33 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
 // - lib/performance.ts: export const performanceMonitor
 // - lib/memory-monitor.ts: export const memoryMonitor
 // - lib/intelligent-cache-warmer.ts: export const intelligentCacheWarmer
+```
+
+**14. Church Branding System Pattern**
+```typescript
+// Church-specific branding customization (settings/branding)
+interface ChurchBrandColors {
+  prayerRequest: string      // Default: #DDD6FE (purple-200 pastel)
+  visitorFollowup: string    // Default: #DBEAFE (blue-200 pastel)
+  socialMedia: string        // Default: #D1FAE5 (green-200 pastel)
+  events: string             // Default: #FED7AA (orange-200 pastel)
+  primary: string            // Church primary color
+  secondary: string          // Church secondary color
+}
+
+// Fetch church branding
+const response = await fetch('/api/church-theme')
+const { brandColors } = await response.json()
+
+// Apply to components (analytics-style design pattern)
+<Card style={{ backgroundColor: brandColors.primary }}>
+  <CardHeader>
+    <Icon className="text-bright-color" /> {/* Bright icons on pastel */}
+  </CardHeader>
+</Card>
+
+// Design Pattern: Pastel backgrounds (#D-E range) with bright icons/text
+// Example: Purple-200 background (#DDD6FE) with purple-600 icon (#9333EA)
 ```
 
 ### Current Development Priorities (Next 2-4 Weeks)
@@ -825,7 +853,7 @@ git push origin main  # → Triggers Railway build → Nixpacks detects Next.js 
 ### Production Deployment Standards
 - **TypeScript Coverage**: 100% with zero compilation errors (ENFORCED via `ignoreBuildErrors: false`)
 - **Memory Optimization**: Use `npm run build:memory-optimized` for production
-- **Railway Deployment**: All builds must compile 348 total routes successfully (116 pages + 232 API routes)
+- **Railway Deployment**: All builds must compile 360 total routes successfully (118 pages + 242 API routes)
 - **Feature Flags**: Use for safe deployment of new features (`lib/feature-flags.ts`)
 - **Route Group Pattern**: Use parentheses for layout organization `(dashboard)`, `(platform)`
 
@@ -938,7 +966,7 @@ git push origin main  # Triggers Railway build & deploy
 - Nixpacks detects Next.js application
 - Installs dependencies with npm ci
 - Runs Prisma generate
-- Executes next build (compiles 348 total routes)
+- Executes next build (compiles 360 total routes)
 - Starts production server with next start
 ```
 
