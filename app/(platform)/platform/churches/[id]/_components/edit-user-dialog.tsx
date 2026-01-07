@@ -37,6 +37,31 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
   const [showPasswordReset, setShowPasswordReset] = useState(false)
   const [newPassword, setNewPassword] = useState('')
 
+  // Auto-generate secure random password
+  const generateRandomPassword = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%'
+    const length = 12
+    let password = 'Temp-'
+    for (let i = 0; i < length; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    return password
+  }
+
+  const handlePasswordResetToggle = () => {
+    if (!showPasswordReset) {
+      // Generate random password automatically when enabling password reset
+      const randomPassword = generateRandomPassword()
+      setNewPassword(randomPassword)
+      setShowPasswordReset(true)
+      toast.success('Contraseña temporal generada automáticamente')
+    } else {
+      // Cancel password reset
+      setShowPasswordReset(false)
+      setNewPassword('')
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -235,7 +260,7 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => setShowPasswordReset(!showPasswordReset)}
+                onClick={handlePasswordResetToggle}
               >
                 <RotateCcw className="h-4 w-4 mr-2" />
                 {showPasswordReset ? 'Cancelar' : 'Restablecer'}
@@ -244,15 +269,20 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
 
             {showPasswordReset && (
               <div className="space-y-2 bg-orange-50 p-4 rounded-lg">
-                <Label htmlFor="newPassword">Nueva Contraseña Temporal</Label>
+                <Label htmlFor="newPassword">Nueva Contraseña Temporal (Generada Automáticamente)</Label>
                 <Input
                   id="newPassword"
-                  type="password"
+                  type="text"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Mínimo 8 caracteres"
                   minLength={8}
+                  className="font-mono"
                 />
+                <p className="text-xs text-orange-700 flex items-center gap-1">
+                  <Mail className="h-3 w-3" />
+                  Esta contraseña se enviará automáticamente por email al guardar
+                </p>
                 <p className="text-xs text-orange-600">
                   El usuario deberá cambiar esta contraseña en su próximo inicio de sesión
                 </p>
