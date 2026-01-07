@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDigestSchedule = exports.shouldSendDigest = exports.shouldSendEmailNotification = exports.emailQueue = exports.formatChurchEmailSignature = exports.getEmailSubjectPrefix = exports.renderEmailTemplate = exports.sendEmail = exports.EMAIL_CONFIG = void 0;
 const render_1 = require("@react-email/render");
+const resend_1 = require("resend");
 // Email service configuration
 exports.EMAIL_CONFIG = {
     from: process.env.FROM_EMAIL || 'noreply@khesed-tek.com',
@@ -62,36 +63,26 @@ async function sendEmail(emailData) {
     }
 }
 exports.sendEmail = sendEmail;
-// Resend.com integration (popular for Next.js apps)
+// Resend.com integration (official SDK)
 async function sendViaResend(emailData) {
     const resendApiKey = process.env.RESEND_API_KEY;
     if (!resendApiKey) {
         throw new Error('RESEND_API_KEY not configured');
     }
     try {
-        const response = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${resendApiKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                from: `${exports.EMAIL_CONFIG.fromName} <${exports.EMAIL_CONFIG.from}>`,
-                to: [emailData.to],
-                subject: emailData.subject,
-                html: emailData.html,
-                text: emailData.text
-            })
+        const resend = new resend_1.Resend(resendApiKey);
+        const { data, error } = await resend.emails.send({
+            from: `${exports.EMAIL_CONFIG.fromName} <${exports.EMAIL_CONFIG.from}>`,
+            to: [emailData.to],
+            subject: emailData.subject,
+            html: emailData.html,
+            text: emailData.text
         });
-        if (response.ok) {
-            const result = await response.json();
-            console.log(`✅ Resend email sent: ${result.id}`);
-            return true;
+        if (error) {
+            throw new Error(`Resend API error: ${error.message}`);
         }
-        else {
-            const error = await response.text();
-            throw new Error(`Resend API error: ${response.status} - ${error}`);
-        }
+        console.log(`✅ Resend email sent: ${data?.id}`);
+        return true;
     }
     catch (error) {
         console.error('Resend email failed:', error);

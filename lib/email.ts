@@ -1,5 +1,6 @@
 
 import { render } from '@react-email/render'
+import { Resend } from 'resend'
 
 // Email service configuration
 export const EMAIL_CONFIG = {
@@ -120,7 +121,7 @@ export async function sendEmail(emailData: EmailData): Promise<boolean> {
   }
 }
 
-// Resend.com integration (popular for Next.js apps)
+// Resend.com integration (official SDK)
 async function sendViaResend(emailData: EmailData): Promise<boolean> {
   const resendApiKey = process.env.RESEND_API_KEY
   if (!resendApiKey) {
@@ -128,29 +129,23 @@ async function sendViaResend(emailData: EmailData): Promise<boolean> {
   }
   
   try {
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: `${EMAIL_CONFIG.fromName} <${EMAIL_CONFIG.from}>`,
-        to: [emailData.to],
-        subject: emailData.subject,
-        html: emailData.html,
-        text: emailData.text
-      })
+    const resend = new Resend(resendApiKey)
+    
+    const { data, error } = await resend.emails.send({
+      from: `${EMAIL_CONFIG.fromName} <${EMAIL_CONFIG.from}>`,
+      to: [emailData.to],
+      subject: emailData.subject,
+      html: emailData.html,
+      text: emailData.text
     })
     
-    if (response.ok) {
-      const result = await response.json()
-      console.log(`✅ Resend email sent: ${result.id}`)
-      return true
-    } else {
-      const error = await response.text()
-      throw new Error(`Resend API error: ${response.status} - ${error}`)
+    if (error) {
+      throw new Error(`Resend API error: ${error.message}`)
     }
+    
+    console.log(`✅ Resend email sent: ${data?.id}`)
+    return true
+    
   } catch (error) {
     console.error('Resend email failed:', error)
     throw error
