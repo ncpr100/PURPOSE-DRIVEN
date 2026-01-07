@@ -20,8 +20,10 @@ export async function PUT(request: NextRequest) {
       data: {
         name: data.name,
         email: data.email,
-        // Note: Additional profile fields would need to be added to User model
-        // For now, we'll just update the basic fields that exist
+        phone: data.phone,
+        location: data.location,
+        bio: data.bio,
+        image: data.avatar, // avatar field maps to image in database
       }
     })
 
