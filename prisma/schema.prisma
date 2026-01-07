@@ -1997,6 +1997,8 @@ model users {
   role                                   UserRole                                 @default(MIEMBRO)
   churchId                               String?
   isActive                               Boolean                                  @default(true)
+  isFirstLogin                           Boolean                                  @default(false)
+  lastPasswordChange                     DateTime?
   createdAt                              DateTime                                 @default(now())
   updatedAt                              DateTime
   accounts                               accounts[]

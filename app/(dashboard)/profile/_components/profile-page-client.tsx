@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -38,6 +38,7 @@ import { Switch } from '@/components/ui/switch'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { toast } from 'sonner'
+import ChangePasswordDialog from './change-password-dialog'
 
 interface ProfilePageClientProps {
   userRole: string
@@ -48,6 +49,29 @@ export function ProfilePageClient({ userRole, churchId }: ProfilePageClientProps
   const { data: session, status, update } = useSession()
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('profile')
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false)
+  const [isFirstLogin, setIsFirstLogin] = useState(false)
+
+  // Check if user needs to change password (first login)
+  useEffect(() => {
+    const checkFirstLogin = async () => {
+      if (session?.user?.id) {
+        try {
+          const response = await fetch(`/api/users/${session.user.id}/status`)
+          if (response.ok) {
+            const data = await response.json()
+            if (data.isFirstLogin) {
+              setIsFirstLogin(true)
+              setShowPasswordDialog(true)
+            }
+          }
+        } catch (error) {
+          console.error('Error checking first login:', error)
+        }
+      }
+    }
+    checkFirstLogin()
+  }, [session])
   
   const [profileData, setProfileData] = useState({
     name: session?.user?.name || '',
@@ -450,7 +474,11 @@ export function ProfilePageClient({ userRole, churchId }: ProfilePageClientProps
                       Última actualización: {securitySettings.lastPasswordChange.toLocaleDateString()}
                     </p>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setShowPasswordDialog(true)}
+                  >
                     Cambiar
                   </Button>
                 </div>
@@ -531,6 +559,14 @@ export function ProfilePageClient({ userRole, churchId }: ProfilePageClientProps
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Password Change Dialog */}
+      <ChangePasswordDialog
+        isOpen={showPasswordDialog}
+        onClose={() => setShowPasswordDialog(false)}
+        isFirstLogin={isFirstLogin}
+        canClose={!isFirstLogin}
+      />
     </div>
   )
 }

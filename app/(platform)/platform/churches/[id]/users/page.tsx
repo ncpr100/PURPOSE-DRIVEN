@@ -43,6 +43,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
+import EditUserDialog from '../_components/edit-user-dialog'
 
 interface Church {
   id: string
@@ -104,6 +105,8 @@ export default function ChurchUsersPage() {
     email: '',
     role: 'MIEMBRO'
   })
+  const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [showEditDialog, setShowEditDialog] = useState(false)
   
   const handleCreateUser = async () => {
     if (!newUser.name || !newUser.email) {
@@ -483,11 +486,12 @@ export default function ChurchUsersPage() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem asChild>
-                        <Link href={`/platform/churches/${params.id}/users/${user.id}/profile`} className="flex items-center w-full">
-                          <UserCheck className="h-4 w-4 mr-2" />
-                          Ver Perfil
-                        </Link>
+                      <DropdownMenuItem onClick={() => {
+                        setEditingUser(user)
+                        setShowEditDialog(true)
+                      }}>
+                        <UserCheck className="h-4 w-4 mr-2" />
+                        Editar Usuario
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link href={`/platform/churches/${params.id}/users/${user.id}/permissions`} className="flex items-center w-full">
@@ -561,6 +565,25 @@ export default function ChurchUsersPage() {
             Siguiente
           </Button>
         </div>
+      )}
+
+      {/* Edit User Dialog */}
+      {editingUser && (
+        <EditUserDialog
+          isOpen={showEditDialog}
+          onClose={() => {
+            setShowEditDialog(false)
+            setEditingUser(null)
+          }}
+          user={{
+            id: editingUser.id,
+            name: editingUser.name,
+            email: editingUser.email,
+            role: editingUser.role,
+            isActive: editingUser.isActive
+          }}
+          onSuccess={fetchUsers}
+        />
       )}
     </div>
   )

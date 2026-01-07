@@ -178,6 +178,7 @@ export async function POST(request: NextRequest) {
             connect: { id: church.id }
           },
           isActive: true,
+          isFirstLogin: true,
           emailVerified: new Date(),
           updatedAt: new Date()
         }
