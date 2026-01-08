@@ -44,7 +44,9 @@ import {
   Heart,
   Zap,
   TrendingUp,
-  Activity
+  Activity,
+  Loader2,
+  Save
 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -171,9 +173,11 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
   // Dialog states
   const [isNewEventDialogOpen, setIsNewEventDialogOpen] = useState(false)
+  const [isEditEventDialogOpen, setIsEditEventDialogOpen] = useState(false)
   const [isResourceDialogOpen, setIsResourceDialogOpen] = useState(false)
   const [isCommunicationDialogOpen, setIsCommunicationDialogOpen] = useState(false)
   const [isVolunteerAssignmentOpen, setIsVolunteerAssignmentOpen] = useState(false)
+  const [isAutoAssigning, setIsAutoAssigning] = useState(false)
 
   // Form states
   const [eventForm, setEventForm] = useState({
@@ -382,7 +386,10 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
   }
 
   const autoAssignVolunteers = async (eventId: string) => {
+    if (isAutoAssigning) return // Prevent double-click
+    
     try {
+      setIsAutoAssigning(true)
       toast.info('🎯 Asignando voluntarios automáticamente...')
       
       const response = await fetch(`/api/events/${eventId}/auto-assign-volunteers`, {
@@ -392,11 +399,29 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
       if (response.ok) {
         const data = await response.json()
-        toast.success(`✅ ${data.assignedCount} voluntarios asignados automáticamente`)
+        
+        if (!data || typeof data.assignedCount !== 'number') {
+          toast.error('Respuesta inválida del servidor')
+          return
+        }
+        
+        if (data.assignedCount === 0) {
+          toast.warning('⚠️ No se encontraron voluntarios elegibles para asignar')
+        } else {
+          toast.success(`✅ ${data.assignedCount} voluntarios asignados automáticamente`)
+        }
+        
         fetchEvents()
+      } else {
+        const error = await response.json()
+        console.error('Auto-assign error:', error)
+        toast.error(`Error: ${error.message || 'No se pudo asignar voluntarios'}`)
       }
     } catch (error) {
-      toast.error('Error en asignación automática')
+      console.error('Error in autoAssignVolunteers:', error)
+      toast.error('Error de conexión al asignar voluntarios')
+    } finally {
+      setIsAutoAssigning(false)
     }
   }
 
@@ -428,6 +453,49 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       }
     } catch (error) {
       toast.error('Error al enviar comunicación')
+    }
+  }
+
+  const handleUpdateEvent = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!selectedEvent) {
+      toast.error('No hay evento seleccionado')
+      return
+    }
+
+    if (!eventForm.title || !eventForm.startDate) {
+      toast.error('Título y fecha de inicio son requeridos')
+      return
+    }
+
+    try {
+      const requestBody = {
+        ...eventForm,
+        startDate: new Date(eventForm.startDate).toISOString(),
+        endDate: eventForm.endDate ? new Date(eventForm.endDate).toISOString() : null,
+        budget: eventForm.budget ? parseFloat(eventForm.budget) : null,
+      }
+      
+      const response = await fetch(`/api/events/${selectedEvent.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody),
+      })
+
+      if (response.ok) {
+        toast.success('✅ Evento actualizado exitosamente')
+        setIsEditEventDialogOpen(false)
+        setSelectedEvent(null)
+        resetEventForm()
+        fetchEvents()
+      } else {
+        const error = await response.json()
+        toast.error(error.message || 'Error al actualizar evento')
+      }
+    } catch (error) {
+      console.error('Update event error:', error)
+      toast.error('Error al actualizar evento')
     }
   }
 
@@ -721,7 +789,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="budget">Presupuesto (€)</Label>
+                      <Label htmlFor="budget">Presupuesto ($)</Label>
                       <Input
                         id="budget"
                         type="number"
@@ -747,6 +815,137 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       Cancelar
                     </Button>
                     <Button type="submit">Crear Evento</Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+
+            {/* Edit Event Dialog */}
+            <Dialog open={isEditEventDialogOpen} onOpenChange={setIsEditEventDialogOpen}>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Edit className="h-5 w-5" />
+                    Editar Evento
+                  </DialogTitle>
+                  <DialogDescription>
+                    Actualiza la información del evento
+                  </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handleUpdateEvent} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="editEventTitle">Título del Evento *</Label>
+                      <Input
+                        id="editEventTitle"
+                        value={eventForm.title}
+                        onChange={(e) => setEventForm(prev => ({ ...prev, title: e.target.value }))}
+                        placeholder="Ej: Culto Especial de Navidad"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="editEventCategory">Categoría</Label>
+                      <Select
+                        value={eventForm.category}
+                        onValueChange={(value) => setEventForm(prev => ({ ...prev, category: value }))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="CULTO">Culto</SelectItem>
+                          <SelectItem value="CONFERENCIA">Conferencia</SelectItem>
+                          <SelectItem value="SOCIAL">Evento Social</SelectItem>
+                          <SelectItem value="CAPACITACION">Capacitación</SelectItem>
+                          <SelectItem value="SERVICIO">Servicio Comunitario</SelectItem>
+                          <SelectItem value="OTRO">Otro</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="editEventDescription">Descripción</Label>
+                    <Textarea
+                      id="editEventDescription"
+                      value={eventForm.description}
+                      onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
+                      placeholder="Descripción detallada del evento..."
+                      rows={3}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="editStartDate">Fecha de Inicio *</Label>
+                      <Input
+                        id="editStartDate"
+                        type="datetime-local"
+                        value={eventForm.startDate}
+                        onChange={(e) => setEventForm(prev => ({ ...prev, startDate: e.target.value }))}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="editEndDate">Fecha de Fin</Label>
+                      <Input
+                        id="editEndDate"
+                        type="datetime-local"
+                        value={eventForm.endDate}
+                        onChange={(e) => setEventForm(prev => ({ ...prev, endDate: e.target.value }))}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="editLocation">Ubicación</Label>
+                      <Input
+                        id="editLocation"
+                        value={eventForm.location}
+                        onChange={(e) => setEventForm(prev => ({ ...prev, location: e.target.value }))}
+                        placeholder="Salón principal, Auditorio..."
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="editBudget">Presupuesto ($)</Label>
+                      <Input
+                        id="editBudget"
+                        type="number"
+                        value={eventForm.budget}
+                        onChange={(e) => setEventForm(prev => ({ ...prev, budget: e.target.value }))}
+                        placeholder="0.00"
+                        step="0.01"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="editIsPublic"
+                      checked={eventForm.isPublic}
+                      onCheckedChange={(checked) => setEventForm(prev => ({ ...prev, isPublic: checked }))}
+                    />
+                    <Label htmlFor="editIsPublic">Evento público (visible para todos los miembros)</Label>
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-4">
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => {
+                        setIsEditEventDialogOpen(false)
+                        setSelectedEvent(null)
+                        resetEventForm()
+                      }}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button type="submit">
+                      <Save className="h-4 w-4 mr-2" />
+                      Guardar Cambios
+                    </Button>
                   </div>
                 </form>
               </DialogContent>
@@ -816,7 +1015,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       {event.budget && (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                           <DollarSign className="h-4 w-4" />
-                          <span>€{event.budget.toLocaleString()}</span>
+                          <span>${event.budget.toLocaleString()}</span>
                         </div>
                       )}
                     </div>
@@ -829,10 +1028,20 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                           size="sm"
                           variant="outline"
                           onClick={() => autoAssignVolunteers(event.id)}
+                          disabled={isAutoAssigning}
                           className="text-xs"
                         >
-                          <Brain className="h-3 w-3 mr-1" />
-                          Auto-Asignar
+                          {isAutoAssigning ? (
+                            <>
+                              <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                              Asignando...
+                            </>
+                          ) : (
+                            <>
+                              <Brain className="h-3 w-3 mr-1" />
+                              Auto-Asignar
+                            </>
+                          )}
                         </Button>
                         <Button
                           size="sm"
@@ -848,7 +1057,24 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                         </Button>
                       </div>
                       
-                      <Button size="sm" variant="ghost">
+                      <Button 
+                        size="sm" 
+                        variant="ghost"
+                        onClick={() => {
+                          setSelectedEvent(event)
+                          setEventForm({
+                            title: event.title,
+                            description: event.description || '',
+                            category: event.category,
+                            startDate: new Date(event.startDate).toISOString().slice(0, 16),
+                            endDate: event.endDate ? new Date(event.endDate).toISOString().slice(0, 16) : '',
+                            location: event.location || '',
+                            budget: event.budget?.toString() || '',
+                            isPublic: event.isPublic
+                          })
+                          setIsEditEventDialogOpen(true)
+                        }}
+                      >
                         <Edit className="h-4 w-4" />
                       </Button>
                     </div>
