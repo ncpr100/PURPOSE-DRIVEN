@@ -152,6 +152,7 @@ export default function HelpCenterSuperAdmin() {
       { name: "🆕 Analíticas Inteligentes Globales", href: "/platform/help/manual/global-intelligent-analytics", icon: "🤖" },
       { name: "Gestión de Usuarios", href: "/platform/help/manual/users", icon: "👥" },
       { name: "🆕 Sistema de Formularios Globales", href: "/platform/help/manual/global-visitor-forms", icon: "📝" },
+      { name: "🆕 Sistema Inteligente de Eventos", href: "/platform/help/manual/events", icon: "📅" },
       { name: "Monitoreo del Sistema", href: "/platform/help/manual/monitoring", icon: "🔍" }
     ]},
     { title: "💰 Configuración de Negocio", items: [
