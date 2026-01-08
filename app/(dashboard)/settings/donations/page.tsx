@@ -49,11 +49,16 @@ async function getPaymentMethods(churchId: string) {
 export default async function DonationsSettingsPage() {
   const session = await getServerSession(authOptions);
   
-  if (!session?.user?.church?.id) {
+  if (!session?.user?.churchId) {
     redirect('/auth/signin');
   }
 
-  const churchId = session.user.church.id;
+  // Check permissions
+  if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
+    redirect('/home');
+  }
+
+  const churchId = session.user.churchId;
   
   const [categories, paymentMethods] = await Promise.all([
     getDonationCategories(churchId),
