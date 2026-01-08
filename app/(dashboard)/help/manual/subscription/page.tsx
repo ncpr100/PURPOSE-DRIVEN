@@ -71,14 +71,12 @@ export default function SubscriptionManual() {
                   <p><strong>1.1.</strong> Navegue a <code>Mi Suscripción → Ver Planes</code></p>
                   <p><strong>1.2.</strong> Planes disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>🆓 Plan Básico (Gratis):</strong>
-                      <br />Hasta 50 miembros, funcionalidades esenciales</li>
-                    <li>• <strong>💼 Plan Estándar ($19/mes):</strong>
-                      <br />Hasta 200 miembros, comunicaciones masivas</li>
-                    <li>• <strong>🚀 Plan Premium ($39/mes):</strong>
-                      <br />Hasta 500 miembros, analíticas avanzadas</li>
-                    <li>• <strong>⛪ Plan Iglesia Grande ($79/mes):</strong>
-                      <br />Miembros ilimitados, soporte prioritario</li>
+                    <li>• <strong>⛪️ Iglesia Pequeña ($149.99 USD/mes):</strong>
+                      <br />Hasta 500 miembros, hasta 5 licencias, gestión básica</li>
+                    <li>• <strong>🚀 Iglesia Mediana ($299.99 USD/mes) - MÁS POPULAR:</strong>
+                      <br />Hasta 2,000 miembros, hasta 10 licencias, reportes avanzados</li>
+                    <li>• <strong>💼 Iglesia Grande (Personalizado):</strong>
+                      <br />Miembros ilimitados, licencias ilimitadas, multi-campus</li>
                   </ul>
                   <p><strong>1.3.</strong> Para cambiar plan:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -93,29 +91,35 @@ export default function SubscriptionManual() {
                 <h4 className="font-semibold mb-2">✨ Características por Plan</h4>
                 <div className="text-sm space-y-3">
                   <div>
-                    <p className="font-semibold text-gray-600">🆓 BÁSICO</p>
+                    <p className="font-semibold text-gray-600">�️ IGLESIA PEQUEÑA ($149.99/mes)</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
-                      <li>• Gestión de miembros (50 max)</li>
-                      <li>• Eventos básicos</li>
-                      <li>• Donaciones simples</li>
+                      <li>• Hasta 500 miembros</li>
+                      <li>• 5 licencias</li>
+                      <li>• WhatsApp integrado</li>
+                      <li>• Soporte en español</li>
+                      <li>• 14 días prueba gratis</li>
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-600">💼 ESTÁNDAR</p>
+                    <p className="font-semibold text-blue-600">⛪ IGLESIA MEDIANA ($299.99/mes)</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
-                      <li>• Todo de Básico + 200 miembros</li>
-                      <li>• Comunicaciones masivas</li>
-                      <li>• Check-in QR</li>
-                      <li>• Reportes estándar</li>
+                      <li>• Hasta 2,000 miembros</li>
+                      <li>• 10 licencias</li>
+                      <li>• Todo lo anterior +</li>
+                      <li>• Eventos y transmisiones</li>
+                      <li>• Analíticas inteligentes</li>
+                      <li>• Gestión de donaciones</li>
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold text-green-600">🚀 PREMIUM</p>
+                    <p className="font-semibold text-green-600">🏰 IGLESIA GRANDE (Personalizado)</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
-                      <li>• Todo de Estándar + 500 miembros</li>
-                      <li>• Analíticas avanzadas</li>
-                      <li>• WebRTC Seguridad Infantil</li>
-                      <li>• Automatización de visitantes</li>
+                      <li>• Licencias ilimitadas</li>
+                      <li>• Miembros ilimitados</li>
+                      <li>• Multi-campus</li>
+                      <li>• API personalizada</li>
+                      <li>• Soporte prioritario</li>
+                      <li>• Entrenamiento dedicado</li>
                     </ul>
                   </div>
                 </div>
@@ -140,16 +144,16 @@ export default function SubscriptionManual() {
                   <p><strong>2.1.</strong> En Mi Suscripción, haga clic en &quot;🔌 Complementos&quot;</p>
                   <p><strong>2.2.</strong> Opciones disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>📱 SMS Premium (+$10/mes):</strong>
-                      <br />1000 SMS/mes incluidos, WhatsApp Business</li>
-                    <li>• <strong>☁️ Almacenamiento Extra (+$5/mes):</strong>
-                      <br />100GB adicionales para archivos</li>
-                    <li>• <strong>📊 Analíticas Pro (+$15/mes):</strong>
-                      <br />Reportes personalizados, exportación avanzada</li>
-                    <li>• <strong>🎥 Streaming Live (+$20/mes):</strong>
-                      <br />Transmisión en vivo integrada</li>
-                    <li>• <strong>🌐 Dominio Personalizado (+$8/mes):</strong>
-                      <br />iglesia.com en lugar de subdominio</li>
+                    <li>• <strong>� Integración WhatsApp ($50,000 COP/mes):</strong>
+                      <br />WhatsApp Business API completo integrado</li>
+                    <li>• <strong>🎨 Marca Personalizada ($30,000 COP/mes):</strong>
+                      <br />Personalización completa de colores, logo y marca</li>
+                    <li>• <strong>📊 Analytics Avanzados ($40,000 COP/mes):</strong>
+                      <br />Dashboards personalizados y métricas detalladas</li>
+                    <li>• <strong>🆘 Soporte Prioritario ($60,000 COP/mes):</strong>
+                      <br />Soporte 24/7 con respuesta en menos de 2 horas</li>
+                    <li>• <strong>📱 SMS Notificaciones ($50 COP por SMS):</strong>
+                      <br />Envío de notificaciones por SMS (pago por uso)</li>
                   </ul>
                 </div>
               </div>
@@ -287,17 +291,16 @@ export default function SubscriptionManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>5.1.</strong> Soporte incluido según plan:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>Plan Básico:</strong> Email, 48-72h respuesta</li>
-                    <li>• <strong>Plan Estándar:</strong> Email + chat, 24-48h</li>
-                    <li>• <strong>Plan Premium:</strong> Soporte prioritario, 12-24h</li>
-                    <li>• <strong>Plan Iglesia Grande:</strong> Soporte dedicado, 2-4h</li>
+                    <li>• <strong>Iglesia Pequeña:</strong> Email</li>
+                    <li>• <strong>Iglesia Mediana:</strong> Email + Chat</li>
+                    <li>• <strong>Iglesia Grande:</strong> Soporte prioritario 24/7</li>
                   </ul>
                   <p><strong>5.2.</strong> Canales de contacto:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>📧 Email:</strong> soporte@khesedtek.com</li>
                     <li>• <strong>💬 WhatsApp:</strong> +57 300 343 5733</li>
-                    <li>• <strong>💻 Chat en vivo:</strong> Desde la plataforma</li>
-                    <li>• <strong>📞 Teléfono:</strong> Solo planes Premium+</li>
+                    <li>• <strong>💻 Chat en vivo:</strong> Planes Mediana y Grande</li>
+                    <li>• <strong>📞 Teléfono:</strong> Solo plan Iglesia Grande</li>
                   </ul>
                 </div>
               </div>
