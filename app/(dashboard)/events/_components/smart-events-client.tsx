@@ -622,7 +622,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
               <div className="flex items-center space-x-2">
                 <DollarSign className="h-4 w-4 text-yellow-500" />
                 <div>
-                  <p className="text-2xl font-bold">${analytics.totalDonations.toLocaleString()}</p>
+                  <p className="text-2xl font-bold">${analytics.totalDonations.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   <p className="text-xs text-muted-foreground">Donaciones</p>
                 </div>
               </div>
@@ -1015,7 +1015,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       {event.budget && (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                           <DollarSign className="h-4 w-4" />
-                          <span>${event.budget.toLocaleString()}</span>
+                          <span>${event.budget.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </div>
                       )}
                     </div>
