@@ -178,12 +178,23 @@ export default function DonationsManual() {
               <div>
                 <h4 className="font-semibold mb-3">🔧 Configuración Avanzada</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>Para pagos online:</strong></p>
+                  <p><strong>Para pagos online LATAM:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>Gateway de pago:</strong> Stripe, PayPal, Mercado Pago</li>
-                    <li>• <strong>Comisiones:</strong> Configure % de comisión</li>
-                    <li>• <strong>Monedas aceptadas:</strong> USD, moneda local</li>
-                    <li>• <strong>Límites:</strong> Mínimo y máximo por transacción</li>
+                    <li>• <strong>Gateway Universal:</strong> MercadoPago (7 países LATAM)</li>
+                    <li>• <strong>Colombia:</strong> PSE (todos los bancos), Nequi (billetera digital)</li>
+                    <li>• <strong>Brasil:</strong> PIX (pagos instantáneos 24/7)</li>
+                    <li>• <strong>México:</strong> SPEI (transferencias), OXXO (20,000+ tiendas)</li>
+                    <li>• <strong>Otros países:</strong> Argentina, Chile, Perú, Uruguay</li>
+                    <li>• <strong>Comisiones:</strong> 0%-5.9% según método de pago</li>
+                    <li>• <strong>Monedas:</strong> COP, BRL, MXN, ARS, CLP, PEN, UYU, USD</li>
+                  </ul>
+                  <p><strong>Configuración en Ajustes:</strong></p>
+                  <ul className="ml-4 space-y-1 text-muted-foreground">
+                    <li>• Vaya a <code>Configuración → Donaciones</code></li>
+                    <li>• Pestaña &quot;💳 Métodos de Pago&quot;</li>
+                    <li>• Seleccione el gateway según su país</li>
+                    <li>• Configure credenciales API (modo prueba/producción)</li>
+                    <li>• Active webhooks para confirmaciones automáticas</li>
                   </ul>
                   <p><strong>Para efectivo:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">

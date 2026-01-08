@@ -3,6 +3,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export async function POST(request: NextRequest) {
   try {
@@ -73,6 +74,7 @@ export async function POST(request: NextRequest) {
           paymentId: paymentId.toString()
         },
         create: {
+          id: nanoid(),
           churchId,
           amount: payment.transaction_amount,
           currency: payment.currency_id,

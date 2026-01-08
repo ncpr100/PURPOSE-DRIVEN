@@ -3,6 +3,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
           paymentId: orderId
         },
         create: {
+          id: nanoid(),
           churchId,
           amount: order.amount / 100, // Convert from cents
           currency: 'MXN',

@@ -3,6 +3,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export async function POST(request: NextRequest) {
   try {
@@ -65,6 +66,7 @@ export async function POST(request: NextRequest) {
         paymentId: txid
       },
       create: {
+        id: nanoid(),
         churchId,
         amount: pixPayment.valor?.original ? parseFloat(pixPayment.valor.original) : 0,
         currency: 'BRL',
