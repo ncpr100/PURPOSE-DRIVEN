@@ -173,7 +173,84 @@ lib/monitoring/
 - **Role-Based Security**: Granular permission system with delegation
 - **API Rate Limiting**: DDoS protection and abuse prevention
 
-### **4F. Critical Unfinished Business from Previous Phases** (Weeks 10-12)
+### **4F. Additional LATAM Payment Gateway Expansion** (Weeks 8-12)
+**Goal**: Expand payment processing to all LATAM countries with local payment methods
+
+#### **✅ ALREADY DEPLOYED (January 2026)**
+- **MercadoPago**: Universal LATAM gateway (7 countries) ✅
+- **Brazil PIX**: Instant payment system (70% market share) ✅
+- **Mexico SPEI**: Interbank transfers ✅
+- **Mexico OXXO**: Cash payment network (20,000+ stores) ✅
+- **Colombia PSE**: All banks payment gateway ✅
+- **Colombia Nequi**: Digital wallet integration ✅
+
+#### **Phase 4 Gateway Implementations**
+
+**Chile Payment Gateways** (Week 8-9)
+- **Webpay Plus (Transbank)**: Chile's dominant payment processor (80% market share)
+- **Khipu**: Bank transfer payment system (alternative to Webpay)
+- **MercadoPago Chile**: Regional credit/debit card fallback
+
+```typescript
+// lib/payments/chile-gateways.ts
+export class WebpayGateway implements PaymentGateway {
+  // Transbank Webpay Plus integration
+  // Credit/debit cards, bank transfers
+  // Transaction fees: 2.9% + IVA
+}
+```
+
+**Peru Payment Gateways** (Week 9-10)
+- **Yape**: Most popular digital wallet (50M+ users, 80% adoption)
+- **Plin**: Second digital wallet option (BCP bank)
+- **PagoEfectivo**: Cash payment network
+- **Niubiz (Visa)**: Credit/debit card processing
+
+```typescript
+// lib/payments/peru-gateways.ts
+export class YapeGateway implements PaymentGateway {
+  // BCP Yape digital wallet
+  // Instant QR code payments
+  // Transaction fees: 0.5% - 1%
+}
+
+export class PlinGateway implements PaymentGateway {
+  // Plin digital wallet (multi-bank)
+  // QR code and phone number payments
+}
+```
+
+**Argentina Payment Enhancements** (Week 10)
+- **Rapipago**: Cash payment network (5,000+ locations)
+- **Pago Fácil**: Alternative cash network (3,000+ locations)
+- **MercadoPago Argentina**: Already deployed, add bank transfer options
+
+**Uruguay & Paraguay Gateways** (Week 11)
+- **Uruguay**: Abitab, RedPagos (cash networks)
+- **Paraguay**: Tigo Money, Personal Pay (mobile wallets)
+
+**Central America Expansion** (Week 12)
+- **Costa Rica**: SINPE Móvil (instant transfers)
+- **Panama**: Yappy (digital wallet)
+- **Guatemala/El Salvador**: Cash networks + MercadoPago
+
+#### **Gateway Implementation Priority Matrix**
+
+| Country   | Priority | Gateway           | Market Share | Complexity | Timeline |
+|-----------|----------|-------------------|--------------|------------|----------|
+| Chile     | ⭐⭐⭐⭐   | Webpay Plus       | 80%          | Medium     | Week 8   |
+| Peru      | ⭐⭐⭐⭐   | Yape              | 80%          | Medium     | Week 9   |
+| Argentina | ⭐⭐⭐     | Rapipago          | 60%          | Low        | Week 10  |
+| Uruguay   | ⭐⭐       | Abitab            | 50%          | Low        | Week 11  |
+| Paraguay  | ⭐⭐       | Tigo Money        | 40%          | Medium     | Week 11  |
+| C.America | ⭐⭐       | SINPE/Yappy       | Varies       | Medium     | Week 12  |
+
+#### **Total LATAM Coverage (Post-Phase 4)**
+- **14 Countries**: Argentina, Brazil, Chile, Colombia, Costa Rica, Ecuador, El Salvador, Guatemala, Mexico, Panama, Paraguay, Peru, Uruguay, Venezuela
+- **25+ Payment Methods**: Credit/debit cards, bank transfers, digital wallets, cash networks
+- **$5M+ Monthly Volume**: Projected transaction capacity across all gateways
+
+### **4G. Critical Unfinished Business from Previous Phases** (Weeks 10-12)
 **Goal**: Complete high-priority items deferred from earlier phases
 
 #### **Spanish Bible System Optimization**
@@ -189,9 +266,9 @@ lib/monitoring/
 - **Load Balancing**: Traffic distribution for high-availability deployment
 
 #### **Monetization System Implementation**
-- **Colombian Payment Gateway**: Local payment processing integration
+- **Multi-Country Pricing**: Region-specific subscription tiers (Colombia, Brazil, Mexico, etc.)
 - **Subscription Tiers**: BÁSICO ($50K COP), PROFESIONAL ($120K COP), ENTERPRISE ($300K COP)
-- **Automated Billing**: Recurring payment and trial period systems
+- **Automated Billing**: Recurring payment and trial period systems via MercadoPago
 - **Church Onboarding**: Streamlined registration and setup workflows
 
 #### **Critical Security Gaps**

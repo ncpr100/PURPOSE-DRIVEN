@@ -76,9 +76,17 @@ export async function POST(request: NextRequest) {
       configuration
     } = body
 
-    if (!gatewayType || !['pse', 'nequi', 'daviplata'].includes(gatewayType.toLowerCase())) {
+    // Supported gateway types (expanded for LATAM coverage)
+    const supportedGateways = [
+      'pse', 'nequi', 'daviplata',           // Colombia
+      'mercadopago',                          // Universal LATAM (7 countries)
+      'pix',                                  // Brazil
+      'spei', 'oxxo'                          // Mexico
+    ]
+
+    if (!gatewayType || !supportedGateways.includes(gatewayType.toLowerCase())) {
       return NextResponse.json(
-        { message: 'Tipo de gateway no válido' },
+        { message: 'Tipo de gateway no válido. Soportados: ' + supportedGateways.join(', ') },
         { status: 400 }
       )
     }
