@@ -205,6 +205,18 @@ const navigationItems = [
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA'],
   },
   {
+    title: 'Gestión de Ministerios',
+    href: '/settings/ministries',
+    icon: Heart,
+    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'],
+  },
+  {
+    title: 'Configuración de Donaciones',
+    href: '/settings/donations',
+    icon: DollarSign,
+    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'],
+  },
+  {
     title: 'Configuración de Notificaciones',
     href: '/settings/notifications',
     icon: Bell,

@@ -176,7 +176,7 @@ export async function DELETE(
 
     // Check if ministry is in use (has members or volunteers)
     const [memberCount, volunteerCount] = await Promise.all([
-      db.member.count({
+      db.members.count({
         where: {
           churchId: session.user.churchId,
           ministryInterests: {
@@ -184,7 +184,7 @@ export async function DELETE(
           }
         }
       }),
-      db.volunteer.count({
+      db.volunteers.count({
         where: {
           churchId: session.user.churchId,
           skills: {
