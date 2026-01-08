@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
                                paymentMethod === 'oxxo_cash' ? 'OXXO' : 
                                'Conekta'
 
-      // Create or update donation
-      const donation = await db.donations.upsert({
+      // Create or update online payment
+      const onlinePayment = await db.online_payments.upsert({
         where: {
           paymentId: orderId
         },
@@ -48,14 +48,16 @@ export async function POST(request: NextRequest) {
           churchId,
           amount: order.amount / 100, // Convert from cents
           currency: 'MXN',
-          status: 'COMPLETADA',
+          status: 'completed',
           paymentId: orderId,
-          paymentMethod: paymentMethodName,
+          gatewayType: paymentMethod === 'spei' ? 'spei' : 'oxxo',
           categoryId: categoryId || undefined,
           donorName: order.customer_info?.name || 'Donante Anónimo',
           donorEmail: order.customer_info?.email,
           donorPhone: order.customer_info?.phone,
           notes: metadata.notes || `Pago vía ${paymentMethodName}`,
+          webhookReceived: true,
+          completedAt: new Date(),
           metadata: {
             conekta_order_id: orderId,
             payment_method: paymentMethod,
@@ -63,7 +65,9 @@ export async function POST(request: NextRequest) {
           }
         },
         update: {
-          status: 'COMPLETADA',
+          status: 'completed',
+          webhookReceived: true,
+          completedAt: new Date(),
           metadata: {
             conekta_order_id: orderId,
             payment_method: paymentMethod,
@@ -73,8 +77,8 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      console.log(`${paymentMethodName} donation processed:`, donation.id)
-      return NextResponse.json({ success: true, donationId: donation.id })
+      console.log(`${paymentMethodName} payment processed:`, onlinePayment.id)
+      return NextResponse.json({ success: true, paymentId: onlinePayment.id })
     }
 
     // Handle order.expired event
@@ -82,13 +86,13 @@ export async function POST(request: NextRequest) {
       const order = data.object
       const orderId = order.id
 
-      // Update donation status to cancelled
-      await db.donations.updateMany({
+      // Update online payment status to cancelled
+      await db.online_payments.updateMany({
         where: {
           paymentId: orderId
         },
         data: {
-          status: 'CANCELADA'
+          status: 'cancelled'
         }
       })
 

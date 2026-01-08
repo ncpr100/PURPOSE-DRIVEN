@@ -55,6 +55,7 @@ export declare class PaymentGatewayFactory {
         id: string;
         name: string;
         description: string;
+        country: string;
     }>;
 }
 //# sourceMappingURL=colombian-gateways.d.ts.map

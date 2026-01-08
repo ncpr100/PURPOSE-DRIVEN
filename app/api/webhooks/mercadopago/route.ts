@@ -67,8 +67,8 @@ export async function POST(request: NextRequest) {
           status = 'PENDIENTE'
       }
 
-      // Create or update donation record
-      const donation = await db.donations.upsert({
+      // Create or update online payment record
+      const onlinePayment = await db.online_payments.upsert({
         where: {
           paymentId: paymentId.toString()
         },
@@ -76,14 +76,16 @@ export async function POST(request: NextRequest) {
           churchId,
           amount: payment.transaction_amount,
           currency: payment.currency_id,
-          status,
+          status: status === 'COMPLETADA' ? 'completed' : status === 'FALLIDA' ? 'failed' : status === 'CANCELADA' ? 'cancelled' : 'pending',
           paymentId: paymentId.toString(),
-          paymentMethod: 'MercadoPago',
+          gatewayType: 'mercadopago',
           categoryId: categoryId || undefined,
           donorName: payment.payer?.first_name + ' ' + payment.payer?.last_name,
           donorEmail: payment.payer?.email,
           donorPhone: payment.payer?.phone?.number,
           notes: `País: ${payment.payer?.identification?.type}`,
+          webhookReceived: true,
+          completedAt: status === 'COMPLETADA' ? new Date() : undefined,
           metadata: {
             mercadopago_payment_id: paymentId,
             payment_method_id: payment.payment_method_id,
@@ -93,7 +95,9 @@ export async function POST(request: NextRequest) {
           }
         },
         update: {
-          status,
+          status: status === 'COMPLETADA' ? 'completed' : status === 'FALLIDA' ? 'failed' : status === 'CANCELADA' ? 'cancelled' : 'pending',
+          webhookReceived: true,
+          completedAt: status === 'COMPLETADA' ? new Date() : undefined,
           metadata: {
             mercadopago_payment_id: paymentId,
             payment_method_id: payment.payment_method_id,
@@ -104,8 +108,8 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      console.log('MercadoPago donation processed:', donation.id)
-      return NextResponse.json({ success: true, donationId: donation.id })
+      console.log('MercadoPago payment processed:', onlinePayment.id)
+      return NextResponse.json({ success: true, paymentId: onlinePayment.id })
     }
 
     return NextResponse.json({ success: true })

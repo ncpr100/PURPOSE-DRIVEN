@@ -245,28 +245,73 @@ class NequiGateway {
 }
 exports.NequiGateway = NequiGateway;
 // Payment Gateway Factory
+const mercadopago_gateway_1 = require("./mercadopago-gateway");
+const brazil_pix_gateway_1 = require("./brazil-pix-gateway");
+const mexico_gateways_1 = require("./mexico-gateways");
 class PaymentGatewayFactory {
     static createGateway(gatewayType) {
         switch (gatewayType.toLowerCase()) {
+            // Colombian Gateways
             case 'pse':
                 return new PSEGateway(process.env.PSE_MERCHANT_ID, process.env.PSE_API_KEY, process.env.PSE_TEST_MODE === 'true');
             case 'nequi':
                 return new NequiGateway(process.env.NEQUI_CLIENT_ID, process.env.NEQUI_CLIENT_SECRET, process.env.NEQUI_TEST_MODE === 'true');
+            // Universal LATAM Gateway (7 countries)
+            case 'mercadopago':
+                return new mercadopago_gateway_1.MercadoPagoGateway(process.env.MERCADOPAGO_ACCESS_TOKEN, process.env.MERCADOPAGO_PUBLIC_KEY, process.env.MERCADOPAGO_TEST_MODE === 'true');
+            // Brazil Gateways
+            case 'pix':
+                return new brazil_pix_gateway_1.BrazilPixGateway(process.env.PIX_KEY, process.env.PIX_API_KEY, process.env.PIX_TEST_MODE === 'true');
+            // Mexico Gateways
+            case 'spei':
+                return new mexico_gateways_1.MexicoSPEIGateway(process.env.CONEKTA_MERCHANT_ID, process.env.CONEKTA_API_KEY, process.env.CONEKTA_TEST_MODE === 'true');
+            case 'oxxo':
+                return new mexico_gateways_1.MexicoOXXOGateway(process.env.CONEKTA_MERCHANT_ID, process.env.CONEKTA_API_KEY, process.env.CONEKTA_TEST_MODE === 'true');
             default:
                 throw new Error(`Unsupported payment gateway: ${gatewayType}`);
         }
     }
     static getSupportedGateways() {
         return [
+            // Universal LATAM
+            {
+                id: 'mercadopago',
+                name: 'MercadoPago',
+                description: 'Pagos en toda América Latina',
+                country: 'LATAM'
+            },
+            // Colombia
             {
                 id: 'pse',
                 name: 'PSE - Pagos Seguros en Línea',
-                description: 'Pago con cualquier banco colombiano'
+                description: 'Pago con cualquier banco colombiano',
+                country: 'CO'
             },
             {
                 id: 'nequi',
                 name: 'Nequi',
-                description: 'Pago desde tu cuenta Nequi'
+                description: 'Pago desde tu cuenta Nequi',
+                country: 'CO'
+            },
+            // Brazil
+            {
+                id: 'pix',
+                name: 'PIX',
+                description: 'Pagamento instantâneo 24/7',
+                country: 'BR'
+            },
+            // Mexico
+            {
+                id: 'spei',
+                name: 'SPEI',
+                description: 'Transferencia bancaria interbancaria',
+                country: 'MX'
+            },
+            {
+                id: 'oxxo',
+                name: 'OXXO',
+                description: 'Pago en efectivo en tiendas OXXO',
+                country: 'MX'
             }
         ];
     }

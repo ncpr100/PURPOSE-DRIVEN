@@ -59,8 +59,8 @@ export async function POST(request: NextRequest) {
         status = 'PENDIENTE'
     }
 
-    // Create or update donation
-    const donation = await db.donations.upsert({
+    // Create or update online payment
+    const onlinePayment = await db.online_payments.upsert({
       where: {
         paymentId: txid
       },
@@ -68,12 +68,14 @@ export async function POST(request: NextRequest) {
         churchId,
         amount: pixPayment.valor?.original ? parseFloat(pixPayment.valor.original) : 0,
         currency: 'BRL',
-        status,
+        status: status === 'COMPLETADA' ? 'completed' : status === 'CANCELADA' ? 'cancelled' : 'pending',
         paymentId: txid,
-        paymentMethod: 'PIX',
+        gatewayType: 'pix',
         donorName: pagador?.nome || 'PIX - Doador Anônimo',
         donorEmail: pagador?.cpf ? `pix_${pagador.cpf}@example.com` : undefined,
         notes: 'Pagamento via PIX',
+        webhookReceived: true,
+        completedAt: status === 'COMPLETADA' ? new Date() : undefined,
         metadata: {
           pix_txid: txid,
           pix_horario: horario,
@@ -81,7 +83,9 @@ export async function POST(request: NextRequest) {
         }
       },
       update: {
-        status,
+        status: status === 'COMPLETADA' ? 'completed' : status === 'CANCELADA' ? 'cancelled' : 'pending',
+        webhookReceived: true,
+        completedAt: status === 'COMPLETADA' ? new Date() : undefined,
         metadata: {
           pix_txid: txid,
           pix_horario: horario,
@@ -91,8 +95,8 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log('PIX donation processed:', donation.id)
-    return NextResponse.json({ success: true, donationId: donation.id })
+    console.log('PIX payment processed:', onlinePayment.id)
+    return NextResponse.json({ success: true, paymentId: onlinePayment.id })
   } catch (error) {
     console.error('PIX webhook error:', error)
     return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 })
