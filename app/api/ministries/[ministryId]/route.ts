@@ -174,22 +174,18 @@ export async function DELETE(
       return NextResponse.json({ message: 'Ministerio no encontrado' }, { status: 404 })
     }
 
-    // Check if ministry is in use (has members or volunteers)
+    // Check if ministry is in use (has members or volunteers assigned)
     const [memberCount, volunteerCount] = await Promise.all([
       db.members.count({
         where: {
           churchId: session.user.churchId,
-          ministryInterests: {
-            has: existing.name
-          }
+          ministryId: params.ministryId
         }
       }),
       db.volunteers.count({
         where: {
           churchId: session.user.churchId,
-          skills: {
-            has: existing.name
-          }
+          ministryId: params.ministryId
         }
       })
     ])
