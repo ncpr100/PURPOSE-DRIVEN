@@ -30,8 +30,8 @@ export declare const volunteerCreateSchema: z.ZodObject<{
     ministryId: string;
     skills: string[];
     email?: string | undefined;
-    memberId?: string | undefined;
     phone?: string | undefined;
+    memberId?: string | undefined;
     availability?: {
         frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
         days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
@@ -42,8 +42,8 @@ export declare const volunteerCreateSchema: z.ZodObject<{
     lastName: string;
     ministryId: string;
     email?: string | undefined;
-    memberId?: string | undefined;
     phone?: string | undefined;
+    memberId?: string | undefined;
     skills?: string[] | undefined;
     availability?: {
         frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;

@@ -32,8 +32,8 @@ export declare const createMemberSchema: z.ZodObject<{
     firstName: string;
     lastName: string;
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     address?: string | undefined;
     city?: string | undefined;
     state?: string | undefined;
@@ -61,8 +61,8 @@ export declare const createMemberSchema: z.ZodObject<{
     firstName: string;
     lastName: string;
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     address?: string | undefined;
     city?: string | undefined;
     state?: string | undefined;
@@ -118,8 +118,8 @@ export declare const updateMemberSchema: z.ZodObject<{
     emergencyContact: z.ZodOptional<z.ZodOptional<z.ZodString>>;
 }, "strip", z.ZodTypeAny, {
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
     address?: string | undefined;
@@ -147,8 +147,8 @@ export declare const updateMemberSchema: z.ZodObject<{
     emergencyContact?: string | undefined;
 }, {
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
     address?: string | undefined;

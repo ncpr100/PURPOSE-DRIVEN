@@ -184,14 +184,14 @@ export declare const contactSchema: z.ZodObject<{
     name: string;
     preferredContact: "email" | "phone" | "whatsapp" | "sms";
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     address?: string | undefined;
 }, {
     name: string;
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
     address?: string | undefined;
 }>;
@@ -205,15 +205,15 @@ export declare const contactUpdateSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name?: string | undefined;
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
     address?: string | undefined;
 }, {
     name?: string | undefined;
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
     address?: string | undefined;
 }>;
@@ -312,8 +312,8 @@ export declare const memberSchema: z.ZodObject<{
     firstName: string;
     lastName: string;
     email?: string | undefined;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
@@ -324,9 +324,9 @@ export declare const memberSchema: z.ZodObject<{
     lastName: string;
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
+    phone?: string | undefined;
     status?: "visitor" | "active" | "inactive" | undefined;
     notes?: string | undefined;
-    phone?: string | undefined;
     address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
@@ -349,9 +349,9 @@ export declare const memberUpdateSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
+    phone?: string | undefined;
     status?: "visitor" | "active" | "inactive" | undefined;
     notes?: string | undefined;
-    phone?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
     address?: string | undefined;
@@ -362,9 +362,9 @@ export declare const memberUpdateSchema: z.ZodObject<{
 }, {
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
+    phone?: string | undefined;
     status?: "visitor" | "active" | "inactive" | undefined;
     notes?: string | undefined;
-    phone?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
     address?: string | undefined;
@@ -455,9 +455,9 @@ export declare const churchConfigSchema: z.ZodObject<{
     name: string;
     slug: string;
     email?: string | undefined;
+    phone?: string | undefined;
     currency?: "USD" | "EUR" | "CRC" | undefined;
     language?: "es" | "en" | undefined;
-    phone?: string | undefined;
     address?: string | undefined;
     website?: string | undefined;
     timezone?: string | undefined;
@@ -475,20 +475,20 @@ export declare const churchConfigUpdateSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name?: string | undefined;
     email?: string | undefined;
+    phone?: string | undefined;
     slug?: string | undefined;
     currency?: "USD" | "EUR" | "CRC" | undefined;
     language?: "es" | "en" | undefined;
-    phone?: string | undefined;
     address?: string | undefined;
     website?: string | undefined;
     timezone?: string | undefined;
 }, {
     name?: string | undefined;
     email?: string | undefined;
+    phone?: string | undefined;
     slug?: string | undefined;
     currency?: "USD" | "EUR" | "CRC" | undefined;
     language?: "es" | "en" | undefined;
-    phone?: string | undefined;
     address?: string | undefined;
     website?: string | undefined;
     timezone?: string | undefined;
@@ -724,14 +724,14 @@ declare const _default: {
         name: string;
         preferredContact: "email" | "phone" | "whatsapp" | "sms";
         email?: string | undefined;
-        notes?: string | undefined;
         phone?: string | undefined;
+        notes?: string | undefined;
         address?: string | undefined;
     }, {
         name: string;
         email?: string | undefined;
-        notes?: string | undefined;
         phone?: string | undefined;
+        notes?: string | undefined;
         preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
         address?: string | undefined;
     }>;
@@ -745,15 +745,15 @@ declare const _default: {
     }, "strip", z.ZodTypeAny, {
         name?: string | undefined;
         email?: string | undefined;
-        notes?: string | undefined;
         phone?: string | undefined;
+        notes?: string | undefined;
         preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
         address?: string | undefined;
     }, {
         name?: string | undefined;
         email?: string | undefined;
-        notes?: string | undefined;
         phone?: string | undefined;
+        notes?: string | undefined;
         preferredContact?: "email" | "phone" | "whatsapp" | "sms" | undefined;
         address?: string | undefined;
     }>;
@@ -852,8 +852,8 @@ declare const _default: {
         firstName: string;
         lastName: string;
         email?: string | undefined;
-        notes?: string | undefined;
         phone?: string | undefined;
+        notes?: string | undefined;
         address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
@@ -864,9 +864,9 @@ declare const _default: {
         lastName: string;
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
+        phone?: string | undefined;
         status?: "visitor" | "active" | "inactive" | undefined;
         notes?: string | undefined;
-        phone?: string | undefined;
         address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
@@ -889,9 +889,9 @@ declare const _default: {
     }, "strip", z.ZodTypeAny, {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
+        phone?: string | undefined;
         status?: "visitor" | "active" | "inactive" | undefined;
         notes?: string | undefined;
-        phone?: string | undefined;
         firstName?: string | undefined;
         lastName?: string | undefined;
         address?: string | undefined;
@@ -902,9 +902,9 @@ declare const _default: {
     }, {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
+        phone?: string | undefined;
         status?: "visitor" | "active" | "inactive" | undefined;
         notes?: string | undefined;
-        phone?: string | undefined;
         firstName?: string | undefined;
         lastName?: string | undefined;
         address?: string | undefined;
@@ -995,9 +995,9 @@ declare const _default: {
         name: string;
         slug: string;
         email?: string | undefined;
+        phone?: string | undefined;
         currency?: "USD" | "EUR" | "CRC" | undefined;
         language?: "es" | "en" | undefined;
-        phone?: string | undefined;
         address?: string | undefined;
         website?: string | undefined;
         timezone?: string | undefined;
@@ -1015,20 +1015,20 @@ declare const _default: {
     }, "strip", z.ZodTypeAny, {
         name?: string | undefined;
         email?: string | undefined;
+        phone?: string | undefined;
         slug?: string | undefined;
         currency?: "USD" | "EUR" | "CRC" | undefined;
         language?: "es" | "en" | undefined;
-        phone?: string | undefined;
         address?: string | undefined;
         website?: string | undefined;
         timezone?: string | undefined;
     }, {
         name?: string | undefined;
         email?: string | undefined;
+        phone?: string | undefined;
         slug?: string | undefined;
         currency?: "USD" | "EUR" | "CRC" | undefined;
         language?: "es" | "en" | undefined;
-        phone?: string | undefined;
         address?: string | undefined;
         website?: string | undefined;
         timezone?: string | undefined;
