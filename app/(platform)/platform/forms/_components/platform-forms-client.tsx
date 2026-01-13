@@ -788,6 +788,7 @@ export default function PlatformFormsClient() {
               }}
               formId={selectedForm.id}
               formName={selectedForm.name}
+              formSlug={selectedForm.slug}
               onQRGenerated={() => {
                 fetchForms()
               }}

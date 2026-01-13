@@ -172,11 +172,12 @@ export function PlatformQRGenerator({
     }
 
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://khesedtek.com' 
+      ? 'https://khesed-tek-cms.up.railway.app' 
       : 'http://localhost:3000'
     
+    // Use short slug-based URL
     const formUrl = formSlug 
-      ? `${baseUrl}/api/platform/forms/${formSlug}/submit`
+      ? `${baseUrl}/form-viewer?slug=${formSlug}`
       : `${baseUrl}/platform/forms`
 
     const params = new URLSearchParams()
@@ -199,7 +200,7 @@ export function PlatformQRGenerator({
       })
     }
 
-    return `${formUrl}?${params.toString()}`
+    return `${formUrl}&${params.toString()}`
   }
 
   // Apply campaign preset

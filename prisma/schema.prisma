@@ -2598,3 +2598,45 @@ model PlatformQRScan {
   @@index([scannedAt])
   @@index([ipAddress])
 }
+
+// Church QR Codes for tenant churches
+model qr_codes {
+  id          String    @id
+  name        String
+  type        String    // website, call, sms, email, whatsapp, form, payment, etc.
+  data        String    // The actual data/URL for the QR code
+  formId      String?   // Reference to custom form if type is "form"
+  config      Json      // Visual configuration (colors, style, logo, etc.)
+  preview     String?   @db.Text  // Base64 or URL to QR code preview image
+  churchId    String
+  createdBy   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relationships
+  church      churches  @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  form        custom_forms? @relation(fields: [formId], references: [id], onDelete: SetNull)
+  user        users     @relation("QRCodeCreatedBy", fields: [createdBy], references: [id])
+  scans       qr_scans[]
+  
+  @@index([churchId])
+  @@index([type])
+  @@index([formId])
+  @@index([createdAt])
+}
+
+model qr_scans {
+  id         String    @id @default(cuid())
+  qrCodeId   String
+  scannedAt  DateTime  @default(now())
+  userAgent  String?
+  ipAddress  String?
+  location   Json?
+  
+  // Relationships
+  qrCode     qr_codes  @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  
+  @@index([qrCodeId])
+  @@index([scannedAt])
+}
+
