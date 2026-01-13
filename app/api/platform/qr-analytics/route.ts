@@ -258,11 +258,18 @@ async function calculateQRAnalytics(where: any) {
         return acc
       }, {} as Record<string, { qrCodes: number, scans: number }>)
       
-      return Object.entries(campaignStats).map(([campaign, stats]) => ({
-        campaignTag: campaign,
-        qrCodes: stats.qrCodes,
-        scans: stats.scans
-      }))
+      return Object.entries(campaignStats).map(([campaign, stats]): {
+        campaignTag: string;
+        qrCodes: number;
+        scans: number;
+      } => {
+        const typedStats = stats as { qrCodes: number; scans: number };
+        return {
+          campaignTag: campaign,
+          qrCodes: typedStats.qrCodes,
+          scans: typedStats.scans
+        };
+      })
     }),
     
     // Top performing QR codes
