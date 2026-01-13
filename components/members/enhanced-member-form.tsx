@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { members } from '@prisma/client'
+import { Member } from '@prisma/client'
 import { Save, X, User, Heart, Calendar, Brain, Home, UserCircle, Church, ArrowLeft } from 'lucide-react'
 import { MemberSpiritualAssessment } from './member-spiritual-assessment'
 import { AvailabilityMatrix } from './availability-matrix'
@@ -45,7 +45,7 @@ function combineEmergencyContactFields(name: string, phone: string, address: str
 }
 
 interface EnhancedMemberFormProps {
-  member?: members | null
+  member?: Member | null
   onSave: (memberData: any) => void
   onCancel: () => void
   isLoading?: boolean
