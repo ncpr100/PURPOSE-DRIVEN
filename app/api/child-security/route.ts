@@ -4,10 +4,11 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { ChildSecurityService } from '@/lib/services/child-security'
 
-const childSecurity = new ChildSecurityService()
-
 export async function POST(req: NextRequest) {
   try {
+    // Instantiate service inside handler to avoid build-time Prisma initialization
+    const childSecurity = new ChildSecurityService()
+    
     const session = await getServerSession(authOptions)
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -62,6 +63,9 @@ export async function POST(req: NextRequest) {
 // Get pickup history and security info
 export async function GET(req: NextRequest) {
   try {
+    // Instantiate service inside handler to avoid build-time Prisma initialization
+    const childSecurity = new ChildSecurityService()
+    
     const session = await getServerSession(authOptions)
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
