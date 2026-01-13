@@ -151,8 +151,10 @@ export default function PlatformFormsClient() {
     try {
       const response = await fetch('/api/platform/forms')
       if (response.ok) {
-        const data = await response.json()
-        setForms(data)
+        const result = await response.json()
+        // Handle both array and object response formats
+        const formsData = Array.isArray(result) ? result : (result.data || [])
+        setForms(formsData)
       } else {
         toast.error('Error al cargar formularios de la plataforma')
       }
@@ -219,7 +221,7 @@ export default function PlatformFormsClient() {
         })
         
         if (response.ok) {
-          setForms(forms.filter(form => form.id !== formId))
+          setForms((forms || []).filter(form => form.id !== formId))
           toast.success('Formulario eliminado exitosamente')
         } else {
           toast.error('Error al eliminar formulario')
@@ -230,19 +232,19 @@ export default function PlatformFormsClient() {
     }
   }
 
-  const filteredForms = forms.filter(form => {
-    const matchesSearch = form.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  const filteredForms = (forms || []).filter(form => {
+    const matchesSearch = form.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          form.description?.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesStatus = statusFilter === 'all' || 
                          (statusFilter === 'active' && form.isActive) ||
                          (statusFilter === 'inactive' && !form.isActive)
-    const matchesCampaign = campaignFilter === 'all' || form.campaignTag === campaignFilter
+    const matchesCampaign = campaignFilter === 'all' || form.campaignTag === campaignTag
     
     return matchesSearch && matchesStatus && matchesCampaign
   })
 
-  const totalSubmissions = forms.reduce((sum, form) => sum + (form._count?.submissions || 0), 0)
-  const totalConversions = forms.reduce((sum, form) => sum + (form._count?.conversions || 0), 0)
+  const totalSubmissions = (forms || []).reduce((sum, form) => sum + (form._count?.submissions || 0), 0)
+  const totalConversions = (forms || []).reduce((sum, form) => sum + (form._count?.conversions || 0), 0)
   const conversionRate = totalSubmissions > 0 ? ((totalConversions / totalSubmissions) * 100).toFixed(1) : '0.0'
 
   return (
@@ -255,9 +257,9 @@ export default function PlatformFormsClient() {
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{forms.filter(f => f.isActive).length}</div>
+            <div className="text-2xl font-bold">{(forms || []).filter(f => f.isActive).length}</div>
             <p className="text-xs text-muted-foreground">
-              {forms.length} formularios totales
+              {(forms || []).length} formularios totales
             </p>
           </CardContent>
         </Card>
@@ -295,7 +297,7 @@ export default function PlatformFormsClient() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {forms.reduce((sum, form) => sum + (form._count?.qrCodes || 0), 0)}
+              {(forms || []).reduce((sum, form) => sum + (form._count?.qrCodes || 0), 0)}
             </div>
             <p className="text-xs text-muted-foreground">
               Marketing offline
@@ -348,7 +350,7 @@ export default function PlatformFormsClient() {
             variant="outline"
             onClick={() => {
               // Quick access to QR generator
-              const form = forms.find(f => f.isActive)
+              const form = (forms || []).find(f => f.isActive)
               if (form) {
                 setSelectedForm(form)
                 setIsQRGeneratorOpen(true)
@@ -548,7 +550,7 @@ export default function PlatformFormsClient() {
                     <Select 
                       value={selectedForm?.id || ''}
                       onValueChange={(value) => {
-                        const form = forms.find(f => f.id === value)
+                        const form = (forms || []).find(f => f.id === value)
                         if (form) {
                           setSelectedForm(form)
                           setIsQRGeneratorOpen(true)
@@ -559,7 +561,7 @@ export default function PlatformFormsClient() {
                         <SelectValue placeholder="Seleccionar formulario" />
                       </SelectTrigger>
                       <SelectContent>
-                        {forms.filter(f => f.isActive).map((form) => (
+                        {(forms || []).filter(f => f.isActive).map((form) => (
                           <SelectItem key={form.id} value={form.id}>
                             {form.name}
                           </SelectItem>
