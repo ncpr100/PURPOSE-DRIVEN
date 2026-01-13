@@ -238,7 +238,7 @@ export default function PlatformFormsClient() {
     const matchesStatus = statusFilter === 'all' || 
                          (statusFilter === 'active' && form.isActive) ||
                          (statusFilter === 'inactive' && !form.isActive)
-    const matchesCampaign = campaignFilter === 'all' || form.campaignTag === campaignTag
+    const matchesCampaign = campaignFilter === 'all' || form.campaignTag === campaignFilter
     
     return matchesSearch && matchesStatus && matchesCampaign
   })
