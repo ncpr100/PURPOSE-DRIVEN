@@ -173,8 +173,10 @@ export default function AdvancedQRGenerator({
     // Generate preview
     const canvas = document.createElement('canvas')
     qrCodeInstance.append(canvas)
-    qrCodeInstance.getRawData('png').then((blob) => {
-      if (blob) {
+    qrCodeInstance.getRawData('png').then((data) => {
+      if (data) {
+        // Convert Buffer to Blob if necessary
+        const blob = data instanceof Blob ? data : new Blob([data], { type: 'image/png' })
         setQRPreview(URL.createObjectURL(blob))
       }
     })
