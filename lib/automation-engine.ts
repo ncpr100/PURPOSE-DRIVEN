@@ -1,12 +1,6 @@
 
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
-import type { 
-  automation_rules,
-  automation_triggers,
-  automation_conditions,
-  automation_actions
-} from '@prisma/client'
 import { broadcastToUser, broadcastToChurch, broadcastToRole } from '@/lib/sse-broadcast'
 import { PushNotificationService, NotificationTemplates } from '@/lib/push-notifications'
 import { isFeatureEnabled } from '@/lib/feature-flags'
@@ -34,12 +28,8 @@ export interface FormSubmissionTrigger extends TriggerData {
   submissionData: Record<string, any>
 }
 
-// Types for expanded rule data
-export interface AutomationRuleWithDetails extends automation_rules {
-  automation_triggers: automation_triggers[]
-  automation_conditions: automation_conditions[]
-  automation_actions: automation_actions[]
-}
+// Types for expanded rule data (use any for Prisma types not available in production)
+export type AutomationRuleWithDetails = any
 
 export class AutomationEngine {
   
@@ -205,11 +195,11 @@ export class AutomationEngine {
   /**
    * Evaluate rule conditions
    */
-  private static async evaluateConditions(conditions: automation_conditions[], triggerData: TriggerData): Promise<boolean> {
+  private static async evaluateConditions(conditions: any[], triggerData: TriggerData): Promise<boolean> {
     if (conditions.length === 0) return true
 
     // Group conditions by groupId for proper logical evaluation
-    const conditionGroups = new Map<string, automation_conditions[]>()
+    const conditionGroups = new Map<string, any[]>()
     
     conditions.forEach(condition => {
       const groupKey = condition.groupId || 'default'
@@ -237,7 +227,7 @@ export class AutomationEngine {
   /**
    * Evaluate a group of conditions
    */
-  private static async evaluateConditionGroup(conditions: automation_conditions[], triggerData: TriggerData): Promise<boolean> {
+  private static async evaluateConditionGroup(conditions: any[], triggerData: TriggerData): Promise<boolean> {
     if (conditions.length === 0) return true
 
     let result = true
@@ -264,7 +254,7 @@ export class AutomationEngine {
   /**
    * Evaluate a single condition
    */
-  private static async evaluateCondition(condition: automation_conditions, triggerData: TriggerData): Promise<boolean> {
+  private static async evaluateCondition(condition: any, triggerData: TriggerData): Promise<boolean> {
     try {
       // Get the value from trigger data
       const fieldValue = this.getFieldValue(condition.field, triggerData)
@@ -343,7 +333,7 @@ export class AutomationEngine {
   /**
    * Execute automation actions
    */
-  private static async executeActions(actions: automation_actions[], triggerData: TriggerData): Promise<any[]> {
+  private static async executeActions(actions: any[], triggerData: TriggerData): Promise<any[]> {
     const results: any[] = []
 
     for (const action of actions) {
@@ -372,7 +362,7 @@ export class AutomationEngine {
   /**
    * Execute a single action
    */
-  private static async executeAction(action: automation_actions, triggerData: TriggerData): Promise<any> {
+  private static async executeAction(action: any, triggerData: TriggerData): Promise<any> {
     const config = action.configuration as any
 
     switch (action.type) {
