@@ -132,12 +132,20 @@ export async function GET(request: Request) {
       return acc;
     }, {} as Record<string, { scores: number[]; risks: Record<string, number> }>);
 
-    const monthlyTrends = Object.entries(trendsByMonth).map(([month, data]) => ({
-      month,
-      averageRetention: Math.round(data.scores.reduce((sum, score) => sum + score, 0) / data.scores.length),
-      highRiskCount: data.risks.HIGH + data.risks.VERY_HIGH,
-      totalMembers: data.scores.length
-    }));
+    const monthlyTrends = Object.entries(trendsByMonth).map(([month, data]): {
+      month: string;
+      averageRetention: number;
+      highRiskCount: number;
+      totalMembers: number;
+    } => {
+      const typedData = data as { scores: number[]; risks: Record<string, number> };
+      return {
+        month,
+        averageRetention: Math.round(typedData.scores.reduce((sum, score) => sum + score, 0) / typedData.scores.length),
+        highRiskCount: typedData.risks.HIGH + typedData.risks.VERY_HIGH,
+        totalMembers: typedData.scores.length
+      };
+    });
 
     // Get members who recently moved to higher risk
     const recentRiskIncrease = await db.member_journeys.findMany({
