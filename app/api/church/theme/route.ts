@@ -5,20 +5,17 @@ import { db as prisma } from '@/lib/db'
 import { randomUUID } from 'crypto'
 
 export const dynamic = 'force-dynamic';
-
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.churchId) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-
     const theme = await prisma.church_themes.findUnique({
       where: {
         churchId: session.user.churchId
       }
     })
-
     return NextResponse.json({ theme })
   } catch (error) {
     console.error('Error fetching church theme:', error)
@@ -28,14 +25,7 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-
 export async function PUT(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
-
     const body = await request.json()
     const {
       primaryColor,
@@ -45,21 +35,12 @@ export async function PUT(request: NextRequest) {
       headingFont,
       badgeStyle
     } = body
-
     // Prepare theme configuration
     const themeConfig = JSON.stringify({
-      primaryColor,
-      secondaryColor,
-      accentColor,
-      badgeStyle
-    })
-
     const brandColors = JSON.stringify({
       primary: primaryColor,
       secondary: secondaryColor,
       accent: accentColor
-    })
-
     // Upsert church theme (create or update) - Fixed for unique constraint
     let updatedTheme
     try {
@@ -67,7 +48,6 @@ export async function PUT(request: NextRequest) {
       updatedTheme = await prisma.church_themes.findUnique({
         where: { churchId: session.user.churchId }
       })
-
       if (updatedTheme) {
         // Update existing theme
         updatedTheme = await prisma.church_themes.update({
@@ -83,43 +63,20 @@ export async function PUT(request: NextRequest) {
       } else {
         // DEFINITIVE FIX: Use type assertion to bypass @unique TypeScript inference
         updatedTheme = await prisma.church_themes.upsert({
-          where: { churchId: session.user.churchId },
           update: {
-            themeConfig,
-            brandColors,
-            primaryFont,
-            headingFont,
-            themeName: 'custom'
           },
           create: {
             id: randomUUID(),
             churchId: session.user.churchId,
-            themeConfig,
-            brandColors,
-            primaryFont,
-            headingFont,
-            themeName: 'custom'
           } as any
-        })
-      }
     } catch (error) {
       console.error('Church theme operation error:', error)
       return NextResponse.json({ 
         message: 'Error al actualizar tema de iglesia',
         success: false
       }, { status: 500 })
-    }
-
     return NextResponse.json({ 
       message: 'Tema actualizado exitosamente',
       success: true,
       theme: updatedTheme
-    })
-  } catch (error) {
     console.error('Error updating church theme:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
-  }
-}

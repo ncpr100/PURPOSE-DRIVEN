@@ -1,13 +1,10 @@
 
+import { db as prisma } from '@/lib/db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { AutomationTriggers } from '@/lib/automation-engine';
 import { nanoid } from 'nanoid';
-
-const prisma = new PrismaClient();
-
 // Get social media posts
 export async function GET(request: Request) {
   try {
@@ -16,19 +13,14 @@ export async function GET(request: Request) {
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
     const user = await prisma.users.findUnique({
       where: { email: session.user.email }
     });
-
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    }
-
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const campaignId = searchParams.get('campaignId');
-
     const posts = await prisma.social_media_posts.findMany({
       where: {
         churchId: user.churchId,
@@ -39,10 +31,7 @@ export async function GET(request: Request) {
         marketing_campaigns: {
           select: { id: true, name: true }
         }
-      },
       orderBy: { createdAt: 'desc' }
-    });
-
     return NextResponse.json(posts);
   } catch (error) {
     console.error('Error fetching social media posts:', error);
@@ -51,24 +40,8 @@ export async function GET(request: Request) {
     await prisma.$disconnect();
   }
 }
-
 // Create social media post
 export async function POST(request: Request) {
-  try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email }
-    });
-
-    if (!user?.churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    }
-
     const { 
       title, 
       content, 
@@ -80,11 +53,8 @@ export async function POST(request: Request) {
       mentions, 
       campaignId 
     } = await request.json();
-
     if (!content || !platforms || !accountIds) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
     const post = await prisma.social_media_posts.create({
       data: {
         id: nanoid(),
@@ -100,14 +70,7 @@ export async function POST(request: Request) {
         campaignId: campaignId || null,
         authorId: user.id,
         churchId: user.churchId
-      },
-      include: {
-        marketing_campaigns: {
-          select: { id: true, name: true }
-        }
       }
-    });
-
     // 🔄 P1 ENHANCEMENT: Trigger automation for social media post creation
     try {
       await AutomationTriggers.socialMediaPostCreated(post, user.churchId, user.id);
@@ -115,13 +78,5 @@ export async function POST(request: Request) {
     } catch (automationError) {
       console.error('❌ Error triggering social media post automation:', automationError);
       // Don't fail the request if automation fails
-    }
-
     return NextResponse.json(post);
-  } catch (error) {
     console.error('Error creating social media post:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
-  }
-}

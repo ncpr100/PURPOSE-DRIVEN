@@ -1,12 +1,9 @@
 
+import { db as prisma } from '@/lib/db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { nanoid } from 'nanoid';
-
-const prisma = new PrismaClient();
-
 // Get social media metrics
 export async function GET(request: Request) {
   try {
@@ -15,15 +12,11 @@ export async function GET(request: Request) {
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
     const user = await prisma.users.findUnique({
       where: { email: session.user.email }
     });
-
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    }
-
     const { searchParams } = new URL(request.url);
     const platform = searchParams.get('platform');
     const accountId = searchParams.get('accountId');
@@ -32,7 +25,6 @@ export async function GET(request: Request) {
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
     const periodType = searchParams.get('periodType') || 'DAILY';
-
     const metrics = await prisma.social_media_metrics.findMany({
       where: {
         churchId: user.churchId,
@@ -54,12 +46,8 @@ export async function GET(request: Request) {
             platform: true,
             username: true,
             displayName: true
-          }
         }
-      },
       orderBy: { date: 'desc' }
-    });
-
     return NextResponse.json(metrics);
   } catch (error) {
     console.error('Error fetching social media metrics:', error);
@@ -68,24 +56,8 @@ export async function GET(request: Request) {
     await prisma.$disconnect();
   }
 }
-
 // Create social media metric
 export async function POST(request: Request) {
-  try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email }
-    });
-
-    if (!user?.churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    }
-
     const { 
       accountId, 
       postId, 
@@ -97,11 +69,8 @@ export async function POST(request: Request) {
       periodType, 
       metadata 
     } = await request.json();
-
     if (!accountId || !platform || !metricType || value === undefined || !date) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
     const metric = await prisma.social_media_metrics.create({
       data: {
         id: nanoid(),
@@ -115,23 +84,6 @@ export async function POST(request: Request) {
         periodType: periodType || 'DAILY',
         metadata: metadata ? JSON.stringify(metadata) : null,
         churchId: user.churchId
-      },
-      include: {
-        social_media_accounts: {
-          select: {
-            platform: true,
-            username: true,
-            displayName: true
-          }
-        }
       }
-    });
-
     return NextResponse.json(metric);
-  } catch (error) {
     console.error('Error creating social media metric:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
-  }
-}

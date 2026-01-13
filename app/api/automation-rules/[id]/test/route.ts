@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
 
 interface RouteContext {
   params: { id: string }
@@ -11,6 +10,9 @@ interface RouteContext {
 // POST /api/automation-rules/[id]/test - Test mock automation rule
 export async function POST(request: NextRequest, { params }: RouteContext) {
   try {
+    // Dynamic import to avoid build-time Prisma initialization
+    const { prisma } = await import('@/lib/prisma')
+    
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })

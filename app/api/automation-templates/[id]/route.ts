@@ -9,7 +9,6 @@ import { authOptions } from '@/lib/auth';
 import { db as prisma } from '@/lib/db';
 import { nanoid } from 'nanoid';
 import { randomUUID } from 'crypto';
-
 // GET /api/automation-templates/[id] - Get full template details
 export async function GET(
   request: NextRequest,
@@ -21,16 +20,12 @@ export async function GET(
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
-
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true }
     });
-
     if (!user) {
       return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 });
-    }
-
     const template = await prisma.automation_rule_templates.findUnique({
       where: { id: params.id },
       include: {
@@ -41,37 +36,22 @@ export async function GET(
           }
         }
       }
-    });
-
     if (!template) {
       return NextResponse.json({ error: 'Plantilla no encontrada' }, { status: 404 });
-    }
-
     // Check if church has already installed this template
     const installation = await prisma.automation_rule_template_installations.findUnique({
       where: {
         templateId_churchId: {
           templateId: template.id,
           churchId: user.churchId!
-        }
       },
-      include: {
         automation_rules: {
-          select: {
-            id: true,
             name: true,
             isActive: true
-          }
-        }
-      }
-    });
-
     return NextResponse.json({
       template,
       installation: installation || null,
       isInstalled: !!installation
-    });
-
   } catch (error) {
     console.error('Error fetching template details:', error);
     return NextResponse.json(
@@ -80,62 +60,26 @@ export async function GET(
     );
   }
 }
-
 // POST /api/automation-templates/[id]/activate - Activate template for church
 export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    }
-
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
-    });
-
     if (!user || !user.churchId) {
       return NextResponse.json({ error: 'Usuario no encontrado o sin iglesia' }, { status: 400 });
-    }
-
     // Check admin permission
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
       return NextResponse.json({ error: 'Sin permisos para activar plantillas' }, { status: 403 });
-    }
-
     const body = await request.json();
     const { customizations } = body;
-
     // Get the template
-    const template = await prisma.automation_rule_templates.findUnique({
       where: { id: params.id }
-    });
-
-    if (!template) {
-      return NextResponse.json({ error: 'Plantilla no encontrada' }, { status: 404 });
-    }
-
     // Check if already installed
     const existingInstallation = await prisma.automation_rule_template_installations.findUnique({
-      where: {
-        templateId_churchId: {
-          templateId: template.id,
           churchId: user.churchId
-        }
-      }
-    });
-
     if (existingInstallation) {
       return NextResponse.json(
         { error: 'Esta plantilla ya está instalada' },
         { status: 400 }
       );
-    }
-
     // Merge template config with customizations
     const finalConfig = {
       triggerConfig: customizations?.triggerConfig || template.triggerConfig,
@@ -146,7 +90,6 @@ export async function POST(
       retryConfig: customizations?.retryConfig || template.retryConfig,
       fallbackChannels: customizations?.fallbackChannels || template.fallbackChannels
     };
-
     // Create the automation rule from template
     const automation_rules = await prisma.automation_rules.create({
       data: {
@@ -173,67 +116,36 @@ export async function POST(
             type: (template.triggerConfig as any).type,
             eventSource: (template.triggerConfig as any).eventSource || null,
             configuration: template.triggerConfig as any,
-            isActive: true
           }]
         },
         // Create conditions
         automation_conditions: {
           create: (finalConfig.conditionsConfig || []).map((condition: any, index: number) => ({
-            id: randomUUID(),
             type: condition.type || 'FIELD_COMPARISON',
             field: condition.field,
             operator: condition.operator,
             value: condition.value,
             orderIndex: index,
-            isActive: true
           }))
-        },
         // Create actions
         automation_actions: {
           create: (finalConfig.actionsConfig || []).map((action: any, index: number) => ({
-            id: randomUUID(),
             type: action.type,
             configuration: action.configuration || {},
-            orderIndex: index,
             delay: action.delay || 0,
-            isActive: true
-          }))
-        }
-      }
-    });
-
     // Create installation record
     const installation = await prisma.automation_rule_template_installations.create({
-      data: {
-        id: randomUUID(),
-        churchId: user.churchId,
         templateId: template.id,
         automationRuleId: automation_rules.id,
         customizations: customizations || {},
         installedBy: user.id
-      }
-    });
-
     // Update template stats
     await prisma.automation_rule_templates.update({
       where: { id: template.id },
-      data: {
         installCount: { increment: 1 },
         lastUsedAt: new Date()
-      }
-    });
-
-    return NextResponse.json({
       success: true,
       automation_rules,
       installation
     }, { status: 201 });
-
-  } catch (error) {
     console.error('Error activating template:', error);
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    );
-  }
-}

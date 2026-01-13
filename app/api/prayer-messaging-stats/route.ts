@@ -5,7 +5,6 @@ import { db as prisma } from '@/lib/db'
 
 // Mark the route as dynamic
 export const dynamic = 'force-dynamic';
-
 // GET /api/prayer-messaging-stats - Get messaging statistics
 export async function GET(request: NextRequest) {
   try {
@@ -13,24 +12,17 @@ export async function GET(request: NextRequest) {
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-
     const user = await prisma.users.findUnique({
       where: { id: session.user.id },
       include: { churches: true }
     })
-
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
-    }
-
     // Check permissions
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER'].includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
-    }
-
     const url = new URL(request.url)
     const days = parseInt(url.searchParams.get('days') || '30')
-
     // In a real implementation, these stats would be calculated from actual message data
     // For now, we'll return mock statistics
     const stats = {
@@ -47,7 +39,6 @@ export async function GET(request: NextRequest) {
         pending: 8,
         sent: 132,
         failed: 16
-      },
       topTemplates: [
         {
           id: 'template1',
@@ -55,33 +46,24 @@ export async function GET(request: NextRequest) {
           usageCount: 42,
           successRate: 96.8
         },
-        {
           id: 'template2', 
           name: 'Respuesta - Salud',
           usageCount: 38,
           successRate: 94.2
-        },
-        {
           id: 'template3',
           name: 'Respuesta - Finanzas',
           usageCount: 31,
           successRate: 91.9
-        },
-        {
           id: 'template4',
           name: 'Respuesta Urgente',
           usageCount: 28,
           successRate: 89.3
-        },
-        {
           id: 'template5',
           name: 'Seguimiento Pastoral',
           usageCount: 17,
           successRate: 100.0
         }
       ]
-    }
-
     // Calculate period-specific adjustments based on days parameter
     if (days <= 7) {
       // Recent period - lower totals but higher rates
@@ -102,8 +84,6 @@ export async function GET(request: NextRequest) {
       stats.messagesByStatus.sent = Math.floor(stats.messagesByStatus.sent * 12)
       stats.messagesByStatus.pending = Math.floor(stats.messagesByStatus.pending * 0.8)
       stats.messagesByStatus.failed = Math.floor(stats.messagesByStatus.failed * 11)
-    }
-
     return NextResponse.json({ stats })
   } catch (error) {
     console.error('Error fetching messaging stats:', error)

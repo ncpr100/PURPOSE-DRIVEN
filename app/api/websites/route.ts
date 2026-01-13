@@ -1,12 +1,9 @@
 
+import { db as prisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { PrismaClient } from '@prisma/client'
 import { nanoid } from 'nanoid'
-
-const prisma = new PrismaClient()
-
 // GET - Obtener todos los sitios web de una iglesia
 export async function GET(request: NextRequest) {
   try {
@@ -18,7 +15,6 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       )
     }
-
     const websites = await prisma.websites.findMany({
       where: {
         churchId: session.user.churchId
@@ -34,25 +30,17 @@ export async function GET(request: NextRequest) {
           }
         },
         funnels: {
-          select: {
-            id: true,
             name: true,
             type: true,
             isActive: true
-          }
-        },
         _count: {
-          select: {
             web_pages: true,
             funnels: true
-          }
         }
-      },
       orderBy: {
         updatedAt: 'desc'
       }
     })
-
     return NextResponse.json(websites)
   } catch (error) {
     console.error('Error fetching websites:', error)
@@ -62,34 +50,16 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-
 // POST - Crear nuevo sitio web
 export async function POST(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user?.churchId) {
-      return NextResponse.json(
-        { error: 'No autorizado' },
-        { status: 401 }
-      )
-    }
-
     const body = await request.json()
     const { name, description, slug, theme, primaryColor, secondaryColor } = body
-
     // Verificar que el slug no existe
     const existingWebsite = await prisma.websites.findUnique({
       where: { slug }
-    })
-
     if (existingWebsite) {
-      return NextResponse.json(
         { error: 'La URL del sitio web ya está en uso' },
         { status: 400 }
-      )
-    }
-
     const website = await prisma.websites.create({
       data: {
         id: nanoid(),
@@ -101,25 +71,7 @@ export async function POST(request: NextRequest) {
         secondaryColor: secondaryColor || '#64748B',
         churchId: session.user.churchId,
         updatedAt: new Date(),
-      },
-      include: {
         web_pages: true,
         funnels: true,
-        _count: {
-          select: {
-            web_pages: true,
-            funnels: true
-          }
-        }
-      }
-    })
-
     return NextResponse.json(website)
-  } catch (error) {
     console.error('Error creating website:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
-  }
-}

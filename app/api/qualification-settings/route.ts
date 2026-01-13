@@ -6,7 +6,6 @@ import { nanoid } from 'nanoid'
 import { randomUUID } from 'crypto'
 
 export const dynamic = 'force-dynamic';
-
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -14,15 +13,11 @@ export async function GET(request: NextRequest) {
     if (!session?.user?.churchId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }
-
     let settings = await prisma.church_qualification_settings.findUnique({
       where: { churchId: session.user.churchId }
     })
-
     // Create default settings if none exist
     if (!settings) {
       settings = await prisma.church_qualification_settings.create({
@@ -32,8 +27,6 @@ export async function GET(request: NextRequest) {
           updatedAt: new Date()
         }
       })
-    }
-
     return NextResponse.json(settings)
   } catch (error) {
     console.error('Error fetching qualification settings:', error)
@@ -43,19 +36,7 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-
 export async function PUT(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }
-
     const body = await request.json()
     const {
       volunteerMinMembershipDays,
@@ -77,7 +58,6 @@ export async function PUT(request: NextRequest) {
       ministryPassionWeight,
       activityWeight
     } = body
-
     const settings = await prisma.church_qualification_settings.upsert({
       where: { churchId: session.user.churchId },
       update: {
@@ -103,34 +83,7 @@ export async function PUT(request: NextRequest) {
       create: {
         id: nanoid(),
         churchId: session.user.churchId,
-        volunteerMinMembershipDays,
-        volunteerRequireActiveStatus,
-        volunteerRequireSpiritualAssessment,
-        volunteerMinSpiritualScore,
-        leadershipMinMembershipDays,
-        leadershipRequireVolunteerExp,
-        leadershipMinVolunteerDays,
-        leadershipRequireTraining,
-        leadershipMinSpiritualScore,
-        leadershipMinLeadershipScore,
-        enableSpiritualMaturityScoring,
-        enableLeadershipAptitudeScoring,
-        enableMinistryPassionMatching,
-        spiritualGiftsWeight,
-        availabilityWeight,
-        experienceWeight,
-        ministryPassionWeight,
         activityWeight,
         updatedAt: new Date()
       }
-    })
-
-    return NextResponse.json(settings)
-  } catch (error) {
     console.error('Error updating qualification settings:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' }, 
-      { status: 500 }
-    )
-  }
-}

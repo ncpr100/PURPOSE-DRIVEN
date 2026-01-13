@@ -4,14 +4,12 @@ import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
 
 export const dynamic = 'force-dynamic';
-
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.churchId) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-
     const church = await prisma.churches.findUnique({
       where: {
         id: session.user.churchId
@@ -29,11 +27,8 @@ export async function GET(request: NextRequest) {
         isActive: true
       }
     })
-
     if (!church) {
       return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
-    }
-
     // Return church data with logo as-is (base64 or URL)
     return NextResponse.json({ church })
   } catch (error) {
@@ -44,14 +39,7 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-
 export async function PUT(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
-
     // Check if user has permission to update church profile
     // For now, we'll allow all authenticated users, but this could be restricted to admins
     const body = await request.json()
@@ -64,20 +52,14 @@ export async function PUT(request: NextRequest) {
       description,
       logo
     } = body
-
     // Validate required fields
     if (!name || !name.trim()) {
       return NextResponse.json(
         { error: 'El nombre de la iglesia es requerido' },
         { status: 400 }
       )
-    }
-
     // Update church profile
     const updatedChurch = await prisma.churches.update({
-      where: {
-        id: session.user.churchId
-      },
       data: {
         name: name.trim(),
         address: address?.trim() || null,
@@ -86,30 +68,7 @@ export async function PUT(request: NextRequest) {
         website: website?.trim() || null,
         description: description?.trim() || null,
         logo: logo || null // Don't trim logo - it's base64 data
-      },
-      select: {
-        id: true,
-        name: true,
-        address: true,
-        phone: true,
-        email: true,
-        website: true,
-        description: true,
-        logo: true,
-        founded: true,
-        isActive: true
-      }
-    })
-
     return NextResponse.json({ 
       message: 'Perfil actualizado exitosamente',
       church: updatedChurch 
-    })
-  } catch (error) {
     console.error('Error updating church profile:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
-  }
-}

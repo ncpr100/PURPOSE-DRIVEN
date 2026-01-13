@@ -5,7 +5,6 @@ import { db as prisma } from '@/lib/db'
 import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic';
-
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)
@@ -13,10 +12,8 @@ export async function GET() {
     if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
     }
-
     // Get platform settings (create default if doesn't exist)
     let settings = await prisma.platform_settings.findFirst()
-    
     if (!settings) {
       settings = await prisma.platform_settings.create({
         data: {
@@ -31,25 +28,14 @@ export async function GET() {
           updatedAt: new Date()
         }
       })
-    }
-
     return NextResponse.json(settings)
   } catch (error) {
     console.error('Error fetching platform settings:', error)
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
-
 export async function PUT(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
-      return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
-    }
-
     const data = await request.json()
-    
     // Update or create platform settings
     const settings = await prisma.platform_settings.upsert({
       where: { id: data.id || 'default' },
@@ -76,10 +62,4 @@ export async function PUT(request: NextRequest) {
         updatedAt: new Date()
       }
     })
-
-    return NextResponse.json(settings)
-  } catch (error) {
     console.error('Error updating platform settings:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
-  }
-}

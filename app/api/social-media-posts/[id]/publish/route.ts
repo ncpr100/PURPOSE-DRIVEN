@@ -1,12 +1,9 @@
 
+import { db as prisma } from '@/lib/db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { AutomationTriggers } from '@/lib/automation-engine';
-
-const prisma = new PrismaClient();
-
 // Publish social media post
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   try {
@@ -15,49 +12,32 @@ export async function POST(request: Request, { params }: { params: { id: string 
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
     const user = await prisma.users.findUnique({
       where: { email: session.user.email }
     });
-
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    }
-
     // Get the post
     const post = await prisma.social_media_posts.findUnique({
       where: {
         id: params.id,
         churchId: user.churchId
       }
-    });
-
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
-    }
-
     if (post.status === 'PUBLISHED') {
       return NextResponse.json({ error: 'Post already published' }, { status: 400 });
-    }
-
     // Get connected accounts
     const accountIds = JSON.parse(post.accountIds || '[]');
     const accounts = await prisma.social_media_accounts.findMany({
-      where: {
         id: { in: accountIds },
         churchId: user.churchId,
         isActive: true
-      }
-    });
-
     if (accounts.length === 0) {
       return NextResponse.json({ error: 'No active accounts found' }, { status: 400 });
-    }
-
     // Here you would integrate with actual social media APIs
     // For now, we'll simulate the publishing process
     const postIds: { [key: string]: string } = {};
-    
     for (const account of accounts) {
       // Simulate API call to each platform
       const platformPostId = `${account.platform.toLowerCase()}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -68,8 +48,6 @@ export async function POST(request: Request, { params }: { params: { id: string 
       // - Twitter API v2
       // - Instagram Basic Display API
       // - LinkedIn API
-    }
-
     // Update post status
     const updatedPost = await prisma.social_media_posts.update({
       where: { id: params.id },
@@ -77,9 +55,6 @@ export async function POST(request: Request, { params }: { params: { id: string 
         status: 'PUBLISHED',
         publishedAt: new Date(),
         postIds: JSON.stringify(postIds)
-      }
-    });
-
     // 🔄 P1 ENHANCEMENT: Trigger automation for social media post publishing
     try {
       await AutomationTriggers.socialMediaPostPublished(updatedPost, user.churchId);
@@ -87,13 +62,10 @@ export async function POST(request: Request, { params }: { params: { id: string 
     } catch (automationError) {
       console.error('❌ Error triggering social media post published automation:', automationError);
       // Don't fail the request if automation fails
-    }
-
     return NextResponse.json({ 
       message: 'Post published successfully',
       post: updatedPost,
       platformPostIds: postIds 
-    });
   } catch (error) {
     console.error('Error publishing social media post:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

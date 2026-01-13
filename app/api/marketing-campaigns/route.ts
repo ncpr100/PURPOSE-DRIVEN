@@ -1,13 +1,10 @@
 
+import { db as prisma } from '@/lib/db';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { AutomationTriggers } from '@/lib/automation-engine';
 import { nanoid } from 'nanoid';
-
-const prisma = new PrismaClient();
-
 // Get marketing campaigns
 export async function GET() {
   try {
@@ -16,15 +13,11 @@ export async function GET() {
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
     const user = await prisma.users.findUnique({
       where: { email: session.user.email }
     });
-
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    }
-
     const campaigns = await prisma.marketing_campaigns.findMany({
       where: {
         churchId: user.churchId
@@ -36,10 +29,7 @@ export async function GET() {
         _count: {
           select: { marketing_campaign_posts: true }
         }
-      },
       orderBy: { createdAt: 'desc' }
-    });
-
     return NextResponse.json(campaigns);
   } catch (error) {
     console.error('Error fetching marketing campaigns:', error);
@@ -48,24 +38,8 @@ export async function GET() {
     await prisma.$disconnect();
   }
 }
-
 // Create marketing campaign
 export async function POST(request: Request) {
-  try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email }
-    });
-
-    if (!user?.churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    }
-
     const { 
       name, 
       description, 
@@ -78,11 +52,8 @@ export async function POST(request: Request) {
       platforms, 
       tags 
     } = await request.json();
-
     if (!name || !startDate) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
     const campaign = await prisma.marketing_campaigns.create({
       data: {
         id: nanoid(),
@@ -99,17 +70,7 @@ export async function POST(request: Request) {
         managerId: user.id,
         churchId: user.churchId,
         updatedAt: new Date()
-      },
-      include: {
-        marketing_campaign_posts: {
-          select: { id: true, postId: true, accountId: true, status: true, scheduledAt: true }
-        },
-        _count: {
-          select: { marketing_campaign_posts: true }
-        }
       }
-    });
-
     // 🔄 P1 ENHANCEMENT: Trigger automation for marketing campaign launch
     try {
       await AutomationTriggers.socialMediaCampaignLaunched(campaign, user.churchId, user.id);
@@ -117,13 +78,5 @@ export async function POST(request: Request) {
     } catch (automationError) {
       console.error('❌ Error triggering marketing campaign automation:', automationError);
       // Don't fail the request if automation fails
-    }
-
     return NextResponse.json(campaign);
-  } catch (error) {
     console.error('Error creating marketing campaign:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
-  }
-}

@@ -4,7 +4,6 @@ import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
 
 export const dynamic = 'force-dynamic';
-
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -12,30 +11,19 @@ export async function GET(request: NextRequest) {
     if (!session?.user?.churchId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
-
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }
-
     // Get events analytics
     const totalEvents = await prisma.events.count({
       where: { churchId: session.user.churchId }
     })
-
     const activeEvents = await prisma.events.count({
       where: { 
         churchId: session.user.churchId,
         startDate: { gte: new Date() }
       }
-    })
-
     const completedEvents = await prisma.events.count({
-      where: { 
-        churchId: session.user.churchId,
         endDate: { lt: new Date() }
-      }
-    })
-
     // Mock analytics data - in a real implementation, you'd calculate from actual data
     const analyticsData = {
       totalEvents,
@@ -53,8 +41,6 @@ export async function GET(request: NextRequest) {
         { month: 'Mayo', events: 6, attendance: 160, donations: 800 },
         { month: 'Junio', events: 3, attendance: 85, donations: 420 }
       ]
-    }
-
     return NextResponse.json(analyticsData)
   } catch (error) {
     console.error('Error fetching events analytics:', error)
@@ -64,4 +50,3 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-

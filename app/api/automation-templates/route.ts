@@ -27,7 +27,6 @@ const createTemplateSchema = z.object({
   tags: z.array(z.string()).optional(),
   isPublic: z.boolean().optional()
 })
-
 // GET - Get automation rule templates
 export async function GET(request: NextRequest) {
   try {
@@ -36,36 +35,25 @@ export async function GET(request: NextRequest) {
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })
-
     if (!user) {
       return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 })
-    }
-
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
     const search = searchParams.get('search')
-
     const where: any = {
       isActive: true
-    }
-
     if (category) {
       where.category = category
-    }
-
     if (search) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
         { description: { contains: search, mode: 'insensitive' } },
         { tags: { has: search } }
       ]
-    }
-
     const templates = await prisma.automation_rule_templates.findMany({
       where,
       orderBy: [
@@ -106,8 +94,6 @@ export async function GET(request: NextRequest) {
         businessHoursConfig: true,
         retryConfig: true
       }
-    })
-
     // Map to match component interface
     const mappedTemplates = templates.map(t => ({
       id: t.id,
@@ -123,24 +109,18 @@ export async function GET(request: NextRequest) {
       },
       creator: t.users
     }))
-
     // Get categories for filtering
     const categories = await prisma.automation_rule_templates.groupBy({
       by: ['category'],
       where: { isActive: true },
       _count: {
         category: true
-      }
-    })
-
     return NextResponse.json({
       templates: mappedTemplates,
       categories: categories.map((cat: { category: string; _count: { category: number } }) => ({
         name: cat.category,
         count: cat._count.category
       }))
-    })
-
   } catch (error) {
     console.error('Error fetching automation templates:', error)
     return NextResponse.json(
@@ -149,33 +129,14 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-
 // POST - Create custom automation rule template (admin only)
 export async function POST(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
-
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email },
       select: { id: true, role: true }
-    })
-
-    if (!user) {
-      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 })
-    }
-
     // Only admins can create templates
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA'].includes(user.role)) {
       return NextResponse.json({ error: 'Sin permisos para crear plantillas' }, { status: 403 })
-    }
-
     const body = await request.json()
     const validatedData = createTemplateSchema.parse(body)
-
     const template = await prisma.automation_rule_templates.create({
       data: {
         id: randomUUID(),
@@ -186,7 +147,6 @@ export async function POST(request: NextRequest) {
         icon: validatedData.icon || '⚡',
         color: validatedData.color || '#3B82F6',
         isSystemTemplate: false,
-        isActive: true,
         isPublic: validatedData.isPublic !== undefined ? validatedData.isPublic : false,
         createdBy: user.id,
         triggerConfig: validatedData.triggerConfig,
@@ -201,32 +161,12 @@ export async function POST(request: NextRequest) {
         fallbackChannels: validatedData.fallbackChannels || [],
         createManualTaskOnFail: validatedData.createManualTaskOnFail || false,
         tags: validatedData.tags || []
-      },
       include: {
-        users: {
-          select: {
-            id: true,
-            name: true
-          }
         }
-      }
-    })
-
     return NextResponse.json(template, { status: 201 })
-
-  } catch (error) {
     console.error('Error creating automation template:', error)
-    
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Datos de entrada inválidos', details: error.errors },
         { status: 400 }
       )
-    }
-    
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
-  }
-}

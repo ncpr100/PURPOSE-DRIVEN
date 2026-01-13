@@ -1,12 +1,9 @@
 
+import { db as prisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { PrismaClient } from '@prisma/client'
 import { nanoid } from 'nanoid'
-
-const prisma = new PrismaClient()
-
 // GET - Obtener todos los proyectos de sitios web (SUPER_ADMIN)
 export async function GET(request: NextRequest) {
   try {
@@ -18,7 +15,6 @@ export async function GET(request: NextRequest) {
         { status: 403 }
       )
     }
-
     // Obtener todas las solicitudes de sitios web
     const website_requestss = await prisma.website_requests.findMany({
       include: {
@@ -34,27 +30,16 @@ export async function GET(request: NextRequest) {
         { createdAt: 'desc' }
       ]
     })
-
     // Obtener sitios web activos
     const activeWebsites = await prisma.websites.findMany({
-      include: {
-        churches: {
-          select: {
             name: true
-          }
         },
         _count: {
-          select: {
             web_pages: true,
             funnels: true
-          }
-        }
-      },
       orderBy: {
         updatedAt: 'desc'
       }
-    })
-
     return NextResponse.json({
       requests: website_requestss,
       activeWebsites: activeWebsites,
@@ -66,8 +51,6 @@ export async function GET(request: NextRequest) {
           .filter(r => r.status === 'completed' && r.completedAt && 
             new Date(r.completedAt).getMonth() === new Date().getMonth())
           .reduce((sum, r) => sum + (r.finalPrice || r.estimatedPrice || 0), 0)
-      }
-    })
   } catch (error) {
     console.error('Error fetching platform website services:', error)
     return NextResponse.json(
@@ -76,19 +59,8 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-
 // POST - Crear proyecto de sitio web profesional (SUPER_ADMIN)
 export async function POST(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
-      return NextResponse.json(
-        { error: 'Acceso denegado - Se requiere rol SUPER_ADMIN' },
-        { status: 403 }
-      )
-    }
-
     const body = await request.json()
     const {
       churchName,
@@ -107,21 +79,16 @@ export async function POST(request: NextRequest) {
       colorSchemeName,
       estimatedPrice
     } = body
-
     // Verificar que el slug no existe
     if (slug) {
       const existingWebsite = await prisma.websites.findUnique({
         where: { slug }
       })
-
       if (existingWebsite) {
         return NextResponse.json(
           { error: 'La URL del sitio web ya está en uso' },
           { status: 400 }
         )
-      }
-    }
-
     // Buscar o crear iglesia
     let church = await prisma.churches.findFirst({
       where: {
@@ -129,9 +96,6 @@ export async function POST(request: NextRequest) {
           { name: churchName },
           { email: contactEmail }
         ]
-      }
-    })
-
     if (!church) {
       // Crear iglesia básica para el proyecto
       church = await prisma.churches.create({
@@ -143,10 +107,6 @@ export async function POST(request: NextRequest) {
           address: address || '',
           isActive: true,
           updatedAt: new Date()
-        }
-      })
-    }
-
     // Crear el sitio web directamente
     const website = await prisma.websites.create({
       data: {
@@ -169,22 +129,8 @@ export async function POST(request: NextRequest) {
           createdByAdmin: session.user.id,
           estimatedPrice: estimatedPrice
         })
-      },
-      include: {
-        churches: {
-          select: {
-            name: true,
-            email: true
-          }
-        }
-      }
-    })
-
     // Crear entrada en el log de proyectos
     await prisma.website_requests.create({
-      data: {
-        id: nanoid(),
-        churchId: church.id,
         requestType: 'admin_created',
         projectName: websiteName,
         description: `Sitio web creado directamente por SUPER_ADMIN usando plantilla ${templateName}`,
@@ -194,25 +140,9 @@ export async function POST(request: NextRequest) {
         phone: phone,
         estimatedPrice: estimatedPrice,
         adminNotes: `Proyecto iniciado por: ${session.user.name || session.user.email}`,
-        metadata: JSON.stringify({
-          template: template,
           colors: { primary: primaryColor, secondary: secondaryColor, accent: accentColor },
           specialRequests: specialRequests
-        })
-      }
-    })
-
-    return NextResponse.json({
       success: true,
       website: website,
       message: 'Proyecto de sitio web creado exitosamente'
-    })
-    
-  } catch (error) {
     console.error('Error creating website project:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
-  }
-}

@@ -20,7 +20,6 @@ const churchThemeSchema = z.object({
   allowFontChanges: z.boolean().optional(),
   allowLayoutChanges: z.boolean().optional(),
 })
-
 // GET - Get church theme configuration
 export async function GET(request: NextRequest) {
   try {
@@ -29,16 +28,12 @@ export async function GET(request: NextRequest) {
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })
-
     if (!user || !user.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
-    }
-
     // TEMPORARY: Return empty response to skip TypeScript error
     return NextResponse.json({ 
       id: 'temp',
@@ -46,8 +41,6 @@ export async function GET(request: NextRequest) {
       themeName: 'temp',
       themeConfig: '{}',
       churches: { name: 'temp', id: 'temp', logo: null }
-    })
-
     // TODO: Fix TypeScript issue and uncomment
     /*
     // Get or create church theme configuration using upsert
@@ -82,109 +75,37 @@ export async function GET(request: NextRequest) {
           }
         }
       }
-    })
     */
-
     // Temporary return until TypeScript issue is resolved
     return NextResponse.json(
       {
         success: false,
         message: "Church themes temporarily disabled for TypeScript fix"
-      },
       { status: 500 }
     )
   } catch (error) {
     console.error('Error fetching church theme:', error)
-    return NextResponse.json(
       { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
   }
 }
-
 // PUT - Update church theme configuration (Admin only)
 export async function PUT(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
-    }
-
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, churchId: true, role: true }
-    })
-
-    if (!user || !user.churchId) {
-      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
-    }
-
     // Check if user has permission to modify church theme
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
       return NextResponse.json({ error: 'Sin permisos para modificar tema de iglesia' }, { status: 403 })
-    }
-
     const body = await request.json()
     const validatedData = churchThemeSchema.parse(body)
-
-    // TODO: Fix TypeScript issue and uncomment
-    /*
     // Upsert church theme
-    const church_themes = await prisma.church_themes.upsert({
-      where: { churchId: user.churchId },
       update: {
         ...validatedData,
         updatedAt: new Date(),
-      },
-      create: {
-        churchId: user.churchId,
         themeName: 'church-custom',
         themeConfig: JSON.stringify({}),
-        layoutStyle: 'default',
-        primaryFont: 'Inter',
-        headingFont: 'Inter',
-        allowMemberThemes: true,
-        allowColorChanges: true,
-        allowFontChanges: true,
-        allowLayoutChanges: false,
-        ...validatedData,
-      },
-      include: {
-        churches: {
-          select: {
-            id: true,
-            name: true,
-            logo: true
-          }
-        }
-      }
-    })
-    */
-
-    // Temporary return until TypeScript issue is resolved
-    return NextResponse.json(
-      {
-        success: false,
         message: "Church themes update temporarily disabled for TypeScript fix"
-      },
-      { status: 500 }
-    )
-  } catch (error) {
     console.error('Error updating church theme:', error)
-    
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Datos de entrada inválidos', details: error.errors },
         { status: 400 }
       )
-    }
-    
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
-  }
-}
-
 export const dynamic = 'force-dynamic';

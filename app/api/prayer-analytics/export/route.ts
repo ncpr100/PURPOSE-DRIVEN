@@ -6,7 +6,6 @@ import { subDays, format } from 'date-fns'
 
 // Mark the route as dynamic
 export const dynamic = 'force-dynamic';
-
 // GET /api/prayer-analytics/export - Export prayer analytics data
 export async function GET(request: NextRequest) {
   try {
@@ -14,31 +13,23 @@ export async function GET(request: NextRequest) {
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-
     const user = await prisma.users.findUnique({
       where: { id: session.user.id },
       include: { churches: true }
     })
-
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
-    }
-
     // Check permissions
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER'].includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
-    }
-
     const url = new URL(request.url)
     const days = parseInt(url.searchParams.get('days') || '30')
     const category = url.searchParams.get('category') || 'all'
     const status = url.searchParams.get('status') || 'all'
     const contactMethod = url.searchParams.get('contactMethod') || 'all'
     const format_type = url.searchParams.get('format') || 'csv'
-
     const startDate = subDays(new Date(), days)
     const endDate = new Date()
-
     // Build where clause for filtering
     const whereClause: any = {
       churchId: user.churchId,
@@ -46,16 +37,10 @@ export async function GET(request: NextRequest) {
         gte: startDate,
         lte: endDate
       }
-    }
-
     if (category !== 'all') {
       whereClause.categoryId = category
-    }
-
     if (status !== 'all') {
       whereClause.status = status
-    }
-
     // Get prayer requests for export
     const prayer_requestss = await prisma.prayer_requests.findMany({
       where: whereClause,
@@ -69,16 +54,12 @@ export async function GET(request: NextRequest) {
         }
       },
       orderBy: { createdAt: 'desc' }
-    })
-
     // Filter by contact method if specified
     let filteredRequests = prayer_requestss
     if (contactMethod !== 'all') {
       filteredRequests = prayer_requestss.filter((req: any) => 
         req.contact?.preferredContact === contactMethod
       )
-    }
-
     if (format_type === 'csv') {
       // Generate CSV export
       const headers = [
@@ -97,7 +78,6 @@ export async function GET(request: NextRequest) {
         'Aprobado Por',
         'Notas de Aprobación'
       ]
-
       const rows = filteredRequests.map((req: any) => [
         req.id,
         format(new Date(req.createdAt), 'yyyy-MM-dd HH:mm:ss'),
@@ -114,21 +94,17 @@ export async function GET(request: NextRequest) {
         req.approval?.approver?.name || '',
         req.approval?.notes ? `"${req.approval.notes.replace(/"/g, '""')}"` : ''
       ])
-
       const csvContent = [
         headers.join(','),
         ...rows.map((row: any) => row.join(','))
       ].join('\n')
-
       // Add BOM for proper UTF-8 encoding in Excel
       const bom = '\ufeff'
       const csvWithBom = bom + csvContent
-
       return new NextResponse(csvWithBom, {
         headers: {
           'Content-Type': 'text/csv; charset=utf-8',
           'Content-Disposition': `attachment; filename="analisis-oraciones-${format(new Date(), 'yyyy-MM-dd')}.csv"`
-        }
       })
     } else {
       // Return JSON format
@@ -150,7 +126,6 @@ export async function GET(request: NextRequest) {
           rejectedRequests: filteredRequests.filter((req: any) => req.status === 'rejected').length,
           pendingRequests: filteredRequests.filter((req: any) => req.status === 'pending').length,
           uniqueContacts: new Set(filteredRequests.map((req: any) => req.contactId)).size
-        },
         requests: filteredRequests.map((req: any) => ({
           id: req.id,
           createdAt: req.createdAt,
@@ -162,7 +137,6 @@ export async function GET(request: NextRequest) {
             email: req.contact?.email || null,
             phone: req.contact?.phone || null,
             preferredContact: req.contact?.preferredContact || 'email'
-          },
           isAnonymous: req.isAnonymous,
           message: req.message,
           approval: req.approval ? {
@@ -171,14 +145,8 @@ export async function GET(request: NextRequest) {
             notes: req.approval.notes
           } : null
         }))
-      }
-
       return NextResponse.json(exportData, {
-        headers: {
           'Content-Disposition': `attachment; filename="analisis-oraciones-${format(new Date(), 'yyyy-MM-dd')}.json"`
-        }
-      })
-    }
   } catch (error) {
     console.error('Error exporting prayer analytics:', error)
     return NextResponse.json(
