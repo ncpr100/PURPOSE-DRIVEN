@@ -3,6 +3,7 @@
  * Handles retry logic, fallback channels, escalation, and business hours
  * for automation rule execution
  */
+export type JsonValue = any;
 type CommunicationChannel = 'EMAIL' | 'SMS' | 'WHATSAPP' | 'PUSH' | 'PHONE';
 interface RetryConfig {
     maxRetries: number;

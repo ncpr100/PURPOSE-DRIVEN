@@ -6,12 +6,44 @@
 
 import { db } from './db';
 import { nanoid } from 'nanoid';
-import { 
-  MemberLifecycleStage, 
-  EngagementLevel, 
-  RetentionRisk,
-  PrismaClient 
-} from '@prisma/client';
+
+// Define enum types and values (Prisma enums not available in production build)
+export type MemberLifecycleStage = string
+export type EngagementLevel = string
+export type RetentionRisk = string
+
+// Enum value constants
+export const MemberLifecycleStage = {
+  VISITOR: 'VISITOR',
+  FIRST_TIME_GUEST: 'FIRST_TIME_GUEST',
+  RETURNING_VISITOR: 'RETURNING_VISITOR',
+  REGULAR_ATTENDEE: 'REGULAR_ATTENDEE',
+  MEMBERSHIP_CANDIDATE: 'MEMBERSHIP_CANDIDATE',
+  NEW_MEMBER: 'NEW_MEMBER',
+  ESTABLISHED_MEMBER: 'ESTABLISHED_MEMBER',
+  GROWING_MEMBER: 'GROWING_MEMBER',
+  SERVING_MEMBER: 'SERVING_MEMBER',
+  LEADING_MEMBER: 'LEADING_MEMBER',
+  MATURE_LEADER: 'MATURE_LEADER',
+  INACTIVE_MEMBER: 'INACTIVE_MEMBER',
+  DISCONNECTED_MEMBER: 'DISCONNECTED_MEMBER'
+} as const
+
+export const RetentionRisk = {
+  VERY_LOW: 'VERY_LOW',
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  VERY_HIGH: 'VERY_HIGH'
+} as const
+
+export const EngagementLevel = {
+  LOW: 'LOW',
+  MEDIUM_LOW: 'MEDIUM_LOW',
+  MEDIUM: 'MEDIUM',
+  MEDIUM_HIGH: 'MEDIUM_HIGH',
+  HIGH: 'HIGH'
+} as const
 
 // Types for enhanced analytics
 export interface MemberJourneyState {
@@ -493,7 +525,7 @@ export class MemberJourneyAnalytics {
             stageStartDate: new Date(),
             totalDaysInCurrentStage: 0,
             stageHistory: JSON.stringify(stageHistory)
-          }
+          } as any
         });
       } else {
         const daysInStage = Math.floor((Date.now() - journey.stageStartDate.getTime()) / (1000 * 60 * 60 * 24));
@@ -503,7 +535,7 @@ export class MemberJourneyAnalytics {
           data: {
             ...journeyData,
             totalDaysInCurrentStage: daysInStage
-          }
+          } as any
         });
       }
     } else {
@@ -526,7 +558,7 @@ export class MemberJourneyAnalytics {
           growthPredictions: JSON.stringify({}),
           riskFactors: JSON.stringify([]),
           strengthFactors: JSON.stringify([])
-        }
+        } as any
       });
     }
   }

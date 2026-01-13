@@ -6,7 +6,9 @@
 
 import { db as prisma } from '@/lib/db';
 import { nanoid } from 'nanoid';
-import { Prisma } from '@prisma/client';
+
+// Prisma namespace not available in production - use any for JsonValue
+export type JsonValue = any
 
 // Communication channel types
 type CommunicationChannel = 'EMAIL' | 'SMS' | 'WHATSAPP' | 'PUSH' | 'PHONE';

@@ -5,12 +5,33 @@
  * Implements intelligent caching strategies for optimal performance
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCachedAnalyticsService = exports.CachedAnalyticsService = void 0;
+exports.createCachedAnalyticsService = exports.CachedAnalyticsService = exports.RetentionRisk = exports.MemberLifecycleStage = void 0;
 const member_journey_analytics_1 = require("./member-journey-analytics");
 const redis_cache_manager_1 = require("./redis-cache-manager");
 const db_1 = require("./db");
 const gender_utils_1 = require("./gender-utils");
-const client_1 = require("@prisma/client");
+exports.MemberLifecycleStage = {
+    VISITOR: 'VISITOR',
+    FIRST_TIME_GUEST: 'FIRST_TIME_GUEST',
+    RETURNING_VISITOR: 'RETURNING_VISITOR',
+    REGULAR_ATTENDEE: 'REGULAR_ATTENDEE',
+    MEMBERSHIP_CANDIDATE: 'MEMBERSHIP_CANDIDATE',
+    NEW_MEMBER: 'NEW_MEMBER',
+    ESTABLISHED_MEMBER: 'ESTABLISHED_MEMBER',
+    GROWING_MEMBER: 'GROWING_MEMBER',
+    SERVING_MEMBER: 'SERVING_MEMBER',
+    LEADING_MEMBER: 'LEADING_MEMBER',
+    MATURE_LEADER: 'MATURE_LEADER',
+    INACTIVE_MEMBER: 'INACTIVE_MEMBER',
+    DISCONNECTED_MEMBER: 'DISCONNECTED_MEMBER'
+};
+exports.RetentionRisk = {
+    VERY_LOW: 'VERY_LOW',
+    LOW: 'LOW',
+    MEDIUM: 'MEDIUM',
+    HIGH: 'HIGH',
+    VERY_HIGH: 'VERY_HIGH'
+};
 class CachedAnalyticsService {
     constructor(churchId) {
         this.churchId = churchId;
@@ -490,7 +511,7 @@ class CachedAnalyticsService {
     calculateStageDistribution(journeys) {
         const stageCounts = {};
         journeys.forEach(j => {
-            const stage = j.currentStage || client_1.MemberLifecycleStage.VISITOR;
+            const stage = j.currentStage || exports.MemberLifecycleStage.VISITOR;
             stageCounts[stage] = (stageCounts[stage] || 0) + 1;
         });
         const total = journeys.length;
@@ -504,7 +525,7 @@ class CachedAnalyticsService {
         const riskMembers = await db_1.db.member_journeys.findMany({
             where: {
                 churchId: this.churchId,
-                retentionRisk: { in: [client_1.RetentionRisk.HIGH, client_1.RetentionRisk.VERY_HIGH] }
+                retentionRisk: { in: [exports.RetentionRisk.HIGH, exports.RetentionRisk.VERY_HIGH] }
             },
             include: {
                 members: {

@@ -4,7 +4,35 @@
  */
 
 import { db } from './db';
-import { MemberLifecycleStage, RetentionRisk, EngagementLevel } from '@prisma/client';
+
+// Define enum types and values (Prisma enums not available in production build)
+export type MemberLifecycleStage = string
+export type RetentionRisk = string
+export type EngagementLevel = string
+
+export const MemberLifecycleStage = {
+  VISITOR: 'VISITOR',
+  FIRST_TIME_GUEST: 'FIRST_TIME_GUEST',
+  RETURNING_VISITOR: 'RETURNING_VISITOR',
+  REGULAR_ATTENDEE: 'REGULAR_ATTENDEE',
+  MEMBERSHIP_CANDIDATE: 'MEMBERSHIP_CANDIDATE',
+  NEW_MEMBER: 'NEW_MEMBER',
+  ESTABLISHED_MEMBER: 'ESTABLISHED_MEMBER',
+  GROWING_MEMBER: 'GROWING_MEMBER',
+  SERVING_MEMBER: 'SERVING_MEMBER',
+  LEADING_MEMBER: 'LEADING_MEMBER',
+  MATURE_LEADER: 'MATURE_LEADER',
+  INACTIVE_MEMBER: 'INACTIVE_MEMBER',
+  DISCONNECTED_MEMBER: 'DISCONNECTED_MEMBER'
+} as const
+
+export const RetentionRisk = {
+  VERY_LOW: 'VERY_LOW',
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  VERY_HIGH: 'VERY_HIGH'
+} as const
 
 // Advanced ML Types
 export interface MLModelFeatures {
