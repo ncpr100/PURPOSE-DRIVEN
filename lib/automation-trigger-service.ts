@@ -5,7 +5,9 @@
  */
 
 import { db } from '@/lib/db'
-import { AutomationTriggerType } from '@prisma/client'
+
+// Define enum type as string literal (Prisma enums not available in production build)
+export type AutomationTriggerType = string
 
 export interface AutomationTriggerPayload {
   type: AutomationTriggerType
@@ -66,7 +68,7 @@ export async function triggerAutomations(
         isActive: true,
         automation_triggers: {
           some: {
-            type: payload.type,
+            type: payload.type as any,
             isActive: true
           }
         }
@@ -74,7 +76,7 @@ export async function triggerAutomations(
       include: {
         automation_triggers: {
           where: {
-            type: payload.type,
+            type: payload.type as any,
             isActive: true
           }
         },
@@ -105,8 +107,9 @@ export async function triggerAutomations(
     for (const rule of activeRules) {
       try {
         // Evaluate conditions (if any)
-        const conditionsMet = rule.automation_conditions && rule.automation_conditions.length > 0
-          ? await evaluateConditions(rule.automation_conditions, payload.data)
+        const ruleConditions = (rule as any).automation_conditions
+        const conditionsMet = ruleConditions && ruleConditions.length > 0
+          ? await evaluateConditions(ruleConditions, payload.data)
           : true
 
         if (!conditionsMet) {

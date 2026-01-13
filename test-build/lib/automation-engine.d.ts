@@ -1,4 +1,7 @@
-import { AutomationTriggerType, automation_rules, automation_triggers, automation_conditions, automation_actions } from '@prisma/client';
+import type { automation_rules, automation_triggers, automation_conditions, automation_actions } from '@prisma/client';
+export type AutomationTriggerType = string;
+export type AutomationConditionType = string;
+export type AutomationActionType = string;
 export interface TriggerData {
     type: AutomationTriggerType | string;
     entityId?: string;

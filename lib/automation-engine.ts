@@ -1,10 +1,7 @@
 
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
-import { 
-  AutomationTriggerType, 
-  AutomationConditionType, 
-  AutomationActionType,
+import type { 
   automation_rules,
   automation_triggers,
   automation_conditions,
@@ -13,6 +10,11 @@ import {
 import { broadcastToUser, broadcastToChurch, broadcastToRole } from '@/lib/sse-broadcast'
 import { PushNotificationService, NotificationTemplates } from '@/lib/push-notifications'
 import { isFeatureEnabled } from '@/lib/feature-flags'
+
+// Define enum types as string literals (Prisma enums not available in production build)
+export type AutomationTriggerType = string
+export type AutomationConditionType = string
+export type AutomationActionType = string
 
 // Types for trigger data
 export interface TriggerData {
@@ -98,7 +100,7 @@ export class AutomationEngine {
           isActive: true,
           automation_triggers: {
             some: {
-              type: triggerData.type as AutomationTriggerType,
+              type: triggerData.type as any,
               isActive: true
             }
           }
