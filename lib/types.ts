@@ -1,17 +1,19 @@
 
-import { users, churches, members, sermons, UserRole } from "@prisma/client"
+// Railway Prisma client only exports PrismaClient - no table types
+// Define local types for compatibility
+export type UserRole = string
 
-export type ExtendedUser = users & {
-  church?: churches | null
+export type ExtendedUser = any & {
+  church?: any | null
 }
 
-export type ExtendedMember = members & {
-  church?: churches
-  user?: users | null
+export type ExtendedMember = any & {
+  church?: any
+  user?: any | null
 }
 
-export type ExtendedSermon = sermons & {
-  church?: churches
+export type ExtendedSermon = any & {
+  church?: any
 }
 
 export interface DashboardStats {
@@ -47,7 +49,7 @@ declare module "next-auth" {
       image?: string | null
       role: UserRole
       churchId: string | null
-      church?: churches | null
+      church?: any | null
     }
   }
 
@@ -58,7 +60,7 @@ declare module "next-auth" {
     image?: string | null
     role: UserRole
     churchId: string | null
-    church?: churches | null
+    church?: any | null
   }
 }
 
@@ -67,8 +69,6 @@ declare module "next-auth/jwt" {
     id: string
     role: UserRole
     churchId: string | null
-    church?: churches | null
+    church?: any | null
   }
 }
-
-export { UserRole }
