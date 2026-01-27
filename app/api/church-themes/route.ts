@@ -42,6 +42,7 @@ export async function GET(request: NextRequest) {
       themeName: 'temp',
       themeConfig: '{}',
       churches: { name: 'temp', id: 'temp', logo: null }
+    });
     // TODO: Fix TypeScript issue and uncomment
     /*
     // Get or create church theme configuration using upsert
@@ -86,7 +87,6 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   } catch (error) {
-  }
     console.error('Error fetching church theme:', error);
     return NextResponse.json(
       { error: 'Error interno del servidor' },

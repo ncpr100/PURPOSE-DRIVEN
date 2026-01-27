@@ -61,7 +61,9 @@ export async function GET(request: NextRequest) {
         { name: { contains: search, mode: 'insensitive' } },
         { description: { contains: search, mode: 'insensitive' } },
         { tags: { has: search } }
-      ]
+      ];
+    }
+
     const templates = await prisma.automation_rule_templates.findMany({
       where,
       orderBy: [

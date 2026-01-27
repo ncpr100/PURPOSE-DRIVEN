@@ -43,9 +43,14 @@ export async function GET(request: NextRequest) {
   }
 }
 export async function PUT(request: NextRequest) {
-    // Check if user has permission to update church profile
-    // For now, we'll allow all authenticated users, but this could be restricted to admins
-    const body = await request.json()
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.churchId) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+
+    const churchId = session.user.churchId;
+    const body = await request.json();
     const {
       name,
       address,
@@ -54,13 +59,16 @@ export async function PUT(request: NextRequest) {
       website,
       description,
       logo
-    } = body
+    } = body;
+
     // Validate required fields
     if (!name || !name.trim()) {
       return NextResponse.json(
         { error: 'El nombre de la iglesia es requerido' },
         { status: 400 }
-      )
+      );
+    }
+
     // Update church profile
     const updatedChurch = await prisma.churches.update({
       where: { id: churchId },

@@ -91,19 +91,9 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 
 // PUT /api/automation-rules/[id] - Update mock automation rule
 export async function PUT(request: NextRequest, { params }: RouteContext) {
-    // Check permissions
-    if (!['SUPER_ADMIN', 'ADMIN', 'PASTOR'].includes(user.role)) {
-      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
-    // Check if rule exists in mock data
-    const validIds = ['rule_1', 'rule_2', 'rule_3']
-    if (!validIds.includes(params.id)) {
-    const updateData = await request.json()
-    // If only updating isActive status
-    if (Object.keys(updateData).length === 1 && 'isActive' in updateData) {
-      return NextResponse.json({ 
-        message: `Regla ${updateData.isActive ? 'activada' : 'desactivada'}` 
-      })
+  try {
     // For demo purposes, return success message
+    const updateData = await request.json();
     return NextResponse.json({
       rule: {
         id: params.id,
@@ -115,8 +105,26 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
         actions: updateData.actions || [],
         createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
         updatedAt: new Date().toISOString()
-    console.error('Error updating automation rule:', error)
+      }
+    });
+  } catch (error) {
+    console.error('Error updating automation rule:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}
+
 // DELETE /api/automation-rules/[id] - Delete mock automation rule
 export async function DELETE(request: NextRequest, { params }: RouteContext) {
-    return NextResponse.json({ message: 'Regla eliminada exitosamente' })
-    console.error('Error deleting automation rule:', error)
+  try {
+    return NextResponse.json({ message: 'Regla eliminada exitosamente' });
+  } catch (error) {
+    console.error('Error deleting automation rule:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}

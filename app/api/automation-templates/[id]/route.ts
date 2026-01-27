@@ -26,6 +26,8 @@ export async function GET(
     });
     if (!user) {
       return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 });
+    }
+    
     const template = await prisma.automation_rule_templates.findUnique({
       where: { id: params.id },
       include: {
