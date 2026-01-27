@@ -96,19 +96,36 @@ export async function GET(request: NextRequest) {
 }
 // PUT - Update church theme configuration (Admin only)
 export async function PUT(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+    
+    const user = await prisma.users.findUnique({
+      where: { email: session.user.email },
+      select: { id: true, churchId: true, role: true }
+    });
+    
+    if (!user || !user.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 });
+    }
+    
     // Check if user has permission to modify church theme
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
-      return NextResponse.json({ error: 'Sin permisos para modificar tema de iglesia' }, { status: 403 })
-    const body = await request.json()
-    const validatedData = churchThemeSchema.parse(body)
-    // Upsert church theme
-      update: {
-        ...validatedData,
-        updatedAt: new Date(),
-        themeName: 'church-custom',
-        themeConfig: JSON.stringify({}),
-        message: "Church themes update temporarily disabled for TypeScript fix"
-    console.error('Error updating church theme:', error)
+      return NextResponse.json({ error: 'Sin permisos para modificar tema de iglesia' }, { status: 403 });
+    }
+    
+    const body = await request.json();
+    const validatedData = churchThemeSchema.parse(body);
+    
+    // Temporary response
+    return NextResponse.json({
+      success: false,
+      message: "Church themes update temporarily disabled for TypeScript fix"
+    }, { status: 500 });
+  } catch (error) {
+    console.error('Error updating church theme:', error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Datos de entrada inválidos', details: error.errors },

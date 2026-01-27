@@ -34,13 +34,21 @@ export async function PUT(request: NextRequest) {
       primaryFont,
       headingFont,
       badgeStyle
-    } = body
+    } = body;
+    
     // Prepare theme configuration
     const themeConfig = JSON.stringify({
+      primaryColor,
+      secondaryColor,
+      accentColor
+    });
+    
     const brandColors = JSON.stringify({
       primary: primaryColor,
       secondary: secondaryColor,
       accent: accentColor
+    });
+    
     // Upsert church theme (create or update) - Fixed for unique constraint
     let updatedTheme
     try {

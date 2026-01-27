@@ -69,11 +69,16 @@ export async function POST(request: NextRequest) {
         }
       }
       if (validatedData.userId) {
-        userQuery.id = validatedData.userId
+        userQuery.id = validatedData.userId;
+      }
+      
       const users = await prisma.users.findMany({
         where: userQuery,
         include: {
           notification_preferences: true
+        }
+      });
+      
       // Filter users that should receive digest
       const eligibleUsers = users.filter((user: any) => {
         const preferences = user.notification_preferences

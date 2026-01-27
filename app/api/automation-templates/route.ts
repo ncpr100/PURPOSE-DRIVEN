@@ -189,10 +189,20 @@ export async function POST(request: NextRequest) {
         fallbackChannels: validatedData.fallbackChannels || [],
         createManualTaskOnFail: validatedData.createManualTaskOnFail || false,
         tags: validatedData.tags || []
+      },
       include: {
+        users: {
+          select: {
+            id: true,
+            name: true
+          }
         }
-    return NextResponse.json(template, { status: 201 })
-    console.error('Error creating automation template:', error)
+      }
+    });
+    
+    return NextResponse.json(template, { status: 201 });
+  } catch (error) {
+    console.error('Error creating automation template:', error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Datos de entrada inválidos', details: error.errors },

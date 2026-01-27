@@ -99,11 +99,26 @@ export async function POST(
       return NextResponse.json({ error: 'Sin permisos para activar plantillas' }, { status: 403 });
     const body = await request.json();
     const { customizations } = body;
+    
     // Get the template
+    const template = await prisma.automation_rule_templates.findUnique({
       where: { id: params.id }
+    });
+    
+    if (!template) {
+      return NextResponse.json({ error: 'Plantilla no encontrada' }, { status: 404 });
+    }
+    
     // Check if already installed
     const existingInstallation = await prisma.automation_rule_template_installations.findUnique({
+      where: {
+        templateId_churchId: {
+          templateId: template.id,
           churchId: user.churchId
+        }
+      }
+    });
+    
     if (existingInstallation) {
       return NextResponse.json(
         { error: 'Esta plantilla ya está instalada' },
@@ -156,25 +171,45 @@ export async function POST(
             value: condition.value,
             orderIndex: index,
           }))
+        },
         // Create actions
         automation_actions: {
           create: (finalConfig.actionsConfig || []).map((action: any, index: number) => ({
             type: action.type,
             configuration: action.configuration || {},
             delay: action.delay || 0,
+            orderIndex: index
+          }))
+        }
+      }
+    });
+    
     // Create installation record
     const installation = await prisma.automation_rule_template_installations.create({
+      data: {
+        id: randomUUID(),
         templateId: template.id,
+        churchId: user.churchId,
         automationRuleId: automation_rules.id,
         customizations: customizations || {},
         installedBy: user.id
+      }
+    });
+    
     // Update template stats
     await prisma.automation_rule_templates.update({
       where: { id: template.id },
+      data: {
         installCount: { increment: 1 },
         lastUsedAt: new Date()
+      }
+    });
+    
+    return NextResponse.json({
       success: true,
       automation_rules,
       installation
     }, { status: 201 });
+  } catch (error) {
+    console.error('Error activating template:', error);
     console.error('Error activating template:', error);
