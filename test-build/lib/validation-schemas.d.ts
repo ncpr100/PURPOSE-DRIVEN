@@ -308,7 +308,7 @@ export declare const memberSchema: z.ZodObject<{
     notes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     role: "member" | "leader" | "pastor" | "admin";
-    status: "visitor" | "active" | "inactive";
+    status: "active" | "inactive" | "visitor";
     firstName: string;
     lastName: string;
     email?: string | undefined;
@@ -325,7 +325,7 @@ export declare const memberSchema: z.ZodObject<{
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
     phone?: string | undefined;
-    status?: "visitor" | "active" | "inactive" | undefined;
+    status?: "active" | "inactive" | "visitor" | undefined;
     notes?: string | undefined;
     address?: string | undefined;
     birthDate?: string | undefined;
@@ -350,7 +350,7 @@ export declare const memberUpdateSchema: z.ZodObject<{
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
     phone?: string | undefined;
-    status?: "visitor" | "active" | "inactive" | undefined;
+    status?: "active" | "inactive" | "visitor" | undefined;
     notes?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
@@ -363,7 +363,7 @@ export declare const memberUpdateSchema: z.ZodObject<{
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
     phone?: string | undefined;
-    status?: "visitor" | "active" | "inactive" | undefined;
+    status?: "active" | "inactive" | "visitor" | undefined;
     notes?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
@@ -391,13 +391,13 @@ export declare const searchSchema: z.ZodObject<{
     sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
 }, "strip", z.ZodTypeAny, {
     category: string;
-    status: "all" | "rejected" | "pending" | "active" | "inactive" | "approved";
+    status: "all" | "active" | "inactive" | "rejected" | "pending" | "approved";
     sortBy: "name" | "category" | "status" | "date";
     sortOrder: "asc" | "desc";
     q?: string | undefined;
 }, {
     category?: string | undefined;
-    status?: "all" | "rejected" | "pending" | "active" | "inactive" | "approved" | undefined;
+    status?: "all" | "active" | "inactive" | "rejected" | "pending" | "approved" | undefined;
     sortBy?: "name" | "category" | "status" | "date" | undefined;
     sortOrder?: "asc" | "desc" | undefined;
     q?: string | undefined;
@@ -848,7 +848,7 @@ declare const _default: {
         notes: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
         role: "member" | "leader" | "pastor" | "admin";
-        status: "visitor" | "active" | "inactive";
+        status: "active" | "inactive" | "visitor";
         firstName: string;
         lastName: string;
         email?: string | undefined;
@@ -865,7 +865,7 @@ declare const _default: {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
         phone?: string | undefined;
-        status?: "visitor" | "active" | "inactive" | undefined;
+        status?: "active" | "inactive" | "visitor" | undefined;
         notes?: string | undefined;
         address?: string | undefined;
         birthDate?: string | undefined;
@@ -890,7 +890,7 @@ declare const _default: {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
         phone?: string | undefined;
-        status?: "visitor" | "active" | "inactive" | undefined;
+        status?: "active" | "inactive" | "visitor" | undefined;
         notes?: string | undefined;
         firstName?: string | undefined;
         lastName?: string | undefined;
@@ -903,7 +903,7 @@ declare const _default: {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
         phone?: string | undefined;
-        status?: "visitor" | "active" | "inactive" | undefined;
+        status?: "active" | "inactive" | "visitor" | undefined;
         notes?: string | undefined;
         firstName?: string | undefined;
         lastName?: string | undefined;
@@ -931,13 +931,13 @@ declare const _default: {
         sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
     }, "strip", z.ZodTypeAny, {
         category: string;
-        status: "all" | "rejected" | "pending" | "active" | "inactive" | "approved";
+        status: "all" | "active" | "inactive" | "rejected" | "pending" | "approved";
         sortBy: "name" | "category" | "status" | "date";
         sortOrder: "asc" | "desc";
         q?: string | undefined;
     }, {
         category?: string | undefined;
-        status?: "all" | "rejected" | "pending" | "active" | "inactive" | "approved" | undefined;
+        status?: "all" | "active" | "inactive" | "rejected" | "pending" | "approved" | undefined;
         sortBy?: "name" | "category" | "status" | "date" | undefined;
         sortOrder?: "asc" | "desc" | undefined;
         q?: string | undefined;
