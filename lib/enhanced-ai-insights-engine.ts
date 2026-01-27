@@ -4,7 +4,7 @@
  */
 
 import { db } from './db';
-import { MemberLifecycleStage, RetentionRisk, EngagementLevel } from '@prisma/client';
+import { MemberLifecycleStage, RetentionRisk, EngagementLevel } from './cached-analytics-service';
 
 // Advanced ML Types
 export interface MLModelFeatures {
@@ -292,7 +292,7 @@ export class EnhancedAIInsightsEngine {
       throw new Error('Member journey not found');
     }
 
-    const currentStage = currentJourney.currentStage;
+    const currentStage = currentJourney.currentStage as MemberLifecycleStage;
     const predictions = this.analyzeStageProgression(features, currentStage);
 
     return {

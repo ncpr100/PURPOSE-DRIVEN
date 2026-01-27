@@ -6,7 +6,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnhancedAIInsightsEngine = void 0;
 const db_1 = require("./db");
-const client_1 = require("@prisma/client");
+const cached_analytics_service_1 = require("./cached-analytics-service");
 class EnhancedAIInsightsEngine {
     constructor(churchId) {
         this.historicalAccuracy = new Map();
@@ -150,15 +150,15 @@ class EnhancedAIInsightsEngine {
         // Convert score to risk level
         let retentionRisk;
         if (riskScore >= 76)
-            retentionRisk = client_1.RetentionRisk.VERY_HIGH;
+            retentionRisk = cached_analytics_service_1.RetentionRisk.VERY_HIGH;
         else if (riskScore >= 51)
-            retentionRisk = client_1.RetentionRisk.HIGH;
+            retentionRisk = cached_analytics_service_1.RetentionRisk.HIGH;
         else if (riskScore >= 26)
-            retentionRisk = client_1.RetentionRisk.MEDIUM;
+            retentionRisk = cached_analytics_service_1.RetentionRisk.MEDIUM;
         else if (riskScore >= 11)
-            retentionRisk = client_1.RetentionRisk.LOW;
+            retentionRisk = cached_analytics_service_1.RetentionRisk.LOW;
         else
-            retentionRisk = client_1.RetentionRisk.VERY_LOW;
+            retentionRisk = cached_analytics_service_1.RetentionRisk.VERY_LOW;
         return {
             prediction: {
                 retentionRisk,
@@ -505,7 +505,7 @@ class EnhancedAIInsightsEngine {
     }
     generateRiskMitigations(risk, factors) {
         const mitigations = [];
-        if (risk === client_1.RetentionRisk.VERY_HIGH || risk === client_1.RetentionRisk.HIGH) {
+        if (risk === cached_analytics_service_1.RetentionRisk.VERY_HIGH || risk === cached_analytics_service_1.RetentionRisk.HIGH) {
             mitigations.push({
                 risk: 'Immediate departure risk',
                 mitigation: 'Emergency pastoral intervention with leadership team',
@@ -519,7 +519,7 @@ class EnhancedAIInsightsEngine {
         // Implementation for sophisticated stage progression analysis
         return {
             mostLikely: {
-                stage: client_1.MemberLifecycleStage.ESTABLISHED_MEMBER,
+                stage: cached_analytics_service_1.MemberLifecycleStage.ESTABLISHED_MEMBER,
                 probability: 0.75,
                 estimatedDays: 45
             },
