@@ -71,20 +71,37 @@ export async function PUT(request: NextRequest) {
       } else {
         // DEFINITIVE FIX: Use type assertion to bypass @unique TypeScript inference
         updatedTheme = await prisma.church_themes.upsert({
+          where: { churchId: session.user.churchId },
           update: {
+            themeConfig,
+            brandColors,
+            primaryFont,
+            headingFont,
+            themeName: 'custom'
           },
           create: {
             id: randomUUID(),
             churchId: session.user.churchId,
+            themeConfig,
+            brandColors,
+            primaryFont,
+            headingFont,
+            themeName: 'custom'
           } as any
+        });
+      }
     } catch (error) {
-      console.error('Church theme operation error:', error)
+      console.error('Church theme operation error:', error);
       return NextResponse.json({ 
         message: 'Error al actualizar tema de iglesia',
         success: false
-      }, { status: 500 })
+      }, { status: 500 });
+    }
+    
     return NextResponse.json({ 
       message: 'Tema actualizado exitosamente',
       success: true,
       theme: updatedTheme
-    console.error('Error updating church theme:', error)
+    });
+  } catch (error) {
+    console.error('Error updating church theme:', error);

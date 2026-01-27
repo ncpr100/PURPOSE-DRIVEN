@@ -130,5 +130,13 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json(
         { error: 'Datos de entrada inválidos', details: error.errors },
         { status: 400 }
-      )
+      );
+    }
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}
+
 export const dynamic = 'force-dynamic';

@@ -81,13 +81,17 @@ export async function POST(request: NextRequest) {
       
       // Filter users that should receive digest
       const eligibleUsers = users.filter((user: any) => {
-        const preferences = user.notification_preferences
-        if (!preferences) return false
+        const preferences = user.notification_preferences;
+        if (!preferences) return false;
         
-        return shouldSendDigest(preferences, validatedData.period)
+        return shouldSendDigest(preferences, validatedData.period);
+      });
+      
       if (eligibleUsers.length === 0) {
-        console.log(`No eligible users for ${validatedData.period} digest in church ${churchDetails.name}`)
-        continue
+        console.log(`No eligible users for ${validatedData.period} digest in church ${churchDetails.name}`);
+        continue;
+      }
+      
       // Get notifications for the period for this church
       const notifications = await prisma.notifications.findMany({
         where: {
@@ -105,6 +109,9 @@ export async function POST(request: NextRequest) {
         },
         orderBy: {
           createdAt: 'desc'
+        }
+      });
+      
       if (notifications.length === 0) {
         results.push({
           churchName: churchDetails.name,
