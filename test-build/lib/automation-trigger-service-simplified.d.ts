@@ -26,4 +26,4 @@ declare const _default: {
     processMemberLifecycleChange: typeof processMemberLifecycleChange;
 };
 export default _default;
-//# sourceMappingURL=automation-trigger-service.d.ts.map
+//# sourceMappingURL=automation-trigger-service-simplified.d.ts.map

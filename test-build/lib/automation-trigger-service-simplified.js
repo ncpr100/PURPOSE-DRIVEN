@@ -10,7 +10,7 @@ async function processTrigger(payload) {
     console.log('[AutomationTriggerService] Processing trigger:', payload.type);
     try {
         // Find basic automation rules without complex relations
-        const rules = await db_1.db.automation_rules.findMany({
+        const rules = await db_1.db.automationRule.findMany({
             where: {
                 churchId: payload.churchId,
                 isActive: true
@@ -90,4 +90,4 @@ exports.default = {
     processMemberRegistration,
     processMemberLifecycleChange
 };
-//# sourceMappingURL=automation-trigger-service.js.map
+//# sourceMappingURL=automation-trigger-service-simplified.js.map
