@@ -576,6 +576,7 @@ model churches {
   volunteers                       volunteers[]
   website_requests                 website_requests[]
   websites                         websites[]
+  qr_codes                         qr_codes[]
 }
 
 model communication_templates {
@@ -649,6 +650,7 @@ model custom_forms {
   custom_form_submissions custom_form_submissions[]
   churches                churches                  @relation(fields: [churchId], references: [id], onDelete: Cascade)
   users                   users                     @relation(fields: [createdBy], references: [id])
+  qr_codes                qr_codes[]
 
   @@index([churchId, isActive])
   @@index([slug])
@@ -2035,6 +2037,7 @@ model users {
   platformFormsCreated                   PlatformForm[]                           @relation("PlatformFormCreatedBy")
   platformSubmissionsProcessed           PlatformFormSubmission[]                 @relation("PlatformSubmissionProcessedBy")
   platformQRCodesGenerated               PlatformQRCode[]                         @relation("PlatformQRGeneratedBy")
+  qrCodesCreated                         qr_codes[]                               @relation("QRCodeCreatedBy")
 }
 
 model verification_tokens {
