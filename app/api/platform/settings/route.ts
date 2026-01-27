@@ -39,6 +39,8 @@ export async function GET() {
 
 export async function PUT(request: NextRequest) {
   try {
+    const data = await request.json()
+    
     // Update or create platform settings
     const settings = await prisma.platform_settings.upsert({
       where: { id: data.id || 'default' },
