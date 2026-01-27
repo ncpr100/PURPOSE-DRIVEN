@@ -170,22 +170,27 @@ export async function POST(request: NextRequest) {
         });
         
         const emailHtml = renderEmailTemplate(emailComponent);
-        const periodLabel = validatedData.period === 'DAILY' ? 'Diario' : 'Semanal'
+        const periodLabel = validatedData.period === 'DAILY' ? 'Diario' : 'Semanal';
         return {
           to: user.email,
           subject: `📊 Resumen ${periodLabel} - ${churchDetails.name} (${userNotifications.length} notificaciones)`,
           html: emailHtml,
           userName: user.name || 'Estimado miembro'
-      }).filter(Boolean) as any[]
+        };
+      }).filter(Boolean) as any[];
+      
       if (emails.length > 0) {
-        await emailQueue.addBulk(emails)
-        totalSent += emails.length
-        console.log(`📊 Queued ${emails.length} digest emails for ${churchDetails.name} (${validatedData.period})`)
+        await emailQueue.addBulk(emails);
+        totalSent += emails.length;
+        console.log(`📊 Queued ${emails.length} digest emails for ${churchDetails.name} (${validatedData.period})`);
+      }
+      
       results.push({
         churchName: churchDetails.name,
         sent: emails.length,
         notificationCount: notifications.length,
         eligibleUsers: eligibleUsers.length
+      });
     return NextResponse.json({
       success: true,
       period: validatedData.period,

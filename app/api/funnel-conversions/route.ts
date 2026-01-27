@@ -79,13 +79,14 @@ export async function GET(request: NextRequest) {
             slug: true
           }
         }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      },
-      take: limit,
-      skip: offset
-    });
+      }
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: limit,
+    skip: offset
+  });
     
     return NextResponse.json(conversions);
   } catch (error) {

@@ -9,10 +9,13 @@ export async function GET(request: NextRequest) {
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    
     // Get events analytics
     const totalEvents = await prisma.events.count({
       where: { churchId: session.user.churchId }

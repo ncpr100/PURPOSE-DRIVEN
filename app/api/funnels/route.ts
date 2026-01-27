@@ -53,10 +53,15 @@ export async function GET(request: NextRequest) {
         _count: {
           select: {
             funnel_conversions: true
+          }
         }
+      },
       orderBy: {
         updatedAt: 'desc'
-    return NextResponse.json(funnels)
+      }
+    });
+    
+    return NextResponse.json(funnels);
   } catch (error) {
     console.error('Error fetching funnels:', error)
     return NextResponse.json(
