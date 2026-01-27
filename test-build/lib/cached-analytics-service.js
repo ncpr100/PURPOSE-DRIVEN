@@ -5,12 +5,43 @@
  * Implements intelligent caching strategies for optimal performance
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCachedAnalyticsService = exports.CachedAnalyticsService = void 0;
+exports.createCachedAnalyticsService = exports.CachedAnalyticsService = exports.RetentionRisk = exports.EngagementLevel = exports.MemberLifecycleStage = void 0;
 const member_journey_analytics_1 = require("./member-journey-analytics");
 const redis_cache_manager_1 = require("./redis-cache-manager");
 const db_1 = require("./db");
 const gender_utils_1 = require("./gender-utils");
-const client_1 = require("@prisma/client");
+// Create proper enterprise enums that can be used as values (following automation-engine pattern)
+var MemberLifecycleStage;
+(function (MemberLifecycleStage) {
+    MemberLifecycleStage["VISITOR"] = "VISITOR";
+    MemberLifecycleStage["FIRST_TIME_GUEST"] = "FIRST_TIME_GUEST";
+    MemberLifecycleStage["RETURNING_VISITOR"] = "RETURNING_VISITOR";
+    MemberLifecycleStage["REGULAR_ATTENDEE"] = "REGULAR_ATTENDEE";
+    MemberLifecycleStage["NEW_MEMBER"] = "NEW_MEMBER";
+    MemberLifecycleStage["ESTABLISHED_MEMBER"] = "ESTABLISHED_MEMBER";
+    MemberLifecycleStage["GROWING_MEMBER"] = "GROWING_MEMBER";
+    MemberLifecycleStage["SERVING_MEMBER"] = "SERVING_MEMBER";
+    MemberLifecycleStage["LEADING_MEMBER"] = "LEADING_MEMBER";
+    MemberLifecycleStage["MATURE_LEADER"] = "MATURE_LEADER";
+    MemberLifecycleStage["INACTIVE_MEMBER"] = "INACTIVE_MEMBER";
+    MemberLifecycleStage["DISCONNECTED_MEMBER"] = "DISCONNECTED_MEMBER";
+})(MemberLifecycleStage || (exports.MemberLifecycleStage = MemberLifecycleStage = {}));
+var EngagementLevel;
+(function (EngagementLevel) {
+    EngagementLevel["HIGH"] = "HIGH";
+    EngagementLevel["MEDIUM_HIGH"] = "MEDIUM_HIGH";
+    EngagementLevel["MEDIUM"] = "MEDIUM";
+    EngagementLevel["MEDIUM_LOW"] = "MEDIUM_LOW";
+    EngagementLevel["LOW"] = "LOW";
+})(EngagementLevel || (exports.EngagementLevel = EngagementLevel = {}));
+var RetentionRisk;
+(function (RetentionRisk) {
+    RetentionRisk["VERY_LOW"] = "VERY_LOW";
+    RetentionRisk["LOW"] = "LOW";
+    RetentionRisk["MEDIUM"] = "MEDIUM";
+    RetentionRisk["HIGH"] = "HIGH";
+    RetentionRisk["VERY_HIGH"] = "VERY_HIGH";
+})(RetentionRisk || (exports.RetentionRisk = RetentionRisk = {}));
 class CachedAnalyticsService {
     constructor(churchId) {
         this.churchId = churchId;
@@ -490,7 +521,7 @@ class CachedAnalyticsService {
     calculateStageDistribution(journeys) {
         const stageCounts = {};
         journeys.forEach(j => {
-            const stage = j.currentStage || client_1.MemberLifecycleStage.VISITOR;
+            const stage = j.currentStage || MemberLifecycleStage.VISITOR;
             stageCounts[stage] = (stageCounts[stage] || 0) + 1;
         });
         const total = journeys.length;
@@ -504,7 +535,7 @@ class CachedAnalyticsService {
         const riskMembers = await db_1.db.member_journeys.findMany({
             where: {
                 churchId: this.churchId,
-                retentionRisk: { in: [client_1.RetentionRisk.HIGH, client_1.RetentionRisk.VERY_HIGH] }
+                retentionRisk: { in: [RetentionRisk.HIGH, RetentionRisk.VERY_HIGH] }
             },
             include: {
                 members: {

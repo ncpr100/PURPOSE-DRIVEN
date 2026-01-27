@@ -3,6 +3,34 @@
  * High-performance analytics service with Redis caching integration
  * Implements intelligent caching strategies for optimal performance
  */
+export declare enum MemberLifecycleStage {
+    VISITOR = "VISITOR",
+    FIRST_TIME_GUEST = "FIRST_TIME_GUEST",
+    RETURNING_VISITOR = "RETURNING_VISITOR",
+    REGULAR_ATTENDEE = "REGULAR_ATTENDEE",
+    NEW_MEMBER = "NEW_MEMBER",
+    ESTABLISHED_MEMBER = "ESTABLISHED_MEMBER",
+    GROWING_MEMBER = "GROWING_MEMBER",
+    SERVING_MEMBER = "SERVING_MEMBER",
+    LEADING_MEMBER = "LEADING_MEMBER",
+    MATURE_LEADER = "MATURE_LEADER",
+    INACTIVE_MEMBER = "INACTIVE_MEMBER",
+    DISCONNECTED_MEMBER = "DISCONNECTED_MEMBER"
+}
+export declare enum EngagementLevel {
+    HIGH = "HIGH",
+    MEDIUM_HIGH = "MEDIUM_HIGH",
+    MEDIUM = "MEDIUM",
+    MEDIUM_LOW = "MEDIUM_LOW",
+    LOW = "LOW"
+}
+export declare enum RetentionRisk {
+    VERY_LOW = "VERY_LOW",
+    LOW = "LOW",
+    MEDIUM = "MEDIUM",
+    HIGH = "HIGH",
+    VERY_HIGH = "VERY_HIGH"
+}
 export interface CachedAnalyticsOptions {
     forceRefresh?: boolean;
     cacheWarm?: boolean;
