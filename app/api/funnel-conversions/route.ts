@@ -19,7 +19,9 @@ export async function GET(request: NextRequest) {
     const conversions = await prisma.funnel_conversions.findMany({
       where: {
         funnels: {
-          churchId: session.user.churchId
+          is: {
+            churchId: session.user.churchId
+          }
         }
       },
       orderBy: {
