@@ -39,6 +39,7 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
+    const memberId = params.id
     const body = await request.json();
     const {
       giftSelections,
