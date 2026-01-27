@@ -1,118 +1,120 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
+import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { db as prisma } from '@/lib/db'
+import { db } from '@/lib/db'
 
-// Marking the route as dynamic
-export const dynamic = 'force-dynamic';
-// GET - Fetch support contact information
-export async function GET() {
+export const dynamic = 'force-dynamic'
+
+// POST /api/support-contact - Submit support contact request
+export async function POST(request: NextRequest) {
   try {
-    let contactInfo = await prisma.support_contact_info.findFirst({
-      where: { id: 'default' }
-    })
-    // If no record exists, create default one
-    if (!contactInfo) {
-      contactInfo = await prisma.support_contact_info.create({
-        data: {
-          id: 'default',
-          whatsappNumber: '+57 300 KHESED (543733)',
-          whatsappUrl: 'https://wa.me/573003435733',
-          email: 'soporte@khesedtek.com',
-          schedule: 'Lun-Vie 8AM-8PM (Colombia)',
-          companyName: 'Khesed-tek Systems',
-          location: 'Bogotá, Colombia',
-          website: 'https://khesedtek.com',
-          updatedAt: new Date()
-        }
-      })
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    return NextResponse.json(contactInfo)
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    const body = await request.json()
+    const { subject, message, category, priority, contactEmail, contactPhone } = body
+
+    if (!subject || !message) {
+      return NextResponse.json({ error: 'Asunto y mensaje son requeridos' }, { status: 400 })
+    }
+
+    // Create support request
+    const supportRequest = await db.support_requests.create({
+      data: {
+        subject,
+        message,
+        category: category || 'general',
+        priority: priority || 'medium',
+        status: 'open',
+        contactEmail: contactEmail || user.email,
+        contactPhone,
+        churchId: user.churchId,
+        userId: user.id,
+        submittedAt: new Date()
+      }
+    })
+
+    // Log the support request for admin tracking
+    console.log('Support request submitted:', {
+      id: supportRequest.id,
+      churchId: user.churchId,
+      userId: user.id,
+      subject: subject,
+      category: category || 'general',
+      priority: priority || 'medium',
+      userEmail: user.email,
+      churchName: user.churches?.name,
+      timestamp: new Date().toISOString()
+    })
+
+    // Enhanced success response
+    return NextResponse.json({
+      success: true,
+      message: 'Solicitud de soporte enviada exitosamente',
+      supportRequest: {
+        id: supportRequest.id,
+        subject: supportRequest.subject,
+        category: supportRequest.category,
+        priority: supportRequest.priority,
+        status: supportRequest.status,
+        submittedAt: supportRequest.submittedAt
+      }
+    }, { status: 201 })
   } catch (error) {
-    console.error('Error fetching support contact info:', error)
+    console.error('Error creating support request:', error)
     return NextResponse.json(
-      { error: 'Error al obtener información de contacto' },
+      { error: 'Error interno del servidor' },
       { status: 500 }
     )
   }
 }
-// PUT - Update support contact information (SUPER_ADMIN only)
-export async function PUT(request: NextRequest) {
+
+// GET /api/support-contact - Get user's support requests
+export async function GET(request: NextRequest) {
+  try {
     const session = await getServerSession(authOptions)
-    // COMPREHENSIVE DEBUGGING
-    console.log('🔍 Support Contact PUT - Full Session Debug:', {
-      exists: !!session,
-      user: session?.user,
-      userRole: session?.user?.role,
-      userEmail: session?.user?.email,
-      users: {
-        connect: { id: session?.user?.id }
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    const supportRequests = await db.support_requests.findMany({
+      where: {
+        churchId: user.churchId,
+        userId: user.id
       },
-      timestamp: new Date().toISOString()
-    // Enhanced error messaging for frontend
-    if (!session) {
-      console.error('❌ No session found - user not authenticated')
-      return NextResponse.json(
-        { 
-          error: 'Sesión no encontrada. Por favor, inicia sesión nuevamente.',
-          code: 'NO_SESSION',
-          debug: 'User session is null or undefined'
-        },
-        { status: 401 }
-      )
-    if (!session.user) {
-      console.error('❌ Session exists but user is null')
-          error: 'Datos de usuario no encontrados en la sesión.',
-          code: 'NO_USER_DATA',
-          debug: 'Session.user is null or undefined'
-    if (session.user.role !== 'SUPER_ADMIN') {
-      console.error('❌ Unauthorized role:', {
-        currentRole: session.user.role,
-        requiredRole: 'SUPER_ADMIN',
-        userEmail: session.user.email
-          error: `Acceso denegado. Rol actual: "${session.user.role}", se requiere: "SUPER_ADMIN"`,
-          code: 'INSUFFICIENT_ROLE',
-          debug: {
-            currentRole: session.user.role,
-            requiredRole: 'SUPER_ADMIN',
-            userEmail: session.user.email
-          }
-        { status: 403 }
-    console.log('✅ Authentication successful for SUPER_ADMIN:', session.user.email)
-    const body = await request.json()
-    const {
-      whatsappNumber,
-      whatsappUrl,
-      email,
-      schedule,
-      companyName,
-      location,
-      website
-    } = body
-    // Validate required fields
-    if (!whatsappNumber || !email || !companyName) {
-        { error: 'WhatsApp, Email y Nombre de empresa son obligatorios' },
-        { status: 400 }
-    console.log('📝 Updating support contact with data:', { whatsappNumber, email, companyName, location, website })
-    // Update or create contact info
-    const contactInfo = await prisma.support_contact_info.upsert({
-      where: { id: 'default' },
-      update: {
-        whatsappNumber,
-        whatsappUrl,
-        email,
-        schedule,
-        companyName,
-        location,
-        website,
-        updatedAt: new Date()
-      create: {
-        id: 'default',
-      }
-    console.log('✅ Support contact info updated successfully:', contactInfo)
+      orderBy: { submittedAt: 'desc' },
+      take: 50
+    })
+
     return NextResponse.json({
       success: true,
-      message: 'Información de contacto actualizada exitosamente',
-      data: contactInfo
-    console.error('Error updating support contact info:', error)
-      { error: 'Error al actualizar información de contacto' },
+      requests: supportRequests
+    })
+  } catch (error) {
+    console.error('Error fetching support requests:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}

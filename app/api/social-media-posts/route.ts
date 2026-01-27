@@ -1,82 +1,103 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/db'
 
-import { db as prisma } from '@/lib/db';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { NextResponse } from 'next/server';
-import { AutomationTriggers } from '@/lib/automation-engine';
-import { nanoid } from 'nanoid';
-// Get social media posts
-export async function GET(request: Request) {
+export const dynamic = 'force-dynamic'
+
+// GET /api/social-media-posts - Get all social media posts
+export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email }
-    });
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
     if (!user?.churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
-    const campaignId = searchParams.get('campaignId');
-    const posts = await prisma.social_media_posts.findMany({
-      where: {
-        churchId: user.churchId,
-        ...(status && { status }),
-        ...(campaignId && { campaignId })
-      },
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    const posts = await db.social_media_posts.findMany({
+      where: { churchId: user.churchId },
       include: {
+        social_media_accounts: {
+          select: { id: true, platform: true, username: true, displayName: true }
+        },
         marketing_campaigns: {
           select: { id: true, name: true }
         }
+      },
       orderBy: { createdAt: 'desc' }
-    return NextResponse.json(posts);
+    })
+
+    return NextResponse.json(posts)
   } catch (error) {
-    console.error('Error fetching social media posts:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
+    console.error('Error fetching social media posts:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
   }
 }
-// Create social media post
-export async function POST(request: Request) {
-    const { 
-      title, 
-      content, 
-      mediaUrls, 
-      platforms, 
-      accountIds, 
-      scheduledAt, 
-      hashtags, 
-      mentions, 
-      campaignId 
-    } = await request.json();
-    if (!content || !platforms || !accountIds) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    const post = await prisma.social_media_posts.create({
+
+// POST /api/social-media-posts - Create social media post
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    // Check permissions
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(user.role)) {
+      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    }
+
+    const body = await request.json()
+    const { content, scheduledFor, accountIds, campaignId, mediaUrls, hashtags } = body
+
+    if (!content) {
+      return NextResponse.json({ error: 'Contenido es requerido' }, { status: 400 })
+    }
+
+    const post = await db.social_media_posts.create({
       data: {
-        id: nanoid(),
-        title,
         content,
-        mediaUrls: Array.isArray(mediaUrls) ? JSON.stringify(mediaUrls) : null,
-        platforms: Array.isArray(platforms) ? JSON.stringify(platforms) : platforms,
-        accountIds: Array.isArray(accountIds) ? JSON.stringify(accountIds) : accountIds,
-        status: scheduledAt ? 'SCHEDULED' : 'DRAFT',
-        scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
-        hashtags: Array.isArray(hashtags) ? JSON.stringify(hashtags) : null,
-        mentions: Array.isArray(mentions) ? JSON.stringify(mentions) : null,
-        campaignId: campaignId || null,
-        authorId: user.id,
-        churchId: user.churchId
+        scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
+        campaignId,
+        mediaUrls: mediaUrls ? JSON.stringify(mediaUrls) : null,
+        hashtags: hashtags ? JSON.stringify(hashtags) : null,
+        status: 'DRAFT',
+        churchId: user.churchId,
+        createdBy: user.id
+      },
+      include: {
+        social_media_accounts: {
+          select: { id: true, platform: true, username: true }
+        }
       }
-    // 🔄 P1 ENHANCEMENT: Trigger automation for social media post creation
-    try {
-      await AutomationTriggers.socialMediaPostCreated(post, user.churchId, user.id);
-      console.log(`✅ Social media post automation triggered for post: ${post.id}`);
-    } catch (automationError) {
-      console.error('❌ Error triggering social media post automation:', automationError);
-      // Don't fail the request if automation fails
-    return NextResponse.json(post);
-    console.error('Error creating social media post:', error);
+    })
+
+    return NextResponse.json(post, { status: 201 })
+  } catch (error) {
+    console.error('Error creating social media post:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}

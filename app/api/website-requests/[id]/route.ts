@@ -1,45 +1,47 @@
-
-import { db as prisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-// GET - Obtener una solicitud específica
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+import { db } from '@/lib/db'
+
+export const dynamic = 'force-dynamic'
+
+// GET /api/website-requests/[id] - Get specific website request
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const session = await getServerSession(authOptions)
-    
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: 'No autorizado' },
-        { status: 401 }
-      )
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    const website_requests = await prisma.website_requests.findFirst({
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    const websiteRequest = await db.website_requests.findFirst({
       where: {
         id: params.id,
-        // Solo permitir acceso si es SUPER_ADMIN o es de su iglesia
-        ...(session.user.role === 'SUPER_ADMIN' 
-          ? {} 
-          : { churchId: session.user.churchId || undefined }
-        )
+        churchId: user.churchId
       },
       include: {
-        churches: {
-          select: {
-            name: true,
-            email: true,
-            phone: true
-          }
+        users: {
+          select: { id: true, name: true, email: true }
         }
       }
     })
-    if (!website_requests) {
+
+    if (!websiteRequest) {
+      return NextResponse.json(
         { error: 'Solicitud no encontrada' },
         { status: 404 }
-    return NextResponse.json(website_requests)
+      )
+    }
+
+    return NextResponse.json(websiteRequest)
   } catch (error) {
     console.error('Error fetching website request:', error)
     return NextResponse.json(
@@ -48,51 +50,110 @@ export async function GET(
     )
   }
 }
-// PUT - Actualizar solicitud (principalmente para SUPER_ADMIN)
-export async function PUT(
+
+// PUT /api/website-requests/[id] - Update website request
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    // Check permissions for updates
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
+      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    }
+
+    // Verify request ownership
+    const existing = await db.website_requests.findFirst({
+      where: { id: params.id, churchId: user.churchId }
+    })
+
+    if (!existing) {
+      return NextResponse.json({ error: 'Solicitud no encontrada' }, { status: 404 })
+    }
+
     const body = await request.json()
-    // Solo SUPER_ADMIN puede actualizar el estado y notas administrativas
-    if (session.user.role === 'SUPER_ADMIN') {
-      const updatedRequest = await prisma.website_requests.update({
-        where: { id: params.id },
-        data: {
-          ...body,
-          ...(body.status === 'completed' && { completedAt: new Date() })
-        },
-        include: {
-          churches: {
-            select: {
-              name: true,
-              email: true
-            }
-      })
-      return NextResponse.json(updatedRequest)
-    } 
-    // Los usuarios regulares solo pueden actualizar ciertos campos de sus propias solicitudes
-    else if (session.user.churchId) {
-      const website_requests = await prisma.website_requests.findFirst({
-        where: {
-          id: params.id,
-          churchId: session.user.churchId
-      if (!website_requests) {
-        return NextResponse.json(
-          { error: 'Solicitud no encontrada' },
-          { status: 404 }
-      // Permitir actualizar solo ciertos campos
-      const allowedFields = ['description', 'phone', 'metadata']
-      const updateData: any = {}
-      
-      for (const field of allowedFields) {
-        if (body[field] !== undefined) {
-          updateData[field] = body[field]
-        data: updateData
-      { error: 'No autorizado' },
-      { status: 403 }
+    const { status, priority, notes, estimatedPrice, estimatedDays, assignedTo } = body
+
+    const updated = await db.website_requests.update({
+      where: { id: params.id },
+      data: {
+        status: status || existing.status,
+        priority: priority || existing.priority,
+        notes: notes !== undefined ? notes : existing.notes,
+        estimatedPrice: estimatedPrice !== undefined ? estimatedPrice : existing.estimatedPrice,
+        estimatedDays: estimatedDays !== undefined ? estimatedDays : existing.estimatedDays,
+        assignedTo: assignedTo !== undefined ? assignedTo : existing.assignedTo,
+        updatedAt: new Date()
+      },
+      include: {
+        users: {
+          select: { id: true, name: true, email: true }
+        }
+      }
+    })
+
+    return NextResponse.json(updated)
+  } catch (error) {
     console.error('Error updating website request:', error)
-// DELETE - Eliminar solicitud
-export async function DELETE(
-    // Solo SUPER_ADMIN o la iglesia propietaria puede eliminar
-    await prisma.website_requests.delete({
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE /api/website-requests/[id] - Delete website request
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    // Check permissions
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA'].includes(user.role)) {
+      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    }
+
+    // Verify request ownership
+    const existing = await db.website_requests.findFirst({
+      where: { id: params.id, churchId: user.churchId }
+    })
+
+    if (!existing) {
+      return NextResponse.json({ error: 'Solicitud no encontrada' }, { status: 404 })
+    }
+
+    await db.website_requests.delete({
       where: { id: params.id }
-    return NextResponse.json({ message: 'Solicitud eliminada correctamente' })
+    })
+
+    return NextResponse.json({ success: true, message: 'Solicitud eliminada exitosamente' })
+  } catch (error) {
     console.error('Error deleting website request:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}
