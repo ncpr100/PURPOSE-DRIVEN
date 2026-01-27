@@ -19,6 +19,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
     })
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
     // Mock rules for demo
     const mockRules: Record<string, any> = {
       'rule_1': {

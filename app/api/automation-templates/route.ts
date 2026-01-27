@@ -145,12 +145,24 @@ export async function GET(request: NextRequest) {
 }
 // POST - Create custom automation rule template (admin only)
 export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+    const user = await prisma.users.findUnique({
+      where: { id: session.user.id },
       select: { id: true, role: true }
+    });
+    if (!user) {
+      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 404 });
+    }
     // Only admins can create templates
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA'].includes(user.role)) {
-      return NextResponse.json({ error: 'Sin permisos para crear plantillas' }, { status: 403 })
-    const body = await request.json()
-    const validatedData = createTemplateSchema.parse(body)
+      return NextResponse.json({ error: 'Sin permisos para crear plantillas' }, { status: 403 });
+    }
+    const body = await request.json();
+    const validatedData = createTemplateSchema.parse(body);
     const template = await prisma.automation_rule_templates.create({
       data: {
         id: randomUUID(),

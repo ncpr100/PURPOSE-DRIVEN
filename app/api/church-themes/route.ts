@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
     })
     if (!user || !user.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
+    }
     // TEMPORARY: Return empty response to skip TypeScript error
     return NextResponse.json({ 
       id: 'temp',
@@ -85,6 +86,7 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   } catch (error) {
+  }
     console.error('Error fetching church theme:', error);
     return NextResponse.json(
       { error: 'Error interno del servidor' },
