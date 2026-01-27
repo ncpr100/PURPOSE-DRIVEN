@@ -102,6 +102,8 @@ export async function GET(request: NextRequest) {
         businessHoursConfig: true,
         retryConfig: true
       }
+    });
+
     // Map to match component interface
     const mappedTemplates = templates.map(t => ({
       id: t.id,

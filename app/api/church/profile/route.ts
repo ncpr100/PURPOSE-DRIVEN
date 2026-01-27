@@ -63,6 +63,7 @@ export async function PUT(request: NextRequest) {
       )
     // Update church profile
     const updatedChurch = await prisma.churches.update({
+      where: { id: churchId },
       data: {
         name: name.trim(),
         address: address?.trim() || null,
@@ -71,7 +72,12 @@ export async function PUT(request: NextRequest) {
         website: website?.trim() || null,
         description: description?.trim() || null,
         logo: logo || null // Don't trim logo - it's base64 data
+      }
+    });
+
     return NextResponse.json({ 
       message: 'Perfil actualizado exitosamente',
       church: updatedChurch 
-    console.error('Error updating church profile:', error)
+    });
+  } catch (error) {
+    console.error('Error updating church profile:', error);

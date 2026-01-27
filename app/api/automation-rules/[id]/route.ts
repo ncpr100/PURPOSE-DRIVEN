@@ -55,18 +55,26 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
         name: 'Seguimiento Urgente',
         description: 'Notificación inmediata para peticiones con prioridad urgente',
         triggerType: 'priority',
+        conditions: {
           priority: ['urgent']
-              templateId: 'template_urgente',
-              messageType: 'all',
-              delay: 0
+        },
+        actions: {
+          templateId: 'template_urgente',
+          messageType: 'all',
+          delay: 0
+        },
+        stats: {
           totalRuns: 8,
           successRuns: 8,
           lastRun: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
           avgResponseTime: 0.5
+        },
         createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
         updatedAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
       }
-    const rule = mockRules[params.id]
+    };
+
+    const rule = mockRules[params.id];
     if (!rule) {
       return NextResponse.json({ error: 'Regla no encontrada' }, { status: 404 })
     return NextResponse.json({ rule })

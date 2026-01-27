@@ -47,14 +47,23 @@ export async function GET(
         templateId_churchId: {
           templateId: template.id,
           churchId: user.churchId!
+        }
       },
+      include: {
         automation_rules: {
+          select: {
             name: true,
             isActive: true
+          }
+        }
+      }
+    });
+
     return NextResponse.json({
       template,
       installation: installation || null,
       isInstalled: !!installation
+    });
   } catch (error) {
     console.error('Error fetching template details:', error);
     return NextResponse.json(
