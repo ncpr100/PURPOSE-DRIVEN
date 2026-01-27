@@ -49,7 +49,7 @@ export default async function PlatformFormsPage() {
         </div>
       </div>
 
-      <PlatformFormsClient />
+      <PlatformFormsClient userRole={session.user.role} />
     </div>
   )
 }
