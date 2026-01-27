@@ -132,7 +132,9 @@ export async function GET(request: Request) {
       return acc;
     }, {} as Record<string, { scores: number[]; risks: Record<string, number> }>);
 
-    const monthlyTrends = Object.entries(trendsByMonth).map(([month, data]) => ({
+    // Type-safe mapping for monthly trends
+    type MonthlyRetentionData = { scores: number[]; risks: Record<string, number> };
+    const monthlyTrends = Object.entries(trendsByMonth).map(([month, data]: [string, MonthlyRetentionData]) => ({
       month,
       averageRetention: Math.round(data.scores.reduce((sum, score) => sum + score, 0) / data.scores.length),
       highRiskCount: data.risks.HIGH + data.risks.VERY_HIGH,
