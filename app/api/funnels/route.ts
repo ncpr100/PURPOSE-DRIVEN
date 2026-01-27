@@ -15,22 +15,33 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       )
     }
-    const { searchParams } = new URL(request.url)
-    const websiteId = searchParams.get('websiteId')
+    const { searchParams } = new URL(request.url);
+    const websiteId = searchParams.get('websiteId');
+    
     if (!websiteId) {
+      return NextResponse.json(
         { error: 'ID del sitio web es requerido' },
         { status: 400 }
+      );
+    }
+    
     // Verificar que el sitio web pertenece a la iglesia
     const website = await prisma.websites.findFirst({
       where: {
         id: websiteId,
         churchId: session.user.churchId
       }
-    })
+    });
+    
     if (!website) {
+      return NextResponse.json(
         { error: 'Sitio web no encontrado' },
         { status: 404 }
+      );
+    }
+    
     const funnels = await prisma.funnels.findMany({
+      where: {
         websiteId: websiteId
       },
       include: {

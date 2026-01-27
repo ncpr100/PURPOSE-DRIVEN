@@ -159,13 +159,17 @@ export async function POST(request: NextRequest) {
             month: 'long',
             day: 'numeric'
           })
+        };
+        
         const emailComponent = DigestEmail({
           userName: emailData.user.name,
-          churchName: emailData.churches.name,
+          churchName: emailData.church.name,
           notifications: emailData.notifications,
           period: emailData.period,
           date: emailData.date
-        const emailHtml = renderEmailTemplate(emailComponent)
+        });
+        
+        const emailHtml = renderEmailTemplate(emailComponent);
         const periodLabel = validatedData.period === 'DAILY' ? 'Diario' : 'Semanal'
         return {
           to: user.email,

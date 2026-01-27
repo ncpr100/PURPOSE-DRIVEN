@@ -75,14 +75,19 @@ export async function GET(request: NextRequest) {
             }
         },
         funnel_steps: {
+          select: {
             slug: true
+          }
+        }
       },
       orderBy: {
         createdAt: 'desc'
+      },
       take: limit,
       skip: offset
-    })
-    return NextResponse.json(conversions)
+    });
+    
+    return NextResponse.json(conversions);
   } catch (error) {
     console.error('Error fetching conversions:', error)
     return NextResponse.json(

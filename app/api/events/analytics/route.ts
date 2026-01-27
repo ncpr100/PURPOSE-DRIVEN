@@ -48,7 +48,9 @@ export async function GET(request: NextRequest) {
         { month: 'Mayo', events: 6, attendance: 160, donations: 800 },
         { month: 'Junio', events: 3, attendance: 85, donations: 420 }
       ]
-    return NextResponse.json(analyticsData)
+    };
+    
+    return NextResponse.json(analyticsData);
   } catch (error) {
     console.error('Error fetching events analytics:', error)
     return NextResponse.json(

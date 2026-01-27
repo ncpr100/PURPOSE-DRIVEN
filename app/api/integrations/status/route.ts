@@ -46,7 +46,9 @@ export async function GET(request: NextRequest) {
           whatsapp: process.env.ENABLE_WHATSAPP === 'true'
         }
       }
-    return NextResponse.json(status)
+    };
+    
+    return NextResponse.json(status);
   } catch (error) {
     console.error('Error fetching integration status:', error)
     return NextResponse.json(
