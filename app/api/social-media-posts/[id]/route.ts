@@ -1,70 +1,168 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/db'
 
-import { db as prisma } from '@/lib/db';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { NextResponse } from 'next/server';
-// Get single social media post
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export const dynamic = 'force-dynamic'
+
+// GET /api/social-media-posts/[id] - Get specific social media post
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email }
-    });
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
     if (!user?.churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
-    const post = await prisma.social_media_posts.findUnique({
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    const post = await db.social_media_posts.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
       },
       include: {
-        marketing_campaigns: {
+        social_media_accounts: {
           select: { id: true, name: true }
         }
       }
+    })
+
     if (!post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
-    return NextResponse.json(post);
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+    }
+
+    return NextResponse.json(post)
   } catch (error) {
-    console.error('Error fetching social media post:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
+    console.error('Error fetching social media post:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
   }
 }
-// Update social media post
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
-    const { 
-      title, 
-      content, 
-      mediaUrls, 
-      platforms, 
-      accountIds, 
-      status, 
-      scheduledAt, 
-      hashtags, 
-      mentions, 
-      campaignId 
-    } = await request.json();
-    const post = await prisma.social_media_posts.update({
+
+// PUT /api/social-media-posts/[id] - Update social media post
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    // Check permissions
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(user.role)) {
+      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    }
+
+    // Verify post ownership
+    const existing = await db.social_media_posts.findFirst({
+      where: { id: params.id, churchId: user.churchId }
+    })
+
+    if (!existing) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+    }
+
+    if (existing.status === 'PUBLISHED') {
+      return NextResponse.json({ error: 'Cannot update published post' }, { status: 400 })
+    }
+
+    const body = await request.json()
+    const { content, scheduledFor, accountIds, mediaUrls, hashtags, status } = body
+
+    const updated = await db.social_media_posts.update({
+      where: { id: params.id },
       data: {
-        ...(title !== undefined && { title }),
-        ...(content !== undefined && { content }),
-        ...(mediaUrls !== undefined && { mediaUrls: Array.isArray(mediaUrls) ? JSON.stringify(mediaUrls) : null }),
-        ...(platforms !== undefined && { platforms: Array.isArray(platforms) ? JSON.stringify(platforms) : platforms }),
-        ...(accountIds !== undefined && { accountIds: Array.isArray(accountIds) ? JSON.stringify(accountIds) : accountIds }),
-        ...(status !== undefined && { status }),
-        ...(scheduledAt !== undefined && { scheduledAt: scheduledAt ? new Date(scheduledAt) : null }),
-        ...(hashtags !== undefined && { hashtags: Array.isArray(hashtags) ? JSON.stringify(hashtags) : null }),
-        ...(mentions !== undefined && { mentions: Array.isArray(mentions) ? JSON.stringify(mentions) : null }),
-        ...(campaignId !== undefined && { campaignId: campaignId || null }),
-    console.error('Error updating social media post:', error);
-// Delete social media post
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-    await prisma.social_media_posts.delete({
-    return NextResponse.json({ message: 'Post deleted successfully' });
-    console.error('Error deleting social media post:', error);
+        content: content || existing.content,
+        scheduledFor: scheduledFor ? new Date(scheduledFor) : existing.scheduledFor,
+        mediaUrls: mediaUrls !== undefined ? JSON.stringify(mediaUrls) : existing.mediaUrls,
+        hashtags: hashtags !== undefined ? JSON.stringify(hashtags) : existing.hashtags,
+        status: status || existing.status,
+        updatedAt: new Date()
+      },
+      include: {
+        social_media_accounts: {
+          select: {
+            id: true,
+            platform: true,
+            username: true,
+            displayName: true
+          }
+        }
+      }
+    })
+
+    return NextResponse.json(updated)
+  } catch (error) {
+    console.error('Error updating social media post:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE /api/social-media-posts/[id] - Delete social media post
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    // Check permissions
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
+      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    }
+
+    // Verify post ownership
+    const existing = await db.social_media_posts.findFirst({
+      where: { id: params.id, churchId: user.churchId }
+    })
+
+    if (!existing) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+    }
+
+    if (existing.status === 'PUBLISHED') {
+      return NextResponse.json({ error: 'Cannot delete published post' }, { status: 400 })
+    }
+
+    await db.social_media_posts.delete({
+      where: { id: params.id }
+    })
+
+    return NextResponse.json({ success: true, message: 'Post deleted successfully' })
+  } catch (error) {
+    console.error('Error deleting social media post:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}

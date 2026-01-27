@@ -1,75 +1,83 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/db'
 
-import { db as prisma } from '@/lib/db';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { NextResponse } from 'next/server';
-import { AutomationTriggers } from '@/lib/automation-engine';
-// Publish social media post
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export const dynamic = 'force-dynamic'
+
+// POST /api/social-media-posts/[id]/publish - Publish a social media post
+export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email }
-    });
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
     if (!user?.churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    // Check permissions
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(user.role)) {
+      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    }
+
     // Get the post
-    const post = await prisma.social_media_posts.findUnique({
+    const post = await db.social_media_posts.findFirst({
       where: {
         id: params.id,
         churchId: user.churchId
+      },
+      include: {
+        social_media_accounts: true
       }
+    })
+
     if (!post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+    }
+
     if (post.status === 'PUBLISHED') {
-      return NextResponse.json({ error: 'Post already published' }, { status: 400 });
-    // Get connected accounts
-    const accountIds = JSON.parse(post.accountIds || '[]');
-    const accounts = await prisma.social_media_accounts.findMany({
-        id: { in: accountIds },
-        churchId: user.churchId,
-        isActive: true
-    if (accounts.length === 0) {
-      return NextResponse.json({ error: 'No active accounts found' }, { status: 400 });
-    // Here you would integrate with actual social media APIs
-    // For now, we'll simulate the publishing process
-    const postIds: { [key: string]: string } = {};
-    for (const account of accounts) {
-      // Simulate API call to each platform
-      const platformPostId = `${account.platform.toLowerCase()}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      postIds[account.id] = platformPostId;
-      
-      // TODO: Implement actual API calls:
-      // - Facebook Graph API
-      // - Twitter API v2
-      // - Instagram Basic Display API
-      // - LinkedIn API
-    // Update post status
-    const updatedPost = await prisma.social_media_posts.update({
+      return NextResponse.json({ error: 'Post already published' }, { status: 400 })
+    }
+
+    // Update post status to published
+    const updatedPost = await db.social_media_posts.update({
       where: { id: params.id },
       data: {
         status: 'PUBLISHED',
         publishedAt: new Date(),
-        postIds: JSON.stringify(postIds)
-    // 🔄 P1 ENHANCEMENT: Trigger automation for social media post publishing
-    try {
-      await AutomationTriggers.socialMediaPostPublished(updatedPost, user.churchId);
-      console.log(`✅ Social media post published automation triggered for post: ${updatedPost.id}`);
-    } catch (automationError) {
-      console.error('❌ Error triggering social media post published automation:', automationError);
-      // Don't fail the request if automation fails
-    return NextResponse.json({ 
+        publishedBy: user.id
+      },
+      include: {
+        social_media_accounts: {
+          select: {
+            id: true,
+            platform: true,
+            username: true,
+            displayName: true
+          }
+        }
+      }
+    })
+
+    // Here you would integrate with actual social media APIs
+    // For now, we just update the database
+    
+    return NextResponse.json({
       message: 'Post published successfully',
-      post: updatedPost,
-      platformPostIds: postIds 
+      post: updatedPost
+    })
   } catch (error) {
-    console.error('Error publishing social media post:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
+    console.error('Error publishing post:', error)
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
   }
 }
