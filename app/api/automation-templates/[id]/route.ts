@@ -72,11 +72,26 @@ export async function GET(
     );
   }
 }
+
 // POST /api/automation-templates/[id]/activate - Activate template for church
 export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+
+    const user = await prisma.users.findUnique({
+      where: { id: session.user.id },
       select: { id: true, churchId: true, role: true }
+    });
+
     if (!user || !user.churchId) {
       return NextResponse.json({ error: 'Usuario no encontrado o sin iglesia' }, { status: 400 });
+    }
     // Check admin permission
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
       return NextResponse.json({ error: 'Sin permisos para activar plantillas' }, { status: 403 });

@@ -81,3 +81,9 @@ export async function PUT(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error updating church profile:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}

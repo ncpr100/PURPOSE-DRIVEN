@@ -125,12 +125,16 @@ export async function GET(request: NextRequest) {
       where: { isActive: true },
       _count: {
         category: true
+      }
+    });
+
     return NextResponse.json({
       templates: mappedTemplates,
       categories: categories.map((cat: { category: string; _count: { category: number } }) => ({
         name: cat.category,
         count: cat._count.category
       }))
+    });
   } catch (error) {
     console.error('Error fetching automation templates:', error)
     return NextResponse.json(

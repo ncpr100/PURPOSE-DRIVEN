@@ -76,15 +76,18 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 
     const rule = mockRules[params.id];
     if (!rule) {
-      return NextResponse.json({ error: 'Regla no encontrada' }, { status: 404 })
-    return NextResponse.json({ rule })
+      return NextResponse.json({ error: 'Regla no encontrada' }, { status: 404 });
+    }
+    return NextResponse.json({ rule });
   } catch (error) {
-    console.error('Error fetching automation rule:', error)
+    console.error('Error fetching automation rule:', error);
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }
-    )
+    );
   }
+}
+
 // PUT /api/automation-rules/[id] - Update mock automation rule
 export async function PUT(request: NextRequest, { params }: RouteContext) {
     // Check permissions
