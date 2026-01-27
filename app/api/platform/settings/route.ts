@@ -64,5 +64,13 @@ export async function PUT(request: NextRequest) {
         allowRegistrations: data.allowRegistrations || true,
         updatedAt: new Date()
       }
-    })
-    console.error('Error updating platform settings:', error)
+    });
+    
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error updating platform settings:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
+  }
+}
