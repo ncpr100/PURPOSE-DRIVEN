@@ -12,6 +12,10 @@ export declare class AutomationEngine {
 }
 export declare const automationEngine: AutomationEngine;
 export declare function triggerAutomation(triggerType: AutomationTriggerType, data: any, churchId: string, contextId?: string, contextType?: string, userId?: string): Promise<void>;
+export declare class FormAutomationEngine {
+    static processFormSubmission(formType: string, formData: any, churchId: string, userId?: string): Promise<void>;
+    private static mapFormTypeToTrigger;
+}
 export declare const AutomationTriggers: {
     memberJoined: (memberData: any, churchId: string) => Promise<void>;
     attendanceRecorded: (attendanceData: any, churchId: string) => Promise<void>;

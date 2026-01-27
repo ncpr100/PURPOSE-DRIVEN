@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutomationTriggers = exports.triggerAutomation = exports.automationEngine = exports.AutomationEngine = void 0;
+exports.AutomationTriggers = exports.FormAutomationEngine = exports.triggerAutomation = exports.automationEngine = exports.AutomationEngine = void 0;
 // Minimal automation engine for basic functionality
 class AutomationEngine {
     constructor() {
@@ -49,6 +49,38 @@ async function triggerAutomation(triggerType, data, churchId, contextId, context
     return exports.automationEngine.processTrigger(triggerType, churchId, data, userId, contextId, contextType);
 }
 exports.triggerAutomation = triggerAutomation;
+// Form Automation Engine for custom form submissions
+class FormAutomationEngine {
+    static async processFormSubmission(formType, formData, churchId, userId) {
+        try {
+            console.log(`📝 Processing form submission: ${formType} for church ${churchId}`);
+            // Trigger automation based on form type
+            const triggerType = this.mapFormTypeToTrigger(formType);
+            if (triggerType) {
+                await triggerAutomation(triggerType, formData, churchId, formData.id, 'form', userId);
+            }
+            console.log(`✅ Form automation processed successfully`);
+        }
+        catch (error) {
+            console.error('Form automation error:', error);
+        }
+    }
+    static mapFormTypeToTrigger(formType) {
+        switch (formType.toLowerCase()) {
+            case 'member_registration':
+                return 'MEMBER_REGISTRATION';
+            case 'event_signup':
+                return 'EVENT_CREATED';
+            case 'donation_form':
+                return 'DONATION_RECEIVED';
+            case 'visitor_info':
+                return 'MEMBER_CHECK_IN';
+            default:
+                return null;
+        }
+    }
+}
+exports.FormAutomationEngine = FormAutomationEngine;
 // Export specific trigger functions for common scenarios (minimal implementation)
 exports.AutomationTriggers = {
     memberJoined: (memberData, churchId) => triggerAutomation('MEMBER_JOINED', memberData, churchId, memberData.id, 'member'),

@@ -108,6 +108,45 @@ export async function triggerAutomation(
   return automationEngine.processTrigger(triggerType, churchId, data, userId, contextId, contextType)
 }
 
+// Form Automation Engine for custom form submissions
+export class FormAutomationEngine {
+  static async processFormSubmission(
+    formType: string,
+    formData: any,
+    churchId: string,
+    userId?: string
+  ): Promise<void> {
+    try {
+      console.log(`📝 Processing form submission: ${formType} for church ${churchId}`)
+      
+      // Trigger automation based on form type
+      const triggerType = this.mapFormTypeToTrigger(formType)
+      if (triggerType) {
+        await triggerAutomation(triggerType, formData, churchId, formData.id, 'form', userId)
+      }
+      
+      console.log(`✅ Form automation processed successfully`)
+    } catch (error) {
+      console.error('Form automation error:', error)
+    }
+  }
+
+  private static mapFormTypeToTrigger(formType: string): AutomationTriggerType | null {
+    switch (formType.toLowerCase()) {
+      case 'member_registration':
+        return 'MEMBER_REGISTRATION'
+      case 'event_signup':
+        return 'EVENT_CREATED'
+      case 'donation_form':
+        return 'DONATION_RECEIVED'
+      case 'visitor_info':
+        return 'MEMBER_CHECK_IN'
+      default:
+        return null
+    }
+  }
+}
+
 // Export specific trigger functions for common scenarios (minimal implementation)
 export const AutomationTriggers = {
   memberJoined: (memberData: any, churchId: string) =>
