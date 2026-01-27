@@ -1,46 +1,41 @@
-
-import { db as prisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { nanoid } from 'nanoid'
-// GET - Obtener todos los sitios web de una iglesia
+import { db } from '@/lib/db'
+import { cuid } from '@/lib/utils'
+
+export const dynamic = 'force-dynamic'
+
+// GET /api/websites - Get all websites for church
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    
-    if (!session?.user?.churchId) {
-      return NextResponse.json(
-        { error: 'No autorizado' },
-        { status: 401 }
-      )
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    const websites = await prisma.websites.findMany({
-      where: {
-        churchId: session.user.churchId
-      },
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    const websites = await db.websites.findMany({
+      where: { churchId: user.churchId },
       include: {
-        web_pages: {
-          select: {
-            id: true,
-            title: true,
-            slug: true,
-            isHomePage: true,
-            isPublished: true
-          }
-        },
-        funnels: {
-            name: true,
-            type: true,
-            isActive: true
         _count: {
+          select: {
             web_pages: true,
             funnels: true
+          }
         }
-      orderBy: {
-        updatedAt: 'desc'
-      }
+      },
+      orderBy: { createdAt: 'desc' }
     })
+
     return NextResponse.json(websites)
   } catch (error) {
     console.error('Error fetching websites:', error)
@@ -50,28 +45,101 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-// POST - Crear nuevo sitio web
+
+// POST /api/websites - Create new website
 export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({
+      where: { id: session.user.id },
+      include: { churches: true }
+    })
+
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    // Check permissions
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
+      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    }
+
     const body = await request.json()
-    const { name, description, slug, theme, primaryColor, secondaryColor } = body
-    // Verificar que el slug no existe
-    const existingWebsite = await prisma.websites.findUnique({
-      where: { slug }
-    if (existingWebsite) {
-        { error: 'La URL del sitio web ya está en uso' },
-        { status: 400 }
-    const website = await prisma.websites.create({
+    const { name, domain, subdomain, description, type = 'institutional', settings = {} } = body
+
+    if (!name) {
+      return NextResponse.json({ error: 'El nombre es requerido' }, { status: 400 })
+    }
+
+    // Check for existing domain/subdomain
+    if (domain) {
+      const existingDomain = await db.websites.findFirst({
+        where: { domain, id: { not: undefined } }
+      })
+      
+      if (existingDomain) {
+        return NextResponse.json(
+          { error: 'Ya existe un sitio web con este dominio' },
+          { status: 409 }
+        )
+      }
+    }
+
+    if (subdomain) {
+      const existingSubdomain = await db.websites.findFirst({
+        where: { subdomain, id: { not: undefined } }
+      })
+      
+      if (existingSubdomain) {
+        return NextResponse.json(
+          { error: 'Ya existe un sitio web con este subdominio' },
+          { status: 409 }
+        )
+      }
+    }
+
+    const website = await db.websites.create({
       data: {
-        id: nanoid(),
+        id: cuid(),
         name,
-        description,
-        slug,
-        theme: theme || 'default',
-        primaryColor: primaryColor || '#3B82F6',
-        secondaryColor: secondaryColor || '#64748B',
-        churchId: session.user.churchId,
-        updatedAt: new Date(),
-        web_pages: true,
-        funnels: true,
-    return NextResponse.json(website)
+        domain: domain || null,
+        subdomain: subdomain || null,
+        description: description || null,
+        type,
+        isActive: true,
+        settings: JSON.stringify(settings),
+        churchId: user.churchId,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      include: {
+        _count: {
+          select: {
+            web_pages: true,
+            funnels: true
+          }
+        }
+      }
+    })
+
+    return NextResponse.json(website, { status: 201 })
+  } catch (error) {
     console.error('Error creating website:', error)
+    
+    if (error.code === 'P2002') {
+      return NextResponse.json(
+        { error: 'Ya existe un sitio web con estos datos únicos' },
+        { status: 409 }
+      )
+    }
+    
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}
