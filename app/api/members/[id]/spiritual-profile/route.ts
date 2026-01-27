@@ -105,7 +105,9 @@ export async function POST(
       'NOVATO': 3,
       'INTERMEDIO': 6,
       'AVANZADO': 9
-    const experienceLevelNumeric = experienceLevelMap[experienceLevel] || 5
+    };
+    
+    const experienceLevelNumeric = experienceLevelMap[experienceLevel] || 5;
     // Calculate readiness scores based on assessment
     const volunteerReadinessScore = Math.min(100, Math.round(
       (primaryGifts.length * 15) + 
