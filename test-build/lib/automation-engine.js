@@ -51,6 +51,20 @@ async function triggerAutomation(triggerType, data, churchId, contextId, context
 exports.triggerAutomation = triggerAutomation;
 // Form Automation Engine for custom form submissions
 class FormAutomationEngine {
+    static async processCustomFormSubmission(formId, formType, formData, churchId, userId) {
+        try {
+            console.log(`📝 Processing custom form submission: ${formType} (ID: ${formId}) for church ${churchId}`);
+            // Trigger automation based on form type
+            const triggerType = this.mapFormTypeToTrigger(formType);
+            if (triggerType) {
+                await triggerAutomation(triggerType, formData, churchId, formId, 'form', userId);
+            }
+            console.log(`✅ Custom form automation processed successfully`);
+        }
+        catch (error) {
+            console.error('Custom form automation error:', error);
+        }
+    }
     static async processFormSubmission(formType, formData, churchId, userId) {
         try {
             console.log(`📝 Processing form submission: ${formType} for church ${churchId}`);
@@ -68,15 +82,19 @@ class FormAutomationEngine {
     static mapFormTypeToTrigger(formType) {
         switch (formType.toLowerCase()) {
             case 'member_registration':
+            case 'member':
                 return 'MEMBER_REGISTRATION';
             case 'event_signup':
+            case 'event':
                 return 'EVENT_CREATED';
             case 'donation_form':
+            case 'donation':
                 return 'DONATION_RECEIVED';
             case 'visitor_info':
+            case 'visitor':
                 return 'MEMBER_CHECK_IN';
             default:
-                return null;
+                return 'MEMBER_CHECK_IN'; // Default to check-in for unknown form types
         }
     }
 }

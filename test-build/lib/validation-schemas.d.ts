@@ -308,7 +308,7 @@ export declare const memberSchema: z.ZodObject<{
     notes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     role: "member" | "leader" | "pastor" | "admin";
-    status: "active" | "inactive" | "visitor";
+    status: "visitor" | "active" | "inactive";
     firstName: string;
     lastName: string;
     email?: string | undefined;
@@ -325,7 +325,7 @@ export declare const memberSchema: z.ZodObject<{
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
     phone?: string | undefined;
-    status?: "active" | "inactive" | "visitor" | undefined;
+    status?: "visitor" | "active" | "inactive" | undefined;
     notes?: string | undefined;
     address?: string | undefined;
     birthDate?: string | undefined;
@@ -350,7 +350,7 @@ export declare const memberUpdateSchema: z.ZodObject<{
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
     phone?: string | undefined;
-    status?: "active" | "inactive" | "visitor" | undefined;
+    status?: "visitor" | "active" | "inactive" | undefined;
     notes?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
@@ -363,7 +363,7 @@ export declare const memberUpdateSchema: z.ZodObject<{
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
     phone?: string | undefined;
-    status?: "active" | "inactive" | "visitor" | undefined;
+    status?: "visitor" | "active" | "inactive" | undefined;
     notes?: string | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
@@ -848,7 +848,7 @@ declare const _default: {
         notes: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
         role: "member" | "leader" | "pastor" | "admin";
-        status: "active" | "inactive" | "visitor";
+        status: "visitor" | "active" | "inactive";
         firstName: string;
         lastName: string;
         email?: string | undefined;
@@ -865,7 +865,7 @@ declare const _default: {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
         phone?: string | undefined;
-        status?: "active" | "inactive" | "visitor" | undefined;
+        status?: "visitor" | "active" | "inactive" | undefined;
         notes?: string | undefined;
         address?: string | undefined;
         birthDate?: string | undefined;
@@ -890,7 +890,7 @@ declare const _default: {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
         phone?: string | undefined;
-        status?: "active" | "inactive" | "visitor" | undefined;
+        status?: "visitor" | "active" | "inactive" | undefined;
         notes?: string | undefined;
         firstName?: string | undefined;
         lastName?: string | undefined;
@@ -903,7 +903,7 @@ declare const _default: {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
         phone?: string | undefined;
-        status?: "active" | "inactive" | "visitor" | undefined;
+        status?: "visitor" | "active" | "inactive" | undefined;
         notes?: string | undefined;
         firstName?: string | undefined;
         lastName?: string | undefined;
