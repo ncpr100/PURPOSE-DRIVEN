@@ -17,6 +17,7 @@ var MemberLifecycleStage;
     MemberLifecycleStage["FIRST_TIME_GUEST"] = "FIRST_TIME_GUEST";
     MemberLifecycleStage["RETURNING_VISITOR"] = "RETURNING_VISITOR";
     MemberLifecycleStage["REGULAR_ATTENDEE"] = "REGULAR_ATTENDEE";
+    MemberLifecycleStage["MEMBERSHIP_CANDIDATE"] = "MEMBERSHIP_CANDIDATE";
     MemberLifecycleStage["NEW_MEMBER"] = "NEW_MEMBER";
     MemberLifecycleStage["ESTABLISHED_MEMBER"] = "ESTABLISHED_MEMBER";
     MemberLifecycleStage["GROWING_MEMBER"] = "GROWING_MEMBER";

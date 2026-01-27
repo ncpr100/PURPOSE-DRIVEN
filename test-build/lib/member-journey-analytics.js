@@ -5,10 +5,13 @@
  * and predictive retention modeling.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MemberJourneyAnalytics = void 0;
+exports.MemberJourneyAnalytics = exports.RetentionRisk = exports.EngagementLevel = exports.MemberLifecycleStage = void 0;
 const db_1 = require("./db");
 const nanoid_1 = require("nanoid");
-const client_1 = require("@prisma/client");
+const cached_analytics_service_1 = require("./cached-analytics-service");
+Object.defineProperty(exports, "MemberLifecycleStage", { enumerable: true, get: function () { return cached_analytics_service_1.MemberLifecycleStage; } });
+Object.defineProperty(exports, "EngagementLevel", { enumerable: true, get: function () { return cached_analytics_service_1.EngagementLevel; } });
+Object.defineProperty(exports, "RetentionRisk", { enumerable: true, get: function () { return cached_analytics_service_1.RetentionRisk; } });
 class MemberJourneyAnalytics {
     constructor(churchId) {
         this.churchId = churchId;
@@ -94,7 +97,7 @@ class MemberJourneyAnalytics {
             }
         });
         if (!member)
-            return client_1.MemberLifecycleStage.VISITOR;
+            return cached_analytics_service_1.MemberLifecycleStage.VISITOR;
         const membershipDuration = member.membershipDate
             ? Math.floor((Date.now() - member.membershipDate.getTime()) / (1000 * 60 * 60 * 24))
             : 0;
@@ -103,32 +106,32 @@ class MemberJourneyAnalytics {
         const isLeader = member.users?.role && ['PASTOR', 'LIDER', 'ADMIN_IGLESIA'].includes(member.users.role);
         // Determine stage based on comprehensive criteria
         if (isLeader)
-            return client_1.MemberLifecycleStage.MATURE_LEADER;
+            return cached_analytics_service_1.MemberLifecycleStage.MATURE_LEADER;
         if (hasMinistryRole && membershipDuration > 365 && engagementScore > 80)
-            return client_1.MemberLifecycleStage.LEADING_MEMBER;
+            return cached_analytics_service_1.MemberLifecycleStage.LEADING_MEMBER;
         if (hasMinistryRole && engagementScore > 70)
-            return client_1.MemberLifecycleStage.SERVING_MEMBER;
+            return cached_analytics_service_1.MemberLifecycleStage.SERVING_MEMBER;
         if (membershipDuration > 180 && engagementScore > 60)
-            return client_1.MemberLifecycleStage.GROWING_MEMBER;
+            return cached_analytics_service_1.MemberLifecycleStage.GROWING_MEMBER;
         if (membershipDuration > 30 && engagementScore > 50)
-            return client_1.MemberLifecycleStage.ESTABLISHED_MEMBER;
+            return cached_analytics_service_1.MemberLifecycleStage.ESTABLISHED_MEMBER;
         if (member.membershipDate && membershipDuration <= 180)
-            return client_1.MemberLifecycleStage.NEW_MEMBER;
+            return cached_analytics_service_1.MemberLifecycleStage.NEW_MEMBER;
         if (engagementScore < 20 && membershipDuration > 90)
-            return client_1.MemberLifecycleStage.INACTIVE_MEMBER;
+            return cached_analytics_service_1.MemberLifecycleStage.INACTIVE_MEMBER;
         if (engagementScore < 10 && membershipDuration > 180)
-            return client_1.MemberLifecycleStage.DISCONNECTED_MEMBER;
+            return cached_analytics_service_1.MemberLifecycleStage.DISCONNECTED_MEMBER;
         // For non-members, determine visitor stage
         const checkInCount = await this.getCheckInCount(memberId);
         if (checkInCount === 0)
-            return client_1.MemberLifecycleStage.VISITOR;
+            return cached_analytics_service_1.MemberLifecycleStage.VISITOR;
         if (checkInCount === 1)
-            return client_1.MemberLifecycleStage.FIRST_TIME_GUEST;
+            return cached_analytics_service_1.MemberLifecycleStage.FIRST_TIME_GUEST;
         if (checkInCount <= 4)
-            return client_1.MemberLifecycleStage.RETURNING_VISITOR;
+            return cached_analytics_service_1.MemberLifecycleStage.RETURNING_VISITOR;
         if (checkInCount >= 5)
-            return client_1.MemberLifecycleStage.REGULAR_ATTENDEE;
-        return client_1.MemberLifecycleStage.VISITOR;
+            return cached_analytics_service_1.MemberLifecycleStage.REGULAR_ATTENDEE;
+        return cached_analytics_service_1.MemberLifecycleStage.VISITOR;
     }
     /**
      * Calculate retention risk using predictive modeling
@@ -140,7 +143,7 @@ class MemberJourneyAnalytics {
             include: { member_journeys: true }
         });
         if (!member)
-            return { risk: client_1.RetentionRisk.VERY_HIGH, score: 100, factors: ['Member not found'] };
+            return { risk: cached_analytics_service_1.RetentionRisk.VERY_HIGH, score: 100, factors: ['Member not found'] };
         const riskFactors = [];
         let riskScore = 50; // Base risk
         // Engagement factor
@@ -189,15 +192,15 @@ class MemberJourneyAnalytics {
         // Determine risk level
         let risk;
         if (riskScore >= 76)
-            risk = client_1.RetentionRisk.VERY_HIGH;
+            risk = cached_analytics_service_1.RetentionRisk.VERY_HIGH;
         else if (riskScore >= 51)
-            risk = client_1.RetentionRisk.HIGH;
+            risk = cached_analytics_service_1.RetentionRisk.HIGH;
         else if (riskScore >= 26)
-            risk = client_1.RetentionRisk.MEDIUM;
+            risk = cached_analytics_service_1.RetentionRisk.MEDIUM;
         else if (riskScore >= 11)
-            risk = client_1.RetentionRisk.LOW;
+            risk = cached_analytics_service_1.RetentionRisk.LOW;
         else
-            risk = client_1.RetentionRisk.VERY_LOW;
+            risk = cached_analytics_service_1.RetentionRisk.VERY_LOW;
         return { risk, score: riskScore, factors: riskFactors };
     }
     /**
@@ -231,7 +234,7 @@ class MemberJourneyAnalytics {
                 requiredSkills: ['Conocimiento bíblico', 'Comunicación efectiva']
             });
         }
-        if (primaryGifts.includes('LIDERAZGO') && currentStage !== client_1.MemberLifecycleStage.LEADING_MEMBER) {
+        if (primaryGifts.includes('LIDERAZGO') && currentStage !== cached_analytics_service_1.MemberLifecycleStage.LEADING_MEMBER) {
             recommendations.push({
                 type: 'leadership',
                 title: 'Desarrollo de Liderazgo',
@@ -243,7 +246,7 @@ class MemberJourneyAnalytics {
             });
         }
         // Growth recommendations based on stage
-        if (currentStage === client_1.MemberLifecycleStage.NEW_MEMBER) {
+        if (currentStage === cached_analytics_service_1.MemberLifecycleStage.NEW_MEMBER) {
             recommendations.push({
                 type: 'growth',
                 title: 'Programa de Discipulado',
@@ -457,7 +460,7 @@ class MemberJourneyAnalytics {
         const stageDistribution = {};
         const stageCounts = {};
         // Initialize all stages
-        Object.values(client_1.MemberLifecycleStage).forEach(stage => {
+        Object.values(cached_analytics_service_1.MemberLifecycleStage).forEach(stage => {
             stageDistribution[stage] = { count: 0, percentage: 0, averageDuration: 0 };
             stageCounts[stage] = 0;
         });
@@ -479,14 +482,14 @@ class MemberJourneyAnalytics {
         });
         // Calculate conversion rates between sequential stages
         const stageOrder = [
-            client_1.MemberLifecycleStage.VISITOR,
-            client_1.MemberLifecycleStage.FIRST_TIME_GUEST,
-            client_1.MemberLifecycleStage.RETURNING_VISITOR,
-            client_1.MemberLifecycleStage.REGULAR_ATTENDEE,
-            client_1.MemberLifecycleStage.NEW_MEMBER,
-            client_1.MemberLifecycleStage.ESTABLISHED_MEMBER,
-            client_1.MemberLifecycleStage.SERVING_MEMBER,
-            client_1.MemberLifecycleStage.LEADING_MEMBER
+            cached_analytics_service_1.MemberLifecycleStage.VISITOR,
+            cached_analytics_service_1.MemberLifecycleStage.FIRST_TIME_GUEST,
+            cached_analytics_service_1.MemberLifecycleStage.RETURNING_VISITOR,
+            cached_analytics_service_1.MemberLifecycleStage.REGULAR_ATTENDEE,
+            cached_analytics_service_1.MemberLifecycleStage.NEW_MEMBER,
+            cached_analytics_service_1.MemberLifecycleStage.ESTABLISHED_MEMBER,
+            cached_analytics_service_1.MemberLifecycleStage.SERVING_MEMBER,
+            cached_analytics_service_1.MemberLifecycleStage.LEADING_MEMBER
         ];
         const conversionRates = {};
         for (let i = 0; i < stageOrder.length - 1; i++) {
@@ -501,12 +504,12 @@ class MemberJourneyAnalytics {
         return {
             totalVisitors: totalJourneys,
             conversionRates: {
-                visitorToFirstTime: conversionRates[`${client_1.MemberLifecycleStage.VISITOR}To${client_1.MemberLifecycleStage.FIRST_TIME_GUEST}`] || 0,
-                firstTimeToReturning: conversionRates[`${client_1.MemberLifecycleStage.FIRST_TIME_GUEST}To${client_1.MemberLifecycleStage.RETURNING_VISITOR}`] || 0,
-                returningToRegular: conversionRates[`${client_1.MemberLifecycleStage.RETURNING_VISITOR}To${client_1.MemberLifecycleStage.REGULAR_ATTENDEE}`] || 0,
-                regularToMember: conversionRates[`${client_1.MemberLifecycleStage.REGULAR_ATTENDEE}To${client_1.MemberLifecycleStage.NEW_MEMBER}`] || 0,
-                memberToActive: conversionRates[`${client_1.MemberLifecycleStage.NEW_MEMBER}To${client_1.MemberLifecycleStage.ESTABLISHED_MEMBER}`] || 0,
-                activeToLeader: conversionRates[`${client_1.MemberLifecycleStage.ESTABLISHED_MEMBER}To${client_1.MemberLifecycleStage.LEADING_MEMBER}`] || 0,
+                visitorToFirstTime: conversionRates[`${cached_analytics_service_1.MemberLifecycleStage.VISITOR}To${cached_analytics_service_1.MemberLifecycleStage.FIRST_TIME_GUEST}`] || 0,
+                firstTimeToReturning: conversionRates[`${cached_analytics_service_1.MemberLifecycleStage.FIRST_TIME_GUEST}To${cached_analytics_service_1.MemberLifecycleStage.RETURNING_VISITOR}`] || 0,
+                returningToRegular: conversionRates[`${cached_analytics_service_1.MemberLifecycleStage.RETURNING_VISITOR}To${cached_analytics_service_1.MemberLifecycleStage.REGULAR_ATTENDEE}`] || 0,
+                regularToMember: conversionRates[`${cached_analytics_service_1.MemberLifecycleStage.REGULAR_ATTENDEE}To${cached_analytics_service_1.MemberLifecycleStage.NEW_MEMBER}`] || 0,
+                memberToActive: conversionRates[`${cached_analytics_service_1.MemberLifecycleStage.NEW_MEMBER}To${cached_analytics_service_1.MemberLifecycleStage.ESTABLISHED_MEMBER}`] || 0,
+                activeToLeader: conversionRates[`${cached_analytics_service_1.MemberLifecycleStage.ESTABLISHED_MEMBER}To${cached_analytics_service_1.MemberLifecycleStage.LEADING_MEMBER}`] || 0,
             },
             stageDistribution
         };
@@ -515,10 +518,10 @@ class MemberJourneyAnalytics {
         const retentionByStage = {};
         const riskDistribution = {};
         // Initialize
-        Object.values(client_1.MemberLifecycleStage).forEach(stage => {
+        Object.values(cached_analytics_service_1.MemberLifecycleStage).forEach(stage => {
             retentionByStage[stage] = 0;
         });
-        Object.values(client_1.RetentionRisk).forEach(risk => {
+        Object.values(cached_analytics_service_1.RetentionRisk).forEach(risk => {
             riskDistribution[risk] = 0;
         });
         // Calculate retention by stage (simplified - would need historical data)
@@ -548,11 +551,11 @@ class MemberJourneyAnalytics {
     }
     calculateEngagementDistribution(journeys) {
         const distribution = {
-            [client_1.EngagementLevel.HIGH]: 0,
-            [client_1.EngagementLevel.MEDIUM_HIGH]: 0,
-            [client_1.EngagementLevel.MEDIUM]: 0,
-            [client_1.EngagementLevel.MEDIUM_LOW]: 0,
-            [client_1.EngagementLevel.LOW]: 0,
+            [cached_analytics_service_1.EngagementLevel.HIGH]: 0,
+            [cached_analytics_service_1.EngagementLevel.MEDIUM_HIGH]: 0,
+            [cached_analytics_service_1.EngagementLevel.MEDIUM]: 0,
+            [cached_analytics_service_1.EngagementLevel.MEDIUM_LOW]: 0,
+            [cached_analytics_service_1.EngagementLevel.LOW]: 0,
         };
         journeys.forEach(journey => {
             if (journey.engagementLevel && journey.engagementLevel in distribution) {
@@ -608,8 +611,8 @@ class MemberJourneyAnalytics {
     }
     // Enhanced ML-powered prediction methods
     async generateMLGrowthPredictions(journeys) {
-        const membershipCandidates = journeys.filter(j => j.currentStage === client_1.MemberLifecycleStage.MEMBERSHIP_CANDIDATE);
-        const servingMembers = journeys.filter(j => j.currentStage === client_1.MemberLifecycleStage.SERVING_MEMBER);
+        const membershipCandidates = journeys.filter(j => j.currentStage === cached_analytics_service_1.MemberLifecycleStage.MEMBERSHIP_CANDIDATE);
+        const servingMembers = journeys.filter(j => j.currentStage === cached_analytics_service_1.MemberLifecycleStage.SERVING_MEMBER);
         // Use historical conversion rates from church-specific data
         const historicalData = await this.getHistoricalConversionRates();
         // Apply seasonality and trend analysis
@@ -643,7 +646,7 @@ class MemberJourneyAnalytics {
         };
     }
     async generateMLRetentionAlerts(journeys) {
-        const highRiskJourneys = journeys.filter(j => j.retentionRisk && [client_1.RetentionRisk.HIGH, client_1.RetentionRisk.VERY_HIGH].includes(j.retentionRisk));
+        const highRiskJourneys = journeys.filter(j => j.retentionRisk && [cached_analytics_service_1.RetentionRisk.HIGH, cached_analytics_service_1.RetentionRisk.VERY_HIGH].includes(j.retentionRisk));
         // Enhanced risk categorization
         const criticalAlerts = [];
         const urgentAlerts = [];
@@ -682,11 +685,11 @@ class MemberJourneyAnalytics {
     async generateMLRecommendedActions(journeys) {
         const actions = [];
         // AI-generated action prioritization
-        const criticalMembers = journeys.filter(j => j.retentionRisk === client_1.RetentionRisk.VERY_HIGH);
+        const criticalMembers = journeys.filter(j => j.retentionRisk === cached_analytics_service_1.RetentionRisk.VERY_HIGH);
         const lowEngagementMembers = journeys.filter(j => j.engagementScore < 30);
-        const potentialLeaders = journeys.filter(j => j.currentStage === client_1.MemberLifecycleStage.SERVING_MEMBER &&
+        const potentialLeaders = journeys.filter(j => j.currentStage === cached_analytics_service_1.MemberLifecycleStage.SERVING_MEMBER &&
             j.engagementScore > 70);
-        const newcomers = journeys.filter(j => [client_1.MemberLifecycleStage.NEW_MEMBER, client_1.MemberLifecycleStage.FIRST_TIME_GUEST].includes(j.currentStage));
+        const newcomers = journeys.filter(j => [cached_analytics_service_1.MemberLifecycleStage.NEW_MEMBER, cached_analytics_service_1.MemberLifecycleStage.FIRST_TIME_GUEST].includes(j.currentStage));
         // Critical retention actions
         if (criticalMembers.length > 0) {
             actions.push({

@@ -9,9 +9,11 @@ import { nanoid } from 'nanoid';
 import { 
   MemberLifecycleStage, 
   EngagementLevel, 
-  RetentionRisk,
-  PrismaClient 
-} from '@prisma/client';
+  RetentionRisk
+} from './cached-analytics-service';
+
+// Re-export types to maintain existing import structure for other files
+export { MemberLifecycleStage, EngagementLevel, RetentionRisk };
 
 // Types for enhanced analytics
 export interface MemberJourneyState {

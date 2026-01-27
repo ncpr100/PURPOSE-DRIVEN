@@ -3,7 +3,8 @@
  * Implements sophisticated member lifecycle tracking with behavioral pattern analysis
  * and predictive retention modeling.
  */
-import { MemberLifecycleStage, EngagementLevel, RetentionRisk } from '@prisma/client';
+import { MemberLifecycleStage, EngagementLevel, RetentionRisk } from './cached-analytics-service';
+export { MemberLifecycleStage, EngagementLevel, RetentionRisk };
 export interface MemberJourneyState {
     id: string;
     currentStage: MemberLifecycleStage;
