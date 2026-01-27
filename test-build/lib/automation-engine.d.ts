@@ -22,6 +22,7 @@ export declare const AutomationTriggers: {
     attendanceRecorded: (attendanceData: any, churchId: string) => Promise<void>;
     birthday: (memberData: any, churchId: string) => Promise<void>;
     anniversary: (memberData: any, churchId: string) => Promise<void>;
+    donationReceived: (donationData: any, churchId: string) => Promise<void>;
     sermonPublished: (sermonData: any, churchId: string, userId: string) => Promise<void>;
     followUpDue: (followUpData: any, churchId: string) => Promise<void>;
     socialMediaPostCreated: (postData: any, churchId: string, userId: string) => Promise<void>;

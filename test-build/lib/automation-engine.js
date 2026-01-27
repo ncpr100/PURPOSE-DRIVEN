@@ -49,7 +49,7 @@ async function triggerAutomation(triggerType, data, churchId, contextId, context
     return exports.automationEngine.processTrigger(triggerType, churchId, data, userId, contextId, contextType);
 }
 exports.triggerAutomation = triggerAutomation;
-// Form Automation Engine for custom form submissions
+// Form Automation Engine for custom form submissions (Fixed for Railway deployment)
 class FormAutomationEngine {
     static async processCustomFormSubmission(formId, formType, formData, churchId, userId) {
         try {
@@ -105,6 +105,7 @@ exports.AutomationTriggers = {
     attendanceRecorded: (attendanceData, churchId) => triggerAutomation('ATTENDANCE_RECORDED', attendanceData, churchId, attendanceData.id, 'attendance'),
     birthday: (memberData, churchId) => triggerAutomation('BIRTHDAY', memberData, churchId, memberData.id, 'member'),
     anniversary: (memberData, churchId) => triggerAutomation('ANNIVERSARY', memberData, churchId, memberData.id, 'member'),
+    donationReceived: (donationData, churchId) => triggerAutomation('DONATION_RECEIVED', donationData, churchId, donationData.id, 'donation'),
     sermonPublished: (sermonData, churchId, userId) => triggerAutomation('SERMON_PUBLISHED', sermonData, churchId, sermonData.id, 'sermon', userId),
     followUpDue: (followUpData, churchId) => triggerAutomation('FOLLOW_UP_DUE', followUpData, churchId, followUpData.id, 'followUp'),
     socialMediaPostCreated: (postData, churchId, userId) => triggerAutomation('SOCIAL_MEDIA_POST_CREATED', postData, churchId, postData.id, 'socialMediaPost', userId),

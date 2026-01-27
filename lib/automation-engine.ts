@@ -108,7 +108,7 @@ export async function triggerAutomation(
   return automationEngine.processTrigger(triggerType, churchId, data, userId, contextId, contextType)
 }
 
-// Form Automation Engine for custom form submissions
+// Form Automation Engine for custom form submissions (Fixed for Railway deployment)
 export class FormAutomationEngine {
   static async processCustomFormSubmission(
     formId: string,
@@ -186,6 +186,9 @@ export const AutomationTriggers = {
 
   anniversary: (memberData: any, churchId: string) =>
     triggerAutomation('ANNIVERSARY', memberData, churchId, memberData.id, 'member'),
+
+  donationReceived: (donationData: any, churchId: string) =>
+    triggerAutomation('DONATION_RECEIVED', donationData, churchId, donationData.id, 'donation'),
 
   sermonPublished: (sermonData: any, churchId: string, userId: string) =>
     triggerAutomation('SERMON_PUBLISHED', sermonData, churchId, sermonData.id, 'sermon', userId),
