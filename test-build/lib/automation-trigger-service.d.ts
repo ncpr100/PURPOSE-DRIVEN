@@ -3,7 +3,7 @@
  * Handles automatic execution of automation rules based on system events
  * Integrates with Forms, QR Codes, Prayer Requests, Visitor Check-ins, etc.
  */
-export type AutomationTriggerType = string;
+import { AutomationTriggerType } from '@prisma/client';
 export interface AutomationTriggerPayload {
     type: AutomationTriggerType;
     churchId: string;

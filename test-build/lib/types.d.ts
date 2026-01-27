@@ -1,13 +1,13 @@
-export type UserRole = string;
-export type ExtendedUser = any & {
-    church?: any | null;
+import { users, churches, members, sermons, UserRole } from "@prisma/client";
+export type ExtendedUser = users & {
+    church?: churches | null;
 };
-export type ExtendedMember = any & {
-    church?: any;
-    user?: any | null;
+export type ExtendedMember = members & {
+    church?: churches;
+    user?: users | null;
 };
-export type ExtendedSermon = any & {
-    church?: any;
+export type ExtendedSermon = sermons & {
+    church?: churches;
 };
 export interface DashboardStats {
     totalMembers: number;
@@ -38,7 +38,7 @@ declare module "next-auth" {
             image?: string | null;
             role: UserRole;
             churchId: string | null;
-            church?: any | null;
+            church?: churches | null;
         };
     }
     interface User {
@@ -48,7 +48,7 @@ declare module "next-auth" {
         image?: string | null;
         role: UserRole;
         churchId: string | null;
-        church?: any | null;
+        church?: churches | null;
     }
 }
 declare module "next-auth/jwt" {
@@ -56,7 +56,8 @@ declare module "next-auth/jwt" {
         id: string;
         role: UserRole;
         churchId: string | null;
-        church?: any | null;
+        church?: churches | null;
     }
 }
+export { UserRole };
 //# sourceMappingURL=types.d.ts.map

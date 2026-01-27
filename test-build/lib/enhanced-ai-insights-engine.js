@@ -4,30 +4,9 @@
  * Implements sophisticated predictive modeling for 90%+ accuracy
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EnhancedAIInsightsEngine = exports.RetentionRisk = exports.MemberLifecycleStage = void 0;
+exports.EnhancedAIInsightsEngine = void 0;
 const db_1 = require("./db");
-exports.MemberLifecycleStage = {
-    VISITOR: 'VISITOR',
-    FIRST_TIME_GUEST: 'FIRST_TIME_GUEST',
-    RETURNING_VISITOR: 'RETURNING_VISITOR',
-    REGULAR_ATTENDEE: 'REGULAR_ATTENDEE',
-    MEMBERSHIP_CANDIDATE: 'MEMBERSHIP_CANDIDATE',
-    NEW_MEMBER: 'NEW_MEMBER',
-    ESTABLISHED_MEMBER: 'ESTABLISHED_MEMBER',
-    GROWING_MEMBER: 'GROWING_MEMBER',
-    SERVING_MEMBER: 'SERVING_MEMBER',
-    LEADING_MEMBER: 'LEADING_MEMBER',
-    MATURE_LEADER: 'MATURE_LEADER',
-    INACTIVE_MEMBER: 'INACTIVE_MEMBER',
-    DISCONNECTED_MEMBER: 'DISCONNECTED_MEMBER'
-};
-exports.RetentionRisk = {
-    VERY_LOW: 'VERY_LOW',
-    LOW: 'LOW',
-    MEDIUM: 'MEDIUM',
-    HIGH: 'HIGH',
-    VERY_HIGH: 'VERY_HIGH'
-};
+const client_1 = require("@prisma/client");
 class EnhancedAIInsightsEngine {
     constructor(churchId) {
         this.historicalAccuracy = new Map();
@@ -171,15 +150,15 @@ class EnhancedAIInsightsEngine {
         // Convert score to risk level
         let retentionRisk;
         if (riskScore >= 76)
-            retentionRisk = exports.RetentionRisk.VERY_HIGH;
+            retentionRisk = client_1.RetentionRisk.VERY_HIGH;
         else if (riskScore >= 51)
-            retentionRisk = exports.RetentionRisk.HIGH;
+            retentionRisk = client_1.RetentionRisk.HIGH;
         else if (riskScore >= 26)
-            retentionRisk = exports.RetentionRisk.MEDIUM;
+            retentionRisk = client_1.RetentionRisk.MEDIUM;
         else if (riskScore >= 11)
-            retentionRisk = exports.RetentionRisk.LOW;
+            retentionRisk = client_1.RetentionRisk.LOW;
         else
-            retentionRisk = exports.RetentionRisk.VERY_LOW;
+            retentionRisk = client_1.RetentionRisk.VERY_LOW;
         return {
             prediction: {
                 retentionRisk,
@@ -526,7 +505,7 @@ class EnhancedAIInsightsEngine {
     }
     generateRiskMitigations(risk, factors) {
         const mitigations = [];
-        if (risk === exports.RetentionRisk.VERY_HIGH || risk === exports.RetentionRisk.HIGH) {
+        if (risk === client_1.RetentionRisk.VERY_HIGH || risk === client_1.RetentionRisk.HIGH) {
             mitigations.push({
                 risk: 'Immediate departure risk',
                 mitigation: 'Emergency pastoral intervention with leadership team',
@@ -540,7 +519,7 @@ class EnhancedAIInsightsEngine {
         // Implementation for sophisticated stage progression analysis
         return {
             mostLikely: {
-                stage: exports.MemberLifecycleStage.ESTABLISHED_MEMBER,
+                stage: client_1.MemberLifecycleStage.ESTABLISHED_MEMBER,
                 probability: 0.75,
                 estimatedDays: 45
             },

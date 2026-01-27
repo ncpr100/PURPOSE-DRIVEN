@@ -1,6 +1,4 @@
-export type AutomationTriggerType = string;
-export type AutomationConditionType = string;
-export type AutomationActionType = string;
+import { AutomationTriggerType, automation_rules, automation_triggers, automation_conditions, automation_actions } from '@prisma/client';
 export interface TriggerData {
     type: AutomationTriggerType | string;
     entityId?: string;
@@ -15,7 +13,11 @@ export interface FormSubmissionTrigger extends TriggerData {
     formId: string;
     submissionData: Record<string, any>;
 }
-export type AutomationRuleWithDetails = any;
+export interface AutomationRuleWithDetails extends automation_rules {
+    automation_triggers: automation_triggers[];
+    automation_conditions: automation_conditions[];
+    automation_actions: automation_actions[];
+}
 export declare class AutomationEngine {
     /**
      * Process a trigger event and execute matching automation rules

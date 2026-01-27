@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 
 // ADMIN-ONLY ENDPOINT - Fix orphaned spiritual profile
 export async function POST(request: NextRequest) {
   try {
-    // Dynamic import to avoid build-time Prisma initialization
-    const { prisma } = await import('@/lib/prisma')
-    
     const session = await getServerSession(authOptions)
     
     // Only allow SUPER_ADMIN or ADMIN_IGLESIA to run this fix

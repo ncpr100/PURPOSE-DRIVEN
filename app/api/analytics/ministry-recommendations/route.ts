@@ -260,10 +260,7 @@ export async function GET(request: Request) {
     // Calculate ministry statistics
     const ministryStats = {
       totalOpenings: ministries.length * 3, // Assume average 3 positions per ministry
-      totalVolunteers: Object.values(volunteerCounts).reduce((sum: number, count) => {
-        const typedCount = count as number;
-        return sum + typedCount;
-      }, 0),
+      totalVolunteers: Object.values(volunteerCounts).reduce((sum, count) => sum + count, 0),
       urgentNeeds: ministries.filter(ministry => 
         (volunteerCounts[ministry.id] || 0) < 2
       ).length,

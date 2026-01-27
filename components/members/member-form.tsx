@@ -8,10 +8,11 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { members } from '@prisma/client'
 import { Save, X } from 'lucide-react'
 
 interface MemberFormProps {
-  member?: any | null
+  member?: members | null
   onSave: (memberData: any) => void
   onCancel: () => void
   isLoading?: boolean

@@ -3,31 +3,6 @@
  * High-performance analytics service with Redis caching integration
  * Implements intelligent caching strategies for optimal performance
  */
-export type MemberLifecycleStage = string;
-export type EngagementLevel = string;
-export type RetentionRisk = string;
-export declare const MemberLifecycleStage: {
-    readonly VISITOR: "VISITOR";
-    readonly FIRST_TIME_GUEST: "FIRST_TIME_GUEST";
-    readonly RETURNING_VISITOR: "RETURNING_VISITOR";
-    readonly REGULAR_ATTENDEE: "REGULAR_ATTENDEE";
-    readonly MEMBERSHIP_CANDIDATE: "MEMBERSHIP_CANDIDATE";
-    readonly NEW_MEMBER: "NEW_MEMBER";
-    readonly ESTABLISHED_MEMBER: "ESTABLISHED_MEMBER";
-    readonly GROWING_MEMBER: "GROWING_MEMBER";
-    readonly SERVING_MEMBER: "SERVING_MEMBER";
-    readonly LEADING_MEMBER: "LEADING_MEMBER";
-    readonly MATURE_LEADER: "MATURE_LEADER";
-    readonly INACTIVE_MEMBER: "INACTIVE_MEMBER";
-    readonly DISCONNECTED_MEMBER: "DISCONNECTED_MEMBER";
-};
-export declare const RetentionRisk: {
-    readonly VERY_LOW: "VERY_LOW";
-    readonly LOW: "LOW";
-    readonly MEDIUM: "MEDIUM";
-    readonly HIGH: "HIGH";
-    readonly VERY_HIGH: "VERY_HIGH";
-};
 export interface CachedAnalyticsOptions {
     forceRefresh?: boolean;
     cacheWarm?: boolean;

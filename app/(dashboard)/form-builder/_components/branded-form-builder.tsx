@@ -76,7 +76,6 @@ export default function BrandedFormBuilder() {
   const [qrCodeUrl, setQRCodeUrl] = useState<string>('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [savedForms, setSavedForms] = useState<any[]>([])
-  const [currentFormSlug, setCurrentFormSlug] = useState<string>('')
 
   // Refs
   const previewRef = useRef<HTMLDivElement>(null)
@@ -132,11 +131,16 @@ export default function BrandedFormBuilder() {
   // Form URL Builder
   const buildFormUrl = (formSlug?: string) => {
     if (formSlug) {
-      // Use saved form slug - SHORT URL
+      // Use saved form slug
       return `${window.location.origin}/form-viewer?slug=${formSlug}`
     } else {
-      // Return placeholder for unsaved forms
-      return `${window.location.origin}/form-viewer?slug=guardar-primero`
+      // Legacy URL for preview (before saving)
+      const payload = {
+        ...formConfig,
+        timestamp: Date.now()
+      }
+      const encoded = btoa(JSON.stringify(payload))
+      return `${window.location.origin}/form-viewer?data=${encoded}`
     }
   }
 
@@ -192,11 +196,7 @@ export default function BrandedFormBuilder() {
 
   // Button click handler for QR generation
   const handleGenerateQR = () => {
-    if (!currentFormSlug) {
-      toast.error('Guarda el formulario primero para generar el código QR')
-      return
-    }
-    generateQRCode(currentFormSlug)
+    generateQRCode()
   }
 
   // Download Functions
@@ -248,11 +248,7 @@ export default function BrandedFormBuilder() {
   }
 
   const copyFormUrl = () => {
-    if (!currentFormSlug) {
-      toast.error('Guarda el formulario primero para obtener una URL')
-      return
-    }
-    const url = buildFormUrl(currentFormSlug)
+    const url = buildFormUrl()
     navigator.clipboard.writeText(url).then(() => {
       toast.success('URL copiada al portapapeles')
     }).catch(() => {
@@ -288,9 +284,6 @@ export default function BrandedFormBuilder() {
         const result = await response.json()
         const savedForm = result.form
         
-        // Store the slug for URL generation
-        setCurrentFormSlug(savedForm.slug)
-        
         // Generate QR code with the new form slug
         await generateQRCode(savedForm.slug)
         
@@ -299,7 +292,7 @@ export default function BrandedFormBuilder() {
         
         // Update the QR code with the permanent URL
         setTimeout(() => {
-          toast.success(`Código QR actualizado con URL corta`)
+          toast.success(`Código QR actualizado con URL permanente: /form-viewer?slug=${savedForm.slug}`)
         }, 1000)
         
       } else {
@@ -673,11 +666,7 @@ export default function BrandedFormBuilder() {
               <Alert className="mt-4">
                 <AlertDescription>
                   <strong>URL del formulario:</strong><br />
-                  {currentFormSlug ? (
-                    <code className="text-xs break-all">{buildFormUrl(currentFormSlug)}</code>
-                  ) : (
-                    <span className="text-xs text-muted-foreground">Guarda el formulario para obtener una URL corta</span>
-                  )}
+                  <code className="text-xs break-all">{buildFormUrl()}</code>
                 </AlertDescription>
               </Alert>
             </CardContent>

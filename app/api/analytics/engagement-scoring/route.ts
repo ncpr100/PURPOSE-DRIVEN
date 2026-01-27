@@ -116,14 +116,11 @@ export async function GET(request: Request) {
       return acc;
     }, {} as Record<string, { total: number; count: number; scores: number[] }>);
 
-    const monthlyAverages = Object.entries(trendsByMonth).map(([month, data]): { month: string; averageEngagement: number; memberCount: number } => {
-      const typedData = data as { total: number; count: number; scores: number[] }
-      return {
-        month,
-        averageEngagement: Math.round(typedData.total / typedData.count),
-        memberCount: typedData.count
-      }
-    });
+    const monthlyAverages = Object.entries(trendsByMonth).map(([month, data]) => ({
+      month,
+      averageEngagement: Math.round(data.total / data.count),
+      memberCount: data.count
+    }));
 
     // Calculate engagement score categories
     const engagementCategories = {

@@ -33,16 +33,16 @@ interface TenantCredentials {
   sentAt?: string
   lastSentAt?: string
   createdAt: string
-  church: {
+  churches: {
     id: string
     name: string
     email: string
     isActive: boolean
   }
-  creator: {
+  users?: {
     id: string
     name: string
-  }
+  } | null
 }
 
 interface Church {
@@ -328,9 +328,9 @@ export default function TenantCredentialsPage() {
                   <div className="flex justify-between items-start">
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
-                        <h3 className="font-medium">{cred.church.name}</h3>
-                        <Badge className={cred.church.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}>
-                          {cred.church.isActive ? 'Activa' : 'Inactiva'}
+                        <h3 className="font-medium">{cred.churches?.name || 'Sin nombre'}</h3>
+                        <Badge className={cred.churches?.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}>
+                          {cred.churches?.isActive ? 'Activa' : 'Inactiva'}
                         </Badge>
                         {cred.isFirstLogin && (
                           <Badge className="bg-orange-100 text-orange-800">
@@ -354,7 +354,7 @@ export default function TenantCredentialsPage() {
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        Creado por: {cred.creator.name}
+                        Creado por: {cred.users?.name || 'Sistema'}
                       </p>
                     </div>
                     <div className="flex gap-2">

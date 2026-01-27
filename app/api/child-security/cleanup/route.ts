@@ -2,12 +2,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ChildSecurityService } from '@/lib/services/child-security'
 
+const childSecurity = new ChildSecurityService()
+
 // Cron job endpoint for photo cleanup
 export async function POST(req: NextRequest) {
   try {
-    // Instantiate service inside handler to avoid build-time Prisma initialization
-    const childSecurity = new ChildSecurityService()
-    
     // Verify cron job authorization (in production, use proper auth)
     const authHeader = req.headers.get('Authorization')
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {

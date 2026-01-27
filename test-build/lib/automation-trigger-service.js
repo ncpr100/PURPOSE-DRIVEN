@@ -55,9 +55,8 @@ async function triggerAutomations(payload) {
         for (const rule of activeRules) {
             try {
                 // Evaluate conditions (if any)
-                const ruleConditions = rule.automation_conditions;
-                const conditionsMet = ruleConditions && ruleConditions.length > 0
-                    ? await evaluateConditions(ruleConditions, payload.data)
+                const conditionsMet = rule.automation_conditions && rule.automation_conditions.length > 0
+                    ? await evaluateConditions(rule.automation_conditions, payload.data)
                     : true;
                 if (!conditionsMet) {
                     console.log(`⏭️  Skipping rule "${rule.name}" - conditions not met`);
