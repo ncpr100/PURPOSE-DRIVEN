@@ -190,6 +190,9 @@ export const AutomationTriggers = {
   donationReceived: (donationData: any, churchId: string) =>
     triggerAutomation('DONATION_RECEIVED', donationData, churchId, donationData.id, 'donation'),
 
+  eventCreated: (eventData: any, churchId: string) =>
+    triggerAutomation('EVENT_CREATED', eventData, churchId, eventData.id, 'event'),
+
   sermonPublished: (sermonData: any, churchId: string, userId: string) =>
     triggerAutomation('SERMON_PUBLISHED', sermonData, churchId, sermonData.id, 'sermon', userId),
 

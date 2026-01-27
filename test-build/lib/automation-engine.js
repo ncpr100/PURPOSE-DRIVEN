@@ -106,6 +106,7 @@ exports.AutomationTriggers = {
     birthday: (memberData, churchId) => triggerAutomation('BIRTHDAY', memberData, churchId, memberData.id, 'member'),
     anniversary: (memberData, churchId) => triggerAutomation('ANNIVERSARY', memberData, churchId, memberData.id, 'member'),
     donationReceived: (donationData, churchId) => triggerAutomation('DONATION_RECEIVED', donationData, churchId, donationData.id, 'donation'),
+    eventCreated: (eventData, churchId) => triggerAutomation('EVENT_CREATED', eventData, churchId, eventData.id, 'event'),
     sermonPublished: (sermonData, churchId, userId) => triggerAutomation('SERMON_PUBLISHED', sermonData, churchId, sermonData.id, 'sermon', userId),
     followUpDue: (followUpData, churchId) => triggerAutomation('FOLLOW_UP_DUE', followUpData, churchId, followUpData.id, 'followUp'),
     socialMediaPostCreated: (postData, churchId, userId) => triggerAutomation('SOCIAL_MEDIA_POST_CREATED', postData, churchId, postData.id, 'socialMediaPost', userId),
