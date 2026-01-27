@@ -139,4 +139,4 @@ declare module "next-auth/jwt" {
   }
 }
 
-export { UserRole }
+export type { UserRole }
