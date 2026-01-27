@@ -1,92 +1,78 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { db as prisma } from '@/lib/db'
+import { db } from '@/lib/db'
+import { subDays } from 'date-fns'
 
-// Mark the route as dynamic
-export const dynamic = 'force-dynamic';
-// GET /api/prayer-messaging-stats - Get messaging statistics
+export const dynamic = 'force-dynamic'
+
+// GET /api/prayer-messaging-stats - Get prayer messaging statistics
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    const user = await prisma.users.findUnique({
+
+    const user = await db.users.findUnique({
       where: { id: session.user.id },
       include: { churches: true }
     })
+
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
-    // Check permissions
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER'].includes(user.role)) {
-      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    }
+
     const url = new URL(request.url)
     const days = parseInt(url.searchParams.get('days') || '30')
-    // In a real implementation, these stats would be calculated from actual message data
-    // For now, we'll return mock statistics
-    const stats = {
-      totalSent: 156,
-      deliveryRate: 94.2,
-      responseRate: 23.7,
-      avgDeliveryTime: 2.3,
-      messagesByType: {
-        email: 89,
-        sms: 45,
-        whatsapp: 22
-      },
-      messagesByStatus: {
-        pending: 8,
-        sent: 132,
-        failed: 16
-      topTemplates: [
-        {
-          id: 'template1',
-          name: 'Respuesta General - Familia',
-          usageCount: 42,
-          successRate: 96.8
-        },
-          id: 'template2', 
-          name: 'Respuesta - Salud',
-          usageCount: 38,
-          successRate: 94.2
-          id: 'template3',
-          name: 'Respuesta - Finanzas',
-          usageCount: 31,
-          successRate: 91.9
-          id: 'template4',
-          name: 'Respuesta Urgente',
-          usageCount: 28,
-          successRate: 89.3
-          id: 'template5',
-          name: 'Seguimiento Pastoral',
-          usageCount: 17,
-          successRate: 100.0
+    
+    const startDate = subDays(new Date(), days)
+    const endDate = new Date()
+
+    // Get messaging statistics for prayers
+    const messagingStats = await db.prayer_messages.findMany({
+      where: {
+        churchId: user.churchId,
+        createdAt: {
+          gte: startDate,
+          lte: endDate
         }
-      ]
-    // Calculate period-specific adjustments based on days parameter
-    if (days <= 7) {
-      // Recent period - lower totals but higher rates
-      stats.totalSent = Math.floor(stats.totalSent * 0.2)
-      stats.messagesByType.email = Math.floor(stats.messagesByType.email * 0.2)
-      stats.messagesByType.sms = Math.floor(stats.messagesByType.sms * 0.2)
-      stats.messagesByType.whatsapp = Math.floor(stats.messagesByType.whatsapp * 0.2)
-      stats.messagesByStatus.sent = Math.floor(stats.messagesByStatus.sent * 0.2)
-      stats.messagesByStatus.pending = Math.floor(stats.messagesByStatus.pending * 0.3)
-      stats.messagesByStatus.failed = Math.floor(stats.messagesByStatus.failed * 0.15)
-      stats.deliveryRate = Math.min(stats.deliveryRate + 2, 98)
-    } else if (days >= 365) {
-      // Long period - higher totals
-      stats.totalSent = Math.floor(stats.totalSent * 12)
-      stats.messagesByType.email = Math.floor(stats.messagesByType.email * 12)
-      stats.messagesByType.sms = Math.floor(stats.messagesByType.sms * 12)
-      stats.messagesByType.whatsapp = Math.floor(stats.messagesByType.whatsapp * 12)
-      stats.messagesByStatus.sent = Math.floor(stats.messagesByStatus.sent * 12)
-      stats.messagesByStatus.pending = Math.floor(stats.messagesByStatus.pending * 0.8)
-      stats.messagesByStatus.failed = Math.floor(stats.messagesByStatus.failed * 11)
-    return NextResponse.json({ stats })
+      },
+      include: {
+        prayer_requests: true,
+        message_templates: true
+      }
+    })
+
+    // Calculate stats
+    const totalMessages = messagingStats.length
+    const uniqueRequests = new Set(messagingStats.map(msg => msg.prayerRequestId)).size
+    const templateUsage = messagingStats.reduce((acc: any, msg) => {
+      const templateName = msg.message_templates?.name || 'Sin template'
+      acc[templateName] = (acc[templateName] || 0) + 1
+      return acc
+    }, {})
+
+    // Top templates
+    const topTemplates = Object.entries(templateUsage)
+      .sort(([,a]: any, [,b]: any) => b - a)
+      .slice(0, 5)
+      .map(([name, count]) => ({ name, count }))
+
+    const stats = {
+      summary: {
+        totalMessages,
+        uniqueRequests,
+        avgMessagesPerRequest: uniqueRequests > 0 ? (totalMessages / uniqueRequests).toFixed(1) : '0.0'
+      },
+      templateUsage,
+      topTemplates,
+      recentMessages: messagingStats.slice(0, 20)
+    }
+
+    return NextResponse.json(stats)
   } catch (error) {
-    console.error('Error fetching messaging stats:', error)
+    console.error('Error fetching prayer messaging stats:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }
