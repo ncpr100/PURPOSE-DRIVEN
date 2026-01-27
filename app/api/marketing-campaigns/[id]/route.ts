@@ -50,8 +50,10 @@ export async function GET(request: Request, { params }: { params: { id: string }
     await prisma.$disconnect();
   }
 }
+
 // Update marketing campaign
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
+  try {
     const { 
       name, 
       description, 

@@ -21,18 +21,25 @@ export async function GET(
       where: { memberId }
     })
     if (!spiritualProfile) {
-      return NextResponse.json({ profile: null })
-    return NextResponse.json({ profile: spiritualProfile })
+      return NextResponse.json({ profile: null });
+    }
+    
+    return NextResponse.json({ profile: spiritualProfile });
   } catch (error) {
-    console.error('Error fetching spiritual profile:', error)
+    console.error('Error fetching spiritual profile:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
-    )
+    );
   }
 }
+
 export async function POST(
-    const body = await request.json()
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const body = await request.json();
     const {
       giftSelections,
       ministryPassions,

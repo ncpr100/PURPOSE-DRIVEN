@@ -204,7 +204,7 @@ export async function POST(request: NextRequest) {
       churches: results
     });
   } catch (error) {
-    console.error('Error sending digest emails:', error)
+    console.error('Error sending digest emails:', error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Datos de entrada inválidos', details: error.errors },
@@ -215,15 +215,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }
-    )
+    );
   }
 }
+
 // GET - Preview digest content
 export async function GET(request: NextRequest) {
+  try {
     const user = await prisma.users.findUnique({
       select: { id: true, churchId: true, role: true, name: true }
+    });
+    
     if (!user || !user.churchId) {
-      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 });
+    }
     const { searchParams } = new URL(request.url)
     const period = (searchParams.get('period') || 'DAILY') as 'DAILY' | 'WEEKLY'
     // Calculate date range

@@ -29,7 +29,10 @@ export async function GET() {
         _count: {
           select: { marketing_campaign_posts: true }
         }
+      },
       orderBy: { createdAt: 'desc' }
+    });
+    
     return NextResponse.json(campaigns);
   } catch (error) {
     console.error('Error fetching marketing campaigns:', error);

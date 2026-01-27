@@ -97,9 +97,11 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
 // POST - Registrar nueva conversión (para uso público)
 export async function POST(request: NextRequest) {
-    const body = await request.json()
+  try {
+    const body = await request.json();
     const { 
       funnelId, 
       stepId, 
