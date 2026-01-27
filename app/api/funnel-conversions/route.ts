@@ -20,7 +20,11 @@ export async function GET(request: NextRequest) {
       where: {
         funnels: {
           is: {
-            churchId: session.user.churchId
+            websites: {
+              is: {
+                churchId: session.user.churchId
+              }
+            }
           }
         }
       },
