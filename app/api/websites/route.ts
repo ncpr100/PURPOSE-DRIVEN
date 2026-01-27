@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { createId } from '@paralleldrive/cuid2'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
 
     const website = await db.websites.create({
       data: {
-        id: createId(),
+        id: nanoid(),
         name,
         domain: domain || null,
         subdomain: subdomain || null,
