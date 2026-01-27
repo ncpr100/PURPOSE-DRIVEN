@@ -22,8 +22,15 @@ export async function GET(request: NextRequest) {
         churchId: session.user.churchId,
         startDate: { gte: new Date() }
       }
+    });
+    
     const completedEvents = await prisma.events.count({
+      where: {
+        churchId: session.user.churchId,
         endDate: { lt: new Date() }
+      }
+    });
+    
     // Mock analytics data - in a real implementation, you'd calculate from actual data
     const analyticsData = {
       totalEvents,

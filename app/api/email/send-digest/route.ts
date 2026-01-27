@@ -117,23 +117,31 @@ export async function POST(request: NextRequest) {
           churchName: churchDetails.name,
           sent: 0,
           reason: 'No notifications in period'
-        })
+        });
+        continue;
+      }
+      
       // Prepare digest emails for each eligible user
       const emails = eligibleUsers.map((user: any) => {
         // Filter notifications relevant to this user
         const userNotifications = notifications.filter((notification: any) => {
-          if (notification.isGlobal) return true
-          if (notification.targetUser === user.id) return true
-          if (notification.targetRole === user.role) return true
-          return false
-        if (userNotifications.length === 0) return null
+          if (notification.isGlobal) return true;
+          if (notification.targetUser === user.id) return true;
+          if (notification.targetRole === user.role) return true;
+          return false;
+        });
+        
+        if (userNotifications.length === 0) return null;
+        
         const emailData: DigestEmailData = {
           user: {
             email: user.email,
             name: user.name || undefined
-          churches: {
+          },
+          church: {
             name: churchDetails.name,
             id: church.id
+          },
           notifications: userNotifications.map((n: any) => ({
             title: n.title,
             message: n.message,

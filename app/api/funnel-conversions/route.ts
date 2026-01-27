@@ -41,12 +41,22 @@ export async function GET(request: NextRequest) {
     } else if (websiteId) {
       // Verificar que el sitio web pertenece a la iglesia
       const website = await prisma.websites.findFirst({
+        where: {
           id: websiteId,
           churchId: session.user.churchId
+        }
+      });
+      
       if (!website) {
+        return NextResponse.json(
           { error: 'Sitio web no encontrado' },
+          { status: 404 }
+        );
+      }
+      
       whereClause.funnel = {
         websiteId: websiteId
+      };
     } else {
       // Obtener todas las conversiones de sitios web de la iglesia
         website: {

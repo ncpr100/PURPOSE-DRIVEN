@@ -25,8 +25,12 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-export async function PUT(request: NextRequest) {
-    const body = await request.json()
+export async function PUT(request: NextRequest) {  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.churchId) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+        const body = await request.json()
     const {
       primaryColor,
       secondaryColor,
@@ -105,3 +109,9 @@ export async function PUT(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error updating church theme:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}

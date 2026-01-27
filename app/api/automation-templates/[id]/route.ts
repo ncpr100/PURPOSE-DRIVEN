@@ -97,6 +97,8 @@ export async function POST(
     // Check admin permission
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
       return NextResponse.json({ error: 'Sin permisos para activar plantillas' }, { status: 403 });
+    }
+    
     const body = await request.json();
     const { customizations } = body;
     
@@ -124,6 +126,8 @@ export async function POST(
         { error: 'Esta plantilla ya está instalada' },
         { status: 400 }
       );
+    }
+    
     // Merge template config with customizations
     const finalConfig = {
       triggerConfig: customizations?.triggerConfig || template.triggerConfig,
