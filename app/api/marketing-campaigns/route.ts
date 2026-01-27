@@ -1,87 +1,77 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { db as prisma } from '@/lib/db'
 
-import { db as prisma } from '@/lib/db';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { NextResponse } from 'next/server';
-import { AutomationTriggers } from '@/lib/automation-engine';
-import { nanoid } from 'nanoid';
-// Get marketing campaigns
-export async function GET() {
+export const dynamic = 'force-dynamic'
+
+// GET - Fetch marketing campaigns
+export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.churchId) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
     }
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email }
-    });
-    if (!user?.churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
+
     const campaigns = await prisma.marketing_campaigns.findMany({
       where: {
-        churchId: user.churchId
+        churchId: session.user.churchId
       },
       include: {
-        marketing_campaign_posts: {
-          select: { id: true, postId: true, accountId: true, status: true, scheduledAt: true }
-        },
-        _count: {
-          select: { marketing_campaign_posts: true }
+        posts: {
+          select: {
+            id: true,
+            status: true
+          }
         }
       },
-      orderBy: { createdAt: 'desc' }
-    });
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
     
-    return NextResponse.json(campaigns);
+    return NextResponse.json(campaigns)
   } catch (error) {
-    console.error('Error fetching marketing campaigns:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error fetching marketing campaigns:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   } finally {
-    await prisma.$disconnect();
+    await prisma.$disconnect()
   }
 }
 
-// Create marketing campaign
-export async function POST(request: Request) {
+// POST - Create marketing campaign
+export async function POST(request: NextRequest) {
   try {
-    const { 
-      name, 
-      description, 
-      objectives, 
-      targetAudience, 
-      budget, 
-      currency, 
-      startDate, 
-      endDate, 
-      platforms, 
-      tags 
-    } = await request.json();
-    if (!name || !startDate) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.churchId) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const body = await request.json()
+    const { name, description, objectives } = body
+    
     const campaign = await prisma.marketing_campaigns.create({
       data: {
-        id: nanoid(),
         name,
         description,
-        objectives: Array.isArray(objectives) ? JSON.stringify(objectives) : null,
-        targetAudience: targetAudience ? JSON.stringify(targetAudience) : null,
-        budget: budget ? parseFloat(budget) : null,
-        currency: currency || 'USD',
-        startDate: new Date(startDate),
-        endDate: endDate ? new Date(endDate) : null,
-        platforms: Array.isArray(platforms) ? JSON.stringify(platforms) : JSON.stringify([]),
-        tags: Array.isArray(tags) ? JSON.stringify(tags) : null,
-        managerId: user.id,
-        churchId: user.churchId,
+        objectives,
+        churchId: session.user.churchId,
+        createdAt: new Date(),
         updatedAt: new Date()
       }
-    // 🔄 P1 ENHANCEMENT: Trigger automation for marketing campaign launch
-    try {
-      await AutomationTriggers.socialMediaCampaignLaunched(campaign, user.churchId, user.id);
-      console.log(`✅ Marketing campaign automation triggered for campaign: ${campaign.id}`);
-    } catch (automationError) {
-      console.error('❌ Error triggering marketing campaign automation:', automationError);
-      // Don't fail the request if automation fails
-    return NextResponse.json(campaign);
-    console.error('Error creating marketing campaign:', error);
+    })
+    
+    return NextResponse.json(campaign, { status: 201 })
+  } catch (error) {
+    console.error('Error creating marketing campaign:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  } finally {
+    await prisma.$disconnect()
+  }
+}
