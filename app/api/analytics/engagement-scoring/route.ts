@@ -116,7 +116,9 @@ export async function GET(request: Request) {
       return acc;
     }, {} as Record<string, { total: number; count: number; scores: number[] }>);
 
-    const monthlyAverages = Object.entries(trendsByMonth).map(([month, data]) => ({
+    // Type-safe mapping for monthly averages
+    type MonthlyData = { total: number; count: number; scores: number[] };
+    const monthlyAverages = Object.entries(trendsByMonth).map(([month, data]: [string, MonthlyData]) => ({
       month,
       averageEngagement: Math.round(data.total / data.count),
       memberCount: data.count
