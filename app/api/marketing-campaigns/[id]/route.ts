@@ -36,8 +36,12 @@ export async function GET(request: Request, { params }: { params: { id: string }
           select: { marketing_campaign_posts: true }
         }
       }
+    });
+    
     if (!campaign) {
       return NextResponse.json({ error: 'Campaign not found' }, { status: 404 });
+    }
+    
     return NextResponse.json(campaign);
   } catch (error) {
     console.error('Error fetching marketing campaign:', error);

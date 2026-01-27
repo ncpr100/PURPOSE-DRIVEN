@@ -15,20 +15,26 @@ export async function GET(request: NextRequest) {
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.email) {
-      console.error('Integration status: No session or email found')
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      console.error('Integration status: No session or email found');
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
+    
     // Get full user data to check role
     const sessionUser = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, role: true, churchId: true }
-    })
+    });
+    
     if (!sessionUser) {
-      console.error('Integration status: User not found in database')
-      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 401 })
+      console.error('Integration status: User not found in database');
+      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 401 });
+    }
+    
     // Only admins can view integration status
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA'].includes(sessionUser.role)) {
-      return NextResponse.json({ error: 'Sin permisos para ver integraciones' }, { status: 403 })
+      return NextResponse.json({ error: 'Sin permisos para ver integraciones' }, { status: 403 });
+    }
+    
     const status = {
       communication: communicationService.getStatus(),
       services: {
@@ -50,10 +56,10 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(status);
   } catch (error) {
-    console.error('Error fetching integration status:', error)
+    console.error('Error fetching integration status:', error);
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }
-    )
+    );
   }
 }

@@ -191,6 +191,8 @@ export async function POST(request: NextRequest) {
         notificationCount: notifications.length,
         eligibleUsers: eligibleUsers.length
       });
+    }
+    
     return NextResponse.json({
       success: true,
       period: validatedData.period,
@@ -200,13 +202,16 @@ export async function POST(request: NextRequest) {
       },
       totalSent,
       churches: results
+    });
   } catch (error) {
     console.error('Error sending digest emails:', error)
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Datos de entrada inválidos', details: error.errors },
         { status: 400 }
-      )
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }

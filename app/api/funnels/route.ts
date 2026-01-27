@@ -72,22 +72,42 @@ export async function GET(request: NextRequest) {
 }
 // POST - Crear nuevo funnel
 export async function POST(request: NextRequest) {
-    const body = await request.json()
-    const { websiteId, name, slug, description, type, config } = body
+  try {
+    const body = await request.json();
+    const { websiteId, name, slug, description, type, config } = body;
+    
     // Verificar que el slug no existe en este sitio web
     const existingFunnel = await prisma.funnels.findFirst({
+      where: {
         websiteId,
         slug
+      }
+    });
+    
     if (existingFunnel) {
+      return NextResponse.json(
         { error: 'Ya existe un funnel con esta URL en este sitio web' },
+        { status: 409 }
+      );
+    }
+    
     const funnel = await prisma.funnels.create({
       data: {
-  id: nanoid(),
+        websiteId,
         name,
         slug,
         description,
         type,
-        config: config || {},
-        funnel_steps: true,
-    return NextResponse.json(funnel)
-    console.error('Error creating funnel:', error)
+        config: config || {}
+      }
+    });
+    
+    return NextResponse.json(funnel);
+  } catch (error) {
+    console.error('Error creating funnel:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}
