@@ -36,8 +36,11 @@ export async function GET(
           }
         }
       }
+    });
+
     if (!template) {
       return NextResponse.json({ error: 'Plantilla no encontrada' }, { status: 404 });
+    }
     // Check if church has already installed this template
     const installation = await prisma.automation_rule_template_installations.findUnique({
       where: {

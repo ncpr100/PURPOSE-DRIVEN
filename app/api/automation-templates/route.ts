@@ -38,16 +38,24 @@ export async function GET(request: NextRequest) {
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
-    })
+    });
+
     if (!user) {
-      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 })
-    const { searchParams } = new URL(request.url)
-    const category = searchParams.get('category')
-    const search = searchParams.get('search')
+      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const category = searchParams.get('category');
+    const search = searchParams.get('search');
+
     const where: any = {
       isActive: true
+    };
+
     if (category) {
-      where.category = category
+      where.category = category;
+    }
+
     if (search) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },

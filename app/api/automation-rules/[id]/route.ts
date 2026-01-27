@@ -46,6 +46,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
           successRuns: 23,
           lastRun: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
           avgResponseTime: 2.1
+        },
         createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
         updatedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
       },

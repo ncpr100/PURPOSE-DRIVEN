@@ -26,11 +26,14 @@ export async function GET(request: NextRequest) {
         founded: true,
         isActive: true
       }
-    })
+    });
+
     if (!church) {
-      return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
+      return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 });
+    }
+
     // Return church data with logo as-is (base64 or URL)
-    return NextResponse.json({ church })
+    return NextResponse.json({ church });
   } catch (error) {
     console.error('Error fetching church profile:', error)
     return NextResponse.json(
