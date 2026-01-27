@@ -93,6 +93,7 @@ export async function POST(request: NextRequest) {
     
     const funnel = await prisma.funnels.create({
       data: {
+        id: nanoid(),
         websiteId,
         name,
         slug,
