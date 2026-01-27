@@ -43,7 +43,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
     }
     
     return NextResponse.json(campaign);
-  } catch (error) {
+  } // END OF TRY BLOCK
+  catch (error) {
     console.error('Error fetching marketing campaign:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   } finally {

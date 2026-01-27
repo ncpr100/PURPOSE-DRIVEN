@@ -34,7 +34,8 @@ export async function GET() {
     });
     
     return NextResponse.json(campaigns);
-  } catch (error) {
+  } // END OF TRY BLOCK  
+  catch (error) {
     console.error('Error fetching marketing campaigns:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   } finally {

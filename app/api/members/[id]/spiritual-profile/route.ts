@@ -134,10 +134,29 @@ export async function POST(
         updatedAt: new Date()
       },
       update: {
+        secondaryGifts,
+        spiritualCalling,
+        ministryPassions,
+        experienceLevel: experienceLevelNumeric,
+        leadershipScore: 5,
+        servingMotivation: motivation,
+        volunteerReadinessScore,
+        leadershipReadinessScore: Math.round(volunteerReadinessScore * 0.7),
+        assessmentDate: new Date(),
+        updatedAt: new Date()
       }
+    });
+    
     return NextResponse.json({
       success: true,
       profile: spiritualProfile,
       message: 'Evaluación espiritual guardada exitosamente'
-    console.error('Error saving spiritual profile:', error)
+    });
+  } catch (error) {
+    console.error('Error saving spiritual profile:', error);
+    return NextResponse.json(
       { error: 'Error al guardar la evaluación espiritual' },
+      { status: 500 }
+    );
+  }
+}
