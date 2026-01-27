@@ -41,8 +41,10 @@ export async function GET() {
     await prisma.$disconnect();
   }
 }
+
 // Create marketing campaign
 export async function POST(request: Request) {
+  try {
     const { 
       name, 
       description, 

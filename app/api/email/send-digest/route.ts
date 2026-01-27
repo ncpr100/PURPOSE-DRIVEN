@@ -191,7 +191,7 @@ export async function POST(request: NextRequest) {
         notificationCount: notifications.length,
         eligibleUsers: eligibleUsers.length
       });
-    }
+    } // End for loop
     
     return NextResponse.json({
       success: true,

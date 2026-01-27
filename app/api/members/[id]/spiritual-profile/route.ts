@@ -52,21 +52,48 @@ export async function POST(
       return NextResponse.json(
         { error: 'Debes seleccionar al menos un don espiritual' },
         { status: 400 }
-      )
+      );
+    }
+    
     if (!ministryPassions || ministryPassions.length === 0) {
+      return NextResponse.json(
         { error: 'Debes seleccionar al menos una pasión ministerial' },
+        { status: 400 }
+      );
+    }
+    
     if (!experienceLevel) {
+      return NextResponse.json(
         { error: 'Debes seleccionar tu nivel de experiencia' },
+        { status: 400 }
+      );
+    }
+    
     if (!spiritualCalling || !spiritualCalling.trim()) {
+      return NextResponse.json(
         { error: 'Debes describir tu llamado espiritual' },
+        { status: 400 }
+      );
+    }
+    
     if (!motivation || !motivation.trim()) {
+      return NextResponse.json(
         { error: 'Debes describir tu motivación para servir' },
+        { status: 400 }
+      );
+    }
+    
     // Verify member exists
     const member = await prisma.members.findUnique({
       where: { id: memberId }
+    });
+    
     if (!member) {
+      return NextResponse.json(
         { error: 'Miembro no encontrado' },
         { status: 404 }
+      );
+    }
     // Extract primary and secondary gifts
     const primaryGifts = giftSelections
       .filter((g: any) => g.type === 'primary')
