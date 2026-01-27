@@ -28,14 +28,17 @@ export async function GET() {
           updatedAt: new Date()
         }
       })
-    return NextResponse.json(settings)
+    }
+    
+    return NextResponse.json(settings);
   } catch (error) {
-    console.error('Error fetching platform settings:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
+    console.error('Error fetching platform settings:', error);
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
   }
 }
+
 export async function PUT(request: NextRequest) {
-    const data = await request.json()
+  try {
     // Update or create platform settings
     const settings = await prisma.platform_settings.upsert({
       where: { id: data.id || 'default' },

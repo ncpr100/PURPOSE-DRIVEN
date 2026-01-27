@@ -89,8 +89,7 @@ export async function GET(request: NextRequest) {
   });
     
     return NextResponse.json(conversions);
-  } // END OF TRY BLOCK
-  catch (error) {
+  } catch (error) {
     console.error('Error fetching conversions:', error);
     return NextResponse.json(
       { error: 'Error interno del servidor' },

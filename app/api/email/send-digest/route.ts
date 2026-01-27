@@ -203,8 +203,7 @@ export async function POST(request: NextRequest) {
       totalSent,
       churches: results
     });
-  } // END OF TRY BLOCK
-  catch (error) {
+  } catch (error) {
     console.error('Error sending digest emails:', error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
