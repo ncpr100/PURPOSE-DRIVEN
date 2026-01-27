@@ -138,5 +138,3 @@ declare module "next-auth/jwt" {
     church?: churches | null
   }
 }
-
-export type { UserRole }
