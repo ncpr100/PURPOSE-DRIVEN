@@ -47,13 +47,12 @@ export async function GET(request: NextRequest) {
     })
 
     // QR Code generation analytics
-    const qrEvents = await db.events.findMany({
+    const qrCodes = await db.qr_codes.findMany({
       where: {
-        createdAt: { gte: startDate },
-        qrCode: { not: null }
+        createdAt: { gte: startDate }
       },
       include: {
-        churches: {
+        church: {
           select: {
             name: true,
             id: true
@@ -61,7 +60,7 @@ export async function GET(request: NextRequest) {
         },
         _count: {
           select: {
-            checkIns: true
+            scans: true
           }
         }
       }
@@ -70,24 +69,24 @@ export async function GET(request: NextRequest) {
     // Analytics summary
     const analytics = {
       totalQRScans: qrScans.length,
-      totalQREvents: qrEvents.length,
-      averageScansPerEvent: qrEvents.length > 0 ? qrScans.length / qrEvents.length : 0,
+      totalQRCodes: qrCodes.length,
+      averageScansPerQR: qrCodes.length > 0 ? qrScans.length / qrCodes.length : 0,
       
       // By church breakdown
-      churchBreakdown: qrEvents.reduce((acc: any, event: any) => {
-        const churchId = event.churches.id
-        const churchName = event.churches.name
+      churchBreakdown: qrCodes.reduce((acc: any, qr: any) => {
+        const churchId = qr.church.id
+        const churchName = qr.church.name
         
         if (!acc[churchId]) {
           acc[churchId] = {
             churchName,
-            events: 0,
+            qrCodes: 0,
             totalScans: 0
           }
         }
         
-        acc[churchId].events += 1
-        acc[churchId].totalScans += event._count.checkIns
+        acc[churchId].qrCodes += 1
+        acc[churchId].totalScans += qr._count.scans
         
         return acc
       }, {}),
