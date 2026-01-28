@@ -31,11 +31,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         web_pages: {
           orderBy: { order: 'asc' }
         },
-        funnels: true,
-        _count: {
-          web_pages: true,
-          funnels: true
-        }
+        website_analytics: true
       }
     })
 
