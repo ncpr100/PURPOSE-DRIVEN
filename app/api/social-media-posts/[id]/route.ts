@@ -91,9 +91,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
         status: status || existing.status,
         updatedAt: new Date()
       }
-          }
-        }
-      }
     })
 
     return NextResponse.json(updated)
