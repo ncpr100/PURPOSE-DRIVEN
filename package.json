@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3000",
-    "build": "next build",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "postinstall": "prisma generate",
     "build:memory-optimized": "./scripts/memory-optimized-build.sh",
     "build:incremental": "next build --experimental-build-mode=compile",
