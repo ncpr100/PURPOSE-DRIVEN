@@ -21,7 +21,13 @@ export async function GET(request: NextRequest) {
         churchId: session.user.churchId
       },
       include: {
-        posts: {
+        marketing_campaign_posts: {
+          select: {
+            id: true,
+            status: true
+          }
+        },
+        social_media_posts: {
           select: {
             id: true,
             status: true
