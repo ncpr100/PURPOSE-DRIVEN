@@ -26,11 +26,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       where: {
         id: params.id,
         churchId: user.churchId
-      },
-      include: {
-        social_media_accounts: {
-          select: { id: true, name: true }
-        }
       }
     })
 
