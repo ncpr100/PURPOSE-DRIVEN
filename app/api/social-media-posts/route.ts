@@ -25,9 +25,6 @@ export async function GET(request: NextRequest) {
     const posts = await db.social_media_posts.findMany({
       where: { churchId: user.churchId },
       include: {
-        social_media_accounts: {
-          select: { id: true, platform: true, username: true, displayName: true }
-        },
         marketing_campaigns: {
           select: { id: true, name: true }
         }
