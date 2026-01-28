@@ -79,25 +79,18 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     const body = await request.json()
-    const { content, scheduledFor, accountIds, mediaUrls, hashtags, status } = body
+    const { content, scheduledAt, accountIds, mediaUrls, hashtags, status } = body
 
     const updated = await db.social_media_posts.update({
       where: { id: params.id },
       data: {
         content: content || existing.content,
-        scheduledFor: scheduledFor ? new Date(scheduledFor) : existing.scheduledFor,
+        scheduledAt: scheduledAt ? new Date(scheduledAt) : existing.scheduledAt,
         mediaUrls: mediaUrls !== undefined ? JSON.stringify(mediaUrls) : existing.mediaUrls,
         hashtags: hashtags !== undefined ? JSON.stringify(hashtags) : existing.hashtags,
         status: status || existing.status,
         updatedAt: new Date()
-      },
-      include: {
-        social_media_accounts: {
-          select: {
-            id: true,
-            platform: true,
-            username: true,
-            displayName: true
+      }
           }
         }
       }
