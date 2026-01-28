@@ -81,20 +81,46 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
 
     try {
       setIsCreating(true)
+      
+      // Build complete form data matching API schema
+      const formData = {
+        name: newForm.title,
+        description: newForm.description || '',
+        fields: [],  // Empty fields array - can be added later via form builder
+        style: {
+          backgroundColor: '#ffffff',
+          primaryColor: '#3B82F6',
+          fontFamily: 'Inter'
+        },
+        settings: {
+          thankYouMessage: 'Gracias por tu interés en Khesed-tek',
+          sendNotification: false,
+          autoFollowUp: false,
+          leadScoring: true,
+          campaignTag: newForm.type,
+          conversionTracking: true
+        },
+        isActive: true,
+        isPublic: true,
+        campaignTag: newForm.type,
+        leadScore: 50
+      }
+      
       const response = await fetch('/api/platform/forms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newForm)
+        body: JSON.stringify(formData)
       })
 
       if (response.ok) {
-        const form = await response.json()
-        setForms([form, ...forms])
+        const result = await response.json()
+        setForms([result.data, ...(forms || [])])
         setNewForm({ title: '', description: '', type: 'lead_capture' })
         toast.success('Formulario creado exitosamente')
+        fetchForms() // Refresh list
       } else {
         const error = await response.json()
-        toast.error(error.error || 'Error al crear formulario')
+        toast.error(error.details?.[0]?.message || error.error || 'Error al crear formulario')
       }
     } catch (error) {
       console.error('Error creating form:', error)
