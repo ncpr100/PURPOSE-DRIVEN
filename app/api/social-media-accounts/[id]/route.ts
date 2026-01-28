@@ -32,7 +32,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         platform: true,
         username: true,
         displayName: true,
-        profilePicture: true,
         isActive: true,
         tokenExpiresAt: true,
         lastSync: true,
