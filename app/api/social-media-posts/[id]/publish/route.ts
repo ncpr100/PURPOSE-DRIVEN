@@ -32,9 +32,6 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       where: {
         id: params.id,
         churchId: user.churchId
-      },
-      include: {
-        social_media_accounts: true
       }
     })
 
