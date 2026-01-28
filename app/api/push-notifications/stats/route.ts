@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     const endDate = new Date()
 
     // Get push notification statistics
-    const notifications = await db.push_notifications.findMany({
+    const notifications = await db.push_notification_logs.findMany({
       where: {
         churchId: user.churchId,
         createdAt: {
@@ -45,16 +45,13 @@ export async function GET(request: NextRequest) {
 
     // Calculate stats
     const totalNotifications = notifications.length
-    const sentNotifications = notifications.filter(notif => notif.status === 'sent').length
-    const failedNotifications = notifications.filter(notif => notif.status === 'failed').length
-    const pendingNotifications = notifications.filter(notif => notif.status === 'pending').length
+    const sentNotifications = notifications.filter(notif => notif.status?.toUpperCase() === 'SENT').length
+    const failedNotifications = notifications.filter(notif => notif.status?.toUpperCase() === 'FAILED').length
+    const pendingNotifications = notifications.filter(notif => notif.status?.toUpperCase() === 'PENDING').length
 
-    // Type distribution
-    const typeDistribution = notifications.reduce((acc: any, notif) => {
-      const type = notif.type || 'other'
-      acc[type] = (acc[type] || 0) + 1
-      return acc
-    }, {})
+    // Click and dismissal analytics
+    const clickedNotifications = notifications.filter(notif => notif.clickedAt !== null).length
+    const dismissedNotifications = notifications.filter(notif => notif.dismissedAt !== null).length
 
     const stats = {
       summary: {
@@ -62,9 +59,11 @@ export async function GET(request: NextRequest) {
         sentNotifications,
         failedNotifications,
         pendingNotifications,
-        successRate: totalNotifications > 0 ? ((sentNotifications / totalNotifications) * 100).toFixed(1) : '0.0'
+        clickedNotifications,
+        dismissedNotifications,
+        successRate: totalNotifications > 0 ? ((sentNotifications / totalNotifications) * 100).toFixed(1) : '0.0',
+        clickRate: sentNotifications > 0 ? ((clickedNotifications / sentNotifications) * 100).toFixed(1) : '0.0'
       },
-      typeDistribution,
       recentNotifications: notifications.slice(0, 20)
     }
 
