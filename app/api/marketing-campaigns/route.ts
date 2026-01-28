@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -60,14 +61,25 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, description, objectives } = body
+    const { name, description, objectives, startDate, platforms, targetAudience, budget, currency, endDate, status, metrics, tags } = body
     
     const campaign = await prisma.marketing_campaigns.create({
       data: {
+        id: nanoid(),
         name,
         description,
         objectives,
+        startDate: startDate ? new Date(startDate) : new Date(),
+        platforms: platforms || 'FACEBOOK,INSTAGRAM',
+        managerId: session.user.id,
         churchId: session.user.churchId,
+        targetAudience,
+        budget,
+        currency: currency || 'USD',
+        endDate: endDate ? new Date(endDate) : null,
+        status: status || 'DRAFT',
+        metrics,
+        tags,
         createdAt: new Date(),
         updatedAt: new Date()
       }
