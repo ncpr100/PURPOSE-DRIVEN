@@ -48,18 +48,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       where: { id: params.id },
       data: {
         status: 'PUBLISHED',
-        publishedAt: new Date(),
-        publishedBy: user.id
-      },
-      include: {
-        social_media_accounts: {
-          select: {
-            id: true,
-            platform: true,
-            username: true,
-            displayName: true
-          }
-        }
+        publishedAt: new Date()
       }
     })
 
