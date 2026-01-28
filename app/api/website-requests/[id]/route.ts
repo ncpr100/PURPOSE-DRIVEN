@@ -83,16 +83,16 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     const body = await request.json()
-    const { status, priority, notes, estimatedPrice, estimatedDays, assignedTo } = body
+    const { status, priority, adminNotes, estimatedPrice, estimatedCompletion, assignedTo } = body
 
     const updated = await db.website_requests.update({
       where: { id: params.id },
       data: {
         status: status || existing.status,
         priority: priority || existing.priority,
-        notes: notes !== undefined ? notes : existing.notes,
+        adminNotes: adminNotes !== undefined ? adminNotes : existing.adminNotes,
         estimatedPrice: estimatedPrice !== undefined ? estimatedPrice : existing.estimatedPrice,
-        estimatedDays: estimatedDays !== undefined ? estimatedDays : existing.estimatedDays,
+        estimatedCompletion: estimatedCompletion !== undefined ? estimatedCompletion : existing.estimatedCompletion,
         assignedTo: assignedTo !== undefined ? assignedTo : existing.assignedTo,
         updatedAt: new Date()
       },
