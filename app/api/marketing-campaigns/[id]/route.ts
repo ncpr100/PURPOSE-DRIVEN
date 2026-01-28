@@ -25,7 +25,8 @@ export async function GET(
         churchId: session.user.churchId
       },
       include: {
-        posts: true
+        marketing_campaign_posts: true,
+        social_media_posts: true
       }
     })
     
