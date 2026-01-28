@@ -20,6 +20,7 @@ import {
   Users,
   BarChart3
 } from 'lucide-react'
+import PlatformQRGenerator from './platform-qr-generator'
 
 interface PlatformForm {
   id: string
@@ -41,6 +42,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
   const [forms, setForms] = useState<PlatformForm[]>([])
   const [loading, setLoading] = useState(true)
   const [isCreating, setIsCreating] = useState(false)
+  const [selectedFormId, setSelectedFormId] = useState<string | null>(null)
   const [newForm, setNewForm] = useState({
     title: '',
     description: '',
@@ -281,6 +283,9 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
         </CardContent>
       </Card>
 
+      {/* QR Code Generator */}
+      <PlatformQRGenerator formId={selectedFormId || undefined} />
+
       <div className="grid gap-6">
         {!Array.isArray(forms) || forms.length === 0 ? (
           <Card>
@@ -307,6 +312,14 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
               </CardHeader>
               <CardContent>
                 <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setSelectedFormId(form.id)}
+                  >
+                    <QrCode className="h-4 w-4 mr-1" />
+                    QR
+                  </Button>
                   <Button
                     size="sm"
                     variant="outline"
