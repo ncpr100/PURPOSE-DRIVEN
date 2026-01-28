@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -70,10 +71,10 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { platform, username, displayName, accessToken, refreshToken, tokenExpiresAt, accountData } = body
+    const { platform, accountId, username, displayName, accessToken, refreshToken, tokenExpiresAt, accountData } = body
 
-    if (!platform || !username) {
-      return NextResponse.json({ error: 'Plataforma y username son requeridos' }, { status: 400 })
+    if (!platform || !accountId) {
+      return NextResponse.json({ error: 'Plataforma y accountId son requeridos' }, { status: 400 })
     }
 
     // Check if account already exists
@@ -91,7 +92,9 @@ export async function POST(request: NextRequest) {
 
     const account = await db.social_media_accounts.create({
       data: {
+        id: nanoid(),
         platform,
+        accountId,
         username,
         displayName,
         accessToken,
@@ -100,6 +103,7 @@ export async function POST(request: NextRequest) {
         accountData: accountData ? JSON.stringify(accountData) : null,
         isActive: true,
         churchId: user.churchId,
+        connectedBy: user.id,
         lastSync: new Date()
       },
       select: {
