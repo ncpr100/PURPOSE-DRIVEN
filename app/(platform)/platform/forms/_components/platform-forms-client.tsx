@@ -54,14 +54,17 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
       const response = await fetch('/api/platform/forms')
       
       if (response.ok) {
-        const data = await response.json()
-        setForms(data)
+        const result = await response.json()
+        // API returns { data: [...], meta: {...} }
+        setForms(Array.isArray(result.data) ? result.data : [])
       } else {
         toast.error('Error al cargar formularios')
+        setForms([])
       }
     } catch (error) {
       console.error('Error fetching forms:', error)
       toast.error('Error de conexión')
+      setForms([])
     } finally {
       setLoading(false)
     }
@@ -111,7 +114,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
       })
 
       if (response.ok) {
-        setForms(forms.map(form => 
+        setForms((forms || []).map(form => 
           form.id === formId ? { ...form, isActive: !currentStatus } : form
         ))
         toast.success(`Formulario ${!currentStatus ? 'activado' : 'desactivado'}`)
@@ -253,7 +256,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
       </Card>
 
       <div className="grid gap-6">
-        {forms.length === 0 ? (
+        {!Array.isArray(forms) || forms.length === 0 ? (
           <Card>
             <CardContent className="text-center py-8">
               <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
