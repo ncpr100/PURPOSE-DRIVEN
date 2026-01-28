@@ -29,35 +29,11 @@ export async function GET(request: NextRequest) {
     const startDate = subDays(new Date(), days)
     const endDate = new Date()
 
-    // Get messaging statistics for prayers
-    const messagingStats = await db.prayer_messages.findMany({
-      where: {
-        churchId: user.churchId,
-        createdAt: {
-          gte: startDate,
-          lte: endDate
-        }
-      },
-      include: {
-        prayer_requests: true,
-        message_templates: true
-      }
-    })
-
-    // Calculate stats
-    const totalMessages = messagingStats.length
-    const uniqueRequests = new Set(messagingStats.map(msg => msg.prayerRequestId)).size
-    const templateUsage = messagingStats.reduce((acc: any, msg) => {
-      const templateName = msg.message_templates?.name || 'Sin template'
-      acc[templateName] = (acc[templateName] || 0) + 1
-      return acc
-    }, {})
-
-    // Top templates
-    const topTemplates = Object.entries(templateUsage)
-      .sort(([,a]: any, [,b]: any) => b - a)
-      .slice(0, 5)
-      .map(([name, count]) => ({ name, count }))
+    // TODO: prayer_messages model doesn't exist in schema yet
+    // Returning stub data until messaging feature is fully implemented
+    const totalMessages = 0
+    const uniqueRequests = 0
+    const topTemplates: any[] = []
 
     const stats = {
       summary: {
