@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get qualification settings
-    const settings = await db.qualification_settings.findMany({
+    const settings = await db.church_qualification_settings.findMany({
       where: {
         churchId: user.churchId
       },
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Nombre y descripción son requeridos' }, { status: 400 })
     }
 
-    const setting = await db.qualification_settings.create({
+    const setting = await db.church_qualification_settings.create({
       data: {
         name,
         description,
@@ -120,7 +120,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Verify ownership
-    const existing = await db.qualification_settings.findFirst({
+    const existing = await db.church_qualification_settings.findFirst({
       where: { id, churchId: user.churchId }
     })
 
@@ -128,7 +128,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Configuración no encontrada' }, { status: 404 })
     }
 
-    const updated = await db.qualification_settings.update({
+    const updated = await db.church_qualification_settings.update({
       where: { id },
       data: {
         name: name || existing.name,
