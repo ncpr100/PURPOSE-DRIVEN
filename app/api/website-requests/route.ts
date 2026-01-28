@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -118,21 +119,17 @@ export async function POST(request: NextRequest) {
 
     const websiteRequest = await db.website_requests.create({
       data: {
+        id: nanoid(),
         requestType,
         projectName,
         description,
-        features: features ? JSON.stringify(features) : null,
-        timeline,
-        budget,
         priority: priority || 'medium',
         status: 'pending',
         contactEmail: contactEmail || user.email,
-        contactPhone,
-        additionalNotes,
+        phone: contactPhone,
         estimatedPrice: calculatedPrice,
-        estimatedDays,
+        metadata: JSON.stringify({ features, timeline, budget, additionalNotes, estimatedDays }),
         churchId: user.churchId,
-        userId: user.id,
         createdAt: new Date(),
         updatedAt: new Date()
       },

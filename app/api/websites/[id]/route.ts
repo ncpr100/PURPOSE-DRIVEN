@@ -88,25 +88,21 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     const body = await request.json()
-    const { name, domain, subdomain, description, type, isActive, settings } = body
+    const { name, domain, description, isActive, settings } = body
 
     const updated = await db.websites.update({
       where: { id: params.id },
       data: {
         name: name || existing.name,
         domain: domain || existing.domain,
-        subdomain: subdomain || existing.subdomain,
         description: description || existing.description,
-        type: type || existing.type,
         isActive: isActive !== undefined ? isActive : existing.isActive,
-        settings: settings ? JSON.stringify(settings) : existing.settings,
+        metadata: settings ? JSON.stringify(settings) : existing.metadata,
         updatedAt: new Date()
       },
       include: {
-        _count: {
-          web_pages: true,
-          funnels: true
-        }
+        web_pages: { take: 1 },
+        website_analytics: { take: 1 }
       }
     })
 

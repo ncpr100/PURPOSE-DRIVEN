@@ -69,13 +69,13 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, domain, subdomain, description, type = 'institutional', settings = {} } = body
+    const { name, domain, description, settings = {} } = body
 
     if (!name) {
       return NextResponse.json({ error: 'El nombre es requerido' }, { status: 400 })
     }
 
-    // Check for existing domain/subdomain
+    // Check for existing domain
     if (domain) {
       const existingDomain = await db.websites.findFirst({
         where: { domain, id: { not: undefined } }
@@ -89,40 +89,18 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    if (subdomain) {
-      const existingSubdomain = await db.websites.findFirst({
-        where: { subdomain, id: { not: undefined } }
-      })
-      
-      if (existingSubdomain) {
-        return NextResponse.json(
-          { error: 'Ya existe un sitio web con este subdominio' },
-          { status: 409 }
-        )
-      }
-    }
-
     const website = await db.websites.create({
       data: {
         id: nanoid(),
         name,
+        slug: domain || nanoid(),
         domain: domain || null,
-        subdomain: subdomain || null,
         description: description || null,
-        type,
         isActive: true,
-        settings: JSON.stringify(settings),
+        metadata: JSON.stringify(settings),
         churchId: user.churchId,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      include: {
-        _count: {
-          select: {
-            web_pages: true,
-            funnels: true
-          }
-        }
       }
     })
 
