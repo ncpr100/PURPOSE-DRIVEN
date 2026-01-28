@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { subDays } from 'date-fns'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -86,24 +87,10 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { 
-      platform, 
-      accountId, 
-      date, 
-      followers, 
-      following, 
-      posts, 
-      engagement, 
-      reach, 
-      impressions, 
-      clicks, 
-      shares, 
-      comments, 
-      likes 
-    } = body
+    const { platform, accountId, date, metrics } = body
 
-    if (!platform || !accountId || !date) {
-      return NextResponse.json({ error: 'Plataforma, cuenta y fecha son requeridos' }, { status: 400 })
+    if (!platform || !accountId || !date || !metrics) {
+      return NextResponse.json({ error: 'Plataforma, cuenta, fecha y métricas son requeridos' }, { status: 400 })
     }
 
     // Verify account ownership
@@ -115,55 +102,53 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Cuenta no encontrada' }, { status: 404 })
     }
 
-    // Check if metrics for this date already exist
-    const existing = await db.social_media_metrics.findFirst({
-      where: {
-        accountId,
-        date: new Date(date),
-        platform
-      }
-    })
+    // Store each metric as a separate row (schema uses metricType + value pattern)
+    const metricDate = new Date(date)
+    const createdMetrics = []
 
-    if (existing) {
-      // Update existing metrics
-      const updated = await db.social_media_metrics.update({
-        where: { id: existing.id },
-        data: {
-          followers,
-          following,
-          posts,
-          engagement,
-          reach,
-          impressions,
-          clicks,
-          shares,
-          comments,
-          likes
+    // Process each metric type (followers, engagement, reach, etc.)
+    for (const [metricType, value] of Object.entries(metrics)) {
+      if (value !== null && value !== undefined) {
+        // Check if metric already exists
+        const existing = await db.social_media_metrics.findFirst({
+          where: {
+            accountId,
+            metricType,
+            date: metricDate,
+            periodType: 'DAILY'
+          }
+        })
+
+        if (existing) {
+          // Update existing metric
+          const updated = await db.social_media_metrics.update({
+            where: { id: existing.id },
+            data: {
+              value: Number(value),
+              collectedAt: new Date()
+            }
+          })
+          createdMetrics.push(updated)
+        } else {
+          // Create new metric
+          const newMetric = await db.social_media_metrics.create({
+            data: {
+              id: nanoid(),
+              platform,
+              accountId,
+              churchId: user.churchId,
+              metricType,
+              value: Number(value),
+              date: metricDate,
+              periodType: 'DAILY'
+            }
+          })
+          createdMetrics.push(newMetric)
         }
-      })
-      return NextResponse.json(updated)
-    } else {
-      // Create new metrics
-      const metrics = await db.social_media_metrics.create({
-        data: {
-          platform,
-          accountId,
-          churchId: user.churchId,
-          date: new Date(date),
-          followers,
-          following,
-          posts,
-          engagement,
-          reach,
-          impressions,
-          clicks,
-          shares,
-          comments,
-          likes
-        }
-      })
-      return NextResponse.json(metrics, { status: 201 })
+      }
     }
+
+    return NextResponse.json({ metrics: createdMetrics, count: createdMetrics.length }, { status: 201 })
   } catch (error) {
     console.error('Error creating social media metrics:', error)
     return NextResponse.json(
