@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { content, scheduledFor, accountIds, campaignId, mediaUrls, hashtags } = body
+    const { content, scheduledAt, accountIds, campaignId, mediaUrls, hashtags } = body
 
     if (!content) {
       return NextResponse.json({ error: 'Contenido es requerido' }, { status: 400 })
@@ -74,18 +74,13 @@ export async function POST(request: NextRequest) {
     const post = await db.social_media_posts.create({
       data: {
         content,
-        scheduledFor: scheduledFor ? new Date(scheduledFor) : null,
+        scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
         campaignId,
         mediaUrls: mediaUrls ? JSON.stringify(mediaUrls) : null,
         hashtags: hashtags ? JSON.stringify(hashtags) : null,
         status: 'DRAFT',
         churchId: user.churchId,
-        createdBy: user.id
-      },
-      include: {
-        social_media_accounts: {
-          select: { id: true, platform: true, username: true }
-        }
+        authorId: user.id
       }
     })
 
