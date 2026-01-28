@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -114,10 +115,11 @@ export async function POST(request: NextRequest) {
 
     const webPage = await db.web_pages.create({
       data: {
+        id: nanoid(),
         websiteId,
         title,
         slug,
-        content: content || '',
+        content: typeof content === 'string' ? JSON.parse(content) : (content || {}),
         isPublished: isPublished !== undefined ? isPublished : false,
         order: order || 0
       }
