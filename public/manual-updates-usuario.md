@@ -1,7 +1,23 @@
 
 # Manual de Actualizaciones del Sistema
 ## Kḥesed-tek Church Management Systems
-### Guía del Usuario - Actualizaciones de Agosto 2025
+### Guía del Usuario de Iglesia (Tenant) - Actualizaciones de Agosto 2025
+
+---
+
+## 🔐 NOTA: Roles de Usuario en su Iglesia
+
+**Su Rol**: Usuario de una iglesia individual (tenant) en la plataforma Khesed-Tek.
+
+**Roles Disponibles en su Iglesia** (Nivel Tenant):
+- **Pastores**: Liderazgo pastoral con permisos ampliados
+- **Administradores**: Administran la configuración de la iglesia
+- **Líderes**: Coordinan ministerios y áreas específicas
+- **Servidores**: Personal de servicio ministerial
+
+**Importante**: 
+- Estos roles son específicos de su iglesia (tenant)
+- El SUPER_ADMIN es un rol separado que gestiona toda la plataforma Khesed-Tek (NO es un rol de iglesia)
 
 ---
 

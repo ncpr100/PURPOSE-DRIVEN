@@ -1,7 +1,25 @@
 
 # Manual Técnico de Actualizaciones del Sistema
 ## Kḥesed-tek Church Management Systems
-### Guía del Super Administrador - Actualizaciones de Agosto 2025
+### Guía del SUPER_ADMIN (Administrador de Plataforma) - Actualizaciones de Agosto 2025
+
+---
+
+## 🔐 NOTA IMPORTANTE: Roles del Sistema
+
+### Nivel de Plataforma (Khesed-Tek)
+**SUPER_ADMIN (Usted)**: Administrador de la plataforma Khesed-Tek completa. Gestiona múltiples iglesias (tenants), configuraciones globales, y funciones de plataforma como formularios de marketing.
+
+### Nivel de Tenant (Iglesias Individuales)
+**Roles de Iglesia** (usuarios de tenant individual):
+- **Pastores**: Liderazgo pastoral de la iglesia
+- **Administradores**: Administradores de iglesia individual
+- **Líderes**: Líderes de ministerios
+- **Servidores**: Personal de servicio ministerial
+
+**Separación Crítica**:
+- SUPER_ADMIN = Gestión de plataforma Khesed-Tek (NO es un rol de iglesia)
+- Pastores/Administradores/Líderes/Servidores = Roles dentro de cada iglesia (tenant)
 
 ---
 

@@ -96,7 +96,9 @@ This is an **enterprise-grade church management platform** actively deployed in 
 **1. Centralized Access Control**
 - `middleware.ts` is the **most important file** - controls all routing and permissions (229 lines)
 - Protected routes arrays: `PROTECTED_ROUTES` (25+ routes) and `PROTECTED_API_ROUTES` (20+ API routes)
-- Role hierarchy: `SUPER_ADMIN` → `ADMIN_IGLESIA` → `PASTOR` → `LIDER` → `MIEMBRO`
+- **Role hierarchy**:
+  - **Platform Level**: `SUPER_ADMIN` (Khesed-Tek platform administrator)
+  - **Tenant Level**: `Pastores` → `Administradores` → `Líderes` → `Servidores`
 - **Never bypass middleware** - all auth/permissions must flow through it
 - Authentication flow:
   1. Uses `getToken()` from `next-auth/jwt` to validate JWT tokens
