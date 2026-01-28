@@ -118,11 +118,8 @@ export async function POST(request: NextRequest) {
         title,
         slug,
         content: content || '',
-        templateId,
         isPublished: isPublished !== undefined ? isPublished : false,
-        order: order || 0,
-        createdBy: user.id,
-        updatedBy: user.id
+        order: order || 0
       }
     })
 
