@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 export const dynamic = 'force-dynamic'
 
@@ -65,7 +66,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { content, scheduledAt, accountIds, campaignId, mediaUrls, hashtags } = body
+    const { content, scheduledAt, platforms, accountIds, campaignId, mediaUrls, hashtags } = body
 
     if (!content) {
       return NextResponse.json({ error: 'Contenido es requerido' }, { status: 400 })
@@ -73,7 +74,10 @@ export async function POST(request: NextRequest) {
 
     const post = await db.social_media_posts.create({
       data: {
+        id: nanoid(),
         content,
+        platforms: platforms ? JSON.stringify(platforms) : '[]',
+        accountIds: accountIds ? JSON.stringify(accountIds) : '[]',
         scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
         campaignId,
         mediaUrls: mediaUrls ? JSON.stringify(mediaUrls) : null,
