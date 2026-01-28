@@ -34,6 +34,8 @@ export async function GET(request: NextRequest) {
     const totalMessages = 0
     const uniqueRequests = 0
     const topTemplates: any[] = []
+    const templateUsage = {}
+    const recentMessages: any[] = []
 
     const stats = {
       summary: {
@@ -43,7 +45,7 @@ export async function GET(request: NextRequest) {
       },
       templateUsage,
       topTemplates,
-      recentMessages: messagingStats.slice(0, 20)
+      recentMessages
     }
 
     return NextResponse.json(stats)
