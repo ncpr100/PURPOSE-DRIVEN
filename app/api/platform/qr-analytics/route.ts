@@ -33,20 +33,14 @@ export async function GET(request: NextRequest) {
         createdAt: { gte: startDate }
       },
       include: {
-        event: {
+        events: {
           include: {
-            church: {
+            churches: {
               select: {
                 name: true,
                 id: true
               }
             }
-          }
-        },
-        member: {
-          select: {
-            name: true,
-            id: true
           }
         }
       }
@@ -59,7 +53,7 @@ export async function GET(request: NextRequest) {
         qrCode: { not: null }
       },
       include: {
-        church: {
+        churches: {
           select: {
             name: true,
             id: true
@@ -81,8 +75,8 @@ export async function GET(request: NextRequest) {
       
       // By church breakdown
       churchBreakdown: qrEvents.reduce((acc: any, event: any) => {
-        const churchId = event.church.id
-        const churchName = event.church.name
+        const churchId = event.churches.id
+        const churchName = event.churches.name
         
         if (!acc[churchId]) {
           acc[churchId] = {
