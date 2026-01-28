@@ -6,6 +6,8 @@ import { db } from '@/lib/db'
 export const dynamic = 'force-dynamic'
 
 // POST /api/support-contact - Submit support contact request
+// NOTE: Stub implementation - support_requests model not yet implemented in schema
+// TODO: Create support_requests model for ticket system
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -29,47 +31,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Asunto y mensaje son requeridos' }, { status: 400 })
     }
 
-    // Create support request
-    const supportRequest = await db.support_requests.create({
-      data: {
-        subject,
-        message,
-        category: category || 'general',
-        priority: priority || 'medium',
-        status: 'open',
-        contactEmail: contactEmail || user.email,
-        contactPhone,
-        churchId: user.churchId,
-        userId: user.id,
-        submittedAt: new Date()
-      }
-    })
-
-    // Log the support request for admin tracking
-    console.log('Support request submitted:', {
-      id: supportRequest.id,
-      churchId: user.churchId,
-      userId: user.id,
-      subject: subject,
+    // STUB: Log support request until model implemented
+    console.log('Support request received (NOT SAVED - model unimplemented):', {
+      subject,
+      message,
       category: category || 'general',
       priority: priority || 'medium',
-      userEmail: user.email,
-      churchName: user.churches?.name,
-      timestamp: new Date().toISOString()
+      contactEmail: contactEmail || user.email,
+      contactPhone,
+      churchId: user.churchId,
+      userId: user.id,
+      submittedAt: new Date()
     })
+
+    // Return stub success response
+    const stubResponse = {
+      id: `stub-${Date.now()}`,
+      subject,
+      message,
+      category: category || 'general',
+      priority: priority || 'medium',
+      status: 'pending',
+      contactEmail: contactEmail || user.email,
+      contactPhone,
+      submittedAt: new Date().toISOString()
+    }
 
     // Enhanced success response
     return NextResponse.json({
       success: true,
-      message: 'Solicitud de soporte enviada exitosamente',
-      supportRequest: {
-        id: supportRequest.id,
-        subject: supportRequest.subject,
-        category: supportRequest.category,
-        priority: supportRequest.priority,
-        status: supportRequest.status,
-        submittedAt: supportRequest.submittedAt
-      }
+      message: 'Solicitud de soporte enviada exitosamente (modo stub - no persistente)',
+      supportRequest: stubResponse
     }, { status: 201 })
   } catch (error) {
     console.error('Error creating support request:', error)
@@ -81,6 +73,7 @@ export async function POST(request: NextRequest) {
 }
 
 // GET /api/support-contact - Get user's support requests
+// NOTE: Stub implementation - returns empty array until model implemented
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -97,18 +90,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
 
-    const supportRequests = await db.support_requests.findMany({
-      where: {
-        churchId: user.churchId,
-        userId: user.id
-      },
-      orderBy: { submittedAt: 'desc' },
-      take: 50
-    })
+    // STUB: Return empty array until support_requests model implemented
+    console.log('Support requests GET called (stub - returning empty array)')
 
     return NextResponse.json({
       success: true,
-      requests: supportRequests
+      requests: [],
+      message: 'Support requests feature not yet implemented'
     })
   } catch (error) {
     console.error('Error fetching support requests:', error)
