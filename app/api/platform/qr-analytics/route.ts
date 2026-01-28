@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     startDate.setDate(startDate.getDate() - parseInt(period))
 
     // QR Code scan analytics across all churches
-    const qrScans = await db.checkIns.findMany({
+    const qrScans = await db.check_ins.findMany({
       where: {
         createdAt: { gte: startDate }
       },
