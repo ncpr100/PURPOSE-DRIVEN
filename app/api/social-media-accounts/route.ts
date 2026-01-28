@@ -29,7 +29,6 @@ export async function GET(request: NextRequest) {
         platform: true,
         username: true,
         displayName: true,
-        profilePicture: true,
         isActive: true,
         lastSync: true,
         createdAt: true,
