@@ -243,16 +243,16 @@ export function Sidebar() {
   })
 
   const filteredItems = navigationItems.filter(item => {
-    const hasRole = session?.user?.role && item.roles.includes(session.user.role as string)
+    const hasRole = session?.user?.role && item?.roles?.includes(session.user.role as string)
     console.log(`🔍 Item "${item.title}":`, {
-      roles: item.roles,
+      roles: item?.roles ?? [],
       userRole: session?.user?.role,
       hasRole
     })
     return hasRole
   })
 
-  console.log('🔍 SIDEBAR: Filtered items count:', filteredItems.length)
+  console.log('🔍 SIDEBAR: Filtered items count:', filteredItems?.length ?? 0)
 
   // Show loading state while session is loading
   if (status === 'loading') {
@@ -292,7 +292,9 @@ export function Sidebar() {
       </div>
       
       <nav className="space-y-2">
-        {filteredItems?.map((item) => {
+        {(filteredItems ?? []).map((item) => {
+          if (!item) return null
+          
           const Icon = item.icon
           const isActive = pathname === item.href
 
