@@ -38,6 +38,15 @@ import { EmailManagement } from './email-management'
 import { RealTimeManagement } from './realtime-management'
 import { SentNotificationsList } from './sent-notifications-list'
 
+// Runtime component validation
+if (typeof NotificationList === 'undefined') console.error('NotificationList is undefined')
+if (typeof CreateNotificationDialog === 'undefined') console.error('CreateNotificationDialog is undefined')
+if (typeof NotificationStats === 'undefined') console.error('NotificationStats is undefined')
+if (typeof NotificationPreferences === 'undefined') console.error('NotificationPreferences is undefined')
+if (typeof EmailManagement === 'undefined') console.error('EmailManagement is undefined')
+if (typeof RealTimeManagement === 'undefined') console.error('RealTimeManagement is undefined')
+if (typeof SentNotificationsList === 'undefined') console.error('SentNotificationsList is undefined')
+
 interface Notification {
   id: string
   title: string
