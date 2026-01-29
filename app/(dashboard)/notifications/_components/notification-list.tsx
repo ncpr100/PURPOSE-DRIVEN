@@ -177,6 +177,7 @@ export function NotificationList({
       <div className="space-y-2">
         {notifications.map((notification) => {
           const IconComponent = NOTIFICATION_ICONS[notification.type]
+          if (!IconComponent) return null
           const isExpanded = expandedIds.includes(notification.id)
           const isSelected = selectedIds.includes(notification.id)
           const isExpired = notification.expiresAt && new Date(notification.expiresAt) < new Date()
