@@ -293,7 +293,7 @@ export function Sidebar() {
       
       <nav className="space-y-2">
         {(filteredItems ?? []).map((item) => {
-          if (!item) return null
+          if (!item || !item.icon) return null
           
           const Icon = item.icon
           const isActive = pathname === item.href
