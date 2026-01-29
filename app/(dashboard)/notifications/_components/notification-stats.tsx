@@ -156,6 +156,7 @@ export function NotificationStats({ totalCount, unreadCount, notifications }: No
             <div className="flex flex-wrap gap-2">
               {Object.entries(typeStats).map(([type, count]) => {
                 const IconComponent = typeIcons[type as keyof typeof typeIcons]
+                if (!IconComponent) return null
                 return (
                   <Badge 
                     key={type} 
