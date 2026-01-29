@@ -34,6 +34,178 @@
 
 ---
 
+## 🏗️ ARCHITECTURAL DECISION PROTOCOL (MANDATORY)
+
+**CRITICAL**: This protocol MUST be executed BEFORE any stack selection, technology choice, or architectural decision.
+
+### **1. Analyze Past Errors & Lessons Learned**
+
+**Common Errors in Failed Deployments:**
+- ❌ **Wrong abstraction level**: Choosing monolithic stack when microservices needed, or vice versa
+- ❌ **Over-engineering**: Using multiple overlapping tools (e.g., Prisma + TypeORM + raw SQL in one service)
+- ❌ **Under-engineering**: Using lightweight frameworks for complex transactional systems
+- ❌ **Library mismatch**: Using Next.js for pure static site with no SSR needs, adding unnecessary complexity
+- ❌ **Scalability misjudgment**: Picking stack that doesn't scale in required direction (vertical vs horizontal)
+- ❌ **State management complexity**: Using global state management in small apps, or not using it in large multi-role apps
+- ❌ **Database-ORM mismatch**: Using ORM that doesn't support required database features
+
+**Before ANY architectural decision, ask:**
+1. "Have we made this mistake before?"
+2. "What did we learn from past deployment failures?"
+3. "Is this the simplest solution that meets requirements?"
+
+### **2. Decision Framework: Singular vs. Plural Stacks**
+
+#### **When to Use SINGULAR (Monolithic) Stack:**
+- ✅ Early-stage product, small team
+- ✅ Clear, bounded domain (e.g., internal tool, single-service app)
+- ✅ Example: Next.js (App Router) + Prisma + PostgreSQL all in one repo
+- **Criteria:**
+  - All features mostly share same data models
+  - Team size < 5 developers
+  - Performance scaling can be vertical initially
+
+#### **When to Use PLURAL (Multi-service/Multi-repo) Stack:**
+- ✅ Large-scale, multiple independent domains
+- ✅ Different services have different scaling or tech needs
+- ✅ Example:
+  - Service A: FastAPI + SQLAlchemy (Python, heavy data processing)
+  - Service B: Next.js + tRPC (frontend + BFF)
+  - Service C: NestJS + TypeORM (admin panel, complex transactions)
+- **Criteria:**
+  - Teams separated by service ownership
+  - Different non-functional requirements (real-time vs batch processing)
+  - Need for independent deployment cycles
+
+**Current System**: SINGULAR stack (Next.js + Prisma + PostgreSQL) - appropriate for current scale
+
+### **3. Technology-Specific Choice Rules**
+
+#### **Prisma**
+- ✅ **Use when:**
+  - Rapid prototyping with type-safe database access
+  - Team prefers declarative schema format
+  - Don't need complex SQL queries that ORMs make cumbersome
+- ❌ **Avoid when:**
+  - Heavy reporting/analytical queries
+  - Need advanced DB features not supported by Prisma
+  - Microservices with shared DB (Prisma leads to tight coupling)
+- **Current Status**: ✅ Appropriate choice (church management with standard CRUD operations)
+
+#### **Next.js**
+- ✅ **Use when:**
+  - Need hybrid static + server rendering
+  - SEO matters
+  - Full-stack React with API routes in same project acceptable
+- ❌ **Avoid when:**
+  - Building mobile app backend only
+  - Need long-running server processes (use Node.js + Express/NestJS separately)
+- **Current Status**: ✅ Appropriate choice (church dashboard with SSR needs)
+
+#### **NestJS**
+- ✅ **Use when:**
+  - Enterprise-grade structure (modules, DI, built-in patterns)
+  - Microservices with transporters (RabbitMQ, Kafka)
+  - Large teams needing consistency
+- ❌ **Avoid when:**
+  - Quick prototype or small API (consider Fastify/Express)
+- **Current Status**: ❌ Not used (Next.js API routes sufficient for current scale)
+
+#### **State Management (Zustand, Redux, Context)**
+- **Zustand**: Most projects needing global state (simpler than Redux)
+- **Redux**: Large-scale state with middleware needs (logging, persistence, async flows)
+- **Context**: Only for small, static or low-frequency updates (not for frequent state changes)
+- **Current Status**: Using React hooks + server state (appropriate for church-scoped data)
+
+### **4. Stack Selection Checklist (MANDATORY)**
+
+Before recommending ANY technology change, answer ALL questions:
+
+1. ✅ **Define scope & scaling needs**
+   - Is this a single product or a platform?
+   - Expected traffic patterns: read-heavy vs write-heavy?
+
+2. ✅ **Team expertise**
+   - Don't pick unfamiliar stacks for critical paths without training/buffer time
+
+3. ✅ **Community & maintenance**
+   - Choose stacks with active support and good documentation
+
+4. ✅ **Integration points**
+   - Ensure chosen libraries work together (e.g., Prisma works with Next.js)
+
+5. ✅ **Exit strategy**
+   - Can we replace one component without rewriting the whole app?
+
+### **5. Guardrails for AI Agent (MANDATORY CHECKS)**
+
+**When recommending a stack, ALWAYS ask:**
+1. "Is this for a monolith or distributed system?"
+2. "Have we used this stack before? What were the pain points?"
+3. "Does this match the team's current skill set?"
+4. "What are the risks of this choice?"
+
+**Cross-check against past failures:**
+- Example: "Past failure: Used Next.js API routes for CPU-intensive tasks → caused timeouts. Switch to separate worker service."
+
+**Default to boring technology for mission-critical parts:**
+- Proven > Cutting-edge
+- Simple > Complex
+- Maintainable > Trendy
+
+**Proof-of-concept for risky combinations:**
+- NEVER recommend unproven tech combinations for production
+- Always test new stack combinations in isolated environment first
+
+### **6. Example Decision Flow**
+
+**Prompt**: "We need a dashboard with real-time notifications and reporting."
+
+**Step 1: Identify components**
+- Real-time → WebSockets (Socket.io or SSE)
+- Dashboard frontend → React/Next.js
+- Reporting → Might need separate service if heavy
+
+**Step 2: Check past errors**
+- Previously, putting WebSocket server in Next.js API caused scaling issues → Decouple
+
+**Step 3: Recommendation**
+- Frontend: Next.js (static dashboard pages)
+- Real-time: Separate Node.js/Fastify service with Socket.io
+- Backend for data: NestJS or Express + Prisma if DB is simple
+- Reporting: Use Go service if performance-critical
+
+**Step 4: Validate against checklist**
+- Scope: Platform (distributed)
+- Team: Knows Next.js, learning Go acceptable for performance service
+- Community: All have strong communities
+- Integration: Services communicate via REST/GraphQL
+- Exit: Can swap reporting service without affecting dashboard
+
+### **7. Documentation & Review (MANDATORY)**
+
+**For EVERY architectural decision:**
+
+1. ✅ **Create Stack Decision Log**
+   - Document: Why this stack? What alternatives considered? What risks identified?
+   - Location: Project root or `docs/architecture/`
+
+2. ✅ **Post-deployment review (after 3 months)**
+   - What worked? What caused errors? Would we choose differently?
+   - Update this protocol with learnings
+
+3. ✅ **Update AI knowledge base**
+   - Add successful patterns to copilot instructions
+   - Document failed approaches to avoid repetition
+
+**Current System Review:**
+- Next.js + Prisma + PostgreSQL: ✅ Working well for church management domain
+- Redis caching: ✅ 90% hit rate achieved
+- SSE for real-time: ✅ Appropriate for current scale (< 1K concurrent users)
+- Future consideration: GraphQL migration for Phase 4 mobile apps
+
+---
+
 ## Project State & Current Focus
 
 This is an **enterprise-grade church management platform** actively deployed in production with **97% overall completion** and **100% Phase 3 completion**. All **Member Journey Deep Analytics** and **Performance Optimization** systems have been successfully implemented, with focus now on Phase 4 preparation and advanced system optimization for enterprise scalability.
