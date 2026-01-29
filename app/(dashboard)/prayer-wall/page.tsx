@@ -314,12 +314,12 @@ export default function PrayerWallPage() {
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.overview.totalRequestsCount || 0
+                    analytics?.overview?.totalRequestsCount ?? 0
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-blue-600 mt-1">
-                    {analytics.trends?.requestsOverTime.reduce((sum, day) => sum + day.aprobaciones, 0) || 0} aprobadas
+                    {analytics.trends?.requestsOverTime?.reduce((sum, day) => sum + day.aprobaciones, 0) ?? 0} aprobadas
                   </p>
                 )}
               </div>
@@ -337,12 +337,12 @@ export default function PrayerWallPage() {
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.trends?.requestsOverTime.reduce((sum, day) => sum + day.rechazos, 0) || 0
+                    analytics?.trends?.requestsOverTime?.reduce((sum, day) => sum + day.rechazos, 0) ?? 0
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-amber-600 mt-1">
-                    {analytics.trends?.requestsOverTime.reduce((sum, day) => sum + day.rechazos, 0) || 0} rechazadas
+                    {analytics.trends?.requestsOverTime?.reduce((sum, day) => sum + day.rechazos, 0) ?? 0} rechazadas
                   </p>
                 )}
               </div>
@@ -360,12 +360,12 @@ export default function PrayerWallPage() {
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.overview.totalContactos || 0
+                    analytics?.overview?.totalContactos ?? 0
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-green-600 mt-1">
-                    {analytics.overview.totalContactos} activos
+                    {analytics.overview?.totalContactos ?? 0} activos
                   </p>
                 )}
               </div>
@@ -383,12 +383,12 @@ export default function PrayerWallPage() {
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.trends?.requestsOverTime.reduce((sum, day) => sum + day.aprobaciones, 0) || 0
+                    analytics?.trends?.requestsOverTime?.reduce((sum, day) => sum + day.aprobaciones, 0) ?? 0
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-purple-600 mt-1">
-                    {analytics.overview.averageResponseTime.toFixed(1)}h promedio
+                    {(analytics.overview?.averageResponseTime ?? 0).toFixed(1)}h promedio
                   </p>
                 )}
               </div>
