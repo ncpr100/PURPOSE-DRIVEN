@@ -274,7 +274,7 @@ export function RealTimeManagement() {
                   <Label className="text-sm font-medium">Promedio por Usuario</Label>
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-xl font-bold">{stats.averageConnectionsPerUser.toFixed(1)}</span>
+                    <span className="text-xl font-bold">{(stats?.averageConnectionsPerUser ?? 0).toFixed(1)}</span>
                   </div>
                 </div>
               </>

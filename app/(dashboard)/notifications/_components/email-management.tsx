@@ -254,19 +254,19 @@ export function EmailManagement() {
                 <Label className="text-sm font-medium">Configuración</Label>
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
-                    <Badge variant={emailStatus.emailConfig.development ? "secondary" : "default"}>
-                      {emailStatus.emailConfig.development ? 'Desarrollo' : 'Producción'}
+                    <Badge variant={emailStatus?.emailConfig?.development ? "secondary" : "default"}>
+                      {emailStatus?.emailConfig?.development ? 'Desarrollo' : 'Producción'}
                     </Badge>
                   </div>
                   <span className="text-xs text-muted-foreground">
-                    Desde: {emailStatus.emailConfig.fromEmail}
+                    Desde: {emailStatus?.emailConfig?.fromEmail ?? 'No configurado'}
                   </span>
                 </div>
               </div>
             </div>
           )}
 
-          {emailStatus?.emailConfig.development && (
+          {emailStatus?.emailConfig?.development && (
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
@@ -315,8 +315,8 @@ export function EmailManagement() {
             <div className="border rounded-lg p-4 bg-muted/50">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-medium">Vista Previa del Digest</h4>
-                <Badge variant={digestPreview.preview ? "default" : "secondary"}>
-                  {digestPreview.preview ? `${digestPreview.notifications.length} notificaciones` : 'Sin contenido'}
+                <Badge variant={digestPreview?.preview ? "default" : "secondary"}>
+                  {digestPreview?.preview ? `${digestPreview?.notifications?.length ?? 0} notificaciones` : 'Sin contenido'}
                 </Badge>
               </div>
               
@@ -324,8 +324,8 @@ export function EmailManagement() {
                 <div>
                   <Label className="font-medium">Período:</Label>
                   <p className="text-muted-foreground">
-                    {new Date(digestPreview.dateRange.start).toLocaleDateString('es-ES')} - {' '}
-                    {new Date(digestPreview.dateRange.end).toLocaleDateString('es-ES')}
+                    {digestPreview?.dateRange?.start ? new Date(digestPreview.dateRange.start).toLocaleDateString('es-ES') : 'N/A'} - {' '}
+                    {digestPreview?.dateRange?.end ? new Date(digestPreview.dateRange.end).toLocaleDateString('es-ES') : 'N/A'}
                   </p>
                 </div>
                 <div>
@@ -334,11 +334,11 @@ export function EmailManagement() {
                 </div>
               </div>
 
-              {digestPreview.notifications.length > 0 && (
+              {(digestPreview?.notifications?.length ?? 0) > 0 && (
                 <div className="mt-4">
                   <Label className="font-medium">Notificaciones Incluidas:</Label>
                   <div className="mt-2 space-y-1 max-h-32 overflow-y-auto">
-                    {digestPreview.notifications.slice(0, 5).map((notification, index) => (
+                    {(digestPreview?.notifications ?? []).slice(0, 5).map((notification, index) => (
                       <div key={index} className="text-xs p-2 bg-background rounded border">
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-xs">
@@ -351,9 +351,9 @@ export function EmailManagement() {
                         </div>
                       </div>
                     ))}
-                    {digestPreview.notifications.length > 5 && (
-                      <p className="text-xs text-muted-foreground text-center">
-                        ... y {digestPreview.notifications.length - 5} notificaciones más
+                    {(digestPreview?.notifications?.length ?? 0) > 5 && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        ... y {(digestPreview?.notifications?.length ?? 0) - 5} notificaciones más
                       </p>
                     )}
                   </div>
