@@ -417,7 +417,7 @@ export default function PrayerWallPage() {
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
-                    <RechartsLineChart data={analytics.trends.requestsOverTime}>
+                    <RechartsLineChart data={analytics.trends?.requestsOverTime ?? []}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
                       <YAxis />
@@ -455,7 +455,7 @@ export default function PrayerWallPage() {
                         fill="#8884d8"
                         dataKey="cantidadPeticiones"
                       >
-                        {analytics.categories.map((entry, index) => (
+                        {(analytics.categories ?? []).map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
@@ -483,7 +483,7 @@ export default function PrayerWallPage() {
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
-                    <AreaChart data={analytics.trends.contactGrowth}>
+                    <AreaChart data={analytics.trends?.contactGrowth ?? []}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
                       <YAxis />
@@ -509,7 +509,7 @@ export default function PrayerWallPage() {
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
-                    <RechartsBarChart data={analytics.engagement.mostActiveHours}>
+                    <RechartsBarChart data={analytics.engagement?.mostActiveHours ?? []}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="hour" />
                       <YAxis />
@@ -538,8 +538,8 @@ export default function PrayerWallPage() {
             {analytics && !loading && (
               <div className="mt-4 p-3 bg-white rounded-lg border border-purple-200">
                 <p className="text-sm text-purple-700">
-                  {analytics.overview.totalRequestsCount} peticiones registradas | 
-                  {analytics.trends?.requestsOverTime.length || 0} días de estadísticas
+                  {analytics.overview?.totalRequestsCount ?? 0} peticiones registradas | 
+                  {analytics.trends?.requestsOverTime?.length ?? 0} días de estadísticas
                 </p>
               </div>
             )}
