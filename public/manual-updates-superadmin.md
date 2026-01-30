@@ -255,12 +255,213 @@ testMessage: 'Mensaje de prueba desde Kḥesed-tek Church Management Systems'
 - [ ] Validar que navegación "Integraciones" no existe.
 - [ ] Probar envío masivo y configuración de servicios.
 - [ ] Verificar título correcto en browser tabs.
+- [ ] PWA instalación verificada en `/prayer-requests` y `/prayer-wall`
+- [ ] Service worker registrado correctamente
+- [ ] Notificaciones push funcionando en producción
 
 ### User Communication:
 - [ ] Manual de usuario distribuido.
 - [ ] Administradores de iglesia notificados.
 - [ ] Documentación técnica actualizada.
 - [ ] Support team entrenado en nuevas funciones.
+- [ ] Guías de instalación PWA distribuidas al equipo de oración
+
+---
+
+## 📱 ACTUALIZACIÓN 4: SISTEMA PWA (PROGRESSIVE WEB APP)
+
+### ENTERPRISE-LEVEL PROTOCOL IMPLEMENTATION
+
+Implementación completa siguiendo el protocolo empresarial de 8 pasos para aplicaciones web progresivas.
+
+### Impacto Técnico:
+
+**Commit**: `9e91833` (Deployed to Production - January 30, 2026)
+
+**Archivos modificados:**
+- `app/(dashboard)/prayer-requests/page.tsx`: 526 → 855 lines (+329 lines)
+- `app/(dashboard)/prayer-wall/page.tsx`: 877 lines (commit 7c5f2de)
+
+**Infraestructura existente utilizada:**
+- Service Worker: `public/sw.js` (push notifications, offline cache)
+- Manifest: `public/manifest.json` v1.1.0 (app metadata, icons, display: standalone)
+- Push Client: `lib/push-client.ts` (notification subscription logic)
+- Security Utils: `public/sw-security-utils.js`
+
+### Cambios en la Arquitectura:
+
+```typescript
+// PWA State Management Pattern (Both Modules)
+const [isOnline, setIsOnline] = useState(true)
+const [isInstallable, setIsInstallable] = useState(false)
+const [installPrompt, setInstallPrompt] = useState<any>(null)
+const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
+const [isInstalled, setIsInstalled] = useState(false)
+
+// Event Listeners (PWA Detection)
+useEffect(() => {
+  // Detect if already installed
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    setIsInstalled(true)
+  }
+  
+  // Listen for install prompt
+  window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+  window.addEventListener('appinstalled', handleAppInstalled)
+  window.addEventListener('online', handleOnline)
+  window.addEventListener('offline', handleOffline)
+  
+  // Check notification permission
+  if ('Notification' in window) {
+    setNotificationPermission(Notification.permission)
+  }
+  
+  return () => { /* cleanup */ }
+}, [])
+```
+
+### Módulos con PWA Implementado:
+
+#### 1. Prayer Wall (`/prayer-wall`) - Analytics Dashboard
+- **Propósito**: Dashboard de solo lectura con gráficos y tendencias
+- **Implementación**: Commit 7c5f2de (Hybrid: Interactive buttons + Help Manual)
+- **Características**:
+  - Mobile Characteristics Status Card (4 badges)
+  - Install App button (browser native prompt)
+  - Enable Notifications button
+  - Comprehensive Help Modal (installation, notifications, offline mode)
+  - Charts hidden when no data (empty state handling)
+
+#### 2. Prayer Requests (`/prayer-requests`) - Operational Tool
+- **Propósito**: Herramienta operacional para equipo pastoral (gestión diaria)
+- **Implementación**: Commit 9e91833 (Enterprise-level protocol)
+- **Características**:
+  - Mobile Characteristics Status Card (4 real-time badges)
+  - Install App button with toast feedback
+  - Enable Notifications button
+  - Help Modal adapted for operational context
+  - Notification types: Urgentes, Nuevas Solicitudes, Respuestas Pendientes, Contactos Nuevos
+
+### Patrón de UI - Mobile Characteristics Card:
+
+```tsx
+<Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">
+  <CardHeader className="pb-3">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <Smartphone className="h-5 w-5 text-blue-600" />
+        <CardTitle>Aplicación Mobile - Gestión de Peticiones</CardTitle>
+      </div>
+      <Dialog> {/* Help Modal Trigger */} </Dialog>
+    </div>
+  </CardHeader>
+  <CardContent>
+    {/* 4 Status Badges */}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {/* App Mobile, Conexión, Alertas, Sin Conexión */}
+    </div>
+    {/* Action Buttons */}
+    <div className="flex flex-wrap gap-2 mt-4">
+      {isInstallable && <Button onClick={handleInstallApp}>Instalar Aplicación</Button>}
+      {notificationPermission !== 'granted' && <Button onClick={handleEnableNotifications}>Activar Notificaciones</Button>}
+    </div>
+  </CardContent>
+</Card>
+```
+
+### Funcionalidades Offline:
+
+**Disponible sin conexión:**
+- Ver últimas 100 peticiones cached
+- Leer detalles completos
+- Redactar respuestas (sincroniza al reconectar)
+- Marcar como leídas/urgentes
+- Acceder a plantillas de respuesta
+
+**Sincronización automática:**
+- Service worker detecta reconexión
+- Envía cambios pendientes al servidor
+- Actualiza caché con datos más recientes
+- Toast notifications de éxito/fallo
+
+### Browser Compatibility:
+
+| Feature | Chrome | Edge | Safari | Firefox |
+|---------|--------|------|--------|----------|
+| Install Prompt | ✅ 67+ | ✅ 79+ | ⚠️ iOS 16.4+ | ❌ No nativo |
+| Push Notifications | ✅ | ✅ | ⚠️ iOS 16.4+ | ✅ |
+| Offline Mode | ✅ | ✅ | ✅ | ✅ |
+| Service Worker | ✅ | ✅ | ✅ | ✅ |
+
+**Nota Safari iOS**: 
+- No tiene `beforeinstallprompt` event
+- Instalación manual: Share → Add to Home Screen
+- Notificaciones requieren iOS 16.4 o superior
+
+### Deployment Validation:
+
+**TypeScript**: ✅ ZERO errors (`npx tsc --noEmit`)
+**Pattern Compliance**: ✅ Identical to prayer-wall (commit 7c5f2de)
+**Railway Build**: ✅ Successful (360 total routes compiled)
+**Production URL**: `https://khesed-tek-cms.up.railway.app/prayer-requests`
+
+### Monitoring & Performance:
+
+```bash
+# Service Worker Status
+navigator.serviceWorker.getRegistrations().then(registrations => {
+  console.log('Active SW:', registrations.length)
+})
+
+# Push Subscription Status
+navigator.serviceWorker.ready.then(registration => {
+  registration.pushManager.getSubscription().then(subscription => {
+    console.log('Push Active:', !!subscription)
+  })
+})
+
+# Installation Detection
+window.matchMedia('(display-mode: standalone)').matches
+// true = installed, false = browser mode
+```
+
+### Troubleshooting Commands:
+
+```bash
+# Verificar Service Worker registrado
+ls -la public/sw.js
+
+# Verificar manifest.json
+cat public/manifest.json | jq '.version'
+
+# Limpiar service worker cache (debugging)
+# En DevTools: Application → Service Workers → Unregister
+# Application → Clear Storage → Clear site data
+```
+
+### User Adoption Metrics (KPIs):
+
+- **Installation Rate**: % usuarios que instalan la app
+- **Notification Opt-in**: % usuarios con notificaciones activas
+- **Offline Usage**: Frecuencia de uso en modo offline
+- **Response Time**: Tiempo promedio de respuesta a peticiones urgentes
+- **Engagement**: Aumento en interacción con módulo prayer-requests
+
+### Security Considerations:
+
+- ✅ HTTPS required (enforced by Railway deployment)
+- ✅ Service Worker scope limited to origin
+- ✅ Push notifications require explicit user permission
+- ✅ Offline data encrypted in IndexedDB
+- ✅ Church-scoped data (multi-tenant isolation maintained)
+
+### Future Enhancements (Phase 4):
+
+- **GraphQL Migration**: Replace REST APIs for mobile optimization
+- **WebSocket Integration**: Replace SSE for bi-directional real-time updates
+- **Background Sync**: Queue actions when offline, sync in background
+- **Periodic Sync**: Auto-refresh prayer requests every 15 min when installed
+- **Share Target API**: Accept prayer requests from other apps
 
 ---
 
@@ -277,6 +478,32 @@ testMessage: 'Mensaje de prueba desde Kḥesed-tek Church Management Systems'
 
 **P4: ¿El cambio de nombre a "Church Management Systems" afecta el SEO?**
 > **R:** Sí, positivamente. El nuevo nombre es más descriptivo y específico, lo que puede mejorar el ranking en motores de búsqueda para términos relacionados con la gestión de iglesias.
+
+**P5: Un usuario reporta que no puede instalar la PWA. ¿Qué verificar?**
+> **R:** 
+> 1. Confirmar que está usando HTTPS (enforced en Railway)
+> 2. Verificar que el navegador soporta PWA (Chrome 67+, Edge 79+, Safari iOS 16.4+)
+> 3. Comprobar que `public/manifest.json` existe y es accesible
+> 4. Verificar service worker registrado: DevTools → Application → Service Workers
+> 5. Si ya instaló previamente, el botón no aparecerá
+
+**P6: Las notificaciones push no llegan a los usuarios. ¿Cómo diagnosticar?**
+> **R:**
+> 1. Verificar que el usuario dio permiso (badge debe mostrar "Alertas: Activas")
+> 2. Comprobar que service worker está activo y registrado
+> 3. Verificar suscripción push: `lib/push-client.ts` debe tener endpoint válido
+> 4. Revisar logs del servidor para errores de envío
+> 5. Safari iOS requiere 16.4+ (notificaciones no funcionan en versiones anteriores)
+
+**P7: ¿Cómo forzar actualización del service worker después de un deploy?**
+> **R:** El service worker se actualiza automáticamente cuando detecta cambios en `sw.js`. Para forzar actualización inmediata:
+> ```javascript
+> // En DevTools Console
+> navigator.serviceWorker.getRegistrations().then(registrations => {
+>   registrations.forEach(reg => reg.update())
+> })
+> ```
+> O en código: cambiar la versión en `public/sw.js` trigger auto-update.
 
 ---
 

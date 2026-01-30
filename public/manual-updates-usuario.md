@@ -126,7 +126,119 @@ Se corrigió el nombre completo del sistema de "Church Systems" a "Church Manage
 
 ---
 
-## 🔧 CÓMO USAR LAS NUEVAS FUNCIONES
+## � ACTUALIZACIÓN 4: APLICACIÓN MOBILE INSTALABLE (PWA)
+
+### ¿Qué cambió?
+El sistema Khesed-Tek ahora se puede instalar como una aplicación independiente en su teléfono, tablet o computadora. Esta funcionalidad está disponible en dos módulos clave:
+
+- **Muro de Oración** (`/prayer-wall`): Dashboard de analíticas con gráficos y tendencias
+- **Peticiones de Oración** (`/prayer-requests`): Herramienta operacional para gestionar peticiones diarias
+
+### ¿Dónde lo veré?
+En ambas páginas verá una nueva tarjeta llamada **"Estado de Características Mobile"** o **"Aplicación Mobile"** que muestra:
+
+- **App Mobile**: Estado de instalación (Instalada/Disponible/No disponible)
+- **Conexión**: Estado de internet (Online/Offline)
+- **Alertas**: Estado de notificaciones (Activas/Inactivas)
+- **Sin Conexión**: Disponibilidad de modo offline
+
+### ¿Cómo instalar la aplicación?
+
+#### OPCIÓN 1: Instalación Automática (Recomendado)
+
+**Desde Computadora (Chrome/Edge):**
+1. Navegue a `/prayer-requests` o `/prayer-wall`
+2. Busque el botón **"Instalar Aplicación"** en la tarjeta Mobile
+3. Haga clic en el botón
+4. Confirme en el diálogo del navegador
+5. La app aparecerá en su escritorio/barra de tareas
+6. Ábrala como cualquier programa normal
+
+**Desde Android (Chrome):**
+1. Abra la página en Chrome
+2. Busque el banner de instalación en la parte inferior
+3. Toque **"Agregar a pantalla de inicio"**
+4. Confirme la instalación
+5. Encuentre el ícono en su pantalla de inicio
+6. Toque para abrir en modo aplicación
+
+**Desde iPhone/iPad (Safari):**
+1. Abra la página en Safari
+2. Toque el botón **Compartir** (cuadrado con flecha hacia arriba)
+3. Desplácese y toque **"Agregar a pantalla de inicio"**
+4. Edite el nombre si lo desea (ej: "Peticiones")
+5. Toque **"Agregar"**
+6. La app aparecerá en su pantalla de inicio
+
+#### OPCIÓN 2: Instalación Manual
+
+**Chrome/Edge (si no aparece el botón):**
+1. Busque el ícono de instalación en la barra de direcciones (⊕ o monitor)
+2. Haga clic en el ícono
+3. Confirme la instalación
+
+**Safari iOS:**
+- Siempre use el método de Compartir → Agregar a pantalla de inicio
+
+### ¿Cómo activar las notificaciones?
+
+1. **Después de instalar**, haga clic en **"Activar Notificaciones"**
+2. El navegador pedirá permiso - haga clic en **"Permitir"**
+3. Verá un mensaje de confirmación
+4. El badge cambiará a **"Alertas: Activas"** (ícono naranja)
+
+### Tipos de Notificaciones que Recibirá:
+
+- **🚨 Urgentes**: Peticiones marcadas como prioritarias
+- **📥 Nuevas Solicitudes**: Cuando alguien envía una petición
+- **⏰ Respuestas Pendientes**: Recordatorios de peticiones sin responder
+- **👥 Contactos Nuevos**: Cuando se registra un nuevo contacto
+
+### ¿Cómo funciona el Modo Offline?
+
+**Qué puede hacer sin internet:**
+- Ver las últimas 100 peticiones guardadas
+- Leer detalles completos de cada solicitud
+- Redactar respuestas (se envían al reconectar)
+- Marcar peticiones como leídas o urgentes
+- Acceder a plantillas de respuesta
+
+**Sincronización automática:**
+Cuando recupere la conexión, todos los cambios se sincronizarán automáticamente con el servidor.
+
+### ¿Cómo saber si está instalado correctamente?
+
+Verifique estos 4 badges en la tarjeta Mobile:
+
+| Badge | Estado Correcto | Significado |
+|-------|----------------|-------------|
+| **App Mobile** | ✅ Instalada | App en pantalla de inicio |
+| **Conexión** | 🟢 Online | Internet funcionando |
+| **Alertas** | 🟠 Activas | Notificaciones habilitadas |
+| **Sin Conexión** | ✅ Disponible | Puede trabajar offline |
+
+### Beneficios para el Equipo de Oración:
+
+- ✅ Responda a peticiones urgentes al instante
+- ✅ Funciona sin conexión (modo offline)
+- ✅ Recibe notificaciones de nuevas peticiones
+- ✅ Acceso rápido desde pantalla de inicio
+- ✅ No ocupa espacio en App Store/Play Store
+- ✅ Se actualiza automáticamente (siempre la última versión)
+
+### ¿Necesita ayuda adicional?
+
+En cada página con características Mobile verá un botón de ayuda (❓). Al hacer clic se abrirá un manual completo con:
+
+- Guías de instalación detalladas (Auto, Chrome, Safari)
+- Configuración de notificaciones paso a paso
+- Explicación del modo offline
+- Mejores prácticas para el equipo
+- Solución de problemas comunes
+
+---
+
+## �🔧 CÓMO USAR LAS NUEVAS FUNCIONES
 
 ### Comunicación Masiva (Nueva función):
 1. Vaya a **Comunicaciones > Masivo**.
@@ -154,6 +266,15 @@ Se corrigió el nombre completo del sistema de "Church Systems" a "Church Manage
 
 **P3: ¿Mis plantillas de comunicación se han perdido?**
 > **R:** No, todas sus plantillas guardadas están seguras. Las encontrará en la pestaña **"Plantillas"** dentro del módulo de **Comunicaciones**.
+
+**P4: No veo el botón "Instalar Aplicación". ¿Por qué?**
+> **R:** Puede deberse a tres razones: (1) Ya tiene la app instalada, (2) Su navegador no soporta PWA (use Chrome, Edge o Safari), o (3) Está en modo incógnito. Verifique si ya tiene el ícono en su pantalla de inicio.
+
+**P5: Las notificaciones no funcionan. ¿Qué hago?**
+> **R:** Verifique en la configuración de su navegador que los permisos de notificaciones estén habilitados para el sitio. En Safari iOS, requiere iOS 16.4 o superior.
+
+**P6: ¿El modo offline funciona sin instalar la app?**
+> **R:** No. Debe instalar la aplicación primero para habilitar el modo offline. Verá el badge "Sin Conexión: Requiere app" si no está instalada.
 
 ---
 
