@@ -5,6 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { 
   MessageSquare,
   Clock,
@@ -17,7 +25,14 @@ import {
   Download,
   ExternalLink,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
+  Smartphone,
+  Wifi,
+  WifiOff,
+  Bell,
+  BellOff,
+  HardDrive,
+  HelpCircle
 } from 'lucide-react'
 import {
   LineChart as RechartsLineChart,
@@ -92,9 +107,96 @@ export default function PrayerWallPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   
-  // Removed PWA state management for cleaner user experience
+  // PWA State Management (User-Facing Features)
+  const [isOnline, setIsOnline] = useState(true)
+  const [isInstallable, setIsInstallable] = useState(false)
+  const [installPrompt, setInstallPrompt] = useState<any>(null)
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
+  const [isInstalled, setIsInstalled] = useState(false)
+  const [showHelpModal, setShowHelpModal] = useState(false)
 
-  // Simplified for better user experience - removed PWA complexity
+  // PWA Installation and Notifications Setup
+  useEffect(() => {
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true)
+    }
+
+    // Handle PWA install prompt
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault()
+      setInstallPrompt(e)
+      setIsInstallable(true)
+    }
+
+    // Handle app installed
+    const handleAppInstalled = () => {
+      setIsInstalled(true)
+      setIsInstallable(false)
+      setInstallPrompt(null)
+    }
+
+    // Online/Offline detection
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+
+    // Check notification permission
+    if ('Notification' in window) {
+      setNotificationPermission(Notification.permission)
+    }
+
+    // Add event listeners
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+    window.addEventListener('appinstalled', handleAppInstalled)
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+      window.removeEventListener('appinstalled', handleAppInstalled)
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
+  // PWA Installation Handler
+  const handleInstallApp = async () => {
+    if (!installPrompt) return
+
+    installPrompt.prompt()
+    const result = await installPrompt.userChoice
+    
+    if (result.outcome === 'accepted') {
+      console.log('User accepted the install prompt')
+    }
+    
+    setInstallPrompt(null)
+    setIsInstallable(false)
+  }
+
+  // Notification Permission Handler
+  const handleEnableNotifications = async () => {
+    if (!('Notification' in window)) {
+      alert('Este navegador no soporta notificaciones')
+      return
+    }
+
+    const permission = await Notification.requestPermission()
+    setNotificationPermission(permission)
+
+    if (permission === 'granted') {
+      // Subscribe to push notifications
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        try {
+          await navigator.serviceWorker.ready
+          console.log('Notificaciones activadas correctamente')
+        } catch (error) {
+          console.error('Error setting up push notifications:', error)
+        }
+      }
+    }
+  }
 
   // Fetch real-time prayer analytics with proper authentication
   useEffect(() => {
@@ -302,6 +404,230 @@ export default function PrayerWallPage() {
           </Button>
         </div>
       </div>
+
+      {/* Mobile Characteristics Status Card */}
+      <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Smartphone className="h-5 w-5 text-purple-600" />
+              <CardTitle className="text-lg">Estado de Características Mobile</CardTitle>
+            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <HelpCircle className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Smartphone className="h-6 w-6 text-purple-600" />
+                    Guía de Características Mobile
+                  </DialogTitle>
+                  <DialogDescription>
+                    Aprende a usar las funciones avanzadas del Muro de Oración
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-6 mt-4">
+                  {/* Installation Guide */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <Smartphone className="h-5 w-5 text-blue-600" />
+                      Instalar Aplicación
+                    </h3>
+                    <p className="text-sm text-gray-700">
+                      Convierte el Muro de Oración en una aplicación independiente en tu dispositivo.
+                    </p>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                      <p className="font-medium text-sm">Método Automático (Recomendado):</p>
+                      <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
+                        <li>Haz clic en el botón "Instalar Aplicación" arriba</li>
+                        <li>Confirma la instalación en el diálogo del navegador</li>
+                        <li>La app aparecerá en tu pantalla de inicio</li>
+                      </ol>
+                      <p className="font-medium text-sm mt-3">Método Manual (Chrome/Edge):</p>
+                      <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
+                        <li>Clic en el menú del navegador (⋮)</li>
+                        <li>Selecciona "Instalar aplicación" o "Añadir a pantalla de inicio"</li>
+                        <li>Confirma la instalación</li>
+                      </ol>
+                      <p className="font-medium text-sm mt-3">Método Manual (Safari iOS):</p>
+                      <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
+                        <li>Toca el botón Compartir <span className="inline-block">□↑</span></li>
+                        <li>Desliza y selecciona "Añadir a pantalla de inicio"</li>
+                        <li>Confirma el nombre y toca "Añadir"</li>
+                      </ol>
+                    </div>
+                  </div>
+
+                  {/* Notifications Guide */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <Bell className="h-5 w-5 text-orange-600" />
+                      Activar Notificaciones
+                    </h3>
+                    <p className="text-sm text-gray-700">
+                      Recibe alertas instantáneas cuando se publiquen nuevas peticiones de oración.
+                    </p>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                      <p className="font-medium text-sm">Método Automático:</p>
+                      <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
+                        <li>Haz clic en "Activar Notificaciones" arriba</li>
+                        <li>El navegador te pedirá permiso - haz clic en "Permitir"</li>
+                        <li>Recibirás una notificación de prueba</li>
+                      </ol>
+                      <p className="font-medium text-sm mt-3">Solución de Problemas:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2">
+                        <li>Si bloqueaste las notificaciones: Ve a Configuración del navegador → Notificaciones → Permitir este sitio</li>
+                        <li>En móviles: Verifica que las notificaciones estén habilitadas en Ajustes del sistema</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Offline Mode */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <HardDrive className="h-5 w-5 text-green-600" />
+                      Modo Offline
+                    </h3>
+                    <p className="text-sm text-gray-700">
+                      Accede a las peticiones incluso sin conexión a internet.
+                    </p>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                      <p className="font-medium text-sm">Cómo Funciona:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2">
+                        <li>Las peticiones recientes se guardan automáticamente en tu dispositivo</li>
+                        <li>Puedes leer y revisar peticiones sin conexión</li>
+                        <li>Los cambios se sincronizarán cuando recuperes la conexión</li>
+                      </ul>
+                      <p className="font-medium text-sm mt-3">Beneficios:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2">
+                        <li>Funciona en áreas con señal débil</li>
+                        <li>Ahorra datos móviles</li>
+                        <li>Carga instantánea - no esperas por la red</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Connection Status */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <Wifi className="h-5 w-5 text-blue-600" />
+                      Estado de Conexión
+                    </h3>
+                    <p className="text-sm text-gray-700">
+                      Monitorea tu estado de conexión en tiempo real.
+                    </p>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <span className="text-sm font-medium">Online:</span>
+                        <span className="text-sm text-gray-700">Datos en tiempo real activos</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <span className="text-sm font-medium">Offline:</span>
+                        <span className="text-sm text-gray-700">Usando datos guardados</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {/* Installable Badge */}
+            <div className="flex items-center gap-2">
+              <Smartphone className={`h-5 w-5 ${isInstalled || isInstallable ? 'text-green-600' : 'text-gray-400'}`} />
+              <div>
+                <p className="text-xs font-medium text-gray-700">Instalable</p>
+                <Badge variant={isInstalled ? 'default' : isInstallable ? 'secondary' : 'outline'} className="text-xs">
+                  {isInstalled ? 'Instalada' : isInstallable ? 'Disponible' : 'No disponible'}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Connection Badge */}
+            <div className="flex items-center gap-2">
+              {isOnline ? (
+                <Wifi className="h-5 w-5 text-green-600" />
+              ) : (
+                <WifiOff className="h-5 w-5 text-red-600" />
+              )}
+              <div>
+                <p className="text-xs font-medium text-gray-700">Conectividad</p>
+                <Badge variant={isOnline ? 'default' : 'destructive'} className="text-xs">
+                  {isOnline ? 'Online' : 'Offline'}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Notifications Badge */}
+            <div className="flex items-center gap-2">
+              {notificationPermission === 'granted' ? (
+                <Bell className="h-5 w-5 text-orange-600" />
+              ) : (
+                <BellOff className="h-5 w-5 text-gray-400" />
+              )}
+              <div>
+                <p className="text-xs font-medium text-gray-700">Notificaciones</p>
+                <Badge 
+                  variant={notificationPermission === 'granted' ? 'default' : 'outline'} 
+                  className="text-xs"
+                >
+                  {notificationPermission === 'granted' ? 'Activas' : 'Inactivas'}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Offline Ready Badge */}
+            <div className="flex items-center gap-2">
+              <HardDrive className={`h-5 w-5 ${isInstalled ? 'text-blue-600' : 'text-gray-400'}`} />
+              <div>
+                <p className="text-xs font-medium text-gray-700">Modo Offline</p>
+                <Badge variant={isInstalled ? 'default' : 'outline'} className="text-xs">
+                  {isInstalled ? 'Listo' : 'Requiere instalación'}
+                </Badge>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {isInstallable && !isInstalled && (
+              <Button 
+                size="sm" 
+                onClick={handleInstallApp}
+                className="bg-purple-600 hover:bg-purple-700"
+              >
+                <Smartphone className="h-4 w-4 mr-2" />
+                Instalar Aplicación
+              </Button>
+            )}
+            
+            {notificationPermission !== 'granted' && (
+              <Button 
+                size="sm" 
+                variant="outline"
+                onClick={handleEnableNotifications}
+              >
+                <Bell className="h-4 w-4 mr-2" />
+                Activar Notificaciones
+              </Button>
+            )}
+
+            {isInstalled && (
+              <Badge variant="secondary" className="px-3 py-1">
+                <CheckCircle className="h-3 w-3 mr-1" />
+                Aplicación instalada correctamente
+              </Badge>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Real-time Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
