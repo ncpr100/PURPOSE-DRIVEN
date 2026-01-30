@@ -5,6 +5,15 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { 
   MessageSquare,
   Heart,
@@ -19,7 +28,14 @@ import {
   Zap,
   BarChart3,
   Activity,
-  Sparkles
+  Sparkles,
+  Smartphone,
+  Wifi,
+  WifiOff,
+  Bell,
+  BellOff,
+  HardDrive,
+  HelpCircle
 } from 'lucide-react'
 import { PrayerRequestManager } from '@/components/prayer-wall/PrayerRequestManager'
 import { ResponseTemplateManager } from '@/components/prayer-wall/ResponseTemplateManager'
@@ -66,6 +82,98 @@ export default function PrayerRequestsPage() {
   })
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
   const [loading, setLoading] = useState(true)
+
+  // PWA State Management (User-Facing Features for Church Team)
+  const [isOnline, setIsOnline] = useState(true)
+  const [isInstallable, setIsInstallable] = useState(false)
+  const [installPrompt, setInstallPrompt] = useState<any>(null)
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
+  const [isInstalled, setIsInstalled] = useState(false)
+
+  // PWA Installation and Notifications Setup
+  useEffect(() => {
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true)
+    }
+
+    // Handle PWA install prompt
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault()
+      setInstallPrompt(e)
+      setIsInstallable(true)
+    }
+
+    // Handle app installed
+    const handleAppInstalled = () => {
+      setIsInstalled(true)
+      setIsInstallable(false)
+      setInstallPrompt(null)
+    }
+
+    // Online/Offline detection
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+
+    // Check notification permission
+    if ('Notification' in window) {
+      setNotificationPermission(Notification.permission)
+    }
+
+    // Add event listeners
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+    window.addEventListener('appinstalled', handleAppInstalled)
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+      window.removeEventListener('appinstalled', handleAppInstalled)
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
+  // PWA Installation Handler
+  const handleInstallApp = async () => {
+    if (!installPrompt) return
+
+    installPrompt.prompt()
+    const result = await installPrompt.userChoice
+    
+    if (result.outcome === 'accepted') {
+      toast.success('Aplicación instalada correctamente')
+    }
+    
+    setInstallPrompt(null)
+    setIsInstallable(false)
+  }
+
+  // Notification Permission Handler
+  const handleEnableNotifications = async () => {
+    if (!('Notification' in window)) {
+      toast.error('Este navegador no soporta notificaciones')
+      return
+    }
+
+    const permission = await Notification.requestPermission()
+    setNotificationPermission(permission)
+
+    if (permission === 'granted') {
+      toast.success('Notificaciones activadas - Recibirás alertas de nuevas peticiones')
+      // Subscribe to push notifications
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        try {
+          await navigator.serviceWorker.ready
+        } catch (error) {
+          console.error('Error setting up push notifications:', error)
+        }
+      }
+    } else {
+      toast.error('Permisos de notificación denegados')
+    }
+  }
 
   useEffect(() => {
     if (session?.user) {
@@ -213,6 +321,227 @@ export default function PrayerRequestsPage() {
           </p>
         </div>
       </div>
+
+      {/* Mobile Characteristics Status Card - PWA Features for Church Team */}
+      <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Smartphone className="h-5 w-5 text-blue-600" />
+              <CardTitle className="text-lg">Aplicación Mobile - Gestión de Peticiones</CardTitle>
+            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <HelpCircle className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Heart className="h-6 w-6 text-red-600" />
+                    Guía de Aplicación Mobile - Peticiones de Oración
+                  </DialogTitle>
+                  <DialogDescription>
+                    Instala y usa la app para gestionar peticiones desde cualquier dispositivo
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-6 mt-4">
+                  {/* Installation Guide */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <Smartphone className="h-5 w-5 text-blue-600" />
+                      Instalar como Aplicación Mobile
+                    </h3>
+                    <p className="text-sm text-gray-700">
+                      Convierte el sistema de peticiones en una app independiente para responder rápidamente desde cualquier lugar.
+                    </p>
+                    <div className="bg-blue-50 p-4 rounded-lg space-y-2 border border-blue-200">
+                      <p className="font-medium text-sm text-blue-900">✨ Beneficios para el Equipo:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-blue-800">
+                        <li>Responde a peticiones urgentes al instante</li>
+                        <li>Funciona sin conexión (modo offline)</li>
+                        <li>Recibe notificaciones de nuevas peticiones</li>
+                        <li>Acceso rápido desde pantalla de inicio</li>
+                        <li>No ocupa espacio en App Store/Play Store</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                      <p className="font-medium text-sm">Instalación (Recomendado):</p>
+                      <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
+                        <li>Haz clic en "Instalar Aplicación" arriba</li>
+                        <li>Confirma en el diálogo del navegador</li>
+                        <li>Encuentra el ícono en tu pantalla de inicio</li>
+                        <li>Ábrela como cualquier app nativa</li>
+                      </ol>
+                    </div>
+                  </div>
+
+                  {/* Notifications Guide */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <Bell className="h-5 w-5 text-orange-600" />
+                      Notificaciones de Nuevas Peticiones
+                    </h3>
+                    <p className="text-sm text-gray-700">
+                      Recibe alertas inmediatas cuando lleguen peticiones urgentes o nuevas solicitudes.
+                    </p>
+                    <div className="bg-orange-50 p-4 rounded-lg space-y-2 border border-orange-200">
+                      <p className="font-medium text-sm text-orange-900">🔔 Tipos de Notificaciones:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-orange-800">
+                        <li><strong>Urgentes:</strong> Peticiones marcadas como prioritarias</li>
+                        <li><strong>Nuevas Solicitudes:</strong> Cuando alguien envía una petición</li>
+                        <li><strong>Respuestas Pendientes:</strong> Recordatorio de peticiones sin responder</li>
+                        <li><strong>Contactos Nuevos:</strong> Cuando se registra un nuevo contacto</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                      <p className="font-medium text-sm">Activar Notificaciones:</p>
+                      <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
+                        <li>Haz clic en "Activar Notificaciones" arriba</li>
+                        <li>Permite las notificaciones cuando el navegador pregunte</li>
+                        <li>Recibirás una notificación de prueba</li>
+                        <li>Configura horarios en Ajustes (opcional)</li>
+                      </ol>
+                    </div>
+                  </div>
+
+                  {/* Offline Mode */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <HardDrive className="h-5 w-5 text-green-600" />
+                      Modo Offline - Trabaja Sin Conexión
+                    </h3>
+                    <p className="text-sm text-gray-700">
+                      Accede a peticiones recientes incluso sin internet. Ideal para áreas con señal débil.
+                    </p>
+                    <div className="bg-green-50 p-4 rounded-lg space-y-2 border border-green-200">
+                      <p className="font-medium text-sm text-green-900">💾 Qué Funciona Offline:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-green-800">
+                        <li>Ver últimas 100 peticiones guardadas</li>
+                        <li>Leer detalles completos de cada solicitud</li>
+                        <li>Redactar respuestas (se envían al reconectar)</li>
+                        <li>Marcar peticiones como leídas</li>
+                        <li>Acceder a plantillas de respuesta</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-sm"><strong>Sincronización Automática:</strong> Cuando recuperes la conexión, todos los cambios se sincronizarán automáticamente con el servidor.</p>
+                    </div>
+                  </div>
+
+                  {/* Best Practices */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold text-lg flex items-center gap-2">
+                      <Zap className="h-5 w-5 text-purple-600" />
+                      Mejores Prácticas para el Equipo
+                    </h3>
+                    <div className="bg-purple-50 p-4 rounded-lg space-y-2 border border-purple-200">
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-purple-800">
+                        <li><strong>Instala en todos los dispositivos:</strong> Móvil, tablet y computadora</li>
+                        <li><strong>Activa notificaciones:</strong> No te pierdas peticiones urgentes</li>
+                        <li><strong>Responde rápido:</strong> El modo offline te permite trabajar desde cualquier lugar</li>
+                        <li><strong>Usa plantillas:</strong> Ahorra tiempo con respuestas predefinidas</li>
+                        <li><strong>Revisa analytics:</strong> Monitorea tiempos de respuesta del equipo</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {/* Installable Badge */}
+            <div className="flex items-center gap-2">
+              <Smartphone className={`h-5 w-5 ${isInstalled || isInstallable ? 'text-green-600' : 'text-gray-400'}`} />
+              <div>
+                <p className="text-xs font-medium text-gray-700">App Mobile</p>
+                <Badge variant={isInstalled ? 'default' : isInstallable ? 'secondary' : 'outline'} className="text-xs">
+                  {isInstalled ? 'Instalada' : isInstallable ? 'Disponible' : 'No disponible'}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Connection Badge */}
+            <div className="flex items-center gap-2">
+              {isOnline ? (
+                <Wifi className="h-5 w-5 text-green-600" />
+              ) : (
+                <WifiOff className="h-5 w-5 text-red-600" />
+              )}
+              <div>
+                <p className="text-xs font-medium text-gray-700">Conexión</p>
+                <Badge variant={isOnline ? 'default' : 'destructive'} className="text-xs">
+                  {isOnline ? 'Online' : 'Offline'}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Notifications Badge */}
+            <div className="flex items-center gap-2">
+              {notificationPermission === 'granted' ? (
+                <Bell className="h-5 w-5 text-orange-600" />
+              ) : (
+                <BellOff className="h-5 w-5 text-gray-400" />
+              )}
+              <div>
+                <p className="text-xs font-medium text-gray-700">Alertas</p>
+                <Badge 
+                  variant={notificationPermission === 'granted' ? 'default' : 'outline'} 
+                  className="text-xs"
+                >
+                  {notificationPermission === 'granted' ? 'Activas' : 'Inactivas'}
+                </Badge>
+              </div>
+            </div>
+
+            {/* Offline Ready Badge */}
+            <div className="flex items-center gap-2">
+              <HardDrive className={`h-5 w-5 ${isInstalled ? 'text-blue-600' : 'text-gray-400'}`} />
+              <div>
+                <p className="text-xs font-medium text-gray-700">Sin Conexión</p>
+                <Badge variant={isInstalled ? 'default' : 'outline'} className="text-xs">
+                  {isInstalled ? 'Disponible' : 'Requiere app'}
+                </Badge>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {isInstallable && !isInstalled && (
+              <Button 
+                size="sm" 
+                onClick={handleInstallApp}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                <Smartphone className="h-4 w-4 mr-2" />
+                Instalar Aplicación
+              </Button>
+            )}
+            
+            {notificationPermission !== 'granted' && (
+              <Button 
+                size="sm" 
+                variant="outline"
+                onClick={handleEnableNotifications}
+              >
+                <Bell className="h-4 w-4 mr-2" />
+                Activar Notificaciones
+              </Button>
+            )}
+
+            {isInstalled && (
+              <Badge variant="secondary" className="px-3 py-1.5">
+                <CheckCircle className="h-3 w-3 mr-1" />
+                App instalada - Lista para trabajo offline
+              </Badge>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Overview Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
