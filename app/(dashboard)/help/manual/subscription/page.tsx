@@ -71,12 +71,12 @@ export default function SubscriptionManual() {
                   <p><strong>1.1.</strong> Navegue a <code>Mi Suscripción → Ver Planes</code></p>
                   <p><strong>1.2.</strong> Planes disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>⛪️ Iglesia Pequeña ($149.99 USD/mes):</strong>
-                      <br />Hasta 500 miembros, hasta 5 licencias, gestión básica</li>
-                    <li>• <strong>🚀 Iglesia Mediana ($299.99 USD/mes) - MÁS POPULAR:</strong>
-                      <br />Hasta 2,000 miembros, hasta 10 licencias, reportes avanzados</li>
-                    <li>• <strong>💼 Iglesia Grande (Personalizado):</strong>
-                      <br />Miembros ilimitados, licencias ilimitadas, multi-campus</li>
+                    <li>• <strong>📦 Plan BÁSICO:</strong>
+                      <br />Ideal para iglesias pequeñas (hasta 500 miembros), funciones esenciales de gestión</li>
+                    <li>• <strong>🚀 Plan PROFESIONAL - MÁS POPULAR:</strong>
+                      <br />Para iglesias en crecimiento (hasta 2,000 miembros), analíticas avanzadas, automatizaciones</li>
+                    <li>• <strong>💼 Plan ENTERPRISE:</strong>
+                      <br />Iglesias grandes o multi-campus, miembros ilimitados, funciones empresariales completas</li>
                   </ul>
                   <p><strong>1.3.</strong> Para cambiar plan:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">

@@ -35,11 +35,11 @@ export default function SetupHelp() {
       step: 3,
       title: "Seleccionar Plan de Suscripción",
       time: "3 min",
-      description: "Elija el plan que mejor se adapte a su iglesia",
+      description: "Elija el plan que mejor se adapte al tamaño y necesidades de su iglesia",
       details: [
-        "Plan BÁSICO",
-        "Plan PROFESIONAL",
-        "Plan ENTERPRISE"
+        "Plan BÁSICO - Hasta 500 miembros, funciones esenciales",
+        "Plan PROFESIONAL - Hasta 2,000 miembros, IA y automatizaciones (Recomendado)",
+        "Plan ENTERPRISE - Miembros ilimitados, multi-campus, personalización completa"
       ]
     },
     {

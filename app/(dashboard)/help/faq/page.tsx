@@ -26,11 +26,11 @@ export default function FAQHelp() {
       questions: [
         {
           q: "¿Cómo registro mi iglesia por primera vez?",
-          a: "Vaya a khesedtek.com, haga clic en 'Comenzar Prueba Gratis', complete el formulario de registro con la información de su iglesia, verifique su email y siga el asistente de configuración inicial."
+          a: "Vaya a khesedtek.com, haga clic en 'Comenzar', seleccione su plan (BÁSICO, PROFESIONAL o ENTERPRISE), complete el formulario de registro con la información de su iglesia, verifique su email y siga el asistente de configuración inicial."
         },
         {
           q: "¿Qué plan necesita mi iglesia?",
-          a: "Ofrecemos Plan BÁSICO, Plan PROFESIONAL y Plan ENTERPRISE. Cada plan está diseñado para diferentes tamaños de congregación. Recomendamos PROFESIONAL para la mayoría de iglesias por sus funciones avanzadas."
+          a: "Ofrecemos tres planes: Plan BÁSICO (hasta 500 miembros, funciones esenciales), Plan PROFESIONAL (hasta 2,000 miembros, analíticas avanzadas e IA - MÁS POPULAR) y Plan ENTERPRISE (miembros ilimitados, multi-campus, personalización completa). Recomendamos PROFESIONAL para la mayoría de iglesias en crecimiento."
         },
         {
           q: "¿Cómo importo mis miembros existentes?",
