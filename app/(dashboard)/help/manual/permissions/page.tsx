@@ -212,7 +212,10 @@ export default function PermissionsManual() {
               <div>
                 <h4 className="font-semibold mb-3">🔧 Configuración Inicial</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> Solo SUPER_ADMIN puede inicializar el sistema</p>
+                  <p><strong>2.1.</strong> <span className="text-blue-600 font-bold">IMPORTANTE:</span> Solo usuarios con rol de <strong>Pastor</strong> o <strong>Administrador</strong> de su iglesia pueden inicializar el sistema de permisos</p>
+                  <p className="text-xs text-muted-foreground ml-6">
+                    <em>Nota: El SUPER_ADMIN gestiona la plataforma Khesed-Tek completa, NO los roles internos de cada iglesia</em>
+                  </p>
                   <p><strong>2.2.</strong> Vaya a <code>Configuración → Permisos</code></p>
                   <p><strong>2.3.</strong> Haga clic en &quot;🗄️ Inicializar Sistema&quot;</p>
                   <p><strong>2.4.</strong> El sistema creará automáticamente:</p>
@@ -382,8 +385,8 @@ export default function PermissionsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Recomendaciones generales:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>Mínimo 2 ADMIN_IGLESIA:</strong> En caso de emergencia</li>
-                    <li>• <strong>1 Solo SUPER_ADMIN:</strong> Máximo control</li>
+                    <li>• <strong>Mínimo 2 ADMINISTRADORES:</strong> En caso de emergencia</li>
+                    <li>• <strong>1-3 PASTORES:</strong> Liderazgo espiritual con acceso completo</li>
                     <li>• <strong>Rotación de líderes:</strong> Cambie cada 2 años</li>
                     <li>• <strong>Capacitación obligatoria:</strong> Antes de asignar roles</li>
                     <li>• <strong>Monitoreo regular:</strong> Revise logs de actividad</li>

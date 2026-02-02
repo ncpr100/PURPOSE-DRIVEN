@@ -115,21 +115,24 @@ export default function SetupManual() {
               <div>
                 <h4 className="font-semibold mb-3">🛡️ Inicializar Permisos</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> <span className="text-red-600 font-bold">IMPORTANTE:</span> Solo SUPER_ADMIN puede hacer esto</p>
+                  <p><strong>2.1.</strong> <span className="text-blue-600 font-bold">IMPORTANTE:</span> Solo usuarios con rol de <strong>Pastor</strong> o <strong>Administrador</strong> de su iglesia pueden hacer esto</p>
+                  <p className="text-xs text-muted-foreground ml-6">
+                    <em>Nota: El SUPER_ADMIN gestiona la plataforma Khesed-Tek completa, NO los roles internos de cada iglesia</em>
+                  </p>
                   <p><strong>2.2.</strong> Vaya a <code>Configuración → Permisos</code></p>
                   <p><strong>2.3.</strong> Haga clic en &quot;🗄️ Inicializar Sistema&quot;</p>
                   <p><strong>2.4.</strong> El sistema creará automáticamente:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• 5 roles de iglesia predefinidos</li>
+                    <li>• 5 roles de iglesia predefinidos (Pastores, Administradores, Líderes, Servidores, Miembros)</li>
                     <li>• Permisos básicos para todos los recursos</li>
                     <li>• Estructura jerárquica de acceso</li>
                   </ul>
-                  <p><strong>2.5.</strong> Asigne roles a su equipo:</p>
+                  <p><strong>2.5.</strong> Asigne roles a su equipo pastoral y administrativo:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• ADMIN_IGLESIA: 1-2 personas de confianza</li>
-                    <li>• PASTOR: Equipo pastoral</li>
-                    <li>• LIDER: Líderes de ministerio</li>
-                    <li>• MIEMBRO: Congregación general</li>
+                    <li>• <strong>Administradores:</strong> 1-2 personas de confianza con acceso completo a configuración</li>
+                    <li>• <strong>Pastores:</strong> Equipo pastoral con permisos ampliados</li>
+                    <li>• <strong>Líderes:</strong> Líderes de ministerio con acceso a sus áreas</li>
+                    <li>• <strong>Servidores:</strong> Personal de servicio ministerial</li>
                   </ul>
                 </div>
               </div>

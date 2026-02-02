@@ -169,7 +169,10 @@ export default function GettingStartedManual() {
                 <h4 className="font-semibold mb-2">🔧 Cómo Configurar</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>3.1.</strong> Vaya a <code>Configuración → Permisos</code></p>
-                  <p><strong>3.2.</strong> Haga clic en &quot;Inicializar Sistema&quot; (Solo SUPER_ADMIN)</p>
+                  <p><strong>3.2.</strong> Haga clic en "Inicializar Sistema" (Solo PASTOR o ADMINISTRADOR de su iglesia)</p>
+                  <p className="text-xs text-muted-foreground ml-6">
+                    <em>Nota: El SUPER_ADMIN gestiona la plataforma Khesed-Tek completa, NO los roles de su iglesia</em>
+                  </p>
                   <p><strong>3.3.</strong> En la pestaña &quot;Asignaciones&quot;:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Haga clic en &quot;Asignar Rol&quot;</li>
