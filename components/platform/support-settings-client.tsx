@@ -37,8 +37,8 @@ export default function SupportSettingsClient({ user }: Props) {
   const { toast } = useToast()
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     id: 'default',
-    whatsappNumber: '+57 300 KHESED (543733)',
-    whatsappUrl: 'https://wa.me/573003435733',
+    whatsappNumber: '+57 302 123 4410',
+    whatsappUrl: 'https://wa.me/573021234410',
     email: 'soporte@khesedtek.com',
     schedule: 'Lun-Vie 8AM-8PM (Colombia)',
     companyName: 'Khesed-tek Systems',
@@ -245,7 +245,7 @@ export default function SupportSettingsClient({ user }: Props) {
                   id="whatsapp"
                   value={contactInfo.whatsappNumber}
                   onChange={(e) => handleWhatsAppNumberChange(e.target.value)}
-                  placeholder="+57 300 KHESED (543733)"
+                  placeholder="+57 302 123 4410"
                 />
                 <p className="text-xs text-muted-foreground">
                   URL generada: {contactInfo.whatsappUrl}

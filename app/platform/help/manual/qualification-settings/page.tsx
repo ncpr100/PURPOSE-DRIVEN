@@ -444,7 +444,7 @@ export default function QualificationSettingsManual() {
           <a href="mailto:soporte@khesedtek.com" className="underline font-semibold">
             soporte@khesedtek.com
           </a>{' '}
-          o WhatsApp: <strong>+57 300 KHESED (543733)</strong>
+          o WhatsApp: <strong>+57 302 123 4410</strong>
         </AlertDescription>
       </Alert>
     </div>

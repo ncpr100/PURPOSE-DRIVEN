@@ -298,7 +298,7 @@ export default function SubscriptionManual() {
                   <p><strong>5.2.</strong> Canales de contacto:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>📧 Email:</strong> soporte@khesedtek.com</li>
-                    <li>• <strong>💬 WhatsApp:</strong> +57 300 343 5733</li>
+                    <li>• <strong>💬 WhatsApp:</strong> +57 302 123 4410</li>
                     <li>• <strong>💻 Chat en vivo:</strong> Planes Mediana y Grande</li>
                     <li>• <strong>📞 Teléfono:</strong> Solo plan Iglesia Grande</li>
                   </ul>

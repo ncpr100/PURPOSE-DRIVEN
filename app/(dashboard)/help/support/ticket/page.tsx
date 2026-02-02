@@ -290,7 +290,7 @@ export default function SupportTicket() {
               <div>
                 <h4 className="font-semibold mb-3">📞 Contacto Directo</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>WhatsApp:</strong> +57 300 KHESED (543733)</p>
+                  <p><strong>WhatsApp:</strong> +57 302 123 4410</p>
                   <p><strong>Email:</strong> soporte@khesedtek.com</p>
                   <p><strong>Horario:</strong> Lun-Vie 8AM-8PM (Colombia)</p>
                 </div>

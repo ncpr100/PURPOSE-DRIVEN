@@ -20,8 +20,8 @@ interface ContactInfo {
 export default function ContactInfoCard() {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     id: 'default',
-    whatsappNumber: '+57 300 KHESED (543733)',
-    whatsappUrl: 'https://wa.me/573003435733',
+    whatsappNumber: '+57 302 123 4410',
+    whatsappUrl: 'https://wa.me/573021234410',
     email: 'soporte@khesedtek.com',
     schedule: 'Lun-Vie 8AM-8PM (Colombia)',
     companyName: 'Khesed-tek Systems',
