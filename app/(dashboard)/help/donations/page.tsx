@@ -20,12 +20,12 @@ export default function DonationsHelp() {
     },
     {
       icon: Smartphone,
-      title: "Nequi",
-      description: "Popular en Colombia, fácil de usar",
+      title: "Billeteras Digitales",
+      description: "Nequi (Colombia), Yape/Plin (Perú), Mercado Pago (LATAM)",
       setup: [
-        "Registrar número de teléfono Nequi",
-        "Configurar en el sistema",
-        "Los miembros pagan desde la app Nequi"
+        "Registrar número o cuenta de billetera digital",
+        "Configurar en el sistema según su país",
+        "Los miembros pagan desde sus apps móviles"
       ]
     },
     {

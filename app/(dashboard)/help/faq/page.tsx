@@ -68,11 +68,11 @@ export default function FAQHelp() {
       questions: [
         {
           q: "¿Qué métodos de pago puedo aceptar?",
-          a: "Efectivo (registro manual), transferencia bancaria, Nequi. Las tarjetas de crédito requieren el complemento 'Donaciones Online'."
+          a: "Efectivo (registro manual), transferencias bancarias, billeteras digitales (Nequi en Colombia, Yape/Plin en Perú, Mercado Pago en LATAM). Las tarjetas de crédito requieren el complemento 'Donaciones Online'."
         },
         {
-          q: "¿Cómo configuro Nequi para donaciones?",
-          a: "Vaya a Donaciones → Configuración, active Nequi, e ingrese el número de teléfono Nequi de la iglesia. Los miembros podrán donar directamente desde la app Nequi."
+          q: "¿Cómo configuro billeteras digitales para donaciones?",
+          a: "Vaya a Donaciones → Configuración, active el método de pago según su país (Nequi/Daviplata en Colombia, Yape/Plin en Perú, Mercado Pago en LATAM), e ingrese la información de cuenta. Los miembros podrán donar desde sus apps móviles."
         },
         {
           q: "¿Puedo crear categorías personalizadas de donaciones?",

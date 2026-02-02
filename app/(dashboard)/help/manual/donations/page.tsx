@@ -180,13 +180,14 @@ export default function DonationsManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>Para pagos online LATAM:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>Gateway Universal:</strong> MercadoPago (7 países LATAM)</li>
-                    <li>• <strong>Colombia:</strong> PSE (todos los bancos), Nequi (billetera digital)</li>
-                    <li>• <strong>Brasil:</strong> PIX (pagos instantáneos 24/7)</li>
-                    <li>• <strong>México:</strong> SPEI (transferencias), OXXO (20,000+ tiendas)</li>
-                    <li>• <strong>Otros países:</strong> Argentina, Chile, Perú, Uruguay</li>
-                    <li>• <strong>Comisiones:</strong> 0%-5.9% según método de pago</li>
-                    <li>• <strong>Monedas:</strong> COP, BRL, MXN, ARS, CLP, PEN, UYU, USD</li>
+                    <li>• <strong>Gateway Universal:</strong> MercadoPago (Argentina, Brasil, Chile, Colombia, México, Perú, Uruguay)</li>
+                    <li>• <strong>Colombia:</strong> PSE (bancos), Nequi, Daviplata</li>
+                    <li>• <strong>Perú:</strong> Yape, Plin, BCP, Interbank</li>
+                    <li>• <strong>México:</strong> SPEI, OXXO (20,000+ tiendas)</li>
+                    <li>• <strong>Brasil:</strong> PIX (instantáneo 24/7), Boleto</li>
+                    <li>• <strong>Argentina, Chile, Uruguay:</strong> MercadoPago</li>
+                    <li>• <strong>Comisiones:</strong> 0%-5.9% según método</li>
+                    <li>• <strong>Monedas:</strong> COP, PEN, MXN, BRL, ARS, CLP, UYU, USD</li>
                   </ul>
                   <p><strong>Configuración en Ajustes:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
