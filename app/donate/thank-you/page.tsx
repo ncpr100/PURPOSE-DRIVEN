@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, Clock, XCircle, Home, Receipt, Share2 } from 'lucide-react'
+import { CheckCircle, Clock, XCircle, Home, Receipt, Share2, Mail } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface PaymentStatus {
@@ -196,8 +196,9 @@ export default function ThankYouPage() {
               
               {paymentStatus.status === 'completed' && (
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-green-700">
-                    📧 Se ha enviado un recibo a <strong>{paymentStatus.donorEmail}</strong>
+                  <p className="text-sm text-green-700 flex items-center gap-2 justify-center">
+                    <Mail className="h-4 w-4" />
+                    Se ha enviado un recibo a <strong>{paymentStatus.donorEmail}</strong>
                   </p>
                 </div>
               )}

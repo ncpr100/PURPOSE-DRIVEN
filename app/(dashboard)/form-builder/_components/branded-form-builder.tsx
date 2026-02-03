@@ -19,20 +19,27 @@ import {
   Palette,
   Eye,
   Copy,
-  Save
+  Save,
+  Sparkles,
+  BarChart3,
+  FileText,
+  Zap,
+  Lightbulb,
+  Users,
+  MapPin
 } from 'lucide-react'
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
 import { toast } from 'sonner'
 
-// 🎯 SMART TEMPLATES for Non-Technical Users
+// SMART TEMPLATES for Non-Technical Users
 const SMART_TEMPLATES = [
-  // ⭐ SIMPLE VISITOR TRACKING - Exactly what the user requested
+  // SIMPLE VISITOR TRACKING - Exactly what the user requested
   {
     id: 'simple-visitor-tracking',
-    name: '👥 Visitante Básico',
+    name: 'Visitante Básico',
     description: 'Solo 4 campos: Nombre, Teléfono, Email (opcional), Fuente',
-    icon: '✨',
+    icon: 'Sparkles',
     category: 'Visitantes',
     fields: [
       { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
@@ -64,9 +71,9 @@ const SMART_TEMPLATES = [
   },
   {
     id: 'visitor-source-tracking',
-    name: '📍 Rastreo de Fuentes de Visitantes',
+    name: 'Rastreo de Fuentes de Visitantes',
     description: 'Formulario completo para conocer cómo llegaron los visitantes',
-    icon: '📊',
+    icon: 'BarChart3',
     category: 'Visitantes',
     fields: [
       { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
@@ -204,7 +211,7 @@ const SMART_TEMPLATES = [
   }
 ]
 
-// 🎯 QUICK ADD FIELD PRESETS for instant field creation
+// QUICK ADD FIELD PRESETS for instant field creation
 const QUICK_FIELD_PRESETS = [
   // Contact Fields
   { name: '📧 Email', field: { label: 'Correo Electrónico', type: 'email', required: true } },
@@ -222,7 +229,7 @@ const QUICK_FIELD_PRESETS = [
     }
   },
   {
-    name: '📊 Fuente de Tráfico',
+    name: 'Fuente de Tráfico',
     field: {
       label: 'Fuente de referencia',
       type: 'select',
@@ -330,7 +337,7 @@ export default function BrandedFormBuilder() {
     
     setFormConfig(prev => ({
       ...prev,
-      title: template.name.replace(/[📍📊📱🙏🎉⛪📝]/g, '').trim(),
+      title: template.name.trim(),
       description: template.description,
       fields: templateFields
     }))
@@ -665,18 +672,24 @@ export default function BrandedFormBuilder() {
   return (
     <div className="min-h-screen bg-background">
       
-      {/* 🎯 SMART TEMPLATES SECTION - Shown when templates are visible */}
+      {/* SMART TEMPLATES SECTION - Shown when templates are visible */}
       {showTemplates && (
         <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">🎯 Plantillas Inteligentes</h2>
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="h-6 w-6 text-purple-600" />
+              <h2 className="text-2xl font-bold text-gray-900">Plantillas Inteligentes</h2>
+            </div>
             <p className="text-gray-600">Elige una plantilla para crear tu formulario en segundos</p>
           </div>
           
           {/* Template Categories */}
           <div className="mb-6">
             <div className="flex flex-wrap gap-2 justify-center">
-              <Badge variant="outline" className="bg-blue-100 text-blue-800">📊 Rastreo de Visitantes</Badge>
+              <Badge variant="outline" className="bg-blue-100 text-blue-800 flex items-center gap-1">
+                <BarChart3 className="h-3 w-3" />
+                Rastreo de Visitantes
+              </Badge>
               <Badge variant="outline" className="bg-green-100 text-green-800">💬 Engagement Social</Badge>
               <Badge variant="outline" className="bg-purple-100 text-purple-800">🙏 Ministerio</Badge>
               <Badge variant="outline" className="bg-orange-100 text-orange-800">🎉 Eventos</Badge>
@@ -856,11 +869,14 @@ export default function BrandedFormBuilder() {
               {/* Form Fields */}
               <Separator />
               
-              {/* 🎯 QUICK ADD FIELD PRESETS */}
+              {/* QUICK ADD FIELD PRESETS */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-base font-semibold">Agregar Campos Rápidos</Label>
-                  <Badge variant="secondary" className="text-xs">🚀 Nuevo</Badge>
+                  <Badge variant="secondary" className="text-xs flex items-center gap-1">
+                    <Zap className="h-3 w-3" />
+                    Nuevo
+                  </Badge>
                 </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -878,7 +894,10 @@ export default function BrandedFormBuilder() {
                 </div>
                 
                 <p className="text-xs text-gray-500 italic">
-                  💡 Haz clic en cualquier botón para agregar ese campo instantáneamente
+                  <div className="flex items-center gap-1">
+                    <Lightbulb className="h-3 w-3 text-amber-600" />
+                    <span>Haz clic en cualquier botón para agregar ese campo instantáneamente</span>
+                  </div>
                 </p>
               </div>
               
