@@ -27,11 +27,30 @@ import {
   Lightbulb,
   Users,
   MapPin,
-  ArrowLeft
+  ArrowLeft,
+  MessageSquare,
+  Heart,
+  Calendar
 } from 'lucide-react'
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
 import { toast } from 'sonner'
+
+// Helper function to render template icons as JSX components
+const getTemplateIcon = (iconName: string) => {
+  const iconProps = { className: "h-8 w-8" }
+  
+  switch (iconName) {
+    case 'Sparkles':
+      return <Sparkles {...iconProps} className="h-8 w-8 text-purple-600" />
+    case 'BarChart3':
+      return <BarChart3 {...iconProps} className="h-8 w-8 text-blue-600" />
+    case 'FileText':
+      return <FileText {...iconProps} className="h-8 w-8 text-gray-600" />
+    default:
+      return <FileText {...iconProps} className="h-8 w-8 text-gray-600" />
+  }
+}
 
 // SMART TEMPLATES for Non-Technical Users
 const SMART_TEMPLATES = [
@@ -92,7 +111,7 @@ const SMART_TEMPLATES = [
   },
   {
     id: 'social-media-engagement',
-    name: '📱 Engagement Redes Sociales',
+    name: 'Interacción Redes Sociales',
     description: 'Para eventos específicos o campañas digitales',
     icon: '💬',
     category: 'Marketing',
@@ -721,9 +740,18 @@ export default function BrandedFormBuilder() {
                 <BarChart3 className="h-3 w-3" />
                 Rastreo de Visitantes
               </Badge>
-              <Badge variant="outline" className="bg-green-100 text-green-800">💬 Engagement Social</Badge>
-              <Badge variant="outline" className="bg-purple-100 text-purple-800">🙏 Ministerio</Badge>
-              <Badge variant="outline" className="bg-orange-100 text-orange-800">🎉 Eventos</Badge>
+              <Badge variant="outline" className="bg-green-100 text-green-800 flex items-center gap-1">
+                <MessageSquare className="h-3 w-3" />
+                Interacción Social
+              </Badge>
+              <Badge variant="outline" className="bg-purple-100 text-purple-800 flex items-center gap-1">
+                <Heart className="h-3 w-3" />
+                Ministerio
+              </Badge>
+              <Badge variant="outline" className="bg-orange-100 text-orange-800 flex items-center gap-1">
+                <Calendar className="h-3 w-3" />
+                Eventos
+              </Badge>
             </div>
           </div>
 
@@ -733,7 +761,7 @@ export default function BrandedFormBuilder() {
               <Card key={template.id} className="hover:shadow-md transition-shadow cursor-pointer group" onClick={() => applyTemplate(template)}>
                 <CardContent className="p-4">
                   <div className="text-center mb-3">
-                    <div className="text-3xl mb-2">{template.icon}</div>
+                    <div className="flex justify-center mb-2">{getTemplateIcon(template.icon)}</div>
                     <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                       {template.name}
                     </h3>
