@@ -1,8 +1,20 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 3.4  
-**Last Updated**: January 7, 2026  
-**Project Status**: Production Active - Phase 3 Complete, Phase 4 Architecture Ready (97% Complete)  
+**Document Version**: 3.5  
+**Last Updated**: February 3, 2026  
+**Project Status**: Production Active - Phase 3 Complete, Memory Optimization Deployed (98% Complete)  
+
+---
+
+## 🚨 ENTERPRISE COMPLIANCE MANDATE (CRITICAL)
+
+**THIS IS A PRODUCTION ENTERPRISE SYSTEM** - All protocols below are **NON-NEGOTIABLE** and **MANDATORY**
+
+⚠️ **FAILURE TO FOLLOW THESE PROTOCOLS WILL RESULT IN PRODUCTION FAILURES**
+⚠️ **EVERY TASK MUST EXECUTE THE 8-STEP CRITICAL PROTOCOL CHECK**
+⚠️ **EVERY COMPLETED TASK MUST EXECUTE `git push origin main` FOR RAILWAY DEPLOYMENT**
+
+**EXTERNAL INTEGRATIONS**: Railway Production Workflows ONLY (NO other external systems)
 
 ---
 
@@ -21,11 +33,12 @@
 ## 🚨 AI Agent Quick Start (READ FIRST)
 
 **Essential Facts for Immediate Productivity:**
-- **Production System**: 360 total routes (118 pages + 242 API routes) deployed on Railway with automatic CD pipeline
+- **Production System**: 360+ total routes deployed on Railway with automatic CD pipeline
+- **Memory Optimized**: 3.4MB storage freed, `npm run build:memory-optimized` for production builds
 - **Complete Prayer Wall**: 5-phase PWA implementation finished (analytics, mobile, offline-ready)
 - **Multi-Tenant**: Every DB query MUST include `churchId` filtering (except SUPER_ADMIN operations)
 - **Authentication Gate**: `middleware.ts` (229 lines) controls ALL routing - never bypass
-- **Database**: Prisma singleton via `import { db } from '@/lib/db'` - ~50 tables, 2,475 schema lines
+- **Database**: Prisma singleton via `import { db } from '@/lib/db'` with enhanced connection pooling
 - **Caching**: Redis via `lib/redis-cache-manager.ts` (800+ lines) - 90%+ hit rate target
 - **Real-time**: SSE via `lib/sse-broadcast.ts` for live dashboard updates
 - **TypeScript**: `strict: false` but `ignoreBuildErrors: false` - compilation must pass
@@ -1537,33 +1550,38 @@ Before implementing or deleting ANY code, **ALWAYS** execute these 8 steps in or
 - ✅ **Knowledge sharing**: Ensure team understands the fix and prevention
 - **Example**: Platform fix led to enhanced null safety patterns now documented for all future development
 
-### **DEPLOYMENT PROTOCOL** (MANDATORY)
-**AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. This ensures all updates are automatically deployed to the live production environment without delay.
+### **DEPLOYMENT PROTOCOL** (MANDATORY - ENTERPRISE COMPLIANCE)
+**⚠️ CRITICAL**: **AFTER EVERY COMPLETED TASK** - Execute `git push origin main` to Railway production deployment **IMMEDIATELY** upon task completion. **NO EXCEPTIONS**.
 
-**Railway Deployment Flow**:
+**🚨 ENTERPRISE MANDATE**: This ensures all updates are automatically deployed to the live production environment without delay. **FAILURE TO DEPLOY = INCOMPLETE TASK**.
+
+**Railway Deployment Flow** (ONLY External Integration):
 ```bash
 git add .
 git commit -m "descriptive message"
-git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (348 routes) → next start
+git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (360+ routes) → next start
 ```
 
-**CRITICAL: Never use `npx prisma db push` in production**. Use `npx prisma migrate dev` to create migrations, then migrations run automatically on Railway deployment.
-**MANDATORY GIT PUSH**: Always execute `git push origin main` after completing any update, change, or task to ensure immediate deployment to Railway production environment.
+**⚠️ CRITICAL**: Never use `npx prisma db push` in production. Use `npx prisma migrate dev` to create migrations, then migrations run automatically on Railway deployment.
+**🚨 MANDATORY GIT PUSH**: Always execute `git push origin main` after completing any update, change, or task to ensure immediate deployment to Railway production environment.
 ## Key Workflows & Commands
 
 ### Development
 ```bash
 npm run dev                    # Start dev server (0.0.0.0:3000)
-npm run build                  # Production build (348 total routes: 116 pages + 232 API routes)
+npm run build                  # Production build (NODE_OPTIONS optimized)
 npm run build:memory-optimized # Memory-optimized build (CRITICAL for production)
 npm run build:incremental      # Experimental incremental build mode
-npx prisma db seed            # Populate database (scripts/seed.ts - 1596 lines)
+npx prisma db seed            # Populate database (scripts/seed.ts)
 npm run cleanup               # Memory cleanup scripts (3.4MB freed)
 npm run cleanup:memory        # Run memory monitor test (uses tsx)
 npm run memory:assess         # Memory assessment and optimization (uses tsx)
 npm run optimize              # Combined cleanup + memory-optimized build
 npm run validate:system       # Validate CUID system integrity
 npm run validate:auth         # Validate authentication configuration
+npm run verify:patterns       # Check critical patterns compliance
+npm run fix:patterns          # Apply critical fixes automatically
+npm run pre-deploy            # Pre-deployment verification
 npm run backup                # Backup system state
 ```
 
@@ -2084,17 +2102,58 @@ withFeatureFlag(
 
 ## Development Guidelines
 
-### **CRITICAL PROTOCOL CHECK** (NON-NEGOTIABLE)
-Before implementing or deleting ANY code, **ALWAYS** ask yourself:
+### **CRITICAL PROTOCOL CHECK** (NON-NEGOTIABLE - ENTERPRISE COMPLIANCE)
+**Before implementing or deleting ANY code, **ALWAYS** execute these 8 steps in order. **NO EXCEPTIONS**:
 
-1. **IS THIS STEP THAT I AM ABOUT TO TAKE THE RIGHT APPROACH?** - Verify the implementation strategy aligns with existing patterns
-2. **WHAT ARE THE REPERCUSSIONS OF THIS STEP THAT I AM ABOUT TO TAKE?** - Consider impact on existing functionality and dependencies  
-3. **DO WE HAVE WHAT I AM ABOUT TO IMPLEMENT ALREADY IN THE SYSTEM?** - Check for existing implementations to avoid duplication
-4. **DOUBLE CHECKING MY WORK BEFORE ASSUMING IS CORRECT** - Validate logic and syntax before assuming correctness
-5. **DID I CREATE NEW ERRORS? I NEED TO AVOID THEM NOT CREATE THEM. I NEED TO BE FORWARD THINKING** - Forward-thinking approach to prevent regressions
-6. **MAY WE NEED THIS FILE LATER IN THE APP WORKFLOW APPLICATION?** - Consider future application workflow dependencies
-7. **WHAT ARE NEXT STEPS AND ENHANCEMENTS OPPORTUNITIES?** - Consider future improvements and optimization potential
-8. **LEARN FROM YOUR MISTAKE TO AVOID REPEATING THEM** - Apply lessons learned from previous development cycles
+**⚠️ ENTERPRISE MANDATE**: These steps are **MANDATORY** for production system integrity
+
+**STEP 1: IS THIS STEP THAT I AM ABOUT TO TAKE THE RIGHT APPROACH?**
+- ✅ **Verify existing patterns**: Does this follow established architectural patterns?
+- ✅ **Check for duplicates**: Search codebase for similar implementations
+- ✅ **Validate approach**: Is this the most maintainable solution?
+- **Example**: Recent platform fix - Before fixing property name typo, verified the correct pattern was `websiteRequests` not `website_requestss`
+
+**STEP 2: WHAT ARE THE REPERCUSSIONS OF THIS STEP THAT I AM ABOUT TO TAKE?**
+- ✅ **Impact analysis**: Which components/pages will be affected?
+- ✅ **Dependency check**: What other systems rely on this code?
+- ✅ **Breaking changes**: Will this break existing functionality?
+- **Example**: Platform stats API change required updating both the API response AND the client component consuming it
+
+**STEP 3: DO WE HAVE WHAT I AM ABOUT TO IMPLEMENT ALREADY IN THE SYSTEM?**
+- ✅ **Search patterns**: Use `grep_search` to find existing implementations
+- ✅ **Check utilities**: Look in `/lib`, `/components/ui`, `/hooks` for existing solutions
+- ✅ **Avoid duplication**: Reuse existing patterns, don't reinvent
+- **Example**: Null safety patterns already exist in other components - should follow same defensive programming approach
+
+**STEP 4: DOUBLE CHECKING MY WORK BEFORE ASSUMING IS CORRECT**
+- ✅ **TypeScript validation**: Run `npm run test:compile` before assuming correctness
+- ✅ **Property names**: Verify exact spelling of all object properties
+- ✅ **Import paths**: Confirm all `@/*` imports are correct
+- **Example**: Platform fix required checking both API property names AND client-side property access
+
+**STEP 5: DID I CREATE NEW ERRORS? I NEED TO AVOID THEM NOT CREATE THEM. I NEED TO BE FORWARD THINKING**
+- ✅ **Runtime safety**: Add null checks, try/catch blocks, fallback values
+- ✅ **Error boundaries**: Consider what happens when external data is malformed
+- ✅ **Graceful degradation**: Ensure UI doesn't break with missing data
+- **Example**: Platform dashboard now has comprehensive fallback values for every property
+
+**STEP 6: MAY WE NEED THIS FILE LATER IN THE APP WORKFLOW APPLICATION?**
+- ✅ **Future compatibility**: Consider upcoming Phase 4 requirements
+- ✅ **Scalability**: Will this work with 1K+ churches?
+- ✅ **Maintainability**: Can other developers understand and extend this?
+- **Example**: Platform monitoring system designed to support future GraphQL migration
+
+**STEP 7: WHAT ARE NEXT STEPS AND ENHANCEMENTS OPPORTUNITIES?**
+- ✅ **Performance optimization**: Can this be cached, optimized, or made more efficient?
+- ✅ **User experience**: Are there UX improvements possible?
+- ✅ **Monitoring**: Should this be logged, tracked, or alerted on?
+- **Example**: Platform dashboard enhanced with auto-refresh, loading states, and error boundaries
+
+**STEP 8: LEARN FROM YOUR MISTAKE TO AVOID REPEATING THEM**
+- ✅ **Document patterns**: Update copilot instructions with new learnings
+- ✅ **Create safeguards**: Implement checks to prevent similar issues
+- ✅ **Knowledge sharing**: Ensure team understands the fix and prevention
+- **Example**: Platform fix led to enhanced null safety patterns now documented for all future development
 
 ### **DEPLOYMENT PROTOCOL** (MANDATORY)
 **AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. This ensures all updates are automatically deployed to the live production environment without delay.
@@ -2163,6 +2222,12 @@ export default function MembersPageClient({ members, userRole }: Props) {
 - **Multi-tenant Security**: All data must be church-scoped
 
 ## Critical Integration Points
+
+### **EXTERNAL INTEGRATIONS** (Enterprise Compliance)
+**⚠️ RAILWAY ONLY**: Railway Production Workflows is the **ONLY** approved external integration
+- **NO other external systems** are currently integrated
+- **ALL deployment workflows** go through Railway exclusively
+- **NO staging environment** - direct production deployment only
 
 ### Database Access Pattern
 ```typescript

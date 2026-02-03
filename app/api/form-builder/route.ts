@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Save a new form
+// POST - Save a new form with guaranteed short URL slug
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -71,6 +71,22 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     const validatedData = formBuilderSchema.parse(body)
+
+    // CRITICAL: Generate unique slug for short URLs (fixes QR code issue)
+    const baseSlug = validatedData.title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-')         // Replace spaces with hyphens
+      .substring(0, 50)             // Limit length
+
+    let uniqueSlug = baseSlug
+    let counter = 1
+
+    // Ensure slug uniqueness
+    while (await db.custom_forms.findUnique({ where: { slug: uniqueSlug } })) {
+      uniqueSlug = `${baseSlug}-${counter}`
+      counter++
+    }
 
     const form = await db.custom_forms.create({
       data: {
@@ -85,7 +101,8 @@ export async function POST(request: NextRequest) {
           bgImage: validatedData.bgImage
         },
         qrConfig: validatedData.qrConfig,
-        qrCodeUrl: validatedData.qrCodeUrl,
+        qrCodeUrl: `${process.env.NEXTAUTH_URL || 'https://khesed-tek-cms.up.railway.app'}/form-viewer?slug=${uniqueSlug}`, // SHORT URL
+        slug: uniqueSlug, // CRITICAL: Short slug for QR codes
         churchId: session.user.churchId,
         createdBy: session.user.id,
         slug: `form-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`

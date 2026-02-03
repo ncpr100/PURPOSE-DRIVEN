@@ -43,17 +43,22 @@ export default function FormViewer() {
     const slug = searchParams.get('slug')
     
     if (slug) {
-      // Load form from database using slug
+      // PREFERRED: Load form from database using slug (short URLs)
       fetchFormBySlug(slug)
     } else if (data) {
-      // Load form from URL data (legacy support)
+      // LEGACY: Support old Base64 URLs but warn about length
+      if (data.length > 2000) {
+        console.warn('⚠️ URL muy larga detectada. Recomendamos guardar el formulario para URLs más cortas.')
+        toast.error('URL muy larga. Por favor, usa la versión guardada del formulario para obtener un enlace más corto.')
+      }
       try {
         const decoded = JSON.parse(atob(data))
         setFormConfig(decoded)
         initializeFormData(decoded.fields)
+        setIsLoading(false)
       } catch (err) {
-        setError('Error al decodificar los datos del formulario')
-      } finally {
+        console.error('Error decoding form data:', err)
+        setError('Error al decodificar los datos del formulario. El enlace puede estar dañado o ser demasiado largo.')
         setIsLoading(false)
       }
     } else {

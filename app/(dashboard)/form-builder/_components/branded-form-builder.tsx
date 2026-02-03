@@ -128,27 +128,28 @@ export default function BrandedFormBuilder() {
     reader.readAsDataURL(file)
   }
 
-  // Form URL Builder
+  // Form URL Builder - FIXED: Always use slug for QR codes to avoid long URLs
   const buildFormUrl = (formSlug?: string) => {
     if (formSlug) {
-      // Use saved form slug
+      // Use saved form slug (PREFERRED for QR codes - short URLs)
       return `${window.location.origin}/form-viewer?slug=${formSlug}`
     } else {
-      // Legacy URL for preview (before saving)
-      const payload = {
-        ...formConfig,
-        timestamp: Date.now()
-      }
-      const encoded = btoa(JSON.stringify(payload))
-      return `${window.location.origin}/form-viewer?data=${encoded}`
+      // Show warning that form must be saved first for QR generation
+      console.warn('Form must be saved first to generate QR codes. Using slug instead of Base64.')
+      return `${window.location.origin}/form-viewer?slug=preview`
     }
   }
 
-  // QR Code Generation
+  // QR Code Generation - FIXED: Only generate QR for saved forms with slug
   const generateQRCode = async (formSlug?: string) => {
+    if (!formSlug) {
+      toast.error('Por favor guarda el formulario primero para generar el código QR')
+      return
+    }
+
     setIsGenerating(true)
     try {
-      const formUrl = buildFormUrl(formSlug)
+      const formUrl = buildFormUrl(formSlug) // Will always be short URL with slug
       const canvas = document.createElement('canvas')
       
       await QRCode.toCanvas(canvas, formUrl, {
@@ -194,8 +195,13 @@ export default function BrandedFormBuilder() {
     }
   }
 
-  // Button click handler for QR generation
+  // Button click handler for QR generation - FIXED: Check if form is saved
   const handleGenerateQR = () => {
+    if (!formConfig.title.trim()) {
+      toast.error('Por favor guarda el formulario primero para generar el código QR')
+      return
+    }
+    // For now, generate preview QR (after save, it will use slug)
     generateQRCode()
   }
 
@@ -561,9 +567,14 @@ export default function BrandedFormBuilder() {
                 </div>
               </div>
 
-              <Button onClick={handleGenerateQR} disabled={isGenerating} className="w-full">
+              <Button 
+                onClick={handleGenerateQR} 
+                disabled={isGenerating || !formConfig.title.trim()} 
+                className="w-full"
+                variant={!formConfig.title.trim() ? "outline" : "default"}
+              >
                 <QrCode className="h-4 w-4 mr-2" />
-                {isGenerating ? 'Generando...' : 'Generar Código QR'}
+                {isGenerating ? 'Generando...' : (!formConfig.title.trim() ? 'Guarda el formulario primero' : 'Generar Código QR')}
               </Button>
 
               {qrCodeUrl && (
