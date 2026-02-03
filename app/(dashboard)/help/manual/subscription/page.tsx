@@ -71,12 +71,12 @@ export default function SubscriptionManual() {
                   <p><strong>1.1.</strong> Navegue a <code>Mi Suscripción → Ver Planes</code></p>
                   <p><strong>1.2.</strong> Planes disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>📦 Plan BÁSICO:</strong>
-                      <br />Ideal para iglesias pequeñas (hasta 500 miembros), funciones esenciales de gestión</li>
-                    <li>• <strong>🚀 Plan PROFESIONAL - MÁS POPULAR:</strong>
-                      <br />Para iglesias en crecimiento (hasta 2,000 miembros), analíticas avanzadas, automatizaciones</li>
-                    <li>• <strong>💼 Plan ENTERPRISE:</strong>
-                      <br />Iglesias grandes o multi-campus, miembros ilimitados, funciones empresariales completas</li>
+                    <li>• <strong>📦 BÁSICO - Iglesia Pequeña:</strong>
+                      <br />Gestión básica de miembros, donaciones manuales, eventos simples, comunicaciones por email, soporte por email</li>
+                    <li>• <strong>🚀 PROFESIONAL - Iglesia Mediana - RECOMENDADO:</strong>
+                      <br />Todas las funciones básicas + Analytics avanzados + Automatizaciones + Reportes personalizados + Soporte prioritario</li>
+                    <li>• <strong>💼 EMPRESARIAL - Iglesia Grande:</strong>
+                      <br />Todas las funciones profesionales + API personalizada + Integraciones avanzadas + Soporte telefónico + Consultoría estratégica</li>
                   </ul>
                   <p><strong>1.3.</strong> Para cambiar plan:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -91,35 +91,33 @@ export default function SubscriptionManual() {
                 <h4 className="font-semibold mb-2">✨ Características por Plan</h4>
                 <div className="text-sm space-y-3">
                   <div>
-                    <p className="font-semibold text-gray-600">�️ IGLESIA PEQUEÑA ($149.99/mes)</p>
+                    <p className="font-semibold text-gray-600">📦 BÁSICO - Iglesia Pequeña</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
-                      <li>• Hasta 500 miembros</li>
-                      <li>• 5 licencias</li>
-                      <li>• WhatsApp integrado</li>
-                      <li>• Soporte en español</li>
-                      <li>• 14 días prueba gratis</li>
+                      <li>• Gestión básica de miembros</li>
+                      <li>• Donaciones manuales</li>
+                      <li>• Eventos simples</li>
+                      <li>• Comunicaciones por email</li>
+                      <li>• Soporte por email</li>
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-600">⛪ IGLESIA MEDIANA ($299.99/mes)</p>
+                    <p className="font-semibold text-blue-600">🚀 PROFESIONAL - Iglesia Mediana - Recomendado</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
-                      <li>• Hasta 2,000 miembros</li>
-                      <li>• 10 licencias</li>
-                      <li>• Todo lo anterior +</li>
-                      <li>• Eventos y transmisiones</li>
-                      <li>• Analíticas inteligentes</li>
-                      <li>• Gestión de donaciones</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-green-600">🏰 IGLESIA GRANDE (Personalizado)</p>
-                    <ul className="text-muted-foreground text-xs space-y-1">
-                      <li>• Licencias ilimitadas</li>
-                      <li>• Miembros ilimitados</li>
-                      <li>• Multi-campus</li>
-                      <li>• API personalizada</li>
+                      <li>• Todas las funciones básicas</li>
+                      <li>• Analytics avanzados</li>
+                      <li>• Automatizaciones</li>
+                      <li>• Reportes personalizados</li>
                       <li>• Soporte prioritario</li>
-                      <li>• Entrenamiento dedicado</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-green-600">💼 EMPRESARIAL - Iglesia Grande</p>
+                    <ul className="text-muted-foreground text-xs space-y-1">
+                      <li>• Todas las funciones profesionales</li>
+                      <li>• API personalizada</li>
+                      <li>• Integraciones avanzadas</li>
+                      <li>• Soporte telefónico</li>
+                      <li>• Consultoría estratégica</li>
                     </ul>
                   </div>
                 </div>
@@ -291,9 +289,9 @@ export default function SubscriptionManual() {
                 <div className="space-y-2 text-sm">
                   <p><strong>5.1.</strong> Soporte incluido según plan:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>Iglesia Pequeña:</strong> Email</li>
-                    <li>• <strong>Iglesia Mediana:</strong> Email + Chat</li>
-                    <li>• <strong>Iglesia Grande:</strong> Soporte prioritario 24/7</li>
+                    <li>• <strong>BÁSICO - Iglesia Pequeña:</strong> Email</li>
+                    <li>• <strong>PROFESIONAL - Iglesia Mediana:</strong> Email + Chat</li>
+                    <li>• <strong>EMPRESARIAL - Iglesia Grande:</strong> Soporte prioritario 24/7</li>
                   </ul>
                   <p><strong>5.2.</strong> Canales de contacto:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">

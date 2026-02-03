@@ -10,17 +10,17 @@ import Link from 'next/link'
 export default function SubscriptionHelp() {
   const plans = [
     {
-      name: "BÁSICO",
+      name: "BÁSICO - Iglesia Pequeña",
       features: ["Gestión básica de miembros", "Donaciones manuales", "Eventos simples", "Comunicaciones por email", "Soporte por email"],
       recommended: false
     },
     {
-      name: "PROFESIONAL",
+      name: "PROFESIONAL - Iglesia Mediana",
       features: ["Todas las funciones básicas", "Analytics avanzados", "Automatizaciones", "Reportes personalizados", "Soporte prioritario"],
       recommended: true
     },
     {
-      name: "ENTERPRISE",
+      name: "EMPRESARIAL - Iglesia Grande",
       features: ["Todas las funciones profesionales", "API personalizada", "Integraciones avanzadas", "Soporte telefónico", "Consultoría estratégica"],
       recommended: false
     }
@@ -88,6 +88,7 @@ export default function SubscriptionHelp() {
               <div>
                 <h4 className="font-semibold">Plan Actual</h4>
                 <p className="text-2xl font-bold text-primary">PROFESIONAL</p>
+                <p className="text-sm text-muted-foreground">Iglesia Mediana</p>
               </div>
               <div>
                 <h4 className="font-semibold">Próximo Pago</h4>
