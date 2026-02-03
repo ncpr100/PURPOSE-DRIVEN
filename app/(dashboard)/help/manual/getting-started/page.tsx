@@ -20,7 +20,7 @@ export default function GettingStartedManual() {
         <BookOpen className="h-8 w-8 text-primary" />
         <div>
           <h1 className="text-3xl font-bold">Manual: Primeros Pasos</h1>
-          <p className="text-muted-foreground">Guía completa para comenzar con Kḥesed-tek</p>
+          <p className="text-muted-foreground">Guía completa para comenzar con Khesed-tek Systems</p>
         </div>
       </div>
 
@@ -28,7 +28,7 @@ export default function GettingStartedManual() {
         {/* Quick Start Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>🚀 Bienvenido a Kḥesed-tek Church Management System</CardTitle>
+            <CardTitle>🚀 Bienvenido a Khesed-tek Systems Church Management Platform</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">

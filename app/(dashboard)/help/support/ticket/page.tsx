@@ -298,7 +298,7 @@ export default function SupportTicket() {
               <div>
                 <h4 className="font-semibold mb-3">🏢 Información Empresarial</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>Empresa:</strong> Kḥesed-tek Systems</p>
+                  <p><strong>Empresa:</strong> Khesed-tek Systems</p>
                   <p><strong>Ubicación:</strong> Bogotá, Colombia</p>
                   <p><strong>Web:</strong> https://khesedtek.com</p>
                 </div>

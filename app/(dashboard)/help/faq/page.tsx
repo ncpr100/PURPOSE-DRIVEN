@@ -156,7 +156,7 @@ export default function FAQHelp() {
         },
         {
           q: "¿Funciona en dispositivos móviles?",
-          a: "Sí, Kḥesed-tek es completamente responsive y funciona perfectamente en teléfonos, tablets y computadores."
+          a: "Sí, Khesed-tek Systems es completamente responsive y funciona perfectamente en teléfonos, tablets y computadores."
         },
         {
           q: "¿Mis datos están seguros?",

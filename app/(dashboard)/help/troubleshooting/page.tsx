@@ -182,7 +182,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                       detail: "80% de las veces está ahí"
                     },
                     {
-                      step: "3. Busca emails de 'noreply@khesed-tek.com' o 'onboarding@resend.dev'",
+                      step: "3. Busca emails de 'noreply@khesedtek.com' o 'onboarding@resend.dev'",
                       detail: "Usa la barra de búsqueda de tu correo"
                     },
                     {
@@ -190,7 +190,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                       detail: "Si pusiste juan@gmai.com en vez de gmail.com, nunca llegará"
                     },
                     {
-                      step: "5. Agrega noreply@khesed-tek.com a tus contactos",
+                      step: "5. Agrega noreply@khesedtek.com a tus contactos",
                       detail: "Luego intenta restablecer de nuevo"
                     },
                     {
@@ -198,7 +198,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                       detail: "Ellos pueden restablecer tu contraseña manualmente"
                     }
                   ],
-                  prevention: "Al crear tu cuenta, inmediatamente agrega noreply@khesed-tek.com a contactos seguros"
+                  prevention: "Al crear tu cuenta, inmediatamente agrega noreply@khesedtek.com a contactos seguros"
                 },
                 {
                   problem: "❌ Dice que mi cuenta está bloqueada / inactiva",
@@ -347,7 +347,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   problem: "❌ Eliminé un miembro por error - ¿puedo recuperarlo?",
                   solutions: [
                     "❗ Las eliminaciones son PERMANENTES - no hay recuperación automática",
-                    "Contacta urgente a soporte@khesed-tek.com si fue hace menos de 24 horas",
+                    "Contacta urgente a soporte@khesedtek.com si fue hace menos de 24 horas",
                     "Si tienes un backup reciente, puedes importar ese miembro de nuevo",
                     "PREVENCIÓN: Usa 'Inactivo' en vez de Eliminar para miembros que ya no asisten"
                   ]
@@ -502,7 +502,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                     {
                       category: "Verifica el Estado del Sistema",
                       steps: [
-                        "Revisa status.khesed-tek.com para ver si hay problemas conocidos",
+                        "Revisa khesedtek.com/status para ver si hay problemas conocidos",
                         "Si todos tienen lentitud, puede ser un problema del servidor",
                         "Intenta en horarios de menos tráfico (antes de 8am o después de 10pm)",
                         "Contacta a soporte si persiste más de 1 hora"
@@ -635,14 +635,14 @@ export default function ComprehensiveTroubleshootingGuide() {
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-gray-600 mb-1">📧 Email de Soporte:</p>
-                <a href="mailto:soporte@khesed-tek.com" className="text-blue-600 hover:underline font-medium">
-                  soporte@khesed-tek.com
+                <a href="mailto:soporte@khesedtek.com" className="text-blue-600 hover:underline font-medium">
+                  soporte@khesedtek.com
                 </a>
               </div>
               <div>
                 <p className="text-gray-600 mb-1">💬 WhatsApp:</p>
-                <a href="https://wa.me/1234567890" className="text-green-600 hover:underline font-medium flex items-center gap-1">
-                  +1 (234) 567-890 <ExternalLink className="h-3 w-3" />
+                <a href="https://wa.me/573021234410" className="text-green-600 hover:underline font-medium flex items-center gap-1">
+                  +57 302 123 4410 <ExternalLink className="h-3 w-3" />
                 </a>
               </div>
             </div>
@@ -668,7 +668,7 @@ export default function ComprehensiveTroubleshootingGuide() {
               </div>
             </div>
             <a 
-              href="https://status.khesed-tek.com" 
+              href="https://khesedtek.com/status" 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-blue-600 hover:underline"

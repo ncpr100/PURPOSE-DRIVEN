@@ -283,7 +283,7 @@ export async function POST(request: NextRequest) {
               <li>Comienza a agregar miembros y usuarios</li>
             </ol>
             
-            <p>Si tienes preguntas, contacta al soporte técnico en <a href="mailto:soporte@khesed-tek.com">soporte@khesed-tek.com</a></p>
+            <p>Si tienes preguntas, contacta al soporte técnico en <a href="mailto:soporte@khesedtek.com">soporte@khesedtek.com</a></p>
             
             <p>¡Bienvenido a la familia Kḥesed-tek!</p>
           </div>

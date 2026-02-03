@@ -70,7 +70,7 @@ export default function SetupHelp() {
           <div>
             <h1 className="text-3xl font-bold">Configuración Inicial</h1>
             <p className="text-muted-foreground">
-              Configure su iglesia en Kḥesed-tek paso a paso
+              Configure su iglesia en Khesed-tek Systems paso a paso
             </p>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function SetupHelp() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">
-              Una vez completados estos pasos, podrá empezar a usar todas las funciones de Kḥesed-tek.
+              Una vez completados estos pasos, podrá empezar a usar todas las funciones de Khesed-tek Systems.
             </p>
             <div className="flex gap-2">
               <Link href="/help/members">

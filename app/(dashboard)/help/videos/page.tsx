@@ -11,7 +11,7 @@ export default function VideosHelp() {
   const videoSeries = [
     {
       title: "🚀 Primeros Pasos",
-      description: "Serie completa para comenzar con Kḥesed-tek",
+      description: "Serie completa para comenzar con Khesed-tek Systems",
       videos: 6,
       totalTime: "45 min",
       level: "Principiante",
@@ -139,7 +139,7 @@ export default function VideosHelp() {
           <div>
             <h1 className="text-3xl font-bold">Videotutoriales</h1>
             <p className="text-muted-foreground">
-              Aprenda Kḥesed-tek de forma visual y práctica
+              Aprenda Khesed-tek Systems de forma visual y práctica
             </p>
           </div>
         </div>

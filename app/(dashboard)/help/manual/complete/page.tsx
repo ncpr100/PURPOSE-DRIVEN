@@ -245,7 +245,7 @@ export default function CompleteManual() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">📖 Manual Completo de Usuario</h1>
         <p className="text-muted-foreground mb-4">
-          Guía completa para usar todas las funciones de Kḥesed-tek
+          Guía completa para usar todas las funciones de Khesed-tek Systems
         </p>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">

@@ -68,7 +68,7 @@ export default function SubscriptionHelp() {
           <div>
             <h1 className="text-3xl font-bold">Mi Suscripción</h1>
             <p className="text-muted-foreground">
-              Gestione su plan y complementos de Kḥesed-tek
+              Gestione su plan y complementos de Khesed-tek Systems
             </p>
           </div>
         </div>

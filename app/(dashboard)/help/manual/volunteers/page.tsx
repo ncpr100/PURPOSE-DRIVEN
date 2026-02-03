@@ -39,7 +39,7 @@ export default function VolunteersManualPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-muted-foreground">
-            El sistema de gestión de voluntarios de Kḥesed-tek funciona como un <strong>pipeline integrado</strong>:
+            El sistema de gestión de voluntarios de Khesed-tek Systems funciona como un <strong>pipeline integrado</strong>:
           </p>
           <div className="flex items-center gap-2 text-center">
             <Badge variant="outline" className="flex items-center gap-1">
