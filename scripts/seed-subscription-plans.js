@@ -66,7 +66,7 @@ async function seedSubscriptionPlans() {
       create: {
         id: nanoid(),
         name: 'EMPRESARIAL',
-        displayName: 'Iglesia Grande - Personalizado',
+        displayName: 'Iglesia Grande',
         description: 'Plan empresarial personalizado para iglesias grandes con necesidades específicas',
         priceMonthly: 'Cotización personalizada',
         priceYearly: null,
