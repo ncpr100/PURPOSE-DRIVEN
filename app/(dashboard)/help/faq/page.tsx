@@ -152,7 +152,7 @@ export default function FAQHelp() {
       questions: [
         {
           q: "¿Qué horarios de soporte tienen?",
-          a: "Chat en vivo: Lun-Vie 8AM-6PM. WhatsApp: Lun-Vie 8AM-8PM. Email: 24/7 con respuesta en 24-48 horas. Teléfono: Solo plan Enterprise."
+          a: "Chat en vivo: Lun-Vie 8AM-6PM. WhatsApp: Lun-Vie 9AM-6PM. Email: 24/7 con respuesta en 24-48 horas. Teléfono: Solo plan Enterprise."
         },
         {
           q: "¿Funciona en dispositivos móviles?",

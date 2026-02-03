@@ -23,7 +23,7 @@ export default function ContactInfoCard() {
     whatsappNumber: '+57 302 123 4410',
     whatsappUrl: 'https://wa.me/573021234410',
     email: 'soporte@khesedtek.com',
-    schedule: 'Lun-Vie 8AM-8PM (Colombia)',
+    schedule: 'Lun-Vie 9AM-6PM (Colombia)',,
     companyName: 'Khesed-tek Systems',
     location: 'Bogotá, Colombia',
     website: 'https://khesedtek.com'
