@@ -275,7 +275,7 @@ export default function SupportSettingsClient({ user }: Props) {
                   id="schedule"
                   value={contactInfo.schedule}
                   onChange={(e) => handleInputChange('schedule', e.target.value)}
-                  placeholder="Lun-Vie 8AM-8PM (Colombia)"
+                  placeholder="Lun-Vie 9AM-6PM (Colombia)"
                 />
               </div>
             </CardContent>

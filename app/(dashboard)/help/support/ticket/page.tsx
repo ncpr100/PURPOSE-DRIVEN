@@ -28,9 +28,9 @@ export default function SupportTicket() {
       icon: MessageCircle,
       title: "WhatsApp",
       description: "Respuesta rápida y personal",
-      availability: "Lun-Vie 8AM-8PM",
+      availability: "Lun-Vie 9AM-6PM",
       responseTime: "< 1 hora",
-      action: () => window.open('https://wa.me/573003435733', '_blank')
+      action: () => window.open('https://wa.me/573021234410', '_blank')
     },
     {
       icon: Mail,
@@ -44,7 +44,7 @@ export default function SupportTicket() {
       icon: MessageCircle,
       title: "Chat en Vivo",
       description: "Soporte inmediato online",
-      availability: "Lun-Vie 8AM-6PM",
+      availability: "Lun-Vie 9AM-6PM",
       responseTime: "Inmediato",
       action: () => alert('Chat en vivo será implementado próximamente')
     }
@@ -292,7 +292,7 @@ export default function SupportTicket() {
                 <div className="space-y-2 text-sm">
                   <p><strong>WhatsApp:</strong> +57 302 123 4410</p>
                   <p><strong>Email:</strong> soporte@khesedtek.com</p>
-                  <p><strong>Horario:</strong> Lun-Vie 8AM-8PM (Colombia)</p>
+                  <p><strong>Horario:</strong> Lun-Vie 9AM-6PM (Colombia)</p>
                 </div>
               </div>
               <div>
