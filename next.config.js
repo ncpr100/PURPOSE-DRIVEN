@@ -18,21 +18,7 @@ const nextConfig = {
   },
   // Railway-specific optimizations
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' && process.env.RAILWAY_ENVIRONMENT,
-  },
-  // Webpack optimizations for Railway
-  webpack: (config, { isServer, webpack }) => {
-    // Railway memory optimization
-    if (process.env.RAILWAY_ENVIRONMENT) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          ...config.optimization.splitChunks,
-          maxSize: 200000, // Smaller chunks for Railway
-        },
-      };
-    }
-    return config;
+    removeConsole: process.env.NODE_ENV === 'production' && !!process.env.RAILWAY_ENVIRONMENT,
   },
 };
 
