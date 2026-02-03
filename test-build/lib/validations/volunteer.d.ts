@@ -191,7 +191,7 @@ export type SpiritualProfileInput = z.infer<typeof spiritualProfileSchema>;
  * Validation schema for enhanced spiritual assessment
  * Includes all scoring fields for leadership readiness calculation
  */
-export declare const enhancedSpiritualProfileSchema: z.ZodObject<z.objectUtil.extendShape<{
+export declare const enhancedSpiritualProfileSchema: z.ZodObject<{
     memberId: z.ZodEffects<z.ZodString, string, string>;
     primaryGifts: z.ZodArray<z.ZodEffects<z.ZodString, string, string>, "many">;
     secondaryGifts: z.ZodDefault<z.ZodOptional<z.ZodArray<z.ZodEffects<z.ZodString, string, string>, "many">>>;
@@ -229,7 +229,7 @@ export declare const enhancedSpiritualProfileSchema: z.ZodObject<z.objectUtil.ex
         course: string;
         certificate?: string | undefined;
     }>, "many">>>;
-}, {
+} & {
     spiritualMaturityScore: z.ZodDefault<z.ZodOptional<z.ZodNumber>>;
     leadershipAptitudeScore: z.ZodDefault<z.ZodOptional<z.ZodNumber>>;
     ministryPassionScore: z.ZodDefault<z.ZodOptional<z.ZodNumber>>;
@@ -242,7 +242,7 @@ export declare const enhancedSpiritualProfileSchema: z.ZodObject<z.objectUtil.ex
     leadershipTrainingDate: z.ZodNullable<z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodDate]>>>;
     mentoringExperience: z.ZodDefault<z.ZodOptional<z.ZodBoolean>>;
     discipleshipTraining: z.ZodDefault<z.ZodOptional<z.ZodBoolean>>;
-}>, "strip", z.ZodTypeAny, {
+}, "strip", z.ZodTypeAny, {
     memberId: string;
     secondaryGifts: string[];
     experienceLevel: number;
