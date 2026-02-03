@@ -1,0 +1,29 @@
+name: Simple Railway Deploy
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+        
+      - name: Deploy to Railway
+        run: |
+          echo "🚂 Authenticating with Railway..."
+          railway login --token $RAILWAY_TOKEN
+          
+          echo "🔍 Checking Railway connection..."
+          railway status || echo "Project will be auto-detected"
+          
+          echo "🚀 Deploying to Railway (Railway will handle the build)..."
+          railway up --detach --message "Auto-deploy: $(date)"
+          
+          echo "✅ Deployment initiated successfully!"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

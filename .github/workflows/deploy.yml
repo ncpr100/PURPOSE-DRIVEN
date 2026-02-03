@@ -8,31 +8,45 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-        
+        run: |
+          npm ci --legacy-peer-deps --production=false
+          
       - name: TypeScript Check
         run: npm run test:compile
         
       - name: Build Application
-        run: NODE_OPTIONS='--max-old-space-size=4096' npm run build
+        run: |
+          # Increase Node.js memory and add timeout protection
+          timeout 15m npm run build
         env:
           SKIP_ENV_VALIDATION: true
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: "https://purpose-driven-production.up.railway.app"
+          NODE_OPTIONS: '--max-old-space-size=8192 --max-semi-space-size=1024'
+          CI: true
           
       - name: Deploy to Railway
+        if: success()
         run: |
-          npx @railway/cli login --browserless
-          npx @railway/cli up --detach
+          # Install Railway CLI
+          npm install -g @railway/cli
+          
+          # Authenticate with token
+          railway login --token $RAILWAY_TOKEN
+          
+          # Deploy the application
+          railway up --detach --message "Auto-deploy: GitHub Actions deployment $(date)"
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
