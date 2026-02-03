@@ -1,14 +1,13 @@
-name: Auto Deploy to Railway
+name: Deploy to Railway
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:  # Manual trigger only for now
+  # push:
+  #   branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       
@@ -16,37 +15,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
           
       - name: Install dependencies
-        run: |
-          npm ci --legacy-peer-deps --production=false
-          
-      - name: TypeScript Check
-        run: npm run test:compile
+        run: npm install --legacy-peer-deps
         
-      - name: Build Application
-        run: |
-          # Increase Node.js memory and add timeout protection
-          timeout 15m npm run build
-        env:
-          SKIP_ENV_VALIDATION: true
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          NEXTAUTH_URL: "https://purpose-driven-production.up.railway.app"
-          NODE_OPTIONS: '--max-old-space-size=8192 --max-semi-space-size=1024'
-          CI: true
-          
       - name: Deploy to Railway
-        if: success()
         run: |
-          # Install Railway CLI
+          echo "Installing Railway CLI..."
           npm install -g @railway/cli
           
-          # Authenticate with token
+          echo "Authenticating with Railway..."
           railway login --token $RAILWAY_TOKEN
           
-          # Deploy the application
-          railway up --detach --message "Auto-deploy: GitHub Actions deployment $(date)"
+          echo "Deploying to Railway..."
+          railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

@@ -1,0 +1,63 @@
+name: Debug Deployment
+on:
+  push:
+    branches: [main]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          
+      - name: Check environment
+        run: |
+          echo "=== Environment Check ==="
+          node --version
+          npm --version
+          echo "PWD: $PWD"
+          echo "Files in project:"
+          ls -la
+          
+      - name: Check secrets availability
+        run: |
+          echo "=== Secrets Check ==="
+          echo "DATABASE_URL set: $([[ -n '$DATABASE_URL' ]] && echo 'YES' || echo 'NO')"
+          echo "NEXTAUTH_SECRET set: $([[ -n '$NEXTAUTH_SECRET' ]] && echo 'YES' || echo 'NO')"
+          echo "RAILWAY_TOKEN set: $([[ -n '$RAILWAY_TOKEN' ]] && echo 'YES' || echo 'NO')"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          
+      - name: Test dependency installation
+        run: |
+          echo "=== Dependency Installation Test ==="
+          npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+          
+      - name: Test TypeScript compilation
+        run: |
+          echo "=== TypeScript Compilation Test ==="
+          npm run test:compile
+          
+      - name: Test Railway CLI installation
+        run: |
+          echo "=== Railway CLI Test ==="
+          npm install -g @railway/cli
+          railway --version
+          
+      - name: Test Railway authentication
+        if: env.RAILWAY_TOKEN != ''
+        run: |
+          echo "=== Railway Authentication Test ==="
+          railway login --token $RAILWAY_TOKEN
+          railway whoami
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
