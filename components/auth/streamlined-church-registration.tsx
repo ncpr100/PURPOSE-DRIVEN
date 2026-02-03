@@ -370,7 +370,7 @@ export default function StreamlinedChurchRegistration() {
                               <div className="flex items-center gap-2">
                                 <IconComponent className="h-4 w-4" />
                                 <div>
-                                  <span className="font-medium">{plan.displayName}</span>
+                                  <span className="font-medium">{plan.name}: {plan.displayName}</span>
                                   <span className="text-sm text-gray-500 ml-2">
                                     {plan.priceMonthly.toLowerCase().includes('personalizado') ? 'Cotización personalizada' : `${plan.priceMonthly}/mes`}
                                   </span>
@@ -394,7 +394,7 @@ export default function StreamlinedChurchRegistration() {
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-1">
                               <h3 className="font-semibold text-blue-900">
-                                {selectedPlan.displayName}
+                                {selectedPlan.name}: {selectedPlan.displayName}
                               </h3>
                               <div className="text-right">
                                 {selectedPlan.priceMonthly.toLowerCase().includes('personalizado') ? (
