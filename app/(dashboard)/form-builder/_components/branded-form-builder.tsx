@@ -27,6 +27,41 @@ import { toast } from 'sonner'
 
 // 🎯 SMART TEMPLATES for Non-Technical Users
 const SMART_TEMPLATES = [
+  // ⭐ SIMPLE VISITOR TRACKING - Exactly what the user requested
+  {
+    id: 'simple-visitor-tracking',
+    name: '👥 Visitante Básico',
+    description: 'Solo 4 campos: Nombre, Teléfono, Email (opcional), Fuente',
+    icon: '✨',
+    category: 'Visitantes',
+    fields: [
+      { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
+      { id: 'phone', label: 'Número de Teléfono', type: 'text', required: true },
+      { id: 'email', label: 'Email (opcional)', type: 'email', required: false },
+      { 
+        id: 'source', 
+        label: '¿Cómo nos conociste?', 
+        type: 'select', 
+        required: true,
+        options: [
+          'Facebook',
+          'Instagram', 
+          'WhatsApp',
+          'YouTube',
+          'TikTok',
+          'Familia/Amigo',
+          'Invitación Personal',
+          'Página Web',
+          'Google',
+          'Pasé por aquí',
+          'Evento Especial',
+          'Radio/TV',
+          'Volante',
+          'Otro'
+        ]
+      }
+    ]
+  },
   {
     id: 'visitor-source-tracking',
     name: '📍 Rastreo de Fuentes de Visitantes',
@@ -283,56 +318,6 @@ export default function BrandedFormBuilder() {
   const [qrCodeUrl, setQRCodeUrl] = useState<string>('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [savedForms, setSavedForms] = useState<any[]>([])
-  const [showTemplates, setShowTemplates] = useState(true)
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
-
-  // Smart Templates Functions
-  const applyTemplate = (template: any) => {
-    const templateFields = template.fields.map((field: any, index: number) => ({
-      id: Date.now() + index,
-      ...field
-    }))
-    
-    setFormConfig(prev => ({
-      ...prev,
-      title: template.name.replace(/[📍📊📱🙏🎉⛪📝]/g, '').trim(),
-      description: template.description,
-      fields: templateFields
-    }))
-    
-    setSelectedTemplate(template.id)
-    setShowTemplates(false)
-    toast.success(`Plantilla "${template.name}" aplicada exitosamente`)
-  }
-
-  const addQuickField = (preset: any) => {
-    const newField: FormField = {
-      id: Date.now(),
-      ...preset.field,
-      required: preset.field.required ?? false
-    }
-    
-    setFormConfig(prev => ({
-      ...prev,
-      fields: [...prev.fields, newField]
-    }))
-    
-    toast.success(`Campo "${preset.field.label}" agregado`)
-  }
-
-  const resetToBlank = () => {
-    setFormConfig({
-      title: 'Formulario Personalizado',
-      description: 'Complete la información requerida',
-      fields: [{ id: 1, label: 'Nombre Completo', type: 'text', required: true }],
-      bgColor: '#ffffff',
-      textColor: '#000000',
-      fontFamily: 'Inter',
-      bgImage: null
-    })
-    setShowTemplates(true)
-    setSelectedTemplate(null)
-  }
   const [showTemplates, setShowTemplates] = useState(true)
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
 
