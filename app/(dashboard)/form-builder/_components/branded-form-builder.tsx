@@ -26,7 +26,8 @@ import {
   Zap,
   Lightbulb,
   Users,
-  MapPin
+  MapPin,
+  ArrowLeft
 } from 'lucide-react'
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
@@ -672,6 +673,36 @@ export default function BrandedFormBuilder() {
   return (
     <div className="min-h-screen bg-background">
       
+      {/* NAVIGATION HEADER - When not showing templates */}
+      {!showTemplates && (
+        <div className="mb-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-gray-600">
+                <Sparkles className="h-5 w-5 text-purple-600" />
+                <span className="font-medium">Constructor de Formularios</span>
+              </div>
+              {selectedTemplate && (
+                <>
+                  <span className="text-gray-400">/</span>
+                  <span className="text-blue-600 font-medium">
+                    {SMART_TEMPLATES.find(t => t.id === selectedTemplate)?.name || 'Formulario Personalizado'}
+                  </span>
+                </>
+              )}
+            </div>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowTemplates(true)}
+              className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Volver a Plantillas
+            </Button>
+          </div>
+        </div>
+      )}
+      
       {/* SMART TEMPLATES SECTION - Shown when templates are visible */}
       {showTemplates && (
         <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
@@ -771,10 +802,23 @@ export default function BrandedFormBuilder() {
           {/* Form Configuration */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Palette className="h-5 w-5" />
-                Configuración del Formulario
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Palette className="h-5 w-5" />
+                  Configuración del Formulario
+                </CardTitle>
+                {!showTemplates && (
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={() => setShowTemplates(true)}
+                    className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Volver a Plantillas
+                  </Button>
+                )}
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               
