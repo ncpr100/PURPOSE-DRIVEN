@@ -32,11 +32,41 @@ import {
   Heart,
   Calendar,
   Share2,
-  HandHeart
+  HandHeart,
+  Mail,
+  Phone
 } from 'lucide-react'
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
 import { toast } from 'sonner'
+
+// Helper function to render preset field icons as JSX components
+const getPresetFieldIcon = (iconName: string) => {
+  const iconProps = { className: "h-4 w-4 mr-2" }
+  
+  switch (iconName) {
+    case 'Mail':
+      return <Mail {...iconProps} className="h-4 w-4 mr-2 text-cyan-600" />
+    case 'Phone':
+      return <Phone {...iconProps} className="h-4 w-4 mr-2 text-green-600" />
+    case 'MapPin':
+      return <MapPin {...iconProps} className="h-4 w-4 mr-2 text-red-600" />
+    case 'Share2':
+      return <Share2 {...iconProps} className="h-4 w-4 mr-2 text-blue-600" />
+    case 'BarChart3':
+      return <BarChart3 {...iconProps} className="h-4 w-4 mr-2 text-indigo-600" />
+    case 'Users':
+      return <Users {...iconProps} className="h-4 w-4 mr-2 text-purple-600" />
+    case 'Heart':
+      return <Heart {...iconProps} className="h-4 w-4 mr-2 text-pink-600" />
+    case 'Calendar':
+      return <Calendar {...iconProps} className="h-4 w-4 mr-2 text-orange-600" />
+    case 'MessageSquare':
+      return <MessageSquare {...iconProps} className="h-4 w-4 mr-2 text-gray-600" />
+    default:
+      return <FileText {...iconProps} className="h-4 w-4 mr-2 text-gray-600" />
+  }
+}
 
 // Helper function to render template icons as JSX components
 const getTemplateIcon = (iconName: string) => {
@@ -244,19 +274,20 @@ const SMART_TEMPLATES = [
 // QUICK ADD FIELD PRESETS for instant field creation
 const QUICK_FIELD_PRESETS = [
   // Contact Fields
-  { name: '📧 Email', field: { label: 'Correo Electrónico', type: 'email', required: true } },
-  { name: '📱 Teléfono', field: { label: 'Teléfono', type: 'text', required: false } },
-  { name: '🏠 Dirección', field: { label: 'Dirección', type: 'text', required: false } },
+  { name: 'Email', field: { label: 'Correo Electrónico', type: 'email', required: true }, icon: 'Mail' },
+  { name: 'Teléfono', field: { label: 'Teléfono', type: 'text', required: false }, icon: 'Phone' },
+  { name: 'Dirección', field: { label: 'Dirección', type: 'text', required: false }, icon: 'MapPin' },
   
   // Social Media Tracking
   { 
-    name: '📱 Redes Sociales', 
+    name: 'Redes Sociales', 
     field: { 
       label: '¿Cómo nos conociste?', 
       type: 'select', 
       required: true,
       options: ['Facebook', 'Instagram', 'YouTube', 'TikTok', 'Google', 'Amigo/Familiar', 'Otro']
-    }
+    },
+    icon: 'Share2'
   },
   {
     name: 'Fuente de Tráfico',
@@ -265,43 +296,47 @@ const QUICK_FIELD_PRESETS = [
       type: 'select',
       required: false,
       options: ['Sitio Web', 'Redes Sociales', 'Volante', 'Radio/TV', 'Boca a boca', 'Google', 'Evento', 'Otro']
-    }
+    },
+    icon: 'BarChart3'
   },
   
   // Demographics
   {
-    name: '👥 Grupo de Edad',
+    name: 'Grupo de Edad',
     field: {
       label: 'Rango de Edad',
       type: 'select',
       required: false,
       options: ['18-25', '26-35', '36-45', '46-55', '56-65', '65+']
-    }
+    },
+    icon: 'Users'
   },
   {
-    name: '👨‍👩‍👧‍👦 Estado Familiar',
+    name: 'Estado Familiar',
     field: {
       label: 'Estado Familiar',
       type: 'select',
       required: false,
       options: ['Soltero/a', 'Casado/a', 'Divorciado/a', 'Viudo/a', 'Unión libre']
-    }
+    },
+    icon: 'Heart'
   },
   
   // Ministry & Interests
   {
-    name: '⛪ Interés Ministerial',
+    name: 'Interés Ministerial',
     field: {
       label: 'Ministerio de Interés',
       type: 'select',
       required: false,
       options: ['Música', 'Enseñanza', 'Niños', 'Jóvenes', 'Intercesión', 'Evangelismo', 'Tecnología', 'Otro']
-    }
+    },
+    icon: 'Calendar'
   },
   
   // Text Fields
-  { name: '💬 Comentarios', field: { label: 'Comentarios', type: 'textarea', required: false } },
-  { name: '🙏 Petición de Oración', field: { label: 'Petición de Oración', type: 'textarea', required: false } }
+  { name: 'Comentarios', field: { label: 'Comentarios', type: 'textarea', required: false }, icon: 'MessageSquare' },
+  { name: 'Petición de Oración', field: { label: 'Petición de Oración', type: 'textarea', required: false }, icon: 'Heart' }
 ]
 
 interface FormField {
@@ -968,9 +1003,10 @@ export default function BrandedFormBuilder() {
                       variant="outline" 
                       size="sm" 
                       onClick={() => addQuickField(preset)}
-                      className="text-xs px-2 py-1 h-auto whitespace-normal text-left justify-start"
+                      className="text-xs px-2 py-1 h-auto whitespace-normal text-left justify-start flex items-center"
                     >
-                      {preset.name}
+                      {preset.icon && getPresetFieldIcon(preset.icon)}
+                      <span>{preset.name}</span>
                     </Button>
                   ))}
                 </div>

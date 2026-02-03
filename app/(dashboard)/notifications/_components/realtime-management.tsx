@@ -316,7 +316,7 @@ export function RealTimeManagement() {
                       </div>
                       {user.currentPage && (
                         <p className="text-xs text-muted-foreground mt-1">
-                          📍 {user.currentPage}
+                          {user.currentPage}
                         </p>
                       )}
                       <p className="text-xs text-muted-foreground">

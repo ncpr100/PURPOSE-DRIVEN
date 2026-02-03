@@ -440,7 +440,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
       if (response.ok) {
         const data = await response.json()
-        toast.success(`📧 Comunicación programada para ${data.recipientCount} destinatarios`)
+        toast.success(`Comunicación programada para ${data.recipientCount} destinatarios`)
         setCommunicationForm({
           type: 'EMAIL',
           subject: '',
