@@ -50,7 +50,7 @@ export default function SubscriptionHelp() {
   const paymentMethods = [
     { method: "Tarjeta de Crédito/Débito", description: "Visa, MasterCard, American Express", auto: true },
     { method: "Transferencia Bancaria", description: "Pago manual mensual", auto: false },
-    { method: "Nequi", description: "Pago desde la app Nequi", auto: true }
+    { method: "Billeteras Digitales LATAM", description: "Nequi (Colombia), Yape/Plin (Perú), Mercado Pago (Regional)", auto: true }
   ]
 
   return (
