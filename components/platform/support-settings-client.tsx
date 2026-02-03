@@ -39,11 +39,11 @@ export default function SupportSettingsClient({ user }: Props) {
     id: 'default',
     whatsappNumber: '+57 302 123 4410',
     whatsappUrl: 'https://wa.me/573021234410',
-    email: 'soporte@khesedtek.com',
+    email: 'soporte@khesed-tek-systems.org',
     schedule: 'Lun-Vie 9AM-6PM (Colombia)',
     companyName: 'Khesed-tek Systems',
-    location: 'Bogotá, Colombia',
-    website: 'https://khesedtek.com'
+    location: 'Barranquilla Atlántico, Colombia',
+    website: 'https://khesed-tek-systems.org'
   })
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -262,7 +262,7 @@ export default function SupportSettingsClient({ user }: Props) {
                   type="email"
                   value={contactInfo.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="soporte@khesedtek.com"
+                  placeholder="soporte@khesed-tek-systems.org"
                 />
               </div>
 
@@ -312,7 +312,7 @@ export default function SupportSettingsClient({ user }: Props) {
                   id="location"
                   value={contactInfo.location}
                   onChange={(e) => handleInputChange('location', e.target.value)}
-                  placeholder="Bogotá, Colombia"
+                  placeholder="Barranquilla Atlántico, Colombia"
                 />
               </div>
 

@@ -38,7 +38,7 @@ export default function SupportTicket() {
       description: "Para consultas detalladas",
       availability: "24/7",
       responseTime: "24-48 horas",
-      action: () => window.location.href = 'mailto:soporte@khesedtek.com'
+      action: () => window.location.href = 'mailto:soporte@khesed-tek-systems.org'
     },
     {
       icon: MessageCircle,
@@ -291,7 +291,7 @@ export default function SupportTicket() {
                 <h4 className="font-semibold mb-3">📞 Contacto Directo</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>WhatsApp:</strong> +57 302 123 4410</p>
-                  <p><strong>Email:</strong> soporte@khesedtek.com</p>
+                  <p><strong>Email:</strong> soporte@khesed-tek-systems.org</p>
                   <p><strong>Horario:</strong> Lun-Vie 9AM-6PM (Colombia)</p>
                 </div>
               </div>
@@ -299,8 +299,8 @@ export default function SupportTicket() {
                 <h4 className="font-semibold mb-3">🏢 Información Empresarial</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Empresa:</strong> Khesed-tek Systems</p>
-                  <p><strong>Ubicación:</strong> Bogotá, Colombia</p>
-                  <p><strong>Web:</strong> https://khesedtek.com</p>
+                  <p><strong>Ubicación:</strong> Barranquilla Atlántico, Colombia</p>
+                  <p><strong>Web:</strong> https://khesed-tek-systems.org</p>
                 </div>
               </div>
             </div>

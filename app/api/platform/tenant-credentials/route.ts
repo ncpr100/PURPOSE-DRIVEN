@@ -136,7 +136,7 @@ export async function POST(request: NextRequest) {
               loginEmail: loginEmail,
               tempPassword: password,
               platformUrl: getServerBaseUrl(),
-              supportEmail: 'soporte@khesedtek.com'
+              supportEmail: 'soporte@khesed-tek-systems.org'
             }
           })
         })

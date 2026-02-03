@@ -273,7 +273,7 @@ export default function SubscriptionHelp() {
               <Button onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
                 📱 WhatsApp
               </Button>
-              <Button variant="outline" onClick={() => window.location.href = 'mailto:soporte@khesedtek.com'}>
+              <Button variant="outline" onClick={() => window.location.href = 'mailto:soporte@khesed-tek-systems.org'}>
                 📧 Email Soporte
               </Button>
               <Link href="/help/support/ticket">

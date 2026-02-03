@@ -441,8 +441,8 @@ export default function QualificationSettingsManual() {
         <Info className="h-4 w-4" />
         <AlertDescription>
           <strong>¿Necesitas ayuda adicional?</strong> Contacta el soporte técnico en{' '}
-          <a href="mailto:soporte@khesedtek.com" className="underline font-semibold">
-            soporte@khesedtek.com
+          <a href="mailto:soporte@khesed-tek-systems.org" className="underline font-semibold">
+            soporte@khesed-tek-systems.org
           </a>{' '}
           o WhatsApp: <strong>+57 302 123 4410</strong>
         </AlertDescription>

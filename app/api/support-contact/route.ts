@@ -26,11 +26,11 @@ export async function GET(request: NextRequest) {
           id: 'default',
           whatsappNumber: '+57 302 123 4410',
           whatsappUrl: 'https://wa.me/573021234410',
-          email: 'soporte@khesedtek.com',
+          email: 'soporte@khesed-tek-systems.org',
           schedule: 'Lun-Vie 9AM-6PM (Colombia)',
           companyName: 'Khesed-tek Systems',
-          location: 'Bogotá, Colombia',
-          website: 'https://khesedtek.com',
+          location: 'Barranquilla Atlántico, Colombia',
+          website: 'https://khesed-tek-systems.org',
           updatedAt: new Date()
         }
       })

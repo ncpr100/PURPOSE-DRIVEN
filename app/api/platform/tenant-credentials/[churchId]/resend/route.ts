@@ -75,7 +75,7 @@ export async function POST(
             loginEmail: credentials.loginEmail,
             tempPassword: newPassword,
             platformUrl: getServerBaseUrl(),
-            supportEmail: 'soporte@khesedtek.com'
+            supportEmail: 'soporte@khesed-tek-systems.org'
           }
         })
       })

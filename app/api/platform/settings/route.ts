@@ -22,7 +22,7 @@ export async function GET() {
           freeTrialDays: 14,
           gracePeriodDays: 7,
           platformName: 'Kḥesed-tek Church Management Systems',
-          supportEmail: 'soporte@khesedtek.com',
+          supportEmail: 'soporte@khesed-tek-systems.org',
           maintenanceMode: false,
           allowRegistrations: true,
           updatedAt: new Date()
@@ -61,7 +61,7 @@ export async function PUT(request: NextRequest) {
         freeTrialDays: data.freeTrialDays || 14,
         gracePeriodDays: data.gracePeriodDays || 7,
         platformName: data.platformName || 'Kḥesed-tek Church Management Systems',
-        supportEmail: data.supportEmail || 'soporte@khesedtek.com',
+        supportEmail: data.supportEmail || 'soporte@khesed-tek-systems.org',
         maintenanceMode: data.maintenanceMode || false,
         allowRegistrations: data.allowRegistrations || true,
         updatedAt: new Date()

@@ -309,7 +309,7 @@ export default function SuperAdminCheckInsManual() {
                 <Button variant="outline" onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
                   💬 Soporte WhatsApp
                 </Button>
-                <Button variant="outline" onClick={() => window.open('mailto:soporte@khesedtek.com', '_blank')}>
+                <Button variant="outline" onClick={() => window.open('mailto:soporte@khesed-tek-systems.org', '_blank')}>
                   ✉️ Email Técnico
                 </Button>
               </div>

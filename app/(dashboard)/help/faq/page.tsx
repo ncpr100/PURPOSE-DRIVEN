@@ -300,7 +300,7 @@ export default function FAQHelp() {
               <Button variant="outline" onClick={() => alert('Chat en vivo será implementado próximamente')}>
                 💬 Chat en Vivo
               </Button>
-              <Button variant="outline" onClick={() => window.location.href = 'mailto:soporte@khesedtek.com'}>
+              <Button variant="outline" onClick={() => window.location.href = 'mailto:soporte@khesed-tek-systems.org'}>
                 📧 Email
               </Button>
             </div>

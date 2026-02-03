@@ -31,7 +31,7 @@ export default function PlatformSettingsPage() {
     platform: {
       name: 'Kḥesed-tek Church Management Systems',
       description: 'Plataforma completa de gestión para iglesias',
-      supportEmail: 'soporte@khesedtek.com',
+      supportEmail: 'soporte@khesed-tek-systems.org',
       maintenanceMode: false,
       allowRegistrations: true,
       maxChurchesPerAdmin: 5
