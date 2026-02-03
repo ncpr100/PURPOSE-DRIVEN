@@ -92,7 +92,7 @@ interface SubscriptionAddon {
 const PLAN_ICONS = {
   BÁSICO: Crown,
   PROFESIONAL: Zap,
-  ENTERPRISE: Package,
+  EMPRESARIAL: Package,
 }
 
 export function SubscriptionManagement() {
@@ -598,7 +598,7 @@ function PlanForm({
             <SelectContent>
               <SelectItem value="BÁSICO">BÁSICO</SelectItem>
               <SelectItem value="PROFESIONAL">PROFESIONAL</SelectItem>
-              <SelectItem value="ENTERPRISE">ENTERPRISE</SelectItem>
+              <SelectItem value="EMPRESARIAL">EMPRESARIAL</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -48,7 +48,7 @@ export default function SignUpPage() {
   const PLAN_ICONS = {
     BÁSICO: Crown,
     PROFESIONAL: Zap,
-    ENTERPRISE: Package,
+    EMPRESARIAL: Package,
   }
 
   // Fetch subscription plans from database (same source as SUPER_ADMIN via public API)
