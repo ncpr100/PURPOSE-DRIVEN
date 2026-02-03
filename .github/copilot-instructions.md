@@ -36,6 +36,7 @@
 - **Production System**: 360+ total routes deployed on Railway with automatic CD pipeline
 - **Memory Optimized**: 3.4MB storage freed, `npm run build:memory-optimized` for production builds
 - **Complete Prayer Wall**: 5-phase PWA implementation finished (analytics, mobile, offline-ready)
+- **Form Builder System**: 7 Smart Templates with stroke-only SVG icons, QR generation, visitor CRM integration
 - **Multi-Tenant**: Every DB query MUST include `churchId` filtering (except SUPER_ADMIN operations)
 - **Authentication Gate**: `middleware.ts` (229 lines) controls ALL routing - never bypass
 - **Database**: Prisma singleton via `import { db } from '@/lib/db'` with enhanced connection pooling
@@ -44,6 +45,7 @@
 - **TypeScript**: `strict: false` but `ignoreBuildErrors: false` - compilation must pass
 - **Deployment**: `git push origin main` → Railway auto-deploy (NO staging environment)
 - **Branding System**: Church-specific color customization in `settings/branding` with pastel defaults
+- **Icon Protocol**: ONLY lucide-react stroke-only SVG icons - NO emojis in production UI
 
 ---
 
@@ -576,7 +578,10 @@ import {
   CheckCircle,  // Success states
   AlertCircle,  // Warning/error states
   BarChart3,    // Analytics
-  Settings      // Configuration
+  Settings,     // Configuration
+  Heart,        // Prayer/ministry
+  Share2,       // Social media
+  Users         // Groups/teams
 } from 'lucide-react'
 
 // Icon usage pattern with branding colors
@@ -2094,11 +2099,91 @@ withFeatureFlag(
 - **Events**: QR code check-in systems (`/events`)
 - **Communications**: Multi-channel messaging (`/communications`)
 - **Social Media**: Automation with 8 triggers (`/social-media`)
+- **Form Builder**: Smart templates with QR generation and visitor CRM integration (`/form-builder`)
 
 ### Platform Modules ✅
 - **Website Builder**: Dynamic church websites (`/website-builder`)
 - **Prayer Wall**: Prayer request management (`/prayer-wall`)
 - **Platform Admin**: Multi-tenant management (`/platform`)
+
+### Form Builder System Architecture ✅
+
+**Smart Templates System** (7 production templates):
+```typescript
+// Template categories with themed icons (NO EMOJIS)
+const SMART_TEMPLATES = [
+  {
+    id: 'simple-visitor-tracking',
+    name: 'Visitante Básico',
+    icon: 'Sparkles', // Purple themed
+    fields: [name, phone, email, source] // 4 fields
+  },
+  {
+    id: 'visitor-source-tracking', 
+    name: 'Rastreo de Fuentes de Visitantes',
+    icon: 'BarChart3', // Blue themed
+    fields: [contact_data, traffic_source, visit_reason] // 5 fields
+  },
+  // ... 5 more templates with unique themed icons
+]
+
+// Icon rendering with proper JSX components
+const getTemplateIcon = (iconName: string) => {
+  switch (iconName) {
+    case 'Sparkles':
+      return <Sparkles className="h-8 w-8 text-purple-600" />
+    case 'BarChart3':
+      return <BarChart3 className="h-8 w-8 text-blue-600" />
+    case 'Share2':
+      return <Share2 className="h-8 w-8 text-green-600" />
+    case 'Heart':
+      return <Heart className="h-8 w-8 text-pink-600" />
+    case 'Calendar':
+      return <Calendar className="h-8 w-8 text-orange-600" />
+    case 'Users':
+      return <Users className="h-8 w-8 text-indigo-600" />
+    case 'FileText':
+      return <FileText className="h-8 w-8 text-gray-600" />
+  }
+}
+```
+
+**Quick Field Presets** (18 common fields):
+- Personal: Nombre, Email, Teléfono, Fecha Nacimiento, Género
+- Contact: Dirección, Ciudad, País, WhatsApp, Instagram
+- Church-specific: ¿Cómo nos conociste?, ¿Primera vez?, Ministerios
+- Special: Comentarios, Oración, Necesidades, Testimonio
+
+**Navigation System** (Multi-path UX):
+- Primary: Navigation header with breadcrumbs + "Volver a Plantillas" button
+- Secondary: Form configuration card header button
+- Template summary: "Ver Otras Plantillas" / "Empezar de Nuevo" options
+
+**QR Code Generation**:
+- Slug-based URLs (50 chars vs 5000+ previously)
+- Auto-generation on form save: `/form-viewer?slug=EVENT-NAME`
+- Fixed URL length issue for scannable QR codes
+
+**Visitor CRM Integration**:
+```typescript
+// Auto-detect visitor forms and create CRM profiles
+const detectVisitorForm = (formData) => {
+  if (hasNameField && (hasEmailField || hasPhoneField)) {
+    createVisitorProfile({
+      category: categorizeVisitor(responses),
+      source: extractTrafficSource(responses),
+      churchId: session.user.churchId
+    })
+  }
+}
+```
+
+**Template Troubleshooting Guide**:
+1. **Icons not showing**: Check getTemplateIcon() function, ensure JSX components
+2. **Template not applying**: Wait 2-3s, check network, try different template
+3. **Navigation stuck**: Look for "Volver a Plantillas" in header or form config card
+4. **QR too dense**: Save form first to generate slug, then regenerate QR
+5. **CRM not creating**: Verify name + contact field present and marked required
 
 ## Development Guidelines
 
@@ -2631,3 +2716,98 @@ function ErrorFallback({error}: {error: Error}) {
 ```
 
 When working on this codebase, prioritize the **Phase 4 preparation and system optimization** improvements, maintain the production deployment standards, and always consider the multi-tenant architecture and performance optimization requirements for Phase 4 preparation.
+
+---
+
+## 📚 HELP MANUALS & TROUBLESHOOTING
+
+### **TENANT HELP MANUAL - Form Builder System**
+
+**Access Instructions:**
+1. Navigate to `/form-builder` from dashboard sidebar
+2. Select from 7 Smart Templates with unique themed icons
+3. Customize using Quick Field Presets (18 options) or manual field addition
+4. Generate QR codes with slug-based URLs for sharing
+5. Automatic visitor CRM integration for lead generation
+
+**Common Issues & Solutions:**
+
+**Issue: Template icons showing as text**
+- **Cause**: getTemplateIcon() function not rendering JSX properly
+- **Fix**: Ensure all template icons use proper JSX components with themed colors
+- **Check**: Icons should be Sparkles (purple), BarChart3 (blue), Share2 (green), Heart (pink), Calendar (orange), Users (indigo), FileText (gray)
+
+**Issue: Users stuck in form builder without navigation back**
+- **Cause**: Missing "Volver a Plantillas" buttons
+- **Fix**: Check navigation header and form configuration card header
+- **Locations**: Primary header breadcrumb area + secondary in CardHeader
+- **Backup**: "Ver Otras Plantillas" and "Empezar de Nuevo" options
+
+**Issue: QR codes too dense or not scannable**
+- **Cause**: URL too long (5000+ characters)
+- **Fix**: Save form first to generate slug, then regenerate QR
+- **Result**: Short URL format `/form-viewer?slug=EVENT-NAME` (50 chars max)
+
+### **SUPER ADMIN HELP MANUAL - Platform Management**
+
+**Form Builder System Monitoring:**
+```bash
+# Check form builder compilation
+npm run test:compile
+
+# Verify template icon system
+grep -r "getTemplateIcon" app/(dashboard)/form-builder/
+
+# Validate QR generation
+curl -s "https://api.khesed-tek.com/api/form-builder" | jq '.templates'
+
+# Monitor visitor CRM creation
+SELECT * FROM visitor_profiles WHERE created_at >= NOW() - INTERVAL '1 hour';
+```
+
+**Critical System Checks:**
+1. **Icon Protocol Compliance**: NO emojis in production UI - only lucide-react stroke-only SVG
+2. **Spanish Localization**: ALL text must be Spanish (NO English violations like "Engagement")
+3. **Template Uniqueness**: Each template must have unique themed icon (NO generic FileText overuse)
+4. **Navigation Integrity**: Multiple paths back to templates (header + card + summary options)
+5. **CRM Integration**: Visitor forms auto-create profiles when name + contact fields present
+
+**Enterprise Compliance Monitoring:**
+```typescript
+// Daily compliance check protocol
+const complianceChecks = {
+  emojiViolations: await searchCodebase(/[\u{1F000}-\u{1F9FF}]/u),
+  englishText: await searchCodebase(/engagement|social media|back to/i),
+  iconDuplication: await countIconUsage('FileText'),
+  navigationPaths: await validateNavigation(['header', 'cardHeader', 'summary']),
+  crmIntegration: await testVisitorCreation()
+}
+
+// Alert if violations found
+if (complianceChecks.emojiViolations.length > 0) {
+  alert('CRITICAL: Emoji protocol violations detected')
+}
+```
+
+**Deployment Verification:**
+```bash
+# After any form builder updates
+git add . && git commit -m "Form builder updates"
+git push origin main  # MANDATORY for Railway deployment
+
+# Verify deployment success
+curl -s "https://api.khesed-tek.com/health" | jq '.status'
+
+# Test template system
+curl -s "https://api.khesed-tek.com/form-builder" | jq '.templates[].icon'
+```
+
+**Troubleshooting Escalation:**
+1. **Level 1**: Template/navigation issues → Check getTemplateIcon() and navigation components
+2. **Level 2**: QR/URL issues → Verify slug generation and form saving process
+3. **Level 3**: CRM integration failures → Check visitor detection logic and database connections
+4. **Level 4**: Compliance violations → Immediate protocol review and correction required
+
+---
+
+**END OF COPILOT INSTRUCTIONS v3.5**
