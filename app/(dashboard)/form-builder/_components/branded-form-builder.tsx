@@ -30,7 +30,9 @@ import {
   ArrowLeft,
   MessageSquare,
   Heart,
-  Calendar
+  Calendar,
+  Share2,
+  HandHeart
 } from 'lucide-react'
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
@@ -45,6 +47,14 @@ const getTemplateIcon = (iconName: string) => {
       return <Sparkles {...iconProps} className="h-8 w-8 text-purple-600" />
     case 'BarChart3':
       return <BarChart3 {...iconProps} className="h-8 w-8 text-blue-600" />
+    case 'Share2':
+      return <Share2 {...iconProps} className="h-8 w-8 text-green-600" />
+    case 'Heart':
+      return <Heart {...iconProps} className="h-8 w-8 text-pink-600" />
+    case 'Calendar':
+      return <Calendar {...iconProps} className="h-8 w-8 text-orange-600" />
+    case 'Users':
+      return <Users {...iconProps} className="h-8 w-8 text-indigo-600" />
     case 'FileText':
       return <FileText {...iconProps} className="h-8 w-8 text-gray-600" />
     default:
@@ -113,7 +123,7 @@ const SMART_TEMPLATES = [
     id: 'social-media-engagement',
     name: 'Interacción Redes Sociales',
     description: 'Para eventos específicos o campañas digitales',
-    icon: '💬',
+    icon: 'Share2',
     category: 'Marketing',
     fields: [
       { id: 'name', label: 'Nombre', type: 'text', required: true },
@@ -136,9 +146,9 @@ const SMART_TEMPLATES = [
   },
   {
     id: 'prayer-request-intake',
-    name: '🙏 Recepción de Peticiones',
+    name: 'Recepción de Peticiones',
     description: 'Formulario especializado para peticiones de oración',
-    icon: '✋',
+    icon: 'Heart',
     category: 'Ministerio',
     fields: [
       { id: 'name', label: 'Nombre (opcional)', type: 'text', required: false },
@@ -162,9 +172,9 @@ const SMART_TEMPLATES = [
   },
   {
     id: 'event-registration',
-    name: '🎉 Registro para Eventos',
+    name: 'Registro para Eventos',
     description: 'Inscripción para conferencias, retiros, actividades',
-    icon: '📅',
+    icon: 'Calendar',
     category: 'Eventos',
     fields: [
       { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
@@ -188,9 +198,9 @@ const SMART_TEMPLATES = [
   },
   {
     id: 'ministry-interest',
-    name: '⛪ Interés Ministerial',
+    name: 'Interés Ministerial',
     description: 'Para conectar personas con ministerios específicos',
-    icon: '🤝',
+    icon: 'Users',
     category: 'Ministerios',
     fields: [
       { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
@@ -221,9 +231,9 @@ const SMART_TEMPLATES = [
   },
   {
     id: 'blank-template',
-    name: '📝 Formulario en Blanco',
+    name: 'Formulario en Blanco',
     description: 'Comienza desde cero con un formulario personalizado',
-    icon: '✏️',
+    icon: 'FileText',
     category: 'Personalizado',
     fields: [
       { id: 'name', label: 'Nombre', type: 'text', required: true }
