@@ -13,8 +13,40 @@
 ⚠️ **FAILURE TO FOLLOW THESE PROTOCOLS WILL RESULT IN PRODUCTION FAILURES**
 ⚠️ **EVERY TASK MUST EXECUTE THE 8-STEP CRITICAL PROTOCOL CHECK**
 ⚠️ **EVERY COMPLETED TASK MUST EXECUTE `git push origin main` FOR RAILWAY DEPLOYMENT**
+⚠️ **STRICT ICON PROTOCOL: ONLY OUTLINED DESIGN UNIQUE THEMED COLOR ICONS - NO EMOJIS EVER**
 
 **EXTERNAL INTEGRATIONS**: Railway Production Workflows ONLY (NO other external systems)
+
+---
+
+## 🚨 CRITICAL ICON PROTOCOL (MANDATORY COMPLIANCE)
+
+**ENTERPRISE BRANDING STANDARD**: Use **ONLY** lucide-react stroke-only SVG icons with unique themed colors
+
+### **MANDATORY ICON RULES:**
+1. ✅ **ONLY lucide-react icons** - stroke-only SVG outline style
+2. ✅ **Unique themed colors** - each feature/template gets distinct color
+3. ✅ **Transparent interiors** - colored strokes with no solid fills
+4. ❌ **NEVER use emojis** (🎯, 🚀, 💡, 📝, ✏️, 🎨, ⚡, 📊, 🔍, ✨, 📧, 🙏, 🎉, ⛪, 🤝, 📅, 💬, ✋)
+5. ❌ **NO generic icons** - avoid FileText for everything, use themed icons
+
+### **THEMED ICON SYSTEM:**
+```typescript
+// ✅ CORRECT - Unique themed icons with proper colors
+<Sparkles className="h-8 w-8 text-purple-600" />  // Visitors
+<BarChart3 className="h-8 w-8 text-blue-600" />   // Analytics
+<Share2 className="h-8 w-8 text-green-600" />     // Social Media
+<Heart className="h-8 w-8 text-pink-600" />       // Prayer/Ministry
+<Calendar className="h-8 w-8 text-orange-600" />  // Events
+<Users className="h-8 w-8 text-indigo-600" />     // Groups/Teams
+<Mail className="h-8 w-8 text-cyan-600" />        // Communication
+
+// ❌ FORBIDDEN - Emojis and generic icons
+❌ 🎯 ❌ 🚀 ❌ 💡 ❌ 📝 ❌ ✨ ❌ 📊 ❌ 🔍 ❌ 📧
+❌ <FileText /> used for multiple different templates
+```
+
+**VIOLATION CONSEQUENCES**: Immediate production failure, user confusion, brand inconsistency
 
 ---
 
@@ -2256,6 +2288,21 @@ git push origin main  # → Triggers Railway build → Nixpacks detects Next.js 
 - **Railway Deployment**: All builds must compile 360 total routes successfully (118 pages + 242 API routes)
 - **Feature Flags**: Use for safe deployment of new features (`lib/feature-flags.ts`)
 - **Route Group Pattern**: Use parentheses for layout organization `(dashboard)`, `(platform)`
+- **ICON PROTOCOL ENFORCEMENT**: All UI elements MUST use lucide-react stroke-only SVG icons with unique themed colors - NO emojis allowed
+
+### **ICON PROTOCOL VALIDATION CHECKLIST**
+Before every deployment, verify:
+- ✅ **NO EMOJIS** in any production UI code (🎯, 🚀, 💡, 📝, ✨, 📊, 🔍, 📧, 🙏, 🎉, ⛪, 🤝, 📅, 💬, ✋)
+- ✅ **ONLY lucide-react icons** - stroke-only SVG outline style
+- ✅ **UNIQUE THEMED COLORS** - each feature gets distinct color (purple-600, blue-600, green-600, pink-600, orange-600, indigo-600)
+- ✅ **TRANSPARENT INTERIORS** - colored strokes with no solid fills
+- ✅ **NO GENERIC OVERUSE** - avoid FileText for everything, use appropriate themed icons
+
+```bash
+# Icon protocol validation commands
+grep -r "🎯\|🚀\|💡\|📝\|✨\|📊\|🔍\|📧\|🙏\|🎉\|⛪\|🤝\|📅\|💬\|✋" app/ --include="*.tsx" --include="*.ts"  # Should return empty
+grep -r "lucide-react" app/ --include="*.tsx" | wc -l  # Should show proper icon imports
+```
 
 ### Component Development Standards
 ```typescript
