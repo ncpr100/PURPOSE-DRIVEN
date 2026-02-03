@@ -111,6 +111,66 @@ export default function BrandedFormBuilder() {
     }))
   }
 
+  // Option Management for Selection Fields
+  const addOption = (fieldId: number, option: string) => {
+    if (!option.trim()) return
+    
+    setFormConfig(prev => ({
+      ...prev,
+      fields: prev.fields.map(field =>
+        field.id === fieldId
+          ? { ...field, options: [...(field.options || []), option.trim()] }
+          : field
+      )
+    }))
+  }
+
+  const removeOption = (fieldId: number, optionIndex: number) => {
+    setFormConfig(prev => ({
+      ...prev,
+      fields: prev.fields.map(field =>
+        field.id === fieldId
+          ? {
+              ...field,
+              options: field.options?.filter((_, index) => index !== optionIndex) || []
+            }
+          : field
+      )
+    }))
+  }
+
+  const updateOption = (fieldId: number, optionIndex: number, newValue: string) => {
+    setFormConfig(prev => ({
+      ...prev,
+      fields: prev.fields.map(field =>
+        field.id === fieldId
+          ? {
+              ...field,
+              options: field.options?.map((option, index) =>
+                index === optionIndex ? newValue : option
+              ) || []
+            }
+          : field
+      )
+    }))
+  }
+
+  // Initialize options when field type changes to select
+  const handleFieldTypeChange = (fieldId: number, newType: string) => {
+    setFormConfig(prev => ({
+      ...prev,
+      fields: prev.fields.map(field => {
+        if (field.id === fieldId) {
+          if (newType === 'select' && !field.options) {
+            return { ...field, type: newType as any, options: ['Opción 1'] }
+          }
+          return { ...field, type: newType as any }
+        }
+        return field
+      })
+    }))
+  }
+
   // Image Handlers
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'background' | 'qr-logo') => {
     const file = e.target.files?.[0]
@@ -438,7 +498,7 @@ export default function BrandedFormBuilder() {
                       <div className="col-span-3">
                         <Select 
                           value={field.type} 
-                          onValueChange={(value) => updateField(field.id, 'type', value)}
+                          onValueChange={(value) => handleFieldTypeChange(field.id, value)}
                         >
                           <SelectTrigger>
                             <SelectValue />
@@ -472,6 +532,53 @@ export default function BrandedFormBuilder() {
                         </Button>
                       </div>
                     </div>
+
+                    {/* Options Management for Selection Fields */}
+                    {field.type === 'select' && (
+                      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <Label className="text-sm font-medium">Opciones de Selección</Label>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => {
+                              const newOption = `Opción ${(field.options?.length || 0) + 1}`
+                              addOption(field.id, newOption)
+                            }}
+                          >
+                            <Plus className="h-3 w-3 mr-1" />
+                            Agregar Opción
+                          </Button>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          {field.options?.map((option, optionIndex) => (
+                            <div key={optionIndex} className="flex items-center gap-2">
+                              <Input
+                                value={option}
+                                onChange={(e) => updateOption(field.id, optionIndex, e.target.value)}
+                                placeholder={`Opción ${optionIndex + 1}`}
+                                className="text-sm"
+                              />
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => removeOption(field.id, optionIndex)}
+                                disabled={(field.options?.length || 0) <= 1}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          )) || []}
+                        </div>
+                        
+                        {(!field.options || field.options.length === 0) && (
+                          <div className="text-sm text-gray-500 italic">
+                            No hay opciones. Agrega al menos una opción.
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </Card>
                 ))}
               </div>
@@ -636,6 +743,11 @@ export default function BrandedFormBuilder() {
                       ) : field.type === 'select' ? (
                         <select className="w-full p-2 border rounded text-gray-900">
                           <option>Seleccione una opción</option>
+                          {field.options?.map((option, index) => (
+                            <option key={index} value={option}>
+                              {option}
+                            </option>
+                          ))}
                         </select>
                       ) : (
                         <Input
