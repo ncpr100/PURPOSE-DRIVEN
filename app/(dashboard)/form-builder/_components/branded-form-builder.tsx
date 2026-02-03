@@ -25,6 +25,213 @@ import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
 import { toast } from 'sonner'
 
+// 🎯 SMART TEMPLATES for Non-Technical Users
+const SMART_TEMPLATES = [
+  {
+    id: 'visitor-source-tracking',
+    name: '📍 Rastreo de Fuentes de Visitantes',
+    description: 'Formulario completo para conocer cómo llegaron los visitantes',
+    icon: '📊',
+    category: 'Visitantes',
+    fields: [
+      { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
+      { id: 'email', label: 'Correo Electrónico', type: 'email', required: true },
+      { id: 'phone', label: 'Teléfono', type: 'text', required: false },
+      { 
+        id: 'source', 
+        label: '¿Cómo se enteró de nuestra iglesia?', 
+        type: 'select', 
+        required: true,
+        options: ['Facebook', 'Instagram', 'YouTube', 'TikTok', 'Google', 'Sitio Web', 'Amigo/Familiar', 'Volante', 'Radio/TV', 'Pasando por aquí', 'Evento especial', 'Otro']
+      },
+      { id: 'visit_reason', label: 'Motivo de la visita', type: 'textarea', required: false }
+    ]
+  },
+  {
+    id: 'social-media-engagement',
+    name: '📱 Engagement Redes Sociales',
+    description: 'Para eventos específicos o campañas digitales',
+    icon: '💬',
+    category: 'Marketing',
+    fields: [
+      { id: 'name', label: 'Nombre', type: 'text', required: true },
+      { id: 'email', label: 'Email', type: 'email', required: true },
+      {
+        id: 'social_platform',
+        label: '¿En qué red social nos sigues?',
+        type: 'select',
+        required: true,
+        options: ['Facebook', 'Instagram', 'YouTube', 'TikTok', 'LinkedIn', 'Twitter/X', 'WhatsApp', 'No uso redes sociales']
+      },
+      {
+        id: 'content_interest',
+        label: '¿Qué contenido te interesa más?',
+        type: 'select',
+        required: false,
+        options: ['Sermones', 'Música/Adoración', 'Testimonios', 'Eventos', 'Estudios bíblicos', 'Contenido juvenil', 'Familia', 'Oración']
+      }
+    ]
+  },
+  {
+    id: 'prayer-request-intake',
+    name: '🙏 Recepción de Peticiones',
+    description: 'Formulario especializado para peticiones de oración',
+    icon: '✋',
+    category: 'Ministerio',
+    fields: [
+      { id: 'name', label: 'Nombre (opcional)', type: 'text', required: false },
+      { id: 'email', label: 'Email de contacto', type: 'email', required: false },
+      { id: 'prayer_request', label: 'Su petición de oración', type: 'textarea', required: true },
+      {
+        id: 'prayer_type',
+        label: 'Tipo de petición',
+        type: 'select',
+        required: false,
+        options: ['Salud', 'Familia', 'Trabajo', 'Finanzas', 'Espiritual', 'Agradecimiento', 'Otro']
+      },
+      {
+        id: 'urgency',
+        label: 'Urgencia',
+        type: 'select',
+        required: false,
+        options: ['Normal', 'Urgente', 'Muy urgente']
+      }
+    ]
+  },
+  {
+    id: 'event-registration',
+    name: '🎉 Registro para Eventos',
+    description: 'Inscripción para conferencias, retiros, actividades',
+    icon: '📅',
+    category: 'Eventos',
+    fields: [
+      { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
+      { id: 'email', label: 'Correo Electrónico', type: 'email', required: true },
+      { id: 'phone', label: 'Teléfono', type: 'text', required: true },
+      {
+        id: 'age_group',
+        label: 'Grupo de Edad',
+        type: 'select',
+        required: false,
+        options: ['18-25', '26-35', '36-45', '46-55', '56-65', '65+']
+      },
+      {
+        id: 'dietary_restrictions',
+        label: 'Restricciones alimentarias',
+        type: 'text',
+        required: false
+      },
+      { id: 'special_needs', label: 'Necesidades especiales', type: 'textarea', required: false }
+    ]
+  },
+  {
+    id: 'ministry-interest',
+    name: '⛪ Interés Ministerial',
+    description: 'Para conectar personas con ministerios específicos',
+    icon: '🤝',
+    category: 'Ministerios',
+    fields: [
+      { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
+      { id: 'email', label: 'Email', type: 'email', required: true },
+      { id: 'phone', label: 'Teléfono', type: 'text', required: false },
+      {
+        id: 'ministry_area',
+        label: '¿En qué ministerio te gustaría participar?',
+        type: 'select',
+        required: true,
+        options: ['Música/Adoración', 'Enseñanza', 'Niños', 'Jóvenes', 'Intercesión', 'Evangelismo', 'Tecnología', 'Limpieza', 'Cocina', 'Recepción', 'Seguridad', 'Otro']
+      },
+      {
+        id: 'experience_level',
+        label: 'Nivel de experiencia',
+        type: 'select',
+        required: false,
+        options: ['Principiante', 'Intermedio', 'Avanzado', 'Profesional']
+      },
+      {
+        id: 'availability',
+        label: 'Disponibilidad',
+        type: 'select',
+        required: false,
+        options: ['Solo domingos', 'Entre semana', 'Fines de semana', 'Horario flexible', 'Solo eventos especiales']
+      }
+    ]
+  },
+  {
+    id: 'blank-template',
+    name: '📝 Formulario en Blanco',
+    description: 'Comienza desde cero con un formulario personalizado',
+    icon: '✏️',
+    category: 'Personalizado',
+    fields: [
+      { id: 'name', label: 'Nombre', type: 'text', required: true }
+    ]
+  }
+]
+
+// 🎯 QUICK ADD FIELD PRESETS for instant field creation
+const QUICK_FIELD_PRESETS = [
+  // Contact Fields
+  { name: '📧 Email', field: { label: 'Correo Electrónico', type: 'email', required: true } },
+  { name: '📱 Teléfono', field: { label: 'Teléfono', type: 'text', required: false } },
+  { name: '🏠 Dirección', field: { label: 'Dirección', type: 'text', required: false } },
+  
+  // Social Media Tracking
+  { 
+    name: '📱 Redes Sociales', 
+    field: { 
+      label: '¿Cómo nos conociste?', 
+      type: 'select', 
+      required: true,
+      options: ['Facebook', 'Instagram', 'YouTube', 'TikTok', 'Google', 'Amigo/Familiar', 'Otro']
+    }
+  },
+  {
+    name: '📊 Fuente de Tráfico',
+    field: {
+      label: 'Fuente de referencia',
+      type: 'select',
+      required: false,
+      options: ['Sitio Web', 'Redes Sociales', 'Volante', 'Radio/TV', 'Boca a boca', 'Google', 'Evento', 'Otro']
+    }
+  },
+  
+  // Demographics
+  {
+    name: '👥 Grupo de Edad',
+    field: {
+      label: 'Rango de Edad',
+      type: 'select',
+      required: false,
+      options: ['18-25', '26-35', '36-45', '46-55', '56-65', '65+']
+    }
+  },
+  {
+    name: '👨‍👩‍👧‍👦 Estado Familiar',
+    field: {
+      label: 'Estado Familiar',
+      type: 'select',
+      required: false,
+      options: ['Soltero/a', 'Casado/a', 'Divorciado/a', 'Viudo/a', 'Unión libre']
+    }
+  },
+  
+  // Ministry & Interests
+  {
+    name: '⛪ Interés Ministerial',
+    field: {
+      label: 'Ministerio de Interés',
+      type: 'select',
+      required: false,
+      options: ['Música', 'Enseñanza', 'Niños', 'Jóvenes', 'Intercesión', 'Evangelismo', 'Tecnología', 'Otro']
+    }
+  },
+  
+  // Text Fields
+  { name: '💬 Comentarios', field: { label: 'Comentarios', type: 'textarea', required: false } },
+  { name: '🙏 Petición de Oración', field: { label: 'Petición de Oración', type: 'textarea', required: false } }
+]
+
 interface FormField {
   id: number
   label: string
@@ -76,6 +283,106 @@ export default function BrandedFormBuilder() {
   const [qrCodeUrl, setQRCodeUrl] = useState<string>('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [savedForms, setSavedForms] = useState<any[]>([])
+  const [showTemplates, setShowTemplates] = useState(true)
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
+
+  // Smart Templates Functions
+  const applyTemplate = (template: any) => {
+    const templateFields = template.fields.map((field: any, index: number) => ({
+      id: Date.now() + index,
+      ...field
+    }))
+    
+    setFormConfig(prev => ({
+      ...prev,
+      title: template.name.replace(/[📍📊📱🙏🎉⛪📝]/g, '').trim(),
+      description: template.description,
+      fields: templateFields
+    }))
+    
+    setSelectedTemplate(template.id)
+    setShowTemplates(false)
+    toast.success(`Plantilla "${template.name}" aplicada exitosamente`)
+  }
+
+  const addQuickField = (preset: any) => {
+    const newField: FormField = {
+      id: Date.now(),
+      ...preset.field,
+      required: preset.field.required ?? false
+    }
+    
+    setFormConfig(prev => ({
+      ...prev,
+      fields: [...prev.fields, newField]
+    }))
+    
+    toast.success(`Campo "${preset.field.label}" agregado`)
+  }
+
+  const resetToBlank = () => {
+    setFormConfig({
+      title: 'Formulario Personalizado',
+      description: 'Complete la información requerida',
+      fields: [{ id: 1, label: 'Nombre Completo', type: 'text', required: true }],
+      bgColor: '#ffffff',
+      textColor: '#000000',
+      fontFamily: 'Inter',
+      bgImage: null
+    })
+    setShowTemplates(true)
+    setSelectedTemplate(null)
+  }
+  const [showTemplates, setShowTemplates] = useState(true)
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
+
+  // Smart Templates Functions
+  const applyTemplate = (template: any) => {
+    const templateFields = template.fields.map((field: any, index: number) => ({
+      id: Date.now() + index,
+      ...field
+    }))
+    
+    setFormConfig(prev => ({
+      ...prev,
+      title: template.name.replace(/[📍📊📱🙏🎉⛪📝]/g, '').trim(),
+      description: template.description,
+      fields: templateFields
+    }))
+    
+    setSelectedTemplate(template.id)
+    setShowTemplates(false)
+    toast.success(`Plantilla "${template.name}" aplicada exitosamente`)
+  }
+
+  const addQuickField = (preset: any) => {
+    const newField: FormField = {
+      id: Date.now(),
+      ...preset.field,
+      required: preset.field.required ?? false
+    }
+    
+    setFormConfig(prev => ({
+      ...prev,
+      fields: [...prev.fields, newField]
+    }))
+    
+    toast.success(`Campo "${preset.field.label}" agregado`)
+  }
+
+  const resetToBlank = () => {
+    setFormConfig({
+      title: 'Formulario Personalizado',
+      description: 'Complete la información requerida',
+      fields: [{ id: 1, label: 'Nombre Completo', type: 'text', required: true }],
+      bgColor: '#ffffff',
+      textColor: '#000000',
+      fontFamily: 'Inter',
+      bgImage: null
+    })
+    setShowTemplates(true)
+    setSelectedTemplate(null)
+  }
 
   // Refs
   const previewRef = useRef<HTMLDivElement>(null)
@@ -372,6 +679,93 @@ export default function BrandedFormBuilder() {
 
   return (
     <div className="min-h-screen bg-background">
+      
+      {/* 🎯 SMART TEMPLATES SECTION - Shown when templates are visible */}
+      {showTemplates && (
+        <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">🎯 Plantillas Inteligentes</h2>
+            <p className="text-gray-600">Elige una plantilla para crear tu formulario en segundos</p>
+          </div>
+          
+          {/* Template Categories */}
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-2 justify-center">
+              <Badge variant="outline" className="bg-blue-100 text-blue-800">📊 Rastreo de Visitantes</Badge>
+              <Badge variant="outline" className="bg-green-100 text-green-800">💬 Engagement Social</Badge>
+              <Badge variant="outline" className="bg-purple-100 text-purple-800">🙏 Ministerio</Badge>
+              <Badge variant="outline" className="bg-orange-100 text-orange-800">🎉 Eventos</Badge>
+            </div>
+          </div>
+
+          {/* Template Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            {SMART_TEMPLATES.map((template) => (
+              <Card key={template.id} className="hover:shadow-md transition-shadow cursor-pointer group" onClick={() => applyTemplate(template)}>
+                <CardContent className="p-4">
+                  <div className="text-center mb-3">
+                    <div className="text-3xl mb-2">{template.icon}</div>
+                    <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                      {template.name}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3 text-center leading-relaxed">{template.description}</p>
+                  <div className="space-y-1 text-xs text-gray-500">
+                    <div className="flex items-center gap-1 justify-center">
+                      <span className="font-medium">{template.fields.length} campos:</span>
+                    </div>
+                    <div className="text-center">
+                      {template.fields.slice(0, 3).map((field, idx) => (
+                        <span key={idx} className="inline-block">
+                          {field.label}
+                          {idx < Math.min(template.fields.length - 1, 2) ? ', ' : ''}
+                        </span>
+                      ))}
+                      {template.fields.length > 3 && <span>...</span>}
+                    </div>
+                  </div>
+                  <Button className="w-full mt-3 text-sm" size="sm" variant="outline">
+                    Usar esta Plantilla
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          {/* Skip Templates Option */}
+          <div className="text-center">
+            <Button variant="ghost" onClick={() => setShowTemplates(false)} className="text-gray-600">
+              Saltar plantillas y crear desde cero
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Show template selection summary when template is selected */}
+      {selectedTemplate && !showTemplates && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="text-2xl">✅</div>
+              <div>
+                <h3 className="font-semibold text-green-800">
+                  Plantilla aplicada: {SMART_TEMPLATES.find(t => t.id === selectedTemplate)?.name}
+                </h3>
+                <p className="text-sm text-green-600">Puedes personalizar los campos abajo</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" onClick={() => setShowTemplates(true)}>
+                Ver Otras Plantillas
+              </Button>
+              <Button size="sm" variant="outline" onClick={resetToBlank}>
+                Empezar de Nuevo
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* LEFT PANEL - Configuration */}
         <div className="space-y-6">
@@ -476,6 +870,35 @@ export default function BrandedFormBuilder() {
 
               {/* Form Fields */}
               <Separator />
+              
+              {/* 🎯 QUICK ADD FIELD PRESETS */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-semibold">Agregar Campos Rápidos</Label>
+                  <Badge variant="secondary" className="text-xs">🚀 Nuevo</Badge>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {QUICK_FIELD_PRESETS.map((preset, index) => (
+                    <Button 
+                      key={index}
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => addQuickField(preset)}
+                      className="text-xs px-2 py-1 h-auto whitespace-normal text-left justify-start"
+                    >
+                      {preset.name}
+                    </Button>
+                  ))}
+                </div>
+                
+                <p className="text-xs text-gray-500 italic">
+                  💡 Haz clic en cualquier botón para agregar ese campo instantáneamente
+                </p>
+              </div>
+              
+              <Separator />
+              
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label className="text-base font-semibold">Campos del Formulario</Label>
