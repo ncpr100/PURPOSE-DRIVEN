@@ -34,7 +34,11 @@ import {
   Share2,
   HandHeart,
   Mail,
-  Phone
+  Phone,
+  RefreshCcw,
+  Loader2,
+  Settings,
+  ImageIcon
 } from 'lucide-react'
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
@@ -358,11 +362,37 @@ interface FormConfig {
 }
 
 interface QRConfig {
+  // Basic settings
   foregroundColor: string
   backgroundColor: string
-  logo: string | null
   size: number
   margin: number
+  
+  // Advanced styling
+  cornerStyle: 'square' | 'rounded' | 'extra-rounded' | 'dot'
+  cornerColor: string
+  dotStyle: 'square' | 'rounded' | 'dots' | 'classy' | 'classy-rounded'
+  
+  // Gradient options
+  useGradient: boolean
+  gradientType: 'linear' | 'radial'
+  gradientDirection: string
+  gradientColors: string[]
+  
+  // Background options
+  useBackgroundImage: boolean
+  backgroundImage: string | null
+  backgroundImageOpacity: number
+  
+  // Logo/overlay
+  logo: string | null
+  logoSize: number
+  logoOpacity: number
+  
+  // Eye (corner squares) customization
+  eyeStyle: 'square' | 'rounded' | 'circle'
+  eyeColor: string
+  eyeBorderColor: string
 }
 
 export default function BrandedFormBuilder() {
@@ -379,11 +409,37 @@ export default function BrandedFormBuilder() {
 
   // QR Configuration
   const [qrConfig, setQRConfig] = useState<QRConfig>({
+    // Basic settings
     foregroundColor: '#000000',
     backgroundColor: '#ffffff',
-    logo: null,
     size: 512,
-    margin: 2
+    margin: 2,
+    
+    // Advanced styling
+    cornerStyle: 'square',
+    cornerColor: '#000000',
+    dotStyle: 'square',
+    
+    // Gradient options
+    useGradient: false,
+    gradientType: 'linear',
+    gradientDirection: '0deg',
+    gradientColors: ['#000000', '#333333'],
+    
+    // Background options
+    useBackgroundImage: false,
+    backgroundImage: null,
+    backgroundImageOpacity: 0.1,
+    
+    // Logo/overlay
+    logo: null,
+    logoSize: 0.2,
+    logoOpacity: 1.0,
+    
+    // Eye customization
+    eyeStyle: 'square',
+    eyeColor: '#000000',
+    eyeBorderColor: '#000000'
   })
 
   // State
@@ -568,7 +624,7 @@ export default function BrandedFormBuilder() {
     }
   }
 
-  // QR Code Generation - FIXED: Only generate QR for saved forms with slug
+  // Advanced QR Code Generation with full customization
   const generateQRCode = async (formSlug?: string) => {
     if (!formSlug) {
       toast.error('Por favor guarda el formulario primero para generar el código QR')
@@ -577,50 +633,307 @@ export default function BrandedFormBuilder() {
 
     setIsGenerating(true)
     try {
-      const formUrl = buildFormUrl(formSlug) // Will always be short URL with slug
-      const canvas = document.createElement('canvas')
+      const formUrl = buildFormUrl(formSlug)
       
-      await QRCode.toCanvas(canvas, formUrl, {
+      // Generate QR data using the basic library first
+      const qrDataURL = await QRCode.toDataURL(formUrl, {
         width: qrConfig.size,
         margin: qrConfig.margin,
         color: {
-          dark: qrConfig.foregroundColor,
-          light: qrConfig.backgroundColor
+          dark: '#000000', // We'll customize this later
+          light: '#ffffff'
         }
       })
 
-      // Add logo if provided
-      if (qrConfig.logo) {
-        const ctx = canvas.getContext('2d')
-        const img = new Image()
-        img.src = qrConfig.logo
-        
-        await new Promise((resolve) => {
-          img.onload = resolve
-        })
+      // Create canvas for advanced customization
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')!
+      canvas.width = qrConfig.size
+      canvas.height = qrConfig.size
 
-        const logoSize = canvas.width * 0.2 // 20% of QR size
+      // Load the basic QR image
+      const qrImg = new Image()
+      qrImg.onload = async () => {
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        // Draw background
+        await drawQRBackground(ctx, canvas, qrConfig)
+
+        // Apply advanced styling to QR pattern
+        await drawStyledQR(ctx, canvas, qrImg, qrConfig)
+
+        // Add logo if provided
+        if (qrConfig.logo) {
+          await drawQRLogo(ctx, canvas, qrConfig)
+        }
+
+        setQRCodeUrl(canvas.toDataURL())
+        qrCanvasRef.current = canvas
+        toast.success('Código QR personalizado generado exitosamente')
+        setIsGenerating(false)
+      }
+      qrImg.src = qrDataURL
+
+    } catch (error) {
+      console.error('Error generating custom QR code:', error)
+      toast.error('Error al generar código QR personalizado')
+      setIsGenerating(false)
+    }
+  }
+
+  // Draw QR background (solid color, gradient, or image)
+  const drawQRBackground = async (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, config: QRConfig) => {
+    if (config.useBackgroundImage && config.backgroundImage) {
+      // Background image
+      const bgImg = new Image()
+      bgImg.crossOrigin = 'anonymous'
+      
+      return new Promise<void>((resolve) => {
+        bgImg.onload = () => {
+          ctx.globalAlpha = config.backgroundImageOpacity
+          ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height)
+          ctx.globalAlpha = 1.0
+          resolve()
+        }
+        bgImg.src = config.backgroundImage!
+      })
+    } else if (config.useGradient) {
+      // Gradient background
+      let gradient
+      if (config.gradientType === 'linear') {
+        const angle = parseInt(config.gradientDirection) * Math.PI / 180
+        const x1 = canvas.width / 2 + Math.cos(angle) * canvas.width / 2
+        const y1 = canvas.height / 2 + Math.sin(angle) * canvas.height / 2
+        const x2 = canvas.width / 2 - Math.cos(angle) * canvas.width / 2
+        const y2 = canvas.height / 2 - Math.sin(angle) * canvas.height / 2
+        gradient = ctx.createLinearGradient(x1, y1, x2, y2)
+      } else {
+        gradient = ctx.createRadialGradient(
+          canvas.width / 2, canvas.height / 2, 0,
+          canvas.width / 2, canvas.height / 2, canvas.width / 2
+        )
+      }
+      
+      config.gradientColors.forEach((color, index) => {
+        gradient.addColorStop(index / (config.gradientColors.length - 1), color)
+      })
+      
+      ctx.fillStyle = gradient
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    } else {
+      // Solid background color
+      ctx.fillStyle = config.backgroundColor
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
+  }
+
+  // Draw styled QR pattern with custom corners and dots
+  const drawStyledQR = async (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, qrImg: HTMLImageElement, config: QRConfig) => {
+    // Create a temporary canvas to analyze the QR pattern
+    const tempCanvas = document.createElement('canvas')
+    const tempCtx = tempCanvas.getContext('2d')!
+    tempCanvas.width = qrImg.width
+    tempCanvas.height = qrImg.height
+    
+    tempCtx.drawImage(qrImg, 0, 0)
+    const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height)
+    
+    // Calculate module size (QR code unit size)
+    const moduleSize = canvas.width / tempCanvas.width
+    
+    // Set up QR color (gradient or solid)
+    let qrColor = config.foregroundColor
+    if (config.useGradient) {
+      let gradient
+      if (config.gradientType === 'linear') {
+        const angle = parseInt(config.gradientDirection) * Math.PI / 180
+        const x1 = canvas.width / 2 + Math.cos(angle) * canvas.width / 2
+        const y1 = canvas.height / 2 + Math.sin(angle) * canvas.height / 2
+        const x2 = canvas.width / 2 - Math.cos(angle) * canvas.width / 2
+        const y2 = canvas.height / 2 - Math.sin(angle) * canvas.height / 2
+        gradient = ctx.createLinearGradient(x1, y1, x2, y2)
+      } else {
+        gradient = ctx.createRadialGradient(
+          canvas.width / 2, canvas.height / 2, 0,
+          canvas.width / 2, canvas.height / 2, canvas.width / 2
+        )
+      }
+      
+      config.gradientColors.forEach((color, index) => {
+        gradient.addColorStop(index / (config.gradientColors.length - 1), color)
+      })
+      qrColor = gradient
+    }
+
+    // Draw QR modules with custom styling
+    for (let y = 0; y < tempCanvas.height; y++) {
+      for (let x = 0; x < tempCanvas.width; x++) {
+        const pixelIndex = (y * tempCanvas.width + x) * 4
+        const isBlack = imageData.data[pixelIndex] < 128 // Black pixel in QR
+        
+        if (isBlack) {
+          const canvasX = x * moduleSize
+          const canvasY = y * moduleSize
+          
+          // Check if this is an eye (corner square)
+          if (isQREye(x, y, tempCanvas.width)) {
+            drawQREye(ctx, canvasX, canvasY, moduleSize, config)
+          } else {
+            drawQRModule(ctx, canvasX, canvasY, moduleSize, config, qrColor)
+          }
+        }
+      }
+    }
+  }
+
+  // Check if coordinates are part of QR eye (corner detection squares)
+  const isQREye = (x: number, y: number, qrSize: number) => {
+    const cornerSize = 7 // Standard QR eye size is 7x7 modules
+    
+    // Top-left eye
+    if (x < cornerSize && y < cornerSize) return true
+    // Top-right eye  
+    if (x >= qrSize - cornerSize && y < cornerSize) return true
+    // Bottom-left eye
+    if (x < cornerSize && y >= qrSize - cornerSize) return true
+    
+    return false
+  }
+
+  // Draw individual QR module (dot/square) with custom styling
+  const drawQRModule = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, config: QRConfig, color: string | CanvasGradient) => {
+    ctx.fillStyle = color
+    
+    switch (config.dotStyle) {
+      case 'rounded':
+        ctx.beginPath()
+        ctx.roundRect(x + size * 0.1, y + size * 0.1, size * 0.8, size * 0.8, size * 0.2)
+        ctx.fill()
+        break
+      case 'dots':
+        ctx.beginPath()
+        ctx.arc(x + size / 2, y + size / 2, size * 0.35, 0, 2 * Math.PI)
+        ctx.fill()
+        break
+      case 'classy':
+        // Diamond-like shape
+        ctx.beginPath()
+        ctx.moveTo(x + size / 2, y + size * 0.1)
+        ctx.lineTo(x + size * 0.9, y + size / 2)
+        ctx.lineTo(x + size / 2, y + size * 0.9)
+        ctx.lineTo(x + size * 0.1, y + size / 2)
+        ctx.closePath()
+        ctx.fill()
+        break
+      case 'classy-rounded':
+        ctx.beginPath()
+        ctx.roundRect(x + size * 0.15, y + size * 0.15, size * 0.7, size * 0.7, size * 0.35)
+        ctx.fill()
+        break
+      default: // square
+        ctx.fillRect(x + size * 0.1, y + size * 0.1, size * 0.8, size * 0.8)
+        break
+    }
+  }
+
+  // Draw QR eye (corner detection pattern) with custom styling
+  const drawQREye = (ctx: CanvasRenderingContext2D, x: number, y: number, moduleSize: number, config: QRConfig) => {
+    const eyeSize = moduleSize * 7 // QR eyes are 7x7 modules
+    
+    ctx.fillStyle = config.eyeColor
+    ctx.strokeStyle = config.eyeBorderColor
+    ctx.lineWidth = moduleSize * 0.2
+    
+    switch (config.eyeStyle) {
+      case 'rounded':
+        // Outer square with rounded corners
+        ctx.beginPath()
+        ctx.roundRect(x, y, eyeSize, eyeSize, eyeSize * 0.15)
+        ctx.fill()
+        ctx.stroke()
+        
+        // Inner square
+        ctx.fillStyle = config.backgroundColor
+        ctx.beginPath()
+        ctx.roundRect(x + moduleSize, y + moduleSize, eyeSize - moduleSize * 2, eyeSize - moduleSize * 2, eyeSize * 0.1)
+        ctx.fill()
+        
+        // Center dot
+        ctx.fillStyle = config.eyeColor
+        ctx.beginPath()
+        ctx.roundRect(x + moduleSize * 2, y + moduleSize * 2, eyeSize - moduleSize * 4, eyeSize - moduleSize * 4, moduleSize * 0.5)
+        ctx.fill()
+        break
+        
+      case 'circle':
+        // Outer circle
+        ctx.beginPath()
+        ctx.arc(x + eyeSize / 2, y + eyeSize / 2, eyeSize / 2, 0, 2 * Math.PI)
+        ctx.fill()
+        ctx.stroke()
+        
+        // Inner circle (white)
+        ctx.fillStyle = config.backgroundColor
+        ctx.beginPath()
+        ctx.arc(x + eyeSize / 2, y + eyeSize / 2, eyeSize / 2 - moduleSize, 0, 2 * Math.PI)
+        ctx.fill()
+        
+        // Center dot
+        ctx.fillStyle = config.eyeColor
+        ctx.beginPath()
+        ctx.arc(x + eyeSize / 2, y + eyeSize / 2, moduleSize * 1.5, 0, 2 * Math.PI)
+        ctx.fill()
+        break
+        
+      default: // square
+        // Outer square
+        ctx.fillRect(x, y, eyeSize, eyeSize)
+        ctx.strokeRect(x, y, eyeSize, eyeSize)
+        
+        // Inner square (white)
+        ctx.fillStyle = config.backgroundColor
+        ctx.fillRect(x + moduleSize, y + moduleSize, eyeSize - moduleSize * 2, eyeSize - moduleSize * 2)
+        
+        // Center square
+        ctx.fillStyle = config.eyeColor
+        ctx.fillRect(x + moduleSize * 2, y + moduleSize * 2, eyeSize - moduleSize * 4, eyeSize - moduleSize * 4)
+        break
+    }
+  }
+
+  // Draw logo overlay
+  const drawQRLogo = async (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, config: QRConfig) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    
+    return new Promise<void>((resolve) => {
+      img.onload = () => {
+        const logoSize = canvas.width * config.logoSize
         const x = (canvas.width - logoSize) / 2
         const y = (canvas.height - logoSize) / 2
 
-        // Create circular mask for logo
-        ctx?.save()
-        ctx?.beginPath()
-        ctx?.arc(x + logoSize/2, y + logoSize/2, logoSize/2, 0, 2 * Math.PI)
-        ctx?.clip()
-        ctx?.drawImage(img, x, y, logoSize, logoSize)
-        ctx?.restore()
+        ctx.globalAlpha = config.logoOpacity
+        
+        // Draw white background circle for logo
+        ctx.fillStyle = 'white'
+        ctx.beginPath()
+        ctx.arc(x + logoSize/2, y + logoSize/2, logoSize/2 + 10, 0, 2 * Math.PI)
+        ctx.fill()
+        
+        // Draw logo
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(x + logoSize/2, y + logoSize/2, logoSize/2, 0, 2 * Math.PI)
+        ctx.clip()
+        ctx.drawImage(img, x, y, logoSize, logoSize)
+        ctx.restore()
+        
+        ctx.globalAlpha = 1.0
+        resolve()
       }
-
-      setQRCodeUrl(canvas.toDataURL())
-      qrCanvasRef.current = canvas
-      toast.success('Código QR generado exitosamente')
-    } catch (error) {
-      console.error('Error generating QR code:', error)
-      toast.error('Error al generar código QR')
-    } finally {
-      setIsGenerating(false)
-    }
+      img.src = config.logo!
+    })
   }
 
   // Button click handler for QR generation - FIXED: Check if form has slug or save first
@@ -673,6 +986,8 @@ export default function BrandedFormBuilder() {
   }
 
   // Download Functions
+  const downloadQR = downloadQRCode // Alias for consistency
+  
   const downloadQRCode = () => {
     if (!qrCanvasRef.current) return
     
@@ -1176,114 +1491,432 @@ export default function BrandedFormBuilder() {
             </CardContent>
           </Card>
 
-          {/* QR Configuration */}
+          {/* Advanced QR Configuration */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <QrCode className="h-5 w-5" />
-                Configuración del Código QR
+                <Palette className="h-5 w-5 text-purple-600" />
+                Código QR Personalizado
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Color Principal</Label>
-                  <div className="flex gap-2 items-center">
-                    <Input
-                      type="color"
-                      value={qrConfig.foregroundColor}
-                      onChange={(e) => setQRConfig(prev => ({ ...prev, foregroundColor: e.target.value }))}
-                      className="w-12 h-10"
-                    />
-                    <Input
-                      value={qrConfig.foregroundColor}
-                      onChange={(e) => setQRConfig(prev => ({ ...prev, foregroundColor: e.target.value }))}
-                    />
+              {/* QR Preview Section */}
+              <div className="bg-gray-50 rounded-lg p-4 flex flex-col items-center justify-center space-y-3" style={{ minHeight: '280px' }}>
+                {qrCodeUrl ? (
+                  <>
+                    <img src={qrCodeUrl} alt="QR Code" className="border rounded-lg shadow-sm max-w-[200px]" />
+                    <div className="text-center text-sm text-gray-600">
+                      <p>Tamaño: {qrConfig.size}px</p>
+                      <p>Estilo: {qrConfig.dotStyle}</p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center text-gray-500">
+                    <QrCode className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                    <p>Vista previa del QR personalizado</p>
+                    <p className="text-sm">Configura y genera para ver</p>
                   </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Color de Fondo</Label>
-                  <div className="flex gap-2 items-center">
-                    <Input
-                      type="color"
-                      value={qrConfig.backgroundColor}
-                      onChange={(e) => setQRConfig(prev => ({ ...prev, backgroundColor: e.target.value }))}
-                      className="w-12 h-10"
-                    />
-                    <Input
-                      value={qrConfig.backgroundColor}
-                      onChange={(e) => setQRConfig(prev => ({ ...prev, backgroundColor: e.target.value }))}
-                    />
-                  </div>
-                </div>
+                )}
               </div>
 
-              <div className="space-y-2">
-                <Label>Logo Central (opcional)</Label>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageUpload(e, 'qr-logo')}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Tamaño</Label>
-                  <Select 
-                    value={qrConfig.size.toString()} 
-                    onValueChange={(value) => setQRConfig(prev => ({ ...prev, size: parseInt(value) }))}
+              {/* Quick Style Presets */}
+              <div className="space-y-3">
+                <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-purple-600" />
+                  Estilos Rápidos
+                </Label>
+                
+                <div className="grid grid-cols-4 gap-2">
+                  <Button
+                    variant={qrConfig.dotStyle === 'square' ? 'default' : 'outline'}
+                    className="h-auto p-2 flex flex-col gap-1"
+                    onClick={() => setQRConfig(prev => ({ ...prev, dotStyle: 'square', eyeStyle: 'square' }))}
                   >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="256">256px</SelectItem>
-                      <SelectItem value="512">512px</SelectItem>
-                      <SelectItem value="1024">1024px</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Margen</Label>
-                  <Select 
-                    value={qrConfig.margin.toString()} 
-                    onValueChange={(value) => setQRConfig(prev => ({ ...prev, margin: parseInt(value) }))}
+                    <div className="grid grid-cols-3 gap-0.5">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={i} className="w-1.5 h-1.5 bg-current"></div>
+                      ))}
+                    </div>
+                    <span className="text-xs">Clásico</span>
+                  </Button>
+                  
+                  <Button
+                    variant={qrConfig.dotStyle === 'rounded' ? 'default' : 'outline'}
+                    className="h-auto p-2 flex flex-col gap-1"
+                    onClick={() => setQRConfig(prev => ({ ...prev, dotStyle: 'rounded', eyeStyle: 'rounded' }))}
                   >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">Pequeño</SelectItem>
-                      <SelectItem value="2">Mediano</SelectItem>
-                      <SelectItem value="4">Grande</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <Button 
-                onClick={handleGenerateQR} 
-                disabled={isGenerating || !formConfig.title.trim()} 
-                className="w-full"
-                variant={!formConfig.title.trim() ? "outline" : "default"}
-              >
-                <QrCode className="h-4 w-4 mr-2" />
-                {isGenerating ? 'Generando...' : (!formConfig.title.trim() ? 'Guarda el formulario primero' : 'Generar Código QR')}
-              </Button>
-
-              {qrCodeUrl && (
-                <div className="flex flex-col items-center space-y-4">
-                  <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48 border rounded" />
-                  <Button onClick={downloadQRCode} variant="outline" size="sm">
-                    <Download className="h-4 w-4 mr-2" />
-                    Descargar QR
+                    <div className="grid grid-cols-3 gap-0.5">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={i} className="w-1.5 h-1.5 bg-current rounded-sm"></div>
+                      ))}
+                    </div>
+                    <span className="text-xs">Moderno</span>
+                  </Button>
+                  
+                  <Button
+                    variant={qrConfig.dotStyle === 'dots' ? 'default' : 'outline'}
+                    className="h-auto p-2 flex flex-col gap-1"
+                    onClick={() => setQRConfig(prev => ({ ...prev, dotStyle: 'dots', eyeStyle: 'circle' }))}
+                  >
+                    <div className="grid grid-cols-3 gap-0.5">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={i} className="w-1.5 h-1.5 bg-current rounded-full"></div>
+                      ))}
+                    </div>
+                    <span className="text-xs">Puntos</span>
+                  </Button>
+                  
+                  <Button
+                    variant={qrConfig.dotStyle === 'classy' ? 'default' : 'outline'}
+                    className="h-auto p-2 flex flex-col gap-1"
+                    onClick={() => setQRConfig(prev => ({ ...prev, dotStyle: 'classy', eyeStyle: 'rounded' }))}
+                  >
+                    <div className="grid grid-cols-3 gap-0.5">
+                      {[...Array(9)].map((_, i) => (
+                        <div key={i} className="w-1 h-1 bg-current rotate-45 mx-auto"></div>
+                      ))}
+                    </div>
+                    <span className="text-xs">Elegante</span>
                   </Button>
                 </div>
-              )}
+              </div>
+
+              {/* Basic Settings */}
+              <div className="space-y-4">
+                <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Settings className="h-4 w-4 text-gray-600" />
+                  Configuración Básica
+                </Label>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm">Tamaño (px)</Label>
+                    <Input
+                      type="number"
+                      value={qrConfig.size}
+                      onChange={(e) => setQRConfig(prev => ({ ...prev, size: parseInt(e.target.value) }))}
+                      min="200"
+                      max="800"
+                      step="50"
+                      className="h-9"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm">Margen</Label>
+                    <Input
+                      type="number"
+                      value={qrConfig.margin}
+                      onChange={(e) => setQRConfig(prev => ({ ...prev, margin: parseInt(e.target.value) }))}
+                      min="0"
+                      max="10"
+                      className="h-9"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Colors */}
+              <div className="space-y-4">
+                <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Palette className="h-4 w-4 text-pink-600" />
+                  Colores
+                </Label>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm">QR Principal</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        type="color"
+                        value={qrConfig.foregroundColor}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, foregroundColor: e.target.value }))}
+                        className="w-10 h-9 p-1 rounded"
+                      />
+                      <Input
+                        value={qrConfig.foregroundColor}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, foregroundColor: e.target.value }))}
+                        placeholder="#000000"
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm">Fondo</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        type="color"
+                        value={qrConfig.backgroundColor}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, backgroundColor: e.target.value }))}
+                        className="w-10 h-9 p-1 rounded"
+                      />
+                      <Input
+                        value={qrConfig.backgroundColor}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, backgroundColor: e.target.value }))}
+                        placeholder="#ffffff"
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="useGradient"
+                    checked={qrConfig.useGradient}
+                    onChange={(e) => setQRConfig(prev => ({ ...prev, useGradient: e.target.checked }))}
+                    className="rounded"
+                  />
+                  <Label htmlFor="useGradient" className="text-sm">Usar gradiente</Label>
+                </div>
+
+                {qrConfig.useGradient && (
+                  <div className="space-y-3 ml-6 p-3 bg-gray-50 rounded-lg">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-sm">Tipo</Label>
+                        <Select
+                          value={qrConfig.gradientType}
+                          onValueChange={(value: 'linear' | 'radial') => setQRConfig(prev => ({ ...prev, gradientType: value }))}
+                        >
+                          <SelectTrigger className="h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="linear">Lineal</SelectItem>
+                            <SelectItem value="radial">Radial</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      {qrConfig.gradientType === 'linear' && (
+                        <div>
+                          <Label className="text-sm">Ángulo</Label>
+                          <Input
+                            type="number"
+                            value={qrConfig.gradientDirection}
+                            onChange={(e) => setQRConfig(prev => ({ ...prev, gradientDirection: e.target.value }))}
+                            min="0"
+                            max="360"
+                            step="45"
+                            className="h-8"
+                          />
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <Label className="text-sm">Colores</Label>
+                      <div className="flex gap-2 flex-wrap mt-1">
+                        {qrConfig.gradientColors.map((color, index) => (
+                          <div key={index} className="flex gap-1">
+                            <Input
+                              type="color"
+                              value={color}
+                              onChange={(e) => {
+                                const newColors = [...qrConfig.gradientColors]
+                                newColors[index] = e.target.value
+                                setQRConfig(prev => ({ ...prev, gradientColors: newColors }))
+                              }}
+                              className="w-8 h-8 p-1 rounded"
+                            />
+                            {index >= 2 && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const newColors = qrConfig.gradientColors.filter((_, i) => i !== index)
+                                  setQRConfig(prev => ({ ...prev, gradientColors: newColors }))
+                                }}
+                                className="h-8 w-8 p-0"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            )}
+                          </div>
+                        ))}
+                        {qrConfig.gradientColors.length < 4 && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setQRConfig(prev => ({ 
+                                ...prev, 
+                                gradientColors: [...prev.gradientColors, '#ff0000'] 
+                              }))
+                            }}
+                            className="h-8"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Eye Customization */}
+              <div className="space-y-3">
+                <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Eye className="h-4 w-4 text-blue-600" />
+                  Esquinas (Ojos)
+                </Label>
+                
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    variant={qrConfig.eyeStyle === 'square' ? 'default' : 'outline'}
+                    className="h-auto p-2 flex flex-col gap-1"
+                    onClick={() => setQRConfig(prev => ({ ...prev, eyeStyle: 'square' }))}
+                  >
+                    <div className="w-6 h-6 border-2 border-current">
+                      <div className="w-full h-full border border-current m-0.5">
+                        <div className="w-1.5 h-1.5 bg-current m-0.5"></div>
+                      </div>
+                    </div>
+                    <span className="text-xs">Cuadrado</span>
+                  </Button>
+                  
+                  <Button
+                    variant={qrConfig.eyeStyle === 'rounded' ? 'default' : 'outline'}
+                    className="h-auto p-2 flex flex-col gap-1"
+                    onClick={() => setQRConfig(prev => ({ ...prev, eyeStyle: 'rounded' }))}
+                  >
+                    <div className="w-6 h-6 border-2 border-current rounded">
+                      <div className="w-full h-full border border-current rounded m-0.5">
+                        <div className="w-1.5 h-1.5 bg-current rounded m-0.5"></div>
+                      </div>
+                    </div>
+                    <span className="text-xs">Redondeado</span>
+                  </Button>
+                  
+                  <Button
+                    variant={qrConfig.eyeStyle === 'circle' ? 'default' : 'outline'}
+                    className="h-auto p-2 flex flex-col gap-1"
+                    onClick={() => setQRConfig(prev => ({ ...prev, eyeStyle: 'circle' }))}
+                  >
+                    <div className="w-6 h-6 border-2 border-current rounded-full">
+                      <div className="w-full h-full border border-current rounded-full m-0.5">
+                        <div className="w-1.5 h-1.5 bg-current rounded-full m-0.5"></div>
+                      </div>
+                    </div>
+                    <span className="text-xs">Circular</span>
+                  </Button>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label className="text-sm">Color Esquinas</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        type="color"
+                        value={qrConfig.eyeColor}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, eyeColor: e.target.value }))}
+                        className="w-10 h-9 p-1 rounded"
+                      />
+                      <Input
+                        value={qrConfig.eyeColor}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, eyeColor: e.target.value }))}
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm">Color Borde</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        type="color"
+                        value={qrConfig.eyeBorderColor}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, eyeBorderColor: e.target.value }))}
+                        className="w-10 h-9 p-1 rounded"
+                      />
+                      <Input
+                        value={qrConfig.eyeBorderColor}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, eyeBorderColor: e.target.value }))}
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Logo Settings */}
+              <div className="space-y-3">
+                <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <ImageIcon className="h-4 w-4 text-green-600" />
+                  Logo Central
+                </Label>
+                
+                <div>
+                  <Input
+                    value={qrConfig.logo || ''}
+                    onChange={(e) => setQRConfig(prev => ({ ...prev, logo: e.target.value }))}
+                    placeholder="URL del logo (ej: https://ejemplo.com/logo.png)"
+                    className="h-9 text-sm"
+                  />
+                </div>
+                
+                {qrConfig.logo && (
+                  <div className="grid grid-cols-2 gap-3 ml-6 p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <Label className="text-sm">Tamaño ({Math.round(qrConfig.logoSize * 100)}%)</Label>
+                      <Input
+                        type="range"
+                        min="0.1"
+                        max="0.3"
+                        step="0.05"
+                        value={qrConfig.logoSize}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, logoSize: parseFloat(e.target.value) }))}
+                        className="w-full h-8"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label className="text-sm">Opacidad ({Math.round(qrConfig.logoOpacity * 100)}%)</Label>
+                      <Input
+                        type="range"
+                        min="0.3"
+                        max="1"
+                        step="0.1"
+                        value={qrConfig.logoOpacity}
+                        onChange={(e) => setQRConfig(prev => ({ ...prev, logoOpacity: parseFloat(e.target.value) }))}
+                        className="w-full h-8"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Generate Button */}
+              <div className="flex gap-3 pt-4">
+                <Button 
+                  onClick={handleGenerateQR} 
+                  disabled={isGenerating || !formConfig.title.trim()} 
+                  className="flex-1"
+                  variant={!formConfig.title.trim() ? "outline" : "default"}
+                >
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Generando...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCcw className="h-4 w-4 mr-2" />
+                      {!formConfig.title.trim() ? 'Guarda Primero' : 'Generar QR'}
+                    </>
+                  )}
+                </Button>
+                {qrCodeUrl && (
+                  <Button variant="outline" onClick={downloadQR}>
+                    <Download className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+
             </CardContent>
           </Card>
         </div>
