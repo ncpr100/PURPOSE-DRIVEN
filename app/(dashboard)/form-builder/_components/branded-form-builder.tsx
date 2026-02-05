@@ -264,6 +264,89 @@ const SMART_TEMPLATES = [
     ]
   },
   {
+    id: 'spiritual-assessment-public',
+    name: 'Evaluación Espiritual Pública',
+    description: 'Evaluación espiritual para miembros y visitantes sin acceso a la plataforma',
+    icon: 'Heart',
+    category: 'Ministerio',
+    fields: [
+      { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
+      { id: 'email', label: 'Correo Electrónico', type: 'email', required: true },
+      { id: 'phone', label: 'Teléfono', type: 'text', required: false },
+      {
+        id: 'spiritual_gifts',
+        label: 'Dones Espirituales (selecciona los que sientes que tienes)',
+        type: 'checkbox',
+        required: false,
+        options: ['Liderazgo', 'Enseñanza', 'Evangelismo', 'Pastoreo', 'Servicio', 'Hospitalidad', 'Música', 'Arte Creativo', 'Administración', 'Tecnología', 'Intercesión', 'Discernimiento']
+      },
+      {
+        id: 'ministry_passions',
+        label: 'Ministerios de Interés',
+        type: 'checkbox',
+        required: false,
+        options: ['Niños', 'Jóvenes', 'Familia', 'Evangelismo', 'Música', 'Administración', 'Hospitalidad', 'Educación', 'Misiones', 'Cuidado Pastoral', 'Medios', 'Adultos Jóvenes']
+      },
+      {
+        id: 'experience_level',
+        label: 'Experiencia en Ministerio',
+        type: 'select',
+        required: false,
+        options: ['Novato (0-1 años)', 'Intermedio (2-5 años)', 'Avanzado (5+ años)']
+      },
+      { id: 'spiritual_calling', label: 'Describe cómo sientes que Dios te está llamando a servir', type: 'textarea', required: false },
+      { id: 'availability_comments', label: 'Comentarios sobre disponibilidad o intereses especiales', type: 'textarea', required: false }
+    ]
+  },
+  {
+    id: 'volunteer-availability-assessment',
+    name: 'Disponibilidad de Voluntarios',
+    description: 'Recopila información de voluntarios potenciales sin acceso a la plataforma',
+    icon: 'Users',
+    category: 'Voluntarios',
+    fields: [
+      { id: 'name', label: 'Nombre Completo', type: 'text', required: true },
+      { id: 'email', label: 'Correo Electrónico', type: 'email', required: true },
+      { id: 'phone', label: 'Teléfono', type: 'text', required: false },
+      {
+        id: 'ministry_interest',
+        label: 'Ministerios de Interés para Voluntariado',
+        type: 'checkbox',
+        required: true,
+        options: ['Niños', 'Jóvenes', 'Música/Adoración', 'Evangelismo', 'Administración', 'Tecnología', 'Hospitalidad/Recepción', 'Limpieza/Mantenimiento', 'Eventos Especiales', 'Medios/Comunicación']
+      },
+      {
+        id: 'skills',
+        label: 'Habilidades y Talentos',
+        type: 'checkbox',
+        required: false,
+        options: ['Música', 'Tecnología', 'Diseño Gráfico', 'Fotografía', 'Cocina', 'Carpintería', 'Electricidad', 'Primeros Auxilios', 'Idiomas', 'Contabilidad', 'Marketing', 'Enseñanza']
+      },
+      {
+        id: 'availability_days',
+        label: 'Días Disponibles',
+        type: 'checkbox',
+        required: true,
+        options: ['Domingo Mañana', 'Domingo Tarde', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+      },
+      {
+        id: 'time_commitment',
+        label: 'Tiempo que Podría Dedicar',
+        type: 'select',
+        required: true,
+        options: ['1-2 horas por semana', '3-5 horas por semana', '6-10 horas por semana', 'Más de 10 horas por semana']
+      },
+      {
+        id: 'leadership_interest',
+        label: '¿Interés en Roles de Liderazgo?',
+        type: 'select',
+        required: false,
+        options: ['Sí, me interesa liderar', 'Tal vez en el futuro', 'Prefiero servir sin liderar']
+      },
+      { id: 'special_requirements', label: 'Necesidades Especiales o Comentarios Adicionales', type: 'textarea', required: false }
+    ]
+  },
+  {
     id: 'blank-template',
     name: 'Formulario en Blanco',
     description: 'Comienza desde cero con un formulario personalizado',
