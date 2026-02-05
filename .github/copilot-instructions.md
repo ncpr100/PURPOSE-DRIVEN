@@ -2772,10 +2772,99 @@ When working on this codebase, prioritize the **Phase 4 preparation and system o
 
 **Access Instructions:**
 1. Navigate to `/form-builder` from dashboard sidebar
-2. Select from 7 Smart Templates with unique themed icons
+2. Select from **9 Smart Templates** with unique themed icons (including NEW public assessment templates)
 3. Customize using Quick Field Presets (18 options) or manual field addition
 4. Generate QR codes with slug-based URLs for sharing
 5. Automatic visitor CRM integration for lead generation
+6. **NEW**: Public spiritual assessment and volunteer forms for members without platform access
+
+## 🙏 **NEW: PUBLIC ASSESSMENT SYSTEM TEMPLATES**
+
+### **"Evaluación Espiritual Pública" Template**
+**Icon**: Heart (pink-600) - No login required for church members
+
+**Purpose**: Allow church members to complete spiritual assessments via QR codes without platform access
+
+**Key Fields**:
+- Contact: Nombre, Email, Teléfono
+- Spiritual Gifts: 12 options (Liderazgo, Enseñanza, Evangelismo, etc.)
+- Ministry Passions: 12 options (Niños, Jóvenes, Familia, etc.)
+- Experience Level: Novato/Intermedio/Avanzado
+- Spiritual Calling: Text description
+- Availability Comments
+
+**Usage Steps**:
+1. Select "Evaluación Espiritual Pública" template
+2. Customize fields if needed (or use as-is)
+3. Save form to generate permanent slug
+4. Generate QR code with professional styling
+5. Share QR via social media, printed materials, or displays
+6. **Leadership automatically receives email notifications** when submitted
+
+### **"Disponibilidad de Voluntarios" Template**
+**Icon**: Users (indigo-600) - External volunteer recruitment
+
+**Purpose**: Collect volunteer applications from members without requiring platform login
+
+**Key Fields**:
+- Contact: Nombre, Email, Teléfono
+- Ministry Interests: 10 options (Niños, Música/Adoración, etc.)
+- Skills & Talents: 12 options (Música, Tecnología, Diseño, etc.)
+- Availability Days: 8 time slots
+- Time Commitment: 4 levels (1-2 hours to 10+ hours weekly)
+- Leadership Interest: 3 levels
+- Special Requirements: Text field
+
+**Usage Steps**:
+1. Select "Disponibilidad de Voluntarios" template
+2. Customize ministry options to match your church
+3. Save and generate QR code
+4. Place QR codes in strategic locations
+5. **Automatic volunteer profile creation** in system
+6. **Leadership receives detailed email notifications**
+
+## 📧 **Automatic Leadership Notifications**
+
+Both public assessment templates automatically send **professional HTML email notifications** to:
+- All users with **Pastor** role
+- All users with **Administrador** role
+
+**Email Content Includes**:
+- Complete submission details
+- Member contact information
+- Assessment responses formatted professionally
+- Action recommendations for follow-up
+- Church branding and professional styling
+
+## 🎯 **Best Practice Usage Guide**
+
+### **For Spiritual Assessments**:
+1. **Timing**: Launch during spiritual growth campaigns or new member orientation
+2. **Placement**: QR codes on bulletins, social media, church screens
+3. **Follow-up**: Leadership should contact members within 48 hours
+4. **Integration**: Results automatically populate member spiritual profiles
+
+### **For Volunteer Recruitment**:
+1. **Timing**: During volunteer appreciation events or service campaigns
+2. **Placement**: Ministry fair booths, volunteer recruitment drives
+3. **Follow-up**: Ministry coordinators receive volunteer contact info
+4. **Integration**: Volunteer profiles created with availability preferences
+
+## 🚀 **Advanced Features**
+
+### **Smart Member Linking**
+The system uses **4-strategy duplicate detection**:
+1. **Exact email match** (most reliable)
+2. **Phone + name similarity** (when email missing)
+3. **Fuzzy name matching** (prevents duplicates)
+4. **Create new member** (last resort)
+
+### **QR Code Professional Styling**
+- **Gradients**: Professional color schemes
+- **Logo Integration**: Church logos embedded
+- **Corner Styling**: Rounded or square corners
+- **Background Options**: Solid colors or images
+- **Size Optimization**: Perfect for mobile scanning
 
 **Common Issues & Solutions:**
 
@@ -2795,6 +2884,26 @@ When working on this codebase, prioritize the **Phase 4 preparation and system o
 - **Fix**: Save form first to generate slug, then regenerate QR
 - **Result**: Short URL format `/form-viewer?slug=EVENT-NAME` (50 chars max)
 
+**Issue: Public assessment not creating member profiles**
+- **Cause**: Missing required fields (name + email)
+- **Fix**: Ensure name and email fields are marked as required
+- **Check**: Verify form includes both contact fields for member linking
+
+**Issue: Leadership not receiving notification emails**
+- **Cause**: No users with Pastor/Administrador roles, or email service issues
+- **Fix**: Verify church has active leadership accounts and check email configuration
+- **Check**: Confirm email addresses in user profiles are correct
+
+**Issue: Duplicate members being created**
+- **Cause**: Member linking logic not finding existing profiles
+- **Fix**: Ensure members use consistent email addresses
+- **Prevention**: The system checks email, phone, and name similarity automatically
+
+**Issue: Form not detecting spiritual assessment type**
+- **Cause**: Field names not matching detection patterns
+- **Fix**: Use template fields as-is, or ensure custom fields include 'spiritual', 'dones', or 'ministry' keywords
+- **Check**: Verify form slug contains 'spiritual-assessment' or similar terms
+
 ### **SUPER ADMIN HELP MANUAL - Platform Management**
 
 **Form Builder System Monitoring:**
@@ -2802,7 +2911,7 @@ When working on this codebase, prioritize the **Phase 4 preparation and system o
 # Check form builder compilation
 npm run test:compile
 
-# Verify template icon system
+# Verify template icon system (NOW 9 templates including assessments)
 grep -r "getTemplateIcon" app/(dashboard)/form-builder/
 
 # Validate QR generation
@@ -2810,6 +2919,121 @@ curl -s "https://api.khesed-tek.com/api/form-builder" | jq '.templates'
 
 # Monitor visitor CRM creation
 SELECT * FROM visitor_profiles WHERE created_at >= NOW() - INTERVAL '1 hour';
+
+# NEW: Monitor public assessment submissions
+SELECT * FROM custom_form_submissions WHERE created_at >= NOW() - INTERVAL '1 hour' 
+AND data::text LIKE '%spiritual%' OR data::text LIKE '%volunteer%';
+
+# NEW: Check spiritual assessment creation
+SELECT sa.*, m.name, m.email FROM spiritual_assessments sa 
+JOIN member m ON sa.member_id = m.id 
+WHERE sa.created_at >= NOW() - INTERVAL '1 hour';
+
+# NEW: Monitor volunteer profile creation
+SELECT v.*, m.name, m.email FROM volunteers v 
+JOIN member m ON v.member_id = m.id 
+WHERE v.created_at >= NOW() - INTERVAL '1 hour';
+```
+
+## 🙏 **NEW: PUBLIC ASSESSMENT SYSTEM MONITORING**
+
+### **Real-Time Assessment Tracking**
+```sql
+-- Monitor spiritual assessment submissions by church
+SELECT 
+  c.name as church_name,
+  COUNT(sa.*) as assessments_today,
+  COUNT(DISTINCT sa.member_id) as unique_members
+FROM spiritual_assessments sa
+JOIN member m ON sa.member_id = m.id
+JOIN church c ON m.church_id = c.id
+WHERE sa.created_at >= CURRENT_DATE
+GROUP BY c.id, c.name
+ORDER BY assessments_today DESC;
+
+-- Monitor volunteer applications by church
+SELECT 
+  c.name as church_name,
+  COUNT(v.*) as volunteer_apps_today,
+  COUNT(DISTINCT v.member_id) as unique_volunteers
+FROM volunteers v
+JOIN member m ON v.member_id = m.id
+JOIN church c ON m.church_id = c.id
+WHERE v.created_at >= CURRENT_DATE
+GROUP BY c.id, c.name
+ORDER BY volunteer_apps_today DESC;
+
+-- Check member linking success rate
+SELECT 
+  DATE(created_at) as submission_date,
+  COUNT(*) as total_submissions,
+  COUNT(CASE WHEN data::text LIKE '%assessmentId%' THEN 1 END) as successful_assessments,
+  COUNT(CASE WHEN data::text LIKE '%volunteerId%' THEN 1 END) as successful_volunteers
+FROM custom_form_submissions 
+WHERE created_at >= CURRENT_DATE - INTERVAL '7 days'
+GROUP BY DATE(created_at)
+ORDER BY submission_date DESC;
+```
+
+### **Email Notification System Monitoring**
+```bash
+# Check email service status
+curl -s "https://api.khesed-tek.com/api/health/email" | jq '.status'
+
+# Monitor automation trigger processing
+grep "SPIRITUAL_ASSESSMENT_SUBMITTED\|VOLUNTEER_APPLICATION_SUBMITTED" /var/log/automation.log | tail -50
+
+# Check leadership notification delivery
+grep "notification sent to" /var/log/email.log | grep -E "spiritual|volunteer" | tail -20
+
+# Validate church leadership configuration
+```
+
+```sql
+-- Ensure churches have proper leadership for notifications
+SELECT 
+  c.name as church_name,
+  COUNT(CASE WHEN u.role = 'PASTOR' THEN 1 END) as pastors,
+  COUNT(CASE WHEN u.role = 'ADMINISTRADOR' THEN 1 END) as administrators,
+  COUNT(CASE WHEN u.role IN ('PASTOR', 'ADMINISTRADOR') AND u.is_active = true THEN 1 END) as active_leaders
+FROM church c
+LEFT JOIN user u ON c.id = u.church_id
+GROUP BY c.id, c.name
+HAVING COUNT(CASE WHEN u.role IN ('PASTOR', 'ADMINISTRADOR') AND u.is_active = true THEN 1 END) = 0
+ORDER BY c.name;
+```
+
+### **Form Detection System Validation**
+```typescript
+// Test form type detection accuracy
+const testFormDetection = {
+  spiritual: {
+    indicators: ['spiritual_gifts', 'ministry_passions', 'spiritual_calling'],
+    expectedDetection: true
+  },
+  volunteer: {
+    indicators: ['ministry_interest', 'availability_days', 'time_commitment'],
+    expectedDetection: true
+  },
+  visitor: {
+    indicators: ['name', 'phone', 'conociste', 'primera'],
+    expectedDetection: true
+  }
+}
+
+// Validate detection logic performance
+SELECT 
+  data->>'formTitle' as form_title,
+  data->>'automationType' as detected_type,
+  CASE 
+    WHEN data::text LIKE '%assessmentId%' THEN 'spiritual_created'
+    WHEN data::text LIKE '%volunteerId%' THEN 'volunteer_created' 
+    WHEN data::text LIKE '%visitorId%' THEN 'visitor_created'
+    ELSE 'no_profile_created'
+  END as profile_result
+FROM custom_form_submissions 
+WHERE created_at >= CURRENT_DATE - INTERVAL '24 hours'
+ORDER BY created_at DESC;
 ```
 
 **Critical System Checks:**
@@ -2818,6 +3042,45 @@ SELECT * FROM visitor_profiles WHERE created_at >= NOW() - INTERVAL '1 hour';
 3. **Template Uniqueness**: Each template must have unique themed icon (NO generic FileText overuse)
 4. **Navigation Integrity**: Multiple paths back to templates (header + card + summary options)
 5. **CRM Integration**: Visitor forms auto-create profiles when name + contact fields present
+6. **NEW: Assessment Detection**: Spiritual and volunteer forms must be properly detected and processed
+7. **NEW: Leadership Notifications**: All churches must have active Pastor/Administrador accounts for notifications
+8. **NEW: Member Linking**: Duplicate detection must prevent member profile duplication
+
+**Enterprise Compliance Monitoring:**
+```typescript
+// Daily compliance check protocol
+const complianceChecks = {
+  emojiViolations: await searchCodebase(/[\u{1F000}-\u{1F9FF}]/u),
+  englishText: await searchCodebase(/engagement|social media|back to/i),
+  iconDuplication: await countIconUsage('FileText'),
+  navigationPaths: await validateNavigation(['header', 'cardHeader', 'summary']),
+  crmIntegration: await testVisitorCreation()
+}
+
+// Alert if violations found
+if (complianceChecks.emojiViolations.length > 0) {
+  alert('CRITICAL: Emoji protocol violations detected')
+}
+```
+
+**Deployment Verification:**
+```bash
+# After any form builder updates
+git add . && git commit -m "Form builder updates"
+git push origin main  # MANDATORY for Railway deployment
+
+# Verify deployment success
+curl -s "https://api.khesed-tek.com/health" | jq '.status'
+
+# Test template system
+curl -s "https://api.khesed-tek.com/form-builder" | jq '.templates[].icon'
+```
+
+**Troubleshooting Escalation:**
+1. **Level 1**: Template/navigation issues → Check getTemplateIcon() and navigation components
+2. **Level 2**: QR/URL issues → Verify slug generation and form saving process
+3. **Level 3**: CRM integration failures → Check visitor detection logic and database connections
+4. **Level 4**: Compliance violations → Immediate protocol review and correction required
 
 **Enterprise Compliance Monitoring:**
 ```typescript
