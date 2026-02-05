@@ -392,6 +392,7 @@ export default function BrandedFormBuilder() {
   const [savedForms, setSavedForms] = useState<any[]>([])
   const [showTemplates, setShowTemplates] = useState(true)
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
+  const [currentFormSlug, setCurrentFormSlug] = useState<string | null>(null)
 
   // Smart Templates Functions
   const applyTemplate = (template: any) => {
@@ -408,6 +409,7 @@ export default function BrandedFormBuilder() {
     }))
     
     setSelectedTemplate(template.id)
+    setCurrentFormSlug(null) // Reset slug for new template
     setShowTemplates(false)
     toast.success(`Plantilla "${template.name}" aplicada exitosamente`)
   }
@@ -437,6 +439,8 @@ export default function BrandedFormBuilder() {
       fontFamily: 'Inter',
       bgImage: null
     })
+    setCurrentFormSlug(null) // Reset slug for new form
+    setQRCodeUrl('') // Clear any existing QR code
     setShowTemplates(true)
     setSelectedTemplate(null)
   }
@@ -619,14 +623,53 @@ export default function BrandedFormBuilder() {
     }
   }
 
-  // Button click handler for QR generation - FIXED: Check if form is saved
-  const handleGenerateQR = () => {
+  // Button click handler for QR generation - FIXED: Check if form has slug or save first
+  const handleGenerateQR = async () => {
     if (!formConfig.title.trim()) {
-      toast.error('Por favor guarda el formulario primero para generar el código QR')
+      toast.error('Por favor añade un título al formulario antes de generar el código QR')
       return
     }
-    // For now, generate preview QR (after save, it will use slug)
-    generateQRCode()
+
+    // If form already has a slug (is saved), generate QR immediately
+    if (currentFormSlug) {
+      await generateQRCode(currentFormSlug)
+      return
+    }
+
+    // If not saved, save the form first, then generate QR
+    toast.info('Guardando formulario para generar código QR...')
+    try {
+      const formData = {
+        title: formConfig.title,
+        description: formConfig.description,
+        fields: formConfig.fields,
+        config: {
+          bgColor: formConfig.bgColor,
+          textColor: formConfig.textColor,
+          fontFamily: formConfig.fontFamily,
+          bgImage: formConfig.bgImage
+        },
+      }
+
+      const response = await fetch('/api/form-builder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      if (response.ok) {
+        const savedForm = await response.json()
+        setCurrentFormSlug(savedForm.slug)
+        // Now generate QR with the new slug
+        await generateQRCode(savedForm.slug)
+        toast.success('Formulario guardado y código QR generado exitosamente')
+      } else {
+        throw new Error('Failed to save form')
+      }
+    } catch (error) {
+      console.error('Error saving form for QR generation:', error)
+      toast.error('Error al guardar formulario para generar código QR')
+    }
   }
 
   // Download Functions
@@ -713,6 +756,9 @@ export default function BrandedFormBuilder() {
       if (response.ok) {
         const result = await response.json()
         const savedForm = result.form
+        
+        // Update current form slug
+        setCurrentFormSlug(savedForm.slug)
         
         // Generate QR code with the new form slug
         await generateQRCode(savedForm.slug)
