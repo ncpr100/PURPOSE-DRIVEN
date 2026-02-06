@@ -10,7 +10,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
-import { SocialMediaPostV2, PostStatus, PlatformType } from '@/types/social-media-v2'
+import { SocialMediaPost, SocialPlatform, PostStatus } from '@/types/social-media-v2'
 import { decryptToken } from '../../social-oauth/facebook/callback/route'
 
 export const dynamic = 'force-dynamic'
@@ -30,6 +30,8 @@ export async function POST(request: NextRequest) {
       content,
       platforms,
       scheduledAt,
+      title,
+      hashtags = [],
       mediaUrls = [],
       postType = 'STANDARD',
       targetAudience = 'GENERAL',
@@ -53,12 +55,29 @@ export async function POST(request: NextRequest) {
 
     // Check AI addon subscription if AI features requested
     if (useAI) {
+      // Get church subscription first
+      const churchSubscription = await db.church_subscriptions.findUnique({
+        where: { churchId }
+      })
+
+      if (!churchSubscription) {
+        return NextResponse.json(
+          { 
+            error: 'AI Content Generation requires Premium addon',
+            code: 'AI_ADDON_REQUIRED',
+            upgradeUrl: '/social-media?upgrade=ai'
+          },
+          { status: 402 }
+        )
+      }
+
       const aiAddon = await db.church_subscription_addons.findFirst({
         where: {
-          churchId,
-          addonId: 'social-media-ai',
-          isActive: true,
-          expiresAt: { gt: new Date() }
+          subscriptionId: churchSubscription.id,
+          subscription_addons: {
+            key: 'social_media_ai_premium'
+          },
+          isActive: true
         }
       })
 
@@ -75,12 +94,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate connected accounts for selected platforms
-    const connectedAccounts = await db.social_media_accounts_v2.findMany({
+    const connectedAccounts = await db.social_media_accounts.findMany({
       where: {
         churchId,
         platform: { in: platforms },
-        isActive: true,
-        connectionStatus: 'CONNECTED'
+        isActive: true
       }
     })
 
@@ -123,11 +141,11 @@ export async function POST(request: NextRequest) {
 
     // Determine post status
     const isScheduled = scheduledAt && new Date(scheduledAt) > new Date()
-    const status: PostStatus = isScheduled ? 'SCHEDULED' : 'PENDING'
+    const status: PostStatus = isScheduled ? 'SCHEDULED' : 'DRAFT'
 
     // Create post record
     const postId = nanoid()
-    const post = await db.social_media_posts_v2.create({
+    const post = await db.social_media_posts.create({
       data: {
         id: postId,
         churchId,
@@ -135,58 +153,27 @@ export async function POST(request: NextRequest) {
         
         // Content
         content: finalContent,
-        originalContent: content !== finalContent ? content : null,
-        mediaUrls,
-        postType,
-        targetAudience,
+        title: title || null,
+        mediaUrls: mediaUrls.length > 0 ? JSON.stringify(mediaUrls) : null,
+        hashtags: hashtags ? JSON.stringify(hashtags) : null,
+        
+        // Platform targeting
+        platforms: JSON.stringify(platforms),
+        accountIds: JSON.stringify(connectedAccounts.map(acc => acc.id)),
         
         // Scheduling
         status,
         scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
+        publishedAt: null,
+        postIds: null,
+        engagement: null,
+        mentions: null,
+        campaignId: null,
         createdAt: new Date(),
-        
-        // Platform targeting
-        platforms,
-        
-        // AI metadata (Premium feature)
-        aiGenerated: useAI,
-        aiMetadata: aiMetadata ? JSON.stringify(aiMetadata) : null,
-        
-        // Analytics
-        impressions: 0,
-        engagement: 0,
-        clicks: 0,
-        shares: 0,
+        updatedAt: new Date()
       }
     })
 
-    // Create platform-specific post instances
-    const platformPosts = await Promise.all(
-      connectedAccounts.map(async (account) => {
-        const platformSpecificContent = await optimizeContentForPlatform(
-          finalContent,
-          account.platform,
-          mediaUrls
-        )
-
-        return db.social_media_platform_posts.create({
-          data: {
-            id: nanoid(),
-            postId: post.id,
-            accountId: account.id,
-            platform: account.platform,
-            
-            content: platformSpecificContent.content,
-            mediaUrls: platformSpecificContent.mediaUrls,
-            
-            status: 'PENDING',
-            retryCount: 0,
-            
-            createdAt: new Date()
-          }
-        })
-      })
-    )
 
     // Schedule immediate publishing or queue for later
     if (!isScheduled) {
@@ -204,14 +191,9 @@ export async function POST(request: NextRequest) {
           content: post.content,
           status: post.status,
           scheduledAt: post.scheduledAt,
-          platforms: post.platforms,
-          aiGenerated: post.aiGenerated
-        },
-        platformPosts: platformPosts.map(pp => ({
-          id: pp.id,
-          platform: pp.platform,
-          status: pp.status
-        }))
+          platforms: JSON.parse(post.platforms),
+          accountIds: JSON.parse(post.accountIds)
+        }
       }
     })
 
@@ -245,25 +227,13 @@ export async function GET(request: NextRequest) {
     }
 
     const [posts, total] = await Promise.all([
-      db.social_media_posts_v2.findMany({
+      db.social_media_posts.findMany({
         where: whereClause,
-        include: {
-          author: {
-            select: { name: true, image: true }
-          },
-          platformPosts: {
-            include: {
-              account: {
-                select: { platform: true, username: true, displayName: true }
-              }
-            }
-          }
-        },
         orderBy: { createdAt: 'desc' },
         skip: offset,
         take: limit
       }),
-      db.social_media_posts_v2.count({ where: whereClause })
+      db.social_media_posts.count({ where: whereClause })
     ])
 
     return NextResponse.json({
@@ -276,16 +246,9 @@ export async function GET(request: NextRequest) {
           scheduledAt: post.scheduledAt,
           createdAt: post.createdAt,
           publishedAt: post.publishedAt,
-          platforms: post.platforms,
-          aiGenerated: post.aiGenerated,
-          author: post.author,
-          platformPosts: post.platformPosts.map(pp => ({
-            id: pp.id,
-            platform: pp.platform,
-            status: pp.status,
-            platformUrl: pp.platformPostUrl,
-            account: pp.account
-          }))
+          platforms: typeof post.platforms === 'string' ? JSON.parse(post.platforms) : post.platforms,
+          accountIds: typeof post.accountIds === 'string' ? JSON.parse(post.accountIds) : post.accountIds,
+          authorId: post.authorId
         })),
         pagination: {
           total,
@@ -315,14 +278,14 @@ async function generateAIContent({
   churchId
 }: {
   baseContent: string
-  platforms: PlatformType[]
+  platforms: SocialPlatform[]
   targetAudience: string
   churchId: string
 }) {
   // In production, this would call GPT-4 API
   // For demo purposes, we'll enhance the content
   
-  const church = await db.church.findUnique({
+  const church = await db.churches.findUnique({
     where: { id: churchId },
     select: { name: true, description: true }
   })
@@ -353,7 +316,7 @@ async function generateAIContent({
  */
 async function optimizeContentForPlatform(
   content: string,
-  platform: PlatformType,
+  platform: SocialPlatform,
   mediaUrls: string[]
 ) {
   const optimizations = {
@@ -401,15 +364,8 @@ async function optimizeContentForPlatform(
  */
 async function publishPostImmediately(postId: string) {
   try {
-    const post = await db.social_media_posts_v2.findUnique({
-      where: { id: postId },
-      include: {
-        platformPosts: {
-          include: {
-            account: true
-          }
-        }
-      }
+    const post = await db.social_media_posts.findUnique({
+      where: { id: postId }
     })
 
     if (!post) {
@@ -417,8 +373,21 @@ async function publishPostImmediately(postId: string) {
       return
     }
 
+    // Parse JSON fields
+    const platforms = typeof post.platforms === 'string' ? JSON.parse(post.platforms) : post.platforms
+    const accountIds = typeof post.accountIds === 'string' ? JSON.parse(post.accountIds) : post.accountIds
+    const mediaUrls = post.mediaUrls ? (typeof post.mediaUrls === 'string' ? JSON.parse(post.mediaUrls) : post.mediaUrls) : []
+
+    // Get all accounts for this post
+    const accounts = await db.social_media_accounts.findMany({
+      where: {
+        id: { in: accountIds },
+        isActive: true
+      }
+    })
+
     // Update post status
-    await db.social_media_posts_v2.update({
+    await db.social_media_posts.update({
       where: { id: postId },
       data: { 
         status: 'PUBLISHING',
@@ -427,91 +396,65 @@ async function publishPostImmediately(postId: string) {
     })
 
     // Publish to each platform
-    const publishResults = await Promise.allSettled(
-      post.platformPosts.map(platformPost => 
-        publishToPlatform(platformPost)
-      )
-    )
+    const postIdsMap: Record<string, string> = {}
+    let successCount = 0
 
-    // Count successful publications
-    const successCount = publishResults.filter(result => 
-      result.status === 'fulfilled'
-    ).length
+    for (const account of accounts) {
+      try {
+        const accessToken = decryptToken(account.accessToken)
 
-    // Update final status
+        switch (account.platform) {
+          case 'FACEBOOK': {
+            const result = await publishToFacebook(accessToken, post.content, mediaUrls, account)
+            if (result && result.postId) {
+              postIdsMap[account.platform] = result.postId
+              successCount++
+            }
+            break
+          }
+          case 'INSTAGRAM': {
+            const result = await publishToInstagram(accessToken, post.content, mediaUrls, account)
+            if (result && result.postId) {
+              postIdsMap[account.platform] = result.postId
+              successCount++
+            }
+            break
+          }
+          case 'YOUTUBE': {
+            const result = await publishToYouTube(accessToken, post.content, mediaUrls, account)
+            if (result && result.postId) {
+              postIdsMap[account.platform] = result.postId
+              successCount++
+            }
+            break
+          }
+        }
+      } catch (platformError) {
+        console.error(`Failed to publish to ${account.platform}:`, platformError)
+      }
+    }
+
+    // Update final status with platform post IDs
     const finalStatus = successCount > 0 ? 'PUBLISHED' : 'FAILED'
-    await db.social_media_posts_v2.update({
+    await db.social_media_posts.update({
       where: { id: postId },
-      data: { status: finalStatus }
+      data: { 
+        status: finalStatus,
+        postIds: JSON.stringify(postIdsMap)
+      }
     })
 
-    console.log(`✅ Post ${postId} published to ${successCount}/${post.platformPosts.length} platforms`)
+    console.log(`✅ Post ${postId} published to ${successCount}/${accounts.length} platforms`)
 
   } catch (error) {
     console.error('Error in immediate publishing:', error)
     
     // Mark post as failed
-    await db.social_media_posts_v2.update({
+    await db.social_media_posts.update({
       where: { id: postId },
       data: { status: 'FAILED' }
     })
   }
-}
-
-/**
- * Publish to specific platform
- */
-async function publishToPlatform(platformPost: any) {
-  try {
-    const { account, content, mediaUrls } = platformPost
-    const accessToken = decryptToken(account.accessToken)
-
-    let result
-    
-    switch (account.platform) {
-      case 'FACEBOOK':
-        result = await publishToFacebook(accessToken, content, mediaUrls, account)
-        break
-      case 'INSTAGRAM':
-        result = await publishToInstagram(accessToken, content, mediaUrls, account)
-        break
-      case 'YOUTUBE':
-        result = await publishToYouTube(accessToken, content, mediaUrls, account)
-        break
-      default:
-        throw new Error(`Unsupported platform: ${account.platform}`)
-    }
-
-    // Update platform post with success
-    await db.social_media_platform_posts.update({
-      where: { id: platformPost.id },
-      data: {
-        status: 'PUBLISHED',
-        platformPostId: result.postId,
-        platformPostUrl: result.postUrl,
-        publishedAt: new Date()
-      }
-    })
-
-    return result
-
-  } catch (error) {
-    console.error(`Publishing failed for ${platformPost.account.platform}:`, error)
-    
-    // Update platform post with failure
-    await db.social_media_platform_posts.update({
-      where: { id: platformPost.id },
-      data: {
-        status: 'FAILED',
-        errorMessage: error.message,
-        retryCount: { increment: 1 }
-      }
-    })
-    
-    throw error
-  }
-}
-
 /**
  * Platform-specific publishing functions
  */

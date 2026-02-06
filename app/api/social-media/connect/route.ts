@@ -9,6 +9,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { SocialOAuth } from '@/lib/social-media/oauth-engine'
 import { db } from '@/lib/db'
+import { nanoid } from 'nanoid'
 
 // GET /api/social-media/connect?platform=FACEBOOK
 export async function GET(request: NextRequest) {
@@ -102,14 +103,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Store manually entered tokens (for advanced users)
+    const accountId = accountData?.id || 'manual_' + Date.now()
     const account = await db.social_media_accounts.create({
       data: {
+        id: nanoid(),
         churchId: session.user.churchId,
         platform: platform.toUpperCase(),
-        accessToken: accessToken, // Should be encrypted in production
+        accountId,
+        username: accountData?.username || accountId,
+        displayName: accountData?.name || accountId,
+        accessToken, // Should be encrypted in production
+        refreshToken: null,
+        tokenExpiresAt: null,
         accountData: accountData ? JSON.stringify(accountData) : null,
+        connectedBy: session.user.id,
         isActive: true,
         createdAt: new Date(),
+        updatedAt: new Date(),
         lastSync: new Date()
       }
     })

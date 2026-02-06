@@ -36,17 +36,22 @@ export async function POST(request: NextRequest) {
     // Generate state for OAuth security
     const state = nanoid(32)
 
-    // Store OAuth state in database temporarily (expires in 10 minutes)
-    await db.oauth_states.create({
-      data: {
-        id: nanoid(),
-        state,
-        churchId,
-        platform,
-        userId: session.user.id,
-        expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
-      }
+    // Store OAuth state temporarily (in memory for simplicity)
+    global.oauthStates = global.oauthStates || new Map()
+    global.oauthStates.set(state, {
+      churchId,
+      platform,
+      userId: session.user.id,
+      createdAt: new Date(),
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
     })
+
+    // Clean up expired states
+    for (const [key, value] of global.oauthStates.entries()) {
+      if (value.expiresAt < new Date()) {
+        global.oauthStates.delete(key)
+      }
+    }
 
     // Construct OAuth authorization URL
     const authUrl = new URL(platformConfig.oauth.authUrl)
@@ -88,7 +93,7 @@ export async function GET(request: NextRequest) {
     const churchId = session.user.churchId
 
     // Get all connected accounts for this church
-    const connectedAccounts = await db.social_media_accounts_v2.findMany({
+    const connectedAccounts = await db.social_media_accounts.findMany({
       where: {
         churchId,
         isActive: true
@@ -98,11 +103,7 @@ export async function GET(request: NextRequest) {
         platform: true,
         username: true,
         displayName: true,
-        profileImageUrl: true,
-        connectionStatus: true,
-        canPost: true,
-        canSchedule: true,
-        canAccessAnalytics: true,
+        isActive: true,
         lastSync: true,
         createdAt: true
       },
@@ -117,13 +118,13 @@ export async function GET(request: NextRequest) {
       name: config.name,
       icon: config.icon,
       color: config.color,
-      isConnected: connectedAccounts.some(acc => acc.platform === key && acc.connectionStatus === 'CONNECTED')
+      isConnected: connectedAccounts.some(acc => acc.platform === key && acc.isActive)
     }))
 
     return NextResponse.json({
       connectedAccounts,
       availablePlatforms,
-      totalConnected: connectedAccounts.filter(acc => acc.connectionStatus === 'CONNECTED').length
+      totalConnected: connectedAccounts.filter(acc => acc.isActive).length
     })
 
   } catch (error) {

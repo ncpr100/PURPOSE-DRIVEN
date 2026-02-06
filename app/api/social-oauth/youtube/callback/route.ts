@@ -35,16 +35,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Verify state and get OAuth session
-    const oauthState = await db.oauth_states.findFirst({
-      where: {
-        state,
-        platform: 'YOUTUBE',
-        expiresAt: { gt: new Date() }
-      }
-    })
+    // Verify state from memory storage
+    global.oauthStates = global.oauthStates || new Map()
+    const oauthState = global.oauthStates.get(state)
 
-    if (!oauthState) {
+    if (!oauthState || oauthState.platform !== 'YOUTUBE' || oauthState.expiresAt < new Date()) {
       return NextResponse.redirect(
         `${process.env.NEXTAUTH_URL}/social-media?error=invalid_state&platform=youtube`
       )
@@ -128,15 +123,14 @@ export async function GET(request: NextRequest) {
       : new Date(Date.now() + 3600 * 1000) // Default 1 hour
 
     // Store account in database
-    const account = await db.social_media_accounts_v2.create({
+    const account = await db.social_media_accounts.create({
       data: {
         id: nanoid(),
         churchId: oauthState.churchId,
         platform: 'YOUTUBE',
-        platformAccountId: channel.id,
+        accountId: channel.id,
         username: snippet.customUrl || snippet.title,
         displayName: snippet.title,
-        profileImageUrl: snippet.thumbnails?.default?.url,
         
         // Encrypted tokens
         accessToken: encryptedAccessToken,
@@ -145,17 +139,10 @@ export async function GET(request: NextRequest) {
         
         // Status
         isActive: true,
-        connectionStatus: 'CONNECTED',
         lastSync: new Date(),
-        
-        // Permissions
-        permissions: platformConfig.oauth.scopes,
-        canPost: true,
-        canSchedule: false, // YouTube doesn't support scheduled uploads via API
-        canAccessAnalytics: true,
-        
-        // Metadata
-        accountMetadata: {
+        accountData: JSON.stringify({ 
+          channel, 
+          snippet,
           channelId: channel.id,
           subscriberCount: parseInt(statistics.subscriberCount || '0'),
           videoCount: parseInt(statistics.videoCount || '0'),
@@ -164,17 +151,15 @@ export async function GET(request: NextRequest) {
           language: snippet.defaultLanguage,
           customUrl: snippet.customUrl,
           publishedAt: snippet.publishedAt,
-          userEmail: userProfile.email,
           tokenType: tokenData.token_type || 'Bearer',
           hasRefreshToken: !!tokenData.refresh_token
-        }
+        }),
+        connectedBy: oauthState.userId || oauthState.churchId
       }
     })
 
-    // Clean up OAuth state
-    await db.oauth_states.delete({
-      where: { id: oauthState.id }
-    })
+    // Clean up OAuth state from memory
+    global.oauthStates.delete(state)
 
     // Log successful connection
     console.log(`✅ YouTube channel connected for church ${oauthState.churchId}: ${snippet.title}`)
@@ -229,7 +214,7 @@ export function decryptToken(encryptedToken: string): string {
   const authTag = Buffer.from(authTagHex, 'hex')
   
   const decipher = crypto.createDecipher(algorithm, secretKey)
-  decipher.setAuthTag(authTag)
+  decipher.setAuthTag(new Uint8Array(authTag))
   
   let decrypted = decipher.update(encrypted, 'hex', 'utf8')
   decrypted += decipher.final('utf8')

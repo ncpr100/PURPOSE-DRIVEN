@@ -24,12 +24,21 @@ export async function GET(request: NextRequest) {
     const churchId = session.user.churchId
 
     // Check if church has AI content addon
+    const churchSubscription = await db.church_subscriptions.findUnique({
+      where: { churchId }
+    })
+
+    if (!churchSubscription) {
+      return NextResponse.json({
+        hasAIAccess: false,
+        addon: null,
+        usage: null
+      })
+    }
+
     const aiAddon = await db.church_subscription_addons.findFirst({
       where: {
-        subscription: {
-          churchId,
-          status: 'ACTIVE'
-        },
+        subscriptionId: churchSubscription.id,
         subscription_addons: {
           key: 'social_media_ai_premium'
         },
@@ -45,29 +54,11 @@ export async function GET(request: NextRequest) {
     // Get usage statistics if they have access
     let usage = null
     if (hasAIAccess) {
-      const currentMonth = new Date()
-      currentMonth.setDate(1)
-      currentMonth.setHours(0, 0, 0, 0)
-
-      const nextMonth = new Date(currentMonth)
-      nextMonth.setMonth(nextMonth.getMonth() + 1)
-
-      usage = await db.ai_content_usage.aggregate({
-        where: {
-          churchId,
-          createdAt: {
-            gte: currentMonth,
-            lt: nextMonth
-          }
-        },
-        _sum: {
-          tokensUsed: true,
-          cost: true
-        },
-        _count: {
-          id: true
-        }
-      })
+      // AI usage tracking not implemented yet - return placeholders
+      usage = {
+        _count: { id: 0 },
+        _sum: { tokensUsed: 0, cost: 0 }
+      }
     }
 
     return NextResponse.json({
@@ -195,13 +186,19 @@ export async function DELETE(request: NextRequest) {
 
     const churchId = session.user.churchId
 
+    // Find church subscription first
+    const churchSubscription = await db.church_subscriptions.findUnique({
+      where: { churchId }
+    })
+
+    if (!churchSubscription) {
+      return NextResponse.json({ error: 'No subscription found' }, { status: 404 })
+    }
+
     // Find and deactivate the addon
     const result = await db.church_subscription_addons.updateMany({
       where: {
-        subscription: {
-          churchId,
-          status: 'ACTIVE'
-        },
+        subscriptionId: churchSubscription.id,
         subscription_addons: {
           key: 'social_media_ai_premium'
         }

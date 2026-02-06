@@ -27,7 +27,7 @@ export default async function SocialMediaV2Page() {
   const churchId = session.user.churchId
 
   // Fetch connected accounts
-  const connectedAccounts = await db.social_media_accounts_v2.findMany({
+  const connectedAccounts = await db.social_media_accounts.findMany({
     where: {
       churchId,
       isActive: true
@@ -38,40 +38,30 @@ export default async function SocialMediaV2Page() {
   // Check AI addon subscription
   const aiAddon = await db.church_subscription_addons.findFirst({
     where: {
-      churchId,
+      subscriptionId: {
+        in: (await db.church_subscriptions.findMany({
+          where: { churchId },
+          select: { id: true }
+        })).map(s => s.id)
+      },
       addonId: 'social-media-ai',
-      isActive: true,
-      expiresAt: { gt: new Date() }
+      isActive: true
     }
   })
 
   // Get recent posts
-  const recentPosts = await db.social_media_posts_v2.findMany({
+  const recentPosts = await db.social_media_posts.findMany({
     where: { churchId },
-    include: {
-      author: {
-        select: { name: true, image: true }
-      },
-      platformPosts: {
-        include: {
-          account: {
-            select: { platform: true, username: true, displayName: true }
-          }
-        }
-      }
-    },
     orderBy: { createdAt: 'desc' },
     take: 10
   })
 
   // Get church info for AI context
-  const church = await db.church.findUnique({
+  const church = await db.churches.findUnique({
     where: { id: churchId },
     select: { 
       name: true, 
-      description: true,
-      settings: true,
-      brandColors: true
+      description: true
     }
   })
 
@@ -80,7 +70,7 @@ export default async function SocialMediaV2Page() {
       connectedAccounts={connectedAccounts}
       recentPosts={recentPosts}
       aiAddonActive={!!aiAddon}
-      aiAddonExpiry={aiAddon?.expiresAt}
+      aiAddonExpiry={aiAddon?.updatedAt}
       userRole={session.user.role}
       church={church}
     />

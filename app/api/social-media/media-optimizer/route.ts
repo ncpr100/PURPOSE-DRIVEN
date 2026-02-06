@@ -8,7 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
-import { PlatformType } from '@/types/social-media-v2'
+import { SocialPlatform } from '@/types/social-media-v2'
 import sharp from 'sharp'
 
 export const dynamic = 'force-dynamic'
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData()
     const file = formData.get('file') as File
-    const platforms = JSON.parse(formData.get('platforms') as string) as PlatformType[]
+    const platforms = JSON.parse(formData.get('platforms') as string) as SocialPlatform[]
     const mediaType = formData.get('mediaType') as 'image' | 'video'
     const contentType = formData.get('contentType') as 'feed' | 'story' | 'reel' | 'thumbnail' | 'banner'
 
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
  */
 async function optimizeImageForPlatforms(
   imageBuffer: Buffer,
-  platforms: PlatformType[],
+  platforms: SocialPlatform[],
   contentType: string,
   originalExtension?: string
 ) {
@@ -161,11 +161,15 @@ async function optimizeImageForPlatforms(
   for (const platform of platforms) {
     try {
       const requirements = PLATFORM_REQUIREMENTS[platform]?.image
-      if (!requirements || !requirements[contentType as keyof typeof requirements]) {
+      if (!requirements) {
         continue
       }
 
-      const spec = requirements[contentType as keyof typeof requirements]
+      const spec = requirements[contentType as keyof typeof requirements] as { width: number; height: number; aspectRatio: string } | undefined
+      if (!spec) {
+        continue
+      }
+
       const { width, height } = spec
 
       // Optimize image with Sharp
@@ -217,7 +221,7 @@ async function optimizeImageForPlatforms(
  */
 async function optimizeVideoForPlatforms(
   videoBuffer: Buffer,
-  platforms: PlatformType[],
+  platforms: SocialPlatform[],
   originalFileName: string,
   originalExtension?: string
 ) {
@@ -232,7 +236,8 @@ async function optimizeVideoForPlatforms(
 
       // Video optimization would require FFmpeg integration
       // For now, we'll return metadata and validation
-      const isValidFormat = requirements.formats.includes(originalExtension?.toUpperCase() || '')
+      const upperExtension = originalExtension?.toUpperCase() || ''
+      const isValidFormat = requirements.formats.includes(upperExtension as any)
       const isValidSize = videoBuffer.length <= requirements.maxSize
 
       results.push({
@@ -287,7 +292,7 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url)
-    const platform = searchParams.get('platform') as PlatformType
+    const platform = searchParams.get('platform') as SocialPlatform
     const mediaType = searchParams.get('mediaType') as 'image' | 'video'
 
     if (platform && mediaType) {

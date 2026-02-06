@@ -35,16 +35,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Verify state and get OAuth session
-    const oauthState = await db.oauth_states.findFirst({
-      where: {
-        state,
-        platform: 'FACEBOOK',
-        expiresAt: { gt: new Date() }
-      }
-    })
+    // Verify state from memory storage
+    global.oauthStates = global.oauthStates || new Map()
+    const oauthState = global.oauthStates.get(state)
 
-    if (!oauthState) {
+    if (!oauthState || oauthState.platform !== 'FACEBOOK' || oauthState.expiresAt < new Date()) {
       return NextResponse.redirect(
         `${process.env.NEXTAUTH_URL}/social-media?error=invalid_state&platform=facebook`
       )
@@ -114,45 +109,36 @@ export async function GET(request: NextRequest) {
       : null
 
     // Store account in database
-    const account = await db.social_media_accounts_v2.create({
+    const account = await db.social_media_accounts.create({
       data: {
         id: nanoid(),
         churchId: oauthState.churchId,
         platform: 'FACEBOOK',
-        platformAccountId: profile.id,
+        accountId: profile.id,
         username: profile.name,
         displayName: profile.name,
-        profileImageUrl: profile.picture?.data?.url,
         
         // Encrypted tokens
         accessToken: encryptedToken,
         refreshToken: tokenData.refresh_token ? encryptToken(tokenData.refresh_token) : null,
         tokenExpiresAt: expiresAt,
         
-        // Status
+        // Status  
         isActive: true,
-        connectionStatus: 'CONNECTED',
         lastSync: new Date(),
-        
-        // Permissions
-        permissions: platformConfig.oauth.scopes,
-        canPost: true,
-        canSchedule: true,
-        canAccessAnalytics: true,
-        
-        // Metadata
-        accountMetadata: {
-          pages: pages.slice(0, 5), // Limit to 5 pages for storage
+        accountData: JSON.stringify({
+          profile,
+          pages: pages.slice(0, 5),
           profileType: 'USER',
-          tokenType: tokenData.token_type || 'Bearer'
-        }
+          tokenType: tokenData.token_type || 'Bearer',
+          scopes: platformConfig.oauth.scopes
+        }),
+        connectedBy: oauthState.userId || oauthState.churchId
       }
     })
 
-    // Clean up OAuth state
-    await db.oauth_states.delete({
-      where: { id: oauthState.id }
-    })
+    // Clean up OAuth state from memory
+    global.oauthStates.delete(state)
 
     // Log successful connection
     console.log(`✅ Facebook account connected for church ${oauthState.churchId}: ${profile.name}`)
@@ -174,7 +160,7 @@ export async function GET(request: NextRequest) {
  * Encrypt access token for secure storage
  * Uses AES-256-GCM encryption
  */
-function encryptToken(token: string): string {
+export function encryptToken(token: string): string {
   const algorithm = 'aes-256-gcm'
   const secretKey = process.env.OAUTH_ENCRYPTION_KEY || 'your-32-character-encryption-key-here'
   
@@ -206,8 +192,8 @@ export function decryptToken(encryptedToken: string): string {
   const iv = Buffer.from(ivHex, 'hex')
   const authTag = Buffer.from(authTagHex, 'hex')
   
-  const decipher = crypto.createDecipher(algorithm, secretKey)
-  decipher.setAuthTag(authTag)
+  const decipher = crypto.createDecipher(algorithm, secretKey)  
+  decipher.setAuthTag(new Uint8Array(authTag))
   
   let decrypted = decipher.update(encrypted, 'hex', 'utf8')
   decrypted += decipher.final('utf8')

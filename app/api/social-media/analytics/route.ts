@@ -10,7 +10,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { decryptToken } from '../../social-oauth/facebook/callback/route'
-import { PlatformType } from '@/types/social-media-v2'
+import { SocialPlatform } from '@/types/social-media-v2'
 
 export const dynamic = 'force-dynamic'
 
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       accountsQuery.platform = { in: platforms }
     }
 
-    const connectedAccounts = await db.social_media_accounts_v2.findMany({
+    const connectedAccounts = await db.social_media_accounts.findMany({
       where: accountsQuery,
       orderBy: { lastSync: 'asc' }
     })
@@ -122,7 +122,7 @@ export async function GET(request: NextRequest) {
       : new Date()
 
     // Get account analytics
-    const accounts = await db.social_media_accounts_v2.findMany({
+    const accounts = await db.social_media_accounts.findMany({
       where: {
         churchId,
         isActive: true
@@ -132,14 +132,13 @@ export async function GET(request: NextRequest) {
         platform: true,
         username: true,
         displayName: true,
-        profileImageUrl: true,
         lastSync: true,
-        accountMetadata: true
+        accountData: true
       }
     })
 
     // Get post analytics
-    const posts = await db.social_media_posts_v2.findMany({
+    const posts = await db.social_media_posts.findMany({
       where: {
         churchId,
         createdAt: {
@@ -148,24 +147,16 @@ export async function GET(request: NextRequest) {
         },
         status: 'PUBLISHED'
       },
-      include: {
-        platformPosts: {
-          include: {
-            account: {
-              select: { platform: true, username: true }
-            }
-          }
-        }
-      },
       orderBy: { createdAt: 'desc' }
     })
 
-    // Calculate aggregated metrics
+    // Calculate aggregated metrics from engagement JSON field
     const totalMetrics = posts.reduce((acc, post) => {
-      acc.impressions += post.impressions || 0
-      acc.engagement += post.engagement || 0
-      acc.clicks += post.clicks || 0
-      acc.shares += post.shares || 0
+      const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+      acc.impressions += engagement.impressions || 0
+      acc.engagement += engagement.total || 0
+      acc.clicks += engagement.clicks || 0
+      acc.shares += engagement.shares || 0
       return acc
     }, { impressions: 0, engagement: 0, clicks: 0, shares: 0 })
 
@@ -174,15 +165,16 @@ export async function GET(request: NextRequest) {
     
     accounts.forEach(account => {
       const platformPosts = posts.filter(post => 
-        post.platformPosts.some(pp => pp.account.platform === account.platform)
+        Array.isArray(post.platforms) && post.platforms.includes(account.platform)
       )
       
       const platformMetrics = platformPosts.reduce((acc, post) => {
         acc.posts += 1
-        acc.impressions += post.impressions || 0
-        acc.engagement += post.engagement || 0
-        acc.clicks += post.clicks || 0
-        acc.shares += post.shares || 0
+        const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+        acc.impressions += engagement.impressions || 0
+        acc.engagement += engagement.total || 0
+        acc.clicks += engagement.clicks || 0
+        acc.shares += engagement.shares || 0
         return acc
       }, { posts: 0, impressions: 0, engagement: 0, clicks: 0, shares: 0 })
 
@@ -191,7 +183,7 @@ export async function GET(request: NextRequest) {
           account: {
             username: account.username,
             displayName: account.displayName,
-            profileImage: account.profileImageUrl
+            profileImage: null
           },
           metrics: platformMetrics,
           averageEngagement: platformMetrics.posts > 0 
@@ -204,19 +196,25 @@ export async function GET(request: NextRequest) {
 
     // Top performing posts
     const topPosts = posts
-      .filter(post => post.engagement > 0)
-      .sort((a, b) => (b.engagement || 0) - (a.engagement || 0))
+      .map(post => {
+        const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+        const totalEngagement = typeof engagement === 'number' ? engagement : (engagement.total || 0)
+        return { ...post, engagementValue: totalEngagement }
+      })
+      .filter(post => post.engagementValue > 0)
+      .sort((a, b) => b.engagementValue - a.engagementValue)
       .slice(0, 5)
-      .map(post => ({
-        id: post.id,
-        content: post.content,
-        engagement: post.engagement,
-        impressions: post.impressions,
-        platforms: post.platforms,
-        createdAt: post.createdAt,
-        publishedAt: post.publishedAt,
-        aiGenerated: post.aiGenerated
-      }))
+      .map(post => {
+        const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+        return {
+          id: post.id,
+          content: post.content,
+          engagement: typeof engagement === 'number' ? engagement : (engagement.total || 0),
+          platforms: typeof post.platforms === 'string' ? JSON.parse(post.platforms) : post.platforms,
+          createdAt: post.createdAt,
+          publishedAt: post.publishedAt
+        }
+      })
 
     // Engagement trends (last 30 days)
     const engagementTrends = await calculateEngagementTrends(churchId, dateFrom, dateTo)
@@ -281,12 +279,12 @@ async function syncAccountAnalytics(account: any, forceSync: boolean = false) {
     }
 
     // Update account with latest metrics
-    await db.social_media_accounts_v2.update({
+    await db.social_media_accounts.update({
       where: { id: account.id },
       data: {
         lastSync: new Date(),
-        accountMetadata: {
-          ...account.accountMetadata,
+        accountData: {
+          ...account.accountData,
           latestMetrics: metrics,
           lastMetricsUpdate: new Date().toISOString()
         }
@@ -299,12 +297,12 @@ async function syncAccountAnalytics(account: any, forceSync: boolean = false) {
     console.error(`Analytics sync failed for ${account.platform} account ${account.id}:`, error)
     
     // Update account with error status
-    await db.social_media_accounts_v2.update({
+    await db.social_media_accounts.update({
       where: { id: account.id },
       data: {
         lastSync: new Date(),
-        accountMetadata: {
-          ...account.accountMetadata,
+        accountData: {
+          ...account.accountData,
           lastSyncError: error.message,
           lastErrorAt: new Date().toISOString()
         }
@@ -366,14 +364,14 @@ async function updateChurchAnalyticsSummary(churchId: string) {
 
     // Aggregate metrics across all platforms
     const [posts, accounts] = await Promise.all([
-      db.social_media_posts_v2.findMany({
+      db.social_media_posts.findMany({
         where: {
           churchId,
           createdAt: { gte: thirtyDaysAgo },
           status: 'PUBLISHED'
         }
       }),
-      db.social_media_accounts_v2.findMany({
+      db.social_media_accounts.findMany({
         where: {
           churchId,
           isActive: true
@@ -383,10 +381,22 @@ async function updateChurchAnalyticsSummary(churchId: string) {
 
     const summary = {
       totalPosts: posts.length,
-      totalImpressions: posts.reduce((sum, post) => sum + (post.impressions || 0), 0),
-      totalEngagement: posts.reduce((sum, post) => sum + (post.engagement || 0), 0),
-      totalClicks: posts.reduce((sum, post) => sum + (post.clicks || 0), 0),
-      totalShares: posts.reduce((sum, post) => sum + (post.shares || 0), 0),
+      totalImpressions: posts.reduce((sum, post) => {
+        const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+        return sum + (engagement.impressions || 0)
+      }, 0),
+      totalEngagement: posts.reduce((sum, post) => {
+        const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+        return sum + (typeof engagement === 'number' ? engagement : (engagement.total || 0))
+      }, 0),
+      totalClicks: posts.reduce((sum, post) => {
+        const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+        return sum + (engagement.clicks || 0)
+      }, 0),
+      totalShares: posts.reduce((sum, post) => {
+        const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+        return sum + (engagement.shares || 0)
+      }, 0),
       connectedAccounts: accounts.length,
       lastUpdated: new Date()
     }
@@ -407,7 +417,7 @@ async function updateChurchAnalyticsSummary(churchId: string) {
  */
 async function calculateEngagementTrends(churchId: string, dateFrom: Date, dateTo: Date) {
   try {
-    const posts = await db.social_media_posts_v2.findMany({
+    const posts = await db.social_media_posts.findMany({
       where: {
         churchId,
         createdAt: { gte: dateFrom, lte: dateTo },
@@ -415,8 +425,7 @@ async function calculateEngagementTrends(churchId: string, dateFrom: Date, dateT
       },
       select: {
         createdAt: true,
-        engagement: true,
-        impressions: true
+        engagement: true
       },
       orderBy: { createdAt: 'asc' }
     })
@@ -436,9 +445,13 @@ async function calculateEngagementTrends(churchId: string, dateFrom: Date, dateT
         }
       }
       
+      const engagement = typeof post.engagement === 'string' ? JSON.parse(post.engagement) : (post.engagement || {})
+      const totalEngagement = typeof engagement === 'number' ? engagement : (engagement.total || 0)
+      const impressions = typeof engagement === 'object' ? (engagement.impressions || 0) : 0
+      
       dailyMetrics[day].posts += 1
-      dailyMetrics[day].engagement += post.engagement || 0
-      dailyMetrics[day].impressions += post.impressions || 0
+      dailyMetrics[day].engagement += totalEngagement
+      dailyMetrics[day].impressions += impressions
     })
 
     // Convert to array and calculate engagement rates

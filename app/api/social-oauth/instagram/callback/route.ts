@@ -9,10 +9,48 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
 import { SOCIAL_PLATFORMS } from '@/types/social-media-v2'
-import { decryptToken } from '../facebook/callback/route'
 import crypto from 'crypto'
 
 export const dynamic = 'force-dynamic'
+
+/**
+ * Encrypt access token for secure storage
+ */
+function encryptToken(token: string): string {
+  const algorithm = 'aes-256-gcm'
+  const secretKey = Buffer.from(process.env.OAUTH_ENCRYPTION_KEY || 'your-32-character-encryption-key-here!!', 'utf8').subarray(0, 32)
+  
+  const iv = crypto.randomBytes(16)
+  const cipher = crypto.createCipheriv(algorithm, secretKey as any, iv as any)
+  
+  let encrypted = cipher.update(token, 'utf8', 'hex')
+  encrypted += cipher.final('hex')
+  
+  const authTag = cipher.getAuthTag()
+  
+  // Combine IV, authTag, and encrypted data
+  return `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted}`
+}
+
+/**
+ * Decrypt access token for API calls
+ */
+function decryptToken(encryptedToken: string): string {
+  const algorithm = 'aes-256-gcm'
+  const secretKey = Buffer.from(process.env.OAUTH_ENCRYPTION_KEY || 'your-32-character-encryption-key-here!!', 'utf8').subarray(0, 32)
+  
+  const [ivHex, authTagHex, encrypted] = encryptedToken.split(':')
+  const iv = Buffer.from(ivHex, 'hex')
+  const authTag = Buffer.from(authTagHex, 'hex')
+  
+  const decipher = crypto.createDecipheriv(algorithm, secretKey as any, iv as any)
+  decipher.setAuthTag(authTag as any)
+  
+  let decrypted = decipher.update(encrypted, 'hex', 'utf8')
+  decrypted += decipher.final('utf8')
+  
+  return decrypted
+}
 
 // Handle OAuth callback from Instagram (via Facebook)
 export async function GET(request: NextRequest) {
@@ -36,16 +74,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Verify state and get OAuth session
-    const oauthState = await db.oauth_states.findFirst({
-      where: {
-        state,
-        platform: 'INSTAGRAM',
-        expiresAt: { gt: new Date() }
-      }
-    })
+    // Verify state from memory storage
+    global.oauthStates = global.oauthStates || new Map()
+    const oauthState = global.oauthStates.get(state)
 
-    if (!oauthState) {
+    if (!oauthState || oauthState.platform !== 'INSTAGRAM' || oauthState.expiresAt < new Date()) {
       return NextResponse.redirect(
         `${process.env.NEXTAUTH_URL}/social-media?error=invalid_state&platform=instagram`
       )
@@ -129,15 +162,14 @@ export async function GET(request: NextRequest) {
       : new Date(Date.now() + 60 * 24 * 60 * 60 * 1000) // Default 60 days
 
     // Store account in database
-    const account = await db.social_media_accounts_v2.create({
+    const account = await db.social_media_accounts.create({
       data: {
         id: nanoid(),
         churchId: oauthState.churchId,
         platform: 'INSTAGRAM',
-        platformAccountId: profile.id,
+        accountId: profile.id,
         username: profile.username || profile.name,
         displayName: profile.name || profile.username,
-        profileImageUrl: profile.profile_picture_url,
         
         // Encrypted tokens
         accessToken: encryptedToken,
@@ -146,29 +178,20 @@ export async function GET(request: NextRequest) {
         
         // Status
         isActive: true,
-        connectionStatus: 'CONNECTED',
         lastSync: new Date(),
-        
-        // Permissions
-        permissions: platformConfig.oauth.scopes,
-        canPost: businessAccounts.length > 0, // Can only post via Business accounts
-        canSchedule: businessAccounts.length > 0,
-        canAccessAnalytics: businessAccounts.length > 0,
-        
-        // Metadata
-        accountMetadata: {
-          businessAccounts: businessAccounts,
+        accountData: JSON.stringify({
+          profile,
+          businessAccounts,
           accountType: businessAccounts.length > 0 ? 'BUSINESS' : 'PERSONAL',
           tokenType: tokenData.token_type || 'Bearer',
           canPublishContent: businessAccounts.length > 0
-        }
+        }),
+        connectedBy: oauthState.userId || oauthState.churchId
       }
     })
 
-    // Clean up OAuth state
-    await db.oauth_states.delete({
-      where: { id: oauthState.id }
-    })
+    // Clean up OAuth state from memory
+    global.oauthStates.delete(state)
 
     // Log successful connection
     const accountType = businessAccounts.length > 0 ? 'Business' : 'Personal'
@@ -185,28 +208,4 @@ export async function GET(request: NextRequest) {
       `${process.env.NEXTAUTH_URL}/social-media?error=callback_error&platform=instagram`
     )
   }
-}
-
-/**
- * Encrypt access token for secure storage
- * Uses AES-256-GCM encryption
- */
-function encryptToken(token: string): string {
-  const algorithm = 'aes-256-gcm'
-  const secretKey = process.env.OAUTH_ENCRYPTION_KEY || 'your-32-character-encryption-key-here'
-  
-  if (secretKey.length !== 32) {
-    throw new Error('OAUTH_ENCRYPTION_KEY must be 32 characters long')
-  }
-
-  const iv = crypto.randomBytes(16)
-  const cipher = crypto.createCipher(algorithm, secretKey)
-  
-  let encrypted = cipher.update(token, 'utf8', 'hex')
-  encrypted += cipher.final('hex')
-  
-  const authTag = cipher.getAuthTag()
-  
-  // Combine IV, authTag, and encrypted data
-  return `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted}`
 }
