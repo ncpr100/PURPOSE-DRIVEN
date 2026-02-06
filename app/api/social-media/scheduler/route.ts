@@ -455,6 +455,8 @@ async function publishPostImmediately(postId: string) {
       data: { status: 'FAILED' }
     })
   }
+}
+
 /**
  * Platform-specific publishing functions
  */
