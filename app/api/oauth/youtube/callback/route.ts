@@ -1,0 +1,65 @@
+/**
+ * YOUTUBE OAUTH CALLBACK HANDLER
+ * Processes YouTube OAuth authorization and stores secure tokens
+ */
+
+import { NextRequest, NextResponse } from 'next/server'
+import { SocialOAuth } from '@/lib/social-media/oauth-engine'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
+
+export async function GET(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.churchId) {
+      return NextResponse.redirect(new URL('/auth/signin?error=unauthorized', request.url))
+    }
+
+    const { searchParams } = new URL(request.url)
+    const code = searchParams.get('code')
+    const state = searchParams.get('state')
+    const error = searchParams.get('error')
+
+    // Handle OAuth errors
+    if (error) {
+      console.error('YouTube OAuth error:', error)
+      return NextResponse.redirect(
+        new URL(`/social-media?error=oauth_failed&platform=youtube&reason=${error}`, request.url)
+      )
+    }
+
+    // Validate required parameters
+    if (!code || !state) {
+      return NextResponse.redirect(
+        new URL('/social-media?error=oauth_failed&platform=youtube&reason=missing_params', request.url)
+      )
+    }
+
+    try {
+      // Process OAuth callback with secure token exchange
+      const result = await SocialOAuth.processCallback('YOUTUBE', code, state)
+      
+      if (result.success) {
+        console.log('✅ YouTube channel connected successfully:', result.account.displayName)
+        
+        // Redirect to social media page with success message
+        return NextResponse.redirect(
+          new URL(`/social-media?success=connected&platform=youtube&account=${encodeURIComponent(result.account.displayName)}`, request.url)
+        )
+      } else {
+        throw new Error('OAuth processing failed')
+      }
+    } catch (processingError) {
+      console.error('YouTube OAuth processing error:', processingError)
+      return NextResponse.redirect(
+        new URL('/social-media?error=oauth_failed&platform=youtube&reason=processing_failed', request.url)
+      )
+    }
+
+  } catch (error) {
+    console.error('YouTube OAuth callback error:', error)
+    return NextResponse.redirect(
+      new URL('/social-media?error=oauth_failed&platform=youtube&reason=server_error', request.url)
+    )
+  }
+}

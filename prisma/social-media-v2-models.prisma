@@ -1,0 +1,157 @@
+/**
+ * SOCIAL MEDIA V2 PRISMA MODELS
+ * 
+ * Enhanced social media system with OAuth automation and AI integration
+ * Append to the end of prisma/schema.prisma
+ */
+
+// OAuth state management for secure platform connections
+model oauth_states {
+  id        String   @id
+  state     String   @unique
+  platform  String
+  churchId  String
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  churches churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  users    users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([state, platform])
+  @@index([expiresAt])
+}
+
+// Enhanced social media accounts with OAuth support
+model social_media_accounts_v2 {
+  id                    String                          @id
+  churchId              String
+  platform              String
+  platformAccountId     String
+  username              String?
+  displayName           String?
+  profileImageUrl       String?
+  
+  // Encrypted OAuth tokens
+  accessToken           String
+  refreshToken          String?
+  tokenExpiresAt        DateTime?
+  
+  // Connection status
+  isActive              Boolean                         @default(true)
+  connectionStatus      String                          @default("CONNECTED")
+  lastSync              DateTime?
+  
+  // Permissions
+  permissions           String[] // OAuth scopes
+  canPost               Boolean                         @default(false)
+  canSchedule           Boolean                         @default(false)
+  canAccessAnalytics    Boolean                         @default(false)
+  
+  // Metadata
+  accountMetadata       Json? // Platform-specific data
+  
+  createdAt             DateTime                        @default(now())
+  updatedAt             DateTime                        @default(now())
+
+  // Relations
+  churches              churches                        @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  platformPosts         social_media_platform_posts[]
+
+  @@unique([churchId, platform, platformAccountId])
+  @@index([churchId, isActive])
+  @@index([platform, connectionStatus])
+}
+
+// Enhanced posts with AI and scheduling
+model social_media_posts_v2 {
+  id               String   @id
+  churchId         String
+  authorId         String
+  
+  // Content
+  content          String
+  originalContent  String? // If AI-enhanced, store original
+  mediaUrls        String[] // Array of media URLs
+  postType         String   @default("STANDARD") // STANDARD, STORY, REEL, etc.
+  targetAudience   String   @default("GENERAL")
+  
+  // Scheduling
+  status           String   @default("DRAFT") // DRAFT, SCHEDULED, PUBLISHING, PUBLISHED, FAILED
+  scheduledAt      DateTime?
+  publishedAt      DateTime?
+  
+  // Platform targeting
+  platforms        String[] // Array of platform names
+  
+  // AI features
+  aiGenerated      Boolean  @default(false)
+  aiMetadata       String?  // JSON string with AI generation details
+  
+  // Analytics
+  impressions      Int      @default(0)
+  engagement       Int      @default(0)
+  clicks           Int      @default(0)
+  shares           Int      @default(0)
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
+
+  // Relations
+  churches         churches                        @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  author           users                           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  platformPosts    social_media_platform_posts[]
+
+  @@index([churchId, status])
+  @@index([scheduledAt])
+  @@index([publishedAt])
+}
+
+// Platform-specific post instances
+model social_media_platform_posts {
+  id                String   @id
+  postId            String
+  accountId         String
+  platform          String
+  
+  // Platform-optimized content
+  content           String
+  mediaUrls         String[]
+  
+  // Publishing status
+  status            String   @default("PENDING") // PENDING, PUBLISHED, FAILED
+  platformPostId    String? // ID from platform API
+  platformPostUrl   String? // URL to view post
+  publishedAt       DateTime?
+  
+  // Error handling
+  errorMessage      String?
+  retryCount        Int      @default(0)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
+
+  // Relations
+  post              social_media_posts_v2      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  account           social_media_accounts_v2   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@index([accountId, status])
+  @@index([platform, publishedAt])
+}
+
+/**
+ * MIGRATION NOTES:
+ * 
+ * 1. Run: npx prisma db push (for development)
+ * 2. Or create migration: npx prisma migrate dev --name add-social-media-v2
+ * 
+ * 3. Update existing models to add relations:
+ *    - Add to churches model: social_media_accounts_v2, social_media_posts_v2, oauth_states
+ *    - Add to users model: social_media_posts_v2, oauth_states
+ * 
+ * 4. These models coexist with existing social_media_* models
+ *    - Old system remains functional
+ *    - V2 system uses new models
+ *    - Migration path available for data transfer
+ */
