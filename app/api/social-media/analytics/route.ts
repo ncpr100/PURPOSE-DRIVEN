@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { decryptToken } from '../social-oauth/facebook/callback/route'
+import { decryptToken } from '../../social-oauth/facebook/callback/route'
 import { PlatformType } from '@/types/social-media-v2'
 
 export const dynamic = 'force-dynamic'

@@ -11,7 +11,7 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
 import { SocialMediaPostV2, PostStatus, PlatformType } from '@/types/social-media-v2'
-import { decryptToken } from '../social-oauth/facebook/callback/route'
+import { decryptToken } from '../../social-oauth/facebook/callback/route'
 
 export const dynamic = 'force-dynamic'
 
