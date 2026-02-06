@@ -114,10 +114,10 @@ export class AutomationEngine {
       console.log('🙏 Processing spiritual assessment submission notification')
       
       // Get church leadership (Pastores and Administradores)
-      const leadership = await db.user.findMany({
+      const leadership = await db.users.findMany({
         where: {
           churchId,
-          role: { in: ['PASTOR', 'ADMINISTRADOR'] },
+          role: { in: ['PASTOR', 'ADMIN_IGLESIA'] },
           isActive: true
         },
         select: {
@@ -133,7 +133,7 @@ export class AutomationEngine {
       }
       
       // Get church info for context
-      const church = await db.church.findUnique({
+      const church = await db.churches.findUnique({
         where: { id: churchId },
         select: { name: true }
       })
@@ -183,10 +183,10 @@ export class AutomationEngine {
       console.log('🙋‍♂️ Processing volunteer application submission notification')
       
       // Get church leadership (Pastores and Administradores)
-      const leadership = await db.user.findMany({
+      const leadership = await db.users.findMany({
         where: {
           churchId,
-          role: { in: ['PASTOR', 'ADMINISTRADOR'] },
+          role: { in: ['PASTOR', 'ADMIN_IGLESIA'] },
           isActive: true
         },
         select: {
@@ -202,7 +202,7 @@ export class AutomationEngine {
       }
       
       // Get church info for context
-      const church = await db.church.findUnique({
+      const church = await db.churches.findUnique({
         where: { id: churchId },
         select: { name: true }
       })

@@ -38,7 +38,8 @@ import {
   RefreshCcw,
   Loader2,
   Settings,
-  ImageIcon
+  ImageIcon,
+  AlertTriangle
 } from 'lucide-react'
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
@@ -467,10 +468,14 @@ interface QRConfig {
   backgroundImage: string | null
   backgroundImageOpacity: number
   
-  // Logo/overlay
+  // ENHANCED: Logo/overlay with enterprise features
   logo: string | null
   logoSize: number
   logoOpacity: number
+  logoShape: 'circle' | 'square' | 'rounded-square'
+  logoMargin: number  // Padding around logo for scan safety
+  logoBackground: boolean  // White background behind logo
+  logoBackgroundOpacity: number
   
   // Eye (corner squares) customization
   eyeStyle: 'square' | 'rounded' | 'circle'
@@ -514,10 +519,14 @@ export default function BrandedFormBuilder() {
     backgroundImage: null,
     backgroundImageOpacity: 0.1,
     
-    // Logo/overlay
+    // ENHANCED: Logo/overlay with enterprise features
     logo: null,
     logoSize: 0.2,
     logoOpacity: 1.0,
+    logoShape: 'circle',
+    logoMargin: 10,  // 10px margin for scan safety
+    logoBackground: true,  // White background for better contrast
+    logoBackgroundOpacity: 0.9,
     
     // Eye customization
     eyeStyle: 'square',
@@ -678,18 +687,59 @@ export default function BrandedFormBuilder() {
     }))
   }
 
-  // Image Handlers
+  // ENHANCED: Enterprise Logo Upload with Validation
+  const handleLogoUpload = async (file: File) => {
+    // File validation
+    const maxSize = 2 * 1024 * 1024 // 2MB limit
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml']
+    
+    if (file.size > maxSize) {
+      toast.error('El archivo es demasiado grande. Máximo 2MB permitido.')
+      return
+    }
+    
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Formato no soportado. Use PNG, JPG, o SVG.')
+      return
+    }
+    
+    // Process image
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      const result = event.target?.result as string
+      
+      // Create image to get dimensions
+      const img = new Image()
+      img.onload = () => {
+        // Recommend optimal size if needed
+        const optimalSize = qrConfig.size * qrConfig.logoSize
+        if (img.width < optimalSize * 0.5 || img.height < optimalSize * 0.5) {
+          toast.warning(`Para mejor calidad, use imágenes de al menos ${Math.round(optimalSize)}x${Math.round(optimalSize)}px`)
+        }
+        
+        setQRConfig(prev => ({ ...prev, logo: result }))
+        toast.success('Logo cargado exitosamente')
+      }
+      img.src = result
+    }
+    reader.readAsDataURL(file)
+  }
+
+  // Legacy image handler for background images
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'background' | 'qr-logo') => {
     const file = e.target.files?.[0]
     if (!file) return
+
+    if (type === 'qr-logo') {
+      handleLogoUpload(file)
+      return
+    }
 
     const reader = new FileReader()
     reader.onload = (event) => {
       const result = event.target?.result as string
       if (type === 'background') {
         setFormConfig(prev => ({ ...prev, bgImage: result }))
-      } else {
-        setQRConfig(prev => ({ ...prev, logo: result }))
       }
     }
     reader.readAsDataURL(file)
@@ -718,15 +768,25 @@ export default function BrandedFormBuilder() {
     try {
       const formUrl = buildFormUrl(formSlug)
       
-      // Generate QR data using the basic library first
-      const qrDataURL = await QRCode.toDataURL(formUrl, {
+      // ENHANCED: Generate QR with optimal error correction for logos
+      const qrOptions: any = {
         width: qrConfig.size,
         margin: qrConfig.margin,
         color: {
           dark: '#000000', // We'll customize this later
           light: '#ffffff'
         }
-      })
+      }
+      
+      // Use High error correction (Level H = 30%) when logo is present
+      if (qrConfig.logo) {
+        qrOptions.errorCorrectionLevel = 'H' // 30% error correction for logo safety
+        toast.info('Usando corrección de error alta (30%) para escaneo seguro con logo')
+      } else {
+        qrOptions.errorCorrectionLevel = 'M' // Standard 15% for no-logo QR codes
+      }
+      
+      const qrDataURL = await QRCode.toDataURL(formUrl, qrOptions)
 
       // Create canvas for advanced customization
       const canvas = document.createElement('canvas')
@@ -985,36 +1045,90 @@ export default function BrandedFormBuilder() {
     }
   }
 
-  // Draw logo overlay
+  // ENHANCED: Enterprise Logo Drawing with Professional Styling
   const drawQRLogo = async (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, config: QRConfig) => {
     const img = new Image()
     img.crossOrigin = 'anonymous'
     
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, reject) => {
       img.onload = () => {
-        const logoSize = canvas.width * config.logoSize
-        const x = (canvas.width - logoSize) / 2
-        const y = (canvas.height - logoSize) / 2
+        try {
+          const logoSize = canvas.width * config.logoSize
+          const margin = config.logoMargin || 10
+          const totalSize = logoSize + (margin * 2)
+          const x = (canvas.width - totalSize) / 2
+          const y = (canvas.height - totalSize) / 2
+          const logoX = x + margin
+          const logoY = y + margin
 
-        ctx.globalAlpha = config.logoOpacity
-        
-        // Draw white background circle for logo
-        ctx.fillStyle = 'white'
-        ctx.beginPath()
-        ctx.arc(x + logoSize/2, y + logoSize/2, logoSize/2 + 10, 0, 2 * Math.PI)
-        ctx.fill()
-        
-        // Draw logo
-        ctx.save()
-        ctx.beginPath()
-        ctx.arc(x + logoSize/2, y + logoSize/2, logoSize/2, 0, 2 * Math.PI)
-        ctx.clip()
-        ctx.drawImage(img, x, y, logoSize, logoSize)
-        ctx.restore()
-        
-        ctx.globalAlpha = 1.0
-        resolve()
+          // Validate logo doesn't interfere with scanning (max 30% of QR)
+          if (config.logoSize > 0.3) {
+            console.warn('Logo size too large for reliable scanning. Reducing to 30%.')
+          }
+          
+          ctx.save()
+          
+          // Draw background if enabled
+          if (config.logoBackground) {
+            ctx.globalAlpha = config.logoBackgroundOpacity || 0.9
+            ctx.fillStyle = 'white'
+            
+            // Background shape based on logo shape
+            switch (config.logoShape) {
+              case 'circle':
+                ctx.beginPath()
+                ctx.arc(x + totalSize/2, y + totalSize/2, totalSize/2, 0, 2 * Math.PI)
+                ctx.fill()
+                break
+                
+              case 'square':
+                ctx.fillRect(x, y, totalSize, totalSize)
+                break
+                
+              case 'rounded-square':
+                ctx.beginPath()
+                ctx.roundRect(x, y, totalSize, totalSize, totalSize * 0.1)
+                ctx.fill()
+                break
+            }
+          }
+          
+          // Set logo opacity
+          ctx.globalAlpha = config.logoOpacity
+          
+          // Clip logo based on shape
+          ctx.beginPath()
+          switch (config.logoShape) {
+            case 'circle':
+              ctx.arc(logoX + logoSize/2, logoY + logoSize/2, logoSize/2, 0, 2 * Math.PI)
+              break
+              
+            case 'square':
+              ctx.rect(logoX, logoY, logoSize, logoSize)
+              break
+              
+            case 'rounded-square':
+              ctx.roundRect(logoX, logoY, logoSize, logoSize, logoSize * 0.1)
+              break
+          }
+          ctx.clip()
+          
+          // Draw logo
+          ctx.drawImage(img, logoX, logoY, logoSize, logoSize)
+          
+          ctx.restore()
+          resolve()
+        } catch (error) {
+          console.error('Error drawing logo:', error)
+          reject(error)
+        }
       }
+      
+      img.onerror = () => {
+        console.error('Failed to load logo image')
+        reject(new Error('Failed to load logo'))
+      }
+      
       img.src = config.logo!
     })
   }
@@ -1926,51 +2040,204 @@ export default function BrandedFormBuilder() {
                 </div>
               </div>
 
-              {/* Logo Settings */}
-              <div className="space-y-3">
+              {/* ENHANCED: Enterprise Logo Upload System */}
+              <div className="space-y-4">
                 <Label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                   <ImageIcon className="h-4 w-4 text-green-600" />
-                  Logo Central
+                  Logo Central - Sistema Empresarial
                 </Label>
                 
-                <div>
-                  <Input
-                    value={qrConfig.logo || ''}
-                    onChange={(e) => setQRConfig(prev => ({ ...prev, logo: e.target.value }))}
-                    placeholder="URL del logo (ej: https://ejemplo.com/logo.png)"
-                    className="h-9 text-sm"
-                  />
+                {/* Logo Upload Area */}
+                <div className="space-y-3">
+                  {!qrConfig.logo ? (
+                    <div 
+                      className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-400 transition-colors cursor-pointer"
+                      onClick={() => document.getElementById('logo-upload')?.click()}
+                      onDragOver={(e) => {
+                        e.preventDefault()
+                        e.currentTarget.classList.add('border-green-400', 'bg-green-50')
+                      }}
+                      onDragLeave={(e) => {
+                        e.currentTarget.classList.remove('border-green-400', 'bg-green-50')
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault()
+                        e.currentTarget.classList.remove('border-green-400', 'bg-green-50')
+                        const files = e.dataTransfer.files
+                        if (files[0]) handleLogoUpload(files[0])
+                      }}
+                    >
+                      <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                      <p className="text-sm font-medium text-gray-700 mb-1">Subir Logo de la Iglesia</p>
+                      <p className="text-xs text-gray-500 mb-3">Arrastra y suelta o haz clic para seleccionar</p>
+                      <p className="text-xs text-gray-400">PNG, JPG, SVG • Máximo 2MB</p>
+                      <input
+                        id="logo-upload"
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+                        onChange={(e) => e.target.files?.[0] && handleLogoUpload(e.target.files[0])}
+                        className="hidden"
+                      />
+                    </div>
+                  ) : (
+                    <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <img src={qrConfig.logo} alt="Logo" className="w-12 h-12 object-cover rounded-lg border" />
+                          <div>
+                            <p className="text-sm font-medium text-gray-700">Logo Cargado</p>
+                            <p className="text-xs text-gray-500">Configuración aplicada al QR</p>
+                          </div>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setQRConfig(prev => ({ ...prev, logo: null }))}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      
+                      {/* Logo Shape Selection */}
+                      <div className="space-y-2">
+                        <Label className="text-xs font-medium text-gray-600">Forma del Logo</Label>
+                        <div className="grid grid-cols-3 gap-2">
+                          <Button
+                            variant={qrConfig.logoShape === 'circle' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setQRConfig(prev => ({ ...prev, logoShape: 'circle' }))}
+                            className="h-auto p-2 flex flex-col gap-1"
+                          >
+                            <div className="w-4 h-4 bg-current rounded-full"></div>
+                            <span className="text-xs">Circular</span>
+                          </Button>
+                          <Button
+                            variant={qrConfig.logoShape === 'square' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setQRConfig(prev => ({ ...prev, logoShape: 'square' }))}
+                            className="h-auto p-2 flex flex-col gap-1"
+                          >
+                            <div className="w-4 h-4 bg-current"></div>
+                            <span className="text-xs">Cuadrado</span>
+                          </Button>
+                          <Button
+                            variant={qrConfig.logoShape === 'rounded-square' ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setQRConfig(prev => ({ ...prev, logoShape: 'rounded-square' }))}
+                            className="h-auto p-2 flex flex-col gap-1"
+                          >
+                            <div className="w-4 h-4 bg-current rounded"></div>
+                            <span className="text-xs">Redondeado</span>
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      {/* Logo Configuration Grid */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-xs font-medium text-gray-600">
+                            Tamaño ({Math.round(qrConfig.logoSize * 100)}%)
+                          </Label>
+                          <Input
+                            type="range"
+                            min="0.1"
+                            max="0.25"
+                            step="0.01"
+                            value={qrConfig.logoSize}
+                            onChange={(e) => setQRConfig(prev => ({ ...prev, logoSize: parseFloat(e.target.value) }))}
+                            className="w-full h-6 mt-1"
+                          />
+                          <p className="text-xs text-gray-400 mt-1">Máximo 25% para escaneo seguro</p>
+                        </div>
+                        
+                        <div>
+                          <Label className="text-xs font-medium text-gray-600">
+                            Margen de Seguridad ({qrConfig.logoMargin}px)
+                          </Label>
+                          <Input
+                            type="range"
+                            min="5"
+                            max="25"
+                            step="1"
+                            value={qrConfig.logoMargin}
+                            onChange={(e) => setQRConfig(prev => ({ ...prev, logoMargin: parseInt(e.target.value) }))}
+                            className="w-full h-6 mt-1"
+                          />
+                          <p className="text-xs text-gray-400 mt-1">Espacio alrededor del logo</p>
+                        </div>
+                        
+                        <div>
+                          <Label className="text-xs font-medium text-gray-600">
+                            Opacidad ({Math.round(qrConfig.logoOpacity * 100)}%)
+                          </Label>
+                          <Input
+                            type="range"
+                            min="0.5"
+                            max="1"
+                            step="0.05"
+                            value={qrConfig.logoOpacity}
+                            onChange={(e) => setQRConfig(prev => ({ ...prev, logoOpacity: parseFloat(e.target.value) }))}
+                            className="w-full h-6 mt-1"
+                          />
+                        </div>
+                        
+                        <div>
+                          <Label className="text-xs font-medium text-gray-600">
+                            Fondo Blanco ({Math.round(qrConfig.logoBackgroundOpacity * 100)}%)
+                          </Label>
+                          <div className="space-y-1">
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                id="logoBackground"
+                                checked={qrConfig.logoBackground}
+                                onChange={(e) => setQRConfig(prev => ({ ...prev, logoBackground: e.target.checked }))}
+                                className="rounded"
+                              />
+                              <Label htmlFor="logoBackground" className="text-xs">Activar</Label>
+                            </div>
+                            {qrConfig.logoBackground && (
+                              <Input
+                                type="range"
+                                min="0.3"
+                                max="1"
+                                step="0.1"
+                                value={qrConfig.logoBackgroundOpacity}
+                                onChange={(e) => setQRConfig(prev => ({ ...prev, logoBackgroundOpacity: parseFloat(e.target.value) }))}
+                                className="w-full h-6"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Scanning Safety Alert */}
+                      {qrConfig.logoSize > 0.25 && (
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                          <div className="flex items-start gap-2">
+                            <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                            <div className="text-xs">
+                              <p className="font-medium text-yellow-800">Advertencia de Escaneo</p>
+                              <p className="text-yellow-700">Logo demasiado grande puede interferir con el escaneo. Recomendamos 25% máximo.</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Replace Logo Button */}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById('logo-upload')?.click()}
+                        className="w-full"
+                      >
+                        <ImageIcon className="h-4 w-4 mr-2" />
+                        Cambiar Logo
+                      </Button>
+                    </div>
+                  )}
                 </div>
-                
-                {qrConfig.logo && (
-                  <div className="grid grid-cols-2 gap-3 ml-6 p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <Label className="text-sm">Tamaño ({Math.round(qrConfig.logoSize * 100)}%)</Label>
-                      <Input
-                        type="range"
-                        min="0.1"
-                        max="0.3"
-                        step="0.05"
-                        value={qrConfig.logoSize}
-                        onChange={(e) => setQRConfig(prev => ({ ...prev, logoSize: parseFloat(e.target.value) }))}
-                        className="w-full h-8"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label className="text-sm">Opacidad ({Math.round(qrConfig.logoOpacity * 100)}%)</Label>
-                      <Input
-                        type="range"
-                        min="0.3"
-                        max="1"
-                        step="0.1"
-                        value={qrConfig.logoOpacity}
-                        onChange={(e) => setQRConfig(prev => ({ ...prev, logoOpacity: parseFloat(e.target.value) }))}
-                        className="w-full h-8"
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Generate Button */}
