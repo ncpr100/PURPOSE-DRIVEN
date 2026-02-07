@@ -2778,7 +2778,93 @@ When working on this codebase, prioritize the **Phase 4 preparation and system o
 
 ---
 
-### **TENANT HELP MANUAL - Form Builder System**
+### **TENANT HELP MANUAL - Form Builder & Social Media System**
+
+## 📱 **SOCIAL MEDIA - SUPER SIMPLE GUIDE** 
+
+### **🎯 STEP 1: How to Connect Your Social Media (Like Magic!)**
+
+**What you need to do:** Click 3 buttons. That's it! 🎉
+
+**Go to Social Media page:**
+1. Click "Social Media" in your sidebar (left side of screen)
+2. You will see 3 big colorful buttons:
+   - 🔵 **"Conectar Facebook"** (Blue button)
+   - 🟣 **"Conectar Instagram"** (Purple button)  
+   - 🔴 **"Conectar YouTube"** (Red button)
+
+**Connect each one:**
+1. **Click the blue "Conectar Facebook" button**
+2. **Facebook will open** (like a new window)
+3. **Click "Continue" or "Permitir"** on Facebook 
+4. **You come back to your church page** 
+5. **✅ Facebook is connected!** (you'll see a green checkmark)
+
+**Repeat for Instagram and YouTube** - same easy steps!
+
+### **🎪 STEP 2: What Happens After Connecting? (The Fun Part!)**
+
+**Now you can do EVERYTHING from one place:**
+- ✍️ **Write posts** that go to Facebook, Instagram, AND YouTube at same time
+- 📅 **Schedule posts** for later (like Sunday morning)
+- 📊 **See how many people liked** your posts
+- 📸 **Share photos and videos** automatically
+- 🤖 **AI helps write better posts** (optional)
+
+**It's like having a magic remote control for all your social media!** 🎮
+
+### **🆘 HELP! Something's Not Working**
+
+**"Conectar" button does nothing when I click it:**
+- ✅ **Try refreshing the page** (F5 or reload button)
+- ✅ **Check your internet connection**
+- ✅ **Try a different browser** (Chrome works best)
+- ✅ **Make sure popup blockers are off**
+
+**"I clicked but got an error page:"**
+- ✅ **Don't worry!** Go back and try again
+- ✅ **Sometimes Facebook/Instagram is busy** - try in 5 minutes
+- ✅ **Make sure you're logged into Facebook/Instagram already**
+
+**"I connected but don't see my posts:"**
+- ✅ **Wait 2-3 minutes** - sometimes it takes a moment
+- ✅ **Refresh the page**
+- ✅ **Check if you selected the right Facebook page** (not personal profile)
+
+### **🎨 STEP 3: Creating Posts (Super Easy!)**
+
+**Write your message:**
+1. Type what you want to say in the big text box
+2. Pick which platforms: ☑️ Facebook ☑️ Instagram ☑️ YouTube
+3. Add photos if you want (drag and drop!)
+4. Click **"Publicar Ahora"** (Post Now) or **"Programar"** (Schedule)
+5. **Done!** Your post goes everywhere! 🚀
+
+**Want AI to help write your post?**
+- Turn on the "🤖 AI Ayuda" toggle
+- AI will make your words sound better and add emojis! 
+
+### **📅 STEP 4: Scheduling Posts (Post While You Sleep!)**
+
+1. Write your post like normal
+2. Instead of "Publicar Ahora", click **"Programar"**
+3. Pick the date and time (like "Sunday 9:00 AM")
+4. Click **"Programar Post"**
+5. **Go to sleep!** Your post will publish automatically! 😴→📱
+
+### **🔍 STEP 5: See How Your Posts Are Doing**
+
+**Check your "Social Media Dashboard":**
+- 👍 **Likes**: How many people liked your posts
+- 💬 **Comments**: People talking about your posts  
+- 👁️ **Views**: How many people saw your posts
+- 📈 **Growth**: Are you getting more followers?
+
+**Think of it like a report card for your church's social media!** 📊
+
+---
+
+## 📋 **FORM BUILDER SYSTEM - SUPER SIMPLE GUIDE**
 
 **Access Instructions:**
 1. Navigate to `/form-builder` from dashboard sidebar
@@ -3058,12 +3144,212 @@ The system uses **4-strategy duplicate detection**:
 
 ### **SUPER ADMIN HELP MANUAL - Platform Management**
 
-**🚀 SaaS OAuth System Architecture (Buffer/Hootsuite Model):**
+## 🚀 **SOCIAL MEDIA OAUTH SYSTEM - TECHNICAL GUIDE**
+
+### **🏗️ SaaS Architecture (Buffer/Hootsuite Model)**
+
+**System Overview:**
 - **Enterprise Requirement**: Platform manages ALL OAuth credentials - churches only click "Conectar"
 - **System Location**: `/api/oauth/` (NEW - 65 lines) vs `/api/social-oauth/` (OLD - 202 lines, deprecated) 
 - **Client Flow**: Button → GET `/api/social-media/connect?platform=X` → OAuth URL → Redirect → Callback → Connected
 - **Security**: AES-256 encrypted tokens, runtime validation, performance monitoring
 - **Church Experience**: Zero technical configuration - true one-click social media connection
+
+### **🔧 REQUIRED ENVIRONMENT VARIABLES (Platform Level Only)**
+
+**Production Railway Environment Setup:**
+```bash
+# Facebook/Instagram OAuth (Meta Developer Console)
+FACEBOOK_CLIENT_ID=your_meta_app_id_here
+FACEBOOK_CLIENT_SECRET=your_meta_app_secret_here
+
+# YouTube OAuth (Google Cloud Console)
+GOOGLE_CLIENT_ID=your_google_oauth_client_id_here  
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret_here
+
+# Platform Base URL (Railway Production Domain)
+NEXTAUTH_URL=https://your-production-domain.railway.app
+
+# Token Encryption (Generate 256-bit key)
+SOCIAL_MEDIA_ENCRYPTION_KEY=your_secure_256_bit_encryption_key_here
+```
+
+### **📋 OAUTH APP CONFIGURATION CHECKLIST**
+
+**Step 1: Facebook Developer Console Setup**
+1. **Create Facebook App**: Go to https://developers.facebook.com/apps/
+2. **Add Products**: Facebook Login, Instagram Basic Display
+3. **Set Callback URLs**:
+   - `https://your-domain.railway.app/api/oauth/facebook/callback`
+   - `https://your-domain.railway.app/api/oauth/instagram/callback`
+4. **Request Permissions**: 
+   - `pages_manage_posts` (Facebook posting)
+   - `pages_read_engagement` (Analytics)
+   - `instagram_basic` (Instagram access)
+   - `instagram_content_publish` (Instagram posting)
+5. **Get App ID & Secret**: Copy to Railway environment variables
+
+**Step 2: Google Cloud Console Setup**
+1. **Create Project**: Go to https://console.cloud.google.com/
+2. **Enable YouTube Data API v3**
+3. **Create OAuth 2.0 Client ID**: 
+   - Application Type: Web Application
+   - Authorized Redirect URIs: `https://your-domain.railway.app/api/oauth/youtube/callback`
+4. **Get Client ID & Secret**: Copy to Railway environment variables
+
+**Step 3: Railway Environment Variables**
+1. **Go to Railway Dashboard** → Your project → Variables tab
+2. **Add all 5 environment variables** listed above
+3. **Deploy**: Railway will automatically restart with new config
+
+### **🔍 TROUBLESHOOTING GUIDE (When "Conectar" Buttons Don't Work)**
+
+**Issue 1: Button clicks but nothing happens**
+```bash
+# Check environment variables in production
+railway logs --tail=100 | grep -i oauth
+
+# Expected logs:
+# ✅ "OAuth URL generation took XXXms for FACEBOOK"
+# ❌ "OAuth no configurado para FACEBOOK" = Missing env vars
+```
+
+**Common Fixes:**
+- ✅ **Missing Environment Variables**: Check Railway dashboard → Variables
+- ✅ **Wrong Callback URLs**: Must match exactly in Facebook/Google console
+- ✅ **App Not Approved**: Facebook/Google apps need review for production
+
+**Issue 2: OAuth redirect fails/errors**
+```bash
+# Check callback handler logs
+railway logs --tail=100 | grep -i callback
+
+# Common errors:
+# "OAuth error: access_denied" = User clicked cancel
+# "Invalid redirect_uri" = Callback URL mismatch
+# "Invalid client" = Wrong Client ID/Secret
+```
+
+**Common Fixes:**
+- ✅ **Callback URL Mismatch**: Must be EXACT match in OAuth console
+- ✅ **Wrong Environment**: Check NEXTAUTH_URL matches Railway domain
+- ✅ **Client ID/Secret Wrong**: Double-check copy/paste from developer console
+
+**Issue 3: Token encryption/storage fails**
+```bash
+# Check encryption key
+railway logs --tail=100 | grep -i encryption
+
+# Error: "Using default encryption key in production"
+# Fix: Set SOCIAL_MEDIA_ENCRYPTION_KEY environment variable
+```
+
+**Generate Encryption Key:**
+```bash
+# Generate 256-bit random key
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### **📊 MONITORING & HEALTH CHECKS**
+
+**Real-Time OAuth Performance:**
+```bash
+# Check OAuth URL generation speed (should be <1s)
+curl -s "https://your-domain.railway.app/api/social-media/connect?platform=FACEBOOK" \
+  -H "Cookie: next-auth.session-token=XXX" | jq '.performance.duration'
+
+# Check database connections
+psql $DATABASE_URL -c "SELECT platform, COUNT(*) FROM social_media_accounts GROUP BY platform;"
+
+# Monitor encryption/decryption performance
+railway logs --tail=50 | grep -i "OAuth URL generation took"
+```
+
+**Database Health:**
+```sql
+-- Check active social media accounts by church
+SELECT 
+  c.name as church_name,
+  COUNT(sm.id) as connected_accounts,
+  STRING_AGG(sm.platform, ', ') as platforms
+FROM church c
+LEFT JOIN social_media_accounts sm ON c.id = sm.church_id AND sm.is_active = true
+GROUP BY c.id, c.name
+ORDER BY connected_accounts DESC;
+
+-- Check recent connection activity
+SELECT 
+  sm.platform,
+  sm.account_name,
+  c.name as church,
+  sm.created_at,
+  CASE WHEN sm.expires_at > NOW() THEN 'Valid' ELSE 'Expired' END as token_status
+FROM social_media_accounts sm
+JOIN church c ON sm.church_id = c.id
+WHERE sm.created_at >= NOW() - INTERVAL '24 hours'
+ORDER BY sm.created_at DESC;
+
+-- Monitor OAuth callback success rate  
+SELECT 
+  DATE(created_at) as date,
+  platform,
+  COUNT(*) as successful_connections
+FROM social_media_accounts 
+WHERE created_at >= NOW() - INTERVAL '7 days'
+GROUP BY DATE(created_at), platform
+ORDER BY date DESC, platform;
+```
+
+### **🚨 EMERGENCY FIXES**
+
+**Quick Fix 1: Reset All OAuth Connections**
+```sql
+-- Emergency: Disable all social media accounts (if tokens compromised)
+UPDATE social_media_accounts SET is_active = false WHERE created_at >= '2026-01-01';
+```
+
+**Quick Fix 2: Force Token Refresh**
+```bash
+# Trigger token refresh for specific church
+curl -X POST "https://your-domain.railway.app/api/social-media/refresh-tokens" \
+  -H "Content-Type: application/json" \
+  -d '{"churchId": "church_id_here"}'
+```
+
+**Quick Fix 3: Check System Health**
+```bash
+# Overall system health check
+curl -s "https://your-domain.railway.app/api/health" | jq '.socialMedia'
+
+# Expected response:
+{
+  "oauth": "operational",
+  "encryption": "functional", 
+  "platforms": {
+    "facebook": "configured",
+    "instagram": "configured", 
+    "youtube": "configured"
+  }
+}
+```
+
+### **🔐 SECURITY PROTOCOLS**
+
+**Token Security Checklist:**
+- ✅ **AES-256 Encryption**: All tokens encrypted before database storage
+- ✅ **Environment Variables**: OAuth credentials in Railway env vars only
+- ✅ **HTTPS Only**: All OAuth callbacks use HTTPS (enforced)
+- ✅ **Expiration Tracking**: Automatic token refresh before expiry
+- ✅ **Church Isolation**: Each church's tokens completely isolated
+
+**Security Incident Response:**
+1. **Suspected Token Compromise**: Run "Quick Fix 1" to disable accounts
+2. **Environment Variable Leak**: Rotate all OAuth app secrets immediately
+3. **Callback URL Attack**: Check Railway logs for unauthorized redirect attempts
+
+---
+
+## 📋 **FORM BUILDER SYSTEM MONITORING**
 
 **Form Builder System Monitoring:**
 ```bash

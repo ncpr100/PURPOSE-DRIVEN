@@ -13,7 +13,7 @@ exports.SocialOAuth = exports.OAuthFlowManager = exports.SecureTokenManager = ex
 const db_1 = require("@/lib/db");
 const nanoid_1 = require("nanoid");
 const crypto_1 = __importDefault(require("crypto"));
-// Platform-specific configurations
+// Platform-specific configurations - Enterprise SaaS Multi-Tenant
 exports.SOCIAL_PLATFORMS = {
     FACEBOOK: {
         clientId: process.env.FACEBOOK_CLIENT_ID || '',
@@ -57,13 +57,25 @@ exports.SOCIAL_PLATFORMS = {
         apiBaseUrl: 'https://www.googleapis.com/youtube/v3'
     }
 };
-// Encrypted Token Storage (AES-256)
+// Encrypted Token Storage (AES-256) - Enterprise Security
 class SecureTokenManager {
+    static validateEncryptionKey() {
+        if (this.encryptionKey === 'default-key-change-in-production' && process.env.NODE_ENV === 'production') {
+            console.warn('⚠️ SECURITY: Using default encryption key in production');
+        }
+    }
     static encrypt(text) {
-        const cipher = crypto_1.default.createCipher('aes-256-cbc', this.encryptionKey);
-        let encrypted = cipher.update(text, 'utf8', 'hex');
-        encrypted += cipher.final('hex');
-        return encrypted;
+        this.validateEncryptionKey();
+        try {
+            const cipher = crypto_1.default.createCipher('aes-256-cbc', this.encryptionKey);
+            let encrypted = cipher.update(text, 'utf8', 'hex');
+            encrypted += cipher.final('hex');
+            return encrypted;
+        }
+        catch (error) {
+            console.error('❌ Encryption failed:', error);
+            throw new Error('Error de encriptación del token');
+        }
     }
     static decrypt(encryptedText) {
         const decipher = crypto_1.default.createDecipher('aes-256-cbc', this.encryptionKey);
@@ -112,11 +124,13 @@ exports.SecureTokenManager = SecureTokenManager;
 SecureTokenManager.encryptionKey = process.env.SOCIAL_MEDIA_ENCRYPTION_KEY || 'default-key-change-in-production';
 // OAuth Flow Manager
 class OAuthFlowManager {
-    // Generate OAuth authorization URL
+    // Generate OAuth authorization URL - SaaS Multi-Tenant Safe
     static generateAuthUrl(platform, churchId) {
         const config = exports.SOCIAL_PLATFORMS[platform];
         if (!config)
-            throw new Error(`Unsupported platform: ${platform}`);
+            throw new Error(`Plataforma no soportada: ${platform}`);
+        if (!config.clientId)
+            throw new Error(`OAuth no configurado para ${platform}`);
         const state = Buffer.from(JSON.stringify({ platform, churchId })).toString('base64');
         const params = new URLSearchParams({
             client_id: config.clientId,

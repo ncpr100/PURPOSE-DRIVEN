@@ -17,10 +17,15 @@ const formBuilderSchema = z.object({
     options: z.array(z.string()).optional(),
     required: z.boolean().optional()
   })),
-  bgColor: z.string(),
-  textColor: z.string(),
-  fontFamily: z.string(),
-  bgImage: z.string().nullable(),
+  config: z.object({
+    bgColor: z.string(),
+    textColor: z.string(),
+    fontFamily: z.string(),
+    bgImage: z.string().nullable(),
+    submitButtonText: z.string().optional(),     // NEW: Submit button text
+    submitButtonColor: z.string().optional(),    // NEW: Submit button background color
+    submitButtonTextColor: z.string().optional() // NEW: Submit button text color
+  }),
   qrConfig: z.object({
     foregroundColor: z.string(),
     backgroundColor: z.string(),
@@ -94,18 +99,12 @@ export async function POST(request: NextRequest) {
         title: validatedData.title,
         description: validatedData.description || '',
         fields: validatedData.fields,
-        config: {
-          bgColor: validatedData.bgColor,
-          textColor: validatedData.textColor,
-          fontFamily: validatedData.fontFamily,
-          bgImage: validatedData.bgImage
-        },
+        config: validatedData.config, // Use validated config object
         qrConfig: validatedData.qrConfig,
-        qrCodeUrl: `${process.env.NEXTAUTH_URL || 'https://khesed-tek-cms.up.railway.app'}/form-viewer?slug=${uniqueSlug}`, // SHORT URL
-        slug: uniqueSlug, // CRITICAL: Short slug for QR codes
+        qrCodeUrl: `${process.env.NEXTAUTH_URL || 'https://khesed-tek-cms.up.railway.app'}/form-viewer?slug=${uniqueSlug}`,
+        slug: uniqueSlug, // FIXED: Use the unique slug (remove duplicate)
         churchId: session.user.churchId,
-        createdBy: session.user.id,
-        slug: `form-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        createdBy: session.user.id
       }
     })
 

@@ -16,6 +16,7 @@ export interface SocialPlatformConfig {
 export declare const SOCIAL_PLATFORMS: Record<string, SocialPlatformConfig>;
 export declare class SecureTokenManager {
     private static encryptionKey;
+    private static validateEncryptionKey;
     static encrypt(text: string): string;
     static decrypt(encryptedText: string): string;
     static storeTokens(churchId: string, platform: string, accessToken: string, refreshToken?: string, expiresAt?: Date, accountData?: any): Promise<{

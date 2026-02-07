@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -39,11 +39,13 @@ import {
   Loader2,
   Settings,
   ImageIcon,
-  AlertTriangle
+  AlertTriangle,
+  Upload,
+  Archive
 } from 'lucide-react'
 import QRCode from 'qrcode'
 import html2canvas from 'html2canvas'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast' // FIXED: Use react-hot-toast to match global Toaster provider
 
 // Helper function to render preset field icons as JSX components
 const getPresetFieldIcon = (iconName: string) => {
@@ -487,6 +489,13 @@ interface QRConfig {
 }
 
 export default function BrandedFormBuilder() {
+  // AUTO-SAVE STATE
+  const [isAutoSaving, setIsAutoSaving] = useState(false)
+  const [lastSaved, setLastSaved] = useState<Date | null>(null)
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+  const [hasLocalDraft, setHasLocalDraft] = useState(false)
+  const autoSaveTimeoutRef = useRef<NodeJS.Timeout>()
+  
   // Form Configuration
   const [formConfig, setFormConfig] = useState<FormConfig>({
     title: 'Formulario Personalizado',
@@ -548,6 +557,134 @@ export default function BrandedFormBuilder() {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [currentFormSlug, setCurrentFormSlug] = useState<string | null>(null)
 
+  // 🚀 AUTO-SAVE FUNCTIONALITY - NEVER LOSE YOUR WORK!
+  const AUTO_SAVE_KEY = 'form-builder-draft'
+  
+  // Save to localStorage immediately (instant backup)
+  const saveToLocalStorage = useCallback((config: FormConfig, qrConfiguration: QRConfig) => {
+    try {
+      const draftData = {
+        formConfig: config,
+        qrConfig: qrConfiguration,
+        timestamp: new Date().toISOString(),
+        version: '1.0'
+      }
+      localStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(draftData))
+      setHasLocalDraft(true)
+      console.log('💾 Auto-saved to localStorage') // DEBUG
+    } catch (error) {
+      console.error('❌ Failed to save to localStorage:', error)
+    }
+  }, [])
+  
+  // Restore from localStorage on page load
+  const restoreFromLocalStorage = useCallback(() => {
+    try {
+      const savedDraft = localStorage.getItem(AUTO_SAVE_KEY)
+      if (savedDraft) {
+        const draftData = JSON.parse(savedDraft)
+        const savedTime = new Date(draftData.timestamp)
+        const hoursAgo = (Date.now() - savedTime.getTime()) / (1000 * 60 * 60)
+        
+        if (hoursAgo < 24) { // Only restore if less than 24 hours old
+          setFormConfig(draftData.formConfig)
+          setQRConfig(draftData.qrConfig) 
+          setLastSaved(savedTime)
+          setShowTemplates(false) // Go directly to editor
+          toast.success(`🔄 Trabajo restaurado desde ${savedTime.toLocaleString()}`, { duration: 5000 })
+          console.log('✅ Draft restored from localStorage') // DEBUG
+          return true
+        }
+      }
+    } catch (error) {
+      console.error('❌ Failed to restore from localStorage:', error)
+    }
+    return false
+  }, [])
+  
+  // Enhanced setFormConfig with auto-save
+  const updateFormConfig = useCallback((update: Partial<FormConfig> | ((prev: FormConfig) => FormConfig)) => {
+    setFormConfig(prev => {
+      const newConfig = typeof update === 'function' ? update(prev) : { ...prev, ...update }
+      
+      // Trigger auto-save after state update
+      setTimeout(() => {
+        saveToLocalStorage(newConfig, qrConfig)
+        setHasUnsavedChanges(true)
+        setLastSaved(new Date())
+      }, 100)
+      
+      return newConfig
+    })
+  }, [qrConfig, saveToLocalStorage])
+  
+  // Enhanced setQRConfig with auto-save  
+  const updateQRConfig = useCallback((update: Partial<QRConfig> | ((prev: QRConfig) => QRConfig)) => {
+    setQRConfig(prev => {
+      const newConfig = typeof update === 'function' ? update(prev) : { ...prev, ...update }
+      
+      // Trigger auto-save after state update
+      setTimeout(() => {
+        saveToLocalStorage(formConfig, newConfig)
+        setHasUnsavedChanges(true)
+        setLastSaved(new Date())
+      }, 100)
+      
+      return newConfig
+    })
+  }, [formConfig, saveToLocalStorage])
+  
+  // Clear localStorage when form is successfully saved
+  const clearAutoSave = useCallback(() => {
+    try {
+      localStorage.removeItem(AUTO_SAVE_KEY)
+      setHasUnsavedChanges(false)
+      setHasLocalDraft(false)
+      console.log('🗑️ Auto-save cleared after successful save') // DEBUG
+    } catch (error) {
+      console.error('❌ Failed to clear auto-save:', error)
+    }
+  }, [])
+  
+  // Restore draft on component mount
+  useEffect(() => {
+    // Check if draft exists
+    const savedData = localStorage.getItem('form-builder-draft')
+    if (savedData) {
+      const parsed = JSON.parse(savedData)
+      const saveDate = new Date(parsed.timestamp)
+      const hoursSinceLastSave = (Date.now() - saveDate.getTime()) / (1000 * 60 * 60)
+      
+      if (hoursSinceLastSave < 24) {
+        setHasLocalDraft(true)
+      } else {
+        localStorage.removeItem('form-builder-draft')
+        setHasLocalDraft(false)
+      }
+    } else {
+      setHasLocalDraft(false)
+    }
+    
+    const restored = restoreFromLocalStorage()
+    if (!restored) {
+      // No draft found, start fresh
+      console.log('🆕 Starting with fresh form') // DEBUG
+    }
+  }, [restoreFromLocalStorage])
+  
+  // Warn user before leaving with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault()
+        e.returnValue = 'Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?'
+      }
+    }
+    
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [hasUnsavedChanges])
+
   // Smart Templates Functions
   const applyTemplate = (template: any) => {
     const templateFields = template.fields.map((field: any, index: number) => ({
@@ -555,7 +692,7 @@ export default function BrandedFormBuilder() {
       ...field
     }))
     
-    setFormConfig(prev => ({
+    updateFormConfig(prev => ({
       ...prev,
       title: template.name.trim(),
       description: template.description,
@@ -575,7 +712,7 @@ export default function BrandedFormBuilder() {
       required: preset.field.required ?? false
     }
     
-    setFormConfig(prev => ({
+    updateFormConfig(prev => ({
       ...prev,
       fields: [...prev.fields, newField]
     }))
@@ -584,14 +721,18 @@ export default function BrandedFormBuilder() {
   }
 
   const resetToBlank = () => {
-    setFormConfig({
+    updateFormConfig({
       title: 'Formulario Personalizado',
       description: 'Complete la información requerida',
       fields: [{ id: 1, label: 'Nombre Completo', type: 'text', required: true }],
       bgColor: '#ffffff',
       textColor: '#000000',
       fontFamily: 'Inter',
-      bgImage: null
+      bgImage: null,
+      submitButtonText: 'Enviar Formulario',
+      submitButtonColor: '#2563eb',
+      submitButtonTextColor: '#ffffff'
+    })
     })
     setCurrentFormSlug(null) // Reset slug for new form
     setQRCodeUrl('') // Clear any existing QR code
@@ -637,7 +778,7 @@ export default function BrandedFormBuilder() {
   const addOption = (fieldId: number, option: string) => {
     if (!option.trim()) return
     
-    setFormConfig(prev => ({
+    updateFormConfig(prev => ({
       ...prev,
       fields: prev.fields.map(field =>
         field.id === fieldId
@@ -648,7 +789,7 @@ export default function BrandedFormBuilder() {
   }
 
   const removeOption = (fieldId: number, optionIndex: number) => {
-    setFormConfig(prev => ({
+    updateFormConfig(prev => ({
       ...prev,
       fields: prev.fields.map(field =>
         field.id === fieldId
@@ -662,7 +803,7 @@ export default function BrandedFormBuilder() {
   }
 
   const updateOption = (fieldId: number, optionIndex: number, newValue: string) => {
-    setFormConfig(prev => ({
+    updateFormConfig(prev => ({
       ...prev,
       fields: prev.fields.map(field =>
         field.id === fieldId
@@ -723,7 +864,7 @@ export default function BrandedFormBuilder() {
           toast.warning(`Para mejor calidad, use imágenes de al menos ${Math.round(optimalSize)}x${Math.round(optimalSize)}px`)
         }
         
-        setQRConfig(prev => ({ ...prev, logo: result }))
+        updateQRConfig(prev => ({ ...prev, logo: result }))
         toast.success('Logo cargado exitosamente')
       }
       img.src = result
@@ -745,7 +886,7 @@ export default function BrandedFormBuilder() {
     reader.onload = (event) => {
       const result = event.target?.result as string
       if (type === 'background') {
-        setFormConfig(prev => ({ ...prev, bgImage: result }))
+        updateFormConfig(prev => ({ ...prev, bgImage: result }))
       }
     }
     reader.readAsDataURL(file)
@@ -770,9 +911,11 @@ export default function BrandedFormBuilder() {
       return
     }
 
+    console.log('🎯 Starting QR generation for slug:', formSlug) // DEBUG
     setIsGenerating(true)
     try {
       const formUrl = buildFormUrl(formSlug)
+      console.log('📄 Form URL built:', formUrl) // DEBUG
       
       // ENHANCED: Generate QR with optimal error correction for logos
       const qrOptions: any = {
@@ -793,6 +936,7 @@ export default function BrandedFormBuilder() {
       }
       
       const qrDataURL = await QRCode.toDataURL(formUrl, qrOptions)
+      console.log('✅ Base QR generated successfully') // DEBUG
 
       // Create canvas for advanced customization
       const canvas = document.createElement('canvas')
@@ -803,25 +947,43 @@ export default function BrandedFormBuilder() {
       // Load the basic QR image
       const qrImg = new Image()
       qrImg.onload = async () => {
-        // Clear canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        try {
+          console.log('🎨 Starting canvas customization...') // DEBUG
+          // Clear canvas
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-        // Draw background
-        await drawQRBackground(ctx, canvas, qrConfig)
+          // Draw background
+          await drawQRBackground(ctx, canvas, qrConfig)
+          console.log('✅ Background drawn') // DEBUG
 
-        // Apply advanced styling to QR pattern
-        await drawStyledQR(ctx, canvas, qrImg, qrConfig)
+          // Apply advanced styling to QR pattern
+          await drawStyledQR(ctx, canvas, qrImg, qrConfig)
+          console.log('✅ QR pattern applied') // DEBUG
 
-        // Add logo if provided
-        if (qrConfig.logo) {
-          await drawQRLogo(ctx, canvas, qrConfig)
+          // Add logo if provided
+          if (qrConfig.logo) {
+            await drawQRLogo(ctx, canvas, qrConfig)
+            console.log('✅ Logo added') // DEBUG
+          }
+
+          setQRCodeUrl(canvas.toDataURL())
+          qrCanvasRef.current = canvas
+          console.log('🎉 QR Code generation completed successfully!') // DEBUG
+          toast.success('Código QR personalizado generado exitosamente')
+          setIsGenerating(false)
+        } catch (canvasError) {
+          console.error('❌ Canvas processing error:', canvasError) // DEBUG
+          toast.error('Error en el procesamiento del código QR')
+          setIsGenerating(false)
         }
-
-        setQRCodeUrl(canvas.toDataURL())
-        qrCanvasRef.current = canvas
-        toast.success('Código QR personalizado generado exitosamente')
+      }
+      
+      qrImg.onerror = (imgError) => {
+        console.error('❌ QR image loading error:', imgError) // DEBUG
+        toast.error('Error al cargar la imagen base del QR')
         setIsGenerating(false)
       }
+      
       qrImg.src = qrDataURL
 
     } catch (error) {
@@ -833,47 +995,61 @@ export default function BrandedFormBuilder() {
 
   // Draw QR background (solid color, gradient, or image)
   const drawQRBackground = async (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, config: QRConfig) => {
-    if (config.useBackgroundImage && config.backgroundImage) {
-      // Background image
-      const bgImg = new Image()
-      bgImg.crossOrigin = 'anonymous'
-      
-      return new Promise<void>((resolve) => {
-        bgImg.onload = () => {
-          ctx.globalAlpha = config.backgroundImageOpacity
-          ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height)
-          ctx.globalAlpha = 1.0
-          resolve()
+    try {
+      if (config.useBackgroundImage && config.backgroundImage) {
+        // Background image
+        const bgImg = new Image()
+        bgImg.crossOrigin = 'anonymous'
+        
+        return new Promise<void>((resolve, reject) => {
+          bgImg.onload = () => {
+            try {
+              ctx.globalAlpha = config.backgroundImageOpacity
+              ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height)
+              ctx.globalAlpha = 1.0
+              resolve()
+            } catch (error) {
+              console.error('❌ Error drawing background image:', error) // DEBUG
+              reject(error)
+            }
+          }
+          bgImg.onerror = (error) => {
+            console.error('❌ Error loading background image:', error) // DEBUG
+            reject(error)
+          }
+          bgImg.src = config.backgroundImage!
+        })
+      } else if (config.useGradient) {
+        // Gradient background
+        let gradient
+        if (config.gradientType === 'linear') {
+          const angle = parseInt(config.gradientDirection) * Math.PI / 180
+          const x1 = canvas.width / 2 + Math.cos(angle) * canvas.width / 2
+          const y1 = canvas.height / 2 + Math.sin(angle) * canvas.height / 2
+          const x2 = canvas.width / 2 - Math.cos(angle) * canvas.width / 2
+          const y2 = canvas.height / 2 - Math.sin(angle) * canvas.height / 2
+          gradient = ctx.createLinearGradient(x1, y1, x2, y2)
+        } else {
+          gradient = ctx.createRadialGradient(
+            canvas.width / 2, canvas.height / 2, 0,
+            canvas.width / 2, canvas.height / 2, canvas.width / 2
+          )
         }
-        bgImg.src = config.backgroundImage!
-      })
-    } else if (config.useGradient) {
-      // Gradient background
-      let gradient
-      if (config.gradientType === 'linear') {
-        const angle = parseInt(config.gradientDirection) * Math.PI / 180
-        const x1 = canvas.width / 2 + Math.cos(angle) * canvas.width / 2
-        const y1 = canvas.height / 2 + Math.sin(angle) * canvas.height / 2
-        const x2 = canvas.width / 2 - Math.cos(angle) * canvas.width / 2
-        const y2 = canvas.height / 2 - Math.sin(angle) * canvas.height / 2
-        gradient = ctx.createLinearGradient(x1, y1, x2, y2)
+        
+        config.gradientColors.forEach((color, index) => {
+          gradient.addColorStop(index / (config.gradientColors.length - 1), color)
+        })
+        
+        ctx.fillStyle = gradient
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
       } else {
-        gradient = ctx.createRadialGradient(
-          canvas.width / 2, canvas.height / 2, 0,
-          canvas.width / 2, canvas.height / 2, canvas.width / 2
-        )
+        // Solid background color
+        ctx.fillStyle = config.backgroundColor
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
       }
-      
-      config.gradientColors.forEach((color, index) => {
-        gradient.addColorStop(index / (config.gradientColors.length - 1), color)
-      })
-      
-      ctx.fillStyle = gradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-    } else {
-      // Solid background color
-      ctx.fillStyle = config.backgroundColor
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+    } catch (error) {
+      console.error('❌ Error in drawQRBackground:', error) // DEBUG
+      throw error
     }
   }
 
@@ -1291,6 +1467,9 @@ export default function BrandedFormBuilder() {
         setSavedForms(prev => [savedForm, ...prev])
         toast.success(`Formulario "${formConfig.title}" guardado exitosamente`)
         
+        // 🎉 Clear auto-save after successful save
+        clearAutoSave()
+        
         // Update the QR code with the permanent URL
         setTimeout(() => {
           toast.success(`Código QR actualizado con URL permanente: /form-viewer?slug=${savedForm.slug}`)
@@ -1447,10 +1626,39 @@ export default function BrandedFormBuilder() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Palette className="h-5 w-5" />
-                  Configuración del Formulario
-                </CardTitle>
+                <div className="flex items-center gap-4">
+                  <CardTitle className="flex items-center gap-2">
+                    <Palette className="h-5 w-5" />
+                    Configuración del Formulario
+                  </CardTitle>
+                  {/* 🚀 AUTO-SAVE STATUS INDICATOR */}
+                  <div className="flex items-center gap-2 text-xs">
+                    {hasUnsavedChanges ? (
+                      <>
+                        <div className="flex items-center gap-1 text-orange-600">
+                          <RefreshCcw className="h-3 w-3 animate-spin" />
+                          <span>Guardando...</span>
+                        </div>
+                      </>
+                    ) : lastSaved ? (
+                      <div className="flex items-center gap-1 text-green-600">
+                        <Save className="h-3 w-3" />
+                        <span>Guardado {lastSaved.toLocaleTimeString()}</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1 text-gray-500">
+                        <Save className="h-3 w-3" />
+                        <span>Sin guardar</span>
+                      </div>
+                    )}
+                    {hasLocalDraft && (
+                      <div className="flex items-center gap-1 text-blue-600 ml-4">
+                        <Archive className="h-3 w-3" />
+                        <span>Borrador disponible</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
                 {!showTemplates && (
                   <Button 
                     size="sm" 
@@ -1472,7 +1680,7 @@ export default function BrandedFormBuilder() {
                 <Input
                   id="title"
                   value={formConfig.title}
-                  onChange={(e) => setFormConfig(prev => ({ ...prev, title: e.target.value }))}
+                  onChange={(e) => updateFormConfig(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="Nombre de tu formulario"
                 />
               </div>
@@ -1482,7 +1690,7 @@ export default function BrandedFormBuilder() {
                 <Input
                   id="description"
                   value={formConfig.description}
-                  onChange={(e) => setFormConfig(prev => ({ ...prev, description: e.target.value }))}
+                  onChange={(e) => updateFormConfig(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="Breve descripción"
                 />
               </div>
@@ -1493,7 +1701,7 @@ export default function BrandedFormBuilder() {
                   <Label htmlFor="fontFamily">Fuente</Label>
                   <Select 
                     value={formConfig.fontFamily} 
-                    onValueChange={(value) => setFormConfig(prev => ({ ...prev, fontFamily: value }))}
+                    onValueChange={(value) => updateFormConfig(prev => ({ ...prev, fontFamily: value }))}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -1800,7 +2008,7 @@ export default function BrandedFormBuilder() {
                   <Button
                     variant={qrConfig.dotStyle === 'square' ? 'default' : 'outline'}
                     className="h-auto p-2 flex flex-col gap-1"
-                    onClick={() => setQRConfig(prev => ({ ...prev, dotStyle: 'square', eyeStyle: 'square' }))}
+                    onClick={() => updateQRConfig(prev => ({ ...prev, dotStyle: 'square', eyeStyle: 'square' }))}
                   >
                     <div className="grid grid-cols-3 gap-0.5">
                       {[...Array(9)].map((_, i) => (
@@ -1813,7 +2021,7 @@ export default function BrandedFormBuilder() {
                   <Button
                     variant={qrConfig.dotStyle === 'rounded' ? 'default' : 'outline'}
                     className="h-auto p-2 flex flex-col gap-1"
-                    onClick={() => setQRConfig(prev => ({ ...prev, dotStyle: 'rounded', eyeStyle: 'rounded' }))}
+                    onClick={() => updateQRConfig(prev => ({ ...prev, dotStyle: 'rounded', eyeStyle: 'rounded' }))}
                   >
                     <div className="grid grid-cols-3 gap-0.5">
                       {[...Array(9)].map((_, i) => (
@@ -1826,7 +2034,7 @@ export default function BrandedFormBuilder() {
                   <Button
                     variant={qrConfig.dotStyle === 'dots' ? 'default' : 'outline'}
                     className="h-auto p-2 flex flex-col gap-1"
-                    onClick={() => setQRConfig(prev => ({ ...prev, dotStyle: 'dots', eyeStyle: 'circle' }))}
+                    onClick={() => updateQRConfig(prev => ({ ...prev, dotStyle: 'dots', eyeStyle: 'circle' }))}
                   >
                     <div className="grid grid-cols-3 gap-0.5">
                       {[...Array(9)].map((_, i) => (
@@ -1839,7 +2047,7 @@ export default function BrandedFormBuilder() {
                   <Button
                     variant={qrConfig.dotStyle === 'classy' ? 'default' : 'outline'}
                     className="h-auto p-2 flex flex-col gap-1"
-                    onClick={() => setQRConfig(prev => ({ ...prev, dotStyle: 'classy', eyeStyle: 'rounded' }))}
+                    onClick={() => updateQRConfig(prev => ({ ...prev, dotStyle: 'classy', eyeStyle: 'rounded' }))}
                   >
                     <div className="grid grid-cols-3 gap-0.5">
                       {[...Array(9)].map((_, i) => (
@@ -1864,7 +2072,7 @@ export default function BrandedFormBuilder() {
                     <Input
                       type="number"
                       value={qrConfig.size}
-                      onChange={(e) => setQRConfig(prev => ({ ...prev, size: parseInt(e.target.value) }))}
+                      onChange={(e) => updateQRConfig(prev => ({ ...prev, size: parseInt(e.target.value) }))}
                       min="200"
                       max="800"
                       step="50"
@@ -1876,7 +2084,7 @@ export default function BrandedFormBuilder() {
                     <Input
                       type="number"
                       value={qrConfig.margin}
-                      onChange={(e) => setQRConfig(prev => ({ ...prev, margin: parseInt(e.target.value) }))}
+                      onChange={(e) => updateQRConfig(prev => ({ ...prev, margin: parseInt(e.target.value) }))}
                       min="0"
                       max="10"
                       className="h-9"
@@ -2434,6 +2642,23 @@ export default function BrandedFormBuilder() {
                   <Copy className="h-4 w-4 mr-2" />
                   Copiar URL
                 </Button>
+                {hasLocalDraft && (
+                  <Button onClick={restoreFromLocalStorage} variant="outline" className="border-green-500 text-green-600 hover:bg-green-50">
+                    <Upload className="h-4 w-4 mr-2" />
+                    Cargar Borrador
+                  </Button>
+                )}
+                <Button 
+                  onClick={() => {
+                    saveToLocalStorage(formConfig, qrConfig)
+                    toast.success('Borrador guardado localmente')
+                  }} 
+                  variant="outline" 
+                  className="border-blue-500 text-blue-600 hover:bg-blue-50"
+                >
+                  <Archive className="h-4 w-4 mr-2" />
+                  Guardar Borrador
+                </Button>
                 <Button onClick={saveForm} variant="outline" className="col-span-2">
                   <Save className="h-4 w-4 mr-2" />
                   Guardar Formulario
@@ -2444,6 +2669,24 @@ export default function BrandedFormBuilder() {
                 <AlertDescription>
                   <strong>URL del formulario:</strong><br />
                   <code className="text-xs break-all">{buildFormUrl()}</code>
+                </AlertDescription>
+              </Alert>
+              
+              {hasLocalDraft && (
+                <Alert className="mt-2 border-blue-500 bg-blue-50">
+                  <Archive className="h-4 w-4 text-blue-600" />
+                  <AlertDescription className="text-blue-800">
+                    <strong>Borrador disponible:</strong> Tienes un borrador guardado. 
+                    Usa "Cargar Borrador" para restaurar tu trabajo anterior.
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              <Alert className="mt-2 border-green-500 bg-green-50">
+                <Save className="h-4 w-4 text-green-600" />
+                <AlertDescription className="text-green-800">
+                  <strong>🚀 No más trabajo perdido:</strong> Tus cambios se guardan automáticamente. 
+                  Usa "Guardar Borrador" para crear copias de seguridad manuales.
                 </AlertDescription>
               </Alert>
             </CardContent>
