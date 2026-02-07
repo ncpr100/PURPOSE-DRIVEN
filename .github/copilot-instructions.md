@@ -2768,15 +2768,167 @@ When working on this codebase, prioritize the **Phase 4 preparation and system o
 
 ## 📚 HELP MANUALS & TROUBLESHOOTING
 
+**⚠️ CRITICAL PROTOCOL - NON-NEGOTIABLE ENTERPRISE COMPLIANCE:**
+- **ALL platform, tenant, and super admin help content MUST be in THIS file ONLY**
+- **NO standalone help manual files are permitted** (e.g., TENANT_HELP_MANUAL_*.md)
+- **Location**: `.github/copilot-instructions.md` - Section "📚 HELP MANUALS & TROUBLESHOOTING"
+- **Sections**: TENANT HELP MANUAL, SUPER ADMIN HELP MANUAL
+- **Violation Consequences**: Immediate correction required, standalone files must be archived
+- **AI Agent Mandate**: Always update THIS file for ALL help documentation
+
+---
+
 ### **TENANT HELP MANUAL - Form Builder System**
 
 **Access Instructions:**
 1. Navigate to `/form-builder` from dashboard sidebar
 2. Select from **9 Smart Templates** with unique themed icons (including NEW public assessment templates)
 3. Customize using Quick Field Presets (18 options) or manual field addition
-4. Generate QR codes with slug-based URLs for sharing
-5. Automatic visitor CRM integration for lead generation
-6. **NEW**: Public spiritual assessment and volunteer forms for members without platform access
+4. **NEW**: Customize submit button (text, colors) for brand consistency
+5. Generate QR codes with slug-based URLs for sharing
+6. **COMPREHENSIVE QR Customization**: Background, dots, markers, gradients, logos
+7. Automatic visitor CRM integration for lead generation
+8. **NEW**: Public spiritual assessment and volunteer forms for members without platform access
+
+## 🎨 **NEW: SUBMIT BUTTON CUSTOMIZATION**
+
+**Location**: Paso 1: Configuración → "Personalización del Botón de Envío" section
+
+**Customization Options**:
+1. **Button Text**: Change "Enviar Formulario" to any custom text (e.g., "Registrarme", "Solicitar Información")
+2. **Button Background Color**: Color picker + hex input (default: #2563eb blue)
+3. **Button Text Color**: Color picker + hex input (default: #ffffff white)
+
+**Usage**:
+- Customize button to match your church's branding
+- Use action-oriented text for better engagement
+- Ensure sufficient contrast between button and text colors
+- Changes reflect in real-time preview
+
+**Examples**:
+- Visitor forms: "Quiero Conectar" (green background, white text)
+- Prayer requests: "Enviar Oración" (purple background, white text)
+- Event registration: "Registrarme Ahora" (orange background, white text)
+
+## 📊 **FORM SUBMISSION FLOW - WHERE YOUR DATA GOES**
+
+### **When "Enviar Formulario" is Clicked:**
+
+**Step 1: API Submission** → `/api/custom-form/[slug]`
+
+**Step 2: THREE Automatic Database Records Created:**
+
+#### **1️⃣ VISITOR PROFILE** (check_ins table)
+- **Extracts**: Name, email, phone from form fields (smart field detection)
+- **Labels**: `visitorType: 'custom_form'`
+- **Engagement**: Sets `engagementScore: 85` (high)
+- **Visit Reason**: "Form: [Your Form Title]"
+- **RESULT**: ✅ Visitor appears in **Visitors Dashboard** immediately
+
+#### **2️⃣ FORM SUBMISSION** (custom_form_submissions table)
+- **Stores**: Complete form data as JSON
+- **Tracks**: IP address, user agent, timestamp
+- **Links**: To visitor ID created above
+- **RESULT**: ✅ View all submissions in **Form Builder → Submissions**
+
+#### **3️⃣ AUTOMATIC FOLLOW-UP TASK** (visitor_follow_ups table)
+- **Priority**: HIGH
+- **Status**: PENDING
+- **Scheduled**: 24 hours later (next day)
+- **Includes**: Visitor contact info, preferred contact method
+- **RESULT**: ✅ Task appears in **Follow-Ups Dashboard**
+
+### **Smart Data Extraction**
+The system automatically finds visitor info using intelligent mapping:
+- **Email**: Searches for `email`, `correo`, `correoelectronico`, `e-mail`
+- **Phone**: Searches for `phone`, `telefono`, `celular`, `mobile`
+- **Name**: Searches for `firstName`, `nombre`, `name`, `fullName`
+- **Prayer**: Searches for `prayer_requests`, `oracion`, `peticion`
+- **Interests**: Searches for `interests`, `intereses`, `ministerios`
+
+### **Success Response to User**
+```
+¡Gracias por contactar a [Church Name]! Nos pondremos en contacto pronto.
+```
+User sees success screen with option to submit another form.
+
+### **Where to Find Submitted Data**
+1. **Visitors Dashboard** (`/visitors`) - All form submissions as new visitors
+2. **Follow-Ups Dashboard** (`/visitor-follow-ups`) - Automatic tasks
+3. **Form Builder** (`/form-builder`) - Submission analytics
+4. **Database Tables**: `check_ins`, `custom_form_submissions`, `visitor_follow_ups`
+
+## 🎨 **COMPREHENSIVE QR CODE CUSTOMIZATION**
+
+**Location**: Paso 3: Personalizar QR → Full customization panel
+
+### **✅ ALL 4 Core Customizations Available:**
+
+#### **1. Background Color** (backgroundColor)
+- **Label**: "Fondo"
+- **UI**: Color picker + Hex input
+- **Default**: #ffffff (white)
+- **Use**: Match church branding or event theme
+
+#### **2. Dots Color** (foregroundColor)
+- **Label**: "QR Principal"
+- **UI**: Color picker + Hex input
+- **Default**: #000000 (black)
+- **Use**: Primary QR code pattern color
+
+#### **3. Marker Border** (eyeBorderColor)
+- **Label**: "Color Borde" (under Esquinas section)
+- **UI**: Color picker + Hex input
+- **Default**: #000000 (black)
+- **Use**: Corner square border color
+
+#### **4. Marker Center** (eyeColor)
+- **Label**: "Color Esquinas" (under Esquinas section)
+- **UI**: Color picker + Hex input
+- **Default**: #000000 (black)
+- **Use**: Corner square fill color
+
+### **🚀 Advanced QR Features:**
+
+**Gradient Support**:
+- Linear or Radial gradients
+- Up to 4 colors
+- Custom angle control (0-360°)
+- Replaces solid dots color with gradient
+
+**Eye (Marker) Styles**:
+- Square, Rounded, or Circle
+- Independent color control
+- Visual previews for each style
+
+**Dot Pattern Styles**:
+- Clásico (square dots)
+- Moderno (rounded dots)
+- Puntos (circular dots)
+- Elegante (diamond-shaped dots)
+
+**Logo Integration**:
+- Upload church logo (PNG, JPG, SVG)
+- Logo shape: Circle, Square, Rounded Square
+- Size control: 10-25% (max for scanning safety)
+- Opacity: 50-100%
+- Margin: 5-25px safety zone
+- Optional white background behind logo
+
+**Background Options**:
+- Solid color
+- Gradient (linear/radial)
+- Background image upload
+- Image opacity control
+
+**Size & Margin**:
+- QR size: 200-800px
+- Margin: 0-10 units
+
+### **⚠️ Scanning Safety Alerts**
+- Logo >25% triggers warning (reduces scannability)
+- High contrast recommended for reliability
+- Test QR codes before printing
 
 ## 🙏 **NEW: PUBLIC ASSESSMENT SYSTEM TEMPLATES**
 
@@ -3045,6 +3197,219 @@ ORDER BY created_at DESC;
 6. **NEW: Assessment Detection**: Spiritual and volunteer forms must be properly detected and processed
 7. **NEW: Leadership Notifications**: All churches must have active Pastor/Administrador accounts for notifications
 8. **NEW: Member Linking**: Duplicate detection must prevent member profile duplication
+9. **NEW: Submit Button Customization**: Verify submitButtonText, submitButtonColor, submitButtonTextColor saved in form config
+10. **NEW: Form Submission Flow**: Monitor check_ins, custom_form_submissions, visitor_follow_ups tables for data integrity
+11. **NEW: QR Customization Completeness**: All 4 core options (background, dots, marker border, marker center) functional
+
+**Form Submission Monitoring:**
+```sql
+-- Monitor form submissions in real-time
+SELECT 
+  cf.title as form_title,
+  COUNT(cfs.id) as submissions_today,
+  COUNT(DISTINCT cfs.data->>'visitorId') as unique_visitors,
+  COUNT(vf.id) as follow_ups_created
+FROM custom_forms cf
+LEFT JOIN custom_form_submissions cfs ON cf.id = cfs.formId 
+  AND cfs.createdAt >= CURRENT_DATE
+LEFT JOIN visitor_follow_ups vf ON vf.notes LIKE '%' || cf.title || '%' 
+  AND vf.createdAt >= CURRENT_DATE
+GROUP BY cf.id, cf.title
+ORDER BY submissions_today DESC;
+
+-- Verify CRM integration working
+SELECT 
+  cfs.id as submission_id,
+  cfs.data->>'formTitle' as form,
+  cfs.data->>'visitorId' as visitor_created,
+  ci.firstName || ' ' || ci.lastName as visitor_name,
+  ci.email,
+  ci.phone,
+  vf.id as follow_up_created
+FROM custom_form_submissions cfs
+LEFT JOIN check_ins ci ON ci.id = cfs.data->>'visitorId'
+LEFT JOIN visitor_follow_ups vf ON vf.checkInId = ci.id
+WHERE cfs.createdAt >= NOW() - INTERVAL '24 hours'
+ORDER BY cfs.createdAt DESC;
+
+-- Monitor submit button customization usage
+SELECT 
+  title,
+  config->>'submitButtonText' as button_text,
+  config->>'submitButtonColor' as button_bg,
+  config->>'submitButtonTextColor' as button_text_color,
+  CASE 
+    WHEN config->>'submitButtonText' IS NOT NULL THEN 'customized'
+    ELSE 'default'
+  END as customization_status
+FROM custom_forms
+WHERE createdAt >= CURRENT_DATE - INTERVAL '7 days'
+ORDER BY createdAt DESC;
+```
+
+**QR Customization Validation:**
+```bash
+# Test QR customization API
+curl -s "https://api.khesed-tek.com/api/form-builder" | jq '.forms[] | {title, qrConfig: .qrConfig}'
+
+# Verify all 4 core QR options present
+grep -r "backgroundColor\|foregroundColor\|eyeColor\|eyeBorderColor" app/(dashboard)/form-builder/_components/branded-form-builder.tsx | wc -l
+# Should return 20+ matches (interface + UI + generation logic)
+```
+
+**Submit Button Functionality Tests:**
+```bash
+# Verify form-viewer uses submit button config
+grep -A5 "submitButtonText\|submitButtonColor\|submitButtonTextColor" app/form-viewer/_components/form-viewer.tsx
+
+# Check saveForm includes submit button fields
+grep -A10 "const saveForm" app/(dashboard)/form-builder/_components/branded-form-builder.tsx | grep "submitButton"
+```
+
+## 🔧 **TECHNICAL IMPLEMENTATION - Form Submission API**
+
+**API Endpoint**: `/app/api/custom-form/[slug]/route.ts` (Lines 60-250)
+
+### **POST Handler - Form Submission Flow**
+
+**Step 1: Form Validation** (Lines 60-78)
+```typescript
+// Fetch form by slug
+const form = await db.custom_forms.findUnique({
+  where: { slug },
+  include: { churches: { select: { id, name } } }
+})
+
+// Verify form exists and is active
+if (!form || !form.isActive) {
+  return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
+}
+```
+
+**Step 2: Client Information Capture** (Lines 86-89)
+```typescript
+const clientIp = request.headers.get('x-forwarded-for') || 
+                request.headers.get('x-real-ip') || 'unknown'
+const userAgent = request.headers.get('user-agent') || 'unknown'
+```
+
+**Step 3: Visitor Information Extraction** (Lines 92-95)
+```typescript
+const formData = body.data || body
+const visitorInfo = extractVisitorInfo(formData)  // Smart field mapping
+```
+
+**Step 4: Create Visitor Profile** (Lines 97-111)
+```typescript
+const visitor = await db.check_ins.create({
+  data: {
+    id: nanoid(),
+    firstName: visitorInfo.firstName,
+    lastName: visitorInfo.lastName,
+    email: visitorInfo.email,
+    phone: visitorInfo.phone,
+    isFirstTime: true,
+    checkedInAt: new Date(),
+    visitorType: 'custom_form',
+    engagementScore: 85,  // High engagement for form submissions
+    visitReason: `Form: ${form.title}`,
+    prayerRequest: visitorInfo.prayer_requests,
+    churchId: form.churchId
+  }
+})
+```
+
+**Step 5: Save Form Submission** (Lines 114-127)
+```typescript
+const submission = await db.custom_form_submissions.create({
+  data: {
+    id: nanoid(),
+    formId: form.id,
+    data: {
+      ...formData,
+      visitorId: visitor.id,
+      submittedAt: new Date().toISOString(),
+      formTitle: form.title
+    },
+    ipAddress: clientIp,
+    userAgent,
+    churchId: form.churchId
+  }
+})
+```
+
+**Step 6: Create Follow-Up Task** (Lines 130-146)
+```typescript
+await db.visitor_follow_ups.create({
+  data: {
+    id: nanoid(),
+    checkInId: visitor.id,
+    followUpType: 'custom_form_submission',
+    priority: 'high',
+    status: 'pending',
+    scheduledAt: new Date(Date.now() + 24 * 60 * 60 * 1000),  // Next day
+    notes: `Nuevo visitante desde formulario "${form.title}". 
+            Email: ${visitorInfo.email || 'No proporcionado'}
+            Teléfono: ${visitorInfo.phone || 'No proporcionado'}`,
+    churchId: form.churchId
+  }
+})
+```
+
+**Step 7: Success Response** (Lines 148-156)
+```typescript
+return NextResponse.json({
+  success: true,
+  message: `¡Gracias por contactar a ${form.churches.name}!`,
+  submissionId: submission.id,
+  visitorId: visitor.id,
+  church: form.churches.name
+}, { status: 201 })
+```
+
+### **Smart Field Extraction - extractVisitorInfo()** (Lines 169-235)
+
+**Field Mapping Logic**:
+```typescript
+const fieldMappings = {
+  firstName: ['firstName', 'first_name', 'nombre', 'name'],
+  lastName: ['lastName', 'last_name', 'apellido'],
+  email: ['email', 'correo', 'correoelectronico', 'e-mail'],
+  phone: ['phone', 'telefono', 'celular', 'mobile'],
+  address: ['address', 'direccion'],
+  interests: ['interests', 'intereses', 'ministerios'],
+  prayer_requests: ['prayer_requests', 'prayer', 'oracion', 'peticion'],
+  preferredContact: ['preferredContact', 'contacto_preferido']
+}
+```
+
+**Case-Insensitive Search**:
+- Searches form data for any matching field name
+- Returns first non-null value found
+- Falls back to default values if no match
+
+**Name Fallback Logic**:
+- If no firstName/lastName found, searches for generic 'name' field
+- Splits full name into firstName and lastName
+- Defaults to 'Visitante' if no name provided
+
+### **Database Schema Integration**
+
+**Tables Affected by Form Submission**:
+1. `custom_forms` - Form definition and configuration
+2. `custom_form_submissions` - Raw submission data with metadata
+3. `check_ins` - Visitor profile (CRM integration)
+4. `visitor_follow_ups` - Automated follow-up tasks
+5. `churches` - Associated church information
+
+**Data Flow Diagram**:
+```
+Form Submission → API Endpoint → Validation → Extract Visitor Info →
+→ Create Visitor Profile (check_ins) →
+→ Create Submission Record (custom_form_submissions) →
+→ Create Follow-Up Task (visitor_follow_ups) →
+→ Return Success Response
+```
 
 **Enterprise Compliance Monitoring:**
 ```typescript
