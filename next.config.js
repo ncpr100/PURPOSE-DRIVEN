@@ -13,8 +13,8 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Railway build optimization: Skip type checking during build on Railway
-    ignoreBuildErrors: process.env.RAILWAY_ENVIRONMENT ? true : false,
+    // ENTERPRISE COMPLIANCE: ENFORCED - builds must pass TypeScript (per copilot instructions)
+    ignoreBuildErrors: false,
   },
   // Railway-specific optimizations
   compiler: {
