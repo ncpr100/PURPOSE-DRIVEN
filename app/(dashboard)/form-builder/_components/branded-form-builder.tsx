@@ -443,6 +443,9 @@ interface FormConfig {
   textColor: string
   fontFamily: string
   bgImage: string | null
+  submitButtonText: string
+  submitButtonColor: string
+  submitButtonTextColor: string
 }
 
 interface QRConfig {
@@ -492,7 +495,10 @@ export default function BrandedFormBuilder() {
     bgColor: '#ffffff',
     textColor: '#000000',
     fontFamily: 'Inter',
-    bgImage: null
+    bgImage: null,
+    submitButtonText: 'Enviar Formulario',
+    submitButtonColor: '#2563eb',
+    submitButtonTextColor: '#ffffff'
   })
 
   // QR Configuration
@@ -1157,7 +1163,10 @@ export default function BrandedFormBuilder() {
           bgColor: formConfig.bgColor,
           textColor: formConfig.textColor,
           fontFamily: formConfig.fontFamily,
-          bgImage: formConfig.bgImage
+          bgImage: formConfig.bgImage,
+          submitButtonText: formConfig.submitButtonText,
+          submitButtonColor: formConfig.submitButtonColor,
+          submitButtonTextColor: formConfig.submitButtonTextColor
         },
       }
 
@@ -1168,7 +1177,8 @@ export default function BrandedFormBuilder() {
       })
 
       if (response.ok) {
-        const savedForm = await response.json()
+        const result = await response.json()
+        const savedForm = result.form
         setCurrentFormSlug(savedForm.slug)
         // Now generate QR with the new slug
         await generateQRCode(savedForm.slug)
@@ -1251,7 +1261,10 @@ export default function BrandedFormBuilder() {
           bgColor: formConfig.bgColor,
           textColor: formConfig.textColor,
           fontFamily: formConfig.fontFamily,
-          bgImage: formConfig.bgImage
+          bgImage: formConfig.bgImage,
+          submitButtonText: formConfig.submitButtonText,
+          submitButtonColor: formConfig.submitButtonColor,
+          submitButtonTextColor: formConfig.submitButtonTextColor
         },
         qrConfig,
         qrCodeUrl
@@ -1541,6 +1554,65 @@ export default function BrandedFormBuilder() {
                 </div>
               </div>
 
+              {/* Submit Button Customization */}
+              <Separator />
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Label className="text-base font-semibold">Personalización del Botón de Envío</Label>
+                  <Badge variant="secondary" className="text-xs flex items-center gap-1">
+                    <Palette className="h-3 w-3" />
+                    Nuevo
+                  </Badge>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="submitButtonText">Texto del Botón</Label>
+                  <Input
+                    id="submitButtonText"
+                    value={formConfig.submitButtonText}
+                    onChange={(e) => setFormConfig(prev => ({ ...prev, submitButtonText: e.target.value }))}
+                    placeholder="Enviar Formulario"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="submitButtonColor">Color del Botón</Label>
+                    <div className="flex gap-2 items-center">
+                      <Input
+                        type="color"
+                        value={formConfig.submitButtonColor}
+                        onChange={(e) => setFormConfig(prev => ({ ...prev, submitButtonColor: e.target.value }))}
+                        className="w-12 h-10"
+                      />
+                      <Input
+                        value={formConfig.submitButtonColor}
+                        onChange={(e) => setFormConfig(prev => ({ ...prev, submitButtonColor: e.target.value }))}
+                        placeholder="#2563eb"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="submitButtonTextColor">Color del Texto</Label>
+                    <div className="flex gap-2 items-center">
+                      <Input
+                        type="color"
+                        value={formConfig.submitButtonTextColor}
+                        onChange={(e) => setFormConfig(prev => ({ ...prev, submitButtonTextColor: e.target.value }))}
+                        className="w-12 h-10"
+                      />
+                      <Input
+                        value={formConfig.submitButtonTextColor}
+                        onChange={(e) => setFormConfig(prev => ({ ...prev, submitButtonTextColor: e.target.value }))}
+                        placeholder="#ffffff"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
               {/* Form Fields */}
               <Separator />
               
@@ -2333,7 +2405,15 @@ export default function BrandedFormBuilder() {
                     </div>
                   ))}
                   
-                  <Button className="w-full mt-6">Enviar Formulario</Button>
+                  <Button 
+                    className="w-full mt-6" 
+                    style={{
+                      backgroundColor: formConfig.submitButtonColor,
+                      color: formConfig.submitButtonTextColor
+                    }}
+                  >
+                    {formConfig.submitButtonText}
+                  </Button>
                 </div>
               </div>
             </CardContent>

@@ -26,6 +26,9 @@ interface FormConfig {
   textColor: string
   fontFamily: string
   bgImage: string | null
+  submitButtonText?: string
+  submitButtonColor?: string
+  submitButtonTextColor?: string
   timestamp?: number
 }
 
@@ -83,6 +86,9 @@ export default function FormViewer() {
           textColor: form.config.textColor,
           fontFamily: form.config.fontFamily,
           bgImage: form.config.bgImage,
+          submitButtonText: form.config.submitButtonText,
+          submitButtonColor: form.config.submitButtonColor,
+          submitButtonTextColor: form.config.submitButtonTextColor,
           church: result.church
         }
         
@@ -349,6 +355,10 @@ export default function FormViewer() {
               type="submit" 
               disabled={isSubmitting}
               className="w-full h-12 text-lg font-semibold"
+              style={{
+                backgroundColor: formConfig.submitButtonColor || '#2563eb',
+                color: formConfig.submitButtonTextColor || '#ffffff'
+              }}
             >
               {isSubmitting ? (
                 <>
@@ -356,7 +366,7 @@ export default function FormViewer() {
                   Enviando...
                 </>
               ) : (
-                'Enviar Formulario'
+                formConfig.submitButtonText || 'Enviar Formulario'
               )}
             </Button>
           </form>
