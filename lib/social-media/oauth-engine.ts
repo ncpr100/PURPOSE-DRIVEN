@@ -1,7 +1,8 @@
 /**
- * ENTERPRISE OAUTH SIMPLIFICATION ENGINE
- * GoHighLevel-style one-click social media account connection
- * Handles Facebook, Instagram, YouTube OAuth flows with automatic token management
+ * SAAS PLATFORM OAUTH ENGINE 🚀
+ * Buffer/Hootsuite-style centralized OAuth for ALL churches
+ * NO technical setupRequired by tenants - truly one-click connections
+ * Platform-managed OAuth credentials serve all church tenants
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -20,7 +21,7 @@ export interface SocialPlatformConfig {
   apiBaseUrl: string
 }
 
-// Platform-specific configurations
+// Platform-specific configurations - Enterprise SaaS Multi-Tenant
 export const SOCIAL_PLATFORMS: Record<string, SocialPlatformConfig> = {
   FACEBOOK: {
     clientId: process.env.FACEBOOK_CLIENT_ID || '',
@@ -67,15 +68,27 @@ export const SOCIAL_PLATFORMS: Record<string, SocialPlatformConfig> = {
   }
 }
 
-// Encrypted Token Storage (AES-256)
+// Encrypted Token Storage (AES-256) - Enterprise Security
 export class SecureTokenManager {
   private static encryptionKey = process.env.SOCIAL_MEDIA_ENCRYPTION_KEY || 'default-key-change-in-production'
   
+  private static validateEncryptionKey(): void {
+    if (this.encryptionKey === 'default-key-change-in-production' && process.env.NODE_ENV === 'production') {
+      console.warn('⚠️ SECURITY: Using default encryption key in production')
+    }
+  }
+  
   static encrypt(text: string): string {
-    const cipher = crypto.createCipher('aes-256-cbc', this.encryptionKey)
-    let encrypted = cipher.update(text, 'utf8', 'hex')
-    encrypted += cipher.final('hex')
-    return encrypted
+    this.validateEncryptionKey()
+    try {
+      const cipher = crypto.createCipher('aes-256-cbc', this.encryptionKey)
+      let encrypted = cipher.update(text, 'utf8', 'hex')
+      encrypted += cipher.final('hex')
+      return encrypted
+    } catch (error) {
+      console.error('❌ Encryption failed:', error)
+      throw new Error('Error de encriptación del token')
+    }
   }
   
   static decrypt(encryptedText: string): string {
@@ -135,10 +148,11 @@ export class SecureTokenManager {
 
 // OAuth Flow Manager
 export class OAuthFlowManager {
-  // Generate OAuth authorization URL
+  // Generate OAuth authorization URL - SaaS Multi-Tenant Safe
   static generateAuthUrl(platform: string, churchId: string): string {
     const config = SOCIAL_PLATFORMS[platform]
-    if (!config) throw new Error(`Unsupported platform: ${platform}`)
+    if (!config) throw new Error(`Plataforma no soportada: ${platform}`)
+    if (!config.clientId) throw new Error(`OAuth no configurado para ${platform}`)
     
     const state = Buffer.from(JSON.stringify({ platform, churchId })).toString('base64')
     const params = new URLSearchParams({

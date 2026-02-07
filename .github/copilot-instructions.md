@@ -3058,6 +3058,13 @@ The system uses **4-strategy duplicate detection**:
 
 ### **SUPER ADMIN HELP MANUAL - Platform Management**
 
+**🚀 SaaS OAuth System Architecture (Buffer/Hootsuite Model):**
+- **Enterprise Requirement**: Platform manages ALL OAuth credentials - churches only click "Conectar"
+- **System Location**: `/api/oauth/` (NEW - 65 lines) vs `/api/social-oauth/` (OLD - 202 lines, deprecated) 
+- **Client Flow**: Button → GET `/api/social-media/connect?platform=X` → OAuth URL → Redirect → Callback → Connected
+- **Security**: AES-256 encrypted tokens, runtime validation, performance monitoring
+- **Church Experience**: Zero technical configuration - true one-click social media connection
+
 **Form Builder System Monitoring:**
 ```bash
 # Check form builder compilation

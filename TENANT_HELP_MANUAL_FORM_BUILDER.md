@@ -1,7 +1,7 @@
 # Manual de Ayuda para Tenants - Constructor de Formularios
 
-**Versión**: 2.0  
-**Fecha**: 3 de Febrero, 2026  
+**Versión**: 2.1  
+**Fecha**: 7 de Febrero, 2026  
 **Audiencia**: Administradores de Iglesia (Tenants)  
 **Nivel de Cumplimiento**: Empresarial  
 
@@ -13,11 +13,14 @@
 2. [Acceso al Constructor de Formularios](#acceso-al-constructor-de-formularios)
 3. [Sistema de Plantillas Inteligentes](#sistema-de-plantillas-inteligentes)
 4. [Personalización de Formularios](#personalización-de-formularios)
-5. [Navegación y Flujo de Trabajo](#navegación-y-flujo-de-trabajo)
-6. [Generación de Códigos QR](#generación-de-códigos-qr)
-7. [Integración con CRM](#integración-con-crm)
-8. [Resolución de Problemas](#resolución-de-problemas)
-9. [Mejores Prácticas](#mejores-prácticas)
+5. [**NUEVO: Personalización del Botón de Envío**](#personalización-del-botón-de-envío)
+6. [Navegación y Flujo de Trabajo](#navegación-y-flujo-de-trabajo)
+7. [Generación de Códigos QR](#generación-de-códigos-qr)
+8. [**NUEVO: Personalización Completa de Códigos QR**](#personalización-completa-de-códigos-qr)
+9. [Integración con CRM](#integración-con-crm)
+10. [**NUEVO: Flujo de Envío de Formularios**](#flujo-de-envío-de-formularios)
+11. [Resolución de Problemas](#resolución-de-problemas)
+12. [Mejores Prácticas](#mejores-prácticas)
 
 ---
 
@@ -26,11 +29,14 @@
 El Constructor de Formularios de Khesed-Tek permite crear formularios profesionales para su iglesia en segundos, sin conocimientos técnicos. El sistema incluye plantillas inteligentes, campos rápidos, y generación automática de códigos QR.
 
 ### **Características Principales:**
-- ✅ **7 Plantillas Inteligentes** pre-configuradas
+- ✅ **9 Plantillas Inteligentes** pre-configuradas (incluye evaluaciones espirituales)
 - ✅ **18 Campos Rápidos** para agregar instantáneamente
 - ✅ **Personalización completa** después de aplicar plantillas
+- ✅ **NUEVO: Personalización del botón de envío** (texto y colores)
 - ✅ **Códigos QR automáticos** con URLs cortas
+- ✅ **NUEVO: Personalización completa de QR** (colores, gradientes, logos)
 - ✅ **Integración CRM** para nuevos visitantes
+- ✅ **NUEVO: Flujo automático de seguimiento** (visitantes, tareas, notificaciones)
 - ✅ **Seguimiento de fuentes** de tráfico
 
 ---
@@ -254,6 +260,218 @@ El sistema detecta automáticamente formularios de visitantes y crea perfiles en
 - **Formulario incluye** campos de nombre, email/teléfono
 - **Usuario es nuevo** (no existe en la base de datos)
 - **Envío exitoso** del formulario
+
+---
+
+## 🎨 **NUEVO: PERSONALIZACIÓN DEL BOTÓN DE ENVÍO**
+
+### **Ubicación:**
+**Paso 1: Configuración** → Sección "Personalización del Botón de Envío"
+
+### **Opciones de Personalización:**
+
+#### **1. Texto del Botón**
+- **Predeterminado**: "Enviar Formulario"
+- **Personalizable**: Cualquier texto que desee
+- **Ejemplos**:
+  - "Registrarme Ahora"
+  - "Solicitar Información"
+  - "Quiero Conectar"
+  - "Enviar Oración"
+
+#### **2. Color del Botón**
+- **Predeterminado**: Azul (#2563eb)
+- **Selector de color** + campo hexadecimal
+- **Recomendación**: Use los colores de su iglesia
+
+#### **3. Color del Texto**
+- **Predeterminado**: Blanco (#ffffff)
+- **Selector de color** + campo hexadecimal
+- **Recomendación**: Asegure buen contraste con el fondo
+
+### **Ejemplos de Uso:**
+
+| Tipo de Formulario | Texto Sugerido | Color Botón | Color Texto |
+|-------------------|----------------|-------------|-------------|
+| Visitantes | "Quiero Conectar" | Verde (#059669) | Blanco |
+| Peticiones de Oración | "Enviar Oración" | Púrpura (#9333EA) | Blanco |
+| Registro de Eventos | "Registrarme Ahora" | Naranja (#EA580C) | Blanco |
+| Voluntarios | "Quiero Servir" | Azul (#2563EB) | Blanco |
+
+### **Mejores Prácticas:**
+- ✅ Use texto **orientado a la acción**
+- ✅ Mantenga el texto **corto** (2-3 palabras máximo)
+- ✅ Asegure **suficiente contraste** entre texto y fondo
+- ✅ Los cambios se reflejan en **vista previa en tiempo real**
+- ❌ Evite texto genérico como "Enviar" o "OK"
+
+---
+
+## 📊 **NUEVO: FLUJO DE ENVÍO DE FORMULARIOS**
+
+### **¿Qué Sucede Cuando Alguien Hace Clic en "Enviar Formulario"?**
+
+El sistema ejecuta automáticamente **3 acciones** para cada envío:
+
+#### **Acción 1: Crear Perfil de Visitante** ✅
+**Ubicación**: Dashboard de Visitantes (`/visitors`)
+
+**Información Capturada**:
+- Nombre completo (extraído del formulario)
+- Email y/o teléfono
+- Tipo de visitante: "Formulario Personalizado"
+- Puntaje de engagement: 85/100 (alto)
+- Razón de visita: "Formulario: [Nombre del Formulario]"
+- Peticiones de oración (si están presentes)
+
+**Detección Inteligente de Campos**:
+El sistema busca automáticamente estos nombres de campo:
+- **Email**: `email`, `correo`, `correoelectronico`, `e-mail`
+- **Teléfono**: `phone`, `telefono`, `celular`, `mobile`
+- **Nombre**: `firstName`, `nombre`, `name`, `fullName`
+- **Oración**: `prayer_requests`, `oracion`, `peticion`
+- **Intereses**: `interests`, `intereses`, `ministerios`
+
+#### **Acción 2: Guardar Envío Completo** ✅
+**Ubicación**: Form Builder → Pestala "Envíos" o `custom_form_submissions` tabla
+
+**Datos Almacenados**:
+- Todos los campos del formulario (JSON completo)
+- Dirección IP del visitante
+- Navegador y dispositivo usado
+- Fecha y hora exacta
+- Vinculación al perfil de visitante creado
+
+#### **Acción 3: Crear Tarea de Seguimiento** ✅
+**Ubicación**: Dashboard de Seguimientos (`/visitor-follow-ups`)
+
+**Detalles de la Tarea**:
+- **Prioridad**: ALTA
+- **Estado**: PENDIENTE
+- **Programada**: 24 horas después del envío
+- **Incluye**: Datos de contacto del visitante
+- **Método preferido**: Email (configurable)
+
+### **Mensaje de Éxito al Usuario:**
+```
+¡Gracias por contactar a [Nombre de su Iglesia]! 
+Nos pondremos en contacto pronto.
+```
+
+### **Dónde Encontrar los Datos Enviados:**
+
+1. **Dashboard de Visitantes** (`/visitors`)
+   - Ver todos los formularios enviados como nuevos visitantes
+   - Filtrar por fecha, tipo, puntaje de engagement
+
+2. **Dashboard de Seguimientos** (`/visitor-follow-ups`)
+   - Ver tareas automáticas creadas
+   - Programar contacto con nuevos visitantes
+
+3. **Constructor de Formularios** (`/form-builder`)
+   - Pestaña "Envíos" en cada formulario
+   - Ver analíticas y métricas de conversión
+
+4. **Reportes de Analíticas**
+   - Origen de visitantes por formulario
+   - Tasas de conversión por plantilla
+   - Tendencias de envíos por fecha
+
+---
+
+## 🎨 **NUEVO: PERSONALIZACIÓN COMPLETA DE CÓDIGOS QR**
+
+### **Ubicación:**
+**Paso 3: Personalizar QR** → Panel de personalización completo
+
+### **✅ Opciones de Personalización Disponibles:**
+
+#### **1. Color de Fondo** (backgroundColor)
+- **Etiqueta**: "Fondo"
+- **Selector de color** + campo hexadecimal
+- **Predeterminado**: #ffffff (blanco)
+- **Uso**: Coincida con el tema de su iglesia o evento
+
+#### **2. Color de Puntos** (foregroundColor)
+- **Etiqueta**: "QR Principal"
+- **Selector de color** + campo hexadecimal
+- **Predeterminado**: #000000 (negro)
+- **Uso**: Color principal del patrón QR
+
+#### **3. Color de Borde de Marcadores** (eyeBorderColor)
+- **Etiqueta**: "Color Borde" (en sección Esquinas)
+- **Selector de color** + campo hexadecimal
+- **Predeterminado**: #000000 (negro)
+- **Uso**: Color del borde de los cuadrados de esquina
+
+#### **4. Color Central de Marcadores** (eyeColor)
+- **Etiqueta**: "Color Esquinas" (en sección Esquinas)
+- **Selector de color** + campo hexadecimal
+- **Predeterminado**: #000000 (negro)
+- **Uso**: Color de relleno de los cuadrados de esquina
+
+### **🚀 Funciones Avanzadas de QR:**
+
+#### **Soporte de Gradientes**
+- **Tipos**: Lineal o Radial
+- **Colores**: Hasta 4 colores personalizables
+- **Ángulo**: Control de 0-360° (gradientes lineales)
+- **Reemplaza**: Color sólido de puntos con gradiente
+
+#### **Estilos de Marcadores (Ojos)**
+- **Opciones**: Cuadrado, Redondeado, Circular
+- **Control independiente**: Color de cada marcador
+- **Vista previa**: Visual para cada estilo
+
+#### **Estilos de Patrón de Puntos**
+- **Clásico**: Puntos cuadrados
+- **Moderno**: Puntos redondeados
+- **Puntos**: Puntos circulares
+- **Elegante**: Puntos en forma de diamante
+
+#### **Integración de Logo**
+- **Formatos aceptados**: PNG, JPG, SVG
+- **Formas de logo**: Circular, Cuadrado, Cuadrado Redondeado
+- **Control de tamaño**: 10-25% (máximo para seguridad de escaneo)
+- **Opacidad**: 50-100%
+- **Margen**: 5-25px zona de seguridad
+- **Fondo opcional**: Fondo blanco detrás del logo
+
+#### **Opciones de Fondo**
+- Color sólido
+- Gradiente (lineal/radial)
+- Carga de imagen de fondo
+- Control de opacidad de imagen
+
+#### **Tamaño y Margen**
+- **Tamaño QR**: 200-800px
+- **Margen**: 0-10 unidades
+
+### **⚠️ Alertas de Seguridad de Escaneo**
+- Logo >25% genera advertencia (reduce escaneabilidad)
+- Alto contraste recomendado para confiabilidad
+- Pruebe códigos QR antes de imprimir
+
+### **Ejemplos de Combinaciones de Colores:**
+
+| Tema | Fondo | Puntos | Marcadores | Uso Sugerido |
+|------|-------|--------|------------|---------------|
+| Iglesia Clásica | Blanco | Negro | Negro | Formularios generales |
+| Evento Juvenil | Azul claro | Naranja | Púrpura | Campamentos, retiros |
+| Navidad | Rojo | Verde | Dorado | Eventos festivos |
+| Conferencias | Gris claro | Azul oscuro | Azul | Eventos profesionales |
+
+### **Mejores Prácticas para QR:**
+- ✅ **Alto contraste**: Asegure que los puntos se distingan del fondo
+- ✅ **Pruebe antes de imprimir**: Escanee con varios dispositivos
+- ✅ **Tamaño mínimo impreso**: 2cm x 2cm para fácil escaneo
+- ✅ **Incluya logo de iglesia**: Genera confianza y profesionalismo
+- ❌ **Evite logos muy grandes**: Máximo 25% del tamaño QR
+- ❌ **No use colores muy similares**: Dificulta el escaneo
+
+---
+
+## 🔗 INTEGRACIÓN CON CRM (ACTUALIZADO)
 
 ### **Información Capturada:**
 - **Datos personales**: Nombre, email, teléfono

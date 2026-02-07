@@ -46,13 +46,21 @@ export async function GET(request: NextRequest) {
         }, { status: 409 })
       }
 
-      // Generate one-click OAuth URL
+      // Generate one-click OAuth URL - Enterprise SaaS Performance
+      const startTime = Date.now()
       const authUrl = SocialOAuth.getConnectUrl(platform, session.user.churchId)
+      const duration = Date.now() - startTime
+      
+      // Performance monitoring for enterprise scaling
+      if (duration > 1000) {
+        console.warn(`🚨 OAuth URL generation took ${duration}ms for ${platform}`)
+      }
       
       return NextResponse.json({
         authUrl,
         platform,
-        message: `URL de autorización generada para ${platform}`
+        message: `URL de autorización generada para ${platform}`,
+        performance: { duration }
       })
 
     } catch (error) {

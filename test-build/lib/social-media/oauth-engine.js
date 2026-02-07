@@ -1,8 +1,9 @@
 "use strict";
 /**
- * ENTERPRISE OAUTH SIMPLIFICATION ENGINE
- * GoHighLevel-style one-click social media account connection
- * Handles Facebook, Instagram, YouTube OAuth flows with automatic token management
+ * SAAS PLATFORM OAUTH ENGINE 🚀
+ * Buffer/Hootsuite-style centralized OAuth for ALL churches
+ * NO technical setupRequired by tenants - truly one-click connections
+ * Platform-managed OAuth credentials serve all church tenants
  */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };

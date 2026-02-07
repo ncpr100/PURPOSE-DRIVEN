@@ -1,7 +1,8 @@
 /**
- * ENTERPRISE OAUTH SIMPLIFICATION ENGINE
- * GoHighLevel-style one-click social media account connection
- * Handles Facebook, Instagram, YouTube OAuth flows with automatic token management
+ * SAAS PLATFORM OAUTH ENGINE 🚀
+ * Buffer/Hootsuite-style centralized OAuth for ALL churches
+ * NO technical setupRequired by tenants - truly one-click connections
+ * Platform-managed OAuth credentials serve all church tenants
  */
 export interface SocialPlatformConfig {
     clientId: string;

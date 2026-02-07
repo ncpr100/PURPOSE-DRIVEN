@@ -124,28 +124,28 @@ export default function SocialMediaClient() {
     setIsConnecting(prev => ({ ...prev, [platform]: true }))
     
     try {
-      const response = await fetch('/api/social-media/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ platform })
+      // GET request to retrieve OAuth URL
+      const response = await fetch(`/api/social-media/connect?platform=${platform}`, {
+        method: 'GET'
       })
 
       if (response.ok) {
         const data = await response.json()
         
-        if (data.data?.authUrl) {
+        if (data.authUrl) {
           // Redirect to OAuth authorization
-          window.location.href = data.data.authUrl
+          window.location.href = data.authUrl
         } else {
           toast.success(`${platform} conectado exitosamente`)
           loadDashboardData() // Refresh data
         }
       } else {
-        throw new Error('Connection failed')
+        const error = await response.json()
+        throw new Error(error.error || 'Connection failed')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Failed to connect ${platform}:`, error)
-      toast.error(`Error al conectar ${platform}`)
+      toast.error(error.message || `Error al conectar ${platform}`)
     } finally {
       setIsConnecting(prev => ({ ...prev, [platform]: false }))
     }
