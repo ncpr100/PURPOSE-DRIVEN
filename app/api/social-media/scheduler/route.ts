@@ -486,4 +486,3 @@ async function publishToYouTube(accessToken: string, content: string, mediaUrls:
     postUrl: `https://youtube.com/watch?v=${Date.now()}`
   }
 }
-}
