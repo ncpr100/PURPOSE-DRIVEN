@@ -10,25 +10,8 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Temporarily allow build errors to reduce memory usage during compilation
-    ignoreBuildErrors: true,
-  },
-  // Minimal webpack configuration for memory optimization
-  webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      // Basic chunk splitting without aggressive optimization
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-        },
-      };
-    }
-    return config;
+    // ENTERPRISE COMPLIANCE: ENFORCED - builds must pass TypeScript (per copilot instructions)
+    ignoreBuildErrors: false,
   },
   // Platform-specific optimizations
   compiler: {
