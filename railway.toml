@@ -1,28 +1,42 @@
-# Railway Configuration for Khesed-Tek Church Management Platform
-# EMERGENCY: Force Cloud Builder instead of Metal Builder to prevent hanging
+# Railway Configuration - FORCE BYPASS METAL BUILDER INFRASTRUCTURE
+# CRITICAL: Metal builder "builder-cbuxkt" persistently hanging at "scheduling build"
+# EMERGENCY: Force different builder infrastructure to bypass hanging
+
 [build]
-# Force Nixpacks Cloud builder - NEVER use Metal builder
+# FORCE CLOUD BUILDER - NEVER USE METAL BUILDER
 builder = "NIXPACKS"
 buildCommand = "./scripts/railway-build-fix.sh"
 
-# Aggressive build environment variables to prevent Metal builder hanging
+# FORCE INFRASTRUCTURE BYPASS SETTINGS
 [build.environment]
-# Memory optimization
+# Force different Railway infrastructure region/builder
+RAILWAY_BUILDER_TYPE = "cloud"
+RAILWAY_FORCE_REGION = "us-west"
+RAILWAY_DISABLE_METAL_BUILDER = "true"
+RAILWAY_PREFER_STANDARD_BUILDER = "true"
+
+# Memory and process optimization  
 NODE_OPTIONS = "--max-old-space-size=8192 --max-semi-space-size=1024 --no-deprecation"
 NIXPACKS_NO_MUSL = "1"
 NIXPACKS_NODE_VERSION = "18"
 NIXPACKS_BUILD_CMD = "./scripts/railway-build-fix.sh"
-# Prevent npm hangs
+
+# Prevent npm/build hangs
 NPM_CONFIG_AUDIT = "false"
-NPM_CONFIG_FUND = "false"
+NPM_CONFIG_FUND = "false" 
 NPM_CONFIG_PROGRESS = "false"
-# Force fast CI environment
+NPM_CONFIG_LOGLEVEL = "error"
+
+# Force fast environment
 CI = "true"
 NODE_ENV = "production"
 NEXT_TELEMETRY_DISABLED = "1"
-# Railway-specific optimizations
-RAILWAY_BUILDER_TIMEOUT = "1200"
-RAILWAY_BUILD_PRIORITY = "high"
+
+# AGGRESSIVE RAILWAY BYPASS SETTINGS
+RAILWAY_BUILD_PRIORITY = "immediate"
+RAILWAY_BUILD_TIMEOUT = "900" 
+RAILWAY_FORCE_NEW_INSTANCE = "true"
+RAILWAY_SKIP_CACHE = "true"
 
 # Build command with timeout protection
 [build.watchPaths]

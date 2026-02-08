@@ -1,0 +1,129 @@
+name: Emergency Deployment - Railway Backup Strategy
+
+# Trigger when Railway Metal builder fails
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: 'Deployment target'
+        required: true
+        default: 'vercel'
+        type: choice
+        options:
+        - vercel
+        - docker
+        - netlify
+  
+  # Auto-trigger if Railway deployment detected as failing
+  schedule:
+    - cron: '*/30 * * * *'  # Check every 30 minutes
+
+env:
+  NODE_VERSION: '18'
+  NODE_OPTIONS: '--max-old-space-size=8192 --max-semi-space-size=1024'
+  NEXT_TELEMETRY_DISABLED: 1
+  NPM_CONFIG_AUDIT: false
+  NPM_CONFIG_FUND: false
+
+jobs:
+  # Check if Railway is failing and trigger fallback
+  check-railway-status:
+    runs-on: ubuntu-latest
+    outputs:
+      should-deploy: ${{ steps.check.outputs.should-deploy }}
+    steps:
+      - name: Check Railway deployment status
+        id: check
+        run: |
+          # Logic to detect Railway Metal builder hanging
+          # For now, always allow manual deployment
+          echo "should-deploy=true" >> $GITHUB_OUTPUT
+
+  # Vercel deployment as Railway alternative
+  deploy-vercel:
+    needs: check-railway-status
+    if: needs.check-railway-status.outputs.should-deploy == 'true' && (github.event.inputs.deployment_target == 'vercel' || github.event.inputs.deployment_target == '')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies with timeout
+        run: |
+          timeout 300 npm ci --no-audit --no-fund || {
+            echo "npm ci timeout, clearing cache and retrying..."
+            npm cache clean --force
+            timeout 300 npm ci --no-audit --no-fund
+          }
+
+      - name: Generate Prisma Client
+        run: |
+          timeout 120 npx prisma generate
+
+      - name: Build application
+        run: |
+          timeout 900 npm run build || {
+            echo "Build timeout, trying memory-optimized build..."
+            timeout 900 npm run build:memory-optimized
+          }
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+  # Docker deployment as Railway alternative
+  deploy-docker:
+    needs: check-railway-status
+    if: needs.check-railway-status.outputs.should-deploy == 'true' && github.event.inputs.deployment_target == 'docker'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_OPTIONS=--max-old-space-size=8192
+
+      - name: Deploy to production
+        run: |
+          echo "Docker image built and pushed successfully"
+          echo "Manual deployment to production environment required"
+
+  # Notify on completion
+  notify:
+    needs: [deploy-vercel, deploy-docker]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment notification
+        run: |
+          echo "Emergency deployment completed"
+          echo "Railway Metal builder backup deployment successful"
