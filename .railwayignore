@@ -1,0 +1,64 @@
+# Railway Ignore - Performance Optimization
+# Exclude files that may cause Metal builder hanging
+
+# Dependencies that cause build hangs
+node_modules/.cache/
+node_modules/@next/
+.next/cache/
+.next/standalone/
+.next/static/chunks/_buildManifest.js
+.next/static/chunks/_ssgManifest.js
+
+# Large development files
+*.log
+*.logs
+coverage/
+.nyc_output/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files that may cause hangs
+.temp/
+tmp/
+temp/
+.cache/
+
+# Git files
+.git/
+
+# Environment files that may cause conflicts
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Large archived files that slow builds
+_archived_*.md
+build_output.txt
+DEPLOYMENT_STATUS.txt
+
+# Script files that may interfere with Railway
+deploy-*.sh
+debug_*.js
+check-*.js
+create-*.js
+comprehensive-*.js
+final-*.js
+
+# Memory analysis files
+MEMORY_*.md
+LESSONS_LEARNED_*.md
+*_ANALYSIS_*.md
