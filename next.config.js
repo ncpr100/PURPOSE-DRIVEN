@@ -16,9 +16,28 @@ const nextConfig = {
     // ENTERPRISE COMPLIANCE: ENFORCED - builds must pass TypeScript (per copilot instructions)
     ignoreBuildErrors: false,
   },
-  // Railway-specific optimizations
+  // Memory optimization for Vercel deployment
+  webpack: (config, { dev, isServer }) => {
+    if (!dev && !isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+            },
+          },
+        },
+      };
+    }
+    return config;
+  },
+  // Platform-specific optimizations
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' && !!process.env.RAILWAY_ENVIRONMENT,
+    removeConsole: process.env.NODE_ENV === 'production',
   },
 };
 
