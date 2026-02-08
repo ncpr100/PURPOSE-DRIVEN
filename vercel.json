@@ -1,5 +1,5 @@
 {
-  "buildCommand": "NODE_OPTIONS='--max-old-space-size=3008 --max-semi-space-size=512' npm run build",
+  "buildCommand": "NODE_OPTIONS='--max-old-space-size=2048 --max-semi-space-size=256 --gc-interval=100' npm run build:vercel",
   "outputDirectory": ".next",
   "installCommand": "npm ci",
   "framework": "nextjs",
@@ -15,7 +15,7 @@
   },
   "regions": ["iad1"],
   "env": {
-    "NODE_OPTIONS": "--max-old-space-size=3008 --max-semi-space-size=512"
+    "NODE_OPTIONS": "--max-old-space-size=2048 --max-semi-space-size=256 --gc-interval=100"
   },
   "headers": [
     {
