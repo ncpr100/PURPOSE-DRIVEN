@@ -1,0 +1,30 @@
+# Railway Configuration for Khesed-Tek Church Management Platform
+[build]
+# Use Nixpacks builder with specific optimizations
+builder = "NIXPACKS"
+
+# Build environment variables to prevent hanging
+[build.environment]
+NODE_OPTIONS = "--max-old-space-size=8192 --max-semi-space-size=1024"
+NIXPACKS_NO_MUSL = "1"
+NIXPACKS_NODE_VERSION = "18"
+NPM_CONFIG_AUDIT = "false"
+NPM_CONFIG_FUND = "false"
+CI = "true"
+
+# Build command with timeout protection
+[build.watchPaths]
+include = ["app/**", "components/**", "lib/**", "prisma/**", "public/**"]
+ignore = ["node_modules/**", ".next/**", ".git/**"]
+
+# Deployment settings
+[deploy]
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# Service configuration to prevent hangs
+[service]
+# Force restart if build hangs for too long
+startCommand = "npm run start"
