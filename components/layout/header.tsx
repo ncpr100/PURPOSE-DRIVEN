@@ -12,7 +12,15 @@ import { translateRole } from '@/lib/utils'
 import { MobileSidebarTrigger } from '@/components/layout/sidebar'
 
 export function Header() {
-  const { data: session } = useSession() || {}
+  // Safe session handling
+  let session: any = null
+  try {
+    const sessionData = useSession()
+    session = sessionData?.data
+  } catch (error) {
+    console.log('Session not available in header:', error)
+  }
+  
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   const handleSignOut = async () => {

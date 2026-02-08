@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
 import { Header } from '@/components/layout/header'
 import { Sidebar, SidebarProvider } from '@/components/layout/sidebar'
+import { SessionErrorBoundary } from '@/components/error-boundary'
 
 export default async function DashboardLayout({
   children,
@@ -17,18 +18,20 @@ export default async function DashboardLayout({
   }
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex">
-          <Sidebar />
-          <main className="flex-1 lg:ml-0 p-4 lg:p-6">
-            <div className="max-w-7xl mx-auto">
-              {children}
-            </div>
-          </main>
+    <SessionErrorBoundary>
+      <SidebarProvider>
+        <div className="min-h-screen bg-background">
+          <Header />
+          <div className="flex">
+            <Sidebar />
+            <main className="flex-1 lg:ml-0 p-4 lg:p-6">
+              <div className="max-w-7xl mx-auto">
+                {children}
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </SessionErrorBoundary>
   )
 }

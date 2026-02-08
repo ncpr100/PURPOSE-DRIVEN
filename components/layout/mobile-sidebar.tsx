@@ -309,7 +309,19 @@ const helpNavigation = [
 ]
 
 function SidebarContent() {
-  const { data: session, status } = useSession()
+  // Safe session handling with error boundary
+  let session: any = null
+  let status = 'loading'
+  
+  try {
+    const sessionData = useSession()
+    session = sessionData?.data
+    status = sessionData?.status || 'loading'
+  } catch (error) {
+    console.log('Session not available yet:', error)
+    status = 'loading'
+  }
+  
   const pathname = usePathname()
   const sidebarContext = useContext(SidebarContext)
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
@@ -350,8 +362,8 @@ function SidebarContent() {
     }
   }
 
-  // Show loading state while session is loading
-  if (status === 'loading') {
+  // Show loading state while session is loading or if session is not available
+  if (status === 'loading' || !session) {
     return (
       <div className="p-6">
         <div className="mb-8 pb-4 border-b border-border">
@@ -366,7 +378,7 @@ function SidebarContent() {
     )
   }
 
-  // If no session, show minimal navigation
+  // If no user in session, show minimal navigation
   if (!session?.user) {
     return (
       <div className="p-6">
@@ -374,7 +386,7 @@ function SidebarContent() {
           <ChurchLogo size="lg" />
         </div>
         <div className="text-center text-sm text-muted-foreground">
-          No hay sesión activa
+          Cargando sesión...
         </div>
       </div>
     )
@@ -540,12 +552,13 @@ function SidebarContent() {
 export function Sidebar() {
   const sidebarContext = useContext(SidebarContext)
 
+  // Add error boundary for session-related issues
   return (
-    <>
+    <div>
       {/* Desktop Sidebar - Hidden on mobile */}
       <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:bg-muted/40">
         <div className="flex-1 overflow-hidden">
-          <SidebarContent />
+          <SafeSidebarContent />
         </div>
       </aside>
 
@@ -583,18 +596,44 @@ export function Sidebar() {
             
             {/* Mobile sidebar content */}
             <div className="flex-1 overflow-hidden">
-              <SidebarContent />
+              <SafeSidebarContent />
             </div>
           </div>
         </>
       )}
-    </>
+    </div>
   )
 }
 
-// Mobile menu button component for header
+// Safe wrapper component for SidebarContent
+function SafeSidebarContent() {
+  try {
+    return <SidebarContent />
+  } catch (error) {
+    console.error('Sidebar content error:', error)
+    return (
+      <div className="p-6">
+        <div className="mb-8 pb-4 border-b border-border">
+          <ChurchLogo size="lg" />
+        </div>
+        <div className="text-center text-sm text-muted-foreground">
+          Cargando navegación...
+        </div>
+      </div>
+    )
+  }
+}
+
+// Mobile menu button component for header - with error boundary
 export function MobileSidebarTrigger() {
-  const sidebarContext = useContext(SidebarContext)
+  let sidebarContext = null
+  
+  try {
+    sidebarContext = useContext(SidebarContext)
+  } catch (error) {
+    console.log('Sidebar context not available:', error)
+    return null
+  }
   
   if (!sidebarContext) {
     return null
