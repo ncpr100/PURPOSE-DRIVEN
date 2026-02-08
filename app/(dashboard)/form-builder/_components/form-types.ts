@@ -17,7 +17,6 @@ export interface FormConfig {
   submitButtonText?: string
   submitButtonColor?: string
   submitButtonTextColor?: string
-  backgroundImage?: string
 }
 
 export interface QRConfig {
