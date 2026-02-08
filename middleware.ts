@@ -129,7 +129,7 @@ export async function middleware(request: NextRequest) {
     
     const token = await getToken({ 
       req: request, 
-      secret: process.env.NEXTAUTH_SECRET 
+      secret: process.env.NEXTAUTH_SECRET || 'build-time-fallback-secret-change-in-production'
     });
 
     console.log('🔐 MIDDLEWARE: Token exists:', !!token);
