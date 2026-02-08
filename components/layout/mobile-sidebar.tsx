@@ -36,6 +36,7 @@ import {
   FileText,
   ChevronDown,
   ChevronRight,
+  ChevronUp,
   Briefcase,
   Cog,
   PieChart,
@@ -324,12 +325,16 @@ function SidebarContent() {
   
   const pathname = usePathname()
   const sidebarContext = useContext(SidebarContext)
+  
+  // Mobile-first: Expand all sections by default for better module discovery
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
     'Comunicación y Formularios': false,
-    'Marketing y Automatización': true,
-    'Analíticas e Inteligencia': true,
-    'Configuración': true,
+    'Marketing y Automatización': false,  // EXPANDED on mobile for full access
+    'Analíticas e Inteligencia': false,   // EXPANDED on mobile for full access 
+    'Configuración': false,               // EXPANDED on mobile for full access
   })
+  
+  const [showAllModules, setShowAllModules] = useState(true)
 
   // Helper function to filter items by role
   const filterItemsByRole = (items: any[]) => {
@@ -353,6 +358,18 @@ function SidebarContent() {
       ...prev,
       [sectionTitle]: !prev[sectionTitle]
     }))
+  }
+  
+  // Toggle all sections at once
+  const toggleAllSections = () => {
+    const newState = !showAllModules
+    setShowAllModules(newState)
+    setCollapsedSections({
+      'Comunicación y Formularios': !newState,
+      'Marketing y Automatización': !newState,
+      'Analíticas e Inteligencia': !newState,
+      'Configuración': !newState,
+    })
   }
 
   // Handle mobile link clicks
@@ -393,14 +410,38 @@ function SidebarContent() {
   }
 
   return (
-    <div className="p-4 lg:p-6 overflow-y-auto">
-      {/* Church Branding Section */}
-      <div className="mb-6 pb-4 border-b border-border">
+    <div className="h-full flex flex-col">
+      {/* Church Branding Section - Fixed at top */}
+      <div className="flex-shrink-0 p-4 lg:p-6 pb-2 border-b border-border">
         <ChurchLogo size="lg" />
+        
+        {/* Mobile: Expand/Collapse All Modules Button */}
+        <div className="mt-3 lg:hidden">
+          <button
+            onClick={toggleAllSections}
+            className="expand-button w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all border border-blue-200 shadow-sm mobile-section-header"
+          >
+            <div className="flex items-center gap-3">
+              <PieChart className="h-5 w-5 text-blue-600" />
+              <span className="font-semibold">{showAllModules ? 'Contraer' : 'Expandir'} Todos los Módulos</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full module-counter">
+                {filteredNavigationSections.reduce((acc, section) => acc + section.items.length, 0)}
+              </span>
+              {showAllModules ? (
+                <ChevronUp className="h-4 w-4 text-blue-600" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-blue-600" />
+              )}
+            </div>
+          </button>
+        </div>
       </div>
       
-      <nav className="space-y-1">
-        {/* Core Navigation - Always Visible */}
+      {/* Scrollable Navigation Content */}
+      <div className="flex-1 overflow-y-auto mobile-sidebar-scroll scroll-indicator mobile-sidebar-content px-4 lg:px-6 py-4">
+        <nav className="space-y-1">{/* Core Navigation - Always Visible */}
         <div className="space-y-1 mb-6">
           {filteredCoreNavigation.map((item) => {
             if (!item) return null
@@ -416,6 +457,7 @@ function SidebarContent() {
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
                   'lg:py-2', // Smaller padding on desktop
+                  'mobile-section-header', // Touch-friendly target
                   isActive && 'bg-accent text-accent-foreground font-medium'
                 )}
               >
@@ -440,6 +482,7 @@ function SidebarContent() {
                 className={cn(
                   'flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all touch-manipulation',
                   'lg:py-2', // Smaller padding on desktop
+                  'mobile-section-header', // Touch-friendly target
                   hasActiveItem && 'bg-accent/50 text-accent-foreground'
                 )}
               >
@@ -544,7 +587,18 @@ function SidebarContent() {
             </div>
           </div>
         )}
+        
+        {/* Mobile: Module count indicator */}
+        <div className="mt-4 pt-4 border-t border-border lg:hidden">
+          <div className="text-center text-xs text-muted-foreground">
+            {filteredCoreNavigation.length + 
+             filteredNavigationSections.reduce((acc, section) => acc + section.items.length, 0) + 
+             filteredAdminNavigation.length + 
+             filteredHelpNavigation.length} módulos disponibles
+          </div>
+        </div>
       </nav>
+      </div>
     </div>
   )
 }
@@ -577,26 +631,39 @@ export function Sidebar() {
           <div
             className={cn(
               'fixed inset-y-0 left-0 z-50 w-80 bg-background border-r transform transition-transform duration-200 ease-in-out lg:hidden',
+              'flex flex-col', // Ensure proper flex layout for scrolling
               sidebarContext.isMobileOpen ? 'translate-x-0' : '-translate-x-full'
             )}
           >
-            {/* Mobile sidebar header with close button */}
-            <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-lg font-semibold">Menú Principal</h2>
+            {/* Mobile sidebar header with close button - Fixed */}
+            <div className="flex-shrink-0 flex items-center justify-between p-4 border-b bg-background">
+              <div className="flex items-center gap-2">
+                <PieChart className="h-5 w-5 text-blue-600" />
+                <h2 className="text-lg font-semibold">Menú Principal</h2>
+              </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => sidebarContext.setIsMobileOpen(false)}
-                className="h-8 w-8"
+                className="h-8 w-8 hover:bg-gray-100"
               >
                 <X className="h-4 w-4" />
                 <span className="sr-only">Cerrar menú</span>
               </Button>
             </div>
             
-            {/* Mobile sidebar content */}
+            {/* Mobile sidebar content - Scrollable */}
             <div className="flex-1 overflow-hidden">
               <SafeSidebarContent />
+            </div>
+            
+            {/* Mobile sidebar footer - Fixed at bottom */}
+            <div className="flex-shrink-0 p-3 border-t bg-gray-50">
+              <div className="text-xs text-center text-muted-foreground">
+                <span className="font-medium">Khesed-Tek v1.1.0</span>
+                <br />
+                Desliza para ver todos los módulos
+              </div>
             </div>
           </div>
         </>

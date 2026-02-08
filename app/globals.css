@@ -3,6 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile Sidebar Enhancements */
+@import '../styles/mobile-sidebar.css';
+
 @layer base {
   :root {
     --background: 0 0% 100%;
