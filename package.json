@@ -6,6 +6,7 @@
     "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "NODE_OPTIONS='--max-old-space-size=8192 --max-semi-space-size=1024' next build",
     "build:vercel": "NODE_OPTIONS='--max-old-space-size=2048 --max-semi-space-size=256 --gc-interval=100' next build --experimental-build-worker",
+    "build:minimal": "NODE_OPTIONS='--max-old-space-size=1536 --max-semi-space-size=128 --gc-interval=50' next build",
     "postinstall": "prisma generate",
     "build:memory-optimized": "./scripts/memory-optimized-build.sh",
     "build:incremental": "next build --experimental-build-mode=compile",
