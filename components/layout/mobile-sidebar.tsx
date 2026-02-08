@@ -1,9 +1,12 @@
-
 'use client'
 
-export * from './mobile-sidebar'
+import React, { useState, useEffect, createContext, useContext } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { cn } from '@/lib/utils'
 import { ChurchLogo } from '@/components/ui/church-logo'
+import { Button } from '@/components/ui/button'
 import {
   LayoutDashboard,
   Users,
@@ -37,7 +40,35 @@ import {
   Cog,
   PieChart,
   ShieldCheck,
+  Menu,
+  X,
 } from 'lucide-react'
+
+// Mobile sidebar context
+interface SidebarContextType {
+  isMobileOpen: boolean
+  setIsMobileOpen: (open: boolean) => void
+}
+
+const SidebarContext = createContext<SidebarContextType | null>(null)
+
+export const useSidebar = () => {
+  const context = useContext(SidebarContext)
+  if (!context) {
+    throw new Error('useSidebar must be used within a SidebarProvider')
+  }
+  return context
+}
+
+export function SidebarProvider({ children }: { children: React.ReactNode }) {
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
+
+  return (
+    <SidebarContext.Provider value={{ isMobileOpen, setIsMobileOpen }}>
+      {children}
+    </SidebarContext.Provider>
+  )
+}
 
 // Core navigation items - always visible
 const coreNavigation = [
@@ -56,7 +87,13 @@ const coreNavigation = [
   {
     title: 'Voluntarios',
     href: '/volunteers',
-    icon: Heart,
+    icon: UserCheck,
+    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+  },
+  {
+    title: 'Visitantes',
+    href: '/visitors',
+    icon: UserPlus,
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },
   {
@@ -71,29 +108,29 @@ const coreNavigation = [
     icon: DollarSign,
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },
-  {
-    title: 'Comunicaciones',
-    href: '/communications',
-    icon: MessageSquare,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
-  },
-  {
-    title: 'Registro',
-    href: '/check-ins',
-    icon: UserCheck,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
-  },
 ]
 
 // Grouped navigation sections
 const navigationSections = [
   {
-    title: 'Gestión y Seguimiento',
-    icon: Briefcase,
+    title: 'Comunicación y Formularios',
+    icon: MessageSquare,
     items: [
       {
-        title: 'Dones Espirituales',
-        href: '/spiritual-gifts',
+        title: 'Comunicaciones',
+        href: '/communications',
+        icon: MessageSquare,
+        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+      },
+      {
+        title: 'Seguimiento de Visitantes',
+        href: '/visitor-follow-ups',
+        icon: CalendarClock,
+        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+      },
+      {
+        title: 'Analíticas Inteligentes',
+        href: '/intelligent-analytics',
         icon: Brain,
         roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
       },
@@ -271,21 +308,15 @@ const helpNavigation = [
   },
 ]
 
-export function Sidebar() {
+function SidebarContent() {
   const { data: session, status } = useSession()
   const pathname = usePathname()
+  const sidebarContext = useContext(SidebarContext)
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
-    'Gestión y Seguimiento': false,
+    'Comunicación y Formularios': false,
     'Marketing y Automatización': true,
     'Analíticas e Inteligencia': true,
     'Configuración': true,
-  })
-
-  console.log('🔍 SIDEBAR DEBUG:', {
-    status,
-    hasSession: !!session,
-    userRole: session?.user?.role,
-    userEmail: session?.user?.email
   })
 
   // Helper function to filter items by role
@@ -312,17 +343,17 @@ export function Sidebar() {
     }))
   }
 
-  console.log('🔍 SIDEBAR: Filtered sections:', {
-    core: filteredCoreNavigation.length,
-    sections: filteredNavigationSections.length,
-    admin: filteredAdminNavigation.length,
-    help: filteredHelpNavigation.length
-  })
+  // Handle mobile link clicks
+  const handleLinkClick = () => {
+    if (sidebarContext) {
+      sidebarContext.setIsMobileOpen(false)
+    }
+  }
 
   // Show loading state while session is loading
   if (status === 'loading') {
     return (
-      <aside className="w-64 border-r bg-muted/40 p-6">
+      <div className="p-6">
         <div className="mb-8 pb-4 border-b border-border">
           <ChurchLogo size="lg" />
         </div>
@@ -331,26 +362,26 @@ export function Sidebar() {
           <div className="h-8 bg-muted animate-pulse rounded"></div>
           <div className="h-8 bg-muted animate-pulse rounded"></div>
         </div>
-      </aside>
+      </div>
     )
   }
 
   // If no session, show minimal navigation
   if (!session?.user) {
     return (
-      <aside className="w-64 border-r bg-muted/40 p-6">
+      <div className="p-6">
         <div className="mb-8 pb-4 border-b border-border">
           <ChurchLogo size="lg" />
         </div>
         <div className="text-center text-sm text-muted-foreground">
           No hay sesión activa
         </div>
-      </aside>
+      </div>
     )
   }
 
   return (
-    <aside className="w-64 border-r bg-muted/40 p-6 overflow-y-auto max-h-screen">
+    <div className="p-4 lg:p-6 overflow-y-auto">
       {/* Church Branding Section */}
       <div className="mb-6 pb-4 border-b border-border">
         <ChurchLogo size="lg" />
@@ -369,13 +400,15 @@ export function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={handleLinkClick}
                 className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent hover:text-accent-foreground',
+                  'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
+                  'lg:py-2', // Smaller padding on desktop
                   isActive && 'bg-accent text-accent-foreground font-medium'
                 )}
               >
-                <Icon className="h-4 w-4" />
-                {item.title}
+                <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
+                <span className="truncate">{item.title}</span>
               </Link>
             )
           })}
@@ -393,18 +426,19 @@ export function Sidebar() {
               <button
                 onClick={() => toggleSection(section.title)}
                 className={cn(
-                  'flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all',
+                  'flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all touch-manipulation',
+                  'lg:py-2', // Smaller padding on desktop
                   hasActiveItem && 'bg-accent/50 text-accent-foreground'
                 )}
               >
-                <div className="flex items-center gap-2">
-                  <SectionIcon className="h-4 w-4" />
-                  <span>{section.title}</span>
+                <div className="flex items-center gap-3">
+                  <SectionIcon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
+                  <span className="truncate text-left">{section.title}</span>
                 </div>
                 {isCollapsed ? (
-                  <ChevronRight className="h-3 w-3" />
+                  <ChevronRight className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
                 ) : (
-                  <ChevronDown className="h-3 w-3" />
+                  <ChevronDown className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
                 )}
               </button>
 
@@ -419,13 +453,15 @@ export function Sidebar() {
                       <Link
                         key={item.href}
                         href={item.href}
+                        onClick={handleLinkClick}
                         className={cn(
-                          'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent hover:text-accent-foreground',
+                          'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
+                          'lg:py-2', // Smaller padding on desktop
                           isActive && 'bg-accent text-accent-foreground font-medium'
                         )}
                       >
-                        <Icon className="h-3 w-3" />
-                        {item.title}
+                        <Icon className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
+                        <span className="truncate">{item.title}</span>
                       </Link>
                     )
                   })}
@@ -440,8 +476,8 @@ export function Sidebar() {
           <div className="pt-4 border-t border-border">
             <div className="mb-3">
               <div className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                <ShieldCheck className="h-3 w-3" />
-                Plataforma
+                <ShieldCheck className="h-3 w-3 flex-shrink-0" />
+                <span>Plataforma</span>
               </div>
             </div>
             <div className="space-y-1">
@@ -453,13 +489,15 @@ export function Sidebar() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={handleLinkClick}
                     className={cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent hover:text-accent-foreground',
+                      'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
+                      'lg:py-2', // Smaller padding on desktop
                       isActive && 'bg-accent text-accent-foreground font-medium'
                     )}
                   >
-                    <Icon className="h-4 w-4" />
-                    {item.title}
+                    <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
+                    <span className="truncate">{item.title}</span>
                   </Link>
                 )
               })}
@@ -479,13 +517,15 @@ export function Sidebar() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={handleLinkClick}
                     className={cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent hover:text-accent-foreground',
+                      'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
+                      'lg:py-2', // Smaller padding on desktop
                       isActive && 'bg-accent text-accent-foreground font-medium'
                     )}
                   >
-                    <Icon className="h-4 w-4" />
-                    {item.title}
+                    <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
+                    <span className="truncate">{item.title}</span>
                   </Link>
                 )
               })}
@@ -493,6 +533,82 @@ export function Sidebar() {
           </div>
         )}
       </nav>
-    </aside>
+    </div>
+  )
+}
+
+export function Sidebar() {
+  const sidebarContext = useContext(SidebarContext)
+
+  return (
+    <>
+      {/* Desktop Sidebar - Hidden on mobile */}
+      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:bg-muted/40">
+        <div className="flex-1 overflow-hidden">
+          <SidebarContent />
+        </div>
+      </aside>
+
+      {/* Mobile Sidebar - Sheet overlay */}
+      {sidebarContext && (
+        <>
+          {/* Mobile overlay backdrop */}
+          {sidebarContext.isMobileOpen && (
+            <div 
+              className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+              onClick={() => sidebarContext.setIsMobileOpen(false)}
+            />
+          )}
+          
+          {/* Mobile sidebar */}
+          <div
+            className={cn(
+              'fixed inset-y-0 left-0 z-50 w-80 bg-background border-r transform transition-transform duration-200 ease-in-out lg:hidden',
+              sidebarContext.isMobileOpen ? 'translate-x-0' : '-translate-x-full'
+            )}
+          >
+            {/* Mobile sidebar header with close button */}
+            <div className="flex items-center justify-between p-4 border-b">
+              <h2 className="text-lg font-semibold">Menú Principal</h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => sidebarContext.setIsMobileOpen(false)}
+                className="h-8 w-8"
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Cerrar menú</span>
+              </Button>
+            </div>
+            
+            {/* Mobile sidebar content */}
+            <div className="flex-1 overflow-hidden">
+              <SidebarContent />
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  )
+}
+
+// Mobile menu button component for header
+export function MobileSidebarTrigger() {
+  const sidebarContext = useContext(SidebarContext)
+  
+  if (!sidebarContext) {
+    return null
+  }
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => sidebarContext.setIsMobileOpen(true)}
+      className="lg:hidden"
+    >
+      <Menu className="h-5 w-5" />
+      <span className="sr-only">Abrir menú</span>
+    </Button>
   )
 }

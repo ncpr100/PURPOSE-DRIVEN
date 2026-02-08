@@ -9,9 +9,11 @@ import { Logo } from '@/components/ui/logo'
 import { Menu, X, LogOut, User } from 'lucide-react'
 import { translateRole } from '@/lib/utils'
 
+import { MobileSidebarTrigger } from '@/components/layout/sidebar'
+
 export function Header() {
   const { data: session } = useSession() || {}
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: '/auth/signin' })
@@ -21,6 +23,8 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-7xl items-center justify-between px-4">
         <div className="flex items-center gap-4">
+          {/* Mobile sidebar trigger */}
+          {session?.user && <MobileSidebarTrigger />}
           <Logo size="md" />
         </div>
 
@@ -35,15 +39,15 @@ export function Header() {
                 </Badge>
               </div>
               <Button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 variant="ghost"
                 size="icon"
                 className="md:hidden"
               >
-                {isMenuOpen ? (
+                {isUserMenuOpen ? (
                   <X className="h-5 w-5" />
                 ) : (
-                  <Menu className="h-5 w-5" />
+                  <User className="h-5 w-5" />
                 )}
               </Button>
               <Button
@@ -60,8 +64,8 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {isMenuOpen && session?.user && (
+      {/* Mobile user menu */}
+      {isUserMenuOpen && session?.user && (
         <div className="md:hidden border-t bg-background p-4">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
