@@ -16,7 +16,7 @@ exports.authOptions = {
     pages: {
         signIn: "/auth/signin",
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET || 'build-time-fallback-secret-change-in-production',
     providers: [
         (0, credentials_1.default)({
             name: "credentials",

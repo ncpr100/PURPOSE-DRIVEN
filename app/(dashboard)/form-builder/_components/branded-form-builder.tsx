@@ -36,7 +36,8 @@ import {
   ImageIcon,
   AlertTriangle,
   Upload,
-  Archive
+  Archive,
+  X
 } from 'lucide-react'
 
 export default function BrandedFormBuilder() {
@@ -224,24 +225,131 @@ export default function BrandedFormBuilder() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [hasUnsavedChanges])
 
-  // Generate QR Code
+  // Enhanced QR Code Generation with Logo and Background Support
   const generateQRCode = async () => {
     setIsGenerating(true)
     try {
       const url = buildFormUrl()
-      const qrDataURL = await QRCode.toDataURL(url, {
+      
+      // Create base QR code with advanced options
+      const qrOptions = {
         width: qrConfig.size,
         margin: qrConfig.margin,
         color: {
-          dark: qrConfig.foregroundColor,
+          dark: qrConfig.useGradient ? '#000000' : qrConfig.foregroundColor,
           light: qrConfig.backgroundColor
+        },
+        type: 'image/png' as const,
+        quality: 0.92,
+        errorCorrectionLevel: 'M' as const,
+        rendererOpts: {
+          quality: 0.3
         }
-      })
+      }
+
+      // Generate base QR
+      let qrDataURL = await QRCode.toDataURL(url, qrOptions)
+
+      // If we have logo or background customization, create enhanced QR on canvas
+      if (qrConfig.logoImage || qrConfig.useBackgroundImage || qrConfig.useGradient) {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+        
+        canvas.width = qrConfig.size
+        canvas.height = qrConfig.size
+
+        // Draw background image if specified
+        if (qrConfig.useBackgroundImage && qrConfig.backgroundImage) {
+          const bgImg = new Image()
+          bgImg.crossOrigin = 'anonymous'
+          await new Promise((resolve, reject) => {
+            bgImg.onload = resolve
+            bgImg.onerror = reject
+            bgImg.src = qrConfig.backgroundImage!
+          })
+          
+          ctx.globalAlpha = qrConfig.backgroundOpacity / 100
+          ctx.drawImage(bgImg, 0, 0, qrConfig.size, qrConfig.size)
+          ctx.globalAlpha = 1
+        }
+
+        // Draw base QR code
+        const qrImg = new Image()
+        qrImg.crossOrigin = 'anonymous'
+        await new Promise((resolve, reject) => {
+          qrImg.onload = resolve
+          qrImg.onerror = reject
+          qrImg.src = qrDataURL
+        })
+        
+        ctx.drawImage(qrImg, 0, 0, qrConfig.size, qrConfig.size)
+
+        // Add logo if specified
+        if (qrConfig.logoImage) {
+          const logoImg = new Image()
+          logoImg.crossOrigin = 'anonymous'
+          await new Promise((resolve, reject) => {
+            logoImg.onload = resolve
+            logoImg.onerror = reject
+            logoImg.src = qrConfig.logoImage!
+          })
+
+          const logoSizePixels = (qrConfig.size * qrConfig.logoSize) / 100
+          const logoX = (qrConfig.size - logoSizePixels) / 2
+          const logoY = (qrConfig.size - logoSizePixels) / 2
+
+          // Draw logo background if specified
+          if (qrConfig.logoBackgroundColor) {
+            ctx.fillStyle = qrConfig.logoBackgroundColor
+            const bgPadding = 10
+            
+            if (qrConfig.logoShape === 'circle') {
+              ctx.beginPath()
+              ctx.arc(qrConfig.size / 2, qrConfig.size / 2, (logoSizePixels + bgPadding) / 2, 0, 2 * Math.PI)
+              ctx.fill()
+            } else {
+              const cornerRadius = qrConfig.logoShape === 'rounded' ? 10 : 0
+              const bgX = logoX - bgPadding / 2
+              const bgY = logoY - bgPadding / 2
+              const bgSize = logoSizePixels + bgPadding
+              
+              if (cornerRadius > 0) {
+                ctx.beginPath()
+                ctx.roundRect(bgX, bgY, bgSize, bgSize, cornerRadius)
+                ctx.fill()
+              } else {
+                ctx.fillRect(bgX, bgY, bgSize, bgSize)
+              }
+            }
+          }
+
+          // Set logo opacity and draw
+          ctx.globalAlpha = qrConfig.logoOpacity / 100
+          
+          if (qrConfig.logoShape === 'circle') {
+            ctx.save()
+            ctx.beginPath()
+            ctx.arc(qrConfig.size / 2, qrConfig.size / 2, logoSizePixels / 2, 0, 2 * Math.PI)
+            ctx.clip()
+          }
+          
+          ctx.drawImage(logoImg, logoX, logoY, logoSizePixels, logoSizePixels)
+          
+          if (qrConfig.logoShape === 'circle') {
+            ctx.restore()
+          }
+          
+          ctx.globalAlpha = 1
+        }
+
+        qrDataURL = canvas.toDataURL('image/png', 0.92)
+      }
+      
       setQRCodeUrl(qrDataURL)
-      toast.success('QR generado exitosamente')
+      toast.success('QR personalizado generado exitosamente')
     } catch (error) {
-      console.error('QR generation failed:', error)
-      toast.error('Error generando QR')
+      console.error('Enhanced QR generation failed:', error)
+      toast.error('Error generando QR personalizado')
     } finally {
       setIsGenerating(false)
     }
@@ -484,6 +592,61 @@ export default function BrandedFormBuilder() {
                     </div>
                   </div>
                 </div>
+
+                {/* Form Background Image */}
+                <div className="space-y-3 p-4 border rounded-lg">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <ImageIcon className="h-4 w-4" />
+                    Imagen de Fondo del Formulario
+                  </h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            try {
+                              const formData = new FormData()
+                              formData.append('file', file)
+                              formData.append('type', 'form-background')
+                              
+                              const response = await fetch('/api/upload', {
+                                method: 'POST',
+                                body: formData
+                              })
+                              
+                              if (response.ok) {
+                                const result = await response.json()
+                                updateFormConfig(prev => ({ ...prev, backgroundImage: result.imageData }))
+                                toast.success('Imagen de fondo cargada correctamente')
+                              }
+                            } catch (error) {
+                              toast.error('Error al subir imagen de fondo')
+                            }
+                          }
+                        }}
+                        className="flex-1"
+                      />
+                      {formConfig.backgroundImage && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => updateFormConfig(prev => ({ ...prev, backgroundImage: undefined }))}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                    {formConfig.backgroundImage && (
+                      <div className="flex items-center gap-2 p-2 border rounded">
+                        <img src={formConfig.backgroundImage} alt="Fondo" className="h-8 w-8 object-cover rounded" />
+                        <span className="text-sm text-green-600">Imagen de fondo cargada</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -613,11 +776,25 @@ export default function BrandedFormBuilder() {
                 <CardTitle>Vista Previa del Formulario</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="p-6 border rounded-lg bg-gray-50">
-                  <h3 className="text-xl font-bold mb-2">{formConfig.title}</h3>
-                  {formConfig.description && (
-                    <p className="text-gray-600 mb-4">{formConfig.description}</p>
+                <div 
+                  className="p-6 border rounded-lg bg-gray-50 relative overflow-hidden"
+                  style={{
+                    backgroundImage: formConfig.backgroundImage ? `url(${formConfig.backgroundImage})` : undefined,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                >
+                  {/* Background overlay for readability when image is present */}
+                  {formConfig.backgroundImage && (
+                    <div className="absolute inset-0 bg-white/80 backdrop-blur-sm" />
                   )}
+                  
+                  <div className="relative z-10">
+                    <h3 className="text-xl font-bold mb-2">{formConfig.title}</h3>
+                    {formConfig.description && (
+                      <p className="text-gray-600 mb-4">{formConfig.description}</p>
+                    )}
                   
                   <div className="space-y-4">
                     {formConfig.fields.map((field) => (
@@ -722,6 +899,200 @@ export default function BrandedFormBuilder() {
                     <img src={qrCodeUrl} alt="QR Code" className="border rounded-lg shadow-sm max-w-[200px]" />
                   </div>
                 )}
+
+                {/* QR Customization Section */}
+                <div className="space-y-4 pt-4 border-t">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <Palette className="h-4 w-4" />
+                    Personalizar QR
+                  </h4>
+                  
+                  {/* Basic Colors */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label>Fondo</Label>
+                      <Input
+                        type="color"
+                        value={qrConfig.backgroundColor}
+                        onChange={(e) => updateQRConfig(prev => ({ ...prev, backgroundColor: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <Label>QR Principal</Label>
+                      <Input
+                        type="color"
+                        value={qrConfig.foregroundColor}
+                        onChange={(e) => updateQRConfig(prev => ({ ...prev, foregroundColor: e.target.value }))}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Corner Colors */}
+                  <div className="space-y-3">
+                    <Label>Esquinas</Label>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-sm">Color Esquinas</Label>
+                        <Input
+                          type="color"
+                          value={qrConfig.eyeColor}
+                          onChange={(e) => updateQRConfig(prev => ({ ...prev, eyeColor: e.target.value }))}
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm">Color Borde</Label>
+                        <Input
+                          type="color"
+                          value={qrConfig.eyeBorderColor}
+                          onChange={(e) => updateQRConfig(prev => ({ ...prev, eyeBorderColor: e.target.value }))}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Logo Upload */}
+                  <div className="space-y-2">
+                    <Label>Logo de Iglesia</Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            try {
+                              const formData = new FormData()
+                              formData.append('file', file)
+                              formData.append('type', 'qr-logo')
+                              
+                              const response = await fetch('/api/upload', {
+                                method: 'POST',
+                                body: formData
+                              })
+                              
+                              if (response.ok) {
+                                const result = await response.json()
+                                updateQRConfig(prev => ({ ...prev, logoImage: result.imageData }))
+                                toast.success('Logo subido correctamente')
+                              }
+                            } catch (error) {
+                              toast.error('Error al subir imagen')
+                            }
+                          }
+                        }}
+                        className="flex-1"
+                      />
+                      {qrConfig.logoImage && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => updateQRConfig(prev => ({ ...prev, logoImage: undefined }))}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                    {qrConfig.logoImage && (
+                      <div className="flex items-center gap-2 p-2 border rounded">
+                        <img src={qrConfig.logoImage} alt="Logo" className="h-8 w-8 object-cover rounded" />
+                        <span className="text-sm text-green-600">Logo cargado</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Logo Size Control */}
+                  {qrConfig.logoImage && (
+                    <div>
+                      <Label>Tamaño del Logo: {qrConfig.logoSize}%</Label>
+                      <input
+                        type="range"
+                        min="10"
+                        max="25"
+                        value={qrConfig.logoSize}
+                        onChange={(e) => updateQRConfig(prev => ({ ...prev, logoSize: parseInt(e.target.value) }))}
+                        className="w-full"
+                      />
+                      {qrConfig.logoSize > 20 && (
+                        <p className="text-sm text-amber-600 mt-1">
+                          ⚠️ Logos grandes pueden afectar la legibilidad del QR
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Background Image Upload */}
+                  <div className="space-y-2">
+                    <Label>Imagen de Fondo QR</Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            try {
+                              const formData = new FormData()
+                              formData.append('file', file)
+                              formData.append('type', 'qr-background')
+                              
+                              const response = await fetch('/api/upload', {
+                                method: 'POST',
+                                body: formData
+                              })
+                              
+                              if (response.ok) {
+                                const result = await response.json()
+                                updateQRConfig(prev => ({ 
+                                  ...prev, 
+                                  backgroundImage: result.imageData,
+                                  useBackgroundImage: true 
+                                }))
+                                toast.success('Imagen de fondo cargada')
+                              }
+                            } catch (error) {
+                              toast.error('Error al subir imagen')
+                            }
+                          }
+                        }}
+                        className="flex-1"
+                      />
+                      {qrConfig.backgroundImage && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => updateQRConfig(prev => ({ 
+                            ...prev, 
+                            backgroundImage: undefined,
+                            useBackgroundImage: false 
+                          }))}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                    {qrConfig.backgroundImage && (
+                      <div className="flex items-center gap-2 p-2 border rounded">
+                        <img src={qrConfig.backgroundImage} alt="Fondo" className="h-8 w-8 object-cover rounded" />
+                        <span className="text-sm text-green-600">Imagen de fondo cargada</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Background Opacity */}
+                  {qrConfig.useBackgroundImage && (
+                    <div>
+                      <Label>Opacidad del Fondo: {qrConfig.backgroundOpacity}%</Label>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        value={qrConfig.backgroundOpacity}
+                        onChange={(e) => updateQRConfig(prev => ({ ...prev, backgroundOpacity: parseInt(e.target.value) }))}
+                        className="w-full"
+                      />
+                    </div>
+                  )}
+                </div>
 
                 <Alert className="mt-4">
                   <AlertDescription>

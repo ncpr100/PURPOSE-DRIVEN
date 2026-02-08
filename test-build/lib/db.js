@@ -7,7 +7,7 @@ const globalForPrisma = globalThis;
 exports.db = globalForPrisma.prisma ?? new client_1.PrismaClient({
     datasources: {
         db: {
-            url: process.env.DATABASE_URL,
+            url: process.env.DATABASE_URL || 'postgresql://user:pass@localhost:5432/fallback',
         },
     },
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error']

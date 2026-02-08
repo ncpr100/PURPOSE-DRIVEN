@@ -50,7 +50,6 @@ export async function POST(request: NextRequest) {
 
       console.log('✅ Church logo updated successfully')
       
-      // Return the actual base64 data URL so the image displays immediately
       return NextResponse.json({ 
         url: dataUrl,
         filename: file.name,
@@ -59,6 +58,33 @@ export async function POST(request: NextRequest) {
         message: 'Logo guardado exitosamente en la base de datos'
       })
     }
+
+    // For form builder images (backgrounds, QR logos, etc.)
+    if (type === 'form-background' || type === 'qr-logo' || type === 'qr-background') {
+      console.log(`📋 Processing ${type} upload...`)
+      
+      // No database storage needed for form images - return base64 directly
+      return NextResponse.json({
+        url: dataUrl,
+        filename: file.name,
+        size: file.size,
+        type: file.type,
+        uploadType: type,
+        message: `${type === 'form-background' ? 'Fondo de formulario' : 
+                   type === 'qr-logo' ? 'Logo de QR' : 
+                   'Fondo de QR'} cargado exitosamente`
+      })
+    }
+
+    // Default response for unknown types
+    return NextResponse.json({
+      url: dataUrl,
+      filename: file.name,
+      size: file.size,
+      type: file.type,
+      uploadType: type || 'unknown',
+      message: 'Archivo cargado exitosamente'
+    })
 
   } catch (error) {
     console.error('❌ Error uploading file:', error)
