@@ -259,7 +259,9 @@ export default function BrandedFormBuilder() {
   // 📤 HANDLE IMAGE UPLOADS (using modular function)
   const handleImageUpload = async (file: File, type: 'form-background' | 'qr-logo' | 'qr-background') => {
     try {
+      console.log(`📤 Starting ${type} upload:`, file.name, file.size)
       const url = await uploadImage(file, type)
+      console.log(`✅ ${type} upload successful:`, url.substring(0, 50) + '...')
       
       // Update appropriate config
       if (type === 'qr-logo') {
@@ -273,6 +275,7 @@ export default function BrandedFormBuilder() {
         toast.success('Fondo del formulario subido exitosamente')
       }
     } catch (error: any) {
+      console.error(`❌ ${type} upload failed:`, error)
       toast.error(error.message || 'Error al subir la imagen')
     }
   }
@@ -584,10 +587,13 @@ export default function BrandedFormBuilder() {
                         onChange={(e) => {
                           const file = e.target.files?.[0]
                           if (file) {
-                            uploadImage(file, 'form-background').then(url => {
+                            uploadImage(file, 'church-logo').then(url => {
                               updateFormConfig(prev => ({ ...prev, churchLogo: url }))
-                              toast.success('Logo de iglesia subido')
-                            }).catch(err => toast.error(err.message))
+                              toast.success('Logo de iglesia subido exitosamente')
+                            }).catch(err => {
+                              console.error('Church logo upload error:', err)
+                              toast.error(err.message || 'Error al subir el logo')
+                            })
                           }
                         }}
                       />
