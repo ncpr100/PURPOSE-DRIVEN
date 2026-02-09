@@ -13,7 +13,7 @@ const formBuilderSchema = z.object({
   fields: z.array(z.object({
     id: z.number(),
     label: z.string(),
-    type: z.enum(['text', 'email', 'number', 'checkbox', 'textarea', 'select']),
+    type: z.enum(['text', 'email', 'number', 'checkbox', 'textarea', 'select', 'tel', 'date', 'radio']),
     options: z.array(z.string()).optional(),
     required: z.boolean().optional()
   })),
@@ -22,18 +22,36 @@ const formBuilderSchema = z.object({
     textColor: z.string(),
     fontFamily: z.string(),
     bgImage: z.string().nullable(),
-    submitButtonText: z.string().optional(),     // NEW: Submit button text
-    submitButtonColor: z.string().optional(),    // NEW: Submit button background color
-    submitButtonTextColor: z.string().optional() // NEW: Submit button text color
+    submitButtonText: z.string().optional(),
+    submitButtonColor: z.string().optional(),
+    submitButtonTextColor: z.string().optional()
   }),
   qrConfig: z.object({
-    foregroundColor: z.string(),
-    backgroundColor: z.string(),
-    logo: z.string().nullable(),
-    size: z.number(),
-    margin: z.number()
-  }),
-  qrCodeUrl: z.string().optional()
+    size: z.number().optional(),
+    margin: z.number().optional(),
+    backgroundColor: z.string().optional(),
+    foregroundColor: z.string().optional(),
+    dotType: z.string().optional(),
+    cornerType: z.string().optional(),
+    useGradient: z.boolean().optional(),
+    gradientType: z.string().optional(),
+    gradientColors: z.array(z.string()).optional(),
+    gradientAngle: z.number().optional(),
+    useBackgroundImage: z.boolean().optional(),
+    backgroundImage: z.string().optional(),
+    backgroundOpacity: z.number().optional(),
+    logo: z.string().nullable().optional(),
+    logoImage: z.string().optional(),
+    logoSize: z.number().optional(),
+    logoOpacity: z.number().optional(),
+    logoMargin: z.number().optional(),
+    logoShape: z.string().optional(),
+    logoBackgroundColor: z.string().optional(),
+    logoBackgroundOpacity: z.number().optional(),
+    eyeColor: z.string().optional(),
+    eyeBorderColor: z.string().optional(),
+    eyeShape: z.string().optional()
+  })
 })
 
 // GET - Fetch saved forms

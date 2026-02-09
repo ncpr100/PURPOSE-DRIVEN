@@ -277,27 +277,59 @@ export default function BrandedFormBuilder() {
           description: formConfig.description,
           fields: formConfig.fields,
           config: {
+            bgColor: '#ffffff',
+            textColor: '#000000',
+            fontFamily: 'Inter, sans-serif',
+            bgImage: formConfig.backgroundImage || null,  // Map backgroundImage to bgImage
             submitButtonText: formConfig.submitButtonText,
             submitButtonColor: formConfig.submitButtonColor,
-            submitButtonTextColor: formConfig.submitButtonTextColor,
-            backgroundImage: formConfig.backgroundImage  // Include form background
+            submitButtonTextColor: formConfig.submitButtonTextColor
           },
-          qrConfig  // All advanced QR customizations
+          qrConfig: {
+            // 🎨 ALL ADVANCED QR CUSTOMIZATION FIELDS
+            size: qrConfig.size,
+            margin: qrConfig.margin,
+            backgroundColor: qrConfig.backgroundColor,
+            foregroundColor: qrConfig.foregroundColor,
+            dotType: qrConfig.dotType,
+            cornerType: qrConfig.cornerType,
+            useGradient: qrConfig.useGradient,
+            gradientType: qrConfig.gradientType,
+            gradientColors: qrConfig.gradientColors,
+            gradientAngle: qrConfig.gradientAngle,
+            useBackgroundImage: qrConfig.useBackgroundImage,
+            backgroundImage: qrConfig.backgroundImage,
+            backgroundOpacity: qrConfig.backgroundOpacity,
+            logo: qrConfig.logoImage || null,
+            logoImage: qrConfig.logoImage,
+            logoSize: qrConfig.logoSize,
+            logoOpacity: qrConfig.logoOpacity,
+            logoMargin: qrConfig.logoMargin,
+            logoShape: qrConfig.logoShape,
+            logoBackgroundColor: qrConfig.logoBackgroundColor,
+            logoBackgroundOpacity: qrConfig.logoBackgroundOpacity,
+            eyeColor: qrConfig.eyeColor,
+            eyeBorderColor: qrConfig.eyeBorderColor,
+            eyeShape: qrConfig.eyeShape
+          }
         }),
       })
 
       if (response.ok) {
         const savedForm = await response.json()
-        setCurrentFormSlug(savedForm.slug)
-        setSavedForms(prev => [savedForm, ...prev])
-        clearAutoSave() // Clear local draft after successful save
-        toast.success('Formulario guardado exitosamente con personalizaciones avanzadas')
+        setCurrentFormSlug(savedForm.form.slug)
+        setSavedForms(prev => [savedForm.form, ...prev])
+        clearAutoSave()
+        toast.success('✅ Formulario guardado con personalizaciones avanzadas (QR + Fondo)')
       } else {
-        throw new Error('Failed to save form')
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to save form')
       }
-    } catch (error) {
-      console.error('Save error:', error)
-      toast.error('Error guardando formulario')
+    } catch (error: any) {
+      console.error('❌ Save error:', error)
+      toast.error(error.message || 'Error guardando formulario')
+    }
+  }
     }
   }
 
@@ -502,6 +534,57 @@ export default function BrandedFormBuilder() {
                     </div>
                   </div>
                 </div>
+
+                {/* 🎨 FORM BACKGROUND IMAGE CUSTOMIZATION (NEW) */}
+                <div className="space-y-3 p-4 border-2 border-dashed border-purple-300 rounded-lg">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <ImageIcon className="h-4 w-4 text-purple-600" />
+                    Imagen de Fondo del Formulario
+                  </h4>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                    <ImageIcon className="h-10 w-10 mx-auto text-gray-400 mb-2" />
+                    <Label htmlFor="form-background-upload" className="cursor-pointer">
+                      <div className="text-sm text-gray-600 mb-2">
+                        {formConfig.backgroundImage ? 'Fondo cargado - Haz clic para cambiar' : 'Subir imagen de fondo para el formulario'}
+                      </div>
+                      <Button type="button" variant="outline" size="sm">
+                        <Upload className="h-4 w-4 mr-2" />
+                        {formConfig.backgroundImage ? 'Cambiar Fondo' : 'Subir Fondo'}
+                      </Button>
+                    </Label>
+                    <input
+                      id="form-background-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0]
+                        if (file) handleImageUpload(file, 'form-background')
+                      }}
+                    />
+                    {formConfig.backgroundImage && (
+                      <div className="mt-3">
+                        <img src={formConfig.backgroundImage} alt="Fondo" className="max-w-[150px] mx-auto rounded" />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => updateFormConfig(prev => ({ ...prev, backgroundImage: undefined }))}
+                          className="mt-2 text-red-600"
+                        >
+                          <X className="h-4 w-4 mr-1" />
+                          Eliminar Fondo
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                  <Alert className="border-purple-200 bg-purple-50">
+                    <Palette className="h-4 w-4 text-purple-600" />
+                    <AlertDescription className="text-purple-800 text-xs">
+                      La imagen de fondo se mostrará detrás del formulario con opacidad reducida para mejor legibilidad.
+                    </AlertDescription>
+                  </Alert>
+                </div>
               </CardContent>
             </Card>
 
@@ -631,14 +714,29 @@ export default function BrandedFormBuilder() {
                 <CardTitle>Vista Previa del Formulario</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="p-6 border rounded-lg bg-gray-50">
-                  <h3 className="text-xl font-bold mb-2">{formConfig.title}</h3>
-                  {formConfig.description && (
-                    <p className="text-gray-600 mb-4">{formConfig.description}</p>
+                <div 
+                  className="p-6 border rounded-lg relative overflow-hidden"
+                  style={{
+                    backgroundColor: formConfig.backgroundImage ? 'transparent' : '#f9fafb',
+                    backgroundImage: formConfig.backgroundImage ? `url(${formConfig.backgroundImage})` : 'none',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                >
+                  {/* Background overlay for better readability */}
+                  {formConfig.backgroundImage && (
+                    <div className="absolute inset-0 bg-white/80 -z-10" />
                   )}
                   
-                  <div className="space-y-4">
-                    {formConfig.fields.map((field) => (
+                  <div className="relative z-10">
+                    <h3 className="text-xl font-bold mb-2">{formConfig.title}</h3>
+                    {formConfig.description && (
+                      <p className="text-gray-600 mb-4">{formConfig.description}</p>
+                    )}
+                    
+                    <div className="space-y-4">
+                      {formConfig.fields.map((field) => (
                       <div key={field.id}>
                         <label className="block text-sm font-medium mb-1">
                           {field.label}
@@ -682,16 +780,17 @@ export default function BrandedFormBuilder() {
                       </div>
                     ))}
                     
-                    <button 
-                      className="px-6 py-2 rounded font-medium"
-                      style={{ 
-                        backgroundColor: formConfig.submitButtonColor || '#2563eb',
-                        color: formConfig.submitButtonTextColor || '#ffffff'
-                      }}
-                      disabled
-                    >
-                      {formConfig.submitButtonText || 'Enviar Formulario'}
-                    </button>
+                      <button 
+                        className="px-6 py-2 rounded font-medium"
+                        style={{ 
+                          backgroundColor: formConfig.submitButtonColor || '#2563eb',
+                          color: formConfig.submitButtonTextColor || '#ffffff'
+                        }}
+                        disabled
+                      >
+                        {formConfig.submitButtonText || 'Enviar Formulario'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </CardContent>

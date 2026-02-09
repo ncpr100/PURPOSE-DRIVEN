@@ -148,8 +148,9 @@ async function applyCanvasCustomizations(baseQR: string, qrConfig: QRConfig): Pr
 }
 
 /**
- * Upload image file to server (base64 encoding for Vercel serverless)
+ * Upload image file to server using FormData (Vercel serverless compatible)
  * Max 2MB file size limitation
+ * ENTERPRISE COMPLIANCE: Matches API endpoint expectations exactly
  */
 export async function uploadImage(
   file: File, 
@@ -165,32 +166,31 @@ export async function uploadImage(
     throw new Error('Solo se permiten archivos de imagen')
   }
 
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onloadend = async () => {
-      try {
-        const base64String = reader.result as string
-        
-        // Upload to API (base64 encoding)
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            file: base64String,
-            fileName: file.name,
-            fileType: type
-          })
-        })
+  try {
+    // 🔧 FIX: Use FormData instead of JSON to match API expectations
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('type', type)
 
-        if (!response.ok) throw new Error('Upload failed')
-        
-        const data = await response.json()
-        resolve(data.url)
-      } catch (error) {
-        reject(error)
-      }
+    console.log(`📤 Uploading ${type}: ${file.name} (${(file.size / 1024).toFixed(2)}KB)`)
+
+    // Upload to API endpoint (expects FormData)
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData  // Send FormData directly (no Content-Type header needed)
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ error: 'Upload failed' }))
+      throw new Error(errorData.error || 'Error al subir imagen')
     }
-    reader.onerror = reject
-    reader.readAsDataURL(file)
-  })
+
+    const data = await response.json()
+    console.log(`✅ Upload successful: ${type}`)
+    
+    return data.url
+  } catch (error: any) {
+    console.error(`❌ Upload error (${type}):`, error)
+    throw new Error(error.message || 'Error al subir la imagen')
+  }
 }
