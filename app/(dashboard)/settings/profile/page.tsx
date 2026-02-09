@@ -248,8 +248,11 @@ export default function ChurchProfilePage() {
       // Upload to your file upload API
       const response = await fetch('/api/upload', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'include'  // Include cookies for authentication
       })
+
+      console.log(`📊 Settings upload response: ${response.status} ${response.statusText}`)
 
       if (response.ok) {
         const data = await response.json()
@@ -258,7 +261,8 @@ export default function ChurchProfilePage() {
         handleInputChange('logo', data.url)
         toast.success('Logo subido exitosamente')
       } else {
-        const errorData = await response.json()
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        console.error('❌ Settings upload error:', errorData)
         throw new Error(errorData.error || 'Error al subir el archivo')
       }
     } catch (error) {

@@ -7,9 +7,18 @@ import { db } from '@/lib/db'
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    
+    // Allow uploads for authenticated users with churchId OR SUPER_ADMIN users
+    if (!session?.user) {
+      return NextResponse.json({ error: 'No autorizado - Usuario no autenticado' }, { status: 401 })
     }
+    
+    // SUPER_ADMIN users can upload regardless of churchId
+    if (session.user.role !== 'SUPER_ADMIN' && !session.user.churchId) {
+      return NextResponse.json({ error: 'No autorizado - Church ID requerido' }, { status: 401 })
+    }
+
+    console.log('📤 Upload request from:', session.user.email, 'Role:', session.user.role, 'ChurchId:', session.user.churchId)
 
     const formData = await request.formData()
     const file = formData.get('file') as File
@@ -39,23 +48,32 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ Base64 conversion successful, length:', dataUrl.length)
 
-    // For church logos, update the church record directly
+    // For church logos, update the church record directly (only for church users)
     if (type === 'church-logo') {
-      console.log('🏠 Updating church logo in database...')
+      console.log('🏠 Processing church logo upload...')
       
-      await db.churches.update({
-        where: { id: session.user.churchId },
-        data: { logo: dataUrl }
-      })
+      // Only update database for users with a churchId (not SUPER_ADMIN)
+      if (session.user.churchId) {
+        console.log('📝 Updating church logo in database for churchId:', session.user.churchId)
+        
+        await db.churches.update({
+          where: { id: session.user.churchId },
+          data: { logo: dataUrl }
+        })
+        
+        console.log('✅ Church logo updated successfully in database')
+      } else {
+        console.log('ℹ️  SUPER_ADMIN user - returning logo URL without database update')
+      }
 
-      console.log('✅ Church logo updated successfully')
-      
       return NextResponse.json({ 
         url: dataUrl,
         filename: file.name,
         size: file.size,
         type: file.type,
-        message: 'Logo guardado exitosamente en la base de datos'
+        message: session.user.churchId 
+          ? 'Logo guardado exitosamente en la base de datos'
+          : 'Logo cargado exitosamente (vista previa)'
       })
     }
 

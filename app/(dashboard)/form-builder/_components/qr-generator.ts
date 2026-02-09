@@ -177,16 +177,20 @@ export async function uploadImage(
     // Upload to API endpoint (expects FormData)
     const response = await fetch('/api/upload', {
       method: 'POST',
-      body: formData  // Send FormData directly (no Content-Type header needed)
+      body: formData,  // Send FormData directly (no Content-Type header needed)
+      credentials: 'include'  // Include cookies for authentication
     })
+
+    console.log(`📊 Upload response status: ${response.status} ${response.statusText}`)
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: 'Upload failed' }))
-      throw new Error(errorData.error || 'Error al subir imagen')
+      console.error(`❌ Upload error (${response.status}):`, errorData)
+      throw new Error(errorData.error || `Error al subir imagen (${response.status})`)
     }
 
     const data = await response.json()
-    console.log(`✅ Upload successful: ${type}`)
+    console.log(`✅ Upload successful: ${type}, URL length: ${data.url?.length || 0}`)
     
     return data.url
   } catch (error: any) {
