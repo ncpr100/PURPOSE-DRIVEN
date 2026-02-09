@@ -17,6 +17,8 @@ import { toast } from 'react-hot-toast'
 import { SMART_TEMPLATES, PRESET_FIELDS } from './form-templates'
 import { getPresetFieldIcon, getTemplateIcon } from './form-icons'
 import type { FormConfig, QRConfig, FormField } from './form-types'
+import QRCustomizationPanel from './qr-customization-panel'
+import { generateAdvancedQR, uploadImage } from './qr-generator'
 
 import { 
   Trash2, 
@@ -225,25 +227,40 @@ export default function BrandedFormBuilder() {
   }, [hasUnsavedChanges])
 
   // Generate QR Code
+  // 🎨 ADVANCED QR GENERATION (using modular function)
   const generateQRCode = async () => {
     setIsGenerating(true)
     try {
       const url = buildFormUrl()
-      const qrDataURL = await QRCode.toDataURL(url, {
-        width: qrConfig.size,
-        margin: qrConfig.margin,
-        color: {
-          dark: qrConfig.foregroundColor,
-          light: qrConfig.backgroundColor
-        }
-      })
+      const qrDataURL = await generateAdvancedQR(url, qrConfig)
       setQRCodeUrl(qrDataURL)
-      toast.success('QR generado exitosamente')
+      toast.success('QR generado exitosamente con personalización avanzada')
     } catch (error) {
       console.error('QR generation failed:', error)
       toast.error('Error generando QR')
     } finally {
       setIsGenerating(false)
+    }
+  }
+
+  // 📤 HANDLE IMAGE UPLOADS (using modular function)
+  const handleImageUpload = async (file: File, type: 'form-background' | 'qr-logo' | 'qr-background') => {
+    try {
+      const url = await uploadImage(file, type)
+      
+      // Update appropriate config
+      if (type === 'qr-logo') {
+        setQRConfig(prev => ({ ...prev, logoImage: url }))
+        toast.success('Logo del QR subido exitosamente')
+      } else if (type === 'qr-background') {
+        setQRConfig(prev => ({ ...prev, backgroundImage: url, useBackgroundImage: true }))
+        toast.success('Fondo del QR subido exitosamente')
+      } else {
+        setFormConfig(prev => ({ ...prev, backgroundImage: url }))
+        toast.success('Fondo del formulario subido exitosamente')
+      }
+    } catch (error: any) {
+      toast.error(error.message || 'Error al subir la imagen')
     }
   }
 
@@ -262,9 +279,10 @@ export default function BrandedFormBuilder() {
           config: {
             submitButtonText: formConfig.submitButtonText,
             submitButtonColor: formConfig.submitButtonColor,
-            submitButtonTextColor: formConfig.submitButtonTextColor
+            submitButtonTextColor: formConfig.submitButtonTextColor,
+            backgroundImage: formConfig.backgroundImage  // Include form background
           },
-          qrConfig
+          qrConfig  // All advanced QR customizations
         }),
       })
 
@@ -273,7 +291,7 @@ export default function BrandedFormBuilder() {
         setCurrentFormSlug(savedForm.slug)
         setSavedForms(prev => [savedForm, ...prev])
         clearAutoSave() // Clear local draft after successful save
-        toast.success('Formulario guardado exitosamente')
+        toast.success('Formulario guardado exitosamente con personalizaciones avanzadas')
       } else {
         throw new Error('Failed to save form')
       }
@@ -679,23 +697,35 @@ export default function BrandedFormBuilder() {
               </CardContent>
             </Card>
 
-            {/* QR Code Generation */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Código QR</CardTitle>
+            {/* 🎨 ADVANCED QR CODE CUSTOMIZATION (Modular Component) */}
+            <QRCustomizationPanel
+              qrConfig={qrConfig}
+              setQRConfig={setQRConfig}
+              qrCodeUrl={qrCodeUrl}
+              isGenerating={isGenerating}
+              onGenerate={generateQRCode}
+              onCopyUrl={copyFormUrl}
+              onImageUpload={handleImageUpload}
+              formUrl={buildFormUrl()}
+              formTitle={formConfig.title}
+            />
+
+            {/* 💾 SAVE & DRAFT MANAGEMENT */}
+            <Card className="border-2 border-green-500">
+              <CardHeader className="bg-green-50">
+                <CardTitle className="flex items-center gap-2 text-green-800">
+                  <Save className="h-5 w-5" />
+                  Guardar y Gestionar Borradores
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-4 gap-3">
-                  <Button onClick={generateQRCode} disabled={isGenerating}>
-                    {isGenerating ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <QrCode className="h-4 w-4 mr-2" />}
-                    Generar QR
-                  </Button>
-                  <Button onClick={copyFormUrl} variant="outline">
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copiar URL
-                  </Button>
+              <CardContent className="space-y-3 pt-6">
+                <div className="grid grid-cols-2 gap-3">
                   {hasLocalDraft && (
-                    <Button onClick={restoreFromLocalStorage} variant="outline" className="border-green-500 text-green-600 hover:bg-green-50">
+                    <Button 
+                      onClick={restoreFromLocalStorage} 
+                      variant="outline" 
+                      className="border-blue-500 text-blue-600 hover:bg-blue-50"
+                    >
                       <Upload className="h-4 w-4 mr-2" />
                       Cargar Borrador
                     </Button>
@@ -706,45 +736,26 @@ export default function BrandedFormBuilder() {
                       toast.success('Borrador guardado localmente')
                     }} 
                     variant="outline" 
-                    className="border-blue-500 text-blue-600 hover:bg-blue-50"
+                    className="border-orange-500 text-orange-600 hover:bg-range-50"
                   >
                     <Archive className="h-4 w-4 mr-2" />
                     Guardar Borrador
                   </Button>
-                  <Button onClick={saveForm} variant="outline" className="col-span-2">
-                    <Save className="h-4 w-4 mr-2" />
-                    Guardar Formulario
-                  </Button>
                 </div>
 
-                {qrCodeUrl && (
-                  <div className="flex justify-center">
-                    <img src={qrCodeUrl} alt="QR Code" className="border rounded-lg shadow-sm max-w-[200px]" />
-                  </div>
-                )}
+                <Button 
+                  onClick={saveForm} 
+                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  size="lg"
+                >
+                  <Save className="h-5 w-5 mr-2" />
+                  Guardar Formulario Completo
+                </Button>
 
-                <Alert className="mt-4">
-                  <AlertDescription>
-                    <strong>URL del formulario:</strong><br />
-                    <code className="text-xs break-all">{buildFormUrl()}</code>
-                  </AlertDescription>
-                </Alert>
-                
-                {hasLocalDraft && (
-                  <Alert className="mt-2 border-blue-500 bg-blue-50">
-                    <Archive className="h-4 w-4 text-blue-600" />
-                    <AlertDescription className="text-blue-800">
-                      <strong>Borrador disponible:</strong> Tienes un borrador guardado. 
-                      Usa "Cargar Borrador" para restaurar tu trabajo anterior.
-                    </AlertDescription>
-                  </Alert>
-                )}
-                
-                <Alert className="mt-2 border-green-500 bg-green-50">
-                  <Save className="h-4 w-4 text-green-600" />
-                  <AlertDescription className="text-green-800">
-                    <strong>🚀 No más trabajo perdido:</strong> Tus cambios se guardan automáticamente. 
-                    Usa "Guardar Borrador" para crear copias de seguridad manuales.
+                <Alert className="border-green-200 bg-green-50">
+                  <Settings className="h-4 w-4 text-green-600" />
+                  <AlertDescription className="text-green-800 text-xs">
+                    <strong>Guardar Formulario Completo</strong> guarda en la base de datos con todas las personalizaciones avanzadas (QR, imágenes, colores).
                   </AlertDescription>
                 </Alert>
               </CardContent>
