@@ -54,9 +54,22 @@ export default function BrandedFormBuilder() {
     title: 'Formulario Personalizado',
     description: 'Descripción del formulario',
     fields: [{ id: 1, label: 'Nombre Completo', type: 'text', required: true }],
+    
+    // Submit Button Defaults
     submitButtonText: 'Enviar Formulario',
     submitButtonColor: '#2563eb',
-    submitButtonTextColor: '#ffffff'
+    submitButtonTextColor: '#ffffff',
+    
+    // Church Branding Defaults
+    primaryColor: '#2563eb',        // Blue
+    secondaryColor: '#10b981',      // Green
+    headerTextColor: '#1f2937',     // Dark gray
+    bodyTextColor: '#4b5563',       // Medium gray
+    fontFamily: 'Inter, sans-serif',
+    formBackgroundColor: '#ffffff',
+    borderColor: '#e5e7eb',
+    inputBorderColor: '#d1d5db',
+    inputFocusColor: '#2563eb'
   })
 
   // QR Configuration
@@ -277,13 +290,22 @@ export default function BrandedFormBuilder() {
           description: formConfig.description,
           fields: formConfig.fields,
           config: {
-            bgColor: '#ffffff',
-            textColor: '#000000',
-            fontFamily: 'Inter, sans-serif',
-            bgImage: formConfig.backgroundImage || null,  // Map backgroundImage to bgImage
+            bgColor: formConfig.formBackgroundColor || '#ffffff',
+            textColor: formConfig.bodyTextColor || '#000000',
+            fontFamily: formConfig.fontFamily || 'Inter, sans-serif',
+            bgImage: formConfig.backgroundImage || null,
             submitButtonText: formConfig.submitButtonText,
             submitButtonColor: formConfig.submitButtonColor,
-            submitButtonTextColor: formConfig.submitButtonTextColor
+            submitButtonTextColor: formConfig.submitButtonTextColor,
+            // Church Branding
+            churchLogo: formConfig.churchLogo,
+            primaryColor: formConfig.primaryColor,
+            secondaryColor: formConfig.secondaryColor,
+            headerTextColor: formConfig.headerTextColor,
+            bodyTextColor: formConfig.bodyTextColor,
+            borderColor: formConfig.borderColor,
+            inputBorderColor: formConfig.inputBorderColor,
+            inputFocusColor: formConfig.inputFocusColor
           },
           qrConfig: {
             // 🎨 ALL ADVANCED QR CUSTOMIZATION FIELDS
@@ -320,7 +342,7 @@ export default function BrandedFormBuilder() {
         setCurrentFormSlug(savedForm.form.slug)
         setSavedForms(prev => [savedForm.form, ...prev])
         clearAutoSave()
-        toast.success('✅ Formulario guardado con personalizaciones avanzadas (QR + Fondo)')
+        toast.success('✅ Formulario guardado con personalización completa de iglesia')
       } else {
         const error = await response.json()
         throw new Error(error.error || 'Failed to save form')
@@ -533,7 +555,148 @@ export default function BrandedFormBuilder() {
                   </div>
                 </div>
 
-                {/* 🎨 FORM BACKGROUND IMAGE CUSTOMIZATION (NEW) */}
+                {/* 🎨 CHURCH BRANDING & PERSONALIZATION */}
+                <div className="space-y-3 p-4 border-2 border-dashed border-blue-300 rounded-lg bg-blue-50">
+                  <h4 className="font-semibold flex items-center gap-2 text-blue-900">
+                    <Palette className="h-5 w-5 text-blue-600" />
+                    Personalización de Marca de la Iglesia
+                  </h4>
+                  
+                  {/* Church Logo Upload */}
+                  <div className="space-y-2">
+                    <Label className="font-medium">Logo de la Iglesia</Label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center bg-white">
+                      <ImageIcon className="h-8 w-8 mx-auto text-gray-400 mb-1" />
+                      <Label htmlFor="church-logo-upload" className="cursor-pointer">
+                        <div className="text-xs text-gray-600 mb-1">
+                          {formConfig.churchLogo ? 'Logo cargado' : 'Subir logo de la iglesia'}
+                        </div>
+                        <Button type="button" variant="outline" size="sm">
+                          <Upload className="h-3 w-3 mr-1" />
+                          {formConfig.churchLogo ? 'Cambiar' : 'Subir'}
+                        </Button>
+                      </Label>
+                      <input
+                        id="church-logo-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            uploadImage(file, 'form-background').then(url => {
+                              updateFormConfig(prev => ({ ...prev, churchLogo: url }))
+                              toast.success('Logo de iglesia subido')
+                            }).catch(err => toast.error(err.message))
+                          }
+                        }}
+                      />
+                      {formConfig.churchLogo && (
+                        <div className="mt-2">
+                          <img src={formConfig.churchLogo} alt="Logo" className="max-w-[80px] mx-auto rounded" />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => updateFormConfig(prev => ({ ...prev, churchLogo: undefined }))}
+                            className="mt-1 text-red-600 text-xs"
+                          >
+                            <X className="h-3 w-3 mr-1" />
+                            Eliminar
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Brand Colors */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label className="text-xs font-medium">Color Primario</Label>
+                      <Input
+                        type="color"
+                        value={formConfig.primaryColor || '#2563eb'}
+                        onChange={(e) => updateFormConfig(prev => ({ ...prev, primaryColor: e.target.value }))}
+                        className="h-10"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs font-medium">Color Secundario</Label>
+                      <Input
+                        type="color"
+                        value={formConfig.secondaryColor || '#10b981'}
+                        onChange={(e) => updateFormConfig(prev => ({ ...prev, secondaryColor: e.target.value }))}
+                        className="h-10"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Typography */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label className="text-xs font-medium">Color Título</Label>
+                      <Input
+                        type="color"
+                        value={formConfig.headerTextColor || '#1f2937'}
+                        onChange={(e) => updateFormConfig(prev => ({ ...prev, headerTextColor: e.target.value }))}
+                        className="h-10"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs font-medium">Color Texto</Label>
+                      <Input
+                        type="color"
+                        value={formConfig.bodyTextColor || '#4b5563'}
+                        onChange={(e) => updateFormConfig(prev => ({ ...prev, bodyTextColor: e.target.value }))}
+                        className="h-10"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Font Family */}
+                  <div>
+                    <Label className="text-xs font-medium">Fuente</Label>
+                    <Select
+                      value={formConfig.fontFamily || 'Inter, sans-serif'}
+                      onValueChange={(value) => updateFormConfig(prev => ({ ...prev, fontFamily: value }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Inter, sans-serif">Inter (Moderna)</SelectItem>
+                        <SelectItem value="Georgia, serif">Georgia (Clásica)</SelectItem>
+                        <SelectItem value="Arial, sans-serif">Arial (Simple)</SelectItem>
+                        <SelectItem value="'Times New Roman', serif">Times New Roman (Tradicional)</SelectItem>
+                        <SelectItem value="'Courier New', monospace">Courier (Monoespaciada)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Form Styling */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label className="text-xs font-medium">Fondo Formulario</Label>
+                      <Input
+                        type="color"
+                        value={formConfig.formBackgroundColor || '#ffffff'}
+                        onChange={(e) => updateFormConfig(prev => ({ ...prev, formBackgroundColor: e.target.value }))}
+                        className="h-10"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs font-medium">Color Borde</Label>
+                      <Input
+                        type="color"
+                        value={formConfig.borderColor || '#e5e7eb'}
+                        onChange={(e) => updateFormConfig(prev => ({ ...prev, borderColor: e.target.value }))}
+                        className="h-10"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 🎨 FORM BACKGROUND IMAGE */}
                 <div className="space-y-3 p-4 border-2 border-dashed border-purple-300 rounded-lg">
                   <h4 className="font-medium flex items-center gap-2">
                     <ImageIcon className="h-4 w-4 text-purple-600" />
@@ -713,42 +876,79 @@ export default function BrandedFormBuilder() {
               </CardHeader>
               <CardContent>
                 <div 
-                  className="p-6 border rounded-lg relative overflow-hidden"
+                  className="p-6 rounded-lg relative overflow-hidden"
                   style={{
-                    backgroundColor: formConfig.backgroundImage ? 'transparent' : '#f9fafb',
+                    backgroundColor: formConfig.backgroundImage ? 'transparent' : (formConfig.formBackgroundColor || '#f9fafb'),
                     backgroundImage: formConfig.backgroundImage ? `url(${formConfig.backgroundImage})` : 'none',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
+                    backgroundRepeat: 'no-repeat',
+                    borderColor: formConfig.borderColor || '#e5e7eb',
+                    borderWidth: '2px',
+                    borderStyle: 'solid',
+                    fontFamily: formConfig.fontFamily || 'Inter, sans-serif'
                   }}
                 >
+                  {/* Church Logo */}
+                  {formConfig.churchLogo && (
+                    <div className="flex justify-center mb-4">
+                      <img src={formConfig.churchLogo} alt="Church Logo" className="h-16 object-contain" />
+                    </div>
+                  )}
+                  
                   {/* Background overlay for better readability */}
                   {formConfig.backgroundImage && (
                     <div className="absolute inset-0 bg-white/80 -z-10" />
                   )}
                   
                   <div className="relative z-10">
-                    <h3 className="text-xl font-bold mb-2">{formConfig.title}</h3>
+                    <h3 
+                      className="text-xl font-bold mb-2"
+                      style={{ color: formConfig.headerTextColor || '#1f2937' }}
+                    >
+                      {formConfig.title}
+                    </h3>
                     {formConfig.description && (
-                      <p className="text-gray-600 mb-4">{formConfig.description}</p>
+                      <p 
+                        className="mb-4"
+                        style={{ color: formConfig.bodyTextColor || '#4b5563' }}
+                      >
+                        {formConfig.description}
+                      </p>
                     )}
                     
                     <div className="space-y-4">
                       {formConfig.fields.map((field) => (
                       <div key={field.id}>
-                        <label className="block text-sm font-medium mb-1">
+                        <label 
+                          className="block text-sm font-medium mb-1"
+                          style={{ color: formConfig.bodyTextColor || '#4b5563' }}
+                        >
                           {field.label}
-                          {field.required && <span className="text-red-500 ml-1">*</span>}
+                          {field.required && <span style={{ color: formConfig.primaryColor || '#ef4444' }} className="ml-1">*</span>}
                         </label>
                         
                         {field.type === 'textarea' ? (
                           <textarea 
-                            className="w-full p-2 border rounded" 
+                            className="w-full p-2 rounded" 
+                            style={{
+                              borderColor: formConfig.inputBorderColor || '#d1d5db',
+                              borderWidth: '1px',
+                              borderStyle: 'solid'
+                            }}
                             rows={3}
                             disabled
                           />
                         ) : field.type === 'select' ? (
-                          <select className="w-full p-2 border rounded" disabled>
+                          <select 
+                            className="w-full p-2 rounded" 
+                            style={{
+                              borderColor: formConfig.inputBorderColor || '#d1d5db',
+                              borderWidth: '1px',
+                              borderStyle: 'solid'
+                            }}
+                            disabled
+                          >
                             <option>Seleccionar...</option>
                             {field.options?.map((option, index) => (
                               <option key={index} value={option}>{option}</option>
@@ -757,21 +957,26 @@ export default function BrandedFormBuilder() {
                         ) : field.type === 'checkbox' ? (
                           <div className="flex items-center">
                             <input type="checkbox" className="mr-2" disabled />
-                            <span className="text-sm">{field.label}</span>
+                            <span className="text-sm" style={{ color: formConfig.bodyTextColor || '#4b5563' }}>{field.label}</span>
                           </div>
                         ) : field.type === 'radio' && field.options ? (
                           <div className="space-y-2">
                             {field.options.map((option, index) => (
                               <div key={index} className="flex items-center">
                                 <input type="radio" name={`field-${field.id}`} className="mr-2" disabled />
-                                <span className="text-sm">{option}</span>
+                                <span className="text-sm" style={{ color: formConfig.bodyTextColor || '#4b5563' }}>{option}</span>
                               </div>
                             ))}
                           </div>
                         ) : (
                           <input 
                             type={field.type} 
-                            className="w-full p-2 border rounded" 
+                            className="w-full p-2 rounded" 
+                            style={{
+                              borderColor: formConfig.inputBorderColor || '#d1d5db',
+                              borderWidth: '1px',
+                              borderStyle: 'solid'
+                            }}
                             disabled
                           />
                         )}

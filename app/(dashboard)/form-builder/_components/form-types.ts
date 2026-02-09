@@ -14,10 +14,24 @@ export interface FormConfig {
   title: string
   description?: string
   fields: FormField[]
+  
+  // Submit Button Customization
   submitButtonText?: string
   submitButtonColor?: string
   submitButtonTextColor?: string
-  backgroundImage?: string  // Form background customization
+  
+  // Church Branding & Personalization
+  backgroundImage?: string       // Form background image
+  churchLogo?: string            // Church logo on form
+  primaryColor?: string          // Primary brand color
+  secondaryColor?: string        // Secondary brand color
+  headerTextColor?: string       // Form title color
+  bodyTextColor?: string         // Form description/field text color
+  fontFamily?: string            // Typography selection
+  formBackgroundColor?: string   // Form container background
+  borderColor?: string           // Form border color
+  inputBorderColor?: string      // Input field border color
+  inputFocusColor?: string       // Input focus state color
 }
 
 export interface QRConfig {

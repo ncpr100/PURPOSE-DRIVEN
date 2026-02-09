@@ -29,7 +29,18 @@ interface FormConfig {
   submitButtonText?: string
   submitButtonColor?: string
   submitButtonTextColor?: string
+  // Church Branding
+  churchLogo?: string | null
+  primaryColor?: string
+  secondaryColor?: string
+  headerTextColor?: string
+  bodyTextColor?: string
+  formBackgroundColor?: string
+  borderColor?: string
+  inputBorderColor?: string
+  inputFocusColor?: string
   timestamp?: number
+  church?: any
 }
 
 export default function FormViewer() {
@@ -89,6 +100,16 @@ export default function FormViewer() {
           submitButtonText: form.config.submitButtonText,
           submitButtonColor: form.config.submitButtonColor,
           submitButtonTextColor: form.config.submitButtonTextColor,
+          // Church Branding
+          churchLogo: form.config.churchLogo,
+          primaryColor: form.config.primaryColor,
+          secondaryColor: form.config.secondaryColor,
+          headerTextColor: form.config.headerTextColor,
+          bodyTextColor: form.config.bodyTextColor,
+          formBackgroundColor: form.config.formBackgroundColor,
+          borderColor: form.config.borderColor,
+          inputBorderColor: form.config.inputBorderColor,
+          inputFocusColor: form.config.inputFocusColor,
           church: result.church
         }
         
@@ -276,19 +297,41 @@ export default function FormViewer() {
     <div 
       className="min-h-screen p-4 flex items-center justify-center"
       style={{
-        backgroundColor: formConfig.bgColor,
+        backgroundColor: formConfig.formBackgroundColor || formConfig.bgColor,
         backgroundImage: formConfig.bgImage ? `url(${formConfig.bgImage})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        color: formConfig.textColor,
+        color: formConfig.bodyTextColor || formConfig.textColor,
         fontFamily: formConfig.fontFamily
       }}
     >
-      <Card className="w-full max-w-2xl bg-white/95 backdrop-blur-sm">
+      <Card 
+        className="w-full max-w-2xl bg-white/95 backdrop-blur-sm"
+        style={{
+          borderColor: formConfig.borderColor,
+          borderWidth: formConfig.borderColor ? '2px' : undefined
+        }}
+      >
         <CardHeader className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">{formConfig.title}</h1>
+          {/* Church Logo */}
+          {formConfig.churchLogo && (
+            <div className="flex justify-center mb-4">
+              <img src={formConfig.churchLogo} alt="Church Logo" className="h-20 object-contain" />
+            </div>
+          )}
+          
+          <h1 
+            className="text-2xl font-bold"
+            style={{ color: formConfig.headerTextColor || formConfig.primaryColor || '#1f2937' }}
+          >
+            {formConfig.title}
+          </h1>
           {formConfig.description && (
-            <p className="text-gray-600">{formConfig.description}</p>
+            <p
+              style={{ color: formConfig.bodyTextColor || '#4b5563' }}
+            >
+              {formConfig.description}
+            </p>
           )}
         </CardHeader>
         
@@ -297,40 +340,82 @@ export default function FormViewer() {
             
             {formConfig.fields.map((field) => (
               <div key={field.id} className="space-y-2">
-                <Label htmlFor={`field-${field.id}`} className="text-gray-700">
+                <Label 
+                  htmlFor={`field-${field.id}`}
+                  style={{ color: formConfig.bodyTextColor || '#374151' }}
+                >
                   {field.label}
-                  {field.required && <span className="text-red-500 ml-1">*</span>}
+                  {field.required && <span style={{ color: formConfig.primaryColor || '#ef4444' }} className="ml-1">*</span>}
                 </Label>
                 
                 {field.type === 'textarea' ? (
                   <textarea
                     id={`field-${field.id}`}
-                    className="w-full p-3 border rounded-md resize-none h-24 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-3 rounded-md resize-none h-24"
+                    style={{
+                      borderColor: formConfig.inputBorderColor || '#d1d5db',
+                      borderWidth: '1px',
+                      borderStyle: 'solid',
+                      color: '#1f2937'
+                    }}
                     placeholder={`Ingrese ${field.label.toLowerCase()}`}
                     value={formData[field.id] || ''}
                     onChange={(e) => handleInputChange(field.id, e.target.value)}
                     required={field.required}
+                    onFocus={(e) => {
+                      if (formConfig.inputFocusColor) {
+                        e.target.style.borderColor = formConfig.inputFocusColor
+                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`
+                      }
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = formConfig.inputBorderColor || '#d1d5db'
+                      e.target.style.outline = 'none'
+                    }}
                   />
                 ) : field.type === 'checkbox' ? (
                   <div className="flex items-center space-x-2">
                     <input
                       id={`field-${field.id}`}
                       type="checkbox"
-                      className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                      className="w-4 h-4 rounded"
+                      style={{
+                        accentColor: formConfig.primaryColor || '#2563eb'
+                      }}
                       checked={formData[field.id] || false}
                       onChange={(e) => handleInputChange(field.id, e.target.checked)}
                     />
-                    <Label htmlFor={`field-${field.id}`} className="text-gray-700 cursor-pointer">
+                    <Label 
+                      htmlFor={`field-${field.id}`} 
+                      className="cursor-pointer"
+                      style={{ color: formConfig.bodyTextColor || '#374151' }}
+                    >
                       Acepto los términos y condiciones
                     </Label>
                   </div>
                 ) : field.type === 'select' ? (
                   <select
                     id={`field-${field.id}`}
-                    className="w-full p-3 border rounded-md text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-3 rounded-md"
+                    style={{
+                      borderColor: formConfig.inputBorderColor || '#d1d5db',
+                      borderWidth: '1px',
+                      borderStyle: 'solid',
+                      color: '#1f2937'
+                    }}
                     value={formData[field.id] || ''}
                     onChange={(e) => handleInputChange(field.id, e.target.value)}
                     required={field.required}
+                    onFocus={(e) => {
+                      if (formConfig.inputFocusColor) {
+                        e.target.style.borderColor = formConfig.inputFocusColor
+                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`
+                      }
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = formConfig.inputBorderColor || '#d1d5db'
+                      e.target.style.outline = 'none'
+                    }}
                   >
                     <option value="">Seleccione una opción</option>
                     {field.options?.map((option, index) => (
@@ -341,11 +426,25 @@ export default function FormViewer() {
                   <Input
                     id={`field-${field.id}`}
                     type={field.type}
-                    className="text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className=""
+                    style={{
+                      borderColor: formConfig.inputBorderColor || '#d1d5db',
+                      color: '#1f2937'
+                    }}
                     placeholder={`Ingrese ${field.label.toLowerCase()}`}
                     value={formData[field.id] || ''}
                     onChange={(e) => handleInputChange(field.id, e.target.value)}
                     required={field.required}
+                    onFocus={(e) => {
+                      if (formConfig.inputFocusColor) {
+                        e.target.style.borderColor = formConfig.inputFocusColor
+                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`
+                      }
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = formConfig.inputBorderColor || '#d1d5db'
+                      e.target.style.outline = 'none'
+                    }}
                   />
                 )}
               </div>
