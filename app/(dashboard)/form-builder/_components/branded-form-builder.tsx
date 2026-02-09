@@ -330,8 +330,6 @@ export default function BrandedFormBuilder() {
       toast.error(error.message || 'Error guardando formulario')
     }
   }
-    }
-  }
 
   // Helper functions
   const addField = () => {
