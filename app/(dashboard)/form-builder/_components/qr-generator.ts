@@ -154,7 +154,7 @@ async function applyCanvasCustomizations(baseQR: string, qrConfig: QRConfig): Pr
  */
 export async function uploadImage(
   file: File, 
-  type: 'form-background' | 'qr-logo' | 'qr-background' | 'church-logo'
+  type: 'form-background' | 'qr-logo' | 'qr-background' | 'form-church-logo'
 ): Promise<string> {
   // Validate file size (max 2MB for Vercel)
   if (file.size > 2 * 1024 * 1024) {

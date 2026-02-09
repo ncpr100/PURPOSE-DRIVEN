@@ -587,7 +587,7 @@ export default function BrandedFormBuilder() {
                         onChange={(e) => {
                           const file = e.target.files?.[0]
                           if (file) {
-                            uploadImage(file, 'church-logo').then(url => {
+                            uploadImage(file, 'form-church-logo').then(url => {
                               updateFormConfig(prev => ({ ...prev, churchLogo: url }))
                               toast.success('Logo de iglesia subido exitosamente')
                             }).catch(err => {

@@ -59,8 +59,8 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // For form builder images (backgrounds, QR logos, etc.)
-    if (type === 'form-background' || type === 'qr-logo' || type === 'qr-background') {
+    // For form builder images (backgrounds, QR logos, church logos for forms)
+    if (type === 'form-background' || type === 'qr-logo' || type === 'qr-background' || type === 'form-church-logo') {
       console.log(`📋 Processing ${type} upload...`)
       
       // No database storage needed for form images - return base64 directly
@@ -72,7 +72,8 @@ export async function POST(request: NextRequest) {
         uploadType: type,
         message: `${type === 'form-background' ? 'Fondo de formulario' : 
                    type === 'qr-logo' ? 'Logo de QR' : 
-                   'Fondo de QR'} cargado exitosamente`
+                   type === 'qr-background' ? 'Fondo de QR' :
+                   'Logo de iglesia para formulario'} cargado exitosamente`
       })
     }
 
