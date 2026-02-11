@@ -6,16 +6,32 @@ import { db } from '@/lib/db'
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('📤 Upload API called - checking authentication...')
+    
     const session = await getServerSession(authOptions)
     
-    // Allow uploads for authenticated users with churchId OR SUPER_ADMIN users
+    // Require authenticated user
     if (!session?.user) {
-      return NextResponse.json({ error: 'No autorizado - Usuario no autenticado' }, { status: 401 })
+      console.log('❌ Upload failed - No session found')
+      return NextResponse.json({ 
+        error: 'No autorizado - Usuario no autenticado',
+        code: 'NO_SESSION'
+      }, { status: 401 })
     }
     
-    // SUPER_ADMIN users can upload regardless of churchId
+    console.log('✅ Authenticated user:', {
+      email: session.user.email,
+      role: session.user.role,
+      churchId: session.user.churchId
+    })
+
+    // Allow uploads for users with churchId OR SUPER_ADMIN users (who may have churchId=null)
     if (session.user.role !== 'SUPER_ADMIN' && !session.user.churchId) {
-      return NextResponse.json({ error: 'No autorizado - Church ID requerido' }, { status: 401 })
+      console.log('❌ Upload failed - No churchId and not SUPER_ADMIN')
+      return NextResponse.json({ 
+        error: 'No autorizado - Church ID requerido',
+        code: 'NO_CHURCH_ID'
+      }, { status: 401 })
     }
 
     console.log('📤 Upload request from:', session.user.email, 'Role:', session.user.role, 'ChurchId:', session.user.churchId)
@@ -25,17 +41,38 @@ export async function POST(request: NextRequest) {
     const type = formData.get('type') as string
 
     if (!file) {
-      return NextResponse.json({ error: 'No se recibió archivo' }, { status: 400 })
+      console.log('❌ Upload failed - No file received')
+      return NextResponse.json({ 
+        error: 'No se recibió archivo',
+        code: 'NO_FILE'
+      }, { status: 400 })
     }
+
+    console.log('📁 File details:', {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      uploadType: type
+    })
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      return NextResponse.json({ error: 'Solo se permiten imágenes' }, { status: 400 })
+      console.log('❌ Upload failed - Invalid file type:', file.type)
+      return NextResponse.json({ 
+        error: 'Solo se permiten imágenes',
+        code: 'INVALID_FILE_TYPE',
+        details: { receivedType: file.type }
+      }, { status: 400 })
     }
 
     // Validate file size (max 2MB for base64 storage)
     if (file.size > 2 * 1024 * 1024) {
-      return NextResponse.json({ error: 'El archivo debe ser menor a 2MB' }, { status: 400 })
+      console.log('❌ Upload failed - File too large:', file.size)
+      return NextResponse.json({ 
+        error: 'El archivo debe ser menor a 2MB',
+        code: 'FILE_TOO_LARGE',
+        details: { size: file.size, maxSize: 2097152 }
+      }, { status: 400 })
     }
 
     console.log('📤 Converting file to base64...', { name: file.name, size: file.size, type: file.type })
@@ -105,11 +142,17 @@ export async function POST(request: NextRequest) {
       message: 'Archivo cargado exitosamente'
     })
 
-  } catch (error) {
-    console.error('❌ Error uploading file:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+  } catch (error: any) {
+    console.error('❌ Upload API error:', {
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    })
+    
+    return NextResponse.json({
+      error: 'Error interno del servidor al procesar la carga',
+      code: 'INTERNAL_ERROR',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    }, { status: 500 })
   }
 }

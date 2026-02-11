@@ -60,7 +60,8 @@ const PROTECTED_API_ROUTES = [
   '/api/automation-rules',
   '/api/automation-templates',
   '/api/spiritual-assessment',
-  '/api/admin'
+  '/api/admin',
+  '/api/upload'
 ];
 
 // Mapeo de rutas a permisos requeridos
