@@ -1,0 +1,56 @@
+#!/bin/bash
+
+echo "🧪 NEON DATABASE SETUP VERIFICATION"
+echo "==================================="
+
+echo ""
+echo "📋 STEP 1: Update Vercel Environment Variables"
+echo "Copy your Neon DATABASE_URL and run:"
+echo ""
+echo "vercel env add DATABASE_URL production"
+echo "vercel env add DATABASE_URL preview" 
+echo "vercel env add DATABASE_URL development"
+echo ""
+
+echo "📋 STEP 2: Run Database Migration"
+echo "npx prisma db push"
+echo ""
+
+echo "📋 STEP 3: Seed Database with Users"
+echo "node migrate-to-neon.js"
+echo ""
+
+echo "📋 STEP 4: Deploy to Vercel"
+echo "vercel --prod"
+echo ""
+
+echo "📋 STEP 5: Test Authentication"
+echo "1. Go to your Vercel deployment URL"
+echo "2. Test tenant login:"
+echo "   📧 admin@iglesiacentral.com"
+echo "   🔑 password123"
+echo ""
+echo "3. Test SUPER_ADMIN login:"
+echo "   📧 soporte@khesed-tek-systems.org"
+echo "   🔑 Bendecido100%$$%"
+echo ""
+
+echo "📋 STEP 6: Test Upload Functionality"
+echo "With tenant credentials, test all 4 upload buttons:"
+echo "1. 🏛️ Church Settings Logo: /settings/profile"
+echo "2. 🎨 Form Builder Church Logo: /form-builder"
+echo "3. 📱 QR Logo Upload: /form-builder → Paso 3 → Logo"
+echo "4. 🖼️ QR Background Upload: /form-builder → Paso 3 → Advanced"
+echo ""
+
+echo "✅ SUCCESS CRITERIA:"
+echo "• Both login types work without errors"
+echo "• All upload buttons function (no 'No autorizado' errors)"
+echo "• Images upload and display correctly"
+echo "• Database operations are fast (<2s response times)"
+echo ""
+
+echo "🚨 IF ISSUES OCCUR:"
+echo "• Check Vercel deployment logs: vercel logs"
+echo "• Verify DATABASE_URL is correctly set: vercel env ls"
+echo "• Test database connection: node migrate-to-neon.js"

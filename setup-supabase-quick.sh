@@ -1,0 +1,45 @@
+#!/bin/bash
+
+echo "🚀 SUPABASE POSTGRESQL - IMMEDIATE FIX"
+echo "===================================="
+echo ""
+
+echo "✅ SUPABASE IS UP AND RUNNING!"
+echo "Browser opened at: https://supabase.com/"
+echo ""
+
+echo "📋 QUICK SETUP (5 MINUTES):"
+echo "1. Click 'Start your project'"
+echo "2. Sign in with GitHub (fastest)"
+echo "3. Create Organization: 'Khesed-Tek'"
+echo "4. Create Project:"
+echo "   • Name: 'khesed-tek-church-cms'"
+echo "   • Database Password: 'ChurchCMS2026!' (save this!)"
+echo "   • Region: Choose closest to you"
+echo "   • Pricing: Free (up to 2 projects)"
+echo ""
+
+echo "📋 GET CONNECTION STRING:"
+echo "1. After project creation, go to Settings → Database"
+echo "2. Look for 'Connection string' section"
+echo "3. Copy the 'URI' format (not SSL)"
+echo "4. Should look like:"
+echo "   postgresql://postgres.xxx:[PASSWORD]@aws-0-us-west-1.pooler.supabase.com:6543/postgres"
+echo ""
+
+echo "🎯 ADVANTAGES OF SUPABASE:"
+echo "✅ PostgreSQL (same as current setup)"
+echo "✅ 500MB free database (plenty for churches)"
+echo "✅ Built-in dashboard and monitoring"
+echo "✅ Real-time features (bonus for future)"
+echo "✅ Very reliable (99.9% uptime)"
+echo ""
+
+echo "⚡ NEXT STEPS AFTER GETTING CONNECTION STRING:"
+echo "1. Update Vercel environment variables"
+echo "2. Run database migration"
+echo "3. Create users (tenant + SUPER_ADMIN)"
+echo "4. Test login and uploads"
+echo ""
+
+echo "🔗 Supabase is open in your browser - let's get this fixed!"
