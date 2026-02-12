@@ -93,12 +93,16 @@ export async function POST(request: NextRequest) {
       if (session.user.churchId) {
         console.log('📝 Updating church logo in database for churchId:', session.user.churchId)
         
-        await db.churches.update({
-          where: { id: session.user.churchId },
-          data: { logo: dataUrl }
-        })
-        
-        console.log('✅ Church logo updated successfully in database')
+        try {
+          await db.churches.update({
+            where: { id: session.user.churchId },
+            data: { logo: dataUrl }
+          })
+          console.log('✅ Church logo updated successfully in database')
+        } catch (dbError: any) {
+          console.log('⚠️ Database unavailable, returning logo without database save:', dbError.message)
+          // Continue without failing - return the logo URL anyway
+        }
       } else {
         console.log('ℹ️  SUPER_ADMIN user - returning logo URL without database update')
       }

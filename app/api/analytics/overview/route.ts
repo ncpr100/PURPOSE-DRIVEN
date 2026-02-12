@@ -24,15 +24,17 @@ export async function GET(request: NextRequest) {
     const startDate = new Date();
     startDate.setDate(endDate.getDate() - parseInt(period));
 
-    // Parallel data fetching for better performance
-    const [
-      memberStats,
-      donationStats,
-      eventStats,
-      communicationStats,
-      socialMediaStats,
-      volunteerStats
-    ] = await Promise.all([
+    // Default fallback data
+    let memberStats = { _count: { id: 0 } }
+    let donationStats = { _sum: { amount: 0 }, _count: { id: 0 }, _avg: { amount: 0 } }
+    let eventStats = { _count: { id: 0 } }
+    let communicationStats = { _count: { id: 0 } }
+    let socialMediaStats = { _count: { id: 0 } }
+    let volunteerStats = { _count: { id: 0 } }
+
+    try {
+      // Parallel data fetching for better performance
+      const results = await Promise.all([
       // Member Analytics
       db.members.aggregate({
         where: { churchId, isActive: true },
@@ -86,18 +88,31 @@ export async function GET(request: NextRequest) {
         },
         _count: { id: true }
       })
-    ]);
+      ])
+
+      // Assign results
+      memberStats = results[0]
+      donationStats = results[1]
+      eventStats = results[2]
+      communicationStats = results[3]
+      socialMediaStats = results[4]
+      volunteerStats = results[5]
+    } catch (dbError) {
+      console.log('⚠️ Database unavailable for analytics overview, using fallback data')
+      // Fallback data already initialized above
+    }
 
     // Calculate growth rates (compare with previous period)
     const previousStartDate = new Date();
     previousStartDate.setDate(startDate.getDate() - parseInt(period));
 
-    const [
-      previousDonations,
-      previousEvents,
-      previousCommunications,
-      previousSocialPosts
-    ] = await Promise.all([
+    let previousDonations = { _sum: { amount: 0 }, _count: { id: 0 } }
+    let previousEvents = { _count: { id: 0 } }
+    let previousCommunications = { _count: { id: 0 } }
+    let previousSocialPosts = { _count: { id: 0 } }
+
+    try {
+      const growthResults = await Promise.all([
       db.donations.aggregate({
         where: { 
           churchId,
@@ -131,7 +146,16 @@ export async function GET(request: NextRequest) {
         },
         _count: { id: true }
       })
-    ]);
+      ])
+
+      previousDonations = growthResults[0]
+      previousEvents = growthResults[1]
+      previousCommunications = growthResults[2]
+      previousSocialPosts = growthResults[3]
+    } catch (dbError) {
+      console.log('⚠️ Database unavailable for growth analytics, using zero growth')
+      // Fallback data already initialized above
+    }
 
     // Calculate growth percentages
     const calculateGrowth = (current: number, previous: number): number => {
