@@ -219,8 +219,10 @@ export function QRCodeGenerator({
   }
 
   const copyQRUrl = (url: string) => {
-    navigator.clipboard.writeText(url)
-    toast.success('URL copiada al portapapeles')
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(url)
+      toast.success('URL copiada al portapapeles')
+    }
   }
 
   return (

@@ -394,8 +394,10 @@ export default function BrandedFormBuilder() {
   }
 
   const copyFormUrl = () => {
-    navigator.clipboard.writeText(buildFormUrl())
-    toast.success('URL copiada al portapapeles')
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(buildFormUrl())
+      toast.success('URL copiada al portapapeles')
+    }
   }
 
   // Apply template

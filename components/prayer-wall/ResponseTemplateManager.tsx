@@ -602,8 +602,10 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    navigator.clipboard.writeText(template.content)
-                    toast.success('Contenido copiado')
+                    if (typeof navigator !== 'undefined') {
+                      navigator.clipboard.writeText(template.content)
+                      toast.success('Contenido copiado')
+                    }
                   }}
                 >
                   <Copy className="w-4 h-4" />

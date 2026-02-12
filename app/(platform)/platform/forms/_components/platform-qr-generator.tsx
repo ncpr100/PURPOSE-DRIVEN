@@ -138,8 +138,10 @@ export default function PlatformQRGenerator({ formId }: PlatformQRGeneratorProps
       return
     }
     
-    navigator.clipboard.writeText(url)
-    toast.success('URL copiada al portapapeles')
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(url)
+      toast.success('URL copiada al portapapeles')
+    }
   }
 
   return (

@@ -125,8 +125,10 @@ export default function BibleVersionComparison() {
    */
   const copyVerse = (verse: BibleVerse) => {
     const text = `${verse.reference} (${verse.version})\n${verse.text}`
-    navigator.clipboard.writeText(text)
-    toast.success('Versículo copiado al portapapeles')
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(text)
+      toast.success('Versículo copiado al portapapeles')
+    }
   }
 
   /**

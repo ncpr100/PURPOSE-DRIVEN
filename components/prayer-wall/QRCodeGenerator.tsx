@@ -458,8 +458,10 @@ export function QRCodeGenerator({ qrCode, forms, onSave, onCancel }: QRCodeGener
                 size="sm"
                 className="mt-2"
                 onClick={() => {
+                if (typeof navigator !== 'undefined') {
                   navigator.clipboard.writeText(qrCodeUrl)
                   toast.success('URL copiada al portapapeles')
+                }
                 }}
               >
                 Copiar URL

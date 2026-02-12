@@ -243,36 +243,6 @@ export async function POST(request: NextRequest) {
         console.warn(`⚠️ Could not create Supabase Auth user for ${adminUser.email} - will need manual creation`)
       }
 
-      const admin = await tx.users.create({
-        data: {
-          id: nanoid(),
-          name: adminUser.name,
-          email: adminUser.email,
-          password: hashedPassword,
-          role: 'ADMIN_IGLESIA',
-          churches: {
-            connect: { id: church.id }
-          },
-          isActive: true,
-          isFirstLogin: true,
-          emailVerified: new Date(),
-          updatedAt: new Date()
-        }
-      })
-
-      // 🚀 AUTOMATICALLY CREATE SUPABASE AUTH USER
-      const supabaseUser = await createSupabaseAuthUser(
-        adminUser.email, 
-        temporaryPassword,
-        adminUser.name
-      )
-
-      if (supabaseUser) {
-        console.log(`✅ Auto-created Supabase Auth user for ${adminUser.email}`)
-      } else {
-        console.warn(`⚠️ Could not create Supabase Auth user for ${adminUser.email} - will need manual creation`)
-      }
-
       // Create corresponding member
       await tx.members.create({
         data: {
@@ -294,46 +264,6 @@ export async function POST(request: NextRequest) {
       })
 
       return { church, admin, supabaseUser }
-    })
-          membershipDate: new Date(),
-          isActive: true,
-          updatedAt: new Date()
-        }
-      })
-
-      // Log de actividad: crear notificación y entregas por usuario dentro de la transacción
-      const activityNotification = await tx.notifications.create({
-        data: {
-          id: nanoid(),
-          title: 'Nueva iglesia creada',
-          message: `Iglesia "${name}" creada por SUPER_ADMIN`,
-          type: 'info',
-          churches: {
-            connect: { id: church.id }
-          }
-        }
-      })
-
-      const churchUsers = await tx.users.findMany({
-        where: { churchId: church.id, isActive: true },
-        select: { id: true }
-      })
-
-      if (churchUsers.length > 0) {
-        await tx.notification_deliveries.createMany({
-          data: churchUsers.map(u => ({
-            id: nanoid(),
-            notificationId: activityNotification.id,
-            userId: u.id,
-            deliveryMethod: 'in-app',
-            deliveryStatus: 'PENDING',
-            deliveredAt: new Date(),
-            updatedAt: new Date()
-          }))
-        })
-      }
-
-      return { church, admin }
     })
 
     // Send welcome email with temporary password to the new admin

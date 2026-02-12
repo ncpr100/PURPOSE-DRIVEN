@@ -129,7 +129,7 @@ export default function ThankYouPage() {
   }
 
   const handleShare = async () => {
-    if (navigator.share && paymentStatus) {
+    if (typeof navigator !== 'undefined' && navigator.share && paymentStatus) {
       try {
         await navigator.share({
           title: `Donación a ${paymentStatus.churchName}`,
@@ -139,7 +139,7 @@ export default function ThankYouPage() {
       } catch (error) {
         console.log('Error sharing:', error)
       }
-    } else {
+    } else if (typeof navigator !== 'undefined') {
       toast.success('URL copiada al portapapeles')
       navigator.clipboard.writeText(window.location.origin + `/donate/${churchId}`)
     }

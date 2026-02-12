@@ -168,8 +168,10 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
 
   const copyPublicUrl = async () => {
     try {
-      await navigator.clipboard.writeText(publicDonationUrl)
-      toast.success('Enlace copiado al portapapeles')
+      if (typeof navigator !== 'undefined') {
+        await navigator.clipboard.writeText(publicDonationUrl)
+        toast.success('Enlace copiado al portapapeles')
+      }
     } catch (error) {
       toast.error('Error al copiar enlace')
     }
