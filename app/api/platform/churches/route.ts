@@ -7,6 +7,50 @@ import { sendEmail, emailQueue } from '@/lib/email'
 import { getServerBaseUrl } from '@/lib/server-url'
 import { nanoid } from 'nanoid'
 
+// Supabase Admin API for creating Auth users
+const supabaseAdminUrl = 'https://qxdwpihcmgctznvdfmbv.supabase.co'
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+
+async function createSupabaseAuthUser(email: string, password: string, name: string) {
+  if (!supabaseServiceKey) {
+    console.warn('SUPABASE_SERVICE_ROLE_KEY not configured - skipping Auth user creation')
+    return null
+  }
+
+  try {
+    const response = await fetch(`${supabaseAdminUrl}/auth/v1/admin/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseServiceKey}`,
+        'apikey': supabaseServiceKey
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        user_metadata: {
+          name,
+          full_name: name
+        },
+        email_confirm: true
+      })
+    })
+
+    if (!response.ok) {
+      const error = await response.text()
+      console.error('Failed to create Supabase Auth user:', error)
+      return null
+    }
+
+    const user = await response.json()
+    console.log('✅ Supabase Auth user created:', email)
+    return user
+  } catch (error) {
+    console.error('Error creating Supabase Auth user:', error)
+    return null
+  }
+}
+
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
@@ -145,9 +189,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Crear iglesia y usuario admin en una transacción
+    // Create church and admin user in a transaction
     const result = await db.$transaction(async (tx) => {
-      // Crear iglesia
+      // Create church
       const church = await tx.churches.create({
         data: {
           id: nanoid(),
@@ -163,9 +207,41 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      // Crear usuario administrador
+      // Create admin user password
       const bcrypt = require('bcryptjs')
-      const hashedPassword = await bcrypt.hash(adminUser.password || 'cambiarpassword123', 12)
+      const temporaryPassword = adminUser.password || 'cambiarpassword123'
+      const hashedPassword = await bcrypt.hash(temporaryPassword, 12)
+
+      // Create admin user in database
+      const admin = await tx.users.create({
+        data: {
+          id: nanoid(),
+          name: adminUser.name,
+          email: adminUser.email,
+          password: hashedPassword,
+          role: 'ADMIN_IGLESIA',
+          churches: {
+            connect: { id: church.id }
+          },
+          isActive: true,
+          isFirstLogin: true,
+          emailVerified: new Date(),
+          updatedAt: new Date()
+        }
+      })
+
+      // 🚀 AUTOMATICALLY CREATE SUPABASE AUTH USER
+      const supabaseUser = await createSupabaseAuthUser(
+        adminUser.email, 
+        temporaryPassword,
+        adminUser.name
+      )
+
+      if (supabaseUser) {
+        console.log(`✅ Auto-created Supabase Auth user for ${adminUser.email}`)
+      } else {
+        console.warn(`⚠️ Could not create Supabase Auth user for ${adminUser.email} - will need manual creation`)
+      }
 
       const admin = await tx.users.create({
         data: {
@@ -184,7 +260,20 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      // Crear miembro correspondiente
+      // 🚀 AUTOMATICALLY CREATE SUPABASE AUTH USER
+      const supabaseUser = await createSupabaseAuthUser(
+        adminUser.email, 
+        temporaryPassword,
+        adminUser.name
+      )
+
+      if (supabaseUser) {
+        console.log(`✅ Auto-created Supabase Auth user for ${adminUser.email}`)
+      } else {
+        console.warn(`⚠️ Could not create Supabase Auth user for ${adminUser.email} - will need manual creation`)
+      }
+
+      // Create corresponding member
       await tx.members.create({
         data: {
           id: nanoid(),
@@ -198,6 +287,14 @@ export async function POST(request: NextRequest) {
           users: {
             connect: { id: admin.id }
           },
+          membershipDate: new Date(),
+          isActive: true,
+          updatedAt: new Date()
+        }
+      })
+
+      return { church, admin, supabaseUser }
+    })
           membershipDate: new Date(),
           isActive: true,
           updatedAt: new Date()
@@ -241,6 +338,10 @@ export async function POST(request: NextRequest) {
 
     // Send welcome email with temporary password to the new admin
     const temporaryPassword = adminUser.password || 'cambiarpassword123'
+    const authStatusMessage = result.supabaseUser 
+      ? '✅ Tu cuenta de autenticación ha sido creada automáticamente.'
+      : '⚠️ Por favor contacta al soporte para activar tu cuenta de autenticación.'
+      
     const welcomeEmailContent = `
       <html>
         <head>
@@ -249,6 +350,7 @@ export async function POST(request: NextRequest) {
             .header { background: #3B82F6; color: white; padding: 20px; text-align: center; }
             .content { padding: 20px; }
             .credentials { background: #f8f9fa; padding: 15px; border-left: 4px solid #3B82F6; margin: 20px 0; }
+            .auth-status { background: #d1ecf1; padding: 15px; border-left: 4px solid #3B82F6; margin: 20px 0; }
             .warning { background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0; }
             .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #666; }
           </style>
@@ -261,6 +363,11 @@ export async function POST(request: NextRequest) {
             <h2>Hola ${adminUser.name},</h2>
             
             <p>Tu cuenta de administrador ha sido creada exitosamente para la iglesia <strong>${name}</strong>.</p>
+            
+            <div class="auth-status">
+              <h3>🔐 Estado de Autenticación:</h3>
+              <p>${authStatusMessage}</p>
+            </div>
             
             <div class="credentials">
               <h3>📧 Credenciales de Acceso:</h3>
@@ -313,6 +420,12 @@ export async function POST(request: NextRequest) {
         id: result.admin.id,
         name: result.admin.name,
         email: result.admin.email
+      },
+      supabaseAuth: {
+        created: !!result.supabaseUser,
+        message: result.supabaseUser 
+          ? 'Usuario de autenticación creado automáticamente'
+          : 'Usuario de autenticación pendiente - contactar soporte'
       }
     }, { status: 201 })
 
