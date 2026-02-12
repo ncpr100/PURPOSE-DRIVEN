@@ -10,26 +10,30 @@ export default async function DashboardPage() {
     return <div>Error: No se encontró la iglesia</div>
   }
 
-  // Fetch dashboard statistics
+  // Fetch dashboard statistics with database fallback
   const today = new Date()
   const startOfDay = new Date(today.setHours(0, 0, 0, 0))
   const endOfDay = new Date(today.setHours(23, 59, 59, 999))
 
-  const [
-    totalMembers, 
-    totalSermons, 
-    upcomingEvents, 
-    newMembersThisMonth,
-    totalVolunteers,
-    totalCheckIns,
-    pendingFollowUps,
-    childrenPresent,
-    websiteRequests,
-    existingWebsites,
-    visitorEngagementData,
-    firstTimeVisitorsThisMonth,
-    completedFollowUpsThisMonth
-  ] = await Promise.all([
+  let totalMembers = 0
+  let totalSermons = 0
+  let upcomingEvents = 0
+  let newMembersThisMonth = 0
+  let totalVolunteers = 0
+  let totalCheckIns = 0
+  let pendingFollowUps = 0
+  let childrenPresent = 0
+  let websiteRequests: any[] = []
+  let existingWebsites = 0
+  let visitorEngagementData: any[] = []
+  let firstTimeVisitorsThisMonth = 0
+  let completedFollowUpsThisMonth = 0
+  let recentMembers: any[] = []
+  let recentSermons: any[] = []
+  let recentCheckIns: any[] = []
+
+  try {
+    const results = await Promise.all([
     db.members.count({
       where: { 
         churchId: session.user.churchId,
@@ -146,7 +150,81 @@ export default async function DashboardPage() {
         }
       }
     }).catch(() => 0)
-  ])
+    ])
+
+    // Assign results
+    totalMembers = results[0]
+    totalSermons = results[1]
+    upcomingEvents = results[2]
+    newMembersThisMonth = results[3]
+    totalVolunteers = results[4]
+    totalCheckIns = results[5]
+    pendingFollowUps = results[6]
+    childrenPresent = results[7]
+    websiteRequests = results[8]
+    existingWebsites = results[9]
+    visitorEngagementData = results[10]
+    firstTimeVisitorsThisMonth = results[11]
+    completedFollowUpsThisMonth = results[12]
+
+    // Fetch recent members
+    recentMembers = await db.members.findMany({
+      where: {
+        churchId: session.user.churchId,
+        isActive: true
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      take: 5,
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        createdAt: true
+      }
+    }).catch(() => [])
+
+    // Fetch recent sermons
+    recentSermons = await db.sermons.findMany({
+      where: {
+        churchId: session.user.churchId
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      take: 5,
+      select: {
+        id: true,
+        title: true,
+        scripture: true,
+        createdAt: true
+      }
+    }).catch(() => [])
+
+    // Fetch recent check-ins
+    recentCheckIns = await db.check_ins.findMany({
+      where: {
+        churchId: session.user.churchId
+      },
+      orderBy: {
+        checkedInAt: 'desc'
+      },
+      take: 5,
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        isFirstTime: true,
+        checkedInAt: true
+      }
+    }).catch(() => [])
+
+  } catch (error) {
+    console.log('⚠️ Database unavailable, using fallback dashboard data:', error)
+    // Fallback data is already initialized above
+  }
 
   // Calculate visitor analytics
   const visitorArray = Array.isArray(visitorEngagementData) ? visitorEngagementData : [];
@@ -184,60 +262,6 @@ export default async function DashboardPage() {
       ? Math.round((completedFollowUpsThisMonth / (pendingFollowUps + completedFollowUpsThisMonth)) * 100) 
       : 0
   }
-
-  // Fetch recent members
-  const recentMembers = await db.members.findMany({
-    where: {
-      churchId: session.user.churchId,
-      isActive: true
-    },
-    orderBy: {
-      createdAt: 'desc'
-    },
-    take: 5,
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      email: true,
-      createdAt: true
-    }
-  })
-
-  // Fetch recent sermons
-  const recentSermons = await db.sermons.findMany({
-    where: {
-      churchId: session.user.churchId
-    },
-    orderBy: {
-      createdAt: 'desc'
-    },
-    take: 5,
-    select: {
-      id: true,
-      title: true,
-      scripture: true,
-      createdAt: true
-    }
-  })
-
-  // Fetch recent check-ins
-  const recentCheckIns = await db.check_ins.findMany({
-    where: {
-      churchId: session.user.churchId
-    },
-    orderBy: {
-      checkedInAt: 'desc'
-    },
-    take: 5,
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      isFirstTime: true,
-      checkedInAt: true
-    }
-  })
 
   return (
     <DashboardClient 
