@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { db } from '@/lib/db'
 import { communicationService } from '@/lib/integrations/communication'
 import { z } from 'zod'
 
@@ -23,14 +23,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    // Get full user data to check role
-    const sessionUser = await prisma.users.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, role: true, churchId: true }
-    })
+    // Try to get user from database, fallback to session data if DB unavailable
+    let sessionUser
+    try {
+      sessionUser = await db.user.findUnique({
+        where: { email: session.user.email },
+        select: { id: true, role: true, churchId: true }
+      })
+    } catch (error) {
+      console.log('⚠️ Database unavailable, using session data for integration test')
+      sessionUser = {
+        id: session.user.id,
+        role: session.user.role,
+        churchId: session.user.churchId
+      }
+    }
 
     if (!sessionUser) {
-      console.error('Integration test: User not found in database')
+      console.error('Integration test: User not found')
       return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 401 })
     }
 

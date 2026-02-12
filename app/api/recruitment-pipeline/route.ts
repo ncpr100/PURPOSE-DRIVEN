@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { db } from '@/lib/db'
 import { addDays, differenceInDays } from 'date-fns'
 
 // Phase 3: Automated Recruitment Pipeline
