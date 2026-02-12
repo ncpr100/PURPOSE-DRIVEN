@@ -74,7 +74,7 @@ export const authOptions: NextAuthOptions = {
           })
 
           if (!user || !user.password) {
-            console.log('❌ AUTH: User not found or no password')
+            console.log('❌ AUTH: User not found or no password in database')
             return null
           }
 
@@ -84,29 +84,32 @@ export const authOptions: NextAuthOptions = {
             credentials.password,
             user.password
           )
+
+          if (!isPasswordValid) {
+            console.log('❌ AUTH: Invalid password')
+            return null
+          }
+
+          console.log('✅ AUTH: Password valid, returning user object')
+          console.log('   ID:', user.id)
+          console.log('   Role:', user.role)
+          console.log('   churchId:', user.churchId)
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            churchId: user.churchId,
+          }
         } catch (error) {
-          console.log('⚠️ AUTH: Database connection failed, using fallback only')
+          console.log('⚠️ AUTH: Database connection failed, checking fallback users again')
           console.log('Error:', error.message)
+          
+          // When database fails, return null to indicate no database authentication
+          // The fallback users were already checked above
+          console.log('❌ AUTH: No fallback user found for:', credentials.email)
           return null
-        }
-
-        if (!isPasswordValid) {
-          console.log('❌ AUTH: Invalid password')
-          return null
-        }
-
-        console.log('✅ AUTH: Password valid, returning user object')
-        console.log('   ID:', user.id)
-        console.log('   Role:', user.role)
-        console.log('   churchId:', user.churchId)
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          churchId: user.churchId,
-          // Remove church object entirely to minimize JWT size
         }
       }
     })
