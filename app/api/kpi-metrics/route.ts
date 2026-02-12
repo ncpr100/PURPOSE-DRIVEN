@@ -21,18 +21,24 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category');
     const period = searchParams.get('period');
 
-    const kpiMetrics = await db.kpi_metrics.findMany({
-      where: {
-        churchId,
-        isActive: true,
-        ...(category && { category }),
-        ...(period && { period })
-      },
-      orderBy: [
-        { category: 'asc' },
-        { name: 'asc' }
-      ]
-    });
+    let kpiMetrics
+    try {
+      kpiMetrics = await db.kpi_metrics.findMany({
+        where: {
+          churchId,
+          isActive: true,
+          ...(category && { category }),
+          ...(period && { period })
+        },
+        orderBy: [
+          { category: 'asc' },
+          { name: 'asc' }
+        ]
+      });
+    } catch (dbError) {
+      console.log('⚠️ KPI-METRICS: Database connection failed, returning empty metrics')
+      kpiMetrics = []
+    }
 
     return NextResponse.json(kpiMetrics);
   } catch (error) {

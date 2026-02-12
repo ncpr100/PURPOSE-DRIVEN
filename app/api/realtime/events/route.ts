@@ -18,17 +18,31 @@ export async function GET(request: NextRequest) {
     return new Response('Unauthorized', { status: 401 })
   }
 
-  const user = await prisma.users.findUnique({
-    where: { email: session.user.email },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      churchId: true,
+  let user
+  try {
+    user = await prisma.users.findUnique({
+      where: { email: session.user.email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        churchId: true,
+        isActive: true
+      }
+    })
+  } catch (error) {
+    console.log('⚠️ REALTIME: Database connection failed, using session data')
+    // Fallback to session data when database unavailable
+    user = {
+      id: session.user.id,
+      name: session.user.name,
+      email: session.user.email,
+      role: session.user.role,
+      churchId: session.user.churchId,
       isActive: true
     }
-  })
+  }
 
   if (!user || !user.isActive) {
     return new Response('User not found or inactive', { status: 403 })

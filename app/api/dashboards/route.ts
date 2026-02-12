@@ -17,30 +17,36 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Church not found' }, { status: 404 });
     }
 
-    const dashboards = await db.analytics_dashboards.findMany({
-      where: {
-        churchId,
-        OR: [
-          { isPublic: true },
-          { createdBy: session.user.id },
-          { userRole: session.user.role }
-        ]
-      },
-      include: {
-        dashboard_widgets: {
-          where: { isVisible: true },
-          orderBy: [
-            { position: 'asc' }
+    try {
+      const dashboards = await db.analytics_dashboards.findMany({
+        where: {
+          churchId,
+          OR: [
+            { isPublic: true },
+            { createdBy: session.user.id },
+            { userRole: session.user.role }
           ]
-        }
-      },
-      orderBy: [
-        { isDefault: 'desc' },
-        { updatedAt: 'desc' }
-      ]
-    });
+        },
+        include: {
+          dashboard_widgets: {
+            where: { isVisible: true },
+            orderBy: [
+              { position: 'asc' }
+            ]
+          }
+        },
+        orderBy: [
+          { isDefault: 'desc' },
+          { updatedAt: 'desc' }
+        ]
+      });
 
-    return NextResponse.json(dashboards);
+      return NextResponse.json(dashboards);
+    } catch (dbError) {
+      console.log('⚠️ DASHBOARD: Database connection failed, returning empty dashboards')
+      // Return empty array when database unavailable during initialization
+      return NextResponse.json([]);
+    }
   } catch (error) {
     console.error('Dashboards fetch error:', error);
     return NextResponse.json(

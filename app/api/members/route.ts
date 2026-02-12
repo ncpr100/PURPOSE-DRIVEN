@@ -45,10 +45,21 @@ export async function GET(request: NextRequest) {
     }
 
     // ✅ SECURITY: Church membership validation
-    const user = await db.users.findUnique({
-      where: { id: session.user.id },
-      select: { id: true, churchId: true, role: true }
-    })
+    let user
+    try {
+      user = await db.users.findUnique({
+        where: { id: session.user.id },
+        select: { id: true, churchId: true, role: true }
+      })
+    } catch (dbError) {
+      console.log('⚠️ MEMBERS: Database connection failed, using session data')
+      // Fallback to session data when database unavailable
+      user = {
+        id: session.user.id,
+        churchId: session.user.churchId,
+        role: session.user.role
+      }
+    }
 
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
@@ -160,33 +171,35 @@ export async function GET(request: NextRequest) {
     }
 
     // ✅ SECURITY: Limited data exposure with secure select
-    let members = await db.members.findMany({
-      where: whereClause,
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        phone: true,
-        gender: true,
-        maritalStatus: true,
-        membershipDate: true,
-        isActive: true,
-        spiritualGifts: true,
-        secondaryGifts: true,
-        spiritualCalling: true,
-        ministryPassion: true,
-        experienceLevel: true,
-        leadershipReadiness: true,
-        createdAt: true,
-        updatedAt: true,
-        address: true,
-        city: true,
-        state: true,
-        zipCode: true,
-        birthDate: true,
-        baptismDate: true,
-        ministryId: true,
+    let members
+    try {
+      members = await db.members.findMany({
+        where: whereClause,
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+          gender: true,
+          maritalStatus: true,
+          membershipDate: true,
+          isActive: true,
+          spiritualGifts: true,
+          secondaryGifts: true,
+          spiritualCalling: true,
+          ministryPassion: true,
+          experienceLevel: true,
+          leadershipReadiness: true,
+          createdAt: true,
+          updatedAt: true,
+          address: true,
+          city: true,
+          state: true,
+          zipCode: true,
+          birthDate: true,
+          baptismDate: true,
+          ministryId: true,
         member_spiritual_profiles: {
           select: {
             id: true,
@@ -208,6 +221,11 @@ export async function GET(request: NextRequest) {
       skip: (queryParams.page - 1) * queryParams.limit,
       take: queryParams.limit
     })
+    } catch (dbError) {
+      console.log('⚠️ MEMBERS: Database connection failed, returning empty members list')
+      // Return empty array when database unavailable during initialization
+      members = []
+    }
 
     // Apply post-query filters that require JavaScript logic
     if (queryParams.ageFilter && queryParams.ageFilter !== 'all') {

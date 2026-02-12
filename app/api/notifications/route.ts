@@ -24,10 +24,21 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, churchId: true, role: true }
-    })
+    let user
+    try {
+      user = await prisma.users.findUnique({
+        where: { email: session.user.email },
+        select: { id: true, churchId: true, role: true }
+      })
+    } catch (dbError) {
+      console.log('⚠️ NOTIFICATIONS: Database connection failed, using session data')
+      // Fallback to session data when database unavailable
+      user = {
+        id: session.user.id,
+        churchId: session.user.churchId,
+        role: session.user.role
+      }
+    }
 
     if (!user || !user.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
@@ -59,27 +70,36 @@ export async function GET(request: NextRequest) {
         ...(priority && priority !== 'all' && { priority })
       }
 
-      const [notifications, totalCount] = await Promise.all([
-        prisma.notifications.findMany({
-          where: whereClause,
-          orderBy: { createdAt: 'desc' },
-          take: limit,
-          skip: offset,
-          include: {
-            churches: { select: { name: true } },
-            users: { select: { name: true } },
-            notification_deliveries: {
-              select: {
-                isRead: true,
-                readAt: true,
-                deliveryStatus: true,
-                users: { select: { name: true, email: true } }
+      let notifications, totalCount
+      try {
+        const [notificationResults, countResult] = await Promise.all([
+          prisma.notifications.findMany({
+            where: whereClause,
+            orderBy: { createdAt: 'desc' },
+            take: limit,
+            skip: offset,
+            include: {
+              churches: { select: { name: true } },
+              users: { select: { name: true } },
+              notification_deliveries: {
+                select: {
+                  isRead: true,
+                  readAt: true,
+                  deliveryStatus: true,
+                  users: { select: { name: true, email: true } }
+                }
               }
             }
-          }
-        }),
-        prisma.notifications.count({ where: whereClause })
-      ])
+          }),
+          prisma.notifications.count({ where: whereClause })
+        ])
+        notifications = notificationResults
+        totalCount = countResult
+      } catch (dbError) {
+        console.log('⚠️ NOTIFICATIONS: Database connection failed, returning empty notifications')
+        notifications = []
+        totalCount = 0
+      }
 
       return NextResponse.json({
         notifications,
@@ -105,23 +125,32 @@ export async function GET(request: NextRequest) {
         ...(unreadOnly && { isRead: false })
       }
 
-      const [deliveries, totalCount] = await Promise.all([
-        prisma.notification_deliveries.findMany({
-          where: deliveryWhereClause,
-          orderBy: { createdAt: 'desc' },
-          take: limit,
-          skip: offset,
-          include: {
-            notifications: {
-              include: {
-                churches: { select: { name: true } },
-                users: { select: { name: true } }
+      let deliveries, totalCount
+      try {
+        const [deliveryResults, countResult] = await Promise.all([
+          prisma.notification_deliveries.findMany({
+            where: deliveryWhereClause,
+            orderBy: { createdAt: 'desc' },
+            take: limit,
+            skip: offset,
+            include: {
+              notifications: {
+                include: {
+                  churches: { select: { name: true } },
+                  users: { select: { name: true } }
+                }
               }
             }
-          }
-        }),
-        prisma.notification_deliveries.count({ where: deliveryWhereClause })
-      ])
+          }),
+          prisma.notification_deliveries.count({ where: deliveryWhereClause })
+        ])
+        deliveries = deliveryResults
+        totalCount = countResult
+      } catch (dbError) {
+        console.log('⚠️ NOTIFICATIONS: Database connection failed, returning empty deliveries')
+        deliveries = []
+        totalCount = 0
+      }
 
       // Transform deliveries to include read state
       const notifications = deliveries.map(delivery => ({

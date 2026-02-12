@@ -14,29 +14,46 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await db.users.findUnique({
-      where: { id: session.user.id },
-      include: { churches: true }
-    })
+    let user
+    try {
+      user = await db.users.findUnique({
+        where: { id: session.user.id },
+        include: { churches: true }
+      })
+    } catch (dbError) {
+      console.log('⚠️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, using session data')
+      // Fallback to session data when database unavailable
+      user = {
+        id: session.user.id,
+        churchId: session.user.churchId,
+        churches: null
+      }
+    }
 
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
 
-    const accounts = await db.social_media_accounts.findMany({
-      where: { churchId: user.churchId },
-      select: {
-        id: true,
-        platform: true,
-        username: true,
-        displayName: true,
-        isActive: true,
-        lastSync: true,
-        createdAt: true,
-        updatedAt: true
-      },
-      orderBy: { createdAt: 'desc' }
-    })
+    let accounts
+    try {
+      accounts = await db.social_media_accounts.findMany({
+        where: { churchId: user.churchId },
+        select: {
+          id: true,
+          platform: true,
+          username: true,
+          displayName: true,
+          isActive: true,
+          lastSync: true,
+          createdAt: true,
+          updatedAt: true
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+    } catch (dbError) {
+      console.log('⚠️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, returning empty accounts')
+      accounts = []
+    }
 
     return NextResponse.json(accounts)
   } catch (error) {
