@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
+import { db } from '@/lib/db'
 import { z } from 'zod'
 
 const messageSchema = z.object({
@@ -19,10 +19,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.users.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, churchId: true, role: true, name: true }
-    })
+    // Try to get user from database, fallback to session data if DB unavailable
+    let user
+    try {
+      user = await db.user.findUnique({
+        where: { email: session.user.email },
+        select: { id: true, churchId: true, role: true, name: true }
+      })
+    } catch (error) {
+      console.log('⚠️ Database unavailable, using session data for realtime message')
+      // Fallback to session data when database fails
+      user = {
+        id: session.user.id,
+        churchId: session.user.churchId,
+        role: session.user.role,
+        name: session.user.name
+      }
+    }
 
     if (!user) {
       return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 400 })
