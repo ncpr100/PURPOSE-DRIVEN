@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/db';
 import DonationsSettingsClient from './_components/donations-settings-client';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -24,10 +24,10 @@ function DonationsSettingsLoadingSkeleton() {
 
 async function getDonationCategories(churchId: string) {
   try {
-    return await prisma.donation_categories.findMany({
+    return await db.donationCategory?.findMany({
       where: { churchId },
       orderBy: { name: 'asc' }
-    });
+    }) || [];
   } catch (error) {
     console.error('Error fetching donation categories:', error);
     return [];
@@ -36,10 +36,10 @@ async function getDonationCategories(churchId: string) {
 
 async function getPaymentMethods(churchId: string) {
   try {
-    return await prisma.payment_methods.findMany({
+    return await db.paymentMethod?.findMany({
       where: { churchId },
       orderBy: { name: 'asc' }
-    });
+    }) || [];
   } catch (error) {
     console.error('Error fetching payment methods:', error);
     return [];
