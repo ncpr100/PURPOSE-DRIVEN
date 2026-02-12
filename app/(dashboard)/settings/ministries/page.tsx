@@ -53,15 +53,21 @@ export default async function MinistriesSettingsPage() {
     redirect('/dashboard');
   }
 
-  // Fetch initial ministries data
-  const ministries = await db.ministries.findMany({
-    where: {
-      churchId: session.user.churchId
-    },
-    orderBy: {
-      name: 'asc'
-    }
-  });
+  // Fetch initial ministries data with error handling
+  let ministries = []
+  try {
+    ministries = await db.ministries.findMany({
+      where: {
+        churchId: session.user.churchId
+      },
+      orderBy: {
+        name: 'asc'
+      }
+    }) || []
+  } catch (error) {
+    console.log('⚠️ Database unavailable for ministries page, using fallback data')
+    ministries = []
+  }
 
   return (
     <div className="container mx-auto py-6">
