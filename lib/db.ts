@@ -8,7 +8,8 @@ const globalForPrisma = globalThis as unknown as {
 // 🚨 TEMPORARY HARDCODED OVERRIDE - Transaction Pooler (VERIFIED WORKING VIA CLI!)
 // URL-encoded password: Bendecido100%25%24%24%25
 // Using postgres.PROJECT_REF username format for pooler (not just postgres)
-const HARDCODED_SUPABASE_URL = 'postgresql://postgres.qxdwpihcmgctznvdfmbv:Bendecido100%25%24%24%25@aws-1-us-east-1.pooler.supabase.com:6543/postgres'
+// ?pgbouncer=true disables prepared statements (required for transaction pooler)
+const HARDCODED_SUPABASE_URL = 'postgresql://postgres.qxdwpihcmgctznvdfmbv:Bendecido100%25%24%24%25@aws-1-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true'
 
 // Use hardcoded URL in production to bypass Vercel environment variable caching
 const databaseUrl = process.env.NODE_ENV === 'production' 

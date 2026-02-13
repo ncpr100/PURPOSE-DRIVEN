@@ -1,15 +1,13 @@
 
-import { PrismaClient } from '@prisma/client'
+import { db as prisma } from '../lib/db'
 import bcrypt from 'bcryptjs'
-
-const prisma = new PrismaClient()
 
 async function main() {
   console.log('🌱 Iniciando seed de la base de datos...')
 
   try {
     // Crear iglesia de ejemplo
-    const church = await prisma.church.upsert({
+    const church = await prisma.churches.upsert({
       where: { id: 'demo-church' },
       update: {},
       create: {
@@ -21,7 +19,8 @@ async function main() {
         website: 'https://iglesiacentral.com',
         founded: new Date('2000-01-01'),
         description: 'Una iglesia comprometida con la comunidad y el crecimiento espiritual.',
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       }
     })
 
@@ -30,10 +29,27 @@ async function main() {
     // Hash password para usuarios de prueba
     const hashedPassword = await bcrypt.hash('password123', 12)
     const testHashedPassword = await bcrypt.hash('johndoe123', 12)
-    const superAdminHashedPassword = await bcrypt.hash('SuperAdmin2024!', 12)
+    // 🚨 OFFICIAL SUPER_ADMIN PASSWORD - SINGLE SOURCE OF TRUTH
+    const superAdminHashedPassword = await bcrypt.hash('Bendecido100%$$%', 12)
 
-    // Crear usuario administrador
-    const adminUser = await prisma.user.upsert({
+    // 🚨 Crear usuario SUPER_ADMIN (ONLY ONE - PLATFORM ADMINISTRATOR)
+    const superAdminUser = await prisma.users.upsert({
+      where: { email: 'soporte@khesed-tek-systems.org' },
+      update: {},
+      create: {
+        name: 'Khesed-Tek Support',
+        email: 'soporte@khesed-tek-systems.org',
+        password: superAdminHashedPassword,
+        role: 'SUPER_ADMIN',
+        churchId: null, // SUPER_ADMIN no pertenece a una iglesia específica
+        isActive: true
+      }
+    })
+
+    console.log('✅ SUPER_ADMIN creado:', superAdminUser.name, '(', superAdminUser.email, ')')
+
+    // Crear usuario administrador (CHURCH LEVEL)
+    const adminUser = await prisma.users.upsert({
       where: { email: 'admin@iglesiacentral.com' },
       update: {},
       create: {
@@ -48,24 +64,8 @@ async function main() {
 
     console.log('✅ Usuario administrador creado:', adminUser.name)
 
-    // Crear usuario SUPER_ADMIN
-    const superAdminUser = await prisma.user.upsert({
-      where: { email: 'nelson.castro@khesedtek.com' },
-      update: {},
-      create: {
-        name: 'Nelson Castro',
-        email: 'nelson.castro@khesedtek.com',
-        password: superAdminHashedPassword,
-        role: 'SUPER_ADMIN',
-        churchId: null, // SUPER_ADMIN no pertenece a una iglesia específica
-        isActive: true
-      }
-    })
-
-    console.log('✅ SUPER_ADMIN creado:', superAdminUser.name)
-
     // Crear usuario de prueba (john@doe.com)
-    const testUser = await prisma.user.upsert({
+    const testUser = await prisma.users.upsert({
       where: { email: 'john@doe.com' },
       update: {},
       create: {
@@ -81,7 +81,7 @@ async function main() {
     console.log('✅ Usuario de prueba creado:', testUser.name)
 
     // Crear pastor
-    const pastorUser = await prisma.user.upsert({
+    const pastorUser = await prisma.users.upsert({
       where: { email: 'pastor@iglesiacentral.com' },
       update: {},
       create: {
@@ -107,7 +107,7 @@ async function main() {
 
     const ministries = []
     for (const ministerio of ministeriosData) {
-      const ministry = await prisma.ministry.upsert({
+      const ministry = await prisma.ministries.upsert({
         where: { id: `ministry-${ministerio.name.toLowerCase().replace(/\s+/g, '-')}` },
         update: {},
         create: {
@@ -574,7 +574,7 @@ async function main() {
     ]
 
     for (const miembro of miembrosEjemplo) {
-      await prisma.member.create({
+      await prisma.members.create({
         data: {
           firstName: miembro.firstName,
           lastName: miembro.lastName,
@@ -601,7 +601,7 @@ async function main() {
     console.log('✅ Miembros de ejemplo creados')
 
     // Crear miembro para el administrador
-    await prisma.member.upsert({
+    await prisma.members.upsert({
       where: { userId: adminUser.id },
       update: {},
       create: {
@@ -635,7 +635,7 @@ async function main() {
     })
 
     // Crear miembro para el pastor
-    await prisma.member.upsert({
+    await prisma.members.upsert({
       where: { userId: pastorUser.id },
       update: {},
       create: {
@@ -674,7 +674,7 @@ async function main() {
     console.log('📊 Creando datos de analíticas para AI...')
     
     // Obtener miembros creados para análisis
-    const miembrosCreados = await prisma.member.findMany({
+    const miembrosCreados = await prisma.members.findMany({
       where: { churchId: church.id },
       take: 20 // Tomar más miembros para datos diversos
     })
@@ -750,7 +750,7 @@ async function main() {
 
     const events = []
     for (const evento of eventosEjemplo) {
-      const event = await prisma.event.create({
+      const event = await prisma.events.create({
         data: {
           ...evento,
           churchId: church.id
@@ -1117,7 +1117,7 @@ async function main() {
 
     await Promise.all([
       // Donaciones del mes pasado
-      prisma.donation.create({
+      prisma.donations.create({
         data: {
           amount: 250000,
           currency: 'COP',
@@ -1135,7 +1135,7 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.donation.create({
+      prisma.donations.create({
         data: {
           amount: 100000,
           currency: 'COP',
@@ -1152,7 +1152,7 @@ async function main() {
         }
       }),
       // Donaciones de este mes
-      prisma.donation.create({
+      prisma.donations.create({
         data: {
           amount: 500000,
           currency: 'COP',
@@ -1166,7 +1166,7 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.donation.create({
+      prisma.donations.create({
         data: {
           amount: 150000,
           currency: 'COP',
@@ -1183,7 +1183,7 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.donation.create({
+      prisma.donations.create({
         data: {
           amount: 300000,
           currency: 'COP',
@@ -1201,7 +1201,7 @@ async function main() {
         }
       }),
       // Donación reciente (esta semana)
-      prisma.donation.create({
+      prisma.donations.create({
         data: {
           amount: 75000,
           currency: 'COP',

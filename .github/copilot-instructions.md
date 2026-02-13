@@ -62,11 +62,56 @@
 
 ---
 
+## 🚨 OFFICIAL SUPER_ADMIN CREDENTIALS (CRITICAL - SINGLE SOURCE OF TRUTH)
+
+**⚠️ THERE IS ONLY ONE SUPER_ADMIN ACCOUNT - NO EXCEPTIONS**
+
+**OFFICIAL SUPER_ADMIN LOGIN (Platform Administrator):**
+```
+Email: soporte@khesed-tek-systems.org
+Password: Bendecido100%$$%
+Role: SUPER_ADMIN
+ChurchId: NULL (platform-wide access, not church-scoped)
+Access: /platform/* routes ONLY
+```
+
+**CRITICAL RULES:**
+- ✅ **ONLY 1 SUPER_ADMIN EXISTS** - DO NOT CREATE ADDITIONAL SUPER_ADMIN ACCOUNTS
+- ✅ **Platform Level**: SUPER_ADMIN has NO churchId (NULL) - manages entire platform
+- ✅ **Tenant Level**: Churches have PASTOR, ADMIN_IGLESIA, LIDER, MIEMBRO roles
+- ✅ **Role Hierarchy**: SUPER_ADMIN → PASTOR → ADMIN_IGLESIA → LIDER → MIEMBRO
+- ❌ **NEVER** assign SUPER_ADMIN role to church users
+- ❌ **NEVER** create multiple SUPER_ADMIN accounts
+
+**Seed Data Pattern:**
+```typescript
+// CORRECT - Single SUPER_ADMIN (platform level)
+await prisma.users.create({
+  email: 'soporte@khesed-tek-systems.org',
+  password: bcrypt.hashSync('Bendecido100%$$%', 12),
+  role: 'SUPER_ADMIN',
+  churchId: null,  // Platform admin - no church assignment
+  name: 'Khesed-Tek Support'
+})
+
+// CORRECT - Church users (tenant level)
+await prisma.users.create({
+  email: 'pastor@iglesiacentral.com',
+  password: bcrypt.hashSync('password123', 12),
+  role: 'PASTOR',
+  churchId: 'iglesia-central',  // Assigned to specific church
+  name: 'Pastor Carlos'
+})
+```
+
+---
+
 ## 🚨 AI Agent Quick Start (READ FIRST)
 
 **Essential Facts for Immediate Productivity:**
 - **Production System**: 360+ total routes deployed on Vercel with automatic CD pipeline
 - **Production URL**: https://khesed-tek-cms-org.vercel.app
+- **SUPER_ADMIN**: `soporte@khesed-tek-systems.org` / `Bendecido100%$$%` - ONLY PLATFORM ADMIN (churchId: NULL)
 - **Memory Optimized**: 3.4MB storage freed, `npm run build:memory-optimized` for production builds
 - **Complete Prayer Wall**: 5-phase PWA implementation finished (analytics, mobile, offline-ready)
 - **Form Builder System**: 7 Smart Templates with stroke-only SVG icons, QR generation, visitor CRM integration

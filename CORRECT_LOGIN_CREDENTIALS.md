@@ -1,51 +1,55 @@
 
-# 🔐 KHESED-TEK SUPER ADMIN LOGIN CREDENTIALS
+# 🔐 KHESED-TEK OFFICIAL LOGIN CREDENTIALS
 
-## CRITICAL AUTHENTICATION INFORMATION
+## 🚨 CRITICAL AUTHENTICATION INFORMATION (SINGLE SOURCE OF TRUTH)
 
-**Last Updated**: January 5, 2026
+**Last Updated**: February 13, 2026
 
-**✅ OFFICIAL SUPER ADMIN LOGIN:**
+**✅ OFFICIAL SUPER_ADMIN LOGIN (PLATFORM ADMINISTRATOR):**
 
 ### Production SUPER_ADMIN Account:
 ```
 Email: soporte@khesed-tek-systems.org
 Password: Bendecido100%$$%
 Role: SUPER_ADMIN
+ChurchId: NULL (platform-wide access)
 Status: Active ✅
 Name: Khesed-Tek Support
 ```
 
+**⚠️ CRITICAL RULES:**
+- **THERE IS ONLY 1 SUPER_ADMIN** - NO additional SUPER_ADMIN accounts exist
+- **Platform Level**: SUPER_ADMIN manages entire platform (/platform/* routes)
+- **Tenant Level**: Churches have PASTOR, ADMIN_IGLESIA, LIDER, MIEMBRO roles
+- **NEVER** create additional SUPER_ADMIN accounts
+- **NEVER** assign SUPER_ADMIN role to church users
+
 **Access URLs**:
 - Login: `/auth/signin`
 - Platform Dashboard: `/platform/dashboard`
-- Enhanced Monitoring: `/platform` (with new admin features)
+- Platform Management: `/platform/*` (SUPER_ADMIN only)
 
-## AUTHENTICATION FLOW FIXED
+## CHURCH-LEVEL ROLES (TENANT USERS)
 
-1. **Environment Configuration**: ✅ NEXTAUTH_URL updated to production
-2. **Password Change System**: ✅ Implemented with security validation
-3. **Contact Information**: ✅ Cache refresh mechanism added
-4. **SSE Connection**: ✅ Will work once correct login is used
+### Example Church User (Iglesia Central):
+```
+Email: pastor@iglesiacentral.com
+Password: password123
+Role: PASTOR
+ChurchId: iglesia-central
+Access: /(dashboard)/* routes (church-scoped)
+```
 
-## TESTING INSTRUCTIONS
+**Church Role Hierarchy**:
+1. **PASTOR**: Highest church-level role
+2. **ADMIN_IGLESIA**: Church administrators
+3. **LIDER**: Church leaders
+4. **MIEMBRO**: Church members
 
-### Step 1: Login Test
-1. Go to login page
-2. Use: `soporte@khesedtek.com` / `SuperAdmin2024!`
-3. Should login successfully ✅
+## AUTHENTICATION FLOW
 
-### Step 2: Contact Information Test
-1. Navigate to `/platform/support-settings`
-2. Update contact fields with your data
-3. Click "Guardar Cambios"
-4. Verify green success notification
-5. Check that data persists (no revert) ✅
-
-### Step 3: Password Change Test
-1. Go to Profile → Security section
-2. Change password using current: `SuperAdmin2024!`
-3. Logout and login with new password ✅
+1. **Platform Admin**: Login with SUPER_ADMIN → Access `/platform/*`
+2. **Church Users**: Login with church role → Access `/(dashboard)/*` with churchId scope
 
 ## FIXES IMPLEMENTED
 
