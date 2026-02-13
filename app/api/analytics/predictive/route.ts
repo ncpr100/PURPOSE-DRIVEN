@@ -52,13 +52,15 @@ export async function GET(request: NextRequest) {
     const startDate = new Date();
     startDate.setDate(endDate.getDate() - 365); // 1 year of data for predictions
 
-    // Gather historical data for predictive modeling
-    const [
-      memberHistoryData,
-      donationHistoryData,
-      eventHistoryData,
-      engagementData
-    ] = await Promise.all([
+    // Default fallback data
+    let memberHistoryData: any[] = []
+    let donationHistoryData: any[] = []
+    let eventHistoryData: any[] = []
+    let engagementData: number[] = [0, 0, 0]
+
+    try {
+      // Gather historical data for predictive modeling
+      const results = await Promise.all([
       // Member growth history
       db.members.findMany({
         where: { 
@@ -123,7 +125,17 @@ export async function GET(request: NextRequest) {
           }
         })
       ])
-    ]);
+      ])
+
+      // Assign results
+      memberHistoryData = results[0]
+      donationHistoryData = results[1]
+      eventHistoryData = results[2]
+      engagementData = results[3]
+    } catch (dbError) {
+      console.log('⚠️ Database unavailable for predictive analytics, using fallback data')
+      // Fallback data already initialized above
+    }
 
     // Calculate predictive analytics
     const analytics: PredictiveAnalytics = {

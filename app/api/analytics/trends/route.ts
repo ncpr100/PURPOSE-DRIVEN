@@ -55,7 +55,13 @@ export async function GET(request: NextRequest) {
 
     // Fetch trend data for each interval
     const trends = await Promise.all(intervals.map(async (interval) => {
-      const [donations, events, communications, checkIns] = await Promise.all([
+      let donations = { _sum: { amount: 0 }, _count: { id: 0 } }
+      let events = { _count: { id: 0 } }
+      let communications = { _count: { id: 0 } }
+      let checkIns = { _count: { id: 0 } }
+
+      try {
+        const results = await Promise.all([
         db.donations.aggregate({
           where: {
             churchId,
@@ -89,7 +95,16 @@ export async function GET(request: NextRequest) {
           },
           _count: { id: true }
         })
-      ]);
+        ])
+
+        donations = results[0]
+        events = results[1]
+        communications = results[2]
+        checkIns = results[3]
+      } catch (dbError) {
+        console.log('⚠️ Database unavailable for trends interval, using fallback data')
+        // Fallback data already initialized above
+      }
 
       return {
         period: interval.label,
