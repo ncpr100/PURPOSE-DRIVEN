@@ -6,9 +6,9 @@ const globalForPrisma = globalThis as unknown as {
 }
 
 // 🚨 TEMPORARY HARDCODED OVERRIDE - Using Supabase Connection Pooler for serverless
-// Pooler is required for Vercel → Supabase connectivity (IPv6/network issue)
+// Pooler is required for Vercel → Supabase connectivity (IPv4 enabled)
 // URL-encoded password: Bendecido100%25%24%24%25
-const HARDCODED_SUPABASE_URL = 'postgresql://postgres.qxdwpihcmgctznvdfmbv:Bendecido100%25%24%24%25@aws-0-us-east-1.pooler.supabase.com:6543/postgres'
+const HARDCODED_SUPABASE_URL = 'postgresql://postgres.qxdwpihcmgctznvdfmbv:Bendecido100%25%24%24%25@aws-1-us-east-1.pooler.supabase.com:6543/postgres'
 
 // Use hardcoded URL in production to bypass Vercel environment variable caching
 const databaseUrl = process.env.NODE_ENV === 'production' 
