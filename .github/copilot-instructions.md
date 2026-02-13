@@ -1,8 +1,8 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 3.5  
-**Last Updated**: February 3, 2026  
-**Project Status**: Production Active - Phase 3 Complete, Memory Optimization Deployed (98% Complete)  
+**Document Version**: 3.6  
+**Last Updated**: February 13, 2026  
+**Project Status**: Production Active - Vercel Deployment, Supabase PostgreSQL (Phase 3 Complete)  
 
 ---
 
@@ -12,10 +12,10 @@
 
 ⚠️ **FAILURE TO FOLLOW THESE PROTOCOLS WILL RESULT IN PRODUCTION FAILURES**
 ⚠️ **EVERY TASK MUST EXECUTE THE 8-STEP CRITICAL PROTOCOL CHECK**
-⚠️ **EVERY COMPLETED TASK MUST EXECUTE `git push origin main` FOR RAILWAY DEPLOYMENT**
+⚠️ **EVERY COMPLETED TASK MUST EXECUTE `git push origin main` FOR VERCEL DEPLOYMENT**
 ⚠️ **STRICT ICON PROTOCOL: ONLY OUTLINED DESIGN UNIQUE THEMED COLOR ICONS - NO EMOJIS EVER**
 
-**EXTERNAL INTEGRATIONS**: Railway Production Workflows ONLY (NO other external systems)
+**EXTERNAL INTEGRATIONS**: Vercel Production Workflows ONLY (NO other external systems)
 
 ---
 
@@ -65,7 +65,8 @@
 ## 🚨 AI Agent Quick Start (READ FIRST)
 
 **Essential Facts for Immediate Productivity:**
-- **Production System**: 360+ total routes deployed on Railway with automatic CD pipeline
+- **Production System**: 360+ total routes deployed on Vercel with automatic CD pipeline
+- **Production URL**: https://khesed-tek-cms-org.vercel.app
 - **Memory Optimized**: 3.4MB storage freed, `npm run build:memory-optimized` for production builds
 - **Complete Prayer Wall**: 5-phase PWA implementation finished (analytics, mobile, offline-ready)
 - **Form Builder System**: 7 Smart Templates with stroke-only SVG icons, QR generation, visitor CRM integration
@@ -75,7 +76,8 @@
 - **Caching**: Redis via `lib/redis-cache-manager.ts` (800+ lines) - 90%+ hit rate target
 - **Real-time**: SSE via `lib/sse-broadcast.ts` for live dashboard updates
 - **TypeScript**: `strict: false` but `ignoreBuildErrors: false` - compilation must pass
-- **Deployment**: `git push origin main` → Railway auto-deploy (NO staging environment)
+- **Deployment**: `git push origin main` → Vercel auto-deploy (NO staging environment)
+- **Database**: Supabase PostgreSQL at db.qxdwpihcmgctznvdfmbv.supabase.co:5432
 - **Branding System**: Church-specific color customization in `settings/branding` with pastel defaults
 - **Icon Protocol**: ONLY lucide-react stroke-only SVG icons - NO emojis in production UI
 
@@ -273,8 +275,8 @@ This is an **enterprise-grade church management platform** actively deployed in 
 - **360 total routes** (118 pages + 242 API routes) in production with strict TypeScript enforcement (`ignoreBuildErrors: false`)
 - **Historical Achievement**: 212/212 pages successfully compiled (system has grown to 360 routes)
 - **~2,475 lines** Prisma schema (~50 tables) with multi-tenant church scoping
-- **Railway deployment** with automatic builds on `git push` to main branch
-- **Production database**: PostgreSQL with connection pooling (`lib/db.ts` singleton pattern)
+- **Vercel deployment** with automatic builds on `git push` to main branch
+- **Production database**: Supabase PostgreSQL (db.qxdwpihcmgctznvdfmbv.supabase.co:5432) with connection pooling (`lib/db.ts` singleton pattern)
 
 ## Core Architecture & Context
 
@@ -1588,19 +1590,19 @@ Before implementing or deleting ANY code, **ALWAYS** execute these 8 steps in or
 - **Example**: Platform fix led to enhanced null safety patterns now documented for all future development
 
 ### **DEPLOYMENT PROTOCOL** (MANDATORY - ENTERPRISE COMPLIANCE)
-**⚠️ CRITICAL**: **AFTER EVERY COMPLETED TASK** - Execute `git push origin main` to Railway production deployment **IMMEDIATELY** upon task completion. **NO EXCEPTIONS**.
+**⚠️ CRITICAL**: **AFTER EVERY COMPLETED TASK** - Execute `git push origin main` to Vercel production deployment **IMMEDIATELY** upon task completion. **NO EXCEPTIONS**.
 
 **🚨 ENTERPRISE MANDATE**: This ensures all updates are automatically deployed to the live production environment without delay. **FAILURE TO DEPLOY = INCOMPLETE TASK**.
 
-**Railway Deployment Flow** (ONLY External Integration):
+**Vercel Deployment Flow** (ONLY External Integration):
 ```bash
 git add .
 git commit -m "descriptive message"
-git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (360+ routes) → next start
+git push origin main  # → Triggers Vercel build → Detects Next.js → npm ci → prisma generate → next build (360+ routes) → Production deployment
 ```
 
-**⚠️ CRITICAL**: Never use `npx prisma db push` in production. Use `npx prisma migrate dev` to create migrations, then migrations run automatically on Railway deployment.
-**🚨 MANDATORY GIT PUSH**: Always execute `git push origin main` after completing any update, change, or task to ensure immediate deployment to Railway production environment.
+**⚠️ CRITICAL**: Never use `npx prisma db push` in production. Use `npx prisma migrate dev` to create migrations, then migrations run automatically on Vercel deployment.
+**🚨 MANDATORY GIT PUSH**: Always execute `git push origin main` after completing any update, change, or task to ensure immediate deployment to Vercel production environment.
 ## Key Workflows & Commands
 
 ### Development
@@ -1630,14 +1632,14 @@ npx prisma generate          # Regenerate Prisma client after schema changes
 npx prisma db push          # Push schema changes (dev only - no migrations)
 npx prisma studio           # Database GUI (localhost:5555)
 npx prisma migrate dev      # Create and apply migration (production workflow)
-npx prisma migrate deploy   # Apply migrations in production (runs automatically on Railway)
+npx prisma migrate deploy   # Apply migrations in production (runs automatically on Vercel)
 ```
 
 **CRITICAL**: Never use `npx prisma db push` in production. Always create migrations with `npx prisma migrate dev` for version-controlled schema changes.
 
 ### Production Deployment
 ```bash
-git push origin main        # Triggers automatic Railway deployment
+git push origin main        # Triggers automatic Vercel deployment
 npm run pre-deploy          # Verify patterns and build before deploy
 npm run verify:patterns     # Check critical patterns compliance
 npm run fix:patterns        # Apply critical fixes automatically
@@ -2275,17 +2277,17 @@ const detectVisitorForm = (formData) => {
 ### **DEPLOYMENT PROTOCOL** (MANDATORY)
 **AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. This ensures all updates are automatically deployed to the live production environment without delay.
 
-**Railway Deployment Flow**:
+**Vercel Deployment Flow**:
 ```bash
 git add .
 git commit -m "descriptive message"
-git push origin main  # → Triggers Railway build → Nixpacks detects Next.js → npm ci → prisma generate → next build (348 routes) → next start
+git push origin main  # → Triggers Vercel build → Detects Next.js → npm ci → prisma generate → next build (360+ routes) → Production deployment
 ```
 
 ### Production Deployment Standards
 - **TypeScript Coverage**: 100% with zero compilation errors (ENFORCED via `ignoreBuildErrors: false`)
 - **Memory Optimization**: Use `npm run build:memory-optimized` for production
-- **Railway Deployment**: All builds must compile 360 total routes successfully (118 pages + 242 API routes)
+- **Vercel Deployment**: All builds must compile 360 total routes successfully (118 pages + 242 API routes)
 - **Feature Flags**: Use for safe deployment of new features (`lib/feature-flags.ts`)
 - **Route Group Pattern**: Use parentheses for layout organization `(dashboard)`, `(platform)`
 - **ICON PROTOCOL ENFORCEMENT**: All UI elements MUST use lucide-react stroke-only SVG icons with unique themed colors - NO emojis allowed
@@ -2356,9 +2358,9 @@ export default function MembersPageClient({ members, userRole }: Props) {
 ## Critical Integration Points
 
 ### **EXTERNAL INTEGRATIONS** (Enterprise Compliance)
-**⚠️ RAILWAY ONLY**: Railway Production Workflows is the **ONLY** approved external integration
+**⚠️ VERCEL ONLY**: Vercel Production Workflows is the **ONLY** approved external integration
 - **NO other external systems** are currently integrated
-- **ALL deployment workflows** go through Railway exclusively
+- **ALL deployment workflows** go through Vercel exclusively
 - **NO staging environment** - direct production deployment only
 
 ### Database Access Pattern
@@ -2403,10 +2405,10 @@ export class ServiceIntegration {
 export const serviceIntegration = new ServiceIntegration()
 ```
 
-### Railway Deployment Workflow
+### Vercel Deployment Workflow
 ```bash
 # Automated deployment pipeline (triggered on git push to main)
-git push origin main  # Triggers Railway build & deploy
+git push origin main  # Triggers Vercel build & deploy
 
 # Pre-deployment validation (scripts/safe-deployment.sh)
 1. TypeScript compilation check (npm run test:compile)
@@ -2415,12 +2417,12 @@ git push origin main  # Triggers Railway build & deploy
 4. Critical pattern verification (npm run verify:patterns)
 5. Memory optimization (npm run build:memory-optimized)
 
-# Railway build process:
-- Nixpacks detects Next.js application
+# Vercel build process:
+- Detects Next.js application automatically
 - Installs dependencies with npm ci
 - Runs Prisma generate
 - Executes next build (compiles 360 total routes)
-- Starts production server with next start
+- Deploys to production serverless infrastructure
 ```
 
 ### REST API Conventions
