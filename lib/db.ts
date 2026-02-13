@@ -5,10 +5,18 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Use SUPABASE_DATABASE_URL first (new), fallback to DATABASE_URL (old)
-const databaseUrl = process.env.SUPABASE_DATABASE_URL || process.env.DATABASE_URL || 'postgresql://user:pass@localhost:5432/fallback'
+// 🚨 TEMPORARY HARDCODED OVERRIDE - Bypass Vercel env caching issue
+// URL-encoded password: Bendecido100%25%24%24%25
+const HARDCODED_SUPABASE_URL = 'postgresql://postgres:Bendecido100%25%24%24%25@db.qxdwpihcmgctznvdfmbv.supabase.co:5432/postgres'
 
-console.log('[DB] Using database URL:', databaseUrl.substring(0, 30) + '...')
+// Use hardcoded URL in production to bypass Vercel environment variable caching
+const databaseUrl = process.env.NODE_ENV === 'production' 
+  ? HARDCODED_SUPABASE_URL 
+  : (process.env.SUPABASE_DATABASE_URL || process.env.DATABASE_URL || 'postgresql://user:pass@localhost:5432/fallback')
+
+console.log('[DB] Mode:', process.env.NODE_ENV)
+console.log('[DB] Using:', process.env.NODE_ENV === 'production' ? 'HARDCODED Supabase URL' : 'Environment Variables')
+console.log('[DB] URL preview:', databaseUrl.substring(0, 50) + '...')
 
 // Enhanced connection pooling configuration for production
 export const db = globalForPrisma.prisma ?? new PrismaClient({
