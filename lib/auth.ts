@@ -29,40 +29,7 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        // TEMPORARY: Fallback authentication while database initializes
-        const fallbackUsers = [
-          {
-            email: 'soporte@khesed-tek-systems.org',
-            password: 'Bendecido100%$$%',
-            id: 'temp-super-admin',
-            name: 'Soporte Khesed-Tek',
-            role: 'SUPER_ADMIN',
-            churchId: null
-          },
-          {
-            email: 'admin@iglesiacentral.com', 
-            password: 'password123',
-            id: 'temp-tenant-admin',
-            name: 'Admin Iglesia Central',
-            role: 'PASTOR',
-            churchId: 'temp-church-id'
-          }
-        ]
-
-        // Try fallback authentication first
-        const fallbackUser = fallbackUsers.find(u => u.email === credentials.email)
-        if (fallbackUser && fallbackUser.password === credentials.password) {
-          console.log('✅ FALLBACK AUTH: Using temporary credentials for:', credentials.email)
-          return {
-            id: fallbackUser.id,
-            email: fallbackUser.email,
-            name: fallbackUser.name,
-            role: fallbackUser.role,
-            churchId: fallbackUser.churchId
-          }
-        }
-
-        // Try database authentication
+        // Database authentication ONLY - no fallback users
         try {
           const user = await db.users.findUnique({
             where: {
@@ -136,19 +103,6 @@ export const authOptions: NextAuthOptions = {
       console.log('   token.sub:', token.sub)
       console.log('   token.role:', token.role)
       console.log('   token.churchId:', token.churchId)
-      
-      // TEMPORARY: Handle fallback users during database initialization
-      if (token.sub?.startsWith('temp-')) {
-        console.log('✅ FALLBACK SESSION: Using temporary user data')
-        session.user = {
-          id: token.sub,
-          email: token.email || '',
-          name: token.name || '',
-          role: token.role,
-          churchId: token.churchId || ''
-        }
-        return session
-      }
       
       // Fetch user data fresh each time to keep JWT minimal
       if (token.sub) {
