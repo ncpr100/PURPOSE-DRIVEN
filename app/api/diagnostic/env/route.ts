@@ -2,16 +2,31 @@
 import { NextResponse } from 'next/server'
 
 export async function GET() {
+  const dbUrl = process.env.DATABASE_URL || 'NOT_SET'
+  const supabaseUrl = process.env.SUPABASE_DATABASE_URL || 'NOT_SET'
+  
   return NextResponse.json({
+    timestamp: new Date().toISOString(),
     nodeEnv: process.env.NODE_ENV,
-    databaseUrlPresent: !!process.env.DATABASE_URL,
-    databaseUrlFirst30: process.env.DATABASE_URL?.substring(0, 30) || 'NOT SET',
-    databaseUrlLast30: process.env.DATABASE_URL?.slice(-30) || 'NOT SET',
-    nextauthUrlPresent: !!process.env.NEXTAUTH_URL,
+    databaseUrl: {
+      isSet: !!process.env.DATABASE_URL,
+      first50: dbUrl.substring(0, 50),
+      last50: dbUrl.slice(-50),
+      containsRailway: dbUrl.includes('railway'),
+      containsSupabase: dbUrl.includes('supabase'),
+      host: dbUrl.match(/@([^:]+):/)?.[1] || 'NO_HOST'
+    },
+    supabaseDatabaseUrl: {
+      isSet: !!process.env.SUPABASE_DATABASE_URL,
+      first50: supabaseUrl.substring(0, 50),
+      last50: supabaseUrl.slice(-50),
+      containsSupabase: supabaseUrl.includes('supabase')
+    },
     nextauthUrl: process.env.NEXTAUTH_URL,
-    vercelEnv: process.env.VERCEL_ENV,
-    allEnvKeys: Object.keys(process.env).filter(k => 
-      k.includes('DATABASE') || k.includes('NEXTAUTH') || k.includes('VERCEL')
-    )
+    vercelEnv: process.env.VERCEL_ENV
+  }, {
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate'
+    }
   })
 }
