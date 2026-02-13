@@ -11,19 +11,19 @@ export declare const getDonationsSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    startDate?: string | undefined;
-    endDate?: string | undefined;
     status?: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA" | undefined;
     categoryId?: string | undefined;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
     paymentMethodId?: string | undefined;
 }, {
-    startDate?: string | undefined;
-    endDate?: string | undefined;
+    limit?: number | undefined;
     status?: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA" | undefined;
     categoryId?: string | undefined;
-    paymentMethodId?: string | undefined;
-    limit?: number | undefined;
     page?: number | undefined;
+    startDate?: string | undefined;
+    endDate?: string | undefined;
+    paymentMethodId?: string | undefined;
 }>;
 export declare const createDonationSchema: z.ZodObject<{
     amount: z.ZodNumber;
@@ -42,33 +42,33 @@ export declare const createDonationSchema: z.ZodObject<{
     campaignId: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     status: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA";
-    amount: number;
     currency: string;
-    isAnonymous: boolean;
     categoryId: string;
+    isAnonymous: boolean;
+    amount: number;
     paymentMethodId: string;
-    reference?: string | undefined;
-    notes?: string | undefined;
     memberId?: string | undefined;
-    donorName?: string | undefined;
+    reference?: string | undefined;
+    campaignId?: string | undefined;
+    notes?: string | undefined;
     donorEmail?: string | undefined;
     donorPhone?: string | undefined;
+    donorName?: string | undefined;
     donationDate?: string | undefined;
-    campaignId?: string | undefined;
 }, {
-    amount: number;
     categoryId: string;
+    amount: number;
     paymentMethodId: string;
     status?: "PENDIENTE" | "COMPLETADA" | "FALLIDA" | "REEMBOLSADA" | undefined;
-    currency?: string | undefined;
-    reference?: string | undefined;
-    notes?: string | undefined;
-    isAnonymous?: boolean | undefined;
     memberId?: string | undefined;
-    donorName?: string | undefined;
+    reference?: string | undefined;
+    currency?: string | undefined;
+    campaignId?: string | undefined;
+    isAnonymous?: boolean | undefined;
+    notes?: string | undefined;
     donorEmail?: string | undefined;
     donorPhone?: string | undefined;
+    donorName?: string | undefined;
     donationDate?: string | undefined;
-    campaignId?: string | undefined;
 }>;
 //# sourceMappingURL=donation.d.ts.map

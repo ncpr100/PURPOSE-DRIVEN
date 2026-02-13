@@ -213,6 +213,13 @@ class PushNotificationClient {
      * Get browser and platform information
      */
     static getDeviceInfo() {
+        if (typeof navigator === 'undefined') {
+            return {
+                userAgent: 'server-side-rendering',
+                platform: 'server',
+                language: 'es'
+            };
+        }
         return {
             userAgent: navigator.userAgent,
             platform: navigator.platform,
@@ -223,6 +230,9 @@ class PushNotificationClient {
      * Check if device is mobile
      */
     static isMobile() {
+        if (typeof navigator === 'undefined') {
+            return false;
+        }
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
     /**

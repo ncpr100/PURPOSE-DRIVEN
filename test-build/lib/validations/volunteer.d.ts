@@ -14,41 +14,41 @@ export declare const volunteerCreateSchema: z.ZodObject<{
         times: z.ZodOptional<z.ZodArray<z.ZodEnum<["morning", "afternoon", "evening"]>, "many">>;
         frequency: z.ZodOptional<z.ZodEnum<["weekly", "biweekly", "monthly", "occasional"]>>;
     }, "strip", z.ZodTypeAny, {
-        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
         days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
         times?: ("morning" | "afternoon" | "evening")[] | undefined;
+        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
     }, {
-        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
         days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
         times?: ("morning" | "afternoon" | "evening")[] | undefined;
+        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
     }>>;
     ministryId: z.ZodUnion<[z.ZodEffects<z.ZodString, string, string>, z.ZodLiteral<"no-ministry">]>;
     memberId: z.ZodEffects<z.ZodOptional<z.ZodString>, string | undefined, string | undefined>;
 }, "strip", z.ZodTypeAny, {
-    firstName: string;
     lastName: string;
+    firstName: string;
     ministryId: string;
     skills: string[];
     email?: string | undefined;
     phone?: string | undefined;
     memberId?: string | undefined;
     availability?: {
-        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
         days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
         times?: ("morning" | "afternoon" | "evening")[] | undefined;
+        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
     } | undefined;
 }, {
-    firstName: string;
     lastName: string;
+    firstName: string;
     ministryId: string;
     email?: string | undefined;
     phone?: string | undefined;
     memberId?: string | undefined;
     skills?: string[] | undefined;
     availability?: {
-        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
         days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
         times?: ("morning" | "afternoon" | "evening")[] | undefined;
+        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
     } | undefined;
 }>;
 export type VolunteerCreateInput = z.infer<typeof volunteerCreateSchema>;
@@ -67,37 +67,37 @@ export declare const volunteer_assignmentsSchema: z.ZodEffects<z.ZodObject<{
     notes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     title: string;
-    startTime: string;
-    endTime: string;
     date: string | Date;
     volunteerId: string;
+    startTime: string;
+    endTime: string;
     description?: string | undefined;
     notes?: string | undefined;
     eventId?: string | undefined;
 }, {
     title: string;
-    startTime: string;
-    endTime: string;
     date: string | Date;
     volunteerId: string;
+    startTime: string;
+    endTime: string;
     description?: string | undefined;
     notes?: string | undefined;
     eventId?: string | undefined;
 }>, {
     title: string;
-    startTime: string;
-    endTime: string;
     date: string | Date;
     volunteerId: string;
+    startTime: string;
+    endTime: string;
     description?: string | undefined;
     notes?: string | undefined;
     eventId?: string | undefined;
 }, {
     title: string;
-    startTime: string;
-    endTime: string;
     date: string | Date;
     volunteerId: string;
+    startTime: string;
+    endTime: string;
     description?: string | undefined;
     notes?: string | undefined;
     eventId?: string | undefined;
@@ -123,13 +123,13 @@ export declare const spiritualProfileSchema: z.ZodObject<{
         description: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
         role: string;
-        duration: string;
         ministry: string;
+        duration: string;
         description?: string | undefined;
     }, {
         role: string;
-        duration: string;
         ministry: string;
+        duration: string;
         description?: string | undefined;
     }>, "many">>>;
     trainingCompleted: z.ZodDefault<z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -154,8 +154,8 @@ export declare const spiritualProfileSchema: z.ZodObject<{
     leadershipScore: number;
     previousExperience: {
         role: string;
-        duration: string;
         ministry: string;
+        duration: string;
         description?: string | undefined;
     }[];
     trainingCompleted: {
@@ -176,8 +176,8 @@ export declare const spiritualProfileSchema: z.ZodObject<{
     servingMotivation?: string | undefined;
     previousExperience?: {
         role: string;
-        duration: string;
         ministry: string;
+        duration: string;
         description?: string | undefined;
     }[] | undefined;
     trainingCompleted?: {
@@ -207,13 +207,13 @@ export declare const enhancedSpiritualProfileSchema: z.ZodObject<{
         description: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
         role: string;
-        duration: string;
         ministry: string;
+        duration: string;
         description?: string | undefined;
     }, {
         role: string;
-        duration: string;
         ministry: string;
+        duration: string;
         description?: string | undefined;
     }>, "many">>>;
     trainingCompleted: z.ZodDefault<z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -246,14 +246,13 @@ export declare const enhancedSpiritualProfileSchema: z.ZodObject<{
     memberId: string;
     secondaryGifts: string[];
     experienceLevel: number;
-    availabilityScore: number;
     primaryGifts: string[];
     ministryPassions: string[];
     leadershipScore: number;
     previousExperience: {
         role: string;
-        duration: string;
         ministry: string;
+        duration: string;
         description?: string | undefined;
     }[];
     trainingCompleted: {
@@ -264,6 +263,7 @@ export declare const enhancedSpiritualProfileSchema: z.ZodObject<{
     spiritualMaturityScore: number;
     leadershipAptitudeScore: number;
     ministryPassionScore: number;
+    availabilityScore: number;
     teachingAbility: number;
     pastoralHeart: number;
     organizationalSkills: number;
@@ -281,13 +281,12 @@ export declare const enhancedSpiritualProfileSchema: z.ZodObject<{
     secondaryGifts?: string[] | undefined;
     spiritualCalling?: string | undefined;
     experienceLevel?: number | undefined;
-    availabilityScore?: number | undefined;
     leadershipScore?: number | undefined;
     servingMotivation?: string | undefined;
     previousExperience?: {
         role: string;
-        duration: string;
         ministry: string;
+        duration: string;
         description?: string | undefined;
     }[] | undefined;
     trainingCompleted?: {
@@ -298,6 +297,7 @@ export declare const enhancedSpiritualProfileSchema: z.ZodObject<{
     spiritualMaturityScore?: number | undefined;
     leadershipAptitudeScore?: number | undefined;
     ministryPassionScore?: number | undefined;
+    availabilityScore?: number | undefined;
     teachingAbility?: number | undefined;
     pastoralHeart?: number | undefined;
     organizationalSkills?: number | undefined;
@@ -335,15 +335,15 @@ export declare const paginationSchema: z.ZodObject<{
     sortBy: z.ZodOptional<z.ZodString>;
     sortOrder: z.ZodDefault<z.ZodOptional<z.ZodEnum<["asc", "desc"]>>>;
 }, "strip", z.ZodTypeAny, {
-    sortOrder: "asc" | "desc";
     limit: number;
+    sortOrder: "desc" | "asc";
     page: number;
     sortBy?: string | undefined;
 }, {
-    sortBy?: string | undefined;
-    sortOrder?: "asc" | "desc" | undefined;
     limit?: number | undefined;
+    sortOrder?: "desc" | "asc" | undefined;
     page?: number | undefined;
+    sortBy?: string | undefined;
 }>;
 export type PaginationInput = z.infer<typeof paginationSchema>;
 /**

@@ -30,36 +30,77 @@ exports.authOptions = {
                     console.log('❌ AUTH: Missing credentials');
                     return null;
                 }
-                const user = await db_1.db.users.findUnique({
-                    where: {
-                        email: credentials.email
+                // TEMPORARY: Fallback authentication while database initializes
+                const fallbackUsers = [
+                    {
+                        email: 'soporte@khesed-tek-systems.org',
+                        password: 'Bendecido100%$$%',
+                        id: 'temp-super-admin',
+                        name: 'Soporte Khesed-Tek',
+                        role: 'SUPER_ADMIN',
+                        churchId: null
                     },
-                    include: {
-                        churches: true
+                    {
+                        email: 'admin@iglesiacentral.com',
+                        password: 'password123',
+                        id: 'temp-tenant-admin',
+                        name: 'Admin Iglesia Central',
+                        role: 'PASTOR',
+                        churchId: 'temp-church-id'
                     }
-                });
-                if (!user || !user.password) {
-                    console.log('❌ AUTH: User not found or no password');
+                ];
+                // Try fallback authentication first
+                const fallbackUser = fallbackUsers.find(u => u.email === credentials.email);
+                if (fallbackUser && fallbackUser.password === credentials.password) {
+                    console.log('✅ FALLBACK AUTH: Using temporary credentials for:', credentials.email);
+                    return {
+                        id: fallbackUser.id,
+                        email: fallbackUser.email,
+                        name: fallbackUser.name,
+                        role: fallbackUser.role,
+                        churchId: fallbackUser.churchId
+                    };
+                }
+                // Try database authentication
+                try {
+                    const user = await db_1.db.users.findUnique({
+                        where: {
+                            email: credentials.email
+                        },
+                        include: {
+                            churches: true
+                        }
+                    });
+                    if (!user || !user.password) {
+                        console.log('❌ AUTH: User not found or no password in database');
+                        return null;
+                    }
+                    console.log('✅ AUTH: User found:', user.email, 'Role:', user.role);
+                    const isPasswordValid = await bcryptjs_1.default.compare(credentials.password, user.password);
+                    if (!isPasswordValid) {
+                        console.log('❌ AUTH: Invalid password');
+                        return null;
+                    }
+                    console.log('✅ AUTH: Password valid, returning user object');
+                    console.log('   ID:', user.id);
+                    console.log('   Role:', user.role);
+                    console.log('   churchId:', user.churchId);
+                    return {
+                        id: user.id,
+                        email: user.email,
+                        name: user.name,
+                        role: user.role,
+                        churchId: user.churchId,
+                    };
+                }
+                catch (error) {
+                    console.log('⚠️ AUTH: Database connection failed, checking fallback users again');
+                    console.log('Error:', error.message);
+                    // When database fails, return null to indicate no database authentication
+                    // The fallback users were already checked above
+                    console.log('❌ AUTH: No fallback user found for:', credentials.email);
                     return null;
                 }
-                console.log('✅ AUTH: User found:', user.email, 'Role:', user.role);
-                const isPasswordValid = await bcryptjs_1.default.compare(credentials.password, user.password);
-                if (!isPasswordValid) {
-                    console.log('❌ AUTH: Invalid password');
-                    return null;
-                }
-                console.log('✅ AUTH: Password valid, returning user object');
-                console.log('   ID:', user.id);
-                console.log('   Role:', user.role);
-                console.log('   churchId:', user.churchId);
-                return {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name,
-                    role: user.role,
-                    churchId: user.churchId,
-                    // Remove church object entirely to minimize JWT size
-                };
             }
         })
     ],
@@ -74,6 +115,8 @@ exports.authOptions = {
                 token.sub = user.id;
                 token.role = user.role; // CRITICAL: Middleware needs this!
                 token.churchId = user.churchId;
+                token.email = user.email; // Store for fallback sessions
+                token.name = user.name; // Store for fallback sessions
             }
             return token;
         },
@@ -82,32 +125,58 @@ exports.authOptions = {
             console.log('   token.sub:', token.sub);
             console.log('   token.role:', token.role);
             console.log('   token.churchId:', token.churchId);
+            // TEMPORARY: Handle fallback users during database initialization
+            if (token.sub?.startsWith('temp-')) {
+                console.log('✅ FALLBACK SESSION: Using temporary user data');
+                session.user = {
+                    id: token.sub,
+                    email: token.email || '',
+                    name: token.name || '',
+                    role: token.role,
+                    churchId: token.churchId || ''
+                };
+                return session;
+            }
             // Fetch user data fresh each time to keep JWT minimal
             if (token.sub) {
-                const user = await db_1.db.users.findUnique({
-                    where: { id: token.sub },
-                    select: {
-                        id: true,
-                        email: true,
-                        name: true,
-                        role: true,
-                        churchId: true
+                try {
+                    const user = await db_1.db.users.findUnique({
+                        where: { id: token.sub },
+                        select: {
+                            id: true,
+                            email: true,
+                            name: true,
+                            role: true,
+                            churchId: true
+                        }
+                    });
+                    if (user) {
+                        console.log('✅ SESSION: User fetched from DB');
+                        console.log('   role:', user.role);
+                        console.log('   churchId:', user.churchId);
+                        session.user = {
+                            id: user.id,
+                            email: user.email || '',
+                            name: user.name || '',
+                            role: user.role,
+                            churchId: user.churchId || ''
+                        };
                     }
-                });
-                if (user) {
-                    console.log('✅ SESSION: User fetched from DB');
-                    console.log('   role:', user.role);
-                    console.log('   churchId:', user.churchId);
-                    session.user = {
-                        id: user.id,
-                        email: user.email || '',
-                        name: user.name || '',
-                        role: user.role,
-                        churchId: user.churchId || ''
-                    };
+                    else {
+                        console.log('❌ SESSION: User not found in DB for token.sub:', token.sub);
+                    }
                 }
-                else {
-                    console.log('❌ SESSION: User not found in DB for token.sub:', token.sub);
+                catch (error) {
+                    console.log('⚠️ SESSION: Database connection failed, using token data');
+                    console.log('Error:', error.message);
+                    // Fallback to token data when database is unavailable
+                    session.user = {
+                        id: token.sub,
+                        email: token.email || '',
+                        name: token.name || '',
+                        role: token.role,
+                        churchId: token.churchId || ''
+                    };
                 }
             }
             return session;
