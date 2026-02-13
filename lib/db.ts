@@ -5,10 +5,10 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// 🚨 TEMPORARY HARDCODED OVERRIDE - Direct connection with SSL (IPv4 enabled!)
+// 🚨 TEMPORARY HARDCODED OVERRIDE - Transaction Pooler (VERIFIED WORKING VIA CLI!)
 // URL-encoded password: Bendecido100%25%24%24%25
-// Adding sslmode=require for cloud PostgreSQL compatibility
-const HARDCODED_SUPABASE_URL = 'postgresql://postgres:Bendecido100%25%24%24%25@db.qxdwpihcmgctznvdfmbv.supabase.co:5432/postgres?sslmode=require'
+// Using postgres.PROJECT_REF username format for pooler (not just postgres)
+const HARDCODED_SUPABASE_URL = 'postgresql://postgres.qxdwpihcmgctznvdfmbv:Bendecido100%25%24%24%25@aws-1-us-east-1.pooler.supabase.com:6543/postgres'
 
 // Use hardcoded URL in production to bypass Vercel environment variable caching
 const databaseUrl = process.env.NODE_ENV === 'production' 
