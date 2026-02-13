@@ -5,9 +5,10 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// 🚨 TEMPORARY HARDCODED OVERRIDE - Bypass Vercel env caching issue
+// 🚨 TEMPORARY HARDCODED OVERRIDE - Using Supabase Connection Pooler for serverless
+// Pooler is required for Vercel → Supabase connectivity (IPv6/network issue)
 // URL-encoded password: Bendecido100%25%24%24%25
-const HARDCODED_SUPABASE_URL = 'postgresql://postgres:Bendecido100%25%24%24%25@db.qxdwpihcmgctznvdfmbv.supabase.co:5432/postgres'
+const HARDCODED_SUPABASE_URL = 'postgresql://postgres.qxdwpihcmgctznvdfmbv:Bendecido100%25%24%24%25@aws-0-us-east-1.pooler.supabase.com:6543/postgres'
 
 // Use hardcoded URL in production to bypass Vercel environment variable caching
 const databaseUrl = process.env.NODE_ENV === 'production' 
