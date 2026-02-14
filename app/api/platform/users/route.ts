@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
       where.churchId = church
     }
 
-    const [users, total] = await Promise.all([
+    const [usersRaw, total] = await Promise.all([
       db.users.findMany({
         where,
         skip,
@@ -59,6 +59,12 @@ export async function GET(request: NextRequest) {
       }),
       db.users.count({ where })
     ])
+
+    // Transform users to match frontend expectation (church instead of churches)
+    const users = usersRaw.map(user => ({
+      ...user,
+      church: user.churches // Rename churches -> church for frontend
+    }))
 
     return NextResponse.json({
       users,
