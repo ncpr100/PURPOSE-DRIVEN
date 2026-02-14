@@ -19,6 +19,7 @@ const databaseUrl = process.env.NODE_ENV === 'production'
 console.log('[DB] Mode:', process.env.NODE_ENV)
 console.log('[DB] Using:', process.env.NODE_ENV === 'production' ? 'HARDCODED Supabase URL' : 'Environment Variables')
 console.log('[DB] URL preview:', databaseUrl.substring(0, 50) + '...')
+console.log('[DB] Has pgbouncer param:', databaseUrl.includes('?pgbouncer=true'))
 
 // Enhanced connection pooling configuration for production
 export const db = globalForPrisma.prisma ?? new PrismaClient({
@@ -27,11 +28,18 @@ export const db = globalForPrisma.prisma ?? new PrismaClient({
       url: databaseUrl,
     },
   },
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error']
+  log: process.env.NODE_ENV === 'development' 
+    ? ['query', 'error', 'warn'] 
+    : ['error', 'warn']  // Production: errors AND warnings
 })
 
 // Connection pooling and transaction configuration
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+
+// Test connection on startup
+db.$connect()
+  .then(() => console.log('[DB] ✅ Connected successfully'))
+  .catch(err => console.error('[DB] ❌ Connection failed:', err.message))
 
 // Graceful shutdown
 process.on('beforeExit', async () => {

@@ -70,12 +70,12 @@ export const authOptions: NextAuthOptions = {
             churchId: user.churchId,
           }
         } catch (error) {
-          console.log('⚠️ AUTH: Database connection failed, checking fallback users again')
-          console.log('Error:', error.message)
+          console.error('❌ AUTH: Database connection FAILED')
+          console.error('Error type:', error.constructor.name)
+          console.error('Error message:', error.message)
+          console.error('Full error:', JSON.stringify(error, null, 2))
           
-          // When database fails, return null to indicate no database authentication
-          // The fallback users were already checked above
-          console.log('❌ AUTH: No fallback user found for:', credentials.email)
+          // Database authentication failed - reject login
           return null
         }
       }

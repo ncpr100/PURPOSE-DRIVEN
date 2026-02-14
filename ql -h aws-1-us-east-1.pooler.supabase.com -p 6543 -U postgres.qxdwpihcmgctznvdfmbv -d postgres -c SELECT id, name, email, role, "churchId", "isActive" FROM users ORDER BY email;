@@ -1,0 +1,5 @@
+     id      |      name      |          email           |     role      |    churchId     | isActive |    password_hash     
+-------------+----------------+--------------------------+---------------+-----------------+----------+----------------------
+ admin-maria | María González | admin@iglesiacentral.com | ADMIN_IGLESIA | iglesia-central | t        | $2a$12$LQv3c1yqBWVHx
+(1 row)
+
