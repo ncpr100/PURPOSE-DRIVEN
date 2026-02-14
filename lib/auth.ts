@@ -14,6 +14,18 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/signin",
   },
   secret: process.env.NEXTAUTH_SECRET || 'build-time-fallback-secret-change-in-production',
+  // Cookie configuration for production
+  cookies: {
+    sessionToken: {
+      name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    }
+  },
   providers: [
     CredentialsProvider({
       name: "credentials",
