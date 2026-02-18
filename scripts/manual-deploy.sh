@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Emergency Deployment Script - Railway Metal Builder Bypass
-# When Railway Metal builder persistently hangs at "scheduling build"
+# Manual Deployment Script - Vercel Production Deploy
+# Use this for manual deployment when git push auto-deploy is not working
 
 set -e
 
-echo "🚨 EMERGENCY DEPLOYMENT - Railway Metal Builder Bypass"
-echo "⚠️ Use this when Railway Metal builder hangs at 'scheduling build'"
+echo "🚀 MANUAL DEPLOYMENT - Vercel Production"
+echo "⚡ Use this when automatic deployment needs manual trigger"
 echo ""
 
 # Check if we have required tools
@@ -24,7 +24,7 @@ command -v docker >/dev/null 2>&1 || {
 
 # Function to deploy to Vercel
 deploy_vercel() {
-    echo "🟣 Deploying to Vercel as Railway alternative..."
+    echo "🟣 Deploying to Vercel production..."
     
     # Build optimizations
     export NODE_OPTIONS="--max-old-space-size=8192 --max-semi-space-size=1024"

@@ -1,6 +1,6 @@
-name: Emergency Deployment - Railway Backup Strategy
+name: Manual Emergency Deployment - Vercel Only
 
-# Trigger when Railway Metal builder fails
+# Manual deployment only - Removed automatic Railway checks
 on:
   workflow_dispatch:
     inputs:
@@ -13,10 +13,9 @@ on:
         - vercel
         - docker
         - netlify
-  
-  # Auto-trigger if Railway deployment detected as failing
-  schedule:
-    - cron: '*/30 * * * *'  # Check every 30 minutes
+
+  # REMOVED: Automatic Railway status checking cron job
+  # This was running every 30 minutes when there's no Railway infrastructure
 
 env:
   NODE_VERSION: '18'
@@ -26,23 +25,9 @@ env:
   NPM_CONFIG_FUND: false
 
 jobs:
-  # Check if Railway is failing and trigger fallback
-  check-railway-status:
-    runs-on: ubuntu-latest
-    outputs:
-      should-deploy: ${{ steps.check.outputs.should-deploy }}
-    steps:
-      - name: Check Railway deployment status
-        id: check
-        run: |
-          # Logic to detect Railway Metal builder hanging
-          # For now, always allow manual deployment
-          echo "should-deploy=true" >> $GITHUB_OUTPUT
-
-  # Vercel deployment as Railway alternative
+  # Vercel deployment (primary)
   deploy-vercel:
-    needs: check-railway-status
-    if: needs.check-railway-status.outputs.should-deploy == 'true' && (github.event.inputs.deployment_target == 'vercel' || github.event.inputs.deployment_target == '')
+    if: github.event.inputs.deployment_target == 'vercel' || github.event.inputs.deployment_target == ''
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -81,10 +66,9 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
 
-  # Docker deployment as Railway alternative
+  # Docker deployment (fallback)
   deploy-docker:
-    needs: check-railway-status
-    if: needs.check-railway-status.outputs.should-deploy == 'true' && github.event.inputs.deployment_target == 'docker'
+    if: github.event.inputs.deployment_target == 'docker'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -126,4 +110,4 @@ jobs:
       - name: Deployment notification
         run: |
           echo "Emergency deployment completed"
-          echo "Railway Metal builder backup deployment successful"
+          echo "Vercel deployment successful - no Railway needed"
