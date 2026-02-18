@@ -2,5 +2,7 @@
   "markdown.validate.enabled": false,
   "markdown.validate.fileLinks.enabled": false,
   "markdown.validate.fragmentLinks.enabled": false,
-  "markdown.validate.referenceLinks.enabled": false
+  "markdown.validate.referenceLinks.enabled": false,
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python-envs.pythonProjects": []
 }

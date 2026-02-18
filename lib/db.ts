@@ -11,13 +11,11 @@ const globalForPrisma = globalThis as unknown as {
 // ?pgbouncer=true disables prepared statements (required for transaction pooler)
 const HARDCODED_SUPABASE_URL = 'postgresql://postgres.qxdwpihcmgctznvdfmbv:Bendecido100%25%24%24%25@aws-1-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true'
 
-// Use hardcoded URL in production to bypass Vercel environment variable caching
-const databaseUrl = process.env.NODE_ENV === 'production' 
-  ? HARDCODED_SUPABASE_URL 
-  : (process.env.SUPABASE_DATABASE_URL || process.env.DATABASE_URL || 'postgresql://user:pass@localhost:5432/fallback')
+// Use hardcoded pooler URL for ALL environments (pooler works, direct doesn't)
+const databaseUrl = HARDCODED_SUPABASE_URL
 
 console.log('[DB] Mode:', process.env.NODE_ENV)
-console.log('[DB] Using:', process.env.NODE_ENV === 'production' ? 'HARDCODED Supabase URL' : 'Environment Variables')
+console.log('[DB] Using: HARDCODED Pooler URL (forced)')
 console.log('[DB] URL preview:', databaseUrl.substring(0, 50) + '...')
 console.log('[DB] Has pgbouncer param:', databaseUrl.includes('?pgbouncer=true'))
 
