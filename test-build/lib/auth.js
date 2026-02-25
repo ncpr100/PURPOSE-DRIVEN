@@ -17,6 +17,18 @@ exports.authOptions = {
         signIn: "/auth/signin",
     },
     secret: process.env.NEXTAUTH_SECRET || 'build-time-fallback-secret-change-in-production',
+    // Cookie configuration for production
+    cookies: {
+        sessionToken: {
+            name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production'
+            }
+        }
+    },
     providers: [
         (0, credentials_1.default)({
             name: "credentials",
@@ -30,38 +42,7 @@ exports.authOptions = {
                     console.log('❌ AUTH: Missing credentials');
                     return null;
                 }
-                // TEMPORARY: Fallback authentication while database initializes
-                const fallbackUsers = [
-                    {
-                        email: 'soporte@khesed-tek-systems.org',
-                        password: 'Bendecido100%$$%',
-                        id: 'temp-super-admin',
-                        name: 'Soporte Khesed-Tek',
-                        role: 'SUPER_ADMIN',
-                        churchId: null
-                    },
-                    {
-                        email: 'admin@iglesiacentral.com',
-                        password: 'password123',
-                        id: 'temp-tenant-admin',
-                        name: 'Admin Iglesia Central',
-                        role: 'PASTOR',
-                        churchId: 'temp-church-id'
-                    }
-                ];
-                // Try fallback authentication first
-                const fallbackUser = fallbackUsers.find(u => u.email === credentials.email);
-                if (fallbackUser && fallbackUser.password === credentials.password) {
-                    console.log('✅ FALLBACK AUTH: Using temporary credentials for:', credentials.email);
-                    return {
-                        id: fallbackUser.id,
-                        email: fallbackUser.email,
-                        name: fallbackUser.name,
-                        role: fallbackUser.role,
-                        churchId: fallbackUser.churchId
-                    };
-                }
-                // Try database authentication
+                // Database authentication ONLY - no fallback users
                 try {
                     const user = await db_1.db.users.findUnique({
                         where: {
@@ -94,11 +75,11 @@ exports.authOptions = {
                     };
                 }
                 catch (error) {
-                    console.log('⚠️ AUTH: Database connection failed, checking fallback users again');
-                    console.log('Error:', error.message);
-                    // When database fails, return null to indicate no database authentication
-                    // The fallback users were already checked above
-                    console.log('❌ AUTH: No fallback user found for:', credentials.email);
+                    console.error('❌ AUTH: Database connection FAILED');
+                    console.error('Error type:', error instanceof Error ? error.constructor.name : 'Unknown');
+                    console.error('Error message:', error instanceof Error ? error.message : String(error));
+                    console.error('Full error:', JSON.stringify(error, null, 2));
+                    // Database authentication failed - reject login
                     return null;
                 }
             }
@@ -125,18 +106,6 @@ exports.authOptions = {
             console.log('   token.sub:', token.sub);
             console.log('   token.role:', token.role);
             console.log('   token.churchId:', token.churchId);
-            // TEMPORARY: Handle fallback users during database initialization
-            if (token.sub?.startsWith('temp-')) {
-                console.log('✅ FALLBACK SESSION: Using temporary user data');
-                session.user = {
-                    id: token.sub,
-                    email: token.email || '',
-                    name: token.name || '',
-                    role: token.role,
-                    churchId: token.churchId || ''
-                };
-                return session;
-            }
             // Fetch user data fresh each time to keep JWT minimal
             if (token.sub) {
                 try {
@@ -168,7 +137,7 @@ exports.authOptions = {
                 }
                 catch (error) {
                     console.log('⚠️ SESSION: Database connection failed, using token data');
-                    console.log('Error:', error.message);
+                    console.log('Error:', error instanceof Error ? error.message : String(error));
                     // Fallback to token data when database is unavailable
                     session.user = {
                         id: token.sub,

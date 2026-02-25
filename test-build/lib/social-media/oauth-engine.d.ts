@@ -19,15 +19,47 @@ export declare class SecureTokenManager {
     private static validateEncryptionKey;
     static encrypt(text: string): string;
     static decrypt(encryptedText: string): string;
-    static storeTokens(churchId: string, platform: string, accessToken: string, refreshToken?: string, expiresAt?: Date, accountData?: any): Promise<any>;
-    static getTokens(accountId: string): Promise<any>;
+    static storeTokens(churchId: string, platform: string, accessToken: string, refreshToken?: string, expiresAt?: Date, accountData?: any): Promise<{
+        id: string;
+        churchId: string;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        platform: string;
+        accountId: string;
+        username: string | null;
+        displayName: string | null;
+        accessToken: string;
+        refreshToken: string | null;
+        tokenExpiresAt: Date | null;
+        lastSync: Date | null;
+        accountData: string | null;
+        connectedBy: string;
+    }>;
+    static getTokens(accountId: string): Promise<{
+        accessToken: string;
+        refreshToken: string | null;
+        id: string;
+        churchId: string;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        platform: string;
+        accountId: string;
+        username: string | null;
+        displayName: string | null;
+        tokenExpiresAt: Date | null;
+        lastSync: Date | null;
+        accountData: string | null;
+        connectedBy: string;
+    } | null>;
 }
 export declare class OAuthFlowManager {
     static generateAuthUrl(platform: string, churchId: string): string;
     static exchangeCodeForToken(platform: string, code: string, state: string): Promise<{
         success: boolean;
         account: {
-            id: any;
+            id: string;
             platform: string;
             username: any;
             displayName: any;
@@ -60,7 +92,7 @@ export declare const SocialOAuth: {
     processCallback: (platform: string, code: string, state: string) => Promise<{
         success: boolean;
         account: {
-            id: any;
+            id: string;
             platform: string;
             username: any;
             displayName: any;
@@ -68,7 +100,23 @@ export declare const SocialOAuth: {
         };
     }>;
     validateToken: (accountId: string) => Promise<boolean>;
-    getAccountTokens: (accountId: string) => Promise<any>;
+    getAccountTokens: (accountId: string) => Promise<{
+        accessToken: string;
+        refreshToken: string | null;
+        id: string;
+        churchId: string;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        platform: string;
+        accountId: string;
+        username: string | null;
+        displayName: string | null;
+        tokenExpiresAt: Date | null;
+        lastSync: Date | null;
+        accountData: string | null;
+        connectedBy: string;
+    } | null>;
 };
 export default SocialOAuth;
 //# sourceMappingURL=oauth-engine.d.ts.map

@@ -14,31 +14,31 @@ export declare const createCheckInSchema: z.ZodObject<{
     familyStatus: z.ZodOptional<z.ZodEnum<["SINGLE", "MARRIED", "FAMILY_WITH_KIDS"]>>;
     referredBy: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    lastName: string;
     firstName: string;
+    lastName: string;
     isFirstTime: boolean;
     ministryInterest: string[];
     email?: string | undefined;
     phone?: string | undefined;
-    ageGroup?: "CHILDREN" | "YOUTH" | "ADULTS" | "SENIORS" | undefined;
     prayer_requests?: string | undefined;
     visitReason?: string | undefined;
     eventId?: string | undefined;
     visitorType?: "FIRST_TIME" | "RETURN" | "MINISTRY_INTEREST" | "PRAYER_REQUEST" | undefined;
+    ageGroup?: "CHILDREN" | "YOUTH" | "ADULTS" | "SENIORS" | undefined;
     familyStatus?: "FAMILY_WITH_KIDS" | "SINGLE" | "MARRIED" | undefined;
     referredBy?: string | undefined;
 }, {
-    lastName: string;
     firstName: string;
+    lastName: string;
     email?: string | undefined;
     phone?: string | undefined;
-    ageGroup?: "CHILDREN" | "YOUTH" | "ADULTS" | "SENIORS" | undefined;
     prayer_requests?: string | undefined;
     isFirstTime?: boolean | undefined;
     visitReason?: string | undefined;
     eventId?: string | undefined;
     visitorType?: "FIRST_TIME" | "RETURN" | "MINISTRY_INTEREST" | "PRAYER_REQUEST" | undefined;
     ministryInterest?: string[] | undefined;
+    ageGroup?: "CHILDREN" | "YOUTH" | "ADULTS" | "SENIORS" | undefined;
     familyStatus?: "FAMILY_WITH_KIDS" | "SINGLE" | "MARRIED" | undefined;
     referredBy?: string | undefined;
 }>;
@@ -52,16 +52,16 @@ export declare const getCheckInsSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    isFirstTime?: boolean | undefined;
-    eventId?: string | undefined;
     startDate?: string | undefined;
     endDate?: string | undefined;
+    isFirstTime?: boolean | undefined;
+    eventId?: string | undefined;
 }, {
+    startDate?: string | undefined;
+    endDate?: string | undefined;
+    isFirstTime?: boolean | undefined;
+    eventId?: string | undefined;
     limit?: number | undefined;
     page?: number | undefined;
-    isFirstTime?: boolean | undefined;
-    eventId?: string | undefined;
-    startDate?: string | undefined;
-    endDate?: string | undefined;
 }>;
 //# sourceMappingURL=check-in.d.ts.map
