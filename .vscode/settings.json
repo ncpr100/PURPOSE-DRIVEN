@@ -3,6 +3,10 @@
   "markdown.validate.fileLinks.enabled": false,
   "markdown.validate.fragmentLinks.enabled": false,
   "markdown.validate.referenceLinks.enabled": false,
+  "sql.linter.enabled": false,
+  "files.associations": {
+    "*.sql": "plaintext"
+  },
   "python-envs.defaultEnvManager": "ms-python.python:system",
   "python-envs.pythonProjects": []
 }
