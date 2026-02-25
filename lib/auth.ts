@@ -83,8 +83,8 @@ export const authOptions: NextAuthOptions = {
           }
         } catch (error) {
           console.error('❌ AUTH: Database connection FAILED')
-          console.error('Error type:', error.constructor.name)
-          console.error('Error message:', error.message)
+          console.error('Error type:', error instanceof Error ? error.constructor.name : 'Unknown')
+          console.error('Error message:', error instanceof Error ? error.message : String(error))
           console.error('Full error:', JSON.stringify(error, null, 2))
           
           // Database authentication failed - reject login
@@ -147,7 +147,7 @@ export const authOptions: NextAuthOptions = {
           }
         } catch (error) {
           console.log('⚠️ SESSION: Database connection failed, using token data')
-          console.log('Error:', error.message)
+          console.log('Error:', error instanceof Error ? error.message : String(error))
           // Fallback to token data when database is unavailable
           session.user = {
             id: token.sub,
