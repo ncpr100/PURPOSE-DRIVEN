@@ -3,10 +3,16 @@
   "markdown.validate.fileLinks.enabled": false,
   "markdown.validate.fragmentLinks.enabled": false,
   "markdown.validate.referenceLinks.enabled": false,
+  "markdown.validate.duplicateLinkDefinitions.enabled": false,
+  "markdown.validate.ignoredLinks": ["#*"],
+  "markdown.extension.toc.slugify": "github",
+  "markdown.extension.toc.downcaseLink": false,
   "sql.linter.enabled": false,
   "files.associations": {
-    "*.sql": "plaintext"
+    "*.sql": "plaintext",
+    "copilot-instructions.md": "plaintext"
   },
   "python-envs.defaultEnvManager": "ms-python.python:system",
-  "python-envs.pythonProjects": []
+  "python-envs.pythonProjects": [],
+  "problems.decorations.enabled": false
 }

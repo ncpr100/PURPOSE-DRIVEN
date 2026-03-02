@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     
     // Test 2: Count churches
     console.log('[Diagnostic] Counting churches...')
-    const churchCount = await db.church.count()
+    const churchCount = await db.churches.count()
     diagnostics.tests.churchCount = {
       status: '✅ Success',
       count: churchCount
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     
     // Test 3: Find "Iglesia Central"
     console.log('[Diagnostic] Finding Iglesia Central...')
-    const iglesiacentral = await db.church.findFirst({
+    const iglesiacentral = await db.churches.findFirst({
       where: {
         OR: [
           { name: { contains: 'Central', mode: 'insensitive' } },
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     
     // Test 4: Total members across all churches
     console.log('[Diagnostic] Counting all members...')
-    const totalMembers = await db.member.count()
+    const totalMembers = await db.members.count()
     diagnostics.tests.totalMembersTest = {
       status: '✅ Success',
       count: totalMembers
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     // Test 5: Sample members
     if (totalMembers > 0) {
       console.log('[Diagnostic] Fetching sample members...')
-      const sampleMembers = await db.member.findMany({
+      const sampleMembers = await db.members.findMany({
         take: 3,
         select: {
           id: true,

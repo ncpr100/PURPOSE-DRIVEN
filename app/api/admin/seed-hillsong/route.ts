@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     console.log(`[SEED-HILLSONG] Found church: ${church.name}`);
 
     // Check existing data
-    const existingMembers = await db.member.count({ where: { churchId: church.id } });
+    const existingMembers = await db.members.count({ where: { churchId: church.id } });
     console.log(`[SEED-HILLSONG] Existing members: ${existingMembers}`);
 
     const membersToCreate = Math.max(0, 2000 - existingMembers);
@@ -150,13 +150,13 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      await db.member.createMany({ data: members, skipDuplicates: true });
+      await db.members.createMany({ data: members, skipDuplicates: true });
       totalCreated += members.length;
       console.log(`[SEED-HILLSONG] Batch ${batch + 1}/${batches} completed (${members.length} members)`);
     }
 
     // Get all members for additional data
-    const allMembers = await db.member.findMany({
+    const allMembers = await db.members.findMany({
       where: { churchId: church.id },
       select: { id: true, lifecycle: true }
     });
@@ -191,7 +191,7 @@ export async function POST(request: NextRequest) {
         title: 'Culto Dominical Matutino',
         description: 'Servicio de alabanza y predicación',
         eventType: 'CULTO',
-        date: new Date('2026-02-16T09:00:00'),
+        startDate: new Date('2026-02-16T09:00:00'),
         endDate: new Date('2026-02-16T11:00:00'),
         location: 'Auditorio Principal',
         capacity: 500,
@@ -204,7 +204,7 @@ export async function POST(request: NextRequest) {
         title: 'Culto Dominical Vespertino',
         description: 'Servicio de adoración',
         eventType: 'CULTO',
-        date: new Date('2026-02-16T18:00:00'),
+        startDate: new Date('2026-02-16T18:00:00'),
         endDate: new Date('2026-02-16T18:00:00'),
         location: 'Auditorio Principal',
         capacity: 500,
@@ -218,7 +218,7 @@ export async function POST(request: NextRequest) {
 
     // Final stats
     const finalStats = {
-      members: await db.member.count({ where: { churchId: church.id } }),
+      members: await db.members.count({ where: { churchId: church.id } }),
       volunteers: await db.volunteers.count({ where: { churchId: church.id } }),
       events: await db.events.count({ where: { churchId: church.id } })
     };

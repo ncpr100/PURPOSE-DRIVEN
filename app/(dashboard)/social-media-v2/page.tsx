@@ -34,7 +34,7 @@ export default async function SocialMediaV2Page() {
 
   try {
     // Try to fetch data from database
-    connectedAccounts = await db.socialMediaAccount?.findMany({
+    connectedAccounts = await db.social_media_accounts?.findMany({
       where: {
         churchId,
         isActive: true
@@ -43,7 +43,7 @@ export default async function SocialMediaV2Page() {
     }) || []
 
     // Check AI addon subscription
-    aiAddon = await db.churchSubscriptionAddon?.findFirst({
+    aiAddon = await db.church_subscription_addons?.findFirst({
       where: {
         addonId: 'social-media-ai',
         isActive: true
@@ -51,14 +51,14 @@ export default async function SocialMediaV2Page() {
     }) || null
 
     // Get recent posts
-    recentPosts = await db.socialMediaPost?.findMany({
+    recentPosts = await db.social_media_posts?.findMany({
       where: { churchId },
       orderBy: { createdAt: 'desc' },
       take: 10
     }) || []
 
     // Get church info for AI context
-    church = await db.church?.findUnique({
+    church = await db.churches?.findUnique({
       where: { id: churchId },
       select: { 
         name: true, 

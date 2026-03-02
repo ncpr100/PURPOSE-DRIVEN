@@ -32,7 +32,7 @@ if (dbContent.includes("['error', 'warn']")) {
 
 console.log('\n2️⃣ Checking lib/auth.ts for enhanced error logging...');
 const authContent = fs.readFileSync('lib/auth.ts', 'utf8');
-if (authContent.includes('Full error:', JSON.stringify')) {
+if (authContent.includes('Full error:') && authContent.includes('JSON.stringify')) {
   console.log('   ✅ Enhanced error JSON logging PRESENT');
 } else if (authContent.includes("JSON.stringify(error")) {
   console.log('   ✅ Enhanced error JSON logging PRESENT');

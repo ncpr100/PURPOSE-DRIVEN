@@ -29,11 +29,14 @@ export async function POST(request: NextRequest) {
       data: {
         id: churchId,
         name: 'Iglesia de Prueba',
-        slug: 'iglesia-prueba',
-        country: 'ES',
-        timezone: 'Europe/Madrid',
-        language: 'es',
-        currency: 'EUR',
+        email: 'admin@iglesiaprueba.es',
+        phone: '+34-600-000-000',
+        address: 'Calle Test 123, Madrid, España',
+        description: 'Iglesia de prueba para testing',
+        website: 'https://iglesiaprueba.es',
+        founded: new Date('2020-01-01'),
+        logo: '',
+        isActive: true,
         createdAt: new Date(),
         updatedAt: new Date()
       }
@@ -79,7 +82,7 @@ export async function POST(request: NextRequest) {
         church: {
           id: church.id,
           name: church.name,
-          slug: church.slug
+          email: church.email
         },
         adminUser: {
           email: adminUser.email,
