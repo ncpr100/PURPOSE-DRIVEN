@@ -1,0 +1,93 @@
+{
+  "testSummary": {
+    "totalTests": 5,
+    "passed": 1,
+    "failed": 4,
+    "warnings": 0,
+    "timestamp": "2026-03-04T22:32:03.490Z"
+  },
+  "issuesSummary": {
+    "totalIssues": 4,
+    "highPriority": 4,
+    "mediumPriority": 0,
+    "lowPriority": 0
+  },
+  "detailedResults": [
+    {
+      "category": "AUTH",
+      "test": "Tenant Login",
+      "result": "FAIL",
+      "details": {
+        "statusCode": 302,
+        "response": {}
+      },
+      "timestamp": "2026-03-04T22:32:03.129Z"
+    },
+    {
+      "category": "AUTH",
+      "test": "Session Validation",
+      "result": "FAIL",
+      "details": {},
+      "timestamp": "2026-03-04T22:32:03.199Z"
+    },
+    {
+      "category": "MEMBERS",
+      "test": "Main List API",
+      "result": "FAIL",
+      "details": {
+        "statusCode": 401
+      },
+      "timestamp": "2026-03-04T22:32:03.214Z"
+    },
+    {
+      "category": "LANGUAGE",
+      "test": "Home Page Spanish Check",
+      "result": "PASS",
+      "details": {},
+      "timestamp": "2026-03-04T22:32:03.318Z"
+    },
+    {
+      "category": "SUPER_ADMIN",
+      "test": "Super Admin Login",
+      "result": "FAIL",
+      "details": {
+        "statusCode": 302
+      },
+      "timestamp": "2026-03-04T22:32:03.488Z"
+    }
+  ],
+  "identifiedIssues": [
+    {
+      "id": 1,
+      "severity": "HIGH",
+      "module": "Authentication",
+      "description": "Tenant login failed with provided credentials",
+      "apiInfo": {},
+      "timestamp": "2026-03-04T22:32:03.130Z"
+    },
+    {
+      "id": 2,
+      "severity": "HIGH",
+      "module": "Authentication",
+      "description": "Session validation failed after login",
+      "apiInfo": {},
+      "timestamp": "2026-03-04T22:32:03.200Z"
+    },
+    {
+      "id": 3,
+      "severity": "HIGH",
+      "module": "Members",
+      "description": "Members API not accessible",
+      "apiInfo": {},
+      "timestamp": "2026-03-04T22:32:03.215Z"
+    },
+    {
+      "id": 4,
+      "severity": "HIGH",
+      "module": "Super Admin",
+      "description": "Super Admin login failed with provided credentials",
+      "apiInfo": {},
+      "timestamp": "2026-03-04T22:32:03.489Z"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 # Khesed-tek Church Management System - AI Assistant Instructions
 
-**Document Version**: 3.6  
-**Last Updated**: February 13, 2026  
-**Project Status**: Production Active - Vercel Deployment, Supabase PostgreSQL (Phase 3 Complete)  
+**Document Version**: 3.7  
+**Last Updated**: March 2, 2026  
+**Project Status**: Production Active - Vercel Deployment, Supabase PostgreSQL (Phase 3 Complete, Phase 4 Planning)  
 
 ---
 
@@ -120,11 +120,40 @@ await prisma.users.create({
 - **Database**: Prisma singleton via `import { db } from '@/lib/db'` with enhanced connection pooling
 - **Caching**: Redis via `lib/redis-cache-manager.ts` (800+ lines) - 90%+ hit rate target
 - **Real-time**: SSE via `lib/sse-broadcast.ts` for live dashboard updates
-- **TypeScript**: `strict: false` but `ignoreBuildErrors: false` - compilation must pass
+- **TypeScript**: `strict: false` but `ignoreBuildErrors: true` in next.config.js but compilation enforced via npm scripts
 - **Deployment**: `git push origin main` → Vercel auto-deploy (NO staging environment)
 - **Database**: Supabase PostgreSQL at db.qxdwpihcmgctznvdfmbv.supabase.co:5432
 - **Branding System**: Church-specific color customization in `settings/branding` with pastel defaults
 - **Icon Protocol**: ONLY lucide-react stroke-only SVG icons - NO emojis in production UI
+
+## 📦 **CURRENT MIGRATION & DEPLOYMENT STATE** (March 2026)
+
+**Migration Package Ready**: This codebase includes comprehensive migration support for platform transitions from the current hosting to alternative providers.
+
+**Available Migration Targets:**
+- **Railway** - Primary recommendation ($25-35/month, 1-2 days migration)
+- **Vercel + External DB** - Best Next.js performance ($45-65/month, 2-3 days)  
+- **DigitalOcean App Platform** - Enterprise reliability ($29-45/month, 3-4 days)
+
+**Key Migration Files:**
+```
+configs/                          # Platform-specific deployment guides
+├── railway_config.md            # Railway deployment
+├── vercel_config.md             # Vercel deployment  
+├── digitalocean_config.md       # DigitalOcean deployment
+scripts/                         # Migration utilities
+├── database_backup.sh           # Database backup
+├── database_restore.sh          # Database restore  
+└── migration_validator.sh       # Post-migration validation
+```
+
+**Current Production Architecture:**
+- **Framework**: Next.js 14.2.28 with App Router
+- **Database**: PostgreSQL (Supabase) + Prisma ORM 
+- **Deployment**: Vercel (primary) with Railway migration ready
+- **Memory Optimization**: Build process optimized for 2048MB max old space
+- **TypeScript**: `ignoreBuildErrors: true` in next.config.js but compilation enforced via npm scripts
+- **Phase 4 Status**: AI & Mobile Apps roadmap active (Q1 2026 target)
 
 ---
 
@@ -1644,6 +1673,22 @@ Before implementing or deleting ANY code, **ALWAYS** execute these 8 steps in or
 git add .
 git commit -m "descriptive message"
 git push origin main  # → Triggers Vercel build → Detects Next.js → npm ci → prisma generate → next build (360+ routes) → Production deployment
+```
+
+**Vercel Function Configuration** (vercel.json):
+```json
+{
+  "functions": {
+    "app/**/*.js": { "memory": 1024, "maxDuration": 30 },  // General app functions
+    "app/api/**/*.js": { "memory": 512, "maxDuration": 15 }  // API routes optimized
+  },
+  "regions": ["iad1"],  // US East (Virginia) for optimal performance
+  "headers": [
+    { "X-Content-Type-Options": "nosniff" },
+    { "X-Frame-Options": "DENY" },
+    { "X-XSS-Protection": "1; mode=block" }
+  ]
+}
 ```
 
 **⚠️ CRITICAL**: Never use `npx prisma db push` in production. Use `npx prisma migrate dev` to create migrations, then migrations run automatically on Vercel deployment.

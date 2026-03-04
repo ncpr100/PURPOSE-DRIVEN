@@ -1,0 +1,161 @@
+{
+  "summary": {
+    "timestamp": "2026-03-04T22:35:40.727Z",
+    "totalChecks": 14,
+    "successes": 4,
+    "warnings": 0,
+    "errors": 0,
+    "healthScore": 29
+  },
+  "findings": {
+    "criticalIssues": [],
+    "warnings": [],
+    "achievements": [
+      "Valid JSON response from /api/members",
+      "Valid JSON response from /api/members?status=active",
+      "Valid JSON response from /api/members?role=volunteer",
+      "Valid JSON response from /api/volunteers"
+    ]
+  },
+  "recommendations": [
+    "✅ TEST: Perform manual testing with valid user credentials",
+    "🔍 MONITOR: Set up continuous monitoring for the Members module"
+  ],
+  "allResults": [
+    {
+      "level": "INFO",
+      "message": "Members page response",
+      "data": {
+        "statusCode": 307,
+        "redirectLocation": "/auth/signin?callbackUrl=%2Fmembers"
+      },
+      "timestamp": "2026-03-04T22:35:38.766Z"
+    },
+    {
+      "level": "INFO",
+      "message": "Dashboard/Home response",
+      "data": {
+        "statusCode": 307,
+        "redirectLocation": "/auth/signin?callbackUrl=%2Fhome"
+      },
+      "timestamp": "2026-03-04T22:35:38.773Z"
+    },
+    {
+      "level": "INFO",
+      "message": "API Endpoint: /api/members",
+      "data": {
+        "statusCode": 401,
+        "hasContent": true,
+        "contentType": "application/json"
+      },
+      "timestamp": "2026-03-04T22:35:38.782Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "Valid JSON response from /api/members",
+      "data": {
+        "dataType": "object",
+        "isArray": false,
+        "itemCount": 1
+      },
+      "timestamp": "2026-03-04T22:35:38.782Z"
+    },
+    {
+      "level": "INFO",
+      "message": "API Endpoint: /api/members?status=active",
+      "data": {
+        "statusCode": 401,
+        "hasContent": true,
+        "contentType": "application/json"
+      },
+      "timestamp": "2026-03-04T22:35:38.792Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "Valid JSON response from /api/members?status=active",
+      "data": {
+        "dataType": "object",
+        "isArray": false,
+        "itemCount": 1
+      },
+      "timestamp": "2026-03-04T22:35:38.793Z"
+    },
+    {
+      "level": "INFO",
+      "message": "API Endpoint: /api/members?role=volunteer",
+      "data": {
+        "statusCode": 401,
+        "hasContent": true,
+        "contentType": "application/json"
+      },
+      "timestamp": "2026-03-04T22:35:38.812Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "Valid JSON response from /api/members?role=volunteer",
+      "data": {
+        "dataType": "object",
+        "isArray": false,
+        "itemCount": 1
+      },
+      "timestamp": "2026-03-04T22:35:38.813Z"
+    },
+    {
+      "level": "INFO",
+      "message": "API Endpoint: /api/volunteers",
+      "data": {
+        "statusCode": 401,
+        "hasContent": true,
+        "contentType": "application/json"
+      },
+      "timestamp": "2026-03-04T22:35:38.821Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "Valid JSON response from /api/volunteers",
+      "data": {
+        "dataType": "object",
+        "isArray": false,
+        "itemCount": 1
+      },
+      "timestamp": "2026-03-04T22:35:38.821Z"
+    },
+    {
+      "level": "INFO",
+      "message": "API Endpoint: /api/users",
+      "data": {
+        "statusCode": 404,
+        "hasContent": true,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "timestamp": "2026-03-04T22:35:40.293Z"
+    },
+    {
+      "level": "INFO",
+      "message": "Asset: /_next/static/css",
+      "data": {
+        "statusCode": 404,
+        "contentLength": 8795
+      },
+      "timestamp": "2026-03-04T22:35:40.313Z"
+    },
+    {
+      "level": "INFO",
+      "message": "Asset: /_next/static/chunks",
+      "data": {
+        "statusCode": 404,
+        "contentLength": 8798
+      },
+      "timestamp": "2026-03-04T22:35:40.329Z"
+    },
+    {
+      "level": "INFO",
+      "message": "Asset: /api/auth/session",
+      "data": {
+        "statusCode": 200,
+        "contentLength": 2
+      },
+      "timestamp": "2026-03-04T22:35:40.727Z"
+    }
+  ]
+}

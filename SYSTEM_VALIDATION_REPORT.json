@@ -1,0 +1,130 @@
+{
+  "summary": {
+    "totalTests": 10,
+    "successes": 6,
+    "warnings": 2,
+    "errors": 2,
+    "healthScore": 60
+  },
+  "issues": [
+    {
+      "message": "Unexpected dashboard response",
+      "data": {
+        "statusCode": 307
+      },
+      "timestamp": "2026-03-04T22:33:41.745Z"
+    },
+    {
+      "message": "Unexpected platform response",
+      "data": {
+        "statusCode": 307
+      },
+      "timestamp": "2026-03-04T22:33:41.849Z"
+    }
+  ],
+  "warnings": [
+    {
+      "message": "Sign-in page loads but missing form fields",
+      "data": {},
+      "timestamp": "2026-03-04T22:33:41.730Z"
+    },
+    {
+      "message": "English words found in Spanish interface",
+      "data": {
+        "englishWords": [
+          "management"
+        ],
+        "spanishWords": [
+          "gestión"
+        ]
+      },
+      "timestamp": "2026-03-04T22:33:41.842Z"
+    }
+  ],
+  "allResults": [
+    {
+      "level": "SUCCESS",
+      "message": "Server is running and accessible",
+      "data": {
+        "statusCode": 200,
+        "serverResponse": "<!DOCTYPE html><html lang=\"es\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=dev..."
+      },
+      "timestamp": "2026-03-04T22:33:41.642Z"
+    },
+    {
+      "level": "WARNING",
+      "message": "Sign-in page loads but missing form fields",
+      "data": {},
+      "timestamp": "2026-03-04T22:33:41.730Z"
+    },
+    {
+      "level": "ERROR",
+      "message": "Unexpected dashboard response",
+      "data": {
+        "statusCode": 307
+      },
+      "timestamp": "2026-03-04T22:33:41.745Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "Members API properly protected (requires authentication)",
+      "data": {
+        "statusCode": 401
+      },
+      "timestamp": "2026-03-04T22:33:41.761Z"
+    },
+    {
+      "level": "WARNING",
+      "message": "English words found in Spanish interface",
+      "data": {
+        "englishWords": [
+          "management"
+        ],
+        "spanishWords": [
+          "gestión"
+        ]
+      },
+      "timestamp": "2026-03-04T22:33:41.842Z"
+    },
+    {
+      "level": "ERROR",
+      "message": "Unexpected platform response",
+      "data": {
+        "statusCode": 307
+      },
+      "timestamp": "2026-03-04T22:33:41.849Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "NextAuth endpoint working: /api/auth/signin",
+      "data": {
+        "statusCode": 302
+      },
+      "timestamp": "2026-03-04T22:33:41.919Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "NextAuth endpoint working: /api/auth/signout",
+      "data": {
+        "statusCode": 200
+      },
+      "timestamp": "2026-03-04T22:33:42.044Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "NextAuth endpoint working: /api/auth/session",
+      "data": {
+        "statusCode": 200
+      },
+      "timestamp": "2026-03-04T22:33:42.153Z"
+    },
+    {
+      "level": "SUCCESS",
+      "message": "NextAuth endpoint working: /api/auth/providers",
+      "data": {
+        "statusCode": 200
+      },
+      "timestamp": "2026-03-04T22:33:42.264Z"
+    }
+  ]
+}
