@@ -98,48 +98,8 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
     }
   };
 
-  // Generate mock data for demonstration since we don't have real metrics yet
-  const generateMockData = () => {
-    const mockData: MetricData[] = [];
-    const platforms = selectedPlatform === 'all' ? ['FACEBOOK', 'TWITTER', 'INSTAGRAM', 'LINKEDIN'] : [selectedPlatform];
-    const metricTypes = ['FOLLOWERS', 'LIKES', 'COMMENTS', 'SHARES', 'IMPRESSIONS', 'REACH'];
-    
-    for (let i = parseInt(timeRange); i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      
-      platforms.forEach(platform => {
-        metricTypes.forEach(metricType => {
-          const baseValue = {
-            FOLLOWERS: 1000,
-            LIKES: 50,
-            COMMENTS: 10,
-            SHARES: 5,
-            IMPRESSIONS: 1000,
-            REACH: 800
-          }[metricType] || 100;
-
-          mockData.push({
-            id: `${platform}-${metricType}-${i}`,
-            platform,
-            metricType,
-            value: Math.floor(baseValue + Math.random() * baseValue * 0.3),
-            date: date.toISOString(),
-            account: {
-              platform,
-              username: `@church_${platform.toLowerCase()}`,
-              displayName: `Church ${platform}`
-            }
-          });
-        });
-      });
-    }
-    
-    return mockData;
-  };
-
-  // Use mock data if no real metrics
-  const chartData = metrics.length > 0 ? metrics : generateMockData();
+  // Only use real metrics — no mock data
+  const chartData = metrics;
 
   // Aggregate data for charts
   const dailyMetrics = chartData.reduce((acc: any, metric) => {
@@ -246,7 +206,19 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
         </Select>
       </div>
 
+      {/* Empty state when no metrics available */}
+      {chartData.length === 0 && (
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center h-48 text-gray-400 space-y-2">
+            <BarChart3 className="h-12 w-12 text-gray-300" />
+            <p className="text-sm font-medium text-gray-500">No hay datos disponibles</p>
+            <p className="text-xs text-gray-400">Conecta tus redes sociales y publica contenido para ver analíticas reales</p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Overview Cards */}
+      {chartData.length > 0 && (
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {Object.entries(totals).slice(0, 4).map(([metricType, value]) => {
           const Icon = metricIcons[metricType as keyof typeof metricIcons] || BarChart3;
@@ -269,8 +241,10 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
           );
         })}
       </div>
+      )}
 
       {/* Charts */}
+      {chartData.length > 0 && (
       <div className="grid gap-6 md:grid-cols-2">
         {/* Engagement Timeline */}
         <Card>
@@ -406,6 +380,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
           </CardContent>
         </Card>
       </div>
+      )}
     </div>
   );
 }
