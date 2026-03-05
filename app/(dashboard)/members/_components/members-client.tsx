@@ -873,7 +873,11 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
               <div className="flex items-center gap-2">
                 <Users className="h-8 w-8 text-blue-500" />
                 <div>
-                  <p className="text-2xl font-bold">{filterCounts?.totalCount || filteredMembers.length}</p>
+                  <p className="text-2xl font-bold">
+                    {activeSmartList !== 'all' || searchTerm || genderFilter !== 'all' || ageFilter !== 'all' || maritalStatusFilter !== 'all'
+                      ? filteredMembers.length
+                      : (filterCounts?.totalCount || filteredMembers.length)}
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     {activeSmartList === 'all' && !searchTerm && genderFilter === 'all' && ageFilter === 'all' && maritalStatusFilter === 'all' ? 'Total Miembros' : 'Resultados Filtrados'}
                   </p>
@@ -889,9 +893,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filterCounts?.genderCounts?.masculino || filteredMembers.filter(m => 
-                      categorizeGender(m) === 'masculino'
-                    ).length}
+                    {(activeSmartList !== 'all' || searchTerm || genderFilter !== 'all' || ageFilter !== 'all' || maritalStatusFilter !== 'all')
+                      ? filteredMembers.filter(m => categorizeGender(m) === 'masculino').length
+                      : (filterCounts?.genderCounts?.masculino || filteredMembers.filter(m => categorizeGender(m) === 'masculino').length)}
                   </p>
                   <p className="text-sm text-muted-foreground">Hombres</p>
                 </div>
@@ -906,9 +910,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filterCounts?.genderCounts?.femenino || filteredMembers.filter(m => 
-                      categorizeGender(m) === 'femenino'
-                    ).length}
+                    {(activeSmartList !== 'all' || searchTerm || genderFilter !== 'all' || ageFilter !== 'all' || maritalStatusFilter !== 'all')
+                      ? filteredMembers.filter(m => categorizeGender(m) === 'femenino').length
+                      : (filterCounts?.genderCounts?.femenino || filteredMembers.filter(m => categorizeGender(m) === 'femenino').length)}
                   </p>
                   <p className="text-sm text-muted-foreground">Mujeres</p>
                 </div>
@@ -923,9 +927,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
-                    {filterCounts?.genderCounts?.sinEspecificar || filteredMembers.filter(m => 
-                      categorizeGender(m) === 'sinEspecificar'
-                    ).length}
+                    {(activeSmartList !== 'all' || searchTerm || genderFilter !== 'all' || ageFilter !== 'all' || maritalStatusFilter !== 'all')
+                      ? filteredMembers.filter(m => categorizeGender(m) === 'sinEspecificar').length
+                      : (filterCounts?.genderCounts?.sinEspecificar || filteredMembers.filter(m => categorizeGender(m) === 'sinEspecificar').length)}
                   </p>
                   <p className="text-sm text-muted-foreground">Sin Especificar</p>
                 </div>
@@ -972,20 +976,24 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
             ) : filteredMembers.length === 0 && members.length === 0 ? (
               <div className="text-center py-8">
                 <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No se pudieron cargar los miembros</p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Debug: members={members.length}, filtered={filteredMembers.length}, 
-                  activeFilter={activeSmartList}, searchTerm=&quot;{searchTerm}&quot;
-                </p>
-                <Button 
-                  onClick={() => {
-                    console.log('🔄 Manual refresh triggered')
-                    fetchMembers()
-                  }} 
-                  className="mt-4"
-                >
-                  Recargar Miembros
-                </Button>
+                {activeSmartList !== 'all' ? (
+                  <>
+                    <p className="text-muted-foreground">No hay miembros en esta categoría</p>
+                    <p className="text-sm text-muted-foreground mt-2">Prueba con otra lista inteligente</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-muted-foreground">No se pudieron cargar los miembros</p>
+                    <Button 
+                      onClick={() => {
+                        fetchMembers()
+                      }} 
+                      className="mt-4"
+                    >
+                      Recargar Miembros
+                    </Button>
+                  </>
+                )}
               </div>
             ) : filteredMembers.length === 0 ? (
               <div className="text-center py-8">

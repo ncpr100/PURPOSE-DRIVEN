@@ -505,8 +505,11 @@ function SidebarContent() {
                 )}
               </button>
 
-              {/* Section Items */}
-              {!isCollapsed && (
+              {/* Section Items - smooth UP/DOWN slide animation */}
+              <div className={cn(
+                'overflow-hidden transition-all duration-300 ease-in-out',
+                isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[500px] opacity-100'
+              )}>
                 <div className="ml-6 mt-2 space-y-1">
                   {section.items.map((item) => {
                     const Icon = item.icon
@@ -529,7 +532,7 @@ function SidebarContent() {
                     )
                   })}
                 </div>
-              )}
+              </div>
             </div>
           )
         })}
