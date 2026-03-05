@@ -36,6 +36,7 @@ import {
   FileText,
   ChevronDown,
   ChevronRight,
+  ChevronLeft,
   ChevronUp,
   Briefcase,
   Cog,
@@ -43,12 +44,16 @@ import {
   ShieldCheck,
   Menu,
   X,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react'
 
-// Mobile sidebar context
+// Sidebar context - supports both mobile overlay and desktop collapse
 interface SidebarContextType {
   isMobileOpen: boolean
   setIsMobileOpen: (open: boolean) => void
+  isDesktopCollapsed: boolean
+  toggleDesktopCollapsed: () => void
 }
 
 const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -63,9 +68,12 @@ export const useSidebar = () => {
 
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false)
+
+  const toggleDesktopCollapsed = () => setIsDesktopCollapsed(prev => !prev)
 
   return (
-    <SidebarContext.Provider value={{ isMobileOpen, setIsMobileOpen }}>
+    <SidebarContext.Provider value={{ isMobileOpen, setIsMobileOpen, isDesktopCollapsed, toggleDesktopCollapsed }}>
       {children}
     </SidebarContext.Provider>
   )
@@ -605,14 +613,38 @@ function SidebarContent() {
 
 export function Sidebar() {
   const sidebarContext = useContext(SidebarContext)
+  const isCollapsed = sidebarContext?.isDesktopCollapsed ?? false
 
   // Add error boundary for session-related issues
   return (
     <div>
-      {/* Desktop Sidebar - Hidden on mobile */}
-      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:bg-muted/40">
+      {/* Desktop Sidebar - Hidden on mobile, collapsible */}
+      <aside
+        className={cn(
+          'hidden lg:flex lg:flex-col lg:border-r lg:bg-muted/40 transition-all duration-300 ease-in-out flex-shrink-0',
+          isCollapsed ? 'lg:w-16' : 'lg:w-64'
+        )}
+      >
+        {/* Desktop collapse toggle button */}
+        <div className={cn(
+          'flex-shrink-0 flex items-center border-b border-border bg-muted/40 transition-all duration-300',
+          isCollapsed ? 'justify-center px-2 py-3' : 'justify-end px-3 py-2'
+        )}>
+          <button
+            onClick={() => sidebarContext?.toggleDesktopCollapsed()}
+            className="p-1.5 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-muted-foreground"
+            title={isCollapsed ? 'Expandir menú' : 'Colapsar menú'}
+            aria-label={isCollapsed ? 'Expandir menú' : 'Colapsar menú'}
+          >
+            {isCollapsed ? (
+              <PanelLeftOpen className="h-4 w-4" />
+            ) : (
+              <PanelLeftClose className="h-4 w-4" />
+            )}
+          </button>
+        </div>
         <div className="flex-1 overflow-hidden">
-          <SafeSidebarContent />
+          {isCollapsed ? <CollapsedSidebarContent /> : <SafeSidebarContent />}
         </div>
       </aside>
 
@@ -668,6 +700,49 @@ export function Sidebar() {
           </div>
         </>
       )}
+    </div>
+  )
+}
+
+// Collapsed sidebar - icons only with tooltips
+function CollapsedSidebarContent() {
+  let session: any = null
+  try {
+    const s = useSession()
+    session = s?.data
+  } catch (_) {}
+
+  const pathname = usePathname()
+
+  const filterByRole = (items: any[]) =>
+    items.filter(item => session?.user?.role && item?.roles?.includes(session.user.role as string))
+
+  const allItems = [
+    ...filterByRole(coreNavigation),
+    ...navigationSections.flatMap(s => filterByRole(s.items)),
+    ...filterByRole(adminNavigation),
+    ...filterByRole(helpNavigation),
+  ]
+
+  return (
+    <div className="py-4 px-2 space-y-1 overflow-y-auto h-full">
+      {allItems.map((item) => {
+        const Icon = item.icon
+        const isActive = pathname === item.href
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            title={item.title}
+            className={cn(
+              'flex items-center justify-center w-10 h-10 rounded-lg mx-auto transition-all hover:bg-accent hover:text-accent-foreground',
+              isActive && 'bg-accent text-accent-foreground'
+            )}
+          >
+            <Icon className="h-5 w-5 flex-shrink-0" />
+          </Link>
+        )
+      })}
     </div>
   )
 }

@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
           break
       }
 
-      const members = await prisma.members.findMany({
+      const members = await db.members.findMany({
         ...memberQuery,
         select: {
           email: true,
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log the bulk send activity
-    await prisma.notifications.create({
+    await db.notifications.create({
       data: {
   id: nanoid(),
         title: `Envío masivo ${validatedData.service}`,

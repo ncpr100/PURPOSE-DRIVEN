@@ -93,7 +93,9 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   }
 
   // Form states
+  const [allMembers, setAllMembers] = useState<{id: string; firstName: string; lastName: string; email?: string; phone?: string}[]>([])
   const [formData, setFormData] = useState({
+    memberId: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -118,7 +120,20 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
     fetchVolunteers()
     fetchMinistries()
     fetchSpiritualGifts()
+    fetchAllMembers()
   }, [])
+
+  const fetchAllMembers = async () => {
+    try {
+      const response = await fetch('/api/members?smartList=volunteer-candidates&limit=500')
+      if (response.ok) {
+        const data = await response.json()
+        setAllMembers(data.members || [])
+      }
+    } catch (error) {
+      console.error('Error fetching members for volunteer form:', error)
+    }
+  }
 
   // Fetch spiritual profiles for all volunteers (for recommendations)
   useEffect(() => {
@@ -321,6 +336,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
       if (response.ok) {
         toast.success('Voluntario creado exitosamente')
         setFormData({
+          memberId: '',
           firstName: '',
           lastName: '',
           email: '',
@@ -331,6 +347,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
         })
         setIsCreateDialogOpen(false)
         fetchVolunteers()
+        fetchAllMembers() // Refresh candidates list
       } else {
         const error = await response.json()
         toast.error(error.message || 'Error al crear voluntario')
@@ -684,6 +701,45 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreateVolunteer} className="space-y-4">
+              {/* Member selection — links volunteer to existing member */}
+              {allMembers.length > 0 && (
+                <div className="space-y-2">
+                  <Label htmlFor="memberId">Vincular a miembro existente (recomendado)</Label>
+                  <Select
+                    value={formData.memberId}
+                    onValueChange={(value) => {
+                      if (value === 'none') {
+                        setFormData(prev => ({ ...prev, memberId: '' }))
+                        return
+                      }
+                      const member = allMembers.find(m => m.id === value)
+                      if (member) {
+                        setFormData(prev => ({
+                          ...prev,
+                          memberId: member.id,
+                          firstName: member.firstName,
+                          lastName: member.lastName,
+                          email: member.email || prev.email,
+                          phone: member.phone || prev.phone
+                        }))
+                      }
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar miembro..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Sin vincular (nuevo voluntario externo)</SelectItem>
+                      {allMembers.map((member) => (
+                        <SelectItem key={member.id} value={member.id}>
+                          {member.firstName} {member.lastName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">Vincular evita que el miembro aparezca como candidato simultáneamente</p>
+                </div>
+              )}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName">Nombre *</Label>

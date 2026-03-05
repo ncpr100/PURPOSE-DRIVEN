@@ -64,7 +64,7 @@ async function calculateRecruitmentScore(member: any, churchId: string): Promise
   factors.push({ factor: 'Preparación Espiritual', score: spiritualScore, max: 30 })
 
   // 2. Availability & Commitment (25% weight)
-  const availabilityMatrix = await prisma.availability_matrices.findUnique({
+  const availabilityMatrix = await db.availability_matrices.findUnique({
     where: { memberId: member.id }
   })
   
@@ -74,7 +74,7 @@ async function calculateRecruitmentScore(member: any, churchId: string): Promise
   }
   
   // Check attendance patterns (simplified)
-  const recentCheckIns = await prisma.check_ins.count({
+  const recentCheckIns = await db.check_ins.count({
     where: {
       churchId,
       firstName: member.firstName,
@@ -105,7 +105,7 @@ async function calculateRecruitmentScore(member: any, churchId: string): Promise
   factors.push({ factor: 'Liderazgo', score: leadershipScore, max: 15 })
 
   // 5. Current Engagement (10% weight)
-  const isAlreadyVolunteer = await prisma.volunteers.findFirst({
+  const isAlreadyVolunteer = await db.volunteers.findFirst({
     where: { memberId: member.id, isActive: true }
   })
   
@@ -114,7 +114,7 @@ async function calculateRecruitmentScore(member: any, churchId: string): Promise
     engagementScore = 5 // Bonus for being an active volunteer
   } else {
     // Check for donations or other engagement
-    const recentDonations = await prisma.donations.count({
+    const recentDonations = await db.donations.count({
       where: {
         memberId: member.id,
         createdAt: { gte: addDays(new Date(), -90) }
@@ -164,7 +164,7 @@ function analyzeLeadershipPotential(member: any, recruitmentScore: number): 'HIG
 
 // Generate ministry recommendations based on member profile
 async function generateMinistryRecommendations(member: any, churchId: string): Promise<RecommendedMinistry[]> {
-  const ministries = await prisma.ministries.findMany({
+  const ministries = await db.ministries.findMany({
     where: { churchId, isActive: true },
     include: {
       volunteers: {
@@ -414,7 +414,7 @@ export async function POST(request: NextRequest) {
       memberFilter.id = targetMemberId
     }
 
-    const members = await prisma.members.findMany({
+    const members = await db.members.findMany({
       where: memberFilter,
       include: {
         volunteers: {
@@ -565,15 +565,15 @@ export async function GET(request: NextRequest) {
     }
 
     // Get basic pipeline metrics
-    const totalMembers = await prisma.members.count({
+    const totalMembers = await db.members.count({
       where: { churchId: session.user.churchId, isActive: true }
     })
 
-    const currentVolunteers = await prisma.volunteers.count({
+    const currentVolunteers = await db.volunteers.count({
       where: { churchId: session.user.churchId, isActive: true }
     })
 
-    const membersWithSpiritualProfiles = await prisma.members.count({
+    const membersWithSpiritualProfiles = await db.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,
@@ -581,7 +581,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    const membersWithAvailability = await prisma.members.count({
+    const membersWithAvailability = await db.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,
@@ -594,9 +594,9 @@ export async function GET(request: NextRequest) {
         totalMembers,
         currentVolunteers,
         potentialCandidates: totalMembers - currentVolunteers,
-        conversionRate: Math.round((currentVolunteers / totalMembers) * 100),
-        profileCompleteness: Math.round((membersWithSpiritualProfiles / totalMembers) * 100),
-        availabilityDefined: Math.round((membersWithAvailability / totalMembers) * 100)
+        conversionRate: totalMembers > 0 ? Math.round((currentVolunteers / totalMembers) * 100) : 0,
+        profileCompleteness: totalMembers > 0 ? Math.round((membersWithSpiritualProfiles / totalMembers) * 100) : 0,
+        availabilityDefined: totalMembers > 0 ? Math.round((membersWithAvailability / totalMembers) * 100) : 0
       },
       recommendations: {
         prioritizeProfileCompletion: membersWithSpiritualProfiles < totalMembers * 0.7,

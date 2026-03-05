@@ -5,7 +5,7 @@ async function createSuperAdmin() {
   try {
     // Check if user already exists
     const existingUser = await db.user.findUnique({
-      where: { email: 'soporte@khesed-tek.com' }
+      where: { email: 'soporte@khesed-tek-systems.org' }
     })
 
     if (existingUser) {
@@ -22,8 +22,8 @@ async function createSuperAdmin() {
     // Create the user
     const user = await db.user.create({
       data: {
-        email: 'soporte@khesed-tek.com',
-        name: 'Super Admin',
+        email: 'soporte@khesed-tek-systems.org',
+        name: 'Khesed-Tek Support',
         password: hashedPassword,
         role: 'SUPER_ADMIN',
         isActive: true,

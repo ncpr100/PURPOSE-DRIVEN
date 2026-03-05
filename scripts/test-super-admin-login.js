@@ -8,7 +8,7 @@ async function testSuperAdminLogin() {
 
   try {
     const email = 'soporte@khesed-tek-systems.org'
-    const password = 'Bendecido100%$$$'
+    const password = 'Bendecido100%$$%'  // Corrected password from copilot instructions
 
     console.log('Step 1: Finding user in database')
     const user = await db.users.findUnique({

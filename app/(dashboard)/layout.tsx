@@ -24,7 +24,7 @@ export default async function DashboardLayout({
           <Header />
           <div className="flex">
             <Sidebar />
-            <main className="flex-1 lg:ml-0 p-4 lg:p-6">
+            <main className="flex-1 min-w-0 p-4 lg:p-6 transition-all duration-300">
               <div className="max-w-7xl mx-auto">
                 {children}
               </div>

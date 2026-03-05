@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    const user = await prisma.users.findUnique({
+    const user = await db.users.findUnique({
       where: { email: session.user.email },
       select: { id: true, churchId: true, role: true }
     })
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
     // If using a template, fetch and apply it
     if (validatedData.templateId) {
-      const template = await prisma.notification_templates.findFirst({
+      const template = await db.notification_templates.findFirst({
         where: {
           id: validatedData.templateId,
           OR: [
@@ -131,14 +131,14 @@ export async function POST(request: NextRequest) {
       case 'GLOBAL':
         // Global notification for entire church
         notificationData.isGlobal = true
-        const globalNotification = await prisma.notifications.create({
+        const globalNotification = await db.notifications.create({
           data: notificationData,
           include: { churches: { select: { name: true } } }
         })
         createdNotifications.push(globalNotification)
 
         // Create delivery records for all church users
-        const globalChurchUsers = await prisma.users.findMany({
+        const globalChurchUsers = await db.users.findMany({
           where: {
             churchId: user.churchId,
             isActive: true
@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
           select: { id: true }
         })
 
-        const globalDeliveries = await prisma.notification_deliveries.createMany({
+        const globalDeliveries = await db.notification_deliveries.createMany({
           data: globalChurchUsers.map(churchUser => ({
             id: randomUUID(),
             notificationId: globalNotification.id,
@@ -171,14 +171,14 @@ export async function POST(request: NextRequest) {
         }
         
         notificationData.targetRole = validatedData.targetRole
-        const roleNotification = await prisma.notifications.create({
+        const roleNotification = await db.notifications.create({
           data: notificationData,
           include: { churches: { select: { name: true } } }
         })
         createdNotifications.push(roleNotification)
 
         // Create delivery records for users with this role
-        const roleUsers = await prisma.users.findMany({
+        const roleUsers = await db.users.findMany({
           where: {
             churchId: user.churchId,
             role: validatedData.targetRole as any,
@@ -187,7 +187,7 @@ export async function POST(request: NextRequest) {
           select: { id: true }
         })
 
-        const roleDeliveries = await prisma.notification_deliveries.createMany({
+        const roleDeliveries = await db.notification_deliveries.createMany({
           data: roleUsers.map(roleUser => ({
             id: randomUUID(),
             notificationId: roleNotification.id,
@@ -213,7 +213,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Verify all target users belong to the same church
-        const targetUsers = await prisma.users.findMany({
+        const targetUsers = await db.users.findMany({
           where: {
             id: { in: validatedData.targetUserIds },
             churchId: user.churchId
@@ -229,7 +229,7 @@ export async function POST(request: NextRequest) {
 
         // Create individual notifications for each user
         for (const targetUser of targetUsers) {
-          const userNotification = await prisma.notifications.create({
+          const userNotification = await db.notifications.create({
             data: {
               ...notificationData,
               targetUser: targetUser.id
@@ -239,7 +239,7 @@ export async function POST(request: NextRequest) {
           createdNotifications.push(userNotification)
 
           // Create delivery record for this user
-          await prisma.notification_deliveries.create({
+          await db.notification_deliveries.create({
             data: {
               id: randomUUID(),
               notificationId: userNotification.id,
@@ -261,7 +261,7 @@ export async function POST(request: NextRequest) {
 
       case 'ALL':
         // Send to all users in the church
-        const allChurchUsers = await prisma.users.findMany({
+        const allChurchUsers = await db.users.findMany({
           where: {
             churchId: user.churchId,
             isActive: true
@@ -270,7 +270,7 @@ export async function POST(request: NextRequest) {
         })
 
         for (const churchUser of allChurchUsers) {
-          const userNotification = await prisma.notifications.create({
+          const userNotification = await db.notifications.create({
             data: {
               ...notificationData,
               targetUser: churchUser.id
@@ -280,7 +280,7 @@ export async function POST(request: NextRequest) {
           createdNotifications.push(userNotification)
 
           // Create delivery record for this user
-          await prisma.notification_deliveries.create({
+          await db.notification_deliveries.create({
             data: {
               id: randomUUID(),
               notificationId: userNotification.id,

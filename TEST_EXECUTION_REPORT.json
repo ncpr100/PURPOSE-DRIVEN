@@ -4,7 +4,7 @@
     "passed": 1,
     "failed": 4,
     "warnings": 0,
-    "timestamp": "2026-03-04T22:32:03.490Z"
+    "timestamp": "2026-03-04T23:04:03.475Z"
   },
   "issuesSummary": {
     "totalIssues": 4,
@@ -21,14 +21,14 @@
         "statusCode": 302,
         "response": {}
       },
-      "timestamp": "2026-03-04T22:32:03.129Z"
+      "timestamp": "2026-03-04T23:03:59.604Z"
     },
     {
       "category": "AUTH",
       "test": "Session Validation",
       "result": "FAIL",
       "details": {},
-      "timestamp": "2026-03-04T22:32:03.199Z"
+      "timestamp": "2026-03-04T23:03:59.687Z"
     },
     {
       "category": "MEMBERS",
@@ -37,14 +37,14 @@
       "details": {
         "statusCode": 401
       },
-      "timestamp": "2026-03-04T22:32:03.214Z"
+      "timestamp": "2026-03-04T23:03:59.726Z"
     },
     {
       "category": "LANGUAGE",
       "test": "Home Page Spanish Check",
       "result": "PASS",
       "details": {},
-      "timestamp": "2026-03-04T22:32:03.318Z"
+      "timestamp": "2026-03-04T23:04:03.199Z"
     },
     {
       "category": "SUPER_ADMIN",
@@ -53,7 +53,7 @@
       "details": {
         "statusCode": 302
       },
-      "timestamp": "2026-03-04T22:32:03.488Z"
+      "timestamp": "2026-03-04T23:04:03.474Z"
     }
   ],
   "identifiedIssues": [
@@ -63,7 +63,7 @@
       "module": "Authentication",
       "description": "Tenant login failed with provided credentials",
       "apiInfo": {},
-      "timestamp": "2026-03-04T22:32:03.130Z"
+      "timestamp": "2026-03-04T23:03:59.604Z"
     },
     {
       "id": 2,
@@ -71,7 +71,7 @@
       "module": "Authentication",
       "description": "Session validation failed after login",
       "apiInfo": {},
-      "timestamp": "2026-03-04T22:32:03.200Z"
+      "timestamp": "2026-03-04T23:03:59.687Z"
     },
     {
       "id": 3,
@@ -79,7 +79,7 @@
       "module": "Members",
       "description": "Members API not accessible",
       "apiInfo": {},
-      "timestamp": "2026-03-04T22:32:03.215Z"
+      "timestamp": "2026-03-04T23:03:59.726Z"
     },
     {
       "id": 4,
@@ -87,7 +87,7 @@
       "module": "Super Admin",
       "description": "Super Admin login failed with provided credentials",
       "apiInfo": {},
-      "timestamp": "2026-03-04T22:32:03.489Z"
+      "timestamp": "2026-03-04T23:04:03.474Z"
     }
   ]
 }

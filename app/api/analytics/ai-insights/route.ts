@@ -155,7 +155,7 @@ export async function GET(request: NextRequest) {
     const activeVolunteers = members.filter(m => 
       m.volunteers.some(v => v.volunteer_assignments.length > 0)
     )
-    const volunteerRate = (activeVolunteers.length / members.length) * 100
+    const volunteerRate = members.length > 0 ? (activeVolunteers.length / members.length) * 100 : 0
 
     if (volunteerRate < 20) {
       insights.push({

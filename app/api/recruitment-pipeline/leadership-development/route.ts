@@ -82,7 +82,7 @@ async function analyzeLeadershipPotential(member: any, churchId: string): Promis
   factors.push({ factor: 'Experiencia', score: experienceScore })
 
   // 3. Current Volunteer Performance (15% weight)
-  const volunteer = await prisma.volunteers.findFirst({
+  const volunteer = await db.volunteers.findFirst({
     where: { memberId: member.id, isActive: true },
     include: {
       volunteer_assignments: {
@@ -206,7 +206,7 @@ async function generateLeadershipOpportunities(member: any, leadershipScore: num
   const opportunities = []
 
   // Get ministries that might need leadership
-  const ministries = await prisma.ministries.findMany({
+  const ministries = await db.ministries.findMany({
     where: { churchId, isActive: true },
     include: {
       volunteers: {
@@ -597,7 +597,7 @@ export async function POST(request: NextRequest) {
       delete memberFilter.member_spiritual_profiles // Remove filter for specific member
     }
 
-    const members = await prisma.members.findMany({
+    const members = await db.members.findMany({
       where: memberFilter,
       include: {
         volunteers: {
@@ -700,11 +700,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const totalMembers = await prisma.members.count({
+    const totalMembers = await db.members.count({
       where: { churchId: session.user.churchId, isActive: true }
     })
 
-    const potentialLeaders = await prisma.members.count({
+    const potentialLeaders = await db.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,
@@ -714,7 +714,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    const currentLeaders = await prisma.members.count({
+    const currentLeaders = await db.members.count({
       where: {
         churchId: session.user.churchId,
         isActive: true,
@@ -735,8 +735,8 @@ export async function GET(request: NextRequest) {
         potentialLeaders,
         currentLeaders,
         leadershipPipeline: potentialLeaders - currentLeaders,
-        leadershipRatio: Math.round((currentLeaders / totalMembers) * 100),
-        developmentOpportunity: Math.round(((potentialLeaders - currentLeaders) / totalMembers) * 100)
+        leadershipRatio: totalMembers > 0 ? Math.round((currentLeaders / totalMembers) * 100) : 0,
+        developmentOpportunity: totalMembers > 0 ? Math.round(((potentialLeaders - currentLeaders) / totalMembers) * 100) : 0
       },
       recommendations: {
         focusOnDevelopment: potentialLeaders > currentLeaders * 2,

@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     } = await request.json()
 
     // Verify member exists
-    const member = await prisma.members.findFirst({
+    const member = await db.members.findFirst({
       where: {
         id: memberId,
         churchId: session.user.churchId,
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify ministry exists
-    const ministry = await prisma.ministries.findFirst({
+    const ministry = await db.ministries.findFirst({
       where: {
         id: targetMinistryId,
         churchId: session.user.churchId
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Store workflow data (simplified - in production you'd want a dedicated table)
-    await prisma.members.update({
+    await db.members.update({
       where: { id: memberId },
       data: {
         notes: `${member.notes || ''}\n[ONBOARDING] Workflow iniciado para ${ministry.name}`
@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Create volunteer recommendation record
-    await prisma.volunteer_recommendations.create({
+    await db.volunteer_recommendations.create({
       data: {
         id: nanoid(),
         memberId,
@@ -226,7 +226,7 @@ export async function GET(request: NextRequest) {
     if (memberId) whereClause.memberId = memberId
     if (ministryId) whereClause.ministryId = ministryId
 
-    const workflows = await prisma.volunteer_recommendations.findMany({
+    const workflows = await db.volunteer_recommendations.findMany({
       where: whereClause,
       include: {
         members: {
@@ -512,7 +512,7 @@ function generateDefaultWorkflowSteps(member: any, ministry: any): OnboardingWor
 
 async function findAvailableMentor(ministryId: string, churchId: string) {
   // Find experienced volunteers in the same ministry who could serve as mentors
-  const potentialMentors = await prisma.volunteers.findMany({
+  const potentialMentors = await db.volunteers.findMany({
     where: {
       ministryId,
       churchId,

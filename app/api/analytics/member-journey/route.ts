@@ -539,7 +539,7 @@ function calculateSpiritualGrowth(members: any[], volunteers: any[], prayer_requ
     discipleship: {
       totalInPrograms: membersInDiscipleship,
       completionRate: discipleshipCompletionRate,
-      averageProgress: Math.round((membersInDiscipleship / members.length) * 100)
+      averageProgress: members.length > 0 ? Math.round((membersInDiscipleship / members.length) * 100) : 0
     },
     ministry: {
       totalVolunteers,

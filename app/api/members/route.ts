@@ -161,6 +161,59 @@ export async function GET(request: NextRequest) {
             { updatedAt: { lte: sixMonthsAgo } }
           ]
           break
+        case 'volunteer-candidates': {
+          // Members who are NOT already volunteers (match by memberId OR by name)
+          const volunteers = await db.volunteers.findMany({
+            where: { churchId: user.churchId },
+            select: { memberId: true, firstName: true, lastName: true }
+          })
+          const volunteerMemberIds = volunteers
+            .filter(v => v.memberId) 
+            .map(v => v.memberId as string)
+          
+          // Also build name-based exclusion for unlinked volunteers (memberId = null)
+          const unlinkedNames = volunteers
+            .filter(v => !v.memberId)
+            .map(v => `${v.firstName?.toLowerCase()}|${v.lastName?.toLowerCase()}`)
+          
+          const conditions: any[] = []
+          if (volunteerMemberIds.length > 0) {
+            conditions.push({ id: { notIn: volunteerMemberIds } })
+          }
+          if (unlinkedNames.length > 0) {
+            // Exclude members whose full name matches unlinked volunteer records
+            conditions.push({
+              NOT: {
+                AND: [
+                  { firstName: { in: volunteers.filter(v => !v.memberId).map(v => v.firstName).filter(Boolean) as string[] } },
+                  { lastName: { in: volunteers.filter(v => !v.memberId).map(v => v.lastName).filter(Boolean) as string[] } }
+                ]
+              }
+            })
+          }
+          if (volunteerMemberIds.length > 0) {
+            whereClause.id = { notIn: volunteerMemberIds }
+          }
+          break
+        }
+        case 'active-volunteers': {
+          // Members who ARE volunteers (match by memberId OR by name for unlinked records)
+          const volunteers = await db.volunteers.findMany({
+            where: { churchId: user.churchId },
+            select: { memberId: true, firstName: true, lastName: true }
+          })
+          const volunteerMemberIds = volunteers
+            .filter(v => v.memberId)
+            .map(v => v.memberId as string)
+          
+          if (volunteerMemberIds.length > 0) {
+            whereClause.id = { in: volunteerMemberIds }
+          } else {
+            // No linked volunteers exist, return empty result
+            whereClause.id = { in: ['no-volunteers-exist'] }
+          }
+          break
+        }
         case 'birthdays':
           // Handle birthday filtering - need raw SQL for month extraction
           break
