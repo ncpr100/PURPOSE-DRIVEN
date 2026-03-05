@@ -122,7 +122,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
     }
     
     const link = document.createElement('a')
-    link.download = `qr-platform-form-${formId || Date.now()}.png`
+    link.download = `qr-platform-form-${formSlug || Date.now()}.png`
     link.href = qrCanvasRef.current.toDataURL()
     link.click()
     toast.success('Código QR descargado')
@@ -131,7 +131,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
   // Copy QR code URL to clipboard
   const copyToClipboard = () => {
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
-    const url = customUrl || (formId ? `${baseUrl}/api/platform/forms/${formId}/submit` : '')
+    const url = customUrl || (formSlug ? `${baseUrl}/api/platform/forms/${formSlug}/submit` : '')
     
     if (!url) {
       toast.error('No hay URL para copiar')
@@ -158,11 +158,11 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {formId ? (
+            {formSlug ? (
               <div className="space-y-2">
                 <Label>URL del Formulario</Label>
                 <Input
-                  value={`${typeof window !== 'undefined' ? window.location.origin : ''}/api/platform/forms/${formId}/submit`}
+                  value={`${typeof window !== 'undefined' ? window.location.origin : ''}/api/platform/forms/${formSlug}/submit`}
                   readOnly
                   className="bg-gray-50"
                 />
@@ -304,7 +304,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
             {/* Generate Button */}
             <Button 
               onClick={() => generateQRCode()} 
-              disabled={isGenerating || (!formId && !customUrl.trim())}
+              disabled={isGenerating || (!formSlug && !customUrl.trim())}
               className="w-full"
               size="lg"
             >
