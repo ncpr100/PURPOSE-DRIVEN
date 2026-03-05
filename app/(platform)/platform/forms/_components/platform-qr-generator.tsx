@@ -63,7 +63,7 @@ const DEFAULT_CONFIG: QRConfig = {
   hideLogoDots: true,
   logoBackgroundColor: '#FFFFFF',
   logoBackgroundShape: 'rounded',
-  logoBorderWidth: 6,
+  logoBorderWidth: 22,
 }
 
 const PRESET_THEMES: { name: string; color: string; bg: string; config: QRConfig }[] = [
@@ -205,16 +205,26 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
 
         const cx = canvas.width / 2
         const cy = canvas.height / 2
+        // bgRadius includes the logo area + generous padding for enterprise look
         const logoSize = canvas.width * config.logoSize
         const bgRadius = logoSize / 2 + config.logoBorderWidth
 
-        // Draw background shape
+        // Step 1: Erase QR dots in center by drawing the background color first
+        // This creates the clean "open center" enterprise look
+        ctx.fillStyle = config.backgroundColor || '#FFFFFF'
+        ctx.beginPath()
+        ctx.arc(cx, cy, bgRadius + 4, 0, Math.PI * 2)
+        ctx.fill()
+
+        // Step 2: Draw the styled badge shape on top
+        ctx.shadowColor = 'rgba(0,0,0,0.12)'
+        ctx.shadowBlur = 8
         ctx.fillStyle = config.logoBackgroundColor
         ctx.beginPath()
         if (config.logoBackgroundShape === 'circle') {
           ctx.arc(cx, cy, bgRadius, 0, Math.PI * 2)
         } else if (config.logoBackgroundShape === 'rounded') {
-          const r = bgRadius * 0.3
+          const r = bgRadius * 0.28
           const x = cx - bgRadius
           const y = cy - bgRadius
           const w = bgRadius * 2
@@ -229,12 +239,12 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
           ctx.lineTo(x, y + r)
           ctx.quadraticCurveTo(x, y, x + r, y)
         } else {
-          // square
           ctx.rect(cx - bgRadius, cy - bgRadius, bgRadius * 2, bgRadius * 2)
         }
         ctx.fill()
+        ctx.shadowBlur = 0
 
-        // Draw the logo centered
+        // Step 3: Draw the logo centered on the clean badge
         const logoImg = new window.Image()
         logoImg.onerror = () => resolve(originalBlob)
         logoImg.onload = () => {
@@ -252,7 +262,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
     setIsGenerating(true)
     try {
       const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
-      const targetUrl = customUrl.trim() || (formSlug ? `${baseUrl}/api/platform/forms/${formSlug}/submit` : '')
+      const targetUrl = customUrl.trim() || (formSlug ? `${baseUrl}/p/${formSlug}` : '')
       if (!targetUrl) {
         toast.error('Proporciona una URL o selecciona un formulario')
         setIsGenerating(false)
@@ -276,12 +286,12 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         height: qrConfig.size,
         margin: qrConfig.margin,
         data: targetUrl,
-        image: qrConfig.logoImage || undefined,
+        // No logo in library — canvas compositing handles logo + badge professionally
         qrOptions: { errorCorrectionLevel: 'H' },
         imageOptions: {
-          hideBackgroundDots: qrConfig.hideLogoDots,
-          imageSize: qrConfig.logoSize,
-          margin: qrConfig.logoMargin,
+          hideBackgroundDots: false,
+          imageSize: 0,
+          margin: 0,
           saveAsBlob: true,
         },
         dotsOptions: {
@@ -305,8 +315,8 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
       let blob = await qrInstance.getRawData('png')
       if (!blob) throw new Error('No se pudo generar el QR')
 
-      // Apply enterprise logo background if logo is set and shape is not 'none'
-      if (qrConfig.logoImage && qrConfig.logoBackgroundShape !== 'none') {
+      // Apply enterprise logo — canvas compositing always handles logo placement
+      if (qrConfig.logoImage) {
         blob = await applyLogoBackground(blob as Blob, qrConfig.logoImage, qrConfig)
       }
 
@@ -335,7 +345,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
 
   const copyToClipboard = () => {
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
-    const url = customUrl.trim() || (formSlug ? `${baseUrl}/api/platform/forms/${formSlug}/submit` : '')
+    const url = customUrl.trim() || (formSlug ? `${baseUrl}/p/${formSlug}` : '')
     if (!url) { toast.error('No hay URL para copiar'); return }
     navigator.clipboard.writeText(url)
     toast.success('URL copiada al portapapeles')
@@ -358,10 +368,10 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
           <CardContent className="space-y-3">
             {formSlug && (
               <div className="space-y-1">
-                <Label>URL del Formulario</Label>
+                <Label>URL del Formulario (QR apunta aquí)</Label>
                 <Input
-                  value={typeof window !== 'undefined' ? `${window.location.origin}/api/platform/forms/${formSlug}/submit` : ''}
-                  readOnly className="bg-gray-50 text-sm"
+                  value={typeof window !== 'undefined' ? `${window.location.origin}/p/${formSlug}` : ''}
+                  readOnly className="bg-gray-50 text-sm font-mono"
                 />
               </div>
             )}

@@ -34,6 +34,7 @@ import {
 interface AnalyticsData {
   overview: {
     totalForms: number
+    activeForms: number
     totalSubmissions: number
     totalQRCodes: number
     conversionRate: number
@@ -42,12 +43,17 @@ interface AnalyticsData {
     weekSubmissions: number
   }
   formPerformance: Array<{
+    id: string
     formName: string
+    slug: string
+    isActive: boolean
+    campaignTag: string
+    qrScans: number
     submissions: number
+    submissionsInPeriod: number
     conversionRate: number
     averageLeadScore: number
-    qrScans: number
-    campaignTag: string
+    createdAt: string
   }>
   campaignPerformance: Array<{
     campaignTag: string
@@ -59,8 +65,6 @@ interface AnalyticsData {
   timelineData: Array<{
     date: string
     submissions: number
-    leadScore: number
-    conversions: number
   }>
 }
 
@@ -79,68 +83,18 @@ export function PlatformFormAnalytics({ forms = [], isOpen = true, onClose, sele
   const [loading, setLoading] = useState(false)
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d')
 
-  // Mock analytics data for now - replace with real API calls
-  const mockAnalyticsData: AnalyticsData = {
-    overview: {
-      totalForms: 8,
-      totalSubmissions: 156,
-      totalQRCodes: 24,
-      conversionRate: 12.5,
-      averageLeadScore: 67,
-      todaySubmissions: 4,
-      weekSubmissions: 23
-    },
-    formPerformance: [
-      {
-        formName: 'Registro de Nueva Iglesia',
-        submissions: 45,
-        conversionRate: 22.5,
-        averageLeadScore: 78,
-        qrScans: 89,
-        campaignTag: 'church_acquisition'
-      },
-      {
-        formName: 'Solicitud de Demo',
-        submissions: 38,
-        conversionRate: 15.8,
-        averageLeadScore: 72,
-        qrScans: 112,
-        campaignTag: 'demo_request'
-      },
-      {
-        formName: 'Newsletter Signup',
-        submissions: 73,
-        conversionRate: 8.2,
-        averageLeadScore: 45,
-        qrScans: 234,
-        campaignTag: 'newsletter'
-      }
-    ],
-    campaignPerformance: [
-      { campaignTag: 'church_acquisition', forms: 2, submissions: 67, averageLeadScore: 82, conversionRate: 28.5 },
-      { campaignTag: 'demo_request', forms: 3, submissions: 54, averageLeadScore: 74, conversionRate: 18.2 },
-      { campaignTag: 'newsletter', forms: 2, submissions: 89, averageLeadScore: 48, conversionRate: 9.1 },
-      { campaignTag: 'consultation', forms: 1, submissions: 23, averageLeadScore: 88, conversionRate: 34.8 }
-    ],
-    timelineData: [
-      { date: '2026-01-01', submissions: 8, leadScore: 65, conversions: 2 },
-      { date: '2026-01-02', submissions: 12, leadScore: 72, conversions: 3 },
-      { date: '2026-01-03', submissions: 15, leadScore: 68, conversions: 4 },
-      { date: '2026-01-04', submissions: 9, leadScore: 71, conversions: 2 },
-      { date: '2026-01-05', submissions: 18, leadScore: 73, conversions: 5 }
-    ]
-  }
-
   useEffect(() => {
-    if (isOpen !== false) {
-      setLoading(true)
-      // Simulate API call - in production, use real forms data
-      setTimeout(() => {
-        setAnalyticsData(mockAnalyticsData)
-        setLoading(false)
-      }, 1000)
-    }
-  }, [isOpen, timeRange, forms])
+    if (isOpen === false) return
+    setLoading(true)
+    const daysParam = timeRange === '7d' ? 7 : timeRange === '90d' ? 90 : 30
+    fetch(`/api/platform/forms/analytics?days=${daysParam}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.overview) setAnalyticsData(data as AnalyticsData)
+      })
+      .catch(err => console.error('Analytics fetch error:', err))
+      .finally(() => setLoading(false))
+  }, [isOpen, timeRange])
 
   if (isOpen === false) return null
 
@@ -238,13 +192,7 @@ export function PlatformFormAnalytics({ forms = [], isOpen = true, onClose, sele
                   strokeWidth={2}
                   name="Envíos"
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="conversions" 
-                  stroke="#10b981" 
-                  strokeWidth={2}
-                  name="Conversiones"
-                />
+
               </LineChart>
             </ResponsiveContainer>
           </CardContent>

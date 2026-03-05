@@ -115,6 +115,8 @@ export default function FormViewer() {
         
         setFormConfig(formConfigData)
         initializeFormData(form.fields)
+        // Track this view silently — never block form load
+        fetch(`/api/custom-form/${slug}/view`, { method: 'POST' }).catch(() => {})
       } else {
         setError('Formulario no encontrado')
       }
