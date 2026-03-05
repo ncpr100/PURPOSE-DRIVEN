@@ -115,6 +115,9 @@ export default function BusinessIntelligenceClient() {
   const [error, setError] = useState<string | null>(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [donationData, setDonationData] = useState(sampleDonationData);
+  const [membershipData, setMembershipData] = useState(sampleMembershipData);
+  const [eventData, setEventData] = useState(sampleEventData);
 
   // Create dashboard form state
   const [newDashboard, setNewDashboard] = useState({
@@ -147,6 +150,49 @@ export default function BusinessIntelligenceClient() {
       setDashboards(dashboardsData);
       setKpiMetrics(kpiData);
       
+      // Fetch real chart data (trends + membership distribution)
+      try {
+        const [trendsRes, countsRes] = await Promise.all([
+          fetch('/api/analytics/trends?period=180&granularity=month'),
+          fetch('/api/members/counts')
+        ]);
+
+        if (trendsRes.ok) {
+          const trendsJson = await trendsRes.json();
+          const trends = trendsJson.trends || [];
+
+          const realDonationData = trends.map((t: any) => ({
+            month: (t.period || '').split(' ')[0].slice(0, 3),
+            amount: t.donations?.amount || 0,
+            donations: t.donations?.count || 0
+          }));
+          if (realDonationData.length > 0) setDonationData(realDonationData);
+
+          const realEventData = trends.map((t: any) => ({
+            month: (t.period || '').split(' ')[0].slice(0, 3),
+            events: t.events || 0,
+            attendance: t.attendance || 0
+          }));
+          if (realEventData.length > 0) setEventData(realEventData);
+        }
+
+        if (countsRes.ok) {
+          const countsJson = await countsRes.json();
+          const ageCounts = countsJson.counts?.ageCounts || {};
+          const total = (Object.values(ageCounts) as number[]).reduce((s, v) => s + v, 0) || 1;
+          const realMembershipData = [
+            { category: 'Niños (0-17)', count: ageCounts['0-17'] || 0, percentage: Math.round(((ageCounts['0-17'] || 0) / total) * 100) },
+            { category: 'Jóvenes (18-25)', count: ageCounts['18-25'] || 0, percentage: Math.round(((ageCounts['18-25'] || 0) / total) * 100) },
+            { category: 'Adultos J. (26-35)', count: ageCounts['26-35'] || 0, percentage: Math.round(((ageCounts['26-35'] || 0) / total) * 100) },
+            { category: 'Adultos (36-50)', count: ageCounts['36-50'] || 0, percentage: Math.round(((ageCounts['36-50'] || 0) / total) * 100) },
+            { category: 'Mayores (51+)', count: ageCounts['51+'] || 0, percentage: Math.round(((ageCounts['51+'] || 0) / total) * 100) }
+          ].filter(d => d.count > 0);
+          if (realMembershipData.length > 0) setMembershipData(realMembershipData);
+        }
+      } catch (chartError) {
+        console.error('Error fetching chart data (using sample as fallback):', chartError);
+      }
+
       // Set default dashboard
       const defaultDashboard = dashboardsData.find((d: Dashboard) => d.isDefault) || dashboardsData[0];
       setCurrentDashboard(defaultDashboard);
@@ -439,7 +485,7 @@ export default function BusinessIntelligenceClient() {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={sampleDonationData}>
+              <AreaChart data={donationData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" fontSize={12} />
                 <YAxis fontSize={12} tickFormatter={(value) => `$${value/1000000}M`} />
@@ -468,7 +514,7 @@ export default function BusinessIntelligenceClient() {
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
-                  data={sampleMembershipData}
+                  data={membershipData}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
@@ -476,7 +522,7 @@ export default function BusinessIntelligenceClient() {
                   dataKey="count"
                   label={({ category, percentage }) => `${category} ${percentage}%`}
                 >
-                  {sampleMembershipData.map((entry, index) => (
+                  {membershipData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
@@ -496,7 +542,7 @@ export default function BusinessIntelligenceClient() {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={sampleEventData}>
+              <BarChart data={eventData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" fontSize={12} />
                 <YAxis fontSize={12} />

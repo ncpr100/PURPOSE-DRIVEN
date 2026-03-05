@@ -67,74 +67,77 @@ export function RetentionRiskAlerts({ churchId, className }: RetentionRiskAlerts
   const fetchRetentionData = async () => {
     try {
       setLoading(true);
-      
-      // Mock data for now - replace with actual API call
-      const mockMembers: RetentionRiskMember[] = [
-        {
-          id: '1',
-          name: 'María González',
-          email: 'maria.gonzalez@email.com',
-          membershipDate: '2023-06-15',
-          lastAttendance: '2024-10-20',
-          currentStage: 'ESTABLISHED_MEMBER',
-          engagementScore: 25,
-          riskLevel: 'VERY_HIGH',
-          riskScore: 85,
-          riskFactors: ['Sin asistencia reciente', 'Bajo compromiso en comunicaciones', 'Sin participación en ministerios'],
-          daysSinceLastContact: 22,
-          recommendedActions: ['Llamada personal del pastor', 'Visita domiciliaria', 'Invitación a evento especial'],
-          priority: 1
-        },
-        {
-          id: '2',
-          name: 'Carlos Rodríguez',
-          email: 'carlos.rodriguez@email.com',
-          membershipDate: '2022-03-10',
-          lastAttendance: '2024-11-03',
-          currentStage: 'SERVING_MEMBER',
-          engagementScore: 45,
-          riskLevel: 'HIGH',
-          riskScore: 65,
-          riskFactors: ['Reducción en asistencia', 'Sin ofrendas recientes'],
-          daysSinceLastContact: 8,
-          recommendedActions: ['Conversación con líder de ministerio', 'Seguimiento pastoral'],
-          priority: 2
-        },
-        {
-          id: '3',
-          name: 'Ana Martínez',
-          email: 'ana.martinez@email.com',
-          membershipDate: '2024-01-20',
-          lastAttendance: '2024-11-10',
-          currentStage: 'NEW_MEMBER',
-          engagementScore: 60,
-          riskLevel: 'MEDIUM',
-          riskScore: 40,
-          riskFactors: ['Nuevo miembro sin consolidación'],
-          daysSinceLastContact: 1,
-          recommendedActions: ['Asignar mentor', 'Invitar a grupo pequeño'],
-          priority: 3
-        }
-      ];
 
-      const mockData = {
-        highRiskMembers: mockMembers,
-        riskDistribution: {
-          'VERY_HIGH': 12,
-          'HIGH': 18,
-          'MEDIUM': 25,
-          'LOW': 45,
-          'VERY_LOW': 134
-        },
-        totalAtRisk: 30, // VERY_HIGH + HIGH
+      const response = await fetch('/api/analytics/retention-risk');
+      if (!response.ok) throw new Error('Error al cargar datos de retención');
+      const data = await response.json();
+
+      // Map API highRiskAlerts to component's RetentionRiskMember interface
+      const highRiskMembers: RetentionRiskMember[] = (data.highRiskAlerts || []).map(
+        (alert: any, index: number) => ({
+          id: alert.members?.id || alert.id,
+          name: alert.members?.name || 'Sin nombre',
+          email: alert.members?.email || '',
+          membershipDate: alert.members?.membershipDate || '',
+          lastAttendance: alert.lastAnalysis || undefined,
+          currentStage: alert.currentStage || 'UNKNOWN',
+          engagementScore: alert.retentionScore ?? 0,
+          riskLevel: alert.riskLevel as RetentionRiskMember['riskLevel'],
+          riskScore: alert.retentionScore != null ? Math.round(100 - alert.retentionScore) : 50,
+          riskFactors: alert.intervention?.description
+            ? [alert.intervention.description]
+            : [],
+          daysSinceLastContact: alert.daysInCurrentStage || 0,
+          recommendedActions: alert.intervention?.description
+            ? [alert.intervention.description]
+            : [],
+          priority: index + 1
+        })
+      );
+
+      // Also include medium-risk members mapped the same way
+      const mediumRiskMembers: RetentionRiskMember[] = (data.mediumRiskWatch || []).map(
+        (item: any, index: number) => ({
+          id: item.members?.id || item.id,
+          name: item.members?.name || 'Sin nombre',
+          email: item.members?.email || '',
+          membershipDate: '',
+          currentStage: item.currentStage || 'UNKNOWN',
+          engagementScore: item.retentionScore ?? 50,
+          riskLevel: 'MEDIUM' as const,
+          riskScore: item.retentionScore != null ? Math.round(100 - item.retentionScore) : 30,
+          riskFactors: [],
+          daysSinceLastContact: 0,
+          recommendedActions: [],
+          priority: highRiskMembers.length + index + 1
+        })
+      );
+
+      // Convert riskDistribution array to key-value map for the component
+      const distMap: { [key: string]: number } = {};
+      (data.riskDistribution || []).forEach((r: any) => {
+        distMap[r.level] = r.count;
+      });
+
+      // Derive simple trend labels from monthly data
+      const monthly = data.trends?.monthly || [];
+      let retentionTrend: 'improving' | 'worsening' | 'stable' = 'stable';
+      if (monthly.length >= 2) {
+        const last = monthly[monthly.length - 1].highRiskCount;
+        const prev = monthly[monthly.length - 2].highRiskCount;
+        retentionTrend = last < prev ? 'improving' : last > prev ? 'worsening' : 'stable';
+      }
+
+      setRiskData({
+        highRiskMembers: [...highRiskMembers, ...mediumRiskMembers],
+        riskDistribution: distMap,
+        totalAtRisk: data.summary?.highRiskCount ?? highRiskMembers.length,
         trends: {
-          'retention': 'improving' as const,
-          'engagement': 'stable' as const,
-          'followup': 'worsening' as const
+          retention: retentionTrend,
+          engagement: 'stable',
+          followup: data.summary?.interventionRequired > 0 ? 'worsening' : 'stable'
         }
-      };
-
-      setRiskData(mockData);
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {
