@@ -20,10 +20,10 @@ interface QRConfig {
 }
 
 interface PlatformQRGeneratorProps {
-  formId?: string
+  formSlug?: string
 }
 
-export default function PlatformQRGenerator({ formId }: PlatformQRGeneratorProps) {
+export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorProps) {
   const [qrCodeUrl, setQRCodeUrl] = useState('')
   const [customUrl, setCustomUrl] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -57,7 +57,7 @@ export default function PlatformQRGenerator({ formId }: PlatformQRGeneratorProps
     setIsGenerating(true)
     try {
       const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
-      const formUrl = urlToEncode || (formId ? `${baseUrl}/api/platform/forms/${formId}/submit` : customUrl)
+      const formUrl = urlToEncode || (formSlug ? `${baseUrl}/api/platform/forms/${formSlug}/submit` : customUrl)
       
       if (!formUrl) {
         toast.error('Proporciona una URL o selecciona un formulario')

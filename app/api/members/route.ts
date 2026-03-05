@@ -220,6 +220,28 @@ export async function GET(request: NextRequest) {
         case 'anniversaries':
           // Handle anniversary filtering - need raw SQL for month extraction
           break
+        case 'leadership-ready': {
+          // Members with high leadership readiness but NOT already serving as pastor/admin
+          whereClause.leadershipReadiness = { gt: 70 }
+          whereClause.AND = [
+            ...(Array.isArray(whereClause.AND) ? whereClause.AND : []),
+            { NOT: { users: { role: { in: ['PASTOR', 'ADMIN_IGLESIA'] } } } }
+          ]
+          break
+        }
+        case 'visitors-becoming-members': {
+          // Members who joined in the last 90 days and haven't been baptized yet
+          const ninetyDaysAgo = new Date()
+          ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
+          whereClause.membershipDate = { gte: ninetyDaysAgo }
+          whereClause.baptismDate = null
+          break
+        }
+        case 'prayer-needed': {
+          // Members with prayer requests in their notes
+          whereClause.notes = { contains: 'oración', mode: 'insensitive' }
+          break
+        }
       }
     }
 

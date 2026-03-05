@@ -24,6 +24,7 @@ import PlatformQRGenerator from './platform-qr-generator'
 
 interface PlatformForm {
   id: string
+  slug: string
   title: string
   description?: string
   type: 'lead_capture' | 'feedback' | 'survey' | 'registration'
@@ -155,9 +156,9 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
     }
   }
 
-  // Copy form URL to clipboard
-  const copyFormUrl = (formId: string) => {
-    const url = `${window.location.origin}/forms/${formId}`
+  // Copy form submission URL to clipboard
+  const copyFormUrl = (formSlug: string) => {
+    const url = `${window.location.origin}/api/platform/forms/${formSlug}/submit`
     navigator.clipboard.writeText(url)
     toast.success('URL copiada al portapapeles')
   }
@@ -284,7 +285,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
       </Card>
 
       {/* QR Code Generator */}
-      <PlatformQRGenerator formId={selectedFormId || undefined} />
+      <PlatformQRGenerator formSlug={selectedFormId || undefined} />
 
       <div className="grid gap-6">
         {!Array.isArray(forms) || forms.length === 0 ? (
@@ -315,7 +316,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => setSelectedFormId(form.id)}
+                    onClick={() => setSelectedFormId(form.slug)}
                   >
                     <QrCode className="h-4 w-4 mr-1" />
                     QR
@@ -323,7 +324,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => copyFormUrl(form.id)}
+                    onClick={() => copyFormUrl(form.slug)}
                   >
                     <Copy className="h-4 w-4" />
                   </Button>

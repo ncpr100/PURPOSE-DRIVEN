@@ -132,14 +132,27 @@ export default function SuperAdminProfilePage() {
 
   useEffect(() => {
     if (session?.user) {
-      setProfileData({
+      // Initialize with session data first
+      setProfileData(prev => ({
+        ...prev,
         name: session.user.name || '',
         email: session.user.email || '',
-        phone: '',
-        bio: 'Super Administrator de la Plataforma Kḥesed-tek',
-        location: '',
-        avatar: ''
-      })
+      }))
+      // Fetch saved phone/location/bio from DB (session doesn't carry these)
+      fetch('/api/platform/users/profile')
+        .then(r => r.json())
+        .then(data => {
+          if (data.user) {
+            setProfileData(prev => ({
+              ...prev,
+              phone: data.user.phone || '',
+              location: data.user.location || '',
+              bio: data.user.bio || 'Super Administrator de la Plataforma Kḥesed-tek',
+              avatar: data.user.image || ''
+            }))
+          }
+        })
+        .catch(err => console.error('Error fetching profile data:', err))
     }
   }, [session])
 

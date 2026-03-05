@@ -36,12 +36,15 @@ export async function GET(request: NextRequest) {
         phone: true,
         gender: true,
         birthDate: true,
+        baptismDate: true,
         maritalStatus: true,
         membershipDate: true,
         isActive: true,
         ministryId: true,
         spiritualGifts: true,
         notes: true,
+        leadershipReadiness: true,
+        userId: true,
         createdAt: true,
         updatedAt: true
       }
@@ -167,6 +170,34 @@ export async function GET(request: NextRequest) {
             member.notes && member.notes.toLowerCase().includes('oración')
           )
           break
+
+        case 'visitors-becoming-members': {
+          const ninetyDaysAgo = new Date()
+          ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
+          members = members.filter(member =>
+            member.membershipDate &&
+            new Date(member.membershipDate) >= ninetyDaysAgo &&
+            !member.baptismDate
+          )
+          break
+        }
+
+        case 'leadership-ready': {
+          // Get user IDs for pastors/admins to exclude them
+          const leaderUsers = await db.users.findMany({
+            where: { churchId, role: { in: ['PASTOR', 'ADMIN_IGLESIA'] } },
+            select: { id: true }
+          })
+          const leaderUserIds = new Set(leaderUsers.map(u => u.id))
+          members = members.filter(member =>
+            member.isActive &&
+            member.leadershipReadiness !== null &&
+            member.leadershipReadiness !== undefined &&
+            member.leadershipReadiness > 70 &&
+            (!member.userId || !leaderUserIds.has(member.userId))
+          )
+          break
+        }
           
         default:
           // No additional filtering for other smart lists in count endpoint
