@@ -22,13 +22,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No church associated' }, { status: 403 })
     }
 
-    // Get active rules count
-    const activeRulesCount = await prisma.automation_rules.count({
-      where: {
-        churchId: user.churchId,
-        isActive: true
-      }
-    })
+    // Get rules counts
+    const [activeRulesCount, totalRulesCount] = await Promise.all([
+      prisma.automation_rules.count({
+        where: { churchId: user.churchId, isActive: true }
+      }),
+      prisma.automation_rules.count({
+        where: { churchId: user.churchId }
+      })
+    ])
 
     // Get executions from last 24 hours using automation_executions table
     const last24Hours = new Date()
@@ -73,6 +75,7 @@ export async function GET(request: NextRequest) {
       failedExecutions,
       pendingExecutions,
       activeRules: activeRulesCount,
+      totalRules: totalRulesCount,
       successRate
     }
 

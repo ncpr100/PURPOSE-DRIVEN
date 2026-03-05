@@ -82,106 +82,49 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
     try {
       setLoading(true);
       
-      // Mock data - replace with actual API call
-      const mockRecommendations: PathwayRecommendation[] = [
-        {
-          id: '1',
-          type: 'ministry',
-          title: 'Ministerio de Enseñanza',
-          description: 'Desarrolla tus dones de enseñanza en clases bíblicas y grupos pequeños',
-          matchScore: 92,
-          priority: 'high',
-          timeCommitment: '4-6 horas semanales',
-          requiredSkills: ['Conocimiento bíblico', 'Comunicación efectiva', 'Paciencia'],
-          currentParticipants: 8,
-          maxCapacity: 12,
-          nextSteps: ['Reunión con coordinador', 'Taller de preparación', 'Asignación de grupo'],
-          mentor: {
-            name: 'Pastor Juan Pérez',
-            role: 'Coordinador de Enseñanza',
-            avatar: '/avatars/pastor-juan.jpg'
-          }
-        },
-        {
-          id: '2',
-          type: 'leadership',
-          title: 'Desarrollo de Liderazgo Juvenil',
-          description: 'Programa de formación para líderes del ministerio juvenil',
-          matchScore: 88,
-          priority: 'high',
-          timeCommitment: '6-8 horas semanales',
-          requiredSkills: ['Liderazgo', 'Trabajo en equipo', 'Creatividad', 'Comunicación'],
-          currentParticipants: 5,
-          maxCapacity: 8,
-          nextSteps: ['Aplicación formal', 'Entrevista con pastor juvenil', 'Período de prueba'],
-          mentor: {
-            name: 'Líder María González',
-            role: 'Pastora Juvenil',
-            avatar: '/avatars/maria-gonzalez.jpg'
-          }
-        },
-        {
-          id: '3',
-          type: 'service',
-          title: 'Equipo de Hospitalidad',
-          description: 'Dar la bienvenida y crear un ambiente acogedor para visitantes',
-          matchScore: 85,
-          priority: 'medium',
-          timeCommitment: '2-3 horas semanales',
-          requiredSkills: ['Amabilidad', 'Organización', 'Comunicación'],
-          currentParticipants: 15,
-          maxCapacity: 20,
-          nextSteps: ['Orientación básica', 'Asignación de turnos', 'Capacitación en protocolos'],
-          mentor: {
-            name: 'Carlos Rodríguez',
-            role: 'Coordinador de Hospitalidad'
-          }
-        },
-        {
-          id: '4',
-          type: 'growth',
-          title: 'Grupo de Discipulado',
-          description: 'Crecimiento espiritual a través de estudio bíblico intensivo',
-          matchScore: 78,
-          priority: 'medium',
-          timeCommitment: '2-3 horas semanales',
-          requiredSkills: ['Compromiso', 'Deseo de crecimiento', 'Disponibilidad'],
-          currentParticipants: 12,
-          maxCapacity: 15,
-          nextSteps: ['Evaluación espiritual', 'Asignación de mentor', 'Plan de estudio personalizado']
-        }
-      ];
+      const response = await fetch(`/api/analytics/ministry-recommendations`);
 
-      const mockMembers: Member[] = [
-        {
-          id: '1',
-          name: 'Ana Martínez',
-          currentStage: 'NEW_MEMBER',
-          engagementScore: 75,
-          spiritualGifts: ['ENSEÑANZA', 'HOSPITALIDAD'],
-          recommendations: mockRecommendations.slice(0, 2)
-        },
-        {
-          id: '2',
-          name: 'Pedro López',
-          currentStage: 'ESTABLISHED_MEMBER',
-          engagementScore: 82,
-          spiritualGifts: ['LIDERAZGO', 'EVANGELISMO'],
-          recommendations: mockRecommendations.slice(1, 3)
-        }
-      ];
+      if (!response.ok) {
+        throw new Error('Error al cargar recomendaciones de ministerio');
+      }
 
-      const mockData = {
-        topRecommendations: mockRecommendations,
-        memberRecommendations: mockMembers,
+      const data = await response.json();
+
+      // Map API response to component's expected shape
+      const mapRec = (rec: any): PathwayRecommendation => ({
+        id: rec.id || String(Math.random()),
+        type: (rec.type || rec.recommendationType || 'ministry') as PathwayRecommendation['type'],
+        title: rec.title || 'Sin título',
+        description: rec.description || '',
+        matchScore: rec.matchScore || 0,
+        priority: (rec.priority || 'medium') as PathwayRecommendation['priority'],
+        timeCommitment: rec.timeCommitment,
+        requiredSkills: Array.isArray(rec.requiredSkills) ? rec.requiredSkills : [],
+        currentParticipants: rec.currentParticipants,
+        maxCapacity: rec.maxCapacity,
+        nextSteps: Array.isArray(rec.nextSteps) ? rec.nextSteps : (Array.isArray(rec.basedOnFactors) ? rec.basedOnFactors : []),
+        mentor: rec.mentor,
+      });
+
+      const topRecommendations = (data.topRecommendations || []).map(mapRec);
+      const memberRecommendations: Member[] = (data.memberRecommendations || []).map((m: any) => ({
+        id: m.id || String(Math.random()),
+        name: m.name || 'Sin nombre',
+        currentStage: m.currentStage || '',
+        engagementScore: m.engagementScore || 0,
+        spiritualGifts: Array.isArray(m.spiritualGifts) ? m.spiritualGifts : [],
+        recommendations: Array.isArray(m.recommendations) ? m.recommendations.map(mapRec) : [],
+      }));
+
+      setRecommendationsData({
+        topRecommendations,
+        memberRecommendations,
         ministryStats: {
-          totalOpenings: 23,
-          urgentNeeds: 5,
-          recentMatches: 8
+          totalOpenings: data.ministryStats?.totalOpenings || 0,
+          urgentNeeds: data.ministryStats?.urgentNeeds || 0,
+          recentMatches: data.ministryStats?.recentMatches || 0,
         }
-      };
-
-      setRecommendationsData(mockData);
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {

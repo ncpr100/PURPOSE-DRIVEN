@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
-// GET /api/automation-rules - Get mock automation rules for prayer wall demo
+// GET /api/automation-rules - Get automation rules from database
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -21,110 +21,101 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
 
-    // Check permissions - only SUPER_ADMIN, ADMIN, PASTOR, LIDER can manage automation
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER'].includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }
 
-    // For demo purposes, return mock automation rules
-    // In a production system, these would be stored in the database
-    const mockRules = [
-      {
-        id: 'rule_1',
-        name: 'Respuesta Automática - Familia',
-        description: 'Envía respuesta automática cuando se aprueba una petición de la categoría familia',
-        isActive: true,
-        triggerType: 'approval',
-        triggerConditions: {
-          status: ['approved'],
-          category: ['familia']
-        },
-        actions: [
-          {
-            type: 'send_message',
-            config: {
-              templateId: 'template_familia',
-              messageType: 'email',
-              delay: 120
-            }
-          }
-        ],
-        stats: {
-          totalRuns: 24,
-          successRuns: 23,
-          lastRun: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          avgResponseTime: 2.1
-        },
-        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-      },
-      {
-        id: 'rule_2', 
-        name: 'Seguimiento Urgente',
-        description: 'Notificación inmediata para peticiones con prioridad urgente',
-        isActive: true,
-        triggerType: 'priority',
-        triggerConditions: {
-          priority: ['urgent']
-        },
-        actions: [
-          {
-            type: 'send_message',
-            config: {
-              templateId: 'template_urgente',
-              messageType: 'all',
-              delay: 0
-            }
-          },
-          {
-            type: 'create_followup',
-            config: {
-              assignTo: 'pastor',
-              dueDate: 24
-            }
-          }
-        ],
-        stats: {
-          totalRuns: 8,
-          successRuns: 8,
-          lastRun: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-          avgResponseTime: 0.5
-        },
-        createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
-      },
-      {
-        id: 'rule_3',
-        name: 'Recordatorio Programado',
-        description: 'Envía mensajes de seguimiento todos los días a las 9:00 AM',
-        isActive: false,
-        triggerType: 'scheduled',
-        triggerConditions: {
-          scheduleTime: '09:00',
-          frequency: 'daily'
-        },
-        actions: [
-          {
-            type: 'send_message',
-            config: {
-              templateId: 'template_recordatorio',
-              messageType: 'email',
-              delay: 0
-            }
-          }
-        ],
-        stats: {
-          totalRuns: 45,
-          successRuns: 42,
-          lastRun: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          avgResponseTime: 1.8
-        },
-        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString()
-      }
-    ]
+    const { searchParams } = new URL(request.url)
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')))
+    const sortBy = searchParams.get('sortBy') || 'createdAt'
+    const sortOrder = (searchParams.get('sortOrder') || 'desc') as 'asc' | 'desc'
+    const isActiveParam = searchParams.get('isActive')
 
-    return NextResponse.json({ rules: mockRules })
+    const where: any = { churchId: user.churchId }
+    if (isActiveParam !== null && isActiveParam !== undefined && isActiveParam !== '') {
+      where.isActive = isActiveParam === 'true'
+    }
+
+    const validSortFields = ['createdAt', 'updatedAt', 'name', 'priority', 'executionCount']
+    const safeSortBy = validSortFields.includes(sortBy) ? sortBy : 'createdAt'
+
+    const [rulesRaw, total] = await Promise.all([
+      prisma.automation_rules.findMany({
+        where,
+        include: {
+          automation_triggers: {
+            where: { isActive: true },
+            select: { id: true, type: true, eventSource: true, configuration: true }
+          },
+          automation_conditions: {
+            where: { isActive: true },
+            select: { id: true, type: true, field: true, operator: true, value: true, logicalOperator: true }
+          },
+          automation_actions: {
+            where: { isActive: true },
+            select: { id: true, type: true, configuration: true, orderIndex: true, delay: true },
+            orderBy: { orderIndex: 'asc' }
+          },
+          users: { select: { id: true, name: true, email: true } },
+          _count: { select: { automation_rule_executions: true } }
+        },
+        orderBy: { [safeSortBy]: sortOrder },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.automation_rules.count({ where })
+    ])
+
+    const automationRules = rulesRaw.map(rule => ({
+      id: rule.id,
+      name: rule.name,
+      description: rule.description,
+      isActive: rule.isActive,
+      priority: rule.priority,
+      priorityLevel: rule.priorityLevel,
+      executeOnce: rule.executeOnce,
+      maxExecutions: rule.maxExecutions,
+      executionCount: rule.executionCount,
+      lastExecuted: rule.lastExecuted?.toISOString() ?? null,
+      createdAt: rule.createdAt.toISOString(),
+      updatedAt: rule.updatedAt.toISOString(),
+      triggers: rule.automation_triggers.map(t => ({
+        id: t.id,
+        type: t.type as string,
+        eventSource: t.eventSource,
+        configuration: t.configuration,
+      })),
+      conditions: rule.automation_conditions.map(c => ({
+        id: c.id,
+        type: c.type as string,
+        field: c.field,
+        operator: c.operator,
+        value: c.value,
+        logicalOperator: c.logicalOperator,
+      })),
+      actions: rule.automation_actions.map(a => ({
+        id: a.id,
+        type: a.type as string,
+        configuration: a.configuration,
+        orderIndex: a.orderIndex,
+        delay: a.delay,
+      })),
+      creator: rule.users
+        ? { id: rule.users.id, name: rule.users.name, email: rule.users.email }
+        : { id: '', name: null, email: '' },
+      _count: { executions: rule._count.automation_rule_executions },
+    }))
+
+    return NextResponse.json({
+      automationRules,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    })
   } catch (error) {
     console.error('Error fetching automation rules:', error)
     return NextResponse.json(
@@ -151,52 +142,84 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
 
-    // Check permissions
     if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR'].includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }
 
-    const {
-      name,
-      description,
-      isActive,
-      triggerType,
-      triggerConditions,
-      actions
-    } = await request.json()
+    const body = await request.json()
+    const { name, description, isActive, triggers, conditions, actions } = body
 
     if (!name?.trim()) {
       return NextResponse.json({ error: 'El nombre es requerido' }, { status: 400 })
     }
 
-    if (!triggerType || !['approval', 'time_delay', 'scheduled', 'priority'].includes(triggerType)) {
-      return NextResponse.json({ error: 'Tipo de disparador inválido' }, { status: 400 })
-    }
+    const { nanoid } = await import('nanoid')
+    const ruleId = nanoid()
 
-    if (!actions || !Array.isArray(actions) || actions.length === 0) {
-      return NextResponse.json({ error: 'Al menos una acción es requerida' }, { status: 400 })
-    }
-
-    // For demo purposes, return mock created rule
-    const mockRule = {
-      id: `rule_${Date.now()}`,
-      name: name.trim(),
-      description: description?.trim() || '',
-      isActive: Boolean(isActive),
-      triggerType,
-      triggerConditions: triggerConditions || {},
-      actions,
-      stats: {
-        totalRuns: 0,
-        successRuns: 0,
-        lastRun: null,
-        avgResponseTime: 0
+    const rule = await prisma.automation_rules.create({
+      data: {
+        id: ruleId,
+        name: name.trim(),
+        description: description?.trim() || null,
+        isActive: Boolean(isActive ?? true),
+        churchId: user.churchId,
+        createdBy: user.id,
+        automation_triggers: triggers?.length
+          ? {
+              create: triggers.map((t: any) => ({
+                id: nanoid(),
+                type: t.type,
+                eventSource: t.eventSource || null,
+                configuration: t.configuration ?? {},
+              })),
+            }
+          : undefined,
+        automation_conditions: conditions?.length
+          ? {
+              create: conditions.map((c: any) => ({
+                id: nanoid(),
+                type: c.type,
+                field: c.field,
+                operator: c.operator,
+                value: c.value,
+                logicalOperator: c.logicalOperator || 'AND',
+              })),
+            }
+          : undefined,
+        automation_actions: actions?.length
+          ? {
+              create: actions.map((a: any, idx: number) => ({
+                id: nanoid(),
+                type: a.type,
+                configuration: a.configuration ?? {},
+                orderIndex: a.orderIndex ?? idx,
+                delay: a.delay ?? 0,
+              })),
+            }
+          : undefined,
       },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
+      include: {
+        automation_triggers: { select: { id: true, type: true, eventSource: true, configuration: true } },
+        automation_conditions: { select: { id: true, type: true, field: true, operator: true, value: true, logicalOperator: true } },
+        automation_actions: { select: { id: true, type: true, configuration: true, orderIndex: true, delay: true }, orderBy: { orderIndex: 'asc' } },
+        users: { select: { id: true, name: true, email: true } },
+        _count: { select: { automation_rule_executions: true } },
+      },
+    })
 
-    return NextResponse.json({ rule: mockRule })
+    return NextResponse.json({
+      automationRule: {
+        ...rule,
+        lastExecuted: rule.lastExecuted?.toISOString() ?? null,
+        createdAt: rule.createdAt.toISOString(),
+        updatedAt: rule.updatedAt.toISOString(),
+        triggers: rule.automation_triggers.map(t => ({ id: t.id, type: t.type as string, eventSource: t.eventSource, configuration: t.configuration })),
+        conditions: rule.automation_conditions.map(c => ({ id: c.id, type: c.type as string, field: c.field, operator: c.operator, value: c.value, logicalOperator: c.logicalOperator })),
+        actions: rule.automation_actions.map(a => ({ id: a.id, type: a.type as string, configuration: a.configuration, orderIndex: a.orderIndex, delay: a.delay })),
+        creator: rule.users ? { id: rule.users.id, name: rule.users.name, email: rule.users.email } : { id: '', name: null, email: '' },
+        _count: { executions: rule._count.automation_rule_executions },
+      }
+    }, { status: 201 })
   } catch (error) {
     console.error('Error creating automation rule:', error)
     return NextResponse.json(

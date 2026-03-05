@@ -34,21 +34,30 @@ export function AutomationStats() {
 
   const fetchStats = async () => {
     try {
-      // For now, we'll use mock data since we need to create the stats API
-      // TODO: Create /api/automation-rules/stats endpoint
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      const response = await fetch('/api/automation-rules/dashboard')
+      if (!response.ok) throw new Error('Failed to fetch automation stats')
+      const data = await response.json()
+
+      const s = data.stats ?? {}
+      const executions: any[] = data.executions ?? []
+
+      // Derive most-used trigger from execution rule names (best effort)
+      const triggerCounts: Record<string, number> = {}
+      executions.forEach((e: any) => {
+        const name: string = e.automation_rules?.name || ''
+        if (name) triggerCounts[name] = (triggerCounts[name] || 0) + 1
+      })
+      const mostUsed = Object.entries(triggerCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'MEMBER_JOINED'
+
       setStats({
-        totalRules: 8,
-        activeRules: 6,
-        totalExecutions: 247,
-        successfulExecutions: 231,
-        failedExecutions: 16,
-        executionsToday: 23,
-        mostUsedTrigger: 'MEMBER_JOINED',
-        averageExecutionTime: 1.2
+        totalRules: s.totalRules ?? 0,
+        activeRules: s.activeRules ?? 0,
+        totalExecutions: s.totalExecutions ?? 0,
+        successfulExecutions: s.successfulExecutions ?? 0,
+        failedExecutions: s.failedExecutions ?? 0,
+        executionsToday: s.totalExecutions ?? 0,
+        mostUsedTrigger: mostUsed,
+        averageExecutionTime: 0,
       })
     } catch (error) {
       console.error('Error fetching automation stats:', error)

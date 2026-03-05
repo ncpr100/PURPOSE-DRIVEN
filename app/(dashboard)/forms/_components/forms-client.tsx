@@ -373,7 +373,12 @@ export function FormsClient({ userRole, churchId }: FormsClientProps) {
         <TabsContent value="analytics">
           {/* Analytics for overall forms */}
           {forms.length > 0 && (
-            <FormAnalytics formId={forms[0].id} formName="Resumen General" />
+            <FormAnalytics
+              formId={forms[0].id}
+              formName="Resumen General"
+              totalForms={forms.length}
+              submissionCount={forms.reduce((acc, f) => acc + (f._count?.submissions || 0), 0)}
+            />
           )}
         </TabsContent>
       </Tabs>

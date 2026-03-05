@@ -521,8 +521,11 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   giftId.includes('liderazgo') || giftId.includes('vision')
                 ) || false
                 
-                // Determine availability status (mock for now - would need actual availability data)
-                const isAvailableWeekend = true // Would check actual availability matrix
+                // Determine availability status from actual volunteer availability field
+                const availabilityStr = (volunteer.availability || '').toLowerCase()
+                const isAvailableWeekend = availabilityStr.includes('fin') || availabilityStr.includes('week') ||
+                  availabilityStr.includes('sábado') || availabilityStr.includes('sabado') ||
+                  availabilityStr.includes('domingo') || availabilityStr.includes('todo')
                 
                 return (
                   <Card key={volunteer.id} className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-yellow-400">

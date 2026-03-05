@@ -67,6 +67,11 @@ export async function GET(request: NextRequest) {
       where: {
         churchId: session.user.churchId
       },
+      include: {
+        _count: {
+          select: { custom_form_submissions: true }
+        }
+      },
       orderBy: {
         createdAt: 'desc'
       }

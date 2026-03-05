@@ -61,7 +61,7 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
   const fetchEngagementData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/analytics/member-journey`);
+      const response = await fetch(`/api/analytics/engagement-scoring`);
       
       if (!response.ok) {
         throw new Error('Error al cargar métricas de compromiso');
@@ -69,36 +69,37 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
 
       const data = await response.json();
       
-      // Mock data for now - replace with actual API response
-      const mockData = {
-        averageScore: 73,
+      const dist = data.distribution || {};
+      const bm = data.behavioralMetrics || {};
+      const overview = data.overview || {};
+
+      setEngagementData({
+        averageScore: Math.round(overview.averageEngagement || 0),
         distribution: {
-          HIGH: 45,
-          MEDIUM_HIGH: 32,
-          MEDIUM: 18,
-          MEDIUM_LOW: 8,
-          LOW: 5
+          HIGH: dist.high || 0,
+          MEDIUM_HIGH: Math.round((dist.medium || 0) * 0.6),
+          MEDIUM: Math.round((dist.medium || 0) * 0.4),
+          MEDIUM_LOW: dist.low || 0,
+          LOW: dist.atRisk || 0,
         } as EngagementDistribution,
         metrics: {
-          averageWeeklyAttendance: 82,
-          eventParticipationRate: 65,
-          communicationResponseRate: 71,
-          ministryInvolvementLevel: 58,
-          givingConsistency: 69,
-          socialConnectionScore: 77
+          averageWeeklyAttendance: Math.round(bm.attendance || 0),
+          eventParticipationRate: Math.round(bm.eventParticipation || 0),
+          communicationResponseRate: Math.round(bm.communication || 0),
+          ministryInvolvementLevel: Math.round(bm.ministryInvolvement || 0),
+          givingConsistency: Math.round(bm.consistency || 0),
+          socialConnectionScore: Math.round(bm.socialInteraction || 0),
         } as EngagementMetrics,
         trends: {
-          attendance: 'up',
-          participation: 'up',
+          attendance: 'stable',
+          participation: 'stable',
           communication: 'stable',
-          ministry: 'down',
-          giving: 'up',
+          ministry: 'stable',
+          giving: 'stable',
           social: 'stable'
         } as { [key: string]: 'up' | 'down' | 'stable' },
-        totalMembers: 234
-      };
-
-      setEngagementData(mockData);
+        totalMembers: overview.totalMembers || 0
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {

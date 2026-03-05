@@ -105,8 +105,8 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
           avatar: `/avatars/member-${index + 1}.jpg`,
           joinDate: member.membershipDate || member.createdAt,
           currentStage: member.membershipStage || 'ESTABLISHED_MEMBER',
-          engagementScore: member.engagementScore || Math.floor(Math.random() * 30) + 70, // 70-100
-          spiritualMaturity: member.spiritualMaturity || Math.floor(Math.random() * 40) + 60, // 60-100
+          engagementScore: member.engagementScore || 0,
+          spiritualMaturity: member.spiritualMaturity || 0,
           lastActivity: member.updatedAt || new Date().toISOString().split('T')[0],
           nextMilestone: 'Completar siguiente evaluación espiritual',
           riskLevel: member.retentionRisk || 'low',

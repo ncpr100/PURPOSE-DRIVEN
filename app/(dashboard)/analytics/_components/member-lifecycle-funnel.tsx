@@ -120,34 +120,46 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
   const fetchFunnelData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/analytics/member-journey?period=${period}`);
+      const response = await fetch(`/api/analytics/member-lifecycle-funnel?dateRange=all`);
       
       if (!response.ok) {
         throw new Error('Error al cargar datos del journey de miembros');
       }
 
       const data = await response.json();
-      
-      // Transform API data to funnel format
-      const stages: LifecycleStage[] = Object.entries(data.enhancedAnalytics?.lifecycleDistribution || {})
-        .map(([stageName, stageData]: [string, any]) => ({
-          name: stageName,
-          count: stageData.count || 0,
-          percentage: stageData.percentage || 0,
-          averageDuration: stageData.averageDuration || 0,
-          trend: Math.random() > 0.5 ? 'up' : 'down' // TODO: Calculate actual trend
-        }));
+
+      // Map API stage keys to stageConfig keys
+      const keyMap: Record<string, string> = {
+        'RETURNING_GUEST': 'RETURNING_VISITOR',
+        'LEADER': 'LEADING_MEMBER',
+      };
+      const stageOrder = ['VISITOR', 'FIRST_TIME_GUEST', 'RETURNING_GUEST', 'REGULAR_ATTENDEE', 'NEW_MEMBER', 'ESTABLISHED_MEMBER', 'LEADER'];
+      const cf = data.conversionFunnel || {};
+
+      const stages: LifecycleStage[] = stageOrder
+        .filter(key => cf[key] !== undefined)
+        .map(key => {
+          const stageData = cf[key];
+          return {
+            name: keyMap[key] || key,
+            count: stageData.count || 0,
+            percentage: stageData.percentage || 0,
+            averageDuration: data.averageTimeInStage?.[key] || 0,
+            conversionRate: stageData.conversionRate || 0,
+            trend: 'stable' as const
+          };
+        });
 
       const transformedData: ConversionFunnelData = {
-        totalVisitors: data.conversionFunnel?.totalVisitors || 0,
+        totalVisitors: data.totalMembers || 0,
         stages,
-        conversionRates: data.conversionFunnel?.conversionRates || {
-          visitorToFirstTime: 0,
-          firstTimeToReturning: 0,
-          returningToRegular: 0,
-          regularToMember: 0,
-          memberToActive: 0,
-          activeToLeader: 0
+        conversionRates: {
+          visitorToFirstTime: cf.FIRST_TIME_GUEST?.conversionRate || 0,
+          firstTimeToReturning: cf.RETURNING_GUEST?.conversionRate || 0,
+          returningToRegular: cf.REGULAR_ATTENDEE?.conversionRate || 0,
+          regularToMember: cf.NEW_MEMBER?.conversionRate || 0,
+          memberToActive: cf.ESTABLISHED_MEMBER?.conversionRate || 0,
+          activeToLeader: cf.LEADER?.conversionRate || 0,
         }
       };
 
