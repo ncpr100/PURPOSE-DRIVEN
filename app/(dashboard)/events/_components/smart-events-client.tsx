@@ -226,6 +226,136 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
   // Get all event dates for highlighting in calendar
   const eventDates = events.map(event => new Date(event.startDate))
 
+  // Event Templates System
+  const eventTemplates = [
+    {
+      id: 'culto-dominical',
+      name: 'Culto Dominical',
+      icon: '⛪',
+      category: 'CULTO',
+      duration: 120, // minutes
+      description: 'Servicio principal dominical con predicación y adoración',
+      defaultResources: ['Sistema de Sonido', 'Proyector', 'Plataforma'],
+      defaultBudget: 0,
+      suggestedVolunteers: ['Músicos', 'Técnicos de Sonido', 'Ujieres'],
+      isPublic: true,
+      defaultLocation: 'Templo Principal'
+    },
+    {
+      id: 'estudio-biblico',
+      name: 'Estudio Bíblico',
+      icon: '📖',
+      category: 'ESTUDIO',
+      duration: 90,
+      description: 'Estudio profundo de las Escrituras',
+      defaultResources: ['Sala de Clase', 'Proyector', 'Biblias'],
+      defaultBudget: 50,
+      suggestedVolunteers: ['Maestro', 'Asistente'],
+      isPublic: true,
+      defaultLocation: 'Aula 1'
+    },
+    {
+      id: 'reunion-jovenes',
+      name: 'Reunión de Jóvenes',
+      icon: '🎵',
+      category: 'JUVENTUD',
+      duration: 150,
+      description: 'Actividad para jóvenes con música, mensaje y compañerismo',
+      defaultResources: ['Sistema de Sonido', 'Instrumento Musical', 'Refrigerios'],
+      defaultBudget: 200,
+      suggestedVolunteers: ['Pastor de Jóvenes', 'Músicos', 'Ayudantes'],
+      isPublic: true,
+      defaultLocation: 'Salón Juvenil'
+    },
+    {
+      id: 'actividad-ninos',
+      name: 'Escuela Dominical Niños',
+      icon: '👶',
+      category: 'NIÑOS',
+      duration: 60,
+      description: 'Enseñanza bíblica para niños con actividades didácticas',
+      defaultResources: ['Aula Niños', 'Material Didáctico', 'Refrigerios'],
+      defaultBudget: 100,
+      suggestedVolunteers: ['Maestros', 'Asistentes', 'Coordinador'],
+      isPublic: false,
+      defaultLocation: 'Aula Infantil'
+    },
+    {
+      id: 'retiro-espiritual',
+      name: 'Retiro Espiritual',
+      icon: '🏔️',
+      category: 'RETIRO',
+      duration: 1440, // 24 horas
+      description: 'Fin de semana de crecimiento espiritual fuera de la iglesia',
+      defaultResources: ['Transporte', 'Hospedaje', 'Alimentación'],
+      defaultBudget: 5000,
+      suggestedVolunteers: ['Pastores', 'Coordinadores', 'Cocineros'],
+      isPublic: true,
+      defaultLocation: 'Centro de Retiros'
+    },
+    {
+      id: 'conferencia-ministerial',
+      name: 'Conferencia Ministerial',
+      icon: '🎤',
+      category: 'CONFERENCIA',
+      duration: 480, // 8 horas
+      description: 'Eventos especiales con invitados y múltiples sesiones',
+      defaultResources: ['Auditorio', 'Sistema AV Completo', 'Registro'],
+      defaultBudget: 3000,
+      suggestedVolunteers: ['Coordinadores', 'Técnicos', 'Protocolo'],
+      isPublic: true,
+      defaultLocation: 'Auditorio Principal'
+    },
+    {
+      id: 'reunion-celula',
+      name: 'Reunión de Célula',
+      icon: '🏠',
+      category: 'CELULA',
+      duration: 90,
+      description: 'Reunión íntima en hogar para estudio y oración',
+      defaultResources: ['Biblia', 'Material de Estudio'],
+      defaultBudget: 30,
+      suggestedVolunteers: ['Líder de Célula', 'Anfitrión'],
+      isPublic: false,
+      defaultLocation: 'Casa de Miembro'
+    },
+    {
+      id: 'campana-evangelistica',
+      name: 'Campaña Evangelística',
+      icon: '📢',
+      category: 'EVANGELISMO',
+      duration: 180,
+      description: 'Evento de alcance comunitario con mensaje evangelístico',
+      defaultResources: ['Sonido Portátil', 'Banners', 'Folletos'],
+      defaultBudget: 800,
+      suggestedVolunteers: ['Evangelistas', 'Intercesores', 'Logística'],
+      isPublic: true,
+      defaultLocation: 'Plaza Central'
+    }
+  ]
+
+  // Template application function
+  const applyEventTemplate = (template: typeof eventTemplates[0]) => {
+    const now = new Date()
+    const startTime = new Date(now.getTime() + 24 * 60 * 60 * 1000) // Tomorrow
+    startTime.setHours(10, 0, 0, 0) // 10:00 AM default
+    
+    const endTime = new Date(startTime.getTime() + template.duration * 60 * 1000)
+    
+    setEventForm({
+      title: template.name,
+      description: template.description,
+      category: template.category,
+      startDate: startTime.toISOString().slice(0, 16), // YYYY-MM-DDTHH:MM format
+      endDate: endTime.toISOString().slice(0, 16),
+      location: template.defaultLocation,
+      budget: template.defaultBudget.toString(),
+      isPublic: template.isPublic
+    })
+    
+    toast.success(`Plantilla "${template.name}" aplicada`)
+  }
+
   // Data Fetching
   useEffect(() => {
     fetchEvents()
@@ -720,6 +850,31 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                     Usa IA para sugerencias automáticas o crea tu evento desde cero
                   </DialogDescription>
                 </DialogHeader>
+                
+                {/* Event Templates Section */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-medium text-gray-700">🎯 Plantillas Rápidas</h3>
+                    <span className="text-xs text-muted-foreground">Haz clic para aplicar</span>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto">
+                    {eventTemplates.slice(0, 8).map((template) => (
+                      <button
+                        key={template.id}
+                        type="button"
+                        onClick={() => applyEventTemplate(template)}
+                        className="p-2 text-xs border rounded-lg hover:bg-muted/50 hover:border-primary transition-all group"
+                      >
+                        <div className="text-lg mb-1">{template.icon}</div>
+                        <div className="font-medium text-gray-700 group-hover:text-primary">
+                          {template.name}
+                        </div>
+                        <div className="text-gray-500">{template.duration}min</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
                 <form onSubmit={handleCreateEvent} className="space-y-4">
                   <div className="flex justify-between items-center mb-4">
                     <Button
@@ -1295,72 +1450,148 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           </div>
 
           <div className="grid lg:grid-cols-3 gap-6">
-            {/* Calendar Widget */}
+            {/* Calendar Widget - Mobile Optimized */}
             <div className="lg:col-span-2">
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
                     <Calendar className="h-5 w-5" />
                     Calendario Interactivo
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <DayPicker
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={(date) => date && setSelectedDate(date)}
-                    modifiers={{
-                      hasEvent: eventDates
-                    }}
-                    modifiersStyles={{
-                      hasEvent: { 
-                        backgroundColor: '#3b82f6', 
-                        color: 'white',
-                        borderRadius: '50%'
-                      }
-                    }}
-                    className="border rounded-lg p-4"
-                    locale="es"
-                  />
+                <CardContent className="p-2 lg:p-6">
+                  {/* Mobile: Compact calendar */}
+                  <div className="block lg:hidden">
+                    <DayPicker
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={(date) => date && setSelectedDate(date)}
+                      modifiers={{
+                        hasEvent: eventDates
+                      }}
+                      modifiersStyles={{
+                        hasEvent: { 
+                          backgroundColor: '#3b82f6', 
+                          color: 'white',
+                          borderRadius: '50%',
+                          fontWeight: 'bold'
+                        }
+                      }}
+                      className="border rounded-lg p-2 text-sm"
+                      classNames={{
+                        month: "space-y-2",
+                        caption: "flex justify-between items-center text-lg font-semibold mb-2",
+                        caption_label: "text-base",
+                        nav: "space-x-1 flex items-center",
+                        nav_button: "h-8 w-8 bg-transparent border rounded-md hover:bg-muted",
+                        nav_button_previous: "absolute left-1",
+                        nav_button_next: "absolute right-1",
+                        table: "w-full border-collapse space-y-1",
+                        head_row: "flex",
+                        head_cell: "text-muted-foreground rounded-md w-8 font-normal text-xs",
+                        row: "flex w-full mt-1",
+                        cell: "h-8 w-8 text-center text-xs p-0 relative hover:bg-muted rounded-md transition-colors",
+                        day: "h-8 w-8 p-0 font-normal rounded-md hover:bg-accent hover:text-accent-foreground",
+                        day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
+                        day_today: "bg-accent text-accent-foreground font-bold border-2 border-primary",
+                        day_outside: "text-muted-foreground opacity-50",
+                        day_disabled: "text-muted-foreground opacity-50",
+                        day_range_middle: "aria-selected:bg-accent aria-selected:text-accent-foreground",
+                        day_hidden: "invisible"
+                      }}
+                      locale="es"
+                    />
+                  </div>
+
+                  {/* Desktop: Full calendar */}
+                  <div className="hidden lg:block">
+                    <DayPicker
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={(date) => date && setSelectedDate(date)}
+                      modifiers={{
+                        hasEvent: eventDates
+                      }}
+                      modifiersStyles={{
+                        hasEvent: { 
+                          backgroundColor: '#3b82f6', 
+                          color: 'white',
+                          borderRadius: '50%',
+                          fontWeight: 'bold'
+                        }
+                      }}
+                      className="border rounded-lg p-4"
+                      classNames={{
+                        month: "space-y-4",
+                        caption: "flex justify-between items-center text-xl font-semibold mb-4",
+                        nav: "space-x-2 flex items-center",
+                        nav_button: "h-10 w-10 bg-transparent border rounded-md hover:bg-muted",
+                        table: "w-full border-collapse space-y-2",
+                        head_row: "flex",
+                        head_cell: "text-muted-foreground rounded-md w-12 font-normal text-sm",
+                        row: "flex w-full mt-2",
+                        cell: "h-12 w-12 text-center text-sm p-0 relative hover:bg-muted rounded-md transition-colors",
+                        day: "h-12 w-12 p-0 font-normal rounded-md hover:bg-accent hover:text-accent-foreground",
+                        day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
+                        day_today: "bg-accent text-accent-foreground font-bold border-2 border-primary",
+                        day_outside: "text-muted-foreground opacity-50",
+                        day_disabled: "text-muted-foreground opacity-50"
+                      }}
+                      locale="es"
+                    />
+                  </div>
+
+                  {/* Mobile: Quick event indicator */}
+                  <div className="block lg:hidden mt-3 p-2 bg-muted/30 rounded text-xs text-center">
+                    📅 Días con eventos en azul • Toque fecha para ver detalles
+                  </div>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Events for Selected Date */}
+            {/* Events for Selected Date - Mobile Optimized */}
             <div>
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">
-                    Eventos para {selectedDate.toLocaleDateString('es-ES', { 
-                      weekday: 'long', 
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-base lg:text-lg">
+                    📅 {selectedDate.toLocaleDateString('es-ES', { 
+                      weekday: 'short', 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })}
+                  </CardTitle>
+                  {/* Mobile: Show abbreviated date */}
+                  <div className="block lg:hidden text-xs text-muted-foreground">
+                    {selectedDate.toLocaleDateString('es-ES', { 
                       year: 'numeric', 
                       month: 'long', 
                       day: 'numeric' 
                     })}
-                  </CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <ScrollArea className="h-[400px]">
+                  <ScrollArea className="h-[300px] lg:h-[400px]">
                     {getEventsForDate(selectedDate).length === 0 ? (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <Calendar className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                        <p>No hay eventos programados para este día</p>
+                      <div className="text-center py-6 lg:py-8 text-muted-foreground">
+                        <Calendar className="h-8 w-8 lg:h-12 lg:w-12 mx-auto mb-2 lg:mb-4 opacity-20" />
+                        <p className="text-sm lg:text-base">No hay eventos programados</p>
+                        <p className="text-xs lg:text-sm mt-1">para este día</p>
                       </div>
                     ) : (
-                      <div className="space-y-3">
+                      <div className="space-y-2 lg:space-y-3">
                         {getEventsForDate(selectedDate).map(event => (
-                          <div
+                          <button
                             key={event.id}
-                            className="p-3 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+                            className="w-full p-3 lg:p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors text-left touch-manipulation"
                             onClick={() => {
                               setSelectedEvent(event)
-                              setActiveTab('planning') // Navigate to details
+                              setActiveTab('planning')
                             }}
                           >
                             <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <h3 className="font-medium text-sm">{event.title}</h3>
-                                <p className="text-xs text-muted-foreground mt-1">
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-medium text-sm lg:text-base truncate">{event.title}</h3>
+                                <p className="text-xs lg:text-sm text-muted-foreground mt-1">
                                   {new Date(event.startDate).toLocaleTimeString('es', { 
                                     hour: '2-digit', 
                                     minute: '2-digit' 
@@ -1372,16 +1603,16 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                                 </p>
                                 {event.location && (
                                   <div className="flex items-center gap-1 mt-1">
-                                    <MapPin className="h-3 w-3 text-muted-foreground" />
-                                    <span className="text-xs text-muted-foreground">{event.location}</span>
+                                    <MapPin className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                                    <span className="text-xs text-muted-foreground truncate">{event.location}</span>
                                   </div>
                                 )}
                               </div>
-                              <Badge variant="secondary" className="text-xs">
+                              <Badge variant="secondary" className="text-xs ml-2 flex-shrink-0">
                                 {event.category}
                               </Badge>
                             </div>
-                          </div>
+                          </button>
                         ))}
                       </div>
                     )}
@@ -1389,10 +1620,10 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                 </CardContent>
               </Card>
 
-              {/* Quick Event Creation */}
+              {/* Quick Event Creation - Mobile Optimized */}
               <Card className="mt-4">
-                <CardHeader>
-                  <CardTitle className="text-sm flex items-center gap-2">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm lg:text-base flex items-center gap-2">
                     <Plus className="h-4 w-4" />
                     Evento Rápido
                   </CardTitle>
@@ -1407,11 +1638,12 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       <Input 
                         type="time" 
                         defaultValue={new Date().toTimeString().slice(0, 5)}
-                        className="text-xs" 
+                        className="text-xs flex-1" 
                       />
-                      <Button size="sm" className="flex-1">
+                      <Button size="sm" className="px-3 lg:px-4 text-xs lg:text-sm">
                         <Plus className="h-3 w-3 mr-1" />
-                        Crear
+                        <span className="hidden lg:inline">Crear</span>
+                        <span className="lg:hidden">+</span>
                       </Button>
                     </div>
                   </div>

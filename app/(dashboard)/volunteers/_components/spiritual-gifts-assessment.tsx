@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Brain, Sparkles, Heart, Users, BookOpen, Crown, Target, Zap } from 'lucide-react'
 import { toast } from 'sonner'
+import { useFormAnalytics } from '@/lib/form-analytics'
 
 interface SpiritualGift {
   id: string
@@ -49,6 +50,44 @@ export function SpiritualGiftsAssessment({
     previousExperience: existingProfile?.previousExperience || [],
     trainingCompleted: existingProfile?.trainingCompleted || []
   })
+  // Form Analytics Tracking
+  const analytics = useFormAnalytics(
+    'spiritual-gifts-assessment',
+    'spiritual_assessment',
+    'iglesia-demo' // TODO: Get from props or context
+  )
+
+  // Calculate form completeness percentage for analytics
+  const calculateFormCompleteness = () => {
+    const fields = {
+      primaryGifts: formData.primaryGifts.length > 0,
+      ministryPassions: formData.ministryPassions.length > 0,
+      spiritualCalling: !!formData.spiritualCalling,
+      servingMotivation: !!formData.servingMotivation,
+      experienceLevel: formData.experienceLevel > 0,
+      leadershipScore: formData.leadershipScore > 0
+    }
+    
+    const completedFields = Object.values(fields).filter(Boolean).length
+    const totalFields = Object.keys(fields).length
+    
+    return Math.round((completedFields / totalFields) * 100)
+  }
+  useEffect(() => {
+    // Track form start
+    analytics.trackStart()
+    
+    // Track abandonment on page unload
+    const handleBeforeUnload = () => {
+      analytics.trackAbandonment()
+    }
+    
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [analytics])
 
   useEffect(() => {
     fetchSpiritualGifts()
@@ -93,12 +132,14 @@ export function SpiritualGiftsAssessment({
     e.preventDefault()
     
     if (formData.primaryGifts.length === 0) {
+      analytics.trackError('primaryGifts', 'required_field_empty')
       toast.error('Por favor selecciona al menos un don espiritual principal')
       setSaving(false)
       return
     }
 
     if (formData.ministryPassions.length === 0) {
+      analytics.trackError('ministryPassions', 'required_field_empty')
       toast.error('Por favor selecciona al menos una pasión ministerial')
       setSaving(false)
       return
@@ -122,6 +163,16 @@ export function SpiritualGiftsAssessment({
       
       if (response.ok) {
         const data = await response.json()
+        
+        // Track successful form completion
+        analytics.trackSubmission({
+          primaryGiftsCount: formData.primaryGifts.length,
+          secondaryGiftsCount: formData.secondaryGifts.length,
+          ministryPassionsCount: formData.ministryPassions.length,
+          experienceLevel: formData.experienceLevel,
+          hasSpirituaCallingText: !!formData.spiritualCalling,
+          formCompleteness: calculateFormCompleteness()
+        })
         
         toast.success('Perfil espiritual guardado exitosamente')
         onSave?.(data.profile)
