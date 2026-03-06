@@ -217,7 +217,7 @@ export default function PostComposer({
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div>
-            <Label htmlFor="title">Title (Optional)</Label>
+            <Label htmlFor="title">Título (Opcional)</Label>
             <Input
               id="title"
               value={formData.title}
@@ -228,7 +228,7 @@ export default function PostComposer({
 
           {/* Content */}
           <div>
-            <Label htmlFor="content">Content *</Label>
+            <Label htmlFor="content">Contenido *</Label>
             <Textarea
               id="content"
               value={formData.content}
@@ -238,13 +238,13 @@ export default function PostComposer({
               required
             />
             <div className="text-xs text-gray-500 mt-1">
-              {formData.content.length}/280 characters
+              {formData.content.length}/280 caracteres
             </div>
           </div>
 
           {/* Media Upload */}
           <div>
-            <Label>Media Files</Label>
+            <Label>Archivos Multimedia</Label>
             <div className="mt-2">
               <input
                 type="file"
@@ -258,7 +258,7 @@ export default function PostComposer({
                 <Button type="button" variant="outline" className="cursor-pointer" asChild>
                   <span>
                     <Upload className="mr-2 h-4 w-4" />
-                    Upload Media
+                    Subir Multimedia
                   </span>
                 </Button>
               </label>
@@ -267,7 +267,7 @@ export default function PostComposer({
             {/* Show existing media URLs */}
             {mediaUrls.length > 0 && (
               <div className="mt-2 space-y-2">
-                <Label className="text-sm">Existing Media:</Label>
+                <Label className="text-sm">Medios existentes:</Label>
                 {mediaUrls.map((url, index) => (
                   <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
                     <span className="text-sm truncate">{url}</span>
@@ -287,7 +287,7 @@ export default function PostComposer({
             {/* Show selected files */}
             {mediaFiles.length > 0 && (
               <div className="mt-2 space-y-2">
-                <Label className="text-sm">Selected Files:</Label>
+                <Label className="text-sm">Archivos seleccionados:</Label>
                 {mediaFiles.map((file, index) => (
                   <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
                     <span className="text-sm truncate">{file.name}</span>
@@ -307,7 +307,7 @@ export default function PostComposer({
 
           {/* Accounts Selection */}
           <div>
-            <Label>Select Social Media Accounts *</Label>
+            <Label>Seleccionar Cuentas de Redes Sociales *</Label>
             <div className="mt-2 grid grid-cols-2 gap-2">
               {accounts.map(account => (
                 <Card key={account.id} className="cursor-pointer">
@@ -332,7 +332,7 @@ export default function PostComposer({
 
           {/* Scheduling */}
           <div>
-            <Label htmlFor="scheduledAt">Schedule For (Optional)</Label>
+            <Label htmlFor="scheduledAt">Programar Para (Opcional)</Label>
             <Input
               id="scheduledAt"
               type="datetime-local"
@@ -344,7 +344,7 @@ export default function PostComposer({
 
           {/* Hashtags */}
           <div>
-            <Label htmlFor="hashtags">Hashtags</Label>
+            <Label htmlFor="hashtags">Etiquetas (#hashtags)</Label>
             <Input
               id="hashtags"
               value={formData.hashtags}
@@ -355,7 +355,7 @@ export default function PostComposer({
 
           {/* Mentions */}
           <div>
-            <Label htmlFor="mentions">Mentions</Label>
+            <Label htmlFor="mentions">Menciones (@)</Label>
             <Input
               id="mentions"
               value={formData.mentions}

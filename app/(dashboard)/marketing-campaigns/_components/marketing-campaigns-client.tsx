@@ -48,7 +48,7 @@ export default function MarketingCampaignsClient() {
   const handleCampaignCreated = (newCampaign: MarketingCampaign) => {
     setCampaigns(prev => [newCampaign, ...prev]);
     setShowForm(false);
-    toast.success('Campaign created successfully');
+    toast.success('Campaña creada exitosamente');
   };
 
   const handleCampaignUpdated = (updatedCampaign: MarketingCampaign) => {
@@ -60,7 +60,7 @@ export default function MarketingCampaignsClient() {
     if (selectedCampaign?.id === updatedCampaign.id) {
       setSelectedCampaign(updatedCampaign);
     }
-    toast.success('Campaign updated successfully');
+    toast.success('Campaña actualizada exitosamente');
   };
 
   const handleCampaignDeleted = (campaignId: string) => {
@@ -68,7 +68,7 @@ export default function MarketingCampaignsClient() {
     if (selectedCampaign?.id === campaignId) {
       setSelectedCampaign(null);
     }
-    toast.success('Campaign deleted successfully');
+    toast.success('Campaña eliminada exitosamente');
   };
 
   // Calculate stats

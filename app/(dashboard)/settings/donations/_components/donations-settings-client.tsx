@@ -458,7 +458,7 @@ export default function DonationsSettingsClient({
               </div>
               
               <div>
-                <Label htmlFor="stripeWebhook">Webhook Secret</Label>
+                <Label htmlFor="stripeWebhook">Secreto de Webhook</Label>
                 <Input
                   id="stripeWebhook"
                   type={showSecrets ? "text" : "password"}

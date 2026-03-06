@@ -497,11 +497,11 @@ export default function DonationsSettingsClient({
               </Alert>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Access Token</Label>
+                  <Label>Token de Acceso</Label>
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="APP_USR-..." />
                 </div>
                 <div>
-                  <Label>Public Key</Label>
+                  <Label>Clave Pública</Label>
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="APP_USR-..." />
                 </div>
               </div>
@@ -544,15 +544,15 @@ export default function DonationsSettingsClient({
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>PSE – Merchant ID</Label>
+                  <Label>PSE – ID de Comercio</Label>
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="ID comercio PSE..." />
                 </div>
                 <div>
-                  <Label>Nequi – Client ID</Label>
+                  <Label>Nequi – ID de Cliente</Label>
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="Nequi client_id..." />
                 </div>
                 <div>
-                  <Label>Nequi – Client Secret</Label>
+                  <Label>Nequi – Clave Secreta</Label>
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="Nequi client_secret..." />
                 </div>
                 <div>
@@ -584,16 +584,16 @@ export default function DonationsSettingsClient({
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Chave PIX</Label>
-                  <Input placeholder="E-mail, teléfono, CPF/CNPJ o chave aleatória" />
+                  <Label>Clave PIX</Label>
+                  <Input placeholder="E-mail, teléfono, CPF/CNPJ o clave aleatoria" />
                 </div>
                 <div>
-                  <Label>PIX API Key</Label>
-                  <Input type={showSecrets ? 'text' : 'password'} placeholder="API Key do provedor PIX..." />
+                  <Label>Clave API PIX</Label>
+                  <Input type={showSecrets ? 'text' : 'password'} placeholder="Clave API del proveedor PIX..." />
                 </div>
               </div>
               <p className="text-xs text-muted-foreground">
-                Tipos de chave: E-mail, Teléfono (+55...), CPF/CNPJ o chave aleatória generada por el Banco Central.
+                Tipos de clave: E-mail, Teléfono (+55...), CPF/CNPJ o clave aleatoria generada por el Banco Central.
               </p>
               <div className="flex justify-end">
                 <Button disabled={saving}>{saving ? 'Guardando...' : 'Guardar PIX'}</Button>
@@ -619,11 +619,11 @@ export default function DonationsSettingsClient({
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Conekta – Merchant ID</Label>
+                  <Label>Conekta – ID de Comercio</Label>
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="Conekta merchant_id..." />
                 </div>
                 <div>
-                  <Label>Conekta – API Key</Label>
+                  <Label>Conekta – Clave API</Label>
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="key_..." />
                 </div>
               </div>
@@ -688,7 +688,7 @@ export default function DonationsSettingsClient({
                 </div>
               </div>
               <div>
-                <Label htmlFor="stripeWebhook">Webhook Secret</Label>
+                <Label htmlFor="stripeWebhook">Secreto de Webhook</Label>
                 <Input
                   id="stripeWebhook"
                   type={showSecrets ? 'text' : 'password'}

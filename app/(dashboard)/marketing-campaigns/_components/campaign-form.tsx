@@ -31,12 +31,12 @@ const platformOptions = [
 ];
 
 const objectiveOptions = [
-  { value: 'brand_awareness', label: 'Brand Awareness' },
-  { value: 'engagement', label: 'Engagement' },
-  { value: 'lead_generation', label: 'Lead Generation' },
-  { value: 'event_promotion', label: 'Event Promotion' },
-  { value: 'community_growth', label: 'Community Growth' },
-  { value: 'content_promotion', label: 'Content Promotion' }
+  { value: 'brand_awareness', label: 'Reconocimiento de marca' },
+  { value: 'engagement', label: 'Participación' },
+  { value: 'lead_generation', label: 'Generación de contactos' },
+  { value: 'event_promotion', label: 'Promoción de eventos' },
+  { value: 'community_growth', label: 'Crecimiento comunitario' },
+  { value: 'content_promotion', label: 'Promoción de contenido' }
 ];
 
 export default function CampaignForm({
@@ -140,12 +140,12 @@ export default function CampaignForm({
     }
 
     if (!formData.startDate) {
-      toast.error('Start date is required');
+      toast.error('La fecha de inicio es requerida');
       return;
     }
 
     if (selectedPlatforms.length === 0) {
-      toast.error('Please select at least one platform');
+      toast.error('Por favor seleccione al menos una plataforma');
       return;
     }
 
@@ -177,7 +177,7 @@ export default function CampaignForm({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to save campaign');
+        throw new Error(errorData.error || 'Error al guardar la campaña');
       }
 
       const savedCampaign = await response.json();
@@ -189,7 +189,7 @@ export default function CampaignForm({
       }
     } catch (error: any) {
       console.error('Error saving campaign:', error);
-      toast.error(error.message || 'Failed to save campaign');
+      toast.error(error.message || 'Error al guardar la campaña');
     } finally {
       setIsSubmitting(false);
     }
@@ -200,7 +200,7 @@ export default function CampaignForm({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {campaign ? 'Edit Campaign' : 'Create New Campaign'}
+            {campaign ? 'Editar Campaña' : 'Crear Nueva Campaña'}
           </DialogTitle>
         </DialogHeader>
 
@@ -213,35 +213,35 @@ export default function CampaignForm({
                 <CardContent className="p-4">
                   <div className="flex items-center mb-3">
                     <Target className="mr-2 h-4 w-4" />
-                    <h3 className="font-medium">Campaign Details</h3>
+                    <h3 className="font-medium">Detalles de la Campaña</h3>
                   </div>
                   
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="name">Campaign Name *</Label>
+                      <Label htmlFor="name">Nombre de Campaña *</Label>
                       <Input
                         id="name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        placeholder="Easter Sunday Campaign"
+                        placeholder="Campaña Domingo de Resurrección"
                         required
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="description">Description</Label>
+                      <Label htmlFor="description">Descripción</Label>
                       <Textarea
                         id="description"
                         value={formData.description}
                         onChange={(e) => handleInputChange('description', e.target.value)}
-                        placeholder="Describe your campaign goals and message..."
+                        placeholder="Describa los objetivos y mensaje de su campaña..."
                         rows={3}
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="budget">Budget</Label>
+                        <Label htmlFor="budget">Presupuesto</Label>
                         <Input
                           id="budget"
                           type="number"
@@ -253,7 +253,7 @@ export default function CampaignForm({
                         />
                       </div>
                       <div>
-                        <Label htmlFor="currency">Currency</Label>
+                        <Label htmlFor="currency">Moneda</Label>
                         <Select value={formData.currency} onValueChange={(value) => handleInputChange('currency', value)}>
                           <SelectTrigger>
                             <SelectValue />
@@ -270,7 +270,7 @@ export default function CampaignForm({
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="startDate">Start Date *</Label>
+                        <Label htmlFor="startDate">Fecha de Inicio *</Label>
                         <Input
                           id="startDate"
                           type="datetime-local"
@@ -280,7 +280,7 @@ export default function CampaignForm({
                         />
                       </div>
                       <div>
-                        <Label htmlFor="endDate">End Date</Label>
+                        <Label htmlFor="endDate">Fecha de Fin</Label>
                         <Input
                           id="endDate"
                           type="datetime-local"
@@ -292,17 +292,17 @@ export default function CampaignForm({
                     </div>
 
                     <div>
-                      <Label htmlFor="status">Status</Label>
+                      <Label htmlFor="status">Estado</Label>
                       <Select value={formData.status} onValueChange={(value) => handleInputChange('status', value)}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="DRAFT">Draft</SelectItem>
-                          <SelectItem value="ACTIVE">Active</SelectItem>
-                          <SelectItem value="PAUSED">Paused</SelectItem>
-                          <SelectItem value="COMPLETED">Completed</SelectItem>
-                          <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                          <SelectItem value="DRAFT">Borrador</SelectItem>
+                          <SelectItem value="ACTIVE">Activa</SelectItem>
+                          <SelectItem value="PAUSED">En pausa</SelectItem>
+                          <SelectItem value="COMPLETED">Completada</SelectItem>
+                          <SelectItem value="CANCELLED">Cancelada</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -315,42 +315,42 @@ export default function CampaignForm({
                 <CardContent className="p-4">
                   <div className="flex items-center mb-3">
                     <Users className="mr-2 h-4 w-4" />
-                    <h3 className="font-medium">Target Audience</h3>
+                    <h3 className="font-medium">Público Objetivo</h3>
                   </div>
                   
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="demographics">Demographics</Label>
+                      <Label htmlFor="demographics">Demógraficos</Label>
                       <Input
                         id="demographics"
                         value={formData.targetAudience.demographics}
                         onChange={(e) => handleTargetAudienceChange('demographics', e.target.value)}
-                        placeholder="Adults, families, young professionals..."
+                        placeholder="Adultos, familias, jóvenes profesionales..."
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="interests">Interests</Label>
+                      <Label htmlFor="interests">Intereses</Label>
                       <Input
                         id="interests"
                         value={formData.targetAudience.interests}
                         onChange={(e) => handleTargetAudienceChange('interests', e.target.value)}
-                        placeholder="Faith, community, worship..."
+                        placeholder="Fe, comunidad, adoración..."
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="location">Location</Label>
+                      <Label htmlFor="location">Ubicación</Label>
                       <Input
                         id="location"
                         value={formData.targetAudience.location}
                         onChange={(e) => handleTargetAudienceChange('location', e.target.value)}
-                        placeholder="City, region, or area..."
+                        placeholder="Ciudad, región o área..."
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="ageRange">Age Range</Label>
+                      <Label htmlFor="ageRange">Rango de Edad</Label>
                       <Input
                         id="ageRange"
                         value={formData.targetAudience.ageRange}
@@ -370,7 +370,7 @@ export default function CampaignForm({
                 <CardContent className="p-4">
                   <div className="flex items-center mb-3">
                     <DollarSign className="mr-2 h-4 w-4" />
-                    <h3 className="font-medium">Target Platforms *</h3>
+                    <h3 className="font-medium">Plataformas Objetivo *</h3>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-2">
@@ -392,7 +392,7 @@ export default function CampaignForm({
                 <CardContent className="p-4">
                   <div className="flex items-center mb-3">
                     <Target className="mr-2 h-4 w-4" />
-                    <h3 className="font-medium">Campaign Objectives</h3>
+                    <h3 className="font-medium">Objetivos de la Campaña</h3>
                   </div>
                   
                   <div className="space-y-2">
@@ -422,7 +422,7 @@ export default function CampaignForm({
                       <Input
                         value={newTag}
                         onChange={(e) => setNewTag(e.target.value)}
-                        placeholder="Add a tag..."
+                        placeholder="Añadir etiqueta..."
                         onKeyPress={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
@@ -431,7 +431,7 @@ export default function CampaignForm({
                         }}
                       />
                       <Button type="button" onClick={handleAddTag} size="sm">
-                        Add
+                        Añadir
                       </Button>
                     </div>
                     
@@ -456,11 +456,11 @@ export default function CampaignForm({
           {/* Actions */}
           <div className="flex justify-between pt-4 border-t">
             <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
+              Cancelar
             </Button>
             
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : campaign ? 'Update Campaign' : 'Create Campaign'}
+              {isSubmitting ? 'Guardando...' : campaign ? 'Actualizar Campaña' : 'Crear Campaña'}
             </Button>
           </div>
         </form>

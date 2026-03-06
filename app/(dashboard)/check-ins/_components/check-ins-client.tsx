@@ -457,7 +457,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Button type="button" variant="outline" onClick={() => setIsVisitorDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button type="submit">Registrar Check-in</Button>
+                  <Button type="submit">Registrar Asistencia</Button>
                 </div>
               </form>
             </DialogContent>
@@ -573,13 +573,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Button type="button" variant="outline" onClick={() => setIsChildDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button type="submit">Registrar Check-in</Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-
-          {/* QR Code Generator for Children Check-in */}
+                  <Button type="submit">Registrar Niño</Button>}
           <Dialog open={isQrGeneratorOpen} onOpenChange={setIsQrGeneratorOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
@@ -1051,7 +1045,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
               <div className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Check-ins Seguros</CardTitle>
+                    <CardTitle className="text-sm font-medium">Registros Seguros</CardTitle>
                     <Shield className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>

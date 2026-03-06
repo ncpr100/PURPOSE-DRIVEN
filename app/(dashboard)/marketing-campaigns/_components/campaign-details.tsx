@@ -63,22 +63,22 @@ export default function CampaignDetails({
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update campaign status');
+        throw new Error('Error al actualizar el estado de la campaña');
       }
 
       const updatedCampaign = await response.json();
       onUpdate(updatedCampaign);
-      toast.success(`Campaign ${newStatus.toLowerCase()} successfully`);
+      toast.success(`Campaña actualizada exitosamente`);
     } catch (error) {
       console.error('Error updating campaign status:', error);
-      toast.error('Failed to update campaign status');
+      toast.error('Error al actualizar el estado de la campaña');
     } finally {
       setIsUpdating(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!confirm(`Are you sure you want to delete "${campaign.name}"? This action cannot be undone.`)) {
+    if (!confirm(`¿Está seguro de eliminar la campaña "${campaign.name}"? Esta acción no se puede deshacer.`)) {
       return;
     }
 
@@ -88,14 +88,14 @@ export default function CampaignDetails({
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete campaign');
+        throw new Error('Error al eliminar la campaña');
       }
 
       onDelete(campaign.id);
       onBack();
     } catch (error) {
       console.error('Error deleting campaign:', error);
-      toast.error('Failed to delete campaign');
+      toast.error('Error al eliminar la campaña');
     }
   };
 
@@ -116,16 +116,21 @@ export default function CampaignDetails({
         <div className="flex items-center space-x-4">
           <Button variant="outline" size="sm" onClick={onBack}>
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Campaigns
+          Volver a Campañas
           </Button>
           <div>
             <h1 className="text-2xl font-bold">{campaign.name}</h1>
             <div className="flex items-center space-x-2 mt-1">
               <Badge className={statusColors[campaign.status as keyof typeof statusColors]}>
-                {campaign.status.toLowerCase()}
+                {campaign.status.toLowerCase() === 'draft' ? 'Borrador' :
+               campaign.status.toLowerCase() === 'active' ? 'Activa' :
+               campaign.status.toLowerCase() === 'paused' ? 'En pausa' :
+               campaign.status.toLowerCase() === 'completed' ? 'Completada' :
+               campaign.status.toLowerCase() === 'cancelled' ? 'Cancelada' :
+               campaign.status.toLowerCase()}
               </Badge>
               <span className="text-sm text-gray-500">
-                Created {new Date(campaign.createdAt || campaign.startDate).toLocaleDateString()}
+                Creado el {new Date(campaign.createdAt || campaign.startDate).toLocaleDateString()}
               </span>
             </div>
           </div>
@@ -135,19 +140,19 @@ export default function CampaignDetails({
           {campaign.status === 'DRAFT' && (
             <Button onClick={() => updateCampaignStatus('ACTIVE')} disabled={isUpdating}>
               <Play className="mr-2 h-4 w-4" />
-              Start Campaign
+              Iniciar Campaña
             </Button>
           )}
           {campaign.status === 'ACTIVE' && (
             <Button onClick={() => updateCampaignStatus('PAUSED')} disabled={isUpdating}>
               <Pause className="mr-2 h-4 w-4" />
-              Pause Campaign
+              Pausar Campaña
             </Button>
           )}
           {campaign.status === 'PAUSED' && (
             <Button onClick={() => updateCampaignStatus('ACTIVE')} disabled={isUpdating}>
               <Play className="mr-2 h-4 w-4" />
-              Resume Campaign
+              Reanudar Campaña
             </Button>
           )}
           {['ACTIVE', 'PAUSED'].includes(campaign.status) && (
@@ -157,15 +162,15 @@ export default function CampaignDetails({
               disabled={isUpdating}
             >
               <Square className="mr-2 h-4 w-4" />
-              Complete
+              Completar
             </Button>
           )}
           <Button variant="outline" onClick={() => onEdit(campaign)}>
             <Edit className="mr-2 h-4 w-4" />
-            Edit
+            Editar
           </Button>
           <Button variant="destructive" onClick={handleDelete}>
-            Delete
+            Eliminar
           </Button>
         </div>
       </div>
@@ -174,33 +179,33 @@ export default function CampaignDetails({
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
+            <CardTitle className="text-sm font-medium">Total de Posts</CardTitle>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{campaignPosts.length}</div>
             <p className="text-xs text-muted-foreground">
-              {publishedPosts.length} published
+              {publishedPosts.length} publicados
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Scheduled</CardTitle>
+            <CardTitle className="text-sm font-medium">Programados</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{scheduledPosts.length}</div>
             <p className="text-xs text-muted-foreground">
-              Ready to publish
+              Listos para publicar
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Budget</CardTitle>
+            <CardTitle className="text-sm font-medium">Presupuesto</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -215,7 +220,7 @@ export default function CampaignDetails({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Duration</CardTitle>
+            <CardTitle className="text-sm font-medium">Duración</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -226,7 +231,7 @@ export default function CampaignDetails({
               }
             </div>
             <p className="text-xs text-muted-foreground">
-              days
+              días
             </p>
           </CardContent>
         </Card>
@@ -235,9 +240,9 @@ export default function CampaignDetails({
       {/* Detailed Content */}
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="overview">Resumen</TabsTrigger>
           <TabsTrigger value="posts">Posts</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="analytics">Analíticas</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
@@ -245,34 +250,34 @@ export default function CampaignDetails({
             {/* Campaign Details */}
             <Card>
               <CardHeader>
-                <CardTitle>Campaign Details</CardTitle>
+                <CardTitle>Detalles de la Campaña</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {campaign.description && (
                   <div>
-                    <h4 className="font-medium mb-2">Description</h4>
+                    <h4 className="font-medium mb-2">Descripción</h4>
                     <p className="text-sm text-gray-600">{campaign.description}</p>
                   </div>
                 )}
 
                 <div>
-                  <h4 className="font-medium mb-2">Timeline</h4>
+                  <h4 className="font-medium mb-2">Cronograma</h4>
                   <div className="text-sm space-y-1">
                     <div className="flex items-center">
                       <Calendar className="mr-2 h-4 w-4" />
-                      <span>Start: {new Date(campaign.startDate).toLocaleDateString()}</span>
+                      <span>Inicio: {new Date(campaign.startDate).toLocaleDateString()}</span>
                     </div>
                     {campaign.endDate && (
                       <div className="flex items-center">
                         <Calendar className="mr-2 h-4 w-4" />
-                        <span>End: {new Date(campaign.endDate).toLocaleDateString()}</span>
+                        <span>Fin: {new Date(campaign.endDate).toLocaleDateString()}</span>
                       </div>
                     )}
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-2">Platforms</h4>
+                  <h4 className="font-medium mb-2">Plataformas</h4>
                   <div className="flex flex-wrap gap-2">
                     {platforms.map((platform: string) => (
                       <Badge key={platform} variant="outline">
@@ -284,7 +289,7 @@ export default function CampaignDetails({
 
                 {tags.length > 0 && (
                   <div>
-                    <h4 className="font-medium mb-2">Tags</h4>
+                    <h4 className="font-medium mb-2">Etiquetas</h4>
                     <div className="flex flex-wrap gap-2">
                       {tags.map((tag: string) => (
                         <Badge key={tag} variant="secondary">
@@ -300,12 +305,12 @@ export default function CampaignDetails({
             {/* Target Audience & Objectives */}
             <Card>
               <CardHeader>
-                <CardTitle>Target & Objectives</CardTitle>
+                <CardTitle>Público y Objetivos</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {objectives.length > 0 && (
                   <div>
-                    <h4 className="font-medium mb-2">Objectives</h4>
+                    <h4 className="font-medium mb-2">Objetivos</h4>
                     <ul className="text-sm space-y-1">
                       {objectives.map((objective: string) => (
                         <li key={objective} className="flex items-center">
@@ -375,12 +380,12 @@ export default function CampaignDetails({
                             {post.content}
                           </p>
                           <div className="flex items-center text-xs text-gray-500 space-x-4">
-                            <span>Platforms: {JSON.parse(post.platforms || '[]').join(', ')}</span>
+                            <span>Plataformas: {JSON.parse(post.platforms || '[]').join(', ')}</span>
                             {post.scheduledAt && (
-                              <span>Scheduled: {new Date(post.scheduledAt).toLocaleDateString()}</span>
+                              <span>Programado: {new Date(post.scheduledAt).toLocaleDateString()}</span>
                             )}
                             {post.publishedAt && (
-                              <span>Published: {new Date(post.publishedAt).toLocaleDateString()}</span>
+                              <span>Publicado: {new Date(post.publishedAt).toLocaleDateString()}</span>
                             )}
                           </div>
                         </div>
@@ -391,8 +396,8 @@ export default function CampaignDetails({
               ) : (
                 <div className="text-center py-8 text-gray-500">
                   <Target className="mx-auto h-12 w-12 text-gray-300" />
-                  <h3 className="mt-2 text-sm font-medium">No posts yet</h3>
-                  <p className="mt-1 text-sm">Create social media posts and assign them to this campaign.</p>
+                  <h3 className="mt-2 text-sm font-medium">Sin posts aún</h3>
+                  <p className="mt-1 text-sm">Cree posts en redes sociales y asígnelos a esta campaña.</p>
                 </div>
               )}
             </CardContent>
@@ -402,13 +407,13 @@ export default function CampaignDetails({
         <TabsContent value="analytics">
           <Card>
             <CardHeader>
-              <CardTitle>Campaign Analytics</CardTitle>
+              <CardTitle>Analíticas de Campaña</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-center py-8 text-gray-500">
                 <BarChart3 className="mx-auto h-12 w-12 text-gray-300" />
-                <h3 className="mt-2 text-sm font-medium">Analytics coming soon</h3>
-                <p className="mt-1 text-sm">Campaign performance metrics will be available here.</p>
+                <h3 className="mt-2 text-sm font-medium">Analíticas próximamente</h3>
+                <p className="mt-1 text-sm">Las métricas de desempeño de la campaña estarán disponibles aquí.</p>
               </div>
             </CardContent>
           </Card>

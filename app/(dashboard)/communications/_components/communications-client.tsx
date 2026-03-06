@@ -519,7 +519,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                 {integrationForm.service === 'TWILIO' && (
                   <>
                     <div className="space-y-2">
-                      <Label htmlFor="accountSid">Account SID</Label>
+                      <Label htmlFor="accountSid">SID de Cuenta</Label>
                       <Input
                         id="accountSid"
                         value={integrationForm.config.accountSid}
@@ -531,7 +531,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="authToken">Auth Token</Label>
+                      <Label htmlFor="authToken">Token de Autenticación</Label>
                       <Input
                         id="authToken"
                         type="password"

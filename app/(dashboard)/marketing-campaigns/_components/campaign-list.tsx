@@ -28,6 +28,14 @@ const statusColors = {
   CANCELLED: 'bg-red-100 text-red-800'
 };
 
+const statusLabels: Record<string, string> = {
+  DRAFT: 'Borrador',
+  ACTIVE: 'Activa',
+  PAUSED: 'En pausa',
+  COMPLETED: 'Completada',
+  CANCELLED: 'Cancelada'
+};
+
 export default function CampaignList({
   campaigns,
   isLoading,
@@ -40,7 +48,7 @@ export default function CampaignList({
   const [sortBy, setSortBy] = useState<string>('createdAt');
 
   const handleDelete = async (campaignId: string, campaignName: string) => {
-    if (!confirm(`Are you sure you want to delete "${campaignName}"? This action cannot be undone.`)) {
+    if (!confirm(`¿Está seguro de eliminar la campaña "${campaignName}"? Esta acción no se puede deshacer.`)) {
       return;
     }
 
@@ -112,7 +120,7 @@ export default function CampaignList({
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search campaigns..."
+                  placeholder="Buscar campañas..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-9"
@@ -122,28 +130,28 @@ export default function CampaignList({
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder="Filtrar por estado" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="DRAFT">Draft</SelectItem>
-                <SelectItem value="ACTIVE">Active</SelectItem>
-                <SelectItem value="PAUSED">Paused</SelectItem>
-                <SelectItem value="COMPLETED">Completed</SelectItem>
-                <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                <SelectItem value="all">Todos los estados</SelectItem>
+                <SelectItem value="DRAFT">Borrador</SelectItem>
+                <SelectItem value="ACTIVE">Activa</SelectItem>
+                <SelectItem value="PAUSED">En pausa</SelectItem>
+                <SelectItem value="COMPLETED">Completada</SelectItem>
+                <SelectItem value="CANCELLED">Cancelada</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Sort by" />
+                <SelectValue placeholder="Ordenar por" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="createdAt">Date Created</SelectItem>
-                <SelectItem value="name">Name</SelectItem>
-                <SelectItem value="startDate">Start Date</SelectItem>
-                <SelectItem value="budget">Budget</SelectItem>
-                <SelectItem value="status">Status</SelectItem>
+                <SelectItem value="createdAt">Fecha de creación</SelectItem>
+                <SelectItem value="name">Nombre</SelectItem>
+                <SelectItem value="startDate">Fecha de inicio</SelectItem>
+                <SelectItem value="budget">Presupuesto</SelectItem>
+                <SelectItem value="status">Estado</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -154,7 +162,7 @@ export default function CampaignList({
       <Card>
         <CardHeader>
           <CardTitle>
-            Campaigns ({filteredCampaigns.length})
+            Campañas ({filteredCampaigns.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -171,7 +179,7 @@ export default function CampaignList({
                         <div className="flex items-center space-x-2 mb-2">
                           <h3 className="font-medium text-lg">{campaign.name}</h3>
                           <Badge className={statusColors[campaign.status as keyof typeof statusColors]}>
-                            {campaign.status.toLowerCase()}
+                            {statusLabels[campaign.status] || campaign.status}
                           </Badge>
                         </div>
                         
@@ -216,7 +224,7 @@ export default function CampaignList({
                           ))}
                           {tags.length > 3 && (
                             <Badge variant="secondary" className="text-xs">
-                              +{tags.length - 3} more
+                              +{tags.length - 3} más
                             </Badge>
                           )}
                         </div>
@@ -256,12 +264,12 @@ export default function CampaignList({
             <div className="text-center py-8 text-gray-500">
               <Target className="mx-auto h-12 w-12 text-gray-300" />
               <h3 className="mt-2 text-sm font-medium">
-                {searchTerm || statusFilter !== 'all' ? 'No campaigns match your filters' : 'No campaigns yet'}
+                {searchTerm || statusFilter !== 'all' ? 'Ninguna campaña coincide con los filtros' : 'No hay campañas aún'}
               </h3>
               <p className="mt-1 text-sm">
                 {searchTerm || statusFilter !== 'all' 
-                  ? 'Try adjusting your search or filters.' 
-                  : 'Create your first marketing campaign to get started.'
+                  ? 'Intente ajustar su búsqueda o filtros.' 
+                  : 'Cree su primera campaña de marketing para comenzar.'
                 }
               </p>
             </div>
