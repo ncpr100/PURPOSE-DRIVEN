@@ -46,9 +46,6 @@ export const authOptions: NextAuthOptions = {
           const user = await db.users.findUnique({
             where: {
               email: credentials.email
-            },
-            include: {
-              churches: true
             }
           })
 
