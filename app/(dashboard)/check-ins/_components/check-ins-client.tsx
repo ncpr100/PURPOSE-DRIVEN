@@ -573,7 +573,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Button type="button" variant="outline" onClick={() => setIsChildDialogOpen(false)}>
                     Cancelar
                   </Button>
-                  <Button type="submit">Registrar Niño</Button>}
+                  <Button type="submit">Registrar Niño</Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+
           <Dialog open={isQrGeneratorOpen} onOpenChange={setIsQrGeneratorOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
