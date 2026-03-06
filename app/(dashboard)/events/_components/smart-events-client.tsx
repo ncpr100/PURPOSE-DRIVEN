@@ -3,6 +3,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { DayPicker } from 'react-day-picker'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -205,6 +206,25 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     scheduledFor: '',
     targetAudience: 'ALL'
   })
+
+  // Calendar state  
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+  const [calendarView, setCalendarView] = useState<'month' | 'week'>('month')
+
+  // Get events for a specific date
+  const getEventsForDate = (date: Date) => {
+    return events.filter(event => {
+      const eventDate = new Date(event.startDate)
+      return (
+        eventDate.getDate() === date.getDate() &&
+        eventDate.getMonth() === date.getMonth() &&
+        eventDate.getFullYear() === date.getFullYear()
+      )
+    })
+  }
+
+  // Get all event dates for highlighting in calendar
+  const eventDates = events.map(event => new Date(event.startDate))
 
   // Data Fetching
   useEffect(() => {
@@ -1254,13 +1274,151 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         </TabsContent>
 
         <TabsContent value="calendar" className="space-y-4">
-          <Alert>
-            <Calendar className="h-4 w-4" />
-            <AlertTitle>Vista de Calendario Interactivo</AlertTitle>
-            <AlertDescription>
-              Calendario visual con drag-and-drop, vista mensual/semanal, y sincronización de recursos.
-            </AlertDescription>
-          </Alert>
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold">Calendario de Eventos</h2>
+            <div className="flex gap-2">
+              <Button
+                variant={calendarView === 'month' ? 'default' : 'outline'}
+                onClick={() => setCalendarView('month')}
+                size="sm"
+              >
+                Mensual
+              </Button>
+              <Button
+                variant={calendarView === 'week' ? 'default' : 'outline'}
+                onClick={() => setCalendarView('week')}
+                size="sm"
+              >
+                Semanal
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Calendar Widget */}
+            <div className="lg:col-span-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5" />
+                    Calendario Interactivo
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <DayPicker
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={(date) => date && setSelectedDate(date)}
+                    modifiers={{
+                      hasEvent: eventDates
+                    }}
+                    modifiersStyles={{
+                      hasEvent: { 
+                        backgroundColor: '#3b82f6', 
+                        color: 'white',
+                        borderRadius: '50%'
+                      }
+                    }}
+                    className="border rounded-lg p-4"
+                    locale="es"
+                  />
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Events for Selected Date */}
+            <div>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">
+                    Eventos para {selectedDate.toLocaleDateString('es-ES', { 
+                      weekday: 'long', 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ScrollArea className="h-[400px]">
+                    {getEventsForDate(selectedDate).length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <Calendar className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                        <p>No hay eventos programados para este día</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {getEventsForDate(selectedDate).map(event => (
+                          <div
+                            key={event.id}
+                            className="p-3 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+                            onClick={() => {
+                              setSelectedEvent(event)
+                              setActiveTab('planning') // Navigate to details
+                            }}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h3 className="font-medium text-sm">{event.title}</h3>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                  {new Date(event.startDate).toLocaleTimeString('es', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit' 
+                                  })}
+                                  {event.endDate && ` - ${new Date(event.endDate).toLocaleTimeString('es', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit' 
+                                  })}`}
+                                </p>
+                                {event.location && (
+                                  <div className="flex items-center gap-1 mt-1">
+                                    <MapPin className="h-3 w-3 text-muted-foreground" />
+                                    <span className="text-xs text-muted-foreground">{event.location}</span>
+                                  </div>
+                                )}
+                              </div>
+                              <Badge variant="secondary" className="text-xs">
+                                {event.category}
+                              </Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+
+              {/* Quick Event Creation */}
+              <Card className="mt-4">
+                <CardHeader>
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <Plus className="h-4 w-4" />
+                    Evento Rápido
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <Input 
+                      placeholder="Título del evento" 
+                      className="text-sm"
+                    />
+                    <div className="flex gap-2">
+                      <Input 
+                        type="time" 
+                        defaultValue={new Date().toTimeString().slice(0, 5)}
+                        className="text-xs" 
+                      />
+                      <Button size="sm" className="flex-1">
+                        <Plus className="h-3 w-3 mr-1" />
+                        Crear
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
 

@@ -59,22 +59,10 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   const [volunteerProfiles, setVolunteerProfiles] = useState<Map<string, any>>(new Map())
   const [memberAvailabilityMatrix, setMemberAvailabilityMatrix] = useState<any>(null)
 
-  // Debug: Monitor dialog state changes
-  useEffect(() => {
-    console.log('🔍 isAssignDialogOpen changed to:', isAssignDialogOpen)
-  }, [isAssignDialogOpen])
-
-  useEffect(() => {
-    console.log('🔍 isProfileDialogOpen changed to:', isProfileDialogOpen)
-  }, [isProfileDialogOpen])
-
-  useEffect(() => {
-    console.log('🔍 selectedVolunteer changed to:', selectedVolunteer?.firstName, selectedVolunteer?.lastName)
-  }, [selectedVolunteer])
+  // State management for dialogs
 
   // Handler functions for buttons
   const handleOpenAssignDialog = (volunteer: Volunteer) => {
-    console.log('📋 Opening assignment dialog for:', volunteer.firstName, volunteer.lastName)
     setSelectedVolunteer(volunteer)
     setIsAssignDialogOpen(true)
   }

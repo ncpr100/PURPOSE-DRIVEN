@@ -56,25 +56,15 @@ export function SpiritualGiftsAssessment({
 
   const fetchSpiritualGifts = async () => {
     try {
-      console.log('🔄 FETCHING SPIRITUAL GIFTS...')
       const response = await fetch('/api/spiritual-gifts')
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ SPIRITUAL GIFTS API RESPONSE:', data)
         const gifts = data.gifts || []
-        console.log('✅ SPIRITUAL GIFTS LOADED:', gifts.length, 'gifts')
-        if (gifts.length > 0) {
-          console.log('🎯 SAMPLE GIFTS:', gifts.slice(0, 3))
-        } else {
-          console.error('❌ NO SPIRITUAL GIFTS FOUND!')
-        }
         setSpiritualGifts(gifts)
       } else {
-        console.error('❌ FAILED TO FETCH SPIRITUAL GIFTS:', response.status)
         toast.error('Error al cargar dones espirituales')
       }
     } catch (error) {
-      console.error('❌ ERROR FETCHING SPIRITUAL GIFTS:', error)
       toast.error('Error al cargar dones espirituales')
     } finally {
       setLoading(false)
@@ -82,71 +72,37 @@ export function SpiritualGiftsAssessment({
   }
 
   const handleGiftToggle = (giftId: string, isPrimary: boolean) => {
-    console.log('🎯 GIFT SELECTION:', { giftId, isPrimary })
-    
     if (isPrimary) {
-      const isCurrentlySelected = formData.primaryGifts.includes(giftId)
-      console.log('🎯 PRIMARY GIFT - Currently selected:', isCurrentlySelected)
-      console.log('🎯 PRIMARY GIFT - Current array:', formData.primaryGifts)
-      
-      setFormData(prev => {
-        const newPrimaryGifts = prev.primaryGifts.includes(giftId)
+      setFormData(prev => ({
+        ...prev,
+        primaryGifts: prev.primaryGifts.includes(giftId)
           ? prev.primaryGifts.filter((id: string) => id !== giftId)
           : [...prev.primaryGifts, giftId]
-          
-        console.log('🎯 PRIMARY GIFT - New array:', newPrimaryGifts)
-        
-        return {
-          ...prev,
-          primaryGifts: newPrimaryGifts
-        }
-      })
+      }))
     } else {
-      const isCurrentlySelected = formData.secondaryGifts.includes(giftId)
-      console.log('🎯 SECONDARY GIFT - Currently selected:', isCurrentlySelected)
-      console.log('🎯 SECONDARY GIFT - Current array:', formData.secondaryGifts)
-      
-      setFormData(prev => {
-        const newSecondaryGifts = prev.secondaryGifts.includes(giftId)
+      setFormData(prev => ({
+        ...prev,
+        secondaryGifts: prev.secondaryGifts.includes(giftId)
           ? prev.secondaryGifts.filter((id: string) => id !== giftId)
           : [...prev.secondaryGifts, giftId]
-          
-        console.log('🎯 SECONDARY GIFT - New array:', newSecondaryGifts)
-        
-        return {
-          ...prev,
-          secondaryGifts: newSecondaryGifts
-        }
-      })
+      }))
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    console.log('🔍 FORM SUBMISSION DEBUG:')
-    console.log('📋 Current formData state:', formData)
-    console.log('📋 formData.primaryGifts:', formData.primaryGifts)
-    console.log('📋 formData.primaryGifts length:', formData.primaryGifts.length)
-    console.log('📋 formData.secondaryGifts:', formData.secondaryGifts)
-    console.log('📋 formData.ministryPassions:', formData.ministryPassions)
-    console.log('📋 Member ID:', memberId)
-    
     if (formData.primaryGifts.length === 0) {
-      console.error('❌ VALIDATION FAILED: Primary gifts array is empty')
       toast.error('Por favor selecciona al menos un don espiritual principal')
       setSaving(false)
       return
     }
 
     if (formData.ministryPassions.length === 0) {
-      console.error('❌ VALIDATION FAILED: Ministry passions array is empty')
       toast.error('Por favor selecciona al menos una pasión ministerial')
       setSaving(false)
       return
     }
-
-    console.log('✅ VALIDATION PASSED: Form has required data')
     
     setSaving(true)
 
@@ -156,10 +112,6 @@ export function SpiritualGiftsAssessment({
         ...formData
       }
       
-      console.log('📤 FINAL PAYLOAD BEING SENT:', payload)
-      console.log('📤 Payload JSON:', JSON.stringify(payload, null, 2))
-      console.log('Member ID:', memberId)
-      
       const response = await fetch('/api/member-spiritual-profile', {
         method: 'POST',
         headers: {
@@ -167,34 +119,15 @@ export function SpiritualGiftsAssessment({
         },
         body: JSON.stringify(payload)
       })
-
-      console.log('🔍 API Response Status:', response.status)
-      console.log('🔍 API Response OK:', response.ok)
       
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ SUCCESS Response Data:', data)
-        console.log('🔍 SUCCESS Response Profile:', data.profile)
-        console.log('🔍 SUCCESS Response Success Flag:', data.success)
-        console.log('🔍 SUCCESS Response Refresh Metrics:', data.refreshMetrics)
-        
-        // CRITICAL: Display server logs in browser console
-        if (data.serverLogs && data.serverLogs.length > 0) {
-          console.log('🖥️ SERVER-SIDE EXECUTION LOGS:')
-          data.serverLogs.forEach((log: string, index: number) => {
-            console.log(`${index + 1}. ${log}`)
-          })
-        } else {
-          console.warn('❌ NO SERVER LOGS RECEIVED - Server-side code may not be executing')
-        }
         
         toast.success('Perfil espiritual guardado exitosamente')
         onSave?.(data.profile)
       } else {
-        console.error('API Error Response:', response.status, response.statusText)
         try {
           const error = await response.json()
-          console.error('API Error Details:', error)
           if (response.status === 401) {
             toast.error('Error de autenticación. Por favor, inicie sesión nuevamente.')
           } else if (response.status === 403) {
@@ -203,12 +136,10 @@ export function SpiritualGiftsAssessment({
             toast.error(error.message || `Error al guardar el perfil (${response.status})`)
           }
         } catch (parseError) {
-          console.error('Failed to parse error response:', parseError)
           toast.error(`Error al guardar el perfil (Status: ${response.status})`)
         }
       }
     } catch (error) {
-      console.error('Network/Fetch Error:', error)
       toast.error('Error de red al guardar el perfil espiritual')
     } finally {
       setSaving(false)

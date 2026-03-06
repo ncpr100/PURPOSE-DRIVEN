@@ -80,10 +80,8 @@ export default function SpiritualAssessmentTestPage() {
       setSavedData(data)
       toast.success('Evaluación espiritual guardada exitosamente')
       
-      // Redirect back to origin page after 2 seconds
-      setTimeout(() => {
-        router.push(returnTo)
-      }, 2000)
+      // Immediate redirect after successful save
+      router.push(returnTo)
     } catch (error) {
       console.error('Error saving assessment:', error)
       throw error
