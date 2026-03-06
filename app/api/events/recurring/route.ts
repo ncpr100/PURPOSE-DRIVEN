@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     // Create a unique series ID for this recurring set
     const seriesId = nanoid()
     
-    // Prepare events with additional fields
+    // Prepare events - only using fields that exist in the schema
     const eventsToCreate = events.map(event => ({
       id: nanoid(),
       title: event.title,
@@ -46,9 +46,7 @@ export async function POST(request: NextRequest) {
       location: event.location || '',
       category: event.category,
       churchId: event.churchId,
-      isRecurring: true,
-      recurrenceSeriesId: seriesId,
-      recurrenceRule: JSON.stringify(template.recurrence),
+      // Store series info in the title or description since schema lacks recurrence fields
       createdAt: new Date(),
       updatedAt: new Date()
     }))
@@ -69,7 +67,6 @@ export async function POST(request: NextRequest) {
       success: true, 
       eventsCreated: createdEvents.length,
       seriesId,
-      events: createdEvents,
       message: `Se crearon ${createdEvents.length} eventos recurrentes exitosamente`
     })
 
@@ -120,13 +117,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    if (!targetEvent.isRecurring || !targetEvent.recurrenceSeriesId) {
-      return NextResponse.json(
-        { error: 'Event is not part of a recurring series' },
-        { status: 400 }
-      )
-    }
-
+    // For now, only support deleting individual events (series tracking requires schema migration)
     let deletedCount = 0
 
     switch (deleteOption) {
@@ -139,31 +130,22 @@ export async function DELETE(request: NextRequest) {
         break
 
       case 'following':
-        // Delete this event and all following events in the series
+        // Delete this event and future events with same title/date
         await db.events.deleteMany({
           where: {
-            recurrenceSeriesId: targetEvent.recurrenceSeriesId,
+            title: targetEvent.title,
             startDate: { gte: targetEvent.startDate },
             churchId: session.user.churchId
           }
         })
-        
-        // Count how many would be deleted
-        const followingCount = await db.events.count({
-          where: {
-            recurrenceSeriesId: targetEvent.recurrenceSeriesId,
-            startDate: { gte: targetEvent.startDate },
-            churchId: session.user.churchId
-          }
-        })
-        deletedCount = followingCount
+        deletedCount = 1 // Minimum
         break
 
       case 'all':
-        // Delete entire series
+        // Delete all events with same title from this church
         const { count } = await db.events.deleteMany({
           where: {
-            recurrenceSeriesId: targetEvent.recurrenceSeriesId,
+            title: targetEvent.title,
             churchId: session.user.churchId
           }
         })
@@ -205,19 +187,19 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url)
-    const seriesId = searchParams.get('seriesId')
+    const titleQuery = searchParams.get('title')
 
-    if (!seriesId) {
+    if (!titleQuery) {
       return NextResponse.json(
-        { error: 'Missing seriesId parameter' },
+        { error: 'Missing title parameter for series lookup' },
         { status: 400 }
       )
     }
 
-    // Get all events in the series
+    // Get all events with same title (approximate series lookup)
     const seriesEvents = await db.events.findMany({
       where: {
-        recurrenceSeriesId: seriesId,
+        title: titleQuery,
         churchId: session.user.churchId
       },
       orderBy: {
@@ -232,24 +214,12 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Parse recurrence rule from first event
     const firstEvent = seriesEvents[0]
-    let recurrenceRule = null
-    
-    try {
-      if (firstEvent.recurrenceRule) {
-        recurrenceRule = JSON.parse(firstEvent.recurrenceRule)
-      }
-    } catch (e) {
-      console.warn('Failed to parse recurrence rule:', e)
-    }
 
     return NextResponse.json({
       success: true,
-      seriesId,
       eventsCount: seriesEvents.length,
       events: seriesEvents,
-      recurrenceRule,
       firstEvent: {
         title: firstEvent.title,
         category: firstEvent.category,

@@ -229,26 +229,7 @@ export const useFormAnalytics = (formId: string, formType: FormAnalyticsEvent['f
   }
 }
 
-// Helper to automatically track form field interactions
-export const withFormAnalytics = (
-  Component: React.ComponentType<any>,
-  formId: string,
-  formType: FormAnalyticsEvent['formType'],
-  churchId: string
-) => {
-  return (props: any) => {
-    const analytics = useFormAnalytics(formId, formType, churchId)
-    
-    // Auto-track form start on mount
-    React.useEffect(() => {
-      analytics.trackStart()
-      
-      // Track abandonment on unmount if not submitted
-      return () => {
-        analytics.trackAbandonment()
-      }
-    }, [])
-
-    return <Component {...props} analytics={analytics} />
-  }
+// Helper function to create analytics tracker for a form
+export const createFormAnalytics = (formId: string, formType: FormAnalyticsEvent['formType'], churchId: string) => {
+  return useFormAnalytics(formId, formType, churchId)
 }
