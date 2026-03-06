@@ -587,7 +587,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                       <Progress value={predictiveData.engagementForecast.volunteerParticipationTrend} className="h-2" />
                       
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">Engagement Comunicación</span>
+                        <span className="text-sm font-medium">Compromiso de Comunicación</span>
                         <span className="text-lg font-bold text-orange-600">
                           {predictiveData.engagementForecast.communicationEngagement}%
                         </span>

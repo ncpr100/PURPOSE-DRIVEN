@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react'
 import { DayPicker } from 'react-day-picker'
+import { es } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -1499,7 +1500,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                         day_range_middle: "aria-selected:bg-accent aria-selected:text-accent-foreground",
                         day_hidden: "invisible"
                       }}
-                      locale="es"
+                      locale={es}
                     />
                   </div>
 
@@ -1537,7 +1538,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                         day_outside: "text-muted-foreground opacity-50",
                         day_disabled: "text-muted-foreground opacity-50"
                       }}
-                      locale="es"
+                      locale={es}
                     />
                   </div>
 

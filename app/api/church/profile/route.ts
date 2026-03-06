@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
         id: true,
         name: true,
         address: true,
+        country: true,
         phone: true,
         email: true,
         website: true,
@@ -54,6 +55,7 @@ export async function PUT(request: NextRequest) {
     const {
       name,
       address,
+      country,
       phone,
       email,
       website,
@@ -78,6 +80,7 @@ export async function PUT(request: NextRequest) {
         phone: phone?.trim() || null,
         email: email?.trim() || null,
         website: website?.trim() || null,
+        country: country?.trim() || 'Colombia',
         description: description?.trim() || null,
         logo: logo || null // Don't trim logo - it's base64 data
       }

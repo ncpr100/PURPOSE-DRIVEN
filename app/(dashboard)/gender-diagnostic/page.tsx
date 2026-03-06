@@ -36,17 +36,17 @@ export default function GenderDiagnosticPage() {
   }, [])
 
   if (loading) {
-    return <div className="p-8">Loading...</div>
+    return <div className="p-8">Cargando...</div>
   }
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">🔍 Gender Statistics Diagnostic</h1>
+      <h1 className="text-3xl font-bold mb-6">Diagnóstico de Estadísticas de Género</h1>
       
       <div className="grid gap-4 md:grid-cols-4 mb-8">
         <div className="p-6 border rounded-lg">
           <div className="text-2xl font-bold">{stats.total}</div>
-          <div className="text-sm text-muted-foreground">Total Members</div>
+          <div className="text-sm text-muted-foreground">Total Miembros</div>
         </div>
         <div className="p-6 border rounded-lg bg-green-50">
           <div className="text-2xl font-bold">{stats.masculino}</div>
@@ -58,11 +58,11 @@ export default function GenderDiagnosticPage() {
         </div>
         <div className="p-6 border rounded-lg bg-gray-50">
           <div className="text-2xl font-bold">{stats.other}</div>
-          <div className="text-sm text-muted-foreground">Other/Null</div>
+          <div className="text-sm text-muted-foreground">Otro / Nulo</div>
         </div>
       </div>
 
-      <h2 className="text-xl font-bold mb-4">Sample Members (first 10)</h2>
+      <h2 className="text-xl font-bold mb-4">Muestra de Miembros (primeros 10)</h2>
       <div className="space-y-2">
         {members.slice(0, 10).map((member, index) => (
           <div key={member.id} className="p-4 border rounded">
@@ -79,12 +79,12 @@ export default function GenderDiagnosticPage() {
       </div>
 
       <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded">
-        <h3 className="font-bold mb-2">Expected Results:</h3>
+        <h3 className="font-bold mb-2">Resultados Esperados:</h3>
         <ul className="text-sm space-y-1">
           <li>✅ Total Members: 999</li>
           <li>✅ Masculino: 495</li>
           <li>✅ Femenino: 504</li>
-          <li>✅ Other/Null: 0</li>
+          <li>✅ Otro/Nulo: 0</li>
         </ul>
       </div>
     </div>

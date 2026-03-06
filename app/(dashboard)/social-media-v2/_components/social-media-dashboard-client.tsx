@@ -307,14 +307,14 @@ export default function SocialMediaDashboardClient({
                   {analytics?.summary?.totalImpressions?.toLocaleString() || '0'}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  +{analytics?.summary?.averageEngagement || 0} engagement promedio
+                  +{analytics?.summary?.averageEngagement || 0} interacciones promedio
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Tasa de Engagement</CardTitle>
+                <CardTitle className="text-sm font-medium">Tasa de Interacción</CardTitle>
                 <Heart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -658,7 +658,7 @@ export default function SocialMediaDashboardClient({
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <TrendingUp className="h-5 w-5 text-green-600" />
-                      Posts con Mayor Engagement
+                      Posts con Mayor Interacción
                     </CardTitle>
                   </CardHeader>
                   <CardContent>

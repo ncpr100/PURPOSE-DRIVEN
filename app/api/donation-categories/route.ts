@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
     }
 
-    const categories = await db.donation_categories.findMany({
+    let categories = await db.donation_categories.findMany({
       where: {
         churchId: session.user.churchId,
         isActive: true
@@ -26,6 +26,31 @@ export async function GET(request: NextRequest) {
         name: 'asc'
       }
     })
+
+    // Auto-seed default categories if none exist for this church
+    if (categories.length === 0) {
+      const defaults = [
+        { name: 'Diezmos', description: 'Diezmos de los miembros' },
+        { name: 'Ofrendas', description: 'Ofrendas generales' },
+        { name: 'Misiones', description: 'Fondo de misiones' },
+        { name: 'Construcción', description: 'Fondo de construcción e infraestructura' },
+        { name: 'Benevolencia', description: 'Ayuda a familias necesitadas' },
+      ]
+      await db.donation_categories.createMany({
+        data: defaults.map(d => ({
+          id: nanoid(),
+          name: d.name,
+          description: d.description,
+          churchId: session.user.churchId,
+          isActive: true,
+          updatedAt: new Date()
+        }))
+      })
+      categories = await db.donation_categories.findMany({
+        where: { churchId: session.user.churchId, isActive: true },
+        orderBy: { name: 'asc' }
+      })
+    }
 
     return NextResponse.json(categories)
 

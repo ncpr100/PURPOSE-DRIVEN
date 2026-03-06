@@ -497,6 +497,7 @@ model churches {
   id                               String                             @id
   name                             String
   address                          String?
+  country                          String?                            @default("Colombia")
   phone                            String?
   email                            String?
   website                          String?

@@ -41,7 +41,8 @@ export const volunteerCreateSchema = z.object({
   
   ministryId: cuidOrEmptySchema.or(z.literal('no-ministry')),
   
-  memberId: optionalCuidSchema
+  // Accept any valid ID format (CUID, nanoid, UUID) — existence validated at DB level
+  memberId: z.string().min(5).max(50).optional()
 })
 
 export type VolunteerCreateInput = z.infer<typeof volunteerCreateSchema>

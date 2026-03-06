@@ -32,6 +32,7 @@ export default function ChurchProfilePage() {
   const [churchData, setChurchData] = useState({
     name: '',
     address: '',
+    country: 'Colombia',
     phone: '',
     email: '',
     website: '',
@@ -166,6 +167,7 @@ export default function ChurchProfilePage() {
             setChurchData({
               name: data.church?.name || '',
               address: data.church?.address || '',
+              country: data.church?.country || 'Colombia',
               phone: data.church?.phone || '',
               email: data.church?.email || '',
               website: data.church?.website || '',
@@ -483,8 +485,48 @@ export default function ChurchProfilePage() {
                   id="address"
                   value={churchData.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
-                  placeholder="123 Main Street, Ciudad, Estado"
+                  placeholder="123 Calle Principal, Ciudad, Estado"
                 />
+              </div>
+
+              <div>
+                <Label htmlFor="country">País</Label>
+                <Select
+                  value={churchData.country}
+                  onValueChange={(value) => handleInputChange('country', value)}
+                >
+                  <SelectTrigger id="country">
+                    <SelectValue placeholder="Seleccionar país" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Colombia">🇨🇴 Colombia</SelectItem>
+                    <SelectItem value="México">🇲🇽 México</SelectItem>
+                    <SelectItem value="Brasil">🇧🇷 Brasil</SelectItem>
+                    <SelectItem value="Argentina">🇦🇷 Argentina</SelectItem>
+                    <SelectItem value="Chile">🇨🇱 Chile</SelectItem>
+                    <SelectItem value="Perú">🇵🇪 Perú</SelectItem>
+                    <SelectItem value="Venezuela">🇻🇪 Venezuela</SelectItem>
+                    <SelectItem value="Ecuador">🇪🇨 Ecuador</SelectItem>
+                    <SelectItem value="Guatemala">🇬🇹 Guatemala</SelectItem>
+                    <SelectItem value="Honduras">🇭🇳 Honduras</SelectItem>
+                    <SelectItem value="El Salvador">🇸🇻 El Salvador</SelectItem>
+                    <SelectItem value="Nicaragua">🇳🇮 Nicaragua</SelectItem>
+                    <SelectItem value="Costa Rica">🇨🇷 Costa Rica</SelectItem>
+                    <SelectItem value="Panamá">🇵🇦 Panamá</SelectItem>
+                    <SelectItem value="Uruguay">🇺🇾 Uruguay</SelectItem>
+                    <SelectItem value="Paraguay">🇵🇾 Paraguay</SelectItem>
+                    <SelectItem value="Bolivia">🇧🇴 Bolivia</SelectItem>
+                    <SelectItem value="República Dominicana">🇩🇴 República Dominicana</SelectItem>
+                    <SelectItem value="Cuba">🇨🇺 Cuba</SelectItem>
+                    <SelectItem value="Puerto Rico">🇵🇷 Puerto Rico</SelectItem>
+                    <SelectItem value="Estados Unidos">🇺🇸 Estados Unidos</SelectItem>
+                    <SelectItem value="España">🇪🇸 España</SelectItem>
+                    <SelectItem value="Otro">🌎 Otro</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Seleccionar el país activa los métodos de pago y pasarelas disponibles en tu región.
+                </p>
               </div>
 
               <div>

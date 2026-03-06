@@ -753,7 +753,7 @@ export default function SocialMediaClient() {
                           <span className="font-semibold">{stats.followers.toLocaleString()}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600">Engagement</span>
+                          <span className="text-sm text-gray-600">Interacci\u00f3n</span>
                           <span className="font-semibold">{stats.engagement}%</span>
                         </div>
                         <div className="flex items-center justify-between">

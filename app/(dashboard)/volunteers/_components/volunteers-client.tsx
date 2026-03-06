@@ -317,7 +317,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           ...formData,
           skills: formData.skills ? formData.skills.split(',').map(s => s.trim()) : [],
           availability: formData.availability || null,
-          ministryId: formData.ministryId === 'no-ministry' ? null : formData.ministryId
+          ministryId: formData.ministryId || 'no-ministry'
         }),
       })
 

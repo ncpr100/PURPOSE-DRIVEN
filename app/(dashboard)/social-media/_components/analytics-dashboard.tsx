@@ -249,7 +249,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
         {/* Engagement Timeline */}
         <Card>
           <CardHeader>
-            <CardTitle>Engagement Over Time</CardTitle>
+            <CardTitle>Tendencia de Interacciones</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -297,7 +297,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
         {/* Platform Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Platform Distribution</CardTitle>
+            <CardTitle>Distribución por Plataforma</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -318,7 +318,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value: any) => [value.toLocaleString(), 'Total Engagement']} />
+                <Tooltip formatter={(value: any) => [value.toLocaleString(), 'Total Interacciones']} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -327,7 +327,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
         {/* Follower Growth */}
         <Card>
           <CardHeader>
-            <CardTitle>Follower Growth</CardTitle>
+            <CardTitle>Crecimiento de Seguidores</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -357,7 +357,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
         {/* Reach & Impressions */}
         <Card>
           <CardHeader>
-            <CardTitle>Reach & Impressions</CardTitle>
+            <CardTitle>Alcance e Impresiones</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
