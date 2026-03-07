@@ -1,8 +1,12 @@
 /**
  * Platform Form Detail API — SUPER_ADMIN only
- * GET    /api/platform/forms/[id]   → get single form
- * PATCH  /api/platform/forms/[id]   → update fields (isActive, name, fields…)
- * DELETE /api/platform/forms/[id]   → soft-delete
+ * NOTE: This segment MUST be named [slug] (not [id]) because the sibling
+ *       route [slug]/submit also uses [slug]. Next.js requires all dynamic
+ *       segments at the same level to share the same parameter name.
+ *
+ * GET    /api/platform/forms/:slug   → get single form by id
+ * PATCH  /api/platform/forms/:slug   → update fields (isActive, name, fields…)
+ * DELETE /api/platform/forms/:slug   → soft-delete
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -23,13 +27,13 @@ async function requireSuperAdmin() {
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { slug: string } }
 ) {
   const auth = await requireSuperAdmin()
   if (auth.error) return auth.error
 
   const form = await db.platformForm.findUnique({
-    where: { id: params.id, deletedAt: null },
+    where: { id: params.slug, deletedAt: null },
     include: {
       _count: { select: { submissions: true } },
       createdBy: { select: { name: true, email: true } }
@@ -37,13 +41,12 @@ export async function GET(
   })
 
   if (!form) return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
-
   return NextResponse.json({ data: form })
 }
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { slug: string } }
 ) {
   const auth = await requireSuperAdmin()
   if (auth.error) return auth.error
@@ -54,24 +57,23 @@ export async function PATCH(
   }
 
   const existing = await db.platformForm.findUnique({
-    where: { id: params.id, deletedAt: null }
+    where: { id: params.slug, deletedAt: null }
   })
   if (!existing) return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
 
   const { name, description, fields, style, settings, isActive, isPublic, campaignTag, leadScore } = body
-
   const updated = await db.platformForm.update({
-    where: { id: params.id },
+    where: { id: params.slug },
     data: {
-      ...(name        !== undefined ? { name: String(name).trim() }        : {}),
+      ...(name        !== undefined ? { name: String(name).trim() }               : {}),
       ...(description !== undefined ? { description: description ? String(description).trim() : null } : {}),
-      ...(fields      !== undefined ? { fields }                           : {}),
-      ...(style       !== undefined ? { style }                            : {}),
-      ...(settings    !== undefined ? { settings }                         : {}),
-      ...(isActive    !== undefined ? { isActive: Boolean(isActive) }      : {}),
-      ...(isPublic    !== undefined ? { isPublic: Boolean(isPublic) }      : {}),
-      ...(campaignTag !== undefined ? { campaignTag: String(campaignTag) } : {}),
-      ...(leadScore   !== undefined ? { leadScore: Number(leadScore) }     : {}),
+      ...(fields      !== undefined ? { fields }                                  : {}),
+      ...(style       !== undefined ? { style }                                   : {}),
+      ...(settings    !== undefined ? { settings }                                : {}),
+      ...(isActive    !== undefined ? { isActive: Boolean(isActive) }             : {}),
+      ...(isPublic    !== undefined ? { isPublic: Boolean(isPublic) }             : {}),
+      ...(campaignTag !== undefined ? { campaignTag: String(campaignTag) }        : {}),
+      ...(leadScore   !== undefined ? { leadScore: Number(leadScore) }            : {}),
     }
   })
 
@@ -80,19 +82,19 @@ export async function PATCH(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { slug: string } }
 ) {
   const auth = await requireSuperAdmin()
   if (auth.error) return auth.error
 
   const existing = await db.platformForm.findUnique({
-    where: { id: params.id, deletedAt: null }
+    where: { id: params.slug, deletedAt: null }
   })
   if (!existing) return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
 
   // Soft delete
   await db.platformForm.update({
-    where: { id: params.id },
+    where: { id: params.slug },
     data: { deletedAt: new Date(), isActive: false }
   })
 
