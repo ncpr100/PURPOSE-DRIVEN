@@ -192,6 +192,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Verificar que el miembro pertenezca a la misma iglesia (previene cross-tenant breach)
+    if (!isAnonymous && memberId) {
+      const memberBelongsToChurch = await db.members.findFirst({
+        where: { id: memberId, churchId: session.user.churchId },
+        select: { id: true }
+      })
+      if (!memberBelongsToChurch) {
+        return NextResponse.json(
+          { message: 'Miembro no encontrado' },
+          { status: 400 }
+        )
+      }
+    }
+
     // DATABASE TRANSACTION for data integrity
     // Use database transaction to ensure atomicity
     const donation = await db.$transaction(async (tx) => {
