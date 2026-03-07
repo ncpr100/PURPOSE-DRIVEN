@@ -502,6 +502,8 @@ model churches {
   phone                            String?
   email                            String?
   website                          String?
+  stripeConnectAccountId           String?   // Stripe Connect account for tenant payment isolation
+  stripeConnectStatus              String?   @default("not_connected") // not_connected | pending | active | deauthorized
   founded                          DateTime?
   logo                             String?
   description                      String?
@@ -2040,6 +2042,8 @@ model users {
   platformSubmissionsProcessed           PlatformFormSubmission[]                 @relation("PlatformSubmissionProcessedBy")
   platformQRCodesGenerated               PlatformQRCode[]                         @relation("PlatformQRGeneratedBy")
   qrCodesCreated                         qr_codes[]                               @relation("QRCodeCreatedBy")
+  dynamicQRCodesCreated                  DynamicQRCode[]                          @relation("DynamicQRCreatedBy")
+  platformPaymentsCreated                PlatformPayment[]                        @relation("PlatformPaymentCreatedBy")
 }
 
 model verification_tokens {
@@ -2643,5 +2647,65 @@ model qr_scans {
   
   @@index([qrCodeId])
   @@index([scannedAt])
+}
+
+// Dynamic QR codes for super admin — destination can be changed after printing
+model DynamicQRCode {
+  id              String    @id @default(cuid())
+  shortCode       String    @unique   // short code used in /qr/[shortCode]
+  name            String
+  destinationType String    @default("url")  // url | form | payment | event | survey
+  destinationUrl  String    // current redirect target (mutable without reprinting)
+  config          Json      // QR visual config (colors, dot style, logo, etc.)
+  isActive        Boolean   @default(true)
+  scanCount       Int       @default(0)
+  lastScannedAt   DateTime?
+  notes           String?
+  createdById     String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  createdBy users         @relation("DynamicQRCreatedBy", fields: [createdById], references: [id])
+  scans     DynamicQRScan[]
+
+  @@index([shortCode])
+  @@index([destinationType])
+  @@index([isActive])
+  @@index([createdAt])
+}
+
+model DynamicQRScan {
+  id        String        @id @default(cuid())
+  qrCodeId  String
+  scannedAt DateTime      @default(now())
+  userAgent String?
+  ipAddress String?
+
+  qrCode    DynamicQRCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+
+  @@index([qrCodeId])
+  @@index([scannedAt])
+}
+
+// Platform-level payments — NEVER mixes with tenant funds
+model PlatformPayment {
+  id              String    @id @default(cuid())
+  stripePaymentId String?   @unique     // Stripe Payment Intent ID
+  amount          Int                   // amount in cents (e.g. 1000 = $10.00)
+  currency        String    @default("usd")
+  status          String    @default("pending")  // pending | succeeded | failed | refunded
+  description     String?
+  payerEmail      String?
+  payerName       String?
+  metadata        Json?
+  createdById     String?   // super admin who initiated; null = self-service
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  createdBy users? @relation("PlatformPaymentCreatedBy", fields: [createdById], references: [id])
+
+  @@index([status])
+  @@index([stripePaymentId])
+  @@index([createdAt])
 }
 

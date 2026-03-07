@@ -20,10 +20,15 @@ import {
   Globe,
   ToggleLeft,
   ToggleRight,
-  RefreshCw
+  RefreshCw,
+  Layers,
+  CreditCard
 } from 'lucide-react'
 import PlatformQRGenerator from './platform-qr-generator'
 import { PlatformFormAnalytics } from './platform-form-analytics'
+import { PlatformFormBuilderDnd, type PlatformFormData } from './platform-form-builder-dnd'
+import { PlatformDynamicQR } from './platform-dynamic-qr'
+import { PlatformStripeConnect } from './platform-stripe-connect'
 
 // Field names match the API response from /api/platform/forms
 interface PlatformForm {
@@ -61,6 +66,8 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
     description: '',
     campaignTag: 'lead_capture'
   })
+  const [editingForm, setEditingForm] = useState<PlatformFormData | null>(null)
+  const [showBuilder, setShowBuilder] = useState(false)
 
   // Fetch platform forms
   const fetchForms = async () => {
@@ -163,10 +170,37 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
     window.open(`${window.location.origin}/p/${slug}`, '_blank')
   }
 
-  // Switch to QR tab with this form pre-selected
+  // Switch to QR tab with this form pre-selected (static generator)
   const openQRForForm = (slug: string) => {
     setSelectedFormSlug(slug)
     setActiveTab('qr')
+  }
+
+  // Open DnD builder for an existing form
+  const openBuilder = (form?: PlatformFormData) => {
+    setEditingForm(form ?? null)
+    setShowBuilder(true)
+    setActiveTab('constructor')
+  }
+
+  // Save form from DnD builder
+  const handleSaveBuiltForm = async (formData: PlatformFormData) => {
+    const url    = editingForm ? `/api/platform/forms/${editingForm.id}` : '/api/platform/forms'
+    const method = editingForm ? 'PATCH' : 'POST'
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    if (res.ok) {
+      toast.success(editingForm ? 'Formulario actualizado' : 'Formulario creado')
+      setShowBuilder(false)
+      setEditingForm(null)
+      await fetchForms()
+    } else {
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error || 'Error al guardar')
+    }
   }
 
   // Delete form
@@ -240,18 +274,26 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="formularios" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
-            Formularios
+            <span className="hidden sm:inline">Formularios</span>
           </TabsTrigger>
-          <TabsTrigger value="qr" className="flex items-center gap-2">
+          <TabsTrigger value="constructor" className="flex items-center gap-2">
+            <Layers className="h-4 w-4" />
+            <span className="hidden sm:inline">Constructor</span>
+          </TabsTrigger>
+          <TabsTrigger value="qr-dinamico" className="flex items-center gap-2">
             <QrCode className="h-4 w-4" />
-            Generador QR
+            <span className="hidden sm:inline">QR Dinámico</span>
+          </TabsTrigger>
+          <TabsTrigger value="stripe" className="flex items-center gap-2">
+            <CreditCard className="h-4 w-4" />
+            <span className="hidden sm:inline">Stripe Connect</span>
           </TabsTrigger>
           <TabsTrigger value="analiticas" className="flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
-            Analíticas
+            <span className="hidden sm:inline">Analíticas</span>
           </TabsTrigger>
         </TabsList>
 
@@ -427,40 +469,68 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
           )}
         </TabsContent>
 
-        {/* ─── TAB 2: QR GENERATOR ─── */}
-        <TabsContent value="qr" className="mt-6">
-          {forms.length > 0 && (
-            <div className="mb-4">
-              <Label htmlFor="qr-form-select">Seleccionar Formulario para QR</Label>
-              <div className="flex gap-2 mt-1">
-                <select
-                  id="qr-form-select"
-                  className="flex-1 p-2 border rounded-md"
-                  value={selectedFormSlug || ''}
-                  onChange={(e) => setSelectedFormSlug(e.target.value || undefined)}
-                >
-                  <option value="">— Seleccionar formulario —</option>
-                  {forms.map(form => (
-                    <option key={form.id} value={form.slug}>
-                      {form.name}
-                    </option>
-                  ))}
-                </select>
+        {/* ─── TAB 2: CONSTRUCTOR DND ─── */}
+        <TabsContent value="constructor" className="mt-6">
+          {showBuilder ? (
+            <PlatformFormBuilderDnd
+              form={editingForm ?? undefined}
+              onSave={handleSaveBuiltForm}
+              onCancel={() => { setShowBuilder(false); setEditingForm(null) }}
+            />
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">Constructor de Formularios</h2>
+                  <p className="text-sm text-muted-foreground">Arrastra y suelta campos para diseñar formularios avanzados</p>
+                </div>
+                <Button onClick={() => openBuilder()} className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  Nuevo Formulario
+                </Button>
               </div>
-              {selectedFormSlug && (
-                <p className="text-xs text-gray-500 mt-1">
-                  URL del QR:{' '}
-                  <span className="font-mono text-blue-600">
-                    {typeof window !== 'undefined' ? window.location.origin : ''}/p/{selectedFormSlug}
-                  </span>
-                </p>
+              {forms.length === 0 ? (
+                <div className="text-center py-16 border-2 border-dashed rounded-lg">
+                  <Layers className="h-10 w-10 mx-auto mb-3 text-gray-300" />
+                  <p className="text-muted-foreground">Crea tu primer formulario con el constructor</p>
+                  <Button className="mt-4" onClick={() => openBuilder()}>Abrir Constructor</Button>
+                </div>
+              ) : (
+                <div className="grid gap-3">
+                  {forms.map(form => (
+                    <div key={form.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div>
+                        <p className="font-medium text-sm">{form.name}</p>
+                        <p className="text-xs text-muted-foreground font-mono">/p/{form.slug}</p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => openBuilder(form as unknown as PlatformFormData)}
+                        className="gap-1"
+                      >
+                        <Layers className="h-3.5 w-3.5" />
+                        Editar
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           )}
-          <PlatformQRGenerator formSlug={selectedFormSlug} />
         </TabsContent>
 
-        {/* ─── TAB 3: ANALÍTICAS ─── */}
+        {/* ─── TAB 3: QR DINÁMICO ─── */}
+        <TabsContent value="qr-dinamico" className="mt-6">
+          <PlatformDynamicQR />
+        </TabsContent>
+
+        {/* ─── TAB 4: STRIPE CONNECT ─── */}
+        <TabsContent value="stripe" className="mt-6">
+          <PlatformStripeConnect />
+        </TabsContent>
+
+        {/* ─── TAB 5: ANALÍTICAS ─── */}
         <TabsContent value="analiticas" className="mt-6">
           <PlatformFormAnalytics forms={forms} isOpen={activeTab === 'analiticas'} />
         </TabsContent>
