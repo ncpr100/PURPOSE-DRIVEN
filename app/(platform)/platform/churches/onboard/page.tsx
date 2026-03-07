@@ -24,7 +24,8 @@ import {
   Shield,
   CheckCircle,
   AlertCircle,
-  Loader2
+  Loader2,
+  Info
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -79,6 +80,9 @@ export default function TenantOnboardingPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
+  // When false: church is created but credential email is NOT sent until payment is confirmed
+  const [sendCredentialsNow, setSendCredentialsNow] = useState(false)
+  const [createdResult, setCreatedResult] = useState<{ email: string; password: string; credentialsSent: boolean } | null>(null)
   
   const [onboardingData, setOnboardingData] = useState<OnboardingData>({
     church: {
@@ -323,14 +327,25 @@ export default function TenantOnboardingPage() {
             email: onboardingData.admin.email,
             phone: onboardingData.admin.phone,
             password: onboardingData.admin.password
-          }
+          },
+          sendCredentialsNow
         })
       })
 
       if (response.ok) {
         const result = await response.json()
+        const credSent = result.credentialsSent ?? sendCredentialsNow
+        setCreatedResult({
+          email: onboardingData.admin.email,
+          password: result.tempPassword ?? '',
+          credentialsSent: credSent
+        })
         toast.success('¡Iglesia creada exitosamente!')
-        router.push('/platform/churches')
+        if (credSent) {
+          // Credentials sent by email — safe to navigate away immediately
+          router.push('/platform/churches')
+        }
+        // If NOT sent, stay on step 3 so admin can copy the credentials panel
       } else {
         const errorData = await response.json()
         toast.error(errorData.message || 'Error al crear la iglesia')
@@ -710,6 +725,52 @@ export default function TenantOnboardingPage() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Credential send toggle */}
+            <div className="border border-amber-300 bg-amber-50 rounded-lg p-4 flex items-start gap-3">
+              <Info className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-amber-800 mb-2">
+                  Envío de credenciales al administrador
+                </p>
+                <p className="text-xs text-amber-700 mb-3">
+                  El sistema generará una contraseña temporal única y segura. Puedes enviarla ahora por email o retener las credenciales hasta verificar el pago.
+                </p>
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={sendCredentialsNow}
+                    onChange={(e) => setSendCredentialsNow(e.target.checked)}
+                    className="h-4 w-4 accent-amber-600"
+                  />
+                  <span className="text-sm font-medium text-amber-800">
+                    Enviar credenciales por email al crear
+                  </span>
+                </label>
+                {!sendCredentialsNow && (
+                  <p className="text-xs text-amber-600 mt-2">
+                    Las credenciales se mostrarán en pantalla tras la creación. Podrás enviarlas desde la página de Credenciales una vez verificado el pago.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Credentials result panel (shown after creation when not emailed) */}
+            {createdResult && !createdResult.credentialsSent && (
+              <div className="border border-green-400 bg-green-50 rounded-lg p-4">
+                <p className="text-sm font-semibold text-green-800 mb-3 flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4" />
+                  Iglesia creada — credenciales generadas (NO enviadas por email)
+                </p>
+                <div className="bg-white rounded border border-green-200 p-3 space-y-1 text-sm font-mono">
+                  <p><span className="text-gray-600">Email:</span> {createdResult.email}</p>
+                  <p><span className="text-gray-600">Contraseña:</span> <strong>{createdResult.password}</strong></p>
+                </div>
+                <p className="text-xs text-green-700 mt-2">
+                  Copia estas credenciales ahora. La contraseña no se mostrará nuevamente.
+                </p>
+              </div>
+            )}
           </div>
         )
 
@@ -813,6 +874,11 @@ export default function TenantOnboardingPage() {
             <Button onClick={nextStep}>
               Siguiente
               <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          ) : createdResult ? (
+            <Button onClick={() => router.push('/platform/churches')}>
+              <ArrowRight className="h-4 w-4 mr-2" />
+              Ir a Gestión de Iglesias
             </Button>
           ) : (
             <Button onClick={handleSubmit} disabled={isSubmitting}>

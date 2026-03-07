@@ -1,11 +1,41 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
+import { randomBytes } from 'crypto'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { sendEmail, emailQueue } from '@/lib/email'
 import { getServerBaseUrl } from '@/lib/server-url'
 import { nanoid } from 'nanoid'
+
+/**
+ * Generates a cryptographically secure 12-character temporary password.
+ * Each church receives a UNIQUE password — never a shared default.
+ * Format: 3 uppercase + 3 lowercase + 3 digits + 3 special chars, shuffled.
+ */
+function generateSecureTemporaryPassword(): string {
+  const upper  = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
+  const lower  = 'abcdefghjkmnpqrstuvwxyz'
+  const digits = '23456789'
+  const special = '@#$!'
+  const all = upper + lower + digits + special
+  const bytes = randomBytes(16)
+  // Guarantee at least one of each required character class
+  const required = [
+    upper[bytes[12] % upper.length],
+    lower[bytes[13] % lower.length],
+    digits[bytes[14] % digits.length],
+    special[bytes[15] % special.length],
+  ]
+  const rest = Array.from({ length: 8 }, (_, i) => all[bytes[i] % all.length])
+  // Shuffle the combined array using Fisher-Yates
+  const combined = [...required, ...rest]
+  for (let i = combined.length - 1; i > 0; i--) {
+    const j = bytes[i % 12] % (i + 1)
+    ;[combined[i], combined[j]] = [combined[j], combined[i]]
+  }
+  return combined.join('')
+}
 
 // Supabase Admin API for creating Auth users
 const supabaseAdminUrl = 'https://qxdwpihcmgctznvdfmbv.supabase.co'
@@ -166,7 +196,10 @@ export async function POST(request: NextRequest) {
       website,
       founded,
       description,
-      adminUser
+      adminUser,
+      // When false, the church is created but credential email is NOT sent yet.
+      // Super Admin can send credentials later via Credenciales page.
+      sendCredentialsNow = true
     } = body
 
     // Validaciones
@@ -189,6 +222,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Generate password ONCE here so both the transaction (hashing) and
+    // post-transaction email/response reference the exact same value.
+    const bcrypt = require('bcryptjs')
+    const temporaryPassword = (adminUser.password && adminUser.password.length >= 8)
+      ? adminUser.password
+      : generateSecureTemporaryPassword()
+
     // Create church and admin user in a transaction
     const result = await db.$transaction(async (tx) => {
       // Create church
@@ -207,9 +247,7 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      // Create admin user password
-      const bcrypt = require('bcryptjs')
-      const temporaryPassword = adminUser.password || 'cambiarpassword123'
+      // Hash the password that was already generated above
       const hashedPassword = await bcrypt.hash(temporaryPassword, 12)
 
       // Create admin user in database
@@ -266,8 +304,6 @@ export async function POST(request: NextRequest) {
       return { church, admin, supabaseUser }
     })
 
-    // Send welcome email with temporary password to the new admin
-    const temporaryPassword = adminUser.password || 'cambiarpassword123'
     const authStatusMessage = result.supabaseUser 
       ? '✅ Tu cuenta de autenticación ha sido creada automáticamente.'
       : '⚠️ Por favor contacta al soporte para activar tu cuenta de autenticación.'
@@ -332,16 +368,20 @@ export async function POST(request: NextRequest) {
       </html>
     `
 
-    // Send email asynchronously (don't block the response)
-    emailQueue.add({
-      to: adminUser.email,
-      subject: `🎉 Bienvenido a Kḥesed-tek - Credenciales de ${name}`,
-      html: welcomeEmailContent,
-      churchName: name,
-      userName: adminUser.name
-    }).catch(error => {
-      console.error('Error sending welcome email:', error)
-    })
+    // Only send credential email if Super Admin explicitly requested it.
+    // When sendCredentialsNow === false the church is created but locked until
+    // payment is confirmed — Super Admin sends credentials from Credenciales page.
+    if (sendCredentialsNow !== false) {
+      emailQueue.add({
+        to: adminUser.email,
+        subject: `Bienvenido a Kḥesed-tek - Credenciales de ${name}`,
+        html: welcomeEmailContent,
+        churchName: name,
+        userName: adminUser.name
+      }).catch(error => {
+        console.error('Error sending welcome email:', error)
+      })
+    }
 
     return NextResponse.json({
       message: 'Iglesia creada exitosamente',
@@ -356,7 +396,11 @@ export async function POST(request: NextRequest) {
         message: result.supabaseUser 
           ? 'Usuario de autenticación creado automáticamente'
           : 'Usuario de autenticación pendiente - contactar soporte'
-      }
+      },
+      // tempPassword is returned ONCE here so Super Admin can record it.
+      // It will also be included in the credential email when sent.
+      tempPassword: temporaryPassword,
+      credentialsSent: sendCredentialsNow !== false
     }, { status: 201 })
 
   } catch (error) {

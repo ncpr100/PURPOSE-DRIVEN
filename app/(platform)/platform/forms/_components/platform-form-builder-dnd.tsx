@@ -311,10 +311,11 @@ function SortableField({
                         </p>
                         <div className="grid grid-cols-3 gap-2">
                           <Select
-                            value={field.showIf?.fieldId || ''}
+                            value={field.showIf?.fieldId || '__none__'}
                             onValueChange={(v) =>
                               onUpdate(field.id, {
-                                showIf: v
+                                // '__none__' sentinel clears the conditional rule (Radix forbids empty-string values)
+                                showIf: v && v !== '__none__'
                                   ? { fieldId: v, operator: field.showIf?.operator || 'equals', value: field.showIf?.value || '' }
                                   : undefined,
                               })
@@ -324,7 +325,7 @@ function SortableField({
                               <SelectValue placeholder="Campo" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="">Sin condición</SelectItem>
+                              <SelectItem value="__none__">Sin condición</SelectItem>
                               {otherFields.map((f) => (
                                 <SelectItem key={f.id} value={f.id}>
                                   {f.label}
