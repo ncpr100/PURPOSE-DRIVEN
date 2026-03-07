@@ -47,9 +47,6 @@ exports.authOptions = {
                     const user = await db_1.db.users.findUnique({
                         where: {
                             email: credentials.email
-                        },
-                        include: {
-                            churches: true
                         }
                     });
                     if (!user || !user.password) {

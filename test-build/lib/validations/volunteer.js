@@ -36,7 +36,8 @@ exports.volunteerCreateSchema = zod_1.z.object({
         frequency: zod_1.z.enum(['weekly', 'biweekly', 'monthly', 'occasional']).optional()
     }).optional(),
     ministryId: cuid_1.cuidOrEmptySchema.or(zod_1.z.literal('no-ministry')),
-    memberId: cuid_1.optionalCuidSchema
+    // Accept any valid ID format (CUID, nanoid, UUID) — existence validated at DB level
+    memberId: zod_1.z.string().min(5).max(50).optional()
 });
 /**
  * Validation schema for volunteer assignments

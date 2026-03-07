@@ -37,12 +37,20 @@ export async function GET(request: NextRequest) {
       // Return default pastel colors (platform style)
       return NextResponse.json({
         brandColors: {
-          prayerRequest: '#DDD6FE',    // Purple-200 (pastel) - purple-600 icon
-          visitorFollowup: '#DBEAFE',  // Blue-200 (pastel) - blue-600 icon
-          socialMedia: '#D1FAE5',      // Green-200 (pastel)
-          events: '#FED7AA',           // Orange-200 (pastel)
-          primary: '#DBEAFE',          // Blue-200 (pastel)
-          secondary: '#D1FAE5'         // Green-200 (pastel)
+          prayerRequest: '#DDD6FE',
+          visitorFollowup: '#DBEAFE',
+          socialMedia: '#D1FAE5',
+          events: '#FED7AA',
+          prayerRequestText: '#7C3AED',
+          visitorFollowupText: '#1D4ED8',
+          socialMediaText: '#047857',
+          eventsText: '#C2410C',
+          badgeBackground: '#EDE9FE',
+          badgeText: '#6D28D9',
+          buttonBackground: '#7C3AED',
+          buttonText: '#FFFFFF',
+          primary: '#DBEAFE',
+          secondary: '#D1FAE5'
         },
         isDefault: true
       })
@@ -65,6 +73,14 @@ export async function GET(request: NextRequest) {
         visitorFollowup: '#DBEAFE',
         socialMedia: '#D1FAE5',
         events: '#FED7AA',
+        prayerRequestText: '#7C3AED',
+        visitorFollowupText: '#1D4ED8',
+        socialMediaText: '#047857',
+        eventsText: '#C2410C',
+        badgeBackground: '#EDE9FE',
+        badgeText: '#6D28D9',
+        buttonBackground: '#7C3AED',
+        buttonText: '#FFFFFF',
         primary: '#DBEAFE',
         secondary: '#D1FAE5'
       },
@@ -111,9 +127,17 @@ export async function PUT(request: NextRequest) {
     const colorRegex = /^#[0-9A-F]{6}$/i
     const validColors = [
       'prayerRequest',
-      'visitorFollowup', 
+      'visitorFollowup',
       'socialMedia',
       'events',
+      'prayerRequestText',
+      'visitorFollowupText',
+      'socialMediaText',
+      'eventsText',
+      'badgeBackground',
+      'badgeText',
+      'buttonBackground',
+      'buttonText',
       'primary',
       'secondary'
     ]

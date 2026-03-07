@@ -6,7 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import { 
   FileText, 
@@ -17,8 +20,44 @@ import {
   Gift, 
   Calendar, 
   MessageSquare,
-  Sparkles
+  Sparkles,
+  Pencil
 } from 'lucide-react'
+import { toast } from 'react-hot-toast'
+
+interface BrandColors {
+  prayerRequest: string
+  visitorFollowup: string
+  socialMedia: string
+  events: string
+  prayerRequestText: string
+  visitorFollowupText: string
+  socialMediaText: string
+  eventsText: string
+  badgeBackground: string
+  badgeText: string
+  buttonBackground: string
+  buttonText: string
+  primary: string
+  secondary: string
+}
+
+const DEFAULT_BRAND_COLORS: BrandColors = {
+  prayerRequest: '#DDD6FE',
+  visitorFollowup: '#DBEAFE',
+  socialMedia: '#D1FAE5',
+  events: '#FED7AA',
+  prayerRequestText: '#7C3AED',
+  visitorFollowupText: '#1D4ED8',
+  socialMediaText: '#047857',
+  eventsText: '#C2410C',
+  badgeBackground: '#EDE9FE',
+  badgeText: '#6D28D9',
+  buttonBackground: '#7C3AED',
+  buttonText: '#FFFFFF',
+  primary: '#DBEAFE',
+  secondary: '#D1FAE5',
+}
 
 interface AutomationTemplate {
   id: string
@@ -44,10 +83,32 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [brandColors, setBrandColors] = useState<BrandColors>(DEFAULT_BRAND_COLORS)
+
+  // For the "Personalizar" edit dialog
+  const [editTemplate, setEditTemplate] = useState<AutomationTemplate | null>(null)
+  const [editName, setEditName] = useState('')
+  const [editDescription, setEditDescription] = useState('')
+  const [editSaving, setEditSaving] = useState(false)
 
   useEffect(() => {
     fetchTemplates()
+    fetchBrandColors()
   }, [selectedCategory])
+
+  const fetchBrandColors = async () => {
+    try {
+      const res = await fetch('/api/church-theme')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.brandColors) {
+          setBrandColors({ ...DEFAULT_BRAND_COLORS, ...data.brandColors })
+        }
+      }
+    } catch (_) {
+      // Keep defaults on error
+    }
+  }
 
   const fetchTemplates = async () => {
     try {
@@ -74,13 +135,35 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
 
   const getCategoryIcon = (category: string) => {
     const icons: Record<string, React.ReactNode> = {
-      'PRAYER_REQUEST': <Heart className="h-4 w-4" />,
-      'VISITOR_FOLLOWUP': <Users className="h-4 w-4" />,
-      'MEMBER_ENGAGEMENT': <Star className="h-4 w-4" />,
-      'DONATION_MANAGEMENT': <Gift className="h-4 w-4" />,
-      'EVENT_MANAGEMENT': <Calendar className="h-4 w-4" />
+      'PRAYER_REQUEST': <Heart className="h-5 w-5" />,
+      'VISITOR_FOLLOWUP': <Users className="h-5 w-5" />,
+      'MEMBER_ENGAGEMENT': <Star className="h-5 w-5" />,
+      'DONATION_MANAGEMENT': <Gift className="h-5 w-5" />,
+      'EVENT_MANAGEMENT': <Calendar className="h-5 w-5" />
     }
-    return icons[category] || <FileText className="h-4 w-4" />
+    return icons[category] || <FileText className="h-5 w-5" />
+  }
+
+  const getCategoryBg = (category: string): string => {
+    const map: Record<string, keyof BrandColors> = {
+      'PRAYER_REQUEST': 'prayerRequest',
+      'VISITOR_FOLLOWUP': 'visitorFollowup',
+      'SOCIAL_MEDIA': 'socialMedia',
+      'EVENT_MANAGEMENT': 'events',
+    }
+    const key = map[category]
+    return key ? brandColors[key] : brandColors.primary
+  }
+
+  const getCategoryText = (category: string): string => {
+    const map: Record<string, keyof BrandColors> = {
+      'PRAYER_REQUEST': 'prayerRequestText',
+      'VISITOR_FOLLOWUP': 'visitorFollowupText',
+      'SOCIAL_MEDIA': 'socialMediaText',
+      'EVENT_MANAGEMENT': 'eventsText',
+    }
+    const key = map[category]
+    return key ? brandColors[key] : brandColors.prayerRequestText
   }
 
   const getCategoryLabel = (category: string) => {
@@ -92,6 +175,42 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
       'EVENT_MANAGEMENT': 'Gestión de Eventos'
     }
     return labels[category] || category
+  }
+
+  const openEditDialog = (template: AutomationTemplate, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setEditTemplate(template)
+    setEditName(template.name)
+    setEditDescription(template.description || '')
+  }
+
+  const handleSaveEdit = async () => {
+    if (!editTemplate || !editName.trim()) return
+    setEditSaving(true)
+    try {
+      const res = await fetch(`/api/automation-templates/${editTemplate.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: editName.trim(), description: editDescription.trim() })
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Error al guardar')
+      }
+      setTemplates(prev =>
+        prev.map(t =>
+          t.id === editTemplate.id
+            ? { ...t, name: editName.trim(), description: editDescription.trim() }
+            : t
+        )
+      )
+      toast.success('Plantilla actualizada')
+      setEditTemplate(null)
+    } catch (err: any) {
+      toast.error(err.message || 'Error al guardar la plantilla')
+    } finally {
+      setEditSaving(false)
+    }
   }
 
   const filteredTemplates = templates.filter(template =>
@@ -174,18 +293,45 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
           <Card key={template.id} className="hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {getCategoryIcon(template.category)}
-                  <CardTitle className="text-lg">{template.name}</CardTitle>
+                <div className="flex items-center gap-2 min-w-0">
+                  <div
+                    className="p-2 rounded-lg flex-shrink-0"
+                    style={{ backgroundColor: getCategoryBg(template.category) }}
+                  >
+                    <span style={{ color: getCategoryText(template.category) }}>
+                      {getCategoryIcon(template.category)}
+                    </span>
+                  </div>
+                  <CardTitle
+                    className="text-base leading-tight"
+                    style={{ color: getCategoryText(template.category) }}
+                  >
+                    {template.name}
+                  </CardTitle>
                 </div>
-                {template.isSystem && (
-                  <Badge variant="secondary" className="gap-1">
-                    <Sparkles className="h-3 w-3" />
-                    Sistema
-                  </Badge>
-                )}
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  {template.isSystem && (
+                    <Badge
+                      variant="secondary"
+                      className="gap-1 text-xs"
+                      style={{ backgroundColor: brandColors.badgeBackground, color: brandColors.badgeText }}
+                    >
+                      <Sparkles className="h-3 w-3" />
+                      Sistema
+                    </Badge>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                    title="Personalizar plantilla"
+                    onClick={(e) => openEditDialog(template, e)}
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
               </div>
-              <CardDescription className="line-clamp-2">
+              <CardDescription className="line-clamp-2 mt-1">
                 {template.description}
               </CardDescription>
             </CardHeader>
@@ -195,22 +341,25 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <Star className="h-4 w-4" />
-                    <span>{template.usageCount} instalaciones</span>
+                    <span>{template.usageCount} usos</span>
                   </div>
-                  
                   <Button
                     size="sm"
                     onClick={() => onSelectTemplate(template)}
                     className="gap-2"
+                    style={{ backgroundColor: brandColors.buttonBackground, color: brandColors.buttonText }}
                   >
                     Usar Plantilla
                   </Button>
                 </div>
 
                 {/* Category Badge */}
-                <Badge variant="outline" className="w-fit">
+                <span
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                  style={{ backgroundColor: brandColors.badgeBackground, color: brandColors.badgeText }}
+                >
                   {getCategoryLabel(template.category)}
-                </Badge>
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -231,6 +380,48 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
           </CardContent>
         </Card>
       )}
+
+      {/* Edit / Personalizar Template Dialog */}
+      <Dialog open={!!editTemplate} onOpenChange={(open) => !open && setEditTemplate(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Personalizar Plantilla</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div>
+              <Label htmlFor="edit-name">Nombre</Label>
+              <Input
+                id="edit-name"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label htmlFor="edit-desc">Descripción</Label>
+              <Textarea
+                id="edit-desc"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                rows={3}
+                className="mt-1"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditTemplate(null)}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleSaveEdit}
+              disabled={editSaving || !editName.trim()}
+              style={{ backgroundColor: brandColors.buttonBackground, color: brandColors.buttonText }}
+            >
+              {editSaving ? 'Guardando...' : 'Guardar'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

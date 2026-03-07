@@ -23,7 +23,7 @@ export declare const volunteerCreateSchema: z.ZodObject<{
         times?: ("morning" | "afternoon" | "evening")[] | undefined;
     }>>;
     ministryId: z.ZodUnion<[z.ZodEffects<z.ZodString, string, string>, z.ZodLiteral<"no-ministry">]>;
-    memberId: z.ZodEffects<z.ZodOptional<z.ZodString>, string | undefined, string | undefined>;
+    memberId: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     firstName: string;
     lastName: string;

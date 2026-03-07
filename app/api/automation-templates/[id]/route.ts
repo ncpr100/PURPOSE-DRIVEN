@@ -222,3 +222,60 @@ export async function POST(
     );
   }
 }
+
+// PATCH /api/automation-templates/[id] - Update template name/description
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+
+    const user = await prisma.users.findUnique({
+      where: { id: session.user.id },
+      select: { id: true, churchId: true, role: true }
+    });
+
+    if (!user || !user.churchId) {
+      return NextResponse.json({ error: 'Usuario no encontrado o sin iglesia' }, { status: 400 });
+    }
+
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
+      return NextResponse.json({ error: 'Sin permisos para editar plantillas' }, { status: 403 });
+    }
+
+    const body = await request.json();
+    const { name, description } = body;
+
+    if (!name || typeof name !== 'string' || !name.trim()) {
+      return NextResponse.json({ error: 'El nombre es requerido' }, { status: 400 });
+    }
+
+    const template = await prisma.automation_rule_templates.findUnique({
+      where: { id: params.id }
+    });
+
+    if (!template) {
+      return NextResponse.json({ error: 'Plantilla no encontrada' }, { status: 404 });
+    }
+
+    const updated = await prisma.automation_rule_templates.update({
+      where: { id: params.id },
+      data: {
+        name: name.trim(),
+        ...(description !== undefined && { description: description.trim() })
+      }
+    });
+
+    return NextResponse.json({ success: true, template: updated });
+  } catch (error) {
+    console.error('Error updating template:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}
