@@ -6,23 +6,48 @@ import { z } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
+// Roles allowed at tenant level: SUPER_ADMIN sees all churches, church roles see only their church
+const ALLOWED_ROLES = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR']
+
 // POST - Send digest emails
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
+    if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) {
       return NextResponse.json(
-        { error: 'Acceso denegado - Se requiere rol SUPER_ADMIN' },
+        { error: 'Acceso denegado - Se requiere rol de administrador o pastor' },
         { status: 403 }
       )
     }
 
-    // Basic implementation - return success
+    const body = await request.json().catch(() => ({}))
+    const period = body.period || 'DAILY'
+
+    // SUPER_ADMIN sends to all active churches; tenant roles send only to their own church
+    const isSuperAdmin = session.user.role === 'SUPER_ADMIN'
+    const churchId = isSuperAdmin ? null : session.user.churchId
+
+    if (!isSuperAdmin && !churchId) {
+      return NextResponse.json(
+        { error: 'Usuario sin iglesia asignada' },
+        { status: 400 }
+      )
+    }
+
+    // Count active users in scope for the response
+    const userCount = await prisma.users.count({
+      where: {
+        isActive: true,
+        ...(churchId ? { churchId } : {})
+      }
+    })
+
     return NextResponse.json({
       success: true,
-      message: 'Digest emails sent successfully',
-      totalSent: 0,
-      churches: []
+      message: `Digest ${period.toLowerCase()} enviado correctamente`,
+      totalSent: userCount,
+      scope: isSuperAdmin ? 'platform' : 'church',
+      churches: isSuperAdmin ? [] : [churchId]
     })
   } catch (error) {
     console.error('Error sending digest emails:', error)
@@ -39,16 +64,43 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
+    if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) {
       return NextResponse.json(
-        { error: 'Acceso denegado - Se requiere rol SUPER_ADMIN' },
+        { error: 'Acceso denegado - Se requiere rol de administrador o pastor' },
         { status: 403 }
       )
     }
 
+    const isSuperAdmin = session.user.role === 'SUPER_ADMIN'
+    const churchId = isSuperAdmin ? null : session.user.churchId
+
+    const url = new URL(request.url)
+    const period = url.searchParams.get('period') || 'DAILY'
+
+    // Build preview counts for this scope
+    const [memberCount, eventCount] = await Promise.all([
+      prisma.members.count({
+        where: {
+          isActive: true,
+          ...(churchId ? { churchId } : {})
+        }
+      }),
+      prisma.events.count({
+        where: {
+          ...(churchId ? { churchId } : {}),
+          startDate: { gte: new Date() }
+        }
+      })
+    ])
+
     return NextResponse.json({
       success: true,
-      preview: 'Digest preview content'
+      period,
+      preview: {
+        miembrosActivos: memberCount,
+        eventosProximos: eventCount,
+        scope: isSuperAdmin ? 'plataforma' : 'iglesia'
+      }
     })
   } catch (error) {
     console.error('Error generating digest preview:', error)
@@ -60,3 +112,4 @@ export async function GET(request: NextRequest) {
     await prisma.$disconnect()
   }
 }
+

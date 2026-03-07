@@ -152,15 +152,17 @@ export async function GET(request: NextRequest) {
         totalCount = 0
       }
 
-      // Transform deliveries to include read state
-      const notifications = deliveries.map(delivery => ({
-        ...delivery.notifications,
-        isRead: delivery.isRead,
-        readAt: delivery.readAt,
-        deliveryId: delivery.id,
-        deliveryStatus: delivery.deliveryStatus,
-        deliveredAt: delivery.deliveredAt
-      }))
+      // Transform deliveries to include read state — guard against orphan deliveries
+      const notifications = deliveries
+        .filter((delivery: any) => delivery.notifications != null)
+        .map((delivery: any) => ({
+          ...delivery.notifications,
+          isRead: delivery.isRead,
+          readAt: delivery.readAt,
+          deliveryId: delivery.id,
+          deliveryStatus: delivery.deliveryStatus,
+          deliveredAt: delivery.deliveredAt
+        }))
 
       // Get unread count
       const unreadCount = await prisma.notification_deliveries.count({

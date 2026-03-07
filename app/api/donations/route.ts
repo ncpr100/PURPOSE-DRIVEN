@@ -68,8 +68,17 @@ export async function GET(request: NextRequest) {
       db.donations.count({ where: whereClause })
     ])
 
+    // Map Prisma snake_case relation names to camelCase for client interface
+    const normalizedDonations = donations.map((donation: any) => ({
+      ...donation,
+      paymentMethod: donation.payment_methods ?? null,
+      category: donation.donation_categories ?? null,
+      member: donation.members ?? null,
+      // Keep originals for backwards compatibility but ensure camelCase fields exist
+    }))
+
     return NextResponse.json({
-      donations,
+      donations: normalizedDonations,
       pagination: {
         page,
         limit,

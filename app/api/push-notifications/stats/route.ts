@@ -14,60 +14,92 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
+    // Only SUPER_ADMIN, ADMIN_IGLESIA, and PASTOR can view push notification stats
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
+      return NextResponse.json({ error: 'Sin permisos' }, { status: 403 })
+    }
+
     const user = await db.users.findUnique({
       where: { id: session.user.id },
-      include: { churches: true }
+      select: { id: true, churchId: true, role: true }
     })
 
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
 
+    const churchId = user.churchId
     const url = new URL(request.url)
     const days = parseInt(url.searchParams.get('days') || '30')
-    
     const startDate = subDays(new Date(), days)
     const endDate = new Date()
 
-    // Get push notification statistics
+    // 1. Subscription stats — what the usePushNotificationStats hook expects
+    const [
+      totalSubscriptions,
+      activeSubscriptions,
+      platformStats,
+      recentActivity
+    ] = await Promise.all([
+      db.push_subscriptions.count({ where: { churchId } }),
+      db.push_subscriptions.count({ where: { churchId, isActive: true } }),
+      db.push_subscriptions.groupBy({
+        by: ['platform'],
+        where: { churchId, isActive: true },
+        _count: true
+      }),
+      db.push_subscriptions.count({
+        where: {
+          churchId,
+          isActive: true,
+          updatedAt: { gte: subDays(new Date(), 7) }
+        }
+      })
+    ])
+
+    const subscriptionsByPlatform = platformStats.reduce(
+      (acc: Record<string, number>, stat: any) => {
+        acc[stat.platform || 'unknown'] = stat._count
+        return acc
+      },
+      {} as Record<string, number>
+    )
+
+    // 2. Notification log stats (supplementary)
     const notifications = await db.push_notification_logs.findMany({
       where: {
-        churchId: user.churchId,
-        createdAt: {
-          gte: startDate,
-          lte: endDate
-        }
+        churchId,
+        createdAt: { gte: startDate, lte: endDate }
       },
-      include: {
-        users: true
+      select: {
+        status: true,
+        clickedAt: true,
+        dismissedAt: true,
+        createdAt: true
       }
     })
 
-    // Calculate stats
     const totalNotifications = notifications.length
-    const sentNotifications = notifications.filter(notif => notif.status?.toUpperCase() === 'SENT').length
-    const failedNotifications = notifications.filter(notif => notif.status?.toUpperCase() === 'FAILED').length
-    const pendingNotifications = notifications.filter(notif => notif.status?.toUpperCase() === 'PENDING').length
+    const sentNotifications = notifications.filter(n => n.status?.toUpperCase() === 'SENT').length
+    const failedNotifications = notifications.filter(n => n.status?.toUpperCase() === 'FAILED').length
+    const clickedNotifications = notifications.filter(n => n.clickedAt !== null).length
 
-    // Click and dismissal analytics
-    const clickedNotifications = notifications.filter(notif => notif.clickedAt !== null).length
-    const dismissedNotifications = notifications.filter(notif => notif.dismissedAt !== null).length
-
-    const stats = {
+    return NextResponse.json({
+      // Fields expected by usePushNotificationStats hook
+      totalSubscriptions,
+      activeSubscriptions,
+      subscriptionsByPlatform,
+      recentActivity,
+      // Supplementary notification log stats
       summary: {
         totalNotifications,
         sentNotifications,
         failedNotifications,
-        pendingNotifications,
         clickedNotifications,
-        dismissedNotifications,
         successRate: totalNotifications > 0 ? ((sentNotifications / totalNotifications) * 100).toFixed(1) : '0.0',
         clickRate: sentNotifications > 0 ? ((clickedNotifications / sentNotifications) * 100).toFixed(1) : '0.0'
-      },
-      recentNotifications: notifications.slice(0, 20)
-    }
-
-    return NextResponse.json(stats)
+      }
+    })
   } catch (error) {
     console.error('Error fetching push notification stats:', error)
     return NextResponse.json(

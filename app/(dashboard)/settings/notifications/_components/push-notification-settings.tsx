@@ -323,7 +323,7 @@ export function PushNotificationSettings() {
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">
-                  {Object.keys(stats.subscriptionsByPlatform).length}
+                  {Object.keys(stats.subscriptionsByPlatform || {}).length}
                 </div>
                 <div className="text-xs text-muted-foreground">Plataformas</div>
               </div>
