@@ -520,8 +520,8 @@ export default function PlatformDashboard() {
                 <CardDescription>Proyectos completados</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-green-600">12</div>
-                <p className="text-sm text-green-600 mt-1">+$18,450 revenue</p>
+                <div className="text-3xl font-bold text-green-600">{mockStats.websiteRequests.completed}</div>
+                <p className="text-sm text-green-600 mt-1">+${mockStats.websiteRequests.totalRevenue?.toLocaleString() ?? 0} revenue</p>
               </CardContent>
             </Card>
           </div>

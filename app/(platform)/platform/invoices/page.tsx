@@ -43,11 +43,11 @@ interface Invoice {
   notes?: string
   sentAt?: string
   paidAt?: string
-  church: {
+  churches: {
     id: string
     name: string
     email: string
-  }
+  } | null
   lineItems: Array<{
     description: string
     quantity: number
@@ -599,8 +599,8 @@ export default function InvoiceManagementPage() {
                         <h3 className="font-medium">{invoice.invoiceNumber}</h3>
                         {getStatusBadge(invoice.status)}
                       </div>
-                      <p className="text-sm font-medium">{invoice.church.name}</p>
-                      <p className="text-sm text-muted-foreground">{invoice.church.email}</p>
+                      <p className="text-sm font-medium">{invoice.churches?.name ?? '—'}</p>
+                      <p className="text-sm text-muted-foreground">{invoice.churches?.email ?? ''}</p>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
