@@ -2,6 +2,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
@@ -15,7 +16,6 @@ import {
   BarChart3,
   Settings,
   ArrowLeft,
-  Shield,
   Book,
   MessageCircle,
   Globe,
@@ -46,11 +46,17 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
   return (
     <div className="hidden md:flex w-64 bg-gray-900 text-white flex-col">
       {/* Logo */}
-      <div className="p-6">
+      <div className="p-4 pb-2">
         <div className="flex items-center gap-3">
-          <Shield className="h-8 w-8 text-blue-400" />
+          <Image
+            src="/logo.png"
+            alt="Khesed-tek CMS"
+            width={48}
+            height={48}
+            className="rounded-md object-contain"
+          />
           <div>
-            <h1 className="text-lg font-bold">Kḥesed-tek</h1>
+            <h1 className="text-sm font-bold leading-tight">Kḥesed-tek</h1>
             <p className="text-xs text-gray-400">Super Admin</p>
           </div>
         </div>
@@ -78,11 +84,17 @@ function MobileSidebar({ pathname }: { pathname: string }) {
       <SheetContent side="left" className="p-0 w-64">
         <div className="bg-gray-900 text-white h-full flex flex-col">
           {/* Logo */}
-          <div className="p-6">
+          <div className="p-4 pb-2">
             <div className="flex items-center gap-3">
-              <Shield className="h-8 w-8 text-blue-400" />
+              <Image
+                src="/logo.png"
+                alt="Khesed-tek CMS"
+                width={48}
+                height={48}
+                className="rounded-md object-contain"
+              />
               <div>
-                <h1 className="text-lg font-bold">Kḥesed-tek</h1>
+                <h1 className="text-sm font-bold leading-tight">Kḥesed-tek</h1>
                 <p className="text-xs text-gray-400">Super Admin</p>
               </div>
             </div>

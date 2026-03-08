@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'react-hot-toast'
 import {
@@ -663,6 +664,179 @@ export default function InvoiceManagementPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Invoice Detail Modal */}
+      <Dialog open={!!selectedInvoice} onOpenChange={(open) => { if (!open) setSelectedInvoice(null) }}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-3">
+              <FileText className="h-5 w-5 text-blue-600" />
+              Factura {selectedInvoice?.invoiceNumber}
+              {selectedInvoice && getStatusBadge(selectedInvoice.status)}
+            </DialogTitle>
+          </DialogHeader>
+
+          {selectedInvoice && (
+            <div className="space-y-6">
+              {/* Church & Dates */}
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Iglesia</p>
+                  <p className="font-semibold">{selectedInvoice.churches?.name ?? '—'}</p>
+                  <p className="text-sm text-muted-foreground">{selectedInvoice.churches?.email ?? ''}</p>
+                </div>
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Fecha vencimiento:</span>
+                    <span>{new Date(selectedInvoice.dueDate).toLocaleDateString('es-CO')}</span>
+                  </div>
+                  {selectedInvoice.sentAt && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Enviada:</span>
+                      <span>{new Date(selectedInvoice.sentAt).toLocaleDateString('es-CO')}</span>
+                    </div>
+                  )}
+                  {selectedInvoice.paidAt && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Pagada:</span>
+                      <span className="text-green-600 font-medium">{new Date(selectedInvoice.paidAt).toLocaleDateString('es-CO')}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <Separator />
+
+              {/* Line Items */}
+              <div>
+                <p className="text-sm font-semibold mb-3">Concepto(s)</p>
+                {selectedInvoice.lineItems && selectedInvoice.lineItems.length > 0 ? (
+                  <div className="border rounded-lg overflow-hidden">
+                    <table className="w-full text-sm">
+                      <thead className="bg-muted">
+                        <tr>
+                          <th className="text-left px-4 py-2 font-medium">Descripción</th>
+                          <th className="text-center px-4 py-2 font-medium">Cant.</th>
+                          <th className="text-right px-4 py-2 font-medium">Precio Unit.</th>
+                          <th className="text-right px-4 py-2 font-medium">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {selectedInvoice.lineItems.map((item, idx) => (
+                          <tr key={idx} className="hover:bg-muted/30">
+                            <td className="px-4 py-2">{item.description}</td>
+                            <td className="px-4 py-2 text-center">{item.quantity}</td>
+                            <td className="px-4 py-2 text-right">${item.unitPrice.toFixed(2)}</td>
+                            <td className="px-4 py-2 text-right font-medium">${item.totalPrice.toFixed(2)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">Sin conceptos registrados</p>
+                )}
+              </div>
+
+              {/* Totals */}
+              <div className="flex justify-end">
+                <div className="w-64 space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Subtotal:</span>
+                    <span>${selectedInvoice.subtotal.toFixed(2)} {selectedInvoice.currency}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Impuestos:</span>
+                    <span>${selectedInvoice.taxAmount.toFixed(2)} {selectedInvoice.currency}</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between font-bold text-base">
+                    <span>Total:</span>
+                    <span className="text-green-600">${selectedInvoice.totalAmount.toFixed(2)} {selectedInvoice.currency}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payments */}
+              {selectedInvoice.payments && selectedInvoice.payments.length > 0 && (
+                <>
+                  <Separator />
+                  <div>
+                    <p className="text-sm font-semibold mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      Pagos Registrados
+                    </p>
+                    <div className="space-y-2">
+                      {selectedInvoice.payments.map((payment, idx) => (
+                        <div key={idx} className="flex justify-between items-center text-sm bg-green-50 rounded px-3 py-2">
+                          <div>
+                            <span className="font-medium">{payment.paymentMethod}</span>
+                            {payment.reference && <span className="text-muted-foreground ml-2">Ref: {payment.reference}</span>}
+                            {payment.verifier && <span className="text-muted-foreground ml-2">— {payment.verifier.name}</span>}
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold text-green-700">${payment.amount.toFixed(2)}</p>
+                            <p className="text-xs text-muted-foreground">{new Date(payment.verifiedAt).toLocaleDateString('es-CO')}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Notes */}
+              {selectedInvoice.notes && (
+                <>
+                  <Separator />
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Notas</p>
+                    <p className="text-sm">{selectedInvoice.notes}</p>
+                  </div>
+                </>
+              )}
+
+              {/* Actions */}
+              <Separator />
+              <div className="flex justify-between items-center">
+                <p className="text-xs text-muted-foreground">
+                  ID: {selectedInvoice.id}
+                </p>
+                <div className="flex gap-2">
+                  {selectedInvoice.status === 'DRAFT' && (
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        updateInvoiceStatus(selectedInvoice.id, 'SENT')
+                        setSelectedInvoice(null)
+                      }}
+                    >
+                      <Send className="h-4 w-4 mr-1" />
+                      Marcar como Enviada
+                    </Button>
+                  )}
+                  {selectedInvoice.status === 'SENT' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        updateInvoiceStatus(selectedInvoice.id, 'PAID')
+                        setSelectedInvoice(null)
+                      }}
+                    >
+                      <CheckCircle className="h-4 w-4 mr-1" />
+                      Marcar Pagada
+                    </Button>
+                  )}
+                  <Button size="sm" variant="ghost" onClick={() => setSelectedInvoice(null)}>
+                    Cerrar
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
