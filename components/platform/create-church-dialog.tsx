@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Loader2, Building2 } from 'lucide-react'
+import { Loader2, Building2, Mail, Info } from 'lucide-react'
 
 interface CreateChurchDialogProps {
   open: boolean
@@ -22,6 +22,9 @@ interface CreateChurchDialogProps {
 
 export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChurchDialogProps) {
   const [loading, setLoading] = useState(false)
+  // SECURITY: password is intentionally omitted — the API generates a unique secure password per church
+  const [sendCredentialsNow, setSendCredentialsNow] = useState(false)
+  const [createdCredentials, setCreatedCredentials] = useState<{ email: string; password: string } | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     address: '',
@@ -33,8 +36,8 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
     adminUser: {
       name: '',
       email: '',
-      password: 'cambiarpassword123',
       phone: ''
+      // No password field — API generates a unique cryptographically-secure temporary password
     }
   })
 
@@ -52,7 +55,6 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
         adminUser: {
           name: '',
           email: '',
-          password: 'cambiarpassword123',
           phone: ''
         }
       }
@@ -102,10 +104,16 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, sendCredentialsNow }),
       })
 
       if (response.ok) {
+        const result = await response.json()
+        // Store generated credentials so Super Admin can copy them
+        setCreatedCredentials({
+          email: formData.adminUser.email,
+          password: result.tempPassword ?? '(ver email)'
+        })
         onSuccess()
         setFormData({
           name: '',
@@ -118,7 +126,6 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
           adminUser: {
             name: '',
             email: '',
-            password: 'cambiarpassword123',
             phone: ''
           }
         })
@@ -316,20 +323,57 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
                 />
               </div>
 
+              {/* SECURITY: password removed from UI — API generates a unique secure password per church */}
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <Info className="h-4 w-4 text-blue-600 mt-0.5 shrink-0" />
+                  <p className="text-xs text-blue-700">
+                    La plataforma genera automáticamente una contraseña segura y única para cada iglesia.
+                    La contraseña se mostrará al finalizar la creación.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Credentials Dispatch Option */}
+          <div className="p-4 border border-amber-200 bg-amber-50 rounded-lg">
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="send-credentials-now"
+                checked={sendCredentialsNow}
+                onChange={(e) => setSendCredentialsNow(e.target.checked)}
+                className="h-4 w-4 accent-amber-600"
+              />
               <div>
-                <Label htmlFor="adminPassword">Contraseña Temporal</Label>
-                <Input
-                  id="adminPassword"
-                  value={formData.adminUser.password}
-                  onChange={(e) => handleInputChange('adminUser.password', e.target.value)}
-                  placeholder="Contraseña temporal"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  El administrador deberá cambiar esta contraseña en su primer acceso
+                <label htmlFor="send-credentials-now" className="text-sm font-medium text-amber-900 cursor-pointer">
+                  Enviar credenciales por email ahora
+                </label>
+                <p className="text-xs text-amber-700 mt-0.5">
+                  Si no está marcado, la iglesia se crea pero las credenciales NO se envían hasta que el pago sea confirmado.
+                  Puedes enviarlas después desde <strong>Credenciales</strong>.
                 </p>
               </div>
             </div>
           </div>
+
+          {/* Show generated credentials after creation */}
+          {createdCredentials && (
+            <div className="p-4 border border-green-300 bg-green-50 rounded-lg">
+              <h4 className="text-sm font-semibold text-green-800 mb-2 flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                Credenciales Generadas (guárdelas ahora)
+              </h4>
+              <p className="text-xs text-green-700"><strong>Usuario:</strong> {createdCredentials.email}</p>
+              <p className="text-xs text-green-700 font-mono mt-1"><strong>Contraseña temporal:</strong> {createdCredentials.password}</p>
+              {!sendCredentialsNow && (
+                <p className="text-xs text-amber-700 mt-2">
+                  Email NO enviado. Envía las credenciales desde la página <strong>Credenciales</strong> una vez confirmado el pago.
+                </p>
+              )}
+            </div>
+          )}
 
           <div className="flex justify-end gap-3">
             <Button

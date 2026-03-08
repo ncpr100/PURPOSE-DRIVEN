@@ -27,8 +27,19 @@ import {
   Eye,
   Settings,
   Ban,
-  RefreshCw
+  RefreshCw,
+  Trash2
 } from 'lucide-react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -68,6 +79,8 @@ export default function EnhancedChurchManagement() {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedChurch, setSelectedChurch] = useState<ChurchData | null>(null)
   const [showChurchDetails, setShowChurchDetails] = useState(false)
+  const [deleteChurchId, setDeleteChurchId] = useState<string | null>(null)
+  const [deleteLoading, setDeleteLoading] = useState(false)
   
   const [filters, setFilters] = useState<ChurchFilter>({
     search: '',
@@ -90,6 +103,28 @@ export default function EnhancedChurchManagement() {
       toast.error('Error al cargar las iglesias')
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handlePermanentDelete = async () => {
+    if (!deleteChurchId) return
+    setDeleteLoading(true)
+    try {
+      const response = await fetch(`/api/platform/churches/${deleteChurchId}?permanent=true`, {
+        method: 'DELETE'
+      })
+      if (response.ok) {
+        toast.success('Iglesia eliminada permanentemente')
+        setDeleteChurchId(null)
+        fetchChurches()
+      } else {
+        const err = await response.json()
+        toast.error(err.error || 'Error al eliminar la iglesia')
+      }
+    } catch {
+      toast.error('Error de conexión')
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -421,8 +456,18 @@ export default function EnhancedChurchManagement() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleChurchAction(church.id, church.isActive ? 'deactivate' : 'activate')}
+                          title={church.isActive ? 'Desactivar' : 'Activar'}
                         >
                           {church.isActive ? <Ban className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                          onClick={() => setDeleteChurchId(church.id)}
+                          title="Eliminar permanentemente"
+                        >
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </TableCell>
@@ -553,6 +598,27 @@ export default function EnhancedChurchManagement() {
           )}
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!deleteChurchId} onOpenChange={(open) => { if (!open) setDeleteChurchId(null) }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Eliminar iglesia permanentemente?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción <strong>no se puede deshacer</strong>. Se eliminarán de forma permanente todos los datos asociados a esta iglesia: miembros, donaciones, eventos, comunicaciones y configuraciones.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteLoading}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handlePermanentDelete}
+              disabled={deleteLoading}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {deleteLoading ? 'Eliminando...' : 'Eliminar Permanentemente'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

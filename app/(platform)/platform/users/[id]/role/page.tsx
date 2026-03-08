@@ -67,7 +67,9 @@ export default function EditUserRolePage() {
       const response = await fetch(`/api/platform/users/${params.id}`)
       
       if (response.ok) {
-        const userData = await response.json()
+        const payload = await response.json()
+        // API returns { user: {...} } — unwrap the nested user object
+        const userData = payload.user ?? payload
         setUser(userData)
         setSelectedRole(userData.role)
       } else {

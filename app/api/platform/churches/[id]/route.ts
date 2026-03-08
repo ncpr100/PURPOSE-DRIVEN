@@ -187,6 +187,8 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 
     const churchId = params.id
+    const { searchParams } = new URL(request.url)
+    const permanent = searchParams.get('permanent') === 'true'
 
     // Verificar que la iglesia existe
     const existingChurch = await db.churches.findUnique({
@@ -208,7 +210,38 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       )
     }
 
-    // En lugar de eliminar, desactivar la iglesia para preservar datos
+    if (permanent) {
+      // Hard delete: remove all associated data then the church itself
+      await db.$transaction([
+        db.notification_deliveries.deleteMany({ where: { notifications: { churchId } } }),
+        db.notifications.deleteMany({ where: { churchId } }),
+        db.visitor_follow_ups.deleteMany({ where: { churchId } }),
+        db.custom_form_submissions.deleteMany({ where: { churchId } }),
+        db.custom_forms.deleteMany({ where: { churchId } }),
+        db.check_ins.deleteMany({ where: { churchId } }),
+        db.prayer_requests.deleteMany({ where: { churchId } }),
+        db.spiritual_assessments.deleteMany({ where: { members: { churchId } } }),
+        db.attendance.deleteMany({ where: { churchId } }),
+        db.event_registrations.deleteMany({ where: { events: { churchId } } }),
+        db.events.deleteMany({ where: { churchId } }),
+        db.transactions.deleteMany({ where: { churchId } }),
+        db.donations.deleteMany({ where: { churchId } }),
+        db.communication_logs.deleteMany({ where: { churchId } }),
+        db.automation_logs.deleteMany({ where: { churchId } }),
+        db.automation_rules.deleteMany({ where: { churchId } }),
+        db.social_media_accounts.deleteMany({ where: { churchId } }),
+        db.members.deleteMany({ where: { churchId } }),
+        db.users.deleteMany({ where: { churchId } }),
+        db.churches.delete({ where: { id: churchId } }),
+      ])
+
+      return NextResponse.json({
+        message: 'Iglesia eliminada permanentemente',
+        churchId
+      })
+    }
+
+    // Soft delete: desactivar la iglesia para preservar datos
     const deactivatedChurch = await db.churches.update({
       where: { id: churchId },
       data: { isActive: false }

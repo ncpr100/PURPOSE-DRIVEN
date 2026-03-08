@@ -3,7 +3,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -63,8 +63,9 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
 
 // Mobile Sidebar Component
 function MobileSidebar({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState(false)
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button 
           variant="ghost" 
@@ -87,7 +88,7 @@ function MobileSidebar({ pathname }: { pathname: string }) {
             </div>
           </div>
 
-          <SidebarNavigation pathname={pathname} />
+          <SidebarNavigation pathname={pathname} onNavigate={() => setOpen(false)} />
         </div>
       </SheetContent>
     </Sheet>
@@ -95,7 +96,7 @@ function MobileSidebar({ pathname }: { pathname: string }) {
 }
 
 // Shared Navigation Component
-function SidebarNavigation({ pathname }: { pathname: string }) {
+function SidebarNavigation({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   return (
     <>
       {/* Navigation */}
@@ -106,6 +107,7 @@ function SidebarNavigation({ pathname }: { pathname: string }) {
             <Link
               key={item.name}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors',
                 isActive
@@ -124,6 +126,7 @@ function SidebarNavigation({ pathname }: { pathname: string }) {
       <div className="p-4 border-t border-gray-700">
         <Link
           href="/platform/dashboard"
+          onClick={onNavigate}
           className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />

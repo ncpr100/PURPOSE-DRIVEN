@@ -22,7 +22,11 @@ import {
   Globe,
   Users,
   CreditCard,
-  Activity
+  Activity,
+  CheckCircle2,
+  XCircle,
+  ExternalLink,
+  RefreshCw
 } from 'lucide-react'
 import { SubscriptionManagement } from '@/components/platform/subscription/subscription-management'
 
@@ -59,8 +63,27 @@ export default function PlatformSettingsPage() {
 
   const [systemActionLoading, setSystemActionLoading] = useState(false)
 
+  const [gatewayStatus, setGatewayStatus] = useState<Record<string, {
+    name: string; configured: boolean; envVar: string;
+    webhookConfigured: boolean; description: string; website: string;
+  }>>({})
+  const [gatewayLoading, setGatewayLoading] = useState(false)
+
+  const loadGatewayStatus = async () => {
+    setGatewayLoading(true)
+    try {
+      const res = await fetch('/api/platform/gateway-status')
+      if (res.ok) {
+        const data = await res.json()
+        setGatewayStatus(data.gateways || {})
+      }
+    } catch { /* silently fail */ }
+    finally { setGatewayLoading(false) }
+  }
+
   useEffect(() => {
     loadPlatformSettings()
+    loadGatewayStatus()
   }, [])
 
   const loadPlatformSettings = async () => {
@@ -600,6 +623,93 @@ export default function PlatformSettingsPage() {
               <Button onClick={() => handleSaveSettings('billing')}>
                 Guardar Configuración de Facturación
               </Button>
+            </CardContent>
+          </Card>
+
+          {/* Platform Payment Gateways Card */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="h-5 w-5 text-blue-600" />
+                  <span>Pasarelas de Pago de la Plataforma</span>
+                </CardTitle>
+                <Button variant="outline" size="sm" onClick={loadGatewayStatus} disabled={gatewayLoading}>
+                  <RefreshCw className={`h-4 w-4 mr-1 ${gatewayLoading ? 'animate-spin' : ''}`} />
+                  Actualizar
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Estado de las integraciones de pago para suscripciones de la plataforma. Configure las variables de entorno en Vercel para activar cada pasarela.
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {Object.values(gatewayStatus).map((gw) => (
+                  <div
+                    key={gw.name}
+                    className={`rounded-lg border p-4 space-y-3 ${gw.configured ? 'border-green-200 bg-green-50/50' : 'border-gray-200 bg-gray-50/50'}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-base">{gw.name}</span>
+                      {gw.configured ? (
+                        <CheckCircle2 className="h-5 w-5 text-green-600" />
+                      ) : (
+                        <XCircle className="h-5 w-5 text-gray-400" />
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{gw.description}</p>
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2 text-xs">
+                        <Key className="h-3.5 w-3.5 text-muted-foreground" />
+                        <code className="bg-white border rounded px-1.5 py-0.5 font-mono text-[11px]">{gw.envVar}</code>
+                        {gw.configured ? (
+                          <span className="text-green-600 font-medium">Configurado</span>
+                        ) : (
+                          <span className="text-gray-500">No configurado</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs">
+                        <Shield className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span>Webhook:</span>
+                        {gw.webhookConfigured ? (
+                          <span className="text-green-600 font-medium">Configurado</span>
+                        ) : (
+                          <span className="text-gray-500">No configurado</span>
+                        )}
+                      </div>
+                    </div>
+                    <a
+                      href={gw.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                      {gw.website.replace('https://', '')}
+                    </a>
+                  </div>
+                ))}
+                {Object.keys(gatewayStatus).length === 0 && !gatewayLoading && (
+                  <p className="col-span-3 text-sm text-muted-foreground text-center py-4">
+                    No se pudo cargar el estado de las pasarelas. Intente actualizar.
+                  </p>
+                )}
+                {gatewayLoading && (
+                  <p className="col-span-3 text-sm text-muted-foreground text-center py-4">
+                    Cargando estado de pasarelas...
+                  </p>
+                )}
+              </div>
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-700 space-y-1">
+                <p className="font-medium">¿Cómo activar una pasarela?</p>
+                <ol className="list-decimal list-inside space-y-0.5 ml-1">
+                  <li>Ve a tu panel de Vercel → Settings → Environment Variables</li>
+                  <li>Agrega la variable de entorno indicada con tu clave API</li>
+                  <li>Redeploya la aplicación para que los cambios tomen efecto</li>
+                  <li>Haz clic en &quot;Actualizar&quot; aquí para ver el nuevo estado</li>
+                </ol>
+              </div>
             </CardContent>
           </Card>
 

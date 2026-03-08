@@ -61,8 +61,9 @@ export default function UserDetailsPage() {
       const response = await fetch(`/api/platform/users/${params.id}`)
       
       if (response.ok) {
-        const userData = await response.json()
-        setUser(userData)
+        const payload = await response.json()
+        // API returns { user: {...} } — unwrap the nested user object
+        setUser(payload.user ?? payload)
       } else {
         toast.error('Error al cargar los detalles del usuario')
       }

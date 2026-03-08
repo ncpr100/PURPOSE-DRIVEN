@@ -138,8 +138,12 @@ export function PlatformStripeConnect() {
           returnUrl:  `${origin}/platform/churches`
         })
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Error')
+      // NOTE: always parse JSON safely — a 500 with empty body throws if we call
+      // res.json() unconditionally, turning a server error into a client crash.
+      let data: any = {}
+      try { data = await res.json() } catch { /* empty body on unexpected 500 */ }
+
+      if (!res.ok) throw new Error(data.error ?? 'Error al conectar con Stripe')
       // Open onboarding in new tab
       window.open(data.onboardingUrl, '_blank', 'noopener,noreferrer')
       toast.success('Enlace de incorporación abierto en nueva pestaña')

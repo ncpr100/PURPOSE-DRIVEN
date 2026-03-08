@@ -94,13 +94,24 @@ export async function POST(request: NextRequest) {
   if (!refreshUrl) return NextResponse.json({ error: 'refreshUrl requerido' }, { status: 400 })
   if (!returnUrl)  return NextResponse.json({ error: 'returnUrl requerido' }, { status: 400 })
 
-  const church = await db.churches.findUnique({ where: { id: churchId } })
-  if (!church) {
-    return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
-  }
+  // NOTE: All Stripe operations are wrapped in try/catch so errors always
+  // return a JSON body. An empty 500 would cause res.json() to throw on client.
+  try {
+    const church = await db.churches.findUnique({ where: { id: churchId } })
+    if (!church) {
+      return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
+    }
 
-  const stripe = getStripe()
-  let accountId = church.stripeConnectAccountId
+    // Fail fast with a clear message if the platform key is missing
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json(
+        { error: 'STRIPE_SECRET_KEY no está configurada en el servidor. Contacte al administrador de la plataforma.' },
+        { status: 503 }
+      )
+    }
+
+    const stripe = getStripe()
+    let accountId = church.stripeConnectAccountId
 
   // Create Express account if not yet created
   if (!accountId) {
@@ -131,19 +142,26 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  // Generate onboarding link
-  const accountLink = await stripe.accountLinks.create({
-    account:     accountId,
-    refresh_url: refreshUrl,
-    return_url:  returnUrl,
-    type:        'account_onboarding',
-  })
+    // Generate onboarding link
+    const accountLink = await stripe.accountLinks.create({
+      account:     accountId!,
+      refresh_url: refreshUrl,
+      return_url:  returnUrl,
+      type:        'account_onboarding',
+    })
 
-  return NextResponse.json({
-    accountId,
-    onboardingUrl: accountLink.url,
-    expiresAt:     accountLink.expires_at,
-  })
+    return NextResponse.json({
+      accountId,
+      onboardingUrl: accountLink.url,
+      expiresAt:     accountLink.expires_at,
+    })
+  } catch (error: any) {
+    console.error('[stripe-connect] POST error:', error)
+    const message = error?.raw?.message   // Stripe SDK error
+      ?? error?.message
+      ?? 'Error al configurar Stripe Connect'
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
 }
 
 // ─── DELETE: disconnect church ───────────────────────────────────────────────
