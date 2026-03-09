@@ -25,8 +25,8 @@ function verifyPaddleSignature(rawBody: string, signatureHeader: string, secret:
       .digest('hex')
 
     return crypto.timingSafeEqual(
-      Buffer.from(receivedHash, 'hex'),
-      Buffer.from(expectedHash, 'hex')
+      new Uint8Array(Buffer.from(receivedHash, 'hex')),
+      new Uint8Array(Buffer.from(expectedHash, 'hex'))
     )
   } catch {
     return false
@@ -112,18 +112,20 @@ async function handleSubscriptionCreated(data: any) {
     await prisma.church_subscriptions.upsert({
       where: { churchId },
       create: {
+        id: crypto.randomUUID(),
         churchId,
-        paddleSubscriptionId: data.id,
+        planId: customData.planId || 'free',
         status: 'ACTIVE',
         currentPeriodStart: new Date(data.current_billing_period?.starts_at || Date.now()),
         currentPeriodEnd: new Date(data.current_billing_period?.ends_at || Date.now()),
+        metadata: { paddleSubscriptionId: data.id },
         updatedAt: new Date(),
       },
       update: {
-        paddleSubscriptionId: data.id,
         status: 'ACTIVE',
         currentPeriodStart: new Date(data.current_billing_period?.starts_at || Date.now()),
         currentPeriodEnd: new Date(data.current_billing_period?.ends_at || Date.now()),
+        metadata: { paddleSubscriptionId: data.id },
         updatedAt: new Date(),
       },
     })
@@ -150,7 +152,7 @@ async function handleSubscriptionUpdated(data: any) {
     const status = statusMap[data.status] || 'ACTIVE'
 
     await prisma.church_subscriptions.updateMany({
-      where: { paddleSubscriptionId: subscriptionId },
+      where: { metadata: { path: ['paddleSubscriptionId'], equals: subscriptionId } },
       data: {
         status,
         currentPeriodStart: data.current_billing_period?.starts_at
@@ -175,10 +177,10 @@ async function handleSubscriptionCanceled(data: any) {
     if (!subscriptionId) return
 
     await prisma.church_subscriptions.updateMany({
-      where: { paddleSubscriptionId: subscriptionId },
+      where: { metadata: { path: ['paddleSubscriptionId'], equals: subscriptionId } },
       data: {
         status: 'CANCELED',
-        canceledAt: new Date(),
+        cancelledAt: new Date(),
         updatedAt: new Date(),
       },
     })
@@ -195,7 +197,7 @@ async function handleSubscriptionPastDue(data: any) {
     if (!subscriptionId) return
 
     await prisma.church_subscriptions.updateMany({
-      where: { paddleSubscriptionId: subscriptionId },
+      where: { metadata: { path: ['paddleSubscriptionId'], equals: subscriptionId } },
       data: {
         status: 'PAST_DUE',
         updatedAt: new Date(),

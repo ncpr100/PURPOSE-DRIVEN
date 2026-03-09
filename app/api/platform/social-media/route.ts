@@ -49,27 +49,8 @@ export async function GET(request: NextRequest) {
         },
       ]
 
-      // Fetch recent scheduled posts from marketing_campaigns or a simple log
-      let recentPosts: any[] = []
-      try {
-        recentPosts = await db.marketing_campaigns.findMany({
-          where: { target: { contains: 'PLATFORM' } },
-          orderBy: { createdAt: 'desc' },
-          take: 10,
-          select: {
-            id: true,
-            name: true,
-            status: true,
-            platforms: true,
-            scheduledAt: true,
-            publishedAt: true,
-            createdAt: true,
-          },
-        }) as any[]
-      } catch {
-        // marketing_campaigns table may not have a PLATFORM target — safe to ignore
-        recentPosts = []
-      }
+      // Platform posts are not persisted to DB — return empty for now
+      const recentPosts: any[] = []
 
       return NextResponse.json({ accounts, recentPosts })
     }
