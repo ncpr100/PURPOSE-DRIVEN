@@ -23,7 +23,8 @@ import {
   Key,
   ClipboardList,
   QrCode,
-  Menu
+  Menu,
+  Share2
 } from 'lucide-react'
 
 const navigation = [
@@ -34,6 +35,7 @@ const navigation = [
   { name: 'Credenciales', href: '/platform/tenant-credentials', icon: Key },
   { name: 'Servicios Web', href: '/platform/website-services', icon: Globe },
   { name: 'Marketing Tools', href: '/platform/forms', icon: ClipboardList },
+  { name: 'Redes Sociales', href: '/platform/social-media', icon: Share2 },
   { name: 'Analytics', href: '/platform/analytics', icon: BarChart3 },
   { name: 'Mi Perfil', href: '/platform/profile', icon: User },
   { name: 'Configuración', href: '/platform/settings', icon: Settings },
