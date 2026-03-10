@@ -31,8 +31,12 @@ export const SOCIAL_PLATFORMS: Record<string, SocialPlatformConfig> = {
       'pages_manage_posts',
       'pages_read_engagement', 
       'pages_show_list',
+      'business_management',
       'instagram_basic',
-      'instagram_content_publish'
+      'instagram_content_publish',
+      'instagram_business_basic',
+      'instagram_business_manage_messages',
+      'instagram_manage_comments'
     ],
     authUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
     tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
@@ -44,8 +48,12 @@ export const SOCIAL_PLATFORMS: Record<string, SocialPlatformConfig> = {
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '',
     redirectUri: `${process.env.NEXTAUTH_URL}/api/oauth/instagram/callback`,
     scopes: [
+      'business_management',
       'instagram_basic',
-      'instagram_content_publish',
+      'instagram_content_publish', 
+      'instagram_business_basic',
+      'instagram_business_manage_messages',
+      'instagram_manage_comments',
       'pages_show_list'
     ],
     authUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
