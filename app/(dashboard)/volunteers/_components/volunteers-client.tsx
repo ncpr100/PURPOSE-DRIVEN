@@ -635,9 +635,6 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                             console.log('🔵 handleOpenProfileDialog called successfully')
                           }}
                         >
-                            handleOpenProfileDialog(volunteer)
-                          }}
-                        >
                           <Eye className="h-4 w-4 mr-1" />
                           Ver Perfil
                         </Button>
