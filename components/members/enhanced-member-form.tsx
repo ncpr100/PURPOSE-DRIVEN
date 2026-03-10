@@ -181,26 +181,38 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
 
   const handleSkillsSave = async () => {
     if (!member?.id) {
+      console.error('Skills save failed: Member ID missing', { member, formData })
       toast.error('Primero debe guardar la información básica del miembro')
       return
     }
 
+    console.log('Saving skills for member:', member.id, 'Skills:', formData.skillsMatrix)
+
     try {
+      const payload = { skillsMatrix: formData.skillsMatrix }
+      console.log('Skills save payload:', payload)
+
       const response = await fetch(`/api/members/${member.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ skillsMatrix: formData.skillsMatrix })
+        body: JSON.stringify(payload)
       })
 
+      console.log('Skills save response status:', response.status)
+
       if (response.ok) {
+        const result = await response.json()
+        console.log('Skills saved successfully:', result)
         toast.success('Habilidades guardadas exitosamente')
         setHasUnsavedChanges(false)
       } else {
-        toast.error('Error al guardar habilidades')
+        const errorData = await response.text()
+        console.error('Skills save failed:', response.status, errorData)
+        toast.error(`Error al guardar habilidades: ${response.status}`)
       }
     } catch (error) {
-      console.error('Error saving skills:', error)
-      toast.error('Error al guardar habilidades')
+      console.error('Skills save exception:', error)
+      toast.error('Error de red al guardar habilidades')
     }
   }
 
@@ -1017,24 +1029,20 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           {member?.id ? (
             <Card>
               <CardContent className="pt-6">
-                {activeTab === 'skills' ? (
-                  <>
-                    <SkillsSelector
-                      memberName={`${formData.firstName} ${formData.lastName}`}
-                      existingSkills={member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
-                      onSkillsChange={(skills) => {
-                        setFormData(prev => ({ ...prev, skillsMatrix: skills }))
-                        setHasUnsavedChanges(true)
-                      }}
-                    />
-                    <div className="flex justify-end mt-6 pt-6 border-t">
-                      <Button onClick={handleSkillsSave} disabled={isLoading}>
-                        <Save className="w-4 h-4 mr-2" />
-                        Guardar Habilidades
-                      </Button>
-                    </div>
-                  </>
-                ) : null}
+                <SkillsSelector
+                  memberName={`${formData.firstName} ${formData.lastName}`}
+                  existingSkills={member?.skillsMatrix && Array.isArray(member.skillsMatrix) ? (member.skillsMatrix as string[]) : []}
+                  onSkillsChange={(skills) => {
+                    setFormData(prev => ({ ...prev, skillsMatrix: skills }))
+                    setHasUnsavedChanges(true)
+                  }}
+                />
+                <div className="flex justify-end mt-6 pt-6 border-t">
+                  <Button onClick={handleSkillsSave} disabled={isLoading}>
+                    <Save className="w-4 h-4 mr-2" />
+                    Guardar Habilidades
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ) : (

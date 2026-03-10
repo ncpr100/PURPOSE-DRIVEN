@@ -69,14 +69,25 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
   const handleOpenProfileDialog = (volunteer: Volunteer) => {
     console.log('👤 Opening profile dialog for:', volunteer.firstName, volunteer.lastName)
+    console.log('Volunteer object structure:', volunteer)
+    
     const memberId = volunteer.member?.id
+    console.log('Member ID found:', memberId)
+    
     if (!memberId) {
+      console.error('Profile dialog failed: No member ID', { volunteer, memberProperty: volunteer.member })
       toast.error('Este voluntario no tiene un miembro vinculado')
       return
     }
+    
+    console.log('Setting selected volunteer and opening dialog')
     setSelectedVolunteer(volunteer)
     setIsProfileDialogOpen(true)
+    
+    console.log('Fetching member spiritual profile for:', memberId)
     fetchMemberSpiritualProfile(memberId)
+    
+    console.log('Fetching member availability matrix for:', memberId)
     fetchMemberAvailabilityMatrix(memberId)
   }
 
@@ -616,7 +627,14 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                           variant="outline"
                           onClick={(e) => {
                             e.preventDefault()
-                            console.log('Ver Perfil clicked for:', volunteer.firstName, volunteer.lastName)
+                            console.log('🔵 Ver Perfil CLICKED for:', volunteer.firstName, volunteer.lastName)
+                            console.log('🔵 Volunteer ID:', volunteer.id)
+                            console.log('🔵 Volunteer Member:', volunteer.member)
+                            console.log('🔵 Calling handleOpenProfileDialog...')
+                            handleOpenProfileDialog(volunteer)
+                            console.log('🔵 handleOpenProfileDialog called successfully')
+                          }}
+                        >
                             handleOpenProfileDialog(volunteer)
                           }}
                         >
@@ -942,7 +960,14 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   variant="secondary"
                   className="flex-1"
                   type="button"
-                  onClick={() => handleOpenProfileDialog(volunteer)}
+                  onClick={() => {
+                    console.log('🟢 Ver Perfil CLICKED (variant 2) for:', volunteer.firstName, volunteer.lastName)
+                    console.log('🟢 Volunteer ID:', volunteer.id)
+                    console.log('🟢 Volunteer Member:', volunteer.member)
+                    console.log('🟢 Calling handleOpenProfileDialog...')
+                    handleOpenProfileDialog(volunteer)
+                    console.log('🟢 handleOpenProfileDialog called successfully')
+                  }}
                 >
                   <Eye className="h-4 w-4 mr-1" />
                   Ver Perfil
