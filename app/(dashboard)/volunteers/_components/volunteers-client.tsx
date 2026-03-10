@@ -68,27 +68,17 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   }
 
   const handleOpenProfileDialog = (volunteer: Volunteer) => {
-    console.log('👤 Opening profile dialog for:', volunteer.firstName, volunteer.lastName)
-    console.log('Volunteer object structure:', volunteer)
-    
     const memberId = volunteer.member?.id
-    console.log('Member ID found:', memberId)
-    
-    if (!memberId) {
-      console.error('Profile dialog failed: No member ID', { volunteer, memberProperty: volunteer.member })
-      toast.error('Este voluntario no tiene un miembro vinculado')
-      return
-    }
-    
-    console.log('Setting selected volunteer and opening dialog')
     setSelectedVolunteer(volunteer)
     setIsProfileDialogOpen(true)
-    
-    console.log('Fetching member spiritual profile for:', memberId)
-    fetchMemberSpiritualProfile(memberId)
-    
-    console.log('Fetching member availability matrix for:', memberId)
-    fetchMemberAvailabilityMatrix(memberId)
+
+    if (memberId) {
+      fetchMemberSpiritualProfile(memberId)
+      fetchMemberAvailabilityMatrix(memberId)
+    } else {
+      setMemberSpiritualProfile(null)
+      setMemberAvailabilityMatrix(null)
+    }
   }
 
   // Form states
@@ -625,15 +615,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                         <Button 
                           size="sm" 
                           variant="outline"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            console.log('🔵 Ver Perfil CLICKED for:', volunteer.firstName, volunteer.lastName)
-                            console.log('🔵 Volunteer ID:', volunteer.id)
-                            console.log('🔵 Volunteer Member:', volunteer.member)
-                            console.log('🔵 Calling handleOpenProfileDialog...')
-                            handleOpenProfileDialog(volunteer)
-                            console.log('🔵 handleOpenProfileDialog called successfully')
-                          }}
+                          onClick={() => handleOpenProfileDialog(volunteer)}
                         >
                           <Eye className="h-4 w-4 mr-1" />
                           Ver Perfil
@@ -957,14 +939,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   variant="secondary"
                   className="flex-1"
                   type="button"
-                  onClick={() => {
-                    console.log('🟢 Ver Perfil CLICKED (variant 2) for:', volunteer.firstName, volunteer.lastName)
-                    console.log('🟢 Volunteer ID:', volunteer.id)
-                    console.log('🟢 Volunteer Member:', volunteer.member)
-                    console.log('🟢 Calling handleOpenProfileDialog...')
-                    handleOpenProfileDialog(volunteer)
-                    console.log('🟢 handleOpenProfileDialog called successfully')
-                  }}
+                  onClick={() => handleOpenProfileDialog(volunteer)}
                 >
                   <Eye className="h-4 w-4 mr-1" />
                   Ver Perfil
@@ -1208,14 +1183,27 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 <div>
                   <Label className="text-sm font-medium text-muted-foreground">Habilidades</Label>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    {selectedVolunteer.member && Array.isArray((selectedVolunteer.member as any).skillsMatrix) && ((selectedVolunteer.member as any).skillsMatrix as string[]).length > 0 ? 
-                      ((selectedVolunteer.member as any).skillsMatrix as string[]).map((skill: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {skill}
-                        </Badge>
-                      )) : 
-                      <span className="text-sm text-muted-foreground">No se han registrado habilidades</span>
-                    }
+                    {(() => {
+                      // Prefer member skillsMatrix if available
+                      if (selectedVolunteer.member && Array.isArray((selectedVolunteer.member as any).skillsMatrix) && ((selectedVolunteer.member as any).skillsMatrix as string[]).length > 0) {
+                        return ((selectedVolunteer.member as any).skillsMatrix as string[]).map((skill: string, index: number) => (
+                          <Badge key={index} variant="secondary" className="text-xs">{skill}</Badge>
+                        ))
+                      }
+                      // Fall back to volunteer's own skills field
+                      if (selectedVolunteer.skills) {
+                        try {
+                          const parsed = JSON.parse(selectedVolunteer.skills)
+                          if (Array.isArray(parsed) && parsed.length > 0) {
+                            return parsed.map((skill: string, index: number) => (
+                              <Badge key={index} variant="secondary" className="text-xs">{skill}</Badge>
+                            ))
+                          }
+                        } catch { /* not JSON, show as-is */ }
+                        return <span className="text-sm">{selectedVolunteer.skills}</span>
+                      }
+                      return <span className="text-sm text-muted-foreground">No se han registrado habilidades</span>
+                    })()}
                   </div>
                 </div>
                 
@@ -1229,6 +1217,8 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                           <p className="text-xs text-muted-foreground italic">{memberAvailabilityMatrix.notes}</p>
                         )}
                       </div>
+                    ) : selectedVolunteer.availability ? (
+                      <p className="text-sm">{selectedVolunteer.availability}</p>
                     ) : (
                       <p className="text-sm text-muted-foreground">No se ha registrado disponibilidad</p>
                     )}

@@ -42,31 +42,56 @@ exports.volunteerCreateSchema = zod_1.z.object({
 /**
  * Validation schema for volunteer assignments
  * Addresses HIGH-012: No Scheduling Conflict Detection (validation layer)
+ * Supports both temporary (date/time required) and permanent (no date needed) assignments
  */
 exports.volunteer_assignmentsSchema = zod_1.z.object({
-    volunteerId: cuid_1.cuidSchema,
-    eventId: cuid_1.optionalCuidSchema,
+    volunteerId: zod_1.z.string()
+        .min(1, 'ID de voluntario requerido')
+        .max(50, 'ID de voluntario inválido'),
+    eventId: zod_1.z.string().optional().nullable(),
+    assignmentType: zod_1.z.enum(['temporary', 'permanent']).default('temporary'),
     title: zod_1.z.string()
         .min(1, 'Título es requerido')
         .max(200, 'Título demasiado largo'),
     description: zod_1.z.string()
         .max(1000, 'Descripción demasiado larga')
-        .optional(),
+        .optional()
+        .nullable(),
     date: zod_1.z.string()
-        .datetime('Fecha inválida')
-        .or(zod_1.z.date()),
+        .optional()
+        .nullable(),
+    endDate: zod_1.z.string()
+        .optional()
+        .nullable(),
     startTime: zod_1.z.string()
-        .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Hora de inicio inválida (formato HH:MM)'),
+        .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Hora de inicio inválida (formato HH:MM)')
+        .optional()
+        .nullable(),
     endTime: zod_1.z.string()
-        .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Hora de fin inválida (formato HH:MM)'),
+        .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Hora de fin inválida (formato HH:MM)')
+        .optional()
+        .nullable(),
     notes: zod_1.z.string()
         .max(500, 'Notas demasiado largas')
         .optional()
+        .nullable()
 })
     .refine(data => {
-    const start = data.startTime.split(':').map(Number);
-    const end = data.endTime.split(':').map(Number);
-    return (end[0] * 60 + end[1]) > (start[0] * 60 + start[1]);
+    if (data.assignmentType === 'temporary') {
+        return !!(data.date && data.startTime && data.endTime);
+    }
+    return true;
+}, {
+    message: 'Para asignaciones temporales, la fecha y horarios son requeridos',
+    path: ['date']
+})
+    .refine(data => {
+    if (data.assignmentType === 'temporary' && data.startTime && data.endTime) {
+        const start = data.startTime.split(':').map(Number);
+        const end = data.endTime.split(':').map(Number);
+        return (end[0] * 60 + end[1]) > (start[0] * 60 + start[1]);
+    }
+    return true;
 }, {
     message: 'Hora de fin debe ser después de hora de inicio',
     path: ['endTime']

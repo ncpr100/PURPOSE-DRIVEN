@@ -55,52 +55,85 @@ export type VolunteerCreateInput = z.infer<typeof volunteerCreateSchema>;
 /**
  * Validation schema for volunteer assignments
  * Addresses HIGH-012: No Scheduling Conflict Detection (validation layer)
+ * Supports both temporary (date/time required) and permanent (no date needed) assignments
  */
-export declare const volunteer_assignmentsSchema: z.ZodEffects<z.ZodObject<{
-    volunteerId: z.ZodEffects<z.ZodString, string, string>;
-    eventId: z.ZodEffects<z.ZodOptional<z.ZodString>, string | undefined, string | undefined>;
+export declare const volunteer_assignmentsSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<{
+    volunteerId: z.ZodString;
+    eventId: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    assignmentType: z.ZodDefault<z.ZodEnum<["temporary", "permanent"]>>;
     title: z.ZodString;
-    description: z.ZodOptional<z.ZodString>;
-    date: z.ZodUnion<[z.ZodString, z.ZodDate]>;
-    startTime: z.ZodString;
-    endTime: z.ZodString;
-    notes: z.ZodOptional<z.ZodString>;
+    description: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    date: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    endDate: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    startTime: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    endTime: z.ZodNullable<z.ZodOptional<z.ZodString>>;
+    notes: z.ZodNullable<z.ZodOptional<z.ZodString>>;
 }, "strip", z.ZodTypeAny, {
     title: string;
-    startTime: string;
-    endTime: string;
-    date: string | Date;
     volunteerId: string;
-    description?: string | undefined;
-    notes?: string | undefined;
-    eventId?: string | undefined;
+    assignmentType: "temporary" | "permanent";
+    description?: string | null | undefined;
+    endDate?: string | null | undefined;
+    notes?: string | null | undefined;
+    eventId?: string | null | undefined;
+    startTime?: string | null | undefined;
+    endTime?: string | null | undefined;
+    date?: string | null | undefined;
 }, {
     title: string;
-    startTime: string;
-    endTime: string;
-    date: string | Date;
     volunteerId: string;
-    description?: string | undefined;
-    notes?: string | undefined;
-    eventId?: string | undefined;
+    description?: string | null | undefined;
+    endDate?: string | null | undefined;
+    notes?: string | null | undefined;
+    eventId?: string | null | undefined;
+    startTime?: string | null | undefined;
+    endTime?: string | null | undefined;
+    date?: string | null | undefined;
+    assignmentType?: "temporary" | "permanent" | undefined;
 }>, {
     title: string;
-    startTime: string;
-    endTime: string;
-    date: string | Date;
     volunteerId: string;
-    description?: string | undefined;
-    notes?: string | undefined;
-    eventId?: string | undefined;
+    assignmentType: "temporary" | "permanent";
+    description?: string | null | undefined;
+    endDate?: string | null | undefined;
+    notes?: string | null | undefined;
+    eventId?: string | null | undefined;
+    startTime?: string | null | undefined;
+    endTime?: string | null | undefined;
+    date?: string | null | undefined;
 }, {
     title: string;
-    startTime: string;
-    endTime: string;
-    date: string | Date;
     volunteerId: string;
-    description?: string | undefined;
-    notes?: string | undefined;
-    eventId?: string | undefined;
+    description?: string | null | undefined;
+    endDate?: string | null | undefined;
+    notes?: string | null | undefined;
+    eventId?: string | null | undefined;
+    startTime?: string | null | undefined;
+    endTime?: string | null | undefined;
+    date?: string | null | undefined;
+    assignmentType?: "temporary" | "permanent" | undefined;
+}>, {
+    title: string;
+    volunteerId: string;
+    assignmentType: "temporary" | "permanent";
+    description?: string | null | undefined;
+    endDate?: string | null | undefined;
+    notes?: string | null | undefined;
+    eventId?: string | null | undefined;
+    startTime?: string | null | undefined;
+    endTime?: string | null | undefined;
+    date?: string | null | undefined;
+}, {
+    title: string;
+    volunteerId: string;
+    description?: string | null | undefined;
+    endDate?: string | null | undefined;
+    notes?: string | null | undefined;
+    eventId?: string | null | undefined;
+    startTime?: string | null | undefined;
+    endTime?: string | null | undefined;
+    date?: string | null | undefined;
+    assignmentType?: "temporary" | "permanent" | undefined;
 }>;
 export type VolunteerAssignmentInput = z.infer<typeof volunteer_assignmentsSchema>;
 /**

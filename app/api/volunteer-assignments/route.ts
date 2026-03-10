@@ -88,53 +88,57 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // ✅ BUSINESS LOGIC FIX: Check for scheduling conflicts
+    // ✅ BUSINESS LOGIC FIX: Check for scheduling conflicts (temporary assignments only)
     // Prevents: Double-booking volunteers at the same time
-    const assignmentDate = new Date(validated.date)
-    const conflicts = await db.volunteer_assignments.findMany({
-      where: {
-        volunteerId: validated.volunteerId,
-        date: assignmentDate,
-        status: { in: ['ASIGNADO', 'CONFIRMADO'] },
-        OR: [
-          // New assignment starts during existing
-          {
-            AND: [
-              { startTime: { lte: validated.startTime } },
-              { endTime: { gt: validated.startTime } }
-            ]
-          },
-          // New assignment ends during existing
-          {
-            AND: [
-              { startTime: { lt: validated.endTime } },
-              { endTime: { gte: validated.endTime } }
-            ]
-          },
-          // New assignment encompasses existing
-          {
-            AND: [
-              { startTime: { gte: validated.startTime } },
-              { endTime: { lte: validated.endTime } }
-            ]
-          }
-        ]
-      }
-    })
+    const isPermanent = validated.assignmentType === 'permanent'
+    const assignmentDate = isPermanent ? new Date() : new Date(validated.date!)
 
-    if (conflicts.length > 0) {
-      return NextResponse.json(
-        { 
-          message: 'Conflicto de horario detectado',
-          conflicts: conflicts.map(c => ({
-            id: c.id,
-            title: c.title,
-            date: c.date,
-            time: `${c.startTime} - ${c.endTime}`
-          }))
-        },
-        { status: 409 }
-      )
+    if (!isPermanent && validated.date && validated.startTime && validated.endTime) {
+      const conflicts = await db.volunteer_assignments.findMany({
+        where: {
+          volunteerId: validated.volunteerId,
+          date: assignmentDate,
+          status: { in: ['ASIGNADO', 'CONFIRMADO'] },
+          OR: [
+            // New assignment starts during existing
+            {
+              AND: [
+                { startTime: { lte: validated.startTime } },
+                { endTime: { gt: validated.startTime } }
+              ]
+            },
+            // New assignment ends during existing
+            {
+              AND: [
+                { startTime: { lt: validated.endTime } },
+                { endTime: { gte: validated.endTime } }
+              ]
+            },
+            // New assignment encompasses existing
+            {
+              AND: [
+                { startTime: { gte: validated.startTime } },
+                { endTime: { lte: validated.endTime } }
+              ]
+            }
+          ]
+        }
+      })
+
+      if (conflicts.length > 0) {
+        return NextResponse.json(
+          {
+            message: 'Conflicto de horario detectado',
+            conflicts: conflicts.map(c => ({
+              id: c.id,
+              title: c.title,
+              date: c.date,
+              time: `${c.startTime} - ${c.endTime}`
+            }))
+          },
+          { status: 409 }
+        )
+      }
     }
 
     // ✅ No conflicts - proceed with creation
@@ -144,11 +148,11 @@ export async function POST(request: NextRequest) {
         volunteerId: validated.volunteerId,
         eventId: validated.eventId || null,
         title: validated.title,
-        description: validated.description,
+        description: validated.description || null,
         date: assignmentDate,
-        startTime: validated.startTime,
-        endTime: validated.endTime,
-        notes: validated.notes,
+        startTime: validated.startTime || (isPermanent ? 'N/A' : '00:00'),
+        endTime: validated.endTime || (isPermanent ? 'N/A' : '23:59'),
+        notes: validated.notes || null,
         churchId: session.user.churchId,
         status: 'ASIGNADO',
         updatedAt: new Date()
