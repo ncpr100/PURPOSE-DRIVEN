@@ -67,6 +67,18 @@ export default function SpiritualGiftsManagement() {
 
   useEffect(() => {
     fetchData()
+    
+    // Add window focus listener for automatic refresh when returning from assessment
+    const handleWindowFocus = () => {
+      console.log('🔄 Window focused - refreshing spiritual gifts data...')
+      fetchData()
+    }
+    
+    window.addEventListener('focus', handleWindowFocus)
+    
+    return () => {
+      window.removeEventListener('focus', handleWindowFocus)
+    }
   }, [])
 
   const fetchData = async () => {
@@ -119,6 +131,9 @@ export default function SpiritualGiftsManagement() {
   }
 
   const openAssessmentDialog = (member: Member) => {
+    console.log('🔄 Opening spiritual assessment for member:', member.id, member.firstName, member.lastName)
+    console.log('📍 Redirecting to:', `/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
+    
     // Redirect to dedicated spiritual assessment page with returnTo parameter
     router.push(`/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
   }
@@ -340,16 +355,22 @@ export default function SpiritualGiftsManagement() {
                         size="sm" 
                         variant="outline" 
                         className="flex-1"
-                        onClick={() => openAssessmentDialog(member)}
+                        onClick={() => {
+                          toast.loading('Abriendo evaluación espiritual...')
+                          openAssessmentDialog(member)
+                        }}
                       >
                         <Edit className="h-4 w-4 mr-1" />
-                        Editar
+                        Ver Perfil
                       </Button>
                     ) : (
                       <Button 
                         size="sm" 
                         className="flex-1"
-                        onClick={() => openAssessmentDialog(member)}
+                        onClick={() => {
+                          toast.loading('Abriendo evaluación espiritual...')
+                          openAssessmentDialog(member)
+                        }}
                       >
                         <Plus className="h-4 w-4 mr-1" />
                         Crear Evaluación
@@ -407,10 +428,13 @@ export default function SpiritualGiftsManagement() {
                     size="sm" 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => openAssessmentDialog(member)}
+                    onClick={() => {
+                      toast.loading('Abriendo evaluación espiritual...')
+                      openAssessmentDialog(member)
+                    }}
                   >
                     <Edit className="h-4 w-4 mr-1" />
-                    Editar Perfil
+                    Ver Perfil
                   </Button>
                 </CardContent>
               </Card>
@@ -442,7 +466,10 @@ export default function SpiritualGiftsManagement() {
                   <Button 
                     size="sm" 
                     className="w-full"
-                    onClick={() => openAssessmentDialog(member)}
+                    onClick={() => {
+                      toast.loading('Abriendo evaluación espiritual...')
+                      openAssessmentDialog(member)
+                    }}
                   >
                     <Plus className="h-4 w-4 mr-1" />
                     Crear Evaluación

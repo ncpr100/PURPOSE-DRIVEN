@@ -32,9 +32,13 @@ export default function SpiritualAssessmentTestPage() {
 
   const loadExistingProfile = async () => {
     try {
+      console.log('🔄 Loading spiritual profile for member:', memberId)
       const response = await fetch(`/api/members/${memberId}/spiritual-profile`)
+      
       if (response.ok) {
         const { profile } = await response.json()
+        console.log('📊 Profile loaded:', profile ? 'Found existing profile' : 'No existing profile')
+        
         if (profile) {
           // Convert database format to component format
           const data: SpiritualAssessmentData = {
@@ -48,11 +52,19 @@ export default function SpiritualAssessmentTestPage() {
             motivation: profile.servingMotivation || ''
           }
           setInitialData(data)
+          console.log('✅ Profile data converted and loaded successfully')
+        }
+      } else {
+        console.warn('⚠️ Failed to load spiritual profile:', response.status, response.statusText)
+        if (response.status === 404) {
+          console.log('ℹ️ No existing profile found - this is normal for new assessments')
+        } else {
+          toast.error(`Error al cargar perfil espiritual: ${response.status}`)
         }
       }
     } catch (error) {
-      console.error('Error loading spiritual profile:', error)
-      toast.error('Error al cargar el perfil espiritual')
+      console.error('❌ Error loading spiritual profile:', error)
+      toast.error('Error de conexión al cargar el perfil espiritual')
     } finally {
       setIsLoading(false)
     }
@@ -60,11 +72,20 @@ export default function SpiritualAssessmentTestPage() {
 
   const handleSave = async (data: SpiritualAssessmentData) => {
     if (!memberId) {
+      console.error('❌ No memberId provided for spiritual assessment save')
       toast.error('No se pudo identificar al miembro')
       return
     }
 
     try {
+      console.log('🔄 Saving spiritual assessment for member:', memberId)
+      console.log('📊 Assessment data:', {
+        primaryGifts: data.giftSelections.filter(g => g.type === 'primary').length,
+        secondaryGifts: data.giftSelections.filter(g => g.type === 'secondary').length,
+        ministryPassions: data.ministryPassions.length,
+        experienceLevel: data.experienceLevel
+      })
+      
       const response = await fetch(`/api/members/${memberId}/spiritual-profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -74,16 +95,19 @@ export default function SpiritualAssessmentTestPage() {
       const result = await response.json()
 
       if (!response.ok) {
+        console.error('❌ Spiritual assessment save failed:', response.status, result.error)
         throw new Error(result.error || 'Error al guardar')
       }
 
       setSavedData(data)
+      console.log('✅ Spiritual assessment saved successfully')
       toast.success('Evaluación espiritual guardada exitosamente')
       
       // Immediate redirect after successful save
+      console.log('🔄 Redirecting back to:', returnTo)
       router.push(returnTo)
     } catch (error) {
-      console.error('Error saving assessment:', error)
+      console.error('❌ Error saving spiritual assessment:', error)
       throw error
     }
   }

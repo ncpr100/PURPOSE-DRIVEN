@@ -135,6 +135,7 @@ export async function POST(
         updatedAt: new Date()
       },
       update: {
+        primaryGifts,
         secondaryGifts,
         spiritualCalling,
         ministryPassions,
@@ -147,6 +148,43 @@ export async function POST(
         updatedAt: new Date()
       }
     });
+
+    // Get member info for automation trigger
+    const member = await prisma.members.findUnique({
+      where: { id: memberId }
+    });
+
+    if (member) {
+      // 🤖 AUTOMATED WORKFLOW: Trigger spiritual assessment automation
+      try {
+        console.log('🤖 Triggering SPIRITUAL_ASSESSMENT_SUBMITTED automation for member:', memberId)
+        
+        // Import automation engine
+        const { automationEngine } = await import('@/lib/automation-engine')
+        
+        // Trigger spiritual assessment automation
+        await automationEngine.spiritualAssessmentSubmitted({
+          id: spiritualProfile.id,
+          memberId,
+          memberName: `${member.firstName} ${member.lastName}`,
+          memberEmail: member.email,
+          primaryGifts,
+          secondaryGifts,
+          ministryPassions,
+          experienceLevel: experienceLevelNumeric,
+          volunteerReadinessScore,
+          leadershipReadinessScore: spiritualProfile.leadershipReadinessScore,
+          assessmentDate: spiritualProfile.assessmentDate,
+          spiritualCalling,
+          motivation
+        }, member.churchId)
+        
+        console.log('✅ Spiritual assessment automation triggered successfully')
+      } catch (automationError) {
+        console.error('⚠️ Error triggering spiritual assessment automation:', automationError)
+        // Don't fail the main request if automation fails
+      }
+    }
     
     return NextResponse.json({
       success: true,
