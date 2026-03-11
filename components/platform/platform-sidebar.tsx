@@ -24,13 +24,15 @@ import {
   ClipboardList,
   QrCode,
   Menu,
-  Share2
+  Share2,
+  CreditCard,
 } from 'lucide-react'
 
 const navigation = [
   { name: 'Panel de Control', href: '/platform/dashboard', icon: LayoutDashboard },
   { name: 'Iglesias', href: '/platform/churches', icon: Building2 },
   { name: 'Usuarios', href: '/platform/users', icon: Users },
+  { name: 'Suscripciones', href: '/platform/billing', icon: CreditCard },
   { name: 'Facturas', href: '/platform/invoices', icon: FileText },
   { name: 'Credenciales', href: '/platform/tenant-credentials', icon: Key },
   { name: 'Servicios Web', href: '/platform/website-services', icon: Globe },

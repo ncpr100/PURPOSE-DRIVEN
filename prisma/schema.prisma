@@ -459,6 +459,9 @@ model church_subscriptions {
   trialEnd                   DateTime?
   cancelAtPeriodEnd          Boolean                      @default(false)
   cancelledAt                DateTime?
+  paddleCustomerId           String?
+  paddleSubscriptionId       String?
+  paddleTransactionId        String?
   metadata                   Json?
   createdAt                  DateTime                     @default(now())
   updatedAt                  DateTime                     @default(now())
@@ -1860,6 +1863,8 @@ model subscription_plans {
   description          String?
   priceMonthly         String
   priceYearly          String?
+  paddlePriceIdMonthly String?
+  paddlePriceIdYearly  String?
   maxChurches          Int                    @default(1)
   maxMembers           Int                    @default(100)
   maxUsers             Int                    @default(5)

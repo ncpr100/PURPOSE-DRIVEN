@@ -118,14 +118,16 @@ async function handleSubscriptionCreated(data: any) {
         status: 'ACTIVE',
         currentPeriodStart: new Date(data.current_billing_period?.starts_at || Date.now()),
         currentPeriodEnd: new Date(data.current_billing_period?.ends_at || Date.now()),
-        metadata: { paddleSubscriptionId: data.id },
+        paddleSubscriptionId: data.id,
+        paddleCustomerId: data.customer_id ?? null,
         updatedAt: new Date(),
       },
       update: {
         status: 'ACTIVE',
         currentPeriodStart: new Date(data.current_billing_period?.starts_at || Date.now()),
         currentPeriodEnd: new Date(data.current_billing_period?.ends_at || Date.now()),
-        metadata: { paddleSubscriptionId: data.id },
+        paddleSubscriptionId: data.id,
+        paddleCustomerId: data.customer_id ?? null,
         updatedAt: new Date(),
       },
     })
@@ -152,7 +154,7 @@ async function handleSubscriptionUpdated(data: any) {
     const status = statusMap[data.status] || 'ACTIVE'
 
     await prisma.church_subscriptions.updateMany({
-      where: { metadata: { path: ['paddleSubscriptionId'], equals: subscriptionId } },
+      where: { paddleSubscriptionId: subscriptionId },
       data: {
         status,
         currentPeriodStart: data.current_billing_period?.starts_at
@@ -177,7 +179,7 @@ async function handleSubscriptionCanceled(data: any) {
     if (!subscriptionId) return
 
     await prisma.church_subscriptions.updateMany({
-      where: { metadata: { path: ['paddleSubscriptionId'], equals: subscriptionId } },
+      where: { paddleSubscriptionId: subscriptionId },
       data: {
         status: 'CANCELED',
         cancelledAt: new Date(),
@@ -197,7 +199,7 @@ async function handleSubscriptionPastDue(data: any) {
     if (!subscriptionId) return
 
     await prisma.church_subscriptions.updateMany({
-      where: { metadata: { path: ['paddleSubscriptionId'], equals: subscriptionId } },
+      where: { paddleSubscriptionId: subscriptionId },
       data: {
         status: 'PAST_DUE',
         updatedAt: new Date(),
