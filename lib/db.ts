@@ -31,15 +31,18 @@ export const db = globalForPrisma.prisma ?? new PrismaClient({
     : ['error', 'warn']  // Production: errors AND warnings
 })
 
-// Connection pooling and transaction configuration
+// Keep singleton in dev to prevent connection exhaustion from hot-reload
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
 
-// Test connection on startup
-db.$connect()
-  .then(() => console.log('[DB] ✅ Connected successfully'))
-  .catch(err => console.error('[DB] ❌ Connection failed:', err.message))
+// NOTE: Do NOT call db.$connect() here.
+// This file is imported at *build time* by Next.js when it statically analyses
+// pages and API routes.  A module-level connect() attempt will hang the Vercel
+// build worker waiting for a TCP response from Supabase → SIGTERM → site down.
+// Prisma connects lazily on first query, which is the correct pattern.
 
-// Graceful shutdown
-process.on('beforeExit', async () => {
-  await db.$disconnect()
-})
+// Graceful shutdown (only in long-running server processes, not serverless)
+if (process.env.NODE_ENV !== 'production') {
+  process.on('beforeExit', async () => {
+    await db.$disconnect()
+  })
+}
