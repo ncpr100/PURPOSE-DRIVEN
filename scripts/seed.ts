@@ -1,6 +1,7 @@
 
 import { db as prisma } from '../lib/db'
 import bcrypt from 'bcryptjs'
+import { nanoid } from 'nanoid'
 
 async function main() {
   console.log('🌱 Iniciando seed de la base de datos...')
@@ -37,12 +38,14 @@ async function main() {
       where: { email: 'soporte@khesed-tek-systems.org' },
       update: {},
       create: {
+        id: 'super-admin-khesed-tek',
         name: 'Khesed-Tek Support',
         email: 'soporte@khesed-tek-systems.org',
         password: superAdminHashedPassword,
         role: 'SUPER_ADMIN',
         churchId: null, // SUPER_ADMIN no pertenece a una iglesia específica
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       }
     })
 
@@ -53,12 +56,14 @@ async function main() {
       where: { email: 'admin@iglesiacentral.com' },
       update: {},
       create: {
+        id: 'admin-iglesia-central',
         name: 'María González',
         email: 'admin@iglesiacentral.com',
         password: hashedPassword,
         role: 'ADMIN_IGLESIA',
         churchId: church.id,
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       }
     })
 
@@ -69,12 +74,14 @@ async function main() {
       where: { email: 'john@doe.com' },
       update: {},
       create: {
+        id: 'test-user-john-doe',
         name: 'John Doe',
         email: 'john@doe.com',
         password: testHashedPassword,
         role: 'ADMIN_IGLESIA',
         churchId: church.id,
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       }
     })
 
@@ -85,12 +92,14 @@ async function main() {
       where: { email: 'pastor@iglesiacentral.com' },
       update: {},
       create: {
+        id: 'pastor-carlos-ruiz',
         name: 'Pastor Carlos Ruiz',
         email: 'pastor@iglesiacentral.com',
         password: hashedPassword,
         role: 'PASTOR',
         churchId: church.id,
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       }
     })
 
@@ -576,6 +585,7 @@ async function main() {
     for (const miembro of miembrosEjemplo) {
       await prisma.members.create({
         data: {
+          id: nanoid(),
           firstName: miembro.firstName,
           lastName: miembro.lastName,
           email: miembro.email,
@@ -605,6 +615,7 @@ async function main() {
       where: { userId: adminUser.id },
       update: {},
       create: {
+        id: nanoid(),
         firstName: 'María',
         lastName: 'González',
         email: adminUser.email,
@@ -639,6 +650,7 @@ async function main() {
       where: { userId: pastorUser.id },
       update: {},
       create: {
+        id: nanoid(),
         firstName: 'Carlos',
         lastName: 'Ruiz',
         email: pastorUser.email,
@@ -709,8 +721,9 @@ async function main() {
     ]
 
     for (const sermon of sermonesEjemplo) {
-      await prisma.sermon.create({
+      await prisma.sermons.create({
         data: {
+          id: nanoid(),
           ...sermon,
           churchId: church.id,
           isPublic: false
@@ -752,6 +765,7 @@ async function main() {
     for (const evento of eventosEjemplo) {
       const event = await prisma.events.create({
         data: {
+          id: nanoid(),
           ...evento,
           churchId: church.id
         }
@@ -763,7 +777,7 @@ async function main() {
 
     // Crear voluntarios de ejemplo
     const volunteers = await Promise.all([
-      prisma.volunteer.upsert({
+      prisma.volunteers.upsert({
         where: { id: 'volunteer-1' },
         update: {},
         create: {
@@ -782,7 +796,7 @@ async function main() {
           isActive: true
         }
       }),
-      prisma.volunteer.upsert({
+      prisma.volunteers.upsert({
         where: { id: 'volunteer-2' },
         update: {},
         create: {
@@ -801,7 +815,7 @@ async function main() {
           isActive: true
         }
       }),
-      prisma.volunteer.upsert({
+      prisma.volunteers.upsert({
         where: { id: 'volunteer-3' },
         update: {},
         create: {
@@ -826,8 +840,9 @@ async function main() {
 
     // Crear asignaciones de voluntarios
     const assignments = await Promise.all([
-      prisma.volunteerAssignment.create({
+      prisma.volunteer_assignments.create({
         data: {
+          id: nanoid(),
           volunteerId: volunteers[0].id,
           eventId: events[0].id,
           title: 'Líder de Adoración',
@@ -839,8 +854,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.volunteerAssignment.create({
+      prisma.volunteer_assignments.create({
         data: {
+          id: nanoid(),
           volunteerId: volunteers[1].id,
           eventId: events[0].id,
           title: 'Técnico de Sonido',
@@ -858,8 +874,9 @@ async function main() {
 
     // Crear check-ins de visitantes de ejemplo
     const checkIns = await Promise.all([
-      prisma.checkIn.create({
+      prisma.check_ins.create({
         data: {
+          id: nanoid(),
           firstName: 'Manuel',
           lastName: 'Rodríguez',
           email: 'manuel@email.com',
@@ -872,8 +889,9 @@ async function main() {
           checkedInAt: new Date()
         }
       }),
-      prisma.checkIn.create({
+      prisma.check_ins.create({
         data: {
+          id: nanoid(),
           firstName: 'Elena',
           lastName: 'Vargas',
           email: 'elena@email.com',
@@ -886,8 +904,9 @@ async function main() {
           checkedInAt: new Date(Date.now() - 2 * 60 * 60 * 1000) // hace 2 horas
         }
       }),
-      prisma.checkIn.create({
+      prisma.check_ins.create({
         data: {
+          id: nanoid(),
           firstName: 'Roberto',
           lastName: 'Silva',
           phone: '+1234567896',
@@ -904,8 +923,9 @@ async function main() {
 
     // Crear seguimientos automáticos para primeras visitas
     const followUps = await Promise.all([
-      prisma.visitorFollowUp.create({
+      prisma.visitor_follow_ups.create({
         data: {
+          id: nanoid(),
           checkInId: checkIns[0].id,
           followUpType: 'EMAIL',
           status: 'COMPLETADO',
@@ -916,8 +936,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.visitorFollowUp.create({
+      prisma.visitor_follow_ups.create({
         data: {
+          id: nanoid(),
           checkInId: checkIns[0].id,
           followUpType: 'LLAMADA',
           status: 'PENDIENTE',
@@ -927,8 +948,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.visitorFollowUp.create({
+      prisma.visitor_follow_ups.create({
         data: {
+          id: nanoid(),
           checkInId: checkIns[1].id,
           followUpType: 'EMAIL',
           status: 'PENDIENTE',
@@ -937,8 +959,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.visitorFollowUp.create({
+      prisma.visitor_follow_ups.create({
         data: {
+          id: nanoid(),
           checkInId: checkIns[1].id,
           followUpType: 'LLAMADA',
           status: 'PENDIENTE',
@@ -954,8 +977,9 @@ async function main() {
 
     // Crear check-ins de niños de ejemplo
     const childrenCheckIns = await Promise.all([
-      prisma.childCheckIn.create({
+      prisma.children_check_ins.create({
         data: {
+          id: nanoid(),
           childName: 'Sofía Ramírez',
           childAge: 7,
           parentName: 'Carmen Ramírez',
@@ -971,8 +995,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.childCheckIn.create({
+      prisma.children_check_ins.create({
         data: {
+          id: nanoid(),
           childName: 'Diego Morales',
           childAge: 5,
           parentName: 'Patricia Morales',
@@ -989,8 +1014,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.childCheckIn.create({
+      prisma.children_check_ins.create({
         data: {
+          id: nanoid(),
           childName: 'Isabella Cruz',
           childAge: 9,
           parentName: 'Miguel Cruz',
@@ -1008,7 +1034,7 @@ async function main() {
 
     // Crear categorías de donaciones
     const donationCategories = await Promise.all([
-      prisma.donationCategory.upsert({
+      prisma.donation_categories.upsert({
         where: { id: 'cat-diezmos' },
         update: {},
         create: {
@@ -1019,7 +1045,7 @@ async function main() {
           isActive: true
         }
       }),
-      prisma.donationCategory.upsert({
+      prisma.donation_categories.upsert({
         where: { id: 'cat-ofrendas' },
         update: {},
         create: {
@@ -1030,7 +1056,7 @@ async function main() {
           isActive: true
         }
       }),
-      prisma.donationCategory.upsert({
+      prisma.donation_categories.upsert({
         where: { id: 'cat-misiones' },
         update: {},
         create: {
@@ -1041,7 +1067,7 @@ async function main() {
           isActive: true
         }
       }),
-      prisma.donationCategory.upsert({
+      prisma.donation_categories.upsert({
         where: { id: 'cat-construccion' },
         update: {},
         create: {
@@ -1058,7 +1084,7 @@ async function main() {
 
     // Crear métodos de pago
     const paymentMethods = await Promise.all([
-      prisma.paymentMethod.upsert({
+      prisma.payment_methods.upsert({
         where: { id: 'method-efectivo' },
         update: {},
         create: {
@@ -1070,7 +1096,7 @@ async function main() {
           isActive: true
         }
       }),
-      prisma.paymentMethod.upsert({
+      prisma.payment_methods.upsert({
         where: { id: 'method-transferencia' },
         update: {},
         create: {
@@ -1082,7 +1108,7 @@ async function main() {
           isActive: true
         }
       }),
-      prisma.paymentMethod.upsert({
+      prisma.payment_methods.upsert({
         where: { id: 'method-nequi' },
         update: {},
         create: {
@@ -1094,7 +1120,7 @@ async function main() {
           isActive: true
         }
       }),
-      prisma.paymentMethod.upsert({
+      prisma.payment_methods.upsert({
         where: { id: 'method-tarjeta' },
         update: {},
         create: {
@@ -1119,6 +1145,7 @@ async function main() {
       // Donaciones del mes pasado
       prisma.donations.create({
         data: {
+          id: nanoid(),
           amount: 250000,
           currency: 'COP',
           donorName: 'Ana Martínez',
@@ -1137,6 +1164,7 @@ async function main() {
       }),
       prisma.donations.create({
         data: {
+          id: nanoid(),
           amount: 100000,
           currency: 'COP',
           donorName: 'Pedro López',
@@ -1154,6 +1182,7 @@ async function main() {
       // Donaciones de este mes
       prisma.donations.create({
         data: {
+          id: nanoid(),
           amount: 500000,
           currency: 'COP',
           categoryId: donationCategories[3].id, // Construcción
@@ -1168,6 +1197,7 @@ async function main() {
       }),
       prisma.donations.create({
         data: {
+          id: nanoid(),
           amount: 150000,
           currency: 'COP',
           donorName: 'Sofia García',
@@ -1185,6 +1215,7 @@ async function main() {
       }),
       prisma.donations.create({
         data: {
+          id: nanoid(),
           amount: 300000,
           currency: 'COP',
           donorName: 'Miguel Torres',
@@ -1203,6 +1234,7 @@ async function main() {
       // Donación reciente (esta semana)
       prisma.donations.create({
         data: {
+          id: nanoid(),
           amount: 75000,
           currency: 'COP',
           categoryId: donationCategories[1].id, // Ofrendas
@@ -1255,8 +1287,9 @@ async function main() {
     // FASE 4: Advanced Communications + Events
     // Crear templates de comunicación
     const communicationTemplates = await Promise.all([
-      prisma.communicationTemplate.create({
+      prisma.communication_templates.create({
         data: {
+          id: nanoid(),
           name: 'Bienvenida Nuevos Visitantes',
           subject: '¡Bienvenido a nuestra iglesia!',
           content: '¡Hola {{nombre}}! Nos alegra mucho que hayas visitado nuestra iglesia {{iglesia}}. Esperamos verte pronto de nuevo. Si tienes alguna pregunta, no dudes en contactarnos.',
@@ -1267,8 +1300,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.communicationTemplate.create({
+      prisma.communication_templates.create({
         data: {
+          id: nanoid(),
           name: 'Recordatorio de Evento',
           content: 'Hola {{nombre}}, te recordamos que {{evento}} será {{fecha}} a las {{hora}}. ¡Te esperamos!',
           type: 'SMS',
@@ -1278,8 +1312,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.communicationTemplate.create({
+      prisma.communication_templates.create({
         data: {
+          id: nanoid(),
           name: 'Seguimiento Primera Visita',
           content: '¡Hola {{nombre}}! Fue un placer conocerte en nuestra iglesia. ¿Te gustaría que oremos por algo específico contigo?',
           type: 'WHATSAPP',
@@ -1289,8 +1324,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.communicationTemplate.create({
+      prisma.communication_templates.create({
         data: {
+          id: nanoid(),
           name: 'Anuncio General',
           subject: 'Anuncio importante de {{iglesia}}',
           content: 'Querida congregación,\n\n{{mensaje}}\n\nBendiciones,\nEl equipo pastoral',
@@ -1307,8 +1343,9 @@ async function main() {
 
     // Crear recursos para eventos
     const eventResources = await Promise.all([
-      prisma.eventResource.create({
+      prisma.event_resources.create({
         data: {
+          id: nanoid(),
           name: 'Proyector Principal',
           description: 'Proyector de alta definición para presentaciones',
           type: 'EQUIPO',
@@ -1316,8 +1353,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.eventResource.create({
+      prisma.event_resources.create({
         data: {
+          id: nanoid(),
           name: 'Sistema de Sonido',
           description: 'Equipo de audio completo con micrófonos',
           type: 'EQUIPO',
@@ -1325,8 +1363,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.eventResource.create({
+      prisma.event_resources.create({
         data: {
+          id: nanoid(),
           name: 'Salón Principal',
           description: 'Auditorium principal de la iglesia',
           type: 'ESPACIO',
@@ -1335,8 +1374,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.eventResource.create({
+      prisma.event_resources.create({
         data: {
+          id: nanoid(),
           name: 'Salón de Usos Múltiples',
           description: 'Salón para actividades diversas',
           type: 'ESPACIO',
@@ -1345,8 +1385,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.eventResource.create({
+      prisma.event_resources.create({
         data: {
+          id: nanoid(),
           name: 'Piano',
           description: 'Piano de cola para servicios musicales',
           type: 'EQUIPO',
@@ -1354,8 +1395,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.eventResource.create({
+      prisma.event_resources.create({
         data: {
+          id: nanoid(),
           name: 'Sillas Adicionales',
           description: 'Set de 50 sillas plegables',
           type: 'MATERIAL',
@@ -1369,8 +1411,9 @@ async function main() {
 
     // Crear algunas reservaciones de recursos
     await Promise.all([
-      prisma.eventResourceReservation.create({
+      prisma.event_resource_reservations.create({
         data: {
+          id: nanoid(),
           resourceId: eventResources[0].id, // Proyector
           eventId: events[0].id, // Conferencia de Jóvenes
           startTime: events[0].startDate,
@@ -1381,8 +1424,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.eventResourceReservation.create({
+      prisma.event_resource_reservations.create({
         data: {
+          id: nanoid(),
           resourceId: eventResources[1].id, // Sistema de Sonido
           eventId: events[0].id,
           startTime: events[0].startDate,
@@ -1393,8 +1437,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.eventResourceReservation.create({
+      prisma.event_resource_reservations.create({
         data: {
+          id: nanoid(),
           resourceId: eventResources[2].id, // Salón Principal
           eventId: events[1].id, // Retiro de Matrimonios
           startTime: events[1].startDate,
@@ -1411,8 +1456,9 @@ async function main() {
 
     // Crear configuraciones de integración de ejemplo (inactivas por seguridad)
     await Promise.all([
-      prisma.integrationConfig.create({
+      prisma.integration_configs.create({
         data: {
+          id: nanoid(),
           service: 'TWILIO',
           config: JSON.stringify({
             accountSid: 'AC_EXAMPLE_SID',
@@ -1420,11 +1466,13 @@ async function main() {
             phoneNumber: '+1234567890'
           }),
           isActive: false, // Inactivo por defecto por seguridad
-          churchId: church.id
+          churchId: church.id,
+          updatedAt: new Date()
         }
       }),
-      prisma.integrationConfig.create({
+      prisma.integration_configs.create({
         data: {
+          id: nanoid(),
           service: 'WHATSAPP',
           config: JSON.stringify({
             businessAccountId: 'example_business_id',
@@ -1432,11 +1480,13 @@ async function main() {
             accessToken: 'example_access_token'
           }),
           isActive: false,
-          churchId: church.id
+          churchId: church.id,
+          updatedAt: new Date()
         }
       }),
-      prisma.integrationConfig.create({
+      prisma.integration_configs.create({
         data: {
+          id: nanoid(),
           service: 'MAILGUN',
           config: JSON.stringify({
             apiKey: 'example_api_key',
@@ -1444,7 +1494,8 @@ async function main() {
             from: 'noreply@iglesiacentral.com'
           }),
           isActive: false,
-          churchId: church.id
+          churchId: church.id,
+          updatedAt: new Date()
         }
       })
     ])
@@ -1453,8 +1504,9 @@ async function main() {
 
     // Crear automatizaciones básicas de ejemplo
     const automations = await Promise.all([
-      prisma.automation.create({
+      prisma.automations.create({
         data: {
+          id: nanoid(),
           name: 'Bienvenida Automática Visitantes',
           description: 'Enviar email de bienvenida a nuevos visitantes',
           trigger: 'NEW_VISITOR',
@@ -1477,8 +1529,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.automation.create({
+      prisma.automations.create({
         data: {
+          id: nanoid(),
           name: 'Recordatorio de Eventos',
           description: 'Enviar recordatorio SMS 24 horas antes de eventos',
           trigger: 'EVENT_REMINDER',
@@ -1497,8 +1550,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.automation.create({
+      prisma.automations.create({
         data: {
+          id: nanoid(),
           name: 'Seguimiento Donaciones',
           description: 'Enviar agradecimiento por donaciones importantes',
           trigger: 'LARGE_DONATION',
@@ -1526,8 +1580,9 @@ async function main() {
 
     // Crear algunas comunicaciones de ejemplo
     await Promise.all([
-      prisma.communication.create({
+      prisma.communications.create({
         data: {
+          id: nanoid(),
           title: 'Bienvenida Enero 2024',
           content: '¡Bienvenidos a todos los nuevos visitantes! Nos alegra tenerlos con nosotros.',
           type: 'EMAIL',
@@ -1540,8 +1595,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.communication.create({
+      prisma.communications.create({
         data: {
+          id: nanoid(),
           title: 'Recordatorio Conferencia Jóvenes',
           content: 'Recordatorio: La conferencia de jóvenes es este viernes a las 6 PM. ¡No te lo pierdas!',
           type: 'SMS',
@@ -1554,8 +1610,9 @@ async function main() {
           churchId: church.id
         }
       }),
-      prisma.communication.create({
+      prisma.communications.create({
         data: {
+          id: nanoid(),
           title: 'Anuncio Próximos Eventos',
           content: 'Próximamente tendremos varios eventos especiales. Mantente atento a más información.',
           type: 'WHATSAPP',
