@@ -173,7 +173,9 @@ export default function PlatformBillingClient() {
       toast.error('Paddle no está inicializado. Verifica NEXT_PUBLIC_PADDLE_CLIENT_TOKEN.')
       return
     }
-    paddle.Checkout.open({ url: checkoutUrl })
+    // Paddle Billing JS SDK does not accept a raw `url` option.
+    // Open the hosted checkout URL in a new tab instead.
+    window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
   }
 
   // ─────────────────────────────────────────────────────────────────────────

@@ -141,6 +141,10 @@ export const authOptions: NextAuthOptions = {
             }
           } else {
             console.log('❌ SESSION: User not found in DB for token.sub:', token.sub)
+            // User was deleted or DB was reset — clear the session so the login
+            // page does NOT treat this as an authenticated user and redirect.
+            // This prevents the infinite-redirect / stale-JWT loop.
+            session.user = undefined as any
           }
         } catch (error) {
           console.log('⚠️ SESSION: Database connection failed, using token data')
