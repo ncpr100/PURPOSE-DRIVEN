@@ -10,12 +10,13 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Temporarily ignore TypeScript errors to isolate build issues
-    ignoreBuildErrors: true,
+    // TypeScript errors are now fully resolved — strict build enforcement active
+    ignoreBuildErrors: false,
   },
   // Platform-specific optimizations
+  // removeConsole disabled so Vercel logs show real errors during debugging
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: false,
   },
   // CORS and security headers for authentication
   async headers() {

@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
           firstName: true,
           lastName: true,
           email: true,
-          church: { select: { name: true } }
+          churchId: true
         }
       })
       diagnostics.tests.sampleMembers = {
@@ -89,13 +89,30 @@ export async function GET(request: NextRequest) {
         samples: sampleMembers.map(m => ({
           name: `${m.firstName} ${m.lastName}`,
           email: m.email,
-          church: m.church.name
+          churchId: m.churchId
         }))
       }
     }
     
     diagnostics.tests.overallStatus = '✅ ALL TESTS PASSED'
     
+    // Test 6: Verify users exist (for auth debugging)
+    const userCount = await db.users.count()
+    const userSamples = await db.users.findMany({
+      take: 5,
+      select: { id: true, email: true, role: true, churchId: true, isActive: true }
+    })
+    diagnostics.tests.usersTest = {
+      status: '✅ Success',
+      count: userCount,
+      users: userSamples.map(u => ({
+        email: u.email,
+        role: u.role,
+        churchId: u.churchId,
+        isActive: u.isActive
+      }))
+    }
+
     await db.$disconnect()
     
     return NextResponse.json(diagnostics, { 
