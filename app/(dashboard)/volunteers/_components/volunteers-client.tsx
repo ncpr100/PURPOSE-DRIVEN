@@ -168,11 +168,14 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
       if (response.ok) {
         const data = await response.json()
         // Ensure all volunteers have proper structure
+        // FIX #005b: Prisma returns 'members' and 'ministries' (plural, matching schema relation
+        // field names). The old code read volunteer.member / volunteer.ministry (singular) which
+        // were always undefined → both showed null. Also normalise assignment relation name.
         const safeVolunteers = data.map((volunteer: any) => ({
           ...volunteer,
-          assignments: volunteer.assignments || [],
-          member: volunteer.member || null,
-          ministry: volunteer.ministry || null
+          assignments: volunteer.volunteer_assignments || volunteer.assignments || [],
+          member: volunteer.members || volunteer.member || null,
+          ministry: volunteer.ministries || volunteer.ministry || null
         }))
         setVolunteers(safeVolunteers)
       } else {

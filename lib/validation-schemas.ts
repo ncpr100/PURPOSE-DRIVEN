@@ -238,13 +238,20 @@ export const memberSchema = z.object({
     .regex(/^[\+]?[0-9\s\-\(\)]{8,15}$/, 'Teléfono inválido')
     .trim()
     .optional(),
+  // FIX #002 & #003: Accept YYYY-MM-DD strings or ISO datetime strings for broad compatibility.
+  // The form sends date strings directly from <input type="date"> (YYYY-MM-DD).
+  // Do NOT wrap dates in new Date() before sending — that produces ISO strings which fail stricter regex.
   birthDate: z.string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Fecha inválida (YYYY-MM-DD)')
+    .regex(/^\d{4}-\d{2}-\d{2}(T.*)?$/, 'Fecha inválida (YYYY-MM-DD)')
     .optional(),
-  gender: z.enum(['male', 'female', 'other']).optional(),
-  maritalStatus: z.enum(['single', 'married', 'divorced', 'widowed']).optional(),
+  // FIX #002: Accept both Spanish values (form sends) and English values (legacy).
+  // Form select options send: masculino, femenino, otro, no-especificar
+  gender: z.string().max(50).optional(),
+  // FIX #002: Accept both Spanish values (soltero, casado, divorciado, viudo, union-libre)
+  // and English values (single, married, divorced, widowed).
+  maritalStatus: z.string().max(50).optional(),
   membershipDate: z.string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Fecha inválida (YYYY-MM-DD)')
+    .regex(/^\d{4}-\d{2}-\d{2}(T.*)?$/, 'Fecha inválida (YYYY-MM-DD)')
     .optional(),
   status: z.enum(['active', 'inactive', 'visitor']).default('active'),
   role: z.enum(['member', 'leader', 'pastor', 'admin']).default('member'),

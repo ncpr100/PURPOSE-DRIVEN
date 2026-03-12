@@ -83,8 +83,8 @@ export async function POST(request: NextRequest) {
         phone: validated.phone || null,
         // ✅ VALIDATED: skills is now guaranteed to be an array
         skills: validated.skills?.length ? JSON.stringify(validated.skills) : null,
-        // ✅ VALIDATED: availability is now guaranteed to be a proper object
-        availability: validated.availability ? JSON.stringify(validated.availability) : null,
+        // FIX #005a: availability is a string (text), not an object — no JSON.stringify needed.
+        availability: validated.availability || null,
         ministryId: validated.ministryId === 'no-ministry' ? null : validated.ministryId,
         churchId: session.user.churchId,
         isActive: true,

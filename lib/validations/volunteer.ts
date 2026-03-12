@@ -33,11 +33,10 @@ export const volunteerCreateSchema = z.object({
     .optional()
     .default([]),
   
-  availability: z.object({
-    days: z.array(z.enum(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])).optional(),
-    times: z.array(z.enum(['morning', 'afternoon', 'evening'])).optional(),
-    frequency: z.enum(['weekly', 'biweekly', 'monthly', 'occasional']).optional()
-  }).optional(),
+  // FIX #004: availability is stored as a plain string in the DB and the form never sends a
+  // structured object — the old z.object() schema rejected null (sent by form) with a ZodError.
+  // Changed to z.string().optional().nullable() to match actual data flow.
+  availability: z.string().optional().nullable(),
   
   ministryId: cuidOrEmptySchema.or(z.literal('no-ministry')),
   

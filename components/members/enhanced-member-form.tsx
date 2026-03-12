@@ -271,10 +271,11 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         )
         if (combinedEmergencyContact) cleanData.emergencyContact = combinedEmergencyContact
         
-        // Add dates only if they have valid values
-        if (formData.birthDate) cleanData.birthDate = new Date(formData.birthDate)
-        if (formData.baptismDate) cleanData.baptismDate = new Date(formData.baptismDate)
-        if (formData.membershipDate) cleanData.membershipDate = new Date(formData.membershipDate)
+        // FIX #003: Send date strings as-is (YYYY-MM-DD from <input type="date">).
+        // Do NOT wrap in new Date() — that converts to ISO string which fails the API validation regex.
+        if (formData.birthDate) cleanData.birthDate = formData.birthDate
+        if (formData.baptismDate) cleanData.baptismDate = formData.baptismDate
+        if (formData.membershipDate) cleanData.membershipDate = formData.membershipDate
         
         // CRITICAL: Await onSave so parent updates editingMember state before continuing
         await onSave(cleanData)
