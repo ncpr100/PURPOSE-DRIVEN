@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
     // Get all members for additional data
     const allMembers = await db.members.findMany({
       where: { churchId: church.id },
-      select: { id: true, lifecycle: true }
+      select: { id: true }
     });
 
     // Create volunteers (30% of members)

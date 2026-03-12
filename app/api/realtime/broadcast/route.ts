@@ -39,10 +39,7 @@ export async function POST(request: NextRequest) {
     // Try to get user from database, fallback to session data if DB unavailable
     let sessionUser
     try {
-      sessionUser = await db.user.findUnique({
-        where: { email: session.user.email },
-        select: { id: true, churchId: true, role: true, name: true }
-      })
+      sessionUser = await db.users.findUnique({
     } catch (error) {
       console.log('⚠️ Database unavailable, using session data for broadcast')
       sessionUser = {
@@ -100,7 +97,7 @@ export async function POST(request: NextRequest) {
         // Verify user exists and belongs to same church (unless SUPER_ADMIN)
         if (sessionUser.role !== 'SUPER_ADMIN') {
           try {
-            const targetUser = await db.user.findFirst({
+            const targetUser = await db.users.findFirst({
               where: { 
                 id: validatedData.targetId,
                 churchId: sessionUser.churchId 
@@ -211,7 +208,7 @@ export async function GET(request: NextRequest) {
     // Try to get user from database, fallback to session data if DB unavailable
     let user
     try {
-      user = await db.user.findUnique({
+      user = await db.users.findUnique({
         where: { email: session.user.email },
         select: { id: true, churchId: true, role: true }
       })

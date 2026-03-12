@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     const stripe = new Stripe(stripeSecretKey, {
-      apiVersion: '2025-09-30.clover',
+      apiVersion: '2025-10-29.clover',
     });
 
     const body = await request.text();

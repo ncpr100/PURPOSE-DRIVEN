@@ -186,38 +186,31 @@ async function createSpiritualAssessment(formData: any, churchId: string): Promi
     }
     
     // Create or update spiritual assessment
-    const existingAssessment = await db.spiritual_assessments.findFirst({
+    const existingAssessment = await db.member_spiritual_profiles.findFirst({
       where: {
-        memberId: member.id,
-        churchId
+        memberId: member.id
       }
     })
     
     const assessmentPayload = {
       memberId: member.id,
-      churchId,
       primaryGifts: assessmentData.spiritualGifts || [],
       ministryPassions: assessmentData.ministryPassions || [],
-      experienceLevel: assessmentData.experienceLevel || 'NOVATO',
+      experienceLevel: 1,
       spiritualCalling: assessmentData.spiritualCalling,
-      assessmentDate: new Date(),
-      metadata: {
-        source: 'External Form Submission',
-        submissionDate: new Date().toISOString(),
-        formData: formData
-      }
+      assessmentDate: new Date()
     }
     
     if (existingAssessment) {
       console.log(`📝 Updating existing spiritual assessment: ${existingAssessment.id}`)
-      await db.spiritual_assessments.update({
+      await db.member_spiritual_profiles.update({
         where: { id: existingAssessment.id },
         data: assessmentPayload
       })
       return existingAssessment.id
     } else {
-      console.log(`🙏 Creating new spiritual assessment for: ${member.name}`)
-      const newAssessment = await db.spiritual_assessments.create({
+      console.log(`🙏 Creating new spiritual assessment for: ${member.firstName}`)
+      const newAssessment = await db.member_spiritual_profiles.create({
         data: {
           id: nanoid(),
           ...assessmentPayload
@@ -285,16 +278,16 @@ async function createVolunteerProfile(formData: any, churchId: string): Promise<
       console.log(`📝 Updating existing volunteer: ${existingVolunteer.id}`)
       await db.volunteers.update({
         where: { id: existingVolunteer.id },
-        data: volunteerPayload
+        data: volunteerPayload as any
       })
       return existingVolunteer.id
     } else {
-      console.log(`🙋‍♂️ Creating new volunteer record for: ${member.name}`)
+      console.log(`🙋‍♂️ Creating new volunteer record for: ${member.firstName}`)
       const newVolunteer = await db.volunteers.create({
         data: {
           id: nanoid(),
           ...volunteerPayload
-        }
+        } as any
       })
       return newVolunteer.id
     }
@@ -317,7 +310,7 @@ async function findOrCreateMember(memberData: {
     console.log(`🔍 Searching for existing member: ${memberData.name} (${memberData.email})`)
     
     // Strategy 1: Exact email match (most reliable)
-    let member = await db.member.findFirst({
+    let member = await db.members.findFirst({
       where: {
         churchId: memberData.churchId,
         email: memberData.email
@@ -328,7 +321,7 @@ async function findOrCreateMember(memberData: {
       console.log(`✅ Found member by email: ${member.id}`)
       // Update member info if phone number is provided and missing
       if (memberData.phone && !member.phone) {
-        await db.member.update({
+        await db.members.update({
           where: { id: member.id },
           data: { phone: memberData.phone, updatedAt: new Date() }
         })
@@ -339,11 +332,11 @@ async function findOrCreateMember(memberData: {
     
     // Strategy 2: Name similarity + phone match (for cases without email initially)
     if (memberData.phone) {
-      member = await db.member.findFirst({
+      member = await db.members.findFirst({
         where: {
           churchId: memberData.churchId,
           phone: memberData.phone,
-          name: { contains: memberData.name.split(' ')[0], mode: 'insensitive' }
+          firstName: { contains: memberData.name.split(' ')[0], mode: 'insensitive' }
         }
       })
       
@@ -351,7 +344,7 @@ async function findOrCreateMember(memberData: {
         console.log(`✅ Found member by phone + name similarity: ${member.id}`)
         // Update email if it was missing
         if (!member.email) {
-          await db.member.update({
+          await db.members.update({
             where: { id: member.id },
             data: { email: memberData.email, updatedAt: new Date() }
           })
@@ -366,30 +359,31 @@ async function findOrCreateMember(memberData: {
     
     if (nameWords.length >= 2) {
       // Check for similar names (first name + last name combination)
-      const members = await db.member.findMany({
+      const members = await db.members.findMany({
         where: {
           churchId: memberData.churchId,
           OR: [
-            { name: { contains: nameWords[0], mode: 'insensitive' } },
-            { name: { contains: nameWords[nameWords.length - 1], mode: 'insensitive' } }
+            { firstName: { contains: nameWords[0], mode: 'insensitive' } },
+            { firstName: { contains: nameWords[nameWords.length - 1], mode: 'insensitive' } }
           ]
         }
       })
       
       // Check for potential matches
       for (const existingMember of members) {
-        const existingWords = existingMember.name.toLowerCase().split(' ')
+        const existingName = `${existingMember.firstName} ${existingMember.lastName || ''}`.toLowerCase()
+        const existingWords = existingName.split(' ')
         const commonWords = nameWords.filter(word => 
           existingWords.some(existing => existing.includes(word) || word.includes(existing))
         )
         
         // If 2+ name words match and same church, likely the same person
         if (commonWords.length >= 2) {
-          console.log(`⚠️ Potential duplicate detected: ${existingMember.name} vs ${memberData.name}`)
+          console.log(`⚠️ Potential duplicate detected: ${existingName} vs ${memberData.name}`)
           console.log(`📞 Linking to existing member and updating contact info: ${existingMember.id}`)
           
           // Update existing member with new contact info
-          await db.member.update({
+          await db.members.update({
             where: { id: existingMember.id },
             data: {
               email: memberData.email,
@@ -405,15 +399,17 @@ async function findOrCreateMember(memberData: {
     
     // Strategy 4: Create new member if no matches found
     console.log(`👤 Creating new member: ${memberData.name}`)
-    member = await db.member.create({
+    const nameParts = memberData.name.split(' ')
+    const firstName = nameParts[0] || memberData.name
+    const lastName = nameParts.slice(1).join(' ') || ''
+    member = await db.members.create({
       data: {
         id: nanoid(),
-        name: memberData.name,
+        firstName,
+        lastName,
         email: memberData.email,
         phone: memberData.phone,
         churchId: memberData.churchId,
-        lifecycle: memberData.lifecycle,
-        source: memberData.source,
         createdAt: new Date(),
         updatedAt: new Date()
       }
@@ -639,7 +635,7 @@ export async function POST(request: NextRequest) {
     const userAgent = request.headers.get('user-agent') || 'unknown'
 
     // Add form metadata to submission data
-    const enrichedData = {
+    const enrichedData: Record<string, any> = {
       ...formData,
       formTitle: formTitle,
       formSlug: formSlug,

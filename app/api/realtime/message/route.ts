@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     // Try to get user from database, fallback to session data if DB unavailable
     let user
     try {
-      user = await db.user.findUnique({
+      user = await db.users.findUnique({
         where: { email: session.user.email },
         select: { id: true, churchId: true, role: true, name: true }
       })

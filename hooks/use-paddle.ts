@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useState } from 'react'
-import { initializePaddle, Paddle, Environment } from '@paddle/paddle-js'
+import { initializePaddle, Paddle } from '@paddle/paddle-js'
 
 let paddlePromise: Promise<Paddle | undefined> | null = null
 
@@ -24,8 +24,8 @@ function getOrInitPaddle(): Promise<Paddle | undefined> {
 
   const env =
     process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT === 'production'
-      ? Environment.Production
-      : Environment.Sandbox
+      ? 'production'
+      : 'sandbox'
 
   paddlePromise = initializePaddle({ environment: env, token })
   return paddlePromise

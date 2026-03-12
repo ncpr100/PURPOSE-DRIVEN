@@ -67,9 +67,9 @@ export async function PATCH(
     data: {
       ...(name        !== undefined ? { name: String(name).trim() }               : {}),
       ...(description !== undefined ? { description: description ? String(description).trim() : null } : {}),
-      ...(fields      !== undefined ? { fields }                                  : {}),
-      ...(style       !== undefined ? { style }                                   : {}),
-      ...(settings    !== undefined ? { settings }                                : {}),
+      ...(fields      !== undefined ? { fields: fields as any }                             : {}),
+      ...(style       !== undefined ? { style: style as any }                               : {}),
+      ...(settings    !== undefined ? { settings: settings as any }                         : {}),
       ...(isActive    !== undefined ? { isActive: Boolean(isActive) }             : {}),
       ...(isPublic    !== undefined ? { isPublic: Boolean(isPublic) }             : {}),
       ...(campaignTag !== undefined ? { campaignTag: String(campaignTag) }        : {}),

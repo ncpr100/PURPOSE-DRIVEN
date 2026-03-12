@@ -154,10 +154,10 @@ export async function POST(
       console.log('🤖 Triggering SPIRITUAL_ASSESSMENT_SUBMITTED automation for member:', memberId)
       
       // Import automation engine
-      const { automationEngine } = await import('@/lib/automation-engine')
+      const { AutomationTriggers } = await import('@/lib/automation-engine')
       
       // Trigger spiritual assessment automation
-      await automationEngine.spiritualAssessmentSubmitted({
+      await AutomationTriggers.spiritualAssessmentSubmitted({
         id: spiritualProfile.id,
         memberId,
         memberName: `${member.firstName} ${member.lastName}`,
