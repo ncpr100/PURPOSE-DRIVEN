@@ -44,6 +44,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error fetching marketing campaigns:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
 }
 
 // POST - Create marketing campaign
@@ -86,4 +87,5 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error creating marketing campaign:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
 }
