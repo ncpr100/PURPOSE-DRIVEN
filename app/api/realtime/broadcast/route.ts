@@ -40,6 +40,9 @@ export async function POST(request: NextRequest) {
     let sessionUser
     try {
       sessionUser = await db.users.findUnique({
+        where: { email: session.user.email },
+        select: { id: true, churchId: true, role: true, name: true }
+      })
     } catch (error) {
       console.log('⚠️ Database unavailable, using session data for broadcast')
       sessionUser = {
