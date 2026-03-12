@@ -4,13 +4,13 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { 
-
-export const dynamic = 'force-dynamic'
   addConnection, 
   removeConnection, 
   broadcastToChurch, 
   hasUserConnections 
 } from '@/lib/sse-broadcast'
+
+export const dynamic = 'force-dynamic'
 
 // GET - Server-Sent Events endpoint
 export async function GET(request: NextRequest) {
