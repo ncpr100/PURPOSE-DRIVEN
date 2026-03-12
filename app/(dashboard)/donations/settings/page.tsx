@@ -24,7 +24,7 @@ function DonationsSettingsLoadingSkeleton() {
 
 async function getDonationCategories(churchId: string) {
   try {
-    return await db.donationCategory?.findMany({
+    return await db.donation_categories?.findMany({
       where: { churchId },
       orderBy: { name: 'asc' }
     }) || [];
@@ -36,7 +36,7 @@ async function getDonationCategories(churchId: string) {
 
 async function getPaymentMethods(churchId: string) {
   try {
-    return await db.paymentMethod?.findMany({
+    return await db.payment_methods?.findMany({
       where: { churchId },
       orderBy: { name: 'asc' }
     }) || [];
