@@ -72,7 +72,5 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     console.error('Error updating platform settings:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }

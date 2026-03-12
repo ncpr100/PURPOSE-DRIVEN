@@ -38,9 +38,6 @@ export async function GET(
   } catch (error) {
     console.error('Error fetching marketing campaign:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  } finally {
-    await prisma.$disconnect()
-  }
 }
 
 // PUT - Update marketing campaign
@@ -77,7 +74,4 @@ export async function PUT(
   } catch (error) {
     console.error('Error updating marketing campaign:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  } finally {
-    await prisma.$disconnect()
-  }
 }
