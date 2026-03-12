@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
  * Encrypt access token for secure storage
  * Uses AES-256-GCM encryption
  */
-export function encryptToken(token: string): string {
+function encryptToken(token: string): string {
   const algorithm = 'aes-256-gcm'
   const secretKey = process.env.OAUTH_ENCRYPTION_KEY || 'your-32-character-encryption-key-here'
   
