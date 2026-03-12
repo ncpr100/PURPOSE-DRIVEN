@@ -7,6 +7,8 @@ import { z } from 'zod';
 import { randomUUID } from 'crypto';
 import { nanoid } from 'nanoid';
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/prayer-requests - List prayer requests with filters
 export async function GET(request: Request) {
   try {

@@ -6,6 +6,8 @@ import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
 import { randomUUID } from 'crypto'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

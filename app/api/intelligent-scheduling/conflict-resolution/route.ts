@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { addHours, format, parseISO, isSameDay, differenceInMinutes } from 'date-fns'
 
+export const dynamic = 'force-dynamic'
+
 // Conflict Resolution System for Intelligent Scheduling
 interface SchedulingConflict {
   id: string

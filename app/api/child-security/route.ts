@@ -4,6 +4,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { ChildSecurityService } from '@/lib/services/child-security'
 
+export const dynamic = 'force-dynamic'
+
 const childSecurity = new ChildSecurityService()
 
 export async function POST(req: NextRequest) {

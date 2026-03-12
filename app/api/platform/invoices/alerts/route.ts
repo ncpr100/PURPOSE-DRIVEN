@@ -6,6 +6,8 @@ import { prisma } from '@/lib/prisma'
 import { nanoid } from 'nanoid'
 import { getServerBaseUrl } from '@/lib/server-url'
 
+export const dynamic = 'force-dynamic'
+
 // GET - Get payment alerts and overdue invoices
 export async function GET() {
   try {

@@ -5,6 +5,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/prayer-categories - List prayer categories for a church
 export async function GET(request: Request) {
   try {

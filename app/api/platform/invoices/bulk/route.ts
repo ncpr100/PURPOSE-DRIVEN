@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // POST - Create bulk invoices for multiple churches
 export async function POST(request: NextRequest) {
   try {

@@ -4,6 +4,8 @@ import { readFile } from 'fs/promises';
 import path from 'path';
 import { lookup } from 'mime-types';
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(
   request: Request,
   { params }: { params: { filename: string[] } }

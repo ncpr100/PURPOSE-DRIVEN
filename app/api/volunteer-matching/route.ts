@@ -7,6 +7,8 @@ import { nanoid } from 'nanoid'
 import { volunteerMatchingSchema } from '@/lib/validations/volunteer'
 import { ZodError } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 // ✅ PERFORMANCE FIX: Pure function - no database queries
 // Receives all data pre-fetched to eliminate N+1 query problem
 // BEFORE: 3 queries per member × 500 members = 1,500 queries

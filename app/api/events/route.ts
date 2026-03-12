@@ -6,6 +6,8 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // Validation schemas for events
 const createEventSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200),

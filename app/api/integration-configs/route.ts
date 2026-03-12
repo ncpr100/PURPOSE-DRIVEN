@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth'
 import { nanoid } from 'nanoid'
 import { db } from "@/lib/db"
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 // Real-time updates endpoint for prayer analytics using Server-Sent Events
 export async function GET(request: NextRequest) {
   try {

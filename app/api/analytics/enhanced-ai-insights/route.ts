@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import { EnhancedAIInsightsEngine } from '@/lib/enhanced-ai-insights-engine';
 import { AIPredictionAccuracyEngine } from '@/lib/ai-prediction-accuracy-tracker';
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

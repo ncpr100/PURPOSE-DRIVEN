@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { addDays, differenceInDays } from 'date-fns'
 
+export const dynamic = 'force-dynamic'
+
 // Phase 3: Automated Recruitment Pipeline
 interface MemberRecruitmentProfile {
   memberId: string

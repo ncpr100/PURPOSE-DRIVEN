@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { whatsappBusinessService } from '@/lib/integrations/whatsapp'
 
+export const dynamic = 'force-dynamic'
+
 // GET - Webhook verification
 export async function GET(request: NextRequest) {
   try {

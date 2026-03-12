@@ -6,6 +6,8 @@ import { prisma } from '@/lib/prisma'
 import { PushNotificationService } from '@/lib/push-notifications'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const unsubscribeSchema = z.object({
   endpoint: z.string().url()
 })

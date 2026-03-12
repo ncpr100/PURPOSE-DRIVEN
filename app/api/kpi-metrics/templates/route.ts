@@ -5,6 +5,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth";
 import { nanoid } from 'nanoid';
 
+export const dynamic = 'force-dynamic'
+
 const CHURCH_KPI_TEMPLATES = [
   // Membership & Growth KPIs
   {

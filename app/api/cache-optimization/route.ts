@@ -11,6 +11,8 @@ import { authOptions } from '@/lib/auth';
 import { cacheOptimizationController } from '@/lib/cache-optimization-controller';
 import { cacheManager } from '@/lib/redis-cache-manager';
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);

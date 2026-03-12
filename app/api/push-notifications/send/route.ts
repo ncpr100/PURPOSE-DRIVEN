@@ -7,6 +7,8 @@ import { nanoid } from 'nanoid'
 import { PushNotificationService, PushNotificationPayload } from '@/lib/push-notifications'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const sendNotificationSchema = z.object({
   title: z.string().min(1),
   body: z.string().min(1),

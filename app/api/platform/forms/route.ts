@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 // Schema for platform form validation
 const platformFormSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),

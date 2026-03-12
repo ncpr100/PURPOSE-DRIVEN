@@ -5,6 +5,8 @@ import { nanoid } from 'nanoid'
 import { db } from "@/lib/db"
 import twilio from 'twilio'
 
+export const dynamic = 'force-dynamic'
+
 // BULK SENDING LIMITS for safety
 const BULK_SENDING_LIMITS = {
   EMAIL_DAILY_LIMIT: 1000,

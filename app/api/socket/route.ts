@@ -1,6 +1,8 @@
 
 import { NextRequest } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   // This endpoint is for Server-Sent Events compatibility check
   return new Response('Real-time server is running (SSE)', { 

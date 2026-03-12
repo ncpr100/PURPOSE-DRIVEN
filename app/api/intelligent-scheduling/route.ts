@@ -7,6 +7,8 @@ import { prisma } from '@/lib/prisma'
 import { addDays, format, parseISO, isSameDay } from 'date-fns'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // Intelligent Scheduling Engine - Phase 2
 interface SchedulingGap {
   id: string

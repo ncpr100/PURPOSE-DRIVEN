@@ -8,6 +8,8 @@ import { SocialOAuth } from '@/lib/social-media/oauth-engine'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

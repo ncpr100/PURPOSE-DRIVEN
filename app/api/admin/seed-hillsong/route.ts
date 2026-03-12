@@ -10,6 +10,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
+export const dynamic = 'force-dynamic'
+
 const FIRST_NAMES_MALE = [
   'Juan', 'Carlos', 'José', 'Miguel', 'David', 'Diego', 'Andrés', 'Pedro', 'Luis', 'Fernando',
   'Jorge', 'Ricardo', 'Javier', 'Daniel', 'Alejandro', 'Pablo', 'Manuel', 'Francisco', 'Antonio', 'Raúl',

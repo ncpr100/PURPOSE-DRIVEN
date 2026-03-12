@@ -2,6 +2,8 @@
 import { NextResponse } from "next/server"
 import { communicationService } from "@/lib/integrations/communication"
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     // Test email

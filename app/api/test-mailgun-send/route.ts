@@ -2,6 +2,8 @@
 import { NextResponse } from "next/server"
 import { mailgunService } from "@/lib/integrations/mailgun"
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const result = await mailgunService.sendEmail({

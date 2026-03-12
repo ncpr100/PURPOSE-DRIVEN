@@ -6,6 +6,8 @@ import { z } from 'zod'
 import { randomUUID } from 'crypto'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 const createTemplateSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),

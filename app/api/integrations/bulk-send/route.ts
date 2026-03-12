@@ -7,6 +7,8 @@ import { communicationService } from '@/lib/integrations/communication'
 import { db } from '@/lib/db'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const bulkSendSchema = z.object({
   service: z.enum(['email', 'sms', 'whatsapp']),
   recipients: z.array(z.string()).min(1).max(1000), // Limit to 1000 recipients per batch

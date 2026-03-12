@@ -7,6 +7,8 @@ import { spiritualProfileSchema } from '@/lib/validations/volunteer'
 import { ZodError } from 'zod'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     console.log('=== Spiritual Profile API Called ===')

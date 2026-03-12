@@ -5,6 +5,8 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 // Enhanced spiritual assessment with comprehensive scoring
 export async function POST(request: NextRequest) {
   try {

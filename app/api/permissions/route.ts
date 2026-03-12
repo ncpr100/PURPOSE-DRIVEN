@@ -6,6 +6,8 @@ import { db } from '@/lib/db'
 import { hasPermission } from '@/lib/permissions'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/permissions - Obtener todos los permisos
 export async function GET() {
   try {

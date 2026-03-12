@@ -5,6 +5,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/prayer-qr-codes - List QR codes
 export async function GET(request: Request) {
   try {

@@ -4,6 +4,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { nanoid } from 'nanoid';
+
+export const dynamic = 'force-dynamic'
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }

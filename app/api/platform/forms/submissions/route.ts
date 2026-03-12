@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/platform/forms/submissions - Get all platform form submissions with analytics
 export async function GET(request: NextRequest) {
   try {

@@ -9,6 +9,8 @@ import { authOptions } from '@/lib/auth';
 import { db as prisma } from '@/lib/db';
 import { nanoid } from 'nanoid';
 import { randomUUID } from 'crypto';
+
+export const dynamic = 'force-dynamic'
 // GET /api/automation-templates/[id] - Get full template details
 export async function GET(
   request: NextRequest,

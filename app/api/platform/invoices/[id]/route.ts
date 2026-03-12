@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { sendEmail } from '@/lib/email'
 
+export const dynamic = 'force-dynamic'
+
 // GET - Fetch specific invoice
 export async function GET(
   request: NextRequest,

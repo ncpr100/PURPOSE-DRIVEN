@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/roles-advanced - Obtener todos los roles avanzados
 export async function GET() {
   try {

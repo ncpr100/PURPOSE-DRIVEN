@@ -6,6 +6,8 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 const themePreferenceSchema = z.object({
   themeName: z.string().optional(),
   themeMode: z.enum(['light', 'dark', 'auto']).optional(),

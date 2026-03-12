@@ -6,6 +6,8 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 const notificationPreferencesSchema = z.object({
   // Email Notifications
   emailEnabled: z.boolean().optional(),

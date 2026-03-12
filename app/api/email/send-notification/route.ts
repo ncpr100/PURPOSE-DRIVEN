@@ -13,6 +13,8 @@ import {
 import { NotificationEmail } from '@/components/email-templates/notification-email'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const sendNotificationEmailSchema = z.object({
   notificationId: z.string(),
   userId: z.string().optional(), // If not provided, send to all eligible users

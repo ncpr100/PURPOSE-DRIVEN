@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth'
 import { nanoid } from 'nanoid'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 // Data retention policies - cleanup old communications
 async function cleanupOldCommunications(churchId: string) {
   const sixMonthsAgo = new Date()

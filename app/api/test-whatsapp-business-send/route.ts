@@ -2,6 +2,8 @@
 import { NextResponse } from "next/server"
 import { whatsappBusinessService } from "@/lib/integrations/whatsapp"
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const textResult = await whatsappBusinessService.sendTextMessage("+1234567890", "Test WhatsApp Business message")

@@ -14,6 +14,8 @@ import {
 } from '@/lib/sse-broadcast'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const broadcastSchema = z.object({
   type: z.enum(['notification', 'system', 'chat', 'presence']).default('notification'),
   target: z.enum(['user', 'church', 'role', 'global']),

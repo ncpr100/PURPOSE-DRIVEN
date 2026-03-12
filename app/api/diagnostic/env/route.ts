@@ -1,6 +1,8 @@
 // Show actual environment variables being used in Vercel
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   const dbUrl = process.env.DATABASE_URL || 'NOT_SET'
   const supabaseUrl = process.env.SUPABASE_DATABASE_URL || 'NOT_SET'

@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
+
+export const dynamic = 'force-dynamic'
 // Onboarding Workflow Management System
 interface OnboardingWorkflow {
   id: string

@@ -5,6 +5,8 @@ import { db } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 import { sendEmail } from '@/lib/email'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * GET /api/platform/users/[userId]
  * Get user details (SUPER_ADMIN only)

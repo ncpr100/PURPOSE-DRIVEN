@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { nanoid } from 'nanoid'
+
+export const dynamic = 'force-dynamic'
 // GET - Obtener funnels por website ID
 export async function GET(request: NextRequest) {
   try {

@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { nanoid } from 'nanoid'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }

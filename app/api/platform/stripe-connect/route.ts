@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import Stripe from 'stripe'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * Stripe Connect onboarding for church tenants.
  *

@@ -5,6 +5,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { randomUUID } from 'crypto'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/prayer-contacts - List prayer contacts
 export async function GET(request: Request) {
   try {

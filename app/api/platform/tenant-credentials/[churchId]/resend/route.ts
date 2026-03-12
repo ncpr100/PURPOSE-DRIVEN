@@ -5,6 +5,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getServerBaseUrl } from '@/lib/server-url'
 
+export const dynamic = 'force-dynamic'
+
 // POST - Resend tenant credentials
 export async function POST(
   request: NextRequest,

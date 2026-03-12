@@ -6,6 +6,8 @@ import { db } from '@/lib/db'
 import { RESOURCES, ACTIONS, DEFAULT_ROLE_PERMISSIONS } from '@/lib/permissions'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // POST /api/permissions/seed - Inicializar permisos y roles del sistema
 export async function POST() {
   try {

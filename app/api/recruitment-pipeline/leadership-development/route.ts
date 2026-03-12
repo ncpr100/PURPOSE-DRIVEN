@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { addMonths, differenceInMonths } from 'date-fns'
 
+export const dynamic = 'force-dynamic'
+
 // Leadership Development and Potential Prediction System
 interface LeadershipProfile {
   memberId: string

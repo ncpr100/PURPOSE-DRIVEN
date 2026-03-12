@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
+
 // Get form analytics statistics (simplified - analytics stored client-side)
 export async function GET(request: NextRequest) {
   try {

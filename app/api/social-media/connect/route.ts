@@ -11,6 +11,8 @@ import { SocialOAuth } from '@/lib/social-media/oauth-engine'
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/social-media/connect?platform=FACEBOOK
 export async function GET(request: NextRequest) {
   try {

@@ -5,6 +5,8 @@ import { prisma } from '@/lib/prisma'
 import { broadcastToChurch } from '@/lib/sse-broadcast'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const triggerSchema = z.object({
   type: z.enum(['member-added', 'donation-added', 'event-added', 'volunteer-added', 'manual-refresh']),
   data: z.any().optional()

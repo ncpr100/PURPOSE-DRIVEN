@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // GET - Fetch all invoices (SUPER_ADMIN only)
 export async function GET(request: NextRequest) {
   try {

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * Public Dynamic QR redirect endpoint.
  * /qr/[code]  → looks up DynamicQRCode, increments scanCount, redirects.

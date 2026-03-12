@@ -8,6 +8,8 @@ import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
 
+export const dynamic = 'force-dynamic'
+
 const bulkNotificationSchema = z.object({
   templateId: z.string().optional(),
   title: z.string().min(1, 'Título es requerido'),

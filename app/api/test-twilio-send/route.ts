@@ -2,6 +2,8 @@
 import { NextResponse } from "next/server"
 import { twilioService } from "@/lib/integrations/twilio"
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const smsResult = await twilioService.sendSMS({

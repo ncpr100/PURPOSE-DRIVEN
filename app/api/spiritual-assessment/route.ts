@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 // Validation schema for spiritual assessment data
 const spiritualAssessmentSchema = z.object({
   memberId: z.string().optional(),

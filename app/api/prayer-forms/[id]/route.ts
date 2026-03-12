@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/prayer-forms/[id] - Get single prayer form
 export async function GET(
   request: Request,

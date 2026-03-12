@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ChildSecurityService } from '@/lib/services/child-security'
 
+export const dynamic = 'force-dynamic'
+
 const childSecurity = new ChildSecurityService()
 
 // Cron job endpoint for photo cleanup

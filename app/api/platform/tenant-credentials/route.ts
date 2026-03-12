@@ -8,6 +8,8 @@ import { getServerBaseUrl } from '@/lib/server-url'
 import { randomUUID } from 'crypto'
 import { nanoid } from 'nanoid'
 
+export const dynamic = 'force-dynamic'
+
 // GET - Fetch tenant credentials (SUPER_ADMIN only)
 export async function GET(request: NextRequest) {
   try {

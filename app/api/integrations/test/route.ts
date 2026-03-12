@@ -6,6 +6,8 @@ import { db } from '@/lib/db'
 import { communicationService } from '@/lib/integrations/communication'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const testIntegrationSchema = z.object({
   service: z.enum(['email', 'sms', 'whatsapp']),
   recipient: z.string().min(1),

@@ -6,6 +6,8 @@ import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { addDays, startOfWeek, endOfWeek, format, isAfter } from 'date-fns'
 
+export const dynamic = 'force-dynamic'
+
 // Workload Balancer for Fair Distribution of Volunteer Assignments
 interface VolunteerWorkload {
   memberId: string

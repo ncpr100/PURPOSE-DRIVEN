@@ -6,6 +6,8 @@ import { prisma } from '@/lib/prisma'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const notificationSchema = z.object({
   title: z.string().min(1, 'Título es requerido'),
   message: z.string().min(1, 'Mensaje es requerido'),
