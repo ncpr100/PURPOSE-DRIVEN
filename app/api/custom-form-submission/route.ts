@@ -205,7 +205,7 @@ async function createSpiritualAssessment(formData: any, churchId: string): Promi
       console.log(`📝 Updating existing spiritual assessment: ${existingAssessment.id}`)
       await db.member_spiritual_profiles.update({
         where: { id: existingAssessment.id },
-        data: assessmentPayload
+        data: assessmentPayload as any
       })
       return existingAssessment.id
     } else {
@@ -214,7 +214,7 @@ async function createSpiritualAssessment(formData: any, churchId: string): Promi
         data: {
           id: nanoid(),
           ...assessmentPayload
-        }
+        } as any
       })
       return newAssessment.id
     }
