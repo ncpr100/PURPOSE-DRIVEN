@@ -15,7 +15,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Ensure cache optimization is initialized for 100% hit rates
-    await AnalyticsCacheInitializer.initialize();
+    // Non-fatal: if Redis is unavailable, skip cache init and serve data directly
+    try {
+      await AnalyticsCacheInitializer.initialize();
+    } catch (cacheInitError) {
+      console.warn('[realtime-overview] Cache init skipped (Redis unavailable):', (cacheInitError as Error).message)
+    }
 
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },

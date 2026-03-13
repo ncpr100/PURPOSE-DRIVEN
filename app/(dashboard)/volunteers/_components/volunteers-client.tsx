@@ -53,7 +53,17 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false)
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(null)
+  const [editFormData, setEditFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    skills: '',
+    availability: '',
+    ministryId: 'no-ministry'
+  })
   const [spiritualGifts, setSpiritualGifts] = useState<any[]>([])
   const [member_spiritual_profiles, setMemberSpiritualProfile] = useState<any>(null)
   const [volunteerProfiles, setVolunteerProfiles] = useState<Map<string, any>>(new Map())
@@ -62,6 +72,50 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
   // State management for dialogs
 
   // Handler functions for buttons
+  const handleOpenEditDialog = (volunteer: Volunteer) => {
+    setSelectedVolunteer(volunteer)
+    setEditFormData({
+      firstName: volunteer.firstName,
+      lastName: volunteer.lastName,
+      email: volunteer.email || '',
+      phone: volunteer.phone || '',
+      skills: volunteer.skills || '',
+      availability: volunteer.availability || '',
+      ministryId: volunteer.ministry ? (ministries.find(m => m.name === volunteer.ministry?.name)?.id || 'no-ministry') : 'no-ministry'
+    })
+    setIsEditDialogOpen(true)
+  }
+
+  const handleEditVolunteer = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedVolunteer) return
+    if (!editFormData.firstName || !editFormData.lastName) {
+      toast.error('Nombre y apellido son requeridos')
+      return
+    }
+    try {
+      const response = await fetch(`/api/volunteers/${selectedVolunteer.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...editFormData,
+          skills: editFormData.skills ? editFormData.skills.split(',').map((s: string) => s.trim()) : [],
+          ministryId: editFormData.ministryId === 'no-ministry' ? null : editFormData.ministryId
+        })
+      })
+      if (response.ok) {
+        toast.success('Voluntario actualizado exitosamente')
+        setIsEditDialogOpen(false)
+        fetchVolunteers()
+      } else {
+        const error = await response.json()
+        toast.error(error.message || 'Error al actualizar voluntario')
+      }
+    } catch {
+      toast.error('Error al actualizar voluntario')
+    }
+  }
+
   const handleOpenAssignDialog = (volunteer: Volunteer) => {
     setSelectedVolunteer(volunteer)
     setIsAssignDialogOpen(true)
@@ -1302,7 +1356,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                           size="sm"
                           className="mt-3"
                           onClick={() => {
-                            window.location.href = `/volunteers/spiritual-assessment?volunteerId=${selectedVolunteer.id}&memberId=${selectedVolunteer.id}`
+                            window.location.href = `/volunteers/spiritual-assessment?volunteerId=${selectedVolunteer.id}&memberId=${selectedVolunteer.member?.id || selectedVolunteer.id}`
                           }}
                         >
                           <Brain className="h-4 w-4 mr-2" />
@@ -1379,7 +1433,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                               </div>
                             )}
                             
-                            {memberAvailabilityMatrix && memberAvailabilityMatrix.days?.includes('sunday') && (
+                            {memberAvailabilityMatrix && memberAvailabilityMatrix.recurringAvailability?.sunday && Object.values(memberAvailabilityMatrix.recurringAvailability.sunday as Record<string, boolean>).some(v => v) && (
                               <div className="flex items-center gap-2 p-2 bg-green-50 rounded text-sm">
                                 <Calendar className="h-4 w-4 text-green-500" />
                                 <span>Disponibilidad dominical confirmada</span>
@@ -1416,6 +1470,13 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 <Button variant="outline" onClick={() => setIsProfileDialogOpen(false)}>
                   Cerrar
                 </Button>
+                <Button variant="outline" onClick={() => {
+                  setIsProfileDialogOpen(false)
+                  if (selectedVolunteer) handleOpenEditDialog(selectedVolunteer)
+                }}>
+                  <User className="h-4 w-4 mr-1" />
+                  Editar
+                </Button>
                 <Button onClick={() => {
                   setIsProfileDialogOpen(false)
                   setIsAssignDialogOpen(true)
@@ -1426,6 +1487,91 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Volunteer Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Editar Voluntario</DialogTitle>
+            <DialogDescription>
+              Actualiza la información del voluntario
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleEditVolunteer} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-firstName">Nombre *</Label>
+                <Input
+                  id="edit-firstName"
+                  value={editFormData.firstName}
+                  onChange={(e) => setEditFormData(prev => ({ ...prev, firstName: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-lastName">Apellido *</Label>
+                <Input
+                  id="edit-lastName"
+                  value={editFormData.lastName}
+                  onChange={(e) => setEditFormData(prev => ({ ...prev, lastName: e.target.value }))}
+                  required
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-email">Email</Label>
+              <Input
+                id="edit-email"
+                type="email"
+                value={editFormData.email}
+                onChange={(e) => setEditFormData(prev => ({ ...prev, email: e.target.value }))}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-phone">Teléfono</Label>
+              <Input
+                id="edit-phone"
+                value={editFormData.phone}
+                onChange={(e) => setEditFormData(prev => ({ ...prev, phone: e.target.value }))}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-ministryId">Ministerio</Label>
+              <Select
+                value={editFormData.ministryId}
+                onValueChange={(value) => setEditFormData(prev => ({ ...prev, ministryId: value }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Seleccionar ministerio" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="no-ministry">Sin ministerio</SelectItem>
+                  {ministries.map((ministry) => (
+                    <SelectItem key={ministry.id} value={ministry.id}>
+                      {ministry.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-skills">Habilidades (separadas por comas)</Label>
+              <Textarea
+                id="edit-skills"
+                value={editFormData.skills}
+                onChange={(e) => setEditFormData(prev => ({ ...prev, skills: e.target.value }))}
+                placeholder="Música, Sonido, Niños, etc."
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+                Cancelar
+              </Button>
+              <Button type="submit">Guardar Cambios</Button>
+            </div>
+          </form>
         </DialogContent>
       </Dialog>
     </div>
