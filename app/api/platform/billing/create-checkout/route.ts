@@ -14,6 +14,7 @@ import { prisma } from '@/lib/prisma'
 import {
   createPaddleCustomer,
   createPaddleCheckout,
+  findPaddleDiscountByCode,
 } from '@/lib/paddle'
 
 export const dynamic = 'force-dynamic'
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { churchId, planId, billingCycle = 'MONTHLY' } = body
+    const { churchId, planId, billingCycle = 'MONTHLY', discountCode } = body
 
     if (!churchId || !planId) {
       return NextResponse.json(
@@ -91,6 +92,19 @@ export async function POST(request: NextRequest) {
       paddleCustomerId = customer.id
     }
 
+    // Resolve discount code → Paddle discount ID (dsc_xxx)
+    let discountId: string | undefined
+    if (discountCode) {
+      const found = await findPaddleDiscountByCode(discountCode)
+      if (!found) {
+        return NextResponse.json(
+          { error: `Código de descuento "${discountCode}" no encontrado o inactivo en Paddle.` },
+          { status: 422 }
+        )
+      }
+      discountId = found
+    }
+
     // Create Paddle transaction (draft) → returns hosted checkout URL
     const transaction = await createPaddleCheckout({
       priceId,
@@ -101,6 +115,7 @@ export async function POST(request: NextRequest) {
         planId: plan.id,
         billingCycle,
       },
+      discountId,
     })
 
     // Persist the customer ID and pending transaction ID immediately
