@@ -33,17 +33,29 @@ async function main() {
     // 🚨 OFFICIAL SUPER_ADMIN PASSWORD - SINGLE SOURCE OF TRUTH
     const superAdminHashedPassword = await bcrypt.hash('Bendecido100%$$%', 12)
 
+    // Controlar cuándo se permite resetear credenciales del SUPER_ADMIN desde el seed
+    const allowSuperAdminReset =
+      process.env.ALLOW_SUPER_ADMIN_SEED_RESET === 'true' ||
+      process.env.NODE_ENV === 'development'
+
+    const superAdminUpdateData = allowSuperAdminReset
+      ? {
+          // En desarrollo o con flag explícito permitimos resetear credenciales
+          password: superAdminHashedPassword,
+          isActive: true,
+          role: 'SUPER_ADMIN',
+          churchId: null,
+          updatedAt: new Date()
+        }
+      : {
+          // En otros entornos evitamos cambiar silenciosamente credenciales/rol
+          updatedAt: new Date()
+        }
+
     // 🚨 Crear usuario SUPER_ADMIN (ONLY ONE - PLATFORM ADMINISTRATOR)
     const superAdminUser = await prisma.users.upsert({
       where: { email: 'soporte@khesed-tek-systems.org' },
-      // CRITICAL: Always update password so re-running seed never leaves a stale hash
-      update: {
-        password: superAdminHashedPassword,
-        isActive: true,
-        role: 'SUPER_ADMIN',
-        churchId: null,
-        updatedAt: new Date()
-      },
+      update: superAdminUpdateData,
       create: {
         id: 'super-admin-khesed-tek',
         name: 'Khesed-Tek Support',
