@@ -36,7 +36,14 @@ async function main() {
     // 🚨 Crear usuario SUPER_ADMIN (ONLY ONE - PLATFORM ADMINISTRATOR)
     const superAdminUser = await prisma.users.upsert({
       where: { email: 'soporte@khesed-tek-systems.org' },
-      update: {},
+      // CRITICAL: Always update password so re-running seed never leaves a stale hash
+      update: {
+        password: superAdminHashedPassword,
+        isActive: true,
+        role: 'SUPER_ADMIN',
+        churchId: null,
+        updatedAt: new Date()
+      },
       create: {
         id: 'super-admin-khesed-tek',
         name: 'Khesed-Tek Support',
