@@ -93,6 +93,7 @@ export default function PlatformBillingClient() {
   const [selectedChurch, setSelectedChurch] = useState<Church | null>(null)
   const [selectedPlanId, setSelectedPlanId] = useState<string>('')
   const [billingCycle, setBillingCycle] = useState<'MONTHLY' | 'YEARLY'>('MONTHLY')
+  const [discountCode, setDiscountCode] = useState('')
   const [creatingCheckout, setCreatingCheckout] = useState(false)
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
 
@@ -125,6 +126,7 @@ export default function PlatformBillingClient() {
     setSelectedChurch(church)
     setSelectedPlanId(church.church_subscriptions?.planId ?? '')
     setBillingCycle((church.church_subscriptions?.billingCycle as any) ?? 'MONTHLY')
+    setDiscountCode('')
     setCheckoutUrl(null)
     setDialogOpen(true)
   }
@@ -146,6 +148,7 @@ export default function PlatformBillingClient() {
           churchId: selectedChurch.id,
           planId: selectedPlanId,
           billingCycle,
+          ...(discountCode.trim() && { discountCode: discountCode.trim() }),
         }),
       })
 
@@ -376,6 +379,21 @@ export default function PlatformBillingClient() {
                   <SelectItem value="YEARLY">Anual</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Discount code */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-gray-700">
+                Código de descuento <span className="text-gray-400 font-normal">(opcional)</span>
+              </label>
+              <input
+                type="text"
+                value={discountCode}
+                onChange={e => setDiscountCode(e.target.value.toUpperCase())}
+                placeholder="Ej: LAUNCH50"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 uppercase placeholder:normal-case"
+              />
+              <p className="text-xs text-gray-500">El descuento se aplicará automáticamente al checkout.</p>
             </div>
 
             {/* Plan details */}
