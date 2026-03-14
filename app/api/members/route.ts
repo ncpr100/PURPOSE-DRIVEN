@@ -346,18 +346,29 @@ export async function GET(request: NextRequest) {
     }
 
     // ✅ SECURITY: Get total count for pagination (adjusted for post-query filters)
-    let totalCount = await db.members.count({
-      where: whereClause
-    })
+    let totalCount = members.length
+    try {
+      totalCount = await db.members.count({
+        where: whereClause
+      })
+    } catch (countError) {
+      console.log('⚠️ MEMBERS: Count query failed, using array length as fallback:', members.length)
+    }
 
     // Adjust count for post-query filters if needed
     if (queryParams.ageFilter !== 'all' || queryParams.maritalStatus === 'family-group' || 
         ['birthdays', 'anniversaries'].includes(queryParams.smartList || '')) {
       // For complex filters, we need to get all data to count accurately
-      const allMembers = await db.members.findMany({
-        where: whereClause,
-        select: { id: true, birthDate: true, lastName: true, membershipDate: true }
-      })
+      let allMembers: { id: string; birthDate: Date | null; lastName: string; membershipDate: Date | null }[] = []
+      try {
+        allMembers = await db.members.findMany({
+          where: whereClause,
+          select: { id: true, birthDate: true, lastName: true, membershipDate: true }
+        })
+      } catch (adjustCountError) {
+        console.log('⚠️ MEMBERS: Adjust-count query failed, skipping adjustment')
+        allMembers = []
+      }
       
       let filteredCount = allMembers
       
