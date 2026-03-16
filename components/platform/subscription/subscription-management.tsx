@@ -169,7 +169,7 @@ export function SubscriptionManagement() {
 
       if (settingsRes.ok) {
         const settingsData = await settingsRes.json()
-        setPlatformCurrency(settingsData.currency || 'COP')
+        setPlatformCurrency(settingsData.currency || 'USD')
       }
     } catch (error) {
       console.error('Error fetching data:', error)
@@ -221,6 +221,44 @@ export function SubscriptionManagement() {
       }
     } catch (error) {
       console.error('Error deleting plan:', error)
+      toast.error('Error de conexión')
+    }
+  }
+
+  const handleSeedFeatures = async () => {
+    try {
+      const res = await fetch('/api/platform/plan-features', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'seed_defaults' })
+      })
+      if (res.ok) {
+        const data = await res.json()
+        toast.success(`${data.seeded} características inicializadas`)
+        fetchData()
+      } else {
+        toast.error('Error al inicializar características')
+      }
+    } catch {
+      toast.error('Error de conexión')
+    }
+  }
+
+  const handleSeedAddons = async () => {
+    try {
+      const res = await fetch('/api/platform/subscription-addons', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'seed_defaults' })
+      })
+      if (res.ok) {
+        const data = await res.json()
+        toast.success(`${data.seeded} complementos inicializados`)
+        fetchData()
+      } else {
+        toast.error('Error al inicializar complementos')
+      }
+    } catch {
       toast.error('Error de conexión')
     }
   }
@@ -381,6 +419,15 @@ export function SubscriptionManagement() {
 
               <Card>
                 <CardContent className="p-0">
+                  {features.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+                      <Settings className="h-10 w-10 mb-3 text-gray-300" />
+                      <p className="text-sm mb-4">No hay características configuradas.</p>
+                      <Button variant="outline" onClick={handleSeedFeatures}>
+                        Inicializar Características Predeterminadas
+                      </Button>
+                    </div>
+                  ) : (
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -436,6 +483,7 @@ export function SubscriptionManagement() {
                       ))}
                     </TableBody>
                   </Table>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -481,6 +529,15 @@ export function SubscriptionManagement() {
                 </DialogContent>
               </Dialog>
 
+              {addons.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+                  <Package className="h-10 w-10 mb-3 text-gray-300" />
+                  <p className="text-sm mb-4">No hay complementos configurados.</p>
+                  <Button variant="outline" onClick={handleSeedAddons}>
+                    Inicializar Complementos Predeterminados
+                  </Button>
+                </div>
+              ) : (
               <div className="grid gap-4 md:grid-cols-2">
                 {addons.map((addon) => (
                   <Card key={addon.id}>
@@ -534,6 +591,7 @@ export function SubscriptionManagement() {
                   </Card>
                 ))}
               </div>
+              )}
             </TabsContent>
           </Tabs>
         </CardContent>

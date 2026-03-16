@@ -180,7 +180,7 @@ export default function PlatformSettingsPage() {
         
         // Show warning about application restart
         setTimeout(() => {
-          toast('⚠️ Las nuevas claves requieren reinicio de la aplicación', {
+          toast('Las nuevas claves requieren reinicio de la aplicación', {
             duration: 5000
           })
         }, 2000)
@@ -385,12 +385,13 @@ export default function PlatformSettingsPage() {
           <Card className="border-green-200 bg-green-50/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-green-700">
-                💼 <span>Gestión de Suscripciones SUPER_ADMIN</span>
+                <CreditCard className="h-5 w-5" />
+                <span>Gestión de Suscripciones SUPER_ADMIN</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="text-sm text-green-700 space-y-2">
-                <p><strong>🔧 Control Total de Precios y Características:</strong></p>
+                <p><strong>Control Total de Precios y Características:</strong></p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
                   <li>Editar precios mensuales/anuales de todos los planes</li>
                   <li>Modificar límites de iglesias, miembros y usuarios administradores</li>
@@ -398,7 +399,7 @@ export default function PlatformSettingsPage() {
                   <li><strong>Cambios se reflejan automáticamente en página de registro</strong></li>
                 </ul>
                 <div className="mt-3 p-2 bg-green-100 rounded border-l-4 border-green-400">
-                  <strong>🚀 Sincronización en Tiempo Real:</strong> Cualquier actualización aquí aparece instantáneamente en el formulario de registro de nuevos tenants.
+                  <strong>Sincronización en Tiempo Real:</strong> Cualquier actualización aquí aparece instantáneamente en el formulario de registro de nuevos tenants.
                 </div>
               </div>
             </CardContent>
@@ -547,12 +548,13 @@ export default function PlatformSettingsPage() {
           <Card className="border-blue-200 bg-blue-50/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-blue-700">
-                🇺🇸 <span>Modelo de Facturación USD</span>
+                <Globe className="h-5 w-5" />
+                <span>Modelo de Facturación USD</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="text-sm text-blue-700 space-y-2">
-                <p><strong>📋 Proceso de Facturación Manual:</strong></p>
+                <p><strong>Proceso de Facturación Manual:</strong></p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
                   <li>Todos los precios se muestran en <strong>USD (Dólares Americanos)</strong></li>
                   <li>Facturas son generadas y enviadas manualmente por el administrador</li>
@@ -580,9 +582,9 @@ export default function PlatformSettingsPage() {
                     onChange={(e) => handleSettingChange('billing', 'currency', e.target.value)}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   >
-                    <option value="USD">🇺🇸 USD - Dólar Americano (Recomendado)</option>
-                    <option value="EUR">🇪🇺 EUR - Euro</option>
-                    <option value="COP">🇨🇴 COP - Peso Colombiano</option>
+                    <option value="USD">USD - Dólar Americano (Recomendado)</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="COP">COP - Peso Colombiano</option>
                   </select>
                 </div>
 
@@ -717,12 +719,13 @@ export default function PlatformSettingsPage() {
           <Card className="border-orange-200 bg-orange-50/50">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-orange-700">
-                📄 <span>Flujo de Facturación Manual</span>
+                <RefreshCw className="h-5 w-5" />
+                <span>Flujo de Facturación Manual</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="text-sm text-orange-700 space-y-2">
-                <p><strong>🔄 Proceso Paso a Paso:</strong></p>
+                <p><strong>Proceso Paso a Paso:</strong></p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
                   <div className="space-y-2">
                     <p><strong>1. Registro del Tenant:</strong></p>
