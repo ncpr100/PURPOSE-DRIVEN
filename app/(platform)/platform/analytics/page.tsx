@@ -24,11 +24,18 @@ interface PlatformAnalytics {
     churches: { total: number; active: number; inactive: number }
     users: { total: number; active: number; inactive: number }
     members: number
-    donations: { total: number; count: number }
+    // Platform USD revenue (Paddle subscriptions) — independent from tenant donations
+    platformRevenue: {
+      mrr: number
+      totalInvoicesPaid: number
+      activeSubscriptions: number
+      currency: string
+    }
   }
   growth: {
     monthly: Array<{ month: string; count: number }>
-    donations: Array<{ month: string; total: number; count: number }>
+    // Platform subscription revenue time series (USD paid invoices)
+    subscriptionRevenue: Array<{ month: string; total: number; count: number }>
   }
   rankings: {
     topChurches: Array<{
@@ -36,7 +43,8 @@ interface PlatformAnalytics {
       name: string
       members: number
       users: number
-      donations: number
+      subscriptionPlan: string | null
+      subscriptionStatus: string | null
     }>
   }
   distribution: {
@@ -192,9 +200,12 @@ export default function PlatformAnalyticsPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-yellow-600">Promedio Donación</p>
+                <p className="text-sm font-medium text-yellow-600">MRR Plataforma (USD)</p>
                 <p className="text-3xl font-bold text-yellow-900">
-                  ${Math.round((analytics.overview.donations.total / analytics.overview.donations.count) || 0).toLocaleString()}
+                  ${analytics.overview.platformRevenue.mrr.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
+                <p className="text-xs text-yellow-700 mt-1">
+                  {analytics.overview.platformRevenue.activeSubscriptions} suscripciones activas
                 </p>
               </div>
               <DollarSign className="h-8 w-8 text-yellow-600" />
@@ -252,28 +263,36 @@ export default function PlatformAnalyticsPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <DollarSign className="h-5 w-5" />
-                  Evolución de Donaciones
+                  Ingresos Plataforma (USD)
                 </CardTitle>
+                <p className="text-xs text-gray-500">Ingresos por suscripciones Paddle — independiente de donaciones de inquilinos</p>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {analytics.growth.donations.slice(-6).map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <span className="text-sm font-medium">
-                        {new Date(item.month).toLocaleDateString('es-ES', { 
-                          month: 'long', 
-                          year: 'numeric' 
-                        })}
-                      </span>
-                      <div className="text-right">
-                        <p className="font-semibold text-green-600">
-                          ${parseInt(String(item.total || 0)).toLocaleString()}
-                        </p>
-                        <p className="text-xs text-gray-500">{item.count} donaciones</p>
+                {analytics.growth.subscriptionRevenue.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500 text-sm">
+                    <p>Sin ingresos registrados aún.</p>
+                    <p className="mt-1 text-xs">Los ingresos aparecerán aquí cuando se procesen pagos de suscripción via Paddle.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {analytics.growth.subscriptionRevenue.slice(-6).map((item, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span className="text-sm font-medium">
+                          {new Date(item.month).toLocaleDateString('es-ES', { 
+                            month: 'long', 
+                            year: 'numeric' 
+                          })}
+                        </span>
+                        <div className="text-right">
+                          <p className="font-semibold text-green-600">
+                            ${parseFloat(String(item.total || 0)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD
+                          </p>
+                          <p className="text-xs text-gray-500">{item.count} factura(s)</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -326,10 +345,12 @@ export default function PlatformAnalyticsPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-green-600">
-                          ${church.donations.toLocaleString()}
+                        <p className="font-bold text-blue-600 text-sm">
+                          {church.subscriptionPlan ?? 'Sin plan'}
                         </p>
-                        <p className="text-xs text-gray-500">donaciones</p>
+                        <p className="text-xs text-gray-500">
+                          {church.subscriptionStatus ?? '—'}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -343,7 +364,7 @@ export default function PlatformAnalyticsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Engagement Rate</CardTitle>
+                <CardTitle>Tasa de Participación</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-center">
@@ -421,23 +442,23 @@ export default function PlatformAnalyticsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-4 border rounded-lg">
-                  <h4 className="font-semibold">🎯 Estrategia de Crecimiento</h4>
+                  <h4 className="font-semibold">Estrategia de Crecimiento</h4>
                   <p className="text-sm text-gray-600 mt-1">
                     Enfocar esfuerzos en iglesias medianas (50-200 miembros) para maximizar el crecimiento.
                   </p>
                 </div>
                 
                 <div className="p-4 border rounded-lg">
-                  <h4 className="font-semibold">💡 Funcionalidades Nuevas</h4>
+                  <h4 className="font-semibold">Funcionalidades Nuevas</h4>
                   <p className="text-sm text-gray-600 mt-1">
-                    Implementar más herramientas de engagement para iglesias con baja actividad.
+                    Implementar más herramientas de participación para iglesias con baja actividad.
                   </p>
                 </div>
                 
                 <div className="p-4 border rounded-lg">
-                  <h4 className="font-semibold">🔄 Retención</h4>
+                  <h4 className="font-semibold">Retención</h4>
                   <p className="text-sm text-gray-600 mt-1">
-                    Desarrollar programa de onboarding mejorado para nuevas iglesias.
+                    Desarrollar programa de incorporación mejorado para nuevas iglesias.
                   </p>
                 </div>
               </CardContent>

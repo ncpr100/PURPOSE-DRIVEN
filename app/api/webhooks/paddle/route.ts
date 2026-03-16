@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import { prisma } from '@/lib/prisma'
+import { db } from '@/lib/db'
 import * as crypto from 'crypto'
 
 export const dynamic = 'force-dynamic'
@@ -109,7 +109,7 @@ async function handleSubscriptionCreated(data: any) {
       return
     }
 
-    await prisma.church_subscriptions.upsert({
+    await db.church_subscriptions.upsert({
       where: { churchId },
       create: {
         id: crypto.randomUUID(),
@@ -153,7 +153,7 @@ async function handleSubscriptionUpdated(data: any) {
 
     const status = statusMap[data.status] || 'ACTIVE'
 
-    await prisma.church_subscriptions.updateMany({
+    await db.church_subscriptions.updateMany({
       where: { paddleSubscriptionId: subscriptionId },
       data: {
         status,
@@ -178,7 +178,7 @@ async function handleSubscriptionCanceled(data: any) {
     const subscriptionId = data.id
     if (!subscriptionId) return
 
-    await prisma.church_subscriptions.updateMany({
+    await db.church_subscriptions.updateMany({
       where: { paddleSubscriptionId: subscriptionId },
       data: {
         status: 'CANCELED',
@@ -198,7 +198,7 @@ async function handleSubscriptionPastDue(data: any) {
     const subscriptionId = data.id
     if (!subscriptionId) return
 
-    await prisma.church_subscriptions.updateMany({
+    await db.church_subscriptions.updateMany({
       where: { paddleSubscriptionId: subscriptionId },
       data: {
         status: 'PAST_DUE',
@@ -225,7 +225,7 @@ async function handleTransactionCompleted(data: any) {
     // Update invoice to paid if exists
     const invoiceId = customData.invoiceId
     if (invoiceId) {
-      await prisma.invoices.updateMany({
+      await db.invoices.updateMany({
         where: { id: invoiceId, churchId },
         data: {
           status: 'PAID',
@@ -250,7 +250,7 @@ async function handleTransactionFailed(data: any) {
 
     const invoiceId = customData.invoiceId
     if (invoiceId) {
-      await prisma.invoices.updateMany({
+      await db.invoices.updateMany({
         where: { id: invoiceId, churchId },
         data: {
           status: 'OVERDUE',
