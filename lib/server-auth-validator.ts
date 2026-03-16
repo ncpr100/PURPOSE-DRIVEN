@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
+import type { UserRole } from '@prisma/client'
 
 /**
  * CRITICAL SECURITY: Server-side role validation utility
@@ -20,7 +21,7 @@ export async function validateSuperAdminAccess() {
   // CRITICAL: redirect() from next/navigation throws a NEXT_REDIRECT error.
   // Placing redirect() calls inside a try-catch causes the catch block to swallow
   // the redirect and re-throw as validation_error. DB query ONLY goes in try-catch.
-  let dbUser: { id: string; role: string; isActive: boolean; email: string; name: string | null } | null = null
+  let dbUser: { id: string; role: UserRole; isActive: boolean; email: string; name: string | null } | null = null
   try {
     dbUser = await db.users.findUnique({
       where: { id: session.user.id },
@@ -68,7 +69,7 @@ export async function validateSuperAdminAccess() {
  * CRITICAL SECURITY: Validates user role for any specific role requirement
  * Used for role-based access control validation
  */
-export async function validateUserRole(requiredRole: string) {
+export async function validateUserRole(requiredRole: UserRole) {
   const session = await getServerSession(authOptions)
 
   if (!session?.user) {
@@ -76,7 +77,7 @@ export async function validateUserRole(requiredRole: string) {
   }
 
   // DB query only in try-catch — redirect() calls must be outside
-  let dbUser: { id: string; role: string; isActive: boolean; email: string } | null = null
+  let dbUser: { id: string; role: UserRole; isActive: boolean; email: string } | null = null
   try {
     dbUser = await db.users.findUnique({
       where: { id: session.user.id },
