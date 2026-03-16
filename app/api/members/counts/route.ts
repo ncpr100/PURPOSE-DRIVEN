@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
     const churchId = session.user.churchId
@@ -24,11 +24,11 @@ export async function GET(request: NextRequest) {
     const maritalStatus = searchParams.get('maritalStatus') || 'all'
     const smartList = searchParams.get('smartList') || 'all'
 
-    // Base query - get all active members for this church
+    // Base query - get ALL members for this church (active and inactive)
+    // Inactive filtering is handled per smart-list, not at the base level.
     let allMembers = await db.members.findMany({
       where: {
-        churchId,
-        isActive: true
+        churchId
       },
       select: {
         id: true,
@@ -140,11 +140,7 @@ export async function GET(request: NextRequest) {
           break
           
         case 'inactive-members':
-          const sixMonthsAgo = new Date()
-          sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
-          members = members.filter(member => 
-            !member.isActive || new Date(member.updatedAt) <= sixMonthsAgo
-          )
+          members = members.filter(member => !member.isActive)
           break
           
         case 'birthdays':
