@@ -96,6 +96,7 @@ export default function PlatformBillingClient() {
   const [discountCode, setDiscountCode] = useState('')
   const [creatingCheckout, setCreatingCheckout] = useState(false)
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
+  const [assigningManually, setAssigningManually] = useState(false)
 
   const paddle = usePaddle()
 
@@ -178,6 +179,43 @@ export default function PlatformBillingClient() {
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     paddle.Checkout.open({ url: checkoutUrl } as any)
+  }
+
+  // ── Manual plan assignment (no Paddle required) ────────────────────────────
+
+  const handleManualAssign = async () => {
+    if (!selectedChurch || !selectedPlanId) {
+      toast.error('Selecciona una iglesia y un plan')
+      return
+    }
+
+    setAssigningManually(true)
+    try {
+      const res = await fetch('/api/platform/billing/subscriptions', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          churchId: selectedChurch.id,
+          planId: selectedPlanId,
+          billingCycle,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        toast.error(data.error ?? 'Error asignando plan')
+        return
+      }
+
+      toast.success(data.message ?? 'Plan asignado correctamente')
+      setDialogOpen(false)
+      fetchData()
+    } catch (err: any) {
+      toast.error(err.message ?? 'Error inesperado')
+    } finally {
+      setAssigningManually(false)
+    }
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -471,6 +509,24 @@ export default function PlatformBillingClient() {
                 onClick={() => setDialogOpen(false)}
               >
                 Cancelar
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1"
+                disabled={!selectedPlanId || assigningManually}
+                onClick={handleManualAssign}
+              >
+                {assigningManually ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Asignando…
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="h-4 w-4 mr-2" />
+                    Asignar Manualmente
+                  </>
+                )}
               </Button>
               <Button
                 className="flex-1"
