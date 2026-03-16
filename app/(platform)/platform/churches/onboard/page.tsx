@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { 
   Building2, 
   User, 
@@ -47,6 +48,7 @@ interface AdminData {
   phone: string
   password: string
   confirmPassword: string
+  role: 'ADMIN_IGLESIA' | 'PASTOR'
 }
 
 interface OnboardingData {
@@ -99,7 +101,8 @@ export default function TenantOnboardingPage() {
       email: '',
       phone: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      role: 'ADMIN_IGLESIA'
     }
   })
 
@@ -326,7 +329,8 @@ export default function TenantOnboardingPage() {
             name: onboardingData.admin.name,
             email: onboardingData.admin.email,
             phone: onboardingData.admin.phone,
-            password: onboardingData.admin.password
+            password: onboardingData.admin.password,
+            role: onboardingData.admin.role
           },
           sendCredentialsNow
         })
@@ -637,6 +641,25 @@ export default function TenantOnboardingPage() {
                   <p className="text-sm text-red-600">{validationErrors['admin.confirmPassword']}</p>
                 )}
               </div>
+
+              <div className="md:col-span-2 space-y-2">
+                <Label htmlFor="admin-role">Rol del Administrador *</Label>
+                <Select
+                  value={onboardingData.admin.role}
+                  onValueChange={(value) => updateAdminData('role', value as 'ADMIN_IGLESIA' | 'PASTOR')}
+                >
+                  <SelectTrigger id="admin-role">
+                    <SelectValue placeholder="Seleccionar rol" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ADMIN_IGLESIA">Administrador de Iglesia</SelectItem>
+                    <SelectItem value="PASTOR">Pastor</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-gray-500">
+                  Pastor: liderazgo espiritual completo sobre el tenant. Administrador: gestión administrativa de la iglesia.
+                </p>
+              </div>
             </div>
           </div>
         )
@@ -717,9 +740,12 @@ export default function TenantOnboardingPage() {
                     </div>
                   )}
                   <div className="flex items-center gap-2 mt-4">
-                    <Badge variant="secondary" className="bg-green-100 text-green-700">
+                    <Badge
+                      variant="secondary"
+                      className={onboardingData.admin.role === 'PASTOR' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'}
+                    >
                       <Shield className="h-3 w-3 mr-1" />
-                      ADMIN_IGLESIA
+                      {onboardingData.admin.role === 'PASTOR' ? 'PASTOR' : 'ADMIN_IGLESIA'}
                     </Badge>
                   </div>
                 </CardContent>

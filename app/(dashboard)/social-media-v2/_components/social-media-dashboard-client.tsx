@@ -637,7 +637,7 @@ export default function SocialMediaDashboardClient({
                               <span className="font-medium">{data.metrics.impressions.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-600">Engagement</span>
+                              <span className="text-gray-600">Interacciones</span>
                               <span className="font-medium">{data.metrics.engagement.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
@@ -673,7 +673,7 @@ export default function SocialMediaDashboardClient({
                             <div className="flex items-center gap-4 text-xs text-gray-500">
                               <span className="flex items-center gap-1">
                                 <Heart className="h-3 w-3" />
-                                {post.engagement} engagement
+                                {post.engagement} interacciones
                               </span>
                               <span className="flex items-center gap-1">
                                 <Eye className="h-3 w-3" />

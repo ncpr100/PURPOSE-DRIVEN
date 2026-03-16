@@ -210,6 +210,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Only PASTOR and ADMIN_IGLESIA are valid tenant-level roles.
+    // SUPER_ADMIN is a platform-only role and must never be assigned to a church user.
+    const ALLOWED_TENANT_ROLES = ['ADMIN_IGLESIA', 'PASTOR'] as const
+    type TenantRole = typeof ALLOWED_TENANT_ROLES[number]
+    if (adminUser.role && !ALLOWED_TENANT_ROLES.includes(adminUser.role)) {
+      return NextResponse.json(
+        { message: 'Rol no válido. Solo se permite ADMIN_IGLESIA o PASTOR para usuarios de iglesia.' },
+        { status: 400 }
+      )
+    }
+    const tenantRole: TenantRole = ALLOWED_TENANT_ROLES.includes(adminUser.role)
+      ? (adminUser.role as TenantRole)
+      : 'ADMIN_IGLESIA'
+
     // Verificar que el email del admin no exista
     const existingUser = await db.users.findUnique({
       where: { email: adminUser.email }
@@ -257,7 +271,7 @@ export async function POST(request: NextRequest) {
           name: adminUser.name,
           email: adminUser.email,
           password: hashedPassword,
-          role: 'ADMIN_IGLESIA',
+          role: tenantRole,
           churches: {
             connect: { id: church.id }
           },

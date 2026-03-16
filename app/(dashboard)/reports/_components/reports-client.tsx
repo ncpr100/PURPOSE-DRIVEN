@@ -243,7 +243,7 @@ export default function ReportsClient() {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name">Report Name</Label>
+                <Label htmlFor="name">Nombre del Reporte</Label>
                 <Input
                   id="name"
                   value={newReport.name}

@@ -452,8 +452,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           setEditingMember(savedMember)
         }
         
-        // Refresh member list in background
+        // Refresh member list and badge counts in background
         await fetchMembers()
+        await fetchFilterCounts()
         
         // Dialog stays open - user must click "Guardar y Cerrar" to close
       } else {
@@ -478,6 +479,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
       if (response.ok) {
         await fetchMembers()
+        await fetchFilterCounts()
       } else {
         alert('Error al eliminar el miembro')
       }
@@ -612,10 +614,8 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         counts['new-members']++
       }
 
-      // Inactive members
-      const sixMonthsAgo = new Date()
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
-      if (!member.isActive || new Date(member.updatedAt) <= sixMonthsAgo) {
+      // Inactive members — only truly deactivated members (isActive: false)
+      if (!member.isActive) {
         counts['inactive-members']++
       }
 

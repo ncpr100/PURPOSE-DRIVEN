@@ -145,7 +145,18 @@ export class RedisCacheManager {
   }
 
   /**
-   * Get cached data with fallback to database query
+   * Get cached data with fallback to database query.
+   *
+   * IMPORTANT: fallbackFn (the Prisma/DB query) is executed AT MOST ONCE.
+   * The previous implementation called fallbackFn() a second time inside the
+   * catch block, which doubled the number of failing Prisma queries whenever
+   * the DB was under stress — amplifying a cascade of PrismaClientRustPanicErrors
+   * into ~2x the error count (1195+ errors from a single panic event).
+   *
+   * The restructured flow is:
+   *   1. Attempt cache read (Redis) — if it fails, fall through silently.
+   *   2. Execute fallbackFn() exactly once — if it throws, propagate immediately.
+   *   3. Store result in cache and record metrics as best-effort fire-and-forget.
    */
   async get<T>(
     key: string, 
@@ -153,62 +164,41 @@ export class RedisCacheManager {
     options: CacheOptions = {}
   ): Promise<T> {
     const startTime = Date.now();
-    
-    try {
-      // Record cache request
-      await this.recordMetric('request');
 
-      // Check if force refresh is requested
-      if (options.forceRefresh) {
-        const result = await fallbackFn();
-        await this.set(key, result, options.ttl);
-        await this.recordMetric('miss');
-        return result;
-      }
-
-      // Try to get from cache if connected
-      if (this.isConnected) {
+    // Step 1: Try to serve from cache (best-effort — never blocks fallbackFn)
+    if (!options.forceRefresh && this.isConnected) {
+      try {
         const cachedData = await this.redis.get(key);
-        
         if (cachedData) {
-          await this.recordMetric('hit');
-          await this.recordResponseTime(Date.now() - startTime);
-          
+          this.recordMetric('hit').catch(() => {});
+          this.recordResponseTime(Date.now() - startTime).catch(() => {});
           try {
-            return options.compress ? 
-              JSON.parse(Buffer.from(cachedData, 'base64').toString()) :
-              JSON.parse(cachedData);
-          } catch (error) {
-            console.warn('Cache parse error:', error);
-            // Continue to fallback
+            return options.compress
+              ? JSON.parse(Buffer.from(cachedData, 'base64').toString())
+              : JSON.parse(cachedData);
+          } catch {
+            // Corrupted cache entry — fall through to DB
           }
         }
+      } catch {
+        // Redis unavailable — fall through to DB silently
       }
-
-      // Cache miss - fetch from database
-      const result = await fallbackFn();
-      
-      // Store in cache for next time
-      if (this.isConnected && result !== null && result !== undefined) {
-        await this.set(key, result, options.ttl);
-        
-        // Warm related cache if requested
-        if (options.warmCache) {
-          this.warmRelatedCache(key, result);
-        }
-      }
-
-      await this.recordMetric('miss');
-      await this.recordResponseTime(Date.now() - startTime);
-      return result;
-
-    } catch (error) {
-      console.error('Cache operation error:', error);
-      await this.recordMetric('error');
-      
-      // Fallback to direct database query
-      return await fallbackFn();
     }
+
+    // Step 2: Execute fallbackFn exactly once. Any error propagates to the caller.
+    const result = await fallbackFn();
+
+    // Step 3: Store in cache and record metrics as fire-and-forget (never throws).
+    if (this.isConnected && result !== null && result !== undefined) {
+      this.set(key, result, options.ttl).catch(() => {});
+      if (options.warmCache) {
+        this.warmRelatedCache(key, result);
+      }
+    }
+    this.recordMetric('miss').catch(() => {});
+    this.recordResponseTime(Date.now() - startTime).catch(() => {});
+
+    return result;
   }
 
   /**

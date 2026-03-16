@@ -5,15 +5,31 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Connection URL: prefer DATABASE_URL env var (set in Vercel dashboard).
-// The pooler URL (port 6543 + pgbouncer=true) is required for Supabase transaction pooler.
-const databaseUrl = process.env.DATABASE_URL
+/**
+ * Build the database URL with required pgBouncer parameters.
+ *
+ * Supabase's Supavisor transaction pooler (port 6543) does NOT support
+ * PostgreSQL prepared statements. Without `pgbouncer=true`, Prisma's Rust
+ * query engine will crash (PrismaClientRustPanicError) causing ALL in-flight
+ * queries to throw PrismaClientUnknownRequestError in a cascade.
+ *
+ * `connection_limit=1` prevents connection pool exhaustion in serverless
+ * environments where many Lambda instances share the same DB connection pool.
+ */
+function buildDatabaseUrl(): string {
+  const url = process.env.DATABASE_URL || ''
+  if (url.includes(':6543') && !url.includes('pgbouncer=true')) {
+    const separator = url.includes('?') ? '&' : '?'
+    return `${url}${separator}pgbouncer=true&connection_limit=1`
+  }
+  return url
+}
 
 // Enhanced connection pooling configuration for production
 export const db = globalForPrisma.prisma ?? new PrismaClient({
   datasources: {
     db: {
-      url: databaseUrl,
+      url: buildDatabaseUrl(),
     },
   },
   log: process.env.NODE_ENV === 'development' 
@@ -21,8 +37,9 @@ export const db = globalForPrisma.prisma ?? new PrismaClient({
     : ['error', 'warn']  // Production: errors AND warnings
 })
 
-// Keep singleton in dev to prevent connection exhaustion from hot-reload
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+// Always preserve the global singleton to prevent connection proliferation
+// across hot-reloads in development AND across module imports in production.
+globalForPrisma.prisma = globalForPrisma.prisma ?? db
 
 // NOTE: Do NOT call db.$connect() here.
 // This file is imported at *build time* by Next.js when it statically analyses
