@@ -115,3 +115,105 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+
+/**
+ * PUT /api/platform/billing/subscriptions
+ *
+ * SUPER_ADMIN manually assigns or updates a plan for a church without
+ * requiring Paddle (manual billing model). Sets status to ACTIVE immediately.
+ *
+ * Body: { churchId, planId, billingCycle: "MONTHLY" | "YEARLY", trialDays? }
+ */
+export async function PUT(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
+      return NextResponse.json({ error: 'Solo SUPER_ADMIN puede asignar planes' }, { status: 403 })
+    }
+
+    const body = await request.json()
+    const { churchId, planId, billingCycle = 'MONTHLY', trialDays } = body
+
+    if (!churchId || !planId) {
+      return NextResponse.json(
+        { error: 'Se requieren churchId y planId' },
+        { status: 400 }
+      )
+    }
+
+    // Verify church and plan exist
+    const [church, plan] = await Promise.all([
+      prisma.churches.findUnique({
+        where: { id: churchId },
+        select: { id: true, name: true },
+      }),
+      prisma.subscription_plans.findUnique({
+        where: { id: planId },
+        select: { id: true, displayName: true },
+      }),
+    ])
+
+    if (!church) {
+      return NextResponse.json({ error: 'Iglesia no encontrada' }, { status: 404 })
+    }
+    if (!plan) {
+      return NextResponse.json({ error: 'Plan no encontrado' }, { status: 404 })
+    }
+
+    const now = new Date()
+    const periodEnd = new Date(now)
+    if (billingCycle === 'YEARLY') {
+      periodEnd.setFullYear(periodEnd.getFullYear() + 1)
+    } else {
+      periodEnd.setMonth(periodEnd.getMonth() + 1)
+    }
+
+    const trialEnd = trialDays && trialDays > 0
+      ? new Date(now.getTime() + trialDays * 24 * 60 * 60 * 1000)
+      : null
+
+    const subscription = await prisma.church_subscriptions.upsert({
+      where: { churchId },
+      create: {
+        id: crypto.randomUUID(),
+        churchId,
+        planId,
+        billingCycle,
+        status: 'ACTIVE',
+        currentPeriodStart: now,
+        currentPeriodEnd: periodEnd,
+        ...(trialEnd && { trialEnd }),
+        updatedAt: now,
+      },
+      update: {
+        planId,
+        billingCycle,
+        status: 'ACTIVE',
+        currentPeriodStart: now,
+        currentPeriodEnd: periodEnd,
+        cancelAtPeriodEnd: false,
+        cancelledAt: null,
+        ...(trialEnd && { trialEnd }),
+        updatedAt: now,
+      },
+      include: {
+        subscription_plans: {
+          select: { id: true, displayName: true },
+        },
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      subscription,
+      message: `Plan "${plan.displayName}" asignado correctamente a ${church.name}`,
+    })
+  } catch (error: any) {
+    console.error('[Billing] subscriptions PUT error:', error)
+    return NextResponse.json(
+      { error: error.message ?? 'Error interno del servidor' },
+      { status: 500 }
+    )
+  }
+}
