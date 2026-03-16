@@ -160,3 +160,60 @@ export async function DELETE(request: NextRequest) {
   }
 }
 
+// PATCH - Seed default plan features (idempotent: skips already-existing keys)
+export async function PATCH(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
+      return NextResponse.json({ message: 'Acceso denegado' }, { status: 403 })
+    }
+
+    const defaults = [
+      { key: 'members_management',       name: 'Gestión de Miembros',              category: 'core',       description: 'Registro, perfiles y ciclo de vida de miembros' },
+      { key: 'events_management',        name: 'Gestión de Eventos',               category: 'core',       description: 'Creación, calendario y registro de eventos' },
+      { key: 'financial_tracking',       name: 'Seguimiento Financiero',           category: 'core',       description: 'Registro de donaciones y reportes financieros básicos' },
+      { key: 'communication_tools',      name: 'Herramientas de Comunicación',     category: 'core',       description: 'Email y notificaciones internas' },
+      { key: 'checkin_system',           name: 'Sistema de Asistencia',            category: 'core',       description: 'Registro de asistencia a eventos y servicios' },
+      { key: 'prayer_wall',              name: 'Mural de Oración',                 category: 'core',       description: 'Gestión de peticiones de oración' },
+      { key: 'form_builder',             name: 'Constructor de Formularios',       category: 'advanced',   description: 'Formularios personalizados con QR y CRM de visitantes' },
+      { key: 'volunteer_management',     name: 'Gestión de Voluntarios',           category: 'advanced',   description: 'Coordinación de voluntarios y habilidades' },
+      { key: 'advanced_analytics',       name: 'Analíticas Avanzadas',             category: 'advanced',   description: 'Estadísticas profundas y reportes de tendencias' },
+      { key: 'social_media_automation',  name: 'Automatización Redes Sociales',    category: 'advanced',   description: 'Publicación automática en Facebook, Instagram, YouTube' },
+      { key: 'custom_branding',          name: 'Marca Personalizada',              category: 'advanced',   description: 'Logo, colores y temas propios de la iglesia' },
+      { key: 'data_export',              name: 'Exportación de Datos',             category: 'advanced',   description: 'Exportar datos en PDF, Excel y CSV' },
+      { key: 'ai_insights',              name: 'Insights de Inteligencia Artificial', category: 'enterprise', description: 'Predicciones y recomendaciones basadas en IA' },
+      { key: 'multi_church',             name: 'Multi-Iglesia',                    category: 'enterprise', description: 'Gestión de múltiples iglesias desde una cuenta' },
+      { key: 'api_access',               name: 'Acceso API',                       category: 'enterprise', description: 'Integración con sistemas externos vía API REST' },
+      { key: 'white_label',              name: 'Marca Blanca',                     category: 'enterprise', description: 'Ocultar marca Kḥesed-tek en la experiencia del usuario' },
+    ]
+
+    const existingKeys = new Set(
+      (await db.plan_features.findMany({ select: { key: true } })).map(f => f.key)
+    )
+
+    const toCreate = defaults.filter(d => !existingKeys.has(d.key))
+
+    if (toCreate.length === 0) {
+      return NextResponse.json({ message: 'Todas las características por defecto ya existen', created: 0 })
+    }
+
+    await db.plan_features.createMany({
+      data: toCreate.map(d => ({
+        id: nanoid(),
+        key: d.key,
+        name: d.name,
+        description: d.description,
+        category: d.category,
+      }))
+    })
+
+    return NextResponse.json({
+      message: `${toCreate.length} características creadas exitosamente`,
+      created: toCreate.length,
+    })
+  } catch (error) {
+    console.error('Error seeding plan features:', error)
+    return NextResponse.json({ message: 'Error interno del servidor' }, { status: 500 })
+  }
+}
+
