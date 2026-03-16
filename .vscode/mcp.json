@@ -4,17 +4,12 @@
 			"type": "stdio",
 			"command": "npx",
 			"args": [
-				"--project-ref",
-				"${input:project-ref}",
-				"--read-only",
-				"${input:read-only}",
-				"--features",
-				"${input:features}",
-				"--api-url",
-				"${input:api-url}",
+				"-y",
 				"--registry",
 				"https://registry.npmjs.org",
-				"@supabase/mcp-server-supabase@0.6.3"
+				"@supabase/mcp-server-supabase@0.6.3",
+				"--project-ref",
+				"${input:project-ref}"
 			],
 			"env": {
 				"SUPABASE_ACCESS_TOKEN": "${input:SUPABASE_ACCESS_TOKEN}"
@@ -27,25 +22,7 @@
 		{
 			"id": "project-ref",
 			"type": "promptString",
-			"description": "Supabase project reference ID",
-			"password": false
-		},
-		{
-			"id": "read-only",
-			"type": "promptString",
-			"description": "Enable read-only mode",
-			"password": false
-		},
-		{
-			"id": "features",
-			"type": "promptString",
-			"description": "Comma-separated list of features to enable",
-			"password": false
-		},
-		{
-			"id": "api-url",
-			"type": "promptString",
-			"description": "Custom API URL",
+			"description": "Supabase project reference ID (e.g. qxdwpihcmgctznvdfmbv)",
 			"password": false
 		},
 		{
