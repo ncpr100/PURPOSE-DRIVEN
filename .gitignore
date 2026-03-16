@@ -69,3 +69,6 @@ database-backup/
 # Yarn (we use npm)
 .yarnrc.yml
 yarn.lock
+
+# Build artifacts
+test-build/

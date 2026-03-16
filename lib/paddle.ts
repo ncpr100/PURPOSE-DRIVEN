@@ -102,6 +102,24 @@ export interface PaddleTransaction {
 }
 
 /**
+ * Look up a Paddle discount by its coupon code.
+ * Returns the discount ID (dsc_xxx) or null if not found.
+ */
+export async function findPaddleDiscountByCode(
+  code: string
+): Promise<string | null> {
+  try {
+    const discounts = await paddleRequest<Array<{ id: string; code?: string; status: string }>>(
+      'GET',
+      `/discounts?code=${encodeURIComponent(code)}&status=active`
+    )
+    return Array.isArray(discounts) && discounts.length > 0 ? discounts[0].id : null
+  } catch {
+    return null
+  }
+}
+
+/**
  * Create a Paddle transaction (draft → generates hosted checkout URL).
  * custom_data is passed through to webhooks so we can link back to our DB.
  */
@@ -115,6 +133,7 @@ export async function createPaddleCheckout(opts: {
     billingCycle: string
   }
   successUrl?: string
+  discountId?: string
 }): Promise<PaddleTransaction> {
   const body: Record<string, unknown> = {
     items: [{ price_id: opts.priceId, quantity: 1 }],
@@ -126,6 +145,10 @@ export async function createPaddleCheckout(opts: {
 
   if (opts.customerId) {
     body.customer_id = opts.customerId
+  }
+
+  if (opts.discountId) {
+    body.discount_id = opts.discountId
   }
 
   return paddleRequest<PaddleTransaction>('POST', '/transactions', body)

@@ -39,10 +39,10 @@ export default async function DashboardPage() {
         churchId: session.user.churchId,
         isActive: true 
       }
-    }),
+    }).catch(() => 0),
     db.sermons.count({
       where: { churchId: session.user.churchId }
-    }),
+    }).catch(() => 0),
     db.events.count({
       where: {
         churchId: session.user.churchId,
@@ -50,7 +50,7 @@ export default async function DashboardPage() {
           gte: new Date()
         }
       }
-    }),
+    }).catch(() => 0),
     db.members.count({
       where: {
         churchId: session.user.churchId,
@@ -59,16 +59,13 @@ export default async function DashboardPage() {
           gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1)
         }
       }
-    }),
+    }).catch(() => 0),
     db.volunteers.count({
       where: { 
-        members: {
-          churchId: session.user.churchId,
-          isActive: true
-        },
+        churchId: session.user.churchId,
         isActive: true 
       }
-    }),
+    }).catch(() => 0),
     db.check_ins.count({
       where: {
         churchId: session.user.churchId,
@@ -77,20 +74,20 @@ export default async function DashboardPage() {
           lte: endOfDay
         }
       }
-    }),
+    }).catch(() => 0),
     db.visitor_follow_ups.count({
       where: {
         churchId: session.user.churchId,
         status: 'PENDIENTE'
       }
-    }),
+    }).catch(() => 0),
     db.children_check_ins.count({
       where: {
         churchId: session.user.churchId,
         checkedIn: true,
         checkedOut: false
       }
-    }),
+    }).catch(() => 0),
     // Website requests
     db.website_requests.findMany({
       where: {

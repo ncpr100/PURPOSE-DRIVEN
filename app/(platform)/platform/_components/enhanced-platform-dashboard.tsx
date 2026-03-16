@@ -84,19 +84,25 @@ interface PlatformMonitoringData {
 export default function EnhancedPlatformDashboard() {
   const [data, setData] = useState<PlatformMonitoringData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date())
 
   const fetchMonitoringData = async () => {
     try {
       setIsLoading(true)
+      setError(null)
       const response = await fetch('/api/platform/monitoring?period=24')
       if (response.ok) {
         const result = await response.json()
         setData(result)
         setLastRefresh(new Date())
+      } else {
+        const errData = await response.json().catch(() => ({}))
+        setError(errData.error || `Error ${response.status}: No se pudieron cargar las métricas`)
       }
-    } catch (error) {
-      console.error('Error fetching monitoring data:', error)
+    } catch (err) {
+      console.error('Error fetching monitoring data:', err)
+      setError('No se pudo conectar con el servidor de monitoreo')
     } finally {
       setIsLoading(false)
     }
@@ -141,7 +147,20 @@ export default function EnhancedPlatformDashboard() {
     )
   }
 
-  if (!data) return null
+  if (!data) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 gap-4">
+        <AlertCircle className="h-10 w-10 text-red-500" />
+        <p className="text-lg font-medium text-gray-700">
+          {error || 'No se pudieron cargar las métricas de la plataforma'}
+        </p>
+        <Button onClick={fetchMonitoringData} disabled={isLoading} variant="outline">
+          <RefreshCw className={cn('h-4 w-4 mr-2', isLoading && 'animate-spin')} />
+          Reintentar
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
