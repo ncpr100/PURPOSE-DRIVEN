@@ -150,26 +150,28 @@ export async function POST(request: NextRequest, props: { params: Promise<{ slug
       console.error('❌ Automation trigger failed for visitor submission:', automationError)
     }
 
-    // If form has auto-follow-up enabled, create a visitor check-in
-    if (form.settings && (form.settings as any).autoFollowUp && data.email) {
-      try {
-        await db.check_ins.create({
-          data: {
-            id: nanoid(),
-            firstName: data.firstName || data.name || 'Visitante',
-            lastName: data.lastName || '',
-            email: data.email,
-            phone: data.phone || null,
-            isFirstTime: true,
-            churchId: form.churchId,
-            checkedInAt: new Date(),
-            visitorType: 'first_time',
-            engagementScore: 70 // High engagement for form submission
-          }
-        })
-      } catch (error) {
-        console.log('Could not create check-in from form submission:', error)
-      }
+    // ALWAYS create a visitor check-in for CRM tracking + auto-categorization
+    try {
+      const visitor = await db.check_ins.create({
+        data: {
+          id: nanoid(),
+          firstName: data.firstName || data.name || 'Visitante',
+          lastName: data.lastName || '',
+          email: data.email || null,
+          phone: data.phone || null,
+          isFirstTime: true,
+          churchId: form.churchId,
+          checkedInAt: new Date(),
+          visitorType: 'first_time',
+          engagementScore: 70,
+          visitReason: `Form QR: ${form.name}`,
+        }
+      })
+      // Run real auto-categorization
+      const { VisitorAutomationService } = await import('@/lib/services/visitor-automation')
+      await VisitorAutomationService.processVisitor(visitor.id)
+    } catch (error) {
+      console.log('Could not create check-in or run automation from visitor form submission:', error)
     }
 
     // Send notification if configured

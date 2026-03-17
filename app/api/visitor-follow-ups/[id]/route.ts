@@ -70,3 +70,6 @@ export async function PUT(request: NextRequest, props: { params: Promise<{ id: s
   }
 }
 
+// PATCH - alias to PUT for clients that prefer PATCH semantics
+export const PATCH = PUT
+

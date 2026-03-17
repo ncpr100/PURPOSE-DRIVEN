@@ -727,6 +727,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
         </TabsList>
 
         <TabsContent value="visitors" className="space-y-4">
+          {/* Quick link to full CRM */}
+          <div className="flex justify-end">
+            <a href="/visitors" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+              Abrir CRM completo de Visitantes →
+            </a>
+          </div>
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
@@ -833,16 +839,21 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <Badge variant="outline">
                       {(checkIn.followUps || []).length} seguimientos
                     </Badge>
-                    
-                    {checkIn.qrCode && (
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => setSelectedQrCode(checkIn.qrCode!)}
-                      >
-                        <QrCode className="w-4 h-4" />
-                      </Button>
-                    )}
+                    <div className="flex gap-1">
+                      <a href="/visitors"
+                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline px-2 py-1 rounded border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors">
+                        Ver CRM
+                      </a>
+                      {checkIn.qrCode && (
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => setSelectedQrCode(checkIn.qrCode!)}
+                        >
+                          <QrCode className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
