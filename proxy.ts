@@ -88,11 +88,6 @@ const ROUTE_PERMISSIONS = {
 export async function proxy(request: NextRequest) {
   const response = NextResponse.next();
 
-  // Add compression headers
-  if (request.headers.get('accept-encoding')?.includes('gzip')) {
-    response.headers.set('content-encoding', 'gzip');
-  }
-
   // Add cache headers for static assets
   if (request.nextUrl.pathname.startsWith('/api/files/')) {
     response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
