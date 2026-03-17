@@ -123,6 +123,14 @@ export async function POST(request: NextRequest, props: { params: Promise<{ slug
       }
     })
 
+    // Run real auto-categorization on the newly created visitor
+    try {
+      const { VisitorAutomationService } = await import('@/lib/services/visitor-automation')
+      await VisitorAutomationService.processVisitor(visitor.id)
+    } catch (autoError) {
+      console.log('Visitor auto-categorization failed (non-fatal):', autoError)
+    }
+
     // Create automatic follow-up task
     try {
       await db.visitor_follow_ups.create({
