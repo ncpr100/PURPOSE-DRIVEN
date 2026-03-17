@@ -5,10 +5,8 @@ import { nanoid } from 'nanoid'
 export const dynamic = 'force-dynamic'
 
 // GET - Fetch a custom form by slug
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const { slug } = params
 
@@ -57,10 +55,8 @@ export async function GET(
 }
 
 // POST - Submit custom form data
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const { slug } = params
     const body = await request.json()

@@ -7,13 +7,14 @@ import { prisma } from '@/lib/prisma'
 export const dynamic = 'force-dynamic'
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 // GET - Get specific notification
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     
@@ -62,7 +63,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 }
 
 // PUT - Mark specific notification as read
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async function PUT(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     
@@ -145,7 +147,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 }
 
 // DELETE - Delete notification (Admin only)
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     

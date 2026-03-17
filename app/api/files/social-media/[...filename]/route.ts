@@ -6,10 +6,8 @@ import { lookup } from 'mime-types';
 
 export const dynamic = 'force-dynamic'
 
-export async function GET(
-  request: Request,
-  { params }: { params: { filename: string[] } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ filename: string[] }> }) {
+  const params = await props.params;
   try {
     const filename = params.filename.join('/');
     const filePath = path.join(process.cwd(), '../uploads/social-media', filename);

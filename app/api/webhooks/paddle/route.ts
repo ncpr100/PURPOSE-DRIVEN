@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     const rawBody = await request.text()
-    const headersList = headers()
+    const headersList = await headers()
     const signatureHeader = headersList.get('paddle-signature')
 
     if (!signatureHeader) {

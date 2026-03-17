@@ -12,10 +12,8 @@ import { randomUUID } from 'crypto';
 
 export const dynamic = 'force-dynamic'
 // GET /api/automation-templates/[id] - Get full template details
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions);
     
@@ -78,10 +76,8 @@ export async function GET(
 }
 
 // POST /api/automation-templates/[id]/activate - Activate template for church
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
@@ -226,10 +222,8 @@ export async function POST(
 }
 
 // PATCH /api/automation-templates/[id] - Update template name/description
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {

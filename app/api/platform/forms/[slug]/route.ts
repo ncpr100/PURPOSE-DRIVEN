@@ -27,10 +27,8 @@ async function requireSuperAdmin() {
   return { session }
 }
 
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(_request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const auth = await requireSuperAdmin()
   if (auth.error) return auth.error
 
@@ -46,10 +44,8 @@ export async function GET(
   return NextResponse.json({ data: form })
 }
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const auth = await requireSuperAdmin()
   if (auth.error) return auth.error
 
@@ -82,10 +78,8 @@ export async function PATCH(
   return NextResponse.json({ data: updated, success: true })
 }
 
-export async function DELETE(
-  _request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function DELETE(_request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const auth = await requireSuperAdmin()
   if (auth.error) return auth.error
 

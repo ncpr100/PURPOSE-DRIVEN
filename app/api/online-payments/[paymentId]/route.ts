@@ -6,10 +6,8 @@ import { nanoid } from 'nanoid'
 export const dynamic = 'force-dynamic'
 
 // PATCH - Update payment status (Protected endpoint)
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { paymentId: string } }
-) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ paymentId: string }> }) {
+  const params = await props.params;
   try {
     const { paymentId } = params
     const body = await request.json()

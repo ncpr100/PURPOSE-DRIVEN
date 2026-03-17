@@ -8,9 +8,9 @@ import { z } from 'zod'
 export const dynamic = 'force-dynamic'
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 const notificationTemplateUpdateSchema = z.object({
@@ -27,7 +27,8 @@ const notificationTemplateUpdateSchema = z.object({
 })
 
 // GET - Get specific notification template
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     
@@ -74,7 +75,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 }
 
 // PUT - Update notification template
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async function PUT(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     
@@ -161,7 +163,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 }
 
 // DELETE - Delete notification template
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(request: NextRequest, props: RouteParams) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     

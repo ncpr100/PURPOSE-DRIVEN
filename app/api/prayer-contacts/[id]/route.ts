@@ -7,10 +7,8 @@ import { authOptions } from '@/lib/auth'
 export const dynamic = 'force-dynamic'
 
 // GET /api/prayer-contacts/[id] - Get single prayer contact
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     
@@ -66,10 +64,8 @@ export async function GET(
 }
 
 // PUT /api/prayer-contacts/[id] - Update prayer contact
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     
@@ -142,10 +138,8 @@ export async function PUT(
 }
 
 // DELETE /api/prayer-contacts/[id] - Delete prayer contact
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     

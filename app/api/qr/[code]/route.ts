@@ -10,10 +10,8 @@ export const dynamic = 'force-dynamic'
  * This route must be registered in middleware.ts as a public route
  * (no auth check) so anyone who scans the QR can be redirected.
  */
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { code: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ code: string }> }) {
+  const params = await props.params;
   const { code } = params
 
   if (!code) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react';
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -44,7 +44,8 @@ interface FormData {
   qrCode?: string
 }
 
-export default function PublicVisitorForm({ params }: { params: { slug: string } }) {
+export default function PublicVisitorForm(props: { params: Promise<{ slug: string }> }) {
+  const params = use(props.params);
   const [formData, setFormData] = useState<FormData | null>(null)
   const [submission, setSubmission] = useState<Record<string, any>>({})
   const [isLoading, setIsLoading] = useState(true)

@@ -4,9 +4,9 @@ import { PublicPrayerForm } from '@/components/prayer-wall/PublicPrayerForm'
 import { getServerUrl } from '@/lib/server-url'
 
 interface PrayerQRPageProps {
-  params: {
+  params: Promise<{
     code: string
-  }
+  }>
 }
 
 async function getQRCodeData(code: string) {
@@ -26,9 +26,10 @@ async function getQRCodeData(code: string) {
   }
 }
 
-export default async function PrayerQRPage({ params }: PrayerQRPageProps) {
+export default async function PrayerQRPage(props: PrayerQRPageProps) {
+  const params = await props.params;
   const data = await getQRCodeData(params.code)
-  
+
   if (!data?.qrCode) {
     notFound()
   }
@@ -47,9 +48,10 @@ export default async function PrayerQRPage({ params }: PrayerQRPageProps) {
   )
 }
 
-export async function generateMetadata({ params }: PrayerQRPageProps) {
+export async function generateMetadata(props: PrayerQRPageProps) {
+  const params = await props.params;
   const data = await getQRCodeData(params.code)
-  
+
   if (!data?.qrCode) {
     return {
       title: 'Formulario de Oración no encontrado'

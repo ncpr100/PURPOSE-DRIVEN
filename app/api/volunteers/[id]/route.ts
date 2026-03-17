@@ -8,10 +8,8 @@ import { db } from '@/lib/db'
 export const dynamic = 'force-dynamic'
 
 // GET single volunteer
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
 
@@ -54,10 +52,8 @@ export async function GET(
 }
 
 // UPDATE volunteer
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
 
@@ -125,10 +121,8 @@ export async function PUT(
 }
 
 // DELETE volunteer
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
 

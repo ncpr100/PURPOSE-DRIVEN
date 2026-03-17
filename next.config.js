@@ -4,11 +4,6 @@ const path = require('path');
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   output: process.env.NEXT_OUTPUT_MODE || (process.env.DOCKERFILE_BUILD === 'true' ? 'standalone' : undefined),
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     // TODO: Revert to false once all remaining Prisma union type errors are resolved
     ignoreBuildErrors: true,

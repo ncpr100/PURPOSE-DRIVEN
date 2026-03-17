@@ -6,7 +6,7 @@ import { db } from '@/lib/db'
 import { notFound } from 'next/navigation'
 
 interface PageProps {
-  params: { qrcode: string }
+  params: Promise<{ qrcode: string }>
 }
 
 export const metadata: Metadata = {
@@ -14,7 +14,8 @@ export const metadata: Metadata = {
   description: 'Registro de niños via código QR',
 }
 
-export default async function QRChildrenCheckInPage({ params }: PageProps) {
+export default async function QRChildrenCheckInPage(props: PageProps) {
+  const params = await props.params;
   try {
     // Verify QR code exists and get basic info
     const qrInfo = await db.children_check_ins.findUnique({

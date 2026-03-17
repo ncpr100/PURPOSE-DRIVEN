@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: 'Formulario de contacto',
 }
 
-export default function PlatformFormPage({ params }: { params: { slug: string } }) {
+export default async function PlatformFormPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   return <PlatformFormViewer slug={params.slug} />
 }
