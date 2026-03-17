@@ -1,364 +1,405 @@
+"use client";
 
-
-'use client'
-
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Switch } from '@/components/ui/switch'
-import { UserCheck, QrCode, Users, Clock, Phone, Mail, MessageSquare, Shield, Camera, Zap } from 'lucide-react'
-import { toast } from 'sonner'
-import { VisitorProfileForm } from '@/components/visitor-automation/visitor-profile-form'
-import { SecureCheckInForm } from '@/components/child-security/secure-checkin-form'
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import {
+  UserCheck,
+  QrCode,
+  Users,
+  Clock,
+  Phone,
+  Mail,
+  MessageSquare,
+  Shield,
+  Camera,
+  Zap,
+} from "lucide-react";
+import { toast } from "sonner";
+import { VisitorProfileForm } from "@/components/visitor-automation/visitor-profile-form";
+import { SecureCheckInForm } from "@/components/child-security/secure-checkin-form";
 
 interface CheckIn {
-  id: string
-  firstName: string
-  lastName: string
-  email?: string
-  phone?: string
-  isFirstTime: boolean
-  visitReason?: string
-  prayerRequest?: string
-  qrCode?: string
-  checkedInAt: string
-  event?: { title: string }
-  followUps: FollowUp[]
-  
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+  isFirstTime: boolean;
+  visitReason?: string;
+  prayerRequest?: string;
+  qrCode?: string;
+  checkedInAt: string;
+  event?: { title: string };
+  followUps: FollowUp[];
+
   // Enhanced visitor tracking
-  visitorType?: string
-  ministryInterest?: string[]
-  ageGroup?: string
-  familyStatus?: string
-  referredBy?: string
-  followUpFormId?: string
-  automationTriggered: boolean
-  lastContactDate?: string
-  engagementScore: number
+  visitorType?: string;
+  ministryInterest?: string[];
+  ageGroup?: string;
+  familyStatus?: string;
+  referredBy?: string;
+  followUpFormId?: string;
+  automationTriggered: boolean;
+  lastContactDate?: string;
+  engagementScore: number;
 }
 
 interface ChildCheckIn {
-  id: string
-  childName: string
-  childAge?: number
-  parentName: string
-  parentPhone: string
-  parentEmail?: string
-  emergencyContact?: string
-  emergencyPhone?: string
-  allergies?: string
-  specialNeeds?: string
-  qrCode: string
-  checkedIn: boolean
-  checkedOut: boolean
-  checkedInAt: string
-  checkedOutAt?: string
-  event?: { title: string }
-  
+  id: string;
+  childName: string;
+  childAge?: number;
+  parentName: string;
+  parentPhone: string;
+  parentEmail?: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
+  allergies?: string;
+  specialNeeds?: string;
+  qrCode: string;
+  checkedIn: boolean;
+  checkedOut: boolean;
+  checkedInAt: string;
+  checkedOutAt?: string;
+  event?: { title: string };
+
   // Enhanced security features
-  childPhotoUrl?: string
-  parentPhotoUrl?: string
-  securityPin: string
-  biometricHash?: string
-  photoTakenAt?: string
-  backupAuthCodes: string[]
-  pickupAttempts: any[]
-  requiresBothAuth: boolean
+  childPhotoUrl?: string;
+  parentPhotoUrl?: string;
+  securityPin: string;
+  biometricHash?: string;
+  photoTakenAt?: string;
+  backupAuthCodes: string[];
+  pickupAttempts: any[];
+  requiresBothAuth: boolean;
 }
 
 interface FollowUp {
-  id: string
-  followUpType: string
-  status: string
-  scheduledAt?: string
-  notes?: string
-  assignedUser?: { name: string }
+  id: string;
+  followUpType: string;
+  status: string;
+  scheduledAt?: string;
+  notes?: string;
+  assignedUser?: { name: string };
 }
 
 interface CheckInsClientProps {
-  userRole: string
-  churchId: string
+  userRole: string;
+  churchId: string;
 }
 
 export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
-  const [checkIns, setCheckIns] = useState<CheckIn[]>([])
-  const [childrenCheckIns, setChildrenCheckIns] = useState<ChildCheckIn[]>([])
-  const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState('visitors')
+  const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
+  const [childrenCheckIns, setChildrenCheckIns] = useState<ChildCheckIn[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("visitors");
 
   // Form states for visitor check-in
   const [visitorForm, setVisitorForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
     isFirstTime: false,
-    visitReason: '',
-    prayerRequest: ''
-  })
+    visitReason: "",
+    prayerRequest: "",
+  });
 
   // Form states for child check-in
   const [childForm, setChildForm] = useState({
-    childName: '',
-    childAge: '',
-    parentName: '',
-    parentPhone: '',
-    parentEmail: '',
-    emergencyContact: '',
-    emergencyPhone: '',
-    allergies: '',
-    specialNeeds: ''
-  })
+    childName: "",
+    childAge: "",
+    parentName: "",
+    parentPhone: "",
+    parentEmail: "",
+    emergencyContact: "",
+    emergencyPhone: "",
+    allergies: "",
+    specialNeeds: "",
+  });
 
-  const [isVisitorDialogOpen, setIsVisitorDialogOpen] = useState(false)
-  const [isChildDialogOpen, setIsChildDialogOpen] = useState(false)
-  const [isQrGeneratorOpen, setIsQrGeneratorOpen] = useState(false)
-  const [selectedQrCode, setSelectedQrCode] = useState<string | null>(null)
-  const [generatedQrInfo, setGeneratedQrInfo] = useState<any>(null)
+  const [isVisitorDialogOpen, setIsVisitorDialogOpen] = useState(false);
+  const [isChildDialogOpen, setIsChildDialogOpen] = useState(false);
+  const [isQrGeneratorOpen, setIsQrGeneratorOpen] = useState(false);
+  const [selectedQrCode, setSelectedQrCode] = useState<string | null>(null);
+  const [generatedQrInfo, setGeneratedQrInfo] = useState<any>(null);
 
   useEffect(() => {
-    fetchCheckIns()
-    fetchChildrenCheckIns()
-  }, [])
+    fetchCheckIns();
+    fetchChildrenCheckIns();
+  }, []);
 
   const fetchCheckIns = async () => {
     try {
-      const response = await fetch('/api/check-ins')
+      const response = await fetch("/api/check-ins");
       if (response.ok) {
-        const result = await response.json()
+        const result = await response.json();
         // API returns { data: [], pagination: {} }
-        setCheckIns(Array.isArray(result.data) ? result.data : [])
+        setCheckIns(Array.isArray(result.data) ? result.data : []);
       } else {
-        console.error('Failed to fetch check-ins:', response.status)
-        toast.error('Error al cargar check-ins')
-        setCheckIns([]) // Ensure it's always an array
+        console.error("Failed to fetch check-ins:", response.status);
+        toast.error("Error al cargar check-ins");
+        setCheckIns([]); // Ensure it's always an array
       }
     } catch (error) {
-      console.error('Error fetching check-ins:', error)
-      toast.error('Error al cargar check-ins')
-      setCheckIns([]) // Ensure it's always an array
+      console.error("Error fetching check-ins:", error);
+      toast.error("Error al cargar check-ins");
+      setCheckIns([]); // Ensure it's always an array
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchChildrenCheckIns = async () => {
     try {
-      const response = await fetch('/api/children-check-ins')
+      const response = await fetch("/api/children-check-ins");
       if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
         // API returns array directly
-        setChildrenCheckIns(Array.isArray(data) ? data : [])
+        setChildrenCheckIns(Array.isArray(data) ? data : []);
       } else {
-        console.error('Failed to fetch children check-ins:', response.status)
-        toast.error('Error al cargar check-ins de niños')
-        setChildrenCheckIns([]) // Ensure it's always an array
+        console.error("Failed to fetch children check-ins:", response.status);
+        toast.error("Error al cargar check-ins de niños");
+        setChildrenCheckIns([]); // Ensure it's always an array
       }
     } catch (error) {
-      console.error('Error fetching children check-ins:', error)
-      toast.error('Error al cargar check-ins de niños')
-      setChildrenCheckIns([]) // Ensure it's always an array
+      console.error("Error fetching children check-ins:", error);
+      toast.error("Error al cargar check-ins de niños");
+      setChildrenCheckIns([]); // Ensure it's always an array
     }
-  }
+  };
 
   const handleVisitorCheckIn = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!visitorForm.firstName || !visitorForm.lastName) {
-      toast.error('Nombre y apellido son requeridos')
-      return
+      toast.error("Nombre y apellido son requeridos");
+      return;
     }
 
     try {
-      const response = await fetch('/api/check-ins', {
-        method: 'POST',
+      const response = await fetch("/api/check-ins", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(visitorForm),
-      })
+        body: JSON.stringify({
+          ...visitorForm,
+          prayer_requests: visitorForm.prayerRequest,
+        }),
+      });
 
       if (response.ok) {
-        const newCheckIn = await response.json()
-        toast.success('Check-in registrado exitosamente')
-        
+        const newCheckIn = await response.json();
+        toast.success("Check-in registrado exitosamente");
+
         // Show QR code
         if (newCheckIn.qrCode) {
-          setSelectedQrCode(newCheckIn.qrCode)
+          setSelectedQrCode(newCheckIn.qrCode);
         }
-        
+
         // Reset form
         setVisitorForm({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
           isFirstTime: false,
-          visitReason: '',
-          prayerRequest: ''
-        })
-        setIsVisitorDialogOpen(false)
-        fetchCheckIns()
+          visitReason: "",
+          prayerRequest: "",
+        });
+        setIsVisitorDialogOpen(false);
+        fetchCheckIns();
       } else {
-        const error = await response.json()
-        toast.error(error.message || 'Error al registrar check-in')
+        const error = await response.json();
+        toast.error(error.message || "Error al registrar check-in");
       }
     } catch (error) {
-      toast.error('Error al registrar check-in')
+      toast.error("Error al registrar check-in");
     }
-  }
+  };
 
   const handleChildCheckIn = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Enhanced validation requirements
-    if (!childForm.childName || !childForm.parentName || !childForm.parentPhone) {
-      toast.error('Nombre del niño, nombre del padre y teléfono son requeridos')
-      return
+    if (
+      !childForm.childName ||
+      !childForm.parentName ||
+      !childForm.parentPhone
+    ) {
+      toast.error(
+        "Nombre del niño, nombre del padre y teléfono son requeridos",
+      );
+      return;
     }
 
     // Validate parent phone format (basic validation)
-    const phoneRegex = /^[+]?[\d\s\-\(\)]{7,15}$/
+    const phoneRegex = /^[+]?[\d\s\-\(\)]{7,15}$/;
     if (!phoneRegex.test(childForm.parentPhone)) {
-      toast.error('Formato de teléfono del padre inválido')
-      return
+      toast.error("Formato de teléfono del padre inválido");
+      return;
     }
 
     // Validate parent email if provided
-    if (childForm.parentEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(childForm.parentEmail)) {
-      toast.error('Formato de email del padre inválido')
-      return
+    if (
+      childForm.parentEmail &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(childForm.parentEmail)
+    ) {
+      toast.error("Formato de email del padre inválido");
+      return;
     }
 
     // Require emergency contact for child safety
     if (!childForm.emergencyContact || !childForm.emergencyPhone) {
-      toast.error('Contacto de emergencia y teléfono de emergencia son requeridos para la seguridad del niño')
-      return
+      toast.error(
+        "Contacto de emergencia y teléfono de emergencia son requeridos para la seguridad del niño",
+      );
+      return;
     }
 
     // Validate emergency phone format
     if (!phoneRegex.test(childForm.emergencyPhone)) {
-      toast.error('Formato de teléfono de emergencia inválido')
-      return
+      toast.error("Formato de teléfono de emergencia inválido");
+      return;
     }
 
     // Validate child name format (no numbers, special chars)
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(childForm.childName)) {
-      toast.error('El nombre del niño solo puede contener letras y espacios')
-      return
+      toast.error("El nombre del niño solo puede contener letras y espacios");
+      return;
     }
 
     // Validate parent name format
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(childForm.parentName)) {
-      toast.error('El nombre del padre solo puede contener letras y espacios')
-      return
+      toast.error("El nombre del padre solo puede contener letras y espacios");
+      return;
     }
 
     try {
-      const response = await fetch('/api/children-check-ins', {
-        method: 'POST',
+      const response = await fetch("/api/children-check-ins", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...childForm,
-          childAge: childForm.childAge ? parseInt(childForm.childAge) : null
+          childAge: childForm.childAge ? parseInt(childForm.childAge) : null,
         }),
-      })
+      });
 
       if (response.ok) {
-        const newCheckIn = await response.json()
-        toast.success('Check-in de niño registrado exitosamente')
-        
+        const newCheckIn = await response.json();
+        toast.success("Check-in de niño registrado exitosamente");
+
         // Show QR code
         if (newCheckIn.qrCode) {
-          setSelectedQrCode(newCheckIn.qrCode)
+          setSelectedQrCode(newCheckIn.qrCode);
         }
-        
+
         // Reset form
         setChildForm({
-          childName: '',
-          childAge: '',
-          parentName: '',
-          parentPhone: '',
-          parentEmail: '',
-          emergencyContact: '',
-          emergencyPhone: '',
-          allergies: '',
-          specialNeeds: ''
-        })
-        setIsChildDialogOpen(false)
-        fetchChildrenCheckIns()
+          childName: "",
+          childAge: "",
+          parentName: "",
+          parentPhone: "",
+          parentEmail: "",
+          emergencyContact: "",
+          emergencyPhone: "",
+          allergies: "",
+          specialNeeds: "",
+        });
+        setIsChildDialogOpen(false);
+        fetchChildrenCheckIns();
       } else {
-        const error = await response.json()
-        toast.error(error.message || 'Error al registrar check-in de niño')
+        const error = await response.json();
+        toast.error(error.message || "Error al registrar check-in de niño");
       }
     } catch (error) {
-      toast.error('Error al registrar check-in de niño')
+      toast.error("Error al registrar check-in de niño");
     }
-  }
+  };
 
   const handleChildCheckOut = async (childCheckInId: string) => {
     try {
-      const response = await fetch(`/api/children-check-ins/${childCheckInId}/checkout`, {
-        method: 'POST',
-      })
+      const response = await fetch(
+        `/api/children-check-ins/${childCheckInId}/checkout`,
+        {
+          method: "POST",
+        },
+      );
 
       if (response.ok) {
-        toast.success('Niño retirado exitosamente')
-        fetchChildrenCheckIns()
+        toast.success("Niño retirado exitosamente");
+        fetchChildrenCheckIns();
       } else {
-        const error = await response.json()
-        toast.error(error.message || 'Error al retirar niño')
+        const error = await response.json();
+        toast.error(error.message || "Error al retirar niño");
       }
     } catch (error) {
-      toast.error('Error al retirar niño')
+      toast.error("Error al retirar niño");
     }
-  }
+  };
 
   const generateQRCodeUrl = (qrCode: string) => {
-    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrCode)}&format=png`
-  }
+    return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrCode)}&format=png`;
+  };
 
   // Generate QR code for children check-in
-  const generateChildrenQR = async (eventTitle: string = 'Evento General') => {
-    setLoading(true)
+  const generateChildrenQR = async (eventTitle: string = "Evento General") => {
+    setLoading(true);
     try {
-      const response = await fetch('/api/children-check-ins/generate-qr', {
-        method: 'POST',
+      const response = await fetch("/api/children-check-ins/generate-qr", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          eventTitle
+          eventTitle,
         }),
-      })
+      });
 
       if (response.ok) {
-        const qrInfo = await response.json()
-        setGeneratedQrInfo(qrInfo)
-        setIsQrGeneratorOpen(true)
-        toast.success('🎉 Código QR generado para check-in de niños')
+        const qrInfo = await response.json();
+        setGeneratedQrInfo(qrInfo);
+        setIsQrGeneratorOpen(true);
+        toast.success("🎉 Código QR generado para check-in de niños");
       } else {
-        const error = await response.json()
-        toast.error(error.message || 'Error al generar código QR')
+        const error = await response.json();
+        toast.error(error.message || "Error al generar código QR");
       }
     } catch (error) {
-      console.error('QR generation error:', error)
-      toast.error('Error al generar código QR')
+      console.error("QR generation error:", error);
+      toast.error("Error al generar código QR");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Cargando...</div>
+    return (
+      <div className="flex justify-center items-center h-64">Cargando...</div>
+    );
   }
 
   return (
@@ -366,12 +407,19 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Sistema de Registro</h1>
-          <p className="text-gray-600">Gestiona el registro de visitantes y niños</p>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Sistema de Registro
+          </h1>
+          <p className="text-gray-600">
+            Gestiona el registro de visitantes y niños
+          </p>
         </div>
 
         <div className="flex gap-2">
-          <Dialog open={isVisitorDialogOpen} onOpenChange={setIsVisitorDialogOpen}>
+          <Dialog
+            open={isVisitorDialogOpen}
+            onOpenChange={setIsVisitorDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button>
                 <UserCheck className="w-4 h-4 mr-2" />
@@ -392,7 +440,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <Input
                       id="firstName"
                       value={visitorForm.firstName}
-                      onChange={(e) => setVisitorForm(prev => ({ ...prev, firstName: e.target.value }))}
+                      onChange={(e) =>
+                        setVisitorForm((prev) => ({
+                          ...prev,
+                          firstName: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -401,7 +454,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <Input
                       id="lastName"
                       value={visitorForm.lastName}
-                      onChange={(e) => setVisitorForm(prev => ({ ...prev, lastName: e.target.value }))}
+                      onChange={(e) =>
+                        setVisitorForm((prev) => ({
+                          ...prev,
+                          lastName: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -413,7 +471,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     id="email"
                     type="email"
                     value={visitorForm.email}
-                    onChange={(e) => setVisitorForm(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={(e) =>
+                      setVisitorForm((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                   />
                 </div>
 
@@ -422,7 +485,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Input
                     id="phone"
                     value={visitorForm.phone}
-                    onChange={(e) => setVisitorForm(prev => ({ ...prev, phone: e.target.value }))}
+                    onChange={(e) =>
+                      setVisitorForm((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
+                    }
                   />
                 </div>
 
@@ -430,7 +498,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Switch
                     id="isFirstTime"
                     checked={visitorForm.isFirstTime}
-                    onCheckedChange={(checked) => setVisitorForm(prev => ({ ...prev, isFirstTime: checked }))}
+                    onCheckedChange={(checked) =>
+                      setVisitorForm((prev) => ({
+                        ...prev,
+                        isFirstTime: checked,
+                      }))
+                    }
                   />
                   <Label htmlFor="isFirstTime">¿Primera vez visitando?</Label>
                 </div>
@@ -440,7 +513,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Input
                     id="visitReason"
                     value={visitorForm.visitReason}
-                    onChange={(e) => setVisitorForm(prev => ({ ...prev, visitReason: e.target.value }))}
+                    onChange={(e) =>
+                      setVisitorForm((prev) => ({
+                        ...prev,
+                        visitReason: e.target.value,
+                      }))
+                    }
                   />
                 </div>
 
@@ -449,12 +527,21 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Textarea
                     id="prayerRequest"
                     value={visitorForm.prayerRequest}
-                    onChange={(e) => setVisitorForm(prev => ({ ...prev, prayerRequest: e.target.value }))}
+                    onChange={(e) =>
+                      setVisitorForm((prev) => ({
+                        ...prev,
+                        prayerRequest: e.target.value,
+                      }))
+                    }
                   />
                 </div>
 
                 <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={() => setIsVisitorDialogOpen(false)}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsVisitorDialogOpen(false)}
+                  >
                     Cancelar
                   </Button>
                   <Button type="submit">Registrar Asistencia</Button>
@@ -484,7 +571,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <Input
                       id="childName"
                       value={childForm.childName}
-                      onChange={(e) => setChildForm(prev => ({ ...prev, childName: e.target.value }))}
+                      onChange={(e) =>
+                        setChildForm((prev) => ({
+                          ...prev,
+                          childName: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -496,7 +588,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                       min="0"
                       max="18"
                       value={childForm.childAge}
-                      onChange={(e) => setChildForm(prev => ({ ...prev, childAge: e.target.value }))}
+                      onChange={(e) =>
+                        setChildForm((prev) => ({
+                          ...prev,
+                          childAge: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                 </div>
@@ -507,7 +604,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <Input
                       id="parentName"
                       value={childForm.parentName}
-                      onChange={(e) => setChildForm(prev => ({ ...prev, parentName: e.target.value }))}
+                      onChange={(e) =>
+                        setChildForm((prev) => ({
+                          ...prev,
+                          parentName: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -516,7 +618,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <Input
                       id="parentPhone"
                       value={childForm.parentPhone}
-                      onChange={(e) => setChildForm(prev => ({ ...prev, parentPhone: e.target.value }))}
+                      onChange={(e) =>
+                        setChildForm((prev) => ({
+                          ...prev,
+                          parentPhone: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -528,25 +635,44 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     id="parentEmail"
                     type="email"
                     value={childForm.parentEmail}
-                    onChange={(e) => setChildForm(prev => ({ ...prev, parentEmail: e.target.value }))}
+                    onChange={(e) =>
+                      setChildForm((prev) => ({
+                        ...prev,
+                        parentEmail: e.target.value,
+                      }))
+                    }
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="emergencyContact">Contacto de emergencia</Label>
+                    <Label htmlFor="emergencyContact">
+                      Contacto de emergencia
+                    </Label>
                     <Input
                       id="emergencyContact"
                       value={childForm.emergencyContact}
-                      onChange={(e) => setChildForm(prev => ({ ...prev, emergencyContact: e.target.value }))}
+                      onChange={(e) =>
+                        setChildForm((prev) => ({
+                          ...prev,
+                          emergencyContact: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="emergencyPhone">Teléfono de emergencia</Label>
+                    <Label htmlFor="emergencyPhone">
+                      Teléfono de emergencia
+                    </Label>
                     <Input
                       id="emergencyPhone"
                       value={childForm.emergencyPhone}
-                      onChange={(e) => setChildForm(prev => ({ ...prev, emergencyPhone: e.target.value }))}
+                      onChange={(e) =>
+                        setChildForm((prev) => ({
+                          ...prev,
+                          emergencyPhone: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                 </div>
@@ -556,7 +682,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Textarea
                     id="allergies"
                     value={childForm.allergies}
-                    onChange={(e) => setChildForm(prev => ({ ...prev, allergies: e.target.value }))}
+                    onChange={(e) =>
+                      setChildForm((prev) => ({
+                        ...prev,
+                        allergies: e.target.value,
+                      }))
+                    }
                   />
                 </div>
 
@@ -565,12 +696,21 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   <Textarea
                     id="specialNeeds"
                     value={childForm.specialNeeds}
-                    onChange={(e) => setChildForm(prev => ({ ...prev, specialNeeds: e.target.value }))}
+                    onChange={(e) =>
+                      setChildForm((prev) => ({
+                        ...prev,
+                        specialNeeds: e.target.value,
+                      }))
+                    }
                   />
                 </div>
 
                 <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={() => setIsChildDialogOpen(false)}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsChildDialogOpen(false)}
+                  >
                     Cancelar
                   </Button>
                   <Button type="submit">Registrar Niño</Button>
@@ -593,7 +733,8 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   Código QR para Registro de Niños
                 </DialogTitle>
                 <DialogDescription>
-                  Los padres pueden escanear este código para registrar a sus hijos automáticamente
+                  Los padres pueden escanear este código para registrar a sus
+                  hijos automáticamente
                 </DialogDescription>
               </DialogHeader>
 
@@ -601,13 +742,14 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                 <div className="space-y-4">
                   {/* QR Code Display */}
                   <div className="text-center bg-white p-4 rounded-lg border">
-                    <img 
-                      src={generatedQrInfo.qrDisplayUrl} 
+                    <img
+                      src={generatedQrInfo.qrDisplayUrl}
                       alt="Código QR para registro de niños"
                       className="mx-auto mb-3"
                     />
                     <p className="text-sm text-gray-600 mb-2">
-                      Código QR para: <strong>{generatedQrInfo.eventTitle}</strong>
+                      Código QR para:{" "}
+                      <strong>{generatedQrInfo.eventTitle}</strong>
                     </p>
                     <Badge variant="outline" className="text-xs">
                       {generatedQrInfo.qrCode}
@@ -647,15 +789,15 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <Button
                       variant="outline"
                       onClick={() => {
-                        setGeneratedQrInfo(null)
-                        setIsQrGeneratorOpen(false)
+                        setGeneratedQrInfo(null);
+                        setIsQrGeneratorOpen(false);
                       }}
                       className="flex-1"
                     >
                       Cerrar
                     </Button>
                     <Button
-                      onClick={() => generateChildrenQR('Nuevo Evento')}
+                      onClick={() => generateChildrenQR("Nuevo Evento")}
                       className="flex-1"
                     >
                       <QrCode className="w-4 h-4 mr-2" />
@@ -666,7 +808,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
               ) : (
                 <div className="text-center py-8">
                   <Button
-                    onClick={() => generateChildrenQR('Evento General')}
+                    onClick={() => generateChildrenQR("Evento General")}
                     disabled={loading}
                     className="w-full"
                   >
@@ -692,33 +834,33 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger 
-            value="visitors" 
-            onClick={() => setActiveTab('visitors')}
+          <TabsTrigger
+            value="visitors"
+            onClick={() => setActiveTab("visitors")}
             className="gap-2"
           >
             <Users className="h-4 w-4" />
             Visitantes
           </TabsTrigger>
-          <TabsTrigger 
-            value="visitor-automation" 
-            onClick={() => setActiveTab('visitor-automation')}
+          <TabsTrigger
+            value="visitor-automation"
+            onClick={() => setActiveTab("visitor-automation")}
             className="gap-2"
           >
             <Zap className="h-4 w-4" />
             Automatización
           </TabsTrigger>
-          <TabsTrigger 
-            value="children" 
-            onClick={() => setActiveTab('children')}
+          <TabsTrigger
+            value="children"
+            onClick={() => setActiveTab("children")}
             className="gap-2"
           >
             <UserCheck className="h-4 w-4" />
             Niños
           </TabsTrigger>
-          <TabsTrigger 
-            value="children-security" 
-            onClick={() => setActiveTab('children-security')}
+          <TabsTrigger
+            value="children-security"
+            onClick={() => setActiveTab("children-security")}
             className="gap-2"
           >
             <Shield className="h-4 w-4" />
@@ -729,7 +871,10 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
         <TabsContent value="visitors" className="space-y-4">
           {/* Quick link to full CRM */}
           <div className="flex justify-end">
-            <a href="/visitors" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+            <a
+              href="/visitors"
+              className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+            >
               Abrir CRM completo de Visitantes →
             </a>
           </div>
@@ -737,38 +882,54 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Registros Hoy</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Total Registros Hoy
+                </CardTitle>
                 <UserCheck className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {checkIns.filter(c => 
-                    new Date(c.checkedInAt).toDateString() === new Date().toDateString()
-                  ).length}
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Primeras Visitas</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {checkIns.filter(c => c.isFirstTime).length}
+                  {
+                    checkIns.filter(
+                      (c) =>
+                        new Date(c.checkedInAt).toDateString() ===
+                        new Date().toDateString(),
+                    ).length
+                  }
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Seguimientos Pendientes</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Primeras Visitas
+                </CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {checkIns.filter((c) => c.isFirstTime).length}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Seguimientos Pendientes
+                </CardTitle>
                 <Clock className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {checkIns.reduce((acc, c) => acc + (c.followUps?.filter(f => f.status === 'PENDIENTE')?.length || 0), 0)}
+                  {checkIns.reduce(
+                    (acc, c) =>
+                      acc +
+                      (c.followUps?.filter((f) => f.status === "PENDIENTE")
+                        ?.length || 0),
+                    0,
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -777,7 +938,10 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
           {/* Visitors List */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {checkIns.map((checkIn) => (
-              <Card key={checkIn.id} className="hover:shadow-md transition-shadow">
+              <Card
+                key={checkIn.id}
+                className="hover:shadow-md transition-shadow"
+              >
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center justify-between">
                     {checkIn.firstName} {checkIn.lastName}
@@ -786,52 +950,71 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                         <Badge variant="default">Primera vez</Badge>
                       )}
                       {checkIn.visitorType && (
-                        <Badge variant="secondary" className={`
-                          ${checkIn.visitorType === 'FIRST_TIME' ? 'bg-green-100 text-green-800' : ''}
-                          ${checkIn.visitorType === 'RETURNING' ? 'bg-blue-100 text-blue-800' : ''}
-                          ${checkIn.visitorType === 'REGULAR' ? 'bg-purple-100 text-purple-800' : ''}
-                          ${checkIn.visitorType === 'MEMBER_CANDIDATE' ? 'bg-orange-100 text-orange-800' : ''}
-                          ${checkIn.visitorType === 'MINISTRY_INTEREST' ? 'bg-yellow-100 text-yellow-800' : ''}
-                        `}>
-                          {checkIn.visitorType === 'FIRST_TIME' && 'Nuevo'}
-                          {checkIn.visitorType === 'RETURNING' && 'Regresa'}
-                          {checkIn.visitorType === 'REGULAR' && 'Regular'}
-                          {checkIn.visitorType === 'MEMBER_CANDIDATE' && 'Candidato'}
-                          {checkIn.visitorType === 'MINISTRY_INTEREST' && 'Ministerio'}
-                          {!['FIRST_TIME', 'RETURNING', 'REGULAR', 'MEMBER_CANDIDATE', 'MINISTRY_INTEREST'].includes(checkIn.visitorType) && checkIn.visitorType}
+                        <Badge
+                          variant="secondary"
+                          className={`
+                          ${checkIn.visitorType === "FIRST_TIME" ? "bg-green-100 text-green-800" : ""}
+                          ${checkIn.visitorType === "RETURNING" ? "bg-blue-100 text-blue-800" : ""}
+                          ${checkIn.visitorType === "REGULAR" ? "bg-purple-100 text-purple-800" : ""}
+                          ${checkIn.visitorType === "MEMBER_CANDIDATE" ? "bg-orange-100 text-orange-800" : ""}
+                          ${checkIn.visitorType === "MINISTRY_INTEREST" ? "bg-yellow-100 text-yellow-800" : ""}
+                        `}
+                        >
+                          {checkIn.visitorType === "FIRST_TIME" && "Nuevo"}
+                          {checkIn.visitorType === "RETURNING" && "Regresa"}
+                          {checkIn.visitorType === "REGULAR" && "Regular"}
+                          {checkIn.visitorType === "MEMBER_CANDIDATE" &&
+                            "Candidato"}
+                          {checkIn.visitorType === "MINISTRY_INTEREST" &&
+                            "Ministerio"}
+                          {![
+                            "FIRST_TIME",
+                            "RETURNING",
+                            "REGULAR",
+                            "MEMBER_CANDIDATE",
+                            "MINISTRY_INTEREST",
+                          ].includes(checkIn.visitorType) &&
+                            checkIn.visitorType}
                         </Badge>
                       )}
                     </div>
                   </CardTitle>
                   <CardDescription>
-                    {new Date(checkIn.checkedInAt).toLocaleString('es-ES')}
+                    {new Date(checkIn.checkedInAt).toLocaleString("es-ES")}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {checkIn.email && (
                     <div className="flex items-center space-x-2">
                       <Mail className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">{checkIn.email}</span>
+                      <span className="text-sm text-gray-600">
+                        {checkIn.email}
+                      </span>
                     </div>
                   )}
-                  
+
                   {checkIn.phone && (
                     <div className="flex items-center space-x-2">
                       <Phone className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">{checkIn.phone}</span>
+                      <span className="text-sm text-gray-600">
+                        {checkIn.phone}
+                      </span>
                     </div>
                   )}
 
                   {checkIn.visitReason && (
                     <div className="text-sm text-gray-600">
-                      <span className="font-medium">Motivo:</span> {checkIn.visitReason}
+                      <span className="font-medium">Motivo:</span>{" "}
+                      {checkIn.visitReason}
                     </div>
                   )}
 
                   {checkIn.prayerRequest && (
                     <div className="flex items-start space-x-2">
                       <MessageSquare className="w-4 h-4 text-gray-400 mt-0.5" />
-                      <span className="text-sm text-gray-600">{checkIn.prayerRequest}</span>
+                      <span className="text-sm text-gray-600">
+                        {checkIn.prayerRequest}
+                      </span>
                     </div>
                   )}
 
@@ -840,13 +1023,15 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                       {(checkIn.followUps || []).length} seguimientos
                     </Badge>
                     <div className="flex gap-1">
-                      <a href="/visitors"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline px-2 py-1 rounded border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors">
+                      <a
+                        href="/visitors"
+                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline px-2 py-1 rounded border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors"
+                      >
                         Ver CRM
                       </a>
                       {checkIn.qrCode && (
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="outline"
                           onClick={() => setSelectedQrCode(checkIn.qrCode!)}
                         >
@@ -866,24 +1051,31 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Niños Presentes</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Niños Presentes
+                </CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {childrenCheckIns.filter(c => c.checkedIn && !c.checkedOut).length}
+                  {
+                    childrenCheckIns.filter((c) => c.checkedIn && !c.checkedOut)
+                      .length
+                  }
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Niños Retirados</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Niños Retirados
+                </CardTitle>
                 <UserCheck className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {childrenCheckIns.filter(c => c.checkedOut).length}
+                  {childrenCheckIns.filter((c) => c.checkedOut).length}
                 </div>
               </CardContent>
             </Card>
@@ -895,9 +1087,13 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {childrenCheckIns.filter(c => 
-                    new Date(c.checkedInAt).toDateString() === new Date().toDateString()
-                  ).length}
+                  {
+                    childrenCheckIns.filter(
+                      (c) =>
+                        new Date(c.checkedInAt).toDateString() ===
+                        new Date().toDateString(),
+                    ).length
+                  }
                 </div>
               </CardContent>
             </Card>
@@ -906,59 +1102,74 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
           {/* Children List */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {childrenCheckIns.map((checkIn) => (
-              <Card key={checkIn.id} className="hover:shadow-md transition-shadow">
+              <Card
+                key={checkIn.id}
+                className="hover:shadow-md transition-shadow"
+              >
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center justify-between">
-                    {checkIn.childName} {checkIn.childAge && `(${checkIn.childAge} años)`}
-                    <Badge variant={checkIn.checkedOut ? "secondary" : "default"}>
-                      {checkIn.checkedOut ? 'Retirado' : 'Presente'}
+                    {checkIn.childName}{" "}
+                    {checkIn.childAge && `(${checkIn.childAge} años)`}
+                    <Badge
+                      variant={checkIn.checkedOut ? "secondary" : "default"}
+                    >
+                      {checkIn.checkedOut ? "Retirado" : "Presente"}
                     </Badge>
                   </CardTitle>
                   <CardDescription>
-                    Ingreso: {new Date(checkIn.checkedInAt).toLocaleString('es-ES')}
+                    Ingreso:{" "}
+                    {new Date(checkIn.checkedInAt).toLocaleString("es-ES")}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div>
-                    <span className="text-sm font-medium">Padre:</span> {checkIn.parentName}
+                    <span className="text-sm font-medium">Padre:</span>{" "}
+                    {checkIn.parentName}
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     <Phone className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">{checkIn.parentPhone}</span>
+                    <span className="text-sm text-gray-600">
+                      {checkIn.parentPhone}
+                    </span>
                   </div>
 
                   {checkIn.emergencyContact && (
                     <div className="text-sm text-gray-600">
-                      <span className="font-medium">Emergencia:</span> {checkIn.emergencyContact}
+                      <span className="font-medium">Emergencia:</span>{" "}
+                      {checkIn.emergencyContact}
                       {checkIn.emergencyPhone && ` - ${checkIn.emergencyPhone}`}
                     </div>
                   )}
 
                   {checkIn.allergies && (
                     <div className="text-sm text-red-600">
-                      <span className="font-medium">Alergias:</span> {checkIn.allergies}
+                      <span className="font-medium">Alergias:</span>{" "}
+                      {checkIn.allergies}
                     </div>
                   )}
 
                   {checkIn.specialNeeds && (
                     <div className="text-sm text-yellow-600">
-                      <span className="font-medium">Necesidades especiales:</span> {checkIn.specialNeeds}
+                      <span className="font-medium">
+                        Necesidades especiales:
+                      </span>{" "}
+                      {checkIn.specialNeeds}
                     </div>
                   )}
 
                   <div className="flex items-center justify-between">
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       variant="outline"
                       onClick={() => setSelectedQrCode(checkIn.qrCode)}
                     >
                       <QrCode className="w-4 h-4 mr-2" />
                       Ver QR
                     </Button>
-                    
+
                     {!checkIn.checkedOut && (
-                      <Button 
+                      <Button
                         size="sm"
                         onClick={() => handleChildCheckOut(checkIn.id)}
                       >
@@ -981,36 +1192,42 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                 Sistema de Automatización Inteligente de Visitantes
               </CardTitle>
               <CardDescription>
-                Registro avanzado con seguimiento automático, conexión ministerial y formas de seguimiento con QR
+                Registro avanzado con seguimiento automático, conexión
+                ministerial y formas de seguimiento con QR
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Automatizaciones Activas</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Automatizaciones Activas
+                    </CardTitle>
                     <Zap className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
-                      {checkIns.filter(c => c.automationTriggered).length}
+                      {checkIns.filter((c) => c.automationTriggered).length}
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      Este mes
-                    </p>
+                    <p className="text-xs text-muted-foreground">Este mes</p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Conexiones Ministeriales</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Conexiones Ministeriales
+                    </CardTitle>
                     <Users className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
-                      {checkIns.filter(c => 
-                        c.ministryInterest && c.ministryInterest.length > 0
-                      ).length}
+                      {
+                        checkIns.filter(
+                          (c) =>
+                            c.ministryInterest && c.ministryInterest.length > 0,
+                        ).length
+                      }
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Visitantes con intereses
@@ -1020,12 +1237,20 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Promedio de Participación</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Promedio de Participación
+                    </CardTitle>
                     <MessageSquare className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
-                      {Math.round(checkIns.reduce((sum, c) => sum + (c.engagementScore || 0), 0) / Math.max(checkIns.length, 1))}%
+                      {Math.round(
+                        checkIns.reduce(
+                          (sum, c) => sum + (c.engagementScore || 0),
+                          0,
+                        ) / Math.max(checkIns.length, 1),
+                      )}
+                      %
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Puntuación de compromiso
@@ -1036,8 +1261,10 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
               <VisitorProfileForm
                 onSubmit={async (data) => {
-                  await fetchCheckIns()
-                  toast.success('Visitante registrado con automatización activada')
+                  await fetchCheckIns();
+                  toast.success(
+                    "Visitante registrado con automatización activada",
+                  );
                 }}
                 loading={loading}
               />
@@ -1054,21 +1281,26 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                 Sistema WebRTC de Seguridad Infantil
               </CardTitle>
               <CardDescription>
-                Check-in seguro con captura de fotos en tiempo real, verificación biométrica y códigos PIN
+                Check-in seguro con captura de fotos en tiempo real,
+                verificación biométrica y códigos PIN
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Registros Seguros</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Registros Seguros
+                    </CardTitle>
                     <Shield className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
-                      {childrenCheckIns.filter(c => 
-                        c.childPhotoUrl && c.parentPhotoUrl
-                      ).length}
+                      {
+                        childrenCheckIns.filter(
+                          (c) => c.childPhotoUrl && c.parentPhotoUrl,
+                        ).length
+                      }
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Con fotos de seguridad
@@ -1078,14 +1310,18 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Actualmente Presentes</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Actualmente Presentes
+                    </CardTitle>
                     <Camera className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
-                      {childrenCheckIns.filter(c => 
-                        c.checkedIn && !c.checkedOut
-                      ).length}
+                      {
+                        childrenCheckIns.filter(
+                          (c) => c.checkedIn && !c.checkedOut,
+                        ).length
+                      }
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Esperando recogida
@@ -1095,7 +1331,9 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Registrados</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Total Registrados
+                    </CardTitle>
                     <UserCheck className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
@@ -1110,20 +1348,22 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Promedio de Edad</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Promedio de Edad
+                    </CardTitle>
                     <QrCode className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold text-green-600">
-                      {childrenCheckIns.length > 0 
+                      {childrenCheckIns.length > 0
                         ? Math.round(
                             childrenCheckIns
-                              .filter(c => c.childAge)
-                              .reduce((sum, c) => sum + (c.childAge || 0), 0) / 
-                            childrenCheckIns.filter(c => c.childAge).length
+                              .filter((c) => c.childAge)
+                              .reduce((sum, c) => sum + (c.childAge || 0), 0) /
+                              childrenCheckIns.filter((c) => c.childAge).length,
                           ) || 0
-                        : 0
-                      } años
+                        : 0}{" "}
+                      años
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Edad promedio
@@ -1136,27 +1376,41 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
               <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm font-medium">Distribución por Edad</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Distribución por Edad
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
                       {(() => {
-                        const ageGroups = childrenCheckIns.reduce((acc, child) => {
-                          const age = child.childAge || 0;
-                          const group = age <= 3 ? '0-3 años' : 
-                                       age <= 6 ? '4-6 años' : 
-                                       age <= 10 ? '7-10 años' : 
-                                       '11+ años';
-                          acc[group] = (acc[group] || 0) + 1;
-                          return acc;
-                        }, {} as Record<string, number>);
-                        
-                        return Object.entries(ageGroups).map(([group, count]) => (
-                          <div key={group} className="flex justify-between text-sm">
-                            <span>{group}:</span>
-                            <span className="font-medium">{count}</span>
-                          </div>
-                        ));
+                        const ageGroups = childrenCheckIns.reduce(
+                          (acc, child) => {
+                            const age = child.childAge || 0;
+                            const group =
+                              age <= 3
+                                ? "0-3 años"
+                                : age <= 6
+                                  ? "4-6 años"
+                                  : age <= 10
+                                    ? "7-10 años"
+                                    : "11+ años";
+                            acc[group] = (acc[group] || 0) + 1;
+                            return acc;
+                          },
+                          {} as Record<string, number>,
+                        );
+
+                        return Object.entries(ageGroups).map(
+                          ([group, count]) => (
+                            <div
+                              key={group}
+                              className="flex justify-between text-sm"
+                            >
+                              <span>{group}:</span>
+                              <span className="font-medium">{count}</span>
+                            </div>
+                          ),
+                        );
                       })()}
                     </div>
                   </CardContent>
@@ -1164,26 +1418,34 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm font-medium">Alergias y Necesidades</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Alergias y Necesidades
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span>Con alergias:</span>
                         <span className="font-medium text-red-600">
-                          {childrenCheckIns.filter(c => c.allergies).length}
+                          {childrenCheckIns.filter((c) => c.allergies).length}
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Necesidades especiales:</span>
                         <span className="font-medium text-orange-600">
-                          {childrenCheckIns.filter(c => c.specialNeeds).length}
+                          {
+                            childrenCheckIns.filter((c) => c.specialNeeds)
+                              .length
+                          }
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Contactos de emergencia:</span>
                         <span className="font-medium text-green-600">
-                          {childrenCheckIns.filter(c => c.emergencyContact).length}
+                          {
+                            childrenCheckIns.filter((c) => c.emergencyContact)
+                              .length
+                          }
                         </span>
                       </div>
                     </div>
@@ -1192,26 +1454,40 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-sm font-medium">Seguridad y Verificación</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Seguridad y Verificación
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span>Con PIN personalizado:</span>
                         <span className="font-medium text-blue-600">
-                          {childrenCheckIns.filter(c => c.securityPin !== '000000').length}
+                          {
+                            childrenCheckIns.filter(
+                              (c) => c.securityPin !== "000000",
+                            ).length
+                          }
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Códigos de respaldo:</span>
                         <span className="font-medium text-purple-600">
-                          {childrenCheckIns.filter(c => c.backupAuthCodes?.length > 0).length}
+                          {
+                            childrenCheckIns.filter(
+                              (c) => c.backupAuthCodes?.length > 0,
+                            ).length
+                          }
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Fotos de seguridad:</span>
                         <span className="font-medium text-green-600">
-                          {childrenCheckIns.filter(c => c.childPhotoUrl && c.parentPhotoUrl).length}
+                          {
+                            childrenCheckIns.filter(
+                              (c) => c.childPhotoUrl && c.parentPhotoUrl,
+                            ).length
+                          }
                         </span>
                       </div>
                     </div>
@@ -1221,8 +1497,8 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
               <SecureCheckInForm
                 onSubmit={async (data) => {
-                  await fetchChildrenCheckIns()
-                  toast.success('Check-in seguro completado exitosamente')
+                  await fetchChildrenCheckIns();
+                  toast.success("Check-in seguro completado exitosamente");
                 }}
                 loading={loading}
               />
@@ -1232,13 +1508,14 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
       </Tabs>
 
       {/* QR Code Dialog */}
-      <Dialog open={selectedQrCode !== null} onOpenChange={() => setSelectedQrCode(null)}>
+      <Dialog
+        open={selectedQrCode !== null}
+        onOpenChange={() => setSelectedQrCode(null)}
+      >
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle>Código QR</DialogTitle>
-            <DialogDescription>
-              Código QR para el registro
-            </DialogDescription>
+            <DialogDescription>Código QR para el registro</DialogDescription>
           </DialogHeader>
           <div className="flex justify-center">
             {selectedQrCode && (
@@ -1255,6 +1532,5 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
-

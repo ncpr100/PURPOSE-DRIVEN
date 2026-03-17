@@ -156,7 +156,7 @@ const navigationSections = [
         roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
       },
       {
-        title: 'Seguimiento',
+        title: 'Seguimientos Generales',
         href: '/follow-ups',
         icon: Phone,
         roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
