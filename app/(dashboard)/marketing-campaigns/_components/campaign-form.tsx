@@ -1,7 +1,6 @@
-
-import { MarketingCampaign } from '@/types/social-media';
 'use client';
 
+import { MarketingCampaign } from '@/types/social-media';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
