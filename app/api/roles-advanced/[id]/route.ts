@@ -8,10 +8,8 @@ import { nanoid } from 'nanoid'
 export const dynamic = 'force-dynamic'
 
 // GET /api/roles-advanced/[id] - Obtener rol específico
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user) {
@@ -75,10 +73,8 @@ export async function GET(
 }
 
 // PUT /api/roles-advanced/[id] - Actualizar rol
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user) {
@@ -183,10 +179,8 @@ export async function PUT(
 }
 
 // DELETE /api/roles-advanced/[id] - Eliminar rol
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user) {

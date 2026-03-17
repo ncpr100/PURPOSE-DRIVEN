@@ -14,10 +14,8 @@ const submissionSchema = z.object({
 })
 
 // GET /api/platform/forms/[slug]/submit - Display form (public endpoint)
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const form = await db.platformForm.findUnique({
       where: {
@@ -58,10 +56,8 @@ export async function GET(
 }
 
 // POST /api/platform/forms/[slug]/submit - Submit form (public endpoint)
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     // Get form details
     const form = await db.platformForm.findUnique({

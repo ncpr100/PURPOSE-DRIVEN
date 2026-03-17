@@ -11,10 +11,8 @@ const submissionSchema = z.object({
 })
 
 // GET - Fetch a visitor form by slug
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const { slug } = params
     const { searchParams } = new URL(request.url)
@@ -76,10 +74,8 @@ export async function GET(
 }
 
 // POST - Submit visitor form data
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const { slug } = params
     const body = await request.json()

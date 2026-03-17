@@ -7,10 +7,8 @@ import { db } from '@/lib/db'
 export const dynamic = 'force-dynamic'
 
 // GET /api/permissions/[id] - Obtener permiso específico
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user) {
@@ -62,10 +60,8 @@ export async function GET(
 }
 
 // PUT /api/permissions/[id] - Actualizar permiso
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user) {
@@ -109,10 +105,8 @@ export async function PUT(
 }
 
 // DELETE /api/permissions/[id] - Eliminar permiso
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user) {

@@ -1,13 +1,13 @@
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* React Day Picker Styles */
 @import 'react-day-picker/dist/style.css';
 
 /* Mobile Sidebar Enhancements */
 @import '../styles/mobile-sidebar.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {

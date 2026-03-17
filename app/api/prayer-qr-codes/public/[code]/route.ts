@@ -5,10 +5,8 @@ import { prisma } from '@/lib/prisma'
 export const dynamic = 'force-dynamic'
 
 // GET /api/prayer-qr-codes/public/[code] - Get QR code and form data
-export async function GET(
-  request: Request,
-  { params }: { params: { code: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ code: string }> }) {
+  const params = await props.params;
   try {
     const qrCode = await prisma.prayer_qr_codes.findFirst({
       where: {

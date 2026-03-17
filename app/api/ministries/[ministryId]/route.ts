@@ -6,10 +6,8 @@ import { db } from '@/lib/db'
 export const dynamic = 'force-dynamic'
 
 // GET single ministry
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { ministryId: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ ministryId: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
 
@@ -40,10 +38,8 @@ export async function GET(
 }
 
 // UPDATE ministry (full update)
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { ministryId: string } }
-) {
+export async function PUT(request: NextRequest, props: { params: Promise<{ ministryId: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
 
@@ -98,10 +94,8 @@ export async function PUT(
 }
 
 // PATCH ministry (partial update - typically for toggling isActive)
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { ministryId: string } }
-) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ ministryId: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
 
@@ -147,10 +141,8 @@ export async function PATCH(
 }
 
 // DELETE ministry
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { ministryId: string } }
-) {
+export async function DELETE(request: NextRequest, props: { params: Promise<{ ministryId: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
 

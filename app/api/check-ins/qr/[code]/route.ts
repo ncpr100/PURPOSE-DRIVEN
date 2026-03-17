@@ -6,10 +6,8 @@ import { db } from '@/lib/db'
 export const dynamic = 'force-dynamic'
 
 // GET check-in by QR code (public endpoint for QR scanning)
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { code: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ code: string }> }) {
+  const params = await props.params;
   try {
     const checkIn = await db.check_ins.findUnique({
       where: {

@@ -4,9 +4,9 @@ import { PublicPrayerForm } from '@/components/prayer-wall/PublicPrayerForm'
 import { getServerUrl } from '@/lib/server-url'
 
 interface PrayerFormPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 async function getFormData(slug: string) {
@@ -26,9 +26,10 @@ async function getFormData(slug: string) {
   }
 }
 
-export default async function PrayerFormPage({ params }: PrayerFormPageProps) {
+export default async function PrayerFormPage(props: PrayerFormPageProps) {
+  const params = await props.params;
   const data = await getFormData(params.slug)
-  
+
   if (!data?.form) {
     notFound()
   }
@@ -46,9 +47,10 @@ export default async function PrayerFormPage({ params }: PrayerFormPageProps) {
   )
 }
 
-export async function generateMetadata({ params }: PrayerFormPageProps) {
+export async function generateMetadata(props: PrayerFormPageProps) {
+  const params = await props.params;
   const data = await getFormData(params.slug)
-  
+
   if (!data?.form) {
     return {
       title: 'Formulario de Oración no encontrado'

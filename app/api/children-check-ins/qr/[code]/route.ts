@@ -8,10 +8,8 @@ import { randomUUID } from 'crypto'
 export const dynamic = 'force-dynamic'
 
 // GET child check-in by QR code (public endpoint for parent QR scanning)
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { code: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ code: string }> }) {
+  const params = await props.params;
   try {
     const children_check_ins = await db.children_check_ins.findUnique({
       where: {
@@ -68,10 +66,8 @@ export async function GET(
 }
 
 // POST - Complete QR-based check-in with photos
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { code: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ code: string }> }) {
+  const params = await props.params;
   try {
     const {
       childName,

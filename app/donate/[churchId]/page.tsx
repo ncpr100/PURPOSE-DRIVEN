@@ -6,15 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Heart, Shield, Award } from 'lucide-react'
 
 interface PublicDonatePageProps {
-  params: {
+  params: Promise<{
     churchId: string
-  }
-  searchParams: {
+  }>
+  searchParams: Promise<{
     campaign?: string
-  }
+  }>
 }
 
-export default async function PublicDonatePage({ params, searchParams }: PublicDonatePageProps) {
+export default async function PublicDonatePage(props: PublicDonatePageProps) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   // Get church information
   const church = await prisma.churches.findUnique({
     where: { 
@@ -296,7 +298,8 @@ export default async function PublicDonatePage({ params, searchParams }: PublicD
   )
 }
 
-export async function generateMetadata({ params }: PublicDonatePageProps) {
+export async function generateMetadata(props: PublicDonatePageProps) {
+  const params = await props.params;
   const church = await prisma.churches.findUnique({
     where: { 
       id: params.churchId,

@@ -4,10 +4,8 @@ import { db } from '@/lib/db'
 export const dynamic = 'force-dynamic'
 
 // POST /api/custom-form/[slug]/view — lightweight view tracker (no auth needed, public)
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const { slug } = params
 

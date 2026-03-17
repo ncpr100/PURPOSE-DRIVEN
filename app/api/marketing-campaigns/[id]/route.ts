@@ -6,10 +6,8 @@ import { db as prisma } from '@/lib/db'
 export const dynamic = 'force-dynamic'
 
 // GET - Fetch single marketing campaign
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.churchId) {
@@ -42,10 +40,8 @@ export async function GET(
 }
 
 // PUT - Update marketing campaign
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.churchId) {

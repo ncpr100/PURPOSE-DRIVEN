@@ -5,10 +5,8 @@ import { prisma } from '@/lib/prisma'
 export const dynamic = 'force-dynamic'
 
 // GET /api/prayer-forms/public/[slug] - Get public prayer form by slug
-export async function GET(
-  request: Request,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   try {
     const form = await prisma.prayer_forms.findFirst({
       where: {

@@ -8,10 +8,8 @@ import { getServerBaseUrl } from '@/lib/server-url'
 export const dynamic = 'force-dynamic'
 
 // POST - Resend tenant credentials
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { churchId: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ churchId: string }> }) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     

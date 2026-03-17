@@ -6,10 +6,11 @@ import { db as prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic'
 interface RouteContext {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 // GET /api/automation-rules/[id] - Get specific mock automation rule
-export async function GET(request: NextRequest, { params }: RouteContext) {
+export async function GET(request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
@@ -92,7 +93,8 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 }
 
 // PUT /api/automation-rules/[id] - Update mock automation rule
-export async function PUT(request: NextRequest, { params }: RouteContext) {
+export async function PUT(request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   try {
     // For demo purposes, return success message
     const updateData = await request.json();
@@ -119,7 +121,8 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
 }
 
 // DELETE /api/automation-rules/[id] - Delete mock automation rule
-export async function DELETE(request: NextRequest, { params }: RouteContext) {
+export async function DELETE(request: NextRequest, props: RouteContext) {
+  const params = await props.params;
   try {
     return NextResponse.json({ message: 'Regla eliminada exitosamente' });
   } catch (error) {

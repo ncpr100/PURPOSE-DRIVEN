@@ -85,7 +85,7 @@ const ROUTE_PERMISSIONS = {
   '/automation-rules': { resource: 'automation', action: 'read' }
 } as const;
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = NextResponse.next();
 
   // Add compression headers
