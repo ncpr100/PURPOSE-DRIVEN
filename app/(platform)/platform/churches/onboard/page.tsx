@@ -127,7 +127,8 @@ export default function TenantOnboardingPage() {
           email: '',
           phone: '',
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
+          role: 'ADMIN_IGLESIA'
         }
       }
       
