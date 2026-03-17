@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const createCheckInSchema = z.object({
   firstName: z.string().min(2, 'El nombre es requerido'),
   lastName: z.string().min(2, 'El apellido es requerido'),
-  email: z.string().email('Email inválido').optional(),
+  email: z.preprocess(val => val === '' ? undefined : val, z.string().email('Email inválido').optional()),
   phone: z.string().optional(),
   isFirstTime: z.boolean().default(false),
   visitReason: z.string().optional(),
