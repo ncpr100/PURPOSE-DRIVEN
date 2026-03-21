@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -35,6 +35,9 @@ export default function QRCustomizationPanel({
   formUrl,
   formTitle
 }: QRCustomizationPanelProps) {
+  // Refs for file inputs (fixes Button-inside-Label file picker issue)
+  const qrLogoInputRef = useRef<HTMLInputElement>(null)
+  const qrBgInputRef = useRef<HTMLInputElement>(null)
   return (
     <Card>
       <CardHeader>
@@ -193,16 +196,28 @@ export default function QRCustomizationPanel({
                     {qrConfig.gradientColors.map((color, index) => (
                       <div key={index}>
                         <Label>Color {index + 1}</Label>
-                        <Input
-                          type="color"
-                          value={color}
-                          onChange={(e) => {
-                            const newColors = [...qrConfig.gradientColors]
-                            newColors[index] = e.target.value
-                            setQRConfig(prev => ({ ...prev, gradientColors: newColors }))
-                          }}
-                          className="h-10"
-                        />
+                        <div className="flex gap-2">
+                          <Input
+                            type="color"
+                            value={color}
+                            onChange={(e) => {
+                              const newColors = [...qrConfig.gradientColors]
+                              newColors[index] = e.target.value
+                              setQRConfig(prev => ({ ...prev, gradientColors: newColors }))
+                            }}
+                            className="w-12 h-10 flex-shrink-0"
+                          />
+                          <Input
+                            type="text"
+                            value={color}
+                            onChange={(e) => {
+                              const newColors = [...qrConfig.gradientColors]
+                              newColors[index] = e.target.value
+                              setQRConfig(prev => ({ ...prev, gradientColors: newColors }))
+                            }}
+                            placeholder="#000000"
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -215,21 +230,37 @@ export default function QRCustomizationPanel({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>Color Borde Esquinas</Label>
-                <Input
-                  type="color"
-                  value={qrConfig.eyeBorderColor}
-                  onChange={(e) => setQRConfig(prev => ({ ...prev, eyeBorderColor: e.target.value }))}
-                  className="h-10"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    type="color"
+                    value={qrConfig.eyeBorderColor}
+                    onChange={(e) => setQRConfig(prev => ({ ...prev, eyeBorderColor: e.target.value }))}
+                    className="w-12 h-10 flex-shrink-0"
+                  />
+                  <Input
+                    type="text"
+                    value={qrConfig.eyeBorderColor}
+                    onChange={(e) => setQRConfig(prev => ({ ...prev, eyeBorderColor: e.target.value }))}
+                    placeholder="#000000"
+                  />
+                </div>
               </div>
               <div>
                 <Label>Color Centro Esquinas</Label>
-                <Input
-                  type="color"
-                  value={qrConfig.eyeColor}
-                  onChange={(e) => setQRConfig(prev => ({ ...prev, eyeColor: e.target.value }))}
-                  className="h-10"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    type="color"
+                    value={qrConfig.eyeColor}
+                    onChange={(e) => setQRConfig(prev => ({ ...prev, eyeColor: e.target.value }))}
+                    className="w-12 h-10 flex-shrink-0"
+                  />
+                  <Input
+                    type="text"
+                    value={qrConfig.eyeColor}
+                    onChange={(e) => setQRConfig(prev => ({ ...prev, eyeColor: e.target.value }))}
+                    placeholder="#000000"
+                  />
+                </div>
               </div>
             </div>
           </TabsContent>
@@ -238,17 +269,20 @@ export default function QRCustomizationPanel({
           <TabsContent value="logo" className="space-y-4">
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
               <ImageIcon className="h-12 w-12 mx-auto text-gray-400 mb-2" />
-              <Label htmlFor="qr-logo-upload" className="cursor-pointer">
-                <div className="text-sm text-gray-600 mb-2">
-                  {qrConfig.logoImage ? 'Logo cargado - Haz clic para cambiar' : 'Arrastra o haz clic para subir logo'}
-                </div>
-                <Button type="button" variant="outline" size="sm">
-                  <Upload className="h-4 w-4 mr-2" />
-                  Subir Logo
-                </Button>
-              </Label>
+              <div className="text-sm text-gray-600 mb-2">
+                {qrConfig.logoImage ? 'Logo cargado - Haz clic para cambiar' : 'Arrastra o haz clic para subir logo'}
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => qrLogoInputRef.current?.click()}
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Subir Logo
+              </Button>
               <input
-                id="qr-logo-upload"
+                ref={qrLogoInputRef}
                 type="file"
                 accept="image/*"
                 className="hidden"
@@ -363,17 +397,20 @@ export default function QRCustomizationPanel({
           <TabsContent value="advanced" className="space-y-4">
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
               <ImageIcon className="h-12 w-12 mx-auto text-gray-400 mb-2" />
-              <Label htmlFor="qr-background-upload" className="cursor-pointer">
-                <div className="text-sm text-gray-600 mb-2">
-                  {qrConfig.backgroundImage ? 'Fondo cargado' : 'Subir imagen de fondo'}
-                </div>
-                <Button type="button" variant="outline" size="sm">
-                  <Upload className="h-4 w-4 mr-2" />
-                  Subir Fondo
-                </Button>
-              </Label>
+              <div className="text-sm text-gray-600 mb-2">
+                {qrConfig.backgroundImage ? 'Fondo cargado' : 'Subir imagen de fondo'}
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => qrBgInputRef.current?.click()}
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Subir Fondo
+              </Button>
               <input
-                id="qr-background-upload"
+                ref={qrBgInputRef}
                 type="file"
                 accept="image/*"
                 className="hidden"

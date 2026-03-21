@@ -48,6 +48,10 @@ export default function BrandedFormBuilder() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
   const [hasLocalDraft, setHasLocalDraft] = useState(false)
   const autoSaveTimeoutRef = useRef<NodeJS.Timeout>()
+
+  // FILE INPUT REFS (fixes Button-inside-Label file picker issue)
+  const churchLogoInputRef = useRef<HTMLInputElement>(null)
+  const formBgInputRef = useRef<HTMLInputElement>(null)
   
   // Form Configuration
   const [formConfig, setFormConfig] = useState<FormConfig>({
@@ -403,8 +407,8 @@ export default function BrandedFormBuilder() {
   // Apply template
   const applyTemplate = (template: any) => {
     const templateFields = template.fields.map((field: any, index: number) => ({
-      id: Date.now() + index,
-      ...field
+      ...field,
+      id: Date.now() + index   // MUST come after spread so numeric id wins over template string id
     }))
     
     updateFormConfig(prev => ({
@@ -572,17 +576,20 @@ export default function BrandedFormBuilder() {
                     <Label className="font-medium">Logo de la Iglesia</Label>
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center bg-white">
                       <ImageIcon className="h-8 w-8 mx-auto text-gray-400 mb-1" />
-                      <Label htmlFor="church-logo-upload" className="cursor-pointer">
-                        <div className="text-xs text-gray-600 mb-1">
-                          {formConfig.churchLogo ? 'Logo cargado' : 'Subir logo de la iglesia'}
-                        </div>
-                        <Button type="button" variant="outline" size="sm">
-                          <Upload className="h-3 w-3 mr-1" />
-                          {formConfig.churchLogo ? 'Cambiar' : 'Subir'}
-                        </Button>
-                      </Label>
+                      <div className="text-xs text-gray-600 mb-1">
+                        {formConfig.churchLogo ? 'Logo cargado' : 'Subir logo de la iglesia'}
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => churchLogoInputRef.current?.click()}
+                      >
+                        <Upload className="h-3 w-3 mr-1" />
+                        {formConfig.churchLogo ? 'Cambiar' : 'Subir'}
+                      </Button>
                       <input
-                        id="church-logo-upload"
+                        ref={churchLogoInputRef}
                         type="file"
                         accept="image/*"
                         className="hidden"
@@ -712,17 +719,20 @@ export default function BrandedFormBuilder() {
                   </h4>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
                     <ImageIcon className="h-10 w-10 mx-auto text-gray-400 mb-2" />
-                    <Label htmlFor="form-background-upload" className="cursor-pointer">
-                      <div className="text-sm text-gray-600 mb-2">
-                        {formConfig.backgroundImage ? 'Fondo cargado - Haz clic para cambiar' : 'Subir imagen de fondo para el formulario'}
-                      </div>
-                      <Button type="button" variant="outline" size="sm">
-                        <Upload className="h-4 w-4 mr-2" />
-                        {formConfig.backgroundImage ? 'Cambiar Fondo' : 'Subir Fondo'}
-                      </Button>
-                    </Label>
+                    <div className="text-sm text-gray-600 mb-2">
+                      {formConfig.backgroundImage ? 'Fondo cargado - Haz clic para cambiar' : 'Subir imagen de fondo para el formulario'}
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => formBgInputRef.current?.click()}
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      {formConfig.backgroundImage ? 'Cambiar Fondo' : 'Subir Fondo'}
+                    </Button>
                     <input
-                      id="form-background-upload"
+                      ref={formBgInputRef}
                       type="file"
                       accept="image/*"
                       className="hidden"

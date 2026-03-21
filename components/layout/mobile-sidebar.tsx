@@ -106,6 +106,12 @@ const coreNavigation = [
     roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
   },
   {
+    title: 'Sistema de Registro',
+    href: '/check-ins',
+    icon: QrCode,
+    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+  },
+  {
     title: 'Eventos',
     href: '/events',
     icon: Calendar,

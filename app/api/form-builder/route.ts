@@ -11,7 +11,7 @@ const formBuilderSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
   fields: z.array(z.object({
-    id: z.number(),
+    id: z.union([z.number(), z.string()]),   // accept both numeric (new fields) and string (template fields)
     label: z.string(),
     type: z.enum(['text', 'email', 'number', 'checkbox', 'textarea', 'select', 'tel', 'date', 'radio']),
     options: z.array(z.string()).optional(),
@@ -24,7 +24,16 @@ const formBuilderSchema = z.object({
     bgImage: z.string().nullable(),
     submitButtonText: z.string().optional(),
     submitButtonColor: z.string().optional(),
-    submitButtonTextColor: z.string().optional()
+    submitButtonTextColor: z.string().optional(),
+    // Church branding fields
+    churchLogo: z.string().optional(),
+    primaryColor: z.string().optional(),
+    secondaryColor: z.string().optional(),
+    headerTextColor: z.string().optional(),
+    bodyTextColor: z.string().optional(),
+    borderColor: z.string().optional(),
+    inputBorderColor: z.string().optional(),
+    inputFocusColor: z.string().optional()
   }),
   qrConfig: z.object({
     size: z.number().optional(),
