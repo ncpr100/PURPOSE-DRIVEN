@@ -1,7 +1,7 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -25,10 +25,24 @@ import {
   HelpCircle
 } from 'lucide-react'
 
+interface AutomationRuleData {
+  id?: string
+  name: string
+  description: string | null
+  priority: number
+  executeOnce: boolean
+  maxExecutions: number | null
+  triggers: Array<{ id?: string; type: string; eventSource?: string | null; configuration: any }>
+  conditions: Array<{ id?: string; type: string; field: string; operator: string; value: any; logicalOperator: string }>
+  actions: Array<{ id?: string; type: string; configuration: any; orderIndex: number; delay: number }>
+}
+
 interface CreateAutomationRuleDialogProps {
   open: boolean
   onClose: () => void
   onSuccess: () => void
+  initialData?: AutomationRuleData | null
+  isEdit?: boolean
 }
 
 interface TriggerConfig {
@@ -57,7 +71,9 @@ interface ActionConfig {
 export function CreateAutomationRuleDialog({ 
   open, 
   onClose, 
-  onSuccess 
+  onSuccess,
+  initialData,
+  isEdit = false
 }: CreateAutomationRuleDialogProps) {
   const [loading, setLoading] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
@@ -73,6 +89,39 @@ export function CreateAutomationRuleDialog({
   const [triggers, setTriggers] = useState<TriggerConfig[]>([])
   const [conditions, setConditions] = useState<ConditionConfig[]>([])
   const [actions, setActions] = useState<ActionConfig[]>([])
+
+  // Populate form when initialData changes (edit mode or template pre-fill)
+  useEffect(() => {
+    if (open && initialData) {
+      setCurrentStep(1)
+      setName(initialData.name || '')
+      setDescription(initialData.description || '')
+      setPriority(initialData.priority ?? 0)
+      setExecuteOnce(initialData.executeOnce ?? false)
+      setMaxExecutions(initialData.maxExecutions ?? undefined)
+      setTriggers((initialData.triggers || []).map((t) => ({
+        type: t.type || '',
+        eventSource: t.eventSource ?? undefined,
+        configuration: t.configuration || {}
+      })))
+      setConditions((initialData.conditions || []).map((c, i) => ({
+        type: c.type || 'EQUALS',
+        field: c.field || '',
+        operator: c.operator || '=',
+        value: c.value ?? '',
+        logicalOperator: (c.logicalOperator as 'AND' | 'OR') || 'AND',
+        orderIndex: i
+      })))
+      setActions((initialData.actions || []).map((a, i) => ({
+        type: a.type || '',
+        configuration: a.configuration || {},
+        orderIndex: a.orderIndex ?? i,
+        delay: a.delay ?? 0
+      })))
+    } else if (open && !initialData) {
+      resetForm()
+    }
+  }, [open, initialData])
 
   const resetForm = () => {
     setCurrentStep(1)
@@ -182,29 +231,35 @@ export function CreateAutomationRuleDialog({
 
     setLoading(true)
     try {
-      const response = await fetch('/api/automation-rules', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          description: description.trim() || undefined,
-          priority,
-          executeOnce,
-          maxExecutions,
-          triggers,
-          conditions,
-          actions
-        })
-      })
+      const payload = {
+        name: name.trim(),
+        description: description.trim() || undefined,
+        priority,
+        executeOnce,
+        maxExecutions,
+        triggers,
+        conditions,
+        actions
+      }
+
+      const response = isEdit && initialData?.id
+        ? await fetch(`/api/automation-rules/${initialData.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+        : await fetch('/api/automation-rules', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
 
       if (!response.ok) {
         const error = await response.json()
         throw new Error(error.error || 'Error al crear la regla')
       }
 
-      toast.success('Regla de automatización creada exitosamente')
+      toast.success(isEdit ? 'Regla actualizada exitosamente' : 'Regla de automatización creada exitosamente')
       onSuccess()
       handleClose()
 
@@ -245,10 +300,12 @@ export function CreateAutomationRuleDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Zap className="h-5 w-5" />
-            Nueva Regla de Automatización
+            {isEdit ? 'Editar Regla de Automatización' : 'Nueva Regla de Automatización'}
           </DialogTitle>
           <DialogDescription>
-            Crea una regla que se ejecute automáticamente cuando ocurran eventos específicos
+            {isEdit
+              ? 'Modifica los detalles de tu regla de automatización'
+              : 'Crea una regla que se ejecute automáticamente cuando ocurran eventos específicos'}
           </DialogDescription>
         </DialogHeader>
 
@@ -741,7 +798,7 @@ export function CreateAutomationRuleDialog({
               </Button>
             ) : (
               <Button onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Creando...' : 'Crear Regla'}
+                {loading ? (isEdit ? 'Guardando...' : 'Creando...') : (isEdit ? 'Guardar Cambios' : 'Crear Regla')}
               </Button>
             )}
           </div>

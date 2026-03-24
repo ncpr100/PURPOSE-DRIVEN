@@ -69,7 +69,8 @@ export async function PUT(request: NextRequest) {  try {
             brandColors,
             primaryFont,
             headingFont,
-            themeName: 'custom'
+            themeName: 'custom',
+            updatedAt: new Date()
           }
         })
       } else {
@@ -81,7 +82,8 @@ export async function PUT(request: NextRequest) {  try {
             brandColors,
             primaryFont,
             headingFont,
-            themeName: 'custom'
+            themeName: 'custom',
+            updatedAt: new Date()
           },
           create: {
             id: randomUUID(),
@@ -90,7 +92,8 @@ export async function PUT(request: NextRequest) {  try {
             brandColors,
             primaryFont,
             headingFont,
-            themeName: 'custom'
+            themeName: 'custom',
+            updatedAt: new Date()
           } as any
         });
       }
