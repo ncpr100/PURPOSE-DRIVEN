@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { toast } from 'react-hot-toast'
 import { TemplateDetailModal } from '@/components/automation-rules/template-detail-modal'
 import { CreateAutomationRuleDialog } from './create-automation-rule-dialog'
+import { AutomationTemplates } from './automation-templates'
 import { 
   Zap, Plus, CheckCircle, Clock, TrendingUp, Sparkles,
   Users, Calendar, MessageCircle, MessageSquare, ArrowRight, Palette, HandHeart
@@ -96,6 +97,7 @@ export function UnifiedAutomationInterface() {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
+  const [editingRule, setEditingRule] = useState<any | null>(null)
   const [brandColors, setBrandColors] = useState<ChurchBrandColors>(DEFAULT_COLORS)
   const [stats, setStats] = useState({ total: 0, active: 0, totalExecutions: 0, successRate: 0 })
 
@@ -153,7 +155,7 @@ export function UnifiedAutomationInterface() {
   const handleToggleRule = async (ruleId: string, currentStatus: boolean) => {
     try {
       const response = await fetch(`/api/automation-rules/${ruleId}`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: !currentStatus })
       })
@@ -346,7 +348,7 @@ export function UnifiedAutomationInterface() {
                       <Button variant={rule.isActive ? "outline" : "default"} size="sm" onClick={() => handleToggleRule(rule.id, rule.isActive)}>
                         {rule.isActive ? 'Pausar' : 'Activar'}
                       </Button>
-                      <Button variant="outline" size="sm">Editar</Button>
+                      <Button variant="outline" size="sm" onClick={() => setEditingRule(rule)}>Editar</Button>
                     </div>
                   </div>
                 </CardContent>
@@ -356,7 +358,10 @@ export function UnifiedAutomationInterface() {
         </div>
       )}
 
-      <div className="space-y-4">
+      <AutomationTemplates onSelectTemplate={(t) => handleUseTemplate(t.id)} />
+
+      {/* kept so TypeScript doesn't complain about unused templates state */}
+      {false && <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold">Plantillas Disponibles</h2>
@@ -428,7 +433,7 @@ export function UnifiedAutomationInterface() {
             )
           })}
         </div>
-      </div>
+      </div>}
 
       <Card className="bg-muted/50">
         <CardContent className="p-6">
@@ -454,6 +459,28 @@ export function UnifiedAutomationInterface() {
 
       <TemplateDetailModal templateId={selectedTemplateId} open={modalOpen} onClose={() => { setModalOpen(false); setSelectedTemplateId(null) }} onActivate={handleActivateTemplate} />
       <CreateAutomationRuleDialog open={createDialogOpen} onClose={() => setCreateDialogOpen(false)} onSuccess={() => { fetchData() }} />
+      <CreateAutomationRuleDialog
+        open={!!editingRule}
+        onClose={() => setEditingRule(null)}
+        onSuccess={() => { setEditingRule(null); fetchData() }}
+        initialData={editingRule ? {
+          id: editingRule.id,
+          name: editingRule.name,
+          description: editingRule.description ?? null,
+          priority: editingRule.priority ?? 0,
+          executeOnce: editingRule.executeOnce ?? false,
+          maxExecutions: editingRule.maxExecutions ?? null,
+          triggers: (editingRule.automation_triggers || []).map((t: any) => ({
+            id: t.id, type: t.type, eventSource: t.eventSource ?? null, configuration: t.configuration ?? {}
+          })),
+          conditions: (editingRule.automation_conditions || []).map((c: any) => ({
+            id: c.id, type: c.type ?? 'filter', field: c.field, operator: c.operator, value: c.value, logicalOperator: c.logicalOperator ?? 'AND'
+          })),
+          actions: (editingRule.automation_actions || []).map((a: any) => ({
+            id: a.id, type: a.type, configuration: a.configuration ?? {}, orderIndex: a.orderIndex ?? 0, delay: a.delay ?? 0
+          }))
+        } : null}
+      />
     </div>
   )
 }
