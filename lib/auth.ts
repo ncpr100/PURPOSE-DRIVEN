@@ -5,6 +5,11 @@ import bcrypt from "bcryptjs"
 
 // NOTE: JWT type extensions are in lib/types.ts to avoid duplication
 
+// Auth debug logging: silenced in production to prevent leaking user data
+const devLog = (...args: unknown[]) => {
+  if (process.env.NODE_ENV !== 'production') console.log(...args)
+}
+
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -13,7 +18,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/signin",
   },
-  secret: process.env.NEXTAUTH_SECRET || 'build-time-fallback-secret-change-in-production',
+  secret: process.env.NEXTAUTH_SECRET,
   // Cookie configuration for production
   cookies: {
     sessionToken: {
@@ -34,10 +39,10 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        console.log('🔐 AUTH: authorize() called with email:', credentials?.email)
+        devLog('🔐 AUTH: authorize() called with email:', credentials?.email)
         
         if (!credentials?.email || !credentials?.password) {
-          console.log('❌ AUTH: Missing credentials')
+          devLog('❌ AUTH: Missing credentials')
           return null
         }
 
@@ -50,11 +55,11 @@ export const authOptions: NextAuthOptions = {
           })
 
           if (!user || !user.password) {
-            console.log('❌ AUTH: User not found or no password in database')
+            devLog('❌ AUTH: User not found or no password in database')
             return null
           }
 
-          console.log('✅ AUTH: User found:', user.email, 'Role:', user.role)
+          devLog('✅ AUTH: User found:', user.email, 'Role:', user.role)
 
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
@@ -62,14 +67,14 @@ export const authOptions: NextAuthOptions = {
           )
 
           if (!isPasswordValid) {
-            console.log('❌ AUTH: Invalid password')
+            devLog('❌ AUTH: Invalid password')
             return null
           }
 
-          console.log('✅ AUTH: Password valid, returning user object')
-          console.log('   ID:', user.id)
-          console.log('   Role:', user.role)
-          console.log('   churchId:', user.churchId)
+          devLog('✅ AUTH: Password valid, returning user object')
+          devLog('   ID:', user.id)
+          devLog('   Role:', user.role)
+          devLog('   churchId:', user.churchId)
 
           return {
             id: user.id,
@@ -93,10 +98,10 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        console.log('🔐 JWT: Storing user in token')
-        console.log('   user.id:', user.id)
-        console.log('   user.role:', user.role)
-        console.log('   user.churchId:', user.churchId)
+        devLog('🔐 JWT: Storing user in token')
+        devLog('   user.id:', user.id)
+        devLog('   user.role:', user.role)
+        devLog('   user.churchId:', user.churchId)
         
         // Store user data in JWT for middleware access
         token.sub = user.id
@@ -108,10 +113,10 @@ export const authOptions: NextAuthOptions = {
       return token
     },
     async session({ session, token }) {
-      console.log('🔐 SESSION: Building session from token')
-      console.log('   token.sub:', token.sub)
-      console.log('   token.role:', token.role)
-      console.log('   token.churchId:', token.churchId)
+      devLog('🔐 SESSION: Building session from token')
+      devLog('   token.sub:', token.sub)
+      devLog('   token.role:', token.role)
+      devLog('   token.churchId:', token.churchId)
       
       // Fetch user data fresh each time to keep JWT minimal
       if (token.sub) {
@@ -128,9 +133,9 @@ export const authOptions: NextAuthOptions = {
           })
           
           if (user) {
-            console.log('✅ SESSION: User fetched from DB')
-            console.log('   role:', user.role)
-            console.log('   churchId:', user.churchId)
+            devLog('✅ SESSION: User fetched from DB')
+            devLog('   role:', user.role)
+            devLog('   churchId:', user.churchId)
             
             session.user = {
               id: user.id,
@@ -140,11 +145,11 @@ export const authOptions: NextAuthOptions = {
               churchId: user.churchId || ''
             }
           } else {
-            console.log('❌ SESSION: User not found in DB for token.sub:', token.sub)
+            devLog('❌ SESSION: User not found in DB for token.sub:', token.sub)
           }
         } catch (error) {
-          console.log('⚠️ SESSION: Database connection failed, using token data')
-          console.log('Error:', error instanceof Error ? error.message : String(error))
+          devLog('⚠️ SESSION: Database connection failed, using token data')
+          devLog('Error:', error instanceof Error ? error.message : String(error))
           // Fallback to token data when database is unavailable
           session.user = {
             id: token.sub,

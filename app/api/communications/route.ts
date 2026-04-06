@@ -34,7 +34,11 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.url)
-    const churchId = searchParams.get('churchId')
+    // SECURITY: Always use the session's churchId to prevent cross-tenant data access.
+    // SUPER_ADMIN may override via query param for platform-level management.
+    const churchId = session.user.role === 'SUPER_ADMIN'
+      ? (searchParams.get('churchId') || session.user.churchId)
+      : session.user.churchId
 
     if (!churchId) {
       return NextResponse.json({ error: 'Church ID es requerido' }, { status: 400 })

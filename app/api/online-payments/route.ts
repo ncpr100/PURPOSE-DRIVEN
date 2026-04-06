@@ -1,5 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { PaymentGatewayFactory, DonationPaymentData } from '@/lib/payments/colombian-gateways'
 import { getServerBaseUrl } from '@/lib/server-url'
@@ -14,15 +16,17 @@ export async function GET(request: NextRequest) {
   try {
     // Payment logging for access attempts
     console.log('Payment access attempt:', new Date().toISOString())
-    
-    // Note: For admin dashboard, we need authentication
-    // For now, we'll return empty array to prevent errors
-    const { searchParams } = new URL(request.url)
-    const churchId = searchParams.get('churchId')
-    
-    if (!churchId) {
-      return NextResponse.json([]) // Return empty array instead of error
+
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.churchId) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
+
+    // SECURITY: churchId always sourced from session (SUPER_ADMIN may override via param)
+    const { searchParams } = new URL(request.url)
+    const churchId = session.user.role === 'SUPER_ADMIN'
+      ? (searchParams.get('churchId') || session.user.churchId)
+      : session.user.churchId
 
     const payments = await prisma.online_payments.findMany({
       where: {
