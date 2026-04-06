@@ -11,7 +11,7 @@ interface RouteContext {
 
 // GET /api/automation-rules/[id] - Get a specific automation rule
 export async function GET(request: NextRequest, props: RouteContext) {
-  const params = await props.params;
+  const params = await props.params
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest, props: RouteContext) {
 
 // PUT /api/automation-rules/[id] - Update automation rule
 export async function PUT(request: NextRequest, props: RouteContext) {
-  const params = await props.params;
+  const params = await props.params
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
@@ -121,7 +121,7 @@ export async function PUT(request: NextRequest, props: RouteContext) {
 
 // DELETE /api/automation-rules/[id] - Delete automation rule
 export async function DELETE(request: NextRequest, props: RouteContext) {
-  const params = await props.params;
+  const params = await props.params
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
