@@ -221,7 +221,7 @@ export async function POST(request: NextRequest, props: { params: Promise<{ id: 
   }
 }
 
-// PATCH /api/automation-templates/[id] - Update template name/description
+// PATCH /api/automation-templates/[id] - Update template (name, description, icon, color, trigger, conditions, actions)
 export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   try {
@@ -243,13 +243,6 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
       return NextResponse.json({ error: 'Sin permisos para editar plantillas' }, { status: 403 });
     }
 
-    const body = await request.json();
-    const { name, description } = body;
-
-    if (!name || typeof name !== 'string' || !name.trim()) {
-      return NextResponse.json({ error: 'El nombre es requerido' }, { status: 400 });
-    }
-
     const template = await prisma.automation_rule_templates.findUnique({
       where: { id: params.id }
     });
@@ -258,11 +251,66 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
       return NextResponse.json({ error: 'Plantilla no encontrada' }, { status: 404 });
     }
 
+    const body = await request.json();
+    const {
+      name,
+      description,
+      icon,
+      color,
+      category,
+      triggerConfig,
+      conditionsConfig,
+      actionsConfig,
+      priorityLevel,
+      businessHoursOnly,
+      urgentMode24x7,
+      tags,
+    } = body;
+
+    if (name !== undefined && (typeof name !== 'string' || !name.trim())) {
+      return NextResponse.json({ error: 'El nombre no puede estar vacío' }, { status: 400 });
+    }
+
+    const updateData: Record<string, any> = { updatedAt: new Date() };
+
+    // Always-allowed fields (any admin can change these)
+    if (name !== undefined) updateData.name = name.trim();
+    if (description !== undefined) updateData.description = description.trim();
+    if (icon !== undefined) updateData.icon = icon;
+    if (color !== undefined) updateData.color = color;
+    if (tags !== undefined) updateData.tags = tags;
+
+    // Logic/config fields: allowed for custom templates; super admin can edit system templates too
+    if (!template.isSystemTemplate || user.role === 'SUPER_ADMIN') {
+      if (category !== undefined) updateData.category = category;
+      if (triggerConfig !== undefined) updateData.triggerConfig = triggerConfig;
+      if (conditionsConfig !== undefined) updateData.conditionsConfig = conditionsConfig;
+      if (actionsConfig !== undefined) updateData.actionsConfig = actionsConfig;
+      if (priorityLevel !== undefined) updateData.priorityLevel = priorityLevel;
+      if (businessHoursOnly !== undefined) updateData.businessHoursOnly = Boolean(businessHoursOnly);
+      if (urgentMode24x7 !== undefined) updateData.urgentMode24x7 = Boolean(urgentMode24x7);
+    }
+
     const updated = await prisma.automation_rule_templates.update({
       where: { id: params.id },
-      data: {
-        name: name.trim(),
-        ...(description !== undefined && { description: description.trim() })
+      data: updateData,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        category: true,
+        icon: true,
+        color: true,
+        isSystemTemplate: true,
+        priorityLevel: true,
+        businessHoursOnly: true,
+        urgentMode24x7: true,
+        triggerConfig: true,
+        conditionsConfig: true,
+        actionsConfig: true,
+        tags: true,
+        installCount: true,
+        updatedAt: true,
       }
     });
 
