@@ -145,16 +145,6 @@ export function AutomationTemplates({
   const [createActionMessage, setCreateActionMessage] = useState("");
   const [createSaving, setCreateSaving] = useState(false);
 
-  // For the "Crear Plantilla Personalizada" dialog
-  const [createOpen, setCreateOpen] = useState(false)
-  const [createName, setCreateName] = useState('')
-  const [createDescription, setCreateDescription] = useState('')
-  const [createCategory, setCreateCategory] = useState('PRAYER_REQUEST')
-  const [createTrigger, setCreateTrigger] = useState('PRAYER_REQUEST_SUBMITTED')
-  const [createActionType, setCreateActionType] = useState('SEND_EMAIL')
-  const [createActionMessage, setCreateActionMessage] = useState('')
-  const [createSaving, setCreateSaving] = useState(false)
-
   useEffect(() => {
     fetchTemplates();
     fetchBrandColors();
