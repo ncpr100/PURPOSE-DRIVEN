@@ -8,6 +8,11 @@ const credentials_1 = __importDefault(require("next-auth/providers/credentials")
 const db_1 = require("./db");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 // NOTE: JWT type extensions are in lib/types.ts to avoid duplication
+// Auth debug logging: silenced in production to prevent leaking user data
+const devLog = (...args) => {
+    if (process.env.NODE_ENV !== "production")
+        console.log(...args);
+};
 exports.authOptions = {
     session: {
         strategy: "jwt",
@@ -16,53 +21,53 @@ exports.authOptions = {
     pages: {
         signIn: "/auth/signin",
     },
-    secret: process.env.NEXTAUTH_SECRET || 'build-time-fallback-secret-change-in-production',
+    secret: process.env.NEXTAUTH_SECRET,
     // Cookie configuration for production
     cookies: {
         sessionToken: {
-            name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
+            name: `${process.env.NODE_ENV === "production" ? "__Secure-" : ""}next-auth.session-token`,
             options: {
                 httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production'
-            }
-        }
+                sameSite: "lax",
+                path: "/",
+                secure: process.env.NODE_ENV === "production",
+            },
+        },
     },
     providers: [
         (0, credentials_1.default)({
             name: "credentials",
             credentials: {
                 email: { label: "Email", type: "email" },
-                password: { label: "Password", type: "password" }
+                password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                console.log('🔐 AUTH: authorize() called with email:', credentials?.email);
+                devLog("🔐 AUTH: authorize() called with email:", credentials?.email);
                 if (!credentials?.email || !credentials?.password) {
-                    console.log('❌ AUTH: Missing credentials');
+                    devLog("❌ AUTH: Missing credentials");
                     return null;
                 }
                 // Database authentication ONLY - no fallback users
                 try {
                     const user = await db_1.db.users.findUnique({
                         where: {
-                            email: credentials.email
-                        }
+                            email: credentials.email,
+                        },
                     });
                     if (!user || !user.password) {
-                        console.log('❌ AUTH: User not found or no password in database');
+                        devLog("❌ AUTH: User not found or no password in database");
                         return null;
                     }
-                    console.log('✅ AUTH: User found:', user.email, 'Role:', user.role);
+                    devLog("✅ AUTH: User found:", user.email, "Role:", user.role);
                     const isPasswordValid = await bcryptjs_1.default.compare(credentials.password, user.password);
                     if (!isPasswordValid) {
-                        console.log('❌ AUTH: Invalid password');
+                        devLog("❌ AUTH: Invalid password");
                         return null;
                     }
-                    console.log('✅ AUTH: Password valid, returning user object');
-                    console.log('   ID:', user.id);
-                    console.log('   Role:', user.role);
-                    console.log('   churchId:', user.churchId);
+                    devLog("✅ AUTH: Password valid, returning user object");
+                    devLog("   ID:", user.id);
+                    devLog("   Role:", user.role);
+                    devLog("   churchId:", user.churchId);
                     return {
                         id: user.id,
                         email: user.email,
@@ -72,23 +77,23 @@ exports.authOptions = {
                     };
                 }
                 catch (error) {
-                    console.error('❌ AUTH: Database connection FAILED');
-                    console.error('Error type:', error instanceof Error ? error.constructor.name : 'Unknown');
-                    console.error('Error message:', error instanceof Error ? error.message : String(error));
-                    console.error('Full error:', JSON.stringify(error, null, 2));
+                    console.error("❌ AUTH: Database connection FAILED");
+                    console.error("Error type:", error instanceof Error ? error.constructor.name : "Unknown");
+                    console.error("Error message:", error instanceof Error ? error.message : String(error));
+                    console.error("Full error:", JSON.stringify(error, null, 2));
                     // Database authentication failed - reject login
                     return null;
                 }
-            }
-        })
+            },
+        }),
     ],
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                console.log('🔐 JWT: Storing user in token');
-                console.log('   user.id:', user.id);
-                console.log('   user.role:', user.role);
-                console.log('   user.churchId:', user.churchId);
+                devLog("🔐 JWT: Storing user in token");
+                devLog("   user.id:", user.id);
+                devLog("   user.role:", user.role);
+                devLog("   user.churchId:", user.churchId);
                 // Store user data in JWT for middleware access
                 token.sub = user.id;
                 token.role = user.role; // CRITICAL: Middleware needs this!
@@ -99,10 +104,10 @@ exports.authOptions = {
             return token;
         },
         async session({ session, token }) {
-            console.log('🔐 SESSION: Building session from token');
-            console.log('   token.sub:', token.sub);
-            console.log('   token.role:', token.role);
-            console.log('   token.churchId:', token.churchId);
+            devLog("🔐 SESSION: Building session from token");
+            devLog("   token.sub:", token.sub);
+            devLog("   token.role:", token.role);
+            devLog("   token.churchId:", token.churchId);
             // Fetch user data fresh each time to keep JWT minimal
             if (token.sub) {
                 try {
@@ -113,40 +118,40 @@ exports.authOptions = {
                             email: true,
                             name: true,
                             role: true,
-                            churchId: true
-                        }
+                            churchId: true,
+                        },
                     });
                     if (user) {
-                        console.log('✅ SESSION: User fetched from DB');
-                        console.log('   role:', user.role);
-                        console.log('   churchId:', user.churchId);
+                        devLog("✅ SESSION: User fetched from DB");
+                        devLog("   role:", user.role);
+                        devLog("   churchId:", user.churchId);
                         session.user = {
                             id: user.id,
-                            email: user.email || '',
-                            name: user.name || '',
+                            email: user.email || "",
+                            name: user.name || "",
                             role: user.role,
-                            churchId: user.churchId || ''
+                            churchId: user.churchId || "",
                         };
                     }
                     else {
-                        console.log('❌ SESSION: User not found in DB for token.sub:', token.sub);
+                        devLog("❌ SESSION: User not found in DB for token.sub:", token.sub);
                     }
                 }
                 catch (error) {
-                    console.log('⚠️ SESSION: Database connection failed, using token data');
-                    console.log('Error:', error instanceof Error ? error.message : String(error));
+                    devLog("⚠️ SESSION: Database connection failed, using token data");
+                    devLog("Error:", error instanceof Error ? error.message : String(error));
                     // Fallback to token data when database is unavailable
                     session.user = {
                         id: token.sub,
-                        email: token.email || '',
-                        name: token.name || '',
+                        email: token.email || "",
+                        name: token.name || "",
                         role: token.role,
-                        churchId: token.churchId || ''
+                        churchId: token.churchId || "",
                     };
                 }
             }
             return session;
         },
-    }
+    },
 };
 //# sourceMappingURL=auth.js.map

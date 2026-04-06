@@ -29,7 +29,7 @@ export default async function FormBuilderPage() {
         </p>
       </div>
       
-      <BrandedFormBuilder />
+      <BrandedFormBuilder churchId={session.user.churchId ?? ''} />
     </div>
   )
 }

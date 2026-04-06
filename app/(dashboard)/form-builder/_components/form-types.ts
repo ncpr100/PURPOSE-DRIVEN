@@ -32,6 +32,16 @@ export interface FormConfig {
   borderColor?: string           // Form border color
   inputBorderColor?: string      // Input field border color
   inputFocusColor?: string       // Input focus state color
+
+  // Typography sizing
+  titleFontSize?: string         // Form title font size e.g. '24px'
+  bodyFontSize?: string          // Description/general text size e.g. '14px'
+  fieldLabelFontSize?: string    // Field label font size e.g. '14px'
+  inputFontSize?: string         // Input text font size e.g. '14px'
+
+  // Layout
+  borderRadius?: string          // Input & container border radius e.g. '8px'
+  formMaxWidth?: string          // Max form width e.g. '600px'
 }
 
 export interface QRConfig {

@@ -33,7 +33,15 @@ const formBuilderSchema = z.object({
     bodyTextColor: z.string().optional(),
     borderColor: z.string().optional(),
     inputBorderColor: z.string().optional(),
-    inputFocusColor: z.string().optional()
+    inputFocusColor: z.string().optional(),
+    // Typography sizing
+    titleFontSize: z.string().optional(),
+    bodyFontSize: z.string().optional(),
+    fieldLabelFontSize: z.string().optional(),
+    inputFontSize: z.string().optional(),
+    // Layout
+    borderRadius: z.string().optional(),
+    formMaxWidth: z.string().optional()
   }),
   qrConfig: z.object({
     size: z.number().optional(),
@@ -133,7 +141,7 @@ export async function POST(request: NextRequest) {
         fields: validatedData.fields,
         config: validatedData.config, // Use validated config object
         qrConfig: validatedData.qrConfig,
-        qrCodeUrl: `${process.env.NEXTAUTH_URL || 'https://khesed-tek-cms.up.railway.app'}/form-viewer?slug=${uniqueSlug}`,
+        qrCodeUrl: `${process.env.NEXTAUTH_URL || 'https://khesed-tek-cms-org.vercel.app'}/form-viewer?slug=${uniqueSlug}`,
         slug: uniqueSlug, // FIXED: Use the unique slug (remove duplicate)
         churchId: session.user.churchId,
         createdBy: session.user.id

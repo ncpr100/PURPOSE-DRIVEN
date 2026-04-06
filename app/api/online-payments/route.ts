@@ -1,49 +1,51 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import {
+  PaymentGatewayFactory,
+  DonationPaymentData,
+} from "@/lib/payments/colombian-gateways";
+import { getServerBaseUrl } from "@/lib/server-url";
+import { cache } from "@/lib/cache";
+import DonationSecurity from "@/lib/donations/security";
+import { nanoid } from "nanoid";
 
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { PaymentGatewayFactory, DonationPaymentData } from '@/lib/payments/colombian-gateways'
-import { getServerBaseUrl } from '@/lib/server-url'
-import { cache } from '@/lib/cache'
-import DonationSecurity from '@/lib/donations/security'
-import { nanoid } from 'nanoid'
-
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // GET - Get online payments for a church (Authenticated endpoint)
 export async function GET(request: NextRequest) {
   try {
     // Payment logging for access attempts
-    console.log('Payment access attempt:', new Date().toISOString())
+    console.log("Payment access attempt:", new Date().toISOString());
 
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
     if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     // SECURITY: churchId always sourced from session (SUPER_ADMIN may override via param)
-    const { searchParams } = new URL(request.url)
-    const churchId = session.user.role === 'SUPER_ADMIN'
-      ? (searchParams.get('churchId') || session.user.churchId)
-      : session.user.churchId
+    const { searchParams } = new URL(request.url);
+    const churchId =
+      session.user.role === "SUPER_ADMIN"
+        ? searchParams.get("churchId") || session.user.churchId
+        : session.user.churchId;
 
     const payments = await prisma.online_payments.findMany({
       where: {
         churchId: churchId,
-        status: { in: ['completed', 'pending', 'failed'] }
+        status: { in: ["completed", "pending", "failed"] },
       },
       orderBy: {
-        createdAt: 'desc'
+        createdAt: "desc",
       },
-      take: 50 // Limit to recent payments
-    })
+      take: 50, // Limit to recent payments
+    });
 
-    return NextResponse.json(payments)
-
+    return NextResponse.json(payments);
   } catch (error) {
-    console.error('Error fetching online payments:', error)
-    return NextResponse.json([]) // Return empty array on error to prevent crashes
+    console.error("Error fetching online payments:", error);
+    return NextResponse.json([]); // Return empty array on error to prevent crashes
   }
 }
 
@@ -53,15 +55,15 @@ export async function POST(request: NextRequest) {
     // HTTPS enforcement for payment processing
     if (!DonationSecurity.enforceHTTPS(request)) {
       return NextResponse.json(
-        { error: 'HTTPS requerido para pagos' },
-        { status: 400 }
-      )
+        { error: "HTTPS requerido para pagos" },
+        { status: 400 },
+      );
     }
 
-    const body = await request.json()
+    const body = await request.json();
     const {
       amount,
-      currency = 'COP',
+      currency = "COP",
       donorName,
       donorEmail,
       donorPhone,
@@ -70,55 +72,55 @@ export async function POST(request: NextRequest) {
       campaignId,
       gatewayType,
       notes,
-      returnUrl
-    } = body
+      returnUrl,
+    } = body;
 
     // ENHANCED VALIDATION PROTOCOLS
-    
+
     // amount validation - required field validation
     if (!amount || isNaN(amount) || amount <= 0) {
       return NextResponse.json(
-        { error: 'Monto debe ser mayor a cero' },
-        { status: 400 }
-      )
+        { error: "Monto debe ser mayor a cero" },
+        { status: 400 },
+      );
     }
 
     if (amount < 1000) {
       return NextResponse.json(
-        { error: 'Monto mínimo es $1.000 COP' },
-        { status: 400 }
-      )
+        { error: "Monto mínimo es $1.000 COP" },
+        { status: 400 },
+      );
     }
 
     if (amount > 20000000) {
       return NextResponse.json(
-        { error: 'Monto máximo es $20.000.000 COP' },
-        { status: 400 }
-      )
+        { error: "Monto máximo es $20.000.000 COP" },
+        { status: 400 },
+      );
     }
 
     // Required fields validation
     if (!donorName?.trim()) {
       return NextResponse.json(
-        { error: 'Nombre del donante es requerido' },
-        { status: 400 }
-      )
+        { error: "Nombre del donante es requerido" },
+        { status: 400 },
+      );
     }
 
     if (!donorEmail?.trim()) {
       return NextResponse.json(
-        { error: 'Email del donante es requerido' },
-        { status: 400 }
-      )
+        { error: "Email del donante es requerido" },
+        { status: 400 },
+      );
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(donorEmail.trim())) {
       return NextResponse.json(
-        { error: 'Email del donante no es válido' },
-        { status: 400 }
-      )
+        { error: "Email del donante no es válido" },
+        { status: 400 },
+      );
     }
 
     // Phone validation (if provided)
@@ -126,34 +128,37 @@ export async function POST(request: NextRequest) {
       const phoneRegex = /^[\+]?[\d\s\-\(\)]+$/;
       if (!phoneRegex.test(donorPhone.trim())) {
         return NextResponse.json(
-          { error: 'Número de teléfono no es válido' },
-          { status: 400 }
-        )
+          { error: "Número de teléfono no es válido" },
+          { status: 400 },
+        );
       }
     }
 
     // Church ID validation
     if (!churchId?.trim()) {
       return NextResponse.json(
-        { error: 'ID de iglesia es requerido' },
-        { status: 400 }
-      )
+        { error: "ID de iglesia es requerido" },
+        { status: 400 },
+      );
     }
 
     // Gateway type validation
-    if (!gatewayType || !['pse', 'nequi', 'stripe'].includes(gatewayType.toLowerCase())) {
+    if (
+      !gatewayType ||
+      !["pse", "nequi", "stripe"].includes(gatewayType.toLowerCase())
+    ) {
       return NextResponse.json(
-        { error: 'Método de pago no válido' },
-        { status: 400 }
-      )
+        { error: "Método de pago no válido" },
+        { status: 400 },
+      );
     }
 
     // Currency validation
-    if (currency !== 'COP') {
+    if (currency !== "COP") {
       return NextResponse.json(
-        { error: 'Solo se acepta moneda COP' },
-        { status: 400 }
-      )
+        { error: "Solo se acepta moneda COP" },
+        { status: 400 },
+      );
     }
 
     // Data sanitization with security
@@ -162,65 +167,67 @@ export async function POST(request: NextRequest) {
       currency: currency.toUpperCase(),
       donorName: DonationSecurity.sanitizeInput(donorName),
       donorEmail: DonationSecurity.sanitizeInput(donorEmail.toLowerCase()),
-      donorPhone: donorPhone ? DonationSecurity.sanitizeInput(donorPhone) : null,
+      donorPhone: donorPhone
+        ? DonationSecurity.sanitizeInput(donorPhone)
+        : null,
       churchId: churchId.trim(),
       categoryId: categoryId?.trim() || null,
       campaignId: campaignId?.trim() || null,
       gatewayType: gatewayType.toLowerCase(),
       notes: notes ? DonationSecurity.sanitizeInput(notes) : null,
-      returnUrl: returnUrl?.trim() || null
+      returnUrl: returnUrl?.trim() || null,
     };
 
     // Verify church exists and is active
     const church = await prisma.churches.findUnique({
-      where: { id: sanitizedData.churchId, isActive: true }
-    })
+      where: { id: sanitizedData.churchId, isActive: true },
+    });
 
     if (!church) {
       return NextResponse.json(
-        { error: 'Iglesia no encontrada o inactiva' },
-        { status: 404 }
-      )
+        { error: "Iglesia no encontrada o inactiva" },
+        { status: 404 },
+      );
     }
 
     // Verify category exists if provided
     if (categoryId) {
       const category = await prisma.donation_categories.findUnique({
-        where: { 
+        where: {
           id: categoryId,
           churchId: churchId,
-          isActive: true 
-        }
-      })
+          isActive: true,
+        },
+      });
 
       if (!category) {
         return NextResponse.json(
-          { error: 'Categoría de donación no encontrada' },
-          { status: 404 }
-        )
+          { error: "Categoría de donación no encontrada" },
+          { status: 404 },
+        );
       }
     }
 
     // Verify campaign exists if provided
     if (campaignId) {
       const campaign = await prisma.donation_campaigns.findFirst({
-        where: { 
+        where: {
           id: campaignId,
           churchId: churchId,
-          status: 'ACTIVA'
-        }
-      })
+          status: "ACTIVA",
+        },
+      });
 
       if (!campaign) {
         return NextResponse.json(
-          { error: 'Campaña de donación no encontrada' },
-          { status: 404 }
-        )
+          { error: "Campaña de donación no encontrada" },
+          { status: 404 },
+        );
       }
     }
 
     // Create payment gateway instance
-    const gateway = PaymentGatewayFactory.createGateway(gatewayType)
+    const gateway = PaymentGatewayFactory.createGateway(gatewayType);
 
     // Prepare payment data
     const paymentData: DonationPaymentData = {
@@ -232,8 +239,8 @@ export async function POST(request: NextRequest) {
       churchId,
       categoryId,
       notes,
-      returnUrl: returnUrl || `${getServerBaseUrl()}/donate/thank-you`
-    }
+      returnUrl: returnUrl || `${getServerBaseUrl()}/donate/thank-you`,
+    };
 
     // Process payment with database transaction for safety
     // If any operation fails, transaction will rollback automatically
@@ -243,46 +250,46 @@ export async function POST(request: NextRequest) {
         const paymentResult = await gateway.processPayment(
           paymentData.amount,
           paymentData.currency,
-          paymentData
-        )
+          paymentData,
+        );
 
         if (!paymentResult.success) {
           // This will trigger transaction rollback
-          throw new Error(paymentResult.error || 'Error procesando pago')
+          throw new Error(paymentResult.error || "Error procesando pago");
         }
 
-      // Create online payment record within transaction
-      const onlinePayment = await tx.online_payments.create({
-        data: {
-          id: nanoid(),
-          paymentId: paymentResult.paymentId!,
-          amount: paymentData.amount,
-          currency: paymentData.currency,
-          gatewayType: gatewayType.toLowerCase(),
-          status: 'pending',
-          donorName: paymentData.donorName,
-          donorEmail: paymentData.donorEmail,
-          donorPhone: paymentData.donorPhone,
-          churchId: paymentData.churchId,
-          categoryId: paymentData.categoryId,
-          reference: DonationSecurity.generatePaymentReference(),
-          redirectUrl: paymentResult.redirectUrl,
-          returnUrl: paymentData.returnUrl,
-          notes: paymentData.notes,
-          metadata: paymentResult.gatewayResponse
-        }
-      })
+        // Create online payment record within transaction
+        const onlinePayment = await tx.online_payments.create({
+          data: {
+            id: nanoid(),
+            paymentId: paymentResult.paymentId!,
+            amount: paymentData.amount,
+            currency: paymentData.currency,
+            gatewayType: gatewayType.toLowerCase(),
+            status: "pending",
+            donorName: paymentData.donorName,
+            donorEmail: paymentData.donorEmail,
+            donorPhone: paymentData.donorPhone,
+            churchId: paymentData.churchId,
+            categoryId: paymentData.categoryId,
+            reference: DonationSecurity.generatePaymentReference(),
+            redirectUrl: paymentResult.redirectUrl,
+            returnUrl: paymentData.returnUrl,
+            notes: paymentData.notes,
+            metadata: paymentResult.gatewayResponse,
+          },
+        });
 
         return {
           payment: onlinePayment,
-          gateway: paymentResult
-        }
+          gateway: paymentResult,
+        };
       } catch (txError) {
         // Transaction will rollback automatically on error
-        console.error('Transaction error, rollback triggered:', txError)
-        throw txError
+        console.error("Transaction error, rollback triggered:", txError);
+        throw txError;
       }
-    })
+    });
 
     // Return payment info to frontend
     return NextResponse.json({
@@ -292,22 +299,20 @@ export async function POST(request: NextRequest) {
       reference: result.payment.reference,
       amount: result.payment.amount,
       currency: result.payment.currency,
-      donorName: result.payment.donorName
-    })
-
+      donorName: result.payment.donorName,
+    });
   } catch (error) {
     // Log error with masked sensitive data
     const maskedError = DonationSecurity.maskSensitiveData({
       error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString(),
-      endpoint: 'POST /api/online-payments'
-    })
-    console.error('Online Payment Error:', maskedError)
-    
+      endpoint: "POST /api/online-payments",
+    });
+    console.error("Online Payment Error:", maskedError);
+
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
-
