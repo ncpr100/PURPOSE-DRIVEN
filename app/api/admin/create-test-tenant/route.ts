@@ -1,28 +1,28 @@
 /**
  * API Endpoint: Create Fresh Test Tenant
- * 
+ *
  * URL: /api/admin/create-test-tenant
  * Method: POST
- * 
+ *
  * Creates a new test church + admin user to verify platform functionality
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { db } from '@/lib/db';
-import bcrypt from 'bcryptjs';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
+import bcrypt from "bcryptjs";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
-    return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 })
+  const session = await getServerSession(authOptions);
+  if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+    return NextResponse.json({ error: "Acceso denegado" }, { status: 403 });
   }
 
   try {
-    console.log('[CREATE-TEST-TENANT] Starting fresh tenant creation...');
+    console.log("[CREATE-TEST-TENANT] Starting fresh tenant creation...");
 
     // Generate unique IDs with timestamp
     const timestamp = Date.now();
@@ -30,110 +30,115 @@ export async function POST(request: NextRequest) {
     const userId = `user-test-admin-${timestamp}`;
 
     // Hash password
-    const passwordHash = bcrypt.hashSync('TestPassword123!', 12);
-    console.log('[CREATE-TEST-TENANT] Password hashed');
+    const passwordHash = bcrypt.hashSync("TestPassword123!", 12);
+    console.log("[CREATE-TEST-TENANT] Password hashed");
 
     // Create church
     const church = await db.churches.create({
       data: {
         id: churchId,
-        name: 'Iglesia de Prueba',
-        email: 'admin@iglesiaprueba.es',
-        phone: '+34-600-000-000',
-        address: 'Calle Test 123, Madrid, España',
-        description: 'Iglesia de prueba para testing',
-        website: 'https://iglesiaprueba.es',
-        founded: new Date('2020-01-01'),
-        logo: '',
+        name: "Iglesia de Prueba",
+        email: "admin@iglesiaprueba.es",
+        phone: "+34-600-000-000",
+        address: "Calle Test 123, Madrid, España",
+        description: "Iglesia de prueba para testing",
+        website: "https://iglesiaprueba.es",
+        founded: new Date("2020-01-01"),
+        logo: "",
         isActive: true,
         createdAt: new Date(),
-        updatedAt: new Date()
-      }
+        updatedAt: new Date(),
+      },
     });
-    console.log('[CREATE-TEST-TENANT] Church created:', church.id);
+    console.log("[CREATE-TEST-TENANT] Church created:", church.id);
 
     // Create admin user
     const adminUser = await db.users.create({
       data: {
         id: userId,
-        email: 'testadmin@prueba.com',
+        email: "testadmin@prueba.com",
         password: passwordHash,
-        name: 'Admin de Prueba',
-        role: 'ADMIN_IGLESIA',
+        name: "Admin de Prueba",
+        role: "ADMIN_IGLESIA",
         churchId: church.id,
         isActive: true,
         createdAt: new Date(),
-        updatedAt: new Date()
-      }
+        updatedAt: new Date(),
+      },
     });
-    console.log('[CREATE-TEST-TENANT] Admin user created:', adminUser.email);
+    console.log("[CREATE-TEST-TENANT] Admin user created:", adminUser.email);
 
     // Verify creation
     const verification = await db.churches.findUnique({
       where: { id: church.id },
-      include: { 
+      include: {
         users: {
           select: {
             id: true,
             email: true,
             role: true,
             churchId: true,
-            isActive: true
-          }
-        }
-      }
+            isActive: true,
+          },
+        },
+      },
     });
 
-    return NextResponse.json({
-      success: true,
-      message: '✅ Fresh test tenant created successfully!',
-      data: {
-        church: {
-          id: church.id,
-          name: church.name,
-          email: church.email
+    return NextResponse.json(
+      {
+        success: true,
+        message: "✅ Fresh test tenant created successfully!",
+        data: {
+          church: {
+            id: church.id,
+            name: church.name,
+            email: church.email,
+          },
+          adminUser: {
+            email: adminUser.email,
+            role: adminUser.role,
+            churchId: adminUser.churchId,
+            isActive: adminUser.isActive,
+          },
+          credentials: {
+            email: "testadmin@prueba.com",
+            password: "TestPassword123!",
+            loginUrl: "https://khesed-tek-cms-org.vercel.app/auth/signin",
+          },
+          verification: {
+            churchExists: !!verification,
+            usersInChurch: verification?.users.length || 0,
+            churchId: verification?.id,
+            users: verification?.users,
+          },
         },
-        adminUser: {
-          email: adminUser.email,
-          role: adminUser.role,
-          churchId: adminUser.churchId,
-          isActive: adminUser.isActive
-        },
-        credentials: {
-          email: 'testadmin@prueba.com',
-          password: 'TestPassword123!',
-          loginUrl: 'https://khesed-tek-cms-org.vercel.app/auth/signin'
-        },
-        verification: {
-          churchExists: !!verification,
-          usersInChurch: verification?.users.length || 0,
-          churchId: verification?.id,
-          users: verification?.users
-        }
-      }
-    }, { status: 201 });
-
+      },
+      { status: 201 },
+    );
   } catch (error: any) {
-    console.error('[CREATE-TEST-TENANT] ERROR:', error);
-    
-    return NextResponse.json({
-      success: false,
-      error: error.message,
-      details: error,
-      hint: 'Check if user email already exists or church slug is duplicated'
-    }, { status: 500 });
+    console.error("[CREATE-TEST-TENANT] ERROR:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: error.message,
+        details: error,
+        hint: "Check if user email already exists or church slug is duplicated",
+      },
+      { status: 500 },
+    );
   }
 }
 
 // GET method for easy browser testing
 export async function GET() {
   return NextResponse.json({
-    message: 'Use POST method to create test tenant',
-    example: 'POST /api/admin/create-test-tenant',
+    message: "Use POST method to create test tenant",
+    example: "POST /api/admin/create-test-tenant",
     willCreate: {
-      church: 'Iglesia de Prueba',
-      admin: 'testadmin@prueba.com',
-      password: 'TestPassword123!'
-    }
+      church: "Iglesia de Prueba",
+      admin: "testadmin@prueba.com",
+      password: "TestPassword123!",
+    },
   });
 }

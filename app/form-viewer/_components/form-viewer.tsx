@@ -39,6 +39,14 @@ interface FormConfig {
   borderColor?: string
   inputBorderColor?: string
   inputFocusColor?: string
+  // Typography sizing
+  titleFontSize?: string
+  bodyFontSize?: string
+  fieldLabelFontSize?: string
+  inputFontSize?: string
+  // Layout
+  borderRadius?: string
+  formMaxWidth?: string
   timestamp?: number
   church?: any
 }
@@ -110,6 +118,14 @@ export default function FormViewer() {
           borderColor: form.config.borderColor,
           inputBorderColor: form.config.inputBorderColor,
           inputFocusColor: form.config.inputFocusColor,
+          // Typography sizing
+          titleFontSize: form.config.titleFontSize,
+          bodyFontSize: form.config.bodyFontSize,
+          fieldLabelFontSize: form.config.fieldLabelFontSize,
+          inputFontSize: form.config.inputFontSize,
+          // Layout
+          borderRadius: form.config.borderRadius,
+          formMaxWidth: form.config.formMaxWidth,
           church: result.church
         }
         
@@ -308,8 +324,9 @@ export default function FormViewer() {
       }}
     >
       <Card 
-        className="w-full max-w-2xl bg-white/95 backdrop-blur-sm"
+        className="w-full bg-white/95 backdrop-blur-sm"
         style={{
+          maxWidth: formConfig.formMaxWidth || '600px',
           borderColor: formConfig.borderColor,
           borderWidth: formConfig.borderColor ? '2px' : undefined
         }}
@@ -323,14 +340,20 @@ export default function FormViewer() {
           )}
           
           <h1 
-            className="text-2xl font-bold"
-            style={{ color: formConfig.headerTextColor || formConfig.primaryColor || '#1f2937' }}
+            className="font-bold"
+            style={{
+              color: formConfig.headerTextColor || formConfig.primaryColor || '#1f2937',
+              fontSize: formConfig.titleFontSize || '24px'
+            }}
           >
             {formConfig.title}
           </h1>
           {formConfig.description && (
             <p
-              style={{ color: formConfig.bodyTextColor || '#4b5563' }}
+              style={{
+                color: formConfig.bodyTextColor || '#4b5563',
+                fontSize: formConfig.bodyFontSize || '14px'
+              }}
             >
               {formConfig.description}
             </p>
@@ -344,7 +367,10 @@ export default function FormViewer() {
               <div key={field.id} className="space-y-2">
                 <Label 
                   htmlFor={`field-${field.id}`}
-                  style={{ color: formConfig.bodyTextColor || '#374151' }}
+                  style={{
+                    color: formConfig.bodyTextColor || '#374151',
+                    fontSize: formConfig.fieldLabelFontSize || '14px'
+                  }}
                 >
                   {field.label}
                   {field.required && <span style={{ color: formConfig.primaryColor || '#ef4444' }} className="ml-1">*</span>}
@@ -353,11 +379,13 @@ export default function FormViewer() {
                 {field.type === 'textarea' ? (
                   <textarea
                     id={`field-${field.id}`}
-                    className="w-full p-3 rounded-md resize-none h-24"
+                    className="w-full p-3 resize-none h-24"
                     style={{
                       borderColor: formConfig.inputBorderColor || '#d1d5db',
                       borderWidth: '1px',
                       borderStyle: 'solid',
+                      borderRadius: formConfig.borderRadius || '8px',
+                      fontSize: formConfig.inputFontSize || '14px',
                       color: '#1f2937'
                     }}
                     placeholder={`Ingrese ${field.label.toLowerCase()}`}
@@ -390,7 +418,10 @@ export default function FormViewer() {
                     <Label 
                       htmlFor={`field-${field.id}`} 
                       className="cursor-pointer"
-                      style={{ color: formConfig.bodyTextColor || '#374151' }}
+                      style={{
+                        color: formConfig.bodyTextColor || '#374151',
+                        fontSize: formConfig.fieldLabelFontSize || '14px'
+                      }}
                     >
                       Acepto los términos y condiciones
                     </Label>
@@ -398,11 +429,13 @@ export default function FormViewer() {
                 ) : field.type === 'select' ? (
                   <select
                     id={`field-${field.id}`}
-                    className="w-full p-3 rounded-md"
+                    className="w-full p-3"
                     style={{
                       borderColor: formConfig.inputBorderColor || '#d1d5db',
                       borderWidth: '1px',
                       borderStyle: 'solid',
+                      borderRadius: formConfig.borderRadius || '8px',
+                      fontSize: formConfig.inputFontSize || '14px',
                       color: '#1f2937'
                     }}
                     value={formData[field.id] || ''}
@@ -431,6 +464,8 @@ export default function FormViewer() {
                     className=""
                     style={{
                       borderColor: formConfig.inputBorderColor || '#d1d5db',
+                      borderRadius: formConfig.borderRadius || '8px',
+                      fontSize: formConfig.inputFontSize || '14px',
                       color: '#1f2937'
                     }}
                     placeholder={`Ingrese ${field.label.toLowerCase()}`}

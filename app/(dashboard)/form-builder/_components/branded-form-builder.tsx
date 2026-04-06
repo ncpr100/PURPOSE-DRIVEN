@@ -41,7 +41,7 @@ import {
   X
 } from 'lucide-react'
 
-export default function BrandedFormBuilder() {
+export default function BrandedFormBuilder({ churchId }: { churchId?: string }) {
   // AUTO-SAVE STATE
   const [isAutoSaving, setIsAutoSaving] = useState(false)
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
@@ -73,7 +73,17 @@ export default function BrandedFormBuilder() {
     formBackgroundColor: '#ffffff',
     borderColor: '#e5e7eb',
     inputBorderColor: '#d1d5db',
-    inputFocusColor: '#2563eb'
+    inputFocusColor: '#2563eb',
+
+    // Typography sizing defaults
+    titleFontSize: '24px',
+    bodyFontSize: '14px',
+    fieldLabelFontSize: '14px',
+    inputFontSize: '14px',
+
+    // Layout defaults
+    borderRadius: '8px',
+    formMaxWidth: '600px'
   })
 
   // QR Configuration
@@ -110,8 +120,15 @@ export default function BrandedFormBuilder() {
   const [currentFormSlug, setCurrentFormSlug] = useState<string | null>(null)
 
   // 🚀 AUTO-SAVE FUNCTIONALITY - NEVER LOSE YOUR WORK!
-  const AUTO_SAVE_KEY = 'form-builder-draft'
-  
+  // CRITICAL: Key is scoped to churchId to prevent cross-tenant draft leakage
+  const AUTO_SAVE_KEY = churchId ? `form-builder-draft-${churchId}` : 'form-builder-draft'
+
+  // Refs that always hold latest state values — used by timeout callbacks to avoid stale closures
+  const formConfigRef = useRef(formConfig)
+  useEffect(() => { formConfigRef.current = formConfig }, [formConfig])
+  const qrConfigRef = useRef(qrConfig)
+  useEffect(() => { qrConfigRef.current = qrConfig }, [qrConfig])
+
   // Save to localStorage immediately (instant backup)
   const saveToLocalStorage = useCallback((config: FormConfig, qrConfiguration: QRConfig) => {
     try {
@@ -127,7 +144,7 @@ export default function BrandedFormBuilder() {
     } catch (error) {
       console.error('❌ Failed to save to localStorage:', error)
     }
-  }, [])
+  }, [AUTO_SAVE_KEY])
   
   // Restore from localStorage on page load
   const restoreFromLocalStorage = useCallback(() => {
@@ -144,7 +161,7 @@ export default function BrandedFormBuilder() {
           setLastSaved(savedTime)
           setHasUnsavedChanges(false)
           
-          toast.success(`🔄 Borrador restaurado desde ${savedTime.toLocaleTimeString()}`)
+          toast.success(`Borrador restaurado desde ${savedTime.toLocaleTimeString()}`)
           console.log('✅ Draft restored from localStorage') // DEBUG
           return true
         } else {
@@ -157,40 +174,40 @@ export default function BrandedFormBuilder() {
       console.error('❌ Failed to restore from localStorage:', error)
       return false
     }
-  }, [])
+  }, [AUTO_SAVE_KEY])
   
   // Auto-save wrapper functions
+  // FIXED: Use functional setState (prev =>) and refs to eliminate stale closure bug
+  // that caused dropdown options to revert when added rapidly
   const updateFormConfig = useCallback((updater: (prev: FormConfig) => FormConfig) => {
-    const newConfig = updater(formConfig)
-    setFormConfig(newConfig)
-    
-    // Auto-save debounced
+    setFormConfig(prev => updater(prev))
+
+    // Auto-save debounced — reads latest values from refs, never stale
     clearTimeout(autoSaveTimeoutRef.current)
     setHasUnsavedChanges(true)
-    
+
     autoSaveTimeoutRef.current = setTimeout(() => {
-      saveToLocalStorage(newConfig, qrConfig)
+      saveToLocalStorage(formConfigRef.current, qrConfigRef.current)
       setIsAutoSaving(false)
       setLastSaved(new Date())
       setHasUnsavedChanges(false)
     }, 2000) // 2 second delay
-  }, [formConfig, qrConfig, saveToLocalStorage])
+  }, [saveToLocalStorage])
   
   const updateQRConfig = useCallback((updater: (prev: QRConfig) => QRConfig) => {
-    const newConfig = updater(qrConfig)
-    setQRConfig(newConfig)
-    
-    // Auto-save debounced
+    setQRConfig(prev => updater(prev))
+
+    // Auto-save debounced — reads latest values from refs, never stale
     clearTimeout(autoSaveTimeoutRef.current)
     setHasUnsavedChanges(true)
-    
+
     autoSaveTimeoutRef.current = setTimeout(() => {
-      saveToLocalStorage(formConfig, newConfig)
+      saveToLocalStorage(formConfigRef.current, qrConfigRef.current)
       setIsAutoSaving(false)
       setLastSaved(new Date())
       setHasUnsavedChanges(false)
     }, 2000) // 2 second delay
-  }, [formConfig, qrConfig, saveToLocalStorage])
+  }, [saveToLocalStorage])
   
   // Clear localStorage when form is successfully saved
   const clearAutoSave = useCallback(() => {
@@ -202,12 +219,19 @@ export default function BrandedFormBuilder() {
     } catch (error) {
       console.error('❌ Failed to clear auto-save:', error)
     }
-  }, [])
+  }, [AUTO_SAVE_KEY])
   
   // Restore draft on component mount
   useEffect(() => {
-    // Check if draft exists
-    const savedData = localStorage.getItem('form-builder-draft')
+    // SECURITY: Clear any drafts that belong to OTHER churches (same browser, different tenant)
+    if (churchId) {
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('form-builder-draft-') && k !== AUTO_SAVE_KEY)
+        .forEach(k => localStorage.removeItem(k))
+    }
+
+    // Check if draft exists for THIS church
+    const savedData = localStorage.getItem(AUTO_SAVE_KEY)
     if (savedData) {
       const parsed = JSON.parse(savedData)
       const saveDate = new Date(parsed.timestamp)
@@ -216,7 +240,7 @@ export default function BrandedFormBuilder() {
       if (hoursSinceLastSave < 24) {
         setHasLocalDraft(true)
       } else {
-        localStorage.removeItem('form-builder-draft')
+        localStorage.removeItem(AUTO_SAVE_KEY)
         setHasLocalDraft(false)
       }
     } else {
@@ -228,7 +252,7 @@ export default function BrandedFormBuilder() {
       // No draft found, start fresh
       console.log('🆕 Starting with fresh form') // DEBUG
     }
-  }, [restoreFromLocalStorage])
+  }, [restoreFromLocalStorage, AUTO_SAVE_KEY, churchId])
   
   // Warn user before leaving with unsaved changes
   useEffect(() => {
@@ -246,6 +270,11 @@ export default function BrandedFormBuilder() {
   // Generate QR Code
   // 🎨 ADVANCED QR GENERATION (using modular function)
   const generateQRCode = async () => {
+    // FIXED: Block QR generation if form hasn't been saved yet (prevents unscannable QR codes)
+    if (!currentFormSlug) {
+      toast.error('Guarda el formulario primero para generar el QR con URL corta')
+      return
+    }
     setIsGenerating(true)
     try {
       const url = buildFormUrl()
@@ -312,7 +341,15 @@ export default function BrandedFormBuilder() {
             bodyTextColor: formConfig.bodyTextColor,
             borderColor: formConfig.borderColor,
             inputBorderColor: formConfig.inputBorderColor,
-            inputFocusColor: formConfig.inputFocusColor
+            inputFocusColor: formConfig.inputFocusColor,
+            // Typography sizing
+            titleFontSize: formConfig.titleFontSize,
+            bodyFontSize: formConfig.bodyFontSize,
+            fieldLabelFontSize: formConfig.fieldLabelFontSize,
+            inputFontSize: formConfig.inputFontSize,
+            // Layout
+            borderRadius: formConfig.borderRadius,
+            formMaxWidth: formConfig.formMaxWidth
           },
           qrConfig: {
             // 🎨 ALL ADVANCED QR CUSTOMIZATION FIELDS
@@ -362,15 +399,17 @@ export default function BrandedFormBuilder() {
 
   // Helper functions
   const addField = () => {
-    const newField: FormField = {
-      id: Date.now(),
-      label: `Campo ${formConfig.fields.length + 1}`,
-      type: 'text',
-      required: false
-    }
+    // FIXED: Use prev.fields.length for accurate count; always include options: [] so
+    // select/radio fields work immediately without initializing undefined array
     updateFormConfig(prev => ({
       ...prev,
-      fields: [...prev.fields, newField]
+      fields: [...prev.fields, {
+        id: Date.now(),
+        label: `Campo ${prev.fields.length + 1}`,
+        type: 'text' as const,
+        required: false,
+        options: []
+      }]
     }))
   }
 
@@ -688,6 +727,115 @@ export default function BrandedFormBuilder() {
                     </Select>
                   </div>
 
+                  {/* 🔤 TYPOGRAPHY SIZING */}
+                  <div className="space-y-2 pt-1">
+                    <Label className="text-xs font-semibold text-gray-700">Tamaños de Texto</Label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs font-medium">Tamaño Título</Label>
+                        <Select
+                          value={formConfig.titleFontSize || '24px'}
+                          onValueChange={(value) => updateFormConfig(prev => ({ ...prev, titleFontSize: value }))}
+                        >
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="18px">Pequeño (18px)</SelectItem>
+                            <SelectItem value="20px">Compacto (20px)</SelectItem>
+                            <SelectItem value="24px">Normal (24px)</SelectItem>
+                            <SelectItem value="28px">Grande (28px)</SelectItem>
+                            <SelectItem value="32px">Muy Grande (32px)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs font-medium">Tamaño Texto</Label>
+                        <Select
+                          value={formConfig.bodyFontSize || '14px'}
+                          onValueChange={(value) => updateFormConfig(prev => ({ ...prev, bodyFontSize: value }))}
+                        >
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="12px">Pequeño (12px)</SelectItem>
+                            <SelectItem value="14px">Normal (14px)</SelectItem>
+                            <SelectItem value="16px">Grande (16px)</SelectItem>
+                            <SelectItem value="18px">Muy Grande (18px)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs font-medium">Etiquetas de Campos</Label>
+                        <Select
+                          value={formConfig.fieldLabelFontSize || '14px'}
+                          onValueChange={(value) => updateFormConfig(prev => ({ ...prev, fieldLabelFontSize: value }))}
+                        >
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="11px">Pequeño (11px)</SelectItem>
+                            <SelectItem value="12px">Compacto (12px)</SelectItem>
+                            <SelectItem value="14px">Normal (14px)</SelectItem>
+                            <SelectItem value="16px">Grande (16px)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs font-medium">Texto en Inputs</Label>
+                        <Select
+                          value={formConfig.inputFontSize || '14px'}
+                          onValueChange={(value) => updateFormConfig(prev => ({ ...prev, inputFontSize: value }))}
+                        >
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="12px">Pequeño (12px)</SelectItem>
+                            <SelectItem value="14px">Normal (14px)</SelectItem>
+                            <SelectItem value="16px">Grande (16px)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 📐 LAYOUT */}
+                  <div className="space-y-2 pt-1">
+                    <Label className="text-xs font-semibold text-gray-700">Diseño y Espaciado</Label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs font-medium">Bordes Redondeados</Label>
+                        <Select
+                          value={formConfig.borderRadius || '8px'}
+                          onValueChange={(value) => updateFormConfig(prev => ({ ...prev, borderRadius: value }))}
+                        >
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="0px">Sin Redondeo</SelectItem>
+                            <SelectItem value="4px">Sutil (4px)</SelectItem>
+                            <SelectItem value="8px">Normal (8px)</SelectItem>
+                            <SelectItem value="12px">Moderado (12px)</SelectItem>
+                            <SelectItem value="16px">Redondeado (16px)</SelectItem>
+                            <SelectItem value="24px">Muy Redondeado (24px)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs font-medium">Ancho del Formulario</Label>
+                        <Select
+                          value={formConfig.formMaxWidth || '600px'}
+                          onValueChange={(value) => updateFormConfig(prev => ({ ...prev, formMaxWidth: value }))}
+                        >
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="480px">Compacto (480px)</SelectItem>
+                            <SelectItem value="600px">Normal (600px)</SelectItem>
+                            <SelectItem value="720px">Amplio (720px)</SelectItem>
+                            <SelectItem value="900px">Ancho (900px)</SelectItem>
+                            <SelectItem value="100%">Completo</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Form Styling */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
@@ -848,6 +996,7 @@ export default function BrandedFormBuilder() {
                                   placeholder={`Opción ${optIndex + 1}`}
                                 />
                                 <Button 
+                                  type="button"
                                   onClick={() => {
                                     const newOptions = field.options?.filter((_, i) => i !== optIndex) || []
                                     updateField(field.id, 'options', newOptions)
@@ -860,6 +1009,7 @@ export default function BrandedFormBuilder() {
                               </div>
                             ))}
                             <Button 
+                              type="button"
                               onClick={() => {
                                 const newOptions = [...(field.options || []), `Opción ${(field.options?.length || 0) + 1}`]
                                 updateField(field.id, 'options', newOptions)
@@ -921,15 +1071,21 @@ export default function BrandedFormBuilder() {
                   
                   <div className="relative z-10">
                     <h3 
-                      className="text-xl font-bold mb-2"
-                      style={{ color: formConfig.headerTextColor || '#1f2937' }}
+                      className="font-bold mb-2"
+                      style={{
+                        color: formConfig.headerTextColor || '#1f2937',
+                        fontSize: formConfig.titleFontSize || '24px'
+                      }}
                     >
                       {formConfig.title}
                     </h3>
                     {formConfig.description && (
                       <p 
                         className="mb-4"
-                        style={{ color: formConfig.bodyTextColor || '#4b5563' }}
+                        style={{
+                          color: formConfig.bodyTextColor || '#4b5563',
+                          fontSize: formConfig.bodyFontSize || '14px'
+                        }}
                       >
                         {formConfig.description}
                       </p>
@@ -939,8 +1095,11 @@ export default function BrandedFormBuilder() {
                       {formConfig.fields.map((field) => (
                       <div key={field.id}>
                         <label 
-                          className="block text-sm font-medium mb-1"
-                          style={{ color: formConfig.bodyTextColor || '#4b5563' }}
+                          className="block font-medium mb-1"
+                          style={{
+                            color: formConfig.bodyTextColor || '#4b5563',
+                            fontSize: formConfig.fieldLabelFontSize || '14px'
+                          }}
                         >
                           {field.label}
                           {field.required && <span style={{ color: formConfig.primaryColor || '#ef4444' }} className="ml-1">*</span>}
@@ -948,22 +1107,26 @@ export default function BrandedFormBuilder() {
                         
                         {field.type === 'textarea' ? (
                           <textarea 
-                            className="w-full p-2 rounded" 
+                            className="w-full p-2" 
                             style={{
                               borderColor: formConfig.inputBorderColor || '#d1d5db',
                               borderWidth: '1px',
-                              borderStyle: 'solid'
+                              borderStyle: 'solid',
+                              borderRadius: formConfig.borderRadius || '8px',
+                              fontSize: formConfig.inputFontSize || '14px'
                             }}
                             rows={3}
                             disabled
                           />
                         ) : field.type === 'select' ? (
                           <select 
-                            className="w-full p-2 rounded" 
+                            className="w-full p-2" 
                             style={{
                               borderColor: formConfig.inputBorderColor || '#d1d5db',
                               borderWidth: '1px',
-                              borderStyle: 'solid'
+                              borderStyle: 'solid',
+                              borderRadius: formConfig.borderRadius || '8px',
+                              fontSize: formConfig.inputFontSize || '14px'
                             }}
                             disabled
                           >
@@ -975,25 +1138,27 @@ export default function BrandedFormBuilder() {
                         ) : field.type === 'checkbox' ? (
                           <div className="flex items-center">
                             <input type="checkbox" className="mr-2" disabled />
-                            <span className="text-sm" style={{ color: formConfig.bodyTextColor || '#4b5563' }}>{field.label}</span>
+                            <span style={{ color: formConfig.bodyTextColor || '#4b5563', fontSize: formConfig.inputFontSize || '14px' }}>{field.label}</span>
                           </div>
                         ) : field.type === 'radio' && field.options ? (
                           <div className="space-y-2">
                             {field.options.map((option, index) => (
                               <div key={index} className="flex items-center">
                                 <input type="radio" name={`field-${field.id}`} className="mr-2" disabled />
-                                <span className="text-sm" style={{ color: formConfig.bodyTextColor || '#4b5563' }}>{option}</span>
+                                <span style={{ color: formConfig.bodyTextColor || '#4b5563', fontSize: formConfig.inputFontSize || '14px' }}>{option}</span>
                               </div>
                             ))}
                           </div>
                         ) : (
                           <input 
                             type={field.type} 
-                            className="w-full p-2 rounded" 
+                            className="w-full p-2" 
                             style={{
                               borderColor: formConfig.inputBorderColor || '#d1d5db',
                               borderWidth: '1px',
-                              borderStyle: 'solid'
+                              borderStyle: 'solid',
+                              borderRadius: formConfig.borderRadius || '8px',
+                              fontSize: formConfig.inputFontSize || '14px'
                             }}
                             disabled
                           />
