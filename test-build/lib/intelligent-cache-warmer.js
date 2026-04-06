@@ -446,8 +446,10 @@ class IntelligentCacheWarmer {
 exports.IntelligentCacheWarmer = IntelligentCacheWarmer;
 // Singleton instance
 exports.intelligentCacheWarmer = new IntelligentCacheWarmer();
-// Auto-start the cache warmer
-if (process.env.NODE_ENV === 'production') {
-    exports.intelligentCacheWarmer.start().catch(console.error);
-}
+// Auto-start is disabled - the cache warmer fires hundreds of parallel DB
+// queries on startup, exhausting the Supabase connection pool and causing
+// PrismaClientUnknownRequestError bursts. Use forceWarmup() explicitly if needed.
+// if (process.env.NODE_ENV === 'production') {
+//   intelligentCacheWarmer.start().catch(console.error);
+// }
 //# sourceMappingURL=intelligent-cache-warmer.js.map

@@ -9,19 +9,7 @@ export declare const volunteerCreateSchema: z.ZodObject<{
     email: z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<"">]>;
     phone: z.ZodUnion<[z.ZodOptional<z.ZodString>, z.ZodLiteral<"">]>;
     skills: z.ZodDefault<z.ZodOptional<z.ZodArray<z.ZodString, "many">>>;
-    availability: z.ZodOptional<z.ZodObject<{
-        days: z.ZodOptional<z.ZodArray<z.ZodEnum<["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]>, "many">>;
-        times: z.ZodOptional<z.ZodArray<z.ZodEnum<["morning", "afternoon", "evening"]>, "many">>;
-        frequency: z.ZodOptional<z.ZodEnum<["weekly", "biweekly", "monthly", "occasional"]>>;
-    }, "strip", z.ZodTypeAny, {
-        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
-        days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
-        times?: ("morning" | "afternoon" | "evening")[] | undefined;
-    }, {
-        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
-        days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
-        times?: ("morning" | "afternoon" | "evening")[] | undefined;
-    }>>;
+    availability: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     ministryId: z.ZodUnion<[z.ZodEffects<z.ZodString, string, string>, z.ZodLiteral<"no-ministry">]>;
     memberId: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
@@ -32,11 +20,7 @@ export declare const volunteerCreateSchema: z.ZodObject<{
     email?: string | undefined;
     phone?: string | undefined;
     memberId?: string | undefined;
-    availability?: {
-        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
-        days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
-        times?: ("morning" | "afternoon" | "evening")[] | undefined;
-    } | undefined;
+    availability?: string | null | undefined;
 }, {
     firstName: string;
     lastName: string;
@@ -45,11 +29,7 @@ export declare const volunteerCreateSchema: z.ZodObject<{
     phone?: string | undefined;
     memberId?: string | undefined;
     skills?: string[] | undefined;
-    availability?: {
-        frequency?: "weekly" | "biweekly" | "monthly" | "occasional" | undefined;
-        days?: ("Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday")[] | undefined;
-        times?: ("morning" | "afternoon" | "evening")[] | undefined;
-    } | undefined;
+    availability?: string | null | undefined;
 }>;
 export type VolunteerCreateInput = z.infer<typeof volunteerCreateSchema>;
 /**

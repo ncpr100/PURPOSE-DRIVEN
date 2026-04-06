@@ -1,46 +1,46 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
 
-
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
-
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // UPDATE visitor follow-up
-export async function PUT(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+export async function PUT(
+  request: NextRequest,
+  props: { params: Promise<{ id: string }> },
+) {
   const params = await props.params;
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
 
     if (!session?.user?.churchId) {
-      return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ message: "No autorizado" }, { status: 401 });
     }
 
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(session.user.role)) {
-      return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
+    if (
+      !["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"].includes(
+        session.user.role,
+      )
+    ) {
+      return NextResponse.json({ message: "Sin permisos" }, { status: 403 });
     }
 
-    const {
-      status,
-      notes,
-      assignedTo,
-      scheduledAt,
-      completedAt
-    } = await request.json()
+    const { status, notes, assignedTo, scheduledAt, completedAt } =
+      await request.json();
 
     const followUp = await db.visitor_follow_ups.findFirst({
       where: {
         id: params.id,
-        churchId: session.user.churchId
-      }
-    })
+        churchId: session.user.churchId,
+      },
+    });
 
     if (!followUp) {
       return NextResponse.json(
-        { message: 'Seguimiento no encontrado' },
-        { status: 404 }
-      )
+        { message: "Seguimiento no encontrado" },
+        { status: 404 },
+      );
     }
 
     const updatedFollowUp = await db.visitor_follow_ups.update({
@@ -50,26 +50,27 @@ export async function PUT(request: NextRequest, props: { params: Promise<{ id: s
         notes,
         assignedTo,
         scheduledAt: scheduledAt ? new Date(scheduledAt) : followUp.scheduledAt,
-        completedAt: completedAt ? new Date(completedAt) : 
-                    (status === 'COMPLETADO' ? new Date() : followUp.completedAt)
+        completedAt: completedAt
+          ? new Date(completedAt)
+          : status === "COMPLETADO"
+            ? new Date()
+            : followUp.completedAt,
       },
       include: {
         check_ins: true,
-        users: true
-      }
-    })
+        users: true,
+      },
+    });
 
-    return NextResponse.json(updatedFollowUp)
-
+    return NextResponse.json(updatedFollowUp);
   } catch (error) {
-    console.error('Error updating visitor follow-up:', error)
+    console.error("Error updating visitor follow-up:", error);
     return NextResponse.json(
-      { message: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { message: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
 // PATCH - alias to PUT for clients that prefer PATCH semantics
-export const PATCH = PUT
-
+export const PATCH = PUT;

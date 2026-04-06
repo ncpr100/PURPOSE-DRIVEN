@@ -161,8 +161,8 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 404 });
     }
-    // Only admins can create templates
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA'].includes(user.role)) {
+    // Pastors and admins can create templates
+    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
       return NextResponse.json({ error: 'Sin permisos para crear plantillas' }, { status: 403 });
     }
     const body = await request.json();

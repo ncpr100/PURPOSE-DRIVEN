@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db as prisma } from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { createPrayerRequestSchema, getPrayerRequestsSchema } from '@/lib/validations/prayer-request';
@@ -145,6 +145,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Categoría no encontrada o inactiva para esta iglesia' }, { status: 404 });
     }
 
+    // Derive effective priority from category section (A=normal/1hr, B=high/4hr, C=urgent/10min)
+    // If the submitter passed an explicit priority, honour it; otherwise derive from section
+    const sectionPriorityMap: Record<string, string> = {
+      'A': 'normal',
+      'B': 'high',
+      'C': 'urgent'
+    }
+    const categorySection = (category as any).section as string | null
+    const effectivePriority = priority || (categorySection ? sectionPriorityMap[categorySection.toUpperCase()] ?? 'normal' : 'normal')
+
     // Upsert contact: find existing or create a new one
     const contact = await prisma.prayer_contacts.upsert({
       where: {
@@ -178,7 +188,7 @@ export async function POST(request: Request) {
         categoryId,
         message,
         isAnonymous,
-        priority,
+        priority: effectivePriority,
         status: 'pending', // Default status
         source: formId ? 'prayer_form' : (qrCodeId ? 'qr_code' : 'direct'),
         formId,
@@ -203,6 +213,8 @@ export async function POST(request: Request) {
           formId: prayer_requests.formId,
           qrCodeId: prayer_requests.qrCodeId,
           prayerPriority: prayer_requests.priority,
+          prayerSection: categorySection ?? null,
+          responseTimeMinutes: (category as any).responseTimeMinutes ?? null,
           prayerCategory: category.name,
           contactName: contact.fullName,
           contactEmail: contact.email,

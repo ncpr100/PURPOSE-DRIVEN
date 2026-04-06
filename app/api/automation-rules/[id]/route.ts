@@ -2,134 +2,119 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { db as prisma } from '@/lib/db';
+import { db } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
+
 interface RouteContext {
   params: Promise<{ id: string }>
 }
-// GET /api/automation-rules/[id] - Get specific mock automation rule
+
+// GET /api/automation-rules/[id] - Get a specific automation rule
 export async function GET(request: NextRequest, props: RouteContext) {
-  const params = await props.params;
+  const params = await props.params
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
-    const user = await prisma.users.findUnique({
-      where: { id: session.user.id },
-      include: { churches: true }
-    })
+
+    const user = await db.users.findUnique({ where: { id: session.user.id } })
     if (!user?.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
-    // Mock rules for demo
-    const mockRules: Record<string, any> = {
-      'rule_1': {
-        id: 'rule_1',
-        name: 'Respuesta Automática - Familia',
-        description: 'Envía respuesta automática cuando se aprueba una petición de la categoría familia',
-        isActive: true,
-        triggerType: 'approval',
-        triggerConditions: {
-          status: ['approved'],
-          category: ['familia']
-        },
-        actions: [
-          {
-            type: 'send_message',
-            config: {
-              templateId: 'template_familia',
-              messageType: 'email',
-              delay: 120
-            }
-          }
-        ],
-        stats: {
-          totalRuns: 24,
-          successRuns: 23,
-          lastRun: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          avgResponseTime: 2.1
-        },
-        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-      },
-      'rule_2': {
-        id: 'rule_2',
-        name: 'Seguimiento Urgente',
-        description: 'Notificación inmediata para peticiones con prioridad urgente',
-        triggerType: 'priority',
-        conditions: {
-          priority: ['urgent']
-        },
-        actions: {
-          templateId: 'template_urgente',
-          messageType: 'all',
-          delay: 0
-        },
-        stats: {
-          totalRuns: 8,
-          successRuns: 8,
-          lastRun: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-          avgResponseTime: 0.5
-        },
-        createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
-      }
-    };
 
-    const rule = mockRules[params.id];
+    const rule = await db.automation_rules.findFirst({
+      where: { id: params.id, churchId: user.churchId }
+    })
+
     if (!rule) {
-      return NextResponse.json({ error: 'Regla no encontrada' }, { status: 404 });
+      return NextResponse.json({ error: 'Regla no encontrada' }, { status: 404 })
     }
-    return NextResponse.json({ rule });
+
+    return NextResponse.json({ rule })
   } catch (error) {
-    console.error('Error fetching automation rule:', error);
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    );
+    console.error('Error fetching automation rule:', error)
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
-// PUT /api/automation-rules/[id] - Update mock automation rule
+// PUT /api/automation-rules/[id] - Update automation rule
 export async function PUT(request: NextRequest, props: RouteContext) {
-  const params = await props.params;
+  const params = await props.params
   try {
-    // For demo purposes, return success message
-    const updateData = await request.json();
-    return NextResponse.json({
-      rule: {
-        id: params.id,
-        name: updateData.name || 'Regla actualizada',
-        description: updateData.description || '',
-        isActive: Boolean(updateData.isActive),
-        triggerType: updateData.triggerType || 'approval',
-        triggerConditions: updateData.triggerConditions || {},
-        actions: updateData.actions || [],
-        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date().toISOString()
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({ where: { id: session.user.id } })
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    const updateData = await request.json()
+
+    // Verify ownership before updating
+    const existing = await db.automation_rules.findFirst({
+      where: { id: params.id, churchId: user.churchId }
+    })
+    if (!existing) {
+      return NextResponse.json({ error: 'Regla no encontrada' }, { status: 404 })
+    }
+
+    const rule = await db.automation_rules.update({
+      where: { id: params.id },
+      data: {
+        name: updateData.name ?? existing.name,
+        description: updateData.description ?? existing.description,
+        isActive: updateData.isActive !== undefined ? Boolean(updateData.isActive) : existing.isActive,
+        triggerType: updateData.triggerType ?? existing.triggerType,
+        triggerConfig: updateData.triggerConfig ?? existing.triggerConfig,
+        conditionsConfig: updateData.conditionsConfig ?? existing.conditionsConfig,
+        actionsConfig: updateData.actionsConfig ?? existing.actionsConfig,
+        priorityLevel: updateData.priorityLevel ?? existing.priorityLevel,
+        urgentMode24x7: updateData.urgentMode24x7 !== undefined ? Boolean(updateData.urgentMode24x7) : existing.urgentMode24x7,
+        businessHoursOnly: updateData.businessHoursOnly !== undefined ? Boolean(updateData.businessHoursOnly) : existing.businessHoursOnly,
+        escalationConfig: updateData.escalationConfig ?? existing.escalationConfig,
+        updatedAt: new Date()
       }
-    });
+    })
+
+    return NextResponse.json({ rule, success: true })
   } catch (error) {
-    console.error('Error updating automation rule:', error);
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    );
+    console.error('Error updating automation rule:', error)
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }
 
-// DELETE /api/automation-rules/[id] - Delete mock automation rule
+// DELETE /api/automation-rules/[id] - Delete automation rule
 export async function DELETE(request: NextRequest, props: RouteContext) {
-  const params = await props.params;
+  const params = await props.params
   try {
-    return NextResponse.json({ message: 'Regla eliminada exitosamente' });
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    }
+
+    const user = await db.users.findUnique({ where: { id: session.user.id } })
+    if (!user?.churchId) {
+      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+    }
+
+    // Verify ownership before deleting
+    const existing = await db.automation_rules.findFirst({
+      where: { id: params.id, churchId: user.churchId }
+    })
+    if (!existing) {
+      return NextResponse.json({ error: 'Regla no encontrada' }, { status: 404 })
+    }
+
+    await db.automation_rules.delete({ where: { id: params.id } })
+
+    return NextResponse.json({ success: true, message: 'Regla eliminada exitosamente' })
   } catch (error) {
-    console.error('Error deleting automation rule:', error);
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    );
+    console.error('Error deleting automation rule:', error)
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
 }

@@ -108,6 +108,7 @@ export function AutomationRulesClient() {
   
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [selectedRule, setSelectedRule] = useState<AutomationRule | null>(null)
+  const [templateInitialData, setTemplateInitialData] = useState<any>(null)
 
   useEffect(() => {
     if (session?.user?.role && ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
@@ -392,8 +393,18 @@ export function AutomationRulesClient() {
         <TabsContent value="templates" className="space-y-6">
           <AutomationTemplates
             onSelectTemplate={(template) => {
+              const templateConfig = template.template || {}
+              setTemplateInitialData({
+                name: template.name || '',
+                description: template.description || null,
+                priority: templateConfig.priority ?? 0,
+                executeOnce: templateConfig.executeOnce ?? false,
+                maxExecutions: templateConfig.maxExecutions ?? null,
+                triggers: templateConfig.triggers || [],
+                conditions: templateConfig.conditions || [],
+                actions: templateConfig.actions || []
+              })
               setShowCreateDialog(true)
-              // Pass template data to create dialog
             }}
           />
         </TabsContent>
@@ -453,12 +464,20 @@ export function AutomationRulesClient() {
         </TabsContent>
       </Tabs>
 
-      {/* Create Rule Dialog */}
+      {/* Create / Edit Rule Dialog */}
       <CreateAutomationRuleDialog
-        open={showCreateDialog}
-        onClose={() => setShowCreateDialog(false)}
+        open={showCreateDialog || !!selectedRule}
+        initialData={selectedRule ?? templateInitialData}
+        isEdit={!!selectedRule}
+        onClose={() => {
+          setShowCreateDialog(false)
+          setSelectedRule(null)
+          setTemplateInitialData(null)
+        }}
         onSuccess={() => {
           setShowCreateDialog(false)
+          setSelectedRule(null)
+          setTemplateInitialData(null)
           fetchAutomationRules()
         }}
       />

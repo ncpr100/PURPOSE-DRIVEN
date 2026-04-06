@@ -299,8 +299,8 @@ export declare const memberSchema: z.ZodObject<{
     email: z.ZodOptional<z.ZodString>;
     phone: z.ZodOptional<z.ZodString>;
     birthDate: z.ZodOptional<z.ZodString>;
-    gender: z.ZodOptional<z.ZodEnum<["male", "female", "other"]>>;
-    maritalStatus: z.ZodOptional<z.ZodEnum<["single", "married", "divorced", "widowed"]>>;
+    gender: z.ZodOptional<z.ZodString>;
+    maritalStatus: z.ZodOptional<z.ZodString>;
     membershipDate: z.ZodOptional<z.ZodString>;
     status: z.ZodDefault<z.ZodEnum<["active", "inactive", "visitor"]>>;
     role: z.ZodDefault<z.ZodEnum<["member", "leader", "pastor", "admin"]>>;
@@ -317,8 +317,8 @@ export declare const memberSchema: z.ZodObject<{
     address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
-    maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
-    gender?: "other" | "male" | "female" | undefined;
+    maritalStatus?: string | undefined;
+    gender?: string | undefined;
 }, {
     firstName: string;
     lastName: string;
@@ -330,8 +330,8 @@ export declare const memberSchema: z.ZodObject<{
     address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
-    maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
-    gender?: "other" | "male" | "female" | undefined;
+    maritalStatus?: string | undefined;
+    gender?: string | undefined;
 }>;
 export declare const memberUpdateSchema: z.ZodObject<{
     firstName: z.ZodOptional<z.ZodString>;
@@ -339,8 +339,8 @@ export declare const memberUpdateSchema: z.ZodObject<{
     email: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     phone: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     birthDate: z.ZodOptional<z.ZodOptional<z.ZodString>>;
-    gender: z.ZodOptional<z.ZodOptional<z.ZodEnum<["male", "female", "other"]>>>;
-    maritalStatus: z.ZodOptional<z.ZodOptional<z.ZodEnum<["single", "married", "divorced", "widowed"]>>>;
+    gender: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+    maritalStatus: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     membershipDate: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     status: z.ZodOptional<z.ZodDefault<z.ZodEnum<["active", "inactive", "visitor"]>>>;
     role: z.ZodOptional<z.ZodDefault<z.ZodEnum<["member", "leader", "pastor", "admin"]>>>;
@@ -357,8 +357,8 @@ export declare const memberUpdateSchema: z.ZodObject<{
     address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
-    maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
-    gender?: "other" | "male" | "female" | undefined;
+    maritalStatus?: string | undefined;
+    gender?: string | undefined;
 }, {
     email?: string | undefined;
     role?: "member" | "leader" | "pastor" | "admin" | undefined;
@@ -370,8 +370,8 @@ export declare const memberUpdateSchema: z.ZodObject<{
     address?: string | undefined;
     birthDate?: string | undefined;
     membershipDate?: string | undefined;
-    maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
-    gender?: "other" | "male" | "female" | undefined;
+    maritalStatus?: string | undefined;
+    gender?: string | undefined;
 }>;
 export declare const paginationSchema: z.ZodObject<{
     page: z.ZodDefault<z.ZodEffects<z.ZodString, number, string>>;
@@ -391,13 +391,13 @@ export declare const searchSchema: z.ZodObject<{
     sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
 }, "strip", z.ZodTypeAny, {
     category: string;
-    status: "all" | "active" | "inactive" | "rejected" | "pending" | "approved";
+    status: "all" | "rejected" | "pending" | "active" | "inactive" | "approved";
     sortBy: "name" | "category" | "status" | "date";
     sortOrder: "asc" | "desc";
     q?: string | undefined;
 }, {
     category?: string | undefined;
-    status?: "all" | "active" | "inactive" | "rejected" | "pending" | "approved" | undefined;
+    status?: "all" | "rejected" | "pending" | "active" | "inactive" | "approved" | undefined;
     sortBy?: "name" | "category" | "status" | "date" | undefined;
     sortOrder?: "asc" | "desc" | undefined;
     q?: string | undefined;
@@ -839,8 +839,8 @@ declare const _default: {
         email: z.ZodOptional<z.ZodString>;
         phone: z.ZodOptional<z.ZodString>;
         birthDate: z.ZodOptional<z.ZodString>;
-        gender: z.ZodOptional<z.ZodEnum<["male", "female", "other"]>>;
-        maritalStatus: z.ZodOptional<z.ZodEnum<["single", "married", "divorced", "widowed"]>>;
+        gender: z.ZodOptional<z.ZodString>;
+        maritalStatus: z.ZodOptional<z.ZodString>;
         membershipDate: z.ZodOptional<z.ZodString>;
         status: z.ZodDefault<z.ZodEnum<["active", "inactive", "visitor"]>>;
         role: z.ZodDefault<z.ZodEnum<["member", "leader", "pastor", "admin"]>>;
@@ -857,8 +857,8 @@ declare const _default: {
         address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
-        maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
-        gender?: "other" | "male" | "female" | undefined;
+        maritalStatus?: string | undefined;
+        gender?: string | undefined;
     }, {
         firstName: string;
         lastName: string;
@@ -870,8 +870,8 @@ declare const _default: {
         address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
-        maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
-        gender?: "other" | "male" | "female" | undefined;
+        maritalStatus?: string | undefined;
+        gender?: string | undefined;
     }>;
     memberUpdateSchema: z.ZodObject<{
         firstName: z.ZodOptional<z.ZodString>;
@@ -879,8 +879,8 @@ declare const _default: {
         email: z.ZodOptional<z.ZodOptional<z.ZodString>>;
         phone: z.ZodOptional<z.ZodOptional<z.ZodString>>;
         birthDate: z.ZodOptional<z.ZodOptional<z.ZodString>>;
-        gender: z.ZodOptional<z.ZodOptional<z.ZodEnum<["male", "female", "other"]>>>;
-        maritalStatus: z.ZodOptional<z.ZodOptional<z.ZodEnum<["single", "married", "divorced", "widowed"]>>>;
+        gender: z.ZodOptional<z.ZodOptional<z.ZodString>>;
+        maritalStatus: z.ZodOptional<z.ZodOptional<z.ZodString>>;
         membershipDate: z.ZodOptional<z.ZodOptional<z.ZodString>>;
         status: z.ZodOptional<z.ZodDefault<z.ZodEnum<["active", "inactive", "visitor"]>>>;
         role: z.ZodOptional<z.ZodDefault<z.ZodEnum<["member", "leader", "pastor", "admin"]>>>;
@@ -897,8 +897,8 @@ declare const _default: {
         address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
-        maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
-        gender?: "other" | "male" | "female" | undefined;
+        maritalStatus?: string | undefined;
+        gender?: string | undefined;
     }, {
         email?: string | undefined;
         role?: "member" | "leader" | "pastor" | "admin" | undefined;
@@ -910,8 +910,8 @@ declare const _default: {
         address?: string | undefined;
         birthDate?: string | undefined;
         membershipDate?: string | undefined;
-        maritalStatus?: "single" | "married" | "divorced" | "widowed" | undefined;
-        gender?: "other" | "male" | "female" | undefined;
+        maritalStatus?: string | undefined;
+        gender?: string | undefined;
     }>;
     paginationSchema: z.ZodObject<{
         page: z.ZodDefault<z.ZodEffects<z.ZodString, number, string>>;
@@ -931,13 +931,13 @@ declare const _default: {
         sortOrder: z.ZodDefault<z.ZodEnum<["asc", "desc"]>>;
     }, "strip", z.ZodTypeAny, {
         category: string;
-        status: "all" | "active" | "inactive" | "rejected" | "pending" | "approved";
+        status: "all" | "rejected" | "pending" | "active" | "inactive" | "approved";
         sortBy: "name" | "category" | "status" | "date";
         sortOrder: "asc" | "desc";
         q?: string | undefined;
     }, {
         category?: string | undefined;
-        status?: "all" | "active" | "inactive" | "rejected" | "pending" | "approved" | undefined;
+        status?: "all" | "rejected" | "pending" | "active" | "inactive" | "approved" | undefined;
         sortBy?: "name" | "category" | "status" | "date" | undefined;
         sortOrder?: "asc" | "desc" | undefined;
         q?: string | undefined;

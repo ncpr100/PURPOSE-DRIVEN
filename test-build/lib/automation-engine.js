@@ -433,6 +433,11 @@ class FormAutomationEngine {
             case 'volunteer_form':
             case 'volunteer-form':
                 return 'VOLUNTEER_APPLICATION_SUBMITTED';
+            case 'prayer':
+            case 'prayer_form':
+            case 'prayer-form':
+            case 'prayer_request':
+                return 'PRAYER_FORM_SUBMITTED';
             default:
                 return 'MEMBER_CHECK_IN'; // Default to check-in for unknown form types
         }

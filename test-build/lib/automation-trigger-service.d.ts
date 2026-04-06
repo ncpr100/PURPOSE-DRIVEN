@@ -1,6 +1,7 @@
 /**
- * Simplified Automation Trigger Service
- * Minimal implementation to avoid Prisma schema issues
+ * Automation Trigger Service
+ * Matches active automation rules against incoming trigger events,
+ * evaluates conditions, and executes configured actions.
  */
 import { AutomationTriggerType } from '@/lib/automation-engine';
 export type TriggerPayload = {

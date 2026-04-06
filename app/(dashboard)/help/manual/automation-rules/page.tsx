@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, BookOpen, Zap, CheckCircle2, Clock, RefreshCw, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, BookOpen, Zap, CheckCircle2, Clock, RefreshCw, AlertTriangle, Heart, Settings, Plus, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AutomationRulesManual() {
@@ -392,6 +392,300 @@ export default function AutomationRulesManual() {
                 <li><strong>4.</strong> Personalice el nombre, prioridad, horarios y canales</li>
                 <li><strong>5.</strong> Haga clic en <strong>&quot;Activar Plantilla&quot;</strong></li>
               </ol>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Prayer Section Urgency Routing */}
+        <Card className="border-purple-200 bg-purple-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-purple-900">
+              <Heart className="h-5 w-5 text-purple-600" />
+              Sistema de Urgencia por Sección (A / B / C)
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-purple-800">
+              Cuando configura categorías de oración con una <strong>sección (A, B o C)</strong>, el sistema
+              deriva automáticamente la prioridad y el tiempo de respuesta SLA sin que el solicitante tenga que elegirlo.
+            </p>
+
+            <div className="space-y-3">
+              {/* Section A */}
+              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-green-200">
+                <div className="bg-green-100 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-green-700">A</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-semibold text-green-900">Sección A — Oración Estándar</h4>
+                    <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                      Prioridad NORMAL
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    Peticiones de oración generales. El equipo de oración recibe notificación dentro de <strong>1 hora</strong>.
+                  </p>
+                  <div className="bg-green-50 rounded p-2 text-xs text-green-800">
+                    <strong>Acciones automáticas:</strong> Email al equipo de oración + respuesta de confirmación al solicitante
+                  </div>
+                </div>
+              </div>
+
+              {/* Section B */}
+              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-orange-200">
+                <div className="bg-orange-100 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-orange-700">B</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-semibold text-orange-900">Sección B — Oración Media</h4>
+                    <span className="bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                      Prioridad ALTA
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    Peticiones que necesitan atención. El pastor o líder recibe respuesta dentro de <strong>4 horas</strong>.
+                  </p>
+                  <div className="bg-orange-50 rounded p-2 text-xs text-orange-800">
+                    <strong>Acciones automáticas:</strong> Email al equipo + mensaje WhatsApp al pastor
+                  </div>
+                </div>
+              </div>
+
+              {/* Section C */}
+              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-red-200">
+                <div className="bg-red-100 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-red-700">C</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-semibold text-red-900">Sección C — Urgencia Inmediata</h4>
+                    <span className="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                      Prioridad URGENTE – 24/7
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700 mb-2">
+                    Crisis, enfermedad grave, peligro. Respuesta <strong>en 10 minutos</strong>, ignora horario laboral.
+                  </p>
+                  <div className="bg-red-50 rounded p-2 text-xs text-red-800">
+                    <strong>Acciones automáticas:</strong> Email URGENTE + WhatsApp inmediato al pastor (modo 24/7 activo)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Setup steps */}
+            <div className="bg-white rounded-lg border border-purple-200 p-4 mt-4">
+              <h4 className="font-semibold text-purple-900 mb-3">
+                <Settings className="h-4 w-4 inline mr-1 text-purple-600" />
+                Cómo Activar el Sistema de Secciones
+              </h4>
+              <ol className="text-sm text-gray-700 space-y-2">
+                <li>
+                  <strong>1. Instalar las 3 reglas base:</strong>{' '}
+                  Vaya a <Link href="/automation-rules/templates" className="text-blue-600 underline">Plantillas</Link>,
+                  haga clic en <strong>&quot;Instalar Reglas de Urgencia de Oración&quot;</strong> (botón azul).
+                  Esto crea automáticamente las 3 reglas para A, B y C.
+                </li>
+                <li>
+                  <strong>2. Asignar secciones a categorías:</strong>{' '}
+                  En <Link href="/prayer-requests" className="text-blue-600 underline">Peticiones de Oración</Link> → Configuración de Categorías,
+                  asigne <code className="bg-gray-100 px-1 rounded">A</code>, <code className="bg-gray-100 px-1 rounded">B</code> o <code className="bg-gray-100 px-1 rounded">C</code> a cada categoría.
+                </li>
+                <li>
+                  <strong>3. Configurar destinatarios WhatsApp:</strong>{' '}
+                  En cada regla creada (Sección B y C), edite la acción SEND_WHATSAPP y coloque
+                  el número del pastor en el campo <em>recipientPhone</em>.
+                </li>
+                <li>
+                  <strong>4. Probar:</strong>{' '}
+                  Envíe una petición de prueba con una categoría Sección C — debe llegar un WhatsApp en menos de 1 minuto.
+                </li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Custom Template Creation */}
+        <Card className="border-indigo-200 bg-indigo-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-indigo-900">
+              <Plus className="h-5 w-5 text-indigo-600" />
+              Crear Plantilla Personalizada
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-indigo-800">
+              Además de las plantillas del sistema, <strong>pastores y administradores</strong> pueden crear
+              sus propias plantillas para reutilizar flujos de trabajo específicos de su iglesia.
+            </p>
+
+            <div className="bg-white rounded-lg border border-indigo-200 p-4">
+              <h4 className="font-semibold text-indigo-900 mb-3">Pasos para crear una plantilla</h4>
+              <ol className="text-sm text-gray-700 space-y-3">
+                <li className="flex gap-2">
+                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>
+                  <span>
+                    Vaya a <Link href="/automation-rules/templates" className="text-blue-600 underline">Plantillas de Automatización</Link> y
+                    haga clic en el botón <strong>&ldquo;Crear Plantilla Personalizada&rdquo;</strong> (esquina superior derecha).
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>
+                  <span>
+                    Ingrese un <strong>nombre descriptivo</strong> (ej: &ldquo;Confirmación Evento Jóvenes&rdquo;) y una <strong>descripción</strong>.
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>
+                  <span>
+                    Seleccione la <strong>Categoría</strong> (Petición de Oración, Visitantes, Redes Sociales, Eventos, General).
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>
+                  <span>
+                    Elija el <strong>Tipo de Disparador</strong> — el evento que activará la automatización.
+                    Ej: <code className="bg-gray-100 px-1 rounded">PRAYER_REQUEST_SUBMITTED</code> o <code className="bg-gray-100 px-1 rounded">VISITOR_FIRST_TIME</code>.
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">5</span>
+                  <span>
+                    Seleccione la <strong>Acción</strong> (Email, SMS, WhatsApp, Notificación push, etc.) y escriba el
+                    <strong> mensaje</strong>. Use variables como <code className="bg-gray-100 px-1 rounded">{`{{contactName}}`}</code> para personalización.
+                  </span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">6</span>
+                  <span>
+                    Haga clic en <strong>&ldquo;Crear Plantilla&rdquo;</strong>. La plantilla aparecerá al inicio de la lista para activarla.
+                  </span>
+                </li>
+              </ol>
+            </div>
+
+            <div className="bg-indigo-100 rounded p-3 text-sm text-indigo-800">
+              <strong>Nota:</strong> Las plantillas personalizadas son visibles solo para su iglesia.
+              Las plantillas del sistema son globales y no pueden modificarse.
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* WhatsApp Setup */}
+        <Card className="border-green-200 bg-green-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-green-900">
+              <MessageSquare className="h-5 w-5 text-green-600" />
+              Configurar WhatsApp Business
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-green-800">
+              Para enviar mensajes de WhatsApp desde las automatizaciones necesita una cuenta de
+              <strong> WhatsApp Business API</strong>. Es el mismo número que usa para contactar miembros.
+            </p>
+
+            <div className="bg-white rounded-lg border border-green-200 p-4">
+              <h4 className="font-semibold text-green-900 mb-3">Requisitos</h4>
+              <ul className="text-sm space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>WHATSAPP_ACCESS_TOKEN</strong> — Token de Meta Business. Configúrelo en
+                    <Link href="/settings/integrations" className="text-blue-600 underline ml-1">Configuración → Integraciones</Link>.
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>WHATSAPP_PHONE_NUMBER_ID</strong> — ID del número en Meta Business Suite.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>El número destinatario debe tener WhatsApp activo y haber aceptado recibir mensajes.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-yellow-50 rounded p-3 text-sm text-yellow-800 border border-yellow-200">
+              <AlertTriangle className="h-4 w-4 inline mr-1 text-yellow-600" />
+              <strong>Sin WhatsApp configurado:</strong> Las acciones SEND_WHATSAPP se omiten automáticamente
+              y el sistema usa Email como canal de respaldo.
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Template Variables Reference */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Zap className="h-5 w-5 text-yellow-600" />
+              Variables de Plantilla
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Use estas variables en los mensajes de sus automatizaciones. Se reemplazan automáticamente
+              con los datos reales cuando se ejecuta la acción.
+            </p>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="text-left p-2 border border-gray-200 font-semibold">Variable</th>
+                    <th className="text-left p-2 border border-gray-200 font-semibold">Descripción</th>
+                    <th className="text-left p-2 border border-gray-200 font-semibold">Ejemplo</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr>
+                    <td className="p-2 border border-gray-200"><code className="bg-gray-100 px-1 rounded">{`{{contactName}}`}</code></td>
+                    <td className="p-2 border border-gray-200">Nombre del contacto o solicitante</td>
+                    <td className="p-2 border border-gray-200 text-gray-500">María González</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="p-2 border border-gray-200"><code className="bg-gray-100 px-1 rounded">{`{{prayerCategory}}`}</code></td>
+                    <td className="p-2 border border-gray-200">Categoría de la petición de oración</td>
+                    <td className="p-2 border border-gray-200 text-gray-500">Salud y Sanidad</td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-200"><code className="bg-gray-100 px-1 rounded">{`{{prayerPriority}}`}</code></td>
+                    <td className="p-2 border border-gray-200">Prioridad derivada (normal/high/urgent)</td>
+                    <td className="p-2 border border-gray-200 text-gray-500">urgent</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="p-2 border border-gray-200"><code className="bg-gray-100 px-1 rounded">{`{{prayerSection}}`}</code></td>
+                    <td className="p-2 border border-gray-200">Sección de urgencia de la categoría</td>
+                    <td className="p-2 border border-gray-200 text-gray-500">C</td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-200"><code className="bg-gray-100 px-1 rounded">{`{{responseTimeMinutes}}`}</code></td>
+                    <td className="p-2 border border-gray-200">SLA de respuesta en minutos</td>
+                    <td className="p-2 border border-gray-200 text-gray-500">10</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="p-2 border border-gray-200"><code className="bg-gray-100 px-1 rounded">{`{{visitReason}}`}</code></td>
+                    <td className="p-2 border border-gray-200">Motivo de visita del nuevo contacto</td>
+                    <td className="p-2 border border-gray-200 text-gray-500">Primera visita</td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 border border-gray-200"><code className="bg-gray-100 px-1 rounded">{`{{contactPhone}}`}</code></td>
+                    <td className="p-2 border border-gray-200">Teléfono del contacto</td>
+                    <td className="p-2 border border-gray-200 text-gray-500">+1 555 000 1234</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="p-2 border border-gray-200"><code className="bg-gray-100 px-1 rounded">{`{{contactEmail}}`}</code></td>
+                    <td className="p-2 border border-gray-200">Email del contacto</td>
+                    <td className="p-2 border border-gray-200 text-gray-500">maria@example.com</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bg-blue-50 p-3 rounded text-sm text-blue-800 border border-blue-200">
+              <strong>Ejemplo de mensaje con variables:</strong><br />
+              <code className="block mt-1 bg-white rounded p-2 text-xs">{`Hola {{contactName}}, recibimos tu petición de oración (Sección {{prayerSection}}). Nuestro equipo responderá en {{responseTimeMinutes}} minutos. ¡Dios te bendiga!`}</code>
             </div>
           </CardContent>
         </Card>

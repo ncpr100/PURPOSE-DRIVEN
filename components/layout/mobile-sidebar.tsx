@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect, createContext, useContext } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useSession } from 'next-auth/react'
-import { cn } from '@/lib/utils'
-import { ChurchLogo } from '@/components/ui/church-logo'
-import { Button } from '@/components/ui/button'
+import React, { useState, useEffect, createContext, useContext } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { cn } from "@/lib/utils";
+import { ChurchLogo } from "@/components/ui/church-logo";
+import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
   Users,
@@ -46,355 +46,368 @@ import {
   X,
   PanelLeftClose,
   PanelLeftOpen,
-} from 'lucide-react'
+} from "lucide-react";
 
 // Sidebar context - supports both mobile overlay and desktop collapse
 interface SidebarContextType {
-  isMobileOpen: boolean
-  setIsMobileOpen: (open: boolean) => void
-  isDesktopCollapsed: boolean
-  toggleDesktopCollapsed: () => void
+  isMobileOpen: boolean;
+  setIsMobileOpen: (open: boolean) => void;
+  isDesktopCollapsed: boolean;
+  toggleDesktopCollapsed: () => void;
 }
 
-const SidebarContext = createContext<SidebarContextType | null>(null)
+const SidebarContext = createContext<SidebarContextType | null>(null);
 
 export const useSidebar = () => {
-  const context = useContext(SidebarContext)
+  const context = useContext(SidebarContext);
   if (!context) {
-    throw new Error('useSidebar must be used within a SidebarProvider')
+    throw new Error("useSidebar must be used within a SidebarProvider");
   }
-  return context
-}
+  return context;
+};
 
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
-  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
 
-  const toggleDesktopCollapsed = () => setIsDesktopCollapsed(prev => !prev)
+  const toggleDesktopCollapsed = () => setIsDesktopCollapsed((prev) => !prev);
 
   return (
-    <SidebarContext.Provider value={{ isMobileOpen, setIsMobileOpen, isDesktopCollapsed, toggleDesktopCollapsed }}>
+    <SidebarContext.Provider
+      value={{
+        isMobileOpen,
+        setIsMobileOpen,
+        isDesktopCollapsed,
+        toggleDesktopCollapsed,
+      }}
+    >
       {children}
     </SidebarContext.Provider>
-  )
+  );
 }
 
 // Core navigation items - always visible
 const coreNavigation = [
   {
-    title: 'Panel de Control',
-    href: '/home',
+    title: "Panel de Control",
+    href: "/home",
     icon: LayoutDashboard,
-    roles: ['ADMIN_IGLESIA', 'PASTOR', 'LIDER', 'MIEMBRO'],
+    roles: ["ADMIN_IGLESIA", "PASTOR", "LIDER", "MIEMBRO"],
   },
   {
-    title: 'Miembros',
-    href: '/members',
+    title: "Miembros",
+    href: "/members",
     icon: Users,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+    roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
   },
   {
-    title: 'Voluntarios',
-    href: '/volunteers',
+    title: "Voluntarios",
+    href: "/volunteers",
     icon: UserCheck,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+    roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
   },
   {
-    title: 'Visitantes',
-    href: '/visitors',
+    title: "Visitantes",
+    href: "/visitors",
     icon: UserPlus,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+    roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
   },
   {
-    title: 'Sistema de Registro',
-    href: '/check-ins',
+    title: "Sistema de Registro",
+    href: "/check-ins",
     icon: QrCode,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+    roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
   },
   {
-    title: 'Eventos',
-    href: '/events',
+    title: "Eventos",
+    href: "/events",
     icon: Calendar,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+    roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
   },
   {
-    title: 'Donaciones',
-    href: '/donations',
+    title: "Donaciones",
+    href: "/donations",
     icon: DollarSign,
-    roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+    roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
   },
-]
+];
 
 // Grouped navigation sections
 const navigationSections = [
   {
-    title: 'Comunicación y Formularios',
+    title: "Comunicación y Formularios",
     icon: MessageSquare,
     items: [
       {
-        title: 'Comunicaciones',
-        href: '/communications',
+        title: "Comunicaciones",
+        href: "/communications",
         icon: MessageSquare,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Seguimiento de Visitantes',
-        href: '/visitor-follow-ups',
+        title: "Seguimiento de Visitantes",
+        href: "/visitor-follow-ups",
         icon: CalendarClock,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Analíticas Inteligentes',
-        href: '/intelligent-analytics',
+        title: "Analíticas Inteligentes",
+        href: "/intelligent-analytics",
         icon: Brain,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Constructor de Formularios',
-        href: '/form-builder',
+        title: "Constructor de Formularios",
+        href: "/form-builder",
         icon: QrCode,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Envíos de Formularios',
-        href: '/form-submissions',
+        title: "Envíos de Formularios",
+        href: "/form-submissions",
         icon: FileText,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Seguimientos Generales',
-        href: '/follow-ups',
+        title: "Seguimientos Generales",
+        href: "/follow-ups",
         icon: Phone,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Muro de Oración',
-        href: '/prayer-wall',
+        title: "Muro de Oración",
+        href: "/prayer-wall",
         icon: Heart,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Peticiones de Oración',
-        href: '/prayer-requests',
+        title: "Peticiones de Oración",
+        href: "/prayer-requests",
         icon: MessageSquare,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
     ],
   },
   {
-    title: 'Marketing y Automatización',
+    title: "Marketing y Automatización",
     icon: Zap,
     items: [
       {
-        title: 'Redes Sociales',
-        href: '/social-media',
+        title: "Redes Sociales",
+        href: "/social-media",
         icon: Share2,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Campañas Marketing',
-        href: '/marketing-campaigns',
+        title: "Campañas Marketing",
+        href: "/marketing-campaigns",
         icon: Megaphone,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Reglas de Automatización',
-        href: '/automation-rules',
+        title: "Reglas de Automatización",
+        href: "/automation-rules",
         icon: Zap,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"],
       },
       {
-        title: 'Notificaciones',
-        href: '/notifications',
+        title: "Notificaciones",
+        href: "/notifications",
         icon: Bell,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER', 'MIEMBRO'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER", "MIEMBRO"],
       },
     ],
   },
   {
-    title: 'Analíticas e Inteligencia',
+    title: "Analíticas e Inteligencia",
     icon: PieChart,
     items: [
       {
-        title: 'Analíticas',
-        href: '/analytics',
+        title: "Analíticas",
+        href: "/analytics",
         icon: BarChart3,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
       {
-        title: 'Perspectivas Pastorales',
-        href: '/business-intelligence',
+        title: "Perspectivas Pastorales",
+        href: "/business-intelligence",
         icon: TrendingUp,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"],
       },
       {
-        title: 'Asistente de Sermones',
-        href: '/sermons',
+        title: "Asistente de Sermones",
+        href: "/sermons",
         icon: BookOpen,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"],
       },
     ],
   },
   {
-    title: 'Configuración',
+    title: "Configuración",
     icon: Cog,
     items: [
       {
-        title: 'Perfil Personal',
-        href: '/profile',
+        title: "Perfil Personal",
+        href: "/profile",
         icon: Settings,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER', 'MIEMBRO'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER", "MIEMBRO"],
       },
       {
-        title: 'Perfil de la Iglesia',
-        href: '/settings/profile',
+        title: "Perfil de la Iglesia",
+        href: "/settings/profile",
         icon: Building2,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"],
       },
       {
-        title: 'Gestión de Permisos',
-        href: '/settings/permissions',
+        title: "Gestión de Permisos",
+        href: "/settings/permissions",
         icon: Shield,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA"],
       },
       {
-        title: 'Colores de Marca',
-        href: '/settings/branding',
+        title: "Colores de Marca",
+        href: "/settings/branding",
         icon: Palette,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA"],
       },
       {
-        title: 'Gestión de Ministerios',
-        href: '/settings/ministries',
+        title: "Gestión de Ministerios",
+        href: "/settings/ministries",
         icon: Heart,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"],
       },
       {
-        title: 'Configuración de Donaciones',
-        href: '/settings/donations',
+        title: "Configuración de Donaciones",
+        href: "/settings/donations",
         icon: DollarSign,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"],
       },
       {
-        title: 'Configuración de Notificaciones',
-        href: '/settings/notifications',
+        title: "Configuración de Notificaciones",
+        href: "/settings/notifications",
         icon: Bell,
-        roles: ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER', 'MIEMBRO'],
+        roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER", "MIEMBRO"],
       },
       {
-        title: 'Solicitar Sitio Web',
-        href: '/website-requests',
+        title: "Solicitar Sitio Web",
+        href: "/website-requests",
         icon: Globe,
-        roles: ['ADMIN_IGLESIA', 'PASTOR', 'LIDER'],
+        roles: ["ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
     ],
   },
-]
+];
 
 // Admin navigation - separate section for SUPER_ADMIN
 const adminNavigation = [
   {
-    title: 'Plataforma Admin',
-    href: '/platform/dashboard',
+    title: "Plataforma Admin",
+    href: "/platform/dashboard",
     icon: ShieldCheck,
-    roles: ['SUPER_ADMIN'],
+    roles: ["SUPER_ADMIN"],
   },
   {
-    title: 'Configuración de Plataforma',
-    href: '/settings',
+    title: "Configuración de Plataforma",
+    href: "/settings",
     icon: Settings,
-    roles: ['SUPER_ADMIN'],
+    roles: ["SUPER_ADMIN"],
   },
   {
-    title: 'Configuración de Plataforma (Tema)',
-    href: '/settings/theme',
+    title: "Configuración de Plataforma (Tema)",
+    href: "/settings/theme",
     icon: Palette,
-    roles: ['SUPER_ADMIN'],
+    roles: ["SUPER_ADMIN"],
   },
-]
+];
 
 // Help navigation - always at bottom
 const helpNavigation = [
   {
-    title: 'Ayuda',
-    href: '/help',
+    title: "Ayuda",
+    href: "/help",
     icon: HelpCircle,
-    roles: ['ADMIN_IGLESIA', 'PASTOR', 'LIDER', 'MIEMBRO'],
+    roles: ["ADMIN_IGLESIA", "PASTOR", "LIDER", "MIEMBRO"],
   },
-]
+];
 
 function SidebarContent() {
   // Safe session handling with error boundary
-  let session: any = null
-  let status = 'loading'
-  
+  let session: any = null;
+  let status = "loading";
+
   try {
-    const sessionData = useSession()
-    session = sessionData?.data
-    status = sessionData?.status || 'loading'
+    const sessionData = useSession();
+    session = sessionData?.data;
+    status = sessionData?.status || "loading";
   } catch (error) {
-    console.log('Session not available yet:', error)
-    status = 'loading'
+    console.log("Session not available yet:", error);
+    status = "loading";
   }
-  
-  const pathname = usePathname()
-  const sidebarContext = useContext(SidebarContext)
-  
+
+  const pathname = usePathname();
+  const sidebarContext = useContext(SidebarContext);
+
   // Mobile-first: Expand all sections by default for better module discovery
-  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
-    'Comunicación y Formularios': false,
-    'Marketing y Automatización': false,  // EXPANDED on mobile for full access
-    'Analíticas e Inteligencia': false,   // EXPANDED on mobile for full access 
-    'Configuración': false,               // EXPANDED on mobile for full access
-  })
-  
-  const [showAllModules, setShowAllModules] = useState(true)
+  const [collapsedSections, setCollapsedSections] = useState<
+    Record<string, boolean>
+  >({
+    "Comunicación y Formularios": false,
+    "Marketing y Automatización": false, // EXPANDED on mobile for full access
+    "Analíticas e Inteligencia": false, // EXPANDED on mobile for full access
+    Configuración: false, // EXPANDED on mobile for full access
+  });
+
+  const [showAllModules, setShowAllModules] = useState(true);
 
   // Helper function to filter items by role
   const filterItemsByRole = (items: any[]) => {
-    return items.filter(item => {
-      const hasRole = session?.user?.role && item?.roles?.includes(session.user.role as string)
-      return hasRole
-    })
-  }
+    return items.filter((item) => {
+      const hasRole =
+        session?.user?.role &&
+        item?.roles?.includes(session.user.role as string);
+      return hasRole;
+    });
+  };
 
   // Filter all navigation sections
-  const filteredCoreNavigation = filterItemsByRole(coreNavigation)
-  const filteredNavigationSections = navigationSections.map(section => ({
-    ...section,
-    items: filterItemsByRole(section.items)
-  })).filter(section => section.items.length > 0)
-  const filteredAdminNavigation = filterItemsByRole(adminNavigation)
-  const filteredHelpNavigation = filterItemsByRole(helpNavigation)
+  const filteredCoreNavigation = filterItemsByRole(coreNavigation);
+  const filteredNavigationSections = navigationSections
+    .map((section) => ({
+      ...section,
+      items: filterItemsByRole(section.items),
+    }))
+    .filter((section) => section.items.length > 0);
+  const filteredAdminNavigation = filterItemsByRole(adminNavigation);
+  const filteredHelpNavigation = filterItemsByRole(helpNavigation);
 
   const toggleSection = (sectionTitle: string) => {
-    setCollapsedSections(prev => ({
+    setCollapsedSections((prev) => ({
       ...prev,
-      [sectionTitle]: !prev[sectionTitle]
-    }))
-  }
-  
+      [sectionTitle]: !prev[sectionTitle],
+    }));
+  };
+
   // Toggle all sections at once
   const toggleAllSections = () => {
-    const newState = !showAllModules
-    setShowAllModules(newState)
+    const newState = !showAllModules;
+    setShowAllModules(newState);
     setCollapsedSections({
-      'Comunicación y Formularios': !newState,
-      'Marketing y Automatización': !newState,
-      'Analíticas e Inteligencia': !newState,
-      'Configuración': !newState,
-    })
-  }
+      "Comunicación y Formularios": !newState,
+      "Marketing y Automatización": !newState,
+      "Analíticas e Inteligencia": !newState,
+      Configuración: !newState,
+    });
+  };
 
   // Handle mobile link clicks
   const handleLinkClick = () => {
     if (sidebarContext) {
-      sidebarContext.setIsMobileOpen(false)
+      sidebarContext.setIsMobileOpen(false);
     }
-  }
+  };
 
   // Show loading state while session is loading or if session is not available
-  if (status === 'loading' || !session) {
+  if (status === "loading" || !session) {
     return (
       <div className="p-6">
         <div className="mb-8 pb-4 border-b border-border">
@@ -406,7 +419,7 @@ function SidebarContent() {
           <div className="h-8 bg-muted animate-pulse rounded"></div>
         </div>
       </div>
-    )
+    );
   }
 
   // If no user in session, show minimal navigation
@@ -420,7 +433,7 @@ function SidebarContent() {
           Cargando sesión...
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -428,7 +441,7 @@ function SidebarContent() {
       {/* Church Branding Section - Fixed at top */}
       <div className="flex-shrink-0 p-4 lg:p-6 pb-2 border-b border-border">
         <ChurchLogo size="lg" />
-        
+
         {/* Mobile: Expand/Collapse All Modules Button */}
         <div className="mt-3 lg:hidden">
           <button
@@ -437,11 +450,16 @@ function SidebarContent() {
           >
             <div className="flex items-center gap-3">
               <PieChart className="h-5 w-5 text-blue-600" />
-              <span className="font-semibold">{showAllModules ? 'Contraer' : 'Expandir'} Todos los Módulos</span>
+              <span className="font-semibold">
+                {showAllModules ? "Contraer" : "Expandir"} Todos los Módulos
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full module-counter">
-                {filteredNavigationSections.reduce((acc, section) => acc + section.items.length, 0)}
+                {filteredNavigationSections.reduce(
+                  (acc, section) => acc + section.items.length,
+                  0,
+                )}
               </span>
               {showAllModules ? (
                 <ChevronUp className="h-4 w-4 text-blue-600" />
@@ -452,177 +470,191 @@ function SidebarContent() {
           </button>
         </div>
       </div>
-      
+
       {/* Scrollable Navigation Content */}
       <div className="flex-1 overflow-y-auto mobile-sidebar-scroll scroll-indicator mobile-sidebar-content px-4 lg:px-6 py-4">
-        <nav className="space-y-1">{/* Core Navigation - Always Visible */}
-        <div className="space-y-1 mb-6">
-          {filteredCoreNavigation.map((item) => {
-            if (!item) return null
-            
-            const Icon = item.icon
-            const isActive = pathname === item.href
+        <nav className="space-y-1">
+          {/* Core Navigation - Always Visible */}
+          <div className="space-y-1 mb-6">
+            {filteredCoreNavigation.map((item) => {
+              if (!item) return null;
+
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={handleLinkClick}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation",
+                    "lg:py-2", // Smaller padding on desktop
+                    "mobile-section-header", // Touch-friendly target
+                    isActive && "bg-accent text-accent-foreground font-medium",
+                  )}
+                >
+                  <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
+                  <span className="truncate">{item.title}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Collapsible Navigation Sections */}
+          {filteredNavigationSections.map((section) => {
+            const SectionIcon = section.icon;
+            const isCollapsed = collapsedSections[section.title];
+            const hasActiveItem = section.items.some(
+              (item) => pathname === item.href,
+            );
 
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={handleLinkClick}
-                className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
-                  'lg:py-2', // Smaller padding on desktop
-                  'mobile-section-header', // Touch-friendly target
-                  isActive && 'bg-accent text-accent-foreground font-medium'
-                )}
-              >
-                <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
-                <span className="truncate">{item.title}</span>
-              </Link>
-            )
+              <div key={section.title} className="mb-4">
+                {/* Section Header */}
+                <button
+                  onClick={() => toggleSection(section.title)}
+                  className={cn(
+                    "flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all touch-manipulation",
+                    "lg:py-2", // Smaller padding on desktop
+                    "mobile-section-header", // Touch-friendly target
+                    hasActiveItem && "bg-accent/50 text-accent-foreground",
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <SectionIcon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
+                    <span className="truncate text-left">{section.title}</span>
+                  </div>
+                  {isCollapsed ? (
+                    <ChevronRight className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
+                  )}
+                </button>
+
+                {/* Section Items - smooth UP/DOWN slide animation */}
+                <div
+                  className={cn(
+                    "overflow-hidden transition-all duration-300 ease-in-out",
+                    isCollapsed
+                      ? "max-h-0 opacity-0"
+                      : "max-h-[500px] opacity-100",
+                  )}
+                >
+                  <div className="ml-6 mt-2 space-y-1">
+                    {section.items.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = pathname === item.href;
+
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={handleLinkClick}
+                          className={cn(
+                            "flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation",
+                            "lg:py-2", // Smaller padding on desktop
+                            isActive &&
+                              "bg-accent text-accent-foreground font-medium",
+                          )}
+                        >
+                          <Icon className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
+                          <span className="truncate">{item.title}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
           })}
-        </div>
 
-        {/* Collapsible Navigation Sections */}
-        {filteredNavigationSections.map((section) => {
-          const SectionIcon = section.icon
-          const isCollapsed = collapsedSections[section.title]
-          const hasActiveItem = section.items.some(item => pathname === item.href)
-
-          return (
-            <div key={section.title} className="mb-4">
-              {/* Section Header */}
-              <button
-                onClick={() => toggleSection(section.title)}
-                className={cn(
-                  'flex items-center justify-between w-full px-3 py-3 text-sm font-medium rounded-lg hover:bg-accent hover:text-accent-foreground transition-all touch-manipulation',
-                  'lg:py-2', // Smaller padding on desktop
-                  'mobile-section-header', // Touch-friendly target
-                  hasActiveItem && 'bg-accent/50 text-accent-foreground'
-                )}
-              >
-                <div className="flex items-center gap-3">
-                  <SectionIcon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
-                  <span className="truncate text-left">{section.title}</span>
-                </div>
-                {isCollapsed ? (
-                  <ChevronRight className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
-                ) : (
-                  <ChevronDown className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
-                )}
-              </button>
-
-              {/* Section Items - smooth UP/DOWN slide animation */}
-              <div className={cn(
-                'overflow-hidden transition-all duration-300 ease-in-out',
-                isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[500px] opacity-100'
-              )}>
-                <div className="ml-6 mt-2 space-y-1">
-                  {section.items.map((item) => {
-                    const Icon = item.icon
-                    const isActive = pathname === item.href
-
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={handleLinkClick}
-                        className={cn(
-                          'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
-                          'lg:py-2', // Smaller padding on desktop
-                          isActive && 'bg-accent text-accent-foreground font-medium'
-                        )}
-                      >
-                        <Icon className="h-4 w-4 lg:h-3 lg:w-3 flex-shrink-0" />
-                        <span className="truncate">{item.title}</span>
-                      </Link>
-                    )
-                  })}
+          {/* Admin Navigation - SUPER_ADMIN only */}
+          {filteredAdminNavigation.length > 0 && (
+            <div className="pt-4 border-t border-border">
+              <div className="mb-3">
+                <div className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  <ShieldCheck className="h-3 w-3 flex-shrink-0" />
+                  <span>Plataforma</span>
                 </div>
               </div>
-            </div>
-          )
-        })}
+              <div className="space-y-1">
+                {filteredAdminNavigation.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
 
-        {/* Admin Navigation - SUPER_ADMIN only */}
-        {filteredAdminNavigation.length > 0 && (
-          <div className="pt-4 border-t border-border">
-            <div className="mb-3">
-              <div className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                <ShieldCheck className="h-3 w-3 flex-shrink-0" />
-                <span>Plataforma</span>
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={handleLinkClick}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation",
+                        "lg:py-2", // Smaller padding on desktop
+                        isActive &&
+                          "bg-accent text-accent-foreground font-medium",
+                      )}
+                    >
+                      <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
+                      <span className="truncate">{item.title}</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
-            <div className="space-y-1">
-              {filteredAdminNavigation.map((item) => {
-                const Icon = item.icon
-                const isActive = pathname === item.href
+          )}
 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={handleLinkClick}
-                    className={cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
-                      'lg:py-2', // Smaller padding on desktop
-                      isActive && 'bg-accent text-accent-foreground font-medium'
-                    )}
-                  >
-                    <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
-                    <span className="truncate">{item.title}</span>
-                  </Link>
-                )
-              })}
+          {/* Help Navigation - Always at bottom */}
+          {filteredHelpNavigation.length > 0 && (
+            <div className="pt-4 border-t border-border">
+              <div className="space-y-1">
+                {filteredHelpNavigation.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={handleLinkClick}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation",
+                        "lg:py-2", // Smaller padding on desktop
+                        isActive &&
+                          "bg-accent text-accent-foreground font-medium",
+                      )}
+                    >
+                      <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
+                      <span className="truncate">{item.title}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Mobile: Module count indicator */}
+          <div className="mt-4 pt-4 border-t border-border lg:hidden">
+            <div className="text-center text-xs text-muted-foreground">
+              {filteredCoreNavigation.length +
+                filteredNavigationSections.reduce(
+                  (acc, section) => acc + section.items.length,
+                  0,
+                ) +
+                filteredAdminNavigation.length +
+                filteredHelpNavigation.length}{" "}
+              módulos disponibles
             </div>
           </div>
-        )}
-
-        {/* Help Navigation - Always at bottom */}
-        {filteredHelpNavigation.length > 0 && (
-          <div className="pt-4 border-t border-border">
-            <div className="space-y-1">
-              {filteredHelpNavigation.map((item) => {
-                const Icon = item.icon
-                const isActive = pathname === item.href
-
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={handleLinkClick}
-                    className={cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-all hover:bg-accent hover:text-accent-foreground touch-manipulation',
-                      'lg:py-2', // Smaller padding on desktop
-                      isActive && 'bg-accent text-accent-foreground font-medium'
-                    )}
-                  >
-                    <Icon className="h-5 w-5 lg:h-4 lg:w-4 flex-shrink-0" />
-                    <span className="truncate">{item.title}</span>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        )}
-        
-        {/* Mobile: Module count indicator */}
-        <div className="mt-4 pt-4 border-t border-border lg:hidden">
-          <div className="text-center text-xs text-muted-foreground">
-            {filteredCoreNavigation.length + 
-             filteredNavigationSections.reduce((acc, section) => acc + section.items.length, 0) + 
-             filteredAdminNavigation.length + 
-             filteredHelpNavigation.length} módulos disponibles
-          </div>
-        </div>
-      </nav>
+        </nav>
       </div>
     </div>
-  )
+  );
 }
 
 export function Sidebar() {
-  const sidebarContext = useContext(SidebarContext)
-  const isCollapsed = sidebarContext?.isDesktopCollapsed ?? false
+  const sidebarContext = useContext(SidebarContext);
+  const isCollapsed = sidebarContext?.isDesktopCollapsed ?? false;
 
   // Add error boundary for session-related issues
   return (
@@ -630,20 +662,22 @@ export function Sidebar() {
       {/* Desktop Sidebar - Hidden on mobile, collapsible */}
       <aside
         className={cn(
-          'hidden lg:flex lg:flex-col lg:border-r lg:bg-muted/40 transition-all duration-300 ease-in-out flex-shrink-0',
-          isCollapsed ? 'lg:w-16' : 'lg:w-64'
+          "hidden lg:flex lg:flex-col lg:border-r lg:bg-muted/40 transition-all duration-300 ease-in-out flex-shrink-0",
+          isCollapsed ? "lg:w-16" : "lg:w-64",
         )}
       >
         {/* Desktop collapse toggle button */}
-        <div className={cn(
-          'flex-shrink-0 flex items-center border-b border-border bg-muted/40 transition-all duration-300',
-          isCollapsed ? 'justify-center px-2 py-3' : 'justify-end px-3 py-2'
-        )}>
+        <div
+          className={cn(
+            "flex-shrink-0 flex items-center border-b border-border bg-muted/40 transition-all duration-300",
+            isCollapsed ? "justify-center px-2 py-3" : "justify-end px-3 py-2",
+          )}
+        >
           <button
             onClick={() => sidebarContext?.toggleDesktopCollapsed()}
             className="p-1.5 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-muted-foreground"
-            title={isCollapsed ? 'Expandir menú' : 'Colapsar menú'}
-            aria-label={isCollapsed ? 'Expandir menú' : 'Colapsar menú'}
+            title={isCollapsed ? "Expandir menú" : "Colapsar menú"}
+            aria-label={isCollapsed ? "Expandir menú" : "Colapsar menú"}
           >
             {isCollapsed ? (
               <PanelLeftOpen className="h-4 w-4" />
@@ -662,18 +696,20 @@ export function Sidebar() {
         <>
           {/* Mobile overlay backdrop */}
           {sidebarContext.isMobileOpen && (
-            <div 
+            <div
               className="fixed inset-0 z-40 bg-black/50 lg:hidden"
               onClick={() => sidebarContext.setIsMobileOpen(false)}
             />
           )}
-          
+
           {/* Mobile sidebar */}
           <div
             className={cn(
-              'fixed inset-y-0 left-0 z-50 w-80 bg-background border-r transform transition-transform duration-200 ease-in-out lg:hidden',
-              'flex flex-col', // Ensure proper flex layout for scrolling
-              sidebarContext.isMobileOpen ? 'translate-x-0' : '-translate-x-full'
+              "fixed inset-y-0 left-0 z-50 w-80 bg-background border-r transform transition-transform duration-200 ease-in-out lg:hidden",
+              "flex flex-col", // Ensure proper flex layout for scrolling
+              sidebarContext.isMobileOpen
+                ? "translate-x-0"
+                : "-translate-x-full",
             )}
           >
             {/* Mobile sidebar header with close button - Fixed */}
@@ -692,12 +728,12 @@ export function Sidebar() {
                 <span className="sr-only">Cerrar menú</span>
               </Button>
             </div>
-            
+
             {/* Mobile sidebar content - Scrollable */}
             <div className="flex-1 overflow-hidden">
               <SafeSidebarContent />
             </div>
-            
+
             {/* Mobile sidebar footer - Fixed at bottom */}
             <div className="flex-shrink-0 p-3 border-t bg-gray-50">
               <div className="text-xs text-center text-muted-foreground">
@@ -710,58 +746,62 @@ export function Sidebar() {
         </>
       )}
     </div>
-  )
+  );
 }
 
 // Collapsed sidebar - icons only with tooltips
 function CollapsedSidebarContent() {
-  let session: any = null
+  let session: any = null;
   try {
-    const s = useSession()
-    session = s?.data
+    const s = useSession();
+    session = s?.data;
   } catch (_) {}
 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const filterByRole = (items: any[]) =>
-    items.filter(item => session?.user?.role && item?.roles?.includes(session.user.role as string))
+    items.filter(
+      (item) =>
+        session?.user?.role &&
+        item?.roles?.includes(session.user.role as string),
+    );
 
   const allItems = [
     ...filterByRole(coreNavigation),
-    ...navigationSections.flatMap(s => filterByRole(s.items)),
+    ...navigationSections.flatMap((s) => filterByRole(s.items)),
     ...filterByRole(adminNavigation),
     ...filterByRole(helpNavigation),
-  ]
+  ];
 
   return (
     <div className="py-4 px-2 space-y-1 overflow-y-auto h-full">
       {allItems.map((item) => {
-        const Icon = item.icon
-        const isActive = pathname === item.href
+        const Icon = item.icon;
+        const isActive = pathname === item.href;
         return (
           <Link
             key={item.href}
             href={item.href}
             title={item.title}
             className={cn(
-              'flex items-center justify-center w-10 h-10 rounded-lg mx-auto transition-all hover:bg-accent hover:text-accent-foreground',
-              isActive && 'bg-accent text-accent-foreground'
+              "flex items-center justify-center w-10 h-10 rounded-lg mx-auto transition-all hover:bg-accent hover:text-accent-foreground",
+              isActive && "bg-accent text-accent-foreground",
             )}
           >
             <Icon className="h-5 w-5 flex-shrink-0" />
           </Link>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
 // Safe wrapper component for SidebarContent
 function SafeSidebarContent() {
   try {
-    return <SidebarContent />
+    return <SidebarContent />;
   } catch (error) {
-    console.error('Sidebar content error:', error)
+    console.error("Sidebar content error:", error);
     return (
       <div className="p-6">
         <div className="mb-8 pb-4 border-b border-border">
@@ -771,23 +811,23 @@ function SafeSidebarContent() {
           Cargando navegación...
         </div>
       </div>
-    )
+    );
   }
 }
 
 // Mobile menu button component for header - with error boundary
 export function MobileSidebarTrigger() {
-  let sidebarContext = null
-  
+  let sidebarContext = null;
+
   try {
-    sidebarContext = useContext(SidebarContext)
+    sidebarContext = useContext(SidebarContext);
   } catch (error) {
-    console.log('Sidebar context not available:', error)
-    return null
+    console.log("Sidebar context not available:", error);
+    return null;
   }
-  
+
   if (!sidebarContext) {
-    return null
+    return null;
   }
 
   return (
@@ -800,5 +840,5 @@ export function MobileSidebarTrigger() {
       <Menu className="h-5 w-5" />
       <span className="sr-only">Abrir menú</span>
     </Button>
-  )
+  );
 }
