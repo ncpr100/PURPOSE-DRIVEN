@@ -66,7 +66,18 @@ export declare class RedisCacheManager {
     constructor();
     private setupEventHandlers;
     /**
-     * Get cached data with fallback to database query
+     * Get cached data with fallback to database query.
+     *
+     * IMPORTANT: fallbackFn (the Prisma/DB query) is executed AT MOST ONCE.
+     * The previous implementation called fallbackFn() a second time inside the
+     * catch block, which doubled the number of failing Prisma queries whenever
+     * the DB was under stress — amplifying a cascade of PrismaClientRustPanicErrors
+     * into ~2x the error count (1195+ errors from a single panic event).
+     *
+     * The restructured flow is:
+     *   1. Attempt cache read (Redis) — if it fails, fall through silently.
+     *   2. Execute fallbackFn() exactly once — if it throws, propagate immediately.
+     *   3. Store result in cache and record metrics as best-effort fire-and-forget.
      */
     get<T>(key: string, fallbackFn: () => Promise<T>, options?: CacheOptions): Promise<T>;
     /**

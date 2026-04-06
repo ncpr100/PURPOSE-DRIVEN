@@ -30,11 +30,10 @@ exports.volunteerCreateSchema = zod_1.z.object({
         .max(50, 'Demasiadas habilidades')
         .optional()
         .default([]),
-    availability: zod_1.z.object({
-        days: zod_1.z.array(zod_1.z.enum(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])).optional(),
-        times: zod_1.z.array(zod_1.z.enum(['morning', 'afternoon', 'evening'])).optional(),
-        frequency: zod_1.z.enum(['weekly', 'biweekly', 'monthly', 'occasional']).optional()
-    }).optional(),
+    // FIX #004: availability is stored as a plain string in the DB and the form never sends a
+    // structured object — the old z.object() schema rejected null (sent by form) with a ZodError.
+    // Changed to z.string().optional().nullable() to match actual data flow.
+    availability: zod_1.z.string().optional().nullable(),
     ministryId: cuid_1.cuidOrEmptySchema.or(zod_1.z.literal('no-ministry')),
     // Accept any valid ID format (CUID, nanoid, UUID) — existence validated at DB level
     memberId: zod_1.z.string().min(5).max(50).optional()

@@ -1,3 +1,4 @@
+import type { UserRole } from '@prisma/client';
 /**
  * CRITICAL SECURITY: Server-side role validation utility
  * This function MUST be called in all server components that require SUPER_ADMIN access
@@ -5,11 +6,11 @@
  */
 export declare function validateSuperAdminAccess(): Promise<{
     user: {
-        name: string | null;
         id: string;
-        email: string;
-        role: import(".prisma/client").$Enums.UserRole;
+        role: UserRole;
         isActive: boolean;
+        email: string;
+        name: string | null;
     };
     session: import("next-auth").Session;
 }>;
@@ -17,10 +18,10 @@ export declare function validateSuperAdminAccess(): Promise<{
  * CRITICAL SECURITY: Validates user role for any specific role requirement
  * Used for role-based access control validation
  */
-export declare function validateUserRole(requiredRole: string): Promise<{
+export declare function validateUserRole(requiredRole: UserRole): Promise<{
     id: string;
-    email: string;
-    role: import(".prisma/client").$Enums.UserRole;
+    role: UserRole;
     isActive: boolean;
+    email: string;
 }>;
 //# sourceMappingURL=server-auth-validator.d.ts.map

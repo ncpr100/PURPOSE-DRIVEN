@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { z } from "zod";
 export declare const createCheckInSchema: z.ZodObject<{
     firstName: z.ZodString;
     lastName: z.ZodString;
-    email: z.ZodOptional<z.ZodString>;
+    email: z.ZodEffects<z.ZodOptional<z.ZodString>, string | undefined, unknown>;
     phone: z.ZodOptional<z.ZodString>;
     isFirstTime: z.ZodDefault<z.ZodBoolean>;
     visitReason: z.ZodOptional<z.ZodString>;
@@ -30,7 +30,7 @@ export declare const createCheckInSchema: z.ZodObject<{
 }, {
     firstName: string;
     lastName: string;
-    email?: string | undefined;
+    email?: unknown;
     phone?: string | undefined;
     prayer_requests?: string | undefined;
     isFirstTime?: boolean | undefined;

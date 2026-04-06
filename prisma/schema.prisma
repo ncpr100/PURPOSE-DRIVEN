@@ -1502,6 +1502,10 @@ model prayer_categories {
   color                     String?
   isActive                  Boolean                     @default(true)
   churchId                  String
+  /// Urgency section: A = standard (1hr), B = medium (4hr), C = urgent (10min)
+  section                   String?
+  /// Response time SLA in minutes (e.g. 60, 240, 10)
+  responseTimeMinutes       Int?
   createdAt                 DateTime                    @default(now())
   updatedAt                 DateTime                    @default(now())
   churches                  churches                    @relation(fields: [churchId], references: [id], onDelete: Cascade)

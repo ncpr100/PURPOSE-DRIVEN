@@ -21,7 +21,9 @@ import {
   Calendar, 
   MessageSquare,
   Sparkles,
-  Pencil
+  Pencil,
+  Plus,
+  Zap
 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
@@ -90,6 +92,16 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
   const [editName, setEditName] = useState('')
   const [editDescription, setEditDescription] = useState('')
   const [editSaving, setEditSaving] = useState(false)
+
+  // For the "Crear Plantilla Personalizada" dialog
+  const [createOpen, setCreateOpen] = useState(false)
+  const [createName, setCreateName] = useState('')
+  const [createDescription, setCreateDescription] = useState('')
+  const [createCategory, setCreateCategory] = useState('PRAYER_REQUEST')
+  const [createTrigger, setCreateTrigger] = useState('PRAYER_REQUEST_SUBMITTED')
+  const [createActionType, setCreateActionType] = useState('SEND_EMAIL')
+  const [createActionMessage, setCreateActionMessage] = useState('')
+  const [createSaving, setCreateSaving] = useState(false)
 
   useEffect(() => {
     fetchTemplates()
@@ -213,6 +225,63 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
     }
   }
 
+  const handleCreateTemplate = async () => {
+    if (!createName.trim() || !createActionMessage.trim()) return
+    setCreateSaving(true)
+    try {
+      const res = await fetch('/api/automation-templates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: createName.trim(),
+          description: createDescription.trim() || `Plantilla personalizada: ${createName.trim()}`,
+          category: createCategory,
+          triggerConfig: { triggerType: createTrigger },
+          conditionsConfig: [],
+          actionsConfig: [
+            {
+              type: createActionType,
+              config: { message: createActionMessage.trim() }
+            }
+          ]
+        })
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Error al crear la plantilla')
+      }
+      const raw = await res.json()
+      // Map raw DB shape to component interface (same mapping as GET handler)
+      const mapped = {
+        id: raw.id,
+        name: raw.name,
+        description: raw.description,
+        category: raw.category,
+        usageCount: raw.installCount ?? 0,
+        isSystem: raw.isSystemTemplate ?? false,
+        template: {
+          triggers: raw.triggerConfig,
+          conditions: raw.conditionsConfig,
+          actions: raw.actionsConfig
+        },
+        creator: raw.users ?? null
+      }
+      setTemplates(prev => [mapped, ...prev])
+      toast.success('Plantilla creada exitosamente')
+      setCreateOpen(false)
+      setCreateName('')
+      setCreateDescription('')
+      setCreateCategory('PRAYER_REQUEST')
+      setCreateTrigger('PRAYER_REQUEST_SUBMITTED')
+      setCreateActionType('SEND_EMAIL')
+      setCreateActionMessage('')
+    } catch (err: any) {
+      toast.error(err.message || 'Error al crear la plantilla')
+    } finally {
+      setCreateSaving(false)
+    }
+  }
+
   const filteredTemplates = templates.filter(template =>
     template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     template.description?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -261,7 +330,7 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
       </div>
 
       {/* Filters */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-wrap">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
@@ -285,6 +354,15 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
             ))}
           </SelectContent>
         </Select>
+
+        <Button
+          onClick={() => setCreateOpen(true)}
+          className="gap-2 ml-auto"
+          style={{ backgroundColor: brandColors.buttonBackground, color: brandColors.buttonText }}
+        >
+          <Plus className="h-4 w-4" />
+          Crear Plantilla Personalizada
+        </Button>
       </div>
 
       {/* Templates Grid */}
@@ -418,6 +496,134 @@ export function AutomationTemplates({ onSelectTemplate }: AutomationTemplatesPro
               style={{ backgroundColor: brandColors.buttonBackground, color: brandColors.buttonText }}
             >
               {editSaving ? 'Guardando...' : 'Guardar'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Crear Plantilla Personalizada Dialog */}
+      <Dialog open={createOpen} onOpenChange={(open) => { if (!open) setCreateOpen(false) }}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Zap className="h-5 w-5 text-purple-600" />
+              Crear Plantilla Personalizada
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            {/* Name */}
+            <div>
+              <Label htmlFor="create-name">
+                Nombre de la Plantilla <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="create-name"
+                placeholder="Ej. Confirmación de Petición Familiar"
+                value={createName}
+                onChange={(e) => setCreateName(e.target.value)}
+                className="mt-1"
+              />
+            </div>
+
+            {/* Description */}
+            <div>
+              <Label htmlFor="create-desc">Descripción (opcional)</Label>
+              <Textarea
+                id="create-desc"
+                placeholder="Describe cuándo y cómo se debe usar esta plantilla..."
+                value={createDescription}
+                onChange={(e) => setCreateDescription(e.target.value)}
+                rows={2}
+                className="mt-1"
+              />
+            </div>
+
+            {/* Category */}
+            <div>
+              <Label htmlFor="create-category">Categoría</Label>
+              <Select value={createCategory} onValueChange={setCreateCategory}>
+                <SelectTrigger id="create-category" className="mt-1">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PRAYER_REQUEST">Peticiones de Oración</SelectItem>
+                  <SelectItem value="VISITOR_FOLLOWUP">Seguimiento de Visitantes</SelectItem>
+                  <SelectItem value="MEMBER_ENGAGEMENT">Compromiso de Miembros</SelectItem>
+                  <SelectItem value="DONATION_MANAGEMENT">Gestión de Donaciones</SelectItem>
+                  <SelectItem value="EVENT_MANAGEMENT">Gestión de Eventos</SelectItem>
+                  <SelectItem value="CUSTOM">Personalizado</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Trigger */}
+            <div>
+              <Label htmlFor="create-trigger">Disparador (¿cuándo se activa?)</Label>
+              <Select value={createTrigger} onValueChange={setCreateTrigger}>
+                <SelectTrigger id="create-trigger" className="mt-1">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PRAYER_REQUEST_SUBMITTED">Petición de oración enviada</SelectItem>
+                  <SelectItem value="PRAYER_FORM_SUBMITTED">Formulario de oración enviado</SelectItem>
+                  <SelectItem value="VISITOR_FORM_SUBMITTED">Formulario de visitante enviado</SelectItem>
+                  <SelectItem value="FORM_SUBMITTED">Cualquier formulario enviado</SelectItem>
+                  <SelectItem value="MEMBER_JOINED">Nuevo miembro registrado</SelectItem>
+                  <SelectItem value="DONATION_RECEIVED">Donación recibida</SelectItem>
+                  <SelectItem value="BIRTHDAY">Cumpleaños de miembro</SelectItem>
+                  <SelectItem value="FOLLOW_UP_DUE">Seguimiento pendiente</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Action type */}
+            <div>
+              <Label htmlFor="create-action-type">Acción (¿qué hace al activarse?)</Label>
+              <Select value={createActionType} onValueChange={setCreateActionType}>
+                <SelectTrigger id="create-action-type" className="mt-1">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="SEND_EMAIL">Enviar Email</SelectItem>
+                  <SelectItem value="SEND_WHATSAPP">Enviar WhatsApp</SelectItem>
+                  <SelectItem value="SEND_SMS">Enviar SMS</SelectItem>
+                  <SelectItem value="CREATE_PRAYER_RESPONSE">Crear respuesta de oración</SelectItem>
+                  <SelectItem value="CREATE_FOLLOW_UP">Crear tarea de seguimiento</SelectItem>
+                  <SelectItem value="SEND_NOTIFICATION">Enviar notificación push</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Action message */}
+            <div>
+              <Label htmlFor="create-action-msg">
+                Mensaje de la Acción <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                id="create-action-msg"
+                placeholder="Usa {{contactName}}, {{prayerCategory}}, {{prayerPriority}} para personalizar..."
+                value={createActionMessage}
+                onChange={(e) => setCreateActionMessage(e.target.value)}
+                rows={3}
+                className="mt-1 font-mono text-sm"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Variables disponibles: <code>&#123;&#123;contactName&#125;&#125;</code> <code>&#123;&#123;prayerCategory&#125;&#125;</code> <code>&#123;&#123;prayerPriority&#125;&#125;</code>
+              </p>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setCreateOpen(false)}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleCreateTemplate}
+              disabled={createSaving || !createName.trim() || !createActionMessage.trim()}
+              style={{ backgroundColor: brandColors.buttonBackground, color: brandColors.buttonText }}
+            >
+              {createSaving ? 'Creando...' : 'Crear Plantilla'}
             </Button>
           </DialogFooter>
         </DialogContent>

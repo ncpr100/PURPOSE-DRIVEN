@@ -1,22 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
-import { nanoid } from 'nanoid'
-import { z } from 'zod'
+import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { nanoid } from "nanoid";
+import { z } from "zod";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 const submissionSchema = z.object({
   data: z.record(z.any()),
-  qrCode: z.string().optional()
-})
+  qrCode: z.string().optional(),
+});
 
 // GET - Fetch a visitor form by slug
-export async function GET(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+export async function GET(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> },
+) {
   const params = await props.params;
   try {
-    const { slug } = params
-    const { searchParams } = new URL(request.url)
-    const qrCode = searchParams.get('qr')
+    const { slug } = params;
+    const { searchParams } = new URL(request.url);
+    const qrCode = searchParams.get("qr");
 
     const form = await db.visitor_forms.findUnique({
       where: { slug },
@@ -27,28 +30,31 @@ export async function GET(request: NextRequest, props: { params: Promise<{ slug:
             name: true,
             address: true,
             phone: true,
-            email: true
-          }
-        }
-      }
-    })
+            email: true,
+          },
+        },
+      },
+    });
 
     if (!form || !form.isActive || !form.isPublic) {
-      return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
+      return NextResponse.json(
+        { error: "Formulario no encontrado" },
+        { status: 404 },
+      );
     }
 
     // Update QR scan count if accessed via QR
     if (qrCode) {
       await db.visitor_qr_codes.updateMany({
-        where: { 
+        where: {
           code: qrCode,
-          formId: form.id 
+          formId: form.id,
         },
-        data: { 
+        data: {
           scanCount: { increment: 1 },
-          lastScan: new Date()
-        }
-      })
+          lastScan: new Date(),
+        },
+      });
     }
 
     return NextResponse.json({
@@ -58,28 +64,30 @@ export async function GET(request: NextRequest, props: { params: Promise<{ slug:
         description: form.description,
         fields: form.fields,
         style: form.style,
-        settings: form.settings
+        settings: form.settings,
       },
       church: form.churches,
-      qrCode
-    })
-
+      qrCode,
+    });
   } catch (error) {
-    console.error('Error fetching visitor form:', error)
+    console.error("Error fetching visitor form:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
 // POST - Submit visitor form data
-export async function POST(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+export async function POST(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> },
+) {
   const params = await props.params;
   try {
-    const { slug } = params
-    const body = await request.json()
-    const { data, qrCode } = submissionSchema.parse(body)
+    const { slug } = params;
+    const body = await request.json();
+    const { data, qrCode } = submissionSchema.parse(body);
 
     // Get the form
     const form = await db.visitor_forms.findUnique({
@@ -88,21 +96,25 @@ export async function POST(request: NextRequest, props: { params: Promise<{ slug
         churches: {
           select: {
             id: true,
-            name: true
-          }
-        }
-      }
-    })
+            name: true,
+          },
+        },
+      },
+    });
 
     if (!form || !form.isActive || !form.isPublic) {
-      return NextResponse.json({ error: 'Formulario no encontrado' }, { status: 404 })
+      return NextResponse.json(
+        { error: "Formulario no encontrado" },
+        { status: 404 },
+      );
     }
 
     // Get client info
-    const clientIp = request.headers.get('x-forwarded-for') || 
-                    request.headers.get('x-real-ip') || 
-                    'unknown'
-    const userAgent = request.headers.get('user-agent') || 'unknown'
+    const clientIp =
+      request.headers.get("x-forwarded-for") ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+    const userAgent = request.headers.get("user-agent") || "unknown";
 
     // Save submission
     const submission = await db.visitor_submissions.create({
@@ -111,43 +123,53 @@ export async function POST(request: NextRequest, props: { params: Promise<{ slug
         formId: form.id,
         data: {
           ...data,
-          submittedVia: qrCode ? `QR: ${qrCode}` : 'Direct Link',
-          submittedAt: new Date().toISOString()
+          submittedVia: qrCode ? `QR: ${qrCode}` : "Direct Link",
+          submittedAt: new Date().toISOString(),
         },
         ipAddress: clientIp,
         userAgent,
-        churchId: form.churchId
-      }
-    })
+        churchId: form.churchId,
+      },
+    });
 
     // 🔥 TRIGGER AUTOMATION for visitor form submission
     try {
-      const { triggerAutomations, markAutomationTriggered } = await import('@/lib/automation-trigger-service')
-      
+      const { triggerAutomations, markAutomationTriggered } =
+        await import("@/lib/automation-trigger-service");
+
       const result = await triggerAutomations({
-        type: 'VISITOR_FORM_SUBMITTED',
+        type: "VISITOR_FORM_SUBMITTED",
         churchId: form.churchId,
         data: {
           submissionId: submission.id,
           formId: form.id,
           formName: form.name,
           qrCode: qrCode || undefined,
-          visitorName: data.firstName || data.name || 'Visitante',
+          visitorName: data.firstName || data.name || "Visitante",
           visitorEmail: data.email,
           visitorPhone: data.phone,
-          preferredContact: data.preferredContact || 'email',
+          preferredContact: data.preferredContact || "email",
           fields: data,
-          source: qrCode ? 'qr_code' : 'direct_link',
-          timestamp: new Date()
-        }
-      })
-      
+          source: qrCode ? "qr_code" : "direct_link",
+          timestamp: new Date(),
+        },
+      });
+
       if (result.success && result.rulesTriggered > 0) {
-        await markAutomationTriggered('visitor_submission', submission.id, result.executionIds)
-        console.log(`✅ Triggered ${result.rulesTriggered} automation rule(s) for visitor form ${form.name}`)
+        await markAutomationTriggered(
+          "visitor_submission",
+          submission.id,
+          result.executionIds,
+        );
+        console.log(
+          `✅ Triggered ${result.rulesTriggered} automation rule(s) for visitor form ${form.name}`,
+        );
       }
     } catch (automationError) {
-      console.error('❌ Automation trigger failed for visitor submission:', automationError)
+      console.error(
+        "❌ Automation trigger failed for visitor submission:",
+        automationError,
+      );
     }
 
     // ALWAYS create a visitor check-in for CRM tracking + auto-categorization
@@ -155,51 +177,58 @@ export async function POST(request: NextRequest, props: { params: Promise<{ slug
       const visitor = await db.check_ins.create({
         data: {
           id: nanoid(),
-          firstName: data.firstName || data.name || 'Visitante',
-          lastName: data.lastName || '',
+          firstName: data.firstName || data.name || "Visitante",
+          lastName: data.lastName || "",
           email: data.email || null,
           phone: data.phone || null,
           isFirstTime: true,
           churchId: form.churchId,
           checkedInAt: new Date(),
-          visitorType: 'first_time',
+          visitorType: "first_time",
           engagementScore: 70,
           visitReason: `Form QR: ${form.name}`,
-        }
-      })
+        },
+      });
       // Run real auto-categorization
-      const { VisitorAutomationService } = await import('@/lib/services/visitor-automation')
-      await VisitorAutomationService.processVisitor(visitor.id)
+      const { VisitorAutomationService } =
+        await import("@/lib/services/visitor-automation");
+      await VisitorAutomationService.processVisitor(visitor.id);
     } catch (error) {
-      console.log('Could not create check-in or run automation from visitor form submission:', error)
+      console.log(
+        "Could not create check-in or run automation from visitor form submission:",
+        error,
+      );
     }
 
     // Send notification if configured
-    const settings = form.settings as any
+    const settings = form.settings as any;
     if (settings?.sendNotification && settings?.notificationEmail) {
       // TODO: Send notification email
-      console.log('TODO: Send notification to', settings.notificationEmail)
+      console.log("TODO: Send notification to", settings.notificationEmail);
     }
 
-    return NextResponse.json({ 
-      success: true,
-      submissionId: submission.id,
-      thankYouMessage: settings?.thankYouMessage || 'Gracias por su información',
-      redirectUrl: settings?.redirectUrl
-    }, { status: 201 })
-
+    return NextResponse.json(
+      {
+        success: true,
+        submissionId: submission.id,
+        thankYouMessage:
+          settings?.thankYouMessage || "Gracias por su información",
+        redirectUrl: settings?.redirectUrl,
+      },
+      { status: 201 },
+    );
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Datos inválidos', details: error.errors },
-        { status: 400 }
-      )
+        { error: "Datos inválidos", details: error.errors },
+        { status: 400 },
+      );
     }
 
-    console.error('Error submitting visitor form:', error)
+    console.error("Error submitting visitor form:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
