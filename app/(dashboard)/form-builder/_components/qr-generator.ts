@@ -13,8 +13,9 @@ export async function generateAdvancedQR(url: string, qrConfig: QRConfig): Promi
     width: qrConfig.size,
     margin: qrConfig.margin,
     color: {
-      dark: qrConfig.useGradient ? '#000000' : qrConfig.foregroundColor,
-      light: qrConfig.backgroundColor
+      dark: qrConfig.useGradient ? '#000000ff' : qrConfig.foregroundColor,
+      // Transparent background when gradient is enabled so destination-in masking works correctly
+      light: qrConfig.useGradient ? '#00000000' : qrConfig.backgroundColor
     },
     errorCorrectionLevel: 'H' // High correction for logo overlay
   })
@@ -67,18 +68,42 @@ async function applyCanvasCustomizations(baseQR: string, qrConfig: QRConfig): Pr
         ctx.drawImage(img, 0, 0)
 
         // 3. Apply gradient overlay if enabled
+        // FIXED: Use destination-in masking so gradient colours only the dark QR dots,
+        // not the white background (source-atop coloured everything uniformly)
         if (qrConfig.useGradient) {
-          const gradient = qrConfig.gradientType === 'linear'
-            ? ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-            : ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2)
-          
+          const angleRad = ((qrConfig.gradientAngle ?? 0) * Math.PI) / 180
+          const cos = Math.cos(angleRad)
+          const sin = Math.sin(angleRad)
+          const cx = canvas.width / 2
+          const cy = canvas.height / 2
+          const half = canvas.width / 2
+
+          const gradient = qrConfig.gradientType === 'radial'
+            ? ctx.createRadialGradient(cx, cy, 0, cx, cy, half)
+            : ctx.createLinearGradient(
+                cx - cos * half, cy - sin * half,
+                cx + cos * half, cy + sin * half
+              )
+
           qrConfig.gradientColors.forEach((color, i) => {
-            gradient.addColorStop(i / (qrConfig.gradientColors.length - 1), color)
+            gradient.addColorStop(i / Math.max(qrConfig.gradientColors.length - 1, 1), color)
           })
-          
-          ctx.globalCompositeOperation = 'source-atop'
+
+          // Step A: Fill full canvas with gradient
+          ctx.globalCompositeOperation = 'source-over'
           ctx.fillStyle = gradient
           ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+          // Step B: destination-in — keep gradient ONLY where QR dots are opaque (transparent bg QR)
+          ctx.globalCompositeOperation = 'destination-in'
+          ctx.drawImage(img, 0, 0)
+
+          // Step C: Fill white behind the gradient dots so background isn't transparent
+          ctx.globalCompositeOperation = 'destination-over'
+          ctx.fillStyle = qrConfig.backgroundColor || '#ffffff'
+          ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+          // Reset to normal blending for subsequent steps (logo etc.)
           ctx.globalCompositeOperation = 'source-over'
         }
 
