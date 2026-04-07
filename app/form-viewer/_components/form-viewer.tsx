@@ -1,101 +1,116 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, CheckCircle, AlertCircle } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface FormField {
-  id: number
-  label: string
-  type: 'text' | 'email' | 'number' | 'checkbox' | 'textarea' | 'select' | 'radio' | 'tel' | 'date'
-  options?: string[]
-  required?: boolean
+  id: number;
+  label: string;
+  type:
+    | "text"
+    | "email"
+    | "number"
+    | "checkbox"
+    | "textarea"
+    | "select"
+    | "radio"
+    | "tel"
+    | "date";
+  options?: string[];
+  required?: boolean;
 }
 
 interface FormConfig {
-  title: string
-  description: string
-  fields: FormField[]
-  bgColor: string
-  textColor: string
-  fontFamily: string
-  bgImage: string | null
-  submitButtonText?: string
-  submitButtonColor?: string
-  submitButtonTextColor?: string
+  title: string;
+  description: string;
+  fields: FormField[];
+  bgColor: string;
+  textColor: string;
+  fontFamily: string;
+  bgImage: string | null;
+  submitButtonText?: string;
+  submitButtonColor?: string;
+  submitButtonTextColor?: string;
   // Church Branding
-  churchLogo?: string | null
-  primaryColor?: string
-  secondaryColor?: string
-  headerTextColor?: string
-  bodyTextColor?: string
-  formBackgroundColor?: string
-  borderColor?: string
-  inputBorderColor?: string
-  inputFocusColor?: string
+  churchLogo?: string | null;
+  primaryColor?: string;
+  secondaryColor?: string;
+  headerTextColor?: string;
+  bodyTextColor?: string;
+  formBackgroundColor?: string;
+  borderColor?: string;
+  inputBorderColor?: string;
+  inputFocusColor?: string;
   // Typography sizing
-  titleFontSize?: string
-  bodyFontSize?: string
-  fieldLabelFontSize?: string
-  inputFontSize?: string
+  titleFontSize?: string;
+  bodyFontSize?: string;
+  fieldLabelFontSize?: string;
+  inputFontSize?: string;
   // Layout
-  borderRadius?: string
-  formMaxWidth?: string
-  timestamp?: number
-  church?: any
+  borderRadius?: string;
+  formMaxWidth?: string;
+  timestamp?: number;
+  church?: any;
 }
 
 export default function FormViewer() {
-  const searchParams = useSearchParams()
-  const [formConfig, setFormConfig] = useState<FormConfig | null>(null)
-  const [formData, setFormData] = useState<Record<string, any>>({})
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const searchParams = useSearchParams();
+  const [formConfig, setFormConfig] = useState<FormConfig | null>(null);
+  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const data = searchParams.get('data')
-    const slug = searchParams.get('slug')
-    
+    const data = searchParams.get("data");
+    const slug = searchParams.get("slug");
+
     if (slug) {
       // PREFERRED: Load form from database using slug (short URLs)
-      fetchFormBySlug(slug)
+      fetchFormBySlug(slug);
     } else if (data) {
       // LEGACY: Support old Base64 URLs but warn about length
       if (data.length > 2000) {
-        console.warn('⚠️ URL muy larga detectada. Recomendamos guardar el formulario para URLs más cortas.')
-        toast.error('URL muy larga. Por favor, usa la versión guardada del formulario para obtener un enlace más corto.')
+        console.warn(
+          "⚠️ URL muy larga detectada. Recomendamos guardar el formulario para URLs más cortas.",
+        );
+        toast.error(
+          "URL muy larga. Por favor, usa la versión guardada del formulario para obtener un enlace más corto.",
+        );
       }
       try {
-        const decoded = JSON.parse(atob(data))
-        setFormConfig(decoded)
-        initializeFormData(decoded.fields)
-        setIsLoading(false)
+        const decoded = JSON.parse(atob(data));
+        setFormConfig(decoded);
+        initializeFormData(decoded.fields);
+        setIsLoading(false);
       } catch (err) {
-        console.error('Error decoding form data:', err)
-        setError('Error al decodificar los datos del formulario. El enlace puede estar dañado o ser demasiado largo.')
-        setIsLoading(false)
+        console.error("Error decoding form data:", err);
+        setError(
+          "Error al decodificar los datos del formulario. El enlace puede estar dañado o ser demasiado largo.",
+        );
+        setIsLoading(false);
       }
     } else {
-      setError('No se encontraron datos del formulario')
-      setIsLoading(false)
+      setError("No se encontraron datos del formulario");
+      setIsLoading(false);
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   const fetchFormBySlug = async (slug: string) => {
     try {
-      const response = await fetch(`/api/custom-form/${slug}`)
+      const response = await fetch(`/api/custom-form/${slug}`);
       if (response.ok) {
-        const result = await response.json()
-        const form = result.form
-        
+        const result = await response.json();
+        const form = result.form;
+
         // Convert database format to component format
         const formConfigData = {
           title: form.title,
@@ -126,134 +141,136 @@ export default function FormViewer() {
           // Layout
           borderRadius: form.config.borderRadius,
           formMaxWidth: form.config.formMaxWidth,
-          church: result.church
-        }
-        
-        setFormConfig(formConfigData)
-        initializeFormData(form.fields)
+          church: result.church,
+        };
+
+        setFormConfig(formConfigData);
+        initializeFormData(form.fields);
         // Track this view silently — never block form load
-        fetch(`/api/custom-form/${slug}/view`, { method: 'POST' }).catch(() => {})
+        fetch(`/api/custom-form/${slug}/view`, { method: "POST" }).catch(
+          () => {},
+        );
       } else {
-        setError('Formulario no encontrado')
+        setError("Formulario no encontrado");
       }
     } catch (err) {
-      setError('Error al cargar el formulario')
+      setError("Error al cargar el formulario");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const initializeFormData = (fields: FormField[]) => {
-    const initialData: Record<string, any> = {}
+    const initialData: Record<string, any> = {};
     fields.forEach((field: FormField) => {
-      initialData[field.id] = field.type === 'checkbox' ? false : ''
-    })
-    setFormData(initialData)
-  }
+      initialData[field.id] = field.type === "checkbox" ? false : "";
+    });
+    setFormData(initialData);
+  };
 
   const handleInputChange = (fieldId: number, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [fieldId]: value
-    }))
-  }
+      [fieldId]: value,
+    }));
+  };
 
   const validateForm = (): boolean => {
-    if (!formConfig) return false
+    if (!formConfig) return false;
 
     for (const field of formConfig.fields) {
       if (field.required) {
-        const value = formData[field.id]
-        if (!value || (typeof value === 'string' && value.trim() === '')) {
-          toast.error(`El campo "${field.label}" es requerido`)
-          return false
+        const value = formData[field.id];
+        if (!value || (typeof value === "string" && value.trim() === "")) {
+          toast.error(`El campo "${field.label}" es requerido`);
+          return false;
         }
-        
+
         // Email validation
-        if (field.type === 'email' && value) {
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (field.type === "email" && value) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRegex.test(value)) {
-            toast.error('Por favor ingrese un email válido')
-            return false
+            toast.error("Por favor ingrese un email válido");
+            return false;
           }
         }
       }
     }
 
-    return true
-  }
+    return true;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!validateForm()) return
+    e.preventDefault();
 
-    setIsSubmitting(true)
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
 
     try {
-      const slug = searchParams.get('slug')
-      const isLegacyForm = !slug && searchParams.get('data')
-      
-      let response
-      
+      const slug = searchParams.get("slug");
+      const isLegacyForm = !slug && searchParams.get("data");
+
+      let response;
+
       if (slug) {
         // Submit to specific form endpoint
         response = await fetch(`/api/custom-form/${slug}`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            data: formData
-          })
-        })
+            data: formData,
+          }),
+        });
       } else {
         // Legacy submission handler
-        response = await fetch('/api/custom-form-submission', {
-          method: 'POST',
+        response = await fetch("/api/custom-form-submission", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             formTitle: formConfig?.title,
             formData: formData,
-            timestamp: new Date().toISOString()
-          })
-        })
+            timestamp: new Date().toISOString(),
+          }),
+        });
       }
 
       if (response.ok) {
-        const result = await response.json()
-        setIsSubmitted(true)
-        toast.success(result.message || 'Formulario enviado exitosamente')
-        
-        console.log('Form submitted successfully:', {
+        const result = await response.json();
+        setIsSubmitted(true);
+        toast.success(result.message || "Formulario enviado exitosamente");
+
+        console.log("Form submitted successfully:", {
           formTitle: formConfig?.title,
           submissionId: result.submissionId,
-          visitorId: result.visitorId
-        })
+          visitorId: result.visitorId,
+        });
       } else {
-        const error = await response.json()
-        toast.error(error.error || 'Error al enviar el formulario')
+        const error = await response.json();
+        toast.error(error.error || "Error al enviar el formulario");
       }
     } catch (err) {
-      console.error('Submission error:', err)
-      toast.error('Error al enviar el formulario. Intente nuevamente.')
+      console.error("Submission error:", err);
+      toast.error("Error al enviar el formulario. Intente nuevamente.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const resetForm = () => {
-    setIsSubmitted(false)
+    setIsSubmitted(false);
     if (formConfig) {
-      const initialData: Record<string, any> = {}
+      const initialData: Record<string, any> = {};
       formConfig.fields.forEach((field) => {
-        initialData[field.id] = field.type === 'checkbox' ? false : ''
-      })
-      setFormData(initialData)
+        initialData[field.id] = field.type === "checkbox" ? false : "";
+      });
+      setFormData(initialData);
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -263,7 +280,7 @@ export default function FormViewer() {
           <p className="text-muted-foreground">Cargando formulario...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (error || !formConfig) {
@@ -274,32 +291,39 @@ export default function FormViewer() {
             <div className="text-center">
               <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
               <h2 className="text-lg font-semibold mb-2">Error</h2>
-              <p className="text-muted-foreground">{error || 'Formulario no encontrado'}</p>
+              <p className="text-muted-foreground">
+                {error || "Formulario no encontrado"}
+              </p>
             </div>
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   if (isSubmitted) {
     return (
-      <div 
+      <div
         className="min-h-screen flex items-center justify-center p-4"
         style={{
           backgroundColor: formConfig.bgColor,
-          backgroundImage: formConfig.bgImage ? `url(${formConfig.bgImage})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundImage: formConfig.bgImage
+            ? `url(${formConfig.bgImage})`
+            : "none",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
         <Card className="w-full max-w-md bg-white/95 backdrop-blur-sm">
           <CardContent className="pt-6">
             <div className="text-center">
               <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-              <h2 className="text-lg font-semibold mb-2">¡Formulario Enviado!</h2>
+              <h2 className="text-lg font-semibold mb-2">
+                ¡Formulario Enviado!
+              </h2>
               <p className="text-muted-foreground mb-6">
-                Gracias por completar el formulario. Hemos recibido su información exitosamente.
+                Gracias por completar el formulario. Hemos recibido su
+                información exitosamente.
               </p>
               <Button onClick={resetForm} variant="outline">
                 Enviar Otro Formulario
@@ -308,42 +332,51 @@ export default function FormViewer() {
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
-    <div 
+    <div
       className="min-h-screen p-4 flex items-center justify-center"
       style={{
         backgroundColor: formConfig.formBackgroundColor || formConfig.bgColor,
-        backgroundImage: formConfig.bgImage ? `url(${formConfig.bgImage})` : 'none',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundImage: formConfig.bgImage
+          ? `url(${formConfig.bgImage})`
+          : "none",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         color: formConfig.bodyTextColor || formConfig.textColor,
-        fontFamily: formConfig.fontFamily
+        fontFamily: formConfig.fontFamily,
       }}
     >
-      <Card 
+      <Card
         className="w-full bg-white/95 backdrop-blur-sm"
         style={{
-          maxWidth: formConfig.formMaxWidth || '600px',
+          maxWidth: formConfig.formMaxWidth || "600px",
           borderColor: formConfig.borderColor,
-          borderWidth: formConfig.borderColor ? '2px' : undefined
+          borderWidth: formConfig.borderColor ? "2px" : undefined,
         }}
       >
         <CardHeader className="text-center">
           {/* Church Logo */}
           {formConfig.churchLogo && (
             <div className="flex justify-center mb-4">
-              <img src={formConfig.churchLogo} alt="Church Logo" className="h-20 object-contain" />
+              <img
+                src={formConfig.churchLogo}
+                alt="Church Logo"
+                className="h-20 object-contain"
+              />
             </div>
           )}
-          
-          <h1 
+
+          <h1
             className="font-bold"
             style={{
-              color: formConfig.headerTextColor || formConfig.primaryColor || '#1f2937',
-              fontSize: formConfig.titleFontSize || '24px'
+              color:
+                formConfig.headerTextColor ||
+                formConfig.primaryColor ||
+                "#1f2937",
+              fontSize: formConfig.titleFontSize || "24px",
             }}
           >
             {formConfig.title}
@@ -351,110 +384,126 @@ export default function FormViewer() {
           {formConfig.description && (
             <p
               style={{
-                color: formConfig.bodyTextColor || '#4b5563',
-                fontSize: formConfig.bodyFontSize || '14px'
+                color: formConfig.bodyTextColor || "#4b5563",
+                fontSize: formConfig.bodyFontSize || "14px",
               }}
             >
               {formConfig.description}
             </p>
           )}
         </CardHeader>
-        
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            
             {formConfig.fields.map((field) => (
               <div key={field.id} className="space-y-2">
-                <Label 
+                <Label
                   htmlFor={`field-${field.id}`}
                   style={{
-                    color: formConfig.bodyTextColor || '#374151',
-                    fontSize: formConfig.fieldLabelFontSize || '14px'
+                    color: formConfig.bodyTextColor || "#374151",
+                    fontSize: formConfig.fieldLabelFontSize || "14px",
                   }}
                 >
                   {field.label}
-                  {field.required && <span style={{ color: formConfig.primaryColor || '#ef4444' }} className="ml-1">*</span>}
+                  {field.required && (
+                    <span
+                      style={{ color: formConfig.primaryColor || "#ef4444" }}
+                      className="ml-1"
+                    >
+                      *
+                    </span>
+                  )}
                 </Label>
-                
-                {field.type === 'textarea' ? (
+
+                {field.type === "textarea" ? (
                   <textarea
                     id={`field-${field.id}`}
                     className="w-full p-3 resize-none h-24"
                     style={{
-                      borderColor: formConfig.inputBorderColor || '#d1d5db',
-                      borderWidth: '1px',
-                      borderStyle: 'solid',
-                      borderRadius: formConfig.borderRadius || '8px',
-                      fontSize: formConfig.inputFontSize || '14px',
-                      color: '#1f2937'
+                      borderColor: formConfig.inputBorderColor || "#d1d5db",
+                      borderWidth: "1px",
+                      borderStyle: "solid",
+                      borderRadius: formConfig.borderRadius || "8px",
+                      fontSize: formConfig.inputFontSize || "14px",
+                      color: "#1f2937",
                     }}
                     placeholder={`Ingrese ${field.label.toLowerCase()}`}
-                    value={formData[field.id] || ''}
-                    onChange={(e) => handleInputChange(field.id, e.target.value)}
+                    value={formData[field.id] || ""}
+                    onChange={(e) =>
+                      handleInputChange(field.id, e.target.value)
+                    }
                     required={field.required}
                     onFocus={(e) => {
                       if (formConfig.inputFocusColor) {
-                        e.target.style.borderColor = formConfig.inputFocusColor
-                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`
+                        e.target.style.borderColor = formConfig.inputFocusColor;
+                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
                       }
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = formConfig.inputBorderColor || '#d1d5db'
-                      e.target.style.outline = 'none'
+                      e.target.style.borderColor =
+                        formConfig.inputBorderColor || "#d1d5db";
+                      e.target.style.outline = "none";
                     }}
                   />
-                ) : field.type === 'checkbox' ? (
+                ) : field.type === "checkbox" ? (
                   <div className="flex items-center space-x-2">
                     <input
                       id={`field-${field.id}`}
                       type="checkbox"
                       className="w-4 h-4 rounded"
                       style={{
-                        accentColor: formConfig.primaryColor || '#2563eb'
+                        accentColor: formConfig.primaryColor || "#2563eb",
                       }}
                       checked={formData[field.id] || false}
-                      onChange={(e) => handleInputChange(field.id, e.target.checked)}
+                      onChange={(e) =>
+                        handleInputChange(field.id, e.target.checked)
+                      }
                     />
-                    <Label 
-                      htmlFor={`field-${field.id}`} 
+                    <Label
+                      htmlFor={`field-${field.id}`}
                       className="cursor-pointer"
                       style={{
-                        color: formConfig.bodyTextColor || '#374151',
-                        fontSize: formConfig.fieldLabelFontSize || '14px'
+                        color: formConfig.bodyTextColor || "#374151",
+                        fontSize: formConfig.fieldLabelFontSize || "14px",
                       }}
                     >
                       Acepto los términos y condiciones
                     </Label>
                   </div>
-                ) : field.type === 'select' ? (
+                ) : field.type === "select" ? (
                   <select
                     id={`field-${field.id}`}
                     className="w-full p-3"
                     style={{
-                      borderColor: formConfig.inputBorderColor || '#d1d5db',
-                      borderWidth: '1px',
-                      borderStyle: 'solid',
-                      borderRadius: formConfig.borderRadius || '8px',
-                      fontSize: formConfig.inputFontSize || '14px',
-                      color: '#1f2937'
+                      borderColor: formConfig.inputBorderColor || "#d1d5db",
+                      borderWidth: "1px",
+                      borderStyle: "solid",
+                      borderRadius: formConfig.borderRadius || "8px",
+                      fontSize: formConfig.inputFontSize || "14px",
+                      color: "#1f2937",
                     }}
-                    value={formData[field.id] || ''}
-                    onChange={(e) => handleInputChange(field.id, e.target.value)}
+                    value={formData[field.id] || ""}
+                    onChange={(e) =>
+                      handleInputChange(field.id, e.target.value)
+                    }
                     required={field.required}
                     onFocus={(e) => {
                       if (formConfig.inputFocusColor) {
-                        e.target.style.borderColor = formConfig.inputFocusColor
-                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`
+                        e.target.style.borderColor = formConfig.inputFocusColor;
+                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
                       }
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = formConfig.inputBorderColor || '#d1d5db'
-                      e.target.style.outline = 'none'
+                      e.target.style.borderColor =
+                        formConfig.inputBorderColor || "#d1d5db";
+                      e.target.style.outline = "none";
                     }}
                   >
                     <option value="">Seleccione una opción</option>
                     {field.options?.map((option, index) => (
-                      <option key={index} value={option}>{option}</option>
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
                     ))}
                   </select>
                 ) : (
@@ -463,37 +512,40 @@ export default function FormViewer() {
                     type={field.type}
                     className=""
                     style={{
-                      borderColor: formConfig.inputBorderColor || '#d1d5db',
-                      borderRadius: formConfig.borderRadius || '8px',
-                      fontSize: formConfig.inputFontSize || '14px',
-                      color: '#1f2937'
+                      borderColor: formConfig.inputBorderColor || "#d1d5db",
+                      borderRadius: formConfig.borderRadius || "8px",
+                      fontSize: formConfig.inputFontSize || "14px",
+                      color: "#1f2937",
                     }}
                     placeholder={`Ingrese ${field.label.toLowerCase()}`}
-                    value={formData[field.id] || ''}
-                    onChange={(e) => handleInputChange(field.id, e.target.value)}
+                    value={formData[field.id] || ""}
+                    onChange={(e) =>
+                      handleInputChange(field.id, e.target.value)
+                    }
                     required={field.required}
                     onFocus={(e) => {
                       if (formConfig.inputFocusColor) {
-                        e.target.style.borderColor = formConfig.inputFocusColor
-                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`
+                        e.target.style.borderColor = formConfig.inputFocusColor;
+                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
                       }
                     }}
                     onBlur={(e) => {
-                      e.target.style.borderColor = formConfig.inputBorderColor || '#d1d5db'
-                      e.target.style.outline = 'none'
+                      e.target.style.borderColor =
+                        formConfig.inputBorderColor || "#d1d5db";
+                      e.target.style.outline = "none";
                     }}
                   />
                 )}
               </div>
             ))}
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isSubmitting}
               className="w-full h-12 text-lg font-semibold"
               style={{
-                backgroundColor: formConfig.submitButtonColor || '#2563eb',
-                color: formConfig.submitButtonTextColor || '#ffffff'
+                backgroundColor: formConfig.submitButtonColor || "#2563eb",
+                color: formConfig.submitButtonTextColor || "#ffffff",
               }}
             >
               {isSubmitting ? (
@@ -502,18 +554,19 @@ export default function FormViewer() {
                   Enviando...
                 </>
               ) : (
-                formConfig.submitButtonText || 'Enviar Formulario'
+                formConfig.submitButtonText || "Enviar Formulario"
               )}
             </Button>
           </form>
 
           <Alert className="mt-6">
             <AlertDescription className="text-center text-sm text-gray-600">
-              Sus datos están protegidos y serán tratados con confidencialidad según nuestras políticas de privacidad.
+              Sus datos están protegidos y serán tratados con confidencialidad
+              según nuestras políticas de privacidad.
             </AlertDescription>
           </Alert>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
