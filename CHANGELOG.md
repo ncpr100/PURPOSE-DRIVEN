@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ### Fixed
+- **Build error (Turbopack line 592) — `form-viewer.tsx`**: `formConfig.fields.map((field) => {` is a block-body arrow function; its closing was `))}` (missing the `}` that closes the block body). Changed to `); })}` so Turbopack accepts the file.
+- **QR gradient renders as solid-color rectangle — `qr-generator.ts`**: `source-atop` fills the gradient over ALL opaque canvas pixels — both dark QR dots AND the white background — making dots and background indistinguishable. Fixed with a 3-step `destination-in` masking approach: (1) fill canvas with gradient (`source-over`), (2) draw transparent-background QR with `destination-in` → gradient kept only where dark dots are opaque, (3) restore white background with `destination-over`. Also changed `generateAdvancedQR` to generate the QR with `light: '#00000000'` (transparent) when `useGradient` is enabled so the mask works correctly.
 - **Bug 3 — QR scan shows "No se encontraron datos del formulario"**: "Código QR" header button now auto-saves the form before opening the QR modal when `currentFormSlug` is null. This guarantees the QR always encodes a real `/form-viewer?slug=xxx` URL instead of a `?preview=true` fallback URL that the production server could not handle.
 - **Bug 1 — Background image not visible in form canvas**: Canvas wrapper `style` now uses `backgroundImage` exclusively when a background image is set, and only falls back to `backgroundColor` when no image is present. Previously both properties were set simultaneously — causing `backgroundColor` to paint over the image in some render paths.
 - **TypeScript: 0 errors (was 10)** — Resolved all pre-existing TypeScript compilation errors:
