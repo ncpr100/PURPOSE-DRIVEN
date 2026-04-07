@@ -4,10 +4,11 @@
 export interface FormField {
   id: number | string
   label: string
-  type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'date'
+  type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'date' | 'number' | 'heading' | 'divider'
   required: boolean
   placeholder?: string
   options?: string[]
+  headingLevel?: 1 | 2 | 3  // only used when type === 'heading'
 }
 
 export interface FormConfig {
