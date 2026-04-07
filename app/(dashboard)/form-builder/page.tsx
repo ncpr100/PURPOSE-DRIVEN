@@ -1,20 +1,21 @@
-import { Metadata } from 'next'
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { authOptions } from '@/lib/auth'
-import { Palette } from 'lucide-react'
-import BrandedFormBuilder from './_components/branded-form-builder'
+import { Metadata } from "next";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/auth";
+import { Palette } from "lucide-react";
+import BrandedFormBuilder from "./_components/branded-form-builder";
 
 export const metadata: Metadata = {
-  title: 'Constructor de Formularios | Khesed-tek',
-  description: 'Crea formularios personalizados con códigos QR branded para tu iglesia'
-}
+  title: "Constructor de Formularios | Khesed-tek",
+  description:
+    "Crea formularios personalizados con códigos QR branded para tu iglesia",
+};
 
 export default async function FormBuilderPage() {
-  const session = await getServerSession(authOptions)
-  
+  const session = await getServerSession(authOptions);
+
   if (!session?.user) {
-    redirect('/auth/signin')
+    redirect("/auth/signin");
   }
 
   return (
@@ -25,11 +26,12 @@ export default async function FormBuilderPage() {
           Constructor de Formularios
         </h1>
         <p className="text-muted-foreground">
-          Crea formularios personalizados con códigos QR branded para eventos, registros y más
+          Crea formularios personalizados con códigos QR branded para eventos,
+          registros y más
         </p>
       </div>
-      
-      <BrandedFormBuilder churchId={session.user.churchId ?? ''} />
+
+      <BrandedFormBuilder churchId={session.user.churchId ?? ""} />
     </div>
-  )
+  );
 }

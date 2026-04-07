@@ -13,8 +13,9 @@ export async function generateAdvancedQR(url: string, qrConfig: QRConfig): Promi
     width: qrConfig.size,
     margin: qrConfig.margin,
     color: {
-      dark: qrConfig.useGradient ? '#000000' : qrConfig.foregroundColor,
-      light: qrConfig.backgroundColor
+      dark: qrConfig.useGradient ? '#000000ff' : qrConfig.foregroundColor,
+      // Transparent background when gradient is enabled so destination-in masking works correctly
+      light: qrConfig.useGradient ? '#00000000' : qrConfig.backgroundColor
     },
     errorCorrectionLevel: 'H' // High correction for logo overlay
   })
@@ -67,18 +68,42 @@ async function applyCanvasCustomizations(baseQR: string, qrConfig: QRConfig): Pr
         ctx.drawImage(img, 0, 0)
 
         // 3. Apply gradient overlay if enabled
+        // FIXED: Use destination-in masking so gradient colours only the dark QR dots,
+        // not the white background (source-atop coloured everything uniformly)
         if (qrConfig.useGradient) {
-          const gradient = qrConfig.gradientType === 'linear'
-            ? ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-            : ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width/2)
-          
+          const angleRad = ((qrConfig.gradientAngle ?? 0) * Math.PI) / 180
+          const cos = Math.cos(angleRad)
+          const sin = Math.sin(angleRad)
+          const cx = canvas.width / 2
+          const cy = canvas.height / 2
+          const half = canvas.width / 2
+
+          const gradient = qrConfig.gradientType === 'radial'
+            ? ctx.createRadialGradient(cx, cy, 0, cx, cy, half)
+            : ctx.createLinearGradient(
+                cx - cos * half, cy - sin * half,
+                cx + cos * half, cy + sin * half
+              )
+
           qrConfig.gradientColors.forEach((color, i) => {
-            gradient.addColorStop(i / (qrConfig.gradientColors.length - 1), color)
+            gradient.addColorStop(i / Math.max(qrConfig.gradientColors.length - 1, 1), color)
           })
-          
-          ctx.globalCompositeOperation = 'source-atop'
+
+          // Step A: Fill full canvas with gradient
+          ctx.globalCompositeOperation = 'source-over'
           ctx.fillStyle = gradient
           ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+          // Step B: destination-in — keep gradient ONLY where QR dots are opaque (transparent bg QR)
+          ctx.globalCompositeOperation = 'destination-in'
+          ctx.drawImage(img, 0, 0)
+
+          // Step C: Fill white behind the gradient dots so background isn't transparent
+          ctx.globalCompositeOperation = 'destination-over'
+          ctx.fillStyle = qrConfig.backgroundColor || '#ffffff'
+          ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+          // Reset to normal blending for subsequent steps (logo etc.)
           ctx.globalCompositeOperation = 'source-over'
         }
 
@@ -153,10 +178,10 @@ async function applyCanvasCustomizations(baseQR: string, qrConfig: QRConfig): Pr
  * ENTERPRISE COMPLIANCE: Matches API endpoint expectations exactly
  */
 export async function uploadImage(
-  file: File, 
+  file: File,
   type: 'form-background' | 'qr-logo' | 'qr-background' | 'form-church-logo'
 ): Promise<string> {
-  // Validate file size (max 2MB for Vercel)
+  // Validate file size (max 2MB)
   if (file.size > 2 * 1024 * 1024) {
     throw new Error('La imagen debe ser menor a 2MB')
   }
@@ -166,35 +191,19 @@ export async function uploadImage(
     throw new Error('Solo se permiten archivos de imagen')
   }
 
-  try {
-    // 🔧 FIX: Use FormData instead of JSON to match API expectations
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('type', type)
-
-    console.log(`📤 Uploading ${type}: ${file.name} (${(file.size / 1024).toFixed(2)}KB)`)
-
-    // Upload to API endpoint (expects FormData)
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,  // Send FormData directly (no Content-Type header needed)
-      credentials: 'include'  // Include cookies for authentication
-    })
-
-    console.log(`📊 Upload response status: ${response.status} ${response.statusText}`)
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Upload failed' }))
-      console.error(`❌ Upload error (${response.status}):`, errorData)
-      throw new Error(errorData.error || `Error al subir imagen (${response.status})`)
+  // Convert to base64 data URL client-side — no server upload needed
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const result = e.target?.result
+      if (typeof result === 'string') {
+        console.log(`✅ ${type} converted to data URL (${(result.length / 1024).toFixed(1)}KB)`)
+        resolve(result)
+      } else {
+        reject(new Error('Error al leer el archivo de imagen'))
+      }
     }
-
-    const data = await response.json()
-    console.log(`✅ Upload successful: ${type}, URL length: ${data.url?.length || 0}`)
-    
-    return data.url
-  } catch (error: any) {
-    console.error(`❌ Upload error (${type}):`, error)
-    throw new Error(error.message || 'Error al subir la imagen')
-  }
+    reader.onerror = () => reject(new Error('Error al leer el archivo de imagen'))
+    reader.readAsDataURL(file)
+  })
 }
