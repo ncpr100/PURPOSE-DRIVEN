@@ -589,7 +589,8 @@ export default function FormViewer() {
                   />
                 )}
               </div>
-            ))}
+            );
+          })}
 
             <Button
               type="submit"
