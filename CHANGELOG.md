@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ### Fixed
+- **Bug 3 — QR scan shows "No se encontraron datos del formulario"**: "Código QR" header button now auto-saves the form before opening the QR modal when `currentFormSlug` is null. This guarantees the QR always encodes a real `/form-viewer?slug=xxx` URL instead of a `?preview=true` fallback URL that the production server could not handle.
+- **Bug 1 — Background image not visible in form canvas**: Canvas wrapper `style` now uses `backgroundImage` exclusively when a background image is set, and only falls back to `backgroundColor` when no image is present. Previously both properties were set simultaneously — causing `backgroundColor` to paint over the image in some render paths.
 - **TypeScript: 0 errors (was 10)** — Resolved all pre-existing TypeScript compilation errors:
   - `app/api/automation-rules/seed-prayer-urgency/route.ts`: Cast whole Prisma `create.data` object as `any` to satisfy type-checker for extended schema fields (`triggerType`, `priorityLevel`, `conditionsConfig`, `actionsConfig`) that exist in the DB but are outside the base `automation_rulesCreateInput` type
   - `app/api/form-builder/route.ts`: Added `"heading"` and `"divider"` to Zod field-type enum; added `placeholder` and `headingLevel` validation to match new `FormField` types introduced in WYSIWYG redesign
