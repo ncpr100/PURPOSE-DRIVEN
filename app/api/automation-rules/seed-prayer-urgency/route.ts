@@ -136,12 +136,12 @@ export async function POST(request: NextRequest) {
           isActive: true,
           churchId,
           createdBy: user.id,
-          triggerType: ruleDef.triggerType as any,
-          priorityLevel: ruleDef.priorityLevel as any,
+          triggerType: ruleDef.triggerType,
+          priorityLevel: ruleDef.priorityLevel,
           urgentMode24x7: (ruleDef as any).urgentMode24x7 ?? false,
-          conditionsConfig: ruleDef.conditionsConfig as any,
-          actionsConfig: ruleDef.actionsConfig as any
-        }
+          conditionsConfig: ruleDef.conditionsConfig,
+          actionsConfig: ruleDef.actionsConfig
+        } as any
       })
 
       created.push({ id: rule.id, name: rule.name })

@@ -2,100 +2,119 @@
 // Extracted from branded-form-builder.tsx to reduce bundle size
 
 export interface FormField {
-  id: number | string
-  label: string
-  type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'date' | 'number' | 'heading' | 'divider'
-  required: boolean
-  placeholder?: string
-  options?: string[]
-  headingLevel?: 1 | 2 | 3  // only used when type === 'heading'
+  id: number | string;
+  label: string;
+  type:
+    | "text"
+    | "email"
+    | "tel"
+    | "textarea"
+    | "select"
+    | "checkbox"
+    | "radio"
+    | "date"
+    | "number"
+    | "heading"
+    | "divider";
+  required: boolean;
+  placeholder?: string;
+  options?: string[];
+  headingLevel?: 1 | 2 | 3; // only used when type === 'heading'
 }
 
 export interface FormConfig {
-  title: string
-  description?: string
-  fields: FormField[]
-  
+  title: string;
+  description?: string;
+  fields: FormField[];
+
   // Submit Button Customization
-  submitButtonText?: string
-  submitButtonColor?: string
-  submitButtonTextColor?: string
-  
+  submitButtonText?: string;
+  submitButtonColor?: string;
+  submitButtonTextColor?: string;
+
   // Church Branding & Personalization
-  backgroundImage?: string       // Form background image
-  churchLogo?: string            // Church logo on form
-  primaryColor?: string          // Primary brand color
-  secondaryColor?: string        // Secondary brand color
-  headerTextColor?: string       // Form title color
-  bodyTextColor?: string         // Form description/field text color
-  fontFamily?: string            // Typography selection
-  formBackgroundColor?: string   // Form container background
-  borderColor?: string           // Form border color
-  inputBorderColor?: string      // Input field border color
-  inputFocusColor?: string       // Input focus state color
+  backgroundImage?: string; // Form background image
+  churchLogo?: string; // Church logo on form
+  primaryColor?: string; // Primary brand color
+  secondaryColor?: string; // Secondary brand color
+  headerTextColor?: string; // Form title color
+  bodyTextColor?: string; // Form description/field text color
+  fontFamily?: string; // Typography selection
+  formBackgroundColor?: string; // Form container background
+  borderColor?: string; // Form border color
+  inputBorderColor?: string; // Input field border color
+  inputFocusColor?: string; // Input focus state color
 
   // Typography sizing
-  titleFontSize?: string         // Form title font size e.g. '24px'
-  bodyFontSize?: string          // Description/general text size e.g. '14px'
-  fieldLabelFontSize?: string    // Field label font size e.g. '14px'
-  inputFontSize?: string         // Input text font size e.g. '14px'
+  titleFontSize?: string; // Form title font size e.g. '24px'
+  bodyFontSize?: string; // Description/general text size e.g. '14px'
+  fieldLabelFontSize?: string; // Field label font size e.g. '14px'
+  inputFontSize?: string; // Input text font size e.g. '14px'
 
   // Layout
-  borderRadius?: string          // Input & container border radius e.g. '8px'
-  formMaxWidth?: string          // Max form width e.g. '600px'
+  borderRadius?: string; // Input & container border radius e.g. '8px'
+  formMaxWidth?: string; // Max form width e.g. '600px'
 }
 
 export interface QRConfig {
   // Basic settings
-  size: number
-  margin: number
-  backgroundColor: string
-  foregroundColor: string
-  
+  size: number;
+  margin: number;
+  backgroundColor: string;
+  foregroundColor: string;
+
   // Advanced styling
-  dotType: 'square' | 'rounded' | 'dots' | 'classy'
-  cornerType: 'square' | 'rounded' | 'circle'
-  
+  dotType: "square" | "rounded" | "dots" | "classy";
+  cornerType: "square" | "rounded" | "circle";
+
   // Gradient options
-  useGradient: boolean
-  gradientType: 'linear' | 'radial'
-  gradientColors: string[]
-  gradientAngle: number
-  
+  useGradient: boolean;
+  gradientType: "linear" | "radial";
+  gradientColors: string[];
+  gradientAngle: number;
+
   // Background options
-  useBackgroundImage: boolean
-  backgroundImage?: string
-  backgroundOpacity: number
-  
+  useBackgroundImage: boolean;
+  backgroundImage?: string;
+  backgroundOpacity: number;
+
   // ENHANCED: Logo/overlay with enterprise features
-  logoImage?: string
-  logoSize: number
-  logoOpacity: number
-  logoMargin: number
-  logoShape: 'circle' | 'square' | 'rounded'
-  logoBackgroundColor: string
-  logoBackgroundOpacity: number
-  
+  logoImage?: string;
+  logoSize: number;
+  logoOpacity: number;
+  logoMargin: number;
+  logoShape: "circle" | "square" | "rounded";
+  logoBackgroundColor: string;
+  logoBackgroundOpacity: number;
+
   // Eye (corner squares) customization
-  eyeColor: string
-  eyeBorderColor: string
-  eyeShape: 'square' | 'rounded' | 'circle'
+  eyeColor: string;
+  eyeBorderColor: string;
+  eyeShape: "square" | "rounded" | "circle";
 }
 
 export interface PresetField {
-  id: string
-  label: string
-  type: 'text' | 'email' | 'tel' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'date'
-  icon: string
-  category: string
-  options?: string[]
+  id: string;
+  label: string;
+  type:
+    | "text"
+    | "email"
+    | "tel"
+    | "textarea"
+    | "select"
+    | "checkbox"
+    | "radio"
+    | "date";
+  icon: string;
+  category: string;
+  options?: string[];
 }
 
 export interface SmartTemplate {
-  id: string
-  name: string
-  description: string
-  icon: string
-  category: string
-  fields: Partial<FormField>[]
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  category: string;
+  fields: Partial<FormField>[];
 }
