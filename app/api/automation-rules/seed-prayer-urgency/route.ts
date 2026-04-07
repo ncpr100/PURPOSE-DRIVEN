@@ -128,6 +128,7 @@ export async function POST(request: NextRequest) {
         continue
       }
 
+      // 1. Create the automation rule (only columns that exist on the model)
       const rule = await db.automation_rules.create({
         data: {
           id: nanoid(),
@@ -136,13 +137,49 @@ export async function POST(request: NextRequest) {
           isActive: true,
           churchId,
           createdBy: user.id,
-          triggerType: ruleDef.triggerType,
           priorityLevel: ruleDef.priorityLevel,
           urgentMode24x7: (ruleDef as any).urgentMode24x7 ?? false,
-          conditionsConfig: ruleDef.conditionsConfig,
-          actionsConfig: ruleDef.actionsConfig
-        } as any
+        }
       })
+
+      // 2. Create trigger (triggerType belongs in automation_triggers, not automation_rules)
+      await db.automation_triggers.create({
+        data: {
+          id: nanoid(),
+          ruleId: rule.id,
+          type: ruleDef.triggerType as any,
+          configuration: {},
+        }
+      })
+
+      // 3. Create conditions (conditionsConfig belongs in automation_conditions)
+      for (const cond of ruleDef.conditionsConfig) {
+        await db.automation_conditions.create({
+          data: {
+            id: nanoid(),
+            ruleId: rule.id,
+            type: cond.type as any,
+            field: cond.field,
+            operator: 'EQUALS',
+            value: cond.value as any,
+            logicalOperator: 'AND',
+          }
+        })
+      }
+
+      // 4. Create actions (actionsConfig belongs in automation_actions)
+      let orderIndex = 0
+      for (const action of ruleDef.actionsConfig) {
+        await db.automation_actions.create({
+          data: {
+            id: nanoid(),
+            ruleId: rule.id,
+            type: action.type as any,
+            configuration: action.config || {},
+            orderIndex: orderIndex++,
+          }
+        })
+      }
 
       created.push({ id: rule.id, name: rule.name })
     }

@@ -153,10 +153,10 @@ async function applyCanvasCustomizations(baseQR: string, qrConfig: QRConfig): Pr
  * ENTERPRISE COMPLIANCE: Matches API endpoint expectations exactly
  */
 export async function uploadImage(
-  file: File, 
+  file: File,
   type: 'form-background' | 'qr-logo' | 'qr-background' | 'form-church-logo'
 ): Promise<string> {
-  // Validate file size (max 2MB for Vercel)
+  // Validate file size (max 2MB)
   if (file.size > 2 * 1024 * 1024) {
     throw new Error('La imagen debe ser menor a 2MB')
   }
@@ -166,35 +166,19 @@ export async function uploadImage(
     throw new Error('Solo se permiten archivos de imagen')
   }
 
-  try {
-    // 🔧 FIX: Use FormData instead of JSON to match API expectations
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('type', type)
-
-    console.log(`📤 Uploading ${type}: ${file.name} (${(file.size / 1024).toFixed(2)}KB)`)
-
-    // Upload to API endpoint (expects FormData)
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,  // Send FormData directly (no Content-Type header needed)
-      credentials: 'include'  // Include cookies for authentication
-    })
-
-    console.log(`📊 Upload response status: ${response.status} ${response.statusText}`)
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Upload failed' }))
-      console.error(`❌ Upload error (${response.status}):`, errorData)
-      throw new Error(errorData.error || `Error al subir imagen (${response.status})`)
+  // Convert to base64 data URL client-side — no server upload needed
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const result = e.target?.result
+      if (typeof result === 'string') {
+        console.log(`✅ ${type} converted to data URL (${(result.length / 1024).toFixed(1)}KB)`)
+        resolve(result)
+      } else {
+        reject(new Error('Error al leer el archivo de imagen'))
+      }
     }
-
-    const data = await response.json()
-    console.log(`✅ Upload successful: ${type}, URL length: ${data.url?.length || 0}`)
-    
-    return data.url
-  } catch (error: any) {
-    console.error(`❌ Upload error (${type}):`, error)
-    throw new Error(error.message || 'Error al subir la imagen')
-  }
+    reader.onerror = () => reject(new Error('Error al leer el archivo de imagen'))
+    reader.readAsDataURL(file)
+  })
 }

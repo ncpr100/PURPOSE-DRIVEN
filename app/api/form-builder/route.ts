@@ -170,6 +170,7 @@ export async function POST(request: NextRequest) {
           id: form.id,
           title: form.title,
           slug: form.slug,
+          qrCodeUrl: form.qrCodeUrl,
           createdAt: form.createdAt,
         },
       },

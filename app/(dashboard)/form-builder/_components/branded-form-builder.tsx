@@ -144,6 +144,7 @@ export default function BrandedFormBuilder({
   const [showTemplates, setShowTemplates] = useState(true);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [currentFormSlug, setCurrentFormSlug] = useState<string | null>(null);
+  const [currentFormQRUrl, setCurrentFormQRUrl] = useState<string | null>(null);
 
   // 3-PANEL WYSIWYG STATE
   const [selectedFieldId, setSelectedFieldId] = useState<
@@ -169,6 +170,14 @@ export default function BrandedFormBuilder({
   useEffect(() => {
     qrConfigRef.current = qrConfig;
   }, [qrConfig]);
+  const currentFormSlugRef = useRef(currentFormSlug);
+  useEffect(() => {
+    currentFormSlugRef.current = currentFormSlug;
+  }, [currentFormSlug]);
+  const currentFormQRUrlRef = useRef(currentFormQRUrl);
+  useEffect(() => {
+    currentFormQRUrlRef.current = currentFormQRUrl;
+  }, [currentFormQRUrl]);
 
   // Save to localStorage immediately (instant backup)
   const saveToLocalStorage = useCallback(
@@ -177,6 +186,9 @@ export default function BrandedFormBuilder({
         const draftData = {
           formConfig: config,
           qrConfig: qrConfiguration,
+          // Persist slug so QR generation works after page reload
+          slug: currentFormSlugRef.current,
+          qrCodeUrl: currentFormQRUrlRef.current,
           timestamp: new Date().toISOString(),
           version: "1.0",
         };
@@ -203,6 +215,9 @@ export default function BrandedFormBuilder({
           // Only restore if less than 24 hours old
           setFormConfig(draftData.formConfig);
           setQRConfig(draftData.qrConfig);
+          // Restore slug so QR generation works immediately after page reload
+          if (draftData.slug) setCurrentFormSlug(draftData.slug);
+          if (draftData.qrCodeUrl) setCurrentFormQRUrl(draftData.qrCodeUrl);
           setLastSaved(savedTime);
           setHasUnsavedChanges(false);
 
@@ -453,6 +468,7 @@ export default function BrandedFormBuilder({
       if (response.ok) {
         const savedForm = await response.json();
         setCurrentFormSlug(savedForm.form.slug);
+        setCurrentFormQRUrl(savedForm.form.qrCodeUrl || null);
         setSavedForms((prev) => [savedForm.form, ...prev]);
         clearAutoSave();
         toast.success(
@@ -564,6 +580,9 @@ export default function BrandedFormBuilder({
   };
 
   const buildFormUrl = () => {
+    // Prefer the DB-stored URL (uses NEXTAUTH_URL = production domain)
+    // Falls back to window.location.origin for preview/local use
+    if (currentFormQRUrl) return currentFormQRUrl;
     const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
     return currentFormSlug
       ? `${baseUrl}/form-viewer?slug=${currentFormSlug}`
@@ -662,7 +681,13 @@ export default function BrandedFormBuilder({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setShowQRModal(true)}
+              onClick={async () => {
+                // Auto-save first so QR always encodes a real slug URL (never a preview URL)
+                if (!currentFormSlug) {
+                  await saveForm();
+                }
+                setShowQRModal(true);
+              }}
               className="flex items-center gap-2 text-purple-600 border-purple-300"
             >
               <QrCode className="h-4 w-4" />
@@ -886,8 +911,17 @@ export default function BrandedFormBuilder({
               className="w-full shadow-lg rounded-xl overflow-hidden"
               style={{
                 maxWidth: formConfig.formMaxWidth || "640px",
-                backgroundColor: formConfig.formBackgroundColor || "#ffffff",
                 fontFamily: formConfig.fontFamily || "Inter, sans-serif",
+                ...(formConfig.backgroundImage
+                  ? {
+                      backgroundImage: `url(${formConfig.backgroundImage})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }
+                  : {
+                      backgroundColor: formConfig.formBackgroundColor || "#ffffff",
+                    }),
               }}
             >
               {/* Church Logo */}
