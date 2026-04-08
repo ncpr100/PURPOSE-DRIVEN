@@ -30,7 +30,9 @@ const formBuilderSchema = z.object({
       options: z.array(z.string()).optional(),
       required: z.boolean().optional(),
       placeholder: z.string().optional(),
-      headingLevel: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
+      headingLevel: z
+        .union([z.literal(1), z.literal(2), z.literal(3)])
+        .optional(),
     }),
   ),
   config: z.object({

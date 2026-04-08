@@ -920,7 +920,8 @@ export default function BrandedFormBuilder({
                       backgroundRepeat: "no-repeat",
                     }
                   : {
-                      backgroundColor: formConfig.formBackgroundColor || "#ffffff",
+                      backgroundColor:
+                        formConfig.formBackgroundColor || "#ffffff",
                     }),
               }}
             >
