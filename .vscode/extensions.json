@@ -3,7 +3,7 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
-    "prisma.prisma",
+    "prisma.prisma",  // Keep at v6.x to match @prisma/client 6.7.0 in package.json
     "ms-vscode.vscode-typescript-next",
     "github.copilot",
     "github.copilot-chat"
