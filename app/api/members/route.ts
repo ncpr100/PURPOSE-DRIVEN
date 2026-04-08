@@ -17,7 +17,6 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { nanoid } from 'nanoid'
-import { checkRateLimit } from '@/lib/rate-limit'
 import { memberSchema, paginationSchema, searchSchema } from '@/lib/validation-schemas'
 import { z } from 'zod'
 
@@ -25,18 +24,6 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {
-    // ✅ SECURITY: Rate limiting
-    const rateLimitResult = await checkRateLimit(request, 'members-read')
-    if (!rateLimitResult.success) {
-      return NextResponse.json(
-        { 
-          error: 'Demasiadas solicitudes. Intente nuevamente más tarde.',
-          code: 'RATE_LIMIT_EXCEEDED' 
-        },
-        { status: 429 }
-      )
-    }
-
     // ✅ SECURITY: Authentication check
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
@@ -454,18 +441,6 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    // ✅ SECURITY: Rate limiting for member creation
-    const rateLimitResult = await checkRateLimit(request, 'members-create')
-    if (!rateLimitResult.success) {
-      return NextResponse.json(
-        { 
-          error: 'Demasiadas solicitudes. Intente nuevamente más tarde.',
-          code: 'RATE_LIMIT_EXCEEDED' 
-        },
-        { status: 429 }
-      )
-    }
-
     // ✅ SECURITY: Authentication check
     // NOTE: Session validation is sufficient CSRF protection for same-origin requests.
     // validateCSRFToken() was removed — it used an in-memory Map that is always empty

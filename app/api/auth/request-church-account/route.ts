@@ -14,7 +14,6 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { checkRateLimit } from '@/lib/rate-limit'
 import { z } from 'zod'
 import { sanitizeHtml } from '@/lib/validation-schemas'
 
@@ -77,19 +76,9 @@ export async function POST(request: NextRequest) {
       }, { status: 201 })
     }
 
-    // ✅ SECURITY: Rate limiting to prevent spam (2 requests per IP per hour)
-    const rateLimitResult = await checkRateLimit(request, 'church-account-request')
-    if (!rateLimitResult.success) {
-      return NextResponse.json(
-        { 
-          error: 'Demasiadas solicitudes. Intente nuevamente más tarde.',
-          code: 'RATE_LIMIT_EXCEEDED',
-          retryAfter: Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000)
-        },
-        { status: 429 }
-      )
-    }
-
+    // NOTE: Rate limiting is not implemented (see PROJECT_SOURCE_OF_TRUTH §13.4).
+    // The previous in-memory rate limiter reset on every Vercel cold start and provided
+    // no real protection. Proper rate limiting via @upstash/ratelimit is a Phase 4 task.
     const body = await request.json()
 
     // ✅ SECURITY: Input validation and sanitization
