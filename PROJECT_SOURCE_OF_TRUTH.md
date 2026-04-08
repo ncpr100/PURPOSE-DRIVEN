@@ -1,8 +1,9 @@
 # PROJECT SOURCE OF TRUTH
 ## Khesed-Tek Church Management System
 
-**Document Version**: 1.0  
+**Document Version**: 1.1  
 **Established**: March 2026  
+**Last Updated**: April 2026  
 **Authority**: Lead System Architect  
 **Status**: CANONICAL — All AI agents and developers MUST follow this document
 
@@ -298,3 +299,170 @@ Both Spanish and English accepted. Form currently sends **Spanish values**:
 6. ❌ Never add `validateCSRFToken` to an API route without also updating the frontend to fetch and send the token
 7. ❌ Never use `member-form.tsx` — it is orphaned. Use `enhanced-member-form.tsx`
 8. ❌ Never add diagnostic/test pages to proper route directories — use `scripts/` directory
+9. ❌ **Never rely on `lib/rate-limit.ts` as a hard security control in production.** The in-memory `Map` is reset on every Vercel serverless cold start. It provides zero cross-invocation protection. Current usage in `app/api/members/route.ts` returns 429 only within a single warm invocation window — not across requets from different Lambda instances. Until replaced with a persistent store (e.g., `@upstash/ratelimit` backed by Redis), consider it best-effort only. See §13.4 for the approved migration path.
+
+---
+
+## 11. HEALTH METRICS — DEFINITION OF "100% HEALTH"
+
+This section defines quantitative targets. All checks must pass before a release is considered production-ready.
+
+### 11.1 API Correctness
+| Check | Target |
+|-------|--------|
+| All API routes return 2xx for valid authenticated requests | ✅ 100% |
+| All API routes return 4xx for invalid/unauthenticated requests | ✅ 100% |
+| No API route returns 5xx for expected error conditions | ✅ 0 occurrences |
+| `GET /api/health` returns `{ "status": "healthy" }` with HTTP 200 | ✅ Required |
+
+### 11.2 Frontend Quality
+| Check | Target |
+|-------|--------|
+| No JavaScript errors in browser console on any dashboard page | ✅ 0 errors |
+| All forms save successfully (members, volunteers, donations) | ✅ 100% |
+| Toast notifications displayed on API errors | ✅ Required |
+
+### 11.3 Database & Migrations
+| Check | Target |
+|-------|--------|
+| `db.$queryRaw SELECT 1` completes within 2 seconds | ✅ Required |
+| Prisma migrations run without conflicts | ✅ Required |
+| `GET /api/health` returns a non-null `lastMigration` | ✅ Required |
+
+### 11.4 Authentication & Authorization
+| Check | Target |
+|-------|--------|
+| Middleware blocks unauthenticated access to all protected routes | ✅ 100% |
+| LIDER cannot PUT members (returns 403) | ✅ Required |
+| MIEMBRO cannot GET members (returns 403) | ✅ Required |
+| No API route calls `validateCSRFToken()` | ✅ 0 occurrences |
+
+### 11.5 Build Quality
+| Check | Target |
+|-------|--------|
+| `npm run type-check` exits 0 | ✅ Required |
+| `npm run lint` exits 0 | ✅ Required |
+| `npm run build` completes without errors | ✅ Required |
+| No orphaned/stale imports in the codebase | ✅ Required |
+
+### 11.6 Stale Files (Pending Cleanup — Requires Approval)
+The following files exist but are not part of the active application. They must be removed before the app can reach 100% health. **Deletion requires explicit [PROCEED] from lead engineer.**
+
+| File | Type | Safe to Delete? |
+|------|------|-----------------|
+| `components/members/member-form.tsx` | Orphaned component (replaced by `enhanced-member-form.tsx`) | ✅ No imports |
+| `app/test-member-integration/page.tsx` | Stale debug route | ✅ Not in nav |
+| `app/test-assessment/page.tsx` | Stale debug route | ✅ Not in nav |
+| `app/test-members-api/page.tsx` | Stale debug route | ✅ Not in nav |
+| `app/(dashboard)/gender-diagnostic/page.tsx` | Stale debug route | ✅ Not in nav |
+| `archive/` directory | Old migration artifacts | ✅ Not imported |
+| `test-build/` directory | Compiled build artifacts | ✅ Not source code |
+| `*.js` files at project root (~15 files) | One-time diagnostic scripts | ✅ Not imported |
+
+---
+
+## 12. ENVIRONMENT VARIABLES — REQUIRED FOR PRODUCTION
+
+Missing any of the variables marked **CRITICAL** will cause `GET /api/health` to return 503.
+
+### 12.1 Critical (App will not start without these)
+| Variable | Purpose |
+|----------|---------|
+| `DATABASE_URL` | PostgreSQL connection string (Prisma) |
+| `NEXTAUTH_SECRET` | JWT signing key — must be ≥32 random characters |
+| `NEXTAUTH_URL` | Full public URL of the app (e.g., `https://app.khesed-tek.com`) |
+
+### 12.2 Communication (Optional but recommended)
+| Variable | Purpose |
+|----------|---------|
+| `MAILGUN_API_KEY` | Email delivery |
+| `MAILGUN_DOMAIN` | Mailgun sender domain |
+| `TWILIO_ACCOUNT_SID` | SMS messaging |
+| `TWILIO_AUTH_TOKEN` | SMS authentication |
+| `WHATSAPP_ACCESS_TOKEN` | WhatsApp Business API |
+
+### 12.3 Payments (Required if payment features enabled)
+| Variable | Purpose |
+|----------|---------|
+| `STRIPE_SECRET_KEY` | Stripe server-side key |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe client-side key |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook validation |
+| `PADDLE_API_KEY` | Paddle subscription billing |
+| `PADDLE_WEBHOOK_SECRET` | Paddle webhook validation |
+
+### 12.4 Social Media OAuth (Required if social media module enabled)
+| Variable | Purpose |
+|----------|---------|
+| `FACEBOOK_CLIENT_ID` | Meta OAuth app ID |
+| `FACEBOOK_CLIENT_SECRET` | Meta OAuth app secret |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID (YouTube) |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+| `SOCIAL_MEDIA_ENCRYPTION_KEY` | AES-256 key for token storage |
+
+### 12.5 Performance (Optional)
+| Variable | Purpose |
+|----------|---------|
+| `REDIS_URL` | Redis connection for caching (falls back to in-memory) |
+
+### 12.6 Verification
+```bash
+# Verify all critical vars are set before deploying
+node -e "
+const required = ['DATABASE_URL','NEXTAUTH_SECRET','NEXTAUTH_URL'];
+const missing = required.filter(k => !process.env[k]);
+if (missing.length) { console.error('MISSING:', missing); process.exit(1); }
+console.log('All critical env vars present');
+"
+```
+
+---
+
+## 13. DEPLOYMENT VERIFICATION CHECKLIST
+
+Run this sequence after every `git push origin main` or PR merge.
+
+### 13.1 Pre-Deploy (CI Gate — must all pass)
+```bash
+npm run type-check   # TypeScript — zero errors required
+npm run lint         # ESLint — zero errors required
+npm run build        # Next.js build — must complete without errors
+```
+
+### 13.2 Post-Deploy (Production Verification)
+```bash
+# Health probe — must return { "status": "healthy" }
+curl -s https://YOUR_DOMAIN/api/health | python3 -m json.tool
+
+# Auth is protecting routes (unauthenticated must get 401/403)
+curl -s https://YOUR_DOMAIN/api/members | python3 -m json.tool
+# Expected: { "error": "Unauthorized" } with HTTP 401
+
+# Member creation (replace TOKEN with a valid session token)
+# Expected: 201 Created
+```
+
+### 13.3 Full Quality Gate
+```bash
+# Runs lint + type-check + test:compile in one command
+npm run health:full
+```
+
+### 13.4 Rate-Limit Migration Path (Future)
+The current `lib/rate-limit.ts` uses an in-memory `Map` that resets on every serverless cold start. When this becomes critical:
+
+**Option A — Remove** (acceptable for auth-protected routes with low abuse risk):
+- Delete `lib/rate-limit.ts`
+- Remove `checkRateLimit()` calls from `app/api/members/route.ts` and `app/api/auth/request-church-account/route.ts`
+
+**Option B — Replace** (recommended for public endpoints):
+- Install `@upstash/ratelimit` and `@upstash/redis` (both MIT licensed, approved for addition)
+- Set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` environment variables
+- Replace `checkRateLimit()` calls with `@upstash/ratelimit` sliding window limiter
+- **Requires [PROCEED] before implementation**
+
+### 13.5 TypeScript Strictness Roadmap
+`tsconfig.json` currently has `"strict": false` for legacy compatibility. To reach full strict mode:
+- Enable `"strict": true` in `tsconfig.json`
+- Run `npm run type-check` and fix all new errors (estimated: 50-100 implicit `any` warnings)
+- **Requires [PROCEED] before implementation** — do NOT enable without a dedicated fix pass
+
