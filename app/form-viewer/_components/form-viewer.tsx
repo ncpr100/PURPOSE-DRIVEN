@@ -108,10 +108,13 @@ export default function FormViewer() {
       const previewTitle = searchParams.get("title");
       if (isPreview === "true") {
         // Show a minimal preview form with the title from the URL
-        const title = previewTitle ? decodeURIComponent(previewTitle) : "Vista Previa del Formulario";
+        const title = previewTitle
+          ? decodeURIComponent(previewTitle)
+          : "Vista Previa del Formulario";
         setFormConfig({
           title,
-          description: "Este formulario está en modo vista previa. Guárdalo en el Constructor de Formularios para que sea completamente funcional y escaneable.",
+          description:
+            "Este formulario está en modo vista previa. Guárdalo en el Constructor de Formularios para que sea completamente funcional y escaneable.",
           fields: [],
           bgColor: "#ffffff",
           textColor: "#000000",
@@ -383,7 +386,10 @@ export default function FormViewer() {
                 backgroundRepeat: "no-repeat",
               }
             : {
-                backgroundColor: formConfig.formBackgroundColor || formConfig.bgColor || "#ffffff",
+                backgroundColor:
+                  formConfig.formBackgroundColor ||
+                  formConfig.bgColor ||
+                  "#ffffff",
               }),
         }}
       >
@@ -431,14 +437,21 @@ export default function FormViewer() {
                 return <hr key={field.id} className="border-gray-200 my-2" />;
               }
               if (field.type === "heading") {
-                const sizes: Record<number, string> = { 1: "22px", 2: "18px", 3: "15px" };
+                const sizes: Record<number, string> = {
+                  1: "22px",
+                  2: "18px",
+                  3: "15px",
+                };
                 const Tag = `h${field.headingLevel || 2}` as React.ElementType;
                 return (
                   <Tag
                     key={field.id}
                     className="font-bold"
                     style={{
-                      color: formConfig.headerTextColor || formConfig.bodyTextColor || "#111827",
+                      color:
+                        formConfig.headerTextColor ||
+                        formConfig.bodyTextColor ||
+                        "#111827",
                       fontSize: sizes[field.headingLevel || 2],
                     }}
                   >
@@ -448,149 +461,152 @@ export default function FormViewer() {
               }
 
               return (
-              <div key={field.id} className="space-y-2">
-                <Label
-                  htmlFor={`field-${field.id}`}
-                  style={{
-                    color: formConfig.bodyTextColor || "#374151",
-                    fontSize: formConfig.fieldLabelFontSize || "14px",
-                  }}
-                >
-                  {field.label}
-                  {field.required && (
-                    <span
-                      style={{ color: formConfig.primaryColor || "#ef4444" }}
-                      className="ml-1"
-                    >
-                      *
-                    </span>
-                  )}
-                </Label>
-
-                {field.type === "textarea" ? (
-                  <textarea
-                    id={`field-${field.id}`}
-                    className="w-full p-3 resize-none h-24"
+                <div key={field.id} className="space-y-2">
+                  <Label
+                    htmlFor={`field-${field.id}`}
                     style={{
-                      borderColor: formConfig.inputBorderColor || "#d1d5db",
-                      borderWidth: "1px",
-                      borderStyle: "solid",
-                      borderRadius: formConfig.borderRadius || "8px",
-                      fontSize: formConfig.inputFontSize || "14px",
-                      color: "#1f2937",
-                    }}
-                    placeholder={`Ingrese ${field.label.toLowerCase()}`}
-                    value={formData[field.id] || ""}
-                    onChange={(e) =>
-                      handleInputChange(field.id, e.target.value)
-                    }
-                    required={field.required}
-                    onFocus={(e) => {
-                      if (formConfig.inputFocusColor) {
-                        e.target.style.borderColor = formConfig.inputFocusColor;
-                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
-                      }
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor =
-                        formConfig.inputBorderColor || "#d1d5db";
-                      e.target.style.outline = "none";
-                    }}
-                  />
-                ) : field.type === "checkbox" ? (
-                  <div className="flex items-center space-x-2">
-                    <input
-                      id={`field-${field.id}`}
-                      type="checkbox"
-                      className="w-4 h-4 rounded"
-                      style={{
-                        accentColor: formConfig.primaryColor || "#2563eb",
-                      }}
-                      checked={formData[field.id] || false}
-                      onChange={(e) =>
-                        handleInputChange(field.id, e.target.checked)
-                      }
-                    />
-                    <Label
-                      htmlFor={`field-${field.id}`}
-                      className="cursor-pointer"
-                      style={{
-                        color: formConfig.bodyTextColor || "#374151",
-                        fontSize: formConfig.fieldLabelFontSize || "14px",
-                      }}
-                    >
-                      Acepto los términos y condiciones
-                    </Label>
-                  </div>
-                ) : field.type === "select" ? (
-                  <select
-                    id={`field-${field.id}`}
-                    className="w-full p-3"
-                    style={{
-                      borderColor: formConfig.inputBorderColor || "#d1d5db",
-                      borderWidth: "1px",
-                      borderStyle: "solid",
-                      borderRadius: formConfig.borderRadius || "8px",
-                      fontSize: formConfig.inputFontSize || "14px",
-                      color: "#1f2937",
-                    }}
-                    value={formData[field.id] || ""}
-                    onChange={(e) =>
-                      handleInputChange(field.id, e.target.value)
-                    }
-                    required={field.required}
-                    onFocus={(e) => {
-                      if (formConfig.inputFocusColor) {
-                        e.target.style.borderColor = formConfig.inputFocusColor;
-                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
-                      }
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor =
-                        formConfig.inputBorderColor || "#d1d5db";
-                      e.target.style.outline = "none";
+                      color: formConfig.bodyTextColor || "#374151",
+                      fontSize: formConfig.fieldLabelFontSize || "14px",
                     }}
                   >
-                    <option value="">Seleccione una opción</option>
-                    {field.options?.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <Input
-                    id={`field-${field.id}`}
-                    type={field.type}
-                    className=""
-                    style={{
-                      borderColor: formConfig.inputBorderColor || "#d1d5db",
-                      borderRadius: formConfig.borderRadius || "8px",
-                      fontSize: formConfig.inputFontSize || "14px",
-                      color: "#1f2937",
-                    }}
-                    placeholder={`Ingrese ${field.label.toLowerCase()}`}
-                    value={formData[field.id] || ""}
-                    onChange={(e) =>
-                      handleInputChange(field.id, e.target.value)
-                    }
-                    required={field.required}
-                    onFocus={(e) => {
-                      if (formConfig.inputFocusColor) {
-                        e.target.style.borderColor = formConfig.inputFocusColor;
-                        e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
+                    {field.label}
+                    {field.required && (
+                      <span
+                        style={{ color: formConfig.primaryColor || "#ef4444" }}
+                        className="ml-1"
+                      >
+                        *
+                      </span>
+                    )}
+                  </Label>
+
+                  {field.type === "textarea" ? (
+                    <textarea
+                      id={`field-${field.id}`}
+                      className="w-full p-3 resize-none h-24"
+                      style={{
+                        borderColor: formConfig.inputBorderColor || "#d1d5db",
+                        borderWidth: "1px",
+                        borderStyle: "solid",
+                        borderRadius: formConfig.borderRadius || "8px",
+                        fontSize: formConfig.inputFontSize || "14px",
+                        color: "#1f2937",
+                      }}
+                      placeholder={`Ingrese ${field.label.toLowerCase()}`}
+                      value={formData[field.id] || ""}
+                      onChange={(e) =>
+                        handleInputChange(field.id, e.target.value)
                       }
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor =
-                        formConfig.inputBorderColor || "#d1d5db";
-                      e.target.style.outline = "none";
-                    }}
-                  />
-                )}
-              </div>
-            );
-          })}
+                      required={field.required}
+                      onFocus={(e) => {
+                        if (formConfig.inputFocusColor) {
+                          e.target.style.borderColor =
+                            formConfig.inputFocusColor;
+                          e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
+                        }
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor =
+                          formConfig.inputBorderColor || "#d1d5db";
+                        e.target.style.outline = "none";
+                      }}
+                    />
+                  ) : field.type === "checkbox" ? (
+                    <div className="flex items-center space-x-2">
+                      <input
+                        id={`field-${field.id}`}
+                        type="checkbox"
+                        className="w-4 h-4 rounded"
+                        style={{
+                          accentColor: formConfig.primaryColor || "#2563eb",
+                        }}
+                        checked={formData[field.id] || false}
+                        onChange={(e) =>
+                          handleInputChange(field.id, e.target.checked)
+                        }
+                      />
+                      <Label
+                        htmlFor={`field-${field.id}`}
+                        className="cursor-pointer"
+                        style={{
+                          color: formConfig.bodyTextColor || "#374151",
+                          fontSize: formConfig.fieldLabelFontSize || "14px",
+                        }}
+                      >
+                        Acepto los términos y condiciones
+                      </Label>
+                    </div>
+                  ) : field.type === "select" ? (
+                    <select
+                      id={`field-${field.id}`}
+                      className="w-full p-3"
+                      style={{
+                        borderColor: formConfig.inputBorderColor || "#d1d5db",
+                        borderWidth: "1px",
+                        borderStyle: "solid",
+                        borderRadius: formConfig.borderRadius || "8px",
+                        fontSize: formConfig.inputFontSize || "14px",
+                        color: "#1f2937",
+                      }}
+                      value={formData[field.id] || ""}
+                      onChange={(e) =>
+                        handleInputChange(field.id, e.target.value)
+                      }
+                      required={field.required}
+                      onFocus={(e) => {
+                        if (formConfig.inputFocusColor) {
+                          e.target.style.borderColor =
+                            formConfig.inputFocusColor;
+                          e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
+                        }
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor =
+                          formConfig.inputBorderColor || "#d1d5db";
+                        e.target.style.outline = "none";
+                      }}
+                    >
+                      <option value="">Seleccione una opción</option>
+                      {field.options?.map((option, index) => (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <Input
+                      id={`field-${field.id}`}
+                      type={field.type}
+                      className=""
+                      style={{
+                        borderColor: formConfig.inputBorderColor || "#d1d5db",
+                        borderRadius: formConfig.borderRadius || "8px",
+                        fontSize: formConfig.inputFontSize || "14px",
+                        color: "#1f2937",
+                      }}
+                      placeholder={`Ingrese ${field.label.toLowerCase()}`}
+                      value={formData[field.id] || ""}
+                      onChange={(e) =>
+                        handleInputChange(field.id, e.target.value)
+                      }
+                      required={field.required}
+                      onFocus={(e) => {
+                        if (formConfig.inputFocusColor) {
+                          e.target.style.borderColor =
+                            formConfig.inputFocusColor;
+                          e.target.style.outline = `2px solid ${formConfig.inputFocusColor}40`;
+                        }
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor =
+                          formConfig.inputBorderColor || "#d1d5db";
+                        e.target.style.outline = "none";
+                      }}
+                    />
+                  )}
+                </div>
+              );
+            })}
 
             <Button
               type="submit"
