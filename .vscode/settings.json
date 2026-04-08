@@ -28,6 +28,13 @@
     ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
   ],
   "prisma.fileWatcher": true,
+  "prisma.prismaCliPath": "./node_modules/.bin/prisma",
+  // The Prisma VS Code extension may auto-update to v7.x language server rules
+  // while this project uses Prisma 6.7.0. If you see "url is no longer supported"
+  // errors on prisma/schema.prisma, downgrade the Prisma extension to v6.x or run
+  // `npx prisma validate` to confirm the schema is actually valid (it is).
+  // Do NOT upgrade Prisma to v7 without a dedicated migration PR (see SOURCE_OF_TRUTH §13).
+  "prisma.enableLanguageServer": false,
   "markdown.validate.enabled": false,
   "markdown.validate.fileLinks.enabled": false,
   "markdown.validate.fragmentLinks.enabled": false,

@@ -3,68 +3,85 @@ import { db } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
-/**
- * Railway Health Check Endpoint
- * 
- * This endpoint is used by Railway to verify that the application is running
- * and can connect to essential services like the database.
- */
-export async function GET(request: NextRequest) {
-  try {
-    // Test database connection
-    await db.$queryRaw`SELECT 1`
-    
-    // Return healthy status
-    return NextResponse.json({
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      service: 'khesed-tek-platform',
-      version: process.env.npm_package_version || '1.1.0',
-      environment: process.env.NODE_ENV || 'production',
-      railway: !!process.env.RAILWAY_ENVIRONMENT
-    }, {
-      status: 200,
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Content-Type': 'application/json'
-      }
-    })
-  } catch (error) {
-    console.error('Health check failed:', error)
-    
-    // Return unhealthy status
-    return NextResponse.json({
-      status: 'unhealthy',
-      timestamp: new Date().toISOString(),
-      service: 'khesed-tek-platform',
-      error: error instanceof Error ? error.message : 'Unknown error',
-      environment: process.env.NODE_ENV || 'production'
-    }, {
-      status: 503,
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Content-Type': 'application/json'
-      }
-    })
-  }
+/** Required environment variables — all must be non-empty for a healthy deployment */
+const REQUIRED_ENV_VARS = [
+  'DATABASE_URL',
+  'NEXTAUTH_SECRET',
+  'NEXTAUTH_URL',
+]
+
+function checkEnvVars(): { ok: boolean; missing: string[] } {
+  const missing = REQUIRED_ENV_VARS.filter((key) => !process.env[key])
+  return { ok: missing.length === 0, missing }
 }
 
-// Support HEAD requests for basic health checks
-export async function HEAD(request: NextRequest) {
+/**
+ * Health Check Endpoint
+ *
+ * Vercel / Railway health probe — checks database connectivity, required
+ * environment variables, and last applied Prisma migration.
+ * Returns 200 when healthy, 503 when any critical check fails.
+ */
+export async function GET(request: NextRequest) {
+  const timestamp = new Date().toISOString()
+
+  // 1. Environment variables
+  const envCheck = checkEnvVars()
+
+  // 2. Database connectivity + last migration
+  let database: 'connected' | 'disconnected' = 'disconnected'
+  let lastMigration: string | null = null
+
   try {
-    // Quick health check without database query for HEAD requests
-    return new NextResponse(null, {
-      status: 200,
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate'
-      }
-    })
-  } catch (error) {
-    return new NextResponse(null, {
-      status: 503,
-      headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate'
-      }
-    })
+    await db.$queryRaw`SELECT 1`
+    database = 'connected'
+
+    // Pull the most recently applied Prisma migration name
+    const rows = await db.$queryRaw<{ migration_name: string; finished_at: Date | null }[]>`
+      SELECT migration_name, finished_at
+      FROM _prisma_migrations
+      WHERE finished_at IS NOT NULL
+      ORDER BY finished_at DESC
+      LIMIT 1
+    `
+    if (rows.length > 0) {
+      lastMigration = rows[0].migration_name
+    }
+  } catch {
+    // database stays 'disconnected', lastMigration stays null
   }
+
+  const isHealthy = database === 'connected' && envCheck.ok
+
+  const body = {
+    status: isHealthy ? 'healthy' : 'unhealthy',
+    timestamp,
+    service: 'khesed-tek-platform',
+    version: process.env.npm_package_version || '1.1.0',
+    environment: process.env.NODE_ENV || 'production',
+    checks: {
+      database,
+      lastMigration,
+      envVars: envCheck.ok ? 'ok' : `missing: ${envCheck.missing.join(', ')}`,
+      // Note: in-memory rate-limit resets on every cold start (Vercel serverless).
+      // This is a known anti-pattern — see PROJECT_SOURCE_OF_TRUTH.md §10.
+      rateLimiting: 'in-memory (non-persistent — see anti-patterns)',
+    },
+  }
+
+  return NextResponse.json(body, {
+    status: isHealthy ? 200 : 503,
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+/** HEAD — lightweight probe (no DB query) used by load balancers */
+export async function HEAD(_request: NextRequest) {
+  return new NextResponse(null, {
+    status: 200,
+    headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+  })
 }
