@@ -1663,6 +1663,14 @@ Before implementing or deleting ANY code, **ALWAYS** execute these 8 steps in or
 - ✅ **Knowledge sharing**: Ensure team understands the fix and prevention
 - **Example**: Platform fix led to enhanced null safety patterns now documented for all future development
 
+**STEP 9: UNRELATED ERRORS — FIX AFTER MAIN TASK ONLY (MANDATORY)**
+- ✅ **Finish first**: Always complete the assigned task before touching unrelated errors
+- ✅ **Log don't fix**: When an unrelated error is spotted mid-task, note it (comment or memory) — do NOT interrupt the current work
+- ✅ **Separate commit**: Fixes for unrelated errors must go in their own commit with a clear message (e.g., `fix(pre-existing): ...`)
+- ✅ **Scope discipline**: Never mix unrelated fixes into the same commit as the primary task — this obscures diffs and complicates rollbacks
+- ✅ **Verify pre-existence**: Before fixing, confirm the error existed before the current task started (`git diff main -- <file>`)
+- **Example**: Pre-existing TS2698 spread-type error in `__tests__/validation-schemas.test.ts` was noted during the AI ministry agents branch work, then fixed in a separate commit `38170f6` after the schema and security tasks were complete
+
 ### **DEPLOYMENT PROTOCOL** (MANDATORY - ENTERPRISE COMPLIANCE)
 **⚠️ CRITICAL**: **AFTER EVERY COMPLETED TASK** - Execute `git push origin main` to Vercel production deployment **IMMEDIATELY** upon task completion. **NO EXCEPTIONS**.
 
@@ -2363,6 +2371,14 @@ const detectVisitorForm = (formData) => {
 - ✅ **Create safeguards**: Implement checks to prevent similar issues
 - ✅ **Knowledge sharing**: Ensure team understands the fix and prevention
 - **Example**: Platform fix led to enhanced null safety patterns now documented for all future development
+
+**STEP 9: UNRELATED ERRORS — FIX AFTER MAIN TASK ONLY (MANDATORY)**
+- ✅ **Finish first**: Always complete the assigned task before touching unrelated errors
+- ✅ **Log don't fix**: When an unrelated error is spotted mid-task, note it (comment or memory) — do NOT interrupt the current work
+- ✅ **Separate commit**: Fixes for unrelated errors must go in their own commit with a clear message (e.g., `fix(pre-existing): ...`)
+- ✅ **Scope discipline**: Never mix unrelated fixes into the same commit as the primary task — this obscures diffs and complicates rollbacks
+- ✅ **Verify pre-existence**: Before fixing, confirm the error existed before the current task started (`git diff main -- <file>`)
+- **Example**: Pre-existing TS2698 spread-type error in `__tests__/validation-schemas.test.ts` was noted during the AI ministry agents branch work, then fixed in a separate commit `38170f6` after the schema and security tasks were complete
 
 ### **DEPLOYMENT PROTOCOL** (MANDATORY)
 **AFTER EVERY COMPLETED TASK**: Execute `git push` to production deployment immediately upon task completion. This ensures all updates are automatically deployed to the live production environment without delay.
