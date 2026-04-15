@@ -1,88 +1,90 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { nanoid } from "nanoid";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
 
-
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { nanoid } from 'nanoid'
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
-
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // GET all donation categories for a church
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
 
     if (!session?.user?.churchId) {
-      return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ message: "No autorizado" }, { status: 401 });
     }
 
     let categories = await db.donation_categories.findMany({
       where: {
         churchId: session.user.churchId,
-        isActive: true
+        isActive: true,
       },
       orderBy: {
-        name: 'asc'
-      }
-    })
+        name: "asc",
+      },
+    });
 
     // Auto-seed default categories if none exist for this church
     if (categories.length === 0) {
       const defaults = [
-        { name: 'Diezmos', description: 'Diezmos de los miembros' },
-        { name: 'Ofrendas', description: 'Ofrendas generales' },
-        { name: 'Misiones', description: 'Fondo de misiones' },
-        { name: 'Construcción', description: 'Fondo de construcción e infraestructura' },
-        { name: 'Benevolencia', description: 'Ayuda a familias necesitadas' },
-      ]
+        { name: "Diezmos", description: "Diezmos de los miembros" },
+        { name: "Ofrendas", description: "Ofrendas generales" },
+        { name: "Misiones", description: "Fondo de misiones" },
+        {
+          name: "Construcción",
+          description: "Fondo de construcción e infraestructura",
+        },
+        { name: "Benevolencia", description: "Ayuda a familias necesitadas" },
+      ];
       await db.donation_categories.createMany({
-        data: defaults.map(d => ({
+        data: defaults.map((d) => ({
           id: nanoid(),
           name: d.name,
           description: d.description,
           churchId: session.user.churchId,
           isActive: true,
-          updatedAt: new Date()
-        })) as any
-      })
+          updatedAt: new Date(),
+        })) as any,
+      });
       categories = await db.donation_categories.findMany({
         where: { churchId: session.user.churchId, isActive: true },
-        orderBy: { name: 'asc' }
-      })
+        orderBy: { name: "asc" },
+      });
     }
 
-    return NextResponse.json(categories)
-
+    return NextResponse.json(categories);
   } catch (error) {
-    console.error('Error fetching donation categories:', error)
+    console.error("Error fetching donation categories:", error);
     return NextResponse.json(
-      { message: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { message: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
 // CREATE a new donation category
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
 
     if (!session?.user?.churchId) {
-      return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ message: "No autorizado" }, { status: 401 });
     }
 
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
-      return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
+    if (
+      !["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"].includes(session.user.role)
+    ) {
+      return NextResponse.json({ message: "Sin permisos" }, { status: 403 });
     }
 
-    const { name, description } = await request.json()
+    const { name, description } = await request.json();
 
     if (!name) {
       return NextResponse.json(
-        { message: 'El nombre de la categoría es requerido' },
-        { status: 400 }
-      )
+        { message: "El nombre de la categoría es requerido" },
+        { status: 400 },
+      );
     }
 
     // Verificar que no exista otra categoría con el mismo nombre
@@ -90,15 +92,15 @@ export async function POST(request: NextRequest) {
       where: {
         name,
         churchId: session.user.churchId,
-        isActive: true
-      }
-    })
+        isActive: true,
+      },
+    });
 
     if (existingCategory) {
       return NextResponse.json(
-        { message: 'Ya existe una categoría con este nombre' },
-        { status: 409 }
-      )
+        { message: "Ya existe una categoría con este nombre" },
+        { status: 409 },
+      );
     }
 
     const category = await db.donation_categories.create({
@@ -106,18 +108,16 @@ export async function POST(request: NextRequest) {
         id: nanoid(),
         name,
         description,
-        churchId: session.user.churchId
-      }
-    })
+        churchId: session.user.churchId,
+      },
+    });
 
-    return NextResponse.json(category, { status: 201 })
-
+    return NextResponse.json(category, { status: 201 });
   } catch (error) {
-    console.error('Error creating donation category:', error)
+    console.error("Error creating donation category:", error);
     return NextResponse.json(
-      { message: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { message: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
-

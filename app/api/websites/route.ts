@@ -1,26 +1,29 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { nanoid } from 'nanoid'
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { nanoid } from "nanoid";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // GET /api/websites - Get all websites for church
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     const user = await db.users.findUnique({
       where: { id: session.user.id },
-      include: { churches: true }
-    })
+      include: { churches: true },
+    });
 
     if (!user?.churchId) {
-      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+      return NextResponse.json(
+        { error: "Usuario sin iglesia asignada" },
+        { status: 403 },
+      );
     }
 
     const websites = await db.websites.findMany({
@@ -29,63 +32,72 @@ export async function GET(request: NextRequest) {
         _count: {
           select: {
             web_pages: true,
-            funnels: true
-          }
-        }
+            funnels: true,
+          },
+        },
       },
-      orderBy: { createdAt: 'desc' }
-    })
+      orderBy: { createdAt: "desc" },
+    });
 
-    return NextResponse.json(websites)
+    return NextResponse.json(websites);
   } catch (error) {
-    console.error('Error fetching websites:', error)
+    console.error("Error fetching websites:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
 // POST /api/websites - Create new website
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     const user = await db.users.findUnique({
       where: { id: session.user.id },
-      include: { churches: true }
-    })
+      include: { churches: true },
+    });
 
     if (!user?.churchId) {
-      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+      return NextResponse.json(
+        { error: "Usuario sin iglesia asignada" },
+        { status: 403 },
+      );
     }
 
     // Check permissions
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
-      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    if (!["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"].includes(user.role)) {
+      return NextResponse.json(
+        { error: "Permisos insuficientes" },
+        { status: 403 },
+      );
     }
 
-    const body = await request.json()
-    const { name, domain, description, settings = {} } = body
+    const body = await request.json();
+    const { name, domain, description, settings = {} } = body;
 
     if (!name) {
-      return NextResponse.json({ error: 'El nombre es requerido' }, { status: 400 })
+      return NextResponse.json(
+        { error: "El nombre es requerido" },
+        { status: 400 },
+      );
     }
 
     // Check for existing domain
     if (domain) {
       const existingDomain = await db.websites.findFirst({
-        where: { domain, id: { not: undefined } }
-      })
-      
+        where: { domain, id: { not: undefined } },
+      });
+
       if (existingDomain) {
         return NextResponse.json(
-          { error: 'Ya existe un sitio web con este dominio' },
-          { status: 409 }
-        )
+          { error: "Ya existe un sitio web con este dominio" },
+          { status: 409 },
+        );
       }
     }
 
@@ -100,24 +112,24 @@ export async function POST(request: NextRequest) {
         metadata: JSON.stringify(settings),
         churchId: user.churchId,
         createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    })
+        updatedAt: new Date(),
+      },
+    });
 
-    return NextResponse.json(website, { status: 201 })
+    return NextResponse.json(website, { status: 201 });
   } catch (error) {
-    console.error('Error creating website:', error)
-    
-    if ((error as any).code === 'P2002') {
+    console.error("Error creating website:", error);
+
+    if ((error as any).code === "P2002") {
       return NextResponse.json(
-        { error: 'Ya existe un sitio web con estos datos únicos' },
-        { status: 409 }
-      )
+        { error: "Ya existe un sitio web con estos datos únicos" },
+        { status: 409 },
+      );
     }
-    
+
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
