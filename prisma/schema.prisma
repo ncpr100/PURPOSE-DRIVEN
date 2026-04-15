@@ -2717,4 +2717,124 @@ model PlatformPayment {
   @@index([stripePaymentId])
   @@index([createdAt])
 }
+// ============================================
+// AI MINISTRY AGENTS — NEW MODELS
+// ============================================
+
+// Agent 1: Sermon Antiphony Engine
+model sermon_ai_analysis {
+  id                  String   @id @default(cuid())
+  churchId            String
+  sermonId            String   @unique
+  culturalMirror      String   @db.Text
+  skepticFilter       String   @db.Text
+  unresolvedTension   String   @db.Text
+  comfortSentence     String   @db.Text
+  discomfortSentence  String   @db.Text
+  modelVersion        String   @default("claude-sonnet-4-20250514")
+  generatedAt         DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("sermon_ai_analysis")
+}
+
+// Agent 2: Spiritual Triage
+model triage_keywords {
+  id        String   @id @default(cuid())
+  churchId  String
+  keyword   String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@unique([churchId, keyword])
+  @@map("triage_keywords")
+}
+
+model triage_events {
+  id              String            @id @default(cuid())
+  churchId        String
+  triggerSource   String            // 'prayer_form' | 'visitor_form' | 'chat'
+  sourceId        String            // ID of the prayer request or form submission
+  detectedKeyword String
+  requesterName   String?
+  requesterPhone  String?
+  requesterEmail  String?
+  messageBody     String            @db.Text
+  status          TriageStatus      @default(PENDING)
+  assignedToId    String?           // userId of pastor/care team
+  resolvedAt      DateTime?
+  humanRespondedAt DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("triage_events")
+}
+
+enum TriageStatus {
+  PENDING
+  ASSIGNED
+  HUMAN_RESPONDED
+  RESOLVED
+  ESCALATED
+}
+
+// Agent 4: Prayer Watchman
+model prayer_watchman_events {
+  id                    String    @id @default(cuid())
+  churchId              String
+  prayerRequestId       String
+  eventDescription      String
+  eventDateTime         DateTime
+  reminderSentAt        DateTime?
+  followUpSentAt        DateTime?
+  followUpResponse      String?   @db.Text
+  status                WatchmanStatus @default(SCHEDULED)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("prayer_watchman_events")
+}
+
+enum WatchmanStatus {
+  SCHEDULED
+  REMINDER_SENT
+  FOLLOWUP_SENT
+  RESPONDED
+  COMPLETED
+}
+
+// Agent 5: Shepherd's Log
+model shepherds_log_cache {
+  id             String   @id @default(cuid())
+  churchId       String   @unique
+  members        Json     // Array of at-risk member summaries
+  generatedAt    DateTime @default(now())
+  expiresAt      DateTime
+
+  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("shepherds_log_cache")
+}
+
+model pastoral_contacts {
+  id         String   @id @default(cuid())
+  churchId   String
+  memberId   String
+  contactedBy String  // userId of pastor
+  method     String   // 'call' | 'whatsapp' | 'visit' | 'email'
+  notes      String?  @db.Text
+  contactedAt DateTime @default(now())
+
+  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("pastoral_contacts")
+}
 

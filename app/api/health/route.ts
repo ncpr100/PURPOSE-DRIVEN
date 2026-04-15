@@ -61,7 +61,8 @@ export async function GET(request: NextRequest) {
       database,
       lastMigration,
       envVars: envCheck.ok ? "ok" : `missing: ${envCheck.missing.join(", ")}`,
-      rateLimiting: "removed (was in-memory/non-persistent — @upstash/ratelimit planned for Phase 4, see SOURCE_OF_TRUTH §13.4)",
+      rateLimiting:
+        "removed (was in-memory/non-persistent — @upstash/ratelimit planned for Phase 4, see SOURCE_OF_TRUTH §13.4)",
     },
   };
 
