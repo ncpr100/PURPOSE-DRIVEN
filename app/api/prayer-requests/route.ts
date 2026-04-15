@@ -236,6 +236,29 @@ export async function POST(request: Request) {
       console.error('❌ Automation trigger failed:', automationError)
     }
 
+    // SPIRITUAL TRIAGE: Detect distress keywords and route to pastoral care
+    try {
+      const { detectDistress, createTriageEvent } = await import('@/lib/spiritual-triage-service')
+      const { isDistress, keyword } = await detectDistress(message, churchId)
+
+      if (isDistress && keyword) {
+        await createTriageEvent({
+          churchId,
+          triggerSource: 'prayer_form',
+          sourceId: prayer_requests.id,
+          detectedKeyword: keyword,
+          requesterName: isAnonymous ? undefined : contact.fullName,
+          requesterPhone: contact.phone ?? undefined,
+          requesterEmail: contact.email ?? undefined,
+          messageBody: message,
+        })
+        console.log(`🚨 Triage event created for prayer request ${prayer_requests.id} — keyword: "${keyword}"`)
+      }
+    } catch (triageError) {
+      // Never block the response if triage fails
+      console.error('❌ Spiritual triage failed:', triageError)
+    }
+
     return NextResponse.json(prayer_requests, { status: 201 });
 
   } catch (error) {
