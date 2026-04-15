@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
             connect: { id: user.id }
           },
           churches: {
-            connect: { id: user.churchId }
+            connect: { id: user.churchId! }
           },
           themeName: 'default',
           themeMode: 'light',
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
             }
           }
         }
-      })
+      }) as any
     }
 
     return NextResponse.json(themePreference)

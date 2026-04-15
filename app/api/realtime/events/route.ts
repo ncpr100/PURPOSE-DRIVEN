@@ -20,10 +20,10 @@ export async function GET(request: NextRequest) {
     return new Response('Unauthorized', { status: 401 })
   }
 
-  let user
+  let user: { id: string; name: string | null; email: string | null; role: string; churchId: string | null; isActive: boolean } | null
   try {
     user = await prisma.users.findUnique({
-      where: { email: session.user.email },
+      where: { email: session.user.email! },
       select: {
         id: true,
         name: true,
@@ -38,8 +38,8 @@ export async function GET(request: NextRequest) {
     // Fallback to session data when database unavailable
     user = {
       id: session.user.id,
-      name: session.user.name,
-      email: session.user.email,
+      name: session.user.name ?? null,
+      email: session.user.email ?? null,
       role: session.user.role,
       churchId: session.user.churchId,
       isActive: true
@@ -55,21 +55,24 @@ export async function GET(request: NextRequest) {
     return new Response('User not associated with a church', { status: 403 })
   }
 
+  // Capture for TypeScript narrowing in closures
+  const u = user
+
   const stream = new ReadableStream({
     start(controller) {
-      const connectionId = `${user.id}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      const connectionId = `${u.id}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
       
       // Store connection
       addConnection(connectionId, {
-        userId: user.id,
-        churchId: user.churchId || '',
-        role: user.role,
-        name: user.name || user.email,
+        userId: u.id,
+        churchId: u.churchId || '',
+        role: u.role,
+        name: u.name || u.email || '',
         controller,
         startTime: new Date()
       })
 
-      console.log(`📡 SSE connection established: ${user.name} (${user.role})`)
+      console.log(`📡 SSE connection established: ${u.name} (${u.role})`)
 
       // Send initial connection message
       const welcomeMessage = {
@@ -102,12 +105,12 @@ export async function GET(request: NextRequest) {
       }, 30000) // Every 30 seconds
 
       // Broadcast user presence
-      if (user.churchId) {
-        broadcastToChurch(user.churchId, {
+      if (u.churchId) {
+        broadcastToChurch(u.churchId!, {
           type: 'presence',
           data: {
-            userId: user.id,
-            name: user.name,
+            userId: u.id,
+            name: u.name,
             status: 'online',
             timestamp: Date.now()
           }
@@ -119,15 +122,15 @@ export async function GET(request: NextRequest) {
         clearInterval(heartbeat)
         removeConnection(connectionId)
         
-        console.log(`📡 SSE connection closed: ${user.name}`)
+        console.log(`📡 SSE connection closed: ${u.name}`)
         
         // Broadcast user offline if no more connections
-        if (!hasUserConnections(user.id) && user.churchId) {
-          broadcastToChurch(user.churchId, {
+        if (!hasUserConnections(u.id) && u.churchId) {
+          broadcastToChurch(u.churchId!, {
             type: 'presence',
             data: {
-              userId: user.id,
-              name: user.name,
+              userId: u.id,
+              name: u.name,
               status: 'offline',
               timestamp: Date.now()
             }

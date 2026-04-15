@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
 
       // Assign results
       memberStats = results[0]
-      donationStats = results[1]
+      donationStats = results[1] as any
       eventStats = results[2]
       communicationStats = results[3]
       socialMediaStats = results[4]
@@ -148,7 +148,7 @@ export async function GET(request: NextRequest) {
       })
       ])
 
-      previousDonations = growthResults[0]
+      previousDonations = growthResults[0] as any
       previousEvents = growthResults[1]
       previousCommunications = growthResults[2]
       previousSocialPosts = growthResults[3]

@@ -348,7 +348,7 @@ function calculateEngagementForecast(eventData: any[], engagementMetrics: number
   let totalAttendanceRate = 0;
   let categoryCount = 0;
   
-  Object.entries(eventsByCategory).forEach(([category, events]: [string, any[]]) => {
+  Object.entries(eventsByCategory as Record<string, any[]>).forEach(([category, events]) => {
     const categoryEvents = events as any[];
     const avgCapacity = categoryEvents.reduce((sum, e) => sum + (e.capacity || 50), 0) / categoryEvents.length;
     const utilizationRate = Math.min(100, (categoryEvents.length * avgCapacity) / (avgCapacity * categoryEvents.length) * 80);

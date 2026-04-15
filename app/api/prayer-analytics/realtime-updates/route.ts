@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
             // Get prayer requests count
             const totalRequests = await db.prayer_requests.count({
               where: { 
-                churchId: user.churchId,
+                churchId: user.churchId!,
                 createdAt: { gte: thirtyDaysAgo }
               }
             })
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
             // Get approved requests count  
             const approvedRequests = await db.prayer_requests.count({
               where: { 
-                churchId: user.churchId,
+                churchId: user.churchId!,
                 status: 'APPROVED',
                 createdAt: { gte: thirtyDaysAgo }
               }
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
             // Get total contacts
             const totalContacts = await db.prayer_contacts.count({
               where: { 
-                churchId: user.churchId,
+                churchId: user.churchId!,
                 createdAt: { gte: thirtyDaysAgo }
               }
             })

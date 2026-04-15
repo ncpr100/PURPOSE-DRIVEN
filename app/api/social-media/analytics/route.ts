@@ -56,8 +56,8 @@ export async function POST(request: NextRequest) {
     )
 
     // Process results
-    const successfulSyncs = []
-    const failedSyncs = []
+    const successfulSyncs: any[] = []
+    const failedSyncs: any[] = []
 
     syncResults.forEach((result, index) => {
       const account = connectedAccounts[index]
@@ -303,7 +303,7 @@ async function syncAccountAnalytics(account: any, forceSync: boolean = false) {
         lastSync: new Date(),
         accountData: {
           ...account.accountData,
-          lastSyncError: error.message,
+          lastSyncError: (error as Error).message,
           lastErrorAt: new Date().toISOString()
         }
       }

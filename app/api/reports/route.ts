@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     const reportType = searchParams.get('type');
     const isTemplate = searchParams.get('template') === 'true';
 
-    let reports
+    let reports: any[]
     try {
       reports = await db.custom_reports.findMany({
         where: {

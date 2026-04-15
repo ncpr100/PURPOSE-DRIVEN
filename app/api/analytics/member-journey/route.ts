@@ -443,7 +443,7 @@ function calculateConversionFunnel(visitors: any[], members: any[], checkIns: an
 
   const activeMembers = members.filter(m => {
     const attendance = attendanceMap.get(m.id) || [];
-    const recentAttendance = attendance.filter(date => {
+    const recentAttendance = attendance.filter((date: string) => {
       const checkInDate = new Date(date);
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);

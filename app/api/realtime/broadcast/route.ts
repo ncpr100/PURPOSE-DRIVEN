@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({ error: 'Sin permisos para enviar a esta iglesia' }, { status: 403 })
         }
         
-        broadcastToChurch(targetChurchId, realtimeMessage)
+        broadcastToChurch(targetChurchId!, realtimeMessage)
         success = true
         targetInfo = `church ${targetChurchId}`
         break
@@ -211,7 +211,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Try to get user from database, fallback to session data if DB unavailable
-    let user
+    let user: { id: string; churchId: string | null; role: string } | null
     try {
       user = await db.users.findUnique({
         where: { email: session.user.email },
@@ -244,7 +244,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if current user is online by looking at connected users
-    const isOnline = connectedUsers.some(u => u.userId === user.id)
+    const isOnline = connectedUsers.some(u => u.userId === user!.id)
 
     return NextResponse.json({
       stats,

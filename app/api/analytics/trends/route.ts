@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
         })
         ])
 
-        donations = results[0]
+        donations = results[0] as any
         events = results[1]
         communications = results[2]
         checkIns = results[3]

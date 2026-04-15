@@ -111,7 +111,7 @@ export async function PUT(request: NextRequest, props: { params: Promise<{ id: s
       const dueDate = new Date(invoice.dueDate).toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' })
 
       await sendEmail({
-        to: church.email,
+        to: church.email!,
         subject: `Factura ${invoice.invoiceNumber} — ${church.name} | Khesed-Tek`,
         html: `
           <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff">

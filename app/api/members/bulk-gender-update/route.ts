@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
         results.push({ id: update.id, status: 'success' })
         successCount++
       } catch (error) {
-        results.push({ id: update.id, status: 'error', error: error.message })
+        results.push({ id: update.id, status: 'error', error: (error as Error).message })
         errorCount++
       }
     }

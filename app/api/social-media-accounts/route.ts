@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
 
-    let accounts
+    let accounts: any[]
     try {
       accounts = await db.social_media_accounts.findMany({
         where: { churchId: user.churchId },

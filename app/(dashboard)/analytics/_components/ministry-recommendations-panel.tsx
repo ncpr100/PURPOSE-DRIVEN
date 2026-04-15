@@ -315,7 +315,7 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                           <span className="text-gray-500">Tipo:</span>
                           <p className="font-medium capitalize">{recommendation.type}</p>
                         </div>
-                        {Boolean(recommendation.mentor) && (
+                        {recommendation.mentor != null && (
                           <div>
                             <span className="text-gray-500">Mentor:</span>
                             <p className="font-medium">{recommendation.mentor.name}</p>

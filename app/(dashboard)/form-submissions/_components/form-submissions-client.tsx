@@ -151,7 +151,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
           const formData = submission.data
           return [
             format(new Date(submission.submittedAt), 'dd/MM/yyyy HH:mm', { locale: es }),
-            type === 'visitor' ? submission.form?.name : submission.form?.title,
+            type === 'visitor' ? (submission.form as any)?.name : (submission.form as any)?.title,
             `${formData.firstName || ''} ${formData.lastName || ''}`.trim(),
             formData.email || '',
             formData.phone || '',

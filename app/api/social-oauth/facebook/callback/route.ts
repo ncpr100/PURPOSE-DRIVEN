@@ -36,8 +36,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Verify state from memory storage
-    global.oauthStates = global.oauthStates || new Map()
-    const oauthState = global.oauthStates.get(state)
+    ;(global as any).oauthStates = (global as any).oauthStates || new Map()
+    const oauthState = (global as any).oauthStates.get(state)
 
     if (!oauthState || oauthState.platform !== 'FACEBOOK' || oauthState.expiresAt < new Date()) {
       return NextResponse.redirect(
@@ -138,7 +138,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Clean up OAuth state from memory
-    global.oauthStates.delete(state)
+    ;(global as any).oauthStates.delete(state)
 
     // Log successful connection
     console.log(`✅ Facebook account connected for church ${oauthState.churchId}: ${profile.name}`)

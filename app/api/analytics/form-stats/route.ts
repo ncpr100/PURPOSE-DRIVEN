@@ -74,8 +74,8 @@ export async function GET(request: NextRequest) {
     const fieldDropOffs = new Map()
     sessionArray.filter(s => s.abandoned).forEach(session => {
       const lastFieldEvent = session.events
-        .filter(e => e.event === 'field_focused')
-        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0]
+        .filter((e: any) => e.event === 'field_focused')
+        .sort((a: { timestamp: string }, b: { timestamp: string }) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0]
       
       if (lastFieldEvent?.fieldId) {
         fieldDropOffs.set(

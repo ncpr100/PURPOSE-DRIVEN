@@ -817,7 +817,7 @@ function SafeSidebarContent() {
 
 // Mobile menu button component for header - with error boundary
 export function MobileSidebarTrigger() {
-  let sidebarContext = null;
+  let sidebarContext: { setIsMobileOpen: (v: boolean) => void } | null = null;
 
   try {
     sidebarContext = useContext(SidebarContext);
@@ -834,7 +834,7 @@ export function MobileSidebarTrigger() {
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => sidebarContext.setIsMobileOpen(true)}
+      onClick={() => sidebarContext!.setIsMobileOpen(true)}
       className="lg:hidden"
     >
       <Menu className="h-5 w-5" />

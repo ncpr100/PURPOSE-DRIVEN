@@ -522,7 +522,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
         <TabsContent value="overview" className="space-y-6">
           {/* KPI Cards */}
-          {Boolean(overview) && (
+          {overview !== null && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card>
                 <CardHeader className="pb-2">
@@ -747,7 +747,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
         </TabsContent>
 
         <TabsContent value="trends" className="space-y-6">
-          {Boolean(trends) && (
+          {trends !== null && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
@@ -888,7 +888,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       </div>
                     ))}
                   </div>
-                ) : aiInsights?.insights?.length > 0 ? (
+                ) : (aiInsights?.insights?.length ?? 0) > 0 ? (
                   <div className="space-y-4">
                     {/* Summary Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -900,19 +900,19 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       </div>
                       <div className="text-center p-3 bg-red-50 rounded-lg">
                         <div className="text-2xl font-bold text-red-600">
-                          {aiInsights.summary.highPriority}
+                          {aiInsights?.summary?.highPriority}
                         </div>
                         <div className="text-xs text-red-700">Alta Prioridad</div>
                       </div>
                       <div className="text-center p-3 bg-blue-50 rounded-lg">
                         <div className="text-2xl font-bold text-blue-600">
-                          {aiInsights.summary.patterns}
+                          {aiInsights?.summary?.patterns}
                         </div>
                         <div className="text-xs text-blue-700">Patrones</div>
                       </div>
                       <div className="text-center p-3 bg-green-50 rounded-lg">
                         <div className="text-2xl font-bold text-green-600">
-                          {aiInsights.summary.opportunities}
+                          {aiInsights?.summary?.opportunities}
                         </div>
                         <div className="text-xs text-green-700">Oportunidades</div>
                       </div>

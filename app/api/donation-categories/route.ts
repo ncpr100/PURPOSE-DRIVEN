@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
           churchId: session.user.churchId,
           isActive: true,
           updatedAt: new Date()
-        }))
+        })) as any
       })
       categories = await db.donation_categories.findMany({
         where: { churchId: session.user.churchId, isActive: true },

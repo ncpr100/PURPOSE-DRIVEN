@@ -25,7 +25,7 @@ export default async function BrandingPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <Suspense fallback={<div>Cargando...</div>}>
-        <BrandingPageClient churchId={session.user.churchId} />
+        <BrandingPageClient churchId={session.user.churchId ?? ''} />
       </Suspense>
     </div>
   )

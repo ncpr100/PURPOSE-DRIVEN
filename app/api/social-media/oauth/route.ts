@@ -37,8 +37,8 @@ export async function POST(request: NextRequest) {
     const state = nanoid(32)
 
     // Store OAuth state temporarily (in memory for simplicity)
-    global.oauthStates = global.oauthStates || new Map()
-    global.oauthStates.set(state, {
+    ;(global as any).oauthStates = (global as any).oauthStates || new Map()
+    ;(global as any).oauthStates.set(state, {
       churchId,
       platform,
       userId: session.user.id,
@@ -47,9 +47,9 @@ export async function POST(request: NextRequest) {
     })
 
     // Clean up expired states
-    for (const [key, value] of global.oauthStates.entries()) {
+    for (const [key, value] of (global as any).oauthStates.entries()) {
       if (value.expiresAt < new Date()) {
-        global.oauthStates.delete(key)
+        ;(global as any).oauthStates.delete(key)
       }
     }
 

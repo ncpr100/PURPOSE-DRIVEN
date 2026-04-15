@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Church-wide AI insights
-    const churchInsights = await this.generateChurchWideAIInsights(churchId, aiEngine);
+    const churchInsights = await generateChurchWideAIInsights(churchId, aiEngine);
     response.churchInsights = churchInsights;
 
     // Accuracy metrics if requested

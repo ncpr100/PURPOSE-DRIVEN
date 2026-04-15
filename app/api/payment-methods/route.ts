@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
           churchId: session.user.churchId,
           isActive: true,
           updatedAt: new Date()
-        }))
+        })) as any
       })
       paymentMethods = await db.payment_methods.findMany({
         where: { churchId: session.user.churchId, isActive: true },

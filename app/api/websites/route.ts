@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error creating website:', error)
     
-    if (error.code === 'P2002') {
+    if ((error as any).code === 'P2002') {
       return NextResponse.json(
         { error: 'Ya existe un sitio web con estos datos únicos' },
         { status: 409 }

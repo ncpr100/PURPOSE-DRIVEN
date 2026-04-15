@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category');
     const period = searchParams.get('period');
 
-    let kpiMetrics
+    let kpiMetrics: any[]
     try {
       kpiMetrics = await db.kpi_metrics.findMany({
         where: {

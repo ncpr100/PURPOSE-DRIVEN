@@ -27,9 +27,9 @@ export default async function SocialMediaV2Page() {
   const churchId = session.user.churchId
 
   // Fetch connected accounts with database fallback
-  let connectedAccounts = []
+  let connectedAccounts: any[] = []
   let aiAddon = null
-  let recentPosts = []
+  let recentPosts: any[] = []
   let church = null
 
   try {

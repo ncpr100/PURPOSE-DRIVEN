@@ -207,7 +207,7 @@ async function optimizeImageForPlatforms(
       results.push({
         platform,
         contentType,
-        error: error.message,
+        error: (error as Error).message,
         success: false
       })
     }
@@ -259,7 +259,7 @@ async function optimizeVideoForPlatforms(
       console.error(`Failed to validate video for ${platform}:`, error)
       results.push({
         platform,
-        error: error.message,
+        error: (error as Error).message,
         success: false
       })
     }

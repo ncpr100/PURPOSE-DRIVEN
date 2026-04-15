@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
     })
 
     const missingPlatforms = platforms.filter(
-      platform => !connectedAccounts.some(account => account.platform === platform)
+      (platform: string) => !connectedAccounts.some(account => account.platform === platform)
     )
 
     if (missingPlatforms.length > 0) {
