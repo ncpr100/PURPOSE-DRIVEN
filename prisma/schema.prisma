@@ -584,6 +584,12 @@ model churches {
   website_requests                 website_requests[]
   websites                         websites[]
   qr_codes                         qr_codes[]
+  sermon_ai_analysis               sermon_ai_analysis[]
+  triage_keywords                  triage_keywords[]
+  triage_events                    triage_events[]
+  prayer_watchman_events           prayer_watchman_events[]
+  shepherds_log_cache              shepherds_log_cache[]
+  pastoral_contacts                pastoral_contacts[]
 }
 
 model communication_templates {
@@ -2735,7 +2741,7 @@ model sermon_ai_analysis {
   generatedAt         DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@map("sermon_ai_analysis")
 }
@@ -2748,7 +2754,7 @@ model triage_keywords {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
 
-  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@unique([churchId, keyword])
   @@map("triage_keywords")
@@ -2771,7 +2777,7 @@ model triage_events {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
-  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@map("triage_events")
 }
@@ -2798,7 +2804,7 @@ model prayer_watchman_events {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@map("prayer_watchman_events")
 }
@@ -2819,7 +2825,7 @@ model shepherds_log_cache {
   generatedAt    DateTime @default(now())
   expiresAt      DateTime
 
-  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@map("shepherds_log_cache")
 }
@@ -2833,7 +2839,7 @@ model pastoral_contacts {
   notes      String?  @db.Text
   contactedAt DateTime @default(now())
 
-  church Church @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
   @@map("pastoral_contacts")
 }
