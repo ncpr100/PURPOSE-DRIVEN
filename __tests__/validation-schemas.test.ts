@@ -12,7 +12,7 @@ import { describe, it, expect } from 'vitest'
 import { memberSchema } from '@/lib/validation-schemas'
 
 // Minimal valid member payload (only required fields)
-const VALID_BASE: Parameters<typeof memberSchema.parse>[0] = {
+const VALID_BASE = {
   firstName: 'Carlos',
   lastName: 'García',
 }
