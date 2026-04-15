@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { SermonAssistant } from '@/components/sermons/sermon-assistant'
 import { AntiphonyAnalysisTab } from '@/components/sermons/antiphony-analysis-tab'
+import { FormationContentTab } from '@/components/sermons/formation-content-tab'
 
 import { 
   BookOpen, 
@@ -18,7 +19,8 @@ import {
   Trash2,
   Eye,
   Sparkles,
-  Brain
+  Brain,
+  Share2
 } from 'lucide-react'
 import { formatDate, truncateText } from '@/lib/utils'
 
@@ -172,6 +174,10 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
                   <Brain className="h-4 w-4" />
                   Análisis ministerial
                 </TabsTrigger>
+                <TabsTrigger value="formacion" className="flex items-center gap-2">
+                  <Share2 className="h-4 w-4" />
+                  Contenido formación
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="contenido" className="space-y-4">
@@ -202,6 +208,10 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
                   sermonId={viewingSermon.id}
                   canAnalyze={userRole === 'PASTOR'}
                 />
+              </TabsContent>
+
+              <TabsContent value="formacion">
+                <FormationContentTab sermonId={viewingSermon.id} />
               </TabsContent>
             </Tabs>
           </CardContent>
