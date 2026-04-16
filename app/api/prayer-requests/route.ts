@@ -259,6 +259,25 @@ export async function POST(request: Request) {
       console.error('❌ Spiritual triage failed:', triageError)
     }
 
+    // PRAYER WATCHMAN: Extract scheduled events and queue care touchpoints
+    try {
+      const { extractPrayerEvent, scheduleWatchmanCare } = await import('@/lib/prayer-event-extractor')
+      const extracted = await extractPrayerEvent(message)
+
+      if (extracted.hasEvent && extracted.eventDateTime && extracted.eventDescription) {
+        await scheduleWatchmanCare({
+          churchId,
+          prayerRequestId: prayer_requests.id,
+          eventDateTime: extracted.eventDateTime,
+          eventDescription: extracted.eventDescription,
+        })
+        console.log(`⌚ Watchman event scheduled for prayer request ${prayer_requests.id} — "${extracted.eventDescription}"`)
+      }
+    } catch (watchmanError) {
+      // Never block the response if watchman fails
+      console.error('❌ Prayer watchman failed:', watchmanError)
+    }
+
     return NextResponse.json(prayer_requests, { status: 201 });
 
   } catch (error) {
