@@ -58,8 +58,11 @@ Rules:
     .map((b) => (b as { type: "text"; text: string }).text)
     .join("");
 
+  // Strip markdown fences Claude sometimes adds despite instructions
+  const cleanText = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+
   try {
-    return JSON.parse(rawText) as ExtractedEvent;
+    return JSON.parse(cleanText) as ExtractedEvent;
   } catch {
     return { hasEvent: false, eventDateTime: null, eventDescription: null };
   }
