@@ -31,6 +31,7 @@ export default async function DashboardPage() {
   let recentMembers: any[] = []
   let recentSermons: any[] = []
   let recentCheckIns: any[] = []
+  let shepherdsLogMembers: any[] = []
 
   try {
     const results = await Promise.all([
@@ -223,6 +224,20 @@ export default async function DashboardPage() {
     // Fallback data is already initialized above
   }
 
+  // Fetch Shepherd's Log for PASTOR / ADMIN_IGLESIA only (cached, fast)
+  if (['PASTOR', 'ADMIN_IGLESIA'].includes(session.user.role ?? '')) {
+    try {
+      const cached = await db.shepherds_log_cache.findUnique({
+        where: { churchId: session.user.churchId },
+      }).catch(() => null)
+      if (cached && cached.expiresAt > new Date()) {
+        shepherdsLogMembers = JSON.parse(cached.members as string)
+      }
+    } catch {
+      // widget will render empty — non-blocking
+    }
+  }
+
   // Calculate visitor analytics
   const visitorArray = Array.isArray(visitorEngagementData) ? visitorEngagementData : [];
   const averageEngagementScore = visitorArray.length > 0 
@@ -268,6 +283,8 @@ export default async function DashboardPage() {
       recentCheckIns={recentCheckIns}
       recentWebsiteRequests={websiteRequests}
       userRole={session.user.role}
+      churchId={session.user.churchId}
+      shepherdsLogMembers={shepherdsLogMembers}
     />
   )
 }

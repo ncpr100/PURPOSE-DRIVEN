@@ -28,6 +28,7 @@ import Link from 'next/link'
 import { formatDate } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { ShepherdsLogWidget } from '@/components/dashboard/shepherds-log-widget'
 
 interface StatsCardProps {
   title: string
@@ -144,6 +145,16 @@ interface DashboardClientProps {
     createdAt: Date
   }>
   userRole: string
+  churchId: string
+  shepherdsLogMembers: Array<{
+    id: string
+    name: string
+    phone: string | null
+    reason: string
+    urgency: "HIGH" | "CRITICAL"
+    lastAttendance: string | null
+    daysAbsent: number | null
+  }>
 }
 
 export function DashboardClient({ 
@@ -152,10 +163,13 @@ export function DashboardClient({
   recentSermons,
   recentCheckIns, 
   recentWebsiteRequests,
-  userRole 
+  userRole,
+  churchId,
+  shepherdsLogMembers,
 }: DashboardClientProps) {
   const canManageMembers = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(userRole)
   const canCreateSermons = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(userRole)
+  const isShepherdsLogRole = ['PASTOR', 'ADMIN_IGLESIA'].includes(userRole)
 
   return (
     <div className="space-y-8">
@@ -309,6 +323,22 @@ export function DashboardClient({
           </CardContent>
         </Card>
       </div>
+
+      {/* Shepherd's Log Widget — Pastor / Admin only */}
+      {isShepherdsLogRole && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Heart className="h-5 w-5 text-rose-600" />
+              <h2 className="text-xl font-semibold">Diario del Pastor</h2>
+            </div>
+            <Link href="/shepherds-log" className="text-sm text-muted-foreground hover:underline">
+              Ver todo
+            </Link>
+          </div>
+          <ShepherdsLogWidget initialMembers={shepherdsLogMembers} churchId={churchId} />
+        </div>
+      )}
 
       {/* Quick Actions */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
