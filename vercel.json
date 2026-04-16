@@ -14,6 +14,20 @@
     }
   },
   "regions": ["iad1"],
+  "crons": [
+    {
+      "path": "/api/cron/prayer-watchman",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/triage-followup",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/shepherds-log",
+      "schedule": "0 6 * * 1"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
