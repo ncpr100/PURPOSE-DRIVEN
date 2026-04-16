@@ -46,6 +46,8 @@ import {
   X,
   PanelLeftClose,
   PanelLeftOpen,
+  AlertTriangle,
+  ScrollText,
 } from "lucide-react";
 
 // Sidebar context - supports both mobile overlay and desktop collapse
@@ -186,6 +188,12 @@ const navigationSections = [
         icon: MessageSquare,
         roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR", "LIDER"],
       },
+      {
+        title: "Triaje Espiritual",
+        href: "/triage",
+        icon: AlertTriangle,
+        roles: ["PASTOR", "ADMIN_IGLESIA"],
+      },
     ],
   },
   {
@@ -239,6 +247,12 @@ const navigationSections = [
         href: "/sermons",
         icon: BookOpen,
         roles: ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"],
+      },
+      {
+        title: "Diario del Pastor",
+        href: "/shepherds-log",
+        icon: ScrollText,
+        roles: ["PASTOR", "ADMIN_IGLESIA"],
       },
     ],
   },
