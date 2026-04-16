@@ -185,12 +185,15 @@ const rawText = response.content
   .map((b) => b.text)
   .join("");
 
+// Strip markdown fences Claude sometimes adds despite instructions
+const cleanText = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+
 let analysis;
 try {
-  analysis = JSON.parse(rawText);
+  analysis = JSON.parse(cleanText);
 } catch {
   console.error("❌  Claude returned invalid JSON:");
-  console.error(rawText);
+  console.error(cleanText);
   process.exit(1);
 }
 
