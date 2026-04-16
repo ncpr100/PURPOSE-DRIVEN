@@ -67,10 +67,13 @@ Rules:
     .map((block) => (block as { type: "text"; text: string }).text)
     .join("");
 
+  // Strip markdown fences Claude sometimes adds despite instructions
+  const cleanText = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+
   try {
-    const parsed = JSON.parse(rawText) as AntiphonyAnalysis;
+    const parsed = JSON.parse(cleanText) as AntiphonyAnalysis;
     return parsed;
   } catch {
-    throw new Error(`Antiphony Engine returned invalid JSON: ${rawText}`);
+    throw new Error(`Antiphony Engine returned invalid JSON: ${cleanText}`);
   }
 }
