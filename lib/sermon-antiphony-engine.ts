@@ -56,7 +56,7 @@ Rules:
 - Return ONLY the JSON. No preamble, no explanation, no markdown fences.`;
 
   const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-4-5",
     max_tokens: 1500,
     system: buildSystemPrompt(["imageOfGod", "language", "noPastoralReplacement"]),
     messages: [{ role: "user", content: prompt }],
