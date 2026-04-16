@@ -1,40 +1,45 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { nanoid } from 'nanoid'
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { nanoid } from "nanoid";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // GET /api/social-media-accounts - Get all social media accounts
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    let user
+    let user;
     try {
       user = await db.users.findUnique({
         where: { id: session.user.id },
-        include: { churches: true }
-      })
+        include: { churches: true },
+      });
     } catch (dbError) {
-      console.log('⚠️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, using session data')
+      console.log(
+        "⚠️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, using session data",
+      );
       // Fallback to session data when database unavailable
       user = {
         id: session.user.id,
         churchId: session.user.churchId,
-        churches: null
-      }
+        churches: null,
+      };
     }
 
     if (!user?.churchId) {
-      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+      return NextResponse.json(
+        { error: "Usuario sin iglesia asignada" },
+        { status: 403 },
+      );
     }
 
-    let accounts
+    let accounts: any[];
     try {
       accounts = await db.social_media_accounts.findMany({
         where: { churchId: user.churchId },
@@ -46,65 +51,88 @@ export async function GET(request: NextRequest) {
           isActive: true,
           lastSync: true,
           createdAt: true,
-          updatedAt: true
+          updatedAt: true,
         },
-        orderBy: { createdAt: 'desc' }
-      })
+        orderBy: { createdAt: "desc" },
+      });
     } catch (dbError) {
-      console.log('⚠️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, returning empty accounts')
-      accounts = []
+      console.log(
+        "⚠️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, returning empty accounts",
+      );
+      accounts = [];
     }
 
-    return NextResponse.json(accounts)
+    return NextResponse.json(accounts);
   } catch (error) {
-    console.error('Error fetching social media accounts:', error)
+    console.error("Error fetching social media accounts:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
 // POST /api/social-media-accounts - Create social media account
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     const user = await db.users.findUnique({
       where: { id: session.user.id },
-      include: { churches: true }
-    })
+      include: { churches: true },
+    });
 
     if (!user?.churchId) {
-      return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
+      return NextResponse.json(
+        { error: "Usuario sin iglesia asignada" },
+        { status: 403 },
+      );
     }
 
     // Check permissions
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(user.role)) {
-      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    if (!["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"].includes(user.role)) {
+      return NextResponse.json(
+        { error: "Permisos insuficientes" },
+        { status: 403 },
+      );
     }
 
-    const body = await request.json()
-    const { platform, accountId, username, displayName, accessToken, refreshToken, tokenExpiresAt, accountData } = body
+    const body = await request.json();
+    const {
+      platform,
+      accountId,
+      username,
+      displayName,
+      accessToken,
+      refreshToken,
+      tokenExpiresAt,
+      accountData,
+    } = body;
 
     if (!platform || !accountId) {
-      return NextResponse.json({ error: 'Plataforma y accountId son requeridos' }, { status: 400 })
+      return NextResponse.json(
+        { error: "Plataforma y accountId son requeridos" },
+        { status: 400 },
+      );
     }
 
     // Check if account already exists
     const existing = await db.social_media_accounts.findFirst({
-      where: { 
+      where: {
         churchId: user.churchId,
         platform,
-        username
-      }
-    })
+        username,
+      },
+    });
 
     if (existing) {
-      return NextResponse.json({ error: 'Cuenta ya existe para esta plataforma' }, { status: 409 })
+      return NextResponse.json(
+        { error: "Cuenta ya existe para esta plataforma" },
+        { status: 409 },
+      );
     }
 
     const account = await db.social_media_accounts.create({
@@ -121,7 +149,7 @@ export async function POST(request: NextRequest) {
         isActive: true,
         churchId: user.churchId,
         connectedBy: user.id,
-        lastSync: new Date()
+        lastSync: new Date(),
       },
       select: {
         id: true,
@@ -129,16 +157,16 @@ export async function POST(request: NextRequest) {
         username: true,
         displayName: true,
         isActive: true,
-        createdAt: true
-      }
-    })
+        createdAt: true,
+      },
+    });
 
-    return NextResponse.json(account, { status: 201 })
+    return NextResponse.json(account, { status: 201 });
   } catch (error) {
-    console.error('Error creating social media account:', error)
+    console.error("Error creating social media account:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }

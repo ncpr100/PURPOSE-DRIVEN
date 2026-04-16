@@ -5,8 +5,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { SermonAssistant } from '@/components/sermons/sermon-assistant'
+import { AntiphonyAnalysisTab } from '@/components/sermons/antiphony-analysis-tab'
+import { FormationContentTab } from '@/components/sermons/formation-content-tab'
 
 import { 
   BookOpen, 
@@ -15,7 +18,9 @@ import {
   Edit, 
   Trash2,
   Eye,
-  Sparkles
+  Sparkles,
+  Brain,
+  Share2
 } from 'lucide-react'
 import { formatDate, truncateText } from '@/lib/utils'
 
@@ -147,7 +152,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
             <div className="flex items-start justify-between">
               <div>
                 <CardTitle className="text-2xl">{viewingSermon.title}</CardTitle>
-                <div className="flex items-center gap-2 mt-2">
+                <div className="mt-2 flex items-center gap-2">
                   {viewingSermon.scripture && (
                     <Badge variant="secondary">{viewingSermon.scripture}</Badge>
                   )}
@@ -162,28 +167,53 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {viewingSermon.outline && (
-                <div>
-                  <h3 className="font-semibold mb-2">Bosquejo:</h3>
-                  <div className="bg-muted p-4 rounded-lg">
-                    <pre className="whitespace-pre-wrap font-mono text-sm">
-                      {viewingSermon.outline}
-                    </pre>
+            <Tabs defaultValue="contenido" className="space-y-4">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="contenido">Contenido</TabsTrigger>
+                <TabsTrigger value="analisis" className="flex items-center gap-2">
+                  <Brain className="h-4 w-4" />
+                  Análisis ministerial
+                </TabsTrigger>
+                <TabsTrigger value="formacion" className="flex items-center gap-2">
+                  <Share2 className="h-4 w-4" />
+                  Contenido formación
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="contenido" className="space-y-4">
+                {viewingSermon.outline && (
+                  <div>
+                    <h3 className="mb-2 font-semibold">Bosquejo:</h3>
+                    <div className="rounded-lg bg-muted p-4">
+                      <pre className="whitespace-pre-wrap font-mono text-sm">
+                        {viewingSermon.outline}
+                      </pre>
+                    </div>
                   </div>
-                </div>
-              )}
-              {viewingSermon.content && (
-                <div>
-                  <h3 className="font-semibold mb-2">Contenido:</h3>
-                  <div className="bg-background border rounded-lg p-4">
-                    <pre className="whitespace-pre-wrap text-sm">
-                      {viewingSermon.content}
-                    </pre>
+                )}
+                {viewingSermon.content && (
+                  <div>
+                    <h3 className="mb-2 font-semibold">Contenido:</h3>
+                    <div className="rounded-lg border bg-background p-4">
+                      <pre className="whitespace-pre-wrap text-sm">
+                        {viewingSermon.content}
+                      </pre>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="analisis">
+                <AntiphonyAnalysisTab
+                  sermonId={viewingSermon.id}
+                  canAnalyze={userRole === 'PASTOR'}
+                />
+              </TabsContent>
+
+              <TabsContent value="formacion">
+                <FormationContentTab sermonId={viewingSermon.id} />
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
       </div>

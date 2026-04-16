@@ -297,7 +297,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    await db.volunteers.createMany({ data: volunteers, skipDuplicates: true });
+    await db.volunteers.createMany({ data: volunteers as any, skipDuplicates: true });
     console.log(`[SEED-HILLSONG] Created ${volunteers.length} volunteers`);
 
     // Create events

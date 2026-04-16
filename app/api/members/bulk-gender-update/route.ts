@@ -1,59 +1,74 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
+    const session = await getServerSession(authOptions);
+
     if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only admins can bulk update
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
-      return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
+    if (
+      !["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"].includes(session.user.role)
+    ) {
+      return NextResponse.json(
+        { error: "Permisos insuficientes" },
+        { status: 403 },
+      );
     }
 
-    const body = await request.json()
-    const { updates } = body
+    const body = await request.json();
+    const { updates } = body;
 
     if (!Array.isArray(updates) || updates.length === 0) {
-      return NextResponse.json({ error: 'No se proporcionaron actualizaciones' }, { status: 400 })
+      return NextResponse.json(
+        { error: "No se proporcionaron actualizaciones" },
+        { status: 400 },
+      );
     }
 
     // Validate updates format
     for (const update of updates) {
-      if (!update.id || !['masculino', 'femenino'].includes(update.gender)) {
-        return NextResponse.json({ error: 'Formato de actualización inválido' }, { status: 400 })
+      if (!update.id || !["masculino", "femenino"].includes(update.gender)) {
+        return NextResponse.json(
+          { error: "Formato de actualización inválido" },
+          { status: 400 },
+        );
       }
     }
 
     // Bulk update members
-    const results = []
-    let successCount = 0
-    let errorCount = 0
+    const results = [];
+    let successCount = 0;
+    let errorCount = 0;
 
     for (const update of updates) {
       try {
         await db.members.update({
           where: {
             id: update.id,
-            churchId: session.user.churchId // Ensure church scoping
+            churchId: session.user.churchId, // Ensure church scoping
           },
           data: {
             gender: update.gender,
-            updatedAt: new Date()
-          }
-        })
-        results.push({ id: update.id, status: 'success' })
-        successCount++
+            updatedAt: new Date(),
+          },
+        });
+        results.push({ id: update.id, status: "success" });
+        successCount++;
       } catch (error) {
-        results.push({ id: update.id, status: 'error', error: error.message })
-        errorCount++
+        results.push({
+          id: update.id,
+          status: "error",
+          error: (error as Error).message,
+        });
+        errorCount++;
       }
     }
 
@@ -64,25 +79,24 @@ export async function POST(request: NextRequest) {
       summary: {
         total: updates.length,
         success: successCount,
-        errors: errorCount
-      }
-    })
-
+        errors: errorCount,
+      },
+    });
   } catch (error) {
-    console.error('Error in bulk gender update:', error)
+    console.error("Error in bulk gender update:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
+    const session = await getServerSession(authOptions);
+
     if (!session?.user?.churchId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get members with missing gender data
@@ -90,10 +104,7 @@ export async function GET(request: NextRequest) {
       where: {
         churchId: session.user.churchId,
         isActive: true,
-        OR: [
-          { gender: null },
-          { gender: '' }
-        ]
+        OR: [{ gender: null }, { gender: "" }],
       },
       select: {
         id: true,
@@ -101,24 +112,23 @@ export async function GET(request: NextRequest) {
         lastName: true,
         email: true,
         gender: true,
-        createdAt: true
+        createdAt: true,
       },
       orderBy: {
-        firstName: 'asc'
-      }
-    })
+        firstName: "asc",
+      },
+    });
 
     return NextResponse.json({
       members: membersWithoutGender,
       total: membersWithoutGender.length,
-      success: true
-    })
-
+      success: true,
+    });
   } catch (error) {
-    console.error('Error fetching members without gender:', error)
+    console.error("Error fetching members without gender:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }

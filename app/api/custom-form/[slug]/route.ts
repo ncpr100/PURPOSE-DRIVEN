@@ -167,6 +167,48 @@ export async function POST(
       console.log("Could not create follow-up task:", followUpError);
     }
 
+    // SPIRITUAL TRIAGE: Detect distress keywords from form message fields
+    try {
+      const { detectDistress, createTriageEvent } = await import(
+        "@/lib/spiritual-triage-service"
+      );
+      const textToScan = [
+        visitorInfo.prayer_requests,
+        findFieldValue(formData, "message"),
+        findFieldValue(formData, "mensaje"),
+        findFieldValue(formData, "comments"),
+        findFieldValue(formData, "comentarios"),
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      if (textToScan) {
+        const { isDistress, keyword } = await detectDistress(
+          textToScan,
+          form.churchId,
+        );
+
+        if (isDistress && keyword) {
+          await createTriageEvent({
+            churchId: form.churchId,
+            triggerSource: "visitor_form",
+            sourceId: submission.id,
+            detectedKeyword: keyword,
+            requesterName: `${visitorInfo.firstName} ${visitorInfo.lastName}`.trim(),
+            requesterPhone: visitorInfo.phone,
+            requesterEmail: visitorInfo.email,
+            messageBody: textToScan,
+          });
+          console.log(
+            `🚨 Triage event created for visitor form submission ${submission.id} — keyword: "${keyword}"`,
+          );
+        }
+      }
+    } catch (triageError) {
+      // Never block the response if triage fails
+      console.error("❌ Spiritual triage failed:", triageError);
+    }
+
     return NextResponse.json(
       {
         success: true,

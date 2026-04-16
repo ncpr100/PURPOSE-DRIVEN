@@ -1,58 +1,59 @@
-
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const churchId = session.user.churchId;
     if (!churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
+      return NextResponse.json({ error: "Church not found" }, { status: 404 });
     }
 
     const searchParams = request.nextUrl.searchParams;
-    const reportType = searchParams.get('type');
-    const isTemplate = searchParams.get('template') === 'true';
+    const reportType = searchParams.get("type");
+    const isTemplate = searchParams.get("template") === "true";
 
-    let reports
+    let reports: any[];
     try {
       reports = await db.custom_reports.findMany({
         where: {
           churchId,
           ...(reportType && { reportType }),
-          ...(isTemplate !== undefined && { isTemplate })
+          ...(isTemplate !== undefined && { isTemplate }),
         },
         include: {
           report_schedules: {
-            where: { isActive: true }
+            where: { isActive: true },
           },
           report_executions: {
-            orderBy: { createdAt: 'desc' },
-            take: 5
-          }
+            orderBy: { createdAt: "desc" },
+            take: 5,
+          },
         },
-        orderBy: { updatedAt: 'desc' }
+        orderBy: { updatedAt: "desc" },
       });
     } catch (dbError) {
-      console.log('⚠️ REPORTS: Database connection failed, returning empty reports')
-      reports = []
+      console.log(
+        "⚠️ REPORTS: Database connection failed, returning empty reports",
+      );
+      reports = [];
     }
 
     return NextResponse.json(reports);
   } catch (error) {
-    console.error('Reports fetch error:', error);
+    console.error("Reports fetch error:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch reports' },
-      { status: 500 }
+      { error: "Failed to fetch reports" },
+      { status: 500 },
     );
   }
 }
@@ -61,12 +62,12 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const churchId = session.user.churchId;
     if (!churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
+      return NextResponse.json({ error: "Church not found" }, { status: 404 });
     }
 
     const body = await request.json();
@@ -81,14 +82,14 @@ export async function POST(request: NextRequest) {
       sortBy,
       chartType,
       isPublic,
-      isTemplate
+      isTemplate,
     } = body;
 
     // Validate required fields
     if (!name || !reportType || !config || !columns) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
+        { error: "Missing required fields" },
+        { status: 400 },
       );
     }
 
@@ -108,23 +109,23 @@ export async function POST(request: NextRequest) {
         isTemplate: isTemplate || false,
         createdBy: session.user.id,
         churchId,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       include: {
         report_schedules: true,
         report_executions: {
-          orderBy: { createdAt: 'desc' },
-          take: 5
-        }
-      }
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        },
+      },
     });
 
     return NextResponse.json(report, { status: 201 });
   } catch (error) {
-    console.error('Report creation error:', error);
+    console.error("Report creation error:", error);
     return NextResponse.json(
-      { error: 'Failed to create report' },
-      { status: 500 }
+      { error: "Failed to create report" },
+      { status: 500 },
     );
   }
 }

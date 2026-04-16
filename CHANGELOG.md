@@ -13,6 +13,7 @@
   - `.next/types/validator.ts` (9 errors): Stale build artifact referencing deleted diagnostic/test routes — resolved by clean rebuild; deleted routes were intentionally removed in security hardening PR #23
 
 ### Added
+- **Sermon antiphony analysis panel**: Added a dedicated ministerial analysis tab in the sermon detail view with cultural mirror, skeptic filter, unresolved tension, and comfort/discomfort excerpts backed by the nested sermon analysis API.
 - **3-panel WYSIWYG Form Builder** (PR #26): Tally.so-style block editor replacing the scroll-heavy two-column layout
   - Left panel: Block picker (Preguntas, Diseño, Campos Rápidos)
   - Center panel: Live WYSIWYG canvas with inline editing, field selection, reorder controls

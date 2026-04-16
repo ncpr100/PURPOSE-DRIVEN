@@ -54,7 +54,7 @@ export default async function MinistriesSettingsPage() {
   }
 
   // Fetch initial ministries data with error handling
-  let ministries = []
+  let ministries: any[] = []
   try {
     ministries = await db.ministries.findMany({
       where: {

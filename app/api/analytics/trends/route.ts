@@ -1,24 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const searchParams = request.nextUrl.searchParams;
-    const period = searchParams.get('period') || '90'; // days
-    const granularity = searchParams.get('granularity') || 'week'; // day, week, month
+    const period = searchParams.get("period") || "90"; // days
+    const granularity = searchParams.get("granularity") || "week"; // day, week, month
     const churchId = session.user.churchId;
 
     if (!churchId) {
-      return NextResponse.json({ error: 'Church not found' }, { status: 404 });
+      return NextResponse.json({ error: "Church not found" }, { status: 404 });
     }
 
     const endDate = new Date();
@@ -28,108 +28,116 @@ export async function GET(request: NextRequest) {
     // Generate date intervals based on granularity
     const intervals: { start: Date; end: Date; label: string }[] = [];
     const current = new Date(startDate);
-    
+
     while (current < endDate) {
       const intervalEnd = new Date(current);
-      let label = '';
-      
-      if (granularity === 'day') {
+      let label = "";
+
+      if (granularity === "day") {
         intervalEnd.setDate(current.getDate() + 1);
-        label = current.toISOString().split('T')[0];
-      } else if (granularity === 'week') {
+        label = current.toISOString().split("T")[0];
+      } else if (granularity === "week") {
         intervalEnd.setDate(current.getDate() + 7);
-        label = `Week of ${current.toISOString().split('T')[0]}`;
-      } else { // month
+        label = `Week of ${current.toISOString().split("T")[0]}`;
+      } else {
+        // month
         intervalEnd.setMonth(current.getMonth() + 1);
-        label = current.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+        label = current.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+        });
       }
-      
+
       intervals.push({
         start: new Date(current),
         end: intervalEnd > endDate ? endDate : intervalEnd,
-        label
+        label,
       });
-      
+
       current.setTime(intervalEnd.getTime());
     }
 
     // Fetch trend data for each interval
-    const trends = await Promise.all(intervals.map(async (interval) => {
-      let donations = { _sum: { amount: 0 }, _count: { id: 0 } }
-      let events = { _count: { id: 0 } }
-      let communications = { _count: { id: 0 } }
-      let checkIns = { _count: { id: 0 } }
+    const trends = await Promise.all(
+      intervals.map(async (interval) => {
+        let donations = { _sum: { amount: 0 }, _count: { id: 0 } };
+        let events = { _count: { id: 0 } };
+        let communications = { _count: { id: 0 } };
+        let checkIns = { _count: { id: 0 } };
 
-      try {
-        const results = await Promise.all([
-        db.donations.aggregate({
-          where: {
-            churchId,
-            donationDate: { gte: interval.start, lt: interval.end },
-            status: 'COMPLETADA'
-          },
-          _sum: { amount: true },
-          _count: { id: true }
-        }),
-        
-        db.events.aggregate({
-          where: {
-            churchId,
-            startDate: { gte: interval.start, lt: interval.end }
-          },
-          _count: { id: true }
-        }),
-        
-        db.communications.aggregate({
-          where: {
-            churchId,
-            sentAt: { gte: interval.start, lt: interval.end }
-          },
-          _count: { id: true }
-        }),
-        
-        db.check_ins.aggregate({
-          where: {
-            churchId,
-            createdAt: { gte: interval.start, lt: interval.end }
-          },
-          _count: { id: true }
-        })
-        ])
+        try {
+          const results = await Promise.all([
+            db.donations.aggregate({
+              where: {
+                churchId,
+                donationDate: { gte: interval.start, lt: interval.end },
+                status: "COMPLETADA",
+              },
+              _sum: { amount: true },
+              _count: { id: true },
+            }),
 
-        donations = results[0]
-        events = results[1]
-        communications = results[2]
-        checkIns = results[3]
-      } catch (dbError) {
-        console.log('⚠️ Database unavailable for trends interval, using fallback data')
-        // Fallback data already initialized above
-      }
+            db.events.aggregate({
+              where: {
+                churchId,
+                startDate: { gte: interval.start, lt: interval.end },
+              },
+              _count: { id: true },
+            }),
 
-      return {
-        period: interval.label,
-        start: interval.start.toISOString(),
-        end: interval.end.toISOString(),
-        donations: {
-          amount: donations._sum.amount || 0,
-          count: donations._count.id
-        },
-        events: events._count.id,
-        communications: communications._count.id,
-        attendance: checkIns._count.id
-      };
-    }));
+            db.communications.aggregate({
+              where: {
+                churchId,
+                sentAt: { gte: interval.start, lt: interval.end },
+              },
+              _count: { id: true },
+            }),
+
+            db.check_ins.aggregate({
+              where: {
+                churchId,
+                createdAt: { gte: interval.start, lt: interval.end },
+              },
+              _count: { id: true },
+            }),
+          ]);
+
+          donations = results[0] as any;
+          events = results[1];
+          communications = results[2];
+          checkIns = results[3];
+        } catch (dbError) {
+          console.log(
+            "⚠️ Database unavailable for trends interval, using fallback data",
+          );
+          // Fallback data already initialized above
+        }
+
+        return {
+          period: interval.label,
+          start: interval.start.toISOString(),
+          end: interval.end.toISOString(),
+          donations: {
+            amount: donations._sum.amount || 0,
+            count: donations._count.id,
+          },
+          events: events._count.id,
+          communications: communications._count.id,
+          attendance: checkIns._count.id,
+        };
+      }),
+    );
 
     return NextResponse.json({
       period: parseInt(period),
       granularity,
-      trends
+      trends,
     });
   } catch (error) {
-    console.error('Analytics trends error:', error);
+    console.error("Analytics trends error:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch analytics trends' },
-      { status: 500 }
+      { error: "Failed to fetch analytics trends" },
+      { status: 500 },
     );
   }
 }

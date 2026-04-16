@@ -1,16 +1,15 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { z } from "zod";
+import { nanoid } from "nanoid";
 
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { z } from 'zod'
-import { nanoid } from 'nanoid'
-
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 const themePreferenceSchema = z.object({
   themeName: z.string().optional(),
-  themeMode: z.enum(['light', 'dark', 'auto']).optional(),
+  themeMode: z.enum(["light", "dark", "auto"]).optional(),
   primaryColor: z.string().optional(),
   secondaryColor: z.string().optional(),
   accentColor: z.string().optional(),
@@ -23,31 +22,34 @@ const themePreferenceSchema = z.object({
   mutedColor: z.string().optional(),
   mutedForegroundColor: z.string().optional(),
   fontFamily: z.string().optional(),
-  fontSize: z.enum(['small', 'medium', 'large', 'xl']).optional(),
+  fontSize: z.enum(["small", "medium", "large", "xl"]).optional(),
   borderRadius: z.string().optional(),
   compactMode: z.boolean().optional(),
   logoUrl: z.string().optional(),
   faviconUrl: z.string().optional(),
   brandName: z.string().optional(),
   isPublic: z.boolean().optional(),
-})
+});
 
 // GET - Get user's theme preferences
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
+    const session = await getServerSession(authOptions);
+
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
-      select: { id: true, churchId: true }
-    })
+      select: { id: true, churchId: true },
+    });
 
     if (!user) {
-      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 404 })
+      return NextResponse.json(
+        { error: "Usuario no encontrado" },
+        { status: 404 },
+      );
     }
 
     // Get user's theme preference
@@ -58,25 +60,25 @@ export async function GET(request: NextRequest) {
           select: {
             id: true,
             name: true,
-            logo: true
-          }
-        }
-      }
-    })
+            logo: true,
+          },
+        },
+      },
+    });
 
     // If no user preference exists, create default one
     if (!themePreference) {
-      themePreference = await prisma.user_theme_preferences.create({
+      themePreference = (await prisma.user_theme_preferences.create({
         data: {
           id: nanoid(),
           users: {
-            connect: { id: user.id }
+            connect: { id: user.id },
           },
           churches: {
-            connect: { id: user.churchId }
+            connect: { id: user.churchId! },
           },
-          themeName: 'default',
-          themeMode: 'light',
+          themeName: "default",
+          themeMode: "light",
           updatedAt: new Date(),
         },
         include: {
@@ -84,43 +86,46 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               name: true,
-              logo: true
-            }
-          }
-        }
-      })
+              logo: true,
+            },
+          },
+        },
+      })) as any;
     }
 
-    return NextResponse.json(themePreference)
+    return NextResponse.json(themePreference);
   } catch (error) {
-    console.error('Error fetching theme preferences:', error)
+    console.error("Error fetching theme preferences:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
 // PUT - Update user's theme preferences
 export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
+    const session = await getServerSession(authOptions);
+
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
-      select: { id: true, churchId: true }
-    })
+      select: { id: true, churchId: true },
+    });
 
     if (!user) {
-      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 404 })
+      return NextResponse.json(
+        { error: "Usuario no encontrado" },
+        { status: 404 },
+      );
     }
 
-    const body = await request.json()
-    const validatedData = themePreferenceSchema.parse(body)
+    const body = await request.json();
+    const validatedData = themePreferenceSchema.parse(body);
 
     // Upsert theme preference
     const themePreference = await prisma.user_theme_preferences.upsert({
@@ -133,64 +138,67 @@ export async function PUT(request: NextRequest) {
         id: nanoid(),
         userId: user.id,
         churchId: user.churchId,
-        themeName: 'custom',
-        themeMode: 'light',
+        themeName: "custom",
+        themeMode: "light",
         ...validatedData,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       include: {
         churches: {
           select: {
             id: true,
             name: true,
-            logo: true
-          }
-        }
-      }
-    })
+            logo: true,
+          },
+        },
+      },
+    });
 
-    return NextResponse.json(themePreference)
+    return NextResponse.json(themePreference);
   } catch (error) {
-    console.error('Error updating theme preferences:', error)
-    
+    console.error("Error updating theme preferences:", error);
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Datos de entrada inválidos', details: error.errors },
-        { status: 400 }
-      )
+        { error: "Datos de entrada inválidos", details: error.errors },
+        { status: 400 },
+      );
     }
-    
+
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
 // DELETE - Reset user's theme preferences to default
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
+    const session = await getServerSession(authOptions);
+
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
     const user = await prisma.users.findUnique({
       where: { email: session.user.email },
-      select: { id: true, churchId: true }
-    })
+      select: { id: true, churchId: true },
+    });
 
     if (!user) {
-      return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 404 })
+      return NextResponse.json(
+        { error: "Usuario no encontrado" },
+        { status: 404 },
+      );
     }
 
     // Reset to default theme
     const defaultTheme = await prisma.user_theme_preferences.upsert({
       where: { userId: user.id },
       update: {
-        themeName: 'default',
-        themeMode: 'light',
+        themeName: "default",
+        themeMode: "light",
         primaryColor: null,
         secondaryColor: null,
         accentColor: null,
@@ -202,9 +210,9 @@ export async function DELETE(request: NextRequest) {
         borderColor: null,
         mutedColor: null,
         mutedForegroundColor: null,
-        fontFamily: 'Inter',
-        fontSize: 'medium',
-        borderRadius: '0.5rem',
+        fontFamily: "Inter",
+        fontSize: "medium",
+        borderRadius: "0.5rem",
         compactMode: false,
         logoUrl: null,
         faviconUrl: null,
@@ -216,23 +224,23 @@ export async function DELETE(request: NextRequest) {
         id: nanoid(),
         userId: user.id,
         churchId: user.churchId,
-        themeName: 'default',
-        themeMode: 'light',
-        fontFamily: 'Inter',
-        fontSize: 'medium',
-        borderRadius: '0.5rem',
+        themeName: "default",
+        themeMode: "light",
+        fontFamily: "Inter",
+        fontSize: "medium",
+        borderRadius: "0.5rem",
         compactMode: false,
         isPublic: false,
-        updatedAt: new Date()
-      }
-    })
+        updatedAt: new Date(),
+      },
+    });
 
-    return NextResponse.json(defaultTheme)
+    return NextResponse.json(defaultTheme);
   } catch (error) {
-    console.error('Error resetting theme preferences:', error)
+    console.error("Error resetting theme preferences:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+      { error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }

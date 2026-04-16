@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
         ...(priority && priority !== 'all' && { priority })
       }
 
-      let notifications, totalCount
+      let notifications: any, totalCount
       try {
         const [notificationResults, countResult] = await Promise.all([
           prisma.notifications.findMany({
@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
         ...(unreadOnly && { isRead: false })
       }
 
-      let deliveries, totalCount
+      let deliveries: any, totalCount
       try {
         const [deliveryResults, countResult] = await Promise.all([
           prisma.notification_deliveries.findMany({

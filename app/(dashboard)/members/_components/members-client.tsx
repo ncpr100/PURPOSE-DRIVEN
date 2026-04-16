@@ -203,7 +203,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         }
       }
     } catch (error) {
-      console.error('💥 Error in fetchMembers:', error.message)
+      console.error('💥 Error in fetchMembers:', (error as Error).message)
       console.error('💥 Full error:', error)
     } finally {
       console.log('🏁 Setting isLoading to false')

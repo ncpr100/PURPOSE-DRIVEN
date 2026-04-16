@@ -401,7 +401,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
           </div>
 
           {/* Detailed Stage Info (when selected) */}
-          {Boolean(selectedStage !== null && funnelData.stages[selectedStage]) && (
+          {selectedStage !== null && funnelData.stages[selectedStage] != null && (
             <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-gray-900">

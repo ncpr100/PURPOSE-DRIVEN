@@ -481,9 +481,9 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                                   <p className="text-gray-600 text-sm mt-1">{event.description}</p>
                                   
                                   {/* Metadata */}
-                                  {Boolean(event.metadata) && (
+                                  {event.metadata != null && (
                                     <div className="mt-2 space-y-1">
-                                      {Boolean(event.metadata?.previousValue && event.metadata?.newValue) && (
+                                      {event.metadata?.previousValue != null && event.metadata?.newValue != null && (
                                         <div className="flex items-center gap-2 text-xs">
                                           <span className="text-gray-500">Cambio:</span>
                                           <span className="font-medium text-gray-700">

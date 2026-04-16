@@ -232,7 +232,7 @@ export async function GET(request: NextRequest) {
     }
 
     // ✅ SECURITY: Limited data exposure with secure select
-    let members
+    let members: any[]
     try {
       members = await db.members.findMany({
         where: whereClause,
@@ -514,7 +514,7 @@ export async function POST(request: NextRequest) {
         ...validatedData,
         churchId: user.churchId,
         isActive: true
-      },
+      } as any,
       select: {
         id: true,
         firstName: true,
