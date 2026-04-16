@@ -2,6 +2,7 @@
 // Transforms sermon analysis into formation-minded content — not viral moments.
 
 import { db } from "@/lib/db";
+import { AI_CONSTITUTION } from "@/lib/ai-constitution";
 
 export interface FormationContent {
   socialMediaPost: {
@@ -50,7 +51,7 @@ export async function generateFormationContent(
   return {
     socialMediaPost: {
       text: analysis.comfortSentence,
-      caption: `"${analysis.comfortSentence}"\n\n¿Te resonó esto? Escucha el sermón completo en el enlace de nuestra biografía.\n\n#${hashtag} #IglesiaViva #Esperanza`,
+      caption: `"${analysis.comfortSentence}"\n\n¿Te resonó esto? Escucha el sermón completo en el enlace de nuestra biografía.\n\n#${hashtag} #IglesiaViva #Esperanza\n\n${AI_CONSTITUTION.disclaimer}`,
       platforms: ["instagram", "facebook"],
     },
     smallGroupGuide: {

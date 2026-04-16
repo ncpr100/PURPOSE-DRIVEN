@@ -3,6 +3,7 @@
 // Analyzes sermons for cultural blind spots, skeptic challenges, and unresolved tensions.
 
 import Anthropic from "@anthropic-ai/sdk";
+import { buildSystemPrompt } from "@/lib/ai-constitution";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -57,6 +58,7 @@ Rules:
   const response = await anthropic.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 1500,
+    system: buildSystemPrompt(["imageOfGod", "language", "noPastoralReplacement"]),
     messages: [{ role: "user", content: prompt }],
   });
 

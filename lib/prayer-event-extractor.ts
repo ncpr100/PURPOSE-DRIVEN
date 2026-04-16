@@ -3,6 +3,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { db } from "@/lib/db";
+import { buildSystemPrompt } from "@/lib/ai-constitution";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -48,6 +49,7 @@ Rules:
   const response = await anthropic.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 200,
+    system: buildSystemPrompt(["imageOfGod", "language"]),
     messages: [{ role: "user", content: prompt }],
   });
 

@@ -3,6 +3,7 @@
 // Uses data that already exists in the database — no AI generation of pastoral content.
 
 import { db } from "@/lib/db";
+import { AI_CONSTITUTION } from "@/lib/ai-constitution";
 
 export interface ShepherdsMemberEntry {
   id: string;
@@ -176,5 +177,5 @@ export async function refreshShepherdsLog(churchId: string) {
     },
   });
 
-  return members;
+  return { members, disclaimer: AI_CONSTITUTION.disclaimer };
 }

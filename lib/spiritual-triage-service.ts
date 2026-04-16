@@ -5,6 +5,7 @@
 import { nanoid } from "nanoid";
 import { db } from "@/lib/db";
 import { whatsappBusinessService } from "@/lib/integrations/whatsapp";
+import { AI_CONSTITUTION } from "@/lib/ai-constitution";
 
 export interface TriageResult {
   isDistress: boolean;
@@ -128,7 +129,9 @@ async function notifyPastoralTeam(
     data: {
       id: nanoid(),
       title: "Atención Pastoral Urgente",
-      message: `${name} necesita atención pastoral. Palabra clave: "${params.detectedKeyword}". Mensaje: "${shortMessage}..."`,
+      message: `${name} necesita atención pastoral. Palabra clave: "${params.detectedKeyword}". Mensaje: "${shortMessage}..."
+
+${AI_CONSTITUTION.disclaimer}`,
       type: "DISTRESS_TRIAGE",
       priority: "HIGH",
       targetUser: onCallPastor.id,
