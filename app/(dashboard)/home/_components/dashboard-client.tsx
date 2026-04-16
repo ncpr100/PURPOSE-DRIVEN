@@ -1,13 +1,18 @@
+"use client";
 
-'use client'
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { 
-  Users, 
-  BookOpen, 
-  Calendar, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Users,
+  BookOpen,
+  Calendar,
   UserPlus,
   Plus,
   ArrowRight,
@@ -22,43 +27,50 @@ import {
   Zap,
   BarChart3,
   UserX,
-  LucideIcon
-} from 'lucide-react'
-import Link from 'next/link'
-import { formatDate } from '@/lib/utils'
-import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { ShepherdsLogWidget } from '@/components/dashboard/shepherds-log-widget'
+  LucideIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { formatDate } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { ShepherdsLogWidget } from "@/components/dashboard/shepherds-log-widget";
 
 interface StatsCardProps {
-  title: string
-  value: number
-  icon: LucideIcon
-  description?: string
-  trend?: string
-  index: number
+  title: string;
+  value: number;
+  icon: LucideIcon;
+  description?: string;
+  trend?: string;
+  index: number;
 }
 
-function StatsCard({ title, value, icon: Icon, description, trend, index }: StatsCardProps) {
-  const [animatedValue, setAnimatedValue] = useState(0)
+function StatsCard({
+  title,
+  value,
+  icon: Icon,
+  description,
+  trend,
+  index,
+}: StatsCardProps) {
+  const [animatedValue, setAnimatedValue] = useState(0);
 
   useEffect(() => {
     const animation = setTimeout(() => {
-      const increment = value / 50
+      const increment = value / 50;
       const timer = setInterval(() => {
-        setAnimatedValue(prev => {
+        setAnimatedValue((prev) => {
           if (prev >= value) {
-            clearInterval(timer)
-            return value
+            clearInterval(timer);
+            return value;
           }
-          return Math.min(prev + increment, value)
-        })
-      }, 20)
-      return () => clearInterval(timer)
-    }, index * 200)
+          return Math.min(prev + increment, value);
+        });
+      }, 20);
+      return () => clearInterval(timer);
+    }, index * 200);
 
-    return () => clearTimeout(animation)
-  }, [value, index])
+    return () => clearTimeout(animation);
+  }, [value, index]);
 
   return (
     <motion.div
@@ -68,9 +80,7 @@ function StatsCard({ title, value, icon: Icon, description, trend, index }: Stat
     >
       <Card className="hover:shadow-lg transition-shadow">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            {title}
-          </CardTitle>
+          <CardTitle className="text-sm font-medium">{title}</CardTitle>
           <Icon className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -78,98 +88,99 @@ function StatsCard({ title, value, icon: Icon, description, trend, index }: Stat
             {Math.floor(animatedValue).toLocaleString()}
           </div>
           {description && (
-            <p className="text-xs text-muted-foreground">
-              {description}
-            </p>
+            <p className="text-xs text-muted-foreground">{description}</p>
           )}
-          {trend && (
-            <p className="text-xs text-green-600 mt-1">
-              {trend}
-            </p>
-          )}
+          {trend && <p className="text-xs text-green-600 mt-1">{trend}</p>}
         </CardContent>
       </Card>
     </motion.div>
-  )
+  );
 }
 
 interface DashboardClientProps {
   stats: {
-    totalMembers: number
-    totalSermons: number
-    upcomingEvents: number
-    newMembersThisMonth: number
-    totalVolunteers: number
-    totalCheckIns: number
-    pendingFollowUps: number
-    childrenPresent: number
-    websiteRequests: number
-    pendingWebsiteRequests: number
-    existingWebsites: number
+    totalMembers: number;
+    totalSermons: number;
+    upcomingEvents: number;
+    newMembersThisMonth: number;
+    totalVolunteers: number;
+    totalCheckIns: number;
+    pendingFollowUps: number;
+    childrenPresent: number;
+    websiteRequests: number;
+    pendingWebsiteRequests: number;
+    existingWebsites: number;
     // Visitor analytics
-    averageEngagementScore: number
-    automationSuccessRate: number
-    firstTimeVisitorsThisMonth: number
-    returningVisitorsCount: number
-    firstTimeVisitorsCount: number
-    completedFollowUpsThisMonth: number
-    followUpCompletionRate: number
-  }
+    averageEngagementScore: number;
+    automationSuccessRate: number;
+    firstTimeVisitorsThisMonth: number;
+    returningVisitorsCount: number;
+    firstTimeVisitorsCount: number;
+    completedFollowUpsThisMonth: number;
+    followUpCompletionRate: number;
+  };
   recentMembers: Array<{
-    id: string
-    firstName: string
-    lastName: string
-    email: string | null
-    createdAt: Date
-  }>
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string | null;
+    createdAt: Date;
+  }>;
   recentSermons: Array<{
-    id: string
-    title: string
-    scripture: string | null
-    createdAt: Date
-  }>
+    id: string;
+    title: string;
+    scripture: string | null;
+    createdAt: Date;
+  }>;
   recentCheckIns: Array<{
-    id: string
-    firstName: string
-    lastName: string
-    isFirstTime: boolean
-    checkedInAt: Date
-  }>
+    id: string;
+    firstName: string;
+    lastName: string;
+    isFirstTime: boolean;
+    checkedInAt: Date;
+  }>;
   recentWebsiteRequests: Array<{
-    id: string
-    requestType: string
-    projectName: string
-    status: string
-    priority: string
-    estimatedPrice: number | null
-    createdAt: Date
-  }>
-  userRole: string
-  churchId: string
+    id: string;
+    requestType: string;
+    projectName: string;
+    status: string;
+    priority: string;
+    estimatedPrice: number | null;
+    createdAt: Date;
+  }>;
+  userRole: string;
+  churchId: string;
   shepherdsLogMembers: Array<{
-    id: string
-    name: string
-    phone: string | null
-    reason: string
-    urgency: "HIGH" | "CRITICAL"
-    lastAttendance: string | null
-    daysAbsent: number | null
-  }>
+    id: string;
+    name: string;
+    phone: string | null;
+    reason: string;
+    urgency: "HIGH" | "CRITICAL";
+    lastAttendance: string | null;
+    daysAbsent: number | null;
+  }>;
 }
 
-export function DashboardClient({ 
-  stats, 
-  recentMembers, 
+export function DashboardClient({
+  stats,
+  recentMembers,
   recentSermons,
-  recentCheckIns, 
+  recentCheckIns,
   recentWebsiteRequests,
   userRole,
   churchId,
   shepherdsLogMembers,
 }: DashboardClientProps) {
-  const canManageMembers = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER'].includes(userRole)
-  const canCreateSermons = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(userRole)
-  const isShepherdsLogRole = ['PASTOR', 'ADMIN_IGLESIA'].includes(userRole)
+  const canManageMembers = [
+    "SUPER_ADMIN",
+    "ADMIN_IGLESIA",
+    "PASTOR",
+    "LIDER",
+  ].includes(userRole);
+  const canCreateSermons = ["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"].includes(
+    userRole,
+  );
+  const isShepherdsLogRole = ["PASTOR", "ADMIN_IGLESIA"].includes(userRole);
 
   return (
     <div className="space-y-8">
@@ -188,7 +199,11 @@ export function DashboardClient({
           value={stats.totalMembers}
           icon={Users}
           description="Miembros activos"
-          trend={stats.newMembersThisMonth > 0 ? `+${stats.newMembersThisMonth} este mes` : undefined}
+          trend={
+            stats.newMembersThisMonth > 0
+              ? `+${stats.newMembersThisMonth} este mes`
+              : undefined
+          }
           index={0}
         />
         <StatsCard
@@ -209,8 +224,16 @@ export function DashboardClient({
           title="Sitio Web"
           value={stats.existingWebsites > 0 ? 1 : stats.websiteRequests}
           icon={Globe}
-          description={stats.existingWebsites > 0 ? "Sitio activo" : "Solicitudes"}
-          trend={stats.pendingWebsiteRequests > 0 ? `${stats.pendingWebsiteRequests} pendiente(s)` : stats.existingWebsites > 0 ? "✅ Publicado" : undefined}
+          description={
+            stats.existingWebsites > 0 ? "Sitio activo" : "Solicitudes"
+          }
+          trend={
+            stats.pendingWebsiteRequests > 0
+              ? `${stats.pendingWebsiteRequests} pendiente(s)`
+              : stats.existingWebsites > 0
+                ? "✅ Publicado"
+                : undefined
+          }
           index={3}
         />
       </div>
@@ -222,7 +245,11 @@ export function DashboardClient({
           value={stats.totalCheckIns}
           icon={UserCheck}
           description={`${stats.childrenPresent} niños presentes | Visitantes registrados`}
-          trend={stats.firstTimeVisitorsThisMonth > 0 ? `${stats.firstTimeVisitorsThisMonth} nuevos este mes` : undefined}
+          trend={
+            stats.firstTimeVisitorsThisMonth > 0
+              ? `${stats.firstTimeVisitorsThisMonth} nuevos este mes`
+              : undefined
+          }
           index={0}
         />
         <StatsCard
@@ -230,7 +257,9 @@ export function DashboardClient({
           value={stats.pendingFollowUps}
           icon={Phone}
           description={`${stats.completedFollowUpsThisMonth} completados este mes`}
-          trend={stats.pendingFollowUps > 0 ? "⚠️ Requiere atención" : "✅ Al día"}
+          trend={
+            stats.pendingFollowUps > 0 ? "⚠️ Requiere atención" : "✅ Al día"
+          }
           index={1}
         />
         <StatsCard
@@ -238,7 +267,13 @@ export function DashboardClient({
           value={stats.averageEngagementScore}
           icon={Target}
           description="Puntuación promedio"
-          trend={stats.averageEngagementScore >= 70 ? "🎯 Excelente" : stats.averageEngagementScore >= 50 ? "⚡ Bueno" : "📈 Mejorar"}
+          trend={
+            stats.averageEngagementScore >= 70
+              ? "🎯 Excelente"
+              : stats.averageEngagementScore >= 50
+                ? "⚡ Bueno"
+                : "📈 Mejorar"
+          }
           index={2}
         />
       </div>
@@ -249,7 +284,6 @@ export function DashboardClient({
           <Target className="h-5 w-5 text-blue-600" />
           <h2 className="text-xl font-semibold">Análisis de Visitantes</h2>
         </div>
-
 
         {/* Visitor Breakdown Card */}
         <Card className="border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
@@ -266,45 +300,53 @@ export function DashboardClient({
                 <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mx-auto mb-2">
                   <UserPlus className="h-6 w-6 text-green-600" />
                 </div>
-                <p className="text-2xl font-bold text-green-600">{stats.firstTimeVisitorsCount}</p>
+                <p className="text-2xl font-bold text-green-600">
+                  {stats.firstTimeVisitorsCount}
+                </p>
                 <p className="text-sm text-muted-foreground">Primera Vez</p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mx-auto mb-2">
                   <Users className="h-6 w-6 text-blue-600" />
                 </div>
-                <p className="text-2xl font-bold text-blue-600">{stats.returningVisitorsCount}</p>
+                <p className="text-2xl font-bold text-blue-600">
+                  {stats.returningVisitorsCount}
+                </p>
                 <p className="text-sm text-muted-foreground">Recurrentes</p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full mx-auto mb-2">
                   <Target className="h-6 w-6 text-purple-600" />
                 </div>
-                <p className="text-2xl font-bold text-purple-600">{stats.completedFollowUpsThisMonth}</p>
-                <p className="text-sm text-muted-foreground">Seguimientos Exitosos</p>
+                <p className="text-2xl font-bold text-purple-600">
+                  {stats.completedFollowUpsThisMonth}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Seguimientos Exitosos
+                </p>
               </div>
             </div>
-            
-            {(stats.firstTimeVisitorsThisMonth > 0 || stats.firstTimeVisitorsCount > 0 || stats.averageEngagementScore > 0) ? (
+
+            {stats.firstTimeVisitorsThisMonth > 0 ||
+            stats.firstTimeVisitorsCount > 0 ||
+            stats.averageEngagementScore > 0 ? (
               <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-blue-600" />
                   <p className="text-sm font-medium text-blue-800">
-                    {stats.firstTimeVisitorsThisMonth > 0 
+                    {stats.firstTimeVisitorsThisMonth > 0
                       ? `${stats.firstTimeVisitorsThisMonth} nuevos visitantes este mes`
-                      : stats.firstTimeVisitorsCount > 0 
-                      ? `${stats.firstTimeVisitorsCount} visitantes registrados`
-                      : "Sistema de visitor analytics activado"
-                    }
+                      : stats.firstTimeVisitorsCount > 0
+                        ? `${stats.firstTimeVisitorsCount} visitantes registrados`
+                        : "Sistema de visitor analytics activado"}
                   </p>
                 </div>
                 <p className="text-xs text-blue-600 mt-1">
-                  {stats.automationSuccessRate > 70 
-                    ? "¡Excelente trabajo conectando con visitantes!" 
+                  {stats.automationSuccessRate > 70
+                    ? "¡Excelente trabajo conectando con visitantes!"
                     : stats.automationSuccessRate > 0
-                    ? "Considera revisar los flujos de automatización para mejorar el engagement."
-                    : "Comienza registrando visitantes para ver analytics detallados."
-                  }
+                      ? "Considera revisar los flujos de automatización para mejorar el engagement."
+                      : "Comienza registrando visitantes para ver analytics detallados."}
                 </p>
               </div>
             ) : (
@@ -316,7 +358,8 @@ export function DashboardClient({
                   </p>
                 </div>
                 <p className="text-xs text-gray-600 mt-1">
-                  Registra visitantes en la sección Check-ins para comenzar a ver métricas de engagement y automatización.
+                  Registra visitantes en la sección Check-ins para comenzar a
+                  ver métricas de engagement y automatización.
                 </p>
               </div>
             )}
@@ -332,11 +375,17 @@ export function DashboardClient({
               <Heart className="h-5 w-5 text-rose-600" />
               <h2 className="text-xl font-semibold">Diario del Pastor</h2>
             </div>
-            <Link href="/shepherds-log" className="text-sm text-muted-foreground hover:underline">
+            <Link
+              href="/shepherds-log"
+              className="text-sm text-muted-foreground hover:underline"
+            >
               Ver todo
             </Link>
           </div>
-          <ShepherdsLogWidget initialMembers={shepherdsLogMembers} churchId={churchId} />
+          <ShepherdsLogWidget
+            initialMembers={shepherdsLogMembers}
+            churchId={churchId}
+          />
         </div>
       )}
 
@@ -362,13 +411,16 @@ export function DashboardClient({
             {recentMembers?.length > 0 ? (
               <div className="space-y-4">
                 {(recentMembers || []).map((member) => (
-                  <div key={member.id} className="flex items-center justify-between">
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between"
+                  >
                     <div>
                       <p className="font-medium">
                         {member.firstName} {member.lastName}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        {member.email || 'Sin email'}
+                        {member.email || "Sin email"}
                       </p>
                     </div>
                     <div className="text-right">
@@ -388,7 +440,9 @@ export function DashboardClient({
             ) : (
               <div className="text-center py-6">
                 <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No hay miembros registrados</p>
+                <p className="text-muted-foreground">
+                  No hay miembros registrados
+                </p>
                 {canManageMembers && (
                   <Link href="/members">
                     <Button className="mt-4">
@@ -422,11 +476,12 @@ export function DashboardClient({
             {recentSermons?.length > 0 ? (
               <div className="space-y-4">
                 {(recentSermons || []).map((sermon) => (
-                  <div key={sermon.id} className="flex items-center justify-between">
+                  <div
+                    key={sermon.id}
+                    className="flex items-center justify-between"
+                  >
                     <div className="flex-1">
-                      <p className="font-medium line-clamp-1">
-                        {sermon.title}
-                      </p>
+                      <p className="font-medium line-clamp-1">{sermon.title}</p>
                       <div className="flex items-center gap-2 mt-1">
                         {sermon.scripture && (
                           <Badge variant="secondary" className="text-xs">
@@ -486,12 +541,17 @@ export function DashboardClient({
             {recentCheckIns?.length > 0 ? (
               <div className="space-y-4">
                 {(recentCheckIns || []).map((checkIn) => (
-                  <div key={checkIn.id} className="flex items-center justify-between">
+                  <div
+                    key={checkIn.id}
+                    className="flex items-center justify-between"
+                  >
                     <div>
                       <p className="font-medium flex items-center gap-2">
                         {checkIn.firstName} {checkIn.lastName}
                         {checkIn.isFirstTime && (
-                          <Badge variant="default" className="text-xs">Primera vez</Badge>
+                          <Badge variant="default" className="text-xs">
+                            Primera vez
+                          </Badge>
                         )}
                       </p>
                       <p className="text-sm text-muted-foreground">
@@ -510,7 +570,9 @@ export function DashboardClient({
             ) : (
               <div className="text-center py-6">
                 <UserCheck className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No hay check-ins registrados</p>
+                <p className="text-muted-foreground">
+                  No hay check-ins registrados
+                </p>
                 {canManageMembers && (
                   <Link href="/check-ins">
                     <Button className="mt-4">
@@ -556,17 +618,30 @@ export function DashboardClient({
             ) : recentWebsiteRequests?.length > 0 ? (
               <div className="space-y-4">
                 {(recentWebsiteRequests || []).map((request) => (
-                  <div key={request.id} className="flex items-center justify-between">
+                  <div
+                    key={request.id}
+                    className="flex items-center justify-between"
+                  >
                     <div>
                       <p className="font-medium flex items-center gap-2">
                         {request.projectName}
-                        <Badge 
-                          variant={request.status === 'pending' ? 'secondary' : request.status === 'in_progress' ? 'default' : 'outline'}
+                        <Badge
+                          variant={
+                            request.status === "pending"
+                              ? "secondary"
+                              : request.status === "in_progress"
+                                ? "default"
+                                : "outline"
+                          }
                           className="text-xs"
                         >
-                          {request.status === 'pending' ? 'Pendiente' : 
-                           request.status === 'in_progress' ? 'En Progreso' :
-                           request.status === 'completed' ? 'Completado' : request.status}
+                          {request.status === "pending"
+                            ? "Pendiente"
+                            : request.status === "in_progress"
+                              ? "En Progreso"
+                              : request.status === "completed"
+                                ? "Completado"
+                                : request.status}
                         </Badge>
                       </p>
                       <p className="text-sm text-muted-foreground">
@@ -623,7 +698,9 @@ export function DashboardClient({
                 <p className="text-2xl font-bold text-blue-600">
                   {stats.totalMembers}
                 </p>
-                <p className="text-sm text-muted-foreground">Miembros Totales</p>
+                <p className="text-sm text-muted-foreground">
+                  Miembros Totales
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-green-600">
@@ -635,12 +712,14 @@ export function DashboardClient({
                 <p className="text-2xl font-bold text-purple-600">
                   {stats.totalSermons}
                 </p>
-                <p className="text-sm text-muted-foreground">Sermones Creados</p>
+                <p className="text-sm text-muted-foreground">
+                  Sermones Creados
+                </p>
               </div>
             </div>
           </CardContent>
         </Card>
       )}
     </div>
-  )
+  );
 }
