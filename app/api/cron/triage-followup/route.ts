@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 
 const FALLBACK_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     // Verify cron authorization
     const authHeader = req.headers.get("Authorization");
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
         requesterName: true,
         requesterPhone: true,
         detectedKeyword: true,
-        churches: {
+        church: {
           select: { name: true },
         },
       },
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     for (const event of overdueEvents) {
       try {
         const name = event.requesterName || "Querido/a";
-        const churchName = event.churches.name;
+        const churchName = event.church.name;
 
         await whatsappBusinessService.sendMessage({
           to: event.requesterPhone!.replace(/\D/g, ""),

@@ -11,7 +11,7 @@ import { refreshShepherdsLog } from "@/lib/shepherds-log-service";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
     if (
