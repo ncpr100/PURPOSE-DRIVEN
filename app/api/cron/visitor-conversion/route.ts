@@ -2,7 +2,7 @@
 // Monthly cron: Generate visitor conversion reports for all active churches.
 // Runs on the 1st of each month at 9:00 AM (vercel.json: "0 9 1 * *")
 //
-// POST /api/cron/visitor-conversion
+// GET /api/cron/visitor-conversion
 // Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ import { generateVisitorConversionReport } from "@/lib/visitor-conversion-servic
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
     if (

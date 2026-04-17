@@ -2,7 +2,7 @@
 // Monthly cron: Run generosity journey analysis for all active churches.
 // Runs on the 1st of each month at 10:00 AM (vercel.json: "0 10 1 * *")
 //
-// POST /api/cron/generosity-coach
+// GET /api/cron/generosity-coach
 // Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ import { runGenerosityJourneyAnalysis } from "@/lib/generosity-journey-service";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
     if (

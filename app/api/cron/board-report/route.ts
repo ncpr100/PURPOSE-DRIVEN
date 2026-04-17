@@ -3,7 +3,7 @@
 // Runs on the first Monday of each month at 6:00 AM.
 // Schedule: "0 6 1-7 * 1"  (days 1–7 AND Monday — standard cron equivalent of "1#1")
 //
-// POST /api/cron/board-report
+// GET /api/cron/board-report
 // Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
@@ -12,7 +12,7 @@ import { generateBoardReport } from "@/lib/church-health-synthesizer";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
     if (

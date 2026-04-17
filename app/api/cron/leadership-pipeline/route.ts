@@ -2,7 +2,7 @@
 // Weekly cron: Refresh the Leadership Pipeline for all active churches.
 // Runs every Monday at 7:00 AM (vercel.json: "0 7 * * 1")
 //
-// POST /api/cron/leadership-pipeline
+// GET /api/cron/leadership-pipeline
 // Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ import { refreshLeadershipPipeline } from "@/lib/leadership-pipeline-service";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
     if (

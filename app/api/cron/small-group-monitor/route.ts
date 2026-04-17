@@ -2,7 +2,7 @@
 // Monthly cron: Score small group health for all active churches.
 // Runs on the 1st of each month at 11:00 AM (vercel.json: "0 11 1 * *")
 //
-// POST /api/cron/small-group-monitor
+// GET /api/cron/small-group-monitor
 // Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ import { scoreAllSmallGroups } from "@/lib/small-group-health-monitor";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
     if (

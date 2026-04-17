@@ -2,7 +2,7 @@
 // Weekly cron: Run the Burnout Sentinel for all active churches.
 // Runs every Monday at 8:00 AM (vercel.json: "0 8 * * 1")
 //
-// POST /api/cron/burnout-sentinel
+// GET /api/cron/burnout-sentinel
 // Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ import { runBurnoutSentinel } from "@/lib/volunteer-burnout-sentinel";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
     if (
