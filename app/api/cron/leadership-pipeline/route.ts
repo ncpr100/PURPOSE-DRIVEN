@@ -1,13 +1,13 @@
-// app/api/cron/shepherds-log/route.ts
-// Weekly cron: Refresh the Shepherd's Log cache for all active churches.
-// Runs every Monday at 6:00 AM (vercel.json: "0 6 * * 1")
+// app/api/cron/leadership-pipeline/route.ts
+// Weekly cron: Refresh the Leadership Pipeline for all active churches.
+// Runs every Monday at 7:00 AM (vercel.json: "0 7 * * 1")
 //
-// POST /api/cron/shepherds-log
+// GET /api/cron/leadership-pipeline
 // Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { refreshShepherdsLog } from "@/lib/shepherds-log-service";
+import { refreshLeadershipPipeline } from "@/lib/leadership-pipeline-service";
 
 export const dynamic = "force-dynamic";
 
@@ -21,14 +21,13 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    if (process.env.ENABLE_SHEPHERDS_LOG !== "true") {
+    if (process.env.ENABLE_LEADERSHIP_PIPELINE !== "true") {
       return NextResponse.json({
         skipped: true,
-        reason: "shepherds log disabled",
+        reason: "leadership pipeline disabled",
       });
     }
 
-    // Refresh log for every active church
     const churches = await db.churches.findMany({
       where: { isActive: true },
       select: { id: true },
@@ -39,12 +38,15 @@ export async function GET(req: NextRequest) {
 
     for (const church of churches) {
       try {
-        await refreshShepherdsLog(church.id);
+        await refreshLeadershipPipeline(church.id);
         refreshed++;
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         errors.push(`church:${church.id}: ${msg}`);
-        console.error(`[SHEPHERDS_LOG] Refresh failed for ${church.id}:`, err);
+        console.error(
+          `[LEADERSHIP_PIPELINE] Refresh failed for ${church.id}:`,
+          err,
+        );
       }
     }
 
@@ -55,7 +57,7 @@ export async function GET(req: NextRequest) {
       ...(errors.length > 0 && { errors }),
     });
   } catch (err) {
-    console.error("[SHEPHERDS_LOG] Cron error:", err);
+    console.error("[LEADERSHIP_PIPELINE] Cron error:", err);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

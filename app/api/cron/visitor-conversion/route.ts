@@ -1,13 +1,13 @@
-// app/api/cron/shepherds-log/route.ts
-// Weekly cron: Refresh the Shepherd's Log cache for all active churches.
-// Runs every Monday at 6:00 AM (vercel.json: "0 6 * * 1")
+// app/api/cron/visitor-conversion/route.ts
+// Monthly cron: Generate visitor conversion reports for all active churches.
+// Runs on the 1st of each month at 9:00 AM (vercel.json: "0 9 1 * *")
 //
-// POST /api/cron/shepherds-log
+// GET /api/cron/visitor-conversion
 // Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { refreshShepherdsLog } from "@/lib/shepherds-log-service";
+import { generateVisitorConversionReport } from "@/lib/visitor-conversion-service";
 
 export const dynamic = "force-dynamic";
 
@@ -21,41 +21,43 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    if (process.env.ENABLE_SHEPHERDS_LOG !== "true") {
+    if (process.env.ENABLE_VISITOR_CONVERSION !== "true") {
       return NextResponse.json({
         skipped: true,
-        reason: "shepherds log disabled",
+        reason: "visitor conversion disabled",
       });
     }
 
-    // Refresh log for every active church
     const churches = await db.churches.findMany({
       where: { isActive: true },
       select: { id: true },
     });
 
-    let refreshed = 0;
+    let generated = 0;
     const errors: string[] = [];
 
     for (const church of churches) {
       try {
-        await refreshShepherdsLog(church.id);
-        refreshed++;
+        await generateVisitorConversionReport(church.id);
+        generated++;
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         errors.push(`church:${church.id}: ${msg}`);
-        console.error(`[SHEPHERDS_LOG] Refresh failed for ${church.id}:`, err);
+        console.error(
+          `[VISITOR_CONVERSION] Report failed for ${church.id}:`,
+          err,
+        );
       }
     }
 
     return NextResponse.json({
       success: true,
-      refreshed,
+      generated,
       total: churches.length,
       ...(errors.length > 0 && { errors }),
     });
   } catch (err) {
-    console.error("[SHEPHERDS_LOG] Cron error:", err);
+    console.error("[VISITOR_CONVERSION] Cron error:", err);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },
