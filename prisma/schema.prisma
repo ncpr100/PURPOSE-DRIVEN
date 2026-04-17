@@ -590,6 +590,13 @@ model churches {
   prayer_watchman_events           prayer_watchman_events[]
   shepherds_log_cache              shepherds_log_cache[]
   pastoral_contacts                pastoral_contacts[]
+  leadership_pipeline_cache        leadership_pipeline_cache[]
+  leadership_invitations           leadership_invitations[]
+  burnout_alerts                   burnout_alerts[]
+  visitor_conversion_reports       visitor_conversion_reports[]
+  generosity_journey_alerts        generosity_journey_alerts[]
+  small_group_health_scores        small_group_health_scores[]
+  church_board_reports             church_board_reports[]
 }
 
 model communication_templates {
@@ -2843,4 +2850,152 @@ model pastoral_contacts {
 
   @@map("pastoral_contacts")
 }
+
+// ============================================
+// AI MINISTRY AGENTS PHASE 2 — NEW MODELS
+// ============================================
+
+// Agent 6: Leadership Pipeline
+model leadership_pipeline_cache {
+  id          String   @id @default(cuid())
+  churchId    String   @unique
+  candidates  Json     // Array of leadership candidate summaries
+  generatedAt DateTime @default(now())
+  expiresAt   DateTime
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("leadership_pipeline_cache")
+}
+
+model leadership_invitations {
+  id          String                @id @default(cuid())
+  churchId    String
+  memberId    String
+  invitedBy   String                // userId of pastor
+  role        String                // leadership role suggested
+  notes       String?               @db.Text
+  status      LeadershipInviteStatus @default(PENDING)
+  invitedAt   DateTime              @default(now())
+  respondedAt DateTime?
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("leadership_invitations")
+}
+
+enum LeadershipInviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  DEFERRED
+}
+
+// Agent 7: Volunteer Burnout Sentinel
+model burnout_alerts {
+  id          String           @id @default(cuid())
+  churchId    String
+  volunteerId String
+  alertType   BurnoutAlertType
+  severity    String           // 'WARNING' | 'CRITICAL'
+  details     String           @db.Text
+  isResolved  Boolean          @default(false)
+  resolvedAt  DateTime?
+  resolvedBy  String?          // userId
+  createdAt   DateTime         @default(now())
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("burnout_alerts")
+}
+
+enum BurnoutAlertType {
+  OVER_ASSIGNMENT
+  DECLINING_ENGAGEMENT
+  CONSECUTIVE_SERVICE
+  NO_REST_ROTATION
+}
+
+// Agent 8: Visitor Conversion Intelligence
+model visitor_conversion_reports {
+  id              String   @id @default(cuid())
+  churchId        String
+  periodStart     DateTime
+  periodEnd       DateTime
+  totalVisitors   Int
+  followedUp      Int
+  returned        Int
+  conversionRate  Float
+  patterns        Json     // Array of identified patterns
+  recommendations Json     // Array of action recommendations
+  generatedAt     DateTime @default(now())
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("visitor_conversion_reports")
+}
+
+// Agent 9: Generosity Journey Coach
+model generosity_journey_alerts {
+  id         String               @id @default(cuid())
+  churchId   String
+  memberId   String
+  alertType  GenerosityAlertType
+  message    String               @db.Text
+  isActioned Boolean              @default(false)
+  actionedBy String?
+  actionedAt DateTime?
+  createdAt  DateTime             @default(now())
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("generosity_journey_alerts")
+}
+
+enum GenerosityAlertType {
+  FIRST_GIFT
+  LAPSED_GIVER
+  CAMPAIGN_ONLY_DONOR
+  INCONSISTENT_GIVER
+  RECURRING_MILESTONE
+}
+
+// Agent 10: Small Group Health Monitor
+model small_group_health_scores {
+  id               String   @id @default(cuid())
+  churchId         String
+  groupId          String
+  sizeTrend        String   // 'GROWING' | 'STABLE' | 'DECLINING'
+  attendanceScore  Float    // 0-100
+  leaderScore      Float    // 0-100
+  integrationScore Float    // 0-100
+  overallStatus    String   // 'GREEN' | 'YELLOW' | 'RED'
+  recommendations  Json
+  scoredAt         DateTime @default(now())
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@unique([churchId, groupId])
+  @@map("small_group_health_scores")
+}
+
+// Agent 11: Church Health Synthesizer
+model church_board_reports {
+  id               String   @id @default(cuid())
+  churchId         String
+  reportMonth      String   // 'YYYY-MM'
+  narrative        String   @db.Text
+  attendanceDelta  Float
+  giversDelta      Float
+  visitorRetention Float
+  smallGroupScore  Float
+  actionItems      Json     // Array of 3 specific action items
+  generatedAt      DateTime @default(now())
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@unique([churchId, reportMonth])
+  @@map("church_board_reports")
+}
+
 
