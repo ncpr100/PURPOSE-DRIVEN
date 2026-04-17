@@ -26,6 +26,30 @@
     {
       "path": "/api/cron/shepherds-log",
       "schedule": "0 6 * * 1"
+    },
+    {
+      "path": "/api/cron/leadership-pipeline",
+      "schedule": "0 7 * * 1"
+    },
+    {
+      "path": "/api/cron/burnout-sentinel",
+      "schedule": "0 8 * * 1"
+    },
+    {
+      "path": "/api/cron/visitor-conversion",
+      "schedule": "0 9 1 * *"
+    },
+    {
+      "path": "/api/cron/generosity-coach",
+      "schedule": "0 10 1 * *"
+    },
+    {
+      "path": "/api/cron/small-group-monitor",
+      "schedule": "0 11 1 * *"
+    },
+    {
+      "path": "/api/cron/board-report",
+      "schedule": "0 6 1-7 * 1"
     }
   ],
   "headers": [
