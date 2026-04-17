@@ -59,7 +59,6 @@ export function buildSystemPrompt(
   clauses: (keyof typeof AI_CONSTITUTION)[]
 ): string {
   return clauses
-    .map((c) => AI_CONSTITUTION[c])
-    .filter((v): v is string => typeof v === "string")
+    .map((c) => AI_CONSTITUTION[c] as string)
     .join("\n\n");
 }
