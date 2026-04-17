@@ -19,7 +19,7 @@ export interface GroupHealthScore {
 }
 
 export async function scoreAllSmallGroups(
-  churchId: string
+  churchId: string,
 ): Promise<GroupHealthScore[]> {
   if (process.env.ENABLE_SMALL_GROUP_MONITOR !== "true") {
     return [];
@@ -84,7 +84,7 @@ export async function scoreAllSmallGroups(
     else if (recent < previous * 0.8) {
       sizeTrend = "DECLINING";
       recommendations.push(
-        "El grupo ha perdido miembros. Considere una reunión de reinicio."
+        "El grupo ha perdido miembros. Considere una reunión de reinicio.",
       );
     }
 
@@ -99,7 +99,7 @@ export async function scoreAllSmallGroups(
         leaderScore = leaderJourney.engagementScore;
         if (leaderScore < 50) {
           recommendations.push(
-            "El líder del grupo muestra señales de desvinculación. Priorizar un encuentro pastoral."
+            "El líder del grupo muestra señales de desvinculación. Priorizar un encuentro pastoral.",
           );
         }
       }
@@ -116,7 +116,7 @@ export async function scoreAllSmallGroups(
     integrationScore = newMemberCount > 0 ? 85 : 60;
     if (newMemberCount === 0) {
       recommendations.push(
-        "No se han integrado miembros nuevos en los últimos 30 días."
+        "No se han integrado miembros nuevos en los últimos 30 días.",
       );
     }
 

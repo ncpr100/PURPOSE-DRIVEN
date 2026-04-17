@@ -42,7 +42,11 @@ export async function runBurnoutSentinel(churchId: string) {
 
   const now = new Date();
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-  const createdAlerts: Array<{ volunteerId: string; alertType: string; severity: string }> = [];
+  const createdAlerts: Array<{
+    volunteerId: string;
+    alertType: string;
+    severity: string;
+  }> = [];
 
   for (const volunteer of volunteers) {
     const assignments = volunteer.volunteer_assignments;
@@ -50,7 +54,7 @@ export async function runBurnoutSentinel(churchId: string) {
 
     // ── 1. OVER_ASSIGNMENT ─────────────────────────────────────────────────
     const recentCount = assignments.filter(
-      (a) => new Date(a.date) >= thirtyDaysAgo
+      (a) => new Date(a.date) >= thirtyDaysAgo,
     ).length;
 
     if (recentCount >= OVER_ASSIGNMENT_THRESHOLD) {
@@ -71,7 +75,11 @@ export async function runBurnoutSentinel(churchId: string) {
             details: `${volunteer.firstName} ${volunteer.lastName} tiene ${recentCount} asignaciones en los últimos 30 días (umbral: ${OVER_ASSIGNMENT_THRESHOLD}).`,
           },
         });
-        createdAlerts.push({ volunteerId: volunteer.id, alertType: "OVER_ASSIGNMENT", severity: recentCount >= 8 ? "CRITICAL" : "WARNING" });
+        createdAlerts.push({
+          volunteerId: volunteer.id,
+          alertType: "OVER_ASSIGNMENT",
+          severity: recentCount >= 8 ? "CRITICAL" : "WARNING",
+        });
       }
     }
 
@@ -97,7 +105,11 @@ export async function runBurnoutSentinel(churchId: string) {
             details: `El compromiso de ${volunteer.firstName} ${volunteer.lastName} está en tendencia DECLINING con tasa de participación ${Math.round((engagement.participationRate ?? 0) * 100)}%.`,
           },
         });
-        createdAlerts.push({ volunteerId: volunteer.id, alertType: "DECLINING_ENGAGEMENT", severity: "WARNING" });
+        createdAlerts.push({
+          volunteerId: volunteer.id,
+          alertType: "DECLINING_ENGAGEMENT",
+          severity: "WARNING",
+        });
       }
     }
 
@@ -140,7 +152,11 @@ export async function runBurnoutSentinel(churchId: string) {
             details: `${volunteer.firstName} ${volunteer.lastName} lleva ${streak} semanas consecutivas sirviendo sin descanso (umbral: ${CONSECUTIVE_WEEKS_THRESHOLD}).`,
           },
         });
-        createdAlerts.push({ volunteerId: volunteer.id, alertType: "CONSECUTIVE_SERVICE", severity: streak >= 10 ? "CRITICAL" : "WARNING" });
+        createdAlerts.push({
+          volunteerId: volunteer.id,
+          alertType: "CONSECUTIVE_SERVICE",
+          severity: streak >= 10 ? "CRITICAL" : "WARNING",
+        });
       }
     }
 
@@ -155,12 +171,14 @@ export async function runBurnoutSentinel(churchId: string) {
 
       if (spanDays >= 180) {
         // Check for any rest gap > 3 weeks in last 6 months
-        const sorted = [...assignments]
-          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        const sorted = [...assignments].sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        );
         let hadBreak = false;
         for (let i = 1; i < sorted.length; i++) {
           const gap =
-            (new Date(sorted[i].date).getTime() - new Date(sorted[i - 1].date).getTime()) /
+            (new Date(sorted[i].date).getTime() -
+              new Date(sorted[i - 1].date).getTime()) /
             (1000 * 60 * 60 * 24);
           if (gap >= 21) {
             hadBreak = true;
@@ -186,7 +204,11 @@ export async function runBurnoutSentinel(churchId: string) {
                 details: `${volunteer.firstName} ${volunteer.lastName} lleva más de ${Math.round(spanDays / 30)} meses sirviendo sin un descanso de 3 semanas o más.`,
               },
             });
-            createdAlerts.push({ volunteerId: volunteer.id, alertType: "NO_REST_ROTATION", severity: "WARNING" });
+            createdAlerts.push({
+              volunteerId: volunteer.id,
+              alertType: "NO_REST_ROTATION",
+              severity: "WARNING",
+            });
           }
         }
       }

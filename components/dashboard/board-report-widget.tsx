@@ -79,7 +79,9 @@ export function BoardReportWidget({ initialReport }: Props) {
             onClick={refresh}
             disabled={isRefreshing}
           >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+            <RefreshCw
+              className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
           </Button>
           <Button
             variant="outline"
@@ -94,20 +96,34 @@ export function BoardReportWidget({ initialReport }: Props) {
       <CardContent>
         {!report ? (
           <p className="text-sm text-muted-foreground text-center py-4">
-            No hay informe para este mes. Haz clic en &quot;Generar&quot; para crear el análisis.
+            No hay informe para este mes. Haz clic en &quot;Generar&quot; para
+            crear el análisis.
           </p>
         ) : (
           <div className="space-y-4">
             {/* Month & key metrics */}
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>Período: <span className="font-medium text-foreground">{report.reportMonth}</span></span>
-              <span>Generado: <span className="font-medium text-foreground">{new Date(report.generatedAt).toLocaleDateString("es-CO")}</span></span>
+              <span>
+                Período:{" "}
+                <span className="font-medium text-foreground">
+                  {report.reportMonth}
+                </span>
+              </span>
+              <span>
+                Generado:{" "}
+                <span className="font-medium text-foreground">
+                  {new Date(report.generatedAt).toLocaleDateString("es-CO")}
+                </span>
+              </span>
             </div>
 
             <div className="grid grid-cols-3 gap-3 text-center">
               <div className="bg-muted rounded-lg p-2">
-                <p className={`text-lg font-bold ${report.attendanceDelta >= 0 ? "text-green-600" : "text-red-500"}`}>
-                  {report.attendanceDelta >= 0 ? "+" : ""}{report.attendanceDelta}%
+                <p
+                  className={`text-lg font-bold ${report.attendanceDelta >= 0 ? "text-green-600" : "text-red-500"}`}
+                >
+                  {report.attendanceDelta >= 0 ? "+" : ""}
+                  {report.attendanceDelta}%
                 </p>
                 <p className="text-xs text-muted-foreground">Asistencia</p>
               </div>
@@ -124,7 +140,9 @@ export function BoardReportWidget({ initialReport }: Props) {
             {/* Narrative with expand/collapse */}
             {report.narrative && (
               <div>
-                <p className={`text-sm text-muted-foreground ${!showFullNarrative ? "line-clamp-3" : ""}`}>
+                <p
+                  className={`text-sm text-muted-foreground ${!showFullNarrative ? "line-clamp-3" : ""}`}
+                >
                   {report.narrative}
                 </p>
                 <button
@@ -132,9 +150,13 @@ export function BoardReportWidget({ initialReport }: Props) {
                   onClick={() => setShowFullNarrative(!showFullNarrative)}
                 >
                   {showFullNarrative ? (
-                    <>Leer menos <ChevronUp className="h-3 w-3" /></>
+                    <>
+                      Leer menos <ChevronUp className="h-3 w-3" />
+                    </>
                   ) : (
-                    <>Leer completo <ChevronDown className="h-3 w-3" /></>
+                    <>
+                      Leer completo <ChevronDown className="h-3 w-3" />
+                    </>
                   )}
                 </button>
               </div>
@@ -157,7 +179,8 @@ export function BoardReportWidget({ initialReport }: Props) {
             )}
 
             <p className="text-xs text-muted-foreground italic border-t pt-2">
-              ⚠️ Generado por IA como apoyo ministerial. La decisión pastoral pertenece al pastor.
+              ⚠️ Generado por IA como apoyo ministerial. La decisión pastoral
+              pertenece al pastor.
             </p>
           </div>
         )}

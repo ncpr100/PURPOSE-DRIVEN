@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   if (!session?.user?.churchId || session.user.role !== "PASTOR") {
     return NextResponse.json(
       { error: "Solo pastores pueden ver el informe de consejo" },
-      { status: 403 }
+      { status: 403 },
     );
   }
 
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   if (!session?.user?.churchId || session.user.role !== "PASTOR") {
     return NextResponse.json(
       { error: "Solo pastores pueden generar el informe de consejo" },
-      { status: 403 }
+      { status: 403 },
     );
   }
 

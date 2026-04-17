@@ -74,7 +74,9 @@ export function GenerosityJourneyWidget({ initialAlerts }: Props) {
           onClick={refresh}
           disabled={isRefreshing}
         >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+          <RefreshCw
+            className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+          />
         </Button>
       </CardHeader>
       <CardContent>

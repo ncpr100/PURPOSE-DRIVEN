@@ -21,7 +21,7 @@ export interface LeadershipCandidate {
 }
 
 export async function identifyLeadershipCandidates(
-  churchId: string
+  churchId: string,
 ): Promise<LeadershipCandidate[]> {
   if (process.env.ENABLE_LEADERSHIP_PIPELINE !== "true") {
     return [];
@@ -97,7 +97,7 @@ export async function identifyLeadershipCandidates(
   `;
 
   const volunteerMap = new Map(
-    volunteerHistory.map((v) => [v.memberId, Number(v.activeMonths)])
+    volunteerHistory.map((v) => [v.memberId, Number(v.activeMonths)]),
   );
 
   // Step 4: Exclude members who already have an active invitation
@@ -130,19 +130,25 @@ export async function identifyLeadershipCandidates(
     const engagementPts = Math.min(20, (member.engagementScore / 100) * 20);
     score += engagementPts;
     if (member.engagementScore >= 80)
-      reasons.push(`Puntuación de compromiso alta: ${member.engagementScore}/100`);
+      reasons.push(
+        `Puntuación de compromiso alta: ${member.engagementScore}/100`,
+      );
 
     // 2. Lifecycle maturity (20 pts)
     const lifecyclePts = member.lifecycle === "MATURE_LEADER" ? 20 : 12;
     score += lifecyclePts;
-    if (member.lifecycle === "MATURE_LEADER") reasons.push("Etapa Líder Maduro alcanzada");
-    else if (member.lifecycle === "LEADING_MEMBER") reasons.push("Etapa Miembro Líder activa");
+    if (member.lifecycle === "MATURE_LEADER")
+      reasons.push("Etapa Líder Maduro alcanzada");
+    else if (member.lifecycle === "LEADING_MEMBER")
+      reasons.push("Etapa Miembro Líder activa");
 
     // 3. Time in stage (20 pts)
     const timePts = Math.min(20, (member.totalDaysInCurrentStage / 365) * 20);
     score += timePts;
     if (member.totalDaysInCurrentStage >= 365)
-      reasons.push(`${Math.round(member.totalDaysInCurrentStage / 30)} meses en etapa actual`);
+      reasons.push(
+        `${Math.round(member.totalDaysInCurrentStage / 30)} meses en etapa actual`,
+      );
 
     // 4. Volunteer consistency (20 pts)
     const volunteerPts = Math.min(20, (volunteerMonths / 12) * 20);
@@ -185,7 +191,9 @@ export async function identifyLeadershipCandidates(
   }
 
   // Sort by readiness score, return top 5
-  return candidates.sort((a, b) => b.readinessScore - a.readinessScore).slice(0, 5);
+  return candidates
+    .sort((a, b) => b.readinessScore - a.readinessScore)
+    .slice(0, 5);
 }
 
 export async function refreshLeadershipPipeline(churchId: string) {

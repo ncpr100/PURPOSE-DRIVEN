@@ -4,7 +4,13 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, RefreshCw, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import {
+  Users,
+  RefreshCw,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+} from "lucide-react";
 import toast from "react-hot-toast";
 
 interface ConversionPattern {
@@ -89,7 +95,9 @@ export function VisitorConversionWidget({ initialReport }: Props) {
             onClick={refresh}
             disabled={isRefreshing}
           >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+            <RefreshCw
+              className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
           </Button>
           <Button
             variant="outline"
@@ -104,7 +112,8 @@ export function VisitorConversionWidget({ initialReport }: Props) {
       <CardContent>
         {!report ? (
           <p className="text-sm text-muted-foreground text-center py-4">
-            No hay informe disponible. Haz clic en &quot;Generar&quot; para crear el análisis.
+            No hay informe disponible. Haz clic en &quot;Generar&quot; para
+            crear el análisis.
           </p>
         ) : (
           <div className="space-y-4">

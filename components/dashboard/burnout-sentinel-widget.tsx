@@ -73,7 +73,9 @@ export function BurnoutSentinelWidget({ initialAlerts }: Props) {
           onClick={refresh}
           disabled={isRefreshing}
         >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+          <RefreshCw
+            className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+          />
         </Button>
       </CardHeader>
       <CardContent>
@@ -94,10 +96,16 @@ export function BurnoutSentinelWidget({ initialAlerts }: Props) {
                       {alert.volunteerName}
                     </span>
                     <Badge
-                      variant={alert.severity === "CRITICAL" ? "destructive" : "outline"}
+                      variant={
+                        alert.severity === "CRITICAL"
+                          ? "destructive"
+                          : "outline"
+                      }
                       className="text-xs"
                     >
-                      {alert.severity === "CRITICAL" ? "Crítico" : "Advertencia"}
+                      {alert.severity === "CRITICAL"
+                        ? "Crítico"
+                        : "Advertencia"}
                     </Badge>
                   </div>
                   <p className="text-xs text-muted-foreground mt-0.5">

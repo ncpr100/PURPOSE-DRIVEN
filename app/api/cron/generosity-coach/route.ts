@@ -22,7 +22,10 @@ export async function GET(req: NextRequest) {
     }
 
     if (process.env.ENABLE_GENEROSITY_COACH !== "true") {
-      return NextResponse.json({ skipped: true, reason: "generosity coach disabled" });
+      return NextResponse.json({
+        skipped: true,
+        reason: "generosity coach disabled",
+      });
     }
 
     const churches = await db.churches.findMany({
@@ -40,7 +43,10 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         errors.push(`church:${church.id}: ${msg}`);
-        console.error(`[GENEROSITY_COACH] Analysis failed for ${church.id}:`, err);
+        console.error(
+          `[GENEROSITY_COACH] Analysis failed for ${church.id}:`,
+          err,
+        );
       }
     }
 

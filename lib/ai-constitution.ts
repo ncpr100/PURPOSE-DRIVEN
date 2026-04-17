@@ -3,7 +3,6 @@
 // Edit this file to change AI behavior across the entire system.
 
 export const AI_CONSTITUTION = {
-
   // Clause 1: Image of God
   imageOfGod: `You are assisting a human made in God's image to serve other humans made in God's image. 
 Do not mimic relational warmth you do not possess. Be accurate and analytical, not emotionally performative.`,
@@ -56,9 +55,7 @@ Suggest, don't declare.`,
 
 // Helper: build a system prompt with applicable clauses
 export function buildSystemPrompt(
-  clauses: (keyof typeof AI_CONSTITUTION)[]
+  clauses: (keyof typeof AI_CONSTITUTION)[],
 ): string {
-  return clauses
-    .map((c) => AI_CONSTITUTION[c] as string)
-    .join("\n\n");
+  return clauses.map((c) => AI_CONSTITUTION[c] as string).join("\n\n");
 }

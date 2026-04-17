@@ -24,7 +24,7 @@ export interface GenerosityAlert {
 }
 
 export async function runGenerosityJourneyAnalysis(
-  churchId: string
+  churchId: string,
 ): Promise<GenerosityAlert[]> {
   if (process.env.ENABLE_GENEROSITY_COACH !== "true") {
     return [];

@@ -22,7 +22,10 @@ export async function GET(req: NextRequest) {
     }
 
     if (process.env.ENABLE_SHEPHERDS_LOG !== "true") {
-      return NextResponse.json({ skipped: true, reason: "shepherds log disabled" });
+      return NextResponse.json({
+        skipped: true,
+        reason: "shepherds log disabled",
+      });
     }
 
     // Refresh log for every active church

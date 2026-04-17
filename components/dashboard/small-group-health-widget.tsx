@@ -68,7 +68,9 @@ export function SmallGroupHealthWidget({ initialScores }: Props) {
           onClick={refresh}
           disabled={isRefreshing}
         >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+          <RefreshCw
+            className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+          />
         </Button>
       </CardHeader>
       <CardContent>
@@ -79,11 +81,16 @@ export function SmallGroupHealthWidget({ initialScores }: Props) {
         ) : (
           <ul className="space-y-2">
             {scores.map((group) => (
-              <li key={group.groupId} className="border rounded-lg overflow-hidden">
+              <li
+                key={group.groupId}
+                className="border rounded-lg overflow-hidden"
+              >
                 <button
                   className="w-full flex items-center justify-between p-3 text-left hover:bg-muted/50 transition-colors"
                   onClick={() =>
-                    setExpanded(expanded === group.groupId ? null : group.groupId)
+                    setExpanded(
+                      expanded === group.groupId ? null : group.groupId,
+                    )
                   }
                 >
                   <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -120,7 +127,9 @@ export function SmallGroupHealthWidget({ initialScores }: Props) {
                       </span>
                       <span>
                         Tendencia:{" "}
-                        <span className={`font-medium ${TREND_CONFIG[group.sizeTrend].className}`}>
+                        <span
+                          className={`font-medium ${TREND_CONFIG[group.sizeTrend].className}`}
+                        >
                           {TREND_CONFIG[group.sizeTrend].label}
                         </span>
                       </span>

@@ -62,7 +62,7 @@ export async function generateVisitorConversionReport(churchId: string) {
         const firstVisit = visitors.find((v) => v.email === r.email);
         return firstVisit && r.checkedInAt > firstVisit.checkedInAt;
       })
-      .map((r) => r.email)
+      .map((r) => r.email),
   );
 
   // 3. Get follow-up data
@@ -83,7 +83,7 @@ export async function generateVisitorConversionReport(churchId: string) {
   // 4. Build data summary for Claude analysis
   // Follow-up status in this system uses Spanish: "COMPLETADO" (not "COMPLETED")
   const completedFollowUps = followUps.filter(
-    (f) => f.status === "COMPLETADO" || f.status === "completed"
+    (f) => f.status === "COMPLETADO" || f.status === "completed",
   );
 
   const dataSummary = {
@@ -107,11 +107,11 @@ export async function generateVisitorConversionReport(churchId: string) {
         if (v.visitReason) acc[v.visitReason] = (acc[v.visitReason] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>
+      {} as Record<string, number>,
     ),
     avgEngagementScore: Math.round(
       visitors.reduce((sum, v) => sum + (v.engagementScore || 0), 0) /
-        visitors.length
+        visitors.length,
     ),
   };
 

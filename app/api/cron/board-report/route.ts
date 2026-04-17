@@ -23,7 +23,10 @@ export async function GET(req: NextRequest) {
     }
 
     if (process.env.ENABLE_BOARD_REPORT !== "true") {
-      return NextResponse.json({ skipped: true, reason: "board report disabled" });
+      return NextResponse.json({
+        skipped: true,
+        reason: "board report disabled",
+      });
     }
 
     const churches = await db.churches.findMany({
@@ -41,7 +44,10 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         errors.push(`church:${church.id}: ${msg}`);
-        console.error(`[BOARD_REPORT] Generation failed for ${church.id}:`, err);
+        console.error(
+          `[BOARD_REPORT] Generation failed for ${church.id}:`,
+          err,
+        );
       }
     }
 

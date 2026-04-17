@@ -22,7 +22,10 @@ export async function GET(req: NextRequest) {
     }
 
     if (process.env.ENABLE_SMALL_GROUP_MONITOR !== "true") {
-      return NextResponse.json({ skipped: true, reason: "small group monitor disabled" });
+      return NextResponse.json({
+        skipped: true,
+        reason: "small group monitor disabled",
+      });
     }
 
     const churches = await db.churches.findMany({
@@ -40,7 +43,10 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         errors.push(`church:${church.id}: ${msg}`);
-        console.error(`[SMALL_GROUP_MONITOR] Scoring failed for ${church.id}:`, err);
+        console.error(
+          `[SMALL_GROUP_MONITOR] Scoring failed for ${church.id}:`,
+          err,
+        );
       }
     }
 

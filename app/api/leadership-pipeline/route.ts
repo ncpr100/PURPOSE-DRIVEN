@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
   if (!session?.user?.churchId || session.user.role !== "PASTOR") {
     return NextResponse.json(
       { error: "Solo pastores pueden invitar líderes" },
-      { status: 403 }
+      { status: 403 },
     );
   }
 
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   if (!memberId || !role) {
     return NextResponse.json(
       { error: "memberId y role son requeridos" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 

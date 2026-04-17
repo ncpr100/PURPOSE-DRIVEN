@@ -79,13 +79,20 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
             <Star className="w-4 h-4 text-amber-500" />
             Pipeline de Liderazgo — {candidates.length} candidatos
           </CardTitle>
-          <Button size="sm" variant="ghost" onClick={refresh} disabled={isRefreshing}>
-            <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={refresh}
+            disabled={isRefreshing}
+          >
+            <RefreshCw
+              className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Miembros cuya trayectoria indica preparación para el liderazgo.
-          La decisión pastoral es del pastor.
+          Miembros cuya trayectoria indica preparación para el liderazgo. La
+          decisión pastoral es del pastor.
         </p>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -107,7 +114,10 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-xs text-amber-700 border-amber-200">
+                <Badge
+                  variant="outline"
+                  className="text-xs text-amber-700 border-amber-200"
+                >
                   {c.spiritualGifts[0] || "Sin perfil"}
                 </Badge>
                 {expanded === c.id ? (
@@ -135,7 +145,9 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
                 </div>
                 {c.spiritualGifts.length > 0 && (
                   <div>
-                    <p className="text-xs font-medium text-muted-foreground mb-1">Dones:</p>
+                    <p className="text-xs font-medium text-muted-foreground mb-1">
+                      Dones:
+                    </p>
                     <div className="flex flex-wrap gap-1">
                       {c.spiritualGifts.map((g) => (
                         <Badge key={g} variant="secondary" className="text-xs">
@@ -147,8 +159,17 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
                 )}
                 <div className="flex gap-2">
                   {c.phone && (
-                    <Button size="sm" variant="outline" className="text-xs h-7" asChild>
-                      <a href={`https://wa.me/${c.phone.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-xs h-7"
+                      asChild
+                    >
+                      <a
+                        href={`https://wa.me/${c.phone.replace(/\D/g, "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         <Phone className="w-3 h-3 mr-1" />
                         WhatsApp
                       </a>
@@ -168,7 +189,8 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
           </div>
         ))}
         <p className="text-xs text-muted-foreground text-center pt-1">
-          Generado por IA como apoyo ministerial. La decisión pastoral es del pastor.
+          Generado por IA como apoyo ministerial. La decisión pastoral es del
+          pastor.
         </p>
       </CardContent>
     </Card>

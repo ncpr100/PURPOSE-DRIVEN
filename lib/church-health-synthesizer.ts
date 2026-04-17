@@ -33,7 +33,7 @@ export async function generateBoardReport(churchId: string) {
   const attendanceDelta =
     previousCheckins > 0
       ? Math.round(
-          ((recentCheckins - previousCheckins) / previousCheckins) * 100
+          ((recentCheckins - previousCheckins) / previousCheckins) * 100,
         )
       : 0;
 
@@ -59,7 +59,7 @@ export async function generateBoardReport(churchId: string) {
       ? Math.round(
           ((recentDonors.length - previousDonors.length) /
             previousDonors.length) *
-            100
+            100,
         )
       : 0;
 

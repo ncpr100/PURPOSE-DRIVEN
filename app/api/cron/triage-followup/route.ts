@@ -85,7 +85,10 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         errors.push(`${event.id}: ${msg}`);
-        console.error(`[TRIAGE_CRON] Failed to send fallback for event ${event.id}:`, err);
+        console.error(
+          `[TRIAGE_CRON] Failed to send fallback for event ${event.id}:`,
+          err,
+        );
       }
     }
 

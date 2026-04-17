@@ -22,7 +22,10 @@ export async function GET(req: NextRequest) {
     }
 
     if (process.env.ENABLE_BURNOUT_SENTINEL !== "true") {
-      return NextResponse.json({ skipped: true, reason: "burnout sentinel disabled" });
+      return NextResponse.json({
+        skipped: true,
+        reason: "burnout sentinel disabled",
+      });
     }
 
     const churches = await db.churches.findMany({
