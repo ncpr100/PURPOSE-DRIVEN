@@ -1,9 +1,24 @@
 
 import type { Metadata } from "next"
+import { Cinzel, DM_Sans } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/layout/providers"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+})
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-body",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "Kḥesed-tek Church Management Systems",
@@ -26,7 +41,7 @@ export const metadata: Metadata = {
 
 export function generateViewport() {
   return {
-    themeColor: "#3B82F6",
+    themeColor: "#F0B83C",
     width: "device-width",
     initialScale: 1,
     maximumScale: 1,
@@ -45,7 +60,7 @@ export default async function RootLayout({
       <head>
         <script src="/cache-invalidation.js" defer></script>
       </head>
-      <body className="font-sans">
+      <body className={`${cinzel.variable} ${dmSans.variable} font-sans`}>
         <Providers session={session}>
           {children}
         </Providers>
