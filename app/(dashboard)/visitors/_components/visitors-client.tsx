@@ -89,11 +89,11 @@ interface VisitorsClientProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  "PRIMERA VEZ": "bg-green-100 text-green-800 border-green-200",
-  REGRESÓ: "bg-blue-100 text-blue-800 border-blue-200",
-  REGULAR: "bg-purple-100 text-purple-800 border-purple-200",
-  "CANDIDATO A MIEMBRO": "bg-orange-100 text-orange-800 border-orange-200",
-  "SIN CATEGORÍA": "bg-gray-100 text-gray-600 border-gray-200",
+  "PRIMERA VEZ": "bg-success/20 text-success border-success/30",
+  REGRESÓ: "bg-info/20 text-info border-info/30",
+  REGULAR: "bg-primary/20 text-primary border-primary/30",
+  "CANDIDATO A MIEMBRO": "bg-warning/20 text-warning border-warning/30",
+  "SIN CATEGORÍA": "bg-muted text-muted-foreground border-border",
 };
 
 const MINISTRY_OPTIONS = [
@@ -231,11 +231,11 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Users className="h-6 w-6 text-blue-600" />
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Users className="h-6 w-6 text-primary" />
             Visitantes — CRM
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Registro, categorización y seguimiento de todos los visitantes
           </p>
         </div>
@@ -248,7 +248,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
             <DialogTrigger asChild>
               <Button
                 size="sm"
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className=""
               >
                 <UserPlus className="h-4 w-4 mr-2" />
                 Registro Manual
@@ -401,8 +401,8 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
                         onClick={() => toggleMinistry(m)}
                         className={`px-2 py-1 rounded-full text-xs border transition-colors ${
                           manualForm.ministryInterest.includes(m)
-                            ? "bg-blue-600 text-white border-blue-600"
-                            : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-muted text-muted-foreground border-border hover:border-primary/60"
                         }`}
                       >
                         {m}
@@ -421,7 +421,6 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
                   <Button
                     type="submit"
                     disabled={saving}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     {saving ? "Guardando…" : "Registrar Visitante"}
                   </Button>
@@ -438,34 +437,34 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
           {
             label: "Total visitantes",
             value: stats.total,
-            icon: <Users className="h-5 w-5 text-blue-600" />,
-            bg: "bg-blue-50",
+            icon: <Users className="h-5 w-5 text-primary" />,
+            bg: "bg-primary/10",
           },
           {
             label: "Primera vez",
             value: stats.firstTime,
-            icon: <Star className="h-5 w-5 text-green-600" />,
-            bg: "bg-green-50",
+            icon: <Star className="h-5 w-5 text-success" />,
+            bg: "bg-success/10",
           },
           {
             label: "Regresaron",
             value: stats.returning,
-            icon: <RefreshCw className="h-5 w-5 text-purple-600" />,
-            bg: "bg-purple-50",
+            icon: <RefreshCw className="h-5 w-5 text-info" />,
+            bg: "bg-info/10",
           },
           {
             label: "Seguimientos pendientes",
             value: stats.openTasks,
-            icon: <AlertCircle className="h-5 w-5 text-orange-600" />,
-            bg: "bg-orange-50",
+            icon: <AlertCircle className="h-5 w-5 text-warning" />,
+            bg: "bg-warning/10",
           },
         ].map((s) => (
-          <Card key={s.label} className={`${s.bg} border-0`}>
+          <Card key={s.label} className={`${s.bg} border-border`}>
             <CardContent className="p-4 flex items-center gap-3">
               {s.icon}
               <div>
-                <p className="text-2xl font-bold text-gray-900">{s.value}</p>
-                <p className="text-xs text-gray-600">{s.label}</p>
+                <p className="text-2xl font-bold text-foreground">{s.value}</p>
+                <p className="text-xs text-muted-foreground">{s.label}</p>
               </div>
             </CardContent>
           </Card>
@@ -556,25 +555,25 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-border">
               {visitors.map((v) => (
                 <button
                   key={v.id}
-                  className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors flex items-center gap-3"
+                  className="w-full text-left px-4 py-3 hover:bg-accent/30 transition-colors flex items-center gap-3"
                   onClick={() => {
                     setSelectedVisitor(v);
                     setIsJourneyOpen(true);
                   }}
                 >
                   {/* Avatar */}
-                  <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold text-sm flex-shrink-0">
+                  <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold text-sm flex-shrink-0">
                     {v.firstName[0]}
                     {v.lastName[0]}
                   </div>
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-medium text-gray-900 text-sm">
+                      <span className="font-medium text-foreground text-sm">
                         {v.firstName} {v.lastName}
                       </span>
                       <Badge
@@ -590,7 +589,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
                         </Badge>
                       )}
                     </div>
-                    <div className="flex gap-3 mt-0.5 text-xs text-gray-500 flex-wrap">
+                    <div className="flex gap-3 mt-0.5 text-xs text-muted-foreground flex-wrap">
                       {v.email && (
                         <span className="flex items-center gap-1">
                           <Mail className="h-3 w-3" />
@@ -621,17 +620,17 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
                   </div>
                   {/* Engagement bar */}
                   <div className="hidden sm:flex flex-col items-end gap-1 flex-shrink-0">
-                    <span className="text-xs text-gray-400">Compromiso</span>
-                    <div className="w-16 h-1.5 bg-gray-100 rounded-full">
+                    <span className="text-xs text-muted-foreground">Compromiso</span>
+                    <div className="w-16 h-1.5 bg-muted rounded-full">
                       <div
-                        className="h-1.5 rounded-full bg-blue-500"
+                        className="h-1.5 rounded-full bg-primary"
                         style={{
                           width: `${Math.min(v.engagementScore, 100)}%`,
                         }}
                       />
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                 </button>
               ))}
             </div>

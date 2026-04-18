@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
         errors.push(`church:${church.id}: ${msg}`);
         console.error(
           `[BACKUP_ROSTER_BUILD] Run failed for ${church.id}:`,
-          err
+          err,
         );
       }
     }
@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
     console.error("[BACKUP_ROSTER_BUILD] Cron error:", err);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

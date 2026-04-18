@@ -54,7 +54,7 @@ export async function runPreEventCheck(churchId: string): Promise<void> {
 
       const eventDateLabel = new Date(event.startDate).toLocaleDateString(
         "es-CO",
-        { weekday: "long", day: "numeric", month: "long" }
+        { weekday: "long", day: "numeric", month: "long" },
       );
 
       const message =
@@ -98,13 +98,13 @@ export async function runPreEventCheck(churchId: string): Promise<void> {
  * Called by the same cron that runs runPreEventCheck — runs every hour.
  */
 export async function checkConfirmationResponses(
-  churchId: string
+  churchId: string,
 ): Promise<void> {
   if (process.env.ENABLE_VOLUNTEER_COVERAGE !== "true") return;
 
   const now = new Date();
   const windowCutoff = new Date(
-    now.getTime() - CONFIRMATION_WINDOW_HOURS * 60 * 60 * 1000
+    now.getTime() - CONFIRMATION_WINDOW_HOURS * 60 * 60 * 1000,
   );
 
   // 1. Find all contact logs sent before the cutoff with no response
@@ -134,15 +134,13 @@ export async function checkConfirmationResponses(
   if (pendingSlots.length === 0) return;
 
   // 3. Trigger cascade for each non-responder (lazy import avoids circular dependency)
-  const { triggerCoverageCascade } = await import(
-    "./cascade-contact-system"
-  );
+  const { triggerCoverageCascade } = await import("./cascade-contact-system");
 
   for (const slot of pendingSlots) {
     await triggerCoverageCascade(
       churchId,
       slot.id,
-      "NO_RESPONSE_TO_CONFIRMATION"
+      "NO_RESPONSE_TO_CONFIRMATION",
     );
   }
 }
@@ -156,20 +154,17 @@ async function sendWhatsApp(phone: string, message: string): Promise<void> {
     return;
   }
 
-  await fetch(
-    `https://graph.facebook.com/v18.0/${phoneId}/messages`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        messaging_product: "whatsapp",
-        to: phone.replace(/\D/g, ""),
-        type: "text",
-        text: { body: message },
-      }),
-    }
-  );
+  await fetch(`https://graph.facebook.com/v18.0/${phoneId}/messages`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      messaging_product: "whatsapp",
+      to: phone.replace(/\D/g, ""),
+      type: "text",
+      text: { body: message },
+    }),
+  });
 }

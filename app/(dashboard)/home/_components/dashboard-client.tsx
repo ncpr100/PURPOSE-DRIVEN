@@ -288,14 +288,14 @@ export function DashboardClient({
       {/* Visitor Analytics Section */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Target className="h-5 w-5 text-blue-600" />
+          <Target className="h-5 w-5 text-primary" />
           <h2 className="text-xl font-semibold">Análisis de Visitantes</h2>
         </div>
 
         {/* Visitor Breakdown Card */}
-        <Card className="border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <Card className="border-border bg-card">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-800">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <BarChart3 className="h-5 w-5" />
               Desglose de Visitantes
             </CardTitle>
@@ -313,19 +313,19 @@ export function DashboardClient({
                 <p className="text-sm text-muted-foreground">Primera Vez</p>
               </div>
               <div className="text-center">
-                <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mx-auto mb-2">
-                  <Users className="h-6 w-6 text-blue-600" />
+                <div className="flex items-center justify-center w-12 h-12 bg-info/20 rounded-full mx-auto mb-2">
+                  <Users className="h-6 w-6 text-info" />
                 </div>
-                <p className="text-2xl font-bold text-blue-600">
+                <p className="text-2xl font-bold text-info">
                   {stats.returningVisitorsCount}
                 </p>
                 <p className="text-sm text-muted-foreground">Recurrentes</p>
               </div>
               <div className="text-center">
-                <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full mx-auto mb-2">
-                  <Target className="h-6 w-6 text-purple-600" />
+                <div className="flex items-center justify-center w-12 h-12 bg-primary/20 rounded-full mx-auto mb-2">
+                  <Target className="h-6 w-6 text-primary" />
                 </div>
-                <p className="text-2xl font-bold text-purple-600">
+                <p className="text-2xl font-bold text-primary">
                   {stats.completedFollowUpsThisMonth}
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -337,10 +337,10 @@ export function DashboardClient({
             {stats.firstTimeVisitorsThisMonth > 0 ||
             stats.firstTimeVisitorsCount > 0 ||
             stats.averageEngagementScore > 0 ? (
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="mt-4 p-3 bg-accent/30 rounded-lg border border-accent/40">
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-blue-600" />
-                  <p className="text-sm font-medium text-blue-800">
+                  <TrendingUp className="h-4 w-4 text-accent-foreground" />
+                  <p className="text-sm font-medium text-accent-foreground">
                     {stats.firstTimeVisitorsThisMonth > 0
                       ? `${stats.firstTimeVisitorsThisMonth} nuevos visitantes este mes`
                       : stats.firstTimeVisitorsCount > 0
@@ -348,7 +348,7 @@ export function DashboardClient({
                         : "Sistema de visitor analytics activado"}
                   </p>
                 </div>
-                <p className="text-xs text-blue-600 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {stats.automationSuccessRate > 70
                     ? "¡Excelente trabajo conectando con visitantes!"
                     : stats.automationSuccessRate > 0
@@ -357,14 +357,14 @@ export function DashboardClient({
                 </p>
               </div>
             ) : (
-              <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="mt-4 p-3 bg-muted rounded-lg border border-border">
                 <div className="flex items-center gap-2">
-                  <Target className="h-4 w-4 text-gray-600" />
-                  <p className="text-sm font-medium text-gray-800">
+                  <Target className="h-4 w-4 text-muted-foreground" />
+                  <p className="text-sm font-medium text-foreground">
                     Sistema de Análisis de Visitantes Listo
                   </p>
                 </div>
-                <p className="text-xs text-gray-600 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Registra visitantes en la sección Check-ins para comenzar a
                   ver métricas de engagement y automatización.
                 </p>
@@ -723,7 +723,7 @@ export function DashboardClient({
           <CardContent>
             <div className="grid gap-4 md:grid-cols-3">
               <div className="text-center">
-                <p className="text-2xl font-bold text-blue-600">
+                <p className="text-2xl font-bold text-primary">
                   {stats.totalMembers}
                 </p>
                 <p className="text-sm text-muted-foreground">

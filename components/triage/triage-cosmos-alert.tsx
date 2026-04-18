@@ -15,7 +15,7 @@ interface TriageAlertProps {
 }
 
 export function TriageCosmosAlert({
-  message = "Petición detectada: \"divorcio\" — Enrutando al pastor",
+  message = 'Petición detectada: "divorcio" — Enrutando al pastor',
   keyword = "divorcio",
   requesterName,
   onDismiss,
@@ -71,51 +71,86 @@ export function TriageCosmosAlert({
         maxWidth: "300px",
         opacity,
         transform: opacity === 1 ? "translateX(0)" : "translateX(20px)",
-        transition: "opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)",
+        transition:
+          "opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)",
         cursor: "pointer",
       }}
       onClick={dismiss}
     >
       {/* Pulsing icon */}
-      <div style={{
-        flexShrink: 0,
-        animation: "alertPulse 0.8s ease-in-out infinite",
-      }}>
+      <div
+        style={{
+          flexShrink: 0,
+          animation: "alertPulse 0.8s ease-in-out infinite",
+        }}
+      >
         <AlertTriangle size={22} style={{ color: "#E84855" }} />
       </div>
 
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{
-          fontSize: "12px", fontWeight: 600, color: "#E84855",
-          marginBottom: "3px",
-        }}>
+        <div
+          style={{
+            fontSize: "12px",
+            fontWeight: 600,
+            color: "#E84855",
+            marginBottom: "3px",
+          }}
+        >
           Triaje Espiritual Activo
         </div>
-        <div style={{ fontSize: "10px", color: "hsl(var(--muted-foreground))", lineHeight: 1.5 }}>
-          {requesterName && <strong style={{ color: "hsl(var(--foreground))" }}>{requesterName} — </strong>}
+        <div
+          style={{
+            fontSize: "10px",
+            color: "hsl(var(--muted-foreground))",
+            lineHeight: 1.5,
+          }}
+        >
+          {requesterName && (
+            <strong style={{ color: "hsl(var(--foreground))" }}>
+              {requesterName} —{" "}
+            </strong>
+          )}
           {message}
         </div>
-        <div style={{
-          fontSize: "9px", color: "#E84855", marginTop: "4px",
-          animation: "countdown 1s ease-in-out infinite",
-        }}>
-          <Clock size={9} style={{ display: "inline", marginRight: "3px" }} /> Notificando al pastor ahora...
+        <div
+          style={{
+            fontSize: "9px",
+            color: "#E84855",
+            marginTop: "4px",
+            animation: "countdown 1s ease-in-out infinite",
+          }}
+        >
+          <Clock size={9} style={{ display: "inline", marginRight: "3px" }} />{" "}
+          Notificando al pastor ahora...
         </div>
       </div>
 
       <button
-        onClick={(e) => { e.stopPropagation(); dismiss(); }}
+        onClick={(e) => {
+          e.stopPropagation();
+          dismiss();
+        }}
         aria-label="Cerrar alerta"
         style={{
-          width: "22px", height: "22px", borderRadius: "50%",
+          width: "22px",
+          height: "22px",
+          borderRadius: "50%",
           background: "rgba(255,255,255,0.08)",
-          border: "none", cursor: "pointer",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          color: "rgba(138,147,168,0.7)", flexShrink: 0,
+          border: "none",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "rgba(138,147,168,0.7)",
+          flexShrink: 0,
           transition: "background 0.15s",
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.15)")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.background = "rgba(255,255,255,0.15)")
+        }
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.background = "rgba(255,255,255,0.08)")
+        }
       >
         <X size={10} />
       </button>

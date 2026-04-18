@@ -83,18 +83,18 @@ const CATEGORY_OPTIONS = [
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
-  "PRIMERA VEZ": "bg-green-100 text-green-800",
-  REGRESÓ: "bg-blue-100 text-blue-800",
-  REGULAR: "bg-purple-100 text-purple-800",
-  "CANDIDATO A MIEMBRO": "bg-orange-100 text-orange-800",
-  "SIN CATEGORÍA": "bg-gray-100 text-gray-600",
+  "PRIMERA VEZ": "bg-success/20 text-success",
+  REGRESÓ: "bg-info/20 text-info",
+  REGULAR: "bg-primary/20 text-primary",
+  "CANDIDATO A MIEMBRO": "bg-warning/20 text-warning",
+  "SIN CATEGORÍA": "bg-muted text-muted-foreground",
 };
 
 const FOLLOW_UP_STATUS_COLORS: Record<string, string> = {
-  pending: "bg-yellow-100 text-yellow-800",
-  completed: "bg-green-100 text-green-800",
-  scheduled: "bg-blue-100 text-blue-800",
-  skipped: "bg-gray-100 text-gray-600",
+  pending: "bg-warning/20 text-warning",
+  completed: "bg-success/20 text-success",
+  scheduled: "bg-info/20 text-info",
+  skipped: "bg-muted text-muted-foreground",
 };
 
 const FOLLOW_UP_TYPE_LABELS: Record<string, string> = {
@@ -171,7 +171,7 @@ export function VisitorJourneyCard({
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-lg">
+            <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
               {visitor.firstName[0]}
               {visitor.lastName[0]}
             </div>
@@ -194,7 +194,7 @@ export function VisitorJourneyCard({
             {visitor.email && (
               <a
                 href={`mailto:${visitor.email}`}
-                className="flex items-center gap-2 text-blue-600 hover:underline col-span-2"
+                className="flex items-center gap-2 text-primary hover:underline col-span-2"
               >
                 <Mail className="h-4 w-4" />
                 {visitor.email}
@@ -203,26 +203,26 @@ export function VisitorJourneyCard({
             {visitor.phone && (
               <a
                 href={`tel:${visitor.phone}`}
-                className="flex items-center gap-2 text-blue-600 hover:underline"
+                className="flex items-center gap-2 text-primary hover:underline"
               >
                 <Phone className="h-4 w-4" />
                 {visitor.phone}
               </a>
             )}
             {visitor.ageGroup && (
-              <span className="flex items-center gap-2 text-gray-600">
+              <span className="flex items-center gap-2 text-muted-foreground">
                 <User className="h-4 w-4" />
                 {visitor.ageGroup}
               </span>
             )}
             {visitor.familyStatus && (
-              <span className="flex items-center gap-2 text-gray-600">
+              <span className="flex items-center gap-2 text-muted-foreground">
                 <User className="h-4 w-4" />
                 {visitor.familyStatus}
               </span>
             )}
             {visitor.referredBy && (
-              <span className="flex items-center gap-2 text-gray-600 col-span-2">
+              <span className="flex items-center gap-2 text-muted-foreground col-span-2">
                 <MapPin className="h-4 w-4" />
                 {visitor.referredBy}
               </span>
@@ -235,7 +235,7 @@ export function VisitorJourneyCard({
               {
                 label: "Visitas",
                 value: visitor.visitCount,
-                icon: <Calendar className="h-4 w-4 text-blue-500" />,
+                icon: <Calendar className="h-4 w-4 text-info" />,
               },
               {
                 label: "Compromiso",
@@ -245,22 +245,22 @@ export function VisitorJourneyCard({
               {
                 label: "Seguimientos",
                 value: `${visitor.closedFollowUps}/${visitor.openFollowUps + visitor.closedFollowUps}`,
-                icon: <CheckCircle2 className="h-4 w-4 text-purple-500" />,
+                icon: <CheckCircle2 className="h-4 w-4 text-primary" />,
               },
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="text-center bg-gray-50 rounded-lg p-3"
+                className="text-center bg-muted rounded-lg p-3"
               >
                 <div className="flex justify-center mb-1">{stat.icon}</div>
-                <p className="text-lg font-bold text-gray-900">{stat.value}</p>
-                <p className="text-xs text-gray-500">{stat.label}</p>
+                <p className="text-lg font-bold text-foreground">{stat.value}</p>
+                <p className="text-xs text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>
 
           {/* First visit date */}
-          <div className="text-sm text-gray-600 flex items-center gap-2">
+          <div className="text-sm text-muted-foreground flex items-center gap-2">
             <Clock className="h-4 w-4" />
             Primera visita:{" "}
             {new Date(visitor.checkedInAt).toLocaleDateString("es", {
@@ -273,7 +273,7 @@ export function VisitorJourneyCard({
           {/* Ministry Interests */}
           {visitor.ministryInterest?.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase mb-2 flex items-center gap-1">
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-2 flex items-center gap-1">
                 <Star className="h-3 w-3" />
                 Interés en ministerios
               </p>
@@ -281,7 +281,7 @@ export function VisitorJourneyCard({
                 {visitor.ministryInterest.map((m) => (
                   <span
                     key={m}
-                    className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full text-xs"
+                    className="px-2 py-0.5 bg-primary/20 text-primary rounded-full text-xs"
                   >
                     {m}
                   </span>
@@ -293,11 +293,11 @@ export function VisitorJourneyCard({
           {/* Visit Reason */}
           {visitor.visitReason && (
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase mb-1 flex items-center gap-1">
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-1 flex items-center gap-1">
                 <MessageSquare className="h-3 w-3" />
                 Razón de visita
               </p>
-              <p className="text-sm text-gray-700 bg-gray-50 rounded p-2">
+              <p className="text-sm text-foreground bg-muted rounded p-2">
                 {visitor.visitReason}
               </p>
             </div>
@@ -306,11 +306,11 @@ export function VisitorJourneyCard({
           {/* Prayer Request */}
           {visitor.prayerRequest && (
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase mb-1 flex items-center gap-1">
-                <Heart className="h-3 w-3 text-pink-500" />
+              <p className="text-xs font-semibold text-muted-foreground uppercase mb-1 flex items-center gap-1">
+                <Heart className="h-3 w-3 text-destructive" />
                 Petición de oración
               </p>
-              <p className="text-sm text-gray-700 bg-pink-50 rounded p-2 border border-pink-100">
+              <p className="text-sm text-foreground bg-destructive/10 rounded p-2 border border-destructive/20">
                 {visitor.prayerRequest}
               </p>
             </div>
@@ -372,7 +372,7 @@ export function VisitorJourneyCard({
 
           {/* Category Override */}
           <div>
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-2">
+            <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
               Cambiar categoría manualmente
             </p>
             <div className="flex gap-2">

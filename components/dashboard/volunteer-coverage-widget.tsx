@@ -31,14 +31,15 @@ const STATUS_LABELS: Record<string, string> = {
   NO_BACKUP_ASSIGNED: "Sin suplente",
 };
 
-const STATUS_VARIANT: Record<string, "destructive" | "outline" | "secondary"> = {
-  UNPROTECTED: "destructive",
-  NO_BACKUP_ASSIGNED: "destructive",
-  UNCONFIRMED: "outline",
-  CONFIRMED: "secondary",
-  COVERED: "secondary",
-  CANCELLED: "outline",
-};
+const STATUS_VARIANT: Record<string, "destructive" | "outline" | "secondary"> =
+  {
+    UNPROTECTED: "destructive",
+    NO_BACKUP_ASSIGNED: "destructive",
+    UNCONFIRMED: "outline",
+    CONFIRMED: "secondary",
+    COVERED: "secondary",
+    CANCELLED: "outline",
+  };
 
 export function VolunteerCoverageWidget({ initialSlots }: Props) {
   const [slots, setSlots] = useState(initialSlots);
@@ -74,7 +75,7 @@ export function VolunteerCoverageWidget({ initialSlots }: Props) {
   };
 
   const criticalCount = slots.filter((s) =>
-    ["UNPROTECTED", "NO_BACKUP_ASSIGNED"].includes(s.status)
+    ["UNPROTECTED", "NO_BACKUP_ASSIGNED"].includes(s.status),
   ).length;
 
   return (
@@ -143,10 +144,13 @@ export function VolunteerCoverageWidget({ initialSlots }: Props) {
                       ? ` · ${slot.primaryVolunteerName}`
                       : ""}
                     {slot.eventDate
-                      ? ` · ${new Date(slot.eventDate).toLocaleDateString("es-ES", {
-                          day: "numeric",
-                          month: "short",
-                        })}`
+                      ? ` · ${new Date(slot.eventDate).toLocaleDateString(
+                          "es-ES",
+                          {
+                            day: "numeric",
+                            month: "short",
+                          },
+                        )}`
                       : ""}
                   </p>
                 </div>

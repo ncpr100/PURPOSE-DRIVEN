@@ -1065,16 +1065,16 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 </SelectContent>
               </Select>
               {assignmentData.assignmentType === 'permanent' && (
-                <div className="mt-2 p-3 bg-purple-50 border border-purple-200 rounded-md">
-                  <p className="text-sm text-purple-900">
+                <div className="mt-2 p-3 bg-primary/10 border border-primary/20 rounded-md">
+                  <p className="text-sm text-foreground">
                     <strong>Nota:</strong> Las asignaciones permanentes no tienen fecha de finalización. 
                     El voluntario puede tener múltiples asignaciones temporales además de su rol permanente.
                   </p>
                 </div>
               )}
               {assignmentData.assignmentType === 'temporary' && (
-                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                  <p className="text-sm text-blue-900">
+                <div className="mt-2 p-3 bg-info/10 border border-info/20 rounded-md">
+                  <p className="text-sm text-foreground">
                     <strong>Nota:</strong> Las asignaciones temporales requieren fecha y horario específicos.
                     Recibirás notificación cuando la asignación esté próxima a finalizar.
                   </p>
@@ -1155,12 +1155,12 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
             )}
 
             {assignmentData.assignmentType === 'permanent' && (
-              <div className="p-4 bg-purple-50 border border-purple-200 rounded-md">
+              <div className="p-4 bg-primary/10 border border-primary/20 rounded-md">
                 <div className="flex items-center gap-2 mb-2">
-                  <Crown className="h-5 w-5 text-purple-600" />
-                  <h4 className="font-medium text-purple-900">Rol Permanente</h4>
+                  <Crown className="h-5 w-5 text-primary" />
+                  <h4 className="font-medium text-foreground">Rol Permanente</h4>
                 </div>
-                <p className="text-sm text-purple-700">
+                <p className="text-sm text-muted-foreground">
                   Este voluntario será asignado de manera continua. No se requiere fecha o horario específico.
                   Puedes agregar asignaciones temporales adicionales en cualquier momento.
                 </p>
@@ -1298,7 +1298,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                               {member_spiritual_profiles.primaryGifts.map((giftId: string, index: number) => {
                                 const gift = spiritualGifts.find(g => g.id === giftId)
                                 return (
-                                  <Badge key={index} variant="default" className="text-xs bg-blue-100 text-blue-800">
+                                  <Badge key={index} variant="default" className="text-xs bg-primary/20 text-primary">
                                     {gift?.name || giftId}
                                   </Badge>
                                 )
@@ -1415,21 +1415,21 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                         return (
                           <>
                             {primaryGifts.length > 0 && (
-                              <div className="flex items-center gap-2 p-2 bg-blue-50 rounded text-sm">
-                                <Sparkles className="h-4 w-4 text-blue-500" />
+                              <div className="flex items-center gap-2 p-2 bg-primary/10 rounded text-sm">
+                                <Sparkles className="h-4 w-4 text-primary" />
                                 <span>
                                   {primaryGifts.length === 1 ? 'Don primario identificado' : `${primaryGifts.length} dones primarios identificados`}
                                   {primaryGifts.length > 0 && `: ${primaryGifts.map((id: string) => spiritualGifts.find(g => g.id === id)?.name || id).join(', ')}`}
                                 </span>
-                                <Badge variant="outline" className="ml-auto text-xs bg-blue-100 text-blue-700">{matchScore}% match</Badge>
+                                <Badge variant="outline" className="ml-auto text-xs bg-primary/20 text-primary">{matchScore}% match</Badge>
                               </div>
                             )}
                             
                             {hasLeadershipGifts && (
-                              <div className="flex items-center gap-2 p-2 bg-purple-50 rounded text-sm">
-                                <Crown className="h-4 w-4 text-purple-500" />
+                              <div className="flex items-center gap-2 p-2 bg-warning/10 rounded text-sm">
+                                <Crown className="h-4 w-4 text-warning" />
                                 <span>Potencial para desarrollo de liderazgo</span>
-                                <Badge variant="outline" className="ml-auto text-xs bg-purple-100 text-purple-700">Alto</Badge>
+                                <Badge variant="outline" className="ml-auto text-xs bg-warning/20 text-warning">Alto</Badge>
                               </div>
                             )}
                             

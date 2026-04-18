@@ -30,14 +30,17 @@ function parseSkills(raw: string | null | undefined): string[] {
     }
   }
   // Handle comma-separated format: "Música,Coro,Piano"
-  return trimmed.split(",").map((s) => s.trim()).filter(Boolean);
+  return trimmed
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 /** Build or refresh the backup roster for a single volunteer. */
 export async function buildBackupRosterForVolunteer(
   churchId: string,
   primaryVolunteerId: string,
-  ministryId?: string
+  ministryId?: string,
 ): Promise<BackupSuggestion[]> {
   // 1. Get primary volunteer's skills and ministry
   const primary = await db.volunteers.findFirst({
@@ -81,7 +84,7 @@ export async function buildBackupRosterForVolunteer(
   });
 
   const scoreMap = new Map(
-    engagementRows.map((e) => [e.volunteerId, e.currentScore])
+    engagementRows.map((e) => [e.volunteerId, e.currentScore]),
   );
 
   // 4. Score each candidate using Jaccard similarity + engagement + ministry bonus
@@ -89,14 +92,15 @@ export async function buildBackupRosterForVolunteer(
     .map((candidate) => {
       const candidateSkills = parseSkills(candidate.skills);
       const intersection = requiredSkills.filter((s) =>
-        candidateSkills.includes(s)
+        candidateSkills.includes(s),
       );
       const union = new Set([...requiredSkills, ...candidateSkills]);
       const jaccardScore =
         union.size > 0 ? intersection.length / union.size : 0;
 
       const engagementScore = scoreMap.get(candidate.id) ?? 50;
-      const sameMinistry = candidate.ministryId === primary.ministryId ? 0.2 : 0;
+      const sameMinistry =
+        candidate.ministryId === primary.ministryId ? 0.2 : 0;
 
       // Composite: 50% skill match + 30% engagement + 20% same ministry
       const compositeScore =
@@ -112,7 +116,7 @@ export async function buildBackupRosterForVolunteer(
         reason: buildReason(
           intersection,
           engagementScore,
-          candidate.ministryId === primary.ministryId
+          candidate.ministryId === primary.ministryId,
         ),
       };
     })
@@ -174,7 +178,7 @@ export async function buildAllBackupRosters(churchId: string): Promise<number> {
     } catch (err) {
       console.error(
         `[BACKUP_ROSTER] Failed for volunteer ${volunteer.id}:`,
-        err
+        err,
       );
     }
   }
@@ -185,7 +189,7 @@ export async function buildAllBackupRosters(churchId: string): Promise<number> {
 function buildReason(
   skillOverlap: string[],
   engagementScore: number,
-  sameMinistry: boolean
+  sameMinistry: boolean,
 ): string {
   const parts: string[] = [];
   if (skillOverlap.length > 0)

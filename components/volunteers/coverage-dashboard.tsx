@@ -4,7 +4,13 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Shield, ShieldAlert, ShieldCheck, ShieldX, RefreshCw } from "lucide-react";
+import {
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  ShieldX,
+  RefreshCw,
+} from "lucide-react";
 import toast from "react-hot-toast";
 
 interface CoverageSlot {
@@ -22,13 +28,40 @@ interface EventCoverage {
   coverageRate: number;
 }
 
-const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
-  CONFIRMED:          { label: "Confirmado",   color: "text-green-700 bg-green-50 border-green-200",     icon: ShieldCheck },
-  COVERED:            { label: "Cubierto",     color: "text-blue-700 bg-blue-50 border-blue-200",        icon: ShieldCheck },
-  UNCONFIRMED:        { label: "Sin confirmar",color: "text-yellow-700 bg-yellow-50 border-yellow-200",  icon: Shield },
-  CANCELLED:          { label: "Cancelado",    color: "text-orange-700 bg-orange-50 border-orange-200",  icon: ShieldAlert },
-  UNPROTECTED:        { label: "Sin cobertura",color: "text-red-700 bg-red-50 border-red-200",           icon: ShieldX },
-  NO_BACKUP_ASSIGNED: { label: "Sin suplente", color: "text-red-700 bg-red-50 border-red-200",           icon: ShieldX },
+const statusConfig: Record<
+  string,
+  { label: string; color: string; icon: any }
+> = {
+  CONFIRMED: {
+    label: "Confirmado",
+    color: "text-green-700 bg-green-50 border-green-200",
+    icon: ShieldCheck,
+  },
+  COVERED: {
+    label: "Cubierto",
+    color: "text-blue-700 bg-blue-50 border-blue-200",
+    icon: ShieldCheck,
+  },
+  UNCONFIRMED: {
+    label: "Sin confirmar",
+    color: "text-yellow-700 bg-yellow-50 border-yellow-200",
+    icon: Shield,
+  },
+  CANCELLED: {
+    label: "Cancelado",
+    color: "text-orange-700 bg-orange-50 border-orange-200",
+    icon: ShieldAlert,
+  },
+  UNPROTECTED: {
+    label: "Sin cobertura",
+    color: "text-red-700 bg-red-50 border-red-200",
+    icon: ShieldX,
+  },
+  NO_BACKUP_ASSIGNED: {
+    label: "Sin suplente",
+    color: "text-red-700 bg-red-50 border-red-200",
+    icon: ShieldX,
+  },
 };
 
 export function CoverageDashboard() {
@@ -115,7 +148,9 @@ export function CoverageDashboard() {
       ) : (
         coverage.map((item) => {
           const hasIssues = item.slots.some((s) =>
-            ["CANCELLED", "UNPROTECTED", "NO_BACKUP_ASSIGNED"].includes(s.status)
+            ["CANCELLED", "UNPROTECTED", "NO_BACKUP_ASSIGNED"].includes(
+              s.status,
+            ),
           );
 
           return (
@@ -130,13 +165,16 @@ export function CoverageDashboard() {
                       {item.event.title}
                     </CardTitle>
                     <p className="text-xs text-muted-foreground">
-                      {new Date(item.event.startDate).toLocaleDateString("es-CO", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "long",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      {new Date(item.event.startDate).toLocaleDateString(
+                        "es-CO",
+                        {
+                          weekday: "long",
+                          day: "numeric",
+                          month: "long",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        },
+                      )}
                     </p>
                   </div>
                   <div className="text-right">
@@ -152,7 +190,8 @@ export function CoverageDashboard() {
               <CardContent>
                 <div className="space-y-2">
                   {item.slots.map((slot) => {
-                    const config = statusConfig[slot.status] || statusConfig.UNCONFIRMED;
+                    const config =
+                      statusConfig[slot.status] || statusConfig.UNCONFIRMED;
                     const Icon = config.icon;
                     return (
                       <div
@@ -186,7 +225,8 @@ export function CoverageDashboard() {
       )}
 
       <p className="text-xs text-muted-foreground text-center">
-        Generado por IA como apoyo ministerial. La decisión pastoral es del pastor.
+        Generado por IA como apoyo ministerial. La decisión pastoral es del
+        pastor.
       </p>
     </div>
   );

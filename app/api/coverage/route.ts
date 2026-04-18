@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
   });
 
   const eventIds = upcomingEvents.map((e) => e.id);
-  const eventsById: Record<string, typeof upcomingEvents[number]> = {};
+  const eventsById: Record<string, (typeof upcomingEvents)[number]> = {};
   for (const ev of upcomingEvents) eventsById[ev.id] = ev;
 
   const slots = await db.event_coverage_status.findMany({
@@ -56,13 +56,13 @@ export async function GET(req: NextRequest) {
       acc[key].slots.push(slot);
       return acc;
     },
-    {} as Record<string, any>
+    {} as Record<string, any>,
   );
 
   // Calculate coverage rate per event
   Object.values(byEvent).forEach((e: any) => {
     const covered = e.slots.filter((s: any) =>
-      ["CONFIRMED", "COVERED"].includes(s.status)
+      ["CONFIRMED", "COVERED"].includes(s.status),
     ).length;
     e.coverageRate = e.slots.length > 0 ? covered / e.slots.length : 1;
   });

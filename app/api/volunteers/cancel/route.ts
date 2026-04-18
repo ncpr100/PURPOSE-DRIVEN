@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   if (!assignmentId) {
     return NextResponse.json(
       { error: "assignmentId requerido" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
   if (!assignment) {
     return NextResponse.json(
       { error: "Asignación no encontrada" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
   await triggerCoverageCascade(
     churchId,
     coverageStatus.id,
-    reason ?? "Voluntario canceló su participación"
+    reason ?? "Voluntario canceló su participación",
   );
 
   return NextResponse.json({

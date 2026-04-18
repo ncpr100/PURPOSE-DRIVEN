@@ -741,7 +741,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
               {generatedQrInfo ? (
                 <div className="space-y-4">
                   {/* QR Code Display */}
-                  <div className="text-center bg-white p-4 rounded-lg border">
+                  <div className="text-center bg-card p-4 rounded-lg border border-border">
                     <img
                       src={generatedQrInfo.qrDisplayUrl}
                       alt="Código QR para registro de niños"
@@ -757,12 +757,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   </div>
 
                   {/* Instructions */}
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-blue-800 mb-2 flex items-center gap-2">
+                  <div className="bg-info/10 p-4 rounded-lg">
+                    <h4 className="font-medium text-info mb-2 flex items-center gap-2">
                       <Zap className="w-4 h-4" />
                       Cómo Funciona
                     </h4>
-                    <ol className="text-sm text-blue-700 space-y-1">
+                    <ol className="text-sm text-foreground/80 space-y-1">
                       <li>1. {generatedQrInfo.instructions.step1}</li>
                       <li>2. {generatedQrInfo.instructions.step2}</li>
                       <li>3. {generatedQrInfo.instructions.step3}</li>
@@ -873,7 +873,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
           <div className="flex justify-end">
             <a
               href="/visitors"
-              className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+              className="text-sm text-primary hover:underline flex items-center gap-1"
             >
               Abrir CRM completo de Visitantes →
             </a>
@@ -953,11 +953,11 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                         <Badge
                           variant="secondary"
                           className={`
-                          ${checkIn.visitorType === "FIRST_TIME" ? "bg-green-100 text-green-800" : ""}
-                          ${checkIn.visitorType === "RETURNING" ? "bg-blue-100 text-blue-800" : ""}
-                          ${checkIn.visitorType === "REGULAR" ? "bg-purple-100 text-purple-800" : ""}
-                          ${checkIn.visitorType === "MEMBER_CANDIDATE" ? "bg-orange-100 text-orange-800" : ""}
-                          ${checkIn.visitorType === "MINISTRY_INTEREST" ? "bg-yellow-100 text-yellow-800" : ""}
+                          ${checkIn.visitorType === "FIRST_TIME" ? "bg-success/20 text-success" : ""}
+                          ${checkIn.visitorType === "RETURNING" ? "bg-info/20 text-info" : ""}
+                          ${checkIn.visitorType === "REGULAR" ? "bg-primary/20 text-primary" : ""}
+                          ${checkIn.visitorType === "MEMBER_CANDIDATE" ? "bg-warning/20 text-warning" : ""}
+                          ${checkIn.visitorType === "MINISTRY_INTEREST" ? "bg-accent text-accent-foreground" : ""}
                         `}
                         >
                           {checkIn.visitorType === "FIRST_TIME" && "Nuevo"}
@@ -1025,7 +1025,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <div className="flex gap-1">
                       <a
                         href="/visitors"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline px-2 py-1 rounded border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors"
+                        className="inline-flex items-center gap-1 text-xs text-primary hover:underline px-2 py-1 rounded border border-primary/30 bg-primary/10 hover:bg-primary/20 transition-colors"
                       >
                         Ver CRM
                       </a>
@@ -1188,7 +1188,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-blue-600" />
+                <Zap className="h-5 w-5 text-primary" />
                 Sistema de Automatización Inteligente de Visitantes
               </CardTitle>
               <CardDescription>
@@ -1337,7 +1337,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <UserCheck className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <div className="text-2xl font-bold text-primary">
                       {childrenCheckIns.length}
                     </div>
                     <p className="text-xs text-muted-foreground">
@@ -1462,7 +1462,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span>Con PIN personalizado:</span>
-                        <span className="font-medium text-blue-600">
+                        <span className="font-medium text-primary">
                           {
                             childrenCheckIns.filter(
                               (c) => c.securityPin !== "000000",

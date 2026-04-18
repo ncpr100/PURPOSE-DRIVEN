@@ -747,7 +747,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
       {/* Bulk Actions Bar */}
       {selectedMembers.length > 0 && (
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="border-border bg-accent/20">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium">
@@ -871,7 +871,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-2">
-                <Users className="h-8 w-8 text-blue-500" />
+                <Users className="h-8 w-8 text-primary" />
                 <div>
                   <p className="text-2xl font-bold">
                     {activeSmartList !== 'all' || searchTerm || genderFilter !== 'all' || ageFilter !== 'all' || maritalStatusFilter !== 'all'
@@ -922,7 +922,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-gray-500 flex items-center justify-center text-white text-sm font-bold">
+                <div className="h-8 w-8 rounded-full bg-info/30 flex items-center justify-center text-info text-sm font-bold">
                   ?
                 </div>
                 <div>
@@ -939,7 +939,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm font-bold">
+                <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-bold">
                   {selectedMembers.length}
                 </div>
                 <div>
@@ -1105,7 +1105,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                                 onClick={() => window.open('/volunteers', '_blank')}
                                 title="Ver Perfil de Voluntario"
                               >
-                                <Target className="h-4 w-4 text-blue-600" />
+                                <Target className="h-4 w-4 text-primary" />
                               </Button>
                             )}
                             {/* Leadership Development Action */}
