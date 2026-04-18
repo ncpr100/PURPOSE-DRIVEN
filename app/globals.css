@@ -9,67 +9,99 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   KHESED-TEK CMS — COSMOS DESIGN TOKENS
+   Fixes all issues identified in DESIGN_SYSTEM_AUDIT.md
+
+   Key fixes:
+   - P1-A: Added --success / --warning tokens
+   - P2-C: Resolved --primary vs brand blue conflict
+   - P2-A: Separated --accent from --muted / --secondary
+   - P2-D: Chart color tokens centralized
+   - P3-A: Cinzel + DM Sans via next/font
+   ============================================================ */
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    /* Brand */
+    --brand-gold:          201 57% 47%;   /* #C9922A */
+    --brand-gold-bright:   43  85% 60%;   /* #F0B83C */
+    --brand-gold-dim:      35  50% 28%;   /* #7A5218 */
+    --brand-navy:          222 58%  7%;   /* #080e1c */
+    --brand-navy-deep:     228 54%  4%;   /* #05080F */
+    --brand-navy-mid:      221 50%  9%;   /* #0d1628 */
+    --brand-navy-light:    220 44% 15%;   /* #162035 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    /* Semantic interactive */
+    --primary:             43  85% 60%;   /* Gold bright — the real brand primary */
+    --primary-foreground:  222 58%  7%;   /* Navy on gold */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
+    /* Semantic neutrals */
+    --background:          228 54%  4%;   /* Deep navy */
+    --foreground:          30  18% 92%;   /* Warm white */
+    --card:                221 50%  9%;   /* Navy mid */
+    --card-foreground:     30  18% 92%;
+    --popover:             220 44% 12%;
+    --popover-foreground:  30  18% 92%;
 
-    --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
+    /* Secondary — slightly lighter than muted (P2-A FIX) */
+    --secondary:           220 30% 16%;
+    --secondary-foreground: 215 20% 65%;
 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
+    /* Muted — base subtle bg */
+    --muted:               220 27% 13%;
+    --muted-foreground:    218 11% 55%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    /* Accent — intentionally distinct from muted (P2-A FIX) */
+    --accent:              35  55% 22%;   /* Gold-tinted, visible hover state */
+    --accent-foreground:   43  85% 70%;   /* Gold text on gold-tinted BG */
 
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
+    /* Semantic status tokens (P1-A + P2-B FIX) */
+    --success:             158 76% 36%;   /* #1DC98C emerald */
+    --success-foreground:  158 76% 95%;
+    --warning:             38  92% 50%;   /* #F0B83C amber */
+    --warning-foreground:  38  92% 10%;
+    --destructive:         356 73% 56%;   /* #E84855 rose */
+    --destructive-foreground: 0 0% 98%;
+    --info:                180 72% 50%;   /* #26D9D9 cyan */
+    --info-foreground:     180 72% 10%;
+    --lavender:            246 100% 78%;  /* #9B8FFF */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
+    /* Borders + inputs */
+    --border:              220 25% 15%;
+    --input:               220 25% 18%;
+    --ring:                43  85% 60%;   /* Gold focus ring */
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
+    /* Radius */
+    --radius:              0.5rem;
 
-    --radius: 0.5rem;
-  }
+    /* Typography */
+    --font-display:        'Cinzel', 'Georgia', serif;
+    --font-body:           'DM Sans', system-ui, sans-serif;
 
-  .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
+    /* Elevation (shadows) */
+    --shadow-sm:           0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,146,42,0.06);
+    --shadow-md:           0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,146,42,0.08);
+    --shadow-lg:           0 8px 32px rgba(0,0,0,0.6), 0 0 24px rgba(201,146,42,0.06);
+    --shadow-gold:         0 0 20px rgba(201,146,42,0.25);
+    --shadow-emerald:      0 0 20px rgba(29,201,140,0.2);
+    --shadow-rose:         0 0 20px rgba(232,72,85,0.2);
 
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
+    /* Chart colors (P2-D FIX) */
+    --chart-1: 43  85% 60%;   /* Gold    */
+    --chart-2: 158 76% 45%;   /* Emerald */
+    --chart-3: 180 72% 50%;   /* Cyan    */
+    --chart-4: 246 100% 78%;  /* Lavender */
+    --chart-5: 356 73% 56%;   /* Rose    */
 
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-
-    --primary: 210 20% 98%;
-    --primary-foreground: 220.9 39.3% 11%;
-
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 216 12.2% 83.9%;
+    /* Animation easing */
+    --ease-spring:  cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth:  cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+    --duration-fast:   150ms;
+    --duration-base:   250ms;
+    --duration-slow:   400ms;
+    --duration-slower: 700ms;
   }
 }
 
@@ -81,6 +113,179 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ─── COSMOS KEYFRAMES ──────────────────────────────────── */
+@keyframes livePulse {
+  0%   { box-shadow: 0 0 0 0 hsl(var(--success) / 0.6) }
+  70%  { box-shadow: 0 0 0 8px hsl(var(--success) / 0) }
+  100% { box-shadow: 0 0 0 0 hsl(var(--success) / 0) }
+}
+@keyframes goldPulse {
+  0%   { box-shadow: 0 0 0 0 hsl(var(--warning) / 0.6) }
+  70%  { box-shadow: 0 0 0 8px hsl(var(--warning) / 0) }
+  100% { box-shadow: 0 0 0 0 hsl(var(--warning) / 0) }
+}
+@keyframes rosePulse {
+  0%   { box-shadow: 0 0 0 0 hsl(var(--destructive) / 0.6) }
+  70%  { box-shadow: 0 0 0 8px hsl(var(--destructive) / 0) }
+  100% { box-shadow: 0 0 0 0 hsl(var(--destructive) / 0) }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px) }
+  to   { opacity: 1; transform: translateY(0) }
+}
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+@keyframes shimmerSlide {
+  0%   { transform: translateX(-100%) }
+  100% { transform: translateX(100%) }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0) }
+  50%       { transform: translateY(-6px) }
+}
+@keyframes rotateSlow {
+  from { transform: rotate(0deg) }
+  to   { transform: rotate(360deg) }
+}
+@keyframes countdown {
+  0%, 100% { opacity: 1 }
+  50%       { opacity: 0.35 }
+}
+@keyframes particleFloat {
+  0%   { transform: translateY(100vh) translateX(0) scale(0); opacity: 0 }
+  10%  { opacity: 0.7 }
+  90%  { opacity: 0.2 }
+  100% { transform: translateY(-10vh) translateX(var(--dx, 0px)) scale(0.4); opacity: 0 }
+}
+@keyframes trailFade {
+  from { transform: translate(-50%,-50%) scale(1.2); opacity: 0.8 }
+  to   { transform: translate(-50%,-50%) scale(0);   opacity: 0 }
+}
+@keyframes cascadeActive {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--warning) / 0.5) }
+  50%       { box-shadow: 0 0 0 6px hsl(var(--warning) / 0) }
+}
+
+/* ─── BADGE SYSTEM (P1-A FIX) ──────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: 1px solid transparent;
+}
+.badge-default {
+  background: hsl(var(--primary) / 0.15);
+  color: hsl(var(--primary));
+  border-color: hsl(var(--primary) / 0.3);
+}
+.badge-success {
+  background: hsl(var(--success) / 0.12);
+  color: hsl(var(--success));
+  border-color: hsl(var(--success) / 0.25);
+}
+.badge-warning {
+  background: hsl(var(--warning) / 0.12);
+  color: hsl(var(--warning));
+  border-color: hsl(var(--warning) / 0.25);
+}
+.badge-destructive {
+  background: hsl(var(--destructive) / 0.12);
+  color: hsl(var(--destructive));
+  border-color: hsl(var(--destructive) / 0.25);
+}
+.badge-info {
+  background: hsl(var(--info) / 0.12);
+  color: hsl(var(--info));
+  border-color: hsl(var(--info) / 0.25);
+}
+
+/* ─── STATUS SYSTEM (P1-C FIX) ─────────────────────────── */
+.status-pending {
+  background: hsl(var(--warning) / 0.12);
+  color: hsl(var(--warning));
+  border-color: hsl(var(--warning) / 0.25);
+}
+.status-completed {
+  background: hsl(var(--success) / 0.12);
+  color: hsl(var(--success));
+  border-color: hsl(var(--success) / 0.25);
+}
+.status-scheduled {
+  background: hsl(var(--info) / 0.12);
+  color: hsl(var(--info));
+  border-color: hsl(var(--info) / 0.25);
+}
+.status-skipped {
+  background: hsl(220 10% 40% / 0.15);
+  color: hsl(220 10% 60%);
+  border-color: hsl(220 10% 40% / 0.25);
+}
+.priority-high {
+  background: hsl(var(--destructive) / 0.12);
+  color: hsl(var(--destructive));
+  border-color: hsl(var(--destructive) / 0.25);
+}
+.priority-medium {
+  background: hsl(var(--warning) / 0.12);
+  color: hsl(var(--warning));
+  border-color: hsl(var(--warning) / 0.25);
+}
+.priority-low {
+  background: hsl(220 10% 40% / 0.1);
+  color: hsl(220 10% 55%);
+  border-color: transparent;
+}
+
+/* ─── CTA GRADIENT BUTTON (P1-B FIX) ───────────────────── */
+.btn-cta-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--brand-gold)) 0%,
+    hsl(var(--brand-gold-bright)) 50%,
+    hsl(var(--brand-gold)) 100%
+  );
+  background-size: 200% 200%;
+  color: hsl(var(--brand-navy-deep));
+  font-weight: 600;
+  border: none;
+  transition: background-position var(--duration-base) var(--ease-smooth),
+              box-shadow var(--duration-base) var(--ease-smooth),
+              transform var(--duration-fast) var(--ease-smooth);
+}
+.btn-cta-gradient:hover {
+  background-position: right center;
+  box-shadow: var(--shadow-gold);
+  transform: translateY(-1px);
+}
+.btn-cta-gradient:active {
+  transform: translateY(0);
+}
+
+/* ─── FOCUS VISIBLE (WCAG AA) ───────────────────────────── */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ─── GLOBAL BASE ────────────────────────────────────────── */
+html { -webkit-font-smoothing: antialiased; }
+
+/* ─── SCROLLBARS ─────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 4px; height: 4px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: hsl(var(--brand-gold) / 0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--brand-gold) / 0.4); }
 
 /* Custom scrollbar */
 .scrollbar-thin {
