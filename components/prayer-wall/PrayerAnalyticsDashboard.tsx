@@ -252,9 +252,9 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
   }
 
   const getTrendIcon = (trend: number) => {
-    if (trend > 0) return <TrendingUp className="w-4 h-4 text-green-600" />
-    if (trend < 0) return <TrendingDown className="w-4 h-4 text-red-600" />
-    return <Activity className="w-4 h-4 text-gray-600" />
+    if (trend > 0) return <TrendingUp className="w-4 h-4 text-[hsl(var(--success))]" />
+    if (trend < 0) return <TrendingDown className="w-4 h-4 text-[hsl(var(--destructive))]" />
+    return <Activity className="w-4 h-4 text-muted-foreground" />
   }
 
   const StatCard = ({ title, value, subtitle, icon: Icon, color, trend, format }: any) => (
@@ -262,13 +262,13 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-gray-600">{title}</p>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
             <p className="text-2xl font-bold">{format ? format(value) : value}</p>
-            {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+            {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
             {typeof trend === 'number' && (
               <div className="flex items-center gap-1 mt-2">
                 {getTrendIcon(trend)}
-                <span className={`text-xs ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`text-xs ${trend >= 0 ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--destructive))]'}`}>
                   {trend >= 0 ? '+' : ''}{trend.toFixed(1)}% vs período anterior
                 </span>
               </div>
@@ -280,8 +280,8 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
     </Card>
   )
 
-  const ProgressBar = ({ value, max, color = 'bg-blue-600' }: { value: number; max: number; color?: string }) => (
-    <div className="w-full bg-gray-200 rounded-full h-2">
+  const ProgressBar = ({ value, max, color = 'bg-[hsl(var(--info))]' }: { value: number; max: number; color?: string }) => (
+    <div className="w-full bg-muted rounded-full h-2">
       <div 
         className={`${color} h-2 rounded-full transition-all duration-300`}
         style={{ width: `${Math.min((value / max) * 100, 100)}%` }}
@@ -292,7 +292,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -303,7 +303,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Análisis de Peticiones de Oración</h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Insights y métricas detalladas del ministerio de oración
           </p>
         </div>
@@ -445,7 +445,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               value={analytics.overview.totalRequests}
               subtitle={`En los ${getDateRangeLabel(filters.dateRange).toLowerCase()}`}
               icon={Heart}
-              color="text-red-600"
+              color="text-[hsl(var(--destructive))]"
               trend={calculateTrend(analytics.trends.requestsOverTime, 'requests')}
             />
             <StatCard
@@ -453,7 +453,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               value={analytics.overview.approvedRequests}
               subtitle={`${analytics.overview.totalRequests > 0 ? Math.round((analytics.overview.approvedRequests / analytics.overview.totalRequests) * 100) : 0}% del total`}
               icon={CheckCircle}
-              color="text-green-600"
+              color="text-[hsl(var(--success))]"
               trend={calculateTrend(analytics.trends.requestsOverTime, 'approvals')}
             />
             <StatCard
@@ -461,7 +461,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               value={analytics.overview.totalContacts}
               subtitle={`${analytics.overview.activeContacts} activos`}
               icon={Users}
-              color="text-blue-600"
+              color="text-[hsl(var(--info))]"
               trend={calculateTrend(analytics.trends.contactGrowth, 'newContacts')}
             />
             <StatCard
@@ -469,7 +469,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               value={analytics.overview.avgResponseTime}
               subtitle="Promedio en horas"
               icon={Clock}
-              color="text-orange-600"
+              color="text-[hsl(var(--warning))]"
               format={(value: number) => `${value.toFixed(1)}h`}
             />
           </div>
@@ -479,18 +479,18 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-yellow-600" />
+                  <Clock className="w-5 h-5 text-[hsl(var(--warning))]" />
                   Pendientes
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-yellow-600">{analytics.overview.pendingRequests}</p>
-                  <p className="text-sm text-gray-600">Requieren atención</p>
+                  <p className="text-3xl font-bold text-[hsl(var(--warning))]">{analytics.overview.pendingRequests}</p>
+                  <p className="text-sm text-muted-foreground">Requieren atención</p>
                   <ProgressBar 
                     value={analytics.overview.pendingRequests} 
                     max={analytics.overview.totalRequests}
-                    color="bg-yellow-600"
+                    color="bg-[hsl(var(--warning))]"
                   />
                 </div>
               </CardContent>
@@ -499,14 +499,14 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <CheckCircle className="w-5 h-5 text-[hsl(var(--success))]" />
                   Aprobadas
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-green-600">{analytics.overview.approvedRequests}</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-3xl font-bold text-[hsl(var(--success))]">{analytics.overview.approvedRequests}</p>
+                  <p className="text-sm text-muted-foreground">
                     {analytics.overview.totalRequests > 0 
                       ? Math.round((analytics.overview.approvedRequests / analytics.overview.totalRequests) * 100)
                       : 0}% del total
@@ -514,7 +514,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
                   <ProgressBar 
                     value={analytics.overview.approvedRequests} 
                     max={analytics.overview.totalRequests}
-                    color="bg-green-600"
+                    color="bg-[hsl(var(--success))]"
                   />
                 </div>
               </CardContent>
@@ -523,14 +523,14 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <XCircle className="w-5 h-5 text-red-600" />
+                  <XCircle className="w-5 h-5 text-[hsl(var(--destructive))]" />
                   Rechazadas
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-center">
-                  <p className="text-3xl font-bold text-red-600">{analytics.overview.rejectedRequests}</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-3xl font-bold text-[hsl(var(--destructive))]">{analytics.overview.rejectedRequests}</p>
+                  <p className="text-sm text-muted-foreground">
                     {analytics.overview.totalRequests > 0 
                       ? Math.round((analytics.overview.rejectedRequests / analytics.overview.totalRequests) * 100)
                       : 0}% del total
@@ -538,7 +538,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
                   <ProgressBar 
                     value={analytics.overview.rejectedRequests} 
                     max={analytics.overview.totalRequests}
-                    color="bg-red-600"
+                    color="bg-[hsl(var(--destructive))]"
                   />
                 </div>
               </CardContent>
@@ -553,20 +553,20 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               </CardHeader>
               <CardContent>
                 {analytics.demographics.contactMethods.length === 0 ? (
-                  <p className="text-center text-gray-500 py-4">No hay datos disponibles</p>
+                  <p className="text-center text-muted-foreground py-4">No hay datos disponibles</p>
                 ) : (
                   <div className="space-y-4">
                     {analytics.demographics.contactMethods.map(method => (
                       <div key={method.method} className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          {method.method === 'email' && <Mail className="w-4 h-4 text-blue-600" />}
-                          {method.method === 'sms' && <Phone className="w-4 h-4 text-green-600" />}
-                          {method.method === 'whatsapp' && <MessageSquare className="w-4 h-4 text-purple-600" />}
+                          {method.method === 'email' && <Mail className="w-4 h-4 text-[hsl(var(--info))]" />}
+                          {method.method === 'sms' && <Phone className="w-4 h-4 text-[hsl(var(--success))]" />}
+                          {method.method === 'whatsapp' && <MessageSquare className="w-4 h-4 text-[hsl(var(--lavender))]" />}
                           <span className="capitalize">{method.method}</span>
                         </div>
                         <div className="text-right">
                           <span className="font-medium">{method.count}</span>
-                          <p className="text-xs text-gray-500">{method.preference}% preferencia</p>
+                          <p className="text-xs text-muted-foreground">{method.preference}% preferencia</p>
                         </div>
                       </div>
                     ))}
@@ -587,15 +587,15 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Tasa de lectura</span>
-                    <span className="font-medium text-blue-600">{analytics.engagement.responseEngagement.readRate}%</span>
+                    <span className="font-medium text-[hsl(var(--info))]">{analytics.engagement.responseEngagement.readRate}%</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Tasa de respuesta</span>
-                    <span className="font-medium text-green-600">{analytics.engagement.responseEngagement.replyRate}%</span>
+                    <span className="font-medium text-[hsl(var(--success))]">{analytics.engagement.responseEngagement.replyRate}%</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Tasa de baja</span>
-                    <span className="font-medium text-red-600">{analytics.engagement.responseEngagement.unsubscribeRate}%</span>
+                    <span className="font-medium text-[hsl(var(--destructive))]">{analytics.engagement.responseEngagement.unsubscribeRate}%</span>
                   </div>
                 </div>
               </CardContent>
@@ -610,31 +610,31 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
             </CardHeader>
             <CardContent>
               {analytics.trends.requestsOverTime.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">No hay datos suficientes para mostrar tendencias</p>
+                <p className="text-center text-muted-foreground py-8">No hay datos suficientes para mostrar tendencias</p>
               ) : (
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                     <div>
-                      <p className="text-2xl font-bold text-blue-600">
+                      <p className="text-2xl font-bold text-[hsl(var(--info))]">
                         {analytics.trends.requestsOverTime.reduce((sum, item) => sum + item.requests, 0)}
                       </p>
-                      <p className="text-sm text-gray-600">Total de peticiones</p>
+                      <p className="text-sm text-muted-foreground">Total de peticiones</p>
                     </div>
                     <div>
-                      <p className="text-2xl font-bold text-green-600">
+                      <p className="text-2xl font-bold text-[hsl(var(--success))]">
                         {analytics.trends.requestsOverTime.reduce((sum, item) => sum + item.approvals, 0)}
                       </p>
-                      <p className="text-sm text-gray-600">Total aprobadas</p>
+                      <p className="text-sm text-muted-foreground">Total aprobadas</p>
                     </div>
                     <div>
-                      <p className="text-2xl font-bold text-red-600">
+                      <p className="text-2xl font-bold text-[hsl(var(--destructive))]">
                         {analytics.trends.requestsOverTime.reduce((sum, item) => sum + item.rejections, 0)}
                       </p>
-                      <p className="text-sm text-gray-600">Total rechazadas</p>
+                      <p className="text-sm text-muted-foreground">Total rechazadas</p>
                     </div>
                   </div>
                   
-                  <div className="text-center text-gray-500 py-4">
+                  <div className="text-center text-muted-foreground py-4">
                     Gráfico de tendencias se implementará con biblioteca de charts
                   </div>
                 </div>
@@ -649,16 +649,16 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               </CardHeader>
               <CardContent>
                 {analytics.trends.contactGrowth.length === 0 ? (
-                  <p className="text-center text-gray-500 py-4">No hay datos de crecimiento</p>
+                  <p className="text-center text-muted-foreground py-4">No hay datos de crecimiento</p>
                 ) : (
                   <div className="space-y-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-blue-600">
+                      <p className="text-2xl font-bold text-[hsl(var(--info))]">
                         {analytics.trends.contactGrowth.reduce((sum, item) => sum + item.newContacts, 0)}
                       </p>
-                      <p className="text-sm text-gray-600">Nuevos contactos en el período</p>
+                      <p className="text-sm text-muted-foreground">Nuevos contactos en el período</p>
                     </div>
-                    <div className="text-center text-gray-500">
+                    <div className="text-center text-muted-foreground">
                       Gráfico de crecimiento pendiente
                     </div>
                   </div>
@@ -672,7 +672,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               </CardHeader>
               <CardContent>
                 {analytics.trends.responseMetrics.length === 0 ? (
-                  <p className="text-center text-gray-500 py-4">No hay métricas de respuesta</p>
+                  <p className="text-center text-muted-foreground py-4">No hay métricas de respuesta</p>
                 ) : (
                   <div className="space-y-4">
                     {analytics.trends.responseMetrics.slice(-5).map((metric, index) => (
@@ -681,8 +681,8 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
                           {format(new Date(metric.date), 'dd/MM', { locale: es })}
                         </span>
                         <div className="flex gap-4 text-sm">
-                          <span className="text-blue-600">{metric.responsesSent} enviadas</span>
-                          <span className="text-green-600">{metric.deliveryRate}% entregadas</span>
+                          <span className="text-[hsl(var(--info))]">{metric.responsesSent} enviadas</span>
+                          <span className="text-[hsl(var(--success))]">{metric.deliveryRate}% entregadas</span>
                         </div>
                       </div>
                     ))}
@@ -699,7 +699,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               <Card>
                 <CardContent className="text-center py-12">
                   <PieChart className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                  <p className="text-gray-500">No hay datos de categorías disponibles</p>
+                  <p className="text-muted-foreground">No hay datos de categorías disponibles</p>
                 </CardContent>
               </Card>
             ) : (
@@ -716,23 +716,23 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
                         <Badge variant="outline">{category.requestCount} peticiones</Badge>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-gray-600">Tasa de aprobación</p>
-                        <p className="text-lg font-bold text-green-600">{category.approvalRate}%</p>
+                        <p className="text-sm text-muted-foreground">Tasa de aprobación</p>
+                        <p className="text-lg font-bold text-[hsl(var(--success))]">{category.approvalRate}%</p>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4 text-center">
                       <div>
                         <p className="text-2xl font-bold">{category.requestCount}</p>
-                        <p className="text-sm text-gray-600">Peticiones</p>
+                        <p className="text-sm text-muted-foreground">Peticiones</p>
                       </div>
                       <div>
-                        <p className="text-2xl font-bold text-green-600">{category.approvalRate}%</p>
-                        <p className="text-sm text-gray-600">Aprobación</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--success))]">{category.approvalRate}%</p>
+                        <p className="text-sm text-muted-foreground">Aprobación</p>
                       </div>
                       <div>
-                        <p className="text-2xl font-bold text-orange-600">{category.avgResponseTime.toFixed(1)}h</p>
-                        <p className="text-sm text-gray-600">Resp. promedio</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--warning))]">{category.avgResponseTime.toFixed(1)}h</p>
+                        <p className="text-sm text-muted-foreground">Resp. promedio</p>
                       </div>
                     </div>
 
@@ -740,7 +740,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
                       <ProgressBar 
                         value={category.requestCount} 
                         max={Math.max(...analytics.categories.map(c => c.requestCount))}
-                        color={category.color ? `bg-[${category.color}]` : 'bg-blue-600'}
+                        color={category.color ? `bg-[${category.color}]` : 'bg-[hsl(var(--info))]'}
                       />
                     </div>
                   </CardContent>
@@ -757,14 +757,14 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               value={analytics.engagement.repeatRequesters}
               subtitle="Contactos con >1 petición"
               icon={Users}
-              color="text-purple-600"
+              color="text-[hsl(var(--lavender))]"
             />
             <StatCard
               title="Promedio por Contacto"
               value={analytics.engagement.avgRequestsPerContact}
               subtitle="Peticiones por persona"
               icon={Heart}
-              color="text-red-600"
+              color="text-[hsl(var(--destructive))]"
               format={(value: number) => value.toFixed(1)}
             />
             <StatCard
@@ -772,7 +772,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               value={analytics.engagement.responseEngagement.readRate}
               subtitle="De respuestas enviadas"
               icon={Eye}
-              color="text-blue-600"
+              color="text-[hsl(var(--info))]"
               format={(value: number) => `${value}%`}
             />
             <StatCard
@@ -780,7 +780,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               value={analytics.engagement.responseEngagement.replyRate}
               subtitle="Respuestas recibidas"
               icon={MessageSquare}
-              color="text-green-600"
+              color="text-[hsl(var(--success))]"
               format={(value: number) => `${value}%`}
             />
           </div>
@@ -792,7 +792,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               </CardHeader>
               <CardContent>
                 {analytics.engagement.mostActiveHours.length === 0 ? (
-                  <p className="text-center text-gray-500 py-4">No hay datos de actividad horaria</p>
+                  <p className="text-center text-muted-foreground py-4">No hay datos de actividad horaria</p>
                 ) : (
                   <div className="space-y-3">
                     {analytics.engagement.mostActiveHours.slice(0, 5).map(hour => (
@@ -818,7 +818,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               </CardHeader>
               <CardContent>
                 {analytics.engagement.mostActiveDays.length === 0 ? (
-                  <p className="text-center text-gray-500 py-4">No hay datos de actividad diaria</p>
+                  <p className="text-center text-muted-foreground py-4">No hay datos de actividad diaria</p>
                 ) : (
                   <div className="space-y-3">
                     {analytics.engagement.mostActiveDays.map(day => (
@@ -848,23 +848,23 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               </CardHeader>
               <CardContent>
                 {analytics.templates.length === 0 ? (
-                  <p className="text-center text-gray-500 py-4">No hay datos de plantillas</p>
+                  <p className="text-center text-muted-foreground py-4">No hay datos de plantillas</p>
                 ) : (
                   <div className="space-y-4">
                     {analytics.templates.slice(0, 5).map((template, index) => (
-                      <div key={template.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div key={template.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                         <div className="flex items-center gap-3">
-                          <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-medium">
+                          <span className="w-6 h-6 bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] rounded-full flex items-center justify-center text-sm font-medium">
                             {index + 1}
                           </span>
                           <div>
                             <p className="font-medium">{template.name}</p>
-                            <p className="text-sm text-gray-600">{template.category || 'General'}</p>
+                            <p className="text-sm text-muted-foreground">{template.category || 'General'}</p>
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium text-green-600">{template.successRate}%</p>
-                          <p className="text-sm text-gray-600">{template.usageCount} usos</p>
+                          <p className="font-medium text-[hsl(var(--success))]">{template.successRate}%</p>
+                          <p className="text-sm text-muted-foreground">{template.usageCount} usos</p>
                         </div>
                       </div>
                     ))}
@@ -880,42 +880,42 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
               <CardContent>
                 <div className="space-y-6">
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-blue-600">{analytics.overview.avgResponseTime.toFixed(1)}h</p>
-                    <p className="text-sm text-gray-600">Tiempo promedio de respuesta</p>
+                    <p className="text-3xl font-bold text-[hsl(var(--info))]">{analytics.overview.avgResponseTime.toFixed(1)}h</p>
+                    <p className="text-sm text-muted-foreground">Tiempo promedio de respuesta</p>
                     <ProgressBar 
                       value={24 - analytics.overview.avgResponseTime} 
                       max={24}
-                      color="bg-blue-600"
+                      color="bg-[hsl(var(--info))]"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Meta: menos de 2 horas</p>
+                    <p className="text-xs text-muted-foreground mt-1">Meta: menos de 2 horas</p>
                   </div>
 
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-green-600">
+                    <p className="text-3xl font-bold text-[hsl(var(--success))]">
                       {analytics.overview.totalRequests > 0 
                         ? Math.round((analytics.overview.approvedRequests / analytics.overview.totalRequests) * 100)
                         : 0}%
                     </p>
-                    <p className="text-sm text-gray-600">Tasa de aprobación general</p>
+                    <p className="text-sm text-muted-foreground">Tasa de aprobación general</p>
                     <ProgressBar 
                       value={analytics.overview.approvedRequests} 
                       max={analytics.overview.totalRequests}
-                      color="bg-green-600"
+                      color="bg-[hsl(var(--success))]"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Meta: más del 80%</p>
+                    <p className="text-xs text-muted-foreground mt-1">Meta: más del 80%</p>
                   </div>
 
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-purple-600">
+                    <p className="text-3xl font-bold text-[hsl(var(--lavender))]">
                       {analytics.engagement.responseEngagement.readRate}%
                     </p>
-                    <p className="text-sm text-gray-600">Tasa de lectura de respuestas</p>
+                    <p className="text-sm text-muted-foreground">Tasa de lectura de respuestas</p>
                     <ProgressBar 
                       value={analytics.engagement.responseEngagement.readRate} 
                       max={100}
-                      color="bg-purple-600"
+                      color="bg-[hsl(var(--lavender))]"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Meta: más del 70%</p>
+                    <p className="text-xs text-muted-foreground mt-1">Meta: más del 70%</p>
                   </div>
                 </div>
               </CardContent>

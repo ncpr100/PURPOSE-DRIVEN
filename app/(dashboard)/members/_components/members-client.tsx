@@ -888,7 +888,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold">
+                <div className="h-8 w-8 rounded-full bg-[hsl(var(--success)/0.10)]0 flex items-center justify-center text-white text-sm font-bold">
                   M
                 </div>
                 <div>
@@ -905,7 +905,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-pink-500 flex items-center justify-center text-white text-sm font-bold">
+                <div className="h-8 w-8 rounded-full bg-[hsl(var(--destructive)/0.08)]0 flex items-center justify-center text-white text-sm font-bold">
                   F
                 </div>
                 <div>
@@ -969,7 +969,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
             {isLoading ? (
               <div className="text-center py-8">
                 <p>Cargando miembros...</p>
-                <div className="text-sm text-gray-500 mt-2">
+                <div className="text-sm text-muted-foreground mt-2">
                   Debugging: isLoading={isLoading.toString()}, members.length={members.length}, filteredMembers.length={filteredMembers.length}
                 </div>
               </div>
@@ -1002,7 +1002,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                 <p className="text-sm text-muted-foreground mt-2">
                   {activeSmartList !== 'all' ? 'Prueba con otra lista inteligente' : 'Revisa los filtros aplicados'}
                 </p>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground/70 mt-1">
                   Total miembros: {members.length}, Filtrados: {filteredMembers.length}
                 </p>
               </div>
@@ -1095,7 +1095,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                                 onClick={() => handleVolunteerRecruitment(member)}
                                 title="Reclutar como Voluntario"
                               >
-                                <UserPlus className="h-4 w-4 text-green-600" />
+                                <UserPlus className="h-4 w-4 text-[hsl(var(--success))]" />
                               </Button>
                             )}
                             {getMemberVolunteerStatus(member.id) && (
@@ -1117,7 +1117,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
                                 onClick={() => toast.info('Función de desarrollo de liderazgo próximamente')}
                                 title="Considerar para Liderazgo"
                               >
-                                <Crown className="h-4 w-4 text-yellow-600" />
+                                <Crown className="h-4 w-4 text-[hsl(var(--warning))]" />
                               </Button>
                             )}
                             {/* Existing Actions */}
@@ -1163,7 +1163,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <UserPlus className="h-5 w-5 text-green-600" />
+              <UserPlus className="h-5 w-5 text-[hsl(var(--success))]" />
               Reclutar Voluntario
             </DialogTitle>
             <DialogDescription>

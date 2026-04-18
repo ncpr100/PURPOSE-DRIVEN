@@ -272,20 +272,20 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'approved': return 'bg-green-100 text-green-800'
-      case 'rejected': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'pending': return 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]'
+      case 'approved': return 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
+      case 'rejected': return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
+      default: return 'bg-muted/50 text-foreground'
     }
   }
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'text-red-600'
-      case 'high': return 'text-orange-600'
-      case 'normal': return 'text-blue-600'
-      case 'low': return 'text-gray-600'
-      default: return 'text-gray-600'
+      case 'urgent': return 'text-[hsl(var(--destructive))]'
+      case 'high': return 'text-[hsl(var(--warning))]'
+      case 'normal': return 'text-[hsl(var(--info))]'
+      case 'low': return 'text-muted-foreground'
+      default: return 'text-muted-foreground'
     }
   }
 
@@ -339,20 +339,20 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
 
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <User className="w-4 h-4 text-gray-500" />
+            <User className="w-4 h-4 text-muted-foreground" />
             <span className="font-medium">
               {request.isAnonymous ? 'Anónimo' : request.contact.fullName}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Heart className="w-4 h-4 text-gray-500" />
-            <span className="text-sm text-gray-600">{request.category.name}</span>
+            <Heart className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">{request.category.name}</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-gray-500" />
-            <span className="text-sm text-gray-600">
+            <Calendar className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">
               {format(new Date(request.createdAt), "d 'de' MMMM, yyyy 'a las' HH:mm", { locale: es })}
             </span>
           </div>
@@ -360,18 +360,18 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
           {!request.isAnonymous && (
             <div className="flex items-center gap-2">
               {request.preferredContact === 'email' ? (
-                <Mail className="w-4 h-4 text-gray-500" />
+                <Mail className="w-4 h-4 text-muted-foreground" />
               ) : (
-                <Phone className="w-4 h-4 text-gray-500" />
+                <Phone className="w-4 h-4 text-muted-foreground" />
               )}
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-muted-foreground">
                 {request.contact.email || request.contact.phone}
               </span>
             </div>
           )}
 
           <div className="mt-2">
-            <p className="text-sm text-gray-700 line-clamp-2">
+            <p className="text-sm text-muted-foreground line-clamp-2">
               {request.message}
             </p>
           </div>
@@ -382,7 +382,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
             <Button
               size="sm"
               onClick={() => handleApproval(request.id, 'approve')}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]"
             >
               <Check className="w-4 h-4 mr-1" />
               Aprobar
@@ -391,7 +391,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
               size="sm"
               variant="outline"
               onClick={() => handleApproval(request.id, 'reject')}
-              className="border-red-500 text-red-600 hover:bg-red-50"
+              className="border-[hsl(var(--destructive))] text-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive)/0.10)]"
             >
               <X className="w-4 h-4 mr-1" />
               Rechazar
@@ -415,14 +415,14 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
             <span className="text-sm capitalize font-medium">{request.priority}</span>
           </div>
         </div>
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-muted-foreground">
           {format(new Date(request.createdAt), "d 'de' MMMM, yyyy 'a las' HH:mm", { locale: es })}
         </span>
       </div>
 
-      <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+      <div className="bg-muted/30 rounded-lg p-4 space-y-3">
         <div className="flex items-center gap-2">
-          <User className="w-5 h-5 text-gray-600" />
+          <User className="w-5 h-5 text-muted-foreground" />
           <div>
             <p className="font-medium">
               {request.isAnonymous ? 'Petición Anónima' : request.contact.fullName}
@@ -431,14 +431,14 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
               <div className="flex items-center gap-4 mt-1">
                 {request.contact.email && (
                   <div className="flex items-center gap-1">
-                    <Mail className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">{request.contact.email}</span>
+                    <Mail className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">{request.contact.email}</span>
                   </div>
                 )}
                 {request.contact.phone && (
                   <div className="flex items-center gap-1">
-                    <Phone className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">{request.contact.phone}</span>
+                    <Phone className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">{request.contact.phone}</span>
                   </div>
                 )}
               </div>
@@ -447,17 +447,17 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
         </div>
 
         <div className="flex items-center gap-2">
-          <Heart className="w-5 h-5 text-gray-600" />
+          <Heart className="w-5 h-5 text-muted-foreground" />
           <div>
             <p className="font-medium">{request.category.name}</p>
             {request.category.description && (
-              <p className="text-sm text-gray-600">{request.category.description}</p>
+              <p className="text-sm text-muted-foreground">{request.category.description}</p>
             )}
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <MessageSquare className="w-5 h-5 text-gray-600" />
+          <MessageSquare className="w-5 h-5 text-muted-foreground" />
           <span className="font-medium">Contacto preferido:</span>
           <span className="text-sm">
             {request.preferredContact === 'email' ? 'Email' :
@@ -468,30 +468,30 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
 
       <div>
         <h4 className="font-medium mb-2">Mensaje de la petición:</h4>
-        <div className="bg-blue-50 rounded-lg p-4">
-          <p className="text-gray-700 whitespace-pre-wrap">{request.message}</p>
+        <div className="bg-[hsl(var(--info)/0.10)] rounded-lg p-4">
+          <p className="text-muted-foreground whitespace-pre-wrap">{request.message}</p>
         </div>
       </div>
 
       {request.form && (
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-muted-foreground">
           <span className="font-medium">Formulario:</span> {request.form.name}
         </div>
       )}
 
       {request.qrCode && (
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-muted-foreground">
           <span className="font-medium">Código QR:</span> {request.qrCode.name}
         </div>
       )}
 
       {request.approval && (
-        <div className="bg-gray-50 rounded-lg p-4">
+        <div className="bg-muted/30 rounded-lg p-4">
           <h4 className="font-medium mb-2 flex items-center gap-2">
             {request.approval.status === 'approved' ? (
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <CheckCircle className="w-5 h-5 text-[hsl(var(--success))]" />
             ) : (
-              <XCircle className="w-5 h-5 text-red-600" />
+              <XCircle className="w-5 h-5 text-[hsl(var(--destructive))]" />
             )}
             Estado de Revisión
           </h4>
@@ -506,7 +506,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
             {request.approval.notes && (
               <div className="mt-2">
                 <p className="font-medium">Notas:</p>
-                <p className="text-gray-700">{request.approval.notes}</p>
+                <p className="text-muted-foreground">{request.approval.notes}</p>
               </div>
             )}
           </div>
@@ -517,7 +517,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
         <div className="flex gap-3 pt-4 border-t">
           <Button
             onClick={() => handleApproval(request.id, 'approve')}
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]"
           >
             <Check className="w-4 h-4 mr-2" />
             Aprobar Petición
@@ -525,7 +525,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
           <Button
             variant="outline"
             onClick={() => handleApproval(request.id, 'reject')}
-            className="border-red-500 text-red-600 hover:bg-red-50"
+            className="border-[hsl(var(--destructive))] text-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive)/0.10)]"
           >
             <X className="w-4 h-4 mr-2" />
             Rechazar Petición
@@ -538,7 +538,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -549,7 +549,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Gestión de Peticiones</h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Revisa y aprueba las peticiones de oración de tu comunidad
           </p>
         </div>
@@ -560,7 +560,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
                 setApprovalAction('approve')
                 setIsApprovalDialogOpen(true)
               }}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]"
             >
               <Check className="w-4 h-4 mr-2" />
               Aprobar Seleccionadas ({selectedRequests.length})
@@ -571,7 +571,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
                 setApprovalAction('reject')
                 setIsApprovalDialogOpen(true)
               }}
-              className="border-red-500 text-red-600 hover:bg-red-50"
+              className="border-[hsl(var(--destructive))] text-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive)/0.10)]"
             >
               <X className="w-4 h-4 mr-2" />
               Rechazar Seleccionadas ({selectedRequests.length})
@@ -593,7 +593,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
             <div>
               <Label>Buscar</Label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 w-4 h-4" />
                 <Input
                   placeholder="Nombre, mensaje, categoría..."
                   value={filters.search}
@@ -684,7 +684,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
       {/* Results */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Mostrando {filteredRequests.length} de {requests.length} peticiones
           </p>
           {filteredRequests.length > 0 && (
@@ -712,9 +712,9 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
           <Card>
             <CardContent className="text-center py-12">
               <MessageSquare className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-500">No se encontraron peticiones</p>
+              <p className="text-muted-foreground">No se encontraron peticiones</p>
               {filters.search || filters.status !== 'all' || filters.category !== 'all' ? (
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground/70 mt-1">
                   Intenta ajustar los filtros
                 </p>
               ) : null}
@@ -775,8 +775,8 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
               onClick={() => handleBulkApproval(approvalAction!)}
               disabled={bulkProcessing}
               className={approvalAction === 'approve' 
-                ? 'bg-green-600 hover:bg-green-700' 
-                : 'bg-red-600 hover:bg-red-700'
+                ? 'bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]' 
+                : 'bg-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive))]'
               }
             >
               {bulkProcessing ? (

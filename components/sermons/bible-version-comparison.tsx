@@ -153,7 +153,7 @@ export default function BibleVersionComparison() {
           return (
             <span
               key={index}
-              className={isUnique ? 'bg-yellow-200 px-1 rounded' : ''}
+              className={isUnique ? 'bg-[hsl(var(--warning)/0.15)] px-1 rounded' : ''}
               title={isUnique ? 'Palabra única en esta versión' : undefined}
             >
               {word}
@@ -287,7 +287,7 @@ export default function BibleVersionComparison() {
             ) : comparisonResult.error ? (
               <Card>
                 <CardContent className="py-8">
-                  <div className="text-center text-red-600">
+                  <div className="text-center text-[hsl(var(--destructive))]">
                     <p>Error: {comparisonResult.error}</p>
                   </div>
                 </CardContent>

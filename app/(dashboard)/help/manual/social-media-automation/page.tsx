@@ -82,11 +82,11 @@ export default function SocialMediaAutomationManual() {
             <CardTitle>📍 Acceder al Sistema</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-blue-800">
+            <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
+              <p className="text-[hsl(var(--info))]">
                 <strong>Ruta:</strong> Panel de Control → Redes Sociales → Automatización
               </p>
-              <p className="text-sm text-blue-700 mt-2">
+              <p className="text-sm text-[hsl(var(--info))] mt-2">
                 <strong>Permisos:</strong> PASTOR, ADMIN_IGLESIA, LIDER (con permisos de social media)
               </p>
             </div>
@@ -107,7 +107,7 @@ export default function SocialMediaAutomationManual() {
               {/* Event Creation */}
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-blue-500" />
+                  <Calendar className="h-5 w-5 text-[hsl(var(--info))]" />
                   1. Creación de Eventos
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -132,7 +132,7 @@ export default function SocialMediaAutomationManual() {
               {/* Event Reminders */}
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-green-500" />
+                  <Clock className="h-5 w-5 text-[hsl(var(--success))]" />
                   2. Recordatorios de Eventos
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -160,7 +160,7 @@ export default function SocialMediaAutomationManual() {
               {/* Prayer Requests */}
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <div className="h-5 w-5 text-purple-500">🙏</div>
+                  <div className="h-5 w-5 text-[hsl(var(--lavender))]">🙏</div>
                   3. Peticiones de Oración
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -187,7 +187,7 @@ export default function SocialMediaAutomationManual() {
               {/* Sermon Content */}
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <div className="h-5 w-5 text-orange-500">📖</div>
+                  <div className="h-5 w-5 text-[hsl(var(--warning))]">📖</div>
                   4. Contenido de Sermones
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -215,7 +215,7 @@ export default function SocialMediaAutomationManual() {
               {/* Member Celebrations */}
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <div className="h-5 w-5 text-pink-500">🎉</div>
+                  <div className="h-5 w-5 text-[hsl(var(--lavender))]">🎉</div>
                   5-8. Celebraciones y Hitos
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -259,28 +259,28 @@ export default function SocialMediaAutomationManual() {
                 <h4 className="font-semibold mb-3">Plataformas Soportadas:</h4>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 p-3 border rounded-lg">
-                    <Facebook className="h-5 w-5 text-blue-600" />
+                    <Facebook className="h-5 w-5 text-[hsl(var(--info))]" />
                     <div>
                       <p className="font-medium">Facebook</p>
                       <p className="text-xs text-muted-foreground">Posts, eventos, fotos</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 border rounded-lg">
-                    <Instagram className="h-5 w-5 text-pink-500" />
+                    <Instagram className="h-5 w-5 text-[hsl(var(--lavender))]" />
                     <div>
                       <p className="font-medium">Instagram</p>
                       <p className="text-xs text-muted-foreground">Posts visuales, stories</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 border rounded-lg">
-                    <Linkedin className="h-5 w-5 text-blue-700" />
+                    <Linkedin className="h-5 w-5 text-[hsl(var(--info))]" />
                     <div>
                       <p className="font-medium">LinkedIn</p>
                       <p className="text-xs text-muted-foreground">Contenido profesional</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 border rounded-lg">
-                    <div className="h-5 w-5 bg-red-500 rounded flex items-center justify-center text-white text-xs">Y</div>
+                    <div className="h-5 w-5 bg-[hsl(var(--destructive)/0.10)]0 rounded flex items-center justify-center text-white text-xs">Y</div>
                     <div>
                       <p className="font-medium">YouTube</p>
                       <p className="text-xs text-muted-foreground">Videos, live streams</p>
@@ -377,7 +377,7 @@ export default function SocialMediaAutomationManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-green-600">✅ Recomendaciones:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Recomendaciones:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Contenido auténtico:</strong> Mantenga voz genuina de la iglesia</li>
                   <li>• <strong>Moderación:</strong> Revise contenido automático regularmente</li>
@@ -388,7 +388,7 @@ export default function SocialMediaAutomationManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-red-600">❌ Evitar:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">❌ Evitar:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Sobre-publicación:</strong> No sature feeds con contenido</li>
                   <li>• <strong>Contenido irrelevante:</strong> Mantenga relevancia ministerial</li>
@@ -409,9 +409,9 @@ export default function SocialMediaAutomationManual() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <h4 className="font-semibold text-yellow-800 mb-2">Requisitos Previos:</h4>
-                <ul className="text-sm text-yellow-700 space-y-1">
+              <div className="bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg p-4">
+                <h4 className="font-semibold text-[hsl(var(--warning))] mb-2">Requisitos Previos:</h4>
+                <ul className="text-sm text-[hsl(var(--warning))] space-y-1">
                   <li>• Cuentas de redes sociales de la iglesia creadas</li>
                   <li>• Acceso de administrador a las páginas/canales</li>
                   <li>• APIs configuradas (se hace una sola vez)</li>

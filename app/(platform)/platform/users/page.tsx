@@ -139,15 +139,15 @@ export default function PlatformUsersPage() {
   const getRoleColor = (userRole: string) => {
     switch (userRole) {
       case 'SUPER_ADMIN':
-        return 'bg-red-100 text-red-800'
+        return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
       case 'ADMIN_IGLESIA':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]'
       case 'PASTOR':
-        return 'bg-purple-100 text-purple-800'
+        return 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]'
       case 'LIDER':
-        return 'bg-green-100 text-green-800'
+        return 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-muted/50 text-foreground'
     }
   }
 
@@ -163,8 +163,8 @@ export default function PlatformUsersPage() {
             </Link>
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Gestión de Usuarios</h1>
-            <p className="text-gray-600">Administrar todos los usuarios de la plataforma</p>
+            <h1 className="text-3xl font-bold text-foreground">Gestión de Usuarios</h1>
+            <p className="text-muted-foreground">Administrar todos los usuarios de la plataforma</p>
           </div>
         </div>
         
@@ -179,7 +179,7 @@ export default function PlatformUsersPage() {
       {/* Filters */}
       <div className="flex items-center gap-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 h-4 w-4" />
           <Input
             placeholder="Buscar usuarios..."
             value={search}
@@ -220,19 +220,19 @@ export default function PlatformUsersPage() {
             {loading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <TableRow key={i}>
-                  <TableCell><div className="h-4 bg-gray-200 animate-pulse rounded" /></TableCell>
-                  <TableCell><div className="h-4 bg-gray-200 animate-pulse rounded" /></TableCell>
-                  <TableCell><div className="h-4 bg-gray-200 animate-pulse rounded" /></TableCell>
-                  <TableCell><div className="h-4 bg-gray-200 animate-pulse rounded" /></TableCell>
-                  <TableCell><div className="h-4 bg-gray-200 animate-pulse rounded" /></TableCell>
-                  <TableCell><div className="h-4 bg-gray-200 animate-pulse rounded" /></TableCell>
+                  <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>
+                  <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>
+                  <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>
+                  <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>
+                  <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>
+                  <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>
                 </TableRow>
               ))
             ) : users.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8">
-                  <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No se encontraron usuarios</p>
+                  <Users className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                  <p className="text-muted-foreground">No se encontraron usuarios</p>
                 </TableCell>
               </TableRow>
             ) : (
@@ -241,14 +241,14 @@ export default function PlatformUsersPage() {
                   <TableCell>
                     <div>
                       <p className="font-medium">{user.name}</p>
-                      <p className="text-sm text-gray-500">{user.email}</p>
+                      <p className="text-sm text-muted-foreground">{user.email}</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     {user.church ? (
                       <Badge variant="outline">{user.church.name}</Badge>
                     ) : (
-                      <span className="text-gray-400">Sin iglesia</span>
+                      <span className="text-muted-foreground/70">Sin iglesia</span>
                     )}
                   </TableCell>
                   <TableCell>
@@ -262,7 +262,7 @@ export default function PlatformUsersPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-muted-foreground">
                       {new Date(user.createdAt).toLocaleDateString()}
                     </span>
                   </TableCell>
@@ -285,7 +285,7 @@ export default function PlatformUsersPage() {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem 
                           onClick={() => handleToggleStatus(user.id, user.isActive)}
-                          className={user.isActive ? 'text-red-600' : 'text-green-600'}
+                          className={user.isActive ? 'text-[hsl(var(--destructive))]' : 'text-[hsl(var(--success))]'}
                         >
                           <UserX className="h-4 w-4 mr-2" />
                           {user.isActive ? 'Desactivar' : 'Activar'}
@@ -303,7 +303,7 @@ export default function PlatformUsersPage() {
       {/* Pagination */}
       {pagination.pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-muted-foreground">
             Mostrando {((pagination.page - 1) * pagination.limit) + 1} a {Math.min(pagination.page * pagination.limit, pagination.total)} de {pagination.total} usuarios
           </p>
           
@@ -317,7 +317,7 @@ export default function PlatformUsersPage() {
               Anterior
             </Button>
             
-            <span className="px-3 py-1 text-sm bg-gray-100 rounded">
+            <span className="px-3 py-1 text-sm bg-muted/50 rounded">
               {pagination.page} de {pagination.pages}
             </span>
             

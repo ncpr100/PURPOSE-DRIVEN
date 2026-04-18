@@ -88,9 +88,9 @@ export function FormationContentTab({ sermonId }: Props) {
         </Button>
       </div>
 
-      <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+      <div className="rounded-md border border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)] p-3 text-sm text-amber-800">
         <div className="flex items-start gap-2">
-          <AlertTriangle className="mt-0.5 h-4 w-4 text-amber-600" />
+          <AlertTriangle className="mt-0.5 h-4 w-4 text-[hsl(var(--warning))]" />
           <span>
             Requiere Análisis Ministerial previo. Revise el contenido antes de
             publicar.
@@ -101,17 +101,17 @@ export function FormationContentTab({ sermonId }: Props) {
       {content && (
         <div className="grid gap-4">
           {/* Social Media Post */}
-          <Card className="border-green-200">
+          <Card className="border-[hsl(var(--success)/0.3)]">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm">
-                <Share2 className="h-4 w-4 text-green-600" />
+                <Share2 className="h-4 w-4 text-[hsl(var(--success))]" />
                 Publicación para redes sociales
                 <div className="ml-auto flex gap-1">
                   {content.socialMediaPost.platforms.map((p) => (
                     <Badge
                       key={p}
                       variant="outline"
-                      className="border-green-300 text-green-700 capitalize"
+                      className="border-[hsl(var(--success)/0.4)] text-[hsl(var(--success))] capitalize"
                     >
                       {p}
                     </Badge>
@@ -124,7 +124,7 @@ export function FormationContentTab({ sermonId }: Props) {
                 <p className="mb-1 text-xs font-medium text-muted-foreground">
                   Frase principal
                 </p>
-                <blockquote className="border-l-4 border-green-400 pl-4 text-sm italic">
+                <blockquote className="border-l-4 border-[hsl(var(--success)/0.30)] pl-4 text-sm italic">
                   "{content.socialMediaPost.text}"
                 </blockquote>
               </div>
@@ -153,15 +153,15 @@ export function FormationContentTab({ sermonId }: Props) {
           </Card>
 
           {/* Small Group Guide */}
-          <Card className="border-indigo-200">
+          <Card className="border-primary/20">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm">
-                <Users className="h-4 w-4 text-indigo-600" />
+                <Users className="h-4 w-4 text-primary" />
                 Guía para grupos pequeños
                 {content.smallGroupGuide.verseReference && (
                   <Badge
                     variant="outline"
-                    className="ml-auto border-indigo-300 text-indigo-700"
+                    className="ml-auto border-primary/30 text-primary"
                   >
                     <BookOpen className="mr-1 h-3 w-3" />
                     {content.smallGroupGuide.verseReference}
@@ -174,8 +174,8 @@ export function FormationContentTab({ sermonId }: Props) {
                 <p className="mb-2 text-xs font-medium text-muted-foreground">
                   Pregunta central
                 </p>
-                <div className="rounded-md border border-indigo-100 bg-indigo-50 p-3">
-                  <p className="text-sm font-medium text-indigo-900">
+                <div className="rounded-md border border-[hsl(var(--lavender)/0.30)] bg-primary/[0.06] p-3">
+                  <p className="text-sm font-medium text-foreground">
                     {content.smallGroupGuide.discussionQuestion}
                   </p>
                 </div>
@@ -189,7 +189,7 @@ export function FormationContentTab({ sermonId }: Props) {
                 <ol className="space-y-2">
                   {content.smallGroupGuide.followUpQuestions.map((q, i) => (
                     <li key={i} className="flex gap-2 text-sm">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-bold text-indigo-700">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/[0.12] text-xs font-bold text-primary">
                         {i + 1}
                       </span>
                       <span>{q}</span>

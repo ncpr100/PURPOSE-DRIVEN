@@ -54,7 +54,7 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Info className="h-5 w-5 text-blue-600" />
+            <Info className="h-5 w-5 text-[hsl(var(--info))]" />
             Resumen del Sistema
           </CardTitle>
         </CardHeader>
@@ -67,17 +67,17 @@ export default function QualificationSettingsManual() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="border rounded-lg p-4 text-center">
-              <UserPlus className="h-8 w-8 mx-auto mb-2 text-green-600" />
+              <UserPlus className="h-8 w-8 mx-auto mb-2 text-[hsl(var(--success))]" />
               <h4 className="font-semibold">Candidatos Voluntarios</h4>
               <p className="text-sm text-muted-foreground">Criterios personalizables para identificar miembros listos para ser voluntarios</p>
             </div>
             <div className="border rounded-lg p-4 text-center">
-              <Crown className="h-8 w-8 mx-auto mb-2 text-purple-600" />
+              <Crown className="h-8 w-8 mx-auto mb-2 text-[hsl(var(--lavender))]" />
               <h4 className="font-semibold">Listos para Liderazgo</h4>
               <p className="text-sm text-muted-foreground">Estándares ajustables para candidatos a posiciones de liderazgo</p>
             </div>
             <div className="border rounded-lg p-4 text-center">
-              <Brain className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+              <Brain className="h-8 w-8 mx-auto mb-2 text-[hsl(var(--info))]" />
               <h4 className="font-semibold">IA Personalizada</h4>
               <p className="text-sm text-muted-foreground">Pesos ajustables para algoritmos de recomendación inteligente</p>
             </div>
@@ -89,14 +89,14 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-yellow-600" />
+            <AlertTriangle className="h-5 w-5 text-[hsl(var(--warning))]" />
             Cambios Importantes del Sistema
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold text-red-600 mb-3">❌ Sistema Anterior (Fijo)</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-3">❌ Sistema Anterior (Fijo)</h4>
               <ul className="space-y-2 text-sm">
                 <li>• Candidatos voluntarios: Solo verificación de estado no-voluntario</li>
                 <li>• Liderazgo: Requisito fijo de 1 año de membresía</li>
@@ -106,7 +106,7 @@ export default function QualificationSettingsManual() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-green-600 mb-3">✅ Sistema Nuevo (Personalizable)</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-3">✅ Sistema Nuevo (Personalizable)</h4>
               <ul className="space-y-2 text-sm">
                 <li>• Tiempo mínimo de membresía configurable</li>
                 <li>• Requisitos de evaluación espiritual opcionales</li>
@@ -124,7 +124,7 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-gray-600" />
+            <Settings className="h-5 w-5 text-muted-foreground" />
             Acceso y Configuración Inicial
           </CardTitle>
         </CardHeader>
@@ -170,14 +170,14 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-purple-600" />
+            <Target className="h-5 w-5 text-[hsl(var(--lavender))]" />
             Guía de la Interfaz de Configuración
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-green-600 mb-2">📑 Tab 1: Candidatos Voluntarios</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-2">📑 Tab 1: Candidatos Voluntarios</h4>
               <div className="ml-4 space-y-2 text-sm">
                 <p><strong>Mínimo de días como miembro:</strong> Input numérico (0 = sin restricción)</p>
                 <p><strong>Puntaje mínimo de madurez espiritual:</strong> Slider 0-100%</p>
@@ -187,7 +187,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div>
-              <h4 className="font-semibold text-purple-600 mb-2">👑 Tab 2: Listos para Liderazgo</h4>
+              <h4 className="font-semibold text-[hsl(var(--lavender))] mb-2">👑 Tab 2: Listos para Liderazgo</h4>
               <div className="ml-4 space-y-2 text-sm">
                 <p><strong>Mínimo de días como miembro:</strong> Input numérico (predeterminado: 365)</p>
                 <p><strong>Mínimo de días como voluntario:</strong> Input numérico (0 = sin restricción)</p>
@@ -198,7 +198,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div>
-              <h4 className="font-semibold text-blue-600 mb-2">🧠 Tab 3: Sistema de Puntuación</h4>
+              <h4 className="font-semibold text-[hsl(var(--info))] mb-2">🧠 Tab 3: Sistema de Puntuación</h4>
               <div className="ml-4 space-y-2 text-sm">
                 <p><strong>Sistemas habilitados:</strong> Switches para evaluación de madurez, aptitud y pasión ministerial</p>
                 <p><strong>Pesos de puntuación:</strong> Sliders para ajustar importancia de cada factor (deben sumar 100%)</p>
@@ -221,7 +221,7 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-orange-600" />
+            <Brain className="h-5 w-5 text-[hsl(var(--warning))]" />
             Integración con Evaluaciones Espirituales
           </CardTitle>
         </CardHeader>
@@ -261,14 +261,14 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-teal-600" />
+            <Users className="h-5 w-5 text-[hsl(var(--info))]" />
             Ejemplos de Configuración por Tipo de Iglesia
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="border rounded-lg p-4">
-              <h4 className="font-semibold text-blue-600 mb-3">🏛️ Iglesia Tradicional Grande</h4>
+              <h4 className="font-semibold text-[hsl(var(--info))] mb-3">🏛️ Iglesia Tradicional Grande</h4>
               <div className="text-sm space-y-2">
                 <p><strong>Voluntarios:</strong> 6 meses membresía, evaluación espiritual obligatoria</p>
                 <p><strong>Liderazgo:</strong> 2 años membresía, 1 año como voluntario, capacitación requerida</p>
@@ -277,7 +277,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div className="border rounded-lg p-4">
-              <h4 className="font-semibold text-green-600 mb-3">⛪ Iglesia Contemporánea Mediana</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-3">⛪ Iglesia Contemporánea Mediana</h4>
               <div className="text-sm space-y-2">
                 <p><strong>Voluntarios:</strong> 3 meses membresía, evaluación opcional</p>
                 <p><strong>Liderazgo:</strong> 1 año membresía, experiencia voluntaria opcional</p>
@@ -286,7 +286,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div className="border rounded-lg p-4">
-              <h4 className="font-semibold text-purple-600 mb-3">🌱 Iglesia Plantación Nueva</h4>
+              <h4 className="font-semibold text-[hsl(var(--lavender))] mb-3">🌱 Iglesia Plantación Nueva</h4>
               <div className="text-sm space-y-2">
                 <p><strong>Voluntarios:</strong> Sin restricción de tiempo, solo estado activo</p>
                 <p><strong>Liderazgo:</strong> 6 meses membresía, sin experiencia voluntaria requerida</p>
@@ -295,7 +295,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div className="border rounded-lg p-4">
-              <h4 className="font-semibold text-orange-600 mb-3">🎯 Iglesia Enfocada en Misiones</h4>
+              <h4 className="font-semibold text-[hsl(var(--warning))] mb-3">🎯 Iglesia Enfocada en Misiones</h4>
               <div className="text-sm space-y-2">
                 <p><strong>Voluntarios:</strong> 1 mes membresía, evaluación espiritual requerida</p>
                 <p><strong>Liderazgo:</strong> 1 año membresía, capacitación misionera obligatoria</p>
@@ -310,7 +310,7 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-gray-600" />
+            <Settings className="h-5 w-5 text-muted-foreground" />
             Especificaciones Técnicas
           </CardTitle>
         </CardHeader>
@@ -363,35 +363,35 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-yellow-600" />
+            <AlertTriangle className="h-5 w-5 text-[hsl(var(--warning))]" />
             Resolución de Problemas Comunes
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-red-600">❌ No aparece la opción &quot;Criterios de Calificación&quot;</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ No aparece la opción &quot;Criterios de Calificación&quot;</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Verificar que el usuario tenga rol SUPER_ADMIN, ADMIN_IGLESIA o PASTOR
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold text-red-600">❌ Los pesos de IA no suman 100%</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Los pesos de IA no suman 100%</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Ajustar sliders hasta que la suma sea exactamente 1.00 (100%). El sistema muestra alerta en tiempo real.
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold text-red-600">❌ Los smart lists no se actualizan</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Los smart lists no se actualizan</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Refrescar la página de Miembros. Los contadores se actualizan automáticamente al guardar cambios.
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold text-red-600">❌ Error al guardar configuración</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Error al guardar configuración</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Verificar conexión de red y que todos los campos estén dentro de rangos válidos (0-100 para porcentajes, positivos para días).
               </p>
@@ -404,14 +404,14 @@ export default function QualificationSettingsManual() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Lightbulb className="h-5 w-5 text-yellow-600" />
+            <Lightbulb className="h-5 w-5 text-[hsl(var(--warning))]" />
             Mejores Prácticas para Administradores
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <h4 className="font-semibold text-green-600">✅ Recomendaciones</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))]">✅ Recomendaciones</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Iniciar con configuración conservadora y ajustar gradualmente</li>
                 <li>• Documentar cambios con fecha y razón</li>
@@ -422,7 +422,7 @@ export default function QualificationSettingsManual() {
               </ul>
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold text-red-600">❌ Evitar</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Evitar</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Cambios frecuentes sin análisis de impacto</li>
                 <li>• Criterios extremadamente restrictivos desde el inicio</li>

@@ -258,7 +258,7 @@ export function TemplateDetailModal({
             {/* Trigger */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Zap className="h-5 w-5 text-yellow-500" />
+                <Zap className="h-5 w-5 text-[hsl(var(--warning))]" />
                 <h3 className="font-semibold">Disparador</h3>
               </div>
               <div className="rounded-lg border p-4 bg-muted/50">
@@ -280,7 +280,7 @@ export function TemplateDetailModal({
               <>
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <AlertTriangle className="h-5 w-5 text-orange-500" />
+                    <AlertTriangle className="h-5 w-5 text-[hsl(var(--warning))]" />
                     <h3 className="font-semibold">Condiciones</h3>
                   </div>
                   <div className="space-y-2">
@@ -305,7 +305,7 @@ export function TemplateDetailModal({
             {/* Actions */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <CheckCircle2 className="h-5 w-5 text-green-500" />
+                <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
                 <h3 className="font-semibold">Acciones</h3>
               </div>
               <div className="space-y-3">

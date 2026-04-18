@@ -277,7 +277,7 @@ export default function BusinessIntelligenceClient() {
     
     const isPositive = trendDirection === 'UP';
     const icon = isPositive ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />;
-    const colorClass = isPositive ? 'text-green-600' : 'text-red-600';
+    const colorClass = isPositive ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--destructive))]';
     
     return (
       <div className={`flex items-center gap-1 text-xs ${colorClass}`}>
@@ -304,21 +304,21 @@ export default function BusinessIntelligenceClient() {
           <div className="space-y-2">
             <div className="text-2xl font-bold">
               {metric.unit === '$' ? formatCurrency(metric.currentValue) : metric.currentValue}
-              {metric.unit && metric.unit !== '$' && <span className="text-sm text-gray-600 ml-1">{metric.unit}</span>}
+              {metric.unit && metric.unit !== '$' && <span className="text-sm text-muted-foreground ml-1">{metric.unit}</span>}
             </div>
             
             <div className="flex items-center justify-between">
-              <span className="text-xs text-gray-600 capitalize">{metric.period.toLowerCase()}</span>
+              <span className="text-xs text-muted-foreground capitalize">{metric.period.toLowerCase()}</span>
               {formatGrowth(metric.changePercent, metric.trendDirection)}
             </div>
             
             {metric.target && (
               <div className="mt-3">
-                <div className="flex justify-between text-xs text-gray-600 mb-1">
+                <div className="flex justify-between text-xs text-muted-foreground mb-1">
                   <span>Progreso de Meta</span>
                   <span>{Math.round(progressPercentage)}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-muted rounded-full h-2">
                   <div
                     className={`bg-${metric.color}-500 h-2 rounded-full transition-all duration-300`}
                     style={{ width: `${Math.min(progressPercentage, 100)}%` }}
@@ -348,8 +348,8 @@ export default function BusinessIntelligenceClient() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Perspectivas Pastorales</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-foreground">Perspectivas Pastorales</h1>
+          <p className="text-muted-foreground mt-2">
             Inteligencia ministerial avanzada y perspectivas estratégicas para el crecimiento espiritual y organizacional
           </p>
         </div>
@@ -458,8 +458,8 @@ export default function BusinessIntelligenceClient() {
       </div>
 
       {error && (
-        <Alert className="border-red-200 bg-red-50">
-          <AlertDescription className="text-red-800">{error}</AlertDescription>
+        <Alert className="border-[hsl(var(--destructive)/0.3)] bg-[hsl(var(--destructive)/0.10)]">
+          <AlertDescription className="text-[hsl(var(--destructive))]">{error}</AlertDescription>
         </Alert>
       )}
 
@@ -479,7 +479,7 @@ export default function BusinessIntelligenceClient() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-green-600" />
+              <DollarSign className="h-5 w-5 text-[hsl(var(--success))]" />
               Tendencias de Donaciones
             </CardTitle>
           </CardHeader>
@@ -506,7 +506,7 @@ export default function BusinessIntelligenceClient() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-blue-600" />
+              <Users className="h-5 w-5 text-[hsl(var(--info))]" />
               Distribución de Membresía
             </CardTitle>
           </CardHeader>
@@ -536,7 +536,7 @@ export default function BusinessIntelligenceClient() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-purple-600" />
+              <Calendar className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Asistencia a Eventos
             </CardTitle>
           </CardHeader>
@@ -558,34 +558,34 @@ export default function BusinessIntelligenceClient() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-emerald-600" />
+              <TrendingUp className="h-5 w-5 text-[hsl(var(--success))]" />
               Métricas de Crecimiento
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <div>
-                  <p className="text-sm text-green-800 font-medium">Crecimiento de Donaciones</p>
-                  <p className="text-2xl font-bold text-green-900">+15.3%</p>
+                  <p className="text-sm text-[hsl(var(--success))] font-medium">Crecimiento de Donaciones</p>
+                  <p className="text-2xl font-bold text-foreground">+15.3%</p>
                 </div>
-                <TrendingUp className="h-8 w-8 text-green-600" />
+                <TrendingUp className="h-8 w-8 text-[hsl(var(--success))]" />
               </div>
               
-              <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <div>
-                  <p className="text-sm text-blue-800 font-medium">Crecimiento de Miembros</p>
-                  <p className="text-2xl font-bold text-blue-900">+8.7%</p>
+                  <p className="text-sm text-[hsl(var(--info))] font-medium">Crecimiento de Miembros</p>
+                  <p className="text-2xl font-bold text-foreground">+8.7%</p>
                 </div>
-                <Users className="h-8 w-8 text-blue-600" />
+                <Users className="h-8 w-8 text-[hsl(var(--info))]" />
               </div>
               
-              <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <div>
-                  <p className="text-sm text-purple-800 font-medium">Asistencia a Eventos</p>
-                  <p className="text-2xl font-bold text-purple-900">+22.1%</p>
+                  <p className="text-sm text-[hsl(var(--lavender))] font-medium">Asistencia a Eventos</p>
+                  <p className="text-2xl font-bold text-foreground">+22.1%</p>
                 </div>
-                <Calendar className="h-8 w-8 text-purple-600" />
+                <Calendar className="h-8 w-8 text-[hsl(var(--lavender))]" />
               </div>
             </div>
           </CardContent>
@@ -595,9 +595,9 @@ export default function BusinessIntelligenceClient() {
       {/* Empty State for New Users */}
       {kpiMetrics.length === 0 && !loading && (
         <div className="text-center py-12">
-          <LayoutDashboard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No hay métricas KPI configuradas</h3>
-          <p className="text-gray-600 mb-4">
+          <LayoutDashboard className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-foreground mb-2">No hay métricas KPI configuradas</h3>
+          <p className="text-muted-foreground mb-4">
             Crea tus primeras métricas KPI para comenzar a rastrear indicadores clave de rendimiento.
           </p>
           <Button>

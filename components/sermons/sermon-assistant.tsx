@@ -569,20 +569,20 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
             Asistente de Sermones Reformado con IA - 100% Gratis
           </CardTitle>
           <div className="flex items-center gap-2 mt-2">
-            <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-300">
+            <Badge variant="outline" className="text-xs bg-[hsl(var(--success)/0.10)] text-[hsl(var(--success))] border-[hsl(var(--success)/0.4)]">
               <Lightbulb className="h-3 w-3 mr-1" />
               Teología del Pacto
             </Badge>
-            <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-300">
+            <Badge variant="outline" className="text-xs bg-[hsl(var(--info)/0.10)] text-[hsl(var(--info))] border-[hsl(var(--info)/0.4)]">
               🆓 APIs Bíblicas Gratuitas
             </Badge>
-            <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+            <Badge variant="outline" className="text-xs bg-[hsl(var(--lavender)/0.10)] text-[hsl(var(--lavender))] border-[hsl(var(--lavender)/0.4)]">
               66 Libros • 31,000+ Versículos
             </Badge>
-            <Badge variant="outline" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-300">
+            <Badge variant="outline" className="text-xs bg-[hsl(var(--success)/0.08)] text-[hsl(var(--success))] border-[hsl(var(--success)/0.30)]">
               15+ Versiones Gratuitas
             </Badge>
-            <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700 border-orange-300">
+            <Badge variant="outline" className="text-xs bg-[hsl(var(--warning)/0.10)] text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.30)]">
               📄 5 Formatos de Descarga
             </Badge>
           </div>
@@ -893,16 +893,16 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                       Comparación de Versiones Bíblicas - 100% Gratuito
                     </CardTitle>
                     <div className="flex items-center gap-2 mt-2">
-                      <Badge variant="secondary" className="text-xs bg-green-50 text-green-700 border-green-300">
+                      <Badge variant="secondary" className="text-xs bg-[hsl(var(--success)/0.10)] text-[hsl(var(--success))] border-[hsl(var(--success)/0.4)]">
                         🆓 100% Gratis
                       </Badge>
-                      <Badge variant="secondary" className="text-xs bg-blue-50 text-blue-700 border-blue-300">
+                      <Badge variant="secondary" className="text-xs bg-[hsl(var(--info)/0.10)] text-[hsl(var(--info))] border-[hsl(var(--info)/0.4)]">
                         15+ Versiones
                       </Badge>
-                      <Badge variant="secondary" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                      <Badge variant="secondary" className="text-xs bg-[hsl(var(--lavender)/0.10)] text-[hsl(var(--lavender))] border-[hsl(var(--lavender)/0.4)]">
                         Referencias Cruzadas IA
                       </Badge>
-                      <Badge variant="secondary" className="text-xs bg-orange-50 text-orange-700 border-orange-300">
+                      <Badge variant="secondary" className="text-xs bg-[hsl(var(--warning)/0.10)] text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.30)]">
                         Sin Límites
                       </Badge>
                     </div>
@@ -913,116 +913,116 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                 </Card>
 
                 {/* Feature Overview */}
-                <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+                <Card className="bg-[hsl(var(--success)/0.10)] border-[hsl(var(--success)/0.3)]">
                   <CardContent className="py-6">
                     <div className="text-center mb-6">
-                      <GitCompare className="h-12 w-12 mx-auto text-green-600 mb-4" />
-                      <h3 className="text-xl font-semibold mb-2 text-green-800">Herramientas Bíblicas Completamente Gratuitas</h3>
-                      <p className="text-green-600">
+                      <GitCompare className="h-12 w-12 mx-auto text-[hsl(var(--success))] mb-4" />
+                      <h3 className="text-xl font-semibold mb-2 text-[hsl(var(--success))]">Herramientas Bíblicas Completamente Gratuitas</h3>
+                      <p className="text-[hsl(var(--success))]">
                         Todo lo que necesitas para preparar sermones poderosos, sin costo alguno
                       </p>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-3">
-                        <h4 className="font-semibold text-green-700 flex items-center gap-2">
+                        <h4 className="font-semibold text-[hsl(var(--success))] flex items-center gap-2">
                           ✅ Características Incluidas
                         </h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                             <span>15+ versiones bíblicas gratuitas</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                             <span>Comparación lado a lado</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                             <span>Referencias cruzadas con IA</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                             <span>Búsqueda por temas</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                             <span>Sin límites de uso</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                             <span>66 libros bíblicos completos</span>
                           </div>
                         </div>
                       </div>
                       
                       <div className="space-y-3">
-                        <h4 className="font-semibold text-blue-700 flex items-center gap-2">
+                        <h4 className="font-semibold text-[hsl(var(--info))] flex items-center gap-2">
                           🔄 APIs Gratuitas
                         </h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--info))] rounded-full"></span>
                             <span>Bible-API.com</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--info))] rounded-full"></span>
                             <span>GetBible.net</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--info))] rounded-full"></span>
                             <span>ESV API (5000/día gratis)</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--info))] rounded-full"></span>
                             <span>Bible Gateway público</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--info))] rounded-full"></span>
                             <span>Múltiples fuentes respaldo</span>
                           </div>
                         </div>
                       </div>
 
                       <div className="space-y-3">
-                        <h4 className="font-semibold text-purple-700 flex items-center gap-2">
+                        <h4 className="font-semibold text-[hsl(var(--lavender))] flex items-center gap-2">
                           📚 Versiones Disponibles
                         </h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--lavender))] rounded-full"></span>
                             <span>Reina-Valera 1960</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--lavender))] rounded-full"></span>
                             <span>Nueva Versión Internacional</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--lavender))] rounded-full"></span>
                             <span>Traducción en Lenguaje Actual</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--lavender))] rounded-full"></span>
                             <span>King James Version</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--lavender))] rounded-full"></span>
                             <span>English Standard Version</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 bg-purple-600 rounded-full"></span>
+                            <span className="w-2 h-2 bg-[hsl(var(--lavender))] rounded-full"></span>
                             <span>+ 10 versiones más</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-6 p-4 bg-white rounded-lg border border-green-200">
+                    <div className="mt-6 p-4 bg-white rounded-lg border border-[hsl(var(--success)/0.3)]">
                       <div className="text-center">
-                        <p className="text-sm text-green-700 mb-2">
+                        <p className="text-sm text-[hsl(var(--success))] mb-2">
                           <strong>🎯 RESULTADO:</strong> Herramientas 100% gratuitas que eliminan la necesidad de suscripciones premium
                         </p>
-                        <p className="text-xs text-green-600">
+                        <p className="text-xs text-[hsl(var(--success))]">
                           Usa estas herramientas para encontrar versículos, compararlos y obtener referencias. 
                           Los resultados se copian directamente al generador de sermones.
                         </p>

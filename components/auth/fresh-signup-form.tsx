@@ -213,12 +213,12 @@ export default function FreshSignupForm() {
   const selectedPlan = subscriptionPlans.find(plan => plan.name === registrationData.subscriptionPlan)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4" data-fresh-registration="true">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4" data-fresh-registration="true">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-2">
-            <Church className="h-8 w-8 text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900">Kḥesed-tek</h1>
+            <Church className="h-8 w-8 text-[hsl(var(--info))]" />
+            <h1 className="text-2xl font-bold text-foreground">Kḥesed-tek</h1>
           </div>
         </div>
         
@@ -232,7 +232,7 @@ export default function FreshSignupForm() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded">
+                <div className="p-3 text-sm text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded">
                   {error}
                 </div>
               )}
@@ -254,10 +254,10 @@ export default function FreshSignupForm() {
                   data-1p-ignore="true"
                   data-form-type="other"
                   data-autocomplete-type="disabled"
-                  className={validationErrors['churchName'] ? 'border-red-500' : ''}
+                  className={validationErrors['churchName'] ? 'border-[hsl(var(--destructive))]' : ''}
                 />
                 {validationErrors['churchName'] && (
-                  <p className="text-sm text-red-500">El nombre de la iglesia es requerido</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">El nombre de la iglesia es requerido</p>
                 )}
               </div>
 
@@ -279,10 +279,10 @@ export default function FreshSignupForm() {
                     data-1p-ignore="true"
                     data-form-type="other"
                     data-autocomplete-type="disabled"
-                    className={validationErrors['firstName'] ? 'border-red-500' : ''}
+                    className={validationErrors['firstName'] ? 'border-[hsl(var(--destructive))]' : ''}
                   />
                   {validationErrors['firstName'] && (
-                    <p className="text-sm text-red-500">El nombre es requerido</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">El nombre es requerido</p>
                   )}
                 </div>
                 
@@ -303,10 +303,10 @@ export default function FreshSignupForm() {
                     data-1p-ignore="true"
                     data-form-type="other"
                     data-autocomplete-type="disabled"
-                    className={validationErrors['lastName'] ? 'border-red-500' : ''}
+                    className={validationErrors['lastName'] ? 'border-[hsl(var(--destructive))]' : ''}
                   />
                   {validationErrors['lastName'] && (
-                    <p className="text-sm text-red-500">El apellido es requerido</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">El apellido es requerido</p>
                   )}
                 </div>
               </div>
@@ -329,10 +329,10 @@ export default function FreshSignupForm() {
                   data-1p-ignore="true"
                   data-form-type="other"
                   data-autocomplete-type="disabled"
-                  className={validationErrors['email'] ? 'border-red-500' : ''}
+                  className={validationErrors['email'] ? 'border-[hsl(var(--destructive))]' : ''}
                 />
                 {validationErrors['email'] && (
-                  <p className="text-sm text-red-500">Email válido es requerido</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">Email válido es requerido</p>
                 )}
               </div>
               
@@ -355,7 +355,7 @@ export default function FreshSignupForm() {
                     data-1p-ignore="true"
                     data-form-type="other"
                     data-autocomplete-type="disabled"
-                    className={validationErrors['password'] ? 'border-red-500' : ''}
+                    className={validationErrors['password'] ? 'border-[hsl(var(--destructive))]' : ''}
                   />
                   <Button
                     type="button"
@@ -368,7 +368,7 @@ export default function FreshSignupForm() {
                   </Button>
                 </div>
                 {validationErrors['password'] && (
-                  <p className="text-sm text-red-500">Contraseña de mínimo 8 caracteres requerida</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">Contraseña de mínimo 8 caracteres requerida</p>
                 )}
               </div>
               
@@ -391,7 +391,7 @@ export default function FreshSignupForm() {
                     data-1p-ignore="true"
                     data-form-type="other"
                     data-autocomplete-type="disabled"
-                    className={validationErrors['confirmPassword'] ? 'border-red-500' : ''}
+                    className={validationErrors['confirmPassword'] ? 'border-[hsl(var(--destructive))]' : ''}
                   />
                   <Button
                     type="button"
@@ -404,7 +404,7 @@ export default function FreshSignupForm() {
                   </Button>
                 </div>
                 {validationErrors['confirmPassword'] && (
-                  <p className="text-sm text-red-500">Las contraseñas no coinciden</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">Las contraseñas no coinciden</p>
                 )}
               </div>
 
@@ -413,7 +413,7 @@ export default function FreshSignupForm() {
                 {plansLoading ? (
                   <div className="flex items-center justify-center p-4">
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    <span className="text-sm text-gray-500">Cargando planes...</span>
+                    <span className="text-sm text-muted-foreground">Cargando planes...</span>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -434,11 +434,11 @@ export default function FreshSignupForm() {
                                 <IconComponent className="h-4 w-4" />
                                 <div>
                                   <span className="font-medium">{plan.displayName}</span>
-                                  <span className="text-sm text-gray-500 ml-2">
+                                  <span className="text-sm text-muted-foreground ml-2">
                                     {isCustomPlan ? 'Cotización personalizada' : `${plan.priceMonthly}/mes`}
                                   </span>
                                   {plan.name === 'MEDIANA' && (
-                                    <Badge variant="secondary" className="ml-2 text-xs bg-blue-100 text-blue-800">Más popular</Badge>
+                                    <Badge variant="secondary" className="ml-2 text-xs bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]">Más popular</Badge>
                                   )}
                                 </div>
                               </div>
@@ -449,34 +449,34 @@ export default function FreshSignupForm() {
                     </Select>
 
                     {selectedPlan && (
-                      <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="p-3 bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg">
                         <div className="flex items-start gap-3">
-                          <div className="p-2 bg-blue-100 rounded-lg">
+                          <div className="p-2 bg-[hsl(var(--info)/0.15)] rounded-lg">
                             {(() => {
                               const IconComponent = PLAN_ICONS[selectedPlan.name as keyof typeof PLAN_ICONS] || Crown
-                              return <IconComponent className="h-5 w-5 text-blue-600" />
+                              return <IconComponent className="h-5 w-5 text-[hsl(var(--info))]" />
                             })()}
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-1">
-                              <h3 className="font-semibold text-blue-900">
+                              <h3 className="font-semibold text-foreground">
                                 {selectedPlan.displayName}
                                 {selectedPlan.name === 'MEDIANA' && (
-                                  <Badge variant="secondary" className="ml-2 text-xs bg-gradient-to-r from-blue-500 to-purple-500 text-white">Más popular</Badge>
+                                  <Badge variant="secondary" className="ml-2 text-xs btn-cta-gradient text-white">Más popular</Badge>
                                 )}
                               </h3>
                               <div className="text-right">
                                 {selectedPlan.priceMonthly.toLowerCase().includes('personalizado') ? (
-                                  <div className="text-lg font-bold text-blue-600">
+                                  <div className="text-lg font-bold text-[hsl(var(--info))]">
                                     Cotización personalizada
                                   </div>
                                 ) : (
                                   <>
-                                    <div className="text-lg font-bold text-blue-600">
+                                    <div className="text-lg font-bold text-[hsl(var(--info))]">
                                       {selectedPlan.priceMonthly}/mes
                                     </div>
                                     {selectedPlan.priceYearly && (
-                                      <div className="text-sm text-blue-500 whitespace-nowrap">
+                                      <div className="text-sm text-[hsl(var(--info))] whitespace-nowrap">
                                         {selectedPlan.priceYearly}/año
                                       </div>
                                     )}
@@ -484,8 +484,8 @@ export default function FreshSignupForm() {
                                 )}
                               </div>
                             </div>
-                            <p className="text-sm text-blue-700 mb-3">{selectedPlan.description}</p>
-                            <div className="flex items-center gap-4 text-sm text-blue-600">
+                            <p className="text-sm text-[hsl(var(--info))] mb-3">{selectedPlan.description}</p>
+                            <div className="flex items-center gap-4 text-sm text-[hsl(var(--info))]">
                               <div className="flex items-center gap-1">
                                 <Building className="h-4 w-4" />
                                 <span>
@@ -510,7 +510,7 @@ export default function FreshSignupForm() {
                       </div>
                     )}
 
-                    <div className="text-xs text-gray-500 bg-yellow-50 p-2 rounded border border-yellow-200">
+                    <div className="text-xs text-muted-foreground bg-[hsl(var(--warning)/0.10)] p-2 rounded border border-[hsl(var(--warning)/0.3)]">
                       ⭐ Todos los planes incluyen 14 días de prueba gratuita<br />
                       💰 Precios en USD - Facturación manual por administrador
                     </div>
@@ -538,9 +538,9 @@ export default function FreshSignupForm() {
               </Button>
 
               <div className="text-center">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   ¿Ya tienes una cuenta?{' '}
-                  <Link href="/auth/signin" className="text-blue-600 hover:underline">
+                  <Link href="/auth/signin" className="text-[hsl(var(--info))] hover:underline">
                     Inicia sesión aquí
                   </Link>
                 </p>

@@ -67,7 +67,7 @@ export default function VolunteersManualPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <UserPlus className="h-5 w-5 text-green-600" />
+            <UserPlus className="h-5 w-5 text-[hsl(var(--success))]" />
             Fase 1: Identificación y Reclutamiento de Miembros
           </CardTitle>
         </CardHeader>
@@ -142,7 +142,7 @@ export default function VolunteersManualPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-blue-600" />
+            <Settings className="h-5 w-5 text-[hsl(var(--info))]" />
             Fase 2: Sistema de Gestión de Voluntarios
           </CardTitle>
           <CardDescription>
@@ -222,7 +222,7 @@ export default function VolunteersManualPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-emerald-600" />
+            <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />
             Flujo de Trabajo Recomendado
           </CardTitle>
         </CardHeader>
@@ -271,14 +271,14 @@ export default function VolunteersManualPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-purple-600" />
+            <Settings className="h-5 w-5 text-[hsl(var(--lavender))]" />
             Personalización de Criterios y Evaluaciones Integrales
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-purple-600">🔧 Criterios Personalizables</h4>
+              <h4 className="font-semibold text-[hsl(var(--lavender))]">🔧 Criterios Personalizables</h4>
               <p className="text-sm text-muted-foreground mb-2">
                 Configura criterios específicos para tu iglesia en: <strong>Configuración → Criterios de Calificación</strong>
               </p>
@@ -290,7 +290,7 @@ export default function VolunteersManualPage() {
             </div>
             
             <div>
-              <h4 className="font-semibold text-blue-600">🧠 Evaluación Espiritual Integral</h4>
+              <h4 className="font-semibold text-[hsl(var(--info))]">🧠 Evaluación Espiritual Integral</h4>
               <p className="text-sm text-muted-foreground mb-2">
                 Nueva evaluación de 4 pasos que incluye:
               </p>
@@ -303,7 +303,7 @@ export default function VolunteersManualPage() {
             </div>
 
             <div>
-              <h4 className="font-semibold text-emerald-600">📊 Puntuaciones Automáticas</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))]">📊 Puntuaciones Automáticas</h4>
               <p className="text-sm text-muted-foreground mb-2">
                 El sistema ahora calcula automáticamente:
               </p>
@@ -321,14 +321,14 @@ export default function VolunteersManualPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Lightbulb className="h-5 w-5 text-yellow-600" />
+            <Lightbulb className="h-5 w-5 text-[hsl(var(--warning))]" />
             Mejores Prácticas (Actualizado)
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <h4 className="font-semibold text-green-600">✅ Haz Esto</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))]">✅ Haz Esto</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Configura criterios personalizados para tu contexto</li>
                 <li>• Completa evaluaciones espirituales integrales</li>
@@ -339,7 +339,7 @@ export default function VolunteersManualPage() {
               </ul>
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold text-red-600">❌ Evita Esto</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Evita Esto</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Usar criterios predeterminados sin personalizar</li>
                 <li>• Saltarse las evaluaciones espirituales</li>

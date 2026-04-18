@@ -55,17 +55,17 @@ const NOTIFICATION_ICONS = {
 }
 
 const NOTIFICATION_COLORS = {
-  INFO: 'text-blue-500',
-  SUCCESS: 'text-green-500',
-  WARNING: 'text-yellow-500',
-  ERROR: 'text-red-500',
+  INFO: 'text-[hsl(var(--info))]',
+  SUCCESS: 'text-[hsl(var(--success))]',
+  WARNING: 'text-[hsl(var(--warning))]',
+  ERROR: 'text-[hsl(var(--destructive))]',
 }
 
 const PRIORITY_COLORS = {
-  LOW: 'text-gray-500',
-  NORMAL: 'text-blue-500',
-  HIGH: 'text-orange-500',
-  URGENT: 'text-red-500',
+  LOW: 'text-muted-foreground',
+  NORMAL: 'text-[hsl(var(--info))]',
+  HIGH: 'text-[hsl(var(--warning))]',
+  URGENT: 'text-[hsl(var(--destructive))]',
 }
 
 export function NotificationList({

@@ -35,21 +35,21 @@ export default function SubscriptionManual() {
               Esta guía cubre todo lo relacionado con la gestión de su suscripción, planes, complementos y facturación.
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📋 Secciones</h4>
-                <p className="text-xl font-bold text-purple-600">5</p>
+                <p className="text-xl font-bold text-[hsl(var(--lavender))]">5</p>
               </div>
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⏱️ Tiempo</h4>
-                <p className="text-xl font-bold text-blue-600">15 min</p>
+                <p className="text-xl font-bold text-[hsl(var(--info))]">15 min</p>
               </div>
-              <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🎯 Nivel</h4>
-                <p className="text-lg font-bold text-green-600">Básico</p>
+                <p className="text-lg font-bold text-[hsl(var(--success))]">Básico</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
                 <h4 className="font-semibold">👤 Rol Mínimo</h4>
-                <p className="text-lg font-bold text-orange-600">ADMIN</p>
+                <p className="text-lg font-bold text-[hsl(var(--warning))]">ADMIN</p>
               </div>
             </div>
           </CardContent>
@@ -59,7 +59,7 @@ export default function SubscriptionManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               Planes Disponibles
             </CardTitle>
           </CardHeader>
@@ -87,11 +87,11 @@ export default function SubscriptionManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-purple-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">✨ Características por Plan</h4>
                 <div className="text-sm space-y-3">
                   <div>
-                    <p className="font-semibold text-gray-600">📦 BÁSICO - Iglesia Pequeña</p>
+                    <p className="font-semibold text-muted-foreground">📦 BÁSICO - Iglesia Pequeña</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
                       <li>• Gestión básica de miembros</li>
                       <li>• Donaciones manuales</li>
@@ -101,7 +101,7 @@ export default function SubscriptionManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold text-blue-600">🚀 PROFESIONAL - Iglesia Mediana - Recomendado</p>
+                    <p className="font-semibold text-[hsl(var(--info))]">🚀 PROFESIONAL - Iglesia Mediana - Recomendado</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
                       <li>• Todas las funciones básicas</li>
                       <li>• Analytics avanzados</li>
@@ -111,7 +111,7 @@ export default function SubscriptionManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold text-green-600">💼 EMPRESARIAL - Iglesia Grande</p>
+                    <p className="font-semibold text-[hsl(var(--success))]">💼 EMPRESARIAL - Iglesia Grande</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
                       <li>• Todas las funciones profesionales</li>
                       <li>• API personalizada</li>
@@ -130,7 +130,7 @@ export default function SubscriptionManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Complementos Adicionales
             </CardTitle>
           </CardHeader>
@@ -180,7 +180,7 @@ export default function SubscriptionManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               Facturación y Pagos
             </CardTitle>
           </CardHeader>
@@ -205,7 +205,7 @@ export default function SubscriptionManual() {
                   <p><strong>3.4.</strong> Configure alertas de pago</p>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📅 Ciclo de Facturación</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Facturación mensual:</strong> Mismo día cada mes</li>
@@ -213,7 +213,7 @@ export default function SubscriptionManual() {
                   <li>• <strong>Período de gracia:</strong> 7 días después de vencimiento</li>
                   <li>• <strong>Suspensión:</strong> Después de 15 días sin pago</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-green-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Active recordatorios por email 3 días antes</p>
                 </div>
               </div>
@@ -225,7 +225,7 @@ export default function SubscriptionManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+              <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               Límites de Uso y Monitoreo
             </CardTitle>
           </CardHeader>
@@ -251,7 +251,7 @@ export default function SubscriptionManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-orange-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">⚠️ Límites Importantes</h4>
                 <div className="text-sm space-y-2">
                   <div className="space-y-2">
@@ -278,7 +278,7 @@ export default function SubscriptionManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+              <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
               Soporte Técnico
             </CardTitle>
           </CardHeader>

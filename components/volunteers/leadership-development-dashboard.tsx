@@ -148,10 +148,10 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
 
   const getPotentialColor = (potential: string) => {
     switch (potential) {
-      case 'HIGH': return 'bg-green-500'
-      case 'MEDIUM': return 'bg-blue-500'
-      case 'EMERGING': return 'bg-yellow-500'
-      case 'LOW': return 'bg-gray-500'
+      case 'HIGH': return 'bg-[hsl(var(--success)/0.10)]0'
+      case 'MEDIUM': return 'bg-[hsl(var(--info)/0.10)]0'
+      case 'EMERGING': return 'bg-[hsl(var(--warning)/0.10)]0'
+      case 'LOW': return 'bg-muted/300'
       default: return 'bg-gray-400'
     }
   }
@@ -168,11 +168,11 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
 
   const getReadinessIcon = (readiness: string) => {
     switch (readiness) {
-      case 'READY_NOW': return <CheckCircle className="h-4 w-4 text-green-500" />
-      case 'READY_6_MONTHS': return <Clock className="h-4 w-4 text-blue-500" />
-      case 'READY_1_YEAR': return <Calendar className="h-4 w-4 text-yellow-500" />
-      case 'NEEDS_DEVELOPMENT': return <BookOpen className="h-4 w-4 text-red-500" />
-      default: return <Users className="h-4 w-4 text-gray-400" />
+      case 'READY_NOW': return <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
+      case 'READY_6_MONTHS': return <Clock className="h-4 w-4 text-[hsl(var(--info))]" />
+      case 'READY_1_YEAR': return <Calendar className="h-4 w-4 text-[hsl(var(--warning))]" />
+      case 'NEEDS_DEVELOPMENT': return <BookOpen className="h-4 w-4 text-[hsl(var(--destructive))]" />
+      default: return <Users className="h-4 w-4 text-muted-foreground/70" />
     }
   }
 
@@ -192,7 +192,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Crown className="h-6 w-6 text-yellow-600" />
+            <Crown className="h-6 w-6 text-[hsl(var(--warning))]" />
             Desarrollo de Liderazgo e IA Predictiva
           </h2>
           <p className="text-muted-foreground">
@@ -202,7 +202,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
         <Button 
           onClick={runLeadershipAnalysis}
           disabled={loading}
-          className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
+          className="bg-gradient-to-r from-[hsl(var(--warning))] to-[hsl(var(--warning))] hover:from-[hsl(var(--warning))] hover:to-[hsl(var(--warning))]"
         >
           {loading ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -219,7 +219,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4 text-blue-500" />
+                <Users className="h-4 w-4 text-[hsl(var(--info))]" />
                 <div>
                   <p className="text-2xl font-bold">{developmentMetrics.totalMembers}</p>
                   <p className="text-xs text-muted-foreground">Total Miembros</p>
@@ -230,7 +230,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Star className="h-4 w-4 text-yellow-500" />
+                <Star className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">{developmentMetrics.potentialLeaders}</p>
                   <p className="text-xs text-muted-foreground">Potenciales</p>
@@ -241,7 +241,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Crown className="h-4 w-4 text-orange-500" />
+                <Crown className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">{developmentMetrics.currentLeaders}</p>
                   <p className="text-xs text-muted-foreground">Líderes Actuales</p>
@@ -252,7 +252,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <TrendingUp className="h-4 w-4 text-green-500" />
+                <TrendingUp className="h-4 w-4 text-[hsl(var(--success))]" />
                 <div>
                   <p className="text-2xl font-bold">{developmentMetrics.leadershipPipeline}</p>
                   <p className="text-xs text-muted-foreground">En Pipeline</p>
@@ -263,7 +263,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <BarChart3 className="h-4 w-4 text-purple-500" />
+                <BarChart3 className="h-4 w-4 text-[hsl(var(--lavender))]" />
                 <div>
                   <p className="text-2xl font-bold">{developmentMetrics.leadershipRatio}%</p>
                   <p className="text-xs text-muted-foreground">Ratio Liderazgo</p>
@@ -274,7 +274,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Target className="h-4 w-4 text-red-500" />
+                <Target className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 <div>
                   <p className="text-2xl font-bold">{developmentMetrics.developmentOpportunity}%</p>
                   <p className="text-xs text-muted-foreground">Oportunidad</p>
@@ -314,31 +314,31 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                     
                     <div className="grid grid-cols-2 gap-4 text-center">
                       <div>
-                        <p className="text-2xl font-bold text-green-600">{summary.readyNow}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--success))]">{summary.readyNow}</p>
                         <p className="text-xs text-muted-foreground">Listos Ahora</p>
                       </div>
                       <div>
-                        <p className="text-2xl font-bold text-blue-600">{summary.ready6Months}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--info))]">{summary.ready6Months}</p>
                         <p className="text-xs text-muted-foreground">6 Meses</p>
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4 text-center">
                       <div>
-                        <p className="text-2xl font-bold text-yellow-600">{summary.highPotential}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--warning))]">{summary.highPotential}</p>
                         <p className="text-xs text-muted-foreground">Alto Potencial</p>
                       </div>
                       <div>
-                        <p className="text-2xl font-bold text-purple-600">{Math.round(summary.averageLeadershipScore)}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--lavender))]">{Math.round(summary.averageLeadershipScore)}</p>
                         <p className="text-xs text-muted-foreground">Score Promedio</p>
                       </div>
                     </div>
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <Crown className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Análisis Pendiente</h3>
-                    <p className="text-gray-600 mb-4">
+                    <Crown className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-foreground mb-2">Análisis Pendiente</h3>
+                    <p className="text-muted-foreground mb-4">
                       Ejecute el análisis para evaluar el potencial de liderazgo
                     </p>
                     <Button onClick={runLeadershipAnalysis} disabled={loading}>
@@ -501,11 +501,11 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                         {/* Strong Suits and Development Areas */}
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <h4 className="font-semibold mb-2 text-sm text-green-600">Fortalezas:</h4>
+                            <h4 className="font-semibold mb-2 text-sm text-[hsl(var(--success))]">Fortalezas:</h4>
                             <ul className="text-xs space-y-1">
                               {profile.strongSuits.slice(0, 3).map((suit, index) => (
                                 <li key={index} className="flex items-start gap-1">
-                                  <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                                  <CheckCircle className="h-3 w-3 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                                   {suit}
                                 </li>
                               ))}
@@ -513,11 +513,11 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                           </div>
                           
                           <div>
-                            <h4 className="font-semibold mb-2 text-sm text-orange-600">Desarrollo:</h4>
+                            <h4 className="font-semibold mb-2 text-sm text-[hsl(var(--warning))]">Desarrollo:</h4>
                             <ul className="text-xs space-y-1">
                               {profile.developmentAreas.slice(0, 3).map((area, index) => (
                                 <li key={index} className="flex items-start gap-1">
-                                  <Target className="h-3 w-3 text-orange-500 mt-0.5 flex-shrink-0" />
+                                  <Target className="h-3 w-3 text-[hsl(var(--warning))] mt-0.5 flex-shrink-0" />
                                   {area}
                                 </li>
                               ))}
@@ -567,7 +567,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                         )}
 
                         {/* Mentoring Capability */}
-                        <div className="flex items-center justify-between p-2 bg-blue-50 rounded-lg">
+                        <div className="flex items-center justify-between p-2 bg-[hsl(var(--info)/0.10)] rounded-lg">
                           <div>
                             <span className="text-sm font-medium">Capacidad de Mentoría:</span>
                             <div className="flex items-center gap-2 mt-1">
@@ -600,8 +600,8 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                               {profile.developmentPath.slice(0, 3).map((milestone, index) => (
                                 <div key={index} className="flex items-center gap-2 text-xs">
                                   {milestone.status === 'COMPLETED' ? 
-                                    <CheckCircle className="h-3 w-3 text-green-500" /> :
-                                    <Clock className="h-3 w-3 text-yellow-500" />
+                                    <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" /> :
+                                    <Clock className="h-3 w-3 text-[hsl(var(--warning))]" />
                                   }
                                   <span className={milestone.status === 'COMPLETED' ? 'line-through text-muted-foreground' : ''}>
                                     {milestone.title}
@@ -751,7 +751,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                       <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
                           <div className="flex items-center gap-2">
-                            <Crown className="h-4 w-4 text-yellow-500" />
+                            <Crown className="h-4 w-4 text-[hsl(var(--warning))]" />
                             <span className="font-medium">{succession.candidate}</span>
                           </div>
                           <div className="flex items-center gap-2 mt-1">
@@ -793,7 +793,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                           <Badge variant="outline">{priority.affectedCandidates} candidatos</Badge>
                           <div className="w-16 bg-muted rounded-full h-2">
                             <div 
-                              className="bg-orange-500 h-2 rounded-full" 
+                              className="bg-[hsl(var(--warning)/0.10)]0 h-2 rounded-full" 
                               style={{ 
                                 width: `${Math.min(100, (priority.affectedCandidates / Math.max(...insights.developmentPriorities.map((p: any) => p.affectedCandidates))) * 100)}%` 
                               }}
@@ -819,7 +819,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                       <div key={index} className="flex items-center justify-between p-2 bg-muted rounded-lg">
                         <div>
                           <div className="flex items-center gap-2">
-                            <UserCheck className="h-4 w-4 text-green-500" />
+                            <UserCheck className="h-4 w-4 text-[hsl(var(--success))]" />
                             <span className="font-medium">{mentor.mentorName}</span>
                           </div>
                           <div className="flex flex-wrap gap-1 mt-1">
@@ -832,7 +832,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
                         </div>
                         <div className="text-right">
                           <div className="text-sm">
-                            <span className="font-medium text-green-600">{mentor.available}</span>
+                            <span className="font-medium text-[hsl(var(--success))]">{mentor.available}</span>
                             <span className="text-muted-foreground">/{mentor.capacity} disponibles</span>
                           </div>
                           <Button size="sm" variant="outline" className="mt-1">

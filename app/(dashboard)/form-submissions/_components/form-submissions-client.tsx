@@ -200,9 +200,9 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
               <label className="text-sm font-medium text-muted-foreground">Enviado Via</label>
               <div className="flex items-center gap-2">
                 {data.submittedVia?.includes('QR') ? (
-                  <QrCode className="h-4 w-4 text-blue-500" />
+                  <QrCode className="h-4 w-4 text-[hsl(var(--info))]" />
                 ) : (
-                  <ExternalLink className="h-4 w-4 text-green-500" />
+                  <ExternalLink className="h-4 w-4 text-[hsl(var(--success))]" />
                 )}
                 <p className="text-sm">{data.submittedVia || 'Directo'}</p>
               </div>
@@ -278,7 +278,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
                 <p className="text-sm text-muted-foreground">Formularios de Visitantes</p>
                 <p className="text-2xl font-bold">{visitorSubmissions.length}</p>
               </div>
-              <Users className="h-8 w-8 text-blue-500" />
+              <Users className="h-8 w-8 text-[hsl(var(--info))]" />
             </div>
           </CardContent>
         </Card>
@@ -290,7 +290,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
                 <p className="text-sm text-muted-foreground">Formularios Personalizados</p>
                 <p className="text-2xl font-bold">{customSubmissions.length}</p>
               </div>
-              <FileText className="h-8 w-8 text-green-500" />
+              <FileText className="h-8 w-8 text-[hsl(var(--success))]" />
             </div>
           </CardContent>
         </Card>
@@ -302,7 +302,7 @@ export function FormSubmissionsClient({ userRole, churchId }: FormSubmissionsCli
                 <p className="text-sm text-muted-foreground">Total Submissions</p>
                 <p className="text-2xl font-bold">{visitorSubmissions.length + customSubmissions.length}</p>
               </div>
-              <Calendar className="h-8 w-8 text-purple-500" />
+              <Calendar className="h-8 w-8 text-[hsl(var(--lavender))]" />
             </div>
           </CardContent>
         </Card>

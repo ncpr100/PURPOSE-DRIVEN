@@ -25,10 +25,10 @@ export default function VisitorAutomationManual() {
 
       <div className="space-y-6">
         {/* Overview */}
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-blue-600" />
+              <Users className="h-5 w-5 text-[hsl(var(--info))]" />
               🎯 Seguimiento Inteligente de Visitantes
             </CardTitle>
           </CardHeader>
@@ -76,10 +76,10 @@ export default function VisitorAutomationManual() {
             </p>
 
             <div className="space-y-3">
-              <div className="p-4 border-2 border-green-200 rounded-lg bg-green-50">
+              <div className="p-4 border-2 border-[hsl(var(--success)/0.3)] rounded-lg bg-[hsl(var(--success)/0.10)]">
                 <div className="flex items-center gap-2 mb-2">
-                  <UserPlus className="h-5 w-5 text-green-600" />
-                  <h4 className="font-semibold text-green-900">FIRST_TIME - Primera Vez</h4>
+                  <UserPlus className="h-5 w-5 text-[hsl(var(--success))]" />
+                  <h4 className="font-semibold text-foreground">FIRST_TIME - Primera Vez</h4>
                 </div>
                 <div className="bg-white p-3 rounded">
                   <p className="text-sm mb-2"><strong>Criterio:</strong> 0 visitas anteriores</p>
@@ -94,10 +94,10 @@ export default function VisitorAutomationManual() {
                 </div>
               </div>
 
-              <div className="p-4 border-2 border-blue-200 rounded-lg bg-blue-50">
+              <div className="p-4 border-2 border-[hsl(var(--info)/0.3)] rounded-lg bg-[hsl(var(--info)/0.10)]">
                 <div className="flex items-center gap-2 mb-2">
-                  <Users className="h-5 w-5 text-blue-600" />
-                  <h4 className="font-semibold text-blue-900">RETURNING - Visitante Recurrente</h4>
+                  <Users className="h-5 w-5 text-[hsl(var(--info))]" />
+                  <h4 className="font-semibold text-foreground">RETURNING - Visitante Recurrente</h4>
                 </div>
                 <div className="bg-white p-3 rounded">
                   <p className="text-sm mb-2"><strong>Criterio:</strong> 1-2 visitas anteriores</p>
@@ -110,10 +110,10 @@ export default function VisitorAutomationManual() {
                 </div>
               </div>
 
-              <div className="p-4 border-2 border-purple-200 rounded-lg bg-purple-50">
+              <div className="p-4 border-2 border-[hsl(var(--lavender)/0.3)] rounded-lg bg-[hsl(var(--lavender)/0.10)]">
                 <div className="flex items-center gap-2 mb-2">
-                  <TrendingUp className="h-5 w-5 text-purple-600" />
-                  <h4 className="font-semibold text-purple-900">REGULAR - Asistente Regular</h4>
+                  <TrendingUp className="h-5 w-5 text-[hsl(var(--lavender))]" />
+                  <h4 className="font-semibold text-foreground">REGULAR - Asistente Regular</h4>
                 </div>
                 <div className="bg-white p-3 rounded">
                   <p className="text-sm mb-2"><strong>Criterio:</strong> 3+ visitas</p>
@@ -126,10 +126,10 @@ export default function VisitorAutomationManual() {
                 </div>
               </div>
 
-              <div className="p-4 border-2 border-orange-200 rounded-lg bg-orange-50">
+              <div className="p-4 border-2 border-[hsl(var(--warning)/0.3)] rounded-lg bg-[hsl(var(--warning)/0.10)]">
                 <div className="flex items-center gap-2 mb-2">
-                  <Star className="h-5 w-5 text-orange-600" />
-                  <h4 className="font-semibold text-orange-900">MEMBER_CANDIDATE - Candidato a Miembro</h4>
+                  <Star className="h-5 w-5 text-[hsl(var(--warning))]" />
+                  <h4 className="font-semibold text-[hsl(var(--warning))]">MEMBER_CANDIDATE - Candidato a Miembro</h4>
                 </div>
                 <div className="bg-white p-3 rounded">
                   <p className="text-sm mb-2"><strong>Criterio:</strong> 4+ visitas O expresó interés en membresía</p>
@@ -153,8 +153,8 @@ export default function VisitorAutomationManual() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-4">
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border">
-                <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg border">
+                <div className="bg-[hsl(var(--info))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   1
                 </div>
                 <div className="flex-1">
@@ -165,8 +165,8 @@ export default function VisitorAutomationManual() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border">
-                <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg border">
+                <div className="bg-[hsl(var(--success))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   2
                 </div>
                 <div className="flex-1">
@@ -184,8 +184,8 @@ export default function VisitorAutomationManual() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border">
-                <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg border">
+                <div className="bg-[hsl(var(--lavender))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   3
                 </div>
                 <div className="flex-1">
@@ -203,8 +203,8 @@ export default function VisitorAutomationManual() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border">
-                <div className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg border">
+                <div className="bg-[hsl(var(--warning))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   4
                 </div>
                 <div className="flex-1">
@@ -218,8 +218,8 @@ export default function VisitorAutomationManual() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-400">
-                <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--success)/0.10)] rounded-lg border-2 border-[hsl(var(--success)/0.30)]">
+                <div className="bg-[hsl(var(--success))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   5
                 </div>
                 <div className="flex-1">
@@ -240,12 +240,12 @@ export default function VisitorAutomationManual() {
             <CardTitle>📦 Plantillas de Visitantes Disponibles</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="p-4 border-2 border-green-200 rounded-lg bg-green-50">
+            <div className="p-4 border-2 border-[hsl(var(--success)/0.3)] rounded-lg bg-[hsl(var(--success)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">👋</span>
-                <h4 className="font-semibold text-green-900">Bienvenida Visitante Primera Vez</h4>
+                <h4 className="font-semibold text-foreground">Bienvenida Visitante Primera Vez</h4>
               </div>
-              <p className="text-sm text-green-800 mb-3">
+              <p className="text-sm text-[hsl(var(--success))] mb-3">
                 Secuencia completa de 5 toques para visitantes nuevos.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
@@ -262,12 +262,12 @@ export default function VisitorAutomationManual() {
               </div>
             </div>
 
-            <div className="p-4 border-2 border-blue-200 rounded-lg bg-blue-50">
+            <div className="p-4 border-2 border-[hsl(var(--info)/0.3)] rounded-lg bg-[hsl(var(--info)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">🔄</span>
-                <h4 className="font-semibold text-blue-900">Engagement Visitante Recurrente</h4>
+                <h4 className="font-semibold text-foreground">Engagement Visitante Recurrente</h4>
               </div>
-              <p className="text-sm text-blue-800 mb-3">
+              <p className="text-sm text-[hsl(var(--info))] mb-3">
                 Profundiza la relación con visitantes que regresan.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
@@ -283,12 +283,12 @@ export default function VisitorAutomationManual() {
               </div>
             </div>
 
-            <div className="p-4 border-2 border-orange-200 rounded-lg bg-orange-50">
+            <div className="p-4 border-2 border-[hsl(var(--warning)/0.3)] rounded-lg bg-[hsl(var(--warning)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">🌟</span>
-                <h4 className="font-semibold text-orange-900">Invitación a Membresía</h4>
+                <h4 className="font-semibold text-[hsl(var(--warning))]">Invitación a Membresía</h4>
               </div>
-              <p className="text-sm text-orange-800 mb-3">
+              <p className="text-sm text-[hsl(var(--warning))] mb-3">
                 Para visitantes regulares listos para dar el siguiente paso.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
@@ -304,12 +304,12 @@ export default function VisitorAutomationManual() {
               </div>
             </div>
 
-            <div className="p-4 border-2 border-red-200 rounded-lg bg-red-50">
+            <div className="p-4 border-2 border-[hsl(var(--destructive)/0.3)] rounded-lg bg-[hsl(var(--destructive)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">🚨</span>
-                <h4 className="font-semibold text-red-900">Seguimiento Urgente 24/7</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))]">Seguimiento Urgente 24/7</h4>
               </div>
-              <p className="text-sm text-red-800 mb-3">
+              <p className="text-sm text-[hsl(var(--destructive))] mb-3">
                 Para visitantes que necesitan atención pastoral inmediata.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
@@ -337,7 +337,7 @@ export default function VisitorAutomationManual() {
               Cada visitante tiene un perfil que rastrea automáticamente:
             </p>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
-              <div className="p-3 border rounded-lg bg-gray-50">
+              <div className="p-3 border rounded-lg bg-muted/30">
                 <h4 className="font-semibold mb-2">📈 Métricas de Compromiso</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• Número total de visitas</li>
@@ -347,7 +347,7 @@ export default function VisitorAutomationManual() {
                   <li>• Tendencia (aumentando/disminuyendo)</li>
                 </ul>
               </div>
-              <div className="p-3 border rounded-lg bg-gray-50">
+              <div className="p-3 border rounded-lg bg-muted/30">
                 <h4 className="font-semibold mb-2">💬 Historial de Comunicación</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• Follow-ups enviados</li>
@@ -356,7 +356,7 @@ export default function VisitorAutomationManual() {
                   <li>• Mejor hora de contacto</li>
                 </ul>
               </div>
-              <div className="p-3 border rounded-lg bg-gray-50">
+              <div className="p-3 border rounded-lg bg-muted/30">
                 <h4 className="font-semibold mb-2">🎯 Intereses y Conexiones</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• Ministerios de interés</li>
@@ -365,7 +365,7 @@ export default function VisitorAutomationManual() {
                   <li>• Staff asignado para seguimiento</li>
                 </ul>
               </div>
-              <div className="p-3 border rounded-lg bg-gray-50">
+              <div className="p-3 border rounded-lg bg-muted/30">
                 <h4 className="font-semibold mb-2">🔄 Acciones Automatizadas</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• Auto-agregado a CRM</li>
@@ -379,37 +379,37 @@ export default function VisitorAutomationManual() {
         </Card>
 
         {/* Best Practices */}
-        <Card className="border-green-200">
+        <Card className="border-[hsl(var(--success)/0.3)]">
           <CardHeader>
-            <CardTitle className="text-green-900">✨ Mejores Prácticas</CardTitle>
+            <CardTitle className="text-foreground">✨ Mejores Prácticas</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">1.</span>
+              <span className="text-[hsl(var(--success))] font-bold">1.</span>
               <p>
                 <strong>Responda rápido a visitantes nuevos:</strong> Los primeros 24-48 horas son críticos. Use bypass approval para bienvenidas inmediatas.
               </p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">2.</span>
+              <span className="text-[hsl(var(--success))] font-bold">2.</span>
               <p>
                 <strong>Personalice según la categoría:</strong> No trate a un visitante por primera vez igual que a un candidato a miembro.
               </p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">3.</span>
+              <span className="text-[hsl(var(--success))] font-bold">3.</span>
               <p>
                 <strong>Conecte con intereses:</strong> Si expresaron interés en música, conéctelos con el ministerio de música.
               </p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">4.</span>
+              <span className="text-[hsl(var(--success))] font-bold">4.</span>
               <p>
                 <strong>Escale progresivamente:</strong> Comience con mensajes automáticos, luego llamadas personales para candidatos a miembro.
               </p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">5.</span>
+              <span className="text-[hsl(var(--success))] font-bold">5.</span>
               <p>
                 <strong>Monitoree y ajuste:</strong> Revise qué plantillas tienen mejor tasa de respuesta y ajuste según los resultados.
               </p>
@@ -418,34 +418,34 @@ export default function VisitorAutomationManual() {
         </Card>
 
         {/* Quick Start */}
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
           <CardHeader>
-            <CardTitle className="text-blue-900">🚀 Inicio Rápido</CardTitle>
+            <CardTitle className="text-foreground">🚀 Inicio Rápido</CardTitle>
           </CardHeader>
           <CardContent>
             <ol className="space-y-3 text-sm">
               <li className="flex gap-2">
-                <span className="font-bold text-blue-600">1.</span>
-                <span>Vaya a <Link href="/automation-rules/templates" className="text-blue-600 underline font-semibold">Plantillas de Automatización</Link></span>
+                <span className="font-bold text-[hsl(var(--info))]">1.</span>
+                <span>Vaya a <Link href="/automation-rules/templates" className="text-[hsl(var(--info))] underline font-semibold">Plantillas de Automatización</Link></span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-blue-600">2.</span>
+                <span className="font-bold text-[hsl(var(--info))]">2.</span>
                 <span>Filtre por categoría <strong>&quot;Seguimiento de Visitantes&quot;</strong></span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-blue-600">3.</span>
+                <span className="font-bold text-[hsl(var(--info))]">3.</span>
                 <span>Active las 4 plantillas de visitantes</span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-blue-600">4.</span>
+                <span className="font-bold text-[hsl(var(--info))]">4.</span>
                 <span>Registre un visitante de prueba en Check-Ins</span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-blue-600">5.</span>
+                <span className="font-bold text-[hsl(var(--info))]">5.</span>
                 <span>Verifique que los mensajes se envíen automáticamente</span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-blue-600">6.</span>
+                <span className="font-bold text-[hsl(var(--info))]">6.</span>
                 <span>Revise el VisitorProfile creado para ver el seguimiento</span>
               </li>
             </ol>

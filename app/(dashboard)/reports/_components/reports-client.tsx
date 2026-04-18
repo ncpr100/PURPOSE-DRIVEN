@@ -36,11 +36,11 @@ interface CustomReport {
 }
 
 const REPORT_TYPES = [
-  { value: 'FINANCIAL', label: 'Financial', icon: DollarSign, color: 'bg-green-500' },
-  { value: 'MEMBER', label: 'Members', icon: Users, color: 'bg-blue-500' },
-  { value: 'EVENT', label: 'Events', icon: Calendar, color: 'bg-purple-500' },
-  { value: 'COMMUNICATION', label: 'Communications', icon: MessageSquare, color: 'bg-orange-500' },
-  { value: 'CUSTOM', label: 'Custom', icon: BarChart3, color: 'bg-gray-500' }
+  { value: 'FINANCIAL', label: 'Financial', icon: DollarSign, color: 'bg-[hsl(var(--success)/0.10)]0' },
+  { value: 'MEMBER', label: 'Members', icon: Users, color: 'bg-[hsl(var(--info)/0.10)]0' },
+  { value: 'EVENT', label: 'Events', icon: Calendar, color: 'bg-[hsl(var(--lavender)/0.10)]0' },
+  { value: 'COMMUNICATION', label: 'Communications', icon: MessageSquare, color: 'bg-[hsl(var(--warning)/0.10)]0' },
+  { value: 'CUSTOM', label: 'Custom', icon: BarChart3, color: 'bg-muted/300' }
 ];
 
 const CHART_TYPES = [
@@ -198,7 +198,7 @@ export default function ReportsClient() {
 
     switch (lastExecution.status) {
       case 'COMPLETED':
-        return <Badge variant="default" className="bg-green-500">Completed</Badge>;
+        return <Badge variant="default" className="bg-[hsl(var(--success)/0.10)]0">Completed</Badge>;
       case 'FAILED':
         return <Badge variant="destructive">Failed</Badge>;
       case 'RUNNING':
@@ -224,8 +224,8 @@ export default function ReportsClient() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Custom Reports</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-foreground">Custom Reports</h1>
+          <p className="text-muted-foreground mt-2">
             Create, manage, and execute custom reports for your church data
           </p>
         </div>
@@ -337,7 +337,7 @@ export default function ReportsClient() {
       {/* Filters */}
       <div className="flex gap-4 items-center">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
           <Input
             placeholder="Buscar reportes..."
             value={searchQuery}
@@ -376,9 +376,9 @@ export default function ReportsClient() {
       </div>
 
       {error && (
-        <Alert className="border-red-200 bg-red-50">
+        <Alert className="border-[hsl(var(--destructive)/0.3)] bg-[hsl(var(--destructive)/0.10)]">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription className="text-red-800">{error}</AlertDescription>
+          <AlertDescription className="text-[hsl(var(--destructive))]">{error}</AlertDescription>
         </Alert>
       )}
 
@@ -399,29 +399,29 @@ export default function ReportsClient() {
                   {report.name}
                 </CardTitle>
                 {report.description && (
-                  <p className="text-sm text-gray-600">{report.description}</p>
+                  <p className="text-sm text-muted-foreground">{report.description}</p>
                 )}
               </CardHeader>
               
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Type:</span>
+                    <span className="text-muted-foreground">Type:</span>
                     <Badge variant="outline">{typeInfo.label}</Badge>
                   </div>
                   
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Chart:</span>
+                    <span className="text-muted-foreground">Chart:</span>
                     <span className="font-medium">{report.chartType || 'Table'}</span>
                   </div>
                   
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Status:</span>
+                    <span className="text-muted-foreground">Status:</span>
                     {getStatusBadge(report)}
                   </div>
 
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Last Run:</span>
+                    <span className="text-muted-foreground">Last Run:</span>
                     <span className="font-medium">
                       {report.lastRunAt ? 
                         format(new Date(report.lastRunAt), 'MMM d, yyyy') : 
@@ -431,7 +431,7 @@ export default function ReportsClient() {
                   </div>
 
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Executions:</span>
+                    <span className="text-muted-foreground">Executions:</span>
                     <span className="font-medium">{report.runCount}</span>
                   </div>
 
@@ -475,9 +475,9 @@ export default function ReportsClient() {
 
       {filteredReports.length === 0 && !loading && (
         <div className="text-center py-12">
-          <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No reports found</h3>
-          <p className="text-gray-600 mb-4">
+          <FileText className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-foreground mb-2">No reports found</h3>
+          <p className="text-muted-foreground mb-4">
             {searchQuery || filterType !== 'all' 
               ? 'No reports match your current filters.' 
               : 'Get started by creating your first custom report.'

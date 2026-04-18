@@ -50,16 +50,16 @@ interface ConnectStatusDetail {
 
 function ConnectStatusBadge({ status }: { status?: string }) {
   if (!status || status === 'not_connected') {
-    return <Badge variant="outline" className="gap-1 text-gray-500"><XCircle className="h-3 w-3" />Sin conectar</Badge>
+    return <Badge variant="outline" className="gap-1 text-muted-foreground"><XCircle className="h-3 w-3" />Sin conectar</Badge>
   }
   if (status === 'pending') {
-    return <Badge variant="outline" className="gap-1 text-yellow-600 border-yellow-300 bg-yellow-50"><Clock className="h-3 w-3" />Pendiente</Badge>
+    return <Badge variant="outline" className="gap-1 text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.4)] bg-[hsl(var(--warning)/0.10)]"><Clock className="h-3 w-3" />Pendiente</Badge>
   }
   if (status === 'active') {
-    return <Badge variant="outline" className="gap-1 text-green-700 border-green-300 bg-green-50"><CheckCircle2 className="h-3 w-3" />Activo</Badge>
+    return <Badge variant="outline" className="gap-1 text-[hsl(var(--success))] border-[hsl(var(--success)/0.4)] bg-[hsl(var(--success)/0.10)]"><CheckCircle2 className="h-3 w-3" />Activo</Badge>
   }
   if (status === 'disconnected' || status === 'deauthorized') {
-    return <Badge variant="outline" className="gap-1 text-red-600 border-red-300 bg-red-50"><XCircle className="h-3 w-3" />Desconectado</Badge>
+    return <Badge variant="outline" className="gap-1 text-[hsl(var(--destructive))] border-[hsl(var(--destructive)/0.4)] bg-[hsl(var(--destructive)/0.10)]"><XCircle className="h-3 w-3" />Desconectado</Badge>
   }
   return <Badge variant="secondary">{status}</Badge>
 }
@@ -185,16 +185,16 @@ export function PlatformStripeConnect() {
   return (
     <div className="space-y-6">
       {/* Conceptual separation banner */}
-      <Card className="border-l-4 border-l-green-600 bg-green-50/40">
+      <Card className="border-l-4 border-l-green-600 bg-[hsl(var(--success)/0.10)]/40">
         <CardContent className="p-4">
           <div className="flex gap-3">
-            <ShieldCheck className="h-5 w-5 text-green-700 flex-shrink-0 mt-0.5" />
+            <ShieldCheck className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-semibold text-green-800">Separación Financiera Garantizada</p>
-              <p className="text-xs text-green-700 mt-0.5">
+              <p className="text-sm font-semibold text-[hsl(var(--success))]">Separación Financiera Garantizada</p>
+              <p className="text-xs text-[hsl(var(--success))] mt-0.5">
                 Los fondos de donaciones van <strong>directamente</strong> a la cuenta de cada iglesia.
                 La plataforma <strong>jamás toca</strong> el dinero de los tenants.
-                Los pagos de la plataforma usan la cuenta Stripe del operador (variable <code className="bg-green-100 px-1 rounded">STRIPE_SECRET_KEY</code>).
+                Los pagos de la plataforma usan la cuenta Stripe del operador (variable <code className="bg-[hsl(var(--success)/0.15)] px-1 rounded">STRIPE_SECRET_KEY</code>).
               </p>
             </div>
           </div>
@@ -205,19 +205,19 @@ export function PlatformStripeConnect() {
       <div className="grid grid-cols-3 gap-4">
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-700">{totalConnected}</div>
+            <div className="text-2xl font-bold text-[hsl(var(--success))]">{totalConnected}</div>
             <div className="text-xs text-muted-foreground mt-1">Activas</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-yellow-600">{totalPending}</div>
+            <div className="text-2xl font-bold text-[hsl(var(--warning))]">{totalPending}</div>
             <div className="text-xs text-muted-foreground mt-1">Pendientes</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-gray-500">{totalNotConnected}</div>
+            <div className="text-2xl font-bold text-muted-foreground">{totalNotConnected}</div>
             <div className="text-xs text-muted-foreground mt-1">Sin conectar</div>
           </CardContent>
         </Card>
@@ -235,16 +235,16 @@ export function PlatformStripeConnect() {
       </div>
 
       {/* How it works */}
-      <Card className="bg-blue-50/40 border-blue-200">
+      <Card className="bg-[hsl(var(--info)/0.10)]/40 border-[hsl(var(--info)/0.3)]">
         <CardContent className="p-4">
           <div className="flex gap-2 mb-2">
-            <Info className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
-            <span className="text-sm font-medium text-blue-800">Cómo funciona la separación de pagos</span>
+            <Info className="h-4 w-4 text-[hsl(var(--info))] flex-shrink-0 mt-0.5" />
+            <span className="text-sm font-medium text-[hsl(var(--info))]">Cómo funciona la separación de pagos</span>
           </div>
-          <ol className="text-xs text-blue-700 space-y-1 ml-6 list-decimal">
+          <ol className="text-xs text-[hsl(var(--info))] space-y-1 ml-6 list-decimal">
             <li>El super admin inicia la incorporación de una iglesia (botón «Incorporar»)</li>
             <li>Se abre Stripe Express Onboarding — la iglesia completa su información bancaria</li>
-            <li>Una vez activa, cada donación usa <code className="bg-blue-100 px-0.5 rounded">transfer_data.destination = churchStripeAccountId</code></li>
+            <li>Una vez activa, cada donación usa <code className="bg-[hsl(var(--info)/0.15)] px-0.5 rounded">transfer_data.destination = churchStripeAccountId</code></li>
             <li>Los fondos llegan <em>directamente</em> a la cuenta de la iglesia — sin depósito intermedio</li>
             <li>Los pagos de la plataforma (suscripciones, facturas) usan la cuenta del operador separadamente</li>
           </ol>
@@ -281,8 +281,8 @@ export function PlatformStripeConnect() {
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                     {/* Church info */}
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="w-9 h-9 rounded-lg bg-indigo-100 flex items-center justify-center flex-shrink-0">
-                        <Building2 className="h-4 w-4 text-indigo-600" />
+                      <div className="w-9 h-9 rounded-lg bg-primary/[0.12] flex items-center justify-center flex-shrink-0">
+                        <Building2 className="h-4 w-4 text-primary" />
                       </div>
                       <div className="min-w-0">
                         <p className="font-medium text-sm truncate">{church.name}</p>
@@ -290,7 +290,7 @@ export function PlatformStripeConnect() {
                           <p className="text-xs text-muted-foreground truncate">{church.email}</p>
                         )}
                         {hasAccount && (
-                          <p className="text-xs font-mono text-gray-400 truncate">
+                          <p className="text-xs font-mono text-muted-foreground/70 truncate">
                             {church.stripeConnectAccountId}
                           </p>
                         )}
@@ -301,12 +301,12 @@ export function PlatformStripeConnect() {
                     <div className="flex flex-wrap items-center gap-2">
                       <ConnectStatusBadge status={status} />
                       {detail?.chargesEnabled && (
-                        <Badge variant="outline" className="gap-1 text-green-700 text-xs">
+                        <Badge variant="outline" className="gap-1 text-[hsl(var(--success))] text-xs">
                           <CreditCard className="h-3 w-3" />Cobros activos
                         </Badge>
                       )}
                       {detail?.payoutsEnabled && (
-                        <Badge variant="outline" className="gap-1 text-blue-700 text-xs">
+                        <Badge variant="outline" className="gap-1 text-[hsl(var(--info))] text-xs">
                           <CheckCircle2 className="h-3 w-3" />Pagos activos
                         </Badge>
                       )}
@@ -319,7 +319,7 @@ export function PlatformStripeConnect() {
                           size="sm"
                           onClick={() => startOnboarding(church.id)}
                           disabled={isLoading}
-                          className="gap-1 bg-indigo-600 hover:bg-indigo-700 text-white"
+                          className="gap-1 bg-primary hover:bg-[hsl(var(--lavender))] text-white"
                         >
                           {isLoading ? (
                             <RefreshCw className="h-3.5 w-3.5 animate-spin" />
@@ -336,7 +336,7 @@ export function PlatformStripeConnect() {
                           variant="outline"
                           onClick={() => startOnboarding(church.id)}
                           disabled={isLoading}
-                          className="gap-1 text-yellow-700 border-yellow-300"
+                          className="gap-1 text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.4)]"
                         >
                           <ExternalLink className="h-3.5 w-3.5" />
                           Continuar
@@ -359,7 +359,7 @@ export function PlatformStripeConnect() {
                           variant="outline"
                           onClick={() => disconnect(church.id, church.name)}
                           disabled={isLoading}
-                          className="gap-1 text-red-600 hover:text-red-700 hover:border-red-300"
+                          className="gap-1 text-[hsl(var(--destructive))] hover:text-[hsl(var(--destructive))] hover:border-[hsl(var(--destructive)/0.4)]"
                           title="Desconectar cuenta Stripe Connect"
                         >
                           <Unlink className="h-3.5 w-3.5" />
@@ -378,11 +378,11 @@ export function PlatformStripeConnect() {
       <Card className="border-dashed">
         <CardContent className="p-4">
           <div className="flex gap-2">
-            <AlertCircle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="h-4 w-4 text-[hsl(var(--warning))] flex-shrink-0 mt-0.5" />
             <div className="text-xs text-muted-foreground">
-              <strong className="text-amber-700">Pagos de la plataforma:</strong>{' '}
+              <strong className="text-[hsl(var(--warning))]">Pagos de la plataforma:</strong>{' '}
               Las facturas y suscripciones de los tenants hacia Khesed-Tek usan la
-              cuenta Stripe configurada en <code className="bg-gray-100 px-0.5 rounded">STRIPE_SECRET_KEY</code>.
+              cuenta Stripe configurada en <code className="bg-muted/50 px-0.5 rounded">STRIPE_SECRET_KEY</code>.
               Ver sección de Facturas para el detalle de cobros a tenants.
             </div>
           </div>

@@ -176,7 +176,7 @@ export function AutomationRulesList({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left">
               <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="font-medium">Responder a Peticiones de Oración</p>
                   <p className="text-sm text-muted-foreground">Envía confirmación automática y notifica al equipo</p>
@@ -184,7 +184,7 @@ export function AutomationRulesList({
               </div>
               
               <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="font-medium">Seguimiento de Visitantes</p>
                   <p className="text-sm text-muted-foreground">Mensaje de bienvenida y seguimiento automático</p>
@@ -192,7 +192,7 @@ export function AutomationRulesList({
               </div>
               
               <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="font-medium">Notificaciones de Cumpleaños</p>
                   <p className="text-sm text-muted-foreground">Felicita automáticamente a tus miembros</p>
@@ -200,7 +200,7 @@ export function AutomationRulesList({
               </div>
               
               <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="font-medium">Y mucho más...</p>
                   <p className="text-sm text-muted-foreground">8 plantillas listas para usar en segundos</p>
@@ -239,7 +239,7 @@ export function AutomationRulesList({
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     {rule.isActive ? (
-                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />
                     ) : (
                       <AlertCircle className="h-5 w-5 text-muted-foreground" />
                     )}
@@ -400,8 +400,8 @@ export function AutomationRulesList({
 
             {/* Execution Limits Warning */}
             {rule.maxExecutions && rule.executionCount >= rule.maxExecutions * 0.8 && (
-              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <div className="flex items-center gap-2 text-yellow-800">
+              <div className="mt-4 p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg">
+                <div className="flex items-center gap-2 text-[hsl(var(--warning))]">
                   <AlertCircle className="h-4 w-4" />
                   <span className="text-sm">
                     Esta regla ha usado {rule.executionCount} de {rule.maxExecutions} ejecuciones permitidas.

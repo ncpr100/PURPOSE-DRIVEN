@@ -203,8 +203,8 @@ export default function DonationsSettingsClient({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Configuración de Donaciones</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-foreground">Configuración de Donaciones</h1>
+        <p className="text-muted-foreground mt-2">
           Administre categorías, métodos de pago y configuración de gateways
         </p>
       </div>
@@ -293,7 +293,7 @@ export default function DonationsSettingsClient({
                         </Badge>
                       </div>
                       {category.description && (
-                        <p className="text-sm text-gray-500 mt-1">{category.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{category.description}</p>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
@@ -305,7 +305,7 @@ export default function DonationsSettingsClient({
                   </div>
                 ))}
                 {categories.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No hay categorías configuradas. Cree la primera categoría.
                   </div>
                 )}
@@ -402,13 +402,13 @@ export default function DonationsSettingsClient({
                         </Badge>
                       </div>
                       {method.description && (
-                        <p className="text-sm text-gray-500 mt-1">{method.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{method.description}</p>
                       )}
                     </div>
                   </div>
                 ))}
                 {paymentMethods.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No hay métodos de pago configurados. Cree el primer método.
                   </div>
                 )}

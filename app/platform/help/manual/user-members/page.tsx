@@ -44,24 +44,24 @@ export default function UserMembersManual() {
             </Alert>
             
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🏛️ Iglesias</h4>
-                <p className="text-xl font-bold text-blue-600">100%</p>
+                <p className="text-xl font-bold text-[hsl(var(--info))]">100%</p>
                 <p className="text-xs text-muted-foreground">Con acceso al sistema</p>
               </div>
-              <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📊 Formatos</h4>
-                <p className="text-xl font-bold text-green-600">3</p>
+                <p className="text-xl font-bold text-[hsl(var(--success))]">3</p>
                 <p className="text-xs text-muted-foreground">Excel, CSV, Direct</p>
               </div>
-              <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🤖 Auto-Map</h4>
-                <p className="text-xl font-bold text-purple-600">25+</p>
+                <p className="text-xl font-bold text-[hsl(var(--lavender))]">25+</p>
                 <p className="text-xs text-muted-foreground">Campos reconocidos</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⚡ Límites</h4>
-                <p className="text-xl font-bold text-orange-600">1K</p>
+                <p className="text-xl font-bold text-[hsl(var(--warning))]">1K</p>
                 <p className="text-xs text-muted-foreground">Registros por lote</p>
               </div>
             </div>
@@ -72,7 +72,7 @@ export default function UserMembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">🔧</span>
+              <span className="bg-muted/300 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">🔧</span>
               Arquitectura Técnica del Sistema
             </CardTitle>
           </CardHeader>
@@ -81,27 +81,27 @@ export default function UserMembersManual() {
               <div>
                 <h4 className="font-semibold mb-3">🛠️ Componentes del Sistema</h4>
                 <div className="space-y-3 text-sm">
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>API Endpoint:</strong> <code>/api/members/import</code></p>
                     <p className="text-muted-foreground">Procesamiento backend con validación completa</p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Motor de Mapeo:</strong> Auto-recognition engine</p>
                     <p className="text-muted-foreground">25+ variaciones de campo detectadas automáticamente</p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Procesador XLSX/CSV:</strong> SheetJS integration</p>
                     <p className="text-muted-foreground">Soporte completo Excel 2007+ y CSV UTF-8</p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Validación de Datos:</strong> Multi-layer validation</p>
                     <p className="text-muted-foreground">Email, teléfono, fechas, campos requeridos</p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Detección de Duplicados:</strong> Smart matching</p>
                     <p className="text-muted-foreground">Por email y combinación nombre completo</p>
                   </div>
@@ -111,7 +111,7 @@ export default function UserMembersManual() {
               <div>
                 <h4 className="font-semibold mb-3">📋 Especificaciones Técnicas</h4>
                 <div className="space-y-3 text-sm">
-                  <div className="p-3 bg-blue-50 rounded-lg">
+                  <div className="p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                     <p><strong>Límites del Sistema:</strong></p>
                     <ul className="text-muted-foreground space-y-1 mt-1">
                       <li>• Máximo 1,000 registros por importación</li>
@@ -121,7 +121,7 @@ export default function UserMembersManual() {
                     </ul>
                   </div>
                   
-                  <div className="p-3 bg-green-50 rounded-lg">
+                  <div className="p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                     <p><strong>Seguridad y Permisos:</strong></p>
                     <ul className="text-muted-foreground space-y-1 mt-1">
                       <li>• Solo SUPER_ADMIN, ADMIN_IGLESIA, PASTOR</li>
@@ -131,7 +131,7 @@ export default function UserMembersManual() {
                     </ul>
                   </div>
                   
-                  <div className="p-3 bg-purple-50 rounded-lg">
+                  <div className="p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                     <p><strong>Integración con Automatizaciones:</strong></p>
                     <ul className="text-muted-foreground space-y-1 mt-1">
                       <li>• Trigger automático en nuevos miembros</li>
@@ -150,7 +150,7 @@ export default function UserMembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               Escenarios de Migración por Sistema
             </CardTitle>
           </CardHeader>
@@ -246,7 +246,7 @@ export default function UserMembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Control de Calidad y Validación de Datos
             </CardTitle>
           </CardHeader>
@@ -255,7 +255,7 @@ export default function UserMembersManual() {
               <div>
                 <h4 className="font-semibold mb-3">🔍 Validaciones Automáticas</h4>
                 <div className="space-y-3">
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p className="font-semibold text-sm">Validación de Campos Requeridos</p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-2">
                       <li>• <strong>firstName:</strong> No puede estar vacío</li>
@@ -264,7 +264,7 @@ export default function UserMembersManual() {
                     </ul>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p className="font-semibold text-sm">Validación de Formatos</p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-2">
                       <li>• <strong>Email:</strong> Regex pattern /^[^\s@]+@[^\s@]+\.[^\s@]+$/</li>
@@ -274,7 +274,7 @@ export default function UserMembersManual() {
                     </ul>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p className="font-semibold text-sm">Detección de Duplicados</p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-2">
                       <li>• <strong>Primary Match:</strong> Email address exacto</li>
@@ -289,7 +289,7 @@ export default function UserMembersManual() {
               <div>
                 <h4 className="font-semibold mb-3">📊 Métricas de Importación</h4>
                 <div className="space-y-3">
-                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                  <div className="p-4 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
                     <h5 className="font-semibold text-sm mb-2">✅ Importaciones Exitosas</h5>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       <li>• Registros procesados sin errores</li>
@@ -298,7 +298,7 @@ export default function UserMembersManual() {
                     </ul>
                   </div>
                   
-                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="p-4 bg-[hsl(var(--info)/0.10)] rounded-lg border border-[hsl(var(--info)/0.3)]">
                     <h5 className="font-semibold text-sm mb-2">🔄 Actualizaciones</h5>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       <li>• Miembros existentes actualizados</li>
@@ -307,7 +307,7 @@ export default function UserMembersManual() {
                     </ul>
                   </div>
                   
-                  <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+                  <div className="p-4 bg-[hsl(var(--destructive)/0.10)] rounded-lg border border-[hsl(var(--destructive)/0.3)]">
                     <h5 className="font-semibold text-sm mb-2">❌ Fallos y Errores</h5>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       <li>• Datos inválidos o incompletos</li>
@@ -325,7 +325,7 @@ export default function UserMembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               Referencia Completa de Mapeo de Campos
             </CardTitle>
           </CardHeader>
@@ -342,7 +342,7 @@ export default function UserMembersManual() {
             <div className="grid md:grid-cols-3 gap-4">
               <div>
                 <h5 className="font-semibold mb-2 text-sm">👤 Campos de Identificación</h5>
-                <div className="text-xs bg-gray-50 p-3 rounded-lg">
+                <div className="text-xs bg-muted/30 p-3 rounded-lg">
                   <p><strong>firstName:</strong></p>
                   <p className="text-muted-foreground">first name, firstname, first_name, name (si es completo)</p>
                   
@@ -356,7 +356,7 @@ export default function UserMembersManual() {
               
               <div>
                 <h5 className="font-semibold mb-2 text-sm">📞 Campos de Contacto</h5>
-                <div className="text-xs bg-gray-50 p-3 rounded-lg">
+                <div className="text-xs bg-muted/30 p-3 rounded-lg">
                   <p><strong>phone:</strong></p>
                   <p className="text-muted-foreground">phone, phone number, mobile, cell, telephone</p>
                   
@@ -370,7 +370,7 @@ export default function UserMembersManual() {
               
               <div>
                 <h5 className="font-semibold mb-2 text-sm">📅 Campos de Fecha</h5>
-                <div className="text-xs bg-gray-50 p-3 rounded-lg">
+                <div className="text-xs bg-muted/30 p-3 rounded-lg">
                   <p><strong>birthDate:</strong></p>
                   <p className="text-muted-foreground">birth date, birthdate, date of birth, dob</p>
                   
@@ -383,7 +383,7 @@ export default function UserMembersManual() {
               </div>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
               <h5 className="font-semibold mb-2">🤖 Procesamientos Automáticos Especiales</h5>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
                 <div>
@@ -409,7 +409,7 @@ export default function UserMembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+              <span className="bg-[hsl(var(--destructive)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               Monitoreo y Soporte para Iglesias
             </CardTitle>
           </CardHeader>
@@ -426,7 +426,7 @@ export default function UserMembersManual() {
                     <li>4. View detailed breakdown</li>
                   </ol>
                   
-                  <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                  <div className="mt-4 p-3 bg-muted/30 rounded-lg">
                     <p><strong>KPIs Importantes:</strong></p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-2">
                       <li>• Total importaciones por período</li>
@@ -445,22 +445,22 @@ export default function UserMembersManual() {
                 <div className="space-y-3 text-sm">
                   <p><strong>Problemas Comunes:</strong></p>
                   
-                  <div className="p-3 bg-red-50 rounded-lg border border-red-200">
+                  <div className="p-3 bg-[hsl(var(--destructive)/0.10)] rounded-lg border border-[hsl(var(--destructive)/0.3)]">
                     <p><strong>Error: &quot;Archivo muy grande&quot;</strong></p>
                     <p className="text-muted-foreground">Solución: Dividir en lotes de máximo 1000 registros</p>
                   </div>
                   
-                  <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                  <div className="p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg border border-[hsl(var(--warning)/0.3)]">
                     <p><strong>Error: &quot;Muchos duplicados&quot;</strong></p>
                     <p className="text-muted-foreground">Solución: Activar &quot;Actualizar existentes&quot; o limpiar datos</p>
                   </div>
                   
-                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="p-3 bg-[hsl(var(--info)/0.10)] rounded-lg border border-[hsl(var(--info)/0.3)]">
                     <p><strong>Error: &quot;Campos no reconocidos&quot;</strong></p>
                     <p className="text-muted-foreground">Solución: Usar plantilla o mapear manualmente</p>
                   </div>
                   
-                  <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                  <div className="mt-4 p-3 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
                     <p><strong>💡 Escalación a Soporte:</strong></p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-1">
                       <li>• Migraciones de +5000 miembros</li>
@@ -479,7 +479,7 @@ export default function UserMembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+              <span className="bg-[hsl(var(--warning)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
               Administración de Plataforma
             </CardTitle>
           </CardHeader>
@@ -526,7 +526,7 @@ export default function UserMembersManual() {
                     <li>4. Export logs if needed</li>
                   </ol>
                   
-                  <div className="mt-3 p-2 bg-yellow-50 rounded border border-yellow-200">
+                  <div className="mt-3 p-2 bg-[hsl(var(--warning)/0.10)] rounded border border-[hsl(var(--warning)/0.3)]">
                     <p className="text-xs"><strong>🔒 Privacidad:</strong> Los logs están aislados por iglesia y solo son accesibles por SUPER_ADMIN y la iglesia propietaria.</p>
                   </div>
                 </div>
@@ -539,7 +539,7 @@ export default function UserMembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-indigo-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
+              <span className="bg-primary/[0.06]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
               Mejores Prácticas para Soporte a Iglesias
             </CardTitle>
           </CardHeader>
@@ -558,7 +558,7 @@ export default function UserMembersManual() {
                     <li>6. Configuración de automatizaciones</li>
                   </ol>
                   
-                  <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <div className="mt-3 p-3 bg-[hsl(var(--info)/0.10)] rounded-lg border border-[hsl(var(--info)/0.3)]">
                     <p><strong>🎯 SLA de Migración:</strong></p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-1">
                       <li>• Iglesias pequeñas (&lt;500): 2-4 horas</li>
@@ -581,7 +581,7 @@ export default function UserMembersManual() {
                     <li>• Errores de data corruption</li>
                   </ul>
                   
-                  <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                  <div className="mt-3 p-3 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
                     <p><strong>📋 Checklist Pre-Migración:</strong></p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-1">
                       <li>☑️ Backup de datos actual</li>

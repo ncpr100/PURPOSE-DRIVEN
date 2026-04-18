@@ -15,7 +15,7 @@ export default function CompleteOnboardingGuide() {
   return (
     <div className="container mx-auto p-6 max-w-6xl space-y-8">
       {/* Hero Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 rounded-lg">
+      <div className="btn-cta-gradient text-white p-8 rounded-lg">
         <div className="flex items-center gap-4">
           <Rocket className="h-12 w-12" />
           <div>
@@ -42,9 +42,9 @@ export default function CompleteOnboardingGuide() {
       </div>
 
       {/* What You'll Learn */}
-      <Card className="border-green-200 bg-green-50">
+      <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-green-800">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--success))]">
             <Lightbulb className="h-6 w-6" />
             ¿Qué Aprenderás en Esta Guía?
           </CardTitle>
@@ -52,27 +52,27 @@ export default function CompleteOnboardingGuide() {
         <CardContent className="space-y-3">
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div className="flex items-start gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
               <p><strong>Paso 1:</strong> Crear tu cuenta e iglesia (5 minutos)</p>
             </div>
             <div className="flex items-start gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
               <p><strong>Paso 2:</strong> Configurar información básica (10 minutos)</p>
             </div>
             <div className="flex items-start gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
               <p><strong>Paso 3:</strong> Agregar tus primeros miembros (15 minutos)</p>
             </div>
             <div className="flex items-start gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
               <p><strong>Paso 4:</strong> Crear tu primer evento (10 minutos)</p>
             </div>
             <div className="flex items-start gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
               <p><strong>Paso 5:</strong> Enviar tu primera comunicación (10 minutos)</p>
             </div>
             <div className="flex items-start gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
               <p><strong>Paso 6:</strong> Ver tu dashboard y analíticas (10 minutos)</p>
             </div>
           </div>
@@ -81,16 +81,16 @@ export default function CompleteOnboardingGuide() {
 
       {/* FASE 1: CREAR CUENTA */}
       <section id="fase-1">
-        <Card className="border-blue-300">
-          <CardHeader className="bg-blue-50">
+        <Card className="border-[hsl(var(--info)/0.4)]">
+          <CardHeader className="bg-[hsl(var(--info)/0.10)]">
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-3 text-2xl">
-                <div className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+                <div className="bg-[hsl(var(--info))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
                   1
                 </div>
                 Crear Tu Cuenta e Iglesia
               </CardTitle>
-              <Badge className="bg-blue-600 text-white">5 minutos</Badge>
+              <Badge className="bg-[hsl(var(--info))] text-white">5 minutos</Badge>
             </div>
             <CardDescription className="text-base mt-2">
               ¡Tu primer paso! Como cuando creas una cuenta de correo, pero para tu iglesia.
@@ -98,12 +98,12 @@ export default function CompleteOnboardingGuide() {
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
             {/* Explicación para niños */}
-            <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
-              <h4 className="font-bold text-yellow-900 flex items-center gap-2 mb-2">
+            <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
+              <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
                 <Heart className="h-5 w-5" />
                 Para Niños: ¿Qué es Crear una Cuenta?
               </h4>
-              <p className="text-sm text-yellow-800">
+              <p className="text-sm text-[hsl(var(--warning))]">
                 Imagina que Khesed-tek es como una casa especial para tu iglesia en internet. 
                 Para entrar a esa casa, necesitas una &quot;llave&quot; especial. Crear una cuenta es como 
                 hacer tu propia llave. Vas a elegir un nombre de usuario (como tu apodo) y una 
@@ -114,7 +114,7 @@ export default function CompleteOnboardingGuide() {
             {/* Paso a Paso */}
             <div className="space-y-4">
               <h4 className="font-semibold text-lg flex items-center gap-2">
-                <Play className="h-5 w-5 text-blue-600" />
+                <Play className="h-5 w-5 text-[hsl(var(--info))]" />
                 Pasos Detallados (Con Imágenes Mentales)
               </h4>
               
@@ -124,7 +124,7 @@ export default function CompleteOnboardingGuide() {
                     step: "1.1",
                     title: "Abrir el Navegador",
                     description: "Abre Google Chrome, Firefox, o Safari en tu computadora o teléfono.",
-                    icon: <Home className="h-5 w-5 text-purple-600" />,
+                    icon: <Home className="h-5 w-5 text-[hsl(var(--lavender))]" />,
                     image: "🌐",
                     tips: [
                       "Puedes usar cualquier navegador que tengas",
@@ -136,7 +136,7 @@ export default function CompleteOnboardingGuide() {
                     step: "1.2",
                     title: "Ir a la Página de Khesed-tek",
                     description: "En la barra de arriba (donde escribes las direcciones web), escribe: khesed-tek-cms.up.railway.app",
-                    icon: <ArrowRight className="h-5 w-5 text-green-600" />,
+                    icon: <ArrowRight className="h-5 w-5 text-[hsl(var(--success))]" />,
                     image: "🔍",
                     tips: [
                       "Copia la dirección exactamente como está",
@@ -148,7 +148,7 @@ export default function CompleteOnboardingGuide() {
                     step: "1.3",
                     title: "Hacer Clic en 'Crear Cuenta'",
                     description: "Busca un botón azul que diga 'Crear Cuenta' o 'Registrarse'. Haz clic en él.",
-                    icon: <CheckCircle className="h-5 w-5 text-blue-600" />,
+                    icon: <CheckCircle className="h-5 w-5 text-[hsl(var(--info))]" />,
                     image: "👆",
                     tips: [
                       "El botón está en la esquina superior derecha",
@@ -160,7 +160,7 @@ export default function CompleteOnboardingGuide() {
                     step: "1.4",
                     title: "Llenar el Formulario",
                     description: "Completa estos espacios con tu información:",
-                    icon: <FileText className="h-5 w-5 text-orange-600" />,
+                    icon: <FileText className="h-5 w-5 text-[hsl(var(--warning))]" />,
                     image: "✏️",
                     details: [
                       {
@@ -194,7 +194,7 @@ export default function CompleteOnboardingGuide() {
                     step: "1.5",
                     title: "Verificar Tu Email",
                     description: "Después de crear tu cuenta, revisa tu correo electrónico.",
-                    icon: <Mail className="h-5 w-5 text-red-600" />,
+                    icon: <Mail className="h-5 w-5 text-[hsl(var(--destructive))]" />,
                     image: "📧",
                     tips: [
                       "Te enviaremos un correo con un enlace especial",
@@ -207,7 +207,7 @@ export default function CompleteOnboardingGuide() {
                     step: "1.6",
                     title: "¡Iniciar Sesión Por Primera Vez!",
                     description: "Vuelve a khesed-tek-cms.up.railway.app y entra con tu email y contraseña.",
-                    icon: <Star className="h-5 w-5 text-yellow-600" />,
+                    icon: <Star className="h-5 w-5 text-[hsl(var(--warning))]" />,
                     image: "🎊",
                     tips: [
                       "Usa el mismo email y contraseña que creaste",
@@ -227,17 +227,17 @@ export default function CompleteOnboardingGuide() {
                               Paso {item.step}: {item.title}
                             </h5>
                           </div>
-                          <p className="text-gray-700 mb-3">{item.description}</p>
+                          <p className="text-muted-foreground mb-3">{item.description}</p>
                           
                           {item.details && (
                             <div className="space-y-2 mb-3">
                               {item.details.map((detail, idx) => (
-                                <div key={idx} className="bg-gray-50 p-3 rounded">
-                                  <p className="font-medium text-sm text-blue-800">
+                                <div key={idx} className="bg-muted/30 p-3 rounded">
+                                  <p className="font-medium text-sm text-[hsl(var(--info))]">
                                     📝 {detail.field}
                                   </p>
-                                  <p className="text-xs text-gray-600 mt-1">{detail.example}</p>
-                                  <p className="text-xs text-purple-600 mt-1 italic">
+                                  <p className="text-xs text-muted-foreground mt-1">{detail.example}</p>
+                                  <p className="text-xs text-[hsl(var(--lavender))] mt-1 italic">
                                     💡 {detail.why}
                                   </p>
                                 </div>
@@ -246,11 +246,11 @@ export default function CompleteOnboardingGuide() {
                           )}
 
                           {item.tips && (
-                            <div className="bg-green-50 p-3 rounded-lg">
-                              <p className="text-xs font-medium text-green-800 mb-2">
+                            <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded-lg">
+                              <p className="text-xs font-medium text-[hsl(var(--success))] mb-2">
                                 💡 Consejos Útiles:
                               </p>
-                              <ul className="text-xs text-green-700 space-y-1">
+                              <ul className="text-xs text-[hsl(var(--success))] space-y-1">
                                 {item.tips.map((tip, idx) => (
                                   <li key={idx}>• {tip}</li>
                                 ))}
@@ -266,8 +266,8 @@ export default function CompleteOnboardingGuide() {
             </div>
 
             {/* Troubleshooting Común */}
-            <div className="bg-red-50 p-4 rounded-lg border-2 border-red-200">
-              <h4 className="font-bold text-red-900 flex items-center gap-2 mb-3">
+            <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--destructive)/0.3)]">
+              <h4 className="font-bold text-[hsl(var(--destructive))] flex items-center gap-2 mb-3">
                 <AlertTriangle className="h-5 w-5" />
                 ¿Problemas? Aquí Están las Soluciones
               </h4>
@@ -300,9 +300,9 @@ export default function CompleteOnboardingGuide() {
                     ]
                   }
                 ].map((item, index) => (
-                  <div key={index} className="bg-white p-3 rounded border border-red-200">
-                    <p className="font-medium text-red-800 mb-2">{item.problem}</p>
-                    <ul className="text-red-700 space-y-1 ml-4">
+                  <div key={index} className="bg-white p-3 rounded border border-[hsl(var(--destructive)/0.3)]">
+                    <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
+                    <ul className="text-[hsl(var(--destructive))] space-y-1 ml-4">
                       {item.solutions.map((solution, idx) => (
                         <li key={idx}>✓ {solution}</li>
                       ))}
@@ -315,7 +315,7 @@ export default function CompleteOnboardingGuide() {
             {/* Next Step */}
             <div className="flex justify-end">
               <Link href="#fase-2">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                <Button size="lg" className="bg-[hsl(var(--info))] hover:bg-[hsl(var(--info))]">
                   ¡Siguiente Paso! Configurar Mi Iglesia
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
@@ -327,16 +327,16 @@ export default function CompleteOnboardingGuide() {
 
       {/* FASE 2: CONFIGURACIÓN INICIAL */}
       <section id="fase-2">
-        <Card className="border-purple-300">
-          <CardHeader className="bg-purple-50">
+        <Card className="border-[hsl(var(--lavender)/0.4)]">
+          <CardHeader className="bg-[hsl(var(--lavender)/0.10)]">
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-3 text-2xl">
-                <div className="bg-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+                <div className="bg-[hsl(var(--lavender))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
                   2
                 </div>
                 Configurar Información de Mi Iglesia
               </CardTitle>
-              <Badge className="bg-purple-600 text-white">10 minutos</Badge>
+              <Badge className="bg-[hsl(var(--lavender))] text-white">10 minutos</Badge>
             </div>
             <CardDescription className="text-base mt-2">
               Personaliza tu iglesia - como decorar tu casa en el sistema.
@@ -344,12 +344,12 @@ export default function CompleteOnboardingGuide() {
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
             {/* Para niños */}
-            <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
-              <h4 className="font-bold text-yellow-900 flex items-center gap-2 mb-2">
+            <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
+              <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
                 <Heart className="h-5 w-5" />
                 Para Niños: ¿Por Qué Configurar Mi Iglesia?
               </h4>
-              <p className="text-sm text-yellow-800">
+              <p className="text-sm text-[hsl(var(--warning))]">
                 Es como poner fotos y colores bonitos en tu cuarto. Quieres que cuando alguien 
                 entre a ver tu iglesia en el sistema, vea el nombre correcto, los colores que te 
                 gustan, y la foto de tu iglesia. Así todos saben que es TU iglesia especial.
@@ -366,7 +366,7 @@ export default function CompleteOnboardingGuide() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
                   <p className="font-medium">📍 Dónde Configurar:</p>
-                  <div className="bg-purple-50 p-3 rounded">
+                  <div className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded">
                     <p className="text-xs mb-2">Haz clic en estos lugares en orden:</p>
                     <ol className="space-y-1 text-xs">
                       <li>1. Botón de <strong>Configuración</strong> (⚙️ arriba a la derecha)</li>
@@ -377,37 +377,37 @@ export default function CompleteOnboardingGuide() {
                   <p className="font-medium mt-4">✏️ Información a Completar:</p>
                   <ul className="space-y-2">
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                       <div>
                         <strong>Nombre Completo:</strong>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-muted-foreground">
                           Ejemplo: &quot;Iglesia Cristiana El Buen Pastor&quot;
                         </p>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                       <div>
                         <strong>Dirección Física:</strong>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-muted-foreground">
                           Ejemplo: &quot;Calle 123 #45-67, Bogotá, Colombia&quot;
                         </p>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                       <div>
                         <strong>Teléfono de Contacto:</strong>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-muted-foreground">
                           Para que la gente pueda llamarte
                         </p>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                       <div>
                         <strong>Sitio Web (Opcional):</strong>
-                        <p className="text-xs text-gray-600">
+                        <p className="text-xs text-muted-foreground">
                           Si tienes página web, ponla aquí
                         </p>
                       </div>
@@ -427,7 +427,7 @@ export default function CompleteOnboardingGuide() {
                   <p className="font-medium">🎨 Hacer Tu Iglesia Bonita:</p>
                   
                   <div className="space-y-3">
-                    <div className="bg-pink-50 p-3 rounded">
+                    <div className="bg-[hsl(var(--destructive)/0.08)] p-3 rounded">
                       <p className="font-medium text-sm mb-2">Logo de la Iglesia</p>
                       <ul className="text-xs space-y-1">
                         <li>• Sube una imagen del logo de tu iglesia</li>
@@ -437,7 +437,7 @@ export default function CompleteOnboardingGuide() {
                       </ul>
                     </div>
 
-                    <div className="bg-blue-50 p-3 rounded">
+                    <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
                       <p className="font-medium text-sm mb-2">Colores de Tu Marca</p>
                       <p className="text-xs mb-2">
                         Ve a <strong>Configuración → Personalización de Marca</strong>
@@ -449,7 +449,7 @@ export default function CompleteOnboardingGuide() {
                       </ul>
                     </div>
 
-                    <div className="bg-green-50 p-3 rounded">
+                    <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded">
                       <p className="font-medium text-sm mb-2">Horarios de Servicio</p>
                       <p className="text-xs">Agrega cuándo se reúne tu iglesia:</p>
                       <ul className="text-xs space-y-1 mt-1">
@@ -464,15 +464,15 @@ export default function CompleteOnboardingGuide() {
             </div>
 
             {/* Tips Importantes */}
-            <div className="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
-              <h4 className="font-bold text-blue-900 flex items-center gap-2 mb-3">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--info)/0.3)]">
+              <h4 className="font-bold text-foreground flex items-center gap-2 mb-3">
                 <Lightbulb className="h-5 w-5" />
                 Consejos de Experto
               </h4>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
                 <div className="bg-white p-3 rounded">
-                  <p className="font-medium text-blue-800 mb-2">✅ Sí Hacer:</p>
-                  <ul className="space-y-1 text-blue-700">
+                  <p className="font-medium text-[hsl(var(--info))] mb-2">✅ Sí Hacer:</p>
+                  <ul className="space-y-1 text-[hsl(var(--info))]">
                     <li>✓ Usa fotos de buena calidad (no borrosas)</li>
                     <li>✓ Escribe toda la información completa</li>
                     <li>✓ Revisa que no haya errores de ortografía</li>
@@ -480,8 +480,8 @@ export default function CompleteOnboardingGuide() {
                   </ul>
                 </div>
                 <div className="bg-white p-3 rounded">
-                  <p className="font-medium text-red-800 mb-2">❌ No Hacer:</p>
-                  <ul className="space-y-1 text-red-700">
+                  <p className="font-medium text-[hsl(var(--destructive))] mb-2">❌ No Hacer:</p>
+                  <ul className="space-y-1 text-[hsl(var(--destructive))]">
                     <li>✗ No uses imágenes con copyright</li>
                     <li>✗ No pongas información falsa</li>
                     <li>✗ No uses colores muy brillantes que lastimen los ojos</li>
@@ -500,7 +500,7 @@ export default function CompleteOnboardingGuide() {
                 </Button>
               </Link>
               <Link href="#fase-3">
-                <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+                <Button size="lg" className="bg-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender))]">
                   ¡Siguiente! Agregar Miembros
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
@@ -513,71 +513,71 @@ export default function CompleteOnboardingGuide() {
       {/* Continúa con más fases... debido a límites de longitud, mostraré la estructura para las siguientes fases */}
 
       {/* Quick Summary Footer */}
-      <Card className="bg-gradient-to-r from-green-100 to-blue-100">
+      <Card className="bg-[hsl(var(--success)/0.15)]">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Flag className="h-6 w-6 text-green-600" />
+            <Flag className="h-6 w-6 text-[hsl(var(--success))]" />
             ¡Tu Progreso de Onboarding!
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="text-center p-4 bg-white rounded-lg">
-              <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
+              <CheckCircle className="h-8 w-8 text-[hsl(var(--success))] mx-auto mb-2" />
               <p className="font-semibold">Fase 1</p>
-              <p className="text-xs text-gray-600">Cuenta Creada ✓</p>
+              <p className="text-xs text-muted-foreground">Cuenta Creada ✓</p>
             </div>
             <div className="text-center p-4 bg-white rounded-lg">
-              <CheckCircle className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+              <CheckCircle className="h-8 w-8 text-[hsl(var(--lavender))] mx-auto mb-2" />
               <p className="font-semibold">Fase 2</p>
-              <p className="text-xs text-gray-600">Iglesia Configurada ✓</p>
+              <p className="text-xs text-muted-foreground">Iglesia Configurada ✓</p>
             </div>
-            <div className="text-center p-4 bg-gray-100 rounded-lg opacity-50">
-              <Users className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+            <div className="text-center p-4 bg-muted/50 rounded-lg opacity-50">
+              <Users className="h-8 w-8 text-muted-foreground/70 mx-auto mb-2" />
               <p className="font-semibold">Fase 3</p>
-              <p className="text-xs text-gray-600">Miembros → Siguiente</p>
+              <p className="text-xs text-muted-foreground">Miembros → Siguiente</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Ayuda Final */}
-      <Card className="border-yellow-300 bg-yellow-50">
+      <Card className="border-[hsl(var(--warning)/0.4)] bg-[hsl(var(--warning)/0.10)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-yellow-900">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--warning))]">
             <HelpCircle className="h-6 w-6" />
             ¿Necesitas Ayuda?
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-sm text-yellow-800">
+          <p className="text-sm text-[hsl(var(--warning))]">
             Si te quedas atascado en cualquier paso, ¡no te preocupes! Aquí tienes opciones:
           </p>
           <div className="grid md:grid-cols-3 gap-4">
             <Link href="/help/videos">
               <Card className="cursor-pointer hover:shadow-lg transition-shadow">
                 <CardContent className="pt-4 text-center">
-                  <Video className="h-10 w-10 text-red-600 mx-auto mb-2" />
+                  <Video className="h-10 w-10 text-[hsl(var(--destructive))] mx-auto mb-2" />
                   <p className="font-semibold text-sm">Ver Videos</p>
-                  <p className="text-xs text-gray-600">Tutoriales paso a paso</p>
+                  <p className="text-xs text-muted-foreground">Tutoriales paso a paso</p>
                 </CardContent>
               </Card>
             </Link>
             <Link href="/help/faq">
               <Card className="cursor-pointer hover:shadow-lg transition-shadow">
                 <CardContent className="pt-4 text-center">
-                  <Book className="h-10 w-10 text-blue-600 mx-auto mb-2" />
+                  <Book className="h-10 w-10 text-[hsl(var(--info))] mx-auto mb-2" />
                   <p className="font-semibold text-sm">Leer FAQs</p>
-                  <p className="text-xs text-gray-600">Preguntas frecuentes</p>
+                  <p className="text-xs text-muted-foreground">Preguntas frecuentes</p>
                 </CardContent>
               </Card>
             </Link>
             <Link href="/help/support/ticket">
               <Card className="cursor-pointer hover:shadow-lg transition-shadow">
                 <CardContent className="pt-4 text-center">
-                  <MessageSquare className="h-10 w-10 text-green-600 mx-auto mb-2" />
+                  <MessageSquare className="h-10 w-10 text-[hsl(var(--success))] mx-auto mb-2" />
                   <p className="font-semibold text-sm">Contactar Soporte</p>
-                  <p className="text-xs text-gray-600">Hablemos en persona</p>
+                  <p className="text-xs text-muted-foreground">Hablemos en persona</p>
                 </CardContent>
               </Card>
             </Link>

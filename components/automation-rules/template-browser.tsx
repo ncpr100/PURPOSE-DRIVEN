@@ -159,13 +159,13 @@ export function TemplateBrowser() {
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
-      'PRAYER_REQUEST': 'bg-blue-500',
-      'VISITOR_FOLLOWUP': 'bg-purple-500',
-      'SOCIAL_MEDIA': 'bg-pink-500',
-      'EVENT': 'bg-green-500',
-      'DONATION': 'bg-yellow-500'
+      'PRAYER_REQUEST': 'bg-[hsl(var(--info)/0.10)]0',
+      'VISITOR_FOLLOWUP': 'bg-[hsl(var(--lavender)/0.10)]0',
+      'SOCIAL_MEDIA': 'bg-[hsl(var(--destructive)/0.08)]0',
+      'EVENT': 'bg-[hsl(var(--success)/0.10)]0',
+      'DONATION': 'bg-[hsl(var(--warning)/0.10)]0'
     };
-    return colors[category] || 'bg-gray-500';
+    return colors[category] || 'bg-muted/300';
   };
 
   const getPriorityBadge = (priority: string) => {

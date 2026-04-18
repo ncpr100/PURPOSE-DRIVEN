@@ -113,18 +113,18 @@ export function RealTimeToast({
 
   const getNotificationIcon = (type: string, priority: string) => {
     if (priority === 'URGENT') {
-      return <AlertTriangle className="h-4 w-4 text-red-500" />
+      return <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
     }
 
     switch (type) {
       case 'SUCCESS':
-        return <CheckCircle className="h-4 w-4 text-green-500" />
+        return <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
       case 'WARNING':
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />
+        return <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))]" />
       case 'ERROR':
-        return <AlertTriangle className="h-4 w-4 text-red-500" />
+        return <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
       default:
-        return <Info className="h-4 w-4 text-blue-500" />
+        return <Info className="h-4 w-4 text-[hsl(var(--info))]" />
     }
   }
 

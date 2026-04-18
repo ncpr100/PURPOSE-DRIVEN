@@ -166,7 +166,7 @@ export function VisitorProfileForm({ onSubmit, loading }: VisitorProfileFormProp
     return (
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader className="text-center">
-          <CardTitle className="flex items-center justify-center gap-2 text-green-700">
+          <CardTitle className="flex items-center justify-center gap-2 text-[hsl(var(--success))]">
             <Zap className="h-6 w-6" />
             Visitante Registrado Exitosamente
           </CardTitle>
@@ -176,7 +176,7 @@ export function VisitorProfileForm({ onSubmit, loading }: VisitorProfileFormProp
         </CardHeader>
         
         <CardContent className="space-y-6">
-          <div className="text-center p-4 bg-blue-50 rounded-lg">
+          <div className="text-center p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">
             <Badge variant="outline" className="mb-3">
               {automationResult.visitorType}
             </Badge>
@@ -190,16 +190,16 @@ export function VisitorProfileForm({ onSubmit, loading }: VisitorProfileFormProp
             <div className="space-y-2">
               {automationResult.visitorType === 'FIRST_TIME' && (
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-[hsl(var(--info)/0.10)]0 rounded-full"></div>
                   Bienvenida inmediata por email
                 </div>
               )}
               <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full"></div>
                 Video de bienvenida del pastor (2 días)
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-[hsl(var(--warning)/0.10)]0 rounded-full"></div>
                 Conectar con ministerios de interés (1 semana)
               </div>
             </div>
@@ -218,7 +218,7 @@ export function VisitorProfileForm({ onSubmit, loading }: VisitorProfileFormProp
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <UserPlus className="h-5 w-5 text-blue-600" />
+            <UserPlus className="h-5 w-5 text-[hsl(var(--info))]" />
             Registro de Visitante con Automatización
           </CardTitle>
           <CardDescription>
@@ -384,8 +384,8 @@ export function VisitorProfileForm({ onSubmit, loading }: VisitorProfileFormProp
           </div>
 
           {formData.ministryInterest.length > 0 && (
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-700">
+            <div className="mt-4 p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
+              <p className="text-sm text-[hsl(var(--info))]">
                 <strong>Automatización activada:</strong> Se conectará automáticamente con líderes de los ministerios seleccionados
               </p>
             </div>
@@ -414,8 +414,8 @@ export function VisitorProfileForm({ onSubmit, loading }: VisitorProfileFormProp
           </div>
 
           {formData.prayerRequest && (
-            <div className="mt-4 p-3 bg-purple-50 rounded-lg">
-              <p className="text-sm text-purple-700">
+            <div className="mt-4 p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
+              <p className="text-sm text-[hsl(var(--lavender))]">
                 <strong>Integración con Muro de Oración:</strong> Su petición será incluida en nuestro sistema de seguimiento de oración
               </p>
             </div>

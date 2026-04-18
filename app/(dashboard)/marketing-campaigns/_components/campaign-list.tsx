@@ -21,11 +21,11 @@ interface CampaignListProps {
 }
 
 const statusColors = {
-  DRAFT: 'bg-gray-100 text-gray-800',
-  ACTIVE: 'bg-green-100 text-green-800',
-  PAUSED: 'bg-yellow-100 text-yellow-800',
-  COMPLETED: 'bg-blue-100 text-blue-800',
-  CANCELLED: 'bg-red-100 text-red-800'
+  DRAFT: 'bg-muted/50 text-foreground',
+  ACTIVE: 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]',
+  PAUSED: 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]',
+  COMPLETED: 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]',
+  CANCELLED: 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
 };
 
 const statusLabels: Record<string, string> = {
@@ -99,9 +99,9 @@ export default function CampaignList({
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="animate-pulse space-y-3">
-                <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                <div className="h-3 bg-gray-200 rounded w-full"></div>
-                <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                <div className="h-4 bg-muted rounded w-1/3"></div>
+                <div className="h-3 bg-muted rounded w-full"></div>
+                <div className="h-3 bg-muted rounded w-2/3"></div>
               </div>
             ))}
           </div>
@@ -118,7 +118,7 @@ export default function CampaignList({
           <div className="flex flex-wrap gap-4">
             <div className="flex-1 min-w-[200px]">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 h-4 w-4" />
                 <Input
                   placeholder="Buscar campañas..."
                   value={searchTerm}
@@ -173,7 +173,7 @@ export default function CampaignList({
                 const tags = campaign.tags ? JSON.parse(campaign.tags) : [];
                 
                 return (
-                  <div key={campaign.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                  <div key={campaign.id} className="border rounded-lg p-4 hover:bg-muted/30 transition-colors">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
@@ -184,12 +184,12 @@ export default function CampaignList({
                         </div>
                         
                         {campaign.description && (
-                          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                          <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
                             {campaign.description}
                           </p>
                         )}
                         
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-3">
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-3">
                           <div className="flex items-center">
                             <Calendar className="mr-1 h-4 w-4" />
                             {new Date(campaign.startDate).toLocaleDateString()}
@@ -261,7 +261,7 @@ export default function CampaignList({
               })}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-muted-foreground">
               <Target className="mx-auto h-12 w-12 text-gray-300" />
               <h3 className="mt-2 text-sm font-medium">
                 {searchTerm || statusFilter !== 'all' ? 'Ninguna campaña coincide con los filtros' : 'No hay campañas aún'}

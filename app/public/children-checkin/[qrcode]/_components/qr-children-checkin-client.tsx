@@ -210,7 +210,7 @@ export function QRChildrenCheckInClient({
   }, [stream])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-background p-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -221,10 +221,10 @@ export function QRChildrenCheckInClient({
               className="w-16 h-16 mx-auto mb-4 rounded-full"
             />
           )}
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             Check-in de Niños
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             {churchInfo?.name || 'Iglesia'} - Registro via QR
           </p>
           {eventInfo && (
@@ -238,7 +238,7 @@ export function QRChildrenCheckInClient({
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium">Paso {step} de 3</span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-muted-foreground">
               {step === 1 && 'Información del Niño'}
               {step === 2 && 'Fotos de Seguridad'}
               {step === 3 && 'Confirmación'}
@@ -405,7 +405,7 @@ export function QRChildrenCheckInClient({
               {/* Child Photo */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <Baby className="w-5 h-5 text-blue-600" />
+                  <Baby className="w-5 h-5 text-[hsl(var(--info))]" />
                   <Label className="text-lg font-medium">Foto del Niño</Label>
                 </div>
                 
@@ -452,7 +452,7 @@ export function QRChildrenCheckInClient({
                         className="w-full h-32 border-dashed border-2"
                       >
                         <div className="text-center">
-                          <Camera className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                          <Camera className="w-8 h-8 mx-auto mb-2 text-muted-foreground/70" />
                           <p className="text-sm">Tomar Foto del Niño</p>
                         </div>
                       </Button>
@@ -467,7 +467,7 @@ export function QRChildrenCheckInClient({
                         className="w-full h-48 object-cover rounded-lg"
                       />
                       <div className="absolute top-2 right-2">
-                        <Badge className="bg-green-500">
+                        <Badge className="bg-[hsl(var(--success)/0.10)]0">
                           <CheckCircle className="w-3 h-3 mr-1" />
                           Capturada
                         </Badge>
@@ -490,7 +490,7 @@ export function QRChildrenCheckInClient({
               {/* Parent Photo */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-green-600" />
+                  <Users className="w-5 h-5 text-[hsl(var(--success))]" />
                   <Label className="text-lg font-medium">Foto del Padre/Madre</Label>
                 </div>
                 
@@ -537,7 +537,7 @@ export function QRChildrenCheckInClient({
                         className="w-full h-32 border-dashed border-2"
                       >
                         <div className="text-center">
-                          <Camera className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                          <Camera className="w-8 h-8 mx-auto mb-2 text-muted-foreground/70" />
                           <p className="text-sm">Tomar Foto del Padre/Madre</p>
                         </div>
                       </Button>
@@ -552,7 +552,7 @@ export function QRChildrenCheckInClient({
                         className="w-full h-48 object-cover rounded-lg"
                       />
                       <div className="absolute top-2 right-2">
-                        <Badge className="bg-green-500">
+                        <Badge className="bg-[hsl(var(--success)/0.10)]0">
                           <CheckCircle className="w-3 h-3 mr-1" />
                           Capturada
                         </Badge>
@@ -605,7 +605,7 @@ export function QRChildrenCheckInClient({
         {step === 3 && result && (
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-green-600">
+              <CardTitle className="flex items-center gap-2 text-[hsl(var(--success))]">
                 <CheckCircle className="w-6 h-6" />
                 Check-in Completado
               </CardTitle>
@@ -615,26 +615,26 @@ export function QRChildrenCheckInClient({
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Success Info */}
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-[hsl(var(--success)/0.10)]0 rounded-full flex items-center justify-center">
                     <CheckCircle className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-green-800">¡Check-in Exitoso!</h3>
-                    <p className="text-green-600">Su hijo/a está seguro con nosotros</p>
+                    <h3 className="font-bold text-[hsl(var(--success))]">¡Check-in Exitoso!</h3>
+                    <p className="text-[hsl(var(--success))]">Su hijo/a está seguro con nosotros</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                   <div className="flex items-center gap-2">
-                    <Baby className="w-4 h-4 text-green-600" />
+                    <Baby className="w-4 h-4 text-[hsl(var(--success))]" />
                     <span className="text-sm">
                       <strong>Niño:</strong> {formData.childName}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-green-600" />
+                    <Clock className="w-4 h-4 text-[hsl(var(--success))]" />
                     <span className="text-sm">
                       <strong>Hora:</strong> {new Date().toLocaleTimeString()}
                     </span>
@@ -643,28 +643,28 @@ export function QRChildrenCheckInClient({
               </div>
 
               {/* Security PIN */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <Key className="w-5 h-5 text-blue-600" />
-                  <h4 className="font-bold text-blue-800">Código de Seguridad</h4>
+                  <Key className="w-5 h-5 text-[hsl(var(--info))]" />
+                  <h4 className="font-bold text-[hsl(var(--info))]">Código de Seguridad</h4>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-mono font-bold text-blue-900 mb-2">
+                  <div className="text-3xl font-mono font-bold text-foreground mb-2">
                     {result.securityPin}
                   </div>
-                  <p className="text-sm text-blue-600">
+                  <p className="text-sm text-[hsl(var(--info))]">
                     💡 Guarde este código para recoger a su hijo/a
                   </p>
                 </div>
               </div>
 
               {/* Instructions */}
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <div className="bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-600" />
+                  <AlertTriangle className="w-5 h-5 text-[hsl(var(--warning))]" />
                   <h4 className="font-bold text-amber-800">Instrucciones de Recogida</h4>
                 </div>
-                <ul className="text-sm text-amber-700 space-y-1">
+                <ul className="text-sm text-[hsl(var(--warning))] space-y-1">
                   <li>• Presente su código de seguridad: <strong>{result.securityPin}</strong></li>
                   <li>• Se le tomará una foto para verificar identidad</li>
                   <li>• Solo padres autorizados pueden recoger al niño</li>

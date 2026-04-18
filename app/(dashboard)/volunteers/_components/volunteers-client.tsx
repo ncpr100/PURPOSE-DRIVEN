@@ -531,7 +531,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-                <Lightbulb className="h-6 w-6 text-yellow-500" />
+                <Lightbulb className="h-6 w-6 text-[hsl(var(--warning))]" />
                 Sistema de Recomendaciones Inteligente
               </h2>
               <p className="text-muted-foreground">
@@ -581,9 +581,9 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                           {volunteer.firstName} {volunteer.lastName}
                         </CardTitle>
                         <Badge variant="secondary" className={
-                          matchScore >= 80 ? "bg-green-100 text-green-800" :
-                          matchScore >= 60 ? "bg-yellow-100 text-yellow-800" :
-                          "bg-gray-100 text-gray-800"
+                          matchScore >= 80 ? "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]" :
+                          matchScore >= 60 ? "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]" :
+                          "bg-muted/50 text-foreground"
                         }>
                           {matchScore}% match
                         </Badge>
@@ -615,14 +615,14 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                           <h4 className="font-medium text-sm text-muted-foreground mb-2">Habilidades Destacadas</h4>
                           <div className="flex flex-wrap gap-1">
                             {skillsArray.slice(0, 3).map((skill: string, index: number) => (
-                              <Badge key={index} variant="outline" className="text-xs border-yellow-400 text-yellow-700">
+                              <Badge key={index} variant="outline" className="text-xs border-[hsl(var(--warning)/0.30)] text-[hsl(var(--warning))]">
                                 {skill}
                               </Badge>
                             ))}
                           </div>
                         </div>
                       ) : (
-                        <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
+                        <div className="p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-md">
                           <p className="text-xs text-amber-800">
                             <strong>Nota:</strong> Este voluntario no ha completado su evaluación espiritual. 
                             Recomendamos completarla para mejores recomendaciones.
@@ -635,7 +635,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                         <div className="space-y-2">
                           {profile && primaryGiftNames.length > 0 ? (
                             <div className="flex items-center gap-2 text-sm">
-                              <Target className="h-4 w-4 text-green-500" />
+                              <Target className="h-4 w-4 text-[hsl(var(--success))]" />
                               <span>Ideal para Ministerio de {primaryGiftNames[0]}</span>
                             </div>
                           ) : (
@@ -646,13 +646,13 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                           )}
                           {isAvailableWeekend && (
                             <div className="flex items-center gap-2 text-sm">
-                              <Calendar className="h-4 w-4 text-blue-500" />
+                              <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
                               <span>Disponible fines de semana</span>
                             </div>
                           )}
                           {hasLeadershipGifts && (
                             <div className="flex items-center gap-2 text-sm">
-                              <Star className="h-4 w-4 text-purple-500" />
+                              <Star className="h-4 w-4 text-[hsl(var(--lavender))]" />
                               <span>Alto potencial de liderazgo</span>
                             </div>
                           )}
@@ -687,9 +687,9 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
             {volunteers.filter(v => v.isActive).length === 0 && (
               <Card>
                 <CardContent className="text-center py-12">
-                  <Lightbulb className="mx-auto h-12 w-12 text-yellow-400 mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No hay voluntarios activos</h3>
-                  <p className="text-gray-600">
+                  <Lightbulb className="mx-auto h-12 w-12 text-[hsl(var(--warning)/0.9)] mb-4" />
+                  <h3 className="text-lg font-medium text-foreground mb-2">No hay voluntarios activos</h3>
+                  <p className="text-muted-foreground">
                     {volunteers.length === 0 ? 'Agrega voluntarios para generar recomendaciones personalizadas' : 'Los voluntarios existentes no están marcados como activos'}
                   </p>
                 </CardContent>
@@ -866,7 +866,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
       {/* Search */}
       <div className="flex items-center space-x-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 w-4 h-4" />
           <Input
             placeholder="Buscar voluntarios..."
             value={searchTerm}
@@ -945,15 +945,15 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
             <CardContent className="space-y-3">
               {volunteer.email && (
                 <div className="flex items-center space-x-2">
-                  <Mail className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">{volunteer.email}</span>
+                  <Mail className="w-4 h-4 text-muted-foreground/70" />
+                  <span className="text-sm text-muted-foreground">{volunteer.email}</span>
                 </div>
               )}
               
               {volunteer.phone && (
                 <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">{volunteer.phone}</span>
+                  <Phone className="w-4 h-4 text-muted-foreground/70" />
+                  <span className="text-sm text-muted-foreground">{volunteer.phone}</span>
                 </div>
               )}
 
@@ -1010,9 +1010,9 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
       {filteredVolunteers.length === 0 && (
         <Card>
           <CardContent className="text-center py-8">
-            <Users className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No se encontraron voluntarios</h3>
-            <p className="text-gray-600">
+            <Users className="mx-auto h-12 w-12 text-muted-foreground/70 mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">No se encontraron voluntarios</h3>
+            <p className="text-muted-foreground">
               {searchTerm ? 'Intenta con otros términos de búsqueda' : 'Comienza agregando tu primer voluntario'}
             </p>
           </CardContent>
@@ -1046,7 +1046,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 <SelectContent>
                   <SelectItem value="temporary">
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-blue-600" />
+                      <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
                       <div>
                         <div className="font-medium">Temporal</div>
                         <div className="text-xs text-muted-foreground">Para eventos o días específicos</div>
@@ -1055,7 +1055,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   </SelectItem>
                   <SelectItem value="permanent">
                     <div className="flex items-center gap-2">
-                      <Crown className="h-4 w-4 text-purple-600" />
+                      <Crown className="h-4 w-4 text-[hsl(var(--lavender))]" />
                       <div>
                         <div className="font-medium">Permanente</div>
                         <div className="text-xs text-muted-foreground">Rol continuo sin fecha de finalización</div>
@@ -1207,18 +1207,18 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                   <Label className="text-sm font-medium text-muted-foreground">Información Personal</Label>
                   <div className="mt-2 space-y-2">
                     <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-gray-400" />
+                      <User className="h-4 w-4 text-muted-foreground/70" />
                       <span className="text-sm">{selectedVolunteer.firstName} {selectedVolunteer.lastName}</span>
                     </div>
                     {selectedVolunteer.email && (
                       <div className="flex items-center gap-2">
-                        <Mail className="h-4 w-4 text-gray-400" />
+                        <Mail className="h-4 w-4 text-muted-foreground/70" />
                         <span className="text-sm">{selectedVolunteer.email}</span>
                       </div>
                     )}
                     {selectedVolunteer.phone && (
                       <div className="flex items-center gap-2">
-                        <Phone className="h-4 w-4 text-gray-400" />
+                        <Phone className="h-4 w-4 text-muted-foreground/70" />
                         <span className="text-sm">{selectedVolunteer.phone}</span>
                       </div>
                     )}
@@ -1338,7 +1338,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                             <Label className="text-xs font-medium text-muted-foreground">Pasiones Ministeriales</Label>
                             <div className="flex flex-wrap gap-1 mt-1">
                               {member_spiritual_profiles.ministryPassions.map((passion: string, index: number) => (
-                                <Badge key={index} variant="secondary" className="text-xs bg-green-100 text-green-800">
+                                <Badge key={index} variant="secondary" className="text-xs bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                                   {passion}
                                 </Badge>
                               ))}
@@ -1378,7 +1378,7 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                     <div className="space-y-2">
                       {(selectedVolunteer.assignments || []).slice(0, 3).map((assignment: any, index: number) => (
                         <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
-                          <Calendar className="h-4 w-4 text-blue-500" />
+                          <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
                           <span className="text-sm">Asignación {index + 1}</span>
                           <Badge variant="outline" className="ml-auto text-xs">Activa</Badge>
                         </div>
@@ -1434,20 +1434,20 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                             )}
                             
                             {memberAvailabilityMatrix && memberAvailabilityMatrix.recurringAvailability?.sunday && Object.values(memberAvailabilityMatrix.recurringAvailability.sunday as Record<string, boolean>).some(v => v) && (
-                              <div className="flex items-center gap-2 p-2 bg-green-50 rounded text-sm">
-                                <Calendar className="h-4 w-4 text-green-500" />
+                              <div className="flex items-center gap-2 p-2 bg-[hsl(var(--success)/0.10)] rounded text-sm">
+                                <Calendar className="h-4 w-4 text-[hsl(var(--success))]" />
                                 <span>Disponibilidad dominical confirmada</span>
-                                <Badge variant="outline" className="ml-auto text-xs bg-green-100 text-green-700">Excelente</Badge>
+                                <Badge variant="outline" className="ml-auto text-xs bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">Excelente</Badge>
                               </div>
                             )}
                             
                             {ministryPassions.length > 0 && (
-                              <div className="flex items-center gap-2 p-2 bg-amber-50 rounded text-sm">
-                                <Target className="h-4 w-4 text-amber-500" />
+                              <div className="flex items-center gap-2 p-2 bg-[hsl(var(--warning)/0.10)] rounded text-sm">
+                                <Target className="h-4 w-4 text-[hsl(var(--warning))]" />
                                 <span>
                                   {ministryPassions.length === 1 ? 'Pasión ministerial identificada' : `${ministryPassions.length} pasiones ministeriales identificadas`}
                                 </span>
-                                <Badge variant="outline" className="ml-auto text-xs bg-amber-100 text-amber-700">Activo</Badge>
+                                <Badge variant="outline" className="ml-auto text-xs bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">Activo</Badge>
                               </div>
                             )}
                           </>
@@ -1455,11 +1455,11 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                       })()}
                     </>
                   ) : (
-                    <div className="flex items-center gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm">
-                      <Lightbulb className="h-4 w-4 text-yellow-600" />
+                    <div className="flex items-center gap-2 p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded text-sm">
+                      <Lightbulb className="h-4 w-4 text-[hsl(var(--warning))]" />
                       <div className="flex-1">
-                        <p className="font-medium text-yellow-800">Evaluación espiritual pendiente</p>
-                        <p className="text-xs text-yellow-700 mt-1">Complete la evaluación para obtener recomendaciones inteligentes</p>
+                        <p className="font-medium text-[hsl(var(--warning))]">Evaluación espiritual pendiente</p>
+                        <p className="text-xs text-[hsl(var(--warning))] mt-1">Complete la evaluación para obtener recomendaciones inteligentes</p>
                       </div>
                     </div>
                   )}

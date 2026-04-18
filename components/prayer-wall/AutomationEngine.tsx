@@ -363,23 +363,23 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'sent': return 'bg-green-100 text-green-800'
-      case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'processing': return 'bg-blue-100 text-blue-800'
-      case 'failed': return 'bg-red-100 text-red-800'
-      case 'scheduled': return 'bg-purple-100 text-purple-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'sent': return 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
+      case 'pending': return 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]'
+      case 'processing': return 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]'
+      case 'failed': return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
+      case 'scheduled': return 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]'
+      default: return 'bg-muted/50 text-foreground'
     }
   }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'sent': return <CheckCircle className="w-4 h-4 text-green-600" />
-      case 'pending': return <Clock className="w-4 h-4 text-yellow-600" />
-      case 'processing': return <RefreshCw className="w-4 h-4 text-blue-600 animate-spin" />
-      case 'failed': return <XCircle className="w-4 h-4 text-red-600" />
-      case 'scheduled': return <Calendar className="w-4 h-4 text-purple-600" />
-      default: return <AlertTriangle className="w-4 h-4 text-gray-600" />
+      case 'sent': return <CheckCircle className="w-4 h-4 text-[hsl(var(--success))]" />
+      case 'pending': return <Clock className="w-4 h-4 text-[hsl(var(--warning))]" />
+      case 'processing': return <RefreshCw className="w-4 h-4 text-[hsl(var(--info))] animate-spin" />
+      case 'failed': return <XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" />
+      case 'scheduled': return <Calendar className="w-4 h-4 text-[hsl(var(--lavender))]" />
+      default: return <AlertTriangle className="w-4 h-4 text-muted-foreground" />
     }
   }
 
@@ -407,13 +407,13 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600">{title}</p>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
             <p className="text-2xl font-bold">{value}</p>
-            {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+            {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
             {trend && (
               <div className="flex items-center gap-1 mt-1">
-                <TrendingUp className="w-3 h-3 text-green-600" />
-                <span className="text-xs text-green-600">{trend}</span>
+                <TrendingUp className="w-3 h-3 text-[hsl(var(--success))]" />
+                <span className="text-xs text-[hsl(var(--success))]">{trend}</span>
               </div>
             )}
           </div>
@@ -426,7 +426,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -437,7 +437,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Motor de Automatización</h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Gestiona las reglas de automatización y el envío de mensajes
           </p>
         </div>
@@ -463,28 +463,28 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
           value={messagingStats.totalSent}
           subtitle="Total histórico"
           icon={Send}
-          color="text-blue-600"
+          color="text-[hsl(var(--info))]"
         />
         <StatCard
           title="Tasa de Entrega"
           value={`${messagingStats.deliveryRate}%`}
           subtitle="Mensajes entregados"
           icon={CheckCircle}
-          color="text-green-600"
+          color="text-[hsl(var(--success))]"
         />
         <StatCard
           title="Tasa de Respuesta"
           value={`${messagingStats.responseRate}%`}
           subtitle="Respuestas recibidas"
           icon={MessageSquare}
-          color="text-purple-600"
+          color="text-[hsl(var(--lavender))]"
         />
         <StatCard
           title="Tiempo Promedio"
           value={`${messagingStats.avgDeliveryTime}m`}
           subtitle="Tiempo de entrega"
           icon={Clock}
-          color="text-orange-600"
+          color="text-[hsl(var(--warning))]"
         />
       </div>
 
@@ -513,7 +513,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
             <Card>
               <CardContent className="text-center py-12">
                 <Settings className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                <p className="text-gray-500">No hay reglas de automatización configuradas</p>
+                <p className="text-muted-foreground">No hay reglas de automatización configuradas</p>
                 <Button
                   className="mt-4"
                   onClick={() => openRuleDialog()}
@@ -532,26 +532,26 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-lg font-semibold">{rule.name}</h3>
-                          <Badge className={rule.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                          <Badge className={rule.isActive ? 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]' : 'bg-muted/50 text-foreground'}>
                             {rule.isActive ? 'Activa' : 'Inactiva'}
                           </Badge>
                           <Badge variant="outline">
                             {getTriggerTypeDisplay(rule.triggerType)}
                           </Badge>
                         </div>
-                        <p className="text-gray-600 mb-3">{rule.description}</p>
+                        <p className="text-muted-foreground mb-3">{rule.description}</p>
                         
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                           <div>
-                            <p className="text-gray-500">Ejecuciones totales</p>
+                            <p className="text-muted-foreground">Ejecuciones totales</p>
                             <p className="font-medium">{rule.stats.totalRuns}</p>
                           </div>
                           <div>
-                            <p className="text-gray-500">Ejecuciones exitosas</p>
-                            <p className="font-medium text-green-600">{rule.stats.successRuns}</p>
+                            <p className="text-muted-foreground">Ejecuciones exitosas</p>
+                            <p className="font-medium text-[hsl(var(--success))]">{rule.stats.successRuns}</p>
                           </div>
                           <div>
-                            <p className="text-gray-500">Tasa de éxito</p>
+                            <p className="text-muted-foreground">Tasa de éxito</p>
                             <p className="font-medium">
                               {rule.stats.totalRuns > 0 
                                 ? Math.round((rule.stats.successRuns / rule.stats.totalRuns) * 100)
@@ -559,7 +559,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
                             </p>
                           </div>
                           <div>
-                            <p className="text-gray-500">Última ejecución</p>
+                            <p className="text-muted-foreground">Última ejecución</p>
                             <p className="font-medium">
                               {rule.stats.lastRun 
                                 ? format(new Date(rule.stats.lastRun), 'dd/MM/yy HH:mm')
@@ -608,23 +608,23 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
               <CardContent className="p-4 text-center">
-                <Clock className="w-8 h-8 mx-auto text-yellow-600 mb-2" />
+                <Clock className="w-8 h-8 mx-auto text-[hsl(var(--warning))] mb-2" />
                 <p className="text-2xl font-bold">{messagingStats.messagesByStatus.pending}</p>
-                <p className="text-sm text-gray-600">Pendientes</p>
+                <p className="text-sm text-muted-foreground">Pendientes</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
-                <CheckCircle className="w-8 h-8 mx-auto text-green-600 mb-2" />
+                <CheckCircle className="w-8 h-8 mx-auto text-[hsl(var(--success))] mb-2" />
                 <p className="text-2xl font-bold">{messagingStats.messagesByStatus.sent}</p>
-                <p className="text-sm text-gray-600">Enviados</p>
+                <p className="text-sm text-muted-foreground">Enviados</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
-                <XCircle className="w-8 h-8 mx-auto text-red-600 mb-2" />
+                <XCircle className="w-8 h-8 mx-auto text-[hsl(var(--destructive))] mb-2" />
                 <p className="text-2xl font-bold">{messagingStats.messagesByStatus.failed}</p>
-                <p className="text-sm text-gray-600">Fallidos</p>
+                <p className="text-sm text-muted-foreground">Fallidos</p>
               </CardContent>
             </Card>
           </div>
@@ -633,7 +633,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
             <Card>
               <CardContent className="text-center py-12">
                 <Send className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                <p className="text-gray-500">No hay mensajes en cola</p>
+                <p className="text-muted-foreground">No hay mensajes en cola</p>
               </CardContent>
             </Card>
           ) : (
@@ -665,7 +665,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
                             <p><span className="font-medium">Enviado:</span> {format(new Date(message.sentAt), "d 'de' MMM, HH:mm", { locale: es })}</p>
                           )}
                           {message.errorMessage && (
-                            <p className="text-red-600"><span className="font-medium">Error:</span> {message.errorMessage}</p>
+                            <p className="text-[hsl(var(--destructive))]"><span className="font-medium">Error:</span> {message.errorMessage}</p>
                           )}
                         </div>
                       </div>
@@ -697,21 +697,21 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-blue-600" />
+                    <Mail className="w-4 h-4 text-[hsl(var(--info))]" />
                     <span>Email</span>
                   </div>
                   <span className="font-medium">{messagingStats.messagesByType.email}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-green-600" />
+                    <Phone className="w-4 h-4 text-[hsl(var(--success))]" />
                     <span>SMS</span>
                   </div>
                   <span className="font-medium">{messagingStats.messagesByType.sms}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4 text-purple-600" />
+                    <MessageSquare className="w-4 h-4 text-[hsl(var(--lavender))]" />
                     <span>WhatsApp</span>
                   </div>
                   <span className="font-medium">{messagingStats.messagesByType.whatsapp}</span>
@@ -725,13 +725,13 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
               </CardHeader>
               <CardContent>
                 {messagingStats.topTemplates.length === 0 ? (
-                  <p className="text-center text-gray-500 py-4">No hay datos disponibles</p>
+                  <p className="text-center text-muted-foreground py-4">No hay datos disponibles</p>
                 ) : (
                   <div className="space-y-3">
                     {messagingStats.topTemplates.map((template, index) => (
                       <div key={template.id} className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-medium">
+                          <span className="w-6 h-6 bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] rounded-full flex items-center justify-center text-sm font-medium">
                             {index + 1}
                           </span>
                           <span className="text-sm">{template.name}</span>
@@ -750,16 +750,16 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-green-600">{messagingStats.deliveryRate}%</p>
-                  <p className="text-sm text-gray-600">Tasa de entrega</p>
+                  <p className="text-2xl font-bold text-[hsl(var(--success))]">{messagingStats.deliveryRate}%</p>
+                  <p className="text-sm text-muted-foreground">Tasa de entrega</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-blue-600">{messagingStats.responseRate}%</p>
-                  <p className="text-sm text-gray-600">Tasa de respuesta</p>
+                  <p className="text-2xl font-bold text-[hsl(var(--info))]">{messagingStats.responseRate}%</p>
+                  <p className="text-sm text-muted-foreground">Tasa de respuesta</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-orange-600">{messagingStats.avgDeliveryTime}m</p>
-                  <p className="text-sm text-gray-600">Tiempo promedio</p>
+                  <p className="text-2xl font-bold text-[hsl(var(--warning))]">{messagingStats.avgDeliveryTime}m</p>
+                  <p className="text-sm text-muted-foreground">Tiempo promedio</p>
                 </div>
               </CardContent>
             </Card>
@@ -772,7 +772,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
               <CardTitle>Configuración de Mensajería</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-center text-gray-500 py-8">
+              <p className="text-center text-muted-foreground py-8">
                 La configuración avanzada de mensajería se implementará en futuras versiones.
                 Incluirá configuraciones para proveedores de SMS, WhatsApp Business API, 
                 configuraciones SMTP personalizadas y más.

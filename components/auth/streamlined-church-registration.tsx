@@ -181,31 +181,31 @@ export default function StreamlinedChurchRegistration() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <div className="w-full max-w-md">
           <Card>
             <CardHeader className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                <Mail className="h-6 w-6 text-green-600" />
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[hsl(var(--success)/0.15)]">
+                <Mail className="h-6 w-6 text-[hsl(var(--success))]" />
               </div>
-              <CardTitle className="text-green-900">¡Solicitud Enviada!</CardTitle>
+              <CardTitle className="text-foreground">¡Solicitud Enviada!</CardTitle>
               <CardDescription>
                 Hemos recibido tu solicitud de cuenta para iglesia
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                <p className="text-sm text-green-800 text-center">
+              <div className="p-4 bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg">
+                <p className="text-sm text-[hsl(var(--success))] text-center">
                   {success}
                 </p>
               </div>
               
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="p-4 bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Key className="h-4 w-4 text-blue-600" />
-                  <h4 className="font-semibold text-blue-900">Próximos Pasos:</h4>
+                  <Key className="h-4 w-4 text-[hsl(var(--info))]" />
+                  <h4 className="font-semibold text-foreground">Próximos Pasos:</h4>
                 </div>
-                <ul className="text-sm text-blue-800 space-y-1">
+                <ul className="text-sm text-[hsl(var(--info))] space-y-1">
                   <li>• Nuestro equipo revisará tu solicitud</li>
                   <li>• Recibirás un email con credenciales temporales</li>
                   <li>• Podrás cambiar tu contraseña al iniciar sesión</li>
@@ -214,7 +214,7 @@ export default function StreamlinedChurchRegistration() {
               </div>
 
               <div className="text-center">
-                <Link href="/auth/signin" className="text-blue-600 hover:underline">
+                <Link href="/auth/signin" className="text-[hsl(var(--info))] hover:underline">
                   ¿Ya tienes credenciales? Inicia sesión aquí
                 </Link>
               </div>
@@ -226,10 +226,10 @@ export default function StreamlinedChurchRegistration() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4" data-streamlined-registration="true">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4" data-streamlined-registration="true">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
-          <Logo size="xl" className="text-gray-900" />
+          <Logo size="xl" className="text-foreground" />
         </div>
         
         <Card>
@@ -242,7 +242,7 @@ export default function StreamlinedChurchRegistration() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded">
+                <div className="p-3 text-sm text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded">
                   {error}
                 </div>
               )}
@@ -264,10 +264,10 @@ export default function StreamlinedChurchRegistration() {
                   data-1p-ignore="true"
                   data-form-type="other"
                   data-autocomplete-type="disabled"
-                  className={validationErrors['churchName'] ? 'border-red-500' : ''}
+                  className={validationErrors['churchName'] ? 'border-[hsl(var(--destructive))]' : ''}
                 />
                 {validationErrors['churchName'] && (
-                  <p className="text-sm text-red-500">El nombre de la iglesia es requerido</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">El nombre de la iglesia es requerido</p>
                 )}
               </div>
 
@@ -289,10 +289,10 @@ export default function StreamlinedChurchRegistration() {
                     data-1p-ignore="true"
                     data-form-type="other"
                     data-autocomplete-type="disabled"
-                    className={validationErrors['firstName'] ? 'border-red-500' : ''}
+                    className={validationErrors['firstName'] ? 'border-[hsl(var(--destructive))]' : ''}
                   />
                   {validationErrors['firstName'] && (
-                    <p className="text-sm text-red-500">El nombre es requerido</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">El nombre es requerido</p>
                   )}
                 </div>
                 
@@ -313,10 +313,10 @@ export default function StreamlinedChurchRegistration() {
                     data-1p-ignore="true"
                     data-form-type="other"
                     data-autocomplete-type="disabled"
-                    className={validationErrors['lastName'] ? 'border-red-500' : ''}
+                    className={validationErrors['lastName'] ? 'border-[hsl(var(--destructive))]' : ''}
                   />
                   {validationErrors['lastName'] && (
-                    <p className="text-sm text-red-500">El apellido es requerido</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">El apellido es requerido</p>
                   )}
                 </div>
               </div>
@@ -339,10 +339,10 @@ export default function StreamlinedChurchRegistration() {
                   data-1p-ignore="true"
                   data-form-type="other"
                   data-autocomplete-type="disabled"
-                  className={validationErrors['email'] ? 'border-red-500' : ''}
+                  className={validationErrors['email'] ? 'border-[hsl(var(--destructive))]' : ''}
                 />
                 {validationErrors['email'] && (
-                  <p className="text-sm text-red-500">Email válido es requerido</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">Email válido es requerido</p>
                 )}
               </div>
 
@@ -351,7 +351,7 @@ export default function StreamlinedChurchRegistration() {
                 {plansLoading ? (
                   <div className="flex items-center justify-center p-4">
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    <span className="text-sm text-gray-500">Cargando planes...</span>
+                    <span className="text-sm text-muted-foreground">Cargando planes...</span>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -371,7 +371,7 @@ export default function StreamlinedChurchRegistration() {
                                 <IconComponent className="h-4 w-4" />
                                 <div>
                                   <span className="font-medium">{plan.name}: {plan.displayName}</span>
-                                  <span className="text-sm text-gray-500 ml-2">
+                                  <span className="text-sm text-muted-foreground ml-2">
                                     {plan.priceMonthly.toLowerCase().includes('personalizado') ? 'Cotización personalizada' : `${plan.priceMonthly}/mes`}
                                   </span>
                                 </div>
@@ -383,31 +383,31 @@ export default function StreamlinedChurchRegistration() {
                     </Select>
 
                     {selectedPlan && (
-                      <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="p-3 bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg">
                         <div className="flex items-start gap-3">
-                          <div className="p-2 bg-blue-100 rounded-lg">
+                          <div className="p-2 bg-[hsl(var(--info)/0.15)] rounded-lg">
                             {(() => {
                               const IconComponent = PLAN_ICONS[selectedPlan.name as keyof typeof PLAN_ICONS] || Crown
-                              return <IconComponent className="h-5 w-5 text-blue-600" />
+                              return <IconComponent className="h-5 w-5 text-[hsl(var(--info))]" />
                             })()}
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-1">
-                              <h3 className="font-semibold text-blue-900">
+                              <h3 className="font-semibold text-foreground">
                                 {selectedPlan.name}: {selectedPlan.displayName}
                               </h3>
                               <div className="text-right">
                                 {selectedPlan.priceMonthly.toLowerCase().includes('personalizado') ? (
-                                  <div className="text-lg font-bold text-blue-600">
+                                  <div className="text-lg font-bold text-[hsl(var(--info))]">
                                     Cotización personalizada
                                   </div>
                                 ) : (
                                   <>
-                                    <div className="text-lg font-bold text-blue-600">
+                                    <div className="text-lg font-bold text-[hsl(var(--info))]">
                                       {selectedPlan.priceMonthly}/mes
                                     </div>
                                     {selectedPlan.priceYearly && (
-                                      <div className="text-sm text-blue-500 whitespace-nowrap">
+                                      <div className="text-sm text-[hsl(var(--info))] whitespace-nowrap">
                                         {selectedPlan.priceYearly}/año
                                       </div>
                                     )}
@@ -415,8 +415,8 @@ export default function StreamlinedChurchRegistration() {
                                 )}
                               </div>
                             </div>
-                            <p className="text-sm text-blue-700 mb-3">{selectedPlan.description}</p>
-                            <div className="flex items-center gap-4 text-sm text-blue-600">
+                            <p className="text-sm text-[hsl(var(--info))] mb-3">{selectedPlan.description}</p>
+                            <div className="flex items-center gap-4 text-sm text-[hsl(var(--info))]">
                               <div className="flex items-center gap-1">
                                 <Building className="h-4 w-4" />
                                 <span>
@@ -441,7 +441,7 @@ export default function StreamlinedChurchRegistration() {
                       </div>
                     )}
 
-                    <div className="text-xs text-gray-500 bg-yellow-50 p-2 rounded border border-yellow-200">
+                    <div className="text-xs text-muted-foreground bg-[hsl(var(--warning)/0.10)] p-2 rounded border border-[hsl(var(--warning)/0.3)]">
                       ⭐ Todos los planes incluyen 14 días de prueba gratuita<br />
                       🔑 Las credenciales serán proporcionadas por nuestro equipo<br />
                       💰 Facturación le llegará al correo electrónico
@@ -470,9 +470,9 @@ export default function StreamlinedChurchRegistration() {
               </Button>
 
               <div className="text-center">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   ¿Ya tienes credenciales?{' '}
-                  <Link href="/auth/signin" className="text-blue-600 hover:underline">
+                  <Link href="/auth/signin" className="text-[hsl(var(--info))] hover:underline">
                     Inicia sesión aquí
                   </Link>
                 </p>

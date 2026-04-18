@@ -26,7 +26,7 @@ export default function WhatsNewAugust2025Page() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-yellow-500" />
+                <Star className="h-5 w-5 text-[hsl(var(--warning))]" />
                 Características Principales
               </CardTitle>
               <Badge variant="default">Nuevo</Badge>
@@ -35,7 +35,7 @@ export default function WhatsNewAugust2025Page() {
           <CardContent className="space-y-4">
             <div className="grid gap-4">
               <div className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-1" />
                 <div>
                   <h4 className="font-medium">Dashboard de Análisis Avanzado</h4>
                   <p className="text-sm text-muted-foreground">
@@ -46,7 +46,7 @@ export default function WhatsNewAugust2025Page() {
               </div>
               
               <div className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-1" />
                 <div>
                   <h4 className="font-medium">Sistema de Website Builder</h4>
                   <p className="text-sm text-muted-foreground">
@@ -57,7 +57,7 @@ export default function WhatsNewAugust2025Page() {
               </div>
 
               <div className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-1" />
                 <div>
                   <h4 className="font-medium">Platform Super Admin</h4>
                   <p className="text-sm text-muted-foreground">
@@ -114,7 +114,7 @@ export default function WhatsNewAugust2025Page() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-3 gap-4">
               <div className="text-center p-4 border rounded-lg">
-                <Users className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                <Users className="h-8 w-8 text-[hsl(var(--info))] mx-auto mb-2" />
                 <h4 className="font-medium">Visitor Analytics</h4>
                 <p className="text-xs text-muted-foreground">
                   Análisis detallado de visitantes primerizos vs. recurrentes
@@ -122,7 +122,7 @@ export default function WhatsNewAugust2025Page() {
               </div>
               
               <div className="text-center p-4 border rounded-lg">
-                <Zap className="h-8 w-8 text-yellow-600 mx-auto mb-2" />
+                <Zap className="h-8 w-8 text-[hsl(var(--warning))] mx-auto mb-2" />
                 <h4 className="font-medium">Automation Success</h4>
                 <p className="text-xs text-muted-foreground">
                   Tasas de éxito de flujos de automatización
@@ -130,7 +130,7 @@ export default function WhatsNewAugust2025Page() {
               </div>
               
               <div className="text-center p-4 border rounded-lg">
-                <Star className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                <Star className="h-8 w-8 text-[hsl(var(--lavender))] mx-auto mb-2" />
                 <h4 className="font-medium">Engagement Scores</h4>
                 <p className="text-xs text-muted-foreground">
                   Puntuaciones de participación e interacción
@@ -160,28 +160,28 @@ export default function WhatsNewAugust2025Page() {
         </Card>
 
         {/* Coming Next */}
-        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <Card className="bg-gradient-to-r from-primary/20 to-primary/10 border-[hsl(var(--info)/0.3)]">
           <CardHeader>
-            <CardTitle className="text-blue-800">Próximamente</CardTitle>
-            <CardDescription className="text-blue-600">
+            <CardTitle className="text-[hsl(var(--info))]">Próximamente</CardTitle>
+            <CardDescription className="text-[hsl(var(--info))]">
               Características planificadas para septiembre 2025
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="flex items-center gap-2 text-blue-700">
+              <div className="flex items-center gap-2 text-[hsl(var(--info))]">
                 <ArrowRight className="h-4 w-4" />
                 <span className="text-sm">App móvil nativa</span>
               </div>
-              <div className="flex items-center gap-2 text-blue-700">
+              <div className="flex items-center gap-2 text-[hsl(var(--info))]">
                 <ArrowRight className="h-4 w-4" />
                 <span className="text-sm">Integración con WhatsApp Business</span>
               </div>
-              <div className="flex items-center gap-2 text-blue-700">
+              <div className="flex items-center gap-2 text-[hsl(var(--info))]">
                 <ArrowRight className="h-4 w-4" />
                 <span className="text-sm">Analytics predictivos con IA</span>
               </div>
-              <div className="flex items-center gap-2 text-blue-700">
+              <div className="flex items-center gap-2 text-[hsl(var(--info))]">
                 <ArrowRight className="h-4 w-4" />
                 <span className="text-sm">Gestión avanzada de voluntarios</span>
               </div>

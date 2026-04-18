@@ -675,13 +675,13 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
   const getEventStatusColor = (status: string) => {
     const colors = {
-      PLANIFICANDO: 'bg-yellow-100 text-yellow-800',
-      PROMOCIONANDO: 'bg-blue-100 text-blue-800',
-      ACTIVO: 'bg-green-100 text-green-800',
-      COMPLETADO: 'bg-gray-100 text-gray-800',
-      CANCELADO: 'bg-red-100 text-red-800'
+      PLANIFICANDO: 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]',
+      PROMOCIONANDO: 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]',
+      ACTIVO: 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]',
+      COMPLETADO: 'bg-muted/50 text-foreground',
+      CANCELADO: 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
     }
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+    return colors[status as keyof typeof colors] || 'bg-muted/50 text-foreground'
   }
 
   const getCategoryIcon = (category: string) => {
@@ -721,7 +721,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="default" className="px-3 py-1 bg-green-100 text-green-800">
+          <Badge variant="default" className="px-3 py-1 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
             <Zap className="h-4 w-4 mr-2" />
             Sistema Unificado
           </Badge>
@@ -738,7 +738,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Calendar className="h-4 w-4 text-blue-500" />
+                <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
                 <div>
                   <p className="text-2xl font-bold">{analytics.totalEvents}</p>
                   <p className="text-xs text-muted-foreground">Total Eventos</p>
@@ -749,7 +749,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Activity className="h-4 w-4 text-green-500" />
+                <Activity className="h-4 w-4 text-[hsl(var(--success))]" />
                 <div>
                   <p className="text-2xl font-bold">{analytics.activeEvents}</p>
                   <p className="text-xs text-muted-foreground">Eventos Activos</p>
@@ -760,7 +760,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4 text-purple-500" />
+                <Users className="h-4 w-4 text-[hsl(var(--lavender))]" />
                 <div>
                   <p className="text-2xl font-bold">{analytics.totalAttendees}</p>
                   <p className="text-xs text-muted-foreground">Asistentes Total</p>
@@ -771,7 +771,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <DollarSign className="h-4 w-4 text-yellow-500" />
+                <DollarSign className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">${analytics.totalDonations.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                   <p className="text-xs text-muted-foreground">Donaciones</p>
@@ -782,7 +782,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <TrendingUp className="h-4 w-4 text-orange-500" />
+                <TrendingUp className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">{Math.round(analytics.averageAttendance)}</p>
                   <p className="text-xs text-muted-foreground">Promedio Asistencia</p>
@@ -855,7 +855,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                 {/* Event Templates Section */}
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-medium text-gray-700">🎯 Plantillas Rápidas</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground">🎯 Plantillas Rápidas</h3>
                     <span className="text-xs text-muted-foreground">Haz clic para aplicar</span>
                   </div>
                   <div className="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto">
@@ -867,10 +867,10 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                         className="p-2 text-xs border rounded-lg hover:bg-muted/50 hover:border-primary transition-all group"
                       >
                         <div className="text-lg mb-1">{template.icon}</div>
-                        <div className="font-medium text-gray-700 group-hover:text-primary">
+                        <div className="font-medium text-muted-foreground group-hover:text-primary">
                           {template.name}
                         </div>
-                        <div className="text-gray-500">{template.duration}min</div>
+                        <div className="text-muted-foreground">{template.duration}min</div>
                       </button>
                     ))}
                   </div>
@@ -882,7 +882,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       type="button"
                       variant="outline"
                       onClick={generateEventSuggestions}
-                      className="bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100"
+                      className="btn-cta-gradient hover:from-[hsl(var(--primary))] hover:to-[hsl(var(--lavender))]"
                     >
                       <Brain className="h-4 w-4 mr-2" />
                       Generar Sugerencias IA

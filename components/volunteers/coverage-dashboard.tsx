@@ -34,32 +34,32 @@ const statusConfig: Record<
 > = {
   CONFIRMED: {
     label: "Confirmado",
-    color: "text-green-700 bg-green-50 border-green-200",
+    color: "text-[hsl(var(--success))] bg-[hsl(var(--success)/0.10)] border-[hsl(var(--success)/0.3)]",
     icon: ShieldCheck,
   },
   COVERED: {
     label: "Cubierto",
-    color: "text-blue-700 bg-blue-50 border-blue-200",
+    color: "text-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)] border-[hsl(var(--info)/0.3)]",
     icon: ShieldCheck,
   },
   UNCONFIRMED: {
     label: "Sin confirmar",
-    color: "text-yellow-700 bg-yellow-50 border-yellow-200",
+    color: "text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.10)] border-[hsl(var(--warning)/0.3)]",
     icon: Shield,
   },
   CANCELLED: {
     label: "Cancelado",
-    color: "text-orange-700 bg-orange-50 border-orange-200",
+    color: "text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.10)] border-[hsl(var(--warning)/0.3)]",
     icon: ShieldAlert,
   },
   UNPROTECTED: {
     label: "Sin cobertura",
-    color: "text-red-700 bg-red-50 border-red-200",
+    color: "text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)] border-[hsl(var(--destructive)/0.3)]",
     icon: ShieldX,
   },
   NO_BACKUP_ASSIGNED: {
     label: "Sin suplente",
-    color: "text-red-700 bg-red-50 border-red-200",
+    color: "text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)] border-[hsl(var(--destructive)/0.3)]",
     icon: ShieldX,
   },
 };
@@ -99,9 +99,9 @@ export function CoverageDashboard() {
   };
 
   const getCoverageColor = (rate: number) => {
-    if (rate >= 0.9) return "text-green-600";
-    if (rate >= 0.7) return "text-yellow-600";
-    return "text-red-600";
+    if (rate >= 0.9) return "text-[hsl(var(--success))]";
+    if (rate >= 0.7) return "text-[hsl(var(--warning))]";
+    return "text-[hsl(var(--destructive))]";
   };
 
   if (isLoading) {
@@ -141,7 +141,7 @@ export function CoverageDashboard() {
       {coverage.length === 0 ? (
         <Card>
           <CardContent className="py-8 text-center text-muted-foreground text-sm">
-            <ShieldCheck className="w-10 h-10 mx-auto mb-2 text-green-500 opacity-60" />
+            <ShieldCheck className="w-10 h-10 mx-auto mb-2 text-[hsl(var(--success))] opacity-60" />
             No hay eventos con voluntarios asignados en los próximos 7 días.
           </CardContent>
         </Card>
@@ -156,7 +156,7 @@ export function CoverageDashboard() {
           return (
             <Card
               key={item.event.id}
-              className={hasIssues ? "border-red-200" : ""}
+              className={hasIssues ? "border-[hsl(var(--destructive)/0.3)]" : ""}
             >
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">

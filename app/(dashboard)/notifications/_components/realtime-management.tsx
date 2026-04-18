@@ -152,13 +152,13 @@ export function RealTimeManagement() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'online':
-        return 'bg-green-500'
+        return 'bg-[hsl(var(--success)/0.10)]0'
       case 'away':
-        return 'bg-yellow-500'
+        return 'bg-[hsl(var(--warning)/0.10)]0'
       case 'busy':
-        return 'bg-red-500'
+        return 'bg-[hsl(var(--destructive)/0.10)]0'
       default:
-        return 'bg-gray-500'
+        return 'bg-muted/300'
     }
   }
 
@@ -235,18 +235,18 @@ export function RealTimeManagement() {
               <div className="flex items-center gap-2">
                 {isConnected ? (
                   <>
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span className="text-sm text-green-600">Conectado</span>
+                    <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
+                    <span className="text-sm text-[hsl(var(--success))]">Conectado</span>
                   </>
                 ) : isConnecting ? (
                   <>
-                    <RefreshCw className="h-4 w-4 animate-spin text-blue-500" />
-                    <span className="text-sm text-blue-600">Conectando</span>
+                    <RefreshCw className="h-4 w-4 animate-spin text-[hsl(var(--info))]" />
+                    <span className="text-sm text-[hsl(var(--info))]">Conectando</span>
                   </>
                 ) : (
                   <>
-                    <AlertCircle className="h-4 w-4 text-red-500" />
-                    <span className="text-sm text-red-600">Desconectado</span>
+                    <AlertCircle className="h-4 w-4 text-[hsl(var(--destructive))]" />
+                    <span className="text-sm text-[hsl(var(--destructive))]">Desconectado</span>
                   </>
                 )}
               </div>

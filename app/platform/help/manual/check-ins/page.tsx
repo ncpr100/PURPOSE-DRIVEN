@@ -18,7 +18,7 @@ export default function SuperAdminCheckInsManual() {
       </Link>
 
       <div className="flex items-center gap-3 mb-6">
-        <Crown className="h-8 w-8 text-yellow-600" />
+        <Crown className="h-8 w-8 text-[hsl(var(--warning))]" />
         <div>
           <h1 className="text-3xl font-bold">Manual SUPER_ADMIN: Check-In Avanzado</h1>
           <p className="text-muted-foreground">Configuración y administración del sistema WebRTC y Automatización</p>
@@ -27,10 +27,10 @@ export default function SuperAdminCheckInsManual() {
 
       <div className="space-y-8">
         {/* Administrative Overview */}
-        <Card className="border-yellow-200 bg-yellow-50">
+        <Card className="border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Crown className="h-5 w-5 text-yellow-600" />
+              <Crown className="h-5 w-5 text-[hsl(var(--warning))]" />
               Panel de Control SUPER_ADMIN
             </CardTitle>
           </CardHeader>
@@ -60,7 +60,7 @@ export default function SuperAdminCheckInsManual() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="bg-blue-50 p-4 rounded-lg">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
               <h4 className="font-semibold mb-2">Nuevos Campos de Base de Datos</h4>
               <p className="text-sm mb-3">El sistema ha añadido los siguientes campos para las nuevas funcionalidades:</p>
               
@@ -101,16 +101,16 @@ export default function SuperAdminCheckInsManual() {
               </div>
             </div>
 
-            <div className="bg-red-50 p-4 rounded-lg border-red-200">
+            <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg border-[hsl(var(--destructive)/0.3)]">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-red-600" />
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 Comandos de Mantenimiento
               </h4>
               <div className="text-sm space-y-2">
                 <p><strong>Para sincronizar la base de datos:</strong></p>
-                <code className="bg-gray-100 px-2 py-1 rounded">yarn prisma db push</code>
+                <code className="bg-muted/50 px-2 py-1 rounded">yarn prisma db push</code>
                 <p><strong>Para regenerar el cliente Prisma:</strong></p>
-                <code className="bg-gray-100 px-2 py-1 rounded">yarn prisma generate</code>
+                <code className="bg-muted/50 px-2 py-1 rounded">yarn prisma generate</code>
               </div>
             </div>
           </CardContent>
@@ -148,7 +148,7 @@ export default function SuperAdminCheckInsManual() {
               </div>
             </div>
 
-            <div className="bg-yellow-50 p-4 rounded-lg border-yellow-200">
+            <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-[hsl(var(--warning)/0.3)]">
               <h4 className="font-semibold mb-2">Variables de Entorno Requeridas</h4>
               <div className="text-sm space-y-1">
                 <p>• <code>CRON_SECRET</code> - Para trabajos de limpieza automática</p>
@@ -194,9 +194,9 @@ export default function SuperAdminCheckInsManual() {
               </div>
             </div>
 
-            <div className="bg-red-50 p-4 rounded-lg border-red-200">
+            <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg border-[hsl(var(--destructive)/0.3)]">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-red-600" />
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 Políticas de Seguridad
               </h4>
               <ul className="text-sm space-y-1">
@@ -251,7 +251,7 @@ export default function SuperAdminCheckInsManual() {
               </div>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg border-blue-200">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border-[hsl(var(--info)/0.3)]">
               <h4 className="font-semibold mb-2">Integración con Muro de Oración</h4>
               <p className="text-sm">Las peticiones de oración de visitantes se integran automáticamente con el sistema de Muro de Oración para seguimiento pastoral.</p>
             </div>
@@ -286,10 +286,10 @@ export default function SuperAdminCheckInsManual() {
                 </div>
               </div>
               
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-muted/30 p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">Comando de Limpieza Manual</h4>
                 <p className="text-sm mb-2">Para ejecutar limpieza de fotos manualmente:</p>
-                <code className="bg-gray-100 px-2 py-1 rounded text-sm">
+                <code className="bg-muted/50 px-2 py-1 rounded text-sm">
                   curl -X POST /api/child-security/cleanup -H &quot;Authorization: Bearer [CRON_SECRET]&quot;
                 </code>
               </div>

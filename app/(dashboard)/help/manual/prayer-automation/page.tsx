@@ -25,10 +25,10 @@ export default function PrayerAutomationManual() {
 
       <div className="space-y-6">
         {/* Overview */}
-        <Card className="border-purple-200 bg-purple-50">
+        <Card className="border-[hsl(var(--lavender)/0.3)] bg-[hsl(var(--lavender)/0.10)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Heart className="h-5 w-5 text-purple-600" />
+              <Heart className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Sistema de Oración Automatizado
             </CardTitle>
           </CardHeader>
@@ -38,19 +38,19 @@ export default function PrayerAutomationManual() {
             </p>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
-                <Zap className="h-4 w-4 text-purple-600 mt-0.5" />
+                <Zap className="h-4 w-4 text-[hsl(var(--lavender))] mt-0.5" />
                 <span><strong>Notifica al equipo de oración</strong> por SMS, Email o WhatsApp en segundos</span>
               </li>
               <li className="flex items-start gap-2">
-                <MessageCircle className="h-4 w-4 text-purple-600 mt-0.5" />
+                <MessageCircle className="h-4 w-4 text-[hsl(var(--lavender))] mt-0.5" />
                 <span><strong>Envía confirmación</strong> al solicitante de que su petición fue recibida</span>
               </li>
               <li className="flex items-start gap-2">
-                <Users className="h-4 w-4 text-purple-600 mt-0.5" />
+                <Users className="h-4 w-4 text-[hsl(var(--lavender))] mt-0.5" />
                 <span><strong>Asigna a un intercesor</strong> para seguimiento personalizado</span>
               </li>
               <li className="flex items-start gap-2">
-                <Heart className="h-4 w-4 text-purple-600 mt-0.5" />
+                <Heart className="h-4 w-4 text-[hsl(var(--lavender))] mt-0.5" />
                 <span><strong>Programa llamadas de oración</strong> para casos urgentes</span>
               </li>
             </ul>
@@ -64,8 +64,8 @@ export default function PrayerAutomationManual() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-4">
-              <div className="flex items-start gap-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--info)/0.10)] rounded-lg border border-[hsl(var(--info)/0.3)]">
+                <div className="bg-[hsl(var(--info))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   1
                 </div>
                 <div className="flex-1">
@@ -82,8 +82,8 @@ export default function PrayerAutomationManual() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg border border-green-200">
-                <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
+                <div className="bg-[hsl(var(--success))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   2
                 </div>
                 <div className="flex-1">
@@ -99,8 +99,8 @@ export default function PrayerAutomationManual() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--lavender)/0.10)] rounded-lg border border-[hsl(var(--lavender)/0.3)]">
+                <div className="bg-[hsl(var(--lavender))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   3
                 </div>
                 <div className="flex-1">
@@ -109,7 +109,7 @@ export default function PrayerAutomationManual() {
                     Busca reglas de automatización activas que coincidan:
                   </p>
                   <div className="bg-white p-3 rounded mt-2 border">
-                    <p className="text-xs font-mono text-gray-600">
+                    <p className="text-xs font-mono text-muted-foreground">
                       SI prioridad = URGENTE Y categoría = Salud<br/>
                       ENTONCES ejecutar: &quot;Notificación Urgente al Equipo&quot;
                     </p>
@@ -117,8 +117,8 @@ export default function PrayerAutomationManual() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-orange-50 rounded-lg border border-orange-200">
-                <div className="bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--warning)/0.10)] rounded-lg border border-[hsl(var(--warning)/0.3)]">
+                <div className="bg-[hsl(var(--warning))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   4
                 </div>
                 <div className="flex-1">
@@ -127,16 +127,16 @@ export default function PrayerAutomationManual() {
                     La regla puede configurarse de dos formas:
                   </p>
                   <div className="grid md:grid-cols-2 gap-3">
-                    <div className="bg-green-100 p-3 rounded border border-green-300">
-                      <p className="font-semibold text-green-900 text-sm mb-1">✅ CON Bypass (Recomendado)</p>
-                      <p className="text-xs text-green-800">
+                    <div className="bg-[hsl(var(--success)/0.15)] p-3 rounded border border-[hsl(var(--success)/0.4)]">
+                      <p className="font-semibold text-foreground text-sm mb-1">✅ CON Bypass (Recomendado)</p>
+                      <p className="text-xs text-[hsl(var(--success))]">
                         Ejecuta las acciones inmediatamente sin esperar aprobación manual. 
                         Ideal para confirmaciones y notificaciones.
                       </p>
                     </div>
-                    <div className="bg-yellow-100 p-3 rounded border border-yellow-300">
-                      <p className="font-semibold text-yellow-900 text-sm mb-1">⏸️ SIN Bypass</p>
-                      <p className="text-xs text-yellow-800">
+                    <div className="bg-[hsl(var(--warning)/0.15)] p-3 rounded border border-[hsl(var(--warning)/0.4)]">
+                      <p className="font-semibold text-[hsl(var(--warning))] text-sm mb-1">⏸️ SIN Bypass</p>
+                      <p className="text-xs text-[hsl(var(--warning))]">
                         Crea una tarea de aprobación para el pastor/admin. 
                         Las acciones se ejecutan después de la aprobación manual.
                       </p>
@@ -145,8 +145,8 @@ export default function PrayerAutomationManual() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-400">
-                <div className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--success)/0.10)] rounded-lg border-2 border-[hsl(var(--success)/0.30)]">
+                <div className="bg-[hsl(var(--success))] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold flex-shrink-0">
                   5
                 </div>
                 <div className="flex-1">
@@ -157,15 +157,15 @@ export default function PrayerAutomationManual() {
                   <div className="space-y-2">
                     <div className="bg-white p-2 rounded text-xs border">
                       <strong>Acción 1:</strong> Enviar SMS al coordinador de oración<br/>
-                      <span className="text-green-600">✓ Entregado (intento 1/3)</span>
+                      <span className="text-[hsl(var(--success))]">✓ Entregado (intento 1/3)</span>
                     </div>
                     <div className="bg-white p-2 rounded text-xs border">
                       <strong>Acción 2:</strong> Email de confirmación al solicitante<br/>
-                      <span className="text-green-600">✓ Enviado (intento 1/3)</span>
+                      <span className="text-[hsl(var(--success))]">✓ Enviado (intento 1/3)</span>
                     </div>
                     <div className="bg-white p-2 rounded text-xs border">
                       <strong>Acción 3:</strong> WhatsApp al equipo de intercesión<br/>
-                      <span className="text-green-600">✓ Entregado (intento 1/3)</span>
+                      <span className="text-[hsl(var(--success))]">✓ Entregado (intento 1/3)</span>
                     </div>
                   </div>
                 </div>
@@ -180,12 +180,12 @@ export default function PrayerAutomationManual() {
             <CardTitle>📦 Plantillas de Oración Disponibles</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="p-4 border-2 border-red-200 rounded-lg bg-red-50">
+            <div className="p-4 border-2 border-[hsl(var(--destructive)/0.3)] rounded-lg bg-[hsl(var(--destructive)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">🚨</span>
-                <h4 className="font-semibold text-red-900">Petición Urgente - Notificación Inmediata</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))]">Petición Urgente - Notificación Inmediata</h4>
               </div>
-              <p className="text-sm text-red-800 mb-3">
+              <p className="text-sm text-[hsl(var(--destructive))] mb-3">
                 Para peticiones marcadas como urgentes. Notifica inmediatamente al equipo pastoral 24/7.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
@@ -202,12 +202,12 @@ export default function PrayerAutomationManual() {
               </div>
             </div>
 
-            <div className="p-4 border-2 border-blue-200 rounded-lg bg-blue-50">
+            <div className="p-4 border-2 border-[hsl(var(--info)/0.3)] rounded-lg bg-[hsl(var(--info)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">📧</span>
-                <h4 className="font-semibold text-blue-900">Auto-Confirmación al Solicitante</h4>
+                <h4 className="font-semibold text-foreground">Auto-Confirmación al Solicitante</h4>
               </div>
-              <p className="text-sm text-blue-800 mb-3">
+              <p className="text-sm text-[hsl(var(--info))] mb-3">
                 Envía un mensaje automático de confirmación a quien envió la petición.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
@@ -223,12 +223,12 @@ export default function PrayerAutomationManual() {
               </div>
             </div>
 
-            <div className="p-4 border-2 border-green-200 rounded-lg bg-green-50">
+            <div className="p-4 border-2 border-[hsl(var(--success)/0.3)] rounded-lg bg-[hsl(var(--success)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">💬</span>
-                <h4 className="font-semibold text-green-900">Oración por Mensaje</h4>
+                <h4 className="font-semibold text-foreground">Oración por Mensaje</h4>
               </div>
-              <p className="text-sm text-green-800 mb-3">
+              <p className="text-sm text-[hsl(var(--success))] mb-3">
                 Envía una oración personalizada al solicitante después de 24 horas.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
@@ -244,12 +244,12 @@ export default function PrayerAutomationManual() {
               </div>
             </div>
 
-            <div className="p-4 border-2 border-purple-200 rounded-lg bg-purple-50">
+            <div className="p-4 border-2 border-[hsl(var(--lavender)/0.3)] rounded-lg bg-[hsl(var(--lavender)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">📞</span>
-                <h4 className="font-semibold text-purple-900">Llamada de Oración para Casos Críticos</h4>
+                <h4 className="font-semibold text-foreground">Llamada de Oración para Casos Críticos</h4>
               </div>
-              <p className="text-sm text-purple-800 mb-3">
+              <p className="text-sm text-[hsl(var(--lavender))] mb-3">
                 Programa una llamada telefónica personal para peticiones muy sensibles.
               </p>
               <div className="bg-white p-3 rounded space-y-2 text-xs">
@@ -273,8 +273,8 @@ export default function PrayerAutomationManual() {
             <CardTitle>⚙️ Configuración Recomendada</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-              <h4 className="font-semibold mb-2 text-yellow-900">⚡ Para Respuesta Instantánea</h4>
+            <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
+              <h4 className="font-semibold mb-2 text-[hsl(var(--warning))]">⚡ Para Respuesta Instantánea</h4>
               <ul className="text-sm space-y-2">
                 <li>✅ <strong>Activar bypass approval</strong> en reglas de confirmación</li>
                 <li>✅ <strong>Modo urgente 24/7</strong> para peticiones urgentes</li>
@@ -283,8 +283,8 @@ export default function PrayerAutomationManual() {
               </ul>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <h4 className="font-semibold mb-2 text-blue-900">🔒 Para Privacidad y Control</h4>
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
+              <h4 className="font-semibold mb-2 text-foreground">🔒 Para Privacidad y Control</h4>
               <ul className="text-sm space-y-2">
                 <li>✅ <strong>Desactivar bypass approval</strong> para revisión manual</li>
                 <li>✅ <strong>Horario laboral:</strong> Solo durante horas de oficina</li>
@@ -296,37 +296,37 @@ export default function PrayerAutomationManual() {
         </Card>
 
         {/* Best Practices */}
-        <Card className="border-green-200">
+        <Card className="border-[hsl(var(--success)/0.3)]">
           <CardHeader>
-            <CardTitle className="text-green-900">✨ Mejores Prácticas</CardTitle>
+            <CardTitle className="text-foreground">✨ Mejores Prácticas</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">1.</span>
+              <span className="text-[hsl(var(--success))] font-bold">1.</span>
               <p>
                 <strong>Confirme siempre la recepción:</strong> Active la plantilla de auto-confirmación para que las personas sepan que su petición fue recibida.
               </p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">2.</span>
+              <span className="text-[hsl(var(--success))] font-bold">2.</span>
               <p>
                 <strong>Priorice correctamente:</strong> Use URGENTE solo para crisis reales. Use NORMAL para peticiones generales.
               </p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">3.</span>
+              <span className="text-[hsl(var(--success))] font-bold">3.</span>
               <p>
                 <strong>Personalice los mensajes:</strong> Los mensajes automáticos deben sentirse personales. Use el nombre de la persona y referencias específicas.
               </p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">4.</span>
+              <span className="text-[hsl(var(--success))] font-bold">4.</span>
               <p>
                 <strong>Configure canales de respaldo:</strong> Si el SMS falla, que intente Email automáticamente.
               </p>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-green-600 font-bold">5.</span>
+              <span className="text-[hsl(var(--success))] font-bold">5.</span>
               <p>
                 <strong>Respete la privacidad:</strong> Las peticiones anónimas no deben incluir información identificable en las notificaciones.
               </p>
@@ -335,30 +335,30 @@ export default function PrayerAutomationManual() {
         </Card>
 
         {/* Next Steps */}
-        <Card className="border-purple-200 bg-purple-50">
+        <Card className="border-[hsl(var(--lavender)/0.3)] bg-[hsl(var(--lavender)/0.10)]">
           <CardHeader>
-            <CardTitle className="text-purple-900">🚀 Activar Ahora</CardTitle>
+            <CardTitle className="text-foreground">🚀 Activar Ahora</CardTitle>
           </CardHeader>
           <CardContent>
             <ol className="space-y-3 text-sm">
               <li className="flex gap-2">
-                <span className="font-bold text-purple-600">1.</span>
-                <span>Vaya a <Link href="/automation-rules/templates" className="text-purple-600 underline font-semibold">Plantillas de Automatización</Link></span>
+                <span className="font-bold text-[hsl(var(--lavender))]">1.</span>
+                <span>Vaya a <Link href="/automation-rules/templates" className="text-[hsl(var(--lavender))] underline font-semibold">Plantillas de Automatización</Link></span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-purple-600">2.</span>
+                <span className="font-bold text-[hsl(var(--lavender))]">2.</span>
                 <span>Filtre por categoría <strong>&quot;Peticiones de Oración&quot;</strong></span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-purple-600">3.</span>
+                <span className="font-bold text-[hsl(var(--lavender))]">3.</span>
                 <span>Active las 4 plantillas de oración</span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-purple-600">4.</span>
+                <span className="font-bold text-[hsl(var(--lavender))]">4.</span>
                 <span>Pruebe enviando una petición de oración de prueba</span>
               </li>
               <li className="flex gap-2">
-                <span className="font-bold text-purple-600">5.</span>
+                <span className="font-bold text-[hsl(var(--lavender))]">5.</span>
                 <span>Verifique que las notificaciones lleguen correctamente</span>
               </li>
             </ol>

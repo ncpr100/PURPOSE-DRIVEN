@@ -35,21 +35,21 @@ export default function SetupManual() {
               Esta guía paso a paso le ayudará a configurar completamente el sistema de gestión de su iglesia desde cero.
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📋 Pasos</h4>
-                <p className="text-xl font-bold text-blue-600">8</p>
+                <p className="text-xl font-bold text-[hsl(var(--info))]">8</p>
               </div>
-              <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⏱️ Tiempo</h4>
-                <p className="text-xl font-bold text-green-600">45 min</p>
+                <p className="text-xl font-bold text-[hsl(var(--success))]">45 min</p>
               </div>
-              <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🎯 Nivel</h4>
-                <p className="text-lg font-bold text-purple-600">Básico</p>
+                <p className="text-lg font-bold text-[hsl(var(--lavender))]">Básico</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
                 <h4 className="font-semibold">👤 Rol Mínimo</h4>
-                <p className="text-lg font-bold text-orange-600">ADMIN</p>
+                <p className="text-lg font-bold text-[hsl(var(--warning))]">ADMIN</p>
               </div>
             </div>
           </CardContent>
@@ -59,7 +59,7 @@ export default function SetupManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               Información Básica de la Iglesia
             </CardTitle>
           </CardHeader>
@@ -86,7 +86,7 @@ export default function SetupManual() {
                   <p><strong>1.4.</strong> Suba el logo de la iglesia</p>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📸 Logo de la Iglesia</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Formato recomendado:</strong> PNG con fondo transparente</li>
@@ -94,7 +94,7 @@ export default function SetupManual() {
                   <li>• <strong>Tamaño máximo:</strong> 2MB</li>
                   <li>• <strong>Uso:</strong> Recibos, emails, reportes</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-blue-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Un logo profesional mejora la imagen de su iglesia</p>
                 </div>
               </div>
@@ -106,7 +106,7 @@ export default function SetupManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Configuración de Usuarios y Roles
             </CardTitle>
           </CardHeader>
@@ -115,7 +115,7 @@ export default function SetupManual() {
               <div>
                 <h4 className="font-semibold mb-3">🛡️ Inicializar Permisos</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> <span className="text-blue-600 font-bold">IMPORTANTE:</span> Solo usuarios con rol de <strong>Pastor</strong> o <strong>Administrador</strong> de su iglesia pueden hacer esto</p>
+                  <p><strong>2.1.</strong> <span className="text-[hsl(var(--info))] font-bold">IMPORTANTE:</span> Solo usuarios con rol de <strong>Pastor</strong> o <strong>Administrador</strong> de su iglesia pueden hacer esto</p>
                   <p className="text-xs text-muted-foreground ml-6">
                     <em>Nota: El SUPER_ADMIN gestiona la plataforma Khesed-Tek completa, NO los roles internos de cada iglesia</em>
                   </p>
@@ -136,8 +136,8 @@ export default function SetupManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-red-50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2 text-red-700">⚠️ Seguridad Crítica</h4>
+              <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg">
+                <h4 className="font-semibold mb-2 text-[hsl(var(--destructive))]">⚠️ Seguridad Crítica</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Solo ejecute una vez:</strong> No se puede deshacer</li>
                   <li>• <strong>Backup recomendado:</strong> Antes de inicializar</li>
@@ -153,7 +153,7 @@ export default function SetupManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               Configurar Ministerios Básicos
             </CardTitle>
           </CardHeader>
@@ -182,7 +182,7 @@ export default function SetupManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📋 Lista de Verificación</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>☐ Al menos 5 ministerios creados</li>
@@ -191,7 +191,7 @@ export default function SetupManual() {
                   <li>☐ Horarios de reunión establecidos</li>
                   <li>☐ Primeros miembros asignados</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-green-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Puede agregar más ministerios después según crezca</p>
                 </div>
               </div>
@@ -203,7 +203,7 @@ export default function SetupManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               Configurar Sistema de Comunicaciones
             </CardTitle>
           </CardHeader>
@@ -254,7 +254,7 @@ export default function SetupManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
               Configurar Sistema de Donaciones
             </CardTitle>
           </CardHeader>
@@ -280,7 +280,7 @@ export default function SetupManual() {
                   <p><strong>5.4.</strong> Configure métodos de pago aceptados</p>
                 </div>
               </div>
-              <div className="bg-yellow-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">⚖️ Consideraciones Legales</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Estatus religioso:</strong> Verifique que esté registrado como iglesia</li>
@@ -288,7 +288,7 @@ export default function SetupManual() {
                   <li>• <strong>Recibos obligatorios:</strong> Para donaciones deducibles</li>
                   <li>• <strong>Reportes anuales:</strong> Declaraciones requeridas</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-yellow-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--warning)/0.30)]">
                   <p className="text-xs"><strong>💼 Consulte:</strong> Su contador sobre requisitos específicos</p>
                 </div>
               </div>
@@ -300,7 +300,7 @@ export default function SetupManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
               Configurar Eventos y Servicios
             </CardTitle>
           </CardHeader>
@@ -350,7 +350,7 @@ export default function SetupManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">7</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">7</span>
               Importar Miembros Iniciales
             </CardTitle>
           </CardHeader>
@@ -373,7 +373,7 @@ export default function SetupManual() {
                   <p><strong>7.6.</strong> Confirme la importación</p>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📋 Preparación de Datos</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Limpie datos:</strong> Elimine duplicados</li>
@@ -381,7 +381,7 @@ export default function SetupManual() {
                   <li>• <strong>Verifique emails:</strong> Deben ser únicos y válidos</li>
                   <li>• <strong>Organice por lotes:</strong> Máximo 100 por archivo</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-green-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <p className="text-xs"><strong>💾 Backup:</strong> Mantenga una copia de sus datos originales</p>
                 </div>
               </div>
@@ -393,7 +393,7 @@ export default function SetupManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">8</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">8</span>
               Pruebas y Puesta en Marcha
             </CardTitle>
           </CardHeader>
@@ -416,7 +416,7 @@ export default function SetupManual() {
                   <p><strong>8.4.</strong> Configure backup automático</p>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">🚀 Lista de Go-Live</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>☐ Información de iglesia completa</li>
@@ -428,7 +428,7 @@ export default function SetupManual() {
                   <li>☐ Eventos de prueba realizados</li>
                   <li>☐ Equipo capacitado</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-green-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <p className="text-xs"><strong>🎉 ¡Listo!</strong> Su iglesia está lista para usar el sistema</p>
                 </div>
               </div>

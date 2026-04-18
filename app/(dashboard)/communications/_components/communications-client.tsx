@@ -318,7 +318,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
 
   const StatusBadge = ({ enabled, configured }: { enabled: boolean; configured: boolean }) => {
     if (enabled && configured) {
-      return <Badge variant="default" className="bg-green-500"><CheckCircle className="w-3 h-3 mr-1" />Activo</Badge>
+      return <Badge variant="default" className="bg-[hsl(var(--success)/0.10)]0"><CheckCircle className="w-3 h-3 mr-1" />Activo</Badge>
     }
     if (configured) {
       return <Badge variant="secondary"><AlertTriangle className="w-3 h-3 mr-1" />Configurado</Badge>
@@ -479,8 +479,8 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Comunicaciones Masivas</h1>
-          <p className="text-gray-600">Envía mensajes SMS, WhatsApp y emails a tu congregación</p>
+          <h1 className="text-2xl font-bold text-foreground">Comunicaciones Masivas</h1>
+          <p className="text-muted-foreground">Envía mensajes SMS, WhatsApp y emails a tu congregación</p>
         </div>
 
         <div className="flex gap-2">
@@ -811,8 +811,8 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
           {communications.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">No hay comunicaciones enviadas</p>
+                <MessageSquare className="w-12 h-12 text-muted-foreground/70 mx-auto mb-4" />
+                <p className="text-muted-foreground">No hay comunicaciones enviadas</p>
               </CardContent>
             </Card>
           ) : (
@@ -829,9 +829,9 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <p className="text-sm text-gray-600 line-clamp-2">{comm.content}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-2">{comm.content}</p>
                     
-                    <div className="flex items-center justify-between text-sm text-gray-500">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <Users className="w-4 h-4" />
                         <span>{comm.recipients || 0} destinatarios</span>
@@ -858,8 +858,8 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
           {templates.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <Edit className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">No hay templates creados</p>
+                <Edit className="w-12 h-12 text-muted-foreground/70 mx-auto mb-4" />
+                <p className="text-muted-foreground">No hay templates creados</p>
                 <Button 
                   className="mt-4" 
                   onClick={() => setIsNewTemplateDialogOpen(true)}
@@ -882,14 +882,14 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <p className="text-sm text-gray-600 line-clamp-2">{template.content}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-2">{template.content}</p>
                     
                     {template.category && (
                       <Badge variant="secondary">{template.category}</Badge>
                     )}
                     
                     {template.variables && (
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-muted-foreground">
                         Variables: {JSON.parse(template.variables).join(', ')}
                       </div>
                     )}
@@ -906,7 +906,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-2">
-                  <Mail className="h-8 w-8 text-blue-500" />
+                  <Mail className="h-8 w-8 text-[hsl(var(--info))]" />
                   <div className="flex-1">
                     <p className="font-medium">Email</p>
                     <p className="text-sm text-muted-foreground">{integrationStatus?.communication.email.provider || 'internal'}</p>
@@ -922,7 +922,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-2">
-                  <Phone className="h-8 w-8 text-green-500" />
+                  <Phone className="h-8 w-8 text-[hsl(var(--success))]" />
                   <div className="flex-1">
                     <p className="font-medium">SMS</p>
                     <p className="text-sm text-muted-foreground">{integrationStatus?.communication.sms.provider || 'none'}</p>
@@ -938,7 +938,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-2">
-                  <MessageSquare className="h-8 w-8 text-green-600" />
+                  <MessageSquare className="h-8 w-8 text-[hsl(var(--success))]" />
                   <div className="flex-1">
                     <p className="font-medium">WhatsApp</p>
                     <p className="text-sm text-muted-foreground">{integrationStatus?.communication.whatsapp.provider || 'none'}</p>
@@ -1030,14 +1030,14 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
               </Button>
 
               {bulkResults && (
-                <Alert className={bulkResults.success ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}>
+                <Alert className={bulkResults.success ? 'border-[hsl(var(--success))] bg-[hsl(var(--success)/0.10)]' : 'border-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)]'}>
                   <AlertDescription>
                     {bulkResults.success ? (
-                      <div className="text-green-700">
+                      <div className="text-[hsl(var(--success))]">
                         ✅ Envío completado: {bulkResults.successful}/{bulkResults.total} mensajes enviados
                       </div>
                     ) : (
-                      <div className="text-red-700">
+                      <div className="text-[hsl(var(--destructive))]">
                         ❌ Error en envío masivo: {bulkResults.error}
                       </div>
                     )}
@@ -1123,15 +1123,15 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
               </Button>
 
               {testResults && (
-                <Alert className={testResults.success ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}>
+                <Alert className={testResults.success ? 'border-[hsl(var(--success))] bg-[hsl(var(--success)/0.10)]' : 'border-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)]'}>
                   <AlertDescription>
                     {testResults.success ? (
-                      <div className="text-green-700">
+                      <div className="text-[hsl(var(--success))]">
                         ✅ Mensaje enviado exitosamente via {testResults.provider}
                         {testResults.messageId && <div className="text-sm mt-1">ID: {testResults.messageId}</div>}
                       </div>
                     ) : (
-                      <div className="text-red-700">
+                      <div className="text-[hsl(var(--destructive))]">
                         ❌ Error: {testResults.error}
                       </div>
                     )}
@@ -1159,7 +1159,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                   <Mail className="w-4 h-4" />
                   Mailgun Email Service
                 </h3>
-                <div className="bg-slate-100 p-3 rounded text-sm font-mono text-slate-700">
+                <div className="bg-muted/50 p-3 rounded text-sm font-mono text-muted-foreground">
                   MAILGUN_API_KEY=&quot;key-xxxxx&quot;<br/>
                   MAILGUN_DOMAIN=&quot;mg.tudominio.com&quot;<br/>
                   MAILGUN_FROM_EMAIL=&quot;noreply@tudominio.com&quot;<br/>
@@ -1175,7 +1175,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                   <Phone className="w-4 h-4" />
                   Twilio SMS/WhatsApp
                 </h3>
-                <div className="bg-slate-100 p-3 rounded text-sm font-mono text-slate-700">
+                <div className="bg-muted/50 p-3 rounded text-sm font-mono text-muted-foreground">
                   TWILIO_ACCOUNT_SID=&quot;ACxxxxx&quot;<br/>
                   TWILIO_AUTH_TOKEN=&quot;xxxxx&quot;<br/>
                   TWILIO_PHONE_NUMBER=&quot;+1234567890&quot;<br/>
@@ -1191,7 +1191,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                   <MessageSquare className="w-4 h-4" />
                   WhatsApp Business API
                 </h3>
-                <div className="bg-slate-100 p-3 rounded text-sm font-mono text-slate-700">
+                <div className="bg-muted/50 p-3 rounded text-sm font-mono text-muted-foreground">
                   WHATSAPP_BUSINESS_ACCOUNT_ID=&quot;xxxxx&quot;<br/>
                   WHATSAPP_ACCESS_TOKEN=&quot;xxxxx&quot;<br/>
                   WHATSAPP_PHONE_NUMBER_ID=&quot;xxxxx&quot;<br/>

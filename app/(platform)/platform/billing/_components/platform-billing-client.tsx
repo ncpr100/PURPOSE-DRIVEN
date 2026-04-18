@@ -229,8 +229,8 @@ export default function PlatformBillingClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Suscripciones de Plataforma</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Suscripciones de Plataforma</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Gestiona las suscripciones de cada iglesia mediante Paddle Billing
           </p>
         </div>
@@ -245,12 +245,12 @@ export default function PlatformBillingClient() {
         <Card>
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-100">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
+              <div className="p-2 rounded-lg bg-[hsl(var(--success)/0.15)]">
+                <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{activeSubscriptions}</p>
-                <p className="text-xs text-gray-500">Suscripciones activas</p>
+                <p className="text-xs text-muted-foreground">Suscripciones activas</p>
               </div>
             </div>
           </CardContent>
@@ -258,12 +258,12 @@ export default function PlatformBillingClient() {
         <Card>
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-yellow-100">
-                <Clock className="h-5 w-5 text-yellow-600" />
+              <div className="p-2 rounded-lg bg-[hsl(var(--warning)/0.15)]">
+                <Clock className="h-5 w-5 text-[hsl(var(--warning))]" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{pendingSubscriptions}</p>
-                <p className="text-xs text-gray-500">Checkouts pendientes</p>
+                <p className="text-xs text-muted-foreground">Checkouts pendientes</p>
               </div>
             </div>
           </CardContent>
@@ -271,12 +271,12 @@ export default function PlatformBillingClient() {
         <Card>
           <CardContent className="pt-4 pb-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-gray-100">
-                <AlertCircle className="h-5 w-5 text-gray-500" />
+              <div className="p-2 rounded-lg bg-muted/50">
+                <AlertCircle className="h-5 w-5 text-muted-foreground" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{noSubscriptions}</p>
-                <p className="text-xs text-gray-500">Sin suscripción</p>
+                <p className="text-xs text-muted-foreground">Sin suscripción</p>
               </div>
             </div>
           </CardContent>
@@ -287,7 +287,7 @@ export default function PlatformBillingClient() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
-            <Building2 className="h-5 w-5 text-blue-600" />
+            <Building2 className="h-5 w-5 text-[hsl(var(--info))]" />
             Iglesias y Suscripciones
           </CardTitle>
           <CardDescription>
@@ -302,51 +302,51 @@ export default function PlatformBillingClient() {
               ))}
             </div>
           ) : churches.length === 0 ? (
-            <div className="text-center py-10 text-gray-500">
+            <div className="text-center py-10 text-muted-foreground">
               <Building2 className="h-10 w-10 mx-auto mb-2 text-gray-300" />
               <p>No hay iglesias registradas</p>
             </div>
           ) : (
             <div className="rounded-md border overflow-hidden">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50 border-b">
+                <thead className="bg-muted/30 border-b">
                   <tr>
-                    <th className="text-left px-4 py-3 font-medium text-gray-600">Iglesia</th>
-                    <th className="text-left px-4 py-3 font-medium text-gray-600">Plan</th>
-                    <th className="text-left px-4 py-3 font-medium text-gray-600">Estado</th>
-                    <th className="text-left px-4 py-3 font-medium text-gray-600">Ciclo</th>
-                    <th className="text-left px-4 py-3 font-medium text-gray-600">Vence</th>
-                    <th className="text-right px-4 py-3 font-medium text-gray-600">Acción</th>
+                    <th className="text-left px-4 py-3 font-medium text-muted-foreground">Iglesia</th>
+                    <th className="text-left px-4 py-3 font-medium text-muted-foreground">Plan</th>
+                    <th className="text-left px-4 py-3 font-medium text-muted-foreground">Estado</th>
+                    <th className="text-left px-4 py-3 font-medium text-muted-foreground">Ciclo</th>
+                    <th className="text-left px-4 py-3 font-medium text-muted-foreground">Vence</th>
+                    <th className="text-right px-4 py-3 font-medium text-muted-foreground">Acción</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {churches.map(church => {
                     const sub = church.church_subscriptions
                     return (
-                      <tr key={church.id} className="hover:bg-gray-50">
+                      <tr key={church.id} className="hover:bg-muted/30">
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <Building2 className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                            <Building2 className="h-4 w-4 text-muted-foreground/70 flex-shrink-0" />
                             <div>
-                              <p className="font-medium text-gray-900">{church.name}</p>
+                              <p className="font-medium text-foreground">{church.name}</p>
                               {church.email && (
-                                <p className="text-xs text-gray-400">{church.email}</p>
+                                <p className="text-xs text-muted-foreground/70">{church.email}</p>
                               )}
                             </div>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-gray-700">
+                        <td className="px-4 py-3 text-muted-foreground">
                           {sub?.subscription_plans?.displayName ?? (
-                            <span className="text-gray-400 italic">Sin plan</span>
+                            <span className="text-muted-foreground/70 italic">Sin plan</span>
                           )}
                         </td>
                         <td className="px-4 py-3">
                           <StatusBadge status={sub?.status ?? 'NONE'} />
                         </td>
-                        <td className="px-4 py-3 text-gray-500 text-xs">
+                        <td className="px-4 py-3 text-muted-foreground text-xs">
                           {sub?.billingCycle === 'YEARLY' ? 'Anual' : sub ? 'Mensual' : '—'}
                         </td>
-                        <td className="px-4 py-3 text-gray-500 text-xs">
+                        <td className="px-4 py-3 text-muted-foreground text-xs">
                           {sub?.currentPeriodEnd
                             ? new Date(sub.currentPeriodEnd).toLocaleDateString('es-CO')
                             : '—'}
@@ -376,7 +376,7 @@ export default function PlatformBillingClient() {
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Crown className="h-5 w-5 text-yellow-500" />
+              <Crown className="h-5 w-5 text-[hsl(var(--warning))]" />
               Asignar plan — {selectedChurch?.name}
             </DialogTitle>
             <DialogDescription>
@@ -387,7 +387,7 @@ export default function PlatformBillingClient() {
           <div className="space-y-4 py-2">
             {/* Plan selector */}
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-gray-700">Plan</label>
+              <label className="text-sm font-medium text-muted-foreground">Plan</label>
               <Select value={selectedPlanId} onValueChange={setSelectedPlanId}>
                 <SelectTrigger>
                   <SelectValue placeholder="Selecciona un plan…" />
@@ -396,7 +396,7 @@ export default function PlatformBillingClient() {
                   {plans.map(plan => (
                     <SelectItem key={plan.id} value={plan.id}>
                       <span className="font-medium">{plan.displayName}</span>
-                      <span className="text-gray-500 ml-2 text-xs">
+                      <span className="text-muted-foreground ml-2 text-xs">
                         {plan.priceMonthly}/mes
                       </span>
                     </SelectItem>
@@ -407,7 +407,7 @@ export default function PlatformBillingClient() {
 
             {/* Billing cycle */}
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-gray-700">Ciclo de facturación</label>
+              <label className="text-sm font-medium text-muted-foreground">Ciclo de facturación</label>
               <Select value={billingCycle} onValueChange={v => setBillingCycle(v as any)}>
                 <SelectTrigger>
                   <SelectValue />
@@ -421,17 +421,17 @@ export default function PlatformBillingClient() {
 
             {/* Discount code */}
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-gray-700">
-                Código de descuento <span className="text-gray-400 font-normal">(opcional)</span>
+              <label className="text-sm font-medium text-muted-foreground">
+                Código de descuento <span className="text-muted-foreground/70 font-normal">(opcional)</span>
               </label>
               <input
                 type="text"
                 value={discountCode}
                 onChange={e => setDiscountCode(e.target.value.toUpperCase())}
                 placeholder="Ej: LAUNCH50"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 uppercase placeholder:normal-case"
+                className="w-full rounded-md border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--lavender)/0.30)] uppercase placeholder:normal-case"
               />
-              <p className="text-xs text-gray-500">El descuento se aplicará automáticamente al checkout.</p>
+              <p className="text-xs text-muted-foreground">El descuento se aplicará automáticamente al checkout.</p>
             </div>
 
             {/* Plan details */}
@@ -442,12 +442,12 @@ export default function PlatformBillingClient() {
                 ? !!plan.paddlePriceIdYearly
                 : !!plan.paddlePriceIdMonthly
               return (
-                <div className="rounded-lg border bg-gray-50 p-3 space-y-2">
+                <div className="rounded-lg border bg-muted/30 p-3 space-y-2">
                   <div className="flex items-center gap-2 text-sm font-medium">
-                    <Users className="h-4 w-4 text-indigo-600" />
+                    <Users className="h-4 w-4 text-primary" />
                     {plan.displayName}
                   </div>
-                  <div className="grid grid-cols-2 gap-1 text-xs text-gray-600">
+                  <div className="grid grid-cols-2 gap-1 text-xs text-muted-foreground">
                     <span>Máx. miembros: <strong>{plan.maxMembers}</strong></span>
                     <span>Máx. usuarios: <strong>{plan.maxUsers}</strong></span>
                     <span>Precio mensual: <strong>{plan.priceMonthly}</strong></span>
@@ -471,12 +471,12 @@ export default function PlatformBillingClient() {
 
             {/* Checkout URL result */}
             {checkoutUrl && (
-              <div className="rounded-lg border border-green-200 bg-green-50 p-3 space-y-2">
-                <p className="text-sm font-medium text-green-800 flex items-center gap-1.5">
+              <div className="rounded-lg border border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)] p-3 space-y-2">
+                <p className="text-sm font-medium text-[hsl(var(--success))] flex items-center gap-1.5">
                   <CheckCircle2 className="h-4 w-4" />
                   Checkout listo
                 </p>
-                <p className="text-xs text-green-700 break-all">{checkoutUrl}</p>
+                <p className="text-xs text-[hsl(var(--success))] break-all">{checkoutUrl}</p>
                 <div className="flex gap-2 pt-1">
                   <Button
                     size="sm"

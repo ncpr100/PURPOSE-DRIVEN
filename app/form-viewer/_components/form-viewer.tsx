@@ -314,7 +314,7 @@ export default function FormViewer() {
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <div className="text-center">
-              <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <AlertCircle className="h-12 w-12 text-[hsl(var(--destructive))] mx-auto mb-4" />
               <h2 className="text-lg font-semibold mb-2">Error</h2>
               <p className="text-muted-foreground">
                 {error || "Formulario no encontrado"}
@@ -342,7 +342,7 @@ export default function FormViewer() {
         <Card className="w-full max-w-md bg-white/95 backdrop-blur-sm">
           <CardContent className="pt-6">
             <div className="text-center">
-              <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+              <CheckCircle className="h-12 w-12 text-[hsl(var(--success))] mx-auto mb-4" />
               <h2 className="text-lg font-semibold mb-2">
                 ¡Formulario Enviado!
               </h2>
@@ -434,7 +434,7 @@ export default function FormViewer() {
             {formConfig.fields.map((field) => {
               // ── Layout blocks — no label, no input ──
               if (field.type === "divider") {
-                return <hr key={field.id} className="border-gray-200 my-2" />;
+                return <hr key={field.id} className="border-border my-2" />;
               }
               if (field.type === "heading") {
                 const sizes: Record<number, string> = {
@@ -629,7 +629,7 @@ export default function FormViewer() {
           </form>
 
           <Alert className="mt-6">
-            <AlertDescription className="text-center text-sm text-gray-600">
+            <AlertDescription className="text-center text-sm text-muted-foreground">
               Sus datos están protegidos y serán tratados con confidencialidad
               según nuestras políticas de privacidad.
             </AlertDescription>

@@ -351,11 +351,11 @@ export default function PrayerWallPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-purple-800 flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-[hsl(var(--lavender))] flex items-center gap-3">
             <MessageSquare className="h-8 w-8" />
             Muro de Oración
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-muted-foreground mt-1">
             {loading ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -363,16 +363,16 @@ export default function PrayerWallPage() {
               </span>
             ) : error ? (
               <div className="flex flex-col gap-1">
-                <span className="text-red-600 flex items-center gap-2">
+                <span className="text-[hsl(var(--destructive))] flex items-center gap-2">
                   <AlertCircle className="w-4 h-4" />
                   {error}
                 </span>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-muted-foreground">
                   Mostrando datos de ejemplo. La conexión se reintentará automáticamente.
                 </span>
               </div>
             ) : (
-              <span className="text-green-600 flex items-center gap-2">
+              <span className="text-[hsl(var(--success))] flex items-center gap-2">
                 <CheckCircle className="w-4 h-4" />
                 Sistema conectado en tiempo real
               </span>
@@ -406,11 +406,11 @@ export default function PrayerWallPage() {
       </div>
 
       {/* Mobile Characteristics Status Card */}
-      <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+      <Card className="bg-[hsl(var(--lavender)/0.10)] border-[hsl(var(--lavender)/0.3)]">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Smartphone className="h-5 w-5 text-purple-600" />
+              <Smartphone className="h-5 w-5 text-[hsl(var(--lavender))]" />
               <CardTitle className="text-lg">Estado de Características Mobile</CardTitle>
             </div>
             <Dialog>
@@ -422,7 +422,7 @@ export default function PrayerWallPage() {
               <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
-                    <Smartphone className="h-6 w-6 text-purple-600" />
+                    <Smartphone className="h-6 w-6 text-[hsl(var(--lavender))]" />
                     Guía de Características Mobile
                   </DialogTitle>
                   <DialogDescription>
@@ -433,13 +433,13 @@ export default function PrayerWallPage() {
                   {/* Installation Guide */}
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                      <Smartphone className="h-5 w-5 text-blue-600" />
+                      <Smartphone className="h-5 w-5 text-[hsl(var(--info))]" />
                       Instalar Aplicación
                     </h3>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-muted-foreground">
                       Convierte el Muro de Oración en una aplicación independiente en tu dispositivo.
                     </p>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                    <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                       <p className="font-medium text-sm">Método Automático (Recomendado):</p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
                         <li>Haz clic en el botón "Instalar Aplicación" arriba</li>
@@ -464,13 +464,13 @@ export default function PrayerWallPage() {
                   {/* Notifications Guide */}
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                      <Bell className="h-5 w-5 text-orange-600" />
+                      <Bell className="h-5 w-5 text-[hsl(var(--warning))]" />
                       Activar Notificaciones
                     </h3>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-muted-foreground">
                       Recibe alertas instantáneas cuando se publiquen nuevas peticiones de oración.
                     </p>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                    <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                       <p className="font-medium text-sm">Método Automático:</p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
                         <li>Haz clic en "Activar Notificaciones" arriba</li>
@@ -488,13 +488,13 @@ export default function PrayerWallPage() {
                   {/* Offline Mode */}
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                      <HardDrive className="h-5 w-5 text-green-600" />
+                      <HardDrive className="h-5 w-5 text-[hsl(var(--success))]" />
                       Modo Offline
                     </h3>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-muted-foreground">
                       Accede a las peticiones incluso sin conexión a internet.
                     </p>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                    <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                       <p className="font-medium text-sm">Cómo Funciona:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2">
                         <li>Las peticiones recientes se guardan automáticamente en tu dispositivo</li>
@@ -513,22 +513,22 @@ export default function PrayerWallPage() {
                   {/* Connection Status */}
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                      <Wifi className="h-5 w-5 text-blue-600" />
+                      <Wifi className="h-5 w-5 text-[hsl(var(--info))]" />
                       Estado de Conexión
                     </h3>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-muted-foreground">
                       Monitorea tu estado de conexión en tiempo real.
                     </p>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                    <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-[hsl(var(--success)/0.10)]0 rounded-full"></div>
                         <span className="text-sm font-medium">Online:</span>
-                        <span className="text-sm text-gray-700">Datos en tiempo real activos</span>
+                        <span className="text-sm text-muted-foreground">Datos en tiempo real activos</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-[hsl(var(--destructive)/0.10)]0 rounded-full"></div>
                         <span className="text-sm font-medium">Offline:</span>
-                        <span className="text-sm text-gray-700">Usando datos guardados</span>
+                        <span className="text-sm text-muted-foreground">Usando datos guardados</span>
                       </div>
                     </div>
                   </div>
@@ -541,9 +541,9 @@ export default function PrayerWallPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {/* Installable Badge */}
             <div className="flex items-center gap-2">
-              <Smartphone className={`h-5 w-5 ${isInstalled || isInstallable ? 'text-green-600' : 'text-gray-400'}`} />
+              <Smartphone className={`h-5 w-5 ${isInstalled || isInstallable ? 'text-[hsl(var(--success))]' : 'text-muted-foreground/70'}`} />
               <div>
-                <p className="text-xs font-medium text-gray-700">Instalable</p>
+                <p className="text-xs font-medium text-muted-foreground">Instalable</p>
                 <Badge variant={isInstalled ? 'default' : isInstallable ? 'secondary' : 'outline'} className="text-xs">
                   {isInstalled ? 'Instalada' : isInstallable ? 'Disponible' : 'No disponible'}
                 </Badge>
@@ -553,12 +553,12 @@ export default function PrayerWallPage() {
             {/* Connection Badge */}
             <div className="flex items-center gap-2">
               {isOnline ? (
-                <Wifi className="h-5 w-5 text-green-600" />
+                <Wifi className="h-5 w-5 text-[hsl(var(--success))]" />
               ) : (
-                <WifiOff className="h-5 w-5 text-red-600" />
+                <WifiOff className="h-5 w-5 text-[hsl(var(--destructive))]" />
               )}
               <div>
-                <p className="text-xs font-medium text-gray-700">Conectividad</p>
+                <p className="text-xs font-medium text-muted-foreground">Conectividad</p>
                 <Badge variant={isOnline ? 'default' : 'destructive'} className="text-xs">
                   {isOnline ? 'Online' : 'Offline'}
                 </Badge>
@@ -568,12 +568,12 @@ export default function PrayerWallPage() {
             {/* Notifications Badge */}
             <div className="flex items-center gap-2">
               {notificationPermission === 'granted' ? (
-                <Bell className="h-5 w-5 text-orange-600" />
+                <Bell className="h-5 w-5 text-[hsl(var(--warning))]" />
               ) : (
-                <BellOff className="h-5 w-5 text-gray-400" />
+                <BellOff className="h-5 w-5 text-muted-foreground/70" />
               )}
               <div>
-                <p className="text-xs font-medium text-gray-700">Notificaciones</p>
+                <p className="text-xs font-medium text-muted-foreground">Notificaciones</p>
                 <Badge 
                   variant={notificationPermission === 'granted' ? 'default' : 'outline'} 
                   className="text-xs"
@@ -585,9 +585,9 @@ export default function PrayerWallPage() {
 
             {/* Offline Ready Badge */}
             <div className="flex items-center gap-2">
-              <HardDrive className={`h-5 w-5 ${isInstalled ? 'text-blue-600' : 'text-gray-400'}`} />
+              <HardDrive className={`h-5 w-5 ${isInstalled ? 'text-[hsl(var(--info))]' : 'text-muted-foreground/70'}`} />
               <div>
-                <p className="text-xs font-medium text-gray-700">Modo Offline</p>
+                <p className="text-xs font-medium text-muted-foreground">Modo Offline</p>
                 <Badge variant={isInstalled ? 'default' : 'outline'} className="text-xs">
                   {isInstalled ? 'Listo' : 'Requiere instalación'}
                 </Badge>
@@ -601,7 +601,7 @@ export default function PrayerWallPage() {
               <Button 
                 size="sm" 
                 onClick={handleInstallApp}
-                className="bg-purple-600 hover:bg-purple-700"
+                className="bg-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender))]"
               >
                 <Smartphone className="h-4 w-4 mr-2" />
                 Instalar Aplicación
@@ -631,12 +631,12 @@ export default function PrayerWallPage() {
 
       {/* Real-time Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100">
+        <Card className="bg-[hsl(var(--info)/0.10)]">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-700">Total Peticiones</p>
-                <p className="text-2xl font-bold text-blue-800">
+                <p className="text-sm font-medium text-[hsl(var(--info))]">Total Peticiones</p>
+                <p className="text-2xl font-bold text-[hsl(var(--info))]">
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
@@ -644,12 +644,12 @@ export default function PrayerWallPage() {
                   )}
                 </p>
                 {analytics && !loading && (
-                  <p className="text-xs text-blue-600 mt-1">
+                  <p className="text-xs text-[hsl(var(--info))] mt-1">
                     {analytics.trends?.requestsOverTime?.reduce((sum, day) => sum + day.aprobaciones, 0) ?? 0} aprobadas
                   </p>
                 )}
               </div>
-              <MessageSquare className="w-8 h-8 text-blue-600" />
+              <MessageSquare className="w-8 h-8 text-[hsl(var(--info))]" />
             </div>
           </CardContent>
         </Card>
@@ -658,7 +658,7 @@ export default function PrayerWallPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-amber-700">Pendientes</p>
+                <p className="text-sm font-medium text-[hsl(var(--warning))]">Pendientes</p>
                 <p className="text-2xl font-bold text-amber-800">
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
@@ -667,22 +667,22 @@ export default function PrayerWallPage() {
                   )}
                 </p>
                 {analytics && !loading && (
-                  <p className="text-xs text-amber-600 mt-1">
+                  <p className="text-xs text-[hsl(var(--warning))] mt-1">
                     {analytics.trends?.requestsOverTime?.reduce((sum, day) => sum + day.rechazos, 0) ?? 0} rechazadas
                   </p>
                 )}
               </div>
-              <Clock className="w-8 h-8 text-amber-600" />
+              <Clock className="w-8 h-8 text-[hsl(var(--warning))]" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-green-100">
+        <Card className="bg-[hsl(var(--success)/0.10)]">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-700">Contactos</p>
-                <p className="text-2xl font-bold text-green-800">
+                <p className="text-sm font-medium text-[hsl(var(--success))]">Contactos</p>
+                <p className="text-2xl font-bold text-[hsl(var(--success))]">
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
@@ -690,22 +690,22 @@ export default function PrayerWallPage() {
                   )}
                 </p>
                 {analytics && !loading && (
-                  <p className="text-xs text-green-600 mt-1">
+                  <p className="text-xs text-[hsl(var(--success))] mt-1">
                     {analytics.overview?.totalContactos ?? 0} activos
                   </p>
                 )}
               </div>
-              <Users className="w-8 h-8 text-green-600" />
+              <Users className="w-8 h-8 text-[hsl(var(--success))]" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100">
+        <Card className="bg-[hsl(var(--lavender)/0.10)]">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-purple-700">Respuestas</p>
-                <p className="text-2xl font-bold text-purple-800">
+                <p className="text-sm font-medium text-[hsl(var(--lavender))]">Respuestas</p>
+                <p className="text-2xl font-bold text-[hsl(var(--lavender))]">
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
@@ -713,12 +713,12 @@ export default function PrayerWallPage() {
                   )}
                 </p>
                 {analytics && !loading && (
-                  <p className="text-xs text-purple-600 mt-1">
+                  <p className="text-xs text-[hsl(var(--lavender))] mt-1">
                     {(analytics.overview?.averageResponseTime ?? 0).toFixed(1)}h promedio
                   </p>
                 )}
               </div>
-              <Send className="w-8 h-8 text-purple-600" />
+              <Send className="w-8 h-8 text-[hsl(var(--lavender))]" />
             </div>
           </CardContent>
         </Card>
@@ -734,7 +734,7 @@ export default function PrayerWallPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <LineChart className="h-5 w-5 text-blue-600" />
+                    <LineChart className="h-5 w-5 text-[hsl(var(--info))]" />
                     Tendencia de Peticiones (7 días)
                   </CardTitle>
                   <CardDescription>
@@ -761,7 +761,7 @@ export default function PrayerWallPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <PieChart className="h-5 w-5 text-green-600" />
+                    <PieChart className="h-5 w-5 text-[hsl(var(--success))]" />
                     Distribución por Categorías
                   </CardTitle>
                   <CardDescription>
@@ -800,7 +800,7 @@ export default function PrayerWallPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-purple-600" />
+                    <Users className="h-5 w-5 text-[hsl(var(--lavender))]" />
                     Crecimiento de Contactos
                   </CardTitle>
                   <CardDescription>
@@ -826,7 +826,7 @@ export default function PrayerWallPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-orange-600" />
+                    <BarChart3 className="h-5 w-5 text-[hsl(var(--warning))]" />
                     Horas Más Activas
                   </CardTitle>
                   <CardDescription>
@@ -851,19 +851,19 @@ export default function PrayerWallPage() {
       ) : null}
 
       {/* Sistema Completo */}
-      <Card className="bg-gradient-to-r from-purple-50 to-blue-50">
+      <Card className="bg-[hsl(var(--lavender)/0.10)]">
         <CardContent className="p-6">
           <div className="text-center space-y-4">
-            <h2 className="text-xl font-bold text-purple-800 flex items-center justify-center gap-2">
+            <h2 className="text-xl font-bold text-[hsl(var(--lavender))] flex items-center justify-center gap-2">
               <MessageSquare className="h-6 w-6" />
               Muro de Oración
             </h2>
-            <p className="text-purple-600">
+            <p className="text-[hsl(var(--lavender))]">
               Sistema completo de peticiones de oración con análisis y estadísticas.
             </p>
             {analytics && !loading && (
-              <div className="mt-4 p-3 bg-white rounded-lg border border-purple-200">
-                <p className="text-sm text-purple-700">
+              <div className="mt-4 p-3 bg-white rounded-lg border border-[hsl(var(--lavender)/0.3)]">
+                <p className="text-sm text-[hsl(var(--lavender))]">
                   {analytics.overview?.totalRequestsCount ?? 0} peticiones registradas | 
                   {analytics.trends?.requestsOverTime?.length ?? 0} días de estadísticas
                 </p>

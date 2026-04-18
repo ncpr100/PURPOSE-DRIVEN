@@ -212,11 +212,11 @@ export default function SupportSettingsClient({ user }: Props) {
         </Button>
         <div className="flex items-center gap-4">
           <h1 className="text-3xl font-bold">⚙️ Configuración de Soporte</h1>
-          <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+          <div className="flex items-center gap-2 px-3 py-1 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] rounded-full text-sm">
             <Shield className="h-4 w-4" />
             <span>Validado como SUPER_ADMIN</span>
           </div>
-          <div className="text-xs text-gray-500 bg-blue-50 px-2 py-1 rounded">
+          <div className="text-xs text-muted-foreground bg-[hsl(var(--info)/0.10)] px-2 py-1 rounded">
             Usuario: {user.email} | ID: {user.id}
           </div>
         </div>
@@ -231,7 +231,7 @@ export default function SupportSettingsClient({ user }: Props) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Phone className="h-5 w-5 text-red-600" />
+                <Phone className="h-5 w-5 text-[hsl(var(--destructive))]" />
                 Contacto Directo
               </CardTitle>
             </CardHeader>
@@ -285,7 +285,7 @@ export default function SupportSettingsClient({ user }: Props) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Building className="h-5 w-5 text-blue-600" />
+                <Building className="h-5 w-5 text-[hsl(var(--info))]" />
                 Información Empresarial
               </CardTitle>
             </CardHeader>
@@ -346,11 +346,11 @@ export default function SupportSettingsClient({ user }: Props) {
               </p>
             </CardHeader>
             <CardContent>
-              <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="bg-muted/30 p-6 rounded-lg">
                 <h3 className="text-lg font-semibold mb-4">Información de Contacto</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-medium text-red-600 mb-3 flex items-center gap-2">
+                    <h4 className="font-medium text-[hsl(var(--destructive))] mb-3 flex items-center gap-2">
                       📞 Contacto Directo
                     </h4>
                     <div className="space-y-2 text-sm">
@@ -360,7 +360,7 @@ export default function SupportSettingsClient({ user }: Props) {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-medium text-blue-600 mb-3 flex items-center gap-2">
+                    <h4 className="font-medium text-[hsl(var(--info))] mb-3 flex items-center gap-2">
                       🏢 Información Empresarial
                     </h4>
                     <div className="space-y-2 text-sm">

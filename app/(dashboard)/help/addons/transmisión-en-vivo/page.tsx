@@ -41,7 +41,7 @@ export default function LiveStreamingAddonPage() {
             
             <div className="grid md:grid-cols-2 gap-4">
               <div className="flex items-start gap-3">
-                <Users className="h-5 w-5 text-green-600 mt-1" />
+                <Users className="h-5 w-5 text-[hsl(var(--success))] mt-1" />
                 <div>
                   <h4 className="font-medium">Audiencia Ilimitada</h4>
                   <p className="text-sm text-muted-foreground">
@@ -51,7 +51,7 @@ export default function LiveStreamingAddonPage() {
               </div>
               
               <div className="flex items-start gap-3">
-                <Wifi className="h-5 w-5 text-blue-600 mt-1" />
+                <Wifi className="h-5 w-5 text-[hsl(var(--info))] mt-1" />
                 <div>
                   <h4 className="font-medium">Streaming Adaptativo</h4>
                   <p className="text-sm text-muted-foreground">

@@ -44,7 +44,7 @@ export function MemberInfoBadges({
       {/* NOTE: When family filter is active, display "Familias" badge instead of marital status */}
       {/* This prevents confusion about what filter is being applied */}
       {activeMaritalStatusFilter === 'family-group' ? (
-        <Badge variant="outline" className="text-xs ml-1 bg-purple-100 text-purple-700 border-purple-300">
+        <Badge variant="outline" className="text-xs ml-1 bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))] border-[hsl(var(--lavender)/0.4)]">
           Familias
         </Badge>
       ) : member.maritalStatus && (
@@ -63,7 +63,7 @@ export function MemberInfoBadges({
 
       {/* Volunteer Badge */}
       {isVolunteer && (
-        <Badge variant="default" className="text-xs ml-1 bg-green-600">
+        <Badge variant="default" className="text-xs ml-1 bg-[hsl(var(--success))]">
           <UserPlus className="h-3 w-3 mr-1" />
           Voluntario
         </Badge>

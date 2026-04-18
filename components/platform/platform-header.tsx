@@ -32,7 +32,7 @@ export function PlatformHeader({ user }: PlatformHeaderProps) {
     .toUpperCase() || 'SA'
 
   return (
-    <header className="bg-white border-b border-gray-200 px-3 md:px-6 py-4">
+    <header className="bg-white border-b border-border px-3 md:px-6 py-4">
       <div className="flex items-center justify-between">
         {/* Left side - current page info */}
         <div className="flex items-center gap-2 md:gap-3">
@@ -41,7 +41,7 @@ export function PlatformHeader({ user }: PlatformHeaderProps) {
             <span className="hidden sm:inline">Super Admin</span>
             <span className="sm:hidden">Admin</span>
           </Badge>
-          <span className="text-sm text-gray-500 hidden sm:inline">|</span>
+          <span className="text-sm text-muted-foreground hidden sm:inline">|</span>
           <span className="text-xs md:text-sm font-medium hidden sm:inline">Gestión de Plataforma</span>
         </div>
 
@@ -58,13 +58,13 @@ export function PlatformHeader({ user }: PlatformHeaderProps) {
               <Button variant="ghost" className="flex items-center gap-2 px-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt={user.name || 'Usuario'} />
-                  <AvatarFallback className="bg-blue-600 text-white text-sm">
+                  <AvatarFallback className="bg-[hsl(var(--info))] text-white text-sm">
                     {userInitials}
                   </AvatarFallback>
                 </Avatar>
                 <div className="text-left">
                   <p className="text-sm font-medium">{user.name}</p>
-                  <p className="text-xs text-gray-500">{user.role}</p>
+                  <p className="text-xs text-muted-foreground">{user.role}</p>
                 </div>
               </Button>
             </DropdownMenuTrigger>
@@ -72,7 +72,7 @@ export function PlatformHeader({ user }: PlatformHeaderProps) {
               <DropdownMenuLabel>
                 <div>
                   <p className="font-medium">{user.name}</p>
-                  <p className="text-sm text-gray-500">{user.email}</p>
+                  <p className="text-sm text-muted-foreground">{user.email}</p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -84,7 +84,7 @@ export function PlatformHeader({ user }: PlatformHeaderProps) {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                className="text-red-600 focus:text-red-600"
+                className="text-[hsl(var(--destructive))] focus:text-[hsl(var(--destructive))]"
                 onClick={() => signOut({ callbackUrl: '/' })}
               >
                 <LogOut className="h-4 w-4 mr-2" />

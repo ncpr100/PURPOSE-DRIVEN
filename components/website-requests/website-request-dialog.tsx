@@ -223,12 +223,12 @@ export function WebsiteRequestDialog({
                           className="text-sm font-medium cursor-pointer flex items-center justify-between"
                         >
                           {type.label}
-                          <span className="text-green-600 font-semibold">${type.estimatedPrice}</span>
+                          <span className="text-[hsl(var(--success))] font-semibold">${type.estimatedPrice}</span>
                         </Label>
                         <p className="text-sm text-muted-foreground">{type.description}</p>
                         <div className="flex flex-wrap gap-1 mt-2">
                           {type.features.map((feature, index) => (
-                            <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800">
+                            <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-muted/50 text-foreground">
                               {feature}
                             </span>
                           ))}

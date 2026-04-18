@@ -96,14 +96,14 @@ export default function PlatformAnalyticsPage() {
               </Link>
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Analíticas Detalladas</h1>
+              <h1 className="text-3xl font-bold text-foreground">Analíticas Detalladas</h1>
             </div>
           </div>
         </div>
         
         <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto" />
-          <p className="mt-2 text-gray-600">Cargando analíticas...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))] mx-auto" />
+          <p className="mt-2 text-muted-foreground">Cargando analíticas...</p>
         </div>
       </div>
     )
@@ -121,8 +121,8 @@ export default function PlatformAnalyticsPage() {
             </Link>
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Analíticas Detalladas</h1>
-            <p className="text-gray-600">Análisis profundo de la plataforma Kḥesed-tek</p>
+            <h1 className="text-3xl font-bold text-foreground">Analíticas Detalladas</h1>
+            <p className="text-muted-foreground">Análisis profundo de la plataforma Kḥesed-tek</p>
           </div>
         </div>
         
@@ -130,7 +130,7 @@ export default function PlatformAnalyticsPage() {
           <select
             value={period}
             onChange={(e) => setPeriod(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+            className="px-3 py-2 border border-border rounded-md text-sm"
           >
             <option value="7">Últimos 7 días</option>
             <option value="30">Últimos 30 días</option>
@@ -147,12 +147,12 @@ export default function PlatformAnalyticsPage() {
 
       {/* KPIs Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-[hsl(var(--info)/0.10)] border-[hsl(var(--info)/0.3)]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600">Tasa de Crecimiento</p>
-                <p className="text-3xl font-bold text-blue-900">
+                <p className="text-sm font-medium text-[hsl(var(--info))]">Tasa de Crecimiento</p>
+                <p className="text-3xl font-bold text-foreground">
                   {analytics.growth.monthly.length > 1 ? (
                     `+${Math.round(
                       ((analytics.growth.monthly[analytics.growth.monthly.length - 1]?.count || 0) / 
@@ -163,52 +163,52 @@ export default function PlatformAnalyticsPage() {
                   )}
                 </p>
               </div>
-              <TrendingUp className="h-8 w-8 text-blue-600" />
+              <TrendingUp className="h-8 w-8 text-[hsl(var(--info))]" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-green-50 border-green-200">
+        <Card className="bg-[hsl(var(--success)/0.10)] border-[hsl(var(--success)/0.3)]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-600">Retención de Usuarios</p>
-                <p className="text-3xl font-bold text-green-900">
+                <p className="text-sm font-medium text-[hsl(var(--success))]">Retención de Usuarios</p>
+                <p className="text-3xl font-bold text-foreground">
                   {Math.round((analytics.overview.users.active / analytics.overview.users.total) * 100)}%
                 </p>
               </div>
-              <Users className="h-8 w-8 text-green-600" />
+              <Users className="h-8 w-8 text-[hsl(var(--success))]" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-purple-200">
+        <Card className="bg-[hsl(var(--lavender)/0.10)] border-[hsl(var(--lavender)/0.3)]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-purple-600">Iglesias Activas</p>
-                <p className="text-3xl font-bold text-purple-900">
+                <p className="text-sm font-medium text-[hsl(var(--lavender))]">Iglesias Activas</p>
+                <p className="text-3xl font-bold text-foreground">
                   {Math.round((analytics.overview.churches.active / analytics.overview.churches.total) * 100)}%
                 </p>
               </div>
-              <Building2 className="h-8 w-8 text-purple-600" />
+              <Building2 className="h-8 w-8 text-[hsl(var(--lavender))]" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-yellow-50 border-yellow-200">
+        <Card className="bg-[hsl(var(--warning)/0.10)] border-[hsl(var(--warning)/0.3)]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-yellow-600">MRR Plataforma (USD)</p>
-                <p className="text-3xl font-bold text-yellow-900">
+                <p className="text-sm font-medium text-[hsl(var(--warning))]">MRR Plataforma (USD)</p>
+                <p className="text-3xl font-bold text-[hsl(var(--warning))]">
                   ${analytics.overview.platformRevenue.mrr.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
-                <p className="text-xs text-yellow-700 mt-1">
+                <p className="text-xs text-[hsl(var(--warning))] mt-1">
                   {analytics.overview.platformRevenue.activeSubscriptions} suscripciones activas
                 </p>
               </div>
-              <DollarSign className="h-8 w-8 text-yellow-600" />
+              <DollarSign className="h-8 w-8 text-[hsl(var(--warning))]" />
             </div>
           </CardContent>
         </Card>
@@ -235,7 +235,7 @@ export default function PlatformAnalyticsPage() {
               <CardContent>
                 <div className="space-y-4">
                   {analytics.growth.monthly.slice(-6).map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                       <span className="text-sm font-medium">
                         {new Date(item.month).toLocaleDateString('es-ES', { 
                           month: 'long', 
@@ -243,9 +243,9 @@ export default function PlatformAnalyticsPage() {
                         })}
                       </span>
                       <div className="flex items-center gap-2">
-                        <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-blue-600 rounded-full transition-all"
+                            className="h-full bg-[hsl(var(--info))] rounded-full transition-all"
                             style={{ 
                               width: `${(item.count / Math.max(...analytics.growth.monthly.map(m => m.count))) * 100}%` 
                             }}
@@ -265,18 +265,18 @@ export default function PlatformAnalyticsPage() {
                   <DollarSign className="h-5 w-5" />
                   Ingresos Plataforma (USD)
                 </CardTitle>
-                <p className="text-xs text-gray-500">Ingresos por suscripciones Paddle — independiente de donaciones de inquilinos</p>
+                <p className="text-xs text-muted-foreground">Ingresos por suscripciones Paddle — independiente de donaciones de inquilinos</p>
               </CardHeader>
               <CardContent>
                 {analytics.growth.subscriptionRevenue.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 text-sm">
+                  <div className="text-center py-8 text-muted-foreground text-sm">
                     <p>Sin ingresos registrados aún.</p>
                     <p className="mt-1 text-xs">Los ingresos aparecerán aquí cuando se procesen pagos de suscripción via Paddle.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {analytics.growth.subscriptionRevenue.slice(-6).map((item, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                         <span className="text-sm font-medium">
                           {new Date(item.month).toLocaleDateString('es-ES', { 
                             month: 'long', 
@@ -284,10 +284,10 @@ export default function PlatformAnalyticsPage() {
                           })}
                         </span>
                         <div className="text-right">
-                          <p className="font-semibold text-green-600">
+                          <p className="font-semibold text-[hsl(var(--success))]">
                             ${parseFloat(String(item.total || 0)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD
                           </p>
-                          <p className="text-xs text-gray-500">{item.count} factura(s)</p>
+                          <p className="text-xs text-muted-foreground">{item.count} factura(s)</p>
                         </div>
                       </div>
                     ))}
@@ -313,13 +313,13 @@ export default function PlatformAnalyticsPage() {
                     <div key={role} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
                         <span className="font-medium">{role.replace('_', ' ')}</span>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           {Math.round((count / analytics.overview.users.total) * 100)}% del total
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-blue-600">{count}</p>
-                        <p className="text-sm text-gray-500">usuarios</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--info))]">{count}</p>
+                        <p className="text-sm text-muted-foreground">usuarios</p>
                       </div>
                     </div>
                   ))}
@@ -336,19 +336,19 @@ export default function PlatformAnalyticsPage() {
                   {analytics.rankings.topChurches.map((church, index) => (
                     <div key={church.id} className="flex items-center justify-between p-3 border rounded-lg">
                       <div className="flex items-center gap-3">
-                        <div className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full font-bold text-sm">
+                        <div className="flex items-center justify-center w-8 h-8 bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] rounded-full font-bold text-sm">
                           {index + 1}
                         </div>
                         <div>
                           <p className="font-medium">{church.name}</p>
-                          <p className="text-sm text-gray-500">{church.members} miembros</p>
+                          <p className="text-sm text-muted-foreground">{church.members} miembros</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-blue-600 text-sm">
+                        <p className="font-bold text-[hsl(var(--info))] text-sm">
                           {church.subscriptionPlan ?? 'Sin plan'}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           {church.subscriptionStatus ?? '—'}
                         </p>
                       </div>
@@ -368,10 +368,10 @@ export default function PlatformAnalyticsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-center">
-                  <p className="text-4xl font-bold text-blue-600">
+                  <p className="text-4xl font-bold text-[hsl(var(--info))]">
                     {Math.round((analytics.overview.users.active / analytics.overview.users.total) * 100)}%
                   </p>
-                  <p className="text-sm text-gray-600 mt-2">Usuarios activos vs total</p>
+                  <p className="text-sm text-muted-foreground mt-2">Usuarios activos vs total</p>
                 </div>
               </CardContent>
             </Card>
@@ -382,10 +382,10 @@ export default function PlatformAnalyticsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-center">
-                  <p className="text-4xl font-bold text-green-600">
+                  <p className="text-4xl font-bold text-[hsl(var(--success))]">
                     {Math.round(analytics.overview.members / analytics.overview.churches.active)}
                   </p>
-                  <p className="text-sm text-gray-600 mt-2">Miembros por iglesia activa</p>
+                  <p className="text-sm text-muted-foreground mt-2">Miembros por iglesia activa</p>
                 </div>
               </CardContent>
             </Card>
@@ -396,10 +396,10 @@ export default function PlatformAnalyticsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-center">
-                  <p className="text-4xl font-bold text-purple-600">
+                  <p className="text-4xl font-bold text-[hsl(var(--lavender))]">
                     {Math.round((analytics.overview.churches.active / analytics.overview.churches.total) * 100)}%
                   </p>
-                  <p className="text-sm text-gray-600 mt-2">Iglesias que permanecen activas</p>
+                  <p className="text-sm text-muted-foreground mt-2">Iglesias que permanecen activas</p>
                 </div>
               </CardContent>
             </Card>
@@ -413,23 +413,23 @@ export default function PlatformAnalyticsPage() {
                 <CardTitle>Insights Clave</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
-                  <h4 className="font-semibold text-blue-900">Crecimiento Sostenido</h4>
-                  <p className="text-sm text-blue-800">
+                <div className="p-4 bg-[hsl(var(--info)/0.10)] border-l-4 border-[hsl(var(--info)/0.5)] rounded">
+                  <h4 className="font-semibold text-foreground">Crecimiento Sostenido</h4>
+                  <p className="text-sm text-[hsl(var(--info))]">
                     La plataforma mantiene un crecimiento constante de iglesias mes a mes.
                   </p>
                 </div>
                 
-                <div className="p-4 bg-green-50 border-l-4 border-green-400 rounded">
-                  <h4 className="font-semibold text-green-900">Alta Retención</h4>
-                  <p className="text-sm text-green-800">
+                <div className="p-4 bg-[hsl(var(--success)/0.10)] border-l-4 border-[hsl(var(--success)/0.30)] rounded">
+                  <h4 className="font-semibold text-foreground">Alta Retención</h4>
+                  <p className="text-sm text-[hsl(var(--success))]">
                     {Math.round((analytics.overview.users.active / analytics.overview.users.total) * 100)}% de usuarios permanecen activos.
                   </p>
                 </div>
                 
-                <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
-                  <h4 className="font-semibold text-yellow-900">Oportunidad de Mejora</h4>
-                  <p className="text-sm text-yellow-800">
+                <div className="p-4 bg-[hsl(var(--warning)/0.10)] border-l-4 border-[hsl(var(--warning)/0.30)] rounded">
+                  <h4 className="font-semibold text-[hsl(var(--warning))]">Oportunidad de Mejora</h4>
+                  <p className="text-sm text-[hsl(var(--warning))]">
                     Algunas iglesias podrían beneficiarse de más funciones de engagement.
                   </p>
                 </div>
@@ -443,21 +443,21 @@ export default function PlatformAnalyticsPage() {
               <CardContent className="space-y-4">
                 <div className="p-4 border rounded-lg">
                   <h4 className="font-semibold">Estrategia de Crecimiento</h4>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     Enfocar esfuerzos en iglesias medianas (50-200 miembros) para maximizar el crecimiento.
                   </p>
                 </div>
                 
                 <div className="p-4 border rounded-lg">
                   <h4 className="font-semibold">Funcionalidades Nuevas</h4>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     Implementar más herramientas de participación para iglesias con baja actividad.
                   </p>
                 </div>
                 
                 <div className="p-4 border rounded-lg">
                   <h4 className="font-semibold">Retención</h4>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     Desarrollar programa de incorporación mejorado para nuevas iglesias.
                   </p>
                 </div>

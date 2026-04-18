@@ -476,7 +476,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
             <div className="relative flex-1 min-w-[200px]">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground/70" />
               <Input
                 className="pl-9"
                 placeholder="Buscar por nombre, email, teléfono…"
@@ -487,7 +487,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
             </div>
             <Select value={category} onValueChange={setCategory}>
               <SelectTrigger className="w-[160px]">
-                <Filter className="h-4 w-4 mr-2 text-gray-400" />
+                <Filter className="h-4 w-4 mr-2 text-muted-foreground/70" />
                 <SelectValue placeholder="Categoría" />
               </SelectTrigger>
               <SelectContent>
@@ -517,7 +517,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
                 onChange={(e) => setDateFrom(e.target.value)}
                 className="w-[130px]"
               />
-              <span className="text-gray-400 text-sm">–</span>
+              <span className="text-muted-foreground/70 text-sm">–</span>
               <Input
                 type="date"
                 value={dateTo}
@@ -535,19 +535,19 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
       {/* Visitor List */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold text-gray-700">
+          <CardTitle className="text-base font-semibold text-muted-foreground">
             {pagination.total} visitante{pagination.total !== 1 ? "s" : ""}{" "}
             encontrado{pagination.total !== 1 ? "s" : ""}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="p-8 text-center text-gray-400">
+            <div className="p-8 text-center text-muted-foreground/70">
               <RefreshCw className="h-6 w-6 animate-spin mx-auto mb-2" />
               <p>Cargando visitantes…</p>
             </div>
           ) : visitors.length === 0 ? (
-            <div className="p-8 text-center text-gray-400">
+            <div className="p-8 text-center text-muted-foreground/70">
               <Users className="h-10 w-10 mx-auto mb-3 text-gray-300" />
               <p className="font-medium">No se encontraron visitantes</p>
               <p className="text-sm mt-1">
@@ -582,7 +582,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
                         {v.displayCategory}
                       </Badge>
                       {v.openFollowUps > 0 && (
-                        <Badge className="text-xs px-2 py-0 bg-orange-100 text-orange-700 border-orange-200">
+                        <Badge className="text-xs px-2 py-0 bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.3)]">
                           {v.openFollowUps} tarea
                           {v.openFollowUps > 1 ? "s" : ""} pendiente
                           {v.openFollowUps > 1 ? "s" : ""}
@@ -649,7 +649,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
           >
             Anterior
           </Button>
-          <span className="text-sm text-gray-600 flex items-center px-2">
+          <span className="text-sm text-muted-foreground flex items-center px-2">
             Pág. {pagination.page} / {pagination.totalPages}
           </span>
           <Button

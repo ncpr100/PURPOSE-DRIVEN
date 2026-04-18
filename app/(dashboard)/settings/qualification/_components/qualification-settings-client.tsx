@@ -477,7 +477,7 @@ export function QualificationSettingsClient({ userRole, churchId }: Qualificatio
                   <AlertDescription>
                     <strong>Total: {Math.round((settings.spiritualGiftsWeight + settings.availabilityWeight + settings.experienceWeight + settings.ministryPassionWeight + settings.activityWeight) * 100)}%</strong>
                     {Math.abs((settings.spiritualGiftsWeight + settings.availabilityWeight + settings.experienceWeight + settings.ministryPassionWeight + settings.activityWeight) - 1) > 0.01 && 
-                      <span className="text-orange-600 ml-2">(Se recomienda que sumen 100%)</span>
+                      <span className="text-[hsl(var(--warning))] ml-2">(Se recomienda que sumen 100%)</span>
                     }
                   </AlertDescription>
                 </Alert>

@@ -108,12 +108,12 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
   };
 
   const getEngagementLevel = (score: number): { level: string; color: string; description: string } => {
-    if (score >= 90) return { level: 'Excepcional', color: 'text-green-600 bg-green-100', description: 'Compromiso extraordinario' };
-    if (score >= 80) return { level: 'Muy Alto', color: 'text-emerald-600 bg-emerald-100', description: 'Altamente comprometido' };
-    if (score >= 70) return { level: 'Alto', color: 'text-blue-600 bg-blue-100', description: 'Buen nivel de compromiso' };
-    if (score >= 60) return { level: 'Medio', color: 'text-yellow-600 bg-yellow-100', description: 'Compromiso moderado' };
-    if (score >= 40) return { level: 'Bajo', color: 'text-orange-600 bg-orange-100', description: 'Necesita atención' };
-    return { level: 'Muy Bajo', color: 'text-red-600 bg-red-100', description: 'Requiere intervención urgente' };
+    if (score >= 90) return { level: 'Excepcional', color: 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.15)]', description: 'Compromiso extraordinario' };
+    if (score >= 80) return { level: 'Muy Alto', color: 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.12)]', description: 'Altamente comprometido' };
+    if (score >= 70) return { level: 'Alto', color: 'text-[hsl(var(--info))] bg-[hsl(var(--info)/0.15)]', description: 'Buen nivel de compromiso' };
+    if (score >= 60) return { level: 'Medio', color: 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.15)]', description: 'Compromiso moderado' };
+    if (score >= 40) return { level: 'Bajo', color: 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.15)]', description: 'Necesita atención' };
+    return { level: 'Muy Bajo', color: 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.15)]', description: 'Requiere intervención urgente' };
   };
 
   const metricConfig = [
@@ -170,11 +170,11 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
   const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
     switch (trend) {
       case 'up':
-        return <TrendingUp className="h-4 w-4 text-green-500" />;
+        return <TrendingUp className="h-4 w-4 text-[hsl(var(--success))]" />;
       case 'down':
-        return <TrendingDown className="h-4 w-4 text-red-500" />;
+        return <TrendingDown className="h-4 w-4 text-[hsl(var(--destructive))]" />;
       default:
-        return <Activity className="h-4 w-4 text-gray-500" />;
+        return <Activity className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
@@ -189,10 +189,10 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="animate-pulse space-y-4">
-            <div className="h-32 bg-gray-200 rounded-lg"></div>
+            <div className="h-32 bg-muted rounded-lg"></div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="h-24 bg-gray-200 rounded-lg"></div>
-              <div className="h-24 bg-gray-200 rounded-lg"></div>
+              <div className="h-24 bg-muted rounded-lg"></div>
+              <div className="h-24 bg-muted rounded-lg"></div>
             </div>
           </div>
         </CardContent>
@@ -204,13 +204,13 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
     return (
       <Card className={className}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-600">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <AlertCircle className="h-5 w-5" />
             Error en Métricas de Compromiso
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-red-600">{error}</p>
+          <p className="text-[hsl(var(--destructive))]">{error}</p>
           <Button onClick={fetchEngagementData} className="mt-4">
             Reintentar
           </Button>
@@ -244,30 +244,30 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
 
           <TabsContent value="overview" className="space-y-6">
             {/* Overall Score Card */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border">
+            <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-xl border">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Puntuación Promedio de Compromiso</h3>
-                  <p className="text-sm text-gray-600">Basado en {engagementData.totalMembers} miembros</p>
+                  <h3 className="text-lg font-semibold text-foreground">Puntuación Promedio de Compromiso</h3>
+                  <p className="text-sm text-muted-foreground">Basado en {engagementData.totalMembers} miembros</p>
                 </div>
-                <Award className="h-8 w-8 text-blue-500" />
+                <Award className="h-8 w-8 text-[hsl(var(--info))]" />
               </div>
               
               <div className="flex items-end gap-4">
-                <span className="text-4xl font-bold text-blue-900">{engagementData.averageScore}</span>
-                <span className="text-2xl text-blue-700">/100</span>
+                <span className="text-4xl font-bold text-foreground">{engagementData.averageScore}</span>
+                <span className="text-2xl text-[hsl(var(--info))]">/100</span>
                 <Badge className={`${engagementLevel.color} px-3 py-1`}>
                   {engagementLevel.level}
                 </Badge>
               </div>
               
-              <p className="text-sm text-gray-600 mt-2">{engagementLevel.description}</p>
+              <p className="text-sm text-muted-foreground mt-2">{engagementLevel.description}</p>
               
               <Progress 
                 value={engagementData.averageScore} 
                 className="h-3 mt-4"
                 // @ts-ignore
-                indicatorClassName="bg-gradient-to-r from-blue-500 to-indigo-500"
+                indicatorClassName="bg-gradient-to-r from-primary/20 to-primary/10"
               />
             </div>
 
@@ -287,21 +287,21 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
                       {getTrendIcon(trend)}
                     </div>
                     
-                    <h4 className="font-semibold text-gray-900 text-sm mb-1">{metric.label}</h4>
-                    <p className="text-2xl font-bold text-gray-900">{Math.round(value)}%</p>
-                    <p className="text-xs text-gray-500 mt-1">{metric.description}</p>
+                    <h4 className="font-semibold text-foreground text-sm mb-1">{metric.label}</h4>
+                    <p className="text-2xl font-bold text-foreground">{Math.round(value)}%</p>
+                    <p className="text-xs text-muted-foreground mt-1">{metric.description}</p>
                   </div>
                 );
               })}
             </div>
 
             {/* Action Recommendations */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
+                <AlertCircle className="h-5 w-5 text-[hsl(var(--warning))] mt-0.5" />
                 <div>
-                  <h4 className="font-semibold text-yellow-800 mb-2">Recomendaciones de Acción</h4>
-                  <ul className="space-y-1 text-sm text-yellow-700">
+                  <h4 className="font-semibold text-[hsl(var(--warning))] mb-2">Recomendaciones de Acción</h4>
+                  <ul className="space-y-1 text-sm text-[hsl(var(--warning))]">
                     {engagementData.averageScore < 70 && (
                       <li>• Implementar programa de seguimiento personalizado</li>
                     )}
@@ -333,14 +333,14 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
                         <IconComponent className={`h-5 w-5 text-${metric.color}-600`} />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-gray-900">{metric.label}</h4>
-                        <p className="text-sm text-gray-600">{metric.description}</p>
+                        <h4 className="font-semibold text-foreground">{metric.label}</h4>
+                        <p className="text-sm text-muted-foreground">{metric.description}</p>
                       </div>
                     </div>
                     
                     <div className="text-right">
                       <div className="flex items-center gap-2">
-                        <span className="text-2xl font-bold text-gray-900">{Math.round(value)}%</span>
+                        <span className="text-2xl font-bold text-foreground">{Math.round(value)}%</span>
                         {getTrendIcon(trend)}
                       </div>
                       <Badge className={`${level.color} text-xs`}>
@@ -356,7 +356,7 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
                     indicatorClassName={`bg-${metric.color}-500`}
                   />
                   
-                  <div className="flex justify-between text-xs text-gray-500">
+                  <div className="flex justify-between text-xs text-muted-foreground">
                     <span>0%</span>
                     <span>100%</span>
                   </div>
@@ -372,11 +372,11 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
                 const percentage = Math.round((count / engagementData.totalMembers) * 100);
                 
                 const levelConfig = {
-                  'HIGH': { label: 'Alto', color: 'bg-green-500', bgColor: 'bg-green-100' },
-                  'MEDIUM HIGH': { label: 'Medio-Alto', color: 'bg-blue-500', bgColor: 'bg-blue-100' },
-                  'MEDIUM': { label: 'Medio', color: 'bg-yellow-500', bgColor: 'bg-yellow-100' },
-                  'MEDIUM LOW': { label: 'Medio-Bajo', color: 'bg-orange-500', bgColor: 'bg-orange-100' },
-                  'LOW': { label: 'Bajo', color: 'bg-red-500', bgColor: 'bg-red-100' }
+                  'HIGH': { label: 'Alto', color: 'bg-[hsl(var(--success)/0.10)]0', bgColor: 'bg-[hsl(var(--success)/0.15)]' },
+                  'MEDIUM HIGH': { label: 'Medio-Alto', color: 'bg-[hsl(var(--info)/0.10)]0', bgColor: 'bg-[hsl(var(--info)/0.15)]' },
+                  'MEDIUM': { label: 'Medio', color: 'bg-[hsl(var(--warning)/0.10)]0', bgColor: 'bg-[hsl(var(--warning)/0.15)]' },
+                  'MEDIUM LOW': { label: 'Medio-Bajo', color: 'bg-[hsl(var(--warning)/0.10)]0', bgColor: 'bg-[hsl(var(--warning)/0.15)]' },
+                  'LOW': { label: 'Bajo', color: 'bg-[hsl(var(--destructive)/0.10)]0', bgColor: 'bg-[hsl(var(--destructive)/0.15)]' }
                 };
                 
                 const config = levelConfig[level as keyof typeof levelConfig];
@@ -385,7 +385,7 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
                 return (
                   <div key={levelKey} className={`${config.bgColor} p-4 rounded-lg border`}>
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold text-gray-900">Compromiso {config.label}</h4>
+                      <h4 className="font-semibold text-foreground">Compromiso {config.label}</h4>
                       <Badge variant="outline">
                         {count} miembros ({percentage}%)
                       </Badge>
@@ -398,7 +398,7 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
                       indicatorClassName={config.color}
                     />
                     
-                    <div className="mt-2 flex justify-between text-sm text-gray-600">
+                    <div className="mt-2 flex justify-between text-sm text-muted-foreground">
                       <span>{count} personas</span>
                       <span>{percentage}% del total</span>
                     </div>
@@ -409,28 +409,28 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
             
             {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
-                  <span className="font-semibold text-green-800">Miembros Altamente Comprometidos</span>
+                  <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
+                  <span className="font-semibold text-[hsl(var(--success))]">Miembros Altamente Comprometidos</span>
                 </div>
-                <p className="text-2xl font-bold text-green-900 mt-2">
+                <p className="text-2xl font-bold text-foreground mt-2">
                   {engagementData.distribution.HIGH + engagementData.distribution.MEDIUM_HIGH}
                 </p>
-                <p className="text-sm text-green-600">
+                <p className="text-sm text-[hsl(var(--success))]">
                   {Math.round(((engagementData.distribution.HIGH + engagementData.distribution.MEDIUM_HIGH) / engagementData.totalMembers) * 100)}% del total
                 </p>
               </div>
               
-              <div className="bg-red-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-red-600" />
-                  <span className="font-semibold text-red-800">Miembros que Necesitan Atención</span>
+                  <AlertCircle className="h-5 w-5 text-[hsl(var(--destructive))]" />
+                  <span className="font-semibold text-[hsl(var(--destructive))]">Miembros que Necesitan Atención</span>
                 </div>
-                <p className="text-2xl font-bold text-red-900 mt-2">
+                <p className="text-2xl font-bold text-[hsl(var(--destructive))] mt-2">
                   {engagementData.distribution.MEDIUM_LOW + engagementData.distribution.LOW}
                 </p>
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-[hsl(var(--destructive))]">
                   {Math.round(((engagementData.distribution.MEDIUM_LOW + engagementData.distribution.LOW) / engagementData.totalMembers) * 100)}% del total
                 </p>
               </div>
@@ -444,7 +444,7 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
             onClick={fetchEngagementData}
             variant="outline"
             size="sm"
-            className="text-gray-600 hover:text-gray-900"
+            className="text-muted-foreground hover:text-foreground"
           >
             🔄 Actualizar Métricas
           </Button>

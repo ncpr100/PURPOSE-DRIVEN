@@ -98,8 +98,8 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <div className="text-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto" />
-            <p className="mt-2 text-gray-600">Cargando detalles...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))] mx-auto" />
+            <p className="mt-2 text-muted-foreground">Cargando detalles...</p>
           </div>
         </DialogContent>
       </Dialog>
@@ -111,7 +111,7 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-4xl">
           <div className="text-center py-8">
-            <p className="text-gray-600">Error al cargar los detalles de la iglesia</p>
+            <p className="text-muted-foreground">Error al cargar los detalles de la iglesia</p>
           </div>
         </DialogContent>
       </Dialog>
@@ -150,42 +150,42 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {churchDetails.address && (
                     <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-gray-400 mt-1" />
+                      <MapPin className="h-4 w-4 text-muted-foreground/70 mt-1" />
                       <div>
                         <p className="text-sm font-medium">Dirección</p>
-                        <p className="text-sm text-gray-600">{churchDetails.address}</p>
+                        <p className="text-sm text-muted-foreground">{churchDetails.address}</p>
                       </div>
                     </div>
                   )}
 
                   <div className="flex items-start gap-2">
-                    <Mail className="h-4 w-4 text-gray-400 mt-1" />
+                    <Mail className="h-4 w-4 text-muted-foreground/70 mt-1" />
                     <div>
                       <p className="text-sm font-medium">Email</p>
-                      <p className="text-sm text-gray-600">{churchDetails.email}</p>
+                      <p className="text-sm text-muted-foreground">{churchDetails.email}</p>
                     </div>
                   </div>
 
                   {churchDetails.phone && (
                     <div className="flex items-start gap-2">
-                      <Phone className="h-4 w-4 text-gray-400 mt-1" />
+                      <Phone className="h-4 w-4 text-muted-foreground/70 mt-1" />
                       <div>
                         <p className="text-sm font-medium">Teléfono</p>
-                        <p className="text-sm text-gray-600">{churchDetails.phone}</p>
+                        <p className="text-sm text-muted-foreground">{churchDetails.phone}</p>
                       </div>
                     </div>
                   )}
 
                   {churchDetails.website && (
                     <div className="flex items-start gap-2">
-                      <Globe className="h-4 w-4 text-gray-400 mt-1" />
+                      <Globe className="h-4 w-4 text-muted-foreground/70 mt-1" />
                       <div>
                         <p className="text-sm font-medium">Sitio Web</p>
                         <a
                           href={churchDetails.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:underline"
+                          className="text-sm text-[hsl(var(--info))] hover:underline"
                         >
                           {churchDetails.website}
                         </a>
@@ -195,10 +195,10 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
 
                   {churchDetails.founded && (
                     <div className="flex items-start gap-2">
-                      <Calendar className="h-4 w-4 text-gray-400 mt-1" />
+                      <Calendar className="h-4 w-4 text-muted-foreground/70 mt-1" />
                       <div>
                         <p className="text-sm font-medium">Fundada</p>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-muted-foreground">
                           {new Date(churchDetails.founded).toLocaleDateString('es-ES', {
                             year: 'numeric',
                             month: 'long',
@@ -210,10 +210,10 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
                   )}
 
                   <div className="flex items-start gap-2">
-                    <Building2 className="h-4 w-4 text-gray-400 mt-1" />
+                    <Building2 className="h-4 w-4 text-muted-foreground/70 mt-1" />
                     <div>
                       <p className="text-sm font-medium">Registrada</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-muted-foreground">
                         {new Date(churchDetails.createdAt).toLocaleDateString('es-ES', {
                           year: 'numeric',
                           month: 'long',
@@ -227,7 +227,7 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
                 {churchDetails.description && (
                   <div className="border-t pt-4">
                     <p className="text-sm font-medium mb-2">Descripción</p>
-                    <p className="text-sm text-gray-600">{churchDetails.description}</p>
+                    <p className="text-sm text-muted-foreground">{churchDetails.description}</p>
                   </div>
                 )}
               </CardContent>
@@ -239,10 +239,10 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2">
-                    <UserCheck className="h-8 w-8 text-blue-600" />
+                    <UserCheck className="h-8 w-8 text-[hsl(var(--info))]" />
                     <div>
                       <p className="text-2xl font-bold">{churchDetails.stats.members.active}</p>
-                      <p className="text-sm text-gray-600">Miembros Activos</p>
+                      <p className="text-sm text-muted-foreground">Miembros Activos</p>
                     </div>
                   </div>
                 </CardContent>
@@ -251,12 +251,12 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2">
-                    <DollarSign className="h-8 w-8 text-green-600" />
+                    <DollarSign className="h-8 w-8 text-[hsl(var(--success))]" />
                     <div>
                       <p className="text-2xl font-bold">
                         ${churchDetails.stats.donations.total.toLocaleString()}
                       </p>
-                      <p className="text-sm text-gray-600">Total Donaciones</p>
+                      <p className="text-sm text-muted-foreground">Total Donaciones</p>
                     </div>
                   </div>
                 </CardContent>
@@ -265,10 +265,10 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2">
-                    <Activity className="h-8 w-8 text-purple-600" />
+                    <Activity className="h-8 w-8 text-[hsl(var(--lavender))]" />
                     <div>
                       <p className="text-2xl font-bold">{churchDetails.users.length}</p>
-                      <p className="text-sm text-gray-600">Usuarios Totales</p>
+                      <p className="text-sm text-muted-foreground">Usuarios Totales</p>
                     </div>
                   </div>
                 </CardContent>
@@ -283,9 +283,9 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {Object.entries(churchDetails.stats.events).map(([type, count]) => (
-                      <div key={type} className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div key={type} className="text-center p-3 bg-muted/30 rounded-lg">
                         <p className="text-lg font-bold">{count}</p>
-                        <p className="text-sm text-gray-600 capitalize">{type}</p>
+                        <p className="text-sm text-muted-foreground capitalize">{type}</p>
                       </div>
                     ))}
                   </div>
@@ -305,7 +305,7 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
                     <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
                         <p className="font-medium">{user.name}</p>
-                        <p className="text-sm text-gray-600">{user.email}</p>
+                        <p className="text-sm text-muted-foreground">{user.email}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge variant={user.role === 'ADMIN_IGLESIA' ? 'default' : 'secondary'}>
@@ -328,7 +328,7 @@ export function ViewChurchDialog({ open, onOpenChange, church }: ViewChurchDialo
                 <CardTitle>Actividad Reciente</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-center text-gray-500 py-8">
+                <p className="text-center text-muted-foreground py-8">
                   Funcionalidad de actividad en desarrollo
                 </p>
               </CardContent>

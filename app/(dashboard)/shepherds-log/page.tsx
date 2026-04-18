@@ -19,12 +19,12 @@ export default async function ShepherdsLogPage() {
     <div className="container mx-auto py-6 max-w-3xl">
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-1">
-          <BookOpen className="h-7 w-7 text-indigo-600" />
-          <h1 className="text-2xl font-bold text-gray-900">
+          <BookOpen className="h-7 w-7 text-primary" />
+          <h1 className="text-2xl font-bold text-foreground">
             Diario del Pastor
           </h1>
         </div>
-        <p className="text-gray-500 text-sm ml-10">
+        <p className="text-muted-foreground text-sm ml-10">
           Miembros que necesitan atención pastoral esta semana. Actualizado cada
           lunes.
         </p>

@@ -227,11 +227,11 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return 'bg-green-500'
-      case 'IN_PROGRESS': return 'bg-blue-500'
-      case 'PAUSED': return 'bg-yellow-500'
-      case 'CANCELLED': return 'bg-red-500'
-      case 'NOT_STARTED': return 'bg-gray-500'
+      case 'COMPLETED': return 'bg-[hsl(var(--success)/0.10)]0'
+      case 'IN_PROGRESS': return 'bg-[hsl(var(--info)/0.10)]0'
+      case 'PAUSED': return 'bg-[hsl(var(--warning)/0.10)]0'
+      case 'CANCELLED': return 'bg-[hsl(var(--destructive)/0.10)]0'
+      case 'NOT_STARTED': return 'bg-muted/300'
       default: return 'bg-gray-400'
     }
   }
@@ -249,23 +249,23 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
 
   const getStepIcon = (stepType: string) => {
     switch (stepType) {
-      case 'ASSESSMENT': return <Target className="h-4 w-4 text-blue-500" />
-      case 'TRAINING': return <BookOpen className="h-4 w-4 text-green-500" />
-      case 'ORIENTATION': return <Users className="h-4 w-4 text-purple-500" />
-      case 'MENTORSHIP': return <UserPlus className="h-4 w-4 text-orange-500" />
-      case 'EXPERIENCE': return <Star className="h-4 w-4 text-yellow-500" />
-      case 'DOCUMENTATION': return <Award className="h-4 w-4 text-gray-500" />
-      default: return <CheckCircle className="h-4 w-4 text-gray-400" />
+      case 'ASSESSMENT': return <Target className="h-4 w-4 text-[hsl(var(--info))]" />
+      case 'TRAINING': return <BookOpen className="h-4 w-4 text-[hsl(var(--success))]" />
+      case 'ORIENTATION': return <Users className="h-4 w-4 text-[hsl(var(--lavender))]" />
+      case 'MENTORSHIP': return <UserPlus className="h-4 w-4 text-[hsl(var(--warning))]" />
+      case 'EXPERIENCE': return <Star className="h-4 w-4 text-[hsl(var(--warning))]" />
+      case 'DOCUMENTATION': return <Award className="h-4 w-4 text-muted-foreground" />
+      default: return <CheckCircle className="h-4 w-4 text-muted-foreground/70" />
     }
   }
 
   const getStepStatusIcon = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return <CheckCircle className="h-4 w-4 text-green-500" />
-      case 'IN_PROGRESS': return <PlayCircle className="h-4 w-4 text-blue-500" />
-      case 'FAILED': return <RotateCcw className="h-4 w-4 text-red-500" />
-      case 'SKIPPED': return <Eye className="h-4 w-4 text-gray-500" />
-      default: return <Clock className="h-4 w-4 text-yellow-500" />
+      case 'COMPLETED': return <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
+      case 'IN_PROGRESS': return <PlayCircle className="h-4 w-4 text-[hsl(var(--info))]" />
+      case 'FAILED': return <RotateCcw className="h-4 w-4 text-[hsl(var(--destructive))]" />
+      case 'SKIPPED': return <Eye className="h-4 w-4 text-muted-foreground" />
+      default: return <Clock className="h-4 w-4 text-[hsl(var(--warning))]" />
     }
   }
 
@@ -275,7 +275,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
-            <PlayCircle className="h-6 w-6 text-green-600" />
+            <PlayCircle className="h-6 w-6 text-[hsl(var(--success))]" />
             Workflows de Onboarding
           </h2>
           <p className="text-muted-foreground">
@@ -284,7 +284,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+            <Button className="bg-gradient-to-r from-[hsl(var(--success))] to-[hsl(var(--primary))] hover:from-[hsl(var(--success))] hover:to-[hsl(var(--primary))]">
               <PlayCircle className="h-4 w-4 mr-2" />
               Crear Workflow
             </Button>
@@ -361,7 +361,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <PlayCircle className="h-4 w-4 text-blue-500" />
+                <PlayCircle className="h-4 w-4 text-[hsl(var(--info))]" />
                 <div>
                   <p className="text-2xl font-bold">{summary.total}</p>
                   <p className="text-xs text-muted-foreground">Total Workflows</p>
@@ -372,7 +372,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Clock className="h-4 w-4 text-yellow-500" />
+                <Clock className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">{summary.inProgress}</p>
                   <p className="text-xs text-muted-foreground">En Progreso</p>
@@ -383,7 +383,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+                <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                 <div>
                   <p className="text-2xl font-bold">{summary.completed}</p>
                   <p className="text-xs text-muted-foreground">Completados</p>
@@ -394,7 +394,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <RotateCcw className="h-4 w-4 text-red-500" />
+                <RotateCcw className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 <div>
                   <p className="text-2xl font-bold">{summary.cancelled}</p>
                   <p className="text-xs text-muted-foreground">Cancelados</p>
@@ -435,20 +435,20 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                     
                     <div className="grid grid-cols-2 gap-4 text-center">
                       <div>
-                        <p className="text-2xl font-bold text-blue-600">{summary.inProgress}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--info))]">{summary.inProgress}</p>
                         <p className="text-xs text-muted-foreground">En Progreso</p>
                       </div>
                       <div>
-                        <p className="text-2xl font-bold text-green-600">{summary.completed}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--success))]">{summary.completed}</p>
                         <p className="text-xs text-muted-foreground">Completados</p>
                       </div>
                     </div>
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <PlayCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Sin Workflows</h3>
-                    <p className="text-gray-600 mb-4">
+                    <PlayCircle className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-foreground mb-2">Sin Workflows</h3>
+                    <p className="text-muted-foreground mb-4">
                       Cree su primer workflow de onboarding para comenzar
                     </p>
                     <Button onClick={() => setIsCreateDialogOpen(true)}>
@@ -548,7 +548,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
 
                         {workflow.estimatedCompletion && (
                           <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4 text-blue-500" />
+                            <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
                             <span className="text-sm">
                               Finalización estimada: {new Date(workflow.estimatedCompletion).toLocaleDateString()}
                             </span>
@@ -699,7 +699,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                               </div>
                               
                               {step.completedAt && (
-                                <div className="text-xs text-green-600">
+                                <div className="text-xs text-[hsl(var(--success))]">
                                   Completado el {step.completedAt.toLocaleDateString()}
                                 </div>
                               )}
@@ -734,7 +734,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Users className="h-5 w-5 text-blue-500" />
+                      <Users className="h-5 w-5 text-[hsl(var(--info))]" />
                       Ministerio General
                     </CardTitle>
                     <CardDescription>
@@ -745,19 +745,19 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                     <div className="space-y-3">
                       <div className="text-sm space-y-1">
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Orientación inicial (1 hora)</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Evaluación de dones (30 min)</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Capacitación básica (2 horas)</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Período de prueba (4 semanas)</span>
                         </div>
                       </div>
@@ -771,7 +771,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <BookOpen className="h-5 w-5 text-green-500" />
+                      <BookOpen className="h-5 w-5 text-[hsl(var(--success))]" />
                       Ministerio de Niños
                     </CardTitle>
                     <CardDescription>
@@ -782,19 +782,19 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                     <div className="space-y-3">
                       <div className="text-sm space-y-1">
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Verificación de antecedentes</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Capacitación en seguridad</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Curso de desarrollo infantil</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Período de observación (6 semanas)</span>
                         </div>
                       </div>
@@ -808,7 +808,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Award className="h-5 w-5 text-yellow-500" />
+                      <Award className="h-5 w-5 text-[hsl(var(--warning))]" />
                       Liderazgo
                     </CardTitle>
                     <CardDescription>
@@ -819,19 +819,19 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                     <div className="space-y-3">
                       <div className="text-sm space-y-1">
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Evaluación de liderazgo 360°</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Curso de liderazgo (8 semanas)</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Mentoría con líder senior</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
                           <span>Proyecto de liderazgo (12 semanas)</span>
                         </div>
                       </div>
@@ -845,7 +845,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Target className="h-5 w-5 text-purple-500" />
+                      <Target className="h-5 w-5 text-[hsl(var(--lavender))]" />
                       Personalizado
                     </CardTitle>
                     <CardDescription>

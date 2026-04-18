@@ -129,22 +129,22 @@ export default function SpiritualAssessmentTestPage() {
       </div>
 
       {/* Page Header */}
-      <Card className="p-6 mb-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950">
+      <Card className="p-6 mb-6 btn-cta-gradient dark:from-[hsl(var(--primary))] dark:to-[hsl(var(--lavender))]">
         <h1 className="text-2xl font-bold mb-2">Evaluación Espiritual</h1>
         <p className="text-muted-foreground">
           Completa esta evaluación para identificar tus dones espirituales y áreas de ministerio.
           {!memberId && (
-            <span className="block mt-2 text-amber-600 font-medium">
+            <span className="block mt-2 text-[hsl(var(--warning))] font-medium">
               ⚠️ Advertencia: No se proporcionó ID de miembro. Los datos no se guardarán.
             </span>
           )}
         </p>
         {savedData && (
-          <div className="mt-4 p-3 bg-green-100 dark:bg-green-900 rounded-lg">
-            <p className="text-sm font-medium text-green-900 dark:text-green-100">
+          <div className="mt-4 p-3 bg-[hsl(var(--success)/0.15)] dark:bg-[hsl(var(--success))] rounded-lg">
+            <p className="text-sm font-medium text-foreground dark:text-[hsl(var(--success)/0.6)]">
               ✅ Datos guardados exitosamente
             </p>
-            <div className="mt-2 text-xs text-green-800 dark:text-green-200">
+            <div className="mt-2 text-xs text-[hsl(var(--success))] dark:text-[hsl(var(--success)/0.7)]">
               <p>• Dones primarios: {savedData.giftSelections.filter(g => g.type === 'primary').length}</p>
               <p>• Dones secundarios: {savedData.giftSelections.filter(g => g.type === 'secondary').length}</p>
               <p>• Pasiones: {savedData.ministryPassions.length}</p>

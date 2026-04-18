@@ -59,7 +59,7 @@ export function StatsCard({ title, value, icon: Icon, description, trend, index 
             </p>
           )}
           {trend && (
-            <p className="text-xs text-green-600 mt-1">
+            <p className="text-xs text-[hsl(var(--success))] mt-1">
               {trend}
             </p>
           )}

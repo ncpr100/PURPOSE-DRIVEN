@@ -35,21 +35,21 @@ export default function EventsManual() {
               Esta guía cubre todas las funcionalidades para crear, gestionar y hacer seguimiento de eventos y servicios de su iglesia.
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📋 Secciones</h4>
-                <p className="text-xl font-bold text-blue-600">7</p>
+                <p className="text-xl font-bold text-[hsl(var(--info))]">7</p>
               </div>
-              <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⏱️ Tiempo</h4>
-                <p className="text-xl font-bold text-green-600">30 min</p>
+                <p className="text-xl font-bold text-[hsl(var(--success))]">30 min</p>
               </div>
-              <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🎯 Nivel</h4>
-                <p className="text-lg font-bold text-purple-600">Intermedio</p>
+                <p className="text-lg font-bold text-[hsl(var(--lavender))]">Intermedio</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
                 <h4 className="font-semibold">👤 Rol Mínimo</h4>
-                <p className="text-lg font-bold text-orange-600">LIDER</p>
+                <p className="text-lg font-bold text-[hsl(var(--warning))]">LIDER</p>
               </div>
             </div>
           </CardContent>
@@ -59,7 +59,7 @@ export default function EventsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               Crear Nuevos Eventos
             </CardTitle>
           </CardHeader>
@@ -87,7 +87,7 @@ export default function EventsManual() {
                   <p><strong>1.4.</strong> Haga clic en &quot;💾 Crear Evento&quot;</p>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📋 Tipos de Eventos</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Servicios Regulares:</strong> Cultos dominicales, estudios bíblicos</li>
@@ -96,7 +96,7 @@ export default function EventsManual() {
                   <li>• <strong>Actividades Sociales:</strong> Cenas, picnics, deportes</li>
                   <li>• <strong>Eventos Externos:</strong> Evangelismo, visitas</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-blue-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Use plantillas para eventos recurrentes</p>
                 </div>
               </div>
@@ -108,7 +108,7 @@ export default function EventsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Sistema de Registro de Asistentes
             </CardTitle>
           </CardHeader>
@@ -155,7 +155,7 @@ export default function EventsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               Sistema de Check-in con Código QR
             </CardTitle>
           </CardHeader>
@@ -176,7 +176,7 @@ export default function EventsManual() {
                   <p><strong>3.5.</strong> Monitor la asistencia en tiempo real</p>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📲 Instrucciones para Asistentes</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Para registrar asistencia:</strong></p>
@@ -187,7 +187,7 @@ export default function EventsManual() {
                     <li>4. Complete información si es primera vez</li>
                     <li>5. Confirme su asistencia</li>
                   </ol>
-                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-green-400">
+                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                     <p className="text-xs"><strong>✨ Automático:</strong> Miembros existentes se registran instantáneamente</p>
                   </div>
                 </div>
@@ -200,7 +200,7 @@ export default function EventsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               Tipos de Eventos y Plantillas
             </CardTitle>
           </CardHeader>
@@ -251,7 +251,7 @@ export default function EventsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
               Gestión y Seguimiento de Eventos
             </CardTitle>
           </CardHeader>
@@ -304,7 +304,7 @@ export default function EventsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
               🆕 Funciones Avanzadas de Check-in
             </CardTitle>
           </CardHeader>
@@ -330,7 +330,7 @@ export default function EventsManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-red-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">🚨 Protocolo de Emergencia</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Contacto inmediato:</strong> Notificación automática a padres</li>
@@ -347,7 +347,7 @@ export default function EventsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">7</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">7</span>
               Reportes y Análisis de Eventos
             </CardTitle>
           </CardHeader>
@@ -369,7 +369,7 @@ export default function EventsManual() {
                   <p><strong>7.4.</strong> Exporte en múltiples formatos</p>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📊 Métricas Clave</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-2 gap-4">

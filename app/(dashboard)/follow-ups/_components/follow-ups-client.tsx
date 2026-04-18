@@ -120,13 +120,13 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'COMPLETADO':
-        return <CheckCircle className="w-4 h-4 text-green-500" />
+        return <CheckCircle className="w-4 h-4 text-[hsl(var(--success))]" />
       case 'PENDIENTE':
-        return <Clock className="w-4 h-4 text-yellow-500" />
+        return <Clock className="w-4 h-4 text-[hsl(var(--warning))]" />
       case 'FALLIDO':
-        return <AlertCircle className="w-4 h-4 text-red-500" />
+        return <AlertCircle className="w-4 h-4 text-[hsl(var(--destructive))]" />
       default:
-        return <Clock className="w-4 h-4 text-gray-500" />
+        return <Clock className="w-4 h-4 text-muted-foreground" />
     }
   }
 
@@ -160,8 +160,8 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Seguimiento de Visitantes</h1>
-          <p className="text-gray-600">Gestiona el seguimiento y contacto con visitantes</p>
+          <h1 className="text-2xl font-bold text-foreground">Seguimiento de Visitantes</h1>
+          <p className="text-muted-foreground">Gestiona el seguimiento y contacto con visitantes</p>
         </div>
       </div>
 
@@ -208,7 +208,7 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pendientes</CardTitle>
-            <Clock className="h-4 w-4 text-yellow-500" />
+            <Clock className="h-4 w-4 text-[hsl(var(--warning))]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -220,7 +220,7 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Completados</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-500" />
+            <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -232,7 +232,7 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Fallidos</CardTitle>
-            <AlertCircle className="h-4 w-4 text-red-500" />
+            <AlertCircle className="h-4 w-4 text-[hsl(var(--destructive))]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -282,15 +282,15 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
                 <div className="space-y-2">
                   {followUp.checkIn.email && (
                     <div className="flex items-center space-x-2">
-                      <Mail className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">{followUp.checkIn.email}</span>
+                      <Mail className="w-4 h-4 text-muted-foreground/70" />
+                      <span className="text-sm text-muted-foreground">{followUp.checkIn.email}</span>
                     </div>
                   )}
                   
                   {followUp.checkIn.phone && (
                     <div className="flex items-center space-x-2">
-                      <Phone className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">{followUp.checkIn.phone}</span>
+                      <Phone className="w-4 h-4 text-muted-foreground/70" />
+                      <span className="text-sm text-muted-foreground">{followUp.checkIn.phone}</span>
                     </div>
                   )}
                 </div>
@@ -298,8 +298,8 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
                 <div className="space-y-2">
                   {followUp.scheduledAt && (
                     <div className="flex items-center space-x-2">
-                      <Calendar className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">
+                      <Calendar className="w-4 h-4 text-muted-foreground/70" />
+                      <span className="text-sm text-muted-foreground">
                         Programado: {new Date(followUp.scheduledAt).toLocaleDateString('es-ES')}
                       </span>
                     </div>
@@ -307,8 +307,8 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
                   
                   {followUp.completedAt && (
                     <div className="flex items-center space-x-2">
-                      <CheckCircle className="w-4 h-4 text-green-400" />
-                      <span className="text-sm text-gray-600">
+                      <CheckCircle className="w-4 h-4 text-[hsl(var(--success)/0.7)]" />
+                      <span className="text-sm text-muted-foreground">
                         Completado: {new Date(followUp.completedAt).toLocaleDateString('es-ES')}
                       </span>
                     </div>
@@ -317,15 +317,15 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
               </div>
 
               {followUp.notes && (
-                <div className="bg-gray-50 p-3 rounded-md">
-                  <p className="text-sm text-gray-700">{followUp.notes}</p>
+                <div className="bg-muted/30 p-3 rounded-md">
+                  <p className="text-sm text-muted-foreground">{followUp.notes}</p>
                 </div>
               )}
 
               {followUp.assignedUser && (
                 <div className="flex items-center space-x-2">
-                  <User className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">
+                  <User className="w-4 h-4 text-muted-foreground/70" />
+                  <span className="text-sm text-muted-foreground">
                     Asignado a: {followUp.assignedUser.name}
                   </span>
                 </div>
@@ -348,9 +348,9 @@ export function FollowUpsClient({ userRole, churchId }: FollowUpsClientProps) {
       {filteredFollowUps.length === 0 && (
         <Card>
           <CardContent className="text-center py-8">
-            <MessageSquare className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No se encontraron seguimientos</h3>
-            <p className="text-gray-600">Los seguimientos se crean automáticamente cuando hay visitantes por primera vez</p>
+            <MessageSquare className="mx-auto h-12 w-12 text-muted-foreground/70 mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">No se encontraron seguimientos</h3>
+            <p className="text-muted-foreground">Los seguimientos se crean automáticamente cuando hay visitantes por primera vez</p>
           </CardContent>
         </Card>
       )}

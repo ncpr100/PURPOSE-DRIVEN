@@ -223,7 +223,7 @@ export function SpiritualGiftsAssessment({
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -231,8 +231,8 @@ export function SpiritualGiftsAssessment({
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="text-center">
-        <Brain className="mx-auto h-12 w-12 text-blue-600 mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900">Evaluación de Dones Espirituales</h2>
+        <Brain className="mx-auto h-12 w-12 text-[hsl(var(--info))] mb-4" />
+        <h2 className="text-2xl font-bold text-foreground">Evaluación de Dones Espirituales</h2>
         <p className="text-muted-foreground mt-2">
           Identifique sus dones espirituales y pasiones ministeriales
         </p>
@@ -279,7 +279,7 @@ export function SpiritualGiftsAssessment({
                             />
                             <label
                               htmlFor={`primary-${gift.id}`}
-                              className="text-sm font-medium text-blue-700"
+                              className="text-sm font-medium text-[hsl(var(--info))]"
                             >
                               Primario
                             </label>
@@ -295,7 +295,7 @@ export function SpiritualGiftsAssessment({
                             />
                             <label
                               htmlFor={`secondary-${gift.id}`}
-                              className="text-sm text-gray-600"
+                              className="text-sm text-muted-foreground"
                             >
                               Secundario
                             </label>

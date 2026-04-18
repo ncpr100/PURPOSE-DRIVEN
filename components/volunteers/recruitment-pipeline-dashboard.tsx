@@ -184,11 +184,11 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
 
   const getReadinessColor = (readiness: string) => {
     switch (readiness) {
-      case 'READY': return 'bg-green-500'
-      case 'DEVELOPING': return 'bg-yellow-500'
-      case 'NEEDS_TRAINING': return 'bg-orange-500'
-      case 'NOT_READY': return 'bg-red-500'
-      default: return 'bg-gray-500'
+      case 'READY': return 'bg-[hsl(var(--success)/0.10)]0'
+      case 'DEVELOPING': return 'bg-[hsl(var(--warning)/0.10)]0'
+      case 'NEEDS_TRAINING': return 'bg-[hsl(var(--warning)/0.10)]0'
+      case 'NOT_READY': return 'bg-[hsl(var(--destructive)/0.10)]0'
+      default: return 'bg-muted/300'
     }
   }
 
@@ -204,10 +204,10 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
 
   const getPotentialIcon = (potential: string) => {
     switch (potential) {
-      case 'HIGH': return <Star className="h-4 w-4 text-yellow-500" />
-      case 'MEDIUM': return <TrendingUp className="h-4 w-4 text-blue-500" />
-      case 'LOW': return <Activity className="h-4 w-4 text-gray-500" />
-      default: return <Users className="h-4 w-4 text-gray-400" />
+      case 'HIGH': return <Star className="h-4 w-4 text-[hsl(var(--warning))]" />
+      case 'MEDIUM': return <TrendingUp className="h-4 w-4 text-[hsl(var(--info))]" />
+      case 'LOW': return <Activity className="h-4 w-4 text-muted-foreground" />
+      default: return <Users className="h-4 w-4 text-muted-foreground/70" />
     }
   }
 
@@ -217,7 +217,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
-            <UserPlus className="h-6 w-6 text-blue-600" />
+            <UserPlus className="h-6 w-6 text-[hsl(var(--info))]" />
             Pipeline de Reclutamiento Automatizado
           </h2>
           <p className="text-muted-foreground">
@@ -227,7 +227,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
         <Button 
           onClick={runRecruitmentAnalysis}
           disabled={loading}
-          className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+          className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--success))] hover:from-[hsl(var(--primary))] hover:to-[hsl(var(--success))]"
         >
           {loading ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -244,7 +244,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4 text-blue-500" />
+                <Users className="h-4 w-4 text-[hsl(var(--info))]" />
                 <div>
                   <p className="text-2xl font-bold">{pipelineMetrics.totalMembers}</p>
                   <p className="text-xs text-muted-foreground">Total Miembros</p>
@@ -255,7 +255,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+                <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                 <div>
                   <p className="text-2xl font-bold">{pipelineMetrics.currentVolunteers}</p>
                   <p className="text-xs text-muted-foreground">Voluntarios</p>
@@ -266,7 +266,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Target className="h-4 w-4 text-purple-500" />
+                <Target className="h-4 w-4 text-[hsl(var(--lavender))]" />
                 <div>
                   <p className="text-2xl font-bold">{pipelineMetrics.potentialCandidates}</p>
                   <p className="text-xs text-muted-foreground">Candidatos</p>
@@ -277,7 +277,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <TrendingUp className="h-4 w-4 text-yellow-500" />
+                <TrendingUp className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">{pipelineMetrics.conversionRate}%</p>
                   <p className="text-xs text-muted-foreground">Conversión</p>
@@ -288,7 +288,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <BarChart3 className="h-4 w-4 text-orange-500" />
+                <BarChart3 className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">{pipelineMetrics.profileCompleteness}%</p>
                   <p className="text-xs text-muted-foreground">Perfiles</p>
@@ -299,7 +299,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Clock className="h-4 w-4 text-red-500" />
+                <Clock className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 <div>
                   <p className="text-2xl font-bold">{pipelineMetrics.availabilityDefined}%</p>
                   <p className="text-xs text-muted-foreground">Disponibilidad</p>
@@ -339,11 +339,11 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                     
                     <div className="grid grid-cols-2 gap-4 text-center">
                       <div>
-                        <p className="text-2xl font-bold text-green-600">{summary.readyForRecruitment}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--success))]">{summary.readyForRecruitment}</p>
                         <p className="text-xs text-muted-foreground">Listos Ahora</p>
                       </div>
                       <div>
-                        <p className="text-2xl font-bold text-yellow-600">{summary.developingCandidates}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--warning))]">{summary.developingCandidates}</p>
                         <p className="text-xs text-muted-foreground">En Desarrollo</p>
                       </div>
                     </div>
@@ -357,9 +357,9 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Análisis Pendiente</h3>
-                    <p className="text-gray-600 mb-4">
+                    <Brain className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-foreground mb-2">Análisis Pendiente</h3>
+                    <p className="text-muted-foreground mb-4">
                       Ejecute el análisis para ver el estado del pipeline de reclutamiento
                     </p>
                     <Button onClick={runRecruitmentAnalysis} disabled={loading}>
@@ -548,7 +548,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                               <ul className="text-xs space-y-1">
                                 {profile.barriers.slice(0, 2).map((barrier, index) => (
                                   <li key={index} className="flex items-start gap-1">
-                                    <span className="text-red-500">•</span>
+                                    <span className="text-[hsl(var(--destructive))]">•</span>
                                     {barrier}
                                   </li>
                                 ))}
@@ -561,7 +561,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                             <ul className="text-xs space-y-1">
                               {profile.nextActions.slice(0, 2).map((action, index) => (
                                 <li key={index} className="flex items-start gap-1">
-                                  <span className="text-green-500">•</span>
+                                  <span className="text-[hsl(var(--success))]">•</span>
                                   {action}
                                 </li>
                               ))}
@@ -809,7 +809,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                           <Badge variant="outline">{ministry.candidateCount} candidatos</Badge>
                           <div className="w-16 bg-muted rounded-full h-2">
                             <div 
-                              className="bg-blue-500 h-2 rounded-full" 
+                              className="bg-[hsl(var(--info)/0.10)]0 h-2 rounded-full" 
                               style={{ 
                                 width: `${Math.min(100, (ministry.candidateCount / Math.max(...insights.mostInDemandMinistries.map((m: any) => m.candidateCount))) * 100)}%` 
                               }}
@@ -842,7 +842,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                           </span>
                           <div className="w-16 bg-muted rounded-full h-2">
                             <div 
-                              className="bg-red-500 h-2 rounded-full" 
+                              className="bg-[hsl(var(--destructive)/0.10)]0 h-2 rounded-full" 
                               style={{ 
                                 width: `${Math.min(100, (barrier.memberCount / Math.max(...insights.commonBarriers.map((b: any) => b.memberCount))) * 100)}%` 
                               }}

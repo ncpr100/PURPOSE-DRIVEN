@@ -97,7 +97,7 @@ function StatsCard({
           {description && (
             <p className="text-xs text-muted-foreground">{description}</p>
           )}
-          {trend && <p className="text-xs text-green-600 mt-1">{trend}</p>}
+          {trend && <p className="text-xs text-[hsl(var(--success))] mt-1">{trend}</p>}
         </CardContent>
       </Card>
     </motion.div>
@@ -304,10 +304,10 @@ export function DashboardClient({
           <CardContent>
             <div className="grid gap-6 md:grid-cols-3">
               <div className="text-center">
-                <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mx-auto mb-2">
-                  <UserPlus className="h-6 w-6 text-green-600" />
+                <div className="flex items-center justify-center w-12 h-12 bg-[hsl(var(--success)/0.15)] rounded-full mx-auto mb-2">
+                  <UserPlus className="h-6 w-6 text-[hsl(var(--success))]" />
                 </div>
-                <p className="text-2xl font-bold text-green-600">
+                <p className="text-2xl font-bold text-[hsl(var(--success))]">
                   {stats.firstTimeVisitorsCount}
                 </p>
                 <p className="text-sm text-muted-foreground">Primera Vez</p>
@@ -379,7 +379,7 @@ export function DashboardClient({
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Heart className="h-5 w-5 text-rose-600" />
+              <Heart className="h-5 w-5 text-[hsl(var(--destructive))]" />
               <h2 className="text-xl font-semibold">Diario del Pastor</h2>
             </div>
             <Link
@@ -400,7 +400,7 @@ export function DashboardClient({
       {isShepherdsLogRole && (
         <div className="space-y-6">
           <div className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-violet-600" />
+            <Zap className="h-5 w-5 text-[hsl(var(--lavender))]" />
             <h2 className="text-xl font-semibold">Agentes IA de Ministerio</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
@@ -631,8 +631,8 @@ export function DashboardClient({
           <CardContent>
             {stats.existingWebsites > 0 ? (
               <div className="text-center py-6">
-                <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-                <p className="font-medium text-green-800">¡Sitio Web Activo!</p>
+                <CheckCircle className="h-12 w-12 text-[hsl(var(--success))] mx-auto mb-4" />
+                <p className="font-medium text-[hsl(var(--success))]">¡Sitio Web Activo!</p>
                 <p className="text-sm text-muted-foreground mb-4">
                   Tu iglesia ya tiene un sitio web publicado
                 </p>
@@ -678,7 +678,7 @@ export function DashboardClient({
                     </div>
                     {request.estimatedPrice && (
                       <div className="text-right">
-                        <p className="text-sm font-medium text-green-600">
+                        <p className="text-sm font-medium text-[hsl(var(--success))]">
                           ${request.estimatedPrice}
                         </p>
                       </div>
@@ -731,13 +731,13 @@ export function DashboardClient({
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-green-600">
+                <p className="text-2xl font-bold text-[hsl(var(--success))]">
                   {stats.newMembersThisMonth}
                 </p>
                 <p className="text-sm text-muted-foreground">Nuevos este Mes</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-purple-600">
+                <p className="text-2xl font-bold text-[hsl(var(--lavender))]">
                   {stats.totalSermons}
                 </p>
                 <p className="text-sm text-muted-foreground">

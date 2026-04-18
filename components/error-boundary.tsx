@@ -31,14 +31,14 @@ export class SessionErrorBoundary extends React.Component<
     if (this.state.hasError) {
       return (
         <div className="p-6">
-          <h2 className="text-lg font-semibold mb-2 text-red-600">🚨 Application Error</h2>
-          <div className="bg-red-50 border border-red-200 rounded p-4 mb-4">
-            <p className="text-sm font-mono text-red-800">
+          <h2 className="text-lg font-semibold mb-2 text-[hsl(var(--destructive))]">🚨 Application Error</h2>
+          <div className="bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded p-4 mb-4">
+            <p className="text-sm font-mono text-[hsl(var(--destructive))]">
               {this.state.error?.message || 'Unknown error occurred'}
             </p>
             <details className="mt-2">
-              <summary className="cursor-pointer text-red-600">Error Details</summary>
-              <pre className="mt-2 text-xs text-red-700 overflow-auto">
+              <summary className="cursor-pointer text-[hsl(var(--destructive))]">Error Details</summary>
+              <pre className="mt-2 text-xs text-[hsl(var(--destructive))] overflow-auto">
                 {this.state.error?.stack}
               </pre>
             </details>
@@ -47,7 +47,7 @@ export class SessionErrorBoundary extends React.Component<
             This error information will help diagnose the issue.
           </p>
           <button 
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm"
+            className="px-4 py-2 bg-[hsl(var(--info))] text-white rounded-lg text-sm"
             onClick={() => window.location.reload()}
           >
             Recargar página

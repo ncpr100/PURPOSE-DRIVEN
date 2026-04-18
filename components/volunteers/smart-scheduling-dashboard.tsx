@@ -150,17 +150,17 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
   }
 
   const getUrgencyColor = (score: number) => {
-    if (score >= 8) return 'bg-red-500'
-    if (score >= 6) return 'bg-orange-500'
-    return 'bg-green-500'
+    if (score >= 8) return 'bg-[hsl(var(--destructive)/0.10)]0'
+    if (score >= 6) return 'bg-[hsl(var(--warning)/0.10)]0'
+    return 'bg-[hsl(var(--success)/0.10)]0'
   }
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'HIGH': return 'bg-red-100 text-red-800'
-      case 'MEDIUM': return 'bg-yellow-100 text-yellow-800'
-      case 'LOW': return 'bg-green-100 text-green-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'HIGH': return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
+      case 'MEDIUM': return 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]'
+      case 'LOW': return 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
+      default: return 'bg-muted/50 text-foreground'
     }
   }
 
@@ -217,10 +217,10 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Brechas Críticas</CardTitle>
-                <AlertTriangle className="h-4 w-4 text-red-500" />
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-red-600">
+                <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
                   {gapAnalyses.filter(g => g.urgencyScore >= 8).length}
                 </div>
                 <p className="text-xs text-muted-foreground">
@@ -232,7 +232,7 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Recomendaciones IA</CardTitle>
-                <Brain className="h-4 w-4 text-blue-500" />
+                <Brain className="h-4 w-4 text-[hsl(var(--info))]" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{recommendations.length}</div>
@@ -245,10 +245,10 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Eficiencia Global</CardTitle>
-                <TrendingUp className="h-4 w-4 text-green-500" />
+                <TrendingUp className="h-4 w-4 text-[hsl(var(--success))]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">85%</div>
+                <div className="text-2xl font-bold text-[hsl(var(--success))]">85%</div>
                 <p className="text-xs text-muted-foreground">
                   Cobertura ministerial
                 </p>
@@ -268,7 +268,7 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
               <div className="space-y-4">
                 {gapAnalyses.map(gap => (
                   <div key={gap.id} className="flex items-center space-x-4">
-                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--info)/0.10)]0"></div>
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-center">
                         <p className="text-sm font-medium truncate">{gap.ministry.name}</p>
@@ -301,7 +301,7 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-orange-500" />
+                <AlertTriangle className="h-5 w-5 text-[hsl(var(--warning))]" />
                 Análisis Detallado de Brechas Ministeriales
               </CardTitle>
               <CardDescription>
@@ -383,7 +383,7 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-yellow-500" />
+                <Star className="h-5 w-5 text-[hsl(var(--warning))]" />
                 Recomendaciones Inteligentes de Voluntarios
               </CardTitle>
               <CardDescription>
@@ -413,12 +413,12 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
                             {rec.member.firstName} {rec.member.lastName}
                           </h3>
                           <p className="text-sm text-muted-foreground">{rec.member.email}</p>
-                          <p className="text-sm text-blue-600 font-medium">
+                          <p className="text-sm text-[hsl(var(--info))] font-medium">
                             {rec.ministry.name}
                           </p>
                         </div>
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-green-600">
+                          <div className="text-2xl font-bold text-[hsl(var(--success))]">
                             {Math.round(rec.matchScore)}%
                           </div>
                           <Badge className={getPriorityColor(rec.priority)}>
@@ -432,7 +432,7 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
                         <ul className="text-sm space-y-1">
                           {rec.reasoning.reasons.map((reason, index) => (
                             <li key={index} className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
+                              <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                               {reason}
                             </li>
                           ))}
@@ -461,7 +461,7 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Brain className="h-5 w-5 text-blue-500" />
+                <Brain className="h-5 w-5 text-[hsl(var(--info))]" />
                 Generador de Coincidencias con IA
               </CardTitle>
               <CardDescription>
@@ -512,9 +512,9 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
                 </div>
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="font-medium text-blue-900 mb-2">Cómo funciona el algoritmo IA:</h3>
-                <ul className="text-sm text-blue-800 space-y-1">
+              <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
+                <h3 className="font-medium text-foreground mb-2">Cómo funciona el algoritmo IA:</h3>
+                <ul className="text-sm text-[hsl(var(--info))] space-y-1">
                   <li>• <strong>Análisis de Dones (40%):</strong> Compatibilidad entre dones espirituales y ministerio</li>
                   <li>• <strong>Disponibilidad (25%):</strong> Matriz de disponibilidad y horarios libres</li>
                   <li>• <strong>Experiencia (15%):</strong> Nivel de experiencia ministerial</li>
@@ -540,7 +540,7 @@ export function SmartSchedulingDashboard({ churchId, userRole }: SmartScheduling
                               → {rec.ministry.name}
                             </span>
                           </div>
-                          <Badge variant="outline" className="text-green-700">
+                          <Badge variant="outline" className="text-[hsl(var(--success))]">
                             {Math.round(rec.matchScore)}% coincidencia
                           </Badge>
                         </div>

@@ -126,10 +126,10 @@ export default function WebsiteServicesPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Solicitudes Pendientes</CardTitle>
-            <Clock className="h-4 w-4 text-orange-500" />
+            <Clock className="h-4 w-4 text-[hsl(var(--warning))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">
+            <div className="text-2xl font-bold text-[hsl(var(--warning))]">
               {pendingRequests.filter(r => r.status === 'pending').length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -141,10 +141,10 @@ export default function WebsiteServicesPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">En Progreso</CardTitle>
-            <Settings className="h-4 w-4 text-blue-500" />
+            <Settings className="h-4 w-4 text-[hsl(var(--info))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-[hsl(var(--info))]">
               {pendingRequests.filter(r => r.status === 'in_progress').length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -156,10 +156,10 @@ export default function WebsiteServicesPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Sitios Activos</CardTitle>
-            <Globe className="h-4 w-4 text-green-500" />
+            <Globe className="h-4 w-4 text-[hsl(var(--success))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{activeWebsites.length}</div>
+            <div className="text-2xl font-bold text-[hsl(var(--success))]">{activeWebsites.length}</div>
             <p className="text-xs text-muted-foreground">
               Sitios publicados y funcionando
             </p>
@@ -169,10 +169,10 @@ export default function WebsiteServicesPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Revenue Este Mes</CardTitle>
-            <CheckCircle className="h-4 w-4 text-purple-500" />
+            <CheckCircle className="h-4 w-4 text-[hsl(var(--lavender))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">$2,850</div>
+            <div className="text-2xl font-bold text-[hsl(var(--lavender))]">$2,850</div>
             <p className="text-xs text-muted-foreground">
               Servicios web completados
             </p>

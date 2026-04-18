@@ -289,10 +289,10 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
 
   const getEngineStatusIcon = () => {
     switch (engineStatus) {
-      case 'analyzing': return <Brain className="h-4 w-4 animate-pulse text-blue-500" />
-      case 'optimizing': return <Zap className="h-4 w-4 animate-bounce text-yellow-500" />
-      case 'complete': return <CheckCircle className="h-4 w-4 text-green-500" />
-      default: return <Activity className="h-4 w-4 text-gray-400" />
+      case 'analyzing': return <Brain className="h-4 w-4 animate-pulse text-[hsl(var(--info))]" />
+      case 'optimizing': return <Zap className="h-4 w-4 animate-bounce text-[hsl(var(--warning))]" />
+      case 'complete': return <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
+      default: return <Activity className="h-4 w-4 text-muted-foreground/70" />
     }
   }
 
@@ -380,7 +380,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
             <Button 
               onClick={runIntelligentScheduling}
               disabled={loading}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              className="btn-cta-gradient hover:from-[hsl(var(--primary))] hover:to-[hsl(var(--lavender))]"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -417,7 +417,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4 text-blue-500" />
+                <Users className="h-4 w-4 text-[hsl(var(--info))]" />
                 <div>
                   <p className="text-2xl font-bold">{workloadAnalysis.totalVolunteers}</p>
                   <p className="text-xs text-muted-foreground">Voluntarios Activos</p>
@@ -428,7 +428,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <BarChart3 className="h-4 w-4 text-green-500" />
+                <BarChart3 className="h-4 w-4 text-[hsl(var(--success))]" />
                 <div>
                   <p className="text-2xl font-bold">{Math.round(workloadAnalysis.averageWorkloadScore)}</p>
                   <p className="text-xs text-muted-foreground">Carga Promedio</p>
@@ -439,9 +439,9 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="h-4 w-4 text-red-500" />
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 <div>
-                  <p className="text-2xl font-bold text-red-600">{workloadAnalysis.highBurnoutRisk}</p>
+                  <p className="text-2xl font-bold text-[hsl(var(--destructive))]">{workloadAnalysis.highBurnoutRisk}</p>
                   <p className="text-xs text-muted-foreground">Alto Riesgo</p>
                 </div>
               </div>
@@ -450,7 +450,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <TrendingUp className="h-4 w-4 text-yellow-500" />
+                <TrendingUp className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">{workloadAnalysis.underutilized}</p>
                   <p className="text-xs text-muted-foreground">Subutilizados</p>
@@ -461,7 +461,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Target className="h-4 w-4 text-purple-500" />
+                <Target className="h-4 w-4 text-[hsl(var(--lavender))]" />
                 <div>
                   <p className="text-2xl font-bold">{Math.round(workloadAnalysis.balanceScore)}</p>
                   <p className="text-xs text-muted-foreground">Balance Score</p>
@@ -558,7 +558,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
                                 <div key={recIndex} className="flex items-center justify-between p-2 bg-muted rounded-lg">
                                   <div>
                                     <div className="flex items-center gap-2">
-                                      <Star className="h-4 w-4 text-yellow-500" />
+                                      <Star className="h-4 w-4 text-[hsl(var(--warning))]" />
                                       <span className="font-medium">
                                         Candidato #{recIndex + 1}
                                       </span>
@@ -671,11 +671,11 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
                     
                     <div className="grid grid-cols-2 gap-4 text-center">
                       <div>
-                        <p className="text-2xl font-bold text-red-600">{workloadAnalysis.highBurnoutRisk}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--destructive))]">{workloadAnalysis.highBurnoutRisk}</p>
                         <p className="text-xs text-muted-foreground">Alto Riesgo</p>
                       </div>
                       <div>
-                        <p className="text-2xl font-bold text-green-600">{workloadAnalysis.underutilized}</p>
+                        <p className="text-2xl font-bold text-[hsl(var(--success))]">{workloadAnalysis.underutilized}</p>
                         <p className="text-xs text-muted-foreground">Disponibles</p>
                       </div>
                     </div>

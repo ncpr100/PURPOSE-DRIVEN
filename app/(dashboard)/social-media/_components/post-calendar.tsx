@@ -54,15 +54,15 @@ export default function PostCalendar({ posts, onPostSelect, onPostDeleted }: Pos
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'PUBLISHED':
-        return 'bg-green-100 text-green-800';
+        return 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]';
       case 'SCHEDULED':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]';
       case 'DRAFT':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted/50 text-foreground';
       case 'FAILED':
-        return 'bg-red-100 text-red-800';
+        return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted/50 text-foreground';
     }
   };
 
@@ -93,10 +93,10 @@ export default function PostCalendar({ posts, onPostSelect, onPostDeleted }: Pos
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-7 gap-px bg-gray-200">
+        <div className="grid grid-cols-7 gap-px bg-muted">
           {/* Header Row */}
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="bg-white p-2 text-center text-sm font-medium text-gray-500">
+            <div key={day} className="bg-white p-2 text-center text-sm font-medium text-muted-foreground">
               {day}
             </div>
           ))}
@@ -112,10 +112,10 @@ export default function PostCalendar({ posts, onPostSelect, onPostDeleted }: Pos
                 key={day.toISOString()}
                 className={`bg-white min-h-[120px] p-2 ${
                   !isCurrentMonth ? 'text-gray-300' : ''
-                } ${isCurrentDay ? 'bg-blue-50' : ''}`}
+                } ${isCurrentDay ? 'bg-[hsl(var(--info)/0.10)]' : ''}`}
               >
                 <div className={`text-sm font-medium mb-2 ${
-                  isCurrentDay ? 'text-blue-600' : isCurrentMonth ? 'text-gray-900' : 'text-gray-300'
+                  isCurrentDay ? 'text-[hsl(var(--info))]' : isCurrentMonth ? 'text-foreground' : 'text-gray-300'
                 }`}>
                   {format(day, 'd')}
                 </div>
@@ -133,7 +133,7 @@ export default function PostCalendar({ posts, onPostSelect, onPostDeleted }: Pos
                       </div>
                     ))}
                     {dayPosts.length > 3 && (
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-muted-foreground">
                         +{dayPosts.length - 3} more
                       </div>
                     )}
@@ -147,20 +147,20 @@ export default function PostCalendar({ posts, onPostSelect, onPostDeleted }: Pos
         {/* Legend */}
         <div className="mt-4 flex items-center justify-center space-x-6">
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded bg-green-100"></div>
-            <span className="text-sm text-gray-600">Published</span>
+            <div className="w-3 h-3 rounded bg-[hsl(var(--success)/0.15)]"></div>
+            <span className="text-sm text-muted-foreground">Published</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded bg-blue-100"></div>
-            <span className="text-sm text-gray-600">Scheduled</span>
+            <div className="w-3 h-3 rounded bg-[hsl(var(--info)/0.15)]"></div>
+            <span className="text-sm text-muted-foreground">Scheduled</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded bg-gray-100"></div>
-            <span className="text-sm text-gray-600">Draft</span>
+            <div className="w-3 h-3 rounded bg-muted/50"></div>
+            <span className="text-sm text-muted-foreground">Draft</span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded bg-red-100"></div>
-            <span className="text-sm text-gray-600">Failed</span>
+            <div className="w-3 h-3 rounded bg-[hsl(var(--destructive)/0.15)]"></div>
+            <span className="text-sm text-muted-foreground">Failed</span>
           </div>
         </div>
       </CardContent>

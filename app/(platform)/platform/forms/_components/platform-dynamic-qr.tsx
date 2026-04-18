@@ -90,11 +90,11 @@ interface DynamicQRCode {
 // Helpers
 // ─────────────────────────────────────────────
 const TYPE_META: Record<DestinationType, { label: string; icon: React.ElementType; color: string }> = {
-  url:     { label: 'Enlace web',        icon: Globe,       color: 'text-blue-600 bg-blue-100' },
-  form:    { label: 'Formulario',         icon: FileText,    color: 'text-purple-600 bg-purple-100' },
-  payment: { label: 'Pago',              icon: CreditCard,  color: 'text-green-600 bg-green-100' },
-  event:   { label: 'Evento',            icon: Calendar,    color: 'text-orange-600 bg-orange-100' },
-  survey:  { label: 'Encuesta',          icon: Target,      color: 'text-pink-600 bg-pink-100' },
+  url:     { label: 'Enlace web',        icon: Globe,       color: 'text-[hsl(var(--info))] bg-[hsl(var(--info)/0.15)]' },
+  form:    { label: 'Formulario',         icon: FileText,    color: 'text-[hsl(var(--lavender))] bg-[hsl(var(--lavender)/0.15)]' },
+  payment: { label: 'Pago',              icon: CreditCard,  color: 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.15)]' },
+  event:   { label: 'Evento',            icon: Calendar,    color: 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.15)]' },
+  survey:  { label: 'Encuesta',          icon: Target,      color: 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.12)]' },
 }
 
 async function generateQRDataUrl(url: string, size = 300): Promise<string> {
@@ -124,7 +124,7 @@ function QRPreview({ url, size = 128 }: { url: string; size?: number }) {
     generateQRDataUrl(url, size).then(setDataUrl).catch(() => setDataUrl(''))
   }, [url, size])
 
-  if (!dataUrl) return <div className="rounded bg-gray-100 animate-pulse" style={{ width: size, height: size }} />
+  if (!dataUrl) return <div className="rounded bg-muted/50 animate-pulse" style={{ width: size, height: size }} />
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={dataUrl} alt="QR" width={size} height={size} className="rounded border" />
@@ -468,7 +468,7 @@ export function PlatformDynamicQR() {
                                   className="h-8 w-8"
                                   onClick={() => { setEditItem(item); setEditUrl(item.destinationUrl) }}
                                 >
-                                  <RefreshCw className="h-4 w-4 text-blue-600" />
+                                  <RefreshCw className="h-4 w-4 text-[hsl(var(--info))]" />
                                 </Button>
                               </TooltipTrigger>
                               <TooltipContent>Cambiar destino</TooltipContent>
@@ -477,7 +477,7 @@ export function PlatformDynamicQR() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleDownload(item)}>
-                                  <Download className="h-4 w-4 text-green-600" />
+                                  <Download className="h-4 w-4 text-[hsl(var(--success))]" />
                                 </Button>
                               </TooltipTrigger>
                               <TooltipContent>Descargar QR</TooltipContent>
@@ -486,7 +486,7 @@ export function PlatformDynamicQR() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleOpenDetail(item)}>
-                                  <BarChart3 className="h-4 w-4 text-purple-600" />
+                                  <BarChart3 className="h-4 w-4 text-[hsl(var(--lavender))]" />
                                 </Button>
                               </TooltipTrigger>
                               <TooltipContent>Ver detalles</TooltipContent>
@@ -524,7 +524,7 @@ export function PlatformDynamicQR() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <QrCode className="h-5 w-5 text-blue-600" />
+              <QrCode className="h-5 w-5 text-[hsl(var(--info))]" />
               Nuevo Código QR Dinámico
             </DialogTitle>
           </DialogHeader>
@@ -592,7 +592,7 @@ export function PlatformDynamicQR() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <RefreshCw className="h-5 w-5 text-blue-600" />
+              <RefreshCw className="h-5 w-5 text-[hsl(var(--info))]" />
               Cambiar destino del QR
             </DialogTitle>
           </DialogHeader>
@@ -631,7 +631,7 @@ export function PlatformDynamicQR() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5 text-purple-600" />
+              <BarChart3 className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Detalles del Código QR
             </DialogTitle>
           </DialogHeader>
@@ -642,7 +642,7 @@ export function PlatformDynamicQR() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={detailQRUrl} alt="QR" width={120} height={120} className="rounded border shadow-sm shrink-0" />
                 ) : (
-                  <div className="w-[120px] h-[120px] bg-gray-100 rounded animate-pulse shrink-0" />
+                  <div className="w-[120px] h-[120px] bg-muted/50 rounded animate-pulse shrink-0" />
                 )}
                 <div className="space-y-2 flex-1 min-w-0">
                   <div>
@@ -654,7 +654,7 @@ export function PlatformDynamicQR() {
                   </Badge>
                   <div className="bg-muted rounded p-2">
                     <p className="text-xs font-medium">Total escaneos</p>
-                    <p className="text-3xl font-bold text-purple-600">{detailItem.scanCount.toLocaleString()}</p>
+                    <p className="text-3xl font-bold text-[hsl(var(--lavender))]">{detailItem.scanCount.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -667,7 +667,7 @@ export function PlatformDynamicQR() {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Enlace público</span>
                   <button
-                    className="text-blue-600 text-xs hover:underline"
+                    className="text-[hsl(var(--info))] text-xs hover:underline"
                     onClick={() => { navigator.clipboard.writeText(qrPublicUrl(detailItem.shortCode)); toast.success('Copiado') }}
                   >
                     {qrPublicUrl(detailItem.shortCode).replace(/^https?:\/\//, '')}
@@ -710,7 +710,7 @@ export function PlatformDynamicQR() {
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Layers className="h-5 w-5 text-blue-600" />
+              <Layers className="h-5 w-5 text-[hsl(var(--info))]" />
               Crear QR en Masa
             </DialogTitle>
           </DialogHeader>
@@ -741,7 +741,7 @@ export function PlatformDynamicQR() {
                 {bulkText.split('\n').filter((l) => l.trim()).length} URL(s) procesadas
               </p>
             </div>
-            <div className="p-3 bg-blue-50 rounded-lg text-xs text-blue-700">
+            <div className="p-3 bg-[hsl(var(--info)/0.10)] rounded-lg text-xs text-[hsl(var(--info))]">
               Khesed-Tek generará un código QR dinámico para cada URL y los descargará 
               automáticamente.
             </div>

@@ -280,12 +280,12 @@ export default function TenantCredentialsPage() {
 
       {/* Generated Password Display */}
       {generatedPassword && (
-        <Card className="border-green-200 bg-green-50">
+        <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-medium text-green-800">Contraseña Generada</h3>
-                <p className="text-sm text-green-600">Guarda esta contraseña - no se mostrará nuevamente</p>
+                <h3 className="font-medium text-[hsl(var(--success))]">Contraseña Generada</h3>
+                <p className="text-sm text-[hsl(var(--success))]">Guarda esta contraseña - no se mostrará nuevamente</p>
               </div>
               <div className="flex items-center gap-2">
                 <code className="bg-white px-3 py-1 rounded border">{generatedPassword}</code>
@@ -329,11 +329,11 @@ export default function TenantCredentialsPage() {
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
                         <h3 className="font-medium">{cred.churches?.name || 'Sin nombre'}</h3>
-                        <Badge className={cred.churches?.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}>
+                        <Badge className={cred.churches?.isActive ? 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]' : 'bg-muted/50 text-muted-foreground'}>
                           {cred.churches?.isActive ? 'Activa' : 'Inactiva'}
                         </Badge>
                         {cred.isFirstLogin && (
-                          <Badge className="bg-orange-100 text-orange-800">
+                          <Badge className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">
                             Primer Acceso Pendiente
                           </Badge>
                         )}

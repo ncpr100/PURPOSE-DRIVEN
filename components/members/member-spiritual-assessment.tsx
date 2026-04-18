@@ -233,7 +233,7 @@ export function MemberSpiritualAssessment({
       <CardContent>
         {assessmentState.hasExistingAssessment && assessmentState.data ? (
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-green-600">
+            <div className="flex items-center gap-2 text-[hsl(var(--success))]">
               <CheckCircle2 className="h-5 w-5" />
               <span className="font-medium">Evaluación Completada</span>
             </div>

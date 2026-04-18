@@ -378,10 +378,10 @@ export default function TenantOnboardingPage() {
                   value={onboardingData.church.name}
                   onChange={(e) => updateChurchData('name', e.target.value)}
                   placeholder="Ej: Iglesia Central de Fe"
-                  className={validationErrors['church.name'] ? 'border-red-500' : ''}
+                  className={validationErrors['church.name'] ? 'border-[hsl(var(--destructive))]' : ''}
                 />
                 {validationErrors['church.name'] && (
-                  <p className="text-sm text-red-600">{validationErrors['church.name']}</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors['church.name']}</p>
                 )}
               </div>
 
@@ -390,18 +390,18 @@ export default function TenantOnboardingPage() {
                   Email de Contacto *
                 </Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                   <Input
                     id="church-email"
                     type="email"
                     value={onboardingData.church.email}
                     onChange={(e) => updateChurchData('email', e.target.value)}
                     placeholder="contacto@iglesia.com"
-                    className={`pl-10 ${validationErrors['church.email'] ? 'border-red-500' : ''}`}
+                    className={`pl-10 ${validationErrors['church.email'] ? 'border-[hsl(var(--destructive))]' : ''}`}
                   />
                 </div>
                 {validationErrors['church.email'] && (
-                  <p className="text-sm text-red-600">{validationErrors['church.email']}</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors['church.email']}</p>
                 )}
               </div>
 
@@ -410,18 +410,18 @@ export default function TenantOnboardingPage() {
                   Dirección *
                 </Label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground/70" />
                   <Textarea
                     id="church-address"
                     value={onboardingData.church.address}
                     onChange={(e) => updateChurchData('address', e.target.value)}
                     placeholder="Calle Principal 123, Ciudad, Estado, País"
-                    className={`pl-10 ${validationErrors['church.address'] ? 'border-red-500' : ''}`}
+                    className={`pl-10 ${validationErrors['church.address'] ? 'border-[hsl(var(--destructive))]' : ''}`}
                     rows={2}
                   />
                 </div>
                 {validationErrors['church.address'] && (
-                  <p className="text-sm text-red-600">{validationErrors['church.address']}</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors['church.address']}</p>
                 )}
               </div>
 
@@ -430,7 +430,7 @@ export default function TenantOnboardingPage() {
                   Teléfono
                 </Label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                   <Input
                     id="church-phone"
                     value={onboardingData.church.phone}
@@ -446,7 +446,7 @@ export default function TenantOnboardingPage() {
                   Sitio Web
                 </Label>
                 <div className="relative">
-                  <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                   <Input
                     id="church-website"
                     value={onboardingData.church.website}
@@ -462,7 +462,7 @@ export default function TenantOnboardingPage() {
                   Fecha de Fundación
                 </Label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                   <Input
                     id="church-founded"
                     type="date"
@@ -492,12 +492,12 @@ export default function TenantOnboardingPage() {
       case 2:
         return (
           <div className="space-y-6">
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <Shield className="h-5 w-5 text-yellow-600 mt-0.5" />
+                <Shield className="h-5 w-5 text-[hsl(var(--warning))] mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-yellow-800">Usuario Administrador Principal</h4>
-                  <p className="text-sm text-yellow-700 mt-1">
+                  <h4 className="font-medium text-[hsl(var(--warning))]">Usuario Administrador Principal</h4>
+                  <p className="text-sm text-[hsl(var(--warning))] mt-1">
                     Este usuario tendrá permisos completos de administración para la iglesia.
                   </p>
                 </div>
@@ -524,10 +524,10 @@ export default function TenantOnboardingPage() {
                   data-1p-ignore="true"
                   data-form-type="other"
                   data-autocomplete-type="disabled"
-                  className={validationErrors['admin.name'] ? 'border-red-500' : ''}
+                  className={validationErrors['admin.name'] ? 'border-[hsl(var(--destructive))]' : ''}
                 />
                 {validationErrors['admin.name'] && (
-                  <p className="text-sm text-red-600">{validationErrors['admin.name']}</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors['admin.name']}</p>
                 )}
               </div>
 
@@ -536,7 +536,7 @@ export default function TenantOnboardingPage() {
                   Email *
                 </Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                   <Input
                     id="admin-email"
                     name="admin-email-new-church"
@@ -544,7 +544,7 @@ export default function TenantOnboardingPage() {
                     value={onboardingData.admin.email}
                     onChange={(e) => updateAdminData('email', e.target.value)}
                     placeholder="admin@iglesia.com"
-                    className={`pl-10 ${validationErrors['admin.email'] ? 'border-red-500' : ''}`}
+                    className={`pl-10 ${validationErrors['admin.email'] ? 'border-[hsl(var(--destructive))]' : ''}`}
                     autoComplete="new-password"
                     autoCorrect="off"
                     autoCapitalize="off"
@@ -558,7 +558,7 @@ export default function TenantOnboardingPage() {
                   />
                 </div>
                 {validationErrors['admin.email'] && (
-                  <p className="text-sm text-red-600">{validationErrors['admin.email']}</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors['admin.email']}</p>
                 )}
               </div>
 
@@ -567,7 +567,7 @@ export default function TenantOnboardingPage() {
                   Teléfono
                 </Label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                   <Input
                     id="admin-phone"
                     name="admin-phone-new-church"
@@ -600,7 +600,7 @@ export default function TenantOnboardingPage() {
                   value={onboardingData.admin.password}
                   onChange={(e) => updateAdminData('password', e.target.value)}
                   placeholder="Mínimo 8 caracteres"
-                  className={validationErrors['admin.password'] ? 'border-red-500' : ''}
+                  className={validationErrors['admin.password'] ? 'border-[hsl(var(--destructive))]' : ''}
                   autoComplete="new-password"
                   autoCorrect="off"
                   autoCapitalize="off"
@@ -612,7 +612,7 @@ export default function TenantOnboardingPage() {
                   data-autocomplete-type="disabled"
                 />
                 {validationErrors['admin.password'] && (
-                  <p className="text-sm text-red-600">{validationErrors['admin.password']}</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors['admin.password']}</p>
                 )}
               </div>
 
@@ -627,7 +627,7 @@ export default function TenantOnboardingPage() {
                   value={onboardingData.admin.confirmPassword}
                   onChange={(e) => updateAdminData('confirmPassword', e.target.value)}
                   placeholder="Confirma la contraseña"
-                  className={validationErrors['admin.confirmPassword'] ? 'border-red-500' : ''}
+                  className={validationErrors['admin.confirmPassword'] ? 'border-[hsl(var(--destructive))]' : ''}
                   autoComplete="new-password"
                   autoCorrect="off"
                   autoCapitalize="off"
@@ -639,7 +639,7 @@ export default function TenantOnboardingPage() {
                   data-autocomplete-type="disabled"
                 />
                 {validationErrors['admin.confirmPassword'] && (
-                  <p className="text-sm text-red-600">{validationErrors['admin.confirmPassword']}</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors['admin.confirmPassword']}</p>
                 )}
               </div>
 
@@ -657,7 +657,7 @@ export default function TenantOnboardingPage() {
                     <SelectItem value="PASTOR">Pastor</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-muted-foreground">
                   Pastor: liderazgo espiritual completo sobre el tenant. Administrador: gestión administrativa de la iglesia.
                 </p>
               </div>
@@ -668,12 +668,12 @@ export default function TenantOnboardingPage() {
       case 3:
         return (
           <div className="space-y-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-blue-600 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--info))] mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-blue-800">Revisión Final</h4>
-                  <p className="text-sm text-blue-700 mt-1">
+                  <h4 className="font-medium text-[hsl(var(--info))]">Revisión Final</h4>
+                  <p className="text-sm text-[hsl(var(--info))] mt-1">
                     Por favor revisa la información antes de crear la iglesia.
                   </p>
                 </div>
@@ -691,27 +691,27 @@ export default function TenantOnboardingPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Nombre</p>
-                    <p className="text-sm text-gray-900">{onboardingData.church.name}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Nombre</p>
+                    <p className="text-sm text-foreground">{onboardingData.church.name}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Email</p>
-                    <p className="text-sm text-gray-900">{onboardingData.church.email}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Email</p>
+                    <p className="text-sm text-foreground">{onboardingData.church.email}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Dirección</p>
-                    <p className="text-sm text-gray-900">{onboardingData.church.address}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Dirección</p>
+                    <p className="text-sm text-foreground">{onboardingData.church.address}</p>
                   </div>
                   {onboardingData.church.phone && (
                     <div>
-                      <p className="text-sm font-medium text-gray-700">Teléfono</p>
-                      <p className="text-sm text-gray-900">{onboardingData.church.phone}</p>
+                      <p className="text-sm font-medium text-muted-foreground">Teléfono</p>
+                      <p className="text-sm text-foreground">{onboardingData.church.phone}</p>
                     </div>
                   )}
                   {onboardingData.church.website && (
                     <div>
-                      <p className="text-sm font-medium text-gray-700">Sitio Web</p>
-                      <p className="text-sm text-gray-900">{onboardingData.church.website}</p>
+                      <p className="text-sm font-medium text-muted-foreground">Sitio Web</p>
+                      <p className="text-sm text-foreground">{onboardingData.church.website}</p>
                     </div>
                   )}
                 </CardContent>
@@ -727,23 +727,23 @@ export default function TenantOnboardingPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Nombre</p>
-                    <p className="text-sm text-gray-900">{onboardingData.admin.name}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Nombre</p>
+                    <p className="text-sm text-foreground">{onboardingData.admin.name}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Email</p>
-                    <p className="text-sm text-gray-900">{onboardingData.admin.email}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Email</p>
+                    <p className="text-sm text-foreground">{onboardingData.admin.email}</p>
                   </div>
                   {onboardingData.admin.phone && (
                     <div>
-                      <p className="text-sm font-medium text-gray-700">Teléfono</p>
-                      <p className="text-sm text-gray-900">{onboardingData.admin.phone}</p>
+                      <p className="text-sm font-medium text-muted-foreground">Teléfono</p>
+                      <p className="text-sm text-foreground">{onboardingData.admin.phone}</p>
                     </div>
                   )}
                   <div className="flex items-center gap-2 mt-4">
                     <Badge
                       variant="secondary"
-                      className={onboardingData.admin.role === 'PASTOR' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'}
+                      className={onboardingData.admin.role === 'PASTOR' ? 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]' : 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'}
                     >
                       <Shield className="h-3 w-3 mr-1" />
                       {onboardingData.admin.role === 'PASTOR' ? 'PASTOR' : 'ADMIN_IGLESIA'}
@@ -754,13 +754,13 @@ export default function TenantOnboardingPage() {
             </div>
 
             {/* Credential send toggle */}
-            <div className="border border-amber-300 bg-amber-50 rounded-lg p-4 flex items-start gap-3">
-              <Info className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
+            <div className="border border-amber-300 bg-[hsl(var(--warning)/0.10)] rounded-lg p-4 flex items-start gap-3">
+              <Info className="h-5 w-5 text-[hsl(var(--warning))] mt-0.5 shrink-0" />
               <div className="flex-1">
                 <p className="text-sm font-semibold text-amber-800 mb-2">
                   Envío de credenciales al administrador
                 </p>
-                <p className="text-xs text-amber-700 mb-3">
+                <p className="text-xs text-[hsl(var(--warning))] mb-3">
                   El sistema generará una contraseña temporal única y segura. Puedes enviarla ahora por email o retener las credenciales hasta verificar el pago.
                 </p>
                 <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -775,7 +775,7 @@ export default function TenantOnboardingPage() {
                   </span>
                 </label>
                 {!sendCredentialsNow && (
-                  <p className="text-xs text-amber-600 mt-2">
+                  <p className="text-xs text-[hsl(var(--warning))] mt-2">
                     Las credenciales se mostrarán en pantalla tras la creación. Podrás enviarlas desde la página de Credenciales una vez verificado el pago.
                   </p>
                 )}
@@ -784,16 +784,16 @@ export default function TenantOnboardingPage() {
 
             {/* Credentials result panel (shown after creation when not emailed) */}
             {createdResult && !createdResult.credentialsSent && (
-              <div className="border border-green-400 bg-green-50 rounded-lg p-4">
-                <p className="text-sm font-semibold text-green-800 mb-3 flex items-center gap-2">
+              <div className="border border-[hsl(var(--success)/0.30)] bg-[hsl(var(--success)/0.10)] rounded-lg p-4">
+                <p className="text-sm font-semibold text-[hsl(var(--success))] mb-3 flex items-center gap-2">
                   <CheckCircle className="h-4 w-4" />
                   Iglesia creada — credenciales generadas (NO enviadas por email)
                 </p>
-                <div className="bg-white rounded border border-green-200 p-3 space-y-1 text-sm font-mono">
-                  <p><span className="text-gray-600">Email:</span> {createdResult.email}</p>
-                  <p><span className="text-gray-600">Contraseña:</span> <strong>{createdResult.password}</strong></p>
+                <div className="bg-white rounded border border-[hsl(var(--success)/0.3)] p-3 space-y-1 text-sm font-mono">
+                  <p><span className="text-muted-foreground">Email:</span> {createdResult.email}</p>
+                  <p><span className="text-muted-foreground">Contraseña:</span> <strong>{createdResult.password}</strong></p>
                 </div>
-                <p className="text-xs text-green-700 mt-2">
+                <p className="text-xs text-[hsl(var(--success))] mt-2">
                   Copia estas credenciales ahora. La contraseña no se mostrará nuevamente.
                 </p>
               </div>
@@ -811,11 +811,11 @@ export default function TenantOnboardingPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <Building2 className="h-8 w-8 text-blue-600" />
+          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+            <Building2 className="h-8 w-8 text-[hsl(var(--info))]" />
             Crear Nueva Iglesia
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-muted-foreground mt-1">
             Wizard de configuración rápida para nuevo tenant
           </p>
         </div>
@@ -841,10 +841,10 @@ export default function TenantOnboardingPage() {
                   <div className="flex flex-col items-center">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${
                       isCompleted 
-                        ? 'bg-green-100 border-green-500 text-green-600' 
+                        ? 'bg-[hsl(var(--success)/0.15)] border-[hsl(var(--success))] text-[hsl(var(--success))]' 
                         : isActive 
-                        ? 'bg-blue-100 border-blue-500 text-blue-600'
-                        : 'bg-gray-100 border-gray-300 text-gray-400'
+                        ? 'bg-[hsl(var(--info)/0.15)] border-[hsl(var(--info))] text-[hsl(var(--info))]'
+                        : 'bg-muted/50 border-border text-muted-foreground/70'
                     }`}>
                       {isCompleted ? (
                         <Check className="h-5 w-5" />
@@ -854,18 +854,18 @@ export default function TenantOnboardingPage() {
                     </div>
                     <div className="text-center mt-2">
                       <p className={`text-sm font-medium ${
-                        isActive ? 'text-blue-600' : isCompleted ? 'text-green-600' : 'text-gray-500'
+                        isActive ? 'text-[hsl(var(--info))]' : isCompleted ? 'text-[hsl(var(--success))]' : 'text-muted-foreground'
                       }`}>
                         {step.title}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {step.description}
                       </p>
                     </div>
                   </div>
                   {index < STEPS.length - 1 && (
                     <div className={`flex-1 h-0.5 mx-4 ${
-                      currentStep > step.id ? 'bg-green-500' : 'bg-gray-200'
+                      currentStep > step.id ? 'bg-[hsl(var(--success)/0.10)]0' : 'bg-muted'
                     }`} />
                   )}
                 </div>

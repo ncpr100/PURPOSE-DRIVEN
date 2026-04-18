@@ -564,12 +564,12 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         </div>
         <div className="flex items-center gap-2">
           {hasUnsavedChanges && (
-            <Badge variant="outline" className="text-orange-600">
+            <Badge variant="outline" className="text-[hsl(var(--warning))]">
               Cambios sin guardar
             </Badge>
           )}
           {member?.spiritualGiftsStructured && (
-            <Badge variant="secondary" className="text-green-700">
+            <Badge variant="secondary" className="text-[hsl(var(--success))]">
               <Heart className="h-3 w-3 mr-1" />
               Evaluación completa
             </Badge>
@@ -583,19 +583,19 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
           <TabsTrigger value="spiritual" className="relative">
             Evaluación Espiritual
             {member?.spiritualGiftsStructured && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full"></div>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full"></div>
             )}
           </TabsTrigger>
           <TabsTrigger value="skills" className="relative">
             Habilidades
             {member?.skillsMatrix && Array.isArray(member.skillsMatrix) && (member.skillsMatrix as any[]).length > 0 && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></div>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-[hsl(var(--lavender)/0.10)]0 rounded-full"></div>
             )}
           </TabsTrigger>
           <TabsTrigger value="availability">
             Disponibilidad
             {member?.availabilityScore && member.availabilityScore > 0 && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full"></div>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-[hsl(var(--info)/0.10)]0 rounded-full"></div>
             )}
           </TabsTrigger>
         </TabsList>
@@ -626,7 +626,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
                     }}
                   />
                   {errors.firstName && (
-                    <p className="text-sm text-red-600">{errors.firstName}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.firstName}</p>
                   )}
                 </div>
 
@@ -641,7 +641,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
                     }}
                   />
                   {errors.lastName && (
-                    <p className="text-sm text-red-600">{errors.lastName}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.lastName}</p>
                   )}
                 </div>
               </div>
@@ -659,7 +659,7 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
                     }}
                   />
                   {errors.email && (
-                    <p className="text-sm text-red-600">{errors.email}</p>
+                    <p className="text-sm text-[hsl(var(--destructive))]">{errors.email}</p>
                   )}
                 </div>
 

@@ -267,13 +267,13 @@ export default function PrayerRequestsPage() {
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600">{title}</p>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
             <p className="text-2xl font-bold">{value}</p>
-            {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+            {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
             {trend && (
               <div className="flex items-center gap-1 mt-1">
-                <TrendingUp className="w-3 h-3 text-green-600" />
-                <span className="text-xs text-green-600">{trend}</span>
+                <TrendingUp className="w-3 h-3 text-[hsl(var(--success))]" />
+                <span className="text-xs text-[hsl(var(--success))]">{trend}</span>
               </div>
             )}
           </div>
@@ -295,17 +295,17 @@ export default function PrayerRequestsPage() {
 
   const getActivityColor = (status?: string) => {
     switch (status) {
-      case 'pending': return 'text-yellow-600 bg-yellow-50'
-      case 'approved': return 'text-green-600 bg-green-50'
-      case 'rejected': return 'text-red-600 bg-red-50'
-      default: return 'text-blue-600 bg-blue-50'
+      case 'pending': return 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.10)]'
+      case 'approved': return 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.10)]'
+      case 'rejected': return 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)]'
+      default: return 'text-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]'
     }
   }
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -316,18 +316,18 @@ export default function PrayerRequestsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Dashboard de Peticiones de Oración</h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Gestiona las peticiones de oración, plantillas de respuesta y contactos de tu comunidad
           </p>
         </div>
       </div>
 
       {/* Mobile Characteristics Status Card - PWA Features for Church Team */}
-      <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">
+      <Card className="btn-cta-gradient border-[hsl(var(--info)/0.3)]">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Smartphone className="h-5 w-5 text-blue-600" />
+              <Smartphone className="h-5 w-5 text-[hsl(var(--info))]" />
               <CardTitle className="text-lg">Aplicación Mobile - Gestión de Peticiones</CardTitle>
             </div>
             <Dialog>
@@ -339,7 +339,7 @@ export default function PrayerRequestsPage() {
               <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
-                    <Heart className="h-6 w-6 text-red-600" />
+                    <Heart className="h-6 w-6 text-[hsl(var(--destructive))]" />
                     Guía de Aplicación Mobile - Peticiones de Oración
                   </DialogTitle>
                   <DialogDescription>
@@ -350,15 +350,15 @@ export default function PrayerRequestsPage() {
                   {/* Installation Guide */}
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                      <Smartphone className="h-5 w-5 text-blue-600" />
+                      <Smartphone className="h-5 w-5 text-[hsl(var(--info))]" />
                       Instalar como Aplicación Mobile
                     </h3>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-muted-foreground">
                       Convierte el sistema de peticiones en una app independiente para responder rápidamente desde cualquier lugar.
                     </p>
-                    <div className="bg-blue-50 p-4 rounded-lg space-y-2 border border-blue-200">
-                      <p className="font-medium text-sm text-blue-900">✨ Beneficios para el Equipo:</p>
-                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-blue-800">
+                    <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--info)/0.3)]">
+                      <p className="font-medium text-sm text-foreground">✨ Beneficios para el Equipo:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--info))]">
                         <li>Responde a peticiones urgentes al instante</li>
                         <li>Funciona sin conexión (modo offline)</li>
                         <li>Recibe notificaciones de nuevas peticiones</li>
@@ -366,7 +366,7 @@ export default function PrayerRequestsPage() {
                         <li>No ocupa espacio en App Store/Play Store</li>
                       </ul>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                    <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                       <p className="font-medium text-sm">Instalación (Recomendado):</p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
                         <li>Haz clic en "Instalar Aplicación" arriba</li>
@@ -380,22 +380,22 @@ export default function PrayerRequestsPage() {
                   {/* Notifications Guide */}
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                      <Bell className="h-5 w-5 text-orange-600" />
+                      <Bell className="h-5 w-5 text-[hsl(var(--warning))]" />
                       Notificaciones de Nuevas Peticiones
                     </h3>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-muted-foreground">
                       Recibe alertas inmediatas cuando lleguen peticiones urgentes o nuevas solicitudes.
                     </p>
-                    <div className="bg-orange-50 p-4 rounded-lg space-y-2 border border-orange-200">
-                      <p className="font-medium text-sm text-orange-900">🔔 Tipos de Notificaciones:</p>
-                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-orange-800">
+                    <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--warning)/0.3)]">
+                      <p className="font-medium text-sm text-[hsl(var(--warning))]">🔔 Tipos de Notificaciones:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--warning))]">
                         <li><strong>Urgentes:</strong> Peticiones marcadas como prioritarias</li>
                         <li><strong>Nuevas Solicitudes:</strong> Cuando alguien envía una petición</li>
                         <li><strong>Respuestas Pendientes:</strong> Recordatorio de peticiones sin responder</li>
                         <li><strong>Contactos Nuevos:</strong> Cuando se registra un nuevo contacto</li>
                       </ul>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                    <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                       <p className="font-medium text-sm">Activar Notificaciones:</p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
                         <li>Haz clic en "Activar Notificaciones" arriba</li>
@@ -409,15 +409,15 @@ export default function PrayerRequestsPage() {
                   {/* Offline Mode */}
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                      <HardDrive className="h-5 w-5 text-green-600" />
+                      <HardDrive className="h-5 w-5 text-[hsl(var(--success))]" />
                       Modo Offline - Trabaja Sin Conexión
                     </h3>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-muted-foreground">
                       Accede a peticiones recientes incluso sin internet. Ideal para áreas con señal débil.
                     </p>
-                    <div className="bg-green-50 p-4 rounded-lg space-y-2 border border-green-200">
-                      <p className="font-medium text-sm text-green-900">💾 Qué Funciona Offline:</p>
-                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-green-800">
+                    <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--success)/0.3)]">
+                      <p className="font-medium text-sm text-foreground">💾 Qué Funciona Offline:</p>
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--success))]">
                         <li>Ver últimas 100 peticiones guardadas</li>
                         <li>Leer detalles completos de cada solicitud</li>
                         <li>Redactar respuestas (se envían al reconectar)</li>
@@ -425,7 +425,7 @@ export default function PrayerRequestsPage() {
                         <li>Acceder a plantillas de respuesta</li>
                       </ul>
                     </div>
-                    <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="bg-muted/30 p-4 rounded-lg">
                       <p className="text-sm"><strong>Sincronización Automática:</strong> Cuando recuperes la conexión, todos los cambios se sincronizarán automáticamente con el servidor.</p>
                     </div>
                   </div>
@@ -433,11 +433,11 @@ export default function PrayerRequestsPage() {
                   {/* Best Practices */}
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
-                      <Zap className="h-5 w-5 text-purple-600" />
+                      <Zap className="h-5 w-5 text-[hsl(var(--lavender))]" />
                       Mejores Prácticas para el Equipo
                     </h3>
-                    <div className="bg-purple-50 p-4 rounded-lg space-y-2 border border-purple-200">
-                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-purple-800">
+                    <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--lavender)/0.3)]">
+                      <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--lavender))]">
                         <li><strong>Instala en todos los dispositivos:</strong> Móvil, tablet y computadora</li>
                         <li><strong>Activa notificaciones:</strong> No te pierdas peticiones urgentes</li>
                         <li><strong>Responde rápido:</strong> El modo offline te permite trabajar desde cualquier lugar</li>
@@ -455,9 +455,9 @@ export default function PrayerRequestsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {/* Installable Badge */}
             <div className="flex items-center gap-2">
-              <Smartphone className={`h-5 w-5 ${isInstalled || isInstallable ? 'text-green-600' : 'text-gray-400'}`} />
+              <Smartphone className={`h-5 w-5 ${isInstalled || isInstallable ? 'text-[hsl(var(--success))]' : 'text-muted-foreground/70'}`} />
               <div>
-                <p className="text-xs font-medium text-gray-700">App Mobile</p>
+                <p className="text-xs font-medium text-muted-foreground">App Mobile</p>
                 <Badge variant={isInstalled ? 'default' : isInstallable ? 'secondary' : 'outline'} className="text-xs">
                   {isInstalled ? 'Instalada' : isInstallable ? 'Disponible' : 'No disponible'}
                 </Badge>
@@ -467,12 +467,12 @@ export default function PrayerRequestsPage() {
             {/* Connection Badge */}
             <div className="flex items-center gap-2">
               {isOnline ? (
-                <Wifi className="h-5 w-5 text-green-600" />
+                <Wifi className="h-5 w-5 text-[hsl(var(--success))]" />
               ) : (
-                <WifiOff className="h-5 w-5 text-red-600" />
+                <WifiOff className="h-5 w-5 text-[hsl(var(--destructive))]" />
               )}
               <div>
-                <p className="text-xs font-medium text-gray-700">Conexión</p>
+                <p className="text-xs font-medium text-muted-foreground">Conexión</p>
                 <Badge variant={isOnline ? 'default' : 'destructive'} className="text-xs">
                   {isOnline ? 'Online' : 'Offline'}
                 </Badge>
@@ -482,12 +482,12 @@ export default function PrayerRequestsPage() {
             {/* Notifications Badge */}
             <div className="flex items-center gap-2">
               {notificationPermission === 'granted' ? (
-                <Bell className="h-5 w-5 text-orange-600" />
+                <Bell className="h-5 w-5 text-[hsl(var(--warning))]" />
               ) : (
-                <BellOff className="h-5 w-5 text-gray-400" />
+                <BellOff className="h-5 w-5 text-muted-foreground/70" />
               )}
               <div>
-                <p className="text-xs font-medium text-gray-700">Alertas</p>
+                <p className="text-xs font-medium text-muted-foreground">Alertas</p>
                 <Badge 
                   variant={notificationPermission === 'granted' ? 'default' : 'outline'} 
                   className="text-xs"
@@ -499,9 +499,9 @@ export default function PrayerRequestsPage() {
 
             {/* Offline Ready Badge */}
             <div className="flex items-center gap-2">
-              <HardDrive className={`h-5 w-5 ${isInstalled ? 'text-blue-600' : 'text-gray-400'}`} />
+              <HardDrive className={`h-5 w-5 ${isInstalled ? 'text-[hsl(var(--info))]' : 'text-muted-foreground/70'}`} />
               <div>
-                <p className="text-xs font-medium text-gray-700">Sin Conexión</p>
+                <p className="text-xs font-medium text-muted-foreground">Sin Conexión</p>
                 <Badge variant={isInstalled ? 'default' : 'outline'} className="text-xs">
                   {isInstalled ? 'Disponible' : 'Requiere app'}
                 </Badge>
@@ -515,7 +515,7 @@ export default function PrayerRequestsPage() {
               <Button 
                 size="sm" 
                 onClick={handleInstallApp}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-[hsl(var(--info))] hover:bg-[hsl(var(--info))]"
               >
                 <Smartphone className="h-4 w-4 mr-2" />
                 Instalar Aplicación
@@ -550,28 +550,28 @@ export default function PrayerRequestsPage() {
           value={stats.pendingRequests}
           subtitle="Requieren atención"
           icon={AlertTriangle}
-          color="text-yellow-600"
+          color="text-[hsl(var(--warning))]"
         />
         <StatCard
           title="Peticiones Aprobadas"
           value={stats.approvedRequests}
           subtitle="Este periodo"
           icon={CheckCircle}
-          color="text-green-600"
+          color="text-[hsl(var(--success))]"
         />
         <StatCard
           title="Total de Contactos"
           value={stats.totalContacts}
           subtitle="En la base de datos"
           icon={Users}
-          color="text-blue-600"
+          color="text-[hsl(var(--info))]"
         />
         <StatCard
           title="Plantillas Activas"
           value={stats.templateCount}
           subtitle="Listas para usar"
           icon={Send}
-          color="text-purple-600"
+          color="text-[hsl(var(--lavender))]"
         />
       </div>
 
@@ -580,11 +580,11 @@ export default function PrayerRequestsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="bg-blue-100 p-3 rounded-full">
-                <MessageSquare className="w-6 h-6 text-blue-600" />
+              <div className="bg-[hsl(var(--info)/0.15)] p-3 rounded-full">
+                <MessageSquare className="w-6 h-6 text-[hsl(var(--info))]" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Nuevas hoy</p>
+                <p className="text-sm text-muted-foreground">Nuevas hoy</p>
                 <p className="text-2xl font-bold">{stats.newRequestsToday}</p>
               </div>
             </div>
@@ -594,11 +594,11 @@ export default function PrayerRequestsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="bg-green-100 p-3 rounded-full">
-                <Send className="w-6 h-6 text-green-600" />
+              <div className="bg-[hsl(var(--success)/0.15)] p-3 rounded-full">
+                <Send className="w-6 h-6 text-[hsl(var(--success))]" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Respuestas enviadas hoy</p>
+                <p className="text-sm text-muted-foreground">Respuestas enviadas hoy</p>
                 <p className="text-2xl font-bold">{stats.responsesSentToday}</p>
               </div>
             </div>
@@ -608,11 +608,11 @@ export default function PrayerRequestsPage() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="bg-orange-100 p-3 rounded-full">
-                <Clock className="w-6 h-6 text-orange-600" />
+              <div className="bg-[hsl(var(--warning)/0.15)] p-3 rounded-full">
+                <Clock className="w-6 h-6 text-[hsl(var(--warning))]" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Tiempo promedio de respuesta</p>
+                <p className="text-sm text-muted-foreground">Tiempo promedio de respuesta</p>
                 <p className="text-2xl font-bold">{stats.avgResponseTime}h</p>
               </div>
             </div>
@@ -663,7 +663,7 @@ export default function PrayerRequestsPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-amber-500" />
+                <Sparkles className="w-5 h-5 text-[hsl(var(--warning))]" />
                 Gestión de Agradecimientos
               </CardTitle>
               <CardDescription>
@@ -673,24 +673,24 @@ export default function PrayerRequestsPage() {
             <CardContent>
               <div className="text-center py-12">
                 <Sparkles className="w-16 h-16 mx-auto text-amber-300 mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
                   Sistema de Agradecimientos Integrado
                 </h3>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                   Los agradecimientos se gestionan desde el Muro de Oración con funcionalidad completa 
                   de aprobación, categorización y publicación.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button
                     onClick={() => window.open('/prayer-wall', '_blank')}
-                    className="px-6 py-3 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors font-medium"
+                    className="px-6 py-3 bg-[hsl(var(--warning)/0.10)]0 text-white rounded-lg hover:bg-amber-600 transition-colors font-medium"
                   >
                     <Sparkles className="w-4 h-4 mr-2 inline" />
                     Ir al Muro de Oración
                   </button>
                   <button
                     onClick={() => window.open('/prayer-wall', '_blank')}
-                    className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                    className="px-6 py-3 border border-border text-muted-foreground rounded-lg hover:bg-muted/30 transition-colors font-medium"
                   >
                     <Settings className="w-4 h-4 mr-2 inline" />
                     Configurar Formularios
@@ -701,16 +701,16 @@ export default function PrayerRequestsPage() {
               {/* Quick Stats */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 pt-8 border-t">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-amber-600">0</div>
-                  <div className="text-sm text-gray-600">Agradecimientos Pendientes</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--warning))]">0</div>
+                  <div className="text-sm text-muted-foreground">Agradecimientos Pendientes</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">0</div>
-                  <div className="text-sm text-gray-600">Agradecimientos Aprobados</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--success))]">0</div>
+                  <div className="text-sm text-muted-foreground">Agradecimientos Aprobados</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">0</div>
-                  <div className="text-sm text-gray-600">Agradecimientos Públicos</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--info))]">0</div>
+                  <div className="text-sm text-muted-foreground">Agradecimientos Públicos</div>
                 </div>
               </div>
             </CardContent>
@@ -754,28 +754,28 @@ export default function PrayerRequestsPage() {
                 </CardHeader>
                 <CardContent>
                   {recentActivity.length === 0 ? (
-                    <p className="text-center text-gray-500 py-8">
+                    <p className="text-center text-muted-foreground py-8">
                       No hay actividad reciente
                     </p>
                   ) : (
                     <div className="space-y-4">
                       {recentActivity.map((activity) => (
-                        <div key={activity.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div key={activity.id} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
                           <div className={`p-2 rounded-full ${getActivityColor(activity.status)}`}>
                             {getActivityIcon(activity.type)}
                           </div>
                           <div className="flex-1">
                             <p className="font-medium">{activity.title}</p>
-                            <p className="text-sm text-gray-600 mt-1">{activity.description}</p>
-                            <p className="text-xs text-gray-500 mt-2">
+                            <p className="text-sm text-muted-foreground mt-1">{activity.description}</p>
+                            <p className="text-xs text-muted-foreground mt-2">
                               {format(new Date(activity.timestamp), "d 'de' MMMM, yyyy 'a las' HH:mm", { locale: es })}
                             </p>
                           </div>
                           {activity.status && (
                             <Badge className={
-                              activity.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              activity.status === 'approved' ? 'bg-green-100 text-green-800' :
-                              'bg-red-100 text-red-800'
+                              activity.status === 'pending' ? 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]' :
+                              activity.status === 'approved' ? 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]' :
+                              'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
                             }>
                               {activity.status === 'pending' ? 'Pendiente' :
                                activity.status === 'approved' ? 'Aprobado' : 'Rechazado'}
@@ -799,21 +799,21 @@ export default function PrayerRequestsPage() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Pendientes</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-[hsl(var(--warning)/0.10)]0 rounded-full"></div>
                       <span className="font-medium">{stats.pendingRequests}</span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Aprobadas</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full"></div>
                       <span className="font-medium">{stats.approvedRequests}</span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Rechazadas</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <div className="w-2 h-2 bg-[hsl(var(--destructive)/0.10)]0 rounded-full"></div>
                       <span className="font-medium">{stats.rejectedRequests}</span>
                     </div>
                   </div>
@@ -833,16 +833,16 @@ export default function PrayerRequestsPage() {
                   <CardTitle>Estadísticas Diarias</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <MessageSquare className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                    <p className="text-2xl font-bold text-blue-600">{stats.newRequestsToday}</p>
-                    <p className="text-sm text-blue-800">Peticiones nuevas hoy</p>
+                  <div className="text-center p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">
+                    <MessageSquare className="w-8 h-8 text-[hsl(var(--info))] mx-auto mb-2" />
+                    <p className="text-2xl font-bold text-[hsl(var(--info))]">{stats.newRequestsToday}</p>
+                    <p className="text-sm text-[hsl(var(--info))]">Peticiones nuevas hoy</p>
                   </div>
                   
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <Send className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                    <p className="text-2xl font-bold text-green-600">{stats.responsesSentToday}</p>
-                    <p className="text-sm text-green-800">Respuestas enviadas hoy</p>
+                  <div className="text-center p-4 bg-[hsl(var(--success)/0.10)] rounded-lg">
+                    <Send className="w-8 h-8 text-[hsl(var(--success))] mx-auto mb-2" />
+                    <p className="text-2xl font-bold text-[hsl(var(--success))]">{stats.responsesSentToday}</p>
+                    <p className="text-sm text-[hsl(var(--success))]">Respuestas enviadas hoy</p>
                   </div>
                 </CardContent>
               </Card>

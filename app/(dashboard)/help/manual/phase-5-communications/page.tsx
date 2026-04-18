@@ -15,7 +15,7 @@ export default function Phase5CommunicationsGuide() {
   return (
     <div className="container mx-auto p-6 max-w-6xl space-y-8">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-8 rounded-lg">
+      <div className="bg-[hsl(var(--lavender))] text-foreground p-8 rounded-lg">
         <div className="flex items-center gap-4">
           <MessageSquare className="h-12 w-12" />
           <div>
@@ -38,12 +38,12 @@ export default function Phase5CommunicationsGuide() {
       </div>
 
       {/* Para Niños */}
-      <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
-        <h4 className="font-bold text-yellow-900 flex items-center gap-2 mb-2">
+      <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
+        <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
           <Heart className="h-5 w-5" />
           Para Niños: ¿Por Qué Usar Comunicaciones?
         </h4>
-        <p className="text-sm text-yellow-800">
+        <p className="text-sm text-[hsl(var(--warning))]">
           Imagina que necesitas avisar a 100 personas sobre un evento especial. ¿Llamarías a 
           cada uno por teléfono? ¡Tardarías horas! Con Khesed-tek, escribes un solo mensaje y 
           se envía automáticamente a todos por email, mensaje de texto (SMS), o notificación. 
@@ -52,8 +52,8 @@ export default function Phase5CommunicationsGuide() {
       </div>
 
       {/* Canales de Comunicación */}
-      <Card className="border-blue-300">
-        <CardHeader className="bg-blue-50">
+      <Card className="border-[hsl(var(--info)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--info)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-xl">
             <Megaphone className="h-6 w-6" />
             3 Formas de Comunicarte con Tu Iglesia
@@ -63,12 +63,12 @@ export default function Phase5CommunicationsGuide() {
           <div className="grid md:grid-cols-3 gap-4">
             <Card className="border-l-4 border-l-blue-500 hover:shadow-lg transition-shadow">
               <CardContent className="pt-6 text-center">
-                <Mail className="h-12 w-12 text-blue-600 mx-auto mb-3" />
+                <Mail className="h-12 w-12 text-[hsl(var(--info))] mx-auto mb-3" />
                 <h4 className="font-semibold text-lg mb-2">📧 Email</h4>
-                <p className="text-sm text-gray-600 mb-3">
+                <p className="text-sm text-muted-foreground mb-3">
                   Correos electrónicos profesionales con diseño bonito
                 </p>
-                <div className="bg-blue-50 p-3 rounded text-xs text-left">
+                <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded text-xs text-left">
                   <p className="font-medium mb-2">✅ Mejor Para:</p>
                   <ul className="space-y-1">
                     <li>• Newsletters semanales</li>
@@ -82,12 +82,12 @@ export default function Phase5CommunicationsGuide() {
 
             <Card className="border-l-4 border-l-green-500 hover:shadow-lg transition-shadow">
               <CardContent className="pt-6 text-center">
-                <Phone className="h-12 w-12 text-green-600 mx-auto mb-3" />
+                <Phone className="h-12 w-12 text-[hsl(var(--success))] mx-auto mb-3" />
                 <h4 className="font-semibold text-lg mb-2">📱 SMS</h4>
-                <p className="text-sm text-gray-600 mb-3">
+                <p className="text-sm text-muted-foreground mb-3">
                   Mensajes de texto cortos y urgentes
                 </p>
-                <div className="bg-green-50 p-3 rounded text-xs text-left">
+                <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded text-xs text-left">
                   <p className="font-medium mb-2">✅ Mejor Para:</p>
                   <ul className="space-y-1">
                     <li>• Recordatorios urgentes</li>
@@ -101,12 +101,12 @@ export default function Phase5CommunicationsGuide() {
 
             <Card className="border-l-4 border-l-purple-500 hover:shadow-lg transition-shadow">
               <CardContent className="pt-6 text-center">
-                <Bell className="h-12 w-12 text-purple-600 mx-auto mb-3" />
+                <Bell className="h-12 w-12 text-[hsl(var(--lavender))] mx-auto mb-3" />
                 <h4 className="font-semibold text-lg mb-2">🔔 Notificaciones</h4>
-                <p className="text-sm text-gray-600 mb-3">
+                <p className="text-sm text-muted-foreground mb-3">
                   Push notifications en celulares
                 </p>
-                <div className="bg-purple-50 p-3 rounded text-xs text-left">
+                <div className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded text-xs text-left">
                   <p className="font-medium mb-2">✅ Mejor Para:</p>
                   <ul className="space-y-1">
                     <li>• Recordatorios de eventos</li>
@@ -122,10 +122,10 @@ export default function Phase5CommunicationsGuide() {
       </Card>
 
       {/* Enviar Email Masivo */}
-      <Card className="border-purple-300">
-        <CardHeader className="bg-purple-50">
+      <Card className="border-[hsl(var(--lavender)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--lavender)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <div className="bg-purple-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+            <div className="bg-[hsl(var(--lavender))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               1
             </div>
             Enviar Tu Primer Email Masivo
@@ -140,7 +140,7 @@ export default function Phase5CommunicationsGuide() {
               {
                 step: "1.1",
                 title: "Ir a Comunicaciones",
-                icon: <MessageSquare className="h-5 w-5 text-blue-600" />,
+                icon: <MessageSquare className="h-5 w-5 text-[hsl(var(--info))]" />,
                 image: "💬",
                 description: "En el menú izquierdo, haz clic en 'Comunicaciones'",
                 tips: ["Busca el ícono de mensajes", "Verás tus comunicaciones anteriores"]
@@ -148,7 +148,7 @@ export default function Phase5CommunicationsGuide() {
               {
                 step: "1.2",
                 title: "Hacer Clic en '+ Nueva Comunicación'",
-                icon: <Send className="h-5 w-5 text-green-600" />,
+                icon: <Send className="h-5 w-5 text-[hsl(var(--success))]" />,
                 image: "➕",
                 description: "Botón verde arriba a la derecha para empezar",
                 tips: ["Se abrirá el editor de mensajes", "Puedes elegir email, SMS, o notificación"]
@@ -156,7 +156,7 @@ export default function Phase5CommunicationsGuide() {
               {
                 step: "1.3",
                 title: "Seleccionar los Destinatarios",
-                icon: <Users className="h-5 w-5 text-orange-600" />,
+                icon: <Users className="h-5 w-5 text-[hsl(var(--warning))]" />,
                 image: "👥",
                 description: "Elige a quién le quieres enviar el mensaje:",
                 details: [
@@ -190,7 +190,7 @@ export default function Phase5CommunicationsGuide() {
               {
                 step: "1.4",
                 title: "Escribir el Asunto (Email) o Título",
-                icon: <FileText className="h-5 w-5 text-purple-600" />,
+                icon: <FileText className="h-5 w-5 text-[hsl(var(--lavender))]" />,
                 image: "✏️",
                 description: "Crea un título atractivo que la gente quiera abrir:",
                 examples: [
@@ -202,7 +202,7 @@ export default function Phase5CommunicationsGuide() {
               {
                 step: "1.5",
                 title: "Diseñar el Contenido del Mensaje",
-                icon: <Edit className="h-5 w-5 text-pink-600" />,
+                icon: <Edit className="h-5 w-5 text-[hsl(var(--destructive))]" />,
                 image: "🎨",
                 description: "Usa el editor visual para crear un mensaje profesional:",
                 features: [
@@ -216,7 +216,7 @@ export default function Phase5CommunicationsGuide() {
               {
                 step: "1.6",
                 title: "Personalización Automática",
-                icon: <Star className="h-5 w-5 text-yellow-600" />,
+                icon: <Star className="h-5 w-5 text-[hsl(var(--warning))]" />,
                 image: "✨",
                 description: "Usa variables para personalizar cada mensaje:",
                 variables: [
@@ -230,7 +230,7 @@ export default function Phase5CommunicationsGuide() {
               {
                 step: "1.7",
                 title: "Vista Previa y Prueba",
-                icon: <CheckCircle className="h-5 w-5 text-green-600" />,
+                icon: <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />,
                 image: "👀",
                 description: "Antes de enviar a todos, prueba el mensaje:",
                 steps: [
@@ -243,7 +243,7 @@ export default function Phase5CommunicationsGuide() {
               {
                 step: "1.8",
                 title: "Programar o Enviar Ahora",
-                icon: <Clock className="h-5 w-5 text-blue-600" />,
+                icon: <Clock className="h-5 w-5 text-[hsl(var(--info))]" />,
                 image: "⏰",
                 description: "Decide cuándo enviar el mensaje:",
                 options: [
@@ -276,17 +276,17 @@ export default function Phase5CommunicationsGuide() {
                           Paso {item.step}: {item.title}
                         </h5>
                       </div>
-                      <p className="text-gray-700 mb-3">{item.description}</p>
+                      <p className="text-muted-foreground mb-3">{item.description}</p>
                       
                       {item.details && (
                         <div className="space-y-2 mb-3">
                           {item.details.map((detail: any, idx: number) => (
-                            <div key={idx} className="bg-purple-50 p-3 rounded">
-                              <p className="font-medium text-sm text-purple-800">
+                            <div key={idx} className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded">
+                              <p className="font-medium text-sm text-[hsl(var(--lavender))]">
                                 {detail.option}
                               </p>
-                              <p className="text-xs text-gray-600 mt-1">{detail.description}</p>
-                              <p className="text-xs text-blue-600 mt-1 italic">
+                              <p className="text-xs text-muted-foreground mt-1">{detail.description}</p>
+                              <p className="text-xs text-[hsl(var(--info))] mt-1 italic">
                                 💡 Cuándo usar: {detail.when}
                               </p>
                             </div>
@@ -295,12 +295,12 @@ export default function Phase5CommunicationsGuide() {
                       )}
 
                       {item.examples && (
-                        <div className="bg-gray-50 p-3 rounded mb-3">
+                        <div className="bg-muted/30 p-3 rounded mb-3">
                           <p className="font-medium text-sm mb-2">📋 Ejemplos:</p>
                           {item.examples.map((ex: any, idx: number) => (
                             <div key={idx} className="text-xs mb-2">
-                              <p className="text-red-600">{ex.bad}</p>
-                              <p className="text-green-600 font-medium">{ex.good}</p>
+                              <p className="text-[hsl(var(--destructive))]">{ex.bad}</p>
+                              <p className="text-[hsl(var(--success))] font-medium">{ex.good}</p>
                             </div>
                           ))}
                         </div>
@@ -309,7 +309,7 @@ export default function Phase5CommunicationsGuide() {
                       {item.features && (
                         <div className="grid md:grid-cols-2 gap-2 mb-3">
                           {item.features.map((feature: any, idx: number) => (
-                            <div key={idx} className="bg-pink-50 p-2 rounded text-xs">
+                            <div key={idx} className="bg-[hsl(var(--destructive)/0.08)] p-2 rounded text-xs">
                               <span className="text-lg mr-2">{feature.icon}</span>
                               <strong>{feature.name}:</strong> {feature.description}
                             </div>
@@ -318,25 +318,25 @@ export default function Phase5CommunicationsGuide() {
                       )}
 
                       {item.variables && (
-                        <div className="bg-yellow-50 p-3 rounded mb-3">
+                        <div className="bg-[hsl(var(--warning)/0.10)] p-3 rounded mb-3">
                           <p className="font-medium text-sm mb-2">Variables Disponibles:</p>
                           <div className="space-y-1">
                             {item.variables.map((v: any, idx: number) => (
                               <div key={idx} className="text-xs font-mono">
-                                <code className="bg-yellow-200 px-2 py-1 rounded">{v.code}</code>
+                                <code className="bg-[hsl(var(--warning)/0.15)] px-2 py-1 rounded">{v.code}</code>
                                 <span className="mx-2">→</span>
                                 <span className="italic">&quot;{v.result}&quot;</span>
                               </div>
                             ))}
                           </div>
                           {item.tip && (
-                            <p className="text-xs text-yellow-700 mt-2 italic">💡 {item.tip}</p>
+                            <p className="text-xs text-[hsl(var(--warning))] mt-2 italic">💡 {item.tip}</p>
                           )}
                         </div>
                       )}
 
                       {item.steps && (
-                        <div className="bg-green-50 p-3 rounded mb-3">
+                        <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded mb-3">
                           <ol className="space-y-1 text-sm">
                             {item.steps.map((step: string, idx: number) => (
                               <li key={idx}>✓ {step}</li>
@@ -348,10 +348,10 @@ export default function Phase5CommunicationsGuide() {
                       {item.options && (
                         <div className="space-y-2 mb-3">
                           {item.options.map((opt: any, idx: number) => (
-                            <div key={idx} className="bg-blue-50 p-3 rounded">
-                              <p className="font-medium text-sm text-blue-800">{opt.type}</p>
-                              <p className="text-xs text-gray-600 mt-1">{opt.description}</p>
-                              <p className="text-xs text-purple-600 mt-1 italic">
+                            <div key={idx} className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
+                              <p className="font-medium text-sm text-[hsl(var(--info))]">{opt.type}</p>
+                              <p className="text-xs text-muted-foreground mt-1">{opt.description}</p>
+                              <p className="text-xs text-[hsl(var(--lavender))] mt-1 italic">
                                 ✅ Mejor para: {opt.best}
                               </p>
                             </div>
@@ -360,11 +360,11 @@ export default function Phase5CommunicationsGuide() {
                       )}
 
                       {item.tips && (
-                        <div className="bg-purple-50 p-3 rounded-lg">
-                          <p className="text-xs font-medium text-purple-800 mb-2">
+                        <div className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded-lg">
+                          <p className="text-xs font-medium text-[hsl(var(--lavender))] mb-2">
                             💡 Consejos:
                           </p>
-                          <ul className="text-xs text-purple-700 space-y-1">
+                          <ul className="text-xs text-[hsl(var(--lavender))] space-y-1">
                             {item.tips.map((tip, idx) => (
                               <li key={idx}>• {tip}</li>
                             ))}
@@ -381,8 +381,8 @@ export default function Phase5CommunicationsGuide() {
       </Card>
 
       {/* Plantillas de Comunicación */}
-      <Card className="border-green-300">
-        <CardHeader className="bg-green-50">
+      <Card className="border-[hsl(var(--success)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--success)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-xl">
             <Book className="h-6 w-6" />
             Plantillas Pre-hechas (Ahorra Tiempo!)
@@ -437,10 +437,10 @@ export default function Phase5CommunicationsGuide() {
                     <div className="text-4xl">{template.emoji}</div>
                     <div className="flex-1">
                       <h4 className="font-semibold text-lg mb-1">{template.name}</h4>
-                      <p className="text-sm text-gray-600 mb-3">{template.description}</p>
-                      <div className="bg-green-50 p-2 rounded text-xs">
-                        <p className="font-medium text-green-800 mb-1">✅ Incluye:</p>
-                        <ul className="space-y-1 text-green-700">
+                      <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
+                      <div className="bg-[hsl(var(--success)/0.10)] p-2 rounded text-xs">
+                        <p className="font-medium text-[hsl(var(--success))] mb-1">✅ Incluye:</p>
+                        <ul className="space-y-1 text-[hsl(var(--success))]">
                           {template.includes.map((item, idx) => (
                             <li key={idx}>• {item}</li>
                           ))}
@@ -453,9 +453,9 @@ export default function Phase5CommunicationsGuide() {
             ))}
           </div>
 
-          <div className="mt-6 bg-blue-50 p-4 rounded-lg">
+          <div className="mt-6 bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
             <h4 className="font-semibold flex items-center gap-2 mb-2">
-              <Lightbulb className="h-5 w-5 text-blue-600" />
+              <Lightbulb className="h-5 w-5 text-[hsl(var(--info))]" />
               Cómo Usar Plantillas
             </h4>
             <ol className="text-sm space-y-2 ml-4">
@@ -470,15 +470,15 @@ export default function Phase5CommunicationsGuide() {
       </Card>
 
       {/* Estadísticas y Reportes */}
-      <Card className="border-teal-300">
-        <CardHeader className="bg-teal-50">
+      <Card className="border-[hsl(var(--info)/0.30)]">
+        <CardHeader className="bg-[hsl(var(--info)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-xl">
             <BarChart className="h-6 w-6" />
             Ver Resultados de Tus Comunicaciones
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-6">
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-muted-foreground mb-4">
             Después de enviar un mensaje, puedes ver estas estadísticas:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
@@ -490,10 +490,10 @@ export default function Phase5CommunicationsGuide() {
               { metric: "❌ Rebotados", description: "Emails que no se pudieron entregar", example: "3 emails inválidos" },
               { metric: "📊 Tasa de Apertura", description: "% de personas que leyeron el mensaje", example: "60% - ¡Excelente!" }
             ].map((stat, index) => (
-              <div key={index} className="bg-teal-50 p-3 rounded">
-                <p className="font-semibold text-teal-800 mb-1">{stat.metric}</p>
-                <p className="text-xs text-gray-600 mb-1">{stat.description}</p>
-                <p className="text-xs text-teal-600 italic">Ejemplo: {stat.example}</p>
+              <div key={index} className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
+                <p className="font-semibold text-[hsl(var(--info))] mb-1">{stat.metric}</p>
+                <p className="text-xs text-muted-foreground mb-1">{stat.description}</p>
+                <p className="text-xs text-[hsl(var(--info))] italic">Ejemplo: {stat.example}</p>
               </div>
             ))}
           </div>
@@ -501,9 +501,9 @@ export default function Phase5CommunicationsGuide() {
       </Card>
 
       {/* Troubleshooting */}
-      <Card className="border-red-300 bg-red-50">
+      <Card className="border-[hsl(var(--destructive)/0.4)] bg-[hsl(var(--destructive)/0.10)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-900">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <AlertTriangle className="h-6 w-6" />
             Problemas Comunes con Comunicaciones
           </CardTitle>
@@ -547,9 +547,9 @@ export default function Phase5CommunicationsGuide() {
               ]
             }
           ].map((item, index) => (
-            <div key={index} className="bg-white p-4 rounded border border-red-200">
-              <p className="font-medium text-red-800 mb-2">{item.problem}</p>
-              <ul className="text-sm text-red-700 space-y-1 ml-4">
+            <div key={index} className="bg-white p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
+              <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
+              <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
                   <li key={idx}>✓ {solution}</li>
                 ))}
@@ -560,9 +560,9 @@ export default function Phase5CommunicationsGuide() {
       </Card>
 
       {/* Best Practices */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50">
+      <Card className="bg-[hsl(var(--success)/0.08)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-green-900">
+          <CardTitle className="flex items-center gap-2 text-foreground">
             <Star className="h-6 w-6" />
             Mejores Prácticas para Comunicaciones Efectivas
           </CardTitle>
@@ -570,8 +570,8 @@ export default function Phase5CommunicationsGuide() {
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div className="bg-white p-4 rounded">
-              <h4 className="font-semibold text-green-800 mb-2">✅ SÍ Hacer:</h4>
-              <ul className="space-y-1 text-gray-700">
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-2">✅ SÍ Hacer:</h4>
+              <ul className="space-y-1 text-muted-foreground">
                 <li>✓ Personaliza los mensajes con nombres</li>
                 <li>✓ Sé breve y claro - no escribas párrafos largos</li>
                 <li>✓ Incluye un llamado a la acción claro (&quot;Regístrate aquí&quot;)</li>
@@ -581,8 +581,8 @@ export default function Phase5CommunicationsGuide() {
               </ul>
             </div>
             <div className="bg-white p-4 rounded">
-              <h4 className="font-semibold text-red-800 mb-2">❌ NO Hacer:</h4>
-              <ul className="space-y-1 text-gray-700">
+              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ NO Hacer:</h4>
+              <ul className="space-y-1 text-muted-foreground">
                 <li>✗ Enviar mensajes todos los días (saturación)</li>
                 <li>✗ Usar TODO MAYÚSCULAS o muchos emojis !!!</li>
                 <li>✗ Compartir información privada de miembros</li>
@@ -604,7 +604,7 @@ export default function Phase5CommunicationsGuide() {
           </Button>
         </Link>
         <Link href="/help/manual/phase-6-analytics">
-          <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+          <Button size="lg" className="bg-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender))]">
             ¡Siguiente! Dashboard y Analíticas
             <ArrowRight className="h-5 w-5 ml-2" />
           </Button>

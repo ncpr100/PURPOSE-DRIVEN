@@ -267,10 +267,10 @@ export default function SocialMediaClient() {
     return (
       <div className="space-y-4">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-8 bg-muted rounded w-1/4"></div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-32 bg-gray-200 rounded"></div>
+              <div key={i} className="h-32 bg-muted rounded"></div>
             ))}
           </div>
         </div>
@@ -284,11 +284,11 @@ export default function SocialMediaClient() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Redes Sociales</h1>
-          <p className="text-gray-600">Gestión profesional simplificada</p>
+          <p className="text-muted-foreground">Gestión profesional simplificada</p>
         </div>
         
         {aiAddonActive && (
-          <Badge variant="secondary" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+          <Badge variant="secondary" className="bg-gradient-to-r from-[hsl(var(--lavender))] to-[hsl(var(--lavender))] text-white">
             <Crown className="h-4 w-4 mr-1" />
             AI Premium Activo
           </Badge>
@@ -321,7 +321,7 @@ export default function SocialMediaClient() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Settings className="h-5 w-5 text-blue-600" />
+                <Settings className="h-5 w-5 text-[hsl(var(--info))]" />
                 Conexiones de Plataformas
               </CardTitle>
               <CardDescription>
@@ -331,22 +331,22 @@ export default function SocialMediaClient() {
             <CardContent>
               <div className="grid gap-4 md:grid-cols-3">
                 {/* Facebook Connection */}
-                <Card className="border-2 border-dashed border-blue-200 hover:border-blue-400 transition-colors">
+                <Card className="border-2 border-dashed border-[hsl(var(--info)/0.3)] hover:border-[hsl(var(--info)/0.5)] transition-colors">
                   <CardContent className="p-6">
                     <div className="text-center space-y-4">
-                      <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Facebook className="h-8 w-8 text-blue-600" />
+                      <div className="mx-auto w-16 h-16 bg-[hsl(var(--info)/0.15)] rounded-full flex items-center justify-center">
+                        <Facebook className="h-8 w-8 text-[hsl(var(--info))]" />
                       </div>
                       
                       <div>
                         <h3 className="font-semibold">Facebook</h3>
                         {isConnected('FACEBOOK') ? (
-                          <Badge variant="secondary" className="bg-green-100 text-green-800">
+                          <Badge variant="secondary" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                             <CheckCircle2 className="h-3 w-3 mr-1" />
                             Conectado
                           </Badge>
                         ) : (
-                          <p className="text-sm text-gray-600">No conectado</p>
+                          <p className="text-sm text-muted-foreground">No conectado</p>
                         )}
                       </div>
 
@@ -378,22 +378,22 @@ export default function SocialMediaClient() {
                 </Card>
 
                 {/* Instagram Connection */}
-                <Card className="border-2 border-dashed border-pink-200 hover:border-pink-400 transition-colors">
+                <Card className="border-2 border-dashed border-[hsl(var(--lavender)/0.30)] hover:border-[hsl(var(--lavender)/0.30)] transition-colors">
                   <CardContent className="p-6">
                     <div className="text-center space-y-4">
-                      <div className="mx-auto w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center">
-                        <Instagram className="h-8 w-8 text-pink-600" />
+                      <div className="mx-auto w-16 h-16 bg-[hsl(var(--destructive)/0.12)] rounded-full flex items-center justify-center">
+                        <Instagram className="h-8 w-8 text-[hsl(var(--destructive))]" />
                       </div>
                       
                       <div>
                         <h3 className="font-semibold">Instagram</h3>
                         {isConnected('INSTAGRAM') ? (
-                          <Badge variant="secondary" className="bg-green-100 text-green-800">
+                          <Badge variant="secondary" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                             <CheckCircle2 className="h-3 w-3 mr-1" />
                             Conectado
                           </Badge>
                         ) : (
-                          <p className="text-sm text-gray-600">No conectado</p>
+                          <p className="text-sm text-muted-foreground">No conectado</p>
                         )}
                       </div>
 
@@ -425,22 +425,22 @@ export default function SocialMediaClient() {
                 </Card>
 
                 {/* YouTube Connection */}
-                <Card className="border-2 border-dashed border-red-200 hover:border-red-400 transition-colors">
+                <Card className="border-2 border-dashed border-[hsl(var(--destructive)/0.3)] hover:border-[hsl(var(--destructive)/0.30)] transition-colors">
                   <CardContent className="p-6">
                     <div className="text-center space-y-4">
-                      <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-                        <Youtube className="h-8 w-8 text-red-600" />
+                      <div className="mx-auto w-16 h-16 bg-[hsl(var(--destructive)/0.15)] rounded-full flex items-center justify-center">
+                        <Youtube className="h-8 w-8 text-[hsl(var(--destructive))]" />
                       </div>
                       
                       <div>
                         <h3 className="font-semibold">YouTube</h3>
                         {isConnected('YOUTUBE') ? (
-                          <Badge variant="secondary" className="bg-green-100 text-green-800">
+                          <Badge variant="secondary" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                             <CheckCircle2 className="h-3 w-3 mr-1" />
                             Conectado
                           </Badge>
                         ) : (
-                          <p className="text-sm text-gray-600">No conectado</p>
+                          <p className="text-sm text-muted-foreground">No conectado</p>
                         )}
                       </div>
 
@@ -481,19 +481,19 @@ export default function SocialMediaClient() {
                   <CardContent>
                     <div className="space-y-3">
                       {connectedAccounts.filter(acc => acc.isActive).map((account) => (
-                        <div key={account.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div key={account.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                              {account.platform === 'FACEBOOK' && <Facebook className="h-5 w-5 text-blue-600" />}
-                              {account.platform === 'INSTAGRAM' && <Instagram className="h-5 w-5 text-pink-600" />}
-                              {account.platform === 'YOUTUBE' && <Youtube className="h-5 w-5 text-red-600" />}
+                            <div className="w-10 h-10 bg-[hsl(var(--info)/0.15)] rounded-full flex items-center justify-center">
+                              {account.platform === 'FACEBOOK' && <Facebook className="h-5 w-5 text-[hsl(var(--info))]" />}
+                              {account.platform === 'INSTAGRAM' && <Instagram className="h-5 w-5 text-[hsl(var(--destructive))]" />}
+                              {account.platform === 'YOUTUBE' && <Youtube className="h-5 w-5 text-[hsl(var(--destructive))]" />}
                             </div>
                             <div>
                               <p className="font-medium">{account.displayName || account.username}</p>
-                              <p className="text-sm text-gray-600">{account.platform}</p>
+                              <p className="text-sm text-muted-foreground">{account.platform}</p>
                             </div>
                           </div>
-                          <Badge variant="secondary" className="bg-green-100 text-green-800">
+                          <Badge variant="secondary" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                             Activo
                           </Badge>
                         </div>
@@ -512,7 +512,7 @@ export default function SocialMediaClient() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Share2 className="h-5 w-5 text-green-600" />
+                <Share2 className="h-5 w-5 text-[hsl(var(--success))]" />
                 Crear y Publicar Contenido
               </CardTitle>
               <CardDescription>
@@ -531,7 +531,7 @@ export default function SocialMediaClient() {
                       variant="outline" 
                       size="sm"
                       onClick={generateAIContent}
-                      className="text-purple-600 border-purple-200 hover:bg-purple-50"
+                      className="text-[hsl(var(--lavender))] border-[hsl(var(--lavender)/0.3)] hover:bg-[hsl(var(--lavender)/0.10)]"
                     >
                       <Sparkles className="h-4 w-4 mr-1" />
                       AI Generate
@@ -548,7 +548,7 @@ export default function SocialMediaClient() {
                   maxLength={2000}
                 />
                 
-                <div className="text-right text-sm text-gray-500">
+                <div className="text-right text-sm text-muted-foreground">
                   {newPost.content.length}/2000 caracteres
                 </div>
               </div>
@@ -573,8 +573,8 @@ export default function SocialMediaClient() {
                           ${isAvailable 
                             ? isSelected 
                               ? `border-${platform.color}-500 bg-${platform.color}-50`
-                              : `border-gray-200 hover:border-${platform.color}-300`
-                            : 'border-gray-100 bg-gray-50 cursor-not-allowed opacity-50'
+                              : `border-border hover:border-${platform.color}-300`
+                            : 'border-border/50 bg-muted/30 cursor-not-allowed opacity-50'
                           }
                         `}
                         onClick={() => {
@@ -592,11 +592,11 @@ export default function SocialMediaClient() {
                           <platform.icon className={`h-6 w-6 text-${platform.color}-600`} />
                           <div className="flex-1">
                             <p className="font-medium">{platform.name}</p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-muted-foreground">
                               {isAvailable ? 'Conectado' : 'No conectado'}
                             </p>
                           </div>
-                          {isSelected && <CheckCircle2 className="h-5 w-5 text-green-500" />}
+                          {isSelected && <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />}
                         </div>
                       </div>
                     )
@@ -628,12 +628,12 @@ export default function SocialMediaClient() {
 
               {/* AI Enhancement Toggle */}
               {aiAddonActive && (
-                <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <div className="flex items-center justify-between p-4 bg-[hsl(var(--lavender)/0.10)] rounded-lg border border-[hsl(var(--lavender)/0.3)]">
                   <div className="flex items-center gap-3">
-                    <Sparkles className="h-5 w-5 text-purple-600" />
+                    <Sparkles className="h-5 w-5 text-[hsl(var(--lavender))]" />
                     <div>
-                      <p className="font-medium text-purple-900">Mejorar con AI</p>
-                      <p className="text-sm text-purple-700">Optimizar contenido automáticamente</p>
+                      <p className="font-medium text-foreground">Mejorar con AI</p>
+                      <p className="text-sm text-[hsl(var(--lavender))]">Optimizar contenido automáticamente</p>
                     </div>
                   </div>
                   <Switch
@@ -677,18 +677,18 @@ export default function SocialMediaClient() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-orange-600" />
+                  <Calendar className="h-5 w-5 text-[hsl(var(--warning))]" />
                   Posts Recientes
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {recentPosts.slice(0, 5).map((post) => (
-                    <div key={post.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                    <div key={post.id} className="p-4 border rounded-lg hover:bg-muted/30">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p className="text-sm text-gray-900 mb-2 line-clamp-2">{post.content}</p>
-                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <p className="text-sm text-foreground mb-2 line-clamp-2">{post.content}</p>
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <Badge variant={post.status === 'PUBLISHED' ? 'default' : 'secondary'}>
                               {post.status}
                             </Badge>
@@ -710,7 +710,7 @@ export default function SocialMediaClient() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold">Analíticas Unificadas</h2>
-              <p className="text-gray-600">Métricas de todas tus plataformas en un lugar</p>
+              <p className="text-muted-foreground">Métricas de todas tus plataformas en un lugar</p>
             </div>
             <Button onClick={syncAnalytics} disabled={isSyncingAnalytics}>
               {isSyncingAnalytics ? (
@@ -749,22 +749,22 @@ export default function SocialMediaClient() {
                     {connected ? (
                       <>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600">Seguidores</span>
+                          <span className="text-sm text-muted-foreground">Seguidores</span>
                           <span className="font-semibold">{stats.followers.toLocaleString()}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600">Interacci\u00f3n</span>
+                          <span className="text-sm text-muted-foreground">Interacci\u00f3n</span>
                           <span className="font-semibold">{stats.engagement}%</span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600">Posts</span>
+                          <span className="text-sm text-muted-foreground">Posts</span>
                           <span className="font-semibold">{stats.posts}</span>
                         </div>
                       </>
                     ) : (
                       <div className="text-center py-4">
-                        <AlertCircle className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm text-gray-500">Plataforma no conectada</p>
+                        <AlertCircle className="h-8 w-8 text-muted-foreground/70 mx-auto mb-2" />
+                        <p className="text-sm text-muted-foreground">Plataforma no conectada</p>
                         <Button 
                           variant="outline" 
                           size="sm" 
@@ -789,7 +789,7 @@ export default function SocialMediaClient() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Crown className="h-5 w-5 text-purple-600" />
+                <Crown className="h-5 w-5 text-[hsl(var(--lavender))]" />
                 AI Premium
               </CardTitle>
               <CardDescription>
@@ -799,32 +799,32 @@ export default function SocialMediaClient() {
             <CardContent>
               {aiAddonActive ? (
                 <div className="space-y-6">
-                  <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                  <div className="p-6 bg-[hsl(var(--lavender)/0.10)] rounded-lg border border-[hsl(var(--lavender)/0.3)]">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-gradient-to-r from-[hsl(var(--lavender))] to-[hsl(var(--lavender))] rounded-full flex items-center justify-center">
                         <Crown className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-purple-900">AI Premium Activo</h3>
-                        <p className="text-purple-700">Todas las funciones AI disponibles</p>
+                        <h3 className="text-lg font-semibold text-foreground">AI Premium Activo</h3>
+                        <p className="text-[hsl(var(--lavender))]">Todas las funciones AI disponibles</p>
                       </div>
                     </div>
                     
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
                         <span className="text-sm">Generación de contenido con GPT-4</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
                         <span className="text-sm">Optimización automática</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
                         <span className="text-sm">Análisis de engagement</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
                         <span className="text-sm">Soporte prioritario</span>
                       </div>
                     </div>
@@ -836,60 +836,60 @@ export default function SocialMediaClient() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Contenido generado este mes</span>
+                        <span className="text-sm text-muted-foreground">Contenido generado este mes</span>
                         <span className="font-semibold">12 posts</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Tiempo ahorrado</span>
+                        <span className="text-sm text-muted-foreground">Tiempo ahorrado</span>
                         <span className="font-semibold">~8 horas</span>
                       </div>
                       <Progress value={40} className="h-2" />
-                      <p className="text-xs text-gray-500">40% del límite mensual utilizado</p>
+                      <p className="text-xs text-muted-foreground">40% del límite mensual utilizado</p>
                     </CardContent>
                   </Card>
                 </div>
               ) : (
                 <div className="text-center space-y-6">
-                  <div className="mx-auto w-24 h-24 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full flex items-center justify-center">
-                    <Sparkles className="h-12 w-12 text-purple-600" />
+                  <div className="mx-auto w-24 h-24 bg-gradient-to-r from-[hsl(var(--lavender))] to-[hsl(var(--lavender))] rounded-full flex items-center justify-center">
+                    <Sparkles className="h-12 w-12 text-[hsl(var(--lavender))]" />
                   </div>
                   
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Desbloquea el Poder de la AI</h3>
-                    <p className="text-gray-600 max-w-md mx-auto">
+                    <p className="text-muted-foreground max-w-md mx-auto">
                       Genera contenido profesional, optimiza tus posts y aumenta tu engagement con inteligencia artificial
                     </p>
                   </div>
 
                   <div className="grid gap-3 max-w-sm mx-auto text-left">
                     <div className="flex items-center gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
+                      <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0" />
                       <span className="text-sm">Contenido generado con GPT-4</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
+                      <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0" />
                       <span className="text-sm">Optimización automática por plataforma</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
+                      <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0" />
                       <span className="text-sm">Análisis predictivo de engagement</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
+                      <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0" />
                       <span className="text-sm">Programación inteligente</span>
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 rounded-lg p-6">
+                  <div className="bg-muted/30 rounded-lg p-6">
                     <div className="flex items-center justify-center gap-2 mb-3">
                       <span className="text-2xl font-bold">$19.99</span>
-                      <span className="text-gray-600">/mes</span>
+                      <span className="text-muted-foreground">/mes</span>
                     </div>
-                    <Button size="lg" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                    <Button size="lg" className="w-full bg-gradient-to-r from-[hsl(var(--lavender))] to-[hsl(var(--lavender))] hover:from-[hsl(var(--lavender))] hover:to-[hsl(var(--lavender))]">
                       <Crown className="h-4 w-4 mr-2" />
                       Activar AI Premium
                     </Button>
-                    <p className="text-xs text-gray-500 mt-2">Cancela en cualquier momento</p>
+                    <p className="text-xs text-muted-foreground mt-2">Cancela en cualquier momento</p>
                   </div>
                 </div>
               )}

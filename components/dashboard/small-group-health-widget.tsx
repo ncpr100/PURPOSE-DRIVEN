@@ -25,15 +25,15 @@ interface Props {
 }
 
 const STATUS_CONFIG = {
-  GREEN: { label: "Saludable", className: "bg-green-100 text-green-800" },
-  YELLOW: { label: "Atención", className: "bg-yellow-100 text-yellow-800" },
-  RED: { label: "En riesgo", className: "bg-red-100 text-red-800" },
+  GREEN: { label: "Saludable", className: "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]" },
+  YELLOW: { label: "Atención", className: "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]" },
+  RED: { label: "En riesgo", className: "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]" },
 };
 
 const TREND_CONFIG = {
-  GROWING: { label: "Creciendo", className: "text-green-600" },
-  STABLE: { label: "Estable", className: "text-gray-500" },
-  DECLINING: { label: "Declinando", className: "text-red-500" },
+  GROWING: { label: "Creciendo", className: "text-[hsl(var(--success))]" },
+  STABLE: { label: "Estable", className: "text-muted-foreground" },
+  DECLINING: { label: "Declinando", className: "text-[hsl(var(--destructive))]" },
 };
 
 export function SmallGroupHealthWidget({ initialScores }: Props) {
@@ -59,7 +59,7 @@ export function SmallGroupHealthWidget({ initialScores }: Props) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
-          <Users className="h-4 w-4 text-indigo-500" />
+          <Users className="h-4 w-4 text-primary" />
           Salud de Grupos Pequeños
         </CardTitle>
         <Button

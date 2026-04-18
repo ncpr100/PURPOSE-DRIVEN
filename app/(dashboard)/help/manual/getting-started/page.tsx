@@ -35,17 +35,17 @@ export default function GettingStartedManual() {
               Esta guía le ayudará a configurar su iglesia en 15 minutos y comenzar a usar todas las funcionalidades del sistema.
             </p>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <div className="text-center p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⏱️ Tiempo Total</h4>
-                <p className="text-2xl font-bold text-blue-600">15 min</p>
+                <p className="text-2xl font-bold text-[hsl(var(--info))]">15 min</p>
               </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
+              <div className="text-center p-4 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📋 Pasos</h4>
-                <p className="text-2xl font-bold text-green-600">5</p>
+                <p className="text-2xl font-bold text-[hsl(var(--success))]">5</p>
               </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
+              <div className="text-center p-4 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">👥 Usuario</h4>
-                <p className="text-lg font-bold text-purple-600">Cualquiera</p>
+                <p className="text-lg font-bold text-[hsl(var(--lavender))]">Cualquiera</p>
               </div>
             </div>
           </CardContent>
@@ -55,7 +55,7 @@ export default function GettingStartedManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               Crear su Cuenta
             </CardTitle>
           </CardHeader>
@@ -77,7 +77,7 @@ export default function GettingStartedManual() {
                   <p><strong>1.4.</strong> Inicie sesión con sus credenciales</p>
                 </div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-muted/30 p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">💡 Consejos</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Use un email que revise frecuentemente</li>
@@ -94,7 +94,7 @@ export default function GettingStartedManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Configuración de su Iglesia
             </CardTitle>
           </CardHeader>
@@ -117,7 +117,7 @@ export default function GettingStartedManual() {
                   <p><strong>2.4.</strong> Haga clic en &quot;Guardar Cambios&quot;</p>
                 </div>
               </div>
-              <div className="bg-yellow-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">⚠️ Importante</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Esta información aparecerá en todos los recibos de donaciones</li>
@@ -134,7 +134,7 @@ export default function GettingStartedManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               Configurar Usuarios y Roles
             </CardTitle>
           </CardHeader>
@@ -143,19 +143,19 @@ export default function GettingStartedManual() {
               <div>
                 <h4 className="font-semibold mb-3">👥 Jerarquía de Roles</h4>
                 <div className="space-y-3 text-sm">
-                  <div className="border-l-4 border-red-500 pl-3">
+                  <div className="border-l-4 border-[hsl(var(--destructive))] pl-3">
                     <p><strong>SUPER_ADMIN</strong> - Acceso total al sistema</p>
                     <p className="text-muted-foreground">Configuración global, gestión de usuarios</p>
                   </div>
-                  <div className="border-l-4 border-orange-500 pl-3">
+                  <div className="border-l-4 border-[hsl(var(--warning)/0.30)] pl-3">
                     <p><strong>ADMIN_IGLESIA</strong> - Administrador de iglesia</p>
                     <p className="text-muted-foreground">Gestión completa de la congregación</p>
                   </div>
-                  <div className="border-l-4 border-blue-500 pl-3">
+                  <div className="border-l-4 border-[hsl(var(--info))] pl-3">
                     <p><strong>PASTOR</strong> - Supervisión ministerial</p>
                     <p className="text-muted-foreground">Gestión pastoral y ministerios</p>
                   </div>
-                  <div className="border-l-4 border-green-500 pl-3">
+                  <div className="border-l-4 border-[hsl(var(--success))] pl-3">
                     <p><strong>LIDER</strong> - Líder de ministerio</p>
                     <p className="text-muted-foreground">Gestión de equipos específicos</p>
                   </div>
@@ -165,7 +165,7 @@ export default function GettingStartedManual() {
                   </div>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">🔧 Cómo Configurar</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>3.1.</strong> Vaya a <code>Configuración → Permisos</code></p>
@@ -190,7 +190,7 @@ export default function GettingStartedManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               Importar Datos Iniciales
             </CardTitle>
           </CardHeader>
@@ -215,7 +215,7 @@ export default function GettingStartedManual() {
                   <p><strong>4.5.</strong> Revise la vista previa y confirme</p>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📋 Lista de Verificación</h4>
                 <div className="text-sm space-y-2">
                   <label className="flex items-center gap-2">
@@ -243,7 +243,7 @@ export default function GettingStartedManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
               Primeros Pasos Después de la Configuración
             </CardTitle>
           </CardHeader>
@@ -252,40 +252,40 @@ export default function GettingStartedManual() {
               <div>
                 <h4 className="font-semibold mb-3">🎯 Acciones Recomendadas</h4>
                 <div className="space-y-3 text-sm">
-                  <div className="border-l-4 border-blue-500 pl-3">
+                  <div className="border-l-4 border-[hsl(var(--info))] pl-3">
                     <p><strong>Crear su primer evento</strong></p>
                     <p className="text-muted-foreground">Vaya a Eventos → Nuevo Evento</p>
                   </div>
-                  <div className="border-l-4 border-green-500 pl-3">
+                  <div className="border-l-4 border-[hsl(var(--success))] pl-3">
                     <p><strong>Configurar donaciones</strong></p>
                     <p className="text-muted-foreground">Vaya a Donaciones → Configuración</p>
                   </div>
-                  <div className="border-l-4 border-purple-500 pl-3">
+                  <div className="border-l-4 border-[hsl(var(--lavender))] pl-3">
                     <p><strong>Enviar primera comunicación</strong></p>
                     <p className="text-muted-foreground">Vaya a Comunicaciones → Nuevo Mensaje</p>
                   </div>
-                  <div className="border-l-4 border-orange-500 pl-3">
+                  <div className="border-l-4 border-[hsl(var(--warning)/0.30)] pl-3">
                     <p><strong>Explorar analíticas</strong></p>
                     <p className="text-muted-foreground">Vaya a Analíticas → Resumen</p>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-muted/30 p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">🔗 Enlaces Útiles</h4>
                 <div className="space-y-2 text-sm">
-                  <Link href="/members" className="block text-blue-600 hover:underline">
+                  <Link href="/members" className="block text-[hsl(var(--info))] hover:underline">
                     → Gestión de Miembros
                   </Link>
-                  <Link href="/events" className="block text-blue-600 hover:underline">
+                  <Link href="/events" className="block text-[hsl(var(--info))] hover:underline">
                     → Gestión de Eventos
                   </Link>
-                  <Link href="/donations" className="block text-blue-600 hover:underline">
+                  <Link href="/donations" className="block text-[hsl(var(--info))] hover:underline">
                     → Sistema de Donaciones
                   </Link>
-                  <Link href="/communications" className="block text-blue-600 hover:underline">
+                  <Link href="/communications" className="block text-[hsl(var(--info))] hover:underline">
                     → Comunicaciones
                   </Link>
-                  <Link href="/analytics" className="block text-blue-600 hover:underline">
+                  <Link href="/analytics" className="block text-[hsl(var(--info))] hover:underline">
                     → Analíticas y Reportes
                   </Link>
                 </div>
@@ -302,27 +302,27 @@ export default function GettingStartedManual() {
           <CardContent>
             <div className="space-y-4 text-sm">
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-red-600 mb-2">❌ No puedo acceder a ciertas funciones</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ No puedo acceder a ciertas funciones</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Solución:</strong> Verifique que tenga el rol correcto asignado. Contacte a su ADMIN_IGLESIA para ajustar permisos.
                 </p>
-                <p className="text-xs text-blue-600">→ Ver: Manual de Permisos</p>
+                <p className="text-xs text-[hsl(var(--info))]">→ Ver: Manual de Permisos</p>
               </div>
               
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-red-600 mb-2">❌ Los miembros no aparecen después de importar</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ Los miembros no aparecen después de importar</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Solución:</strong> Revise que el archivo Excel tenga las columnas correctas y que los emails sean únicos.
                 </p>
-                <p className="text-xs text-blue-600">→ Ver: Manual de Miembros</p>
+                <p className="text-xs text-[hsl(var(--info))]">→ Ver: Manual de Miembros</p>
               </div>
 
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-red-600 mb-2">❌ No recibo emails de confirmación</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ No recibo emails de confirmación</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Solución:</strong> Revise su carpeta de spam/correo no deseado. Agregue nuestro dominio a su lista de contactos seguros.
                 </p>
-                <p className="text-xs text-blue-600">→ Contacte soporte si persiste</p>
+                <p className="text-xs text-[hsl(var(--info))]">→ Contacte soporte si persiste</p>
               </div>
             </div>
           </CardContent>

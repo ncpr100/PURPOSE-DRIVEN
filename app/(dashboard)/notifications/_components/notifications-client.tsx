@@ -67,10 +67,10 @@ interface Notification {
 }
 
 const NOTIFICATION_TYPES = [
-  { value: 'INFO', label: 'Información', icon: Info, color: 'text-blue-500' },
-  { value: 'SUCCESS', label: 'Éxito', icon: CheckCircle, color: 'text-green-500' },
-  { value: 'WARNING', label: 'Advertencia', icon: AlertTriangle, color: 'text-yellow-500' },
-  { value: 'ERROR', label: 'Error', icon: XCircle, color: 'text-red-500' },
+  { value: 'INFO', label: 'Información', icon: Info, color: 'text-[hsl(var(--info))]' },
+  { value: 'SUCCESS', label: 'Éxito', icon: CheckCircle, color: 'text-[hsl(var(--success))]' },
+  { value: 'WARNING', label: 'Advertencia', icon: AlertTriangle, color: 'text-[hsl(var(--warning))]' },
+  { value: 'ERROR', label: 'Error', icon: XCircle, color: 'text-[hsl(var(--destructive))]' },
 ]
 
 const CATEGORIES = [
@@ -82,10 +82,10 @@ const CATEGORIES = [
 ]
 
 const PRIORITIES = [
-  { value: 'LOW', label: 'Baja', color: 'text-gray-500' },
-  { value: 'NORMAL', label: 'Normal', color: 'text-blue-500' },
-  { value: 'HIGH', label: 'Alta', color: 'text-orange-500' },
-  { value: 'URGENT', label: 'Urgente', color: 'text-red-500' },
+  { value: 'LOW', label: 'Baja', color: 'text-muted-foreground' },
+  { value: 'NORMAL', label: 'Normal', color: 'text-[hsl(var(--info))]' },
+  { value: 'HIGH', label: 'Alta', color: 'text-[hsl(var(--warning))]' },
+  { value: 'URGENT', label: 'Urgente', color: 'text-[hsl(var(--destructive))]' },
 ]
 
 export function NotificationsClient() {

@@ -407,10 +407,10 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-foreground">
             Sistema de Registro
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Gestiona el registro de visitantes y niños
           </p>
         </div>
@@ -721,7 +721,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
           <Dialog open={isQrGeneratorOpen} onOpenChange={setIsQrGeneratorOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+              <Button className="btn-cta-gradient text-white">
                 <QrCode className="w-4 h-4 mr-2" />
                 Generar QR Niños
               </Button>
@@ -747,7 +747,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                       alt="Código QR para registro de niños"
                       className="mx-auto mb-3"
                     />
-                    <p className="text-sm text-gray-600 mb-2">
+                    <p className="text-sm text-muted-foreground mb-2">
                       Código QR para:{" "}
                       <strong>{generatedQrInfo.eventTitle}</strong>
                     </p>
@@ -771,12 +771,12 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   </div>
 
                   {/* Security Features */}
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-green-800 mb-2 flex items-center gap-2">
+                  <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
+                    <h4 className="font-medium text-[hsl(var(--success))] mb-2 flex items-center gap-2">
                       <Shield className="w-4 h-4" />
                       Características de Seguridad
                     </h4>
-                    <ul className="text-sm text-green-700 space-y-1">
+                    <ul className="text-sm text-[hsl(var(--success))] space-y-1">
                       <li>✅ Fotos del niño y padre requeridas</li>
                       <li>✅ PIN de seguridad generado automáticamente</li>
                       <li>✅ Fotos se eliminan después de 7 días</li>
@@ -986,8 +986,8 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                 <CardContent className="space-y-3">
                   {checkIn.email && (
                     <div className="flex items-center space-x-2">
-                      <Mail className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">
+                      <Mail className="w-4 h-4 text-muted-foreground/70" />
+                      <span className="text-sm text-muted-foreground">
                         {checkIn.email}
                       </span>
                     </div>
@@ -995,15 +995,15 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                   {checkIn.phone && (
                     <div className="flex items-center space-x-2">
-                      <Phone className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">
+                      <Phone className="w-4 h-4 text-muted-foreground/70" />
+                      <span className="text-sm text-muted-foreground">
                         {checkIn.phone}
                       </span>
                     </div>
                   )}
 
                   {checkIn.visitReason && (
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       <span className="font-medium">Motivo:</span>{" "}
                       {checkIn.visitReason}
                     </div>
@@ -1011,8 +1011,8 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
 
                   {checkIn.prayerRequest && (
                     <div className="flex items-start space-x-2">
-                      <MessageSquare className="w-4 h-4 text-gray-400 mt-0.5" />
-                      <span className="text-sm text-gray-600">
+                      <MessageSquare className="w-4 h-4 text-muted-foreground/70 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">
                         {checkIn.prayerRequest}
                       </span>
                     </div>
@@ -1128,14 +1128,14 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <Phone className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">
+                    <Phone className="w-4 h-4 text-muted-foreground/70" />
+                    <span className="text-sm text-muted-foreground">
                       {checkIn.parentPhone}
                     </span>
                   </div>
 
                   {checkIn.emergencyContact && (
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       <span className="font-medium">Emergencia:</span>{" "}
                       {checkIn.emergencyContact}
                       {checkIn.emergencyPhone && ` - ${checkIn.emergencyPhone}`}
@@ -1143,14 +1143,14 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                   )}
 
                   {checkIn.allergies && (
-                    <div className="text-sm text-red-600">
+                    <div className="text-sm text-[hsl(var(--destructive))]">
                       <span className="font-medium">Alergias:</span>{" "}
                       {checkIn.allergies}
                     </div>
                   )}
 
                   {checkIn.specialNeeds && (
-                    <div className="text-sm text-yellow-600">
+                    <div className="text-sm text-[hsl(var(--warning))]">
                       <span className="font-medium">
                         Necesidades especiales:
                       </span>{" "}
@@ -1277,7 +1277,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-green-600" />
+                <Shield className="h-5 w-5 text-[hsl(var(--success))]" />
                 Sistema WebRTC de Seguridad Infantil
               </CardTitle>
               <CardDescription>
@@ -1354,7 +1354,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <QrCode className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-[hsl(var(--success))]">
                       {childrenCheckIns.length > 0
                         ? Math.round(
                             childrenCheckIns
@@ -1426,13 +1426,13 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span>Con alergias:</span>
-                        <span className="font-medium text-red-600">
+                        <span className="font-medium text-[hsl(var(--destructive))]">
                           {childrenCheckIns.filter((c) => c.allergies).length}
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span>Necesidades especiales:</span>
-                        <span className="font-medium text-orange-600">
+                        <span className="font-medium text-[hsl(var(--warning))]">
                           {
                             childrenCheckIns.filter((c) => c.specialNeeds)
                               .length
@@ -1441,7 +1441,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                       </div>
                       <div className="flex justify-between">
                         <span>Contactos de emergencia:</span>
-                        <span className="font-medium text-green-600">
+                        <span className="font-medium text-[hsl(var(--success))]">
                           {
                             childrenCheckIns.filter((c) => c.emergencyContact)
                               .length
@@ -1472,7 +1472,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                       </div>
                       <div className="flex justify-between">
                         <span>Códigos de respaldo:</span>
-                        <span className="font-medium text-purple-600">
+                        <span className="font-medium text-[hsl(var(--lavender))]">
                           {
                             childrenCheckIns.filter(
                               (c) => c.backupAuthCodes?.length > 0,
@@ -1482,7 +1482,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                       </div>
                       <div className="flex justify-between">
                         <span>Fotos de seguridad:</span>
-                        <span className="font-medium text-green-600">
+                        <span className="font-medium text-[hsl(var(--success))]">
                           {
                             childrenCheckIns.filter(
                               (c) => c.childPhotoUrl && c.parentPhotoUrl,

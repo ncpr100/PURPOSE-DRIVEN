@@ -428,22 +428,22 @@ export default function HelpCenterSuperAdmin() {
           <CardContent>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center">
-                <div className="h-3 w-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div className="h-3 w-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Servidores</p>
                 <p className="text-muted-foreground">✅ Operacional</p>
               </div>
               <div className="text-center">
-                <div className="h-3 w-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div className="h-3 w-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Base de Datos</p>
                 <p className="text-muted-foreground">✅ Operacional</p>
               </div>
               <div className="text-center">
-                <div className="h-3 w-3 bg-yellow-500 rounded-full mx-auto mb-2"></div>
+                <div className="h-3 w-3 bg-[hsl(var(--warning)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">APIs Externas</p>
                 <p className="text-muted-foreground">⚠️ Parcial</p>
               </div>
               <div className="text-center">
-                <div className="h-3 w-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div className="h-3 w-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Pagos</p>
                 <p className="text-muted-foreground">✅ Operacional</p>
               </div>

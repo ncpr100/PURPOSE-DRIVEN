@@ -5,7 +5,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 export default function FreshChurchOnboardPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted/30 py-8">
       <Suspense fallback={
         <div className="flex items-center justify-center min-h-screen">
           <LoadingSpinner />

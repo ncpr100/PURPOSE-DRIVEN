@@ -127,7 +127,7 @@ export default async function PublicDonatePage(props: PublicDonatePageProps) {
   }))
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -139,17 +139,17 @@ export default async function PublicDonatePage(props: PublicDonatePageProps) {
                 className="h-16 w-16 rounded-full object-cover mr-4"
               />
             ) : (
-              <div className="h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+              <div className="h-16 w-16 bg-[hsl(var(--info))] rounded-full flex items-center justify-center mr-4">
                 <Heart className="h-8 w-8 text-white" />
               </div>
             )}
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{church.name}</h1>
-              <p className="text-gray-600">Donaciones Online</p>
+              <h1 className="text-3xl font-bold text-foreground">{church.name}</h1>
+              <p className="text-muted-foreground">Donaciones Online</p>
             </div>
           </div>
           {church.description && (
-            <p className="text-gray-700 max-w-2xl mx-auto">{church.description}</p>
+            <p className="text-muted-foreground max-w-2xl mx-auto">{church.description}</p>
           )}
         </div>
 
@@ -168,13 +168,13 @@ export default async function PublicDonatePage(props: PublicDonatePageProps) {
               {campaign.goalAmount && (
                 <CardContent>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm text-gray-600">
+                    <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Meta de Donación</span>
                       <span>
                         ${campaign.goalAmount.toLocaleString()} {campaign.currency || 'COP'}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Campaña de donaciones activa
                     </p>
                   </div>
@@ -190,7 +190,7 @@ export default async function PublicDonatePage(props: PublicDonatePageProps) {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-red-500" />
+                  <Heart className="h-5 w-5 text-[hsl(var(--destructive))]" />
                   Realizar Donación
                 </CardTitle>
                 <CardDescription>
@@ -213,22 +213,22 @@ export default async function PublicDonatePage(props: PublicDonatePageProps) {
             {/* Security Notice */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-green-600">
+                <CardTitle className="flex items-center gap-2 text-[hsl(var(--success))]">
                   <Shield className="h-5 w-5" />
                   Donación Segura
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full mt-2"></div>
                   <p>Encriptación SSL de 256 bits</p>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full mt-2"></div>
                   <p>Procesamiento seguro PSE y Nequi</p>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full mt-2"></div>
                   <p>Recibo automático por email</p>
                 </div>
               </CardContent>
@@ -237,13 +237,13 @@ export default async function PublicDonatePage(props: PublicDonatePageProps) {
             {/* Impact */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-blue-600">
+                <CardTitle className="flex items-center gap-2 text-[hsl(var(--info))]">
                   <Award className="h-5 w-5" />
                   Tu Impacto
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                   Cada donación contribuye directamente a los ministerios y programas 
                   que transforman vidas en nuestra comunidad.
                 </p>
@@ -271,20 +271,20 @@ export default async function PublicDonatePage(props: PublicDonatePageProps) {
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 {church.address && (
-                  <p className="text-gray-600">{church.address}</p>
+                  <p className="text-muted-foreground">{church.address}</p>
                 )}
                 {church.phone && (
-                  <p className="text-gray-600">{church.phone}</p>
+                  <p className="text-muted-foreground">{church.phone}</p>
                 )}
                 {church.email && (
-                  <p className="text-gray-600">{church.email}</p>
+                  <p className="text-muted-foreground">{church.email}</p>
                 )}
                 {church.website && (
                   <a 
                     href={church.website} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline block"
+                    className="text-[hsl(var(--info))] hover:underline block"
                   >
                     Visitar sitio web
                   </a>

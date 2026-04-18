@@ -110,10 +110,10 @@ export function RoleBasedNav({
 
               {roleConfig.restrictedActions.length > 0 && (
                 <div>
-                  <p className="text-sm font-medium text-orange-600">Acciones Restringidas</p>
+                  <p className="text-sm font-medium text-[hsl(var(--warning))]">Acciones Restringidas</p>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {roleConfig.restrictedActions.map(action => (
-                      <Badge key={action} variant="outline" className="text-xs border-orange-200">
+                      <Badge key={action} variant="outline" className="text-xs border-[hsl(var(--warning)/0.3)]">
                         {action}
                       </Badge>
                     ))}

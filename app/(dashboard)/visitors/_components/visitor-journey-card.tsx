@@ -240,7 +240,7 @@ export function VisitorJourneyCard({
               {
                 label: "Compromiso",
                 value: `${visitor.engagementScore}%`,
-                icon: <Target className="h-4 w-4 text-green-500" />,
+                icon: <Target className="h-4 w-4 text-[hsl(var(--success))]" />,
               },
               {
                 label: "Seguimientos",
@@ -320,12 +320,12 @@ export function VisitorJourneyCard({
 
           {/* Follow-ups */}
           <div>
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-2 flex items-center gap-1">
+            <p className="text-xs font-semibold text-muted-foreground uppercase mb-2 flex items-center gap-1">
               <CheckCircle2 className="h-3 w-3" />
               Seguimientos
             </p>
             {visitor.visitor_follow_ups?.length === 0 ? (
-              <p className="text-sm text-gray-400 italic">
+              <p className="text-sm text-muted-foreground/70 italic">
                 Sin seguimientos registrados
               </p>
             ) : (
@@ -333,7 +333,7 @@ export function VisitorJourneyCard({
                 {(visitor.visitor_follow_ups || []).map((fu) => (
                   <div
                     key={fu.id}
-                    className="flex items-start justify-between text-sm bg-gray-50 rounded p-2"
+                    className="flex items-start justify-between text-sm bg-muted/30 rounded p-2"
                   >
                     <div>
                       <span className="font-medium capitalize">
@@ -341,18 +341,18 @@ export function VisitorJourneyCard({
                           fu.followUpType}
                       </span>
                       {fu.scheduledAt && (
-                        <span className="text-gray-500 ml-2 text-xs">
+                        <span className="text-muted-foreground ml-2 text-xs">
                           {new Date(fu.scheduledAt).toLocaleDateString("es")}
                         </span>
                       )}
                       {fu.users?.name && (
-                        <span className="text-gray-500 block text-xs">
+                        <span className="text-muted-foreground block text-xs">
                           Asignado: {fu.users.name}
                         </span>
                       )}
                     </div>
                     <Badge
-                      className={`text-xs ${FOLLOW_UP_STATUS_COLORS[fu.status] || "bg-gray-100 text-gray-600"}`}
+                      className={`text-xs ${FOLLOW_UP_STATUS_COLORS[fu.status] || "bg-muted/50 text-muted-foreground"}`}
                     >
                       {fu.status === "pending"
                         ? "Pendiente"
@@ -408,7 +408,7 @@ export function VisitorJourneyCard({
 
           {/* Promote to Member */}
           <Button
-            className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+            className="w-full bg-[hsl(var(--warning))] hover:bg-[hsl(var(--warning))] text-white"
             onClick={handlePromoteMember}
             disabled={promoting || visitor.visitorType === "member_candidate"}
           >

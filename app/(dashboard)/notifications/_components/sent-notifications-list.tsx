@@ -47,24 +47,24 @@ interface SentNotificationsListProps {
 }
 
 const NOTIFICATION_TYPES = [
-  { value: 'INFO', label: 'Información', icon: Info, color: 'text-blue-500 bg-blue-50' },
-  { value: 'SUCCESS', label: 'Éxito', icon: CheckCircle, color: 'text-green-500 bg-green-50' },
-  { value: 'WARNING', label: 'Advertencia', icon: AlertTriangle, color: 'text-yellow-500 bg-yellow-50' },
-  { value: 'ERROR', label: 'Error', icon: XCircle, color: 'text-red-500 bg-red-50' },
+  { value: 'INFO', label: 'Información', icon: Info, color: 'text-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]' },
+  { value: 'SUCCESS', label: 'Éxito', icon: CheckCircle, color: 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.10)]' },
+  { value: 'WARNING', label: 'Advertencia', icon: AlertTriangle, color: 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.10)]' },
+  { value: 'ERROR', label: 'Error', icon: XCircle, color: 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)]' },
 ]
 
 const PRIORITIES = [
-  { value: 'LOW', label: 'Baja', color: 'text-gray-500 bg-gray-50' },
-  { value: 'NORMAL', label: 'Normal', color: 'text-blue-500 bg-blue-50' },
-  { value: 'HIGH', label: 'Alta', color: 'text-orange-500 bg-orange-50' },
-  { value: 'URGENT', label: 'Urgente', color: 'text-red-500 bg-red-50' },
+  { value: 'LOW', label: 'Baja', color: 'text-muted-foreground bg-muted/30' },
+  { value: 'NORMAL', label: 'Normal', color: 'text-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]' },
+  { value: 'HIGH', label: 'Alta', color: 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.10)]' },
+  { value: 'URGENT', label: 'Urgente', color: 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)]' },
 ]
 
 const STATUS_OPTIONS = [
-  { value: 'DRAFT', label: 'Borrador', color: 'text-gray-500 bg-gray-50' },
-  { value: 'SENT', label: 'Enviado', color: 'text-blue-500 bg-blue-50' },
-  { value: 'DELIVERED', label: 'Entregado', color: 'text-green-500 bg-green-50' },
-  { value: 'FAILED', label: 'Fallido', color: 'text-red-500 bg-red-50' },
+  { value: 'DRAFT', label: 'Borrador', color: 'text-muted-foreground bg-muted/30' },
+  { value: 'SENT', label: 'Enviado', color: 'text-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]' },
+  { value: 'DELIVERED', label: 'Entregado', color: 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.10)]' },
+  { value: 'FAILED', label: 'Fallido', color: 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)]' },
 ]
 
 export function SentNotificationsList({ 
@@ -174,16 +174,16 @@ export function SentNotificationsList({
             <CardContent className="p-4">
               <div className="flex items-start justify-between">
                 <div className="space-y-2 flex-1">
-                  <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                  <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                  <div className="h-4 bg-muted rounded w-1/3"></div>
+                  <div className="h-3 bg-muted rounded w-2/3"></div>
                   <div className="flex gap-2">
-                    <div className="h-6 bg-gray-200 rounded w-16"></div>
-                    <div className="h-6 bg-gray-200 rounded w-16"></div>
+                    <div className="h-6 bg-muted rounded w-16"></div>
+                    <div className="h-6 bg-muted rounded w-16"></div>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <div className="h-8 bg-gray-200 rounded w-8"></div>
-                  <div className="h-8 bg-gray-200 rounded w-8"></div>
+                  <div className="h-8 bg-muted rounded w-8"></div>
+                  <div className="h-8 bg-muted rounded w-8"></div>
                 </div>
               </div>
             </CardContent>
@@ -197,10 +197,10 @@ export function SentNotificationsList({
     return (
       <div className="text-center py-12">
         <Send className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-600 mb-2">
+        <h3 className="text-lg font-semibold text-muted-foreground mb-2">
           No has enviado notificaciones
         </h3>
-        <p className="text-gray-500 mb-4">
+        <p className="text-muted-foreground mb-4">
           Cuando envíes tu primera notificación, aparecerá aquí
         </p>
       </div>
@@ -222,10 +222,10 @@ export function SentNotificationsList({
                   <div className="flex items-start gap-3">
                     <typeConfig.icon className={`h-5 w-5 mt-0.5 ${typeConfig.color.split(' ')[0]}`} />
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 mb-1">
+                      <h3 className="font-semibold text-foreground mb-1">
                         {notification.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                      <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
                         {notification.message}
                       </p>
                       
@@ -241,7 +241,7 @@ export function SentNotificationsList({
                         )}
                       </div>
 
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Users className="h-3 w-3" />
                           {notification.recipientCount} destinatarios

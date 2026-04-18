@@ -42,7 +42,7 @@ export default function QRCustomizationPanel({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <QrCode className="h-5 w-5 text-purple-600" />
+          <QrCode className="h-5 w-5 text-[hsl(var(--lavender))]" />
           Personalización Avanzada del QR
         </CardTitle>
       </CardHeader>
@@ -122,7 +122,7 @@ export default function QRCustomizationPanel({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label className="flex items-center gap-2">
-                  <Palette className="h-4 w-4 text-blue-600" />
+                  <Palette className="h-4 w-4 text-[hsl(var(--info))]" />
                   Fondo del QR
                 </Label>
                 <div className="flex gap-2">
@@ -142,7 +142,7 @@ export default function QRCustomizationPanel({
               </div>
               <div>
                 <Label className="flex items-center gap-2">
-                  <Palette className="h-4 w-4 text-gray-800" />
+                  <Palette className="h-4 w-4 text-foreground" />
                   Color Principal QR
                 </Label>
                 <div className="flex gap-2">
@@ -267,9 +267,9 @@ export default function QRCustomizationPanel({
 
           {/* LOGO TAB */}
           <TabsContent value="logo" className="space-y-4">
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-              <ImageIcon className="h-12 w-12 mx-auto text-gray-400 mb-2" />
-              <div className="text-sm text-gray-600 mb-2">
+            <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+              <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground/70 mb-2" />
+              <div className="text-sm text-muted-foreground mb-2">
                 {qrConfig.logoImage ? 'Logo cargado - Haz clic para cambiar' : 'Arrastra o haz clic para subir logo'}
               </div>
               <Button
@@ -298,7 +298,7 @@ export default function QRCustomizationPanel({
                     variant="ghost"
                     size="sm"
                     onClick={() => setQRConfig(prev => ({ ...prev, logoImage: undefined }))}
-                    className="mt-2 text-red-600"
+                    className="mt-2 text-[hsl(var(--destructive))]"
                   >
                     <X className="h-4 w-4 mr-1" />
                     Eliminar
@@ -320,7 +320,7 @@ export default function QRCustomizationPanel({
                       onChange={(e) => setQRConfig(prev => ({ ...prev, logoSize: parseInt(e.target.value) }))}
                     />
                     {qrConfig.logoSize > 25 && (
-                      <p className="text-xs text-amber-600 mt-1 flex items-center gap-1">
+                      <p className="text-xs text-[hsl(var(--warning))] mt-1 flex items-center gap-1">
                         <AlertTriangle className="h-3 w-3" />
                         &gt;25% puede afectar el escaneo
                       </p>
@@ -395,9 +395,9 @@ export default function QRCustomizationPanel({
 
           {/* ADVANCED TAB */}
           <TabsContent value="advanced" className="space-y-4">
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-              <ImageIcon className="h-12 w-12 mx-auto text-gray-400 mb-2" />
-              <div className="text-sm text-gray-600 mb-2">
+            <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+              <ImageIcon className="h-12 w-12 mx-auto text-muted-foreground/70 mb-2" />
+              <div className="text-sm text-muted-foreground mb-2">
                 {qrConfig.backgroundImage ? 'Fondo cargado' : 'Subir imagen de fondo'}
               </div>
               <Button
@@ -426,7 +426,7 @@ export default function QRCustomizationPanel({
                     variant="ghost"
                     size="sm"
                     onClick={() => setQRConfig(prev => ({ ...prev, backgroundImage: undefined, useBackgroundImage: false }))}
-                    className="mt-2 text-red-600"
+                    className="mt-2 text-[hsl(var(--destructive))]"
                   >
                     <X className="h-4 w-4 mr-1" />
                     Eliminar
@@ -487,7 +487,7 @@ export default function QRCustomizationPanel({
 
         {/* QR PREVIEW */}
         {qrCodeUrl && (
-          <div className="flex justify-center p-6 bg-gray-50 rounded-lg mt-4">
+          <div className="flex justify-center p-6 bg-muted/30 rounded-lg mt-4">
             <img src={qrCodeUrl} alt="QR Code" className="border-4 border-white rounded-lg shadow-lg" style={{ width: `${Math.min(qrConfig.size, 300)}px` }} />
           </div>
         )}

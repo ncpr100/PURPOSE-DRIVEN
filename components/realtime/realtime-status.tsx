@@ -155,18 +155,18 @@ export function RealTimeStatusIndicator({
                     <div className="flex items-center gap-1">
                       {isConnected ? (
                         <>
-                          <CheckCircle className="h-3 w-3 text-green-500" />
-                          <span className="text-green-600 font-medium">Conectado</span>
+                          <CheckCircle className="h-3 w-3 text-[hsl(var(--success))]" />
+                          <span className="text-[hsl(var(--success))] font-medium">Conectado</span>
                         </>
                       ) : isConnecting ? (
                         <>
-                          <Loader2 className="h-3 w-3 animate-spin text-blue-500" />
-                          <span className="text-blue-600">Conectando</span>
+                          <Loader2 className="h-3 w-3 animate-spin text-[hsl(var(--info))]" />
+                          <span className="text-[hsl(var(--info))]">Conectando</span>
                         </>
                       ) : (
                         <>
-                          <WifiOff className="h-3 w-3 text-gray-500" />
-                          <span className="text-gray-600">Desconectado</span>
+                          <WifiOff className="h-3 w-3 text-muted-foreground" />
+                          <span className="text-muted-foreground">Desconectado</span>
                         </>
                       )}
                     </div>
@@ -186,8 +186,8 @@ export function RealTimeStatusIndicator({
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-muted-foreground">Notificaciones:</span>
                       <div className="flex items-center gap-1">
-                        <Bell className="h-3 w-3 text-red-500" />
-                        <span className="text-red-600 font-medium">
+                        <Bell className="h-3 w-3 text-[hsl(var(--destructive))]" />
+                        <span className="text-[hsl(var(--destructive))] font-medium">
                           {unreadCount} sin leer
                         </span>
                       </div>
@@ -210,15 +210,15 @@ export function RealTimeStatusIndicator({
                   <h5 className="text-xs font-medium mb-2">Funciones Activas:</h5>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 text-xs">
-                      <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-gray-300'}`} />
+                      <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-[hsl(var(--success)/0.10)]0' : 'bg-gray-300'}`} />
                       <span>Notificaciones instantáneas</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs">
-                      <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-gray-300'}`} />
+                      <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-[hsl(var(--success)/0.10)]0' : 'bg-gray-300'}`} />
                       <span>Estado de presencia</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs">
-                      <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-gray-300'}`} />
+                      <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-[hsl(var(--success)/0.10)]0' : 'bg-gray-300'}`} />
                       <span>Actualizaciones en vivo</span>
                     </div>
                   </div>

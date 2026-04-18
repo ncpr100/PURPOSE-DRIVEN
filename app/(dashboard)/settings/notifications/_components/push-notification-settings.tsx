@@ -52,19 +52,19 @@ export function PushNotificationSettings() {
     switch (permission) {
       case 'granted':
         return {
-          icon: <CheckCircle className="h-4 w-4 text-green-500" />,
+          icon: <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />,
           text: 'Permitido',
           variant: 'default' as const
         }
       case 'denied':
         return {
-          icon: <AlertCircle className="h-4 w-4 text-red-500" />,
+          icon: <AlertCircle className="h-4 w-4 text-[hsl(var(--destructive))]" />,
           text: 'Denegado',
           variant: 'destructive' as const
         }
       case 'default':
         return {
-          icon: <Info className="h-4 w-4 text-yellow-500" />,
+          icon: <Info className="h-4 w-4 text-[hsl(var(--warning))]" />,
           text: 'Sin configurar',
           variant: 'secondary' as const
         }
@@ -318,7 +318,7 @@ export function PushNotificationSettings() {
                 <div className="text-xs text-muted-foreground">Total</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">{stats.recentActivity}</div>
+                <div className="text-2xl font-bold text-[hsl(var(--success))]">{stats.recentActivity}</div>
                 <div className="text-xs text-muted-foreground">Esta semana</div>
               </div>
               <div className="text-center">

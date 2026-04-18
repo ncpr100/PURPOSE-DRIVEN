@@ -196,7 +196,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[hsl(var(--lavender)/0.30)]"></div>
       </div>
     )
   }
@@ -207,7 +207,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
       <Button
         variant="ghost"
         onClick={() => router.back()}
-        className="-ml-2 text-gray-600 hover:text-gray-900"
+        className="-ml-2 text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
         Volver
@@ -216,10 +216,10 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-foreground">
             Configuración de Marca
           </h1>
-          <p className="text-gray-600 text-sm mt-1">
+          <p className="text-muted-foreground text-sm mt-1">
             Personaliza los colores de tu iglesia para automatizaciones y plantillas
           </p>
         </div>
@@ -238,7 +238,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
           <Button
             onClick={handleSave}
             disabled={!hasChanges || isSaving}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-[hsl(var(--info))] hover:bg-[hsl(var(--info))]"
           >
             <Save className="h-4 w-4 mr-2" />
             {isSaving ? 'Guardando...' : 'Guardar Cambios'}
@@ -247,8 +247,8 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
       </div>
 
       {/* Section 1: Category Colors (background + text pairs) */}
-      <Card className="border-gray-200">
-        <CardHeader className="border-b bg-gray-50/50">
+      <Card className="border-border">
+        <CardHeader className="border-b bg-muted/30/50">
           <CardTitle className="text-lg font-semibold">Colores de Categorías</CardTitle>
           <CardDescription className="text-sm">
             Personaliza el fondo y el color de texto/íconos para cada categoría de plantilla
@@ -257,29 +257,29 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
         <CardContent className="p-6">
           <div className="space-y-6">
             {CATEGORY_COLOR_PAIRS.map(({ bgKey, textKey, label, bgDesc, textDesc }) => (
-              <div key={bgKey} className="p-4 rounded-lg border border-gray-200 bg-white">
-                <p className="text-sm font-semibold text-gray-800 mb-3">{label}</p>
+              <div key={bgKey} className="p-4 rounded-lg border border-border bg-white">
+                <p className="text-sm font-semibold text-foreground mb-3">{label}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Background color */}
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-lg border-2 border-gray-200 shadow-sm flex-shrink-0"
+                      className="w-10 h-10 rounded-lg border-2 border-border shadow-sm flex-shrink-0"
                       style={{ backgroundColor: colors[bgKey] }}
                     />
                     <div className="flex-1 min-w-0">
-                      <Label className="text-xs font-medium text-gray-700">{bgDesc}</Label>
+                      <Label className="text-xs font-medium text-muted-foreground">{bgDesc}</Label>
                       <div className="flex items-center gap-1 mt-1">
                         <Input
                           type="color"
                           value={colors[bgKey]}
                           onChange={(e) => handleColorChange(bgKey, e.target.value)}
-                          className="w-10 h-8 cursor-pointer border-gray-300 p-0.5"
+                          className="w-10 h-8 cursor-pointer border-border p-0.5"
                         />
                         <Input
                           type="text"
                           value={colors[bgKey]}
                           onChange={(e) => handleColorChange(bgKey, e.target.value)}
-                          className="w-24 h-8 font-mono text-xs border-gray-300"
+                          className="w-24 h-8 font-mono text-xs border-border"
                           placeholder="#000000"
                         />
                       </div>
@@ -288,25 +288,25 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
                   {/* Text / icon color */}
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-lg border-2 border-gray-200 shadow-sm flex-shrink-0 flex items-center justify-center"
+                      className="w-10 h-10 rounded-lg border-2 border-border shadow-sm flex-shrink-0 flex items-center justify-center"
                       style={{ backgroundColor: colors[bgKey] }}
                     >
                       <span className="text-lg font-bold" style={{ color: colors[textKey] }}>A</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <Label className="text-xs font-medium text-gray-700">{textDesc}</Label>
+                      <Label className="text-xs font-medium text-muted-foreground">{textDesc}</Label>
                       <div className="flex items-center gap-1 mt-1">
                         <Input
                           type="color"
                           value={colors[textKey]}
                           onChange={(e) => handleColorChange(textKey, e.target.value)}
-                          className="w-10 h-8 cursor-pointer border-gray-300 p-0.5"
+                          className="w-10 h-8 cursor-pointer border-border p-0.5"
                         />
                         <Input
                           type="text"
                           value={colors[textKey]}
                           onChange={(e) => handleColorChange(textKey, e.target.value)}
-                          className="w-24 h-8 font-mono text-xs border-gray-300"
+                          className="w-24 h-8 font-mono text-xs border-border"
                           placeholder="#000000"
                         />
                       </div>
@@ -320,8 +320,8 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
       </Card>
 
       {/* Section 2: Badge & Button Colors */}
-      <Card className="border-gray-200">
-        <CardHeader className="border-b bg-gray-50/50">
+      <Card className="border-border">
+        <CardHeader className="border-b bg-muted/30/50">
           <CardTitle className="text-lg font-semibold">Insignias y Botones</CardTitle>
           <CardDescription className="text-sm">
             Personaliza los colores de las insignias de categoría y los botones de acción
@@ -330,8 +330,8 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
         <CardContent className="p-6">
           <div className="space-y-4">
             {/* Badge preview row */}
-            <div className="p-4 rounded-lg border border-gray-200 bg-white">
-              <p className="text-xs font-medium text-gray-600 mb-3">Vista previa de insignia</p>
+            <div className="p-4 rounded-lg border border-border bg-white">
+              <p className="text-xs font-medium text-muted-foreground mb-3">Vista previa de insignia</p>
               <div className="flex items-center gap-3 flex-wrap">
                 <span
                   className="px-3 py-1 rounded-full text-xs font-medium"
@@ -348,24 +348,24 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg border-2 border-gray-200 shadow-sm flex-shrink-0" style={{ backgroundColor: colors.badgeBackground }} />
+                  <div className="w-10 h-10 rounded-lg border-2 border-border shadow-sm flex-shrink-0" style={{ backgroundColor: colors.badgeBackground }} />
                   <div className="flex-1">
-                    <Label className="text-xs font-medium text-gray-700">Fondo de Insignias</Label>
+                    <Label className="text-xs font-medium text-muted-foreground">Fondo de Insignias</Label>
                     <div className="flex items-center gap-1 mt-1">
-                      <Input type="color" value={colors.badgeBackground} onChange={(e) => handleColorChange('badgeBackground', e.target.value)} className="w-10 h-8 cursor-pointer border-gray-300 p-0.5" />
-                      <Input type="text" value={colors.badgeBackground} onChange={(e) => handleColorChange('badgeBackground', e.target.value)} className="w-24 h-8 font-mono text-xs border-gray-300" placeholder="#000000" />
+                      <Input type="color" value={colors.badgeBackground} onChange={(e) => handleColorChange('badgeBackground', e.target.value)} className="w-10 h-8 cursor-pointer border-border p-0.5" />
+                      <Input type="text" value={colors.badgeBackground} onChange={(e) => handleColorChange('badgeBackground', e.target.value)} className="w-24 h-8 font-mono text-xs border-border" placeholder="#000000" />
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg border-2 border-gray-200 shadow-sm flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: colors.badgeBackground }}>
+                  <div className="w-10 h-10 rounded-lg border-2 border-border shadow-sm flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: colors.badgeBackground }}>
                     <span className="text-xs font-bold" style={{ color: colors.badgeText }}>Ab</span>
                   </div>
                   <div className="flex-1">
-                    <Label className="text-xs font-medium text-gray-700">Texto de Insignias</Label>
+                    <Label className="text-xs font-medium text-muted-foreground">Texto de Insignias</Label>
                     <div className="flex items-center gap-1 mt-1">
-                      <Input type="color" value={colors.badgeText} onChange={(e) => handleColorChange('badgeText', e.target.value)} className="w-10 h-8 cursor-pointer border-gray-300 p-0.5" />
-                      <Input type="text" value={colors.badgeText} onChange={(e) => handleColorChange('badgeText', e.target.value)} className="w-24 h-8 font-mono text-xs border-gray-300" placeholder="#000000" />
+                      <Input type="color" value={colors.badgeText} onChange={(e) => handleColorChange('badgeText', e.target.value)} className="w-10 h-8 cursor-pointer border-border p-0.5" />
+                      <Input type="text" value={colors.badgeText} onChange={(e) => handleColorChange('badgeText', e.target.value)} className="w-24 h-8 font-mono text-xs border-border" placeholder="#000000" />
                     </div>
                   </div>
                 </div>
@@ -373,8 +373,8 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
             </div>
 
             {/* Button preview row */}
-            <div className="p-4 rounded-lg border border-gray-200 bg-white">
-              <p className="text-xs font-medium text-gray-600 mb-3">Vista previa de botón</p>
+            <div className="p-4 rounded-lg border border-border bg-white">
+              <p className="text-xs font-medium text-muted-foreground mb-3">Vista previa de botón</p>
               <button
                 className="px-4 py-2 rounded-md text-sm font-medium mb-3"
                 style={{ backgroundColor: colors.buttonBackground, color: colors.buttonText }}
@@ -383,24 +383,24 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
               </button>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg border-2 border-gray-200 shadow-sm flex-shrink-0" style={{ backgroundColor: colors.buttonBackground }} />
+                  <div className="w-10 h-10 rounded-lg border-2 border-border shadow-sm flex-shrink-0" style={{ backgroundColor: colors.buttonBackground }} />
                   <div className="flex-1">
-                    <Label className="text-xs font-medium text-gray-700">Fondo del Botón</Label>
+                    <Label className="text-xs font-medium text-muted-foreground">Fondo del Botón</Label>
                     <div className="flex items-center gap-1 mt-1">
-                      <Input type="color" value={colors.buttonBackground} onChange={(e) => handleColorChange('buttonBackground', e.target.value)} className="w-10 h-8 cursor-pointer border-gray-300 p-0.5" />
-                      <Input type="text" value={colors.buttonBackground} onChange={(e) => handleColorChange('buttonBackground', e.target.value)} className="w-24 h-8 font-mono text-xs border-gray-300" placeholder="#000000" />
+                      <Input type="color" value={colors.buttonBackground} onChange={(e) => handleColorChange('buttonBackground', e.target.value)} className="w-10 h-8 cursor-pointer border-border p-0.5" />
+                      <Input type="text" value={colors.buttonBackground} onChange={(e) => handleColorChange('buttonBackground', e.target.value)} className="w-24 h-8 font-mono text-xs border-border" placeholder="#000000" />
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg border-2 border-gray-200 shadow-sm flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: colors.buttonBackground }}>
+                  <div className="w-10 h-10 rounded-lg border-2 border-border shadow-sm flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: colors.buttonBackground }}>
                     <span className="text-xs font-bold" style={{ color: colors.buttonText }}>Ab</span>
                   </div>
                   <div className="flex-1">
-                    <Label className="text-xs font-medium text-gray-700">Texto del Botón</Label>
+                    <Label className="text-xs font-medium text-muted-foreground">Texto del Botón</Label>
                     <div className="flex items-center gap-1 mt-1">
-                      <Input type="color" value={colors.buttonText} onChange={(e) => handleColorChange('buttonText', e.target.value)} className="w-10 h-8 cursor-pointer border-gray-300 p-0.5" />
-                      <Input type="text" value={colors.buttonText} onChange={(e) => handleColorChange('buttonText', e.target.value)} className="w-24 h-8 font-mono text-xs border-gray-300" placeholder="#000000" />
+                      <Input type="color" value={colors.buttonText} onChange={(e) => handleColorChange('buttonText', e.target.value)} className="w-10 h-8 cursor-pointer border-border p-0.5" />
+                      <Input type="text" value={colors.buttonText} onChange={(e) => handleColorChange('buttonText', e.target.value)} className="w-24 h-8 font-mono text-xs border-border" placeholder="#000000" />
                     </div>
                   </div>
                 </div>
@@ -411,8 +411,8 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
       </Card>
 
       {/* Section 3: System Palette */}
-      <Card className="border-gray-200">
-        <CardHeader className="border-b bg-gray-50/50">
+      <Card className="border-border">
+        <CardHeader className="border-b bg-muted/30/50">
           <CardTitle className="text-lg font-semibold">Paleta del Sistema</CardTitle>
           <CardDescription className="text-sm">
             Colores primario y secundario usados en toda la plataforma
@@ -424,15 +424,15 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
               const info = COLOR_DESCRIPTIONS[key as keyof typeof COLOR_DESCRIPTIONS]
               if (!info) return null
               return (
-                <div key={key} className="flex items-center gap-4 p-4 rounded-lg border border-gray-200 bg-white hover:border-gray-300 transition-colors">
-                  <div className="w-12 h-12 rounded-lg border-2 border-gray-200 shadow-sm flex-shrink-0" style={{ backgroundColor: colors[key] }} />
+                <div key={key} className="flex items-center gap-4 p-4 rounded-lg border border-border bg-white hover:border-border transition-colors">
+                  <div className="w-12 h-12 rounded-lg border-2 border-border shadow-sm flex-shrink-0" style={{ backgroundColor: colors[key] }} />
                   <div className="flex-1 min-w-0">
-                    <Label htmlFor={key} className="text-sm font-medium text-gray-900">{info.label}</Label>
-                    <p className="text-xs text-gray-500 mt-0.5">{info.description}</p>
+                    <Label htmlFor={key} className="text-sm font-medium text-foreground">{info.label}</Label>
+                    <p className="text-xs text-muted-foreground mt-0.5">{info.description}</p>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <Input id={key} type="color" value={colors[key]} onChange={(e) => handleColorChange(key, e.target.value)} className="w-14 h-9 cursor-pointer border-gray-300" />
-                    <Input type="text" value={colors[key]} onChange={(e) => handleColorChange(key, e.target.value)} className="w-24 h-9 font-mono text-xs border-gray-300" placeholder="#000000" />
+                    <Input id={key} type="color" value={colors[key]} onChange={(e) => handleColorChange(key, e.target.value)} className="w-14 h-9 cursor-pointer border-border" />
+                    <Input type="text" value={colors[key]} onChange={(e) => handleColorChange(key, e.target.value)} className="w-24 h-9 font-mono text-xs border-border" placeholder="#000000" />
                   </div>
                 </div>
               )
@@ -442,8 +442,8 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
       </Card>
 
       {/* Preview */}
-      <Card className="border-gray-200">
-        <CardHeader className="border-b bg-gray-50/50">
+      <Card className="border-border">
+        <CardHeader className="border-b bg-muted/30/50">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             Vista Previa
           </CardTitle>
@@ -481,7 +481,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
               </h3>
               <p className="text-xs" style={{ color: colors.visitorFollowupText, opacity: 0.7 }}>Ejemplo de plantilla</p>
               <span className="mt-2 inline-block px-2 py-0.5 rounded-full text-xs font-medium" style={{ backgroundColor: colors.badgeBackground, color: colors.badgeText }}>Visitantes</span>
-              <p className="text-xs text-gray-500">Ejemplo de plantilla</p>
+              <p className="text-xs text-muted-foreground">Ejemplo de plantilla</p>
             </div>
 
             {/* Social Media Preview */}
@@ -515,8 +515,8 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
             </div>
           </div>
           {/* Button preview */}
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <p className="text-xs font-medium text-gray-600 mb-2">Vista previa del botón de acción</p>
+          <div className="mt-4 pt-4 border-t border-border/50">
+            <p className="text-xs font-medium text-muted-foreground mb-2">Vista previa del botón de acción</p>
             <button
               className="px-4 py-2 rounded-md text-sm font-medium"
               style={{ backgroundColor: colors.buttonBackground, color: colors.buttonText }}
@@ -528,12 +528,12 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
       </Card>
 
       {/* Reset to Defaults */}
-      <Card className="border-gray-200 bg-gray-50">
+      <Card className="border-border bg-muted/30">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">Restablecer Colores</h3>
-              <p className="text-xs text-gray-600 mt-0.5">
+              <h3 className="text-sm font-medium text-foreground">Restablecer Colores</h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Volver a los colores predeterminados del sistema
               </p>
             </div>
@@ -541,7 +541,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
               variant="outline"
               size="sm"
               onClick={handleResetToDefaults}
-              className="border-gray-300 text-gray-700 hover:bg-gray-100"
+              className="border-border text-muted-foreground hover:bg-muted/50"
             >
               <RotateCcw className="h-3 w-3 mr-2" />
               Restablecer

@@ -240,9 +240,9 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
           {[1, 2, 3].map((i) => (
             <Card key={i} className="animate-pulse">
               <CardContent className="p-6">
-                <div className="h-5 bg-gray-200 rounded w-1/3 mb-3"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+                <div className="h-5 bg-muted rounded w-1/3 mb-3"></div>
+                <div className="h-4 bg-muted rounded w-2/3 mb-2"></div>
+                <div className="h-4 bg-muted rounded w-1/4"></div>
               </CardContent>
             </Card>
           ))}
@@ -257,7 +257,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Formularios de Plataforma</h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-muted-foreground mt-1">
             Gestiona formularios, códigos QR y analíticas de marketing
           </p>
         </div>
@@ -304,7 +304,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Plus className="h-5 w-5 text-blue-600" />
+                <Plus className="h-5 w-5 text-[hsl(var(--info))]" />
                 Crear Nuevo Formulario
               </CardTitle>
             </CardHeader>
@@ -357,9 +357,9 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
           {!Array.isArray(forms) || forms.length === 0 ? (
             <Card>
               <CardContent className="text-center py-12">
-                <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <FileText className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No hay formularios</h3>
-                <p className="text-gray-500">Crea tu primer formulario de plataforma para empezar</p>
+                <p className="text-muted-foreground">Crea tu primer formulario de plataforma para empezar</p>
               </CardContent>
             </Card>
           ) : (
@@ -382,9 +382,9 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
                           )}
                         </div>
                         {form.description && (
-                          <p className="text-sm text-gray-500 mb-2">{form.description}</p>
+                          <p className="text-sm text-muted-foreground mb-2">{form.description}</p>
                         )}
-                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1 font-mono">
                             <Globe className="h-3 w-3" />
                             /p/{form.slug}
@@ -431,8 +431,8 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
                           title={form.isActive ? 'Desactivar formulario' : 'Activar formulario'}
                         >
                           {form.isActive
-                            ? <ToggleRight className="h-4 w-4 text-green-600" />
-                            : <ToggleLeft className="h-4 w-4 text-gray-400" />}
+                            ? <ToggleRight className="h-4 w-4 text-[hsl(var(--success))]" />
+                            : <ToggleLeft className="h-4 w-4 text-muted-foreground/70" />}
                         </Button>
                         <Button
                           size="sm"
@@ -449,16 +449,16 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
                     {form.analytics && form.analytics.totalSubmissions > 0 && (
                       <div className="mt-3 pt-3 border-t grid grid-cols-3 gap-3 text-center">
                         <div>
-                          <div className="text-lg font-bold text-blue-600">{form.analytics.totalSubmissions}</div>
-                          <div className="text-xs text-gray-500">Total Envíos</div>
+                          <div className="text-lg font-bold text-[hsl(var(--info))]">{form.analytics.totalSubmissions}</div>
+                          <div className="text-xs text-muted-foreground">Total Envíos</div>
                         </div>
                         <div>
-                          <div className="text-lg font-bold text-green-600">{form.analytics.lastWeekSubmissions}</div>
-                          <div className="text-xs text-gray-500">Última Semana</div>
+                          <div className="text-lg font-bold text-[hsl(var(--success))]">{form.analytics.lastWeekSubmissions}</div>
+                          <div className="text-xs text-muted-foreground">Última Semana</div>
                         </div>
                         <div>
-                          <div className="text-lg font-bold text-purple-600">{form.analytics.averageLeadScore}</div>
-                          <div className="text-xs text-gray-500">Score Promedio</div>
+                          <div className="text-lg font-bold text-[hsl(var(--lavender))]">{form.analytics.averageLeadScore}</div>
+                          <div className="text-xs text-muted-foreground">Score Promedio</div>
                         </div>
                       </div>
                     )}

@@ -40,9 +40,9 @@ function useCountUp(target: number, duration = 1800, delay = 0) {
 }
 
 const DELTA_STYLES: Record<DeltaDir, string> = {
-  up: "text-emerald-400",
+  up: "text-[hsl(var(--success)/0.9)]",
   down: "text-rose-400",
-  neutral: "text-slate-400",
+  neutral: "text-muted-foreground/70",
 };
 
 export function CosmosStatCard({

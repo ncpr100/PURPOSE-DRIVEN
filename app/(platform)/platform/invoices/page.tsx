@@ -236,11 +236,11 @@ export default function InvoiceManagementPage() {
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      DRAFT: { color: 'bg-gray-100 text-gray-800', icon: Edit },
-      SENT: { color: 'bg-blue-100 text-blue-800', icon: Send },
-      PAID: { color: 'bg-green-100 text-green-800', icon: CheckCircle },
-      OVERDUE: { color: 'bg-red-100 text-red-800', icon: AlertCircle },
-      CANCELLED: { color: 'bg-gray-100 text-gray-600', icon: XCircle }
+      DRAFT: { color: 'bg-muted/50 text-foreground', icon: Edit },
+      SENT: { color: 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]', icon: Send },
+      PAID: { color: 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]', icon: CheckCircle },
+      OVERDUE: { color: 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]', icon: AlertCircle },
+      CANCELLED: { color: 'bg-muted/50 text-muted-foreground', icon: XCircle }
     }
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.DRAFT
     const IconComponent = config.icon
@@ -622,7 +622,7 @@ export default function InvoiceManagementPage() {
                       </div>
                     </div>
                     <div className="text-right space-y-2">
-                      <div className="text-2xl font-bold text-green-600">
+                      <div className="text-2xl font-bold text-[hsl(var(--success))]">
                         ${invoice.totalAmount.toFixed(2)} USD
                       </div>
                       <div className="flex gap-2">
@@ -651,7 +651,7 @@ export default function InvoiceManagementPage() {
                         </Button>
                       </div>
                       {invoice._count.communications > 0 && (
-                        <div className="text-xs text-blue-600">
+                        <div className="text-xs text-[hsl(var(--info))]">
                           <MessageSquare className="h-3 w-3 inline mr-1" />
                           {invoice._count.communications} comunicaciones
                         </div>
@@ -670,7 +670,7 @@ export default function InvoiceManagementPage() {
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
-              <FileText className="h-5 w-5 text-blue-600" />
+              <FileText className="h-5 w-5 text-[hsl(var(--info))]" />
               Factura {selectedInvoice?.invoiceNumber}
               {selectedInvoice && getStatusBadge(selectedInvoice.status)}
             </DialogTitle>
@@ -699,7 +699,7 @@ export default function InvoiceManagementPage() {
                   {selectedInvoice.paidAt && (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Pagada:</span>
-                      <span className="text-green-600 font-medium">{new Date(selectedInvoice.paidAt).toLocaleDateString('es-CO')}</span>
+                      <span className="text-[hsl(var(--success))] font-medium">{new Date(selectedInvoice.paidAt).toLocaleDateString('es-CO')}</span>
                     </div>
                   )}
                 </div>
@@ -752,7 +752,7 @@ export default function InvoiceManagementPage() {
                   <Separator />
                   <div className="flex justify-between font-bold text-base">
                     <span>Total:</span>
-                    <span className="text-green-600">${selectedInvoice.totalAmount.toFixed(2)} {selectedInvoice.currency}</span>
+                    <span className="text-[hsl(var(--success))]">${selectedInvoice.totalAmount.toFixed(2)} {selectedInvoice.currency}</span>
                   </div>
                 </div>
               </div>
@@ -763,19 +763,19 @@ export default function InvoiceManagementPage() {
                   <Separator />
                   <div>
                     <p className="text-sm font-semibold mb-3 flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                       Pagos Registrados
                     </p>
                     <div className="space-y-2">
                       {selectedInvoice.payments.map((payment, idx) => (
-                        <div key={idx} className="flex justify-between items-center text-sm bg-green-50 rounded px-3 py-2">
+                        <div key={idx} className="flex justify-between items-center text-sm bg-[hsl(var(--success)/0.10)] rounded px-3 py-2">
                           <div>
                             <span className="font-medium">{payment.paymentMethod}</span>
                             {payment.reference && <span className="text-muted-foreground ml-2">Ref: {payment.reference}</span>}
                             {payment.verifier && <span className="text-muted-foreground ml-2">— {payment.verifier.name}</span>}
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold text-green-700">${payment.amount.toFixed(2)}</p>
+                            <p className="font-semibold text-[hsl(var(--success))]">${payment.amount.toFixed(2)}</p>
                             <p className="text-xs text-muted-foreground">{new Date(payment.verifiedAt).toLocaleDateString('es-CO')}</p>
                           </div>
                         </div>

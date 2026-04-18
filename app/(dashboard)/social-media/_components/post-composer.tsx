@@ -237,7 +237,7 @@ export default function PostComposer({
               rows={4}
               required
             />
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               {formData.content.length}/280 caracteres
             </div>
           </div>
@@ -269,7 +269,7 @@ export default function PostComposer({
               <div className="mt-2 space-y-2">
                 <Label className="text-sm">Medios existentes:</Label>
                 {mediaUrls.map((url, index) => (
-                  <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                  <div key={index} className="flex items-center justify-between bg-muted/30 p-2 rounded">
                     <span className="text-sm truncate">{url}</span>
                     <Button
                       type="button"
@@ -289,7 +289,7 @@ export default function PostComposer({
               <div className="mt-2 space-y-2">
                 <Label className="text-sm">Archivos seleccionados:</Label>
                 {mediaFiles.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                  <div key={index} className="flex items-center justify-between bg-muted/30 p-2 rounded">
                     <span className="text-sm truncate">{file.name}</span>
                     <Button
                       type="button"
@@ -319,7 +319,7 @@ export default function PostComposer({
                       />
                       <div className="flex-1">
                         <div className="font-medium text-sm">{account.platform}</div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-muted-foreground">
                           {account.displayName || account.username}
                         </div>
                       </div>

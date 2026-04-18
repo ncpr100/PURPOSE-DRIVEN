@@ -175,7 +175,7 @@ export default function ChurchSettingsPage() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver
           </Button>
-          <div className="h-6 bg-gray-200 rounded w-64 animate-pulse"></div>
+          <div className="h-6 bg-muted rounded w-64 animate-pulse"></div>
         </div>
         
         <div className="grid gap-6">
@@ -183,10 +183,10 @@ export default function ChurchSettingsPage() {
             <Card key={i}>
               <CardContent className="p-6">
                 <div className="animate-pulse space-y-4">
-                  <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+                  <div className="h-6 bg-muted rounded w-1/3"></div>
                   <div className="space-y-3">
-                    <div className="h-10 bg-gray-200 rounded"></div>
-                    <div className="h-10 bg-gray-200 rounded"></div>
+                    <div className="h-10 bg-muted rounded"></div>
+                    <div className="h-10 bg-muted rounded"></div>
                   </div>
                 </div>
               </CardContent>
@@ -207,14 +207,14 @@ export default function ChurchSettingsPage() {
               Volver
             </Link>
           </Button>
-          <h1 className="text-2xl font-bold text-gray-900">Error</h1>
+          <h1 className="text-2xl font-bold text-foreground">Error</h1>
         </div>
         
         <Card>
           <CardContent className="text-center p-12">
-            <Building2 className="h-16 w-16 text-red-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-red-900 mb-2">{error}</h3>
-            <p className="text-red-600 mb-6">No se pudo cargar la configuración de la iglesia</p>
+            <Building2 className="h-16 w-16 text-[hsl(var(--destructive)/0.8)] mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-[hsl(var(--destructive))] mb-2">{error}</h3>
+            <p className="text-[hsl(var(--destructive))] mb-6">No se pudo cargar la configuración de la iglesia</p>
             <Button asChild>
               <Link href="/platform/churches">
                 Volver a Iglesias
@@ -243,18 +243,18 @@ export default function ChurchSettingsPage() {
           </Button>
           
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl">
+            <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+              <div className="w-10 h-10 rounded-lg btn-cta-gradient flex items-center justify-center text-white font-bold text-xl">
                 {church.name.charAt(0)}
               </div>
               Configurar {church.name}
             </h1>
-            <p className="text-gray-600 mt-1">Administrar configuración y ajustes de la iglesia</p>
+            <p className="text-muted-foreground mt-1">Administrar configuración y ajustes de la iglesia</p>
           </div>
         </div>
         
         <div className="flex items-center gap-3">
-          <Badge variant={church.isActive ? "default" : "destructive"} className={church.isActive ? "bg-green-100 text-green-700" : ""}>
+          <Badge variant={church.isActive ? "default" : "destructive"} className={church.isActive ? "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]" : ""}>
             <Power className="h-3 w-3 mr-1" />
             {church.isActive ? 'Activa' : 'Inactiva'}
           </Badge>
@@ -304,7 +304,7 @@ export default function ChurchSettingsPage() {
                 <div className="space-y-2">
                   <Label htmlFor="email">Email de Contacto *</Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                     <Input
                       id="email"
                       type="email"
@@ -319,7 +319,7 @@ export default function ChurchSettingsPage() {
                 <div className="space-y-2">
                   <Label htmlFor="phone">Teléfono</Label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                     <Input
                       id="phone"
                       value={formData.phone}
@@ -333,7 +333,7 @@ export default function ChurchSettingsPage() {
                 <div className="space-y-2">
                   <Label htmlFor="website">Sitio Web</Label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                     <Input
                       id="website"
                       value={formData.website}
@@ -347,7 +347,7 @@ export default function ChurchSettingsPage() {
                 <div className="space-y-2">
                   <Label htmlFor="founded">Fecha de Fundación</Label>
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                     <Input
                       id="founded"
                       type="date"
@@ -362,7 +362,7 @@ export default function ChurchSettingsPage() {
               <div className="space-y-2">
                 <Label htmlFor="address">Dirección Completa</Label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground/70" />
                   <Textarea
                     id="address"
                     value={formData.address}
@@ -402,7 +402,7 @@ export default function ChurchSettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <Label htmlFor="active-switch">Estado Activo</Label>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     {formData.isActive ? 'La iglesia está activa' : 'La iglesia está inactiva'}
                   </p>
                 </div>
@@ -414,12 +414,12 @@ export default function ChurchSettingsPage() {
               </div>
               
               {!formData.isActive && (
-                <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg">
                   <div className="flex items-start gap-2">
-                    <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5" />
+                    <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))] mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-yellow-800">Iglesia Inactiva</p>
-                      <p className="text-xs text-yellow-700 mt-1">
+                      <p className="text-sm font-medium text-[hsl(var(--warning))]">Iglesia Inactiva</p>
+                      <p className="text-xs text-[hsl(var(--warning))] mt-1">
                         Los usuarios no podrán acceder al sistema
                       </p>
                     </div>
@@ -471,7 +471,7 @@ export default function ChurchSettingsPage() {
               </Button>
               
               {!church.isActive && (
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-muted-foreground text-center">
                   La iglesia ya está desactivada
                 </p>
               )}

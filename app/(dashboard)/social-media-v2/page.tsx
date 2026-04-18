@@ -17,8 +17,8 @@ export default async function SocialMediaV2Page() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Acceso Requerido</h2>
-          <p className="text-gray-600">Necesitas iniciar sesión para acceder al módulo de redes sociales.</p>
+          <h2 className="text-2xl font-semibold text-foreground mb-2">Acceso Requerido</h2>
+          <p className="text-muted-foreground">Necesitas iniciar sesión para acceder al módulo de redes sociales.</p>
         </div>
       </div>
     )

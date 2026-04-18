@@ -27,14 +27,14 @@ export function PlatformStatsCard({
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-600">{title}</p>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
             <p className="text-3xl font-bold">{value}</p>
             {subtitle && (
-              <p className="text-sm text-gray-500">{subtitle}</p>
+              <p className="text-sm text-muted-foreground">{subtitle}</p>
             )}
           </div>
           {icon && (
-            <div className="text-gray-400">
+            <div className="text-muted-foreground/70">
               {icon}
             </div>
           )}
@@ -43,7 +43,7 @@ export function PlatformStatsCard({
         {trend !== 'neutral' && trendValue && (
           <div className={cn(
             'flex items-center gap-1 mt-3 text-sm',
-            trend === 'up' ? 'text-green-600' : 'text-red-600'
+            trend === 'up' ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--destructive))]'
           )}>
             {trend === 'up' ? (
               <TrendingUp className="h-4 w-4" />

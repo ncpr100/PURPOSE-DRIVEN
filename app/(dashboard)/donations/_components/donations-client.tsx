@@ -197,10 +197,10 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETADA': return 'bg-green-100 text-green-800'
-      case 'PENDIENTE': return 'bg-yellow-100 text-yellow-800'
-      case 'FALLIDA': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'COMPLETADA': return 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
+      case 'PENDIENTE': return 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]'
+      case 'FALLIDA': return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
+      default: return 'bg-muted/50 text-foreground'
     }
   }
 
@@ -380,8 +380,8 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
               {donations.map((donation) => (
                 <div key={donation.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="flex items-center space-x-4">
-                    <div className="p-2 bg-green-100 rounded-full">
-                      <DollarSign className="h-4 w-4 text-green-600" />
+                    <div className="p-2 bg-[hsl(var(--success)/0.15)] rounded-full">
+                      <DollarSign className="h-4 w-4 text-[hsl(var(--success))]" />
                     </div>
                     <div>
                       <div className="flex items-center space-x-2">
@@ -450,7 +450,7 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Link2 className="h-5 w-5 text-blue-600" />
+                <Link2 className="h-5 w-5 text-[hsl(var(--info))]" />
                 Enlace Público de Donaciones
               </CardTitle>
               <CardDescription>
@@ -462,7 +462,7 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
                 <Input
                   value={publicDonationUrl}
                   readOnly
-                  className="font-mono text-sm bg-gray-50"
+                  className="font-mono text-sm bg-muted/30"
                 />
                 <Button onClick={copyPublicUrl} variant="outline">
                   <Link2 className="mr-2 h-4 w-4" />
@@ -475,9 +475,9 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
                   </a>
                 </Button>
               </div>
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h4 className="font-semibold text-blue-900 mb-2">¿Cómo funciona?</h4>
-                <ul className="text-sm text-blue-800 space-y-1">
+              <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
+                <h4 className="font-semibold text-foreground mb-2">¿Cómo funciona?</h4>
+                <ul className="text-sm text-[hsl(var(--info))] space-y-1">
                   <li>• Las personas pueden donar directamente desde esta página</li>
                   <li>• No necesitan crear cuenta ni iniciar sesión</li>
                   <li>• Pueden pagar con PSE (bancos) o Nequi</li>
@@ -587,9 +587,9 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
                       <div className="flex-1">
                         <div className="flex items-center gap-3">
                           <div className={`w-3 h-3 rounded-full ${
-                            payment?.status === 'completed' ? 'bg-green-500' :
-                            payment?.status === 'pending' ? 'bg-yellow-500' :
-                            'bg-red-500'
+                            payment?.status === 'completed' ? 'bg-[hsl(var(--success)/0.10)]0' :
+                            payment?.status === 'pending' ? 'bg-[hsl(var(--warning)/0.10)]0' :
+                            'bg-[hsl(var(--destructive)/0.10)]0'
                           }`} />
                           <div>
                             <p className="font-medium">
@@ -626,7 +626,7 @@ export function DonationsClient({ userRole, churchId }: DonationsClientProps) {
           </Card>
 
           {/* Setup Instructions */}
-          <Card className="bg-amber-50 border-amber-200">
+          <Card className="bg-[hsl(var(--warning)/0.10)] border-[hsl(var(--warning)/0.3)]">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-amber-800">
                 <Settings className="h-5 w-5" />

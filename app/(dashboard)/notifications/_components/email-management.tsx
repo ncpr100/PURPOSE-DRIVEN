@@ -237,7 +237,7 @@ export function EmailManagement() {
               <div className="space-y-2">
                 <Label className="text-sm font-medium">Estado del Servicio</Label>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full"></div>
                   <span className="text-sm capitalize">{emailStatus.status}</span>
                 </div>
               </div>

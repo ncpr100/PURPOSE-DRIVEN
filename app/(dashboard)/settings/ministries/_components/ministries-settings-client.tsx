@@ -206,7 +206,7 @@ export default function MinistriesSettingsClient({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Heart className="h-8 w-8 text-purple-600" />
+            <Heart className="h-8 w-8 text-[hsl(var(--lavender))]" />
             Gestión de Ministerios
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -231,7 +231,7 @@ export default function MinistriesSettingsClient({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5 text-green-600" />
+            <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />
             Ministerios Activos
           </CardTitle>
           <CardDescription>
@@ -255,7 +255,7 @@ export default function MinistriesSettingsClient({
                   <div className="space-y-1 flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold">{ministry.name}</h3>
-                      <Badge variant="outline" className="text-green-600 border-green-600">
+                      <Badge variant="outline" className="text-[hsl(var(--success))] border-[hsl(var(--success))]">
                         Activo
                       </Badge>
                     </div>

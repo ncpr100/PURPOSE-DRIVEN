@@ -616,11 +616,11 @@ export default function BrandedFormBuilder({
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+    <div className="h-screen flex flex-col bg-muted/30 overflow-hidden">
       {/* ═══════════════════════════════════════════════
           TOP HEADER BAR
       ═══════════════════════════════════════════════ */}
-      <div className="flex-none bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between z-10">
+      <div className="flex-none bg-white border-b border-border px-4 py-2 flex items-center justify-between z-10">
         <div className="flex items-center gap-3">
           {!showTemplates ? (
             <Button
@@ -630,7 +630,7 @@ export default function BrandedFormBuilder({
               }}
               variant="ghost"
               size="sm"
-              className="flex items-center gap-2 text-gray-600"
+              className="flex items-center gap-2 text-muted-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
               Plantillas
@@ -640,27 +640,27 @@ export default function BrandedFormBuilder({
           <div>
             {!showTemplates ? (
               <div className="flex items-center gap-3">
-                <span className="font-semibold text-gray-800 text-sm">
+                <span className="font-semibold text-foreground text-sm">
                   {formConfig.title}
                 </span>
                 <div className="flex items-center gap-1 text-xs">
                   {hasUnsavedChanges ? (
-                    <span className="flex items-center gap-1 text-orange-500">
+                    <span className="flex items-center gap-1 text-[hsl(var(--warning))]">
                       <RefreshCcw className="h-3 w-3 animate-spin" />
                       Guardando…
                     </span>
                   ) : lastSaved ? (
-                    <span className="flex items-center gap-1 text-green-600">
+                    <span className="flex items-center gap-1 text-[hsl(var(--success))]">
                       <Save className="h-3 w-3" />
                       Guardado {lastSaved.toLocaleTimeString()}
                     </span>
                   ) : (
-                    <span className="text-gray-400">Sin guardar</span>
+                    <span className="text-muted-foreground/70">Sin guardar</span>
                   )}
                 </div>
               </div>
             ) : (
-              <h1 className="text-lg font-bold text-gray-800">
+              <h1 className="text-lg font-bold text-foreground">
                 Plantillas de Formularios
               </h1>
             )}
@@ -688,7 +688,7 @@ export default function BrandedFormBuilder({
                 }
                 setShowQRModal(true);
               }}
-              className="flex items-center gap-2 text-purple-600 border-purple-300"
+              className="flex items-center gap-2 text-[hsl(var(--lavender))] border-[hsl(var(--lavender)/0.4)]"
             >
               <QrCode className="h-4 w-4" />
               Código QR
@@ -696,7 +696,7 @@ export default function BrandedFormBuilder({
             <Button
               onClick={saveForm}
               size="sm"
-              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+              className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))] text-white flex items-center gap-2"
             >
               <Save className="h-4 w-4" />
               Guardar
@@ -711,13 +711,13 @@ export default function BrandedFormBuilder({
       {showTemplates ? (
         <div className="flex-1 overflow-auto p-6">
           <div className="max-w-5xl mx-auto">
-            <p className="text-gray-500 mb-6 text-sm">
+            <p className="text-muted-foreground mb-6 text-sm">
               Elige una plantilla para empezar o crea desde cero.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Blank form option */}
               <Card
-                className="hover:shadow-lg transition-all cursor-pointer border-2 border-dashed border-gray-300 hover:border-blue-400"
+                className="hover:shadow-lg transition-all cursor-pointer border-2 border-dashed border-border hover:border-[hsl(var(--info)/0.5)]"
                 onClick={() => {
                   updateFormConfig((prev) => ({
                     ...prev,
@@ -737,10 +737,10 @@ export default function BrandedFormBuilder({
                   setShowTemplates(false);
                 }}
               >
-                <CardContent className="flex flex-col items-center justify-center py-10 text-gray-500">
-                  <Plus className="h-10 w-10 mb-2 text-gray-400" />
+                <CardContent className="flex flex-col items-center justify-center py-10 text-muted-foreground">
+                  <Plus className="h-10 w-10 mb-2 text-muted-foreground/70" />
                   <span className="font-medium">Formulario en blanco</span>
-                  <span className="text-xs text-gray-400 mt-1">
+                  <span className="text-xs text-muted-foreground/70 mt-1">
                     Empieza desde cero
                   </span>
                 </CardContent>
@@ -749,7 +749,7 @@ export default function BrandedFormBuilder({
               {SMART_TEMPLATES.map((template) => (
                 <Card
                   key={template.id}
-                  className="hover:shadow-lg transition-all cursor-pointer border border-gray-200"
+                  className="hover:shadow-lg transition-all cursor-pointer border border-border"
                   onClick={() => applyTemplate(template)}
                 >
                   <CardHeader className="pb-2">
@@ -769,7 +769,7 @@ export default function BrandedFormBuilder({
                     <p className="text-xs text-muted-foreground mb-2">
                       {template.description}
                     </p>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-muted-foreground/70">
                       {template.fields.length} campos
                     </span>
                   </CardContent>
@@ -786,16 +786,16 @@ export default function BrandedFormBuilder({
           {/* ──────────────────────────────
               LEFT PANEL — Block Picker
           ────────────────────────────── */}
-          <div className="w-52 flex-none bg-white border-r border-gray-200 overflow-y-auto flex flex-col">
-            <div className="p-3 border-b border-gray-100">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+          <div className="w-52 flex-none bg-white border-r border-border overflow-y-auto flex flex-col">
+            <div className="p-3 border-b border-border/50">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Bloques
               </p>
             </div>
 
             {/* QUESTIONS */}
             <div className="p-2">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide px-2 py-1">
+              <p className="text-xs font-semibold text-muted-foreground/70 uppercase tracking-wide px-2 py-1">
                 Preguntas
               </p>
               {[
@@ -828,9 +828,9 @@ export default function BrandedFormBuilder({
                 <button
                   key={type}
                   onClick={() => insertBlock(type)}
-                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors text-left"
+                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-sm text-muted-foreground hover:bg-[hsl(var(--info)/0.10)] hover:text-[hsl(var(--info))] transition-colors text-left"
                 >
-                  <Icon className="h-4 w-4 flex-none text-gray-500" />
+                  <Icon className="h-4 w-4 flex-none text-muted-foreground" />
                   {label}
                 </button>
               ))}
@@ -840,7 +840,7 @@ export default function BrandedFormBuilder({
 
             {/* LAYOUT BLOCKS */}
             <div className="p-2">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide px-2 py-1">
+              <p className="text-xs font-semibold text-muted-foreground/70 uppercase tracking-wide px-2 py-1">
                 Diseño
               </p>
               {[
@@ -854,9 +854,9 @@ export default function BrandedFormBuilder({
                 <button
                   key={type}
                   onClick={() => insertBlock(type)}
-                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors text-left"
+                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-sm text-muted-foreground hover:bg-[hsl(var(--lavender)/0.10)] hover:text-[hsl(var(--lavender))] transition-colors text-left"
                 >
-                  <Icon className="h-4 w-4 flex-none text-gray-500" />
+                  <Icon className="h-4 w-4 flex-none text-muted-foreground" />
                   {label}
                 </button>
               ))}
@@ -866,7 +866,7 @@ export default function BrandedFormBuilder({
 
             {/* PRESET QUICK-ADD */}
             <div className="p-2">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide px-2 py-1">
+              <p className="text-xs font-semibold text-muted-foreground/70 uppercase tracking-wide px-2 py-1">
                 Campos Rápidos
               </p>
               {PRESET_FIELDS.slice(0, 12).map((preset) => (
@@ -894,7 +894,7 @@ export default function BrandedFormBuilder({
                     });
                     setSelectedFieldId(newField.id);
                   }}
-                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs text-gray-600 hover:bg-green-50 hover:text-green-700 transition-colors text-left"
+                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs text-muted-foreground hover:bg-[hsl(var(--success)/0.10)] hover:text-[hsl(var(--success))] transition-colors text-left"
                 >
                   {getPresetFieldIcon(preset.icon)}
                   <span className="truncate">{preset.label}</span>
@@ -906,7 +906,7 @@ export default function BrandedFormBuilder({
           {/* ──────────────────────────────
               CENTER PANEL — Form Canvas (WYSIWYG)
           ────────────────────────────── */}
-          <div className="flex-1 overflow-y-auto bg-gray-100 p-6 flex justify-center">
+          <div className="flex-1 overflow-y-auto bg-muted/50 p-6 flex justify-center">
             <div
               className="w-full shadow-lg rounded-xl overflow-hidden"
               style={{
@@ -939,7 +939,7 @@ export default function BrandedFormBuilder({
               {/* Title & Description — inline editable */}
               <div className="px-8 pt-8 pb-2">
                 <input
-                  className="w-full font-bold bg-transparent border-none outline-none focus:bg-blue-50 focus:rounded px-1 -mx-1 transition-colors"
+                  className="w-full font-bold bg-transparent border-none outline-none focus:bg-[hsl(var(--info)/0.10)] focus:rounded px-1 -mx-1 transition-colors"
                   style={{
                     color: formConfig.headerTextColor || "#111827",
                     fontSize: formConfig.titleFontSize || "28px",
@@ -955,7 +955,7 @@ export default function BrandedFormBuilder({
                   onClick={() => setSelectedFieldId(null)}
                 />
                 <textarea
-                  className="w-full mt-1 bg-transparent border-none outline-none focus:bg-blue-50 focus:rounded px-1 -mx-1 resize-none transition-colors"
+                  className="w-full mt-1 bg-transparent border-none outline-none focus:bg-[hsl(var(--info)/0.10)] focus:rounded px-1 -mx-1 resize-none transition-colors"
                   style={{
                     color: formConfig.bodyTextColor || "#6b7280",
                     fontSize: formConfig.bodyFontSize || "14px",
@@ -984,10 +984,10 @@ export default function BrandedFormBuilder({
                     return (
                       <div
                         key={field.id}
-                        className={`group relative py-3 cursor-pointer rounded-lg transition-all ${isSelected ? "ring-2 ring-blue-500 bg-blue-50" : "hover:bg-gray-50"}`}
+                        className={`group relative py-3 cursor-pointer rounded-lg transition-all ${isSelected ? "ring-2 ring-[hsl(var(--info)/0.4)] bg-[hsl(var(--info)/0.10)]" : "hover:bg-muted/30"}`}
                         onClick={() => setSelectedFieldId(field.id)}
                       >
-                        <hr className="border-gray-300" />
+                        <hr className="border-border" />
                         {isSelected && (
                           <div className="absolute -top-2 right-1 flex gap-1">
                             <button
@@ -995,7 +995,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 moveField(field.id, "up");
                               }}
-                              className="bg-white border rounded p-0.5 hover:bg-gray-100"
+                              className="bg-white border rounded p-0.5 hover:bg-muted/50"
                             >
                               <ChevronUp className="h-3 w-3" />
                             </button>
@@ -1004,7 +1004,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 moveField(field.id, "down");
                               }}
-                              className="bg-white border rounded p-0.5 hover:bg-gray-100"
+                              className="bg-white border rounded p-0.5 hover:bg-muted/50"
                             >
                               <ChevronDown className="h-3 w-3" />
                             </button>
@@ -1013,9 +1013,9 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 removeField(field.id);
                               }}
-                              className="bg-white border border-red-300 rounded p-0.5 hover:bg-red-50"
+                              className="bg-white border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)]"
                             >
-                              <Trash2 className="h-3 w-3 text-red-500" />
+                              <Trash2 className="h-3 w-3 text-[hsl(var(--destructive))]" />
                             </button>
                           </div>
                         )}
@@ -1035,7 +1035,7 @@ export default function BrandedFormBuilder({
                     return (
                       <div
                         key={field.id}
-                        className={`group relative py-2 cursor-pointer rounded-lg transition-all ${isSelected ? "ring-2 ring-blue-500 bg-blue-50" : "hover:bg-gray-50"}`}
+                        className={`group relative py-2 cursor-pointer rounded-lg transition-all ${isSelected ? "ring-2 ring-[hsl(var(--info)/0.4)] bg-[hsl(var(--info)/0.10)]" : "hover:bg-muted/30"}`}
                         onClick={() => setSelectedFieldId(field.id)}
                       >
                         <input
@@ -1060,7 +1060,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 moveField(field.id, "up");
                               }}
-                              className="bg-white border rounded p-0.5 hover:bg-gray-100"
+                              className="bg-white border rounded p-0.5 hover:bg-muted/50"
                             >
                               <ChevronUp className="h-3 w-3" />
                             </button>
@@ -1069,7 +1069,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 moveField(field.id, "down");
                               }}
-                              className="bg-white border rounded p-0.5 hover:bg-gray-100"
+                              className="bg-white border rounded p-0.5 hover:bg-muted/50"
                             >
                               <ChevronDown className="h-3 w-3" />
                             </button>
@@ -1078,9 +1078,9 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 removeField(field.id);
                               }}
-                              className="bg-white border border-red-300 rounded p-0.5 hover:bg-red-50"
+                              className="bg-white border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)]"
                             >
-                              <Trash2 className="h-3 w-3 text-red-500" />
+                              <Trash2 className="h-3 w-3 text-[hsl(var(--destructive))]" />
                             </button>
                           </div>
                         )}
@@ -1092,7 +1092,7 @@ export default function BrandedFormBuilder({
                   return (
                     <div
                       key={field.id}
-                      className={`group relative py-3 px-1 cursor-pointer rounded-lg transition-all ${isSelected ? "ring-2 ring-blue-500 bg-blue-50/60" : "hover:bg-gray-50"}`}
+                      className={`group relative py-3 px-1 cursor-pointer rounded-lg transition-all ${isSelected ? "ring-2 ring-[hsl(var(--info)/0.4)] bg-[hsl(var(--info)/0.10)]/60" : "hover:bg-muted/30"}`}
                       onClick={() => setSelectedFieldId(field.id)}
                     >
                       {/* Field controls */}
@@ -1103,7 +1103,7 @@ export default function BrandedFormBuilder({
                               e.stopPropagation();
                               moveField(field.id, "up");
                             }}
-                            className="bg-white border rounded p-0.5 hover:bg-gray-100 shadow-sm"
+                            className="bg-white border rounded p-0.5 hover:bg-muted/50 shadow-sm"
                           >
                             <ChevronUp className="h-3 w-3" />
                           </button>
@@ -1112,7 +1112,7 @@ export default function BrandedFormBuilder({
                               e.stopPropagation();
                               moveField(field.id, "down");
                             }}
-                            className="bg-white border rounded p-0.5 hover:bg-gray-100 shadow-sm"
+                            className="bg-white border rounded p-0.5 hover:bg-muted/50 shadow-sm"
                           >
                             <ChevronDown className="h-3 w-3" />
                           </button>
@@ -1121,9 +1121,9 @@ export default function BrandedFormBuilder({
                               e.stopPropagation();
                               removeField(field.id);
                             }}
-                            className="bg-white border border-red-300 rounded p-0.5 hover:bg-red-50 shadow-sm"
+                            className="bg-white border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)] shadow-sm"
                           >
-                            <Trash2 className="h-3 w-3 text-red-500" />
+                            <Trash2 className="h-3 w-3 text-[hsl(var(--destructive))]" />
                           </button>
                         </div>
                       )}
@@ -1139,7 +1139,7 @@ export default function BrandedFormBuilder({
                         >
                           {field.label}
                           {field.required && (
-                            <span className="text-red-500 ml-1">*</span>
+                            <span className="text-[hsl(var(--destructive))] ml-1">*</span>
                           )}
                         </label>
                       )}
@@ -1198,7 +1198,7 @@ export default function BrandedFormBuilder({
                           >
                             {field.label}
                             {field.required && (
-                              <span className="text-red-500 ml-1">*</span>
+                              <span className="text-[hsl(var(--destructive))] ml-1">*</span>
                             )}
                           </span>
                         </div>
@@ -1253,7 +1253,7 @@ export default function BrandedFormBuilder({
                     setSelectedFieldId(null);
                     insertBlock("text");
                   }}
-                  className="w-full py-3 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 text-sm hover:border-blue-300 hover:text-blue-500 transition-all flex items-center justify-center gap-2"
+                  className="w-full py-3 border-2 border-dashed border-border rounded-lg text-muted-foreground/70 text-sm hover:border-[hsl(var(--info)/0.4)] hover:text-[hsl(var(--info))] transition-all flex items-center justify-center gap-2"
                 >
                   <Plus className="h-4 w-4" />
                   Agregar campo
@@ -1282,19 +1282,19 @@ export default function BrandedFormBuilder({
           {/* ──────────────────────────────
               RIGHT PANEL — Properties / Style
           ────────────────────────────── */}
-          <div className="w-72 flex-none bg-white border-l border-gray-200 overflow-y-auto flex flex-col">
+          <div className="w-72 flex-none bg-white border-l border-border overflow-y-auto flex flex-col">
             {/* Panel toggle */}
-            <div className="flex border-b border-gray-200">
+            <div className="flex border-b border-border">
               <button
                 onClick={() => setRightPanel("properties")}
-                className={`flex-1 py-2.5 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${rightPanel === "properties" ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50" : "text-gray-500 hover:text-gray-700"}`}
+                className={`flex-1 py-2.5 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${rightPanel === "properties" ? "text-[hsl(var(--info))] border-b-2 border-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]" : "text-muted-foreground hover:text-muted-foreground"}`}
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" />
                 Propiedades
               </button>
               <button
                 onClick={() => setRightPanel("style")}
-                className={`flex-1 py-2.5 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${rightPanel === "style" ? "text-purple-600 border-b-2 border-purple-600 bg-purple-50" : "text-gray-500 hover:text-gray-700"}`}
+                className={`flex-1 py-2.5 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${rightPanel === "style" ? "text-[hsl(var(--lavender))] border-b-2 border-[hsl(var(--lavender)/0.30)] bg-[hsl(var(--lavender)/0.10)]" : "text-muted-foreground hover:text-muted-foreground"}`}
               >
                 <Palette className="h-3.5 w-3.5" />
                 Estilo
@@ -1307,7 +1307,7 @@ export default function BrandedFormBuilder({
                 {selectedFieldId === null ? (
                   /* No field selected — show form-level settings */
                   <div className="space-y-4">
-                    <p className="text-xs text-gray-500 font-medium">
+                    <p className="text-xs text-muted-foreground font-medium">
                       FORMULARIO
                     </p>
                     <div>
@@ -1357,10 +1357,10 @@ export default function BrandedFormBuilder({
                     </div>
 
                     <Separator />
-                    <p className="text-xs text-gray-500 font-medium">
+                    <p className="text-xs text-muted-foreground font-medium">
                       LOGO DE IGLESIA
                     </p>
-                    <div className="border-2 border-dashed border-gray-200 rounded-lg p-3 text-center">
+                    <div className="border-2 border-dashed border-border rounded-lg p-3 text-center">
                       {formConfig.churchLogo ? (
                         <div>
                           <img
@@ -1378,7 +1378,7 @@ export default function BrandedFormBuilder({
                                 churchLogo: undefined,
                               }))
                             }
-                            className="text-red-500 text-xs"
+                            className="text-[hsl(var(--destructive))] text-xs"
                           >
                             <X className="h-3 w-3 mr-1" />
                             Quitar
@@ -1412,7 +1412,7 @@ export default function BrandedFormBuilder({
                     </div>
 
                     <Separator />
-                    <p className="text-xs text-gray-400 italic">
+                    <p className="text-xs text-muted-foreground/70 italic">
                       Haz clic en un campo del formulario para editarlo.
                     </p>
                   </div>
@@ -1423,7 +1423,7 @@ export default function BrandedFormBuilder({
                     );
                     if (!field)
                       return (
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-muted-foreground/70">
                           Campo no encontrado.
                         </p>
                       );
@@ -1431,12 +1431,12 @@ export default function BrandedFormBuilder({
                     return (
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                          <p className="text-xs text-gray-500 font-medium">
+                          <p className="text-xs text-muted-foreground font-medium">
                             CAMPO SELECCIONADO
                           </p>
                           <button
                             onClick={() => removeField(field.id)}
-                            className="text-red-400 hover:text-red-600 transition-colors"
+                            className="text-[hsl(var(--destructive)/0.7)] hover:text-[hsl(var(--destructive))] transition-colors"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -1583,7 +1583,7 @@ export default function BrandedFormBuilder({
                             />
                             <label
                               htmlFor={`req-${field.id}`}
-                              className="text-sm text-gray-700 cursor-pointer"
+                              className="text-sm text-muted-foreground cursor-pointer"
                             >
                               Campo obligatorio
                             </label>
@@ -1620,7 +1620,7 @@ export default function BrandedFormBuilder({
                                       ).filter((_, idx) => idx !== i);
                                       updateField(field.id, "options", newOpts);
                                     }}
-                                    className="text-gray-400 hover:text-red-500 transition-colors"
+                                    className="text-muted-foreground/70 hover:text-[hsl(var(--destructive))] transition-colors"
                                   >
                                     <X className="h-4 w-4" />
                                   </button>
@@ -1635,7 +1635,7 @@ export default function BrandedFormBuilder({
                                   ];
                                   updateField(field.id, "options", newOpts);
                                 }}
-                                className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                                className="flex items-center gap-1.5 text-xs text-[hsl(var(--info))] hover:text-[hsl(var(--info))] font-medium transition-colors"
                               >
                                 <Plus className="h-3.5 w-3.5" />
                                 Agregar opción
@@ -1676,7 +1676,7 @@ export default function BrandedFormBuilder({
             ) : (
               /* ── STYLE TAB ── */
               <div className="flex-1 p-4 space-y-5">
-                <p className="text-xs text-gray-500 font-medium">
+                <p className="text-xs text-muted-foreground font-medium">
                   COLORES Y TIPOGRAFÍA
                 </p>
 
@@ -1727,14 +1727,14 @@ export default function BrandedFormBuilder({
                             [key]: e.target.value,
                           }))
                         }
-                        className="w-9 h-7 rounded border border-gray-200 cursor-pointer"
+                        className="w-9 h-7 rounded border border-border cursor-pointer"
                       />
                     </div>
                   ))}
                 </div>
 
                 <Separator />
-                <p className="text-xs text-gray-500 font-medium">
+                <p className="text-xs text-muted-foreground font-medium">
                   FUENTE Y TAMAÑOS
                 </p>
 
@@ -1807,7 +1807,7 @@ export default function BrandedFormBuilder({
                 </div>
 
                 <Separator />
-                <p className="text-xs text-gray-500 font-medium">DISEÑO</p>
+                <p className="text-xs text-muted-foreground font-medium">DISEÑO</p>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <Label className="text-xs">Bordes</Label>
@@ -1858,10 +1858,10 @@ export default function BrandedFormBuilder({
                 </div>
 
                 <Separator />
-                <p className="text-xs text-gray-500 font-medium">
+                <p className="text-xs text-muted-foreground font-medium">
                   IMAGEN DE FONDO
                 </p>
-                <div className="border-2 border-dashed border-gray-200 rounded-lg p-3 text-center">
+                <div className="border-2 border-dashed border-border rounded-lg p-3 text-center">
                   {formConfig.backgroundImage ? (
                     <div>
                       <img
@@ -1879,7 +1879,7 @@ export default function BrandedFormBuilder({
                             backgroundImage: undefined,
                           }))
                         }
-                        className="text-red-500 text-xs"
+                        className="text-[hsl(var(--destructive))] text-xs"
                       >
                         <X className="h-3 w-3 mr-1" />
                         Quitar
@@ -1925,21 +1925,21 @@ export default function BrandedFormBuilder({
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-4 border-b">
               <div className="flex items-center gap-2">
-                <QrCode className="h-5 w-5 text-purple-600" />
+                <QrCode className="h-5 w-5 text-[hsl(var(--lavender))]" />
                 <h2 className="text-lg font-bold">Código QR del Formulario</h2>
               </div>
               <button
                 onClick={() => setShowQRModal(false)}
-                className="text-gray-400 hover:text-gray-700 transition-colors"
+                className="text-muted-foreground/70 hover:text-muted-foreground transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="p-4">
               {!currentFormSlug && (
-                <Alert className="mb-4 border-orange-200 bg-orange-50">
-                  <AlertTriangle className="h-4 w-4 text-orange-600" />
-                  <AlertDescription className="text-orange-800 text-sm">
+                <Alert className="mb-4 border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]">
+                  <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))]" />
+                  <AlertDescription className="text-[hsl(var(--warning))] text-sm">
                     Guarda el formulario primero para generar un QR con URL
                     corta y escaneable.
                     <Button
@@ -1947,7 +1947,7 @@ export default function BrandedFormBuilder({
                         await saveForm();
                       }}
                       size="sm"
-                      className="ml-2 bg-orange-600 hover:bg-orange-700 text-white text-xs h-7"
+                      className="ml-2 bg-[hsl(var(--warning))] hover:bg-[hsl(var(--warning))] text-white text-xs h-7"
                     >
                       <Save className="h-3 w-3 mr-1" />
                       Guardar Ahora

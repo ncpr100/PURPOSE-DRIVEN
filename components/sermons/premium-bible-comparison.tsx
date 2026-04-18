@@ -160,7 +160,7 @@ export function PremiumBibleComparison({ onVerseSelect, initialVerse = '' }: Bib
             <BookOpen className="h-5 w-5" />
             Comparación de Versiones
             {subscription?.hasSubscription && (
-              <Badge variant="outline" className="bg-blue-50 text-blue-700">
+              <Badge variant="outline" className="bg-[hsl(var(--info)/0.10)] text-[hsl(var(--info))]">
                 Suscripción Activa
               </Badge>
             )}
@@ -219,7 +219,7 @@ export function PremiumBibleComparison({ onVerseSelect, initialVerse = '' }: Bib
                     >
                       <span className="flex items-center gap-2">
                         {version.name}
-                        {version.popular && <Star className="h-3 w-3 text-yellow-500" />}
+                        {version.popular && <Star className="h-3 w-3 text-[hsl(var(--warning))]" />}
                         <Badge variant="outline" className="text-xs">
                           {version.language}
                         </Badge>
@@ -270,9 +270,9 @@ export function PremiumBibleComparison({ onVerseSelect, initialVerse = '' }: Bib
 
       {/* Upgrade Prompt for Free Users */}
       {!subscription?.hasSubscription && (
-        <Card className="border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <Card className="border-[hsl(var(--info)/0.3)] bg-gradient-to-r from-primary/20 to-primary/10">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-800">
+            <CardTitle className="flex items-center gap-2 text-[hsl(var(--info))]">
               <BookOpen className="h-5 w-5" />
               Mejora tus Comparaciones Bíblicas
             </CardTitle>
@@ -285,19 +285,19 @@ export function PremiumBibleComparison({ onVerseSelect, initialVerse = '' }: Bib
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                   <span className="text-sm">Versiones españolas múltiples</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                   <span className="text-sm">Versiones inglesas incluidas</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                   <span className="text-sm">Contenido auténtico</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                   <span className="text-sm">Comparaciones ilimitadas</span>
                 </div>
               </div>
@@ -309,7 +309,7 @@ export function PremiumBibleComparison({ onVerseSelect, initialVerse = '' }: Bib
                       key={plan.id}
                       size="lg"
                       onClick={() => handleUpgrade(plan.id)}
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600"
+                      className="bg-gradient-to-r from-primary/20 to-primary/10"
                     >
                       <BookOpen className="h-4 w-4 mr-2" />
                       Actualizar a {plan.name} - ${plan.price}/mes

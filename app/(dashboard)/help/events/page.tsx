@@ -122,7 +122,7 @@ export default function EventsHelp() {
                   <div className="grid md:grid-cols-2 gap-2">
                     {feature.features.map((item, index) => (
                       <div key={index} className="flex items-center text-sm">
-                        <span className="mr-2 text-green-600">✓</span>
+                        <span className="mr-2 text-[hsl(var(--success))]">✓</span>
                         {item}
                       </div>
                     ))}
