@@ -36,6 +36,7 @@ import { useEffect, useState } from "react";
 import { ShepherdsLogWidget } from "@/components/dashboard/shepherds-log-widget";
 import { LeadershipPipelineWidget } from "@/components/dashboard/leadership-pipeline-widget";
 import { BurnoutSentinelWidget } from "@/components/dashboard/burnout-sentinel-widget";
+import { VolunteerCoverageWidget } from "@/components/dashboard/volunteer-coverage-widget";
 import { VisitorConversionWidget } from "@/components/dashboard/visitor-conversion-widget";
 import { GenerosityJourneyWidget } from "@/components/dashboard/generosity-journey-widget";
 import { SmallGroupHealthWidget } from "@/components/dashboard/small-group-health-widget";
@@ -412,6 +413,7 @@ export function DashboardClient({
           </div>
           <SmallGroupHealthWidget initialScores={[]} />
           <BoardReportWidget initialReport={null} />
+          <VolunteerCoverageWidget initialSlots={[]} />
         </div>
       )}
 
