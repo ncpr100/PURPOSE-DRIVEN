@@ -597,6 +597,10 @@ model churches {
   generosity_journey_alerts        generosity_journey_alerts[]
   small_group_health_scores        small_group_health_scores[]
   church_board_reports             church_board_reports[]
+  volunteer_backup_rosters         volunteer_backup_rosters[]
+  event_coverage_status            event_coverage_status[]
+  coverage_contact_log             coverage_contact_log[]
+  ministry_coverage_reports        ministry_coverage_reports[]
 }
 
 model communication_templates {
@@ -2996,6 +3000,98 @@ model church_board_reports {
 
   @@unique([churchId, reportMonth])
   @@map("church_board_reports")
+}
+
+// ============================================
+// AGENT 12: VOLUNTEER COVERAGE ENGINE
+// ============================================
+
+// Table 1: Backup roster — who backs up whom, in what priority
+model volunteer_backup_rosters {
+  id                 String   @id @default(cuid())
+  churchId           String
+  primaryVolunteerId String
+  backupVolunteerId  String
+  ministryId         String?
+  priorityOrder      Int
+  skills             String[]
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@unique([churchId, primaryVolunteerId, backupVolunteerId, ministryId])
+  @@map("volunteer_backup_rosters")
+}
+
+// Table 2: Coverage status per event slot
+model event_coverage_status {
+  id              String         @id @default(cuid())
+  churchId        String
+  eventId         String
+  volunteerId     String
+  role            String
+  status          CoverageStatus @default(UNCONFIRMED)
+  confirmedAt     DateTime?
+  cancelledAt     DateTime?
+  cancelReason    String?        @db.Text
+  coveredById     String?
+  coverageMethod  String?
+  lastContactedAt DateTime?
+  contactAttempts Int            @default(0)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, volunteerId, role])
+  @@map("event_coverage_status")
+}
+
+// Table 3: Individual contact attempts in the cascade
+model coverage_contact_log {
+  id                   String   @id @default(cuid())
+  churchId             String
+  coverageStatusId     String
+  contactedVolunteerId String
+  channel              String
+  messageBody          String   @db.Text
+  sentAt               DateTime @default(now())
+  responseReceived     Boolean  @default(false)
+  responseAt           DateTime?
+  responseType         String?
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("coverage_contact_log")
+}
+
+// Table 4: Weekly coverage report per ministry
+model ministry_coverage_reports {
+  id               String   @id @default(cuid())
+  churchId         String
+  weekStartDate    DateTime
+  totalSlots       Int
+  confirmedSlots   Int
+  cancelledSlots   Int
+  coveredSlots     Int
+  unprotectedSlots Int
+  coverageRate     Float
+  generatedAt      DateTime @default(now())
+
+  church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+  @@map("ministry_coverage_reports")
+}
+
+enum CoverageStatus {
+  UNCONFIRMED
+  CONFIRMED
+  CANCELLED
+  COVERED
+  UNPROTECTED
+  NO_BACKUP_ASSIGNED
 }
 
 
