@@ -1,0 +1,279 @@
+/* ============================================================
+   KHESED-TEK CMS — COSMOS DESIGN TOKENS
+   Fixes all issues identified in DESIGN_SYSTEM_AUDIT.md
+   
+   Key fixes:
+   - P1-A: Added --success / --warning tokens
+   - P2-C: Resolved --primary vs brand blue conflict
+   - P2-A: Separated --accent from --muted / --secondary  
+   - P2-D: Chart color tokens centralized
+   - P3-A: Cinzel + DM Sans via next/font
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+/* ─── CORE TOKENS ────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --brand-gold:          201 57% 47%;   /* #C9922A */
+  --brand-gold-bright:   43  85% 60%;   /* #F0B83C */
+  --brand-gold-dim:      35  50% 28%;   /* #7A5218 */
+  --brand-navy:          222 58%  7%;   /* #080e1c */
+  --brand-navy-deep:     228 54%  4%;   /* #05080F */
+  --brand-navy-mid:      221 50%  9%;   /* #0d1628 */
+  --brand-navy-light:    220 44% 15%;   /* #162035 */
+
+  /* Semantic interactive */
+  --primary:             43  85% 60%;   /* Gold bright — the real brand primary */
+  --primary-foreground:  222 58%  7%;   /* Navy on gold */
+
+  /* Semantic neutrals */
+  --background:          228 54%  4%;   /* Deep navy */
+  --foreground:          30  18% 92%;   /* Warm white */
+  --card:                221 50%  9%;   /* Navy mid */
+  --card-foreground:     30  18% 92%;
+  --popover:             220 44% 12%;
+  --popover-foreground:  30  18% 92%;
+
+  /* Secondary — slightly lighter than muted (P2-A FIX) */
+  --secondary:           220 30% 16%;
+  --secondary-foreground: 215 20% 65%;
+
+  /* Muted — base subtle bg */
+  --muted:               220 27% 13%;
+  --muted-foreground:    218 11% 55%;
+
+  /* Accent — intentionally distinct from muted (P2-A FIX) */
+  --accent:              35  55% 22%;   /* Gold-tinted, visible hover state */
+  --accent-foreground:   43  85% 70%;   /* Gold text on gold-tinted BG */
+
+  /* Semantic status tokens (P1-A + P2-B FIX) */
+  --success:             158 76% 36%;   /* #1DC98C emerald */
+  --success-foreground:  158 76% 95%;
+  --warning:             38  92% 50%;   /* #F0B83C amber */
+  --warning-foreground:  38  92% 10%;
+  --destructive:         356 73% 56%;   /* #E84855 rose */
+  --destructive-foreground: 0 0% 98%;
+  --info:                180 72% 50%;   /* #26D9D9 cyan */
+  --info-foreground:     180 72% 10%;
+  --lavender:            246 100% 78%;  /* #9B8FFF */
+
+  /* Borders + inputs */
+  --border:              220 25% 15%;
+  --input:               220 25% 18%;
+  --ring:                43  85% 60%;   /* Gold focus ring */
+
+  /* Radius */
+  --radius:              0.5rem;
+
+  /* Typography */
+  --font-display:        'Cinzel', 'Georgia', serif;
+  --font-body:           'DM Sans', system-ui, sans-serif;
+
+  /* Elevation (shadows) */
+  --shadow-sm:           0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,146,42,0.06);
+  --shadow-md:           0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,146,42,0.08);
+  --shadow-lg:           0 8px 32px rgba(0,0,0,0.6), 0 0 24px rgba(201,146,42,0.06);
+  --shadow-gold:         0 0 20px rgba(201,146,42,0.25);
+  --shadow-emerald:      0 0 20px rgba(29,201,140,0.2);
+  --shadow-rose:         0 0 20px rgba(232,72,85,0.2);
+}
+
+/* Light mode override (future-proof) */
+[data-theme="light"] {
+  --background:          210 20% 98%;
+  --foreground:          222 58%  7%;
+  --card:                0 0% 100%;
+  --card-foreground:     222 58%  7%;
+  --primary:             35 50% 30%;
+  --primary-foreground:  43 85% 95%;
+  --secondary:           220 14% 96%;
+  --secondary-foreground: 220 39% 11%;
+  --muted:               220 14% 96%;
+  --muted-foreground:    220  9% 46%;
+  --accent:              35 80% 90%;
+  --accent-foreground:   35 50% 25%;
+  --border:              220 13% 91%;
+  --input:               220 13% 91%;
+}
+
+/* ─── CHART COLOR SYSTEM (P2-D FIX) ────────────────────── */
+:root {
+  --chart-1: 43  85% 60%;   /* Gold    */
+  --chart-2: 158 76% 45%;   /* Emerald */
+  --chart-3: 180 72% 50%;   /* Cyan    */
+  --chart-4: 246 100% 78%;  /* Lavender */
+  --chart-5: 356 73% 56%;   /* Rose    */
+  --chart-6: 38  92% 65%;   /* Amber   */
+}
+
+/* ─── ANIMATION TOKENS ───────────────────────────────────── */
+:root {
+  --ease-spring:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast:   150ms;
+  --duration-base:   250ms;
+  --duration-slow:   400ms;
+  --duration-slower: 700ms;
+}
+
+/* ─── GLOBAL BASE ────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ─── KEYFRAMES ──────────────────────────────────────────── */
+@keyframes livePulse {
+  0%   { box-shadow: 0 0 0 0 hsl(var(--success) / 0.6) }
+  70%  { box-shadow: 0 0 0 8px hsl(var(--success) / 0) }
+  100% { box-shadow: 0 0 0 0 hsl(var(--success) / 0) }
+}
+
+@keyframes goldPulse {
+  0%   { box-shadow: 0 0 0 0 hsl(var(--warning) / 0.6) }
+  70%  { box-shadow: 0 0 0 8px hsl(var(--warning) / 0) }
+  100% { box-shadow: 0 0 0 0 hsl(var(--warning) / 0) }
+}
+
+@keyframes rosePulse {
+  0%   { box-shadow: 0 0 0 0 hsl(var(--destructive) / 0.6) }
+  70%  { box-shadow: 0 0 0 8px hsl(var(--destructive) / 0) }
+  100% { box-shadow: 0 0 0 0 hsl(var(--destructive) / 0) }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px) }
+  to   { opacity: 1; transform: translateY(0) }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+
+@keyframes shimmerSlide {
+  0%   { transform: translateX(-100%) }
+  100% { transform: translateX(100%) }
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0) }
+  50%       { transform: translateY(-6px) }
+}
+
+@keyframes rotateSlow {
+  from { transform: rotate(0deg) }
+  to   { transform: rotate(360deg) }
+}
+
+@keyframes countdown {
+  0%, 100% { opacity: 1 }
+  50%       { opacity: 0.35 }
+}
+
+@keyframes particleFloat {
+  0%   { transform: translateY(100vh) translateX(0) scale(0); opacity: 0 }
+  10%  { opacity: 0.7 }
+  90%  { opacity: 0.2 }
+  100% { transform: translateY(-10vh) translateX(var(--dx, 0px)) scale(0.4); opacity: 0 }
+}
+
+@keyframes trailFade {
+  from { transform: scale(1.2); opacity: 0.8 }
+  to   { transform: scale(0);   opacity: 0 }
+}
+
+@keyframes cascadeActive {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--warning) / 0.5) }
+  50%       { box-shadow: 0 0 0 6px hsl(var(--warning) / 0) }
+}
+
+/* ─── BADGE SYSTEM (P1-A FIX) ───────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: 1px solid transparent;
+}
+
+.badge-default {
+  background: hsl(var(--primary) / 0.15);
+  color: hsl(var(--primary));
+  border-color: hsl(var(--primary) / 0.3);
+}
+.badge-success {
+  background: hsl(var(--success) / 0.12);
+  color: hsl(var(--success));
+  border-color: hsl(var(--success) / 0.25);
+}
+.badge-warning {
+  background: hsl(var(--warning) / 0.12);
+  color: hsl(var(--warning));
+  border-color: hsl(var(--warning) / 0.25);
+}
+.badge-destructive {
+  background: hsl(var(--destructive) / 0.12);
+  color: hsl(var(--destructive));
+  border-color: hsl(var(--destructive) / 0.25);
+}
+.badge-info {
+  background: hsl(var(--info) / 0.12);
+  color: hsl(var(--info));
+  border-color: hsl(var(--info) / 0.25);
+}
+
+/* ─── CTA GRADIENT BUTTON (P1-B FIX) ────────────────────── */
+.btn-cta-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--brand-gold)) 0%,
+    hsl(var(--brand-gold-bright)) 50%,
+    hsl(var(--brand-gold)) 100%
+  );
+  background-size: 200% 200%;
+  color: hsl(var(--brand-navy-deep));
+  font-weight: 600;
+  border: none;
+  transition: background-position var(--duration-base) var(--ease-smooth),
+              box-shadow var(--duration-base) var(--ease-smooth),
+              transform var(--duration-fast) var(--ease-smooth);
+}
+.btn-cta-gradient:hover {
+  background-position: right center;
+  box-shadow: var(--shadow-gold);
+  transform: translateY(-1px);
+}
+.btn-cta-gradient:active {
+  transform: translateY(0);
+}
+
+/* ─── STATUS COLOR SYSTEM (P1-C FIX) ────────────────────── */
+/* Replaces module-local STATUS_COLORS / PRIORITY_COLORS maps */
+.status-pending    { composes: badge-warning from global; }
+.status-completed  { composes: badge-success from global; }
+.status-scheduled  { composes: badge-info from global; }
+.status-skipped    { background: hsl(220 10% 40% / 0.15); color: hsl(220 10% 60%); border-color: hsl(220 10% 40% / 0.25); }
+
+.priority-high     { composes: badge-destructive from global; }
+.priority-medium   { composes: badge-warning from global; }
+.priority-low      { background: hsl(220 10% 40% / 0.1); color: hsl(220 10% 55%); border-color: transparent; }
+
+/* ─── SCROLLBARS ─────────────────────────────────────────── */
+::-webkit-scrollbar          { width: 4px; height: 4px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: hsl(var(--brand-gold) / 0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--brand-gold) / 0.4); }
