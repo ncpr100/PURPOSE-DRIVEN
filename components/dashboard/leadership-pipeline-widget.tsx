@@ -76,7 +76,7 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base flex items-center gap-2">
-            <Star className="w-4 h-4 text-amber-500" />
+            <Star className="w-4 h-4 text-[hsl(var(--warning))]" />
             Pipeline de Liderazgo — {candidates.length} candidatos
           </CardTitle>
           <Button
@@ -103,7 +103,7 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
               onClick={() => setExpanded(expanded === c.id ? null : c.id)}
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-xs font-medium text-amber-800">
+                <div className="w-8 h-8 rounded-full bg-[hsl(var(--warning)/0.15)] flex items-center justify-center text-xs font-medium text-amber-800">
                   {c.readinessScore}
                 </div>
                 <div>
@@ -116,7 +116,7 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
               <div className="flex items-center gap-2">
                 <Badge
                   variant="outline"
-                  className="text-xs text-amber-700 border-amber-200"
+                  className="text-xs text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.3)]"
                 >
                   {c.spiritualGifts[0] || "Sin perfil"}
                 </Badge>
@@ -137,7 +137,7 @@ export function LeadershipPipelineWidget({ initialCandidates }: Props) {
                   <ul className="space-y-1">
                     {c.readinessReasons.map((r, i) => (
                       <li key={i} className="text-xs flex items-start gap-1">
-                        <span className="text-amber-500 mt-0.5">·</span>
+                        <span className="text-[hsl(var(--warning))] mt-0.5">·</span>
                         {r}
                       </li>
                     ))}

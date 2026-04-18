@@ -222,17 +222,17 @@ export default function SocialMediaDashboardClient({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-            <Share2 className="h-8 w-8 text-blue-600" />
+          <h1 className="text-3xl font-bold text-foreground flex items-center gap-3">
+            <Share2 className="h-8 w-8 text-[hsl(var(--info))]" />
             Redes Sociales
             {aiAddonActive && (
-              <Badge variant="secondary" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white">
+              <Badge variant="secondary" className="bg-primary text-foreground">
                 <Crown className="h-3 w-3 mr-1" />
                 Premium AI
               </Badge>
             )}
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-muted-foreground mt-1">
             Gestiona todas tus redes sociales desde un solo lugar
           </p>
         </div>
@@ -240,7 +240,7 @@ export default function SocialMediaDashboardClient({
         {!aiAddonActive && (
           <Button 
             onClick={upgradeToAI}
-            className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+            className="bg-primary hover:bg-primary/90"
           >
             <Sparkles className="h-4 w-4 mr-2" />
             Activar IA Premium
@@ -329,7 +329,7 @@ export default function SocialMediaDashboardClient({
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-blue-600" />
+                  <Users className="h-5 w-5 text-[hsl(var(--info))]" />
                   Cuentas Conectadas
                 </CardTitle>
                 <CardDescription>
@@ -340,14 +340,14 @@ export default function SocialMediaDashboardClient({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {connectedAccounts.map(account => (
                     <div key={account.id} className="flex items-center space-x-4 p-4 border rounded-lg">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full btn-cta-gradient flex items-center justify-center">
                         <Share2 className="h-6 w-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 truncate">
+                        <p className="font-medium text-foreground truncate">
                           {account.displayName}
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           {account.platform} • @{account.username}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
@@ -368,7 +368,7 @@ export default function SocialMediaDashboardClient({
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-green-600" />
+                  <Clock className="h-5 w-5 text-[hsl(var(--success))]" />
                   Posts Recientes
                 </CardTitle>
                 <CardDescription>
@@ -378,13 +378,13 @@ export default function SocialMediaDashboardClient({
               <CardContent>
                 <div className="space-y-4">
                   {recentPosts.slice(0, 5).map(post => (
-                    <div key={post.id} className="border-l-4 border-blue-500 pl-4 py-2">
+                    <div key={post.id} className="border-l-4 border-[hsl(var(--info))] pl-4 py-2">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p className="text-sm text-gray-900 line-clamp-2">
+                          <p className="text-sm text-foreground line-clamp-2">
                             {post.content}
                           </p>
-                          <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                             <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                             <span>{post.platforms.join(', ')}</span>
                             {post.aiGenerated && (
@@ -414,10 +414,10 @@ export default function SocialMediaDashboardClient({
 
           {/* Connect Platforms CTA */}
           {unconnectedPlatforms.length > 0 && (
-            <Card className="border-2 border-dashed border-gray-300">
+            <Card className="border-2 border-dashed border-border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Plus className="h-5 w-5 text-blue-600" />
+                  <Plus className="h-5 w-5 text-[hsl(var(--info))]" />
                   Conecta Más Plataformas
                 </CardTitle>
                 <CardDescription>
@@ -435,12 +435,12 @@ export default function SocialMediaDashboardClient({
                       className="h-auto p-6 flex flex-col items-center space-y-2"
                     >
                       {isConnecting[platform] ? (
-                        <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
+                        <RefreshCw className="h-8 w-8 animate-spin text-[hsl(var(--info))]" />
                       ) : (
-                        <Share2 className="h-8 w-8 text-blue-600" />
+                        <Share2 className="h-8 w-8 text-[hsl(var(--info))]" />
                       )}
                       <span className="font-medium">Conectar {platform}</span>
-                      <span className="text-xs text-gray-500 text-center">
+                      <span className="text-xs text-muted-foreground text-center">
                         {platform === 'FACEBOOK' && 'Páginas y posts automáticos'}
                         {platform === 'INSTAGRAM' && 'Stories y contenido visual'}
                         {platform === 'YOUTUBE' && 'Videos y canal'}
@@ -458,7 +458,7 @@ export default function SocialMediaDashboardClient({
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Plus className="h-5 w-5 text-green-600" />
+                <Plus className="h-5 w-5 text-[hsl(var(--success))]" />
                 Crear Nuevo Post
               </CardTitle>
               <CardDescription>
@@ -480,14 +480,14 @@ export default function SocialMediaDashboardClient({
 
               {/* AI Enhancement Toggle */}
               {aiAddonActive && (
-                <div className="flex items-center space-x-2 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border">
+                <div className="flex items-center space-x-2 p-4 bg-[hsl(var(--lavender)/0.10)] rounded-lg border">
                   <Switch
                     id="use-ai"
                     checked={newPost.useAI}
                     onCheckedChange={(checked) => setNewPost(prev => ({ ...prev, useAI: checked }))}
                   />
                   <Label htmlFor="use-ai" className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-purple-600" />
+                    <Sparkles className="h-4 w-4 text-[hsl(var(--lavender))]" />
                     Mejorar contenido con IA Premium
                   </Label>
                 </div>
@@ -516,7 +516,7 @@ export default function SocialMediaDashboardClient({
                             }))
                           }
                         }}
-                        className="rounded border-gray-300"
+                        className="rounded border-border"
                       />
                       <Label htmlFor={`platform-${account.platform}`} className="text-sm">
                         {account.platform} ({account.username})
@@ -526,7 +526,7 @@ export default function SocialMediaDashboardClient({
                 </div>
                 
                 {connectedAccounts.length === 0 && (
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted-foreground">
                     Conecta al menos una plataforma para publicar contenido
                   </p>
                 )}
@@ -586,7 +586,7 @@ export default function SocialMediaDashboardClient({
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-semibold">Analíticas de Redes Sociales</h2>
-              <p className="text-gray-600">Métricas de rendimiento de todas tus plataformas</p>
+              <p className="text-muted-foreground">Métricas de rendimiento de todas tus plataformas</p>
             </div>
             
             <Button
@@ -615,7 +615,7 @@ export default function SocialMediaDashboardClient({
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-blue-600" />
+                      <TrendingUp className="h-5 w-5 text-[hsl(var(--info))]" />
                       Rendimiento por Plataforma
                     </CardTitle>
                   </CardHeader>
@@ -629,19 +629,19 @@ export default function SocialMediaDashboardClient({
                           </div>
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-600">Posts</span>
+                              <span className="text-muted-foreground">Posts</span>
                               <span className="font-medium">{data.metrics.posts}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-600">Impresiones</span>
+                              <span className="text-muted-foreground">Impresiones</span>
                               <span className="font-medium">{data.metrics.impressions.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-600">Interacciones</span>
+                              <span className="text-muted-foreground">Interacciones</span>
                               <span className="font-medium">{data.metrics.engagement.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-600">Promedio/Post</span>
+                              <span className="text-muted-foreground">Promedio/Post</span>
                               <span className="font-medium">{data.averageEngagement}</span>
                             </div>
                           </div>
@@ -657,7 +657,7 @@ export default function SocialMediaDashboardClient({
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5 text-green-600" />
+                      <TrendingUp className="h-5 w-5 text-[hsl(var(--success))]" />
                       Posts con Mayor Interacción
                     </CardTitle>
                   </CardHeader>
@@ -665,12 +665,12 @@ export default function SocialMediaDashboardClient({
                     <div className="space-y-4">
                       {analytics.topPosts.map((post: any, index: number) => (
                         <div key={post.id} className="flex items-start space-x-4 p-4 border rounded-lg">
-                          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span className="text-sm font-medium text-blue-600">#{index + 1}</span>
+                          <div className="flex-shrink-0 w-8 h-8 bg-[hsl(var(--info)/0.15)] rounded-full flex items-center justify-center">
+                            <span className="text-sm font-medium text-[hsl(var(--info))]">#{index + 1}</span>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm text-gray-900 line-clamp-2 mb-2">{post.content}</p>
-                            <div className="flex items-center gap-4 text-xs text-gray-500">
+                            <p className="text-sm text-foreground line-clamp-2 mb-2">{post.content}</p>
+                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
                               <span className="flex items-center gap-1">
                                 <Heart className="h-3 w-3" />
                                 {post.engagement} interacciones
@@ -694,9 +694,9 @@ export default function SocialMediaDashboardClient({
             <Card>
               <CardContent className="flex items-center justify-center py-12">
                 <div className="text-center">
-                  <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="font-medium text-gray-900 mb-2">No hay datos de analíticas</h3>
-                  <p className="text-gray-600 mb-4">
+                  <TrendingUp className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                  <h3 className="font-medium text-foreground mb-2">No hay datos de analíticas</h3>
+                  <p className="text-muted-foreground mb-4">
                     Conecta tus plataformas y publica contenido para ver analíticas
                   </p>
                   <Button onClick={syncAnalytics} variant="outline">
@@ -713,16 +713,16 @@ export default function SocialMediaDashboardClient({
         <TabsContent value="accounts" className="space-y-6">
           <div>
             <h2 className="text-2xl font-semibold">Gestión de Cuentas</h2>
-            <p className="text-gray-600">Conecta y administra tus plataformas de redes sociales</p>
+            <p className="text-muted-foreground">Conecta y administra tus plataformas de redes sociales</p>
           </div>
 
           {/* AI Addon Status */}
-          <Card className={aiAddonActive ? 'border-purple-200 bg-purple-50' : 'border-gray-200'}>
+          <Card className={aiAddonActive ? 'border-[hsl(var(--lavender)/0.3)] bg-[hsl(var(--lavender)/0.10)]' : 'border-border'}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Crown className={aiAddonActive ? 'h-5 w-5 text-purple-600' : 'h-5 w-5 text-gray-400'} />
+                <Crown className={aiAddonActive ? 'h-5 w-5 text-[hsl(var(--lavender))]' : 'h-5 w-5 text-muted-foreground/70'} />
                 IA Premium para Contenido
-                {aiAddonActive && <Badge className="bg-purple-100 text-purple-800">Activo</Badge>}
+                {aiAddonActive && <Badge className="bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]">Activo</Badge>}
               </CardTitle>
               <CardDescription>
                 {aiAddonActive 
@@ -734,19 +734,19 @@ export default function SocialMediaDashboardClient({
             <CardContent>
               {aiAddonActive ? (
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-green-600">
+                  <div className="flex items-center gap-2 text-sm text-[hsl(var(--success))]">
                     <CheckCircle2 className="h-4 w-4" />
                     Generación automática de hashtags
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-600">
+                  <div className="flex items-center gap-2 text-sm text-[hsl(var(--success))]">
                     <CheckCircle2 className="h-4 w-4" />
                     Optimización de contenido por plataforma
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-600">
+                  <div className="flex items-center gap-2 text-sm text-[hsl(var(--success))]">
                     <CheckCircle2 className="h-4 w-4" />
                     Sugerencias de mejor momento para publicar
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-600">
+                  <div className="flex items-center gap-2 text-sm text-[hsl(var(--success))]">
                     <CheckCircle2 className="h-4 w-4" />
                     Análisis de audiencia y tendencias
                   </div>
@@ -754,20 +754,20 @@ export default function SocialMediaDashboardClient({
               ) : (
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Sparkles className="h-4 w-4" />
                       Generación automática de hashtags
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Sparkles className="h-4 w-4" />
                       Optimización de contenido por plataforma
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Sparkles className="h-4 w-4" />
                       Sugerencias de mejor momento para publicar
                     </div>
                   </div>
-                  <Button onClick={upgradeToAI} className="w-full bg-gradient-to-r from-purple-500 to-blue-500">
+                  <Button onClick={upgradeToAI} className="w-full bg-gradient-to-r from-[hsl(var(--lavender))] to-[hsl(var(--primary))]">
                     <Zap className="h-4 w-4 mr-2" />
                     Activar IA Premium
                   </Button>
@@ -780,7 +780,7 @@ export default function SocialMediaDashboardClient({
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-blue-600" />
+                <Users className="h-5 w-5 text-[hsl(var(--info))]" />
                 Plataformas Conectadas ({connectedAccounts.length})
               </CardTitle>
             </CardHeader>
@@ -790,12 +790,12 @@ export default function SocialMediaDashboardClient({
                   {connectedAccounts.map(account => (
                     <div key={account.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full btn-cta-gradient flex items-center justify-center">
                           <Share2 className="h-6 w-6 text-white" />
                         </div>
                         <div>
                           <h3 className="font-medium">{account.displayName}</h3>
-                          <p className="text-sm text-gray-600">{account.platform} • @{account.username}</p>
+                          <p className="text-sm text-muted-foreground">{account.platform} • @{account.username}</p>
                           <div className="flex items-center gap-2 mt-1">
                             <Badge variant={account.connectionStatus === 'CONNECTED' ? 'default' : 'secondary'}>
                               {account.connectionStatus === 'CONNECTED' ? 'Conectado' : 'Desconectado'}
@@ -822,9 +822,9 @@ export default function SocialMediaDashboardClient({
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <Share2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="font-medium text-gray-900 mb-2">No hay cuentas conectadas</h3>
-                  <p className="text-gray-600">Conecta tus primeras plataformas para comenzar</p>
+                  <Share2 className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                  <h3 className="font-medium text-foreground mb-2">No hay cuentas conectadas</h3>
+                  <p className="text-muted-foreground">Conecta tus primeras plataformas para comenzar</p>
                 </div>
               )}
             </CardContent>
@@ -835,7 +835,7 @@ export default function SocialMediaDashboardClient({
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Plus className="h-5 w-5 text-green-600" />
+                  <Plus className="h-5 w-5 text-[hsl(var(--success))]" />
                   Plataformas Disponibles
                 </CardTitle>
                 <CardDescription>
@@ -847,10 +847,10 @@ export default function SocialMediaDashboardClient({
                   {unconnectedPlatforms.map(platform => (
                     <Card key={platform} className="border-dashed">
                       <CardContent className="flex flex-col items-center justify-center p-6 text-center space-y-3">
-                        <Share2 className="h-12 w-12 text-gray-400" />
+                        <Share2 className="h-12 w-12 text-muted-foreground/70" />
                         <div>
                           <h3 className="font-medium">{platform}</h3>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-muted-foreground">
                             {platform === 'FACEBOOK' && 'Páginas y posts automáticos'}
                             {platform === 'INSTAGRAM' && 'Stories y contenido visual'}
                             {platform === 'YOUTUBE' && 'Videos y canal'}

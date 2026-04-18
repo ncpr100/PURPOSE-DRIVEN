@@ -190,7 +190,7 @@ export function EditChurchDialog({ open, onOpenChange, church, onSuccess }: Edit
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div>
                 <Label htmlFor="isActive">Estado de la Iglesia</Label>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   {formData.isActive ? 'La iglesia está activa' : 'La iglesia está inactiva'}
                 </p>
               </div>

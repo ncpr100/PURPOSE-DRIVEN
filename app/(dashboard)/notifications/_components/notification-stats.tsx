@@ -63,17 +63,17 @@ export function NotificationStats({ totalCount, unreadCount, notifications }: No
   }
 
   const typeColors = {
-    INFO: 'text-blue-500',
-    SUCCESS: 'text-green-500',
-    WARNING: 'text-yellow-500',
-    ERROR: 'text-red-500',
+    INFO: 'text-[hsl(var(--info))]',
+    SUCCESS: 'text-[hsl(var(--success))]',
+    WARNING: 'text-[hsl(var(--warning))]',
+    ERROR: 'text-[hsl(var(--destructive))]',
   }
 
   const priorityColors = {
-    LOW: 'text-gray-500',
-    NORMAL: 'text-blue-500',
-    HIGH: 'text-orange-500',
-    URGENT: 'text-red-500',
+    LOW: 'text-muted-foreground',
+    NORMAL: 'text-[hsl(var(--info))]',
+    HIGH: 'text-[hsl(var(--warning))]',
+    URGENT: 'text-[hsl(var(--destructive))]',
   }
 
   const categoryLabels: Record<string, string> = {
@@ -135,7 +135,7 @@ export function NotificationStats({ totalCount, unreadCount, notifications }: No
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-red-500">
+          <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
             {priorityStats.URGENT || 0}
           </div>
           <p className="text-xs text-muted-foreground">

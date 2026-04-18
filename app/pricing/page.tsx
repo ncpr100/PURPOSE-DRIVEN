@@ -116,41 +116,41 @@ function PricingCard({ plan }: { plan: typeof plans[0] }) {
 
   const borderColor =
     plan.color === 'purple'
-      ? 'border-purple-300'
+      ? 'border-[hsl(var(--lavender)/0.4)]'
       : plan.color === 'green'
-      ? 'border-green-300'
-      : 'border-blue-300'
+      ? 'border-[hsl(var(--success)/0.4)]'
+      : 'border-[hsl(var(--info)/0.4)]'
 
   const iconColor =
     plan.color === 'purple'
-      ? 'text-purple-600'
+      ? 'text-[hsl(var(--lavender))]'
       : plan.color === 'green'
-      ? 'text-green-600'
-      : 'text-blue-600'
+      ? 'text-[hsl(var(--success))]'
+      : 'text-[hsl(var(--info))]'
 
   const badgeBg =
     plan.color === 'purple'
-      ? 'bg-purple-100 text-purple-700'
+      ? 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]'
       : plan.color === 'green'
-      ? 'bg-green-100 text-green-700'
-      : 'bg-blue-100 text-blue-700'
+      ? 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
+      : 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]'
 
   const buttonStyle =
     plan.color === 'purple'
-      ? 'bg-purple-600 hover:bg-purple-700 text-white'
+      ? 'bg-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender))] text-white'
       : plan.color === 'green'
-      ? 'bg-green-600 hover:bg-green-700 text-white'
-      : 'bg-blue-600 hover:bg-blue-700 text-white'
+      ? 'bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))] text-white'
+      : 'bg-[hsl(var(--info))] hover:bg-[hsl(var(--info))] text-white'
 
   return (
     <div
       className={`relative flex flex-col rounded-2xl border-2 ${borderColor} bg-white p-8 shadow-sm ${
-        plan.popular ? 'ring-2 ring-purple-500 ring-offset-2' : ''
+        plan.popular ? 'ring-2 ring-[hsl(var(--lavender)/0.30)] ring-offset-2' : ''
       }`}
     >
       {plan.popular && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-          <span className="rounded-full bg-purple-600 px-4 py-1 text-sm font-semibold text-white">
+          <span className="rounded-full bg-[hsl(var(--lavender))] px-4 py-1 text-sm font-semibold text-white">
             Más popular
           </span>
         </div>
@@ -159,8 +159,8 @@ function PricingCard({ plan }: { plan: typeof plans[0] }) {
       <div className="flex items-center gap-3 mb-6">
         <Icon className={`h-8 w-8 ${iconColor}`} />
         <div>
-          <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
-          <p className="text-sm text-gray-500">{plan.subtitle}</p>
+          <h3 className="text-xl font-bold text-foreground">{plan.name}</h3>
+          <p className="text-sm text-muted-foreground">{plan.subtitle}</p>
         </div>
       </div>
 
@@ -168,12 +168,12 @@ function PricingCard({ plan }: { plan: typeof plans[0] }) {
         {plan.priceMonthly ? (
           <>
             <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-bold text-gray-900">${plan.priceMonthly}</span>
-              <span className="text-gray-500">/mes</span>
+              <span className="text-4xl font-bold text-foreground">${plan.priceMonthly}</span>
+              <span className="text-muted-foreground">/mes</span>
             </div>
             {plan.priceYearly && (
               <div className="mt-1 flex items-center gap-2">
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-muted-foreground">
                   ${plan.priceYearly}/año
                 </span>
                 <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${badgeBg}`}>
@@ -184,7 +184,7 @@ function PricingCard({ plan }: { plan: typeof plans[0] }) {
           </>
         ) : (
           <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-bold text-gray-900">Personalizado</span>
+            <span className="text-3xl font-bold text-foreground">Personalizado</span>
           </div>
         )}
       </div>
@@ -206,7 +206,7 @@ function PricingCard({ plan }: { plan: typeof plans[0] }) {
 
       <ul className="mb-8 flex-1 space-y-3">
         {plan.features.map((feature) => (
-          <li key={feature} className="flex items-start gap-2 text-sm text-gray-700">
+          <li key={feature} className="flex items-start gap-2 text-sm text-muted-foreground">
             <CheckCircle className={`h-4 w-4 mt-0.5 flex-shrink-0 ${iconColor}`} />
             {feature}
           </li>
@@ -238,9 +238,9 @@ function PricingCard({ plan }: { plan: typeof plans[0] }) {
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted/30">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 py-4 px-6">
+      <div className="bg-white border-b border-border py-4 px-6">
         <div className="max-w-6xl mx-auto">
           <Link href="/" className="flex items-center gap-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -252,17 +252,17 @@ export default function PricingPage() {
       {/* Hero */}
       <section className="bg-white py-16 px-6 text-center">
         <div className="max-w-3xl mx-auto">
-          <span className="inline-block rounded-full bg-purple-100 px-4 py-1.5 text-sm font-medium text-purple-700 mb-4">
+          <span className="inline-block rounded-full bg-[hsl(var(--lavender)/0.15)] px-4 py-1.5 text-sm font-medium text-[hsl(var(--lavender))] mb-4">
             Planes y Precios
           </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Un plan para cada iglesia
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-muted-foreground">
             Desde pequeñas congregaciones hasta grandes redes multi-campus. Sin costos ocultos,
             sin contratos de permanencia obligatorios.
           </p>
-          <p className="mt-3 text-sm text-gray-500">
+          <p className="mt-3 text-sm text-muted-foreground">
             Precios en USD. IVA e impuestos locales pueden aplicar según el país.
           </p>
         </div>
@@ -279,11 +279,11 @@ export default function PricingPage() {
 
       {/* Annual savings callout */}
       <section className="py-8 px-6">
-        <div className="max-w-3xl mx-auto rounded-2xl bg-purple-50 border border-purple-200 p-8 text-center">
-          <h3 className="text-xl font-bold text-gray-900 mb-2">
+        <div className="max-w-3xl mx-auto rounded-2xl bg-[hsl(var(--lavender)/0.10)] border border-[hsl(var(--lavender)/0.3)] p-8 text-center">
+          <h3 className="text-xl font-bold text-foreground mb-2">
             Ahorra hasta 2 meses con facturación anual
           </h3>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Los planes anuales se cobran en un solo pago. Incluyen todas las actualizaciones
             del año y soporte completo sin costo adicional.
           </p>
@@ -294,18 +294,18 @@ export default function PricingPage() {
       <section className="py-12 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">Módulos adicionales</h2>
-            <p className="text-gray-600">Amplía tu plan con funcionalidades especializadas</p>
+            <h2 className="text-3xl font-bold text-foreground mb-3">Módulos adicionales</h2>
+            <p className="text-muted-foreground">Amplía tu plan con funcionalidades especializadas</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {addons.map((addon) => (
               <div
                 key={addon.name}
-                className="rounded-xl border border-gray-200 bg-gray-50 p-6"
+                className="rounded-xl border border-border bg-muted/30 p-6"
               >
-                <h4 className="font-semibold text-gray-900 mb-2">{addon.name}</h4>
-                <p className="text-sm text-gray-600 mb-3">{addon.description}</p>
-                <span className="text-sm font-bold text-purple-600">{addon.price}</span>
+                <h4 className="font-semibold text-foreground mb-2">{addon.name}</h4>
+                <p className="text-sm text-muted-foreground mb-3">{addon.description}</p>
+                <span className="text-sm font-bold text-[hsl(var(--lavender))]">{addon.price}</span>
               </div>
             ))}
           </div>
@@ -315,7 +315,7 @@ export default function PricingPage() {
       {/* FAQ */}
       <section className="py-12 px-6">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">
+          <h2 className="text-3xl font-bold text-foreground text-center mb-10">
             Preguntas frecuentes
           </h2>
           <div className="space-y-6">
@@ -345,9 +345,9 @@ export default function PricingPage() {
                 a: 'Sí. Ofrecemos descuentos especiales para organizaciones sin fines de lucro registradas. Contáctanos a ventas@khesed-tek-systems.org con tu certificado de exención.',
               },
             ].map((item) => (
-              <div key={item.q} className="rounded-xl bg-white border border-gray-200 p-6">
-                <h3 className="font-semibold text-gray-900 mb-2">{item.q}</h3>
-                <p className="text-sm text-gray-600">{item.a}</p>
+              <div key={item.q} className="rounded-xl bg-white border border-border p-6">
+                <h3 className="font-semibold text-foreground mb-2">{item.q}</h3>
+                <p className="text-sm text-muted-foreground">{item.a}</p>
               </div>
             ))}
           </div>
@@ -355,25 +355,25 @@ export default function PricingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-6 bg-purple-600 text-center">
+      <section className="py-16 px-6 bg-[hsl(var(--lavender))] text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold text-white mb-4">
             ¿Listo para transformar tu iglesia?
           </h2>
-          <p className="text-purple-100 mb-8">
+          <p className="text-[hsl(var(--lavender)/0.6)] mb-8">
             Únete a cientos de iglesias en Latinoamérica que ya usan Khesed-Tek para crecer y
             conectar con su comunidad.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/auth/register"
-              className="rounded-xl bg-white px-8 py-3 font-semibold text-purple-700 hover:bg-purple-50 transition-colors"
+              className="rounded-xl bg-white px-8 py-3 font-semibold text-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender)/0.10)] transition-colors"
             >
               Comenzar gratis por 7 días
             </Link>
             <a
               href="mailto:ventas@khesed-tek-systems.org"
-              className="rounded-xl border-2 border-white px-8 py-3 font-semibold text-white hover:bg-purple-700 transition-colors"
+              className="rounded-xl border-2 border-white px-8 py-3 font-semibold text-white hover:bg-[hsl(var(--lavender))] transition-colors"
             >
               Hablar con ventas
             </a>
@@ -382,17 +382,17 @@ export default function PricingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-8 px-6 text-center">
+      <footer className="bg-white border-t border-border py-8 px-6 text-center">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500 mb-4">
-            <Link href="/terms" className="hover:text-gray-700">Términos de Servicio</Link>
-            <Link href="/privacy" className="hover:text-gray-700">Política de Privacidad</Link>
-            <Link href="/refund" className="hover:text-gray-700">Política de Reembolso</Link>
-            <a href="mailto:ventas@khesed-tek-systems.org" className="hover:text-gray-700">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground mb-4">
+            <Link href="/terms" className="hover:text-muted-foreground">Términos de Servicio</Link>
+            <Link href="/privacy" className="hover:text-muted-foreground">Política de Privacidad</Link>
+            <Link href="/refund" className="hover:text-muted-foreground">Política de Reembolso</Link>
+            <a href="mailto:ventas@khesed-tek-systems.org" className="hover:text-muted-foreground">
               ventas@khesed-tek-systems.org
             </a>
           </div>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted-foreground/70">
             © {new Date().getFullYear()} Khesed-Tek Systems LLC. Todos los derechos reservados.
           </p>
         </div>

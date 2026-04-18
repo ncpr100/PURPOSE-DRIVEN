@@ -124,7 +124,7 @@ export function SecureCheckInForm({ onSubmit, loading }: SecureCheckInFormProps)
     return (
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader className="text-center">
-          <CardTitle className="flex items-center justify-center gap-2 text-green-700">
+          <CardTitle className="flex items-center justify-center gap-2 text-[hsl(var(--success))]">
             <CheckCircle className="h-6 w-6" />
             Check-In Seguro Completado
           </CardTitle>
@@ -135,10 +135,10 @@ export function SecureCheckInForm({ onSubmit, loading }: SecureCheckInFormProps)
         
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <Key className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+            <div className="text-center p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">
+              <Key className="h-8 w-8 mx-auto mb-2 text-[hsl(var(--info))]" />
               <Label className="text-sm font-medium">PIN de Seguridad</Label>
-              <div className="text-2xl font-bold text-blue-700 mt-1">
+              <div className="text-2xl font-bold text-[hsl(var(--info))] mt-1">
                 {securityPin}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
@@ -146,10 +146,10 @@ export function SecureCheckInForm({ onSubmit, loading }: SecureCheckInFormProps)
               </p>
             </div>
             
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <QrCode className="h-8 w-8 mx-auto mb-2 text-green-600" />
+            <div className="text-center p-4 bg-[hsl(var(--success)/0.10)] rounded-lg">
+              <QrCode className="h-8 w-8 mx-auto mb-2 text-[hsl(var(--success))]" />
               <Label className="text-sm font-medium">Código QR</Label>
-              <div className="text-lg font-bold text-green-700 mt-1">
+              <div className="text-lg font-bold text-[hsl(var(--success))] mt-1">
                 {checkInResult.qrCode}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
@@ -199,7 +199,7 @@ export function SecureCheckInForm({ onSubmit, loading }: SecureCheckInFormProps)
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-blue-600" />
+            <Shield className="h-5 w-5 text-[hsl(var(--info))]" />
             Check-In Seguro de Niños - WebRTC
           </CardTitle>
           <CardDescription>
@@ -352,13 +352,13 @@ export function SecureCheckInForm({ onSubmit, loading }: SecureCheckInFormProps)
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {photos.child && (
-                <Badge variant="outline" className="bg-green-50 text-green-700">
+                <Badge variant="outline" className="bg-[hsl(var(--success)/0.10)] text-[hsl(var(--success))]">
                   <CheckCircle className="h-3 w-3 mr-1" />
                   Foto Niño/a
                 </Badge>
               )}
               {photos.parent && (
-                <Badge variant="outline" className="bg-green-50 text-green-700">
+                <Badge variant="outline" className="bg-[hsl(var(--success)/0.10)] text-[hsl(var(--success))]">
                   <CheckCircle className="h-3 w-3 mr-1" />
                   Foto Padre/Madre
                 </Badge>

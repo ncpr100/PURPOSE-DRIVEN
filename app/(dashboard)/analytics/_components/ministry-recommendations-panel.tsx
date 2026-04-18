@@ -151,13 +151,13 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'text-red-700 bg-red-100 border-red-300';
+        return 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.15)] border-[hsl(var(--destructive)/0.4)]';
       case 'medium':
-        return 'text-yellow-700 bg-yellow-100 border-yellow-300';
+        return 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.15)] border-[hsl(var(--warning)/0.4)]';
       case 'low':
-        return 'text-green-700 bg-green-100 border-green-300';
+        return 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.15)] border-[hsl(var(--success)/0.4)]';
       default:
-        return 'text-gray-700 bg-gray-100 border-gray-300';
+        return 'text-muted-foreground bg-muted/50 border-border';
     }
   };
 
@@ -178,9 +178,9 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
           <div className="animate-pulse space-y-4">
             {[1, 2, 3].map((i) => (
               <div key={i} className="border rounded-lg p-4">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2 mb-3"></div>
-                <div className="h-2 bg-gray-200 rounded w-full"></div>
+                <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                <div className="h-3 bg-muted rounded w-1/2 mb-3"></div>
+                <div className="h-2 bg-muted rounded w-full"></div>
               </div>
             ))}
           </div>
@@ -193,13 +193,13 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
     return (
       <Card className={className}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-600">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <Target className="h-5 w-5" />
             Error en Recomendaciones
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-red-600">{error}</p>
+          <p className="text-[hsl(var(--destructive))]">{error}</p>
           <Button onClick={fetchRecommendations} className="mt-4">
             Reintentar
           </Button>
@@ -224,33 +224,33 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
       <CardContent>
         {/* Stats Summary */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-700">Oportunidades Disponibles</p>
-                <p className="text-2xl font-bold text-blue-900">{recommendationsData.ministryStats.totalOpenings}</p>
+                <p className="text-sm font-medium text-[hsl(var(--info))]">Oportunidades Disponibles</p>
+                <p className="text-2xl font-bold text-foreground">{recommendationsData.ministryStats.totalOpenings}</p>
               </div>
-              <Target className="h-8 w-8 text-blue-500" />
+              <Target className="h-8 w-8 text-[hsl(var(--info))]" />
             </div>
           </div>
           
-          <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+          <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg border border-[hsl(var(--destructive)/0.3)]">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-red-700">Necesidades Urgentes</p>
-                <p className="text-2xl font-bold text-red-900">{recommendationsData.ministryStats.urgentNeeds}</p>
+                <p className="text-sm font-medium text-[hsl(var(--destructive))]">Necesidades Urgentes</p>
+                <p className="text-2xl font-bold text-[hsl(var(--destructive))]">{recommendationsData.ministryStats.urgentNeeds}</p>
               </div>
-              <Clock className="h-8 w-8 text-red-500" />
+              <Clock className="h-8 w-8 text-[hsl(var(--destructive))]" />
             </div>
           </div>
 
-          <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+          <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-700">Conexiones Recientes</p>
-                <p className="text-2xl font-bold text-green-900">{recommendationsData.ministryStats.recentMatches}</p>
+                <p className="text-sm font-medium text-[hsl(var(--success))]">Conexiones Recientes</p>
+                <p className="text-2xl font-bold text-foreground">{recommendationsData.ministryStats.recentMatches}</p>
               </div>
-              <CheckCircle className="h-8 w-8 text-green-500" />
+              <CheckCircle className="h-8 w-8 text-[hsl(var(--success))]" />
             </div>
           </div>
         </div>
@@ -276,28 +276,28 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                   onClick={() => setSelectedRecommendation(recommendation)}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="bg-blue-100 p-3 rounded-lg">
-                      <IconComponent className="h-6 w-6 text-blue-600" />
+                    <div className="bg-[hsl(var(--info)/0.15)] p-3 rounded-lg">
+                      <IconComponent className="h-6 w-6 text-[hsl(var(--info))]" />
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2">
-                        <h4 className="font-semibold text-gray-900">{recommendation.title}</h4>
+                        <h4 className="font-semibold text-foreground">{recommendation.title}</h4>
                         <Badge className={getPriorityColor(recommendation.priority)}>
                           {recommendation.priority === 'high' ? 'Alta' : 
                            recommendation.priority === 'medium' ? 'Media' : 'Baja'} Prioridad
                         </Badge>
-                        <Badge variant="outline" className="bg-green-100 text-green-700">
+                        <Badge variant="outline" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                           {recommendation.matchScore}% Match
                         </Badge>
                       </div>
 
-                      <p className="text-gray-600 text-sm mb-3">{recommendation.description}</p>
+                      <p className="text-muted-foreground text-sm mb-3">{recommendation.description}</p>
 
                       {/* Progress Bar */}
                       {Boolean(recommendation.maxCapacity) && (
                         <div className="mb-3">
-                          <div className="flex justify-between text-xs text-gray-600 mb-1">
+                          <div className="flex justify-between text-xs text-muted-foreground mb-1">
                             <span>Capacidad</span>
                             <span>{recommendation.currentParticipants}/{recommendation.maxCapacity}</span>
                           </div>
@@ -308,16 +308,16 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                       {/* Details Grid */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
                         <div>
-                          <span className="text-gray-500">Tiempo requerido:</span>
+                          <span className="text-muted-foreground">Tiempo requerido:</span>
                           <p className="font-medium">{recommendation.timeCommitment}</p>
                         </div>
                         <div>
-                          <span className="text-gray-500">Tipo:</span>
+                          <span className="text-muted-foreground">Tipo:</span>
                           <p className="font-medium capitalize">{recommendation.type}</p>
                         </div>
                         {recommendation.mentor != null && (
                           <div>
-                            <span className="text-gray-500">Mentor:</span>
+                            <span className="text-muted-foreground">Mentor:</span>
                             <p className="font-medium">{recommendation.mentor.name}</p>
                           </div>
                         )}
@@ -325,7 +325,7 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
 
                       {/* Skills Required */}
                       <div className="mt-3">
-                        <span className="text-gray-500 text-xs">Habilidades requeridas:</span>
+                        <span className="text-muted-foreground text-xs">Habilidades requeridas:</span>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {recommendation.requiredSkills.slice(0, 3).map((skill, index) => (
                             <Badge key={index} variant="secondary" className="text-xs">
@@ -374,24 +374,24 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
               <div key={member.id} className="border rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-4">
                   <Avatar className="h-10 w-10">
-                    <AvatarFallback className="bg-blue-100 text-blue-700">
+                    <AvatarFallback className="bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]">
                       {member.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{member.name}</h4>
-                    <p className="text-sm text-gray-600">
+                    <h4 className="font-semibold text-foreground">{member.name}</h4>
+                    <p className="text-sm text-muted-foreground">
                       {member.currentStage.replace(/_/g, ' ')} • Compromiso: {member.engagementScore}%
                     </p>
                   </div>
-                  <Badge variant="outline" className="bg-purple-100 text-purple-700">
+                  <Badge variant="outline" className="bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]">
                     {member.recommendations.length} recomendaciones
                   </Badge>
                 </div>
 
                 {/* Spiritual Gifts */}
                 <div className="mb-3">
-                  <span className="text-xs text-gray-500">Dones espirituales:</span>
+                  <span className="text-xs text-muted-foreground">Dones espirituales:</span>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {(member.spiritualGifts || []).map((gift, index) => (
                       <Badge key={index} variant="secondary" className="text-xs">
@@ -406,13 +406,13 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                   {member.recommendations.slice(0, 2).map((rec) => {
                     const IconComponent = getMinistryIcon(rec.type);
                     return (
-                      <div key={rec.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                        <IconComponent className="h-4 w-4 text-blue-600" />
+                      <div key={rec.id} className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <IconComponent className="h-4 w-4 text-[hsl(var(--info))]" />
                         <div className="flex-1">
                           <p className="font-medium text-sm">{rec.title}</p>
-                          <p className="text-xs text-gray-600">{rec.matchScore}% match</p>
+                          <p className="text-xs text-muted-foreground">{rec.matchScore}% match</p>
                         </div>
-                        <ArrowRight className="h-4 w-4 text-gray-400" />
+                        <ArrowRight className="h-4 w-4 text-muted-foreground/70" />
                       </div>
                     );
                   })}
@@ -422,12 +422,12 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
           </TabsContent>
 
           <TabsContent value="urgent-needs" className="space-y-4">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+            <div className="bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded-lg p-4 mb-4">
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="h-5 w-5 text-red-600" />
-                <h4 className="font-semibold text-red-800">Ministerios con Necesidades Urgentes</h4>
+                <Clock className="h-5 w-5 text-[hsl(var(--destructive))]" />
+                <h4 className="font-semibold text-[hsl(var(--destructive))]">Ministerios con Necesidades Urgentes</h4>
               </div>
-              <p className="text-red-700 text-sm">
+              <p className="text-[hsl(var(--destructive))] text-sm">
                 Los siguientes ministerios necesitan voluntarios con urgencia para mantener sus actividades.
               </p>
             </div>
@@ -441,23 +441,23 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                   : 0;
 
                 return (
-                  <div key={recommendation.id} className="border-l-4 border-red-500 bg-red-50 p-4 rounded-r-lg">
+                  <div key={recommendation.id} className="border-l-4 border-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)] p-4 rounded-r-lg">
                     <div className="flex items-start gap-4">
-                      <div className="bg-red-100 p-2 rounded-lg">
-                        <IconComponent className="h-5 w-5 text-red-600" />
+                      <div className="bg-[hsl(var(--destructive)/0.15)] p-2 rounded-lg">
+                        <IconComponent className="h-5 w-5 text-[hsl(var(--destructive))]" />
                       </div>
                       
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <h4 className="font-semibold text-red-900">{recommendation.title}</h4>
-                          <Badge className="bg-red-200 text-red-800 border-red-300">
+                          <h4 className="font-semibold text-[hsl(var(--destructive))]">{recommendation.title}</h4>
+                          <Badge className="bg-[hsl(var(--destructive)/0.20)] text-[hsl(var(--destructive))] border-[hsl(var(--destructive)/0.4)]">
                             URGENTE
                           </Badge>
                         </div>
                         
-                        <p className="text-red-800 text-sm mb-2">{recommendation.description}</p>
+                        <p className="text-[hsl(var(--destructive))] text-sm mb-2">{recommendation.description}</p>
                         
-                        <div className="grid grid-cols-2 gap-4 text-xs text-red-700">
+                        <div className="grid grid-cols-2 gap-4 text-xs text-[hsl(var(--destructive))]">
                           <div>
                             <span className="font-medium">Necesita:</span>
                             <span className="ml-1">
@@ -471,14 +471,14 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                         </div>
 
                         {recommendation.mentor && (
-                          <div className="mt-2 flex items-center gap-2 text-xs text-red-700">
+                          <div className="mt-2 flex items-center gap-2 text-xs text-[hsl(var(--destructive))]">
                             <span className="font-medium">Contacto:</span>
                             <span>{recommendation.mentor.name} ({recommendation.mentor.role})</span>
                           </div>
                         )}
                       </div>
 
-                      <Button size="sm" className="bg-red-600 hover:bg-red-700">
+                      <Button size="sm" className="bg-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive))]">
                         Ayudar Ahora
                       </Button>
                     </div>
@@ -504,21 +504,21 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
               </div>
               
               <div className="space-y-4">
-                <p className="text-gray-700">{selectedRecommendation.description}</p>
+                <p className="text-muted-foreground">{selectedRecommendation.description}</p>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="font-medium text-gray-700">Compromiso de tiempo:</span>
+                    <span className="font-medium text-muted-foreground">Compromiso de tiempo:</span>
                     <p>{selectedRecommendation.timeCommitment}</p>
                   </div>
                   <div>
-                    <span className="font-medium text-gray-700">Nivel de match:</span>
+                    <span className="font-medium text-muted-foreground">Nivel de match:</span>
                     <p>{selectedRecommendation.matchScore}%</p>
                   </div>
                 </div>
 
                 <div>
-                  <span className="font-medium text-gray-700">Habilidades requeridas:</span>
+                  <span className="font-medium text-muted-foreground">Habilidades requeridas:</span>
                   <div className="flex flex-wrap gap-2 mt-1">
                     {selectedRecommendation.requiredSkills.map((skill, index) => (
                       <Badge key={index} variant="secondary">{skill}</Badge>
@@ -527,27 +527,27 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                 </div>
 
                 <div>
-                  <span className="font-medium text-gray-700">Próximos pasos:</span>
+                  <span className="font-medium text-muted-foreground">Próximos pasos:</span>
                   <ol className="list-decimal list-inside mt-1 space-y-1">
                     {selectedRecommendation.nextSteps.map((step, index) => (
-                      <li key={index} className="text-sm text-gray-600">{step}</li>
+                      <li key={index} className="text-sm text-muted-foreground">{step}</li>
                     ))}
                   </ol>
                 </div>
 
                 {selectedRecommendation.mentor && (
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <span className="font-medium text-gray-700">Tu mentor será:</span>
+                  <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
+                    <span className="font-medium text-muted-foreground">Tu mentor será:</span>
                     <div className="flex items-center gap-3 mt-2">
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={selectedRecommendation.mentor.avatar} />
-                        <AvatarFallback className="bg-blue-200 text-blue-700">
+                        <AvatarFallback className="bg-[hsl(var(--info)/0.20)] text-[hsl(var(--info))]">
                           {selectedRecommendation.mentor.name.split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
                       <div>
                         <p className="font-medium">{selectedRecommendation.mentor.name}</p>
-                        <p className="text-sm text-gray-600">{selectedRecommendation.mentor.role}</p>
+                        <p className="text-sm text-muted-foreground">{selectedRecommendation.mentor.role}</p>
                       </div>
                     </div>
                   </div>
@@ -578,7 +578,7 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
             onClick={fetchRecommendations}
             variant="outline"
             size="sm"
-            className="text-gray-600 hover:text-gray-900"
+            className="text-muted-foreground hover:text-foreground"
           >
             🔄 Actualizar Recomendaciones
           </Button>

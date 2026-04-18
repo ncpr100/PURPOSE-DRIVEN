@@ -250,8 +250,8 @@ export default function PlatformSettingsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Configuración de Plataforma</h1>
-          <p className="text-gray-600">Administrar configuración global del sistema</p>
+          <h1 className="text-3xl font-bold text-foreground">Configuración de Plataforma</h1>
+          <p className="text-muted-foreground">Administrar configuración global del sistema</p>
         </div>
         
         <Badge variant="outline" className="flex items-center gap-1">
@@ -337,7 +337,7 @@ export default function PlatformSettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Modo Mantenimiento</Label>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Desactivar acceso a la plataforma temporalmente
                     </p>
                   </div>
@@ -350,7 +350,7 @@ export default function PlatformSettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Permitir Registros</Label>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Habilitar registro de nuevas iglesias
                     </p>
                   </div>
@@ -382,15 +382,15 @@ export default function PlatformSettingsPage() {
         {/* Subscriptions Tab */}
         <TabsContent value="subscriptions" className="space-y-6">
           {/* Subscription Management Instructions */}
-          <Card className="border-green-200 bg-green-50/50">
+          <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]/50">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-green-700">
+              <CardTitle className="flex items-center gap-2 text-[hsl(var(--success))]">
                 <CreditCard className="h-5 w-5" />
                 <span>Gestión de Suscripciones SUPER_ADMIN</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="text-sm text-green-700 space-y-2">
+              <div className="text-sm text-[hsl(var(--success))] space-y-2">
                 <p><strong>Control Total de Precios y Características:</strong></p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
                   <li>Editar precios mensuales/anuales de todos los planes</li>
@@ -398,7 +398,7 @@ export default function PlatformSettingsPage() {
                   <li>Agregar/eliminar características y complementos de suscripción</li>
                   <li><strong>Cambios se reflejan automáticamente en página de registro</strong></li>
                 </ul>
-                <div className="mt-3 p-2 bg-green-100 rounded border-l-4 border-green-400">
+                <div className="mt-3 p-2 bg-[hsl(var(--success)/0.15)] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <strong>Sincronización en Tiempo Real:</strong> Cualquier actualización aquí aparece instantáneamente en el formulario de registro de nuevos tenants.
                 </div>
               </div>
@@ -421,7 +421,7 @@ export default function PlatformSettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Notificaciones por Email</Label>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Enviar notificaciones importantes por email
                     </p>
                   </div>
@@ -434,7 +434,7 @@ export default function PlatformSettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Alertas del Sistema</Label>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Notificar sobre eventos del sistema
                     </p>
                   </div>
@@ -447,7 +447,7 @@ export default function PlatformSettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Alertas de Mantenimiento</Label>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Notificar sobre ventanas de mantenimiento
                     </p>
                   </div>
@@ -460,7 +460,7 @@ export default function PlatformSettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Alertas de Seguridad</Label>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Notificar sobre eventos de seguridad críticos
                     </p>
                   </div>
@@ -490,7 +490,7 @@ export default function PlatformSettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <Label>Requerir Autenticación de Dos Factores</Label>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-muted-foreground">
                     Forzar 2FA para todos los administradores
                   </p>
                 </div>
@@ -545,15 +545,15 @@ export default function PlatformSettingsPage() {
 
         <TabsContent value="billing" className="space-y-6">
           {/* USD Billing Model Info Card */}
-          <Card className="border-blue-200 bg-blue-50/50">
+          <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.06)]">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-blue-700">
+              <CardTitle className="flex items-center gap-2 text-[hsl(var(--info))]">
                 <Globe className="h-5 w-5" />
                 <span>Modelo de Facturación USD</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="text-sm text-blue-700 space-y-2">
+              <div className="text-sm text-[hsl(var(--info))] space-y-2">
                 <p><strong>Proceso de Facturación Manual:</strong></p>
                 <ul className="list-disc list-inside space-y-1 ml-4">
                   <li>Todos los precios se muestran en <strong>USD (Dólares Americanos)</strong></li>
@@ -633,7 +633,7 @@ export default function PlatformSettingsPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5 text-blue-600" />
+                  <CreditCard className="h-5 w-5 text-[hsl(var(--info))]" />
                   <span>Pasarelas de Pago de la Plataforma</span>
                 </CardTitle>
                 <Button variant="outline" size="sm" onClick={loadGatewayStatus} disabled={gatewayLoading}>
@@ -650,14 +650,14 @@ export default function PlatformSettingsPage() {
                 {Object.values(gatewayStatus).map((gw) => (
                   <div
                     key={gw.name}
-                    className={`rounded-lg border p-4 space-y-3 ${gw.configured ? 'border-green-200 bg-green-50/50' : 'border-gray-200 bg-gray-50/50'}`}
+                    className={`rounded-lg border p-4 space-y-3 ${gw.configured ? 'border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]/50' : 'border-border bg-muted/30/50'}`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-base">{gw.name}</span>
                       {gw.configured ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-600" />
+                        <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
                       ) : (
-                        <XCircle className="h-5 w-5 text-gray-400" />
+                        <XCircle className="h-5 w-5 text-muted-foreground/70" />
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground">{gw.description}</p>
@@ -666,18 +666,18 @@ export default function PlatformSettingsPage() {
                         <Key className="h-3.5 w-3.5 text-muted-foreground" />
                         <code className="bg-white border rounded px-1.5 py-0.5 font-mono text-[11px]">{gw.envVar}</code>
                         {gw.configured ? (
-                          <span className="text-green-600 font-medium">Configurado</span>
+                          <span className="text-[hsl(var(--success))] font-medium">Configurado</span>
                         ) : (
-                          <span className="text-gray-500">No configurado</span>
+                          <span className="text-muted-foreground">No configurado</span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 text-xs">
                         <Shield className="h-3.5 w-3.5 text-muted-foreground" />
                         <span>Webhook:</span>
                         {gw.webhookConfigured ? (
-                          <span className="text-green-600 font-medium">Configurado</span>
+                          <span className="text-[hsl(var(--success))] font-medium">Configurado</span>
                         ) : (
-                          <span className="text-gray-500">No configurado</span>
+                          <span className="text-muted-foreground">No configurado</span>
                         )}
                       </div>
                     </div>
@@ -685,7 +685,7 @@ export default function PlatformSettingsPage() {
                       href={gw.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline"
+                      className="inline-flex items-center gap-1 text-xs text-[hsl(var(--info))] hover:underline"
                     >
                       <ExternalLink className="h-3 w-3" />
                       {gw.website.replace('https://', '')}
@@ -703,7 +703,7 @@ export default function PlatformSettingsPage() {
                   </p>
                 )}
               </div>
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-700 space-y-1">
+              <div className="mt-4 p-3 bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg text-xs text-[hsl(var(--info))] space-y-1">
                 <p className="font-medium">¿Cómo activar una pasarela?</p>
                 <ol className="list-decimal list-inside space-y-0.5 ml-1">
                   <li>Ve a tu panel de Vercel → Settings → Environment Variables</li>
@@ -716,15 +716,15 @@ export default function PlatformSettingsPage() {
           </Card>
 
           {/* Manual Invoicing Workflow Card */}
-          <Card className="border-orange-200 bg-orange-50/50">
+          <Card className="border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]/50">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-orange-700">
+              <CardTitle className="flex items-center gap-2 text-[hsl(var(--warning))]">
                 <RefreshCw className="h-5 w-5" />
                 <span>Flujo de Facturación Manual</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="text-sm text-orange-700 space-y-2">
+              <div className="text-sm text-[hsl(var(--warning))] space-y-2">
                 <p><strong>Proceso Paso a Paso:</strong></p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
                   <div className="space-y-2">
@@ -759,22 +759,22 @@ export default function PlatformSettingsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div className="text-center p-4 bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg">
+                  <div className="w-3 h-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                   <p className="text-sm font-medium">Base de Datos</p>
-                  <p className="text-xs text-gray-600">Conectada</p>
+                  <p className="text-xs text-muted-foreground">Conectada</p>
                 </div>
 
-                <div className="text-center p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div className="text-center p-4 bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg">
+                  <div className="w-3 h-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                   <p className="text-sm font-medium">Email Service</p>
-                  <p className="text-xs text-gray-600">Operativo</p>
+                  <p className="text-xs text-muted-foreground">Operativo</p>
                 </div>
 
-                <div className="text-center p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div className="text-center p-4 bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg">
+                  <div className="w-3 h-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                   <p className="text-sm font-medium">API External</p>
-                  <p className="text-xs text-gray-600">Activo</p>
+                  <p className="text-xs text-muted-foreground">Activo</p>
                 </div>
               </div>
 

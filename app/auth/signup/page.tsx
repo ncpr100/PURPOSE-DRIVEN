@@ -166,12 +166,12 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-2">
-            <Church className="h-8 w-8 text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900">Kḥesed-tek</h1>
+            <Church className="h-8 w-8 text-[hsl(var(--info))]" />
+            <h1 className="text-2xl font-bold text-foreground">Kḥesed-tek</h1>
           </div>
         </div>
         
@@ -308,12 +308,12 @@ export default function SignUpPage() {
                           <SelectItem key={plan.id} value={plan.name}>
                             <div className="flex items-center justify-between w-full">
                               <div className="flex items-center space-x-3">
-                                <IconComponent className="h-5 w-5 text-blue-500" />
+                                <IconComponent className="h-5 w-5 text-[hsl(var(--info))]" />
                                 <div className="flex flex-col">
                                   <span className="font-medium text-base">
                                     {plan.displayName}
                                     {plan.name === 'MEDIANA' && (
-                                      <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Más popular</span>
+                                      <span className="ml-2 text-xs bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] px-2 py-1 rounded">Más popular</span>
                                     )}
                                   </span>
                                   <span className="text-xs text-muted-foreground">
@@ -323,11 +323,11 @@ export default function SignUpPage() {
                               </div>
                               <div className="text-right">
                                 {isCustomPlan ? (
-                                  <div className="font-bold text-blue-600">Personalizado</div>
+                                  <div className="font-bold text-[hsl(var(--info))]">Personalizado</div>
                                 ) : (
                                   <>
-                                    <div className="font-bold text-blue-600">{plan.priceMonthly}</div>
-                                    <div className="text-xs text-blue-500">USD/mes</div>
+                                    <div className="font-bold text-[hsl(var(--info))]">{plan.priceMonthly}</div>
+                                    <div className="text-xs text-[hsl(var(--info))]">USD/mes</div>
                                   </>
                                 )}
                               </div>
@@ -340,7 +340,7 @@ export default function SignUpPage() {
                 )}
                 <div className="text-xs text-muted-foreground space-y-1">
                   <div>✨ Todos los planes incluyen 14 días de prueba gratuita</div>
-                  <div className="flex items-center gap-1 text-blue-600">
+                  <div className="flex items-center gap-1 text-[hsl(var(--info))]">
                     🇺🇸 <span className="font-medium">Precios en USD</span> - Facturación manual por administrador
                   </div>
                 </div>
@@ -356,19 +356,19 @@ export default function SignUpPage() {
                     const IconComponent = PLAN_ICONS[selectedPlan.name as keyof typeof PLAN_ICONS] || Package
                     
                     return (
-                      <Card className="border-blue-200 bg-blue-50/50">
+                      <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.06)]">
                         <CardHeader className="pb-3">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              <IconComponent className="h-5 w-5 text-blue-600" />
-                              <CardTitle className="text-lg text-blue-700">{selectedPlan.displayName}</CardTitle>
+                              <IconComponent className="h-5 w-5 text-[hsl(var(--info))]" />
+                              <CardTitle className="text-lg text-[hsl(var(--info))]">{selectedPlan.displayName}</CardTitle>
                             </div>
                             <div className="text-right">
-                              <div className="text-2xl font-bold text-blue-600">
+                              <div className="text-2xl font-bold text-[hsl(var(--info))]">
                                 ${selectedPlan.priceMonthly} USD/mes
                               </div>
                               {selectedPlan.priceYearly && (
-                                <div className="text-sm text-blue-600 whitespace-nowrap">
+                                <div className="text-sm text-[hsl(var(--info))] whitespace-nowrap">
                                   ${selectedPlan.priceYearly} USD/año ({(() => {
                                     const monthly = parseFloat(selectedPlan.priceMonthly.replace(/[^0-9.]/g, ''))
                                     const yearly = parseFloat(selectedPlan.priceYearly.replace(/[^0-9.]/g, ''))
@@ -381,21 +381,21 @@ export default function SignUpPage() {
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0">
-                          <p className="text-sm text-gray-700 mb-3">{selectedPlan.description}</p>
+                          <p className="text-sm text-muted-foreground mb-3">{selectedPlan.description}</p>
                           
                           <div className="grid grid-cols-3 gap-2 text-sm">
                             <div className="flex items-center gap-1">
-                              <Building className="h-4 w-4 text-blue-500" />
+                              <Building className="h-4 w-4 text-[hsl(var(--info))]" />
                               <span className="text-xs">
                                 {selectedPlan.maxChurches} iglesia{selectedPlan.maxChurches > 1 ? 's' : ''}
                               </span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <Users className="h-4 w-4 text-blue-500" />
+                              <Users className="h-4 w-4 text-[hsl(var(--info))]" />
                               <span className="text-xs">{selectedPlan.maxMembers} miembros</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <Settings className="h-4 w-4 text-blue-500" />
+                              <Settings className="h-4 w-4 text-[hsl(var(--info))]" />
                               <span className="text-xs">{selectedPlan.maxUsers} usuarios</span>
                             </div>
                           </div>
@@ -407,7 +407,7 @@ export default function SignUpPage() {
               )}
 
               {error && (
-                <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
+                <div className="text-sm text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)] p-3 rounded-md">
                   {error}
                 </div>
               )}
@@ -420,10 +420,10 @@ export default function SignUpPage() {
               </Button>
 
               <div className="text-center text-sm">
-                <span className="text-gray-600">¿Ya tienes una cuenta? </span>
+                <span className="text-muted-foreground">¿Ya tienes una cuenta? </span>
                 <Link
                   href="/auth/signin"
-                  className="text-blue-600 hover:underline font-medium"
+                  className="text-[hsl(var(--info))] hover:underline font-medium"
                 >
                   Inicia sesión aquí
                 </Link>

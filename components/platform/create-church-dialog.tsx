@@ -192,7 +192,7 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Información de la Iglesia */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Información de la Iglesia</h3>
+            <h3 className="text-lg font-semibold text-foreground">Información de la Iglesia</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -276,7 +276,7 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
 
           {/* Información del Administrador */}
           <div className="space-y-4 border-t pt-4">
-            <h3 className="text-lg font-semibold text-gray-900">Administrador de la Iglesia</h3>
+            <h3 className="text-lg font-semibold text-foreground">Administrador de la Iglesia</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -324,10 +324,10 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
               </div>
 
               {/* SECURITY: password removed from UI — API generates a unique secure password per church */}
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="p-3 bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg">
                 <div className="flex items-start gap-2">
-                  <Info className="h-4 w-4 text-blue-600 mt-0.5 shrink-0" />
-                  <p className="text-xs text-blue-700">
+                  <Info className="h-4 w-4 text-[hsl(var(--info))] mt-0.5 shrink-0" />
+                  <p className="text-xs text-[hsl(var(--info))]">
                     La plataforma genera automáticamente una contraseña segura y única para cada iglesia.
                     La contraseña se mostrará al finalizar la creación.
                   </p>
@@ -337,7 +337,7 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
           </div>
 
           {/* Credentials Dispatch Option */}
-          <div className="p-4 border border-amber-200 bg-amber-50 rounded-lg">
+          <div className="p-4 border border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)] rounded-lg">
             <div className="flex items-center gap-3">
               <input
                 type="checkbox"
@@ -350,7 +350,7 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
                 <label htmlFor="send-credentials-now" className="text-sm font-medium text-amber-900 cursor-pointer">
                   Enviar credenciales por email ahora
                 </label>
-                <p className="text-xs text-amber-700 mt-0.5">
+                <p className="text-xs text-[hsl(var(--warning))] mt-0.5">
                   Si no está marcado, la iglesia se crea pero las credenciales NO se envían hasta que el pago sea confirmado.
                   Puedes enviarlas después desde <strong>Credenciales</strong>.
                 </p>
@@ -360,15 +360,15 @@ export function CreateChurchDialog({ open, onOpenChange, onSuccess }: CreateChur
 
           {/* Show generated credentials after creation */}
           {createdCredentials && (
-            <div className="p-4 border border-green-300 bg-green-50 rounded-lg">
-              <h4 className="text-sm font-semibold text-green-800 mb-2 flex items-center gap-2">
+            <div className="p-4 border border-[hsl(var(--success)/0.4)] bg-[hsl(var(--success)/0.10)] rounded-lg">
+              <h4 className="text-sm font-semibold text-[hsl(var(--success))] mb-2 flex items-center gap-2">
                 <Mail className="h-4 w-4" />
                 Credenciales Generadas (guárdelas ahora)
               </h4>
-              <p className="text-xs text-green-700"><strong>Usuario:</strong> {createdCredentials.email}</p>
-              <p className="text-xs text-green-700 font-mono mt-1"><strong>Contraseña temporal:</strong> {createdCredentials.password}</p>
+              <p className="text-xs text-[hsl(var(--success))]"><strong>Usuario:</strong> {createdCredentials.email}</p>
+              <p className="text-xs text-[hsl(var(--success))] font-mono mt-1"><strong>Contraseña temporal:</strong> {createdCredentials.password}</p>
               {!sendCredentialsNow && (
-                <p className="text-xs text-amber-700 mt-2">
+                <p className="text-xs text-[hsl(var(--warning))] mt-2">
                   Email NO enviado. Envía las credenciales desde la página <strong>Credenciales</strong> una vez confirmado el pago.
                 </p>
               )}

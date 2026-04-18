@@ -82,7 +82,7 @@ export default function LazyImage({
         <>
           {/* Placeholder */}
           {!isLoaded && (
-            <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+            <div className="absolute inset-0 bg-muted animate-pulse" />
           )}
           
           {/* Actual Image */}
@@ -108,8 +108,8 @@ export default function LazyImage({
 
       {/* Error State */}
       {hasError && (
-        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-          <div className="text-center text-gray-500">
+        <div className="absolute inset-0 bg-muted/50 flex items-center justify-center">
+          <div className="text-center text-muted-foreground">
             <div className="w-12 h-12 mx-auto mb-2 bg-gray-300 rounded"></div>
             <p className="text-sm">Image failed to load</p>
           </div>
@@ -118,7 +118,7 @@ export default function LazyImage({
 
       {/* Loading State */}
       {!isIntersecting && !priority && (
-        <div className="absolute inset-0 bg-gray-200" />
+        <div className="absolute inset-0 bg-muted" />
       )}
     </div>
   );

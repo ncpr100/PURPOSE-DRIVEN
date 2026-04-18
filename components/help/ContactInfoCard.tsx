@@ -107,7 +107,7 @@ export default function ContactInfoCard() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Contacto Directo */}
           <div>
-            <h4 className="font-semibold text-red-600 mb-3 flex items-center gap-2">
+            <h4 className="font-semibold text-[hsl(var(--destructive))] mb-3 flex items-center gap-2">
               <Phone className="h-4 w-4" />
               Contacto Directo
             </h4>
@@ -148,7 +148,7 @@ export default function ContactInfoCard() {
 
           {/* Información Empresarial */}
           <div>
-            <h4 className="font-semibold text-blue-600 mb-3 flex items-center gap-2">
+            <h4 className="font-semibold text-[hsl(var(--info))] mb-3 flex items-center gap-2">
               <Building className="h-4 w-4" />
               Información Empresarial
             </h4>

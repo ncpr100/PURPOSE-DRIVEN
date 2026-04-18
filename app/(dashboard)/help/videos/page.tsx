@@ -153,7 +153,7 @@ export default function VideosHelp() {
             <Card key={series.title} className="relative">
               {series.popular && (
                 <div className="absolute -top-2 right-2">
-                  <Badge className="bg-orange-100 text-orange-800">🔥 Popular</Badge>
+                  <Badge className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">🔥 Popular</Badge>
                 </div>
               )}
               <CardHeader>

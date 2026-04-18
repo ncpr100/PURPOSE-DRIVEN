@@ -42,10 +42,10 @@ export default function AutomationRulesManual() {
 
       <div className="space-y-6">
         {/* Quick Overview */}
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-blue-600" />
+              <Zap className="h-5 w-5 text-[hsl(var(--info))]" />
               🎉 NUEVO: Ecosistema de Automatización Completo
             </CardTitle>
           </CardHeader>
@@ -55,11 +55,11 @@ export default function AutomationRulesManual() {
               QR + Plantillas de Automatización = Seguimiento automático 24/7 de
               visitantes, peticiones de oración, voluntarios y eventos.
             </p>
-            <div className="p-4 bg-white rounded-lg border border-blue-200 my-4">
-              <h4 className="font-semibold text-blue-900 mb-2">
+            <div className="p-4 bg-white rounded-lg border border-[hsl(var(--info)/0.3)] my-4">
+              <h4 className="font-semibold text-foreground mb-2">
                 🔄 Flujo de Trabajo Completo:
               </h4>
-              <div className="text-sm space-y-1 text-blue-800">
+              <div className="text-sm space-y-1 text-[hsl(var(--info))]">
                 <div className="flex items-center gap-2">
                   <span className="font-bold">1. FORMULARIOS:</span>
                   <span>
@@ -95,28 +95,28 @@ export default function AutomationRulesManual() {
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                 <h4 className="font-semibold">⚡ Velocidad</h4>
-                <p className="text-2xl font-bold text-blue-600">Instantánea</p>
+                <p className="text-2xl font-bold text-[hsl(var(--info))]">Instantánea</p>
                 <p className="text-xs text-muted-foreground">
                   Respuesta en segundos
                 </p>
               </div>
               <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                 <h4 className="font-semibold">🔄 Reintentos</h4>
-                <p className="text-2xl font-bold text-green-600">3x</p>
+                <p className="text-2xl font-bold text-[hsl(var(--success))]">3x</p>
                 <p className="text-xs text-muted-foreground">
                   Con respaldo automático
                 </p>
               </div>
               <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                 <h4 className="font-semibold">📱 Canales</h4>
-                <p className="text-2xl font-bold text-purple-600">5</p>
+                <p className="text-2xl font-bold text-[hsl(var(--lavender))]">5</p>
                 <p className="text-xs text-muted-foreground">
                   SMS, Email, WhatsApp, Push, Phone
                 </p>
               </div>
               <div className="text-center p-4 bg-white rounded-lg shadow-sm">
                 <h4 className="font-semibold">🎯 Plantillas</h4>
-                <p className="text-2xl font-bold text-orange-600">8+</p>
+                <p className="text-2xl font-bold text-[hsl(var(--warning))]">8+</p>
                 <p className="text-xs text-muted-foreground">
                   Listas para usar
                 </p>
@@ -131,8 +131,8 @@ export default function AutomationRulesManual() {
             <CardTitle>🔧 ¿Cómo Funciona?</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="bg-blue-100 rounded-full p-2">
+            <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.15)] rounded-full p-2">
                 <span className="text-2xl">1️⃣</span>
               </div>
               <div className="flex-1">
@@ -148,8 +148,8 @@ export default function AutomationRulesManual() {
               <ArrowLeft className="h-6 w-6 text-muted-foreground rotate-[-90deg]" />
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="bg-green-100 rounded-full p-2">
+            <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.15)] rounded-full p-2">
                 <span className="text-2xl">2️⃣</span>
               </div>
               <div className="flex-1">
@@ -166,8 +166,8 @@ export default function AutomationRulesManual() {
               <ArrowLeft className="h-6 w-6 text-muted-foreground rotate-[-90deg]" />
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="bg-purple-100 rounded-full p-2">
+            <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg">
+              <div className="bg-[hsl(var(--lavender)/0.15)] rounded-full p-2">
                 <span className="text-2xl">3️⃣</span>
               </div>
               <div className="flex-1">
@@ -188,9 +188,9 @@ export default function AutomationRulesManual() {
               <ArrowLeft className="h-6 w-6 text-muted-foreground rotate-[-90deg]" />
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
-              <div className="bg-green-100 rounded-full p-2">
-                <CheckCircle2 className="h-6 w-6 text-green-600" />
+            <div className="flex items-start gap-4 p-4 bg-[hsl(var(--success)/0.10)] rounded-lg border-2 border-[hsl(var(--success)/0.3)]">
+              <div className="bg-[hsl(var(--success)/0.15)] rounded-full p-2">
+                <CheckCircle2 className="h-6 w-6 text-[hsl(var(--success))]" />
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold mb-2">Reintentos y Respaldo</h4>
@@ -221,9 +221,9 @@ export default function AutomationRulesManual() {
 
             {/* Ecosystem Flow */}
             <div className="grid gap-4">
-              <div className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-blue-50">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--success)/0.08)]">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                  <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     1
                   </span>
                   📝 CREACIÓN DE FORMULARIOS
@@ -245,9 +245,9 @@ export default function AutomationRulesManual() {
                 </ul>
               </div>
 
-              <div className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-purple-50">
+              <div className="p-4 border rounded-lg btn-cta-gradient">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                  <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     2
                   </span>
                   📱 GENERACIÓN DE CÓDIGOS QR
@@ -268,9 +268,9 @@ export default function AutomationRulesManual() {
                 </ul>
               </div>
 
-              <div className="p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-pink-50">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--lavender)/0.10)]">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                  <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     3
                   </span>
                   🤖 PLANTILLAS DE AUTOMATIZACIÓN
@@ -291,9 +291,9 @@ export default function AutomationRulesManual() {
                 </ul>
               </div>
 
-              <div className="p-4 border rounded-lg bg-gradient-to-r from-pink-50 to-red-50">
+              <div className="p-4 border rounded-lg bg-gradient-to-r from-[hsl(var(--lavender))] to-[hsl(var(--destructive))]">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <span className="bg-pink-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                  <span className="bg-[hsl(var(--destructive)/0.08)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     4
                   </span>
                   ⚡ AUTOMATIZACIÓN INTELIGENTE
@@ -314,9 +314,9 @@ export default function AutomationRulesManual() {
                 </ul>
               </div>
 
-              <div className="p-4 border rounded-lg bg-gradient-to-r from-red-50 to-orange-50">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--destructive)/0.10)]">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <span className="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                  <span className="bg-[hsl(var(--destructive)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     5
                   </span>
                   📊 DASHBOARD DE SEGUIMIENTO
@@ -338,11 +338,11 @@ export default function AutomationRulesManual() {
               </div>
             </div>
 
-            <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-              <h4 className="font-semibold mb-2 text-orange-900">
+            <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
+              <h4 className="font-semibold mb-2 text-[hsl(var(--warning))]">
                 🚀 Ejemplo Práctico: Visitante Primera Vez
               </h4>
-              <ol className="text-sm text-orange-800 space-y-2">
+              <ol className="text-sm text-[hsl(var(--warning))] space-y-2">
                 <li>
                   <strong>1.</strong> Visitante escanea QR en banco → Abre
                   formulario de visitante
@@ -380,24 +380,24 @@ export default function AutomationRulesManual() {
         </Card>
 
         {/* Quick Start Guide */}
-        <Card className="border-green-200 bg-green-50">
+        <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
           <CardHeader>
-            <CardTitle className="text-green-900">
+            <CardTitle className="text-foreground">
               🚀 Guía de Inicio Rápido (5 Minutos)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
-              <div className="bg-white p-4 rounded-lg border border-green-200">
-                <h4 className="font-semibold mb-2 text-green-900">
+              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+                <h4 className="font-semibold mb-2 text-foreground">
                   🛠️ PASO 1: Crear Primer Formulario
                 </h4>
-                <ol className="text-sm text-green-800 space-y-1">
+                <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
                     <strong>1.</strong> Vaya a{" "}
                     <Link
                       href="/form-builder"
-                      className="text-blue-600 underline"
+                      className="text-[hsl(var(--info))] underline"
                     >
                       Constructor de Formularios
                     </Link>
@@ -415,16 +415,16 @@ export default function AutomationRulesManual() {
                   </li>
                 </ol>
               </div>
-              <div className="bg-white p-4 rounded-lg border border-green-200">
-                <h4 className="font-semibold mb-2 text-green-900">
+              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+                <h4 className="font-semibold mb-2 text-foreground">
                   ⚡ PASO 2: Activar Primera Automatización
                 </h4>
-                <ol className="text-sm text-green-800 space-y-1">
+                <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
                     <strong>1.</strong> Vaya a{" "}
                     <Link
                       href="/automation-rules/templates"
-                      className="text-blue-600 underline"
+                      className="text-[hsl(var(--info))] underline"
                     >
                       Plantillas de Automatización
                     </Link>
@@ -442,11 +442,11 @@ export default function AutomationRulesManual() {
                   </li>
                 </ol>
               </div>
-              <div className="bg-white p-4 rounded-lg border border-green-200">
-                <h4 className="font-semibold mb-2 text-green-900">
+              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+                <h4 className="font-semibold mb-2 text-foreground">
                   🧪 PASO 3: Probar el Sistema
                 </h4>
-                <ol className="text-sm text-green-800 space-y-1">
+                <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
                     <strong>1.</strong> Abra el enlace de su formulario de
                     visitantes
@@ -463,7 +463,7 @@ export default function AutomationRulesManual() {
                     <strong>4.</strong> Revise el{" "}
                     <Link
                       href="/form-submissions"
-                      className="text-blue-600 underline"
+                      className="text-[hsl(var(--info))] underline"
                     >
                       Dashboard de Envíos
                     </Link>{" "}
@@ -472,11 +472,11 @@ export default function AutomationRulesManual() {
                 </ol>
               </div>
             </div>
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-4">
-              <h4 className="font-semibold mb-2 text-blue-900">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)] mt-4">
+              <h4 className="font-semibold mb-2 text-foreground">
                 🎉 ¡Felicitaciones!
               </h4>
-              <p className="text-sm text-blue-800">
+              <p className="text-sm text-[hsl(var(--info))]">
                 Su sistema de automatización ahora está funcionando. Cada nuevo
                 visitante recibirá una respuesta automática y será registrado en
                 su CRM para seguimiento pastoral.
@@ -486,24 +486,24 @@ export default function AutomationRulesManual() {
         </Card>
 
         {/* Quick Start Guide */}
-        <Card className="border-green-200 bg-green-50">
+        <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
           <CardHeader>
-            <CardTitle className="text-green-900">
+            <CardTitle className="text-foreground">
               🚀 Guía de Inicio Rápido (5 Minutos)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
-              <div className="bg-white p-4 rounded-lg border border-green-200">
-                <h4 className="font-semibold mb-2 text-green-900">
+              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+                <h4 className="font-semibold mb-2 text-foreground">
                   🛠️ PASO 1: Crear Primer Formulario
                 </h4>
-                <ol className="text-sm text-green-800 space-y-1">
+                <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
                     <strong>1.</strong> Vaya a{" "}
                     <Link
                       href="/form-builder"
-                      className="text-blue-600 underline"
+                      className="text-[hsl(var(--info))] underline"
                     >
                       Constructor de Formularios
                     </Link>
@@ -521,16 +521,16 @@ export default function AutomationRulesManual() {
                   </li>
                 </ol>
               </div>
-              <div className="bg-white p-4 rounded-lg border border-green-200">
-                <h4 className="font-semibold mb-2 text-green-900">
+              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+                <h4 className="font-semibold mb-2 text-foreground">
                   ⚡ PASO 2: Activar Primera Automatización
                 </h4>
-                <ol className="text-sm text-green-800 space-y-1">
+                <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
                     <strong>1.</strong> Vaya a{" "}
                     <Link
                       href="/automation-rules/templates"
-                      className="text-blue-600 underline"
+                      className="text-[hsl(var(--info))] underline"
                     >
                       Plantillas de Automatización
                     </Link>
@@ -548,11 +548,11 @@ export default function AutomationRulesManual() {
                   </li>
                 </ol>
               </div>
-              <div className="bg-white p-4 rounded-lg border border-green-200">
-                <h4 className="font-semibold mb-2 text-green-900">
+              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+                <h4 className="font-semibold mb-2 text-foreground">
                   🧪 PASO 3: Probar el Sistema
                 </h4>
-                <ol className="text-sm text-green-800 space-y-1">
+                <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
                     <strong>1.</strong> Abra el enlace de su formulario de
                     visitantes
@@ -569,7 +569,7 @@ export default function AutomationRulesManual() {
                     <strong>4.</strong> Revise el{" "}
                     <Link
                       href="/form-submissions"
-                      className="text-blue-600 underline"
+                      className="text-[hsl(var(--info))] underline"
                     >
                       Dashboard de Envíos
                     </Link>{" "}
@@ -578,11 +578,11 @@ export default function AutomationRulesManual() {
                 </ol>
               </div>
             </div>
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-4">
-              <h4 className="font-semibold mb-2 text-blue-900">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)] mt-4">
+              <h4 className="font-semibold mb-2 text-foreground">
                 🎉 ¡Felicitaciones!
               </h4>
-              <p className="text-sm text-blue-800">
+              <p className="text-sm text-[hsl(var(--info))]">
                 Su sistema de automatización ahora está funcionando. Cada nuevo
                 visitante recibirá una respuesta automática y será registrado en
                 su CRM para seguimiento pastoral.
@@ -630,11 +630,11 @@ export default function AutomationRulesManual() {
               </div>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <h4 className="font-semibold mb-2 text-blue-900">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
+              <h4 className="font-semibold mb-2 text-foreground">
                 💡 Cómo Activar una Plantilla
               </h4>
-              <ol className="text-sm text-blue-800 space-y-2">
+              <ol className="text-sm text-[hsl(var(--info))] space-y-2">
                 <li>
                   <strong>1.</strong> Vaya a{" "}
                   <strong>Automatización → Plantillas</strong>
@@ -662,15 +662,15 @@ export default function AutomationRulesManual() {
         </Card>
 
         {/* Prayer Section Urgency Routing */}
-        <Card className="border-purple-200 bg-purple-50">
+        <Card className="border-[hsl(var(--lavender)/0.3)] bg-[hsl(var(--lavender)/0.10)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-purple-900">
-              <Heart className="h-5 w-5 text-purple-600" />
+            <CardTitle className="flex items-center gap-2 text-foreground">
+              <Heart className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Sistema de Urgencia por Sección (A / B / C)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-purple-800">
+            <p className="text-sm text-[hsl(var(--lavender))]">
               Cuando configura categorías de oración con una{" "}
               <strong>sección (A, B o C)</strong>, el sistema deriva
               automáticamente la prioridad y el tiempo de respuesta SLA sin que
@@ -679,24 +679,24 @@ export default function AutomationRulesManual() {
 
             <div className="space-y-3">
               {/* Section A */}
-              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-green-200">
-                <div className="bg-green-100 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-lg font-bold text-green-700">A</span>
+              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-[hsl(var(--success)/0.3)]">
+                <div className="bg-[hsl(var(--success)/0.15)] rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-[hsl(var(--success))]">A</span>
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-green-900">
+                    <h4 className="font-semibold text-foreground">
                       Sección A — Oración Estándar
                     </h4>
-                    <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                    <span className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] text-xs px-2 py-0.5 rounded-full font-medium">
                       Prioridad NORMAL
                     </span>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className="text-sm text-muted-foreground mb-2">
                     Peticiones de oración generales. El equipo de oración recibe
                     notificación dentro de <strong>1 hora</strong>.
                   </p>
-                  <div className="bg-green-50 rounded p-2 text-xs text-green-800">
+                  <div className="bg-[hsl(var(--success)/0.10)] rounded p-2 text-xs text-[hsl(var(--success))]">
                     <strong>Acciones automáticas:</strong> Email al equipo de
                     oración + respuesta de confirmación al solicitante
                   </div>
@@ -704,24 +704,24 @@ export default function AutomationRulesManual() {
               </div>
 
               {/* Section B */}
-              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-orange-200">
-                <div className="bg-orange-100 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-lg font-bold text-orange-700">B</span>
+              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-[hsl(var(--warning)/0.3)]">
+                <div className="bg-[hsl(var(--warning)/0.15)] rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-[hsl(var(--warning))]">B</span>
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-orange-900">
+                    <h4 className="font-semibold text-[hsl(var(--warning))]">
                       Sección B — Oración Media
                     </h4>
-                    <span className="bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                    <span className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] text-xs px-2 py-0.5 rounded-full font-medium">
                       Prioridad ALTA
                     </span>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className="text-sm text-muted-foreground mb-2">
                     Peticiones que necesitan atención. El pastor o líder recibe
                     respuesta dentro de <strong>4 horas</strong>.
                   </p>
-                  <div className="bg-orange-50 rounded p-2 text-xs text-orange-800">
+                  <div className="bg-[hsl(var(--warning)/0.10)] rounded p-2 text-xs text-[hsl(var(--warning))]">
                     <strong>Acciones automáticas:</strong> Email al equipo +
                     mensaje WhatsApp al pastor
                   </div>
@@ -729,24 +729,24 @@ export default function AutomationRulesManual() {
               </div>
 
               {/* Section C */}
-              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-red-200">
-                <div className="bg-red-100 rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-lg font-bold text-red-700">C</span>
+              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-[hsl(var(--destructive)/0.3)]">
+                <div className="bg-[hsl(var(--destructive)/0.15)] rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <span className="text-lg font-bold text-[hsl(var(--destructive))]">C</span>
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-red-900">
+                    <h4 className="font-semibold text-[hsl(var(--destructive))]">
                       Sección C — Urgencia Inmediata
                     </h4>
-                    <span className="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                    <span className="bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] text-xs px-2 py-0.5 rounded-full font-medium">
                       Prioridad URGENTE – 24/7
                     </span>
                   </div>
-                  <p className="text-sm text-gray-700 mb-2">
+                  <p className="text-sm text-muted-foreground mb-2">
                     Crisis, enfermedad grave, peligro. Respuesta{" "}
                     <strong>en 10 minutos</strong>, ignora horario laboral.
                   </p>
-                  <div className="bg-red-50 rounded p-2 text-xs text-red-800">
+                  <div className="bg-[hsl(var(--destructive)/0.10)] rounded p-2 text-xs text-[hsl(var(--destructive))]">
                     <strong>Acciones automáticas:</strong> Email URGENTE +
                     WhatsApp inmediato al pastor (modo 24/7 activo)
                   </div>
@@ -755,17 +755,17 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Setup steps */}
-            <div className="bg-white rounded-lg border border-purple-200 p-4 mt-4">
-              <h4 className="font-semibold text-purple-900 mb-3">
-                <Settings className="h-4 w-4 inline mr-1 text-purple-600" />
+            <div className="bg-white rounded-lg border border-[hsl(var(--lavender)/0.3)] p-4 mt-4">
+              <h4 className="font-semibold text-foreground mb-3">
+                <Settings className="h-4 w-4 inline mr-1 text-[hsl(var(--lavender))]" />
                 Cómo Activar el Sistema de Secciones
               </h4>
-              <ol className="text-sm text-gray-700 space-y-2">
+              <ol className="text-sm text-muted-foreground space-y-2">
                 <li>
                   <strong>1. Instalar las 3 reglas base:</strong> Vaya a{" "}
                   <Link
                     href="/automation-rules/templates"
-                    className="text-blue-600 underline"
+                    className="text-[hsl(var(--info))] underline"
                   >
                     Plantillas
                   </Link>
@@ -780,14 +780,14 @@ export default function AutomationRulesManual() {
                   <strong>2. Asignar secciones a categorías:</strong> En{" "}
                   <Link
                     href="/prayer-requests"
-                    className="text-blue-600 underline"
+                    className="text-[hsl(var(--info))] underline"
                   >
                     Peticiones de Oración
                   </Link>{" "}
                   → Configuración de Categorías, asigne{" "}
-                  <code className="bg-gray-100 px-1 rounded">A</code>,{" "}
-                  <code className="bg-gray-100 px-1 rounded">B</code> o{" "}
-                  <code className="bg-gray-100 px-1 rounded">C</code> a cada
+                  <code className="bg-muted/50 px-1 rounded">A</code>,{" "}
+                  <code className="bg-muted/50 px-1 rounded">B</code> o{" "}
+                  <code className="bg-muted/50 px-1 rounded">C</code> a cada
                   categoría.
                 </li>
                 <li>
@@ -807,35 +807,35 @@ export default function AutomationRulesManual() {
         </Card>
 
         {/* Custom Template Creation */}
-        <Card className="border-indigo-200 bg-indigo-50">
+        <Card className="border-primary/20 bg-primary/[0.06]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-indigo-900">
-              <Plus className="h-5 w-5 text-indigo-600" />
+            <CardTitle className="flex items-center gap-2 text-foreground">
+              <Plus className="h-5 w-5 text-primary" />
               Crear Plantilla Personalizada
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-indigo-800">
+            <p className="text-sm text-primary">
               Además de las plantillas del sistema,{" "}
               <strong>pastores y administradores</strong> pueden crear sus
               propias plantillas para reutilizar flujos de trabajo específicos
               de su iglesia.
             </p>
 
-            <div className="bg-white rounded-lg border border-indigo-200 p-4">
-              <h4 className="font-semibold text-indigo-900 mb-3">
+            <div className="bg-white rounded-lg border border-primary/20 p-4">
+              <h4 className="font-semibold text-foreground mb-3">
                 Pasos para crear una plantilla
               </h4>
-              <ol className="text-sm text-gray-700 space-y-3">
+              <ol className="text-sm text-muted-foreground space-y-3">
                 <li className="flex gap-2">
-                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+                  <span className="bg-primary/[0.06]0 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
                     1
                   </span>
                   <span>
                     Vaya a{" "}
                     <Link
                       href="/automation-rules/templates"
-                      className="text-blue-600 underline"
+                      className="text-[hsl(var(--info))] underline"
                     >
                       Plantillas de Automatización
                     </Link>{" "}
@@ -845,7 +845,7 @@ export default function AutomationRulesManual() {
                   </span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+                  <span className="bg-primary/[0.06]0 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
                     2
                   </span>
                   <span>
@@ -855,7 +855,7 @@ export default function AutomationRulesManual() {
                   </span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+                  <span className="bg-primary/[0.06]0 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
                     3
                   </span>
                   <span>
@@ -864,36 +864,36 @@ export default function AutomationRulesManual() {
                   </span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+                  <span className="bg-primary/[0.06]0 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
                     4
                   </span>
                   <span>
                     Elija el <strong>Tipo de Disparador</strong> — el evento que
                     activará la automatización. Ej:{" "}
-                    <code className="bg-gray-100 px-1 rounded">
+                    <code className="bg-muted/50 px-1 rounded">
                       PRAYER_REQUEST_SUBMITTED
                     </code>{" "}
                     o{" "}
-                    <code className="bg-gray-100 px-1 rounded">
+                    <code className="bg-muted/50 px-1 rounded">
                       VISITOR_FIRST_TIME
                     </code>
                     .
                   </span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+                  <span className="bg-primary/[0.06]0 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
                     5
                   </span>
                   <span>
                     Seleccione la <strong>Acción</strong> (Email, SMS, WhatsApp,
                     Notificación push, etc.) y escriba el
                     <strong> mensaje</strong>. Use variables como{" "}
-                    <code className="bg-gray-100 px-1 rounded">{`{{contactName}}`}</code>{" "}
+                    <code className="bg-muted/50 px-1 rounded">{`{{contactName}}`}</code>{" "}
                     para personalización.
                   </span>
                 </li>
                 <li className="flex gap-2">
-                  <span className="bg-indigo-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+                  <span className="bg-primary/[0.06]0 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
                     6
                   </span>
                   <span>
@@ -904,7 +904,7 @@ export default function AutomationRulesManual() {
               </ol>
             </div>
 
-            <div className="bg-indigo-100 rounded p-3 text-sm text-indigo-800">
+            <div className="bg-primary/[0.12] rounded p-3 text-sm text-primary">
               <strong>Nota:</strong> Las plantillas personalizadas son visibles
               solo para su iglesia. Las plantillas del sistema son globales y no
               pueden modificarse.
@@ -913,32 +913,32 @@ export default function AutomationRulesManual() {
         </Card>
 
         {/* WhatsApp Setup */}
-        <Card className="border-green-200 bg-green-50">
+        <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-900">
-              <MessageSquare className="h-5 w-5 text-green-600" />
+            <CardTitle className="flex items-center gap-2 text-foreground">
+              <MessageSquare className="h-5 w-5 text-[hsl(var(--success))]" />
               Configurar WhatsApp Business
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-green-800">
+            <p className="text-sm text-[hsl(var(--success))]">
               Para enviar mensajes de WhatsApp desde las automatizaciones
               necesita una cuenta de
               <strong> WhatsApp Business API</strong>. Es el mismo número que
               usa para contactar miembros.
             </p>
 
-            <div className="bg-white rounded-lg border border-green-200 p-4">
-              <h4 className="font-semibold text-green-900 mb-3">Requisitos</h4>
-              <ul className="text-sm space-y-2 text-gray-700">
+            <div className="bg-white rounded-lg border border-[hsl(var(--success)/0.3)] p-4">
+              <h4 className="font-semibold text-foreground mb-3">Requisitos</h4>
+              <ul className="text-sm space-y-2 text-muted-foreground">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                   <span>
                     <strong>WHATSAPP_ACCESS_TOKEN</strong> — Token de Meta
                     Business. Configúrelo en
                     <Link
                       href="/settings/integrations"
-                      className="text-blue-600 underline ml-1"
+                      className="text-[hsl(var(--info))] underline ml-1"
                     >
                       Configuración → Integraciones
                     </Link>
@@ -946,14 +946,14 @@ export default function AutomationRulesManual() {
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                   <span>
                     <strong>WHATSAPP_PHONE_NUMBER_ID</strong> — ID del número en
                     Meta Business Suite.
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                   <span>
                     El número destinatario debe tener WhatsApp activo y haber
                     aceptado recibir mensajes.
@@ -962,8 +962,8 @@ export default function AutomationRulesManual() {
               </ul>
             </div>
 
-            <div className="bg-yellow-50 rounded p-3 text-sm text-yellow-800 border border-yellow-200">
-              <AlertTriangle className="h-4 w-4 inline mr-1 text-yellow-600" />
+            <div className="bg-[hsl(var(--warning)/0.10)] rounded p-3 text-sm text-[hsl(var(--warning))] border border-[hsl(var(--warning)/0.3)]">
+              <AlertTriangle className="h-4 w-4 inline mr-1 text-[hsl(var(--warning))]" />
               <strong>Sin WhatsApp configurado:</strong> Las acciones
               SEND_WHATSAPP se omiten automáticamente y el sistema usa Email
               como canal de respaldo.
@@ -975,7 +975,7 @@ export default function AutomationRulesManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-yellow-600" />
+              <Zap className="h-5 w-5 text-[hsl(var(--warning))]" />
               Variables de Plantilla
             </CardTitle>
           </CardHeader>
@@ -989,104 +989,104 @@ export default function AutomationRulesManual() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
                 <thead>
-                  <tr className="bg-gray-100">
-                    <th className="text-left p-2 border border-gray-200 font-semibold">
+                  <tr className="bg-muted/50">
+                    <th className="text-left p-2 border border-border font-semibold">
                       Variable
                     </th>
-                    <th className="text-left p-2 border border-gray-200 font-semibold">
+                    <th className="text-left p-2 border border-border font-semibold">
                       Descripción
                     </th>
-                    <th className="text-left p-2 border border-gray-200 font-semibold">
+                    <th className="text-left p-2 border border-border font-semibold">
                       Ejemplo
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   <tr>
-                    <td className="p-2 border border-gray-200">
-                      <code className="bg-gray-100 px-1 rounded">{`{{contactName}}`}</code>
+                    <td className="p-2 border border-border">
+                      <code className="bg-muted/50 px-1 rounded">{`{{contactName}}`}</code>
                     </td>
-                    <td className="p-2 border border-gray-200">
+                    <td className="p-2 border border-border">
                       Nombre del contacto o solicitante
                     </td>
-                    <td className="p-2 border border-gray-200 text-gray-500">
+                    <td className="p-2 border border-border text-muted-foreground">
                       María González
                     </td>
                   </tr>
-                  <tr className="bg-gray-50">
-                    <td className="p-2 border border-gray-200">
-                      <code className="bg-gray-100 px-1 rounded">{`{{prayerCategory}}`}</code>
+                  <tr className="bg-muted/30">
+                    <td className="p-2 border border-border">
+                      <code className="bg-muted/50 px-1 rounded">{`{{prayerCategory}}`}</code>
                     </td>
-                    <td className="p-2 border border-gray-200">
+                    <td className="p-2 border border-border">
                       Categoría de la petición de oración
                     </td>
-                    <td className="p-2 border border-gray-200 text-gray-500">
+                    <td className="p-2 border border-border text-muted-foreground">
                       Salud y Sanidad
                     </td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-gray-200">
-                      <code className="bg-gray-100 px-1 rounded">{`{{prayerPriority}}`}</code>
+                    <td className="p-2 border border-border">
+                      <code className="bg-muted/50 px-1 rounded">{`{{prayerPriority}}`}</code>
                     </td>
-                    <td className="p-2 border border-gray-200">
+                    <td className="p-2 border border-border">
                       Prioridad derivada (normal/high/urgent)
                     </td>
-                    <td className="p-2 border border-gray-200 text-gray-500">
+                    <td className="p-2 border border-border text-muted-foreground">
                       urgent
                     </td>
                   </tr>
-                  <tr className="bg-gray-50">
-                    <td className="p-2 border border-gray-200">
-                      <code className="bg-gray-100 px-1 rounded">{`{{prayerSection}}`}</code>
+                  <tr className="bg-muted/30">
+                    <td className="p-2 border border-border">
+                      <code className="bg-muted/50 px-1 rounded">{`{{prayerSection}}`}</code>
                     </td>
-                    <td className="p-2 border border-gray-200">
+                    <td className="p-2 border border-border">
                       Sección de urgencia de la categoría
                     </td>
-                    <td className="p-2 border border-gray-200 text-gray-500">
+                    <td className="p-2 border border-border text-muted-foreground">
                       C
                     </td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-gray-200">
-                      <code className="bg-gray-100 px-1 rounded">{`{{responseTimeMinutes}}`}</code>
+                    <td className="p-2 border border-border">
+                      <code className="bg-muted/50 px-1 rounded">{`{{responseTimeMinutes}}`}</code>
                     </td>
-                    <td className="p-2 border border-gray-200">
+                    <td className="p-2 border border-border">
                       SLA de respuesta en minutos
                     </td>
-                    <td className="p-2 border border-gray-200 text-gray-500">
+                    <td className="p-2 border border-border text-muted-foreground">
                       10
                     </td>
                   </tr>
-                  <tr className="bg-gray-50">
-                    <td className="p-2 border border-gray-200">
-                      <code className="bg-gray-100 px-1 rounded">{`{{visitReason}}`}</code>
+                  <tr className="bg-muted/30">
+                    <td className="p-2 border border-border">
+                      <code className="bg-muted/50 px-1 rounded">{`{{visitReason}}`}</code>
                     </td>
-                    <td className="p-2 border border-gray-200">
+                    <td className="p-2 border border-border">
                       Motivo de visita del nuevo contacto
                     </td>
-                    <td className="p-2 border border-gray-200 text-gray-500">
+                    <td className="p-2 border border-border text-muted-foreground">
                       Primera visita
                     </td>
                   </tr>
                   <tr>
-                    <td className="p-2 border border-gray-200">
-                      <code className="bg-gray-100 px-1 rounded">{`{{contactPhone}}`}</code>
+                    <td className="p-2 border border-border">
+                      <code className="bg-muted/50 px-1 rounded">{`{{contactPhone}}`}</code>
                     </td>
-                    <td className="p-2 border border-gray-200">
+                    <td className="p-2 border border-border">
                       Teléfono del contacto
                     </td>
-                    <td className="p-2 border border-gray-200 text-gray-500">
+                    <td className="p-2 border border-border text-muted-foreground">
                       +1 555 000 1234
                     </td>
                   </tr>
-                  <tr className="bg-gray-50">
-                    <td className="p-2 border border-gray-200">
-                      <code className="bg-gray-100 px-1 rounded">{`{{contactEmail}}`}</code>
+                  <tr className="bg-muted/30">
+                    <td className="p-2 border border-border">
+                      <code className="bg-muted/50 px-1 rounded">{`{{contactEmail}}`}</code>
                     </td>
-                    <td className="p-2 border border-gray-200">
+                    <td className="p-2 border border-border">
                       Email del contacto
                     </td>
-                    <td className="p-2 border border-gray-200 text-gray-500">
+                    <td className="p-2 border border-border text-muted-foreground">
                       maria@example.com
                     </td>
                   </tr>
@@ -1094,7 +1094,7 @@ export default function AutomationRulesManual() {
               </table>
             </div>
 
-            <div className="bg-blue-50 p-3 rounded text-sm text-blue-800 border border-blue-200">
+            <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded text-sm text-[hsl(var(--info))] border border-[hsl(var(--info)/0.3)]">
               <strong>Ejemplo de mensaje con variables:</strong>
               <br />
               <code className="block mt-1 bg-white rounded p-2 text-xs">{`Hola {{contactName}}, recibimos tu petición de oración (Sección {{prayerSection}}). Nuestro equipo responderá en {{responseTimeMinutes}} minutos. ¡Dios te bendiga!`}</code>
@@ -1111,7 +1111,7 @@ export default function AutomationRulesManual() {
             <div className="grid md:grid-cols-2 gap-4">
               <div className="p-4 border rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <RefreshCw className="h-5 w-5 text-green-600" />
+                  <RefreshCw className="h-5 w-5 text-[hsl(var(--success))]" />
                   <h4 className="font-semibold">Reintentos Inteligentes</h4>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -1122,7 +1122,7 @@ export default function AutomationRulesManual() {
 
               <div className="p-4 border rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle className="h-5 w-5 text-orange-600" />
+                  <AlertTriangle className="h-5 w-5 text-[hsl(var(--warning))]" />
                   <h4 className="font-semibold">Canales de Respaldo</h4>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -1133,7 +1133,7 @@ export default function AutomationRulesManual() {
 
               <div className="p-4 border rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Clock className="h-5 w-5 text-blue-600" />
+                  <Clock className="h-5 w-5 text-[hsl(var(--info))]" />
                   <h4 className="font-semibold">Horario Laboral</h4>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -1144,7 +1144,7 @@ export default function AutomationRulesManual() {
 
               <div className="p-4 border rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <CheckCircle2 className="h-5 w-5 text-purple-600" />
+                  <CheckCircle2 className="h-5 w-5 text-[hsl(var(--lavender))]" />
                   <h4 className="font-semibold">Bypass Approval</h4>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -1162,44 +1162,44 @@ export default function AutomationRulesManual() {
             <CardTitle>🎯 Niveles de Prioridad</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="flex items-center gap-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-center gap-3 p-3 bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded-lg">
               <span className="text-2xl">🔴</span>
               <div className="flex-1">
-                <h4 className="font-semibold text-red-900">URGENTE</h4>
-                <p className="text-sm text-red-700">
+                <h4 className="font-semibold text-[hsl(var(--destructive))]">URGENTE</h4>
+                <p className="text-sm text-[hsl(var(--destructive))]">
                   Ejecuta inmediatamente, ignora horario laboral. Escalamiento a
                   supervisor en 15 minutos si no hay respuesta.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+            <div className="flex items-center gap-3 p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg">
               <span className="text-2xl">🟠</span>
               <div className="flex-1">
-                <h4 className="font-semibold text-orange-900">ALTA</h4>
-                <p className="text-sm text-orange-700">
+                <h4 className="font-semibold text-[hsl(var(--warning))]">ALTA</h4>
+                <p className="text-sm text-[hsl(var(--warning))]">
                   Prioridad alta, ejecuta dentro de 1 hora. Escalamiento en 2
                   horas sin respuesta.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center gap-3 p-3 bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg">
               <span className="text-2xl">🟢</span>
               <div className="flex-1">
-                <h4 className="font-semibold text-green-900">NORMAL</h4>
-                <p className="text-sm text-green-700">
+                <h4 className="font-semibold text-foreground">NORMAL</h4>
+                <p className="text-sm text-[hsl(var(--success))]">
                   Prioridad estándar. Respeta horario laboral. Escalamiento en
                   24 horas.
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+            <div className="flex items-center gap-3 p-3 bg-muted/30 border border-border rounded-lg">
               <span className="text-2xl">⚪</span>
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-900">BAJA</h4>
-                <p className="text-sm text-gray-700">
+                <h4 className="font-semibold text-foreground">BAJA</h4>
+                <p className="text-sm text-muted-foreground">
                   Ejecuta cuando hay disponibilidad. Sin escalamiento
                   automático.
                 </p>
@@ -1272,15 +1272,15 @@ export default function AutomationRulesManual() {
         </Card>
 
         {/* Best Practices */}
-        <Card className="border-green-200">
+        <Card className="border-[hsl(var(--success)/0.3)]">
           <CardHeader>
-            <CardTitle className="text-green-900">
+            <CardTitle className="text-foreground">
               ✅ Mejores Prácticas
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+              <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
               <p className="text-sm">
                 <strong>Use bypass approval para bienvenidas:</strong> Los
                 mensajes de bienvenida pueden enviarse inmediatamente sin
@@ -1288,21 +1288,21 @@ export default function AutomationRulesManual() {
               </p>
             </div>
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+              <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
               <p className="text-sm">
                 <strong>Active modo urgente 24/7:</strong> Para peticiones de
                 oración marcadas como urgentes, ignora el horario laboral.
               </p>
             </div>
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+              <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
               <p className="text-sm">
                 <strong>Configure canales de respaldo:</strong> Siempre tenga al
                 menos 2 canales configurados (ej: SMS y Email).
               </p>
             </div>
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+              <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
               <p className="text-sm">
                 <strong>Personalice los mensajes:</strong> Use variables como
                 &#123;nombre&#125;, &#123;iglesia&#125;, &#123;mensaje&#125;
@@ -1310,7 +1310,7 @@ export default function AutomationRulesManual() {
               </p>
             </div>
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+              <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
               <p className="text-sm">
                 <strong>Monitoree el dashboard:</strong> Revise regularmente el
                 historial de ejecución para detectar problemas.
@@ -1320,9 +1320,9 @@ export default function AutomationRulesManual() {
         </Card>
 
         {/* Next Steps */}
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
           <CardHeader>
-            <CardTitle className="text-blue-900">
+            <CardTitle className="text-foreground">
               🚀 Siguientes Pasos Recomendados
             </CardTitle>
           </CardHeader>
@@ -1381,7 +1381,7 @@ export default function AutomationRulesManual() {
                     • <strong>Dashboard de Envíos:</strong> Revise{" "}
                     <Link
                       href="/form-submissions"
-                      className="text-blue-600 underline"
+                      className="text-[hsl(var(--info))] underline"
                     >
                       todos los formularios enviados
                     </Link>
@@ -1422,11 +1422,11 @@ export default function AutomationRulesManual() {
                 </ul>
               </div>
             </div>
-            <div className="bg-green-50 p-4 rounded-lg border border-green-200 mt-4">
-              <h4 className="font-semibold mb-2 text-green-900">
+            <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border border-[hsl(var(--success)/0.3)] mt-4">
+              <h4 className="font-semibold mb-2 text-foreground">
                 🏆 Meta de Implementación Completa
               </h4>
-              <p className="text-sm text-green-800">
+              <p className="text-sm text-[hsl(var(--success))]">
                 <strong>Objetivo:</strong> Que el 100% de las interacciones de
                 su iglesia (visitantes, peticiones, voluntarios, eventos) sean
                 capturadas automáticamente y reciban seguimiento personalizado
@@ -1521,7 +1521,7 @@ export default function AutomationRulesManual() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-4">
-              <div className="p-4 border rounded-lg bg-yellow-50">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--warning)/0.10)]">
                 <h4 className="font-semibold mb-2">
                   ⚠️ Problema: No se envían mensajes automáticos
                 </h4>
@@ -1546,7 +1546,7 @@ export default function AutomationRulesManual() {
                       4. Vaya a{" "}
                       <Link
                         href="/settings/integrations"
-                        className="text-blue-600 underline"
+                        className="text-[hsl(var(--info))] underline"
                       >
                         Configuración de Integraciones
                       </Link>
@@ -1554,7 +1554,7 @@ export default function AutomationRulesManual() {
                   </ul>
                 </div>
               </div>
-              <div className="p-4 border rounded-lg bg-blue-50">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--info)/0.10)]">
                 <h4 className="font-semibold mb-2">
                   📱 Problema: Código QR no funciona
                 </h4>
@@ -1575,7 +1575,7 @@ export default function AutomationRulesManual() {
                   </ul>
                 </div>
               </div>
-              <div className="p-4 border rounded-lg bg-green-50">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--success)/0.10)]">
                 <h4 className="font-semibold mb-2">
                   📋 Problema: Datos no aparecen en dashboard
                 </h4>
@@ -1588,7 +1588,7 @@ export default function AutomationRulesManual() {
                       1. Refresque la página del{" "}
                       <Link
                         href="/form-submissions"
-                        className="text-blue-600 underline"
+                        className="text-[hsl(var(--info))] underline"
                       >
                         Dashboard de Envíos
                       </Link>
@@ -1605,14 +1605,14 @@ export default function AutomationRulesManual() {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-100 p-4 rounded-lg mt-4">
+            <div className="bg-muted/50 p-4 rounded-lg mt-4">
               <h4 className="font-semibold mb-2">📞 Soporte Técnico</h4>
               <p className="text-sm text-muted-foreground">
                 Para problemas técnicos avanzados, contacte al equipo de soporte
                 en
                 <Link
                   href="/help/support/ticket"
-                  className="text-blue-600 underline"
+                  className="text-[hsl(var(--info))] underline"
                 >
                   Crear Ticket de Soporte
                 </Link>
@@ -1623,29 +1623,29 @@ export default function AutomationRulesManual() {
         </Card>
 
         {/* ── TEST GUIDE ─────────────────────────────────────── */}
-        <Card className="border-indigo-200 bg-indigo-50">
+        <Card className="border-primary/20 bg-primary/[0.06]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-indigo-900">
-              <CheckCircle2 className="h-5 w-5 text-indigo-600" />
+            <CardTitle className="flex items-center gap-2 text-foreground">
+              <CheckCircle2 className="h-5 w-5 text-primary" />
               Guía de Pruebas — Verificar que las Automatizaciones Funcionan
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <p className="text-sm text-indigo-800">
+            <p className="text-sm text-primary">
               Use esta guía para confirmar que cada automatización está
               funcionando correctamente en producción. Siga los pasos en orden y
               verifique el resultado esperado.
             </p>
 
             {/* Test 1 */}
-            <div className="bg-white rounded-lg border border-indigo-200 p-4">
-              <h4 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
-                <span className="bg-indigo-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
+            <div className="bg-white rounded-lg border border-primary/20 p-4">
+              <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                <span className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
                 Prueba: Petición de Oración Sección A (Normal / 1 hora)
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <span className="font-bold text-indigo-700 whitespace-nowrap">Pasos:</span>
+                  <span className="font-bold text-primary whitespace-nowrap">Pasos:</span>
                   <ol className="space-y-1 text-muted-foreground list-decimal ml-4">
                     <li>Vaya a <strong>Peticiones de Oración</strong> → formulario público o link directo</li>
                     <li>Seleccione una categoría asignada a <strong>Sección A</strong></li>
@@ -1654,7 +1654,7 @@ export default function AutomationRulesManual() {
                   </ol>
                 </div>
                 <div className="flex items-start gap-2 mt-2">
-                  <span className="font-bold text-green-700 whitespace-nowrap">Resultado esperado:</span>
+                  <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
                     <li>✅ Email de confirmación enviado al solicitante (si tiene email)</li>
                     <li>✅ Registro de petición creado en Dashboard de Oración</li>
@@ -1666,14 +1666,14 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 2 */}
-            <div className="bg-white rounded-lg border border-indigo-200 p-4">
-              <h4 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
-                <span className="bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
+            <div className="bg-white rounded-lg border border-primary/20 p-4">
+              <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                <span className="bg-[hsl(var(--warning)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
                 Prueba: Petición de Oración Sección B (Alta / 4 horas)
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <span className="font-bold text-indigo-700 whitespace-nowrap">Pasos:</span>
+                  <span className="font-bold text-primary whitespace-nowrap">Pasos:</span>
                   <ol className="space-y-1 text-muted-foreground list-decimal ml-4">
                     <li>Repita el formulario de oración eligiendo una categoría de <strong>Sección B</strong></li>
                     <li>Incluya un número de teléfono válido en el campo de teléfono</li>
@@ -1681,7 +1681,7 @@ export default function AutomationRulesManual() {
                   </ol>
                 </div>
                 <div className="flex items-start gap-2 mt-2">
-                  <span className="font-bold text-green-700 whitespace-nowrap">Resultado esperado:</span>
+                  <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
                     <li>✅ Email de confirmación enviado</li>
                     <li>✅ <strong>WhatsApp enviado al pastor</strong> con información de la petición</li>
@@ -1692,14 +1692,14 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 3 */}
-            <div className="bg-white rounded-lg border border-red-200 p-4">
-              <h4 className="font-semibold text-red-900 mb-3 flex items-center gap-2">
-                <span className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</span>
+            <div className="bg-white rounded-lg border border-[hsl(var(--destructive)/0.3)] p-4">
+              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-3 flex items-center gap-2">
+                <span className="bg-[hsl(var(--destructive))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</span>
                 Prueba: Petición de Oración Sección C (Urgente / 10 minutos)
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <span className="font-bold text-red-700 whitespace-nowrap">Pasos:</span>
+                  <span className="font-bold text-[hsl(var(--destructive))] whitespace-nowrap">Pasos:</span>
                   <ol className="space-y-1 text-muted-foreground list-decimal ml-4">
                     <li>Seleccione una categoría de <strong>Sección C</strong> (Crisis/Emergencia)</li>
                     <li>Incluya teléfono y email</li>
@@ -1707,7 +1707,7 @@ export default function AutomationRulesManual() {
                   </ol>
                 </div>
                 <div className="flex items-start gap-2 mt-2">
-                  <span className="font-bold text-green-700 whitespace-nowrap">Resultado esperado:</span>
+                  <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
                     <li>✅ WhatsApp urgente enviado al pastor <strong>en menos de 10 minutos</strong></li>
                     <li>✅ Modo 24/7 activo — llega aunque sea fuera de horario</li>
@@ -1718,14 +1718,14 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 4 */}
-            <div className="bg-white rounded-lg border border-indigo-200 p-4">
-              <h4 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
-                <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</span>
+            <div className="bg-white rounded-lg border border-primary/20 p-4">
+              <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                <span className="bg-[hsl(var(--info))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</span>
                 Prueba: Pausar y Reactivar una Regla
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <span className="font-bold text-indigo-700 whitespace-nowrap">Pasos:</span>
+                  <span className="font-bold text-primary whitespace-nowrap">Pasos:</span>
                   <ol className="space-y-1 text-muted-foreground list-decimal ml-4">
                     <li>Vaya a <strong>Reglas de Automatización → Mis Reglas</strong></li>
                     <li>Haga clic en <strong>Pausar</strong> en cualquier regla activa</li>
@@ -1736,7 +1736,7 @@ export default function AutomationRulesManual() {
                   </ol>
                 </div>
                 <div className="flex items-start gap-2 mt-2">
-                  <span className="font-bold text-green-700 whitespace-nowrap">Resultado esperado:</span>
+                  <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
                     <li>✅ Badge cambia entre <strong>Activa</strong> e <strong>Inactiva</strong> sin error</li>
                     <li>✅ La regla pausada NO dispara automatizaciones</li>
@@ -1747,14 +1747,14 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 5 */}
-            <div className="bg-white rounded-lg border border-indigo-200 p-4">
-              <h4 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
-                <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">5</span>
+            <div className="bg-white rounded-lg border border-primary/20 p-4">
+              <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                <span className="bg-[hsl(var(--lavender))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">5</span>
                 Prueba: Editar una Regla Existente
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <span className="font-bold text-indigo-700 whitespace-nowrap">Pasos:</span>
+                  <span className="font-bold text-primary whitespace-nowrap">Pasos:</span>
                   <ol className="space-y-1 text-muted-foreground list-decimal ml-4">
                     <li>Haga clic en <strong>Editar</strong> en cualquier regla</li>
                     <li>Cambie el nombre de la regla</li>
@@ -1762,7 +1762,7 @@ export default function AutomationRulesManual() {
                   </ol>
                 </div>
                 <div className="flex items-start gap-2 mt-2">
-                  <span className="font-bold text-green-700 whitespace-nowrap">Resultado esperado:</span>
+                  <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
                     <li>✅ El nombre actualizado aparece en la lista inmediatamente</li>
                     <li>✅ No aparece mensaje de error rojo</li>
@@ -1772,14 +1772,14 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 6 */}
-            <div className="bg-white rounded-lg border border-indigo-200 p-4">
-              <h4 className="font-semibold text-indigo-900 mb-3 flex items-center gap-2">
-                <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">6</span>
+            <div className="bg-white rounded-lg border border-primary/20 p-4">
+              <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                <span className="bg-[hsl(var(--success))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">6</span>
                 Prueba: Personalizar Icono y Color de Plantilla
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <span className="font-bold text-indigo-700 whitespace-nowrap">Pasos:</span>
+                  <span className="font-bold text-primary whitespace-nowrap">Pasos:</span>
                   <ol className="space-y-1 text-muted-foreground list-decimal ml-4">
                     <li>Vaya a la pestaña <strong>Plantillas</strong></li>
                     <li>Haga clic en el icono de lápiz (<Pencil className="inline h-3 w-3" />) en cualquier plantilla</li>
@@ -1790,7 +1790,7 @@ export default function AutomationRulesManual() {
                   </ol>
                 </div>
                 <div className="flex items-start gap-2 mt-2">
-                  <span className="font-bold text-green-700 whitespace-nowrap">Resultado esperado:</span>
+                  <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
                     <li>✅ La tarjeta muestra el nuevo icono seleccionado</li>
                     <li>✅ El fondo de la tarjeta refleja el nuevo color</li>
@@ -1802,9 +1802,9 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Checklist summary */}
-            <div className="bg-indigo-100 rounded-lg p-4 border border-indigo-300">
-              <h4 className="font-semibold text-indigo-900 mb-3">Lista de Verificación Rápida</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-indigo-800">
+            <div className="bg-primary/[0.12] rounded-lg p-4 border border-primary/30">
+              <h4 className="font-semibold text-foreground mb-3">Lista de Verificación Rápida</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-primary">
                 {[
                   "Sección A → Email confirmación ✓",
                   "Sección B → Email + WhatsApp pastor ✓",
@@ -1818,7 +1818,7 @@ export default function AutomationRulesManual() {
                   "Agregar/eliminar acciones → guardado ✓",
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-indigo-600 flex-shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
                     <span>{item}</span>
                   </div>
                 ))}

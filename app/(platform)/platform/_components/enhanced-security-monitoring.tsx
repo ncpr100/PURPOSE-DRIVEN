@@ -154,10 +154,10 @@ export default function EnhancedSecurityMonitoring() {
 
   const getThreatLevelColor = (level: string) => {
     switch (level) {
-      case 'CRITICAL': return 'text-red-600 bg-red-100'
-      case 'HIGH': return 'text-orange-600 bg-orange-100'
-      case 'MEDIUM': return 'text-yellow-600 bg-yellow-100'
-      default: return 'text-green-600 bg-green-100'
+      case 'CRITICAL': return 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.15)]'
+      case 'HIGH': return 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.15)]'
+      case 'MEDIUM': return 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.15)]'
+      default: return 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.15)]'
     }
   }
 
@@ -172,9 +172,9 @@ export default function EnhancedSecurityMonitoring() {
 
   const getResultIcon = (result: string) => {
     switch (result) {
-      case 'SUCCESS': return <CheckCircle className="h-4 w-4 text-green-600" />
-      case 'FAILURE': return <XCircle className="h-4 w-4 text-red-600" />
-      case 'BLOCKED': return <Ban className="h-4 w-4 text-orange-600" />
+      case 'SUCCESS': return <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
+      case 'FAILURE': return <XCircle className="h-4 w-4 text-[hsl(var(--destructive))]" />
+      case 'BLOCKED': return <Ban className="h-4 w-4 text-[hsl(var(--warning))]" />
       default: return <Activity className="h-4 w-4" />
     }
   }
@@ -182,7 +182,7 @@ export default function EnhancedSecurityMonitoring() {
   if (isLoading && !securityData) {
     return (
       <div className="flex items-center justify-center h-64">
-        <RefreshCw className="h-8 w-8 animate-spin text-purple-600" />
+        <RefreshCw className="h-8 w-8 animate-spin text-[hsl(var(--lavender))]" />
         <span className="ml-2 text-lg">Cargando métricas de seguridad...</span>
       </div>
     )
@@ -196,7 +196,7 @@ export default function EnhancedSecurityMonitoring() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold flex items-center">
-            <Shield className="h-7 w-7 mr-2 text-blue-600" />
+            <Shield className="h-7 w-7 mr-2 text-[hsl(var(--info))]" />
             Centro de Seguridad Avanzado
           </h2>
           <p className="text-muted-foreground">
@@ -226,13 +226,13 @@ export default function EnhancedSecurityMonitoring() {
 
       {/* Security Score Overview */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-800">Puntuación General</CardTitle>
-            <Shield className="h-4 w-4 text-blue-600" />
+            <CardTitle className="text-sm font-medium text-[hsl(var(--info))]">Puntuación General</CardTitle>
+            <Shield className="h-4 w-4 text-[hsl(var(--info))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-[hsl(var(--info))]">
               {securityData.overallScore}%
             </div>
             <Progress value={securityData.overallScore} className="w-full mt-2" />
@@ -257,10 +257,10 @@ export default function EnhancedSecurityMonitoring() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Vulnerabilidades</CardTitle>
-            <Activity className="h-4 w-4 text-red-600" />
+            <Activity className="h-4 w-4 text-[hsl(var(--destructive))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
               {securityData.vulnerabilities.critical + securityData.vulnerabilities.high}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -272,10 +272,10 @@ export default function EnhancedSecurityMonitoring() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Incidentes Activos</CardTitle>
-            <Eye className="h-4 w-4 text-orange-600" />
+            <Eye className="h-4 w-4 text-[hsl(var(--warning))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">
+            <div className="text-2xl font-bold text-[hsl(var(--warning))]">
               {securityData.recentIncidents.filter(i => !i.resolved).length}
             </div>
             <p className="text-xs text-muted-foreground">Requieren atención</p>
@@ -285,9 +285,9 @@ export default function EnhancedSecurityMonitoring() {
 
       {/* Critical Alerts */}
       {securityData.recentIncidents.filter(i => !i.resolved && i.severity === 'CRITICAL').length > 0 && (
-        <Alert className="border-red-200 bg-red-50">
+        <Alert className="border-[hsl(var(--destructive)/0.3)] bg-[hsl(var(--destructive)/0.10)]">
           <AlertTriangle className="h-4 w-4" />
-          <AlertDescription className="text-red-800">
+          <AlertDescription className="text-[hsl(var(--destructive))]">
             <strong>ALERTA CRÍTICA:</strong> Hay {securityData.recentIncidents.filter(i => !i.resolved && i.severity === 'CRITICAL').length} incidentes críticos que requieren atención inmediata.
           </AlertDescription>
         </Alert>
@@ -350,20 +350,20 @@ export default function EnhancedSecurityMonitoring() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-green-600">Exitosos</span>
-                  <span className="font-bold text-green-600">{securityData.accessAttempts.successful}</span>
+                  <span className="text-[hsl(var(--success))]">Exitosos</span>
+                  <span className="font-bold text-[hsl(var(--success))]">{securityData.accessAttempts.successful}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-red-600">Fallidos</span>
-                  <span className="font-bold text-red-600">{securityData.accessAttempts.failed}</span>
+                  <span className="text-[hsl(var(--destructive))]">Fallidos</span>
+                  <span className="font-bold text-[hsl(var(--destructive))]">{securityData.accessAttempts.failed}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-orange-600">Bloqueados</span>
-                  <span className="font-bold text-orange-600">{securityData.accessAttempts.blocked}</span>
+                  <span className="text-[hsl(var(--warning))]">Bloqueados</span>
+                  <span className="font-bold text-[hsl(var(--warning))]">{securityData.accessAttempts.blocked}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-yellow-600">Sospechosos</span>
-                  <span className="font-bold text-yellow-600">{securityData.accessAttempts.suspicious}</span>
+                  <span className="text-[hsl(var(--warning))]">Sospechosos</span>
+                  <span className="font-bold text-[hsl(var(--warning))]">{securityData.accessAttempts.suspicious}</span>
                 </div>
               </CardContent>
             </Card>
@@ -377,29 +377,29 @@ export default function EnhancedSecurityMonitoring() {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-                  <div className="text-2xl font-bold text-red-600">
+                <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg border border-[hsl(var(--destructive)/0.3)]">
+                  <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
                     {securityData.vulnerabilities.critical}
                   </div>
-                  <p className="text-sm text-red-700">Críticas</p>
+                  <p className="text-sm text-[hsl(var(--destructive))]">Críticas</p>
                 </div>
-                <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                  <div className="text-2xl font-bold text-orange-600">
+                <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
+                  <div className="text-2xl font-bold text-[hsl(var(--warning))]">
                     {securityData.vulnerabilities.high}
                   </div>
-                  <p className="text-sm text-orange-700">Altas</p>
+                  <p className="text-sm text-[hsl(var(--warning))]">Altas</p>
                 </div>
-                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                  <div className="text-2xl font-bold text-yellow-600">
+                <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
+                  <div className="text-2xl font-bold text-[hsl(var(--warning))]">
                     {securityData.vulnerabilities.medium}
                   </div>
-                  <p className="text-sm text-yellow-700">Medias</p>
+                  <p className="text-sm text-[hsl(var(--warning))]">Medias</p>
                 </div>
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <div className="text-2xl font-bold text-blue-600">
+                <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
+                  <div className="text-2xl font-bold text-[hsl(var(--info))]">
                     {securityData.vulnerabilities.low}
                   </div>
-                  <p className="text-sm text-blue-700">Bajas</p>
+                  <p className="text-sm text-[hsl(var(--info))]">Bajas</p>
                 </div>
               </div>
               
@@ -430,8 +430,8 @@ export default function EnhancedSecurityMonitoring() {
                 {securityData.recentIncidents.map((incident) => (
                   <div key={incident.id} className={cn(
                     "flex items-center justify-between p-4 border rounded-lg",
-                    !incident.resolved && incident.severity === 'CRITICAL' && "border-red-200 bg-red-50",
-                    !incident.resolved && incident.severity === 'HIGH' && "border-orange-200 bg-orange-50"
+                    !incident.resolved && incident.severity === 'CRITICAL' && "border-[hsl(var(--destructive)/0.3)] bg-[hsl(var(--destructive)/0.10)]",
+                    !incident.resolved && incident.severity === 'HIGH' && "border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]"
                   )}>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -451,7 +451,7 @@ export default function EnhancedSecurityMonitoring() {
                     </div>
                     <div className="flex items-center gap-2">
                       {incident.resolved ? (
-                        <Badge variant="outline" className="text-green-600">
+                        <Badge variant="outline" className="text-[hsl(var(--success))]">
                           <CheckCircle className="h-3 w-3 mr-1" />
                           Resuelto
                         </Badge>
@@ -498,21 +498,21 @@ export default function EnhancedSecurityMonitoring() {
                 <div>
                   <h4 className="font-medium mb-3">Estadísticas de Acceso (24h)</h4>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 bg-green-50 rounded">
-                      <span className="text-green-800">Accesos Exitosos</span>
-                      <span className="font-bold text-green-600">{securityData.accessAttempts.successful}</span>
+                    <div className="flex items-center justify-between p-3 bg-[hsl(var(--success)/0.10)] rounded">
+                      <span className="text-[hsl(var(--success))]">Accesos Exitosos</span>
+                      <span className="font-bold text-[hsl(var(--success))]">{securityData.accessAttempts.successful}</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-red-50 rounded">
-                      <span className="text-red-800">Intentos Fallidos</span>
-                      <span className="font-bold text-red-600">{securityData.accessAttempts.failed}</span>
+                    <div className="flex items-center justify-between p-3 bg-[hsl(var(--destructive)/0.10)] rounded">
+                      <span className="text-[hsl(var(--destructive))]">Intentos Fallidos</span>
+                      <span className="font-bold text-[hsl(var(--destructive))]">{securityData.accessAttempts.failed}</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-orange-50 rounded">
-                      <span className="text-orange-800">IPs Bloqueadas</span>
-                      <span className="font-bold text-orange-600">{securityData.accessAttempts.blocked}</span>
+                    <div className="flex items-center justify-between p-3 bg-[hsl(var(--warning)/0.10)] rounded">
+                      <span className="text-[hsl(var(--warning))]">IPs Bloqueadas</span>
+                      <span className="font-bold text-[hsl(var(--warning))]">{securityData.accessAttempts.blocked}</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-yellow-50 rounded">
-                      <span className="text-yellow-800">Actividad Sospechosa</span>
-                      <span className="font-bold text-yellow-600">{securityData.accessAttempts.suspicious}</span>
+                    <div className="flex items-center justify-between p-3 bg-[hsl(var(--warning)/0.10)] rounded">
+                      <span className="text-[hsl(var(--warning))]">Actividad Sospechosa</span>
+                      <span className="font-bold text-[hsl(var(--warning))]">{securityData.accessAttempts.suspicious}</span>
                     </div>
                   </div>
                 </div>

@@ -196,7 +196,7 @@ export default function SpiritualGiftsManagement() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -206,7 +206,7 @@ export default function SpiritualGiftsManagement() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Brain className="h-8 w-8 text-blue-600" />
+            <Brain className="h-8 w-8 text-[hsl(var(--info))]" />
             Gestión de Dones Espirituales
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -218,7 +218,7 @@ export default function SpiritualGiftsManagement() {
       {/* Search */}
       <div className="flex items-center gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 h-4 w-4" />
           <Input
             placeholder="Buscar miembros..."
             value={searchTerm}
@@ -386,11 +386,11 @@ export default function SpiritualGiftsManagement() {
         <TabsContent value="with-profile">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {membersWithProfiles.map((member) => (
-              <Card key={member.id} className="hover:shadow-lg transition-shadow border-green-200">
+              <Card key={member.id} className="hover:shadow-lg transition-shadow border-[hsl(var(--success)/0.3)]">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     {member.firstName} {member.lastName}
-                    <Badge variant="default" className="bg-green-100 text-green-800">
+                    <Badge variant="default" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                       Completado
                     </Badge>
                   </CardTitle>
@@ -445,11 +445,11 @@ export default function SpiritualGiftsManagement() {
         <TabsContent value="without-profile">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {membersWithoutProfiles.map((member) => (
-              <Card key={member.id} className="hover:shadow-lg transition-shadow border-orange-200">
+              <Card key={member.id} className="hover:shadow-lg transition-shadow border-[hsl(var(--warning)/0.3)]">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     {member.firstName} {member.lastName}
-                    <Badge variant="outline" className="bg-orange-100 text-orange-800">
+                    <Badge variant="outline" className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">
                       Pendiente
                     </Badge>
                   </CardTitle>

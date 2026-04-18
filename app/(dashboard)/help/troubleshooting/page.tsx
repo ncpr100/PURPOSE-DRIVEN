@@ -16,7 +16,7 @@ export default function ComprehensiveTroubleshootingGuide() {
   return (
     <div className="container mx-auto p-6 max-w-7xl space-y-8">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white p-8 rounded-lg">
+      <div className="bg-[hsl(var(--destructive))] text-foreground p-8 rounded-lg">
         <div className="flex items-center gap-4">
           <AlertTriangle className="h-12 w-12" />
           <div>
@@ -39,8 +39,8 @@ export default function ComprehensiveTroubleshootingGuide() {
       </div>
 
       {/* Quick Search */}
-      <Card className="border-blue-300">
-        <CardHeader className="bg-blue-50">
+      <Card className="border-[hsl(var(--info)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--info)/0.10)]">
           <CardTitle className="flex items-center gap-3">
             <Search className="h-6 w-6" />
             Búsqueda Rápida de Problemas
@@ -50,18 +50,18 @@ export default function ComprehensiveTroubleshootingGuide() {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
-          <div className="bg-white p-4 rounded-lg border-2 border-gray-200">
+          <div className="bg-white p-4 rounded-lg border-2 border-border">
             <input
               type="text"
               placeholder="Ejemplo: 'no puedo iniciar sesión', 'el email no llega', 'error al guardar miembro'..."
               className="w-full p-3 text-lg border-none focus:outline-none"
             />
             <div className="mt-3 flex gap-3 flex-wrap">
-              <Badge className="cursor-pointer hover:bg-blue-700">No puedo iniciar sesión</Badge>
-              <Badge variant="outline" className="cursor-pointer hover:bg-gray-100">Emails no llegan</Badge>
-              <Badge variant="outline" className="cursor-pointer hover:bg-gray-100">Error al guardar</Badge>
-              <Badge variant="outline" className="cursor-pointer hover:bg-gray-100">Página en blanco</Badge>
-              <Badge variant="outline" className="cursor-pointer hover:bg-gray-100">Lento el sistema</Badge>
+              <Badge className="cursor-pointer hover:bg-[hsl(var(--info))]">No puedo iniciar sesión</Badge>
+              <Badge variant="outline" className="cursor-pointer hover:bg-muted/50">Emails no llegan</Badge>
+              <Badge variant="outline" className="cursor-pointer hover:bg-muted/50">Error al guardar</Badge>
+              <Badge variant="outline" className="cursor-pointer hover:bg-muted/50">Página en blanco</Badge>
+              <Badge variant="outline" className="cursor-pointer hover:bg-muted/50">Lento el sistema</Badge>
             </div>
           </div>
         </CardContent>
@@ -109,7 +109,7 @@ export default function ComprehensiveTroubleshootingGuide() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Lock className="h-6 w-6 text-red-600" />
+                <Lock className="h-6 w-6 text-[hsl(var(--destructive))]" />
                 Problemas de Inicio de Sesión y Contraseñas
               </CardTitle>
             </CardHeader>
@@ -243,32 +243,32 @@ export default function ComprehensiveTroubleshootingGuide() {
                   prevention: "No uses 'modo incógnito' - las sesiones no se guardan ahí"
                 }
               ].map((item, index) => (
-                <Card key={index} className={`border-l-4 ${item.severity === 'high' ? 'border-l-red-500 bg-red-50' : item.severity === 'medium' ? 'border-l-orange-500 bg-orange-50' : 'border-l-yellow-500 bg-yellow-50'}`}>
+                <Card key={index} className={`border-l-4 ${item.severity === 'high' ? 'border-l-red-500 bg-[hsl(var(--destructive)/0.10)]' : item.severity === 'medium' ? 'border-l-orange-500 bg-[hsl(var(--warning)/0.10)]' : 'border-l-yellow-500 bg-[hsl(var(--warning)/0.10)]'}`}>
                   <CardContent className="pt-4">
                     <div className="flex items-start gap-3 mb-4">
-                      <XCircle className="h-6 w-6 text-red-600 flex-shrink-0 mt-0.5" />
+                      <XCircle className="h-6 w-6 text-[hsl(var(--destructive))] flex-shrink-0 mt-0.5" />
                       <div className="flex-1">
                         <h4 className="font-semibold text-lg mb-1">{item.problem}</h4>
-                        <Badge className={item.severity === 'high' ? 'bg-red-600' : item.severity === 'medium' ? 'bg-orange-600' : 'bg-yellow-600'}>
+                        <Badge className={item.severity === 'high' ? 'bg-[hsl(var(--destructive))]' : item.severity === 'medium' ? 'bg-[hsl(var(--warning))]' : 'bg-[hsl(var(--warning))]'}>
                           {item.severity === 'high' ? 'Urgente' : item.severity === 'medium' ? 'Común' : 'Ocasional'}
                         </Badge>
                       </div>
                     </div>
 
                     <div className="bg-white p-4 rounded-lg mb-3">
-                      <h5 className="font-semibold text-sm text-green-800 mb-3 flex items-center gap-2">
+                      <h5 className="font-semibold text-sm text-[hsl(var(--success))] mb-3 flex items-center gap-2">
                         <CheckCircle className="h-5 w-5" />
                         Solución Paso a Paso:
                       </h5>
                       <div className="space-y-3">
                         {item.solutions.map((solution, idx) => (
                           <div key={idx} className="flex items-start gap-3">
-                            <div className="bg-green-100 text-green-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                            <div className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                               {idx + 1}
                             </div>
                             <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-800">{solution.step}</p>
-                              <p className="text-xs text-gray-600 mt-1 italic">{solution.detail}</p>
+                              <p className="text-sm font-medium text-foreground">{solution.step}</p>
+                              <p className="text-xs text-muted-foreground mt-1 italic">{solution.detail}</p>
                             </div>
                           </div>
                         ))}
@@ -276,11 +276,11 @@ export default function ComprehensiveTroubleshootingGuide() {
                     </div>
 
                     {item.prevention && (
-                      <div className="bg-blue-50 p-3 rounded-lg">
-                        <p className="text-xs font-medium text-blue-800 mb-1">
+                      <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded-lg">
+                        <p className="text-xs font-medium text-[hsl(var(--info))] mb-1">
                           🛡️ Cómo Prevenir Este Problema:
                         </p>
-                        <p className="text-xs text-blue-700">{item.prevention}</p>
+                        <p className="text-xs text-[hsl(var(--info))]">{item.prevention}</p>
                       </div>
                     )}
                   </CardContent>
@@ -295,7 +295,7 @@ export default function ComprehensiveTroubleshootingGuide() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Users className="h-6 w-6 text-blue-600" />
+                <Users className="h-6 w-6 text-[hsl(var(--info))]" />
                 Problemas con Gestión de Miembros
               </CardTitle>
             </CardHeader>
@@ -356,16 +356,16 @@ export default function ComprehensiveTroubleshootingGuide() {
                 <Card key={index} className="border-l-4 border-l-blue-500">
                   <CardContent className="pt-4">
                     <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                      <AlertCircle className="h-5 w-5 text-orange-600" />
+                      <AlertCircle className="h-5 w-5 text-[hsl(var(--warning))]" />
                       {item.problem}
                     </h4>
-                    <div className="bg-green-50 p-4 rounded-lg">
-                      <p className="font-medium text-sm text-green-800 mb-2">✅ Soluciones:</p>
+                    <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
+                      <p className="font-medium text-sm text-[hsl(var(--success))] mb-2">✅ Soluciones:</p>
                       <ul className="space-y-2 text-sm">
                         {item.solutions.map((solution, idx) => (
                           <li key={idx} className="flex items-start gap-2">
-                            <span className="text-green-600 font-bold flex-shrink-0">{idx + 1}.</span>
-                            <span className="text-gray-700">{solution}</span>
+                            <span className="text-[hsl(var(--success))] font-bold flex-shrink-0">{idx + 1}.</span>
+                            <span className="text-muted-foreground">{solution}</span>
                           </li>
                         ))}
                       </ul>
@@ -382,7 +382,7 @@ export default function ComprehensiveTroubleshootingGuide() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Mail className="h-6 w-6 text-purple-600" />
+                <Mail className="h-6 w-6 text-[hsl(var(--lavender))]" />
                 Problemas con Emails y SMS
               </CardTitle>
             </CardHeader>
@@ -445,8 +445,8 @@ export default function ComprehensiveTroubleshootingGuide() {
                   <CardContent className="pt-4">
                     <h4 className="font-semibold text-lg mb-2">{item.problem}</h4>
                     {item.quickFix && (
-                      <div className="bg-yellow-100 border-l-4 border-yellow-500 p-3 mb-3">
-                        <p className="text-sm font-medium text-yellow-900">
+                      <div className="bg-[hsl(var(--warning)/0.15)] border-l-4 border-[hsl(var(--warning)/0.30)] p-3 mb-3">
+                        <p className="text-sm font-medium text-[hsl(var(--warning))]">
                           ⚡ Solución Rápida: {item.quickFix}
                         </p>
                       </div>
@@ -454,7 +454,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                     <div className="space-y-2">
                       {item.solutions.map((solution, idx) => (
                         <div key={idx} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                          <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                           <span>{solution}</span>
                         </div>
                       ))}
@@ -471,7 +471,7 @@ export default function ComprehensiveTroubleshootingGuide() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Zap className="h-6 w-6 text-yellow-600" />
+                <Zap className="h-6 w-6 text-[hsl(var(--warning))]" />
                 Problemas de Rendimiento y Velocidad
               </CardTitle>
             </CardHeader>
@@ -554,21 +554,21 @@ export default function ComprehensiveTroubleshootingGuide() {
                   <CardContent className="pt-4">
                     <div className="flex items-start justify-between mb-4">
                       <h4 className="font-semibold text-lg">{item.problem}</h4>
-                      <Badge className={item.impact === 'Crítico' ? 'bg-red-600' : item.impact.includes('Alto') ? 'bg-orange-600' : 'bg-yellow-600'}>
+                      <Badge className={item.impact === 'Crítico' ? 'bg-[hsl(var(--destructive))]' : item.impact.includes('Alto') ? 'bg-[hsl(var(--warning))]' : 'bg-[hsl(var(--warning))]'}>
                         {item.impact}
                       </Badge>
                     </div>
                     <div className="space-y-4">
                       {item.solutions.map((category, idx) => (
-                        <div key={idx} className="bg-gray-50 p-4 rounded-lg">
-                          <h5 className="font-semibold text-sm text-gray-800 mb-3">
+                        <div key={idx} className="bg-muted/30 p-4 rounded-lg">
+                          <h5 className="font-semibold text-sm text-foreground mb-3">
                             {category.category}:
                           </h5>
                           <ul className="space-y-2">
                             {category.steps.map((step, sidx) => (
                               <li key={sidx} className="flex items-start gap-2 text-sm">
-                                <span className="text-yellow-600 font-bold">{sidx + 1}.</span>
-                                <span className="text-gray-700">{step}</span>
+                                <span className="text-[hsl(var(--warning))] font-bold">{sidx + 1}.</span>
+                                <span className="text-muted-foreground">{step}</span>
                               </li>
                             ))}
                           </ul>
@@ -584,9 +584,9 @@ export default function ComprehensiveTroubleshootingGuide() {
       </Tabs>
 
       {/* Emergency Contact */}
-      <Card className="border-red-500 border-2 bg-red-50">
+      <Card className="border-[hsl(var(--destructive))] border-2 bg-[hsl(var(--destructive)/0.10)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-900">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <Shield className="h-6 w-6" />
             ¿No Encontraste la Solución?
           </CardTitle>
@@ -596,9 +596,9 @@ export default function ComprehensiveTroubleshootingGuide() {
             <Link href="/help/support/ticket">
               <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
                 <CardContent className="pt-6 text-center">
-                  <MessageSquare className="h-10 w-10 text-blue-600 mx-auto mb-3" />
+                  <MessageSquare className="h-10 w-10 text-[hsl(var(--info))] mx-auto mb-3" />
                   <h4 className="font-semibold mb-2">Crear Ticket de Soporte</h4>
-                  <p className="text-sm text-gray-600 mb-3">Respuesta en 24 horas</p>
+                  <p className="text-sm text-muted-foreground mb-3">Respuesta en 24 horas</p>
                   <Button size="sm" className="w-full">Abrir Ticket</Button>
                 </CardContent>
               </Card>
@@ -607,9 +607,9 @@ export default function ComprehensiveTroubleshootingGuide() {
             <Link href="/help/videos">
               <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
                 <CardContent className="pt-6 text-center">
-                  <Video className="h-10 w-10 text-red-600 mx-auto mb-3" />
+                  <Video className="h-10 w-10 text-[hsl(var(--destructive))] mx-auto mb-3" />
                   <h4 className="font-semibold mb-2">Ver Video Tutoriales</h4>
-                  <p className="text-sm text-gray-600 mb-3">Aprende visualmente</p>
+                  <p className="text-sm text-muted-foreground mb-3">Aprende visualmente</p>
                   <Button size="sm" variant="outline" className="w-full">Ver Videos</Button>
                 </CardContent>
               </Card>
@@ -618,9 +618,9 @@ export default function ComprehensiveTroubleshootingGuide() {
             <Link href="/help/manual/complete-onboarding-guide">
               <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
                 <CardContent className="pt-6 text-center">
-                  <Book className="h-10 w-10 text-green-600 mx-auto mb-3" />
+                  <Book className="h-10 w-10 text-[hsl(var(--success))] mx-auto mb-3" />
                   <h4 className="font-semibold mb-2">Guía Completa</h4>
-                  <p className="text-sm text-gray-600 mb-3">Manual paso a paso</p>
+                  <p className="text-sm text-muted-foreground mb-3">Manual paso a paso</p>
                   <Button size="sm" variant="outline" className="w-full">Leer Manual</Button>
                 </CardContent>
               </Card>
@@ -629,19 +629,19 @@ export default function ComprehensiveTroubleshootingGuide() {
 
           <div className="mt-6 bg-white p-4 rounded-lg">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <Phone className="h-5 w-5 text-green-600" />
+              <Phone className="h-5 w-5 text-[hsl(var(--success))]" />
               Contacto de Emergencia (24/7)
             </h4>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-gray-600 mb-1">📧 Email de Soporte:</p>
-                <a href="mailto:soporte@khesed-tek-systems.org" className="text-blue-600 hover:underline font-medium">
+                <p className="text-muted-foreground mb-1">📧 Email de Soporte:</p>
+                <a href="mailto:soporte@khesed-tek-systems.org" className="text-[hsl(var(--info))] hover:underline font-medium">
                   soporte@khesed-tek-systems.org
                 </a>
               </div>
               <div>
-                <p className="text-gray-600 mb-1">💬 WhatsApp:</p>
-                <a href="https://wa.me/573021234410" className="text-green-600 hover:underline font-medium flex items-center gap-1">
+                <p className="text-muted-foreground mb-1">💬 WhatsApp:</p>
+                <a href="https://wa.me/573021234410" className="text-[hsl(var(--success))] hover:underline font-medium flex items-center gap-1">
                   +57 302 123 4410 <ExternalLink className="h-3 w-3" />
                 </a>
               </div>
@@ -651,27 +651,27 @@ export default function ComprehensiveTroubleshootingGuide() {
       </Card>
 
       {/* System Status */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50">
+      <Card className="bg-[hsl(var(--success)/0.08)]">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Activity className="h-6 w-6 text-green-600" />
+            <Activity className="h-6 w-6 text-[hsl(var(--success))]" />
             Estado del Sistema
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-[hsl(var(--success)/0.10)]0 rounded-full animate-pulse"></div>
               <div>
                 <p className="font-semibold">Todos los Sistemas Operacionales</p>
-                <p className="text-sm text-gray-600">Última verificación: Hace 2 minutos</p>
+                <p className="text-sm text-muted-foreground">Última verificación: Hace 2 minutos</p>
               </div>
             </div>
             <a 
               href="https://khesed-tek-systems.org/status" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-blue-600 hover:underline"
+              className="flex items-center gap-2 text-[hsl(var(--info))] hover:underline"
             >
               Ver Estado Completo <ExternalLink className="h-4 w-4" />
             </a>

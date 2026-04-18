@@ -22,7 +22,7 @@ export interface SentinelReport {
 }
 
 export async function runCoverageSentinel(
-  churchId: string
+  churchId: string,
 ): Promise<SentinelReport> {
   if (process.env.ENABLE_VOLUNTEER_COVERAGE !== "true") {
     return {
@@ -37,9 +37,7 @@ export async function runCoverageSentinel(
 
   const now = new Date();
   const sevenDaysLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-  const fortyEightHoursLater = new Date(
-    now.getTime() + 48 * 60 * 60 * 1000
-  );
+  const fortyEightHoursLater = new Date(now.getTime() + 48 * 60 * 60 * 1000);
 
   // Get all volunteer assignments for events in the next 7 days.
   // volunteer_assignments.date is the assignment date (matches startDate range).
@@ -82,8 +80,7 @@ export async function runCoverageSentinel(
     const volunteerId = assignment.volunteers.id;
     // Use the linked event id if present, otherwise fall back to assignment id
     const eventId = assignment.events?.id ?? assignment.id;
-    const eventTitle =
-      assignment.events?.title ?? assignment.title;
+    const eventTitle = assignment.events?.title ?? assignment.title;
     const eventDate = assignment.events?.startDate ?? assignment.date;
     const isWithin48h = eventDate <= fortyEightHoursLater;
     const volunteerName = `${assignment.volunteers.firstName} ${assignment.volunteers.lastName}`;
@@ -146,7 +143,7 @@ export async function runCoverageSentinel(
 
       await alertPastor(
         churchId,
-        `COBERTURA: ${volunteerName} (${role}) el ${eventDate.toLocaleDateString("es-CO")} no tiene suplente asignado.`
+        `COBERTURA: ${volunteerName} (${role}) el ${eventDate.toLocaleDateString("es-CO")} no tiene suplente asignado.`,
       );
     } else if (isWithin48h && coverageStatus.status === "UNCONFIRMED") {
       // Within 48 h and still unconfirmed — flag as unprotected

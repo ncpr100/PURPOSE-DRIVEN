@@ -79,8 +79,8 @@ export default function AnalyticsPageClient({ userRole, churchId }: AnalyticsPag
     <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
       {/* Enhanced Header */}
       <div className="mb-4 md:mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">Centro de Analíticas</h1>
-        <p className="text-sm md:text-base text-gray-600">Insights y métricas para el crecimiento de la iglesia</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-1 md:mb-2">Centro de Analíticas</h1>
+        <p className="text-sm md:text-base text-muted-foreground">Insights y métricas para el crecimiento de la iglesia</p>
       </div>
 
       {/* Real-time Analytics Overview */}

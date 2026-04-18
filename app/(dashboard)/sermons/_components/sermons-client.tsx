@@ -231,7 +231,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setShowSpanishAssistant(true)} className="bg-green-600 hover:bg-green-700">
+          <Button onClick={() => setShowSpanishAssistant(true)} className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]">
             <Sparkles className="h-4 w-4 mr-2" />
             Asistente IA
           </Button>
@@ -270,7 +270,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
               {searchTerm ? 'No se encontraron sermones' : 'No hay sermones creados'}
             </p>
             <div className="flex gap-2 justify-center">
-              <Button onClick={() => setShowSpanishAssistant(true)} className="bg-green-600 hover:bg-green-700">
+              <Button onClick={() => setShowSpanishAssistant(true)} className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]">
                 <Sparkles className="h-4 w-4 mr-2" />
                 Crear con IA
               </Button>

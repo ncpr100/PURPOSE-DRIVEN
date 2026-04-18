@@ -218,7 +218,7 @@ export function AutomationStats() {
               <div className="flex items-center gap-2">
                 <div className="w-20 h-2 bg-muted rounded">
                   <div 
-                    className="h-full bg-green-500 rounded" 
+                    className="h-full bg-[hsl(var(--success)/0.10)]0 rounded" 
                     style={{ width: `${(stats.activeRules / stats.totalRules) * 100}%` }}
                   />
                 </div>
@@ -233,7 +233,7 @@ export function AutomationStats() {
               <div className="flex items-center gap-2">
                 <div className="w-20 h-2 bg-muted rounded">
                   <div 
-                    className="h-full bg-blue-500 rounded" 
+                    className="h-full bg-[hsl(var(--info)/0.10)]0 rounded" 
                     style={{ width: `${getSuccessRate()}%` }}
                   />
                 </div>

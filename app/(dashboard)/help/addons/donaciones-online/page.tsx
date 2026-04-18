@@ -148,7 +148,7 @@ export default function DonacionesOnlineAddon() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge className="bg-green-100 text-green-800">💰 Más Ingresos</Badge>
+          <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">💰 Más Ingresos</Badge>
           <Badge variant="outline">Complemento Premium</Badge>
         </div>
       </div>
@@ -220,7 +220,7 @@ export default function DonacionesOnlineAddon() {
                     </Badge>
                   ))}
                 </div>
-                <div className="bg-gray-100 p-2 rounded">
+                <div className="bg-muted/50 p-2 rounded">
                   <p className="text-sm font-semibold">Comisión:</p>
                   <p className="text-xs text-muted-foreground">{method.fee}</p>
                 </div>
@@ -232,9 +232,9 @@ export default function DonacionesOnlineAddon() {
 
       {/* How to Use - NEW SECTION */}
       <section className="mb-8">
-        <Card className="bg-blue-50 border-blue-200">
+        <Card className="bg-[hsl(var(--info)/0.10)] border-[hsl(var(--info)/0.3)]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-800">
+            <CardTitle className="flex items-center gap-2 text-[hsl(var(--info))]">
               <CreditCard className="h-5 w-5" />
               ¡Ya está implementado! Cómo usar las donaciones online
             </CardTitle>
@@ -242,60 +242,60 @@ export default function DonacionesOnlineAddon() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold text-blue-800 mb-3">Para administradores:</h4>
+                <h4 className="font-semibold text-[hsl(var(--info))] mb-3">Para administradores:</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
-                    <span className="text-blue-600 font-bold">1.</span>
+                    <span className="text-[hsl(var(--info))] font-bold">1.</span>
                     <span>Configure métodos de pago PSE y Nequi en Configuración</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-blue-600 font-bold">2.</span>
+                    <span className="text-[hsl(var(--info))] font-bold">2.</span>
                     <span>Cree categorías (Diezmos, Ofrendas, Proyectos especiales)</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-blue-600 font-bold">3.</span>
+                    <span className="text-[hsl(var(--info))] font-bold">3.</span>
                     <span>Comparta el enlace público de donaciones</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-blue-600 font-bold">4.</span>
+                    <span className="text-[hsl(var(--info))] font-bold">4.</span>
                     <span>Monitore las donaciones en el dashboard</span>
                   </li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-green-800 mb-3">Para los donantes:</h4>
+                <h4 className="font-semibold text-[hsl(var(--success))] mb-3">Para los donantes:</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-[hsl(var(--success))]">✓</span>
                     <span>Acceso directo sin registro previo</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-[hsl(var(--success))]">✓</span>
                     <span>Selección fácil de montos y categorías</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-[hsl(var(--success))]">✓</span>
                     <span>Pago seguro con PSE o Nequi</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-[hsl(var(--success))]">✓</span>
                     <span>Recibo instantáneo por email</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600">✓</span>
+                    <span className="text-[hsl(var(--success))]">✓</span>
                     <span>Confirmación inmediata del pago</span>
                   </li>
                 </ul>
               </div>
             </div>
-            <div className="bg-white border border-blue-300 rounded-lg p-4 mt-4">
-              <h5 className="font-semibold text-blue-900 mb-2">🔗 Su enlace de donaciones:</h5>
-              <p className="text-sm text-blue-700">
-                <code className="bg-blue-100 px-2 py-1 rounded text-xs font-mono">
+            <div className="bg-white border border-[hsl(var(--info)/0.4)] rounded-lg p-4 mt-4">
+              <h5 className="font-semibold text-foreground mb-2">🔗 Su enlace de donaciones:</h5>
+              <p className="text-sm text-[hsl(var(--info))]">
+                <code className="bg-[hsl(var(--info)/0.15)] px-2 py-1 rounded text-xs font-mono">
                   https://khesedtek.app/donate/[ID-DE-SU-IGLESIA]
                 </code>
               </p>
-              <p className="text-xs text-blue-600 mt-2">
+              <p className="text-xs text-[hsl(var(--info))] mt-2">
                 * Reemplace [ID-DE-SU-IGLESIA] con el ID de su iglesia. Solicite este enlace a soporte.
               </p>
             </div>
@@ -331,7 +331,7 @@ export default function DonacionesOnlineAddon() {
                   <div>
                     <h4 className="font-semibold text-sm mb-1">{useCase.scenario}</h4>
                     <p className="text-xs text-muted-foreground mb-2">{useCase.description}</p>
-                    <div className="bg-green-50 p-2 rounded text-xs">
+                    <div className="bg-[hsl(var(--success)/0.10)] p-2 rounded text-xs">
                       <span className="font-semibold">Ejemplo: </span>
                       {useCase.example}
                     </div>
@@ -386,22 +386,22 @@ export default function DonacionesOnlineAddon() {
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Shield className="h-8 w-8 text-green-600" />
+                <div className="w-16 h-16 bg-[hsl(var(--success)/0.15)] rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Shield className="h-8 w-8 text-[hsl(var(--success))]" />
                 </div>
                 <h4 className="font-semibold text-sm mb-2">Certificación PCI DSS</h4>
                 <p className="text-xs text-muted-foreground">Máximo estándar de seguridad para pagos</p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Receipt className="h-8 w-8 text-blue-600" />
+                <div className="w-16 h-16 bg-[hsl(var(--info)/0.15)] rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Receipt className="h-8 w-8 text-[hsl(var(--info))]" />
                 </div>
                 <h4 className="font-semibold text-sm mb-2">DIAN Compatible</h4>
                 <p className="text-xs text-muted-foreground">Recibos válidos para declaración de renta</p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <CreditCard className="h-8 w-8 text-purple-600" />
+                <div className="w-16 h-16 bg-[hsl(var(--lavender)/0.15)] rounded-full flex items-center justify-center mx-auto mb-3">
+                  <CreditCard className="h-8 w-8 text-[hsl(var(--lavender))]" />
                 </div>
                 <h4 className="font-semibold text-sm mb-2">Datos Protegidos</h4>
                 <p className="text-xs text-muted-foreground">Nunca almacenamos información de tarjetas</p>
@@ -447,18 +447,18 @@ export default function DonacionesOnlineAddon() {
             <CardTitle>📊 Calculadora de Ingresos Adicionales</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-lg">
+            <div className="bg-[hsl(var(--success)/0.08)] p-6 rounded-lg">
               <div className="grid md:grid-cols-3 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-green-600">+40%</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--success))]">+40%</div>
                   <p className="text-sm">Aumento promedio en donaciones</p>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-blue-600">-30%</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--info))]">-30%</div>
                   <p className="text-sm">Menos tiempo contando efectivo</p>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-purple-600">100%</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--lavender))]">100%</div>
                   <p className="text-sm">Transparencia en reportes</p>
                 </div>
               </div>

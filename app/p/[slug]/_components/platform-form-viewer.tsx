@@ -125,19 +125,19 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="min-h-screen flex items-center justify-center bg-muted/30">
+        <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--info))]" />
       </div>
     )
   }
 
   if (error && !form) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
         <div className="max-w-md w-full text-center space-y-3">
-          <AlertCircle className="h-12 w-12 text-red-500 mx-auto" />
-          <h2 className="text-xl font-semibold text-gray-800">Formulario no disponible</h2>
-          <p className="text-gray-500">{error}</p>
+          <AlertCircle className="h-12 w-12 text-[hsl(var(--destructive))] mx-auto" />
+          <h2 className="text-xl font-semibold text-foreground">Formulario no disponible</h2>
+          <p className="text-muted-foreground">{error}</p>
         </div>
       </div>
     )
@@ -149,8 +149,8 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
         style={{ backgroundColor: form?.style?.backgroundColor || '#F9FAFB' }}>
         <div className="max-w-md w-full bg-white rounded-2xl shadow-sm p-8 text-center space-y-4">
           <CheckCircle className="h-14 w-14 mx-auto" style={{ color: form?.style?.primaryColor || '#2563EB' }} />
-          <h2 className="text-2xl font-bold text-gray-800">¡Enviado con éxito!</h2>
-          <p className="text-gray-600">{thankYouMessage}</p>
+          <h2 className="text-2xl font-bold text-foreground">¡Enviado con éxito!</h2>
+          <p className="text-muted-foreground">{thankYouMessage}</p>
         </div>
       </div>
     )
@@ -173,9 +173,9 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
             {style.logoUrl && (
               <img src={style.logoUrl} alt="Logo" className="h-12 object-contain mb-4" />
             )}
-            <h1 className="text-2xl font-bold text-gray-900">{form.name}</h1>
+            <h1 className="text-2xl font-bold text-foreground">{form.name}</h1>
             {form.description && (
-              <p className="mt-1 text-gray-500 text-sm">{form.description}</p>
+              <p className="mt-1 text-muted-foreground text-sm">{form.description}</p>
             )}
           </div>
         </div>
@@ -183,7 +183,7 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
         {/* Form */}
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6 space-y-5">
           {error && (
-            <div className="flex items-start gap-2 text-red-600 bg-red-50 rounded-lg p-3 text-sm">
+            <div className="flex items-start gap-2 text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)] rounded-lg p-3 text-sm">
               <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
               <span>{error}</span>
             </div>
@@ -191,9 +191,9 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
 
           {fields.map((field) => (
             <div key={field.id} className="space-y-1.5">
-              <Label htmlFor={field.id} className="text-gray-700 font-medium text-sm">
+              <Label htmlFor={field.id} className="text-muted-foreground font-medium text-sm">
                 {field.label}
-                {field.required && <span className="text-red-500 ml-1">*</span>}
+                {field.required && <span className="text-[hsl(var(--destructive))] ml-1">*</span>}
               </Label>
 
               {field.type === 'textarea' && (
@@ -204,7 +204,7 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
                   placeholder={field.placeholder || ''}
                   value={formValues[field.id] || ''}
                   onChange={(e) => handleChange(field.id, e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:border-transparent resize-none"
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:border-transparent resize-none"
                   style={{ '--tw-ring-color': primaryColor } as React.CSSProperties}
                 />
               )}
@@ -217,7 +217,7 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
                   placeholder={field.placeholder || ''}
                   value={formValues[field.id] || ''}
                   onChange={(e) => handleChange(field.id, e.target.value)}
-                  className="border-gray-300"
+                  className="border-border"
                 />
               )}
 
@@ -227,7 +227,7 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
                   required={field.required}
                   value={formValues[field.id] || ''}
                   onChange={(e) => handleChange(field.id, e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:border-transparent"
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:border-transparent"
                 >
                   <option value="">{field.placeholder || 'Seleccionar...'}</option>
                   {field.options.map((opt) => (
@@ -239,7 +239,7 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
               {field.type === 'radio' && field.options && (
                 <div className="space-y-2">
                   {field.options.map((opt) => (
-                    <label key={opt} className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                    <label key={opt} className="flex items-center gap-2 cursor-pointer text-sm text-muted-foreground">
                       <input
                         type="radio"
                         name={field.id}
@@ -257,7 +257,7 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
               )}
 
               {field.type === 'checkbox' && (
-                <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                <label className="flex items-center gap-2 cursor-pointer text-sm text-muted-foreground">
                   <input
                     type="checkbox"
                     id={field.id}
@@ -283,7 +283,7 @@ export default function PlatformFormViewer({ slug }: { slug: string }) {
           </Button>
         </form>
 
-        <p className="text-center text-xs text-gray-400 mt-4">Con tecnología de Khesed-tek</p>
+        <p className="text-center text-xs text-muted-foreground/70 mt-4">Con tecnología de Khesed-tek</p>
       </div>
     </div>
   )

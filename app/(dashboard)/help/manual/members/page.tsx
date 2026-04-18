@@ -35,21 +35,21 @@ export default function MembersManual() {
               Esta guía cubre todas las funcionalidades para administrar su congregación, desde la migración e importación inicial hasta el seguimiento avanzado con analytics pastoral.
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📋 Secciones</h4>
-                <p className="text-xl font-bold text-blue-600">8</p>
+                <p className="text-xl font-bold text-[hsl(var(--info))]">8</p>
               </div>
-              <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⏱️ Tiempo</h4>
-                <p className="text-xl font-bold text-green-600">35 min</p>
+                <p className="text-xl font-bold text-[hsl(var(--success))]">35 min</p>
               </div>
-              <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🎯 Nivel</h4>
-                <p className="text-lg font-bold text-purple-600">Básico-Int.</p>
+                <p className="text-lg font-bold text-[hsl(var(--lavender))]">Básico-Int.</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
                 <h4 className="font-semibold">👤 Rol Mínimo</h4>
-                <p className="text-lg font-bold text-orange-600">LIDER</p>
+                <p className="text-lg font-bold text-[hsl(var(--warning))]">LIDER</p>
               </div>
             </div>
           </CardContent>
@@ -59,13 +59,13 @@ export default function MembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               🆕 Importar Miembros desde Excel/CSV/Sistemas Externos
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Migration from Church Systems */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200">
+            <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-lg border border-[hsl(var(--info)/0.3)]">
               <h4 className="font-semibold mb-3 flex items-center gap-2">
                 🔄 Migrar desde Otros Sistemas de Iglesia
               </h4>
@@ -101,32 +101,32 @@ export default function MembersManual() {
               <div>
                 <h4 className="font-semibold mb-3">📊 Proceso Paso a Paso</h4>
                 <div className="space-y-3 text-sm">
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Paso 1:</strong> Acceder a Importación</p>
                     <p className="text-muted-foreground">Navegue a <code>Miembros → Importar Miembros</code></p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Paso 2:</strong> Descargar Plantilla</p>
                     <p className="text-muted-foreground">Haga clic en &quot;📅 Descargar Plantilla CSV&quot; para obtener formato correcto</p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Paso 3:</strong> Preparar Datos</p>
                     <p className="text-muted-foreground">Complete campos requeridos: firstName, lastName, email</p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Paso 4:</strong> Configurar Opciones</p>
                     <p className="text-muted-foreground">✅ Marque &quot;Actualizar miembros existentes&quot; si desea sobreescribir</p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Paso 5:</strong> Subir y Procesar</p>
                     <p className="text-muted-foreground">Seleccione archivo y haga clic en &quot;Iniciar Importación&quot;</p>
                   </div>
                   
-                  <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+                  <div className="p-3 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
                     <p><strong>Paso 6:</strong> Verificar Resultados</p>
                     <p className="text-muted-foreground">Revise resumen: ✅ Nuevos, 🔄 Actualizados, ❌ Errores</p>
                   </div>
@@ -134,7 +134,7 @@ export default function MembersManual() {
               </div>
               
               <div className="space-y-4">
-                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
                   <h4 className="font-semibold mb-2">⚠️ Errores Comunes y Soluciones</h4>
                   <ul className="text-sm space-y-2">
                     <li>
@@ -156,7 +156,7 @@ export default function MembersManual() {
                   </ul>
                 </div>
                 
-                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                   <h4 className="font-semibold mb-2">💡 Mejores Prácticas</h4>
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Haga respaldo antes de importación masiva</li>
@@ -174,8 +174,8 @@ export default function MembersManual() {
               <h4 className="font-semibold mb-3">📋 Campos Soportados y Mapeo Automático</h4>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-xs border border-gray-200 rounded-lg">
-                    <thead className="bg-gray-50">
+                  <table className="w-full text-xs border border-border rounded-lg">
+                    <thead className="bg-muted/30">
                       <tr>
                         <th className="p-2 text-left font-semibold">Campo Original</th>
                         <th className="p-2 text-left font-semibold">Campo KHESED-TEK</th>
@@ -196,8 +196,8 @@ export default function MembersManual() {
                 </div>
                 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-xs border border-gray-200 rounded-lg">
-                    <thead className="bg-gray-50">
+                  <table className="w-full text-xs border border-border rounded-lg">
+                    <thead className="bg-muted/30">
                       <tr>
                         <th className="p-2 text-left font-semibold">Campo Original</th>
                         <th className="p-2 text-left font-semibold">Campo KHESED-TEK</th>
@@ -225,7 +225,7 @@ export default function MembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Agregar Miembros Manualmente
             </CardTitle>
           </CardHeader>
@@ -247,7 +247,7 @@ export default function MembersManual() {
                   <p><strong>2.5.</strong> Haga clic en &quot;💾 Guardar Miembro&quot;</p>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">✅ Mejores Prácticas</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Siempre incluya email para comunicaciones</li>
@@ -265,7 +265,7 @@ export default function MembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               Funcionalidades de Gestión
             </CardTitle>
           </CardHeader>
@@ -310,7 +310,7 @@ export default function MembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               Gestión de Perfiles de Miembros
             </CardTitle>
           </CardHeader>
@@ -352,7 +352,7 @@ export default function MembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
               Gestión de Ministerios y Grupos
             </CardTitle>
           </CardHeader>
@@ -396,7 +396,7 @@ export default function MembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
               Seguimiento Espiritual y Dones
             </CardTitle>
           </CardHeader>
@@ -421,7 +421,7 @@ export default function MembersManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-purple-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">🎯 Categorías de Dones</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Liderazgo:</strong> Administración, enseñanza</li>
@@ -439,7 +439,7 @@ export default function MembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">7</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">7</span>
               Funciones de Comunicación
             </CardTitle>
           </CardHeader>
@@ -489,7 +489,7 @@ export default function MembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">8</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">8</span>
               Reportes y Análisis de Miembros
             </CardTitle>
           </CardHeader>
@@ -511,7 +511,7 @@ export default function MembersManual() {
                   <p><strong>8.4.</strong> Exporte en Excel, CSV o PDF</p>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📊 Métricas Clave</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-2 gap-4">
@@ -562,8 +562,8 @@ export default function MembersManual() {
                   <li>• <strong>&quot;📊 Exportar&quot;:</strong> Descarga lista actual</li>
                   <li>• <strong>&quot;🏦 Ministerios&quot;:</strong> Gestión de grupos</li>
                 </ul>
-                <div className="mt-2 p-2 bg-blue-50 rounded border border-blue-200">
-                  <p className="text-xs text-blue-700"><strong>🆕 NUEVO:</strong> El botón &quot;Importar Miembros&quot; permite migrar desde ChurchTrac, Planning Center, Rock RMS y más!</p>
+                <div className="mt-2 p-2 bg-[hsl(var(--info)/0.10)] rounded border border-[hsl(var(--info)/0.3)]">
+                  <p className="text-xs text-[hsl(var(--info))]"><strong>🆕 NUEVO:</strong> El botón &quot;Importar Miembros&quot; permite migrar desde ChurchTrac, Planning Center, Rock RMS y más!</p>
                 </div>
               </div>
               <div>

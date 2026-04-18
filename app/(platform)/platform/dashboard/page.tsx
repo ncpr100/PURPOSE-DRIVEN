@@ -161,20 +161,20 @@ export default function PlatformDashboard() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'pending': return <Clock className="h-4 w-4 text-orange-500" />
-      case 'in_progress': return <Activity className="h-4 w-4 text-blue-500" />
-      case 'completed': return <CheckCircle className="h-4 w-4 text-green-500" />
-      case 'rejected': return <AlertTriangle className="h-4 w-4 text-red-500" />
+      case 'pending': return <Clock className="h-4 w-4 text-[hsl(var(--warning))]" />
+      case 'in_progress': return <Activity className="h-4 w-4 text-[hsl(var(--info))]" />
+      case 'completed': return <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
+      case 'rejected': return <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
       default: return <Clock className="h-4 w-4" />
     }
   }
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'church_created': return <Building2 className="h-4 w-4 text-blue-500" />
-      case 'website_request': return <Globe className="h-4 w-4 text-purple-500" />
-      case 'user_registered': return <Users className="h-4 w-4 text-green-500" />
-      case 'website_completed': return <CheckCircle className="h-4 w-4 text-emerald-500" />
+      case 'church_created': return <Building2 className="h-4 w-4 text-[hsl(var(--info))]" />
+      case 'website_request': return <Globe className="h-4 w-4 text-[hsl(var(--lavender))]" />
+      case 'user_registered': return <Users className="h-4 w-4 text-[hsl(var(--success))]" />
+      case 'website_completed': return <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
       default: return <Activity className="h-4 w-4" />
     }
   }
@@ -183,7 +183,7 @@ export default function PlatformDashboard() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <AlertTriangle className="h-12 w-12 text-[hsl(var(--destructive))] mx-auto mb-4" />
           <h3 className="text-lg font-semibold">Acceso Denegado</h3>
           <p className="text-muted-foreground">Se requiere rol SUPER_ADMIN</p>
         </div>
@@ -195,7 +195,7 @@ export default function PlatformDashboard() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <Activity className="h-12 w-12 text-blue-500 mx-auto mb-4 animate-spin" />
+          <Activity className="h-12 w-12 text-[hsl(var(--info))] mx-auto mb-4 animate-spin" />
           <p className="text-muted-foreground">Cargando dashboard...</p>
         </div>
       </div>
@@ -246,10 +246,10 @@ export default function PlatformDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Iglesias Activas</CardTitle>
-                <Building2 className="h-4 w-4 text-blue-500" />
+                <Building2 className="h-4 w-4 text-[hsl(var(--info))]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">{mockStats.activeChurches}</div>
+                <div className="text-2xl font-bold text-[hsl(var(--info))]">{mockStats.activeChurches}</div>
                 <p className="text-xs text-muted-foreground">
                   de {mockStats.totalChurches} totales
                 </p>
@@ -259,10 +259,10 @@ export default function PlatformDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Usuarios Activos</CardTitle>
-                <Users className="h-4 w-4 text-green-500" />
+                <Users className="h-4 w-4 text-[hsl(var(--success))]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">{mockStats.activeUsers}</div>
+                <div className="text-2xl font-bold text-[hsl(var(--success))]">{mockStats.activeUsers}</div>
                 <p className="text-xs text-muted-foreground">
                   de {mockStats.totalUsers} totales
                 </p>
@@ -272,10 +272,10 @@ export default function PlatformDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Revenue Sitios Web</CardTitle>
-                <DollarSign className="h-4 w-4 text-purple-500" />
+                <DollarSign className="h-4 w-4 text-[hsl(var(--lavender))]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-purple-600">
+                <div className="text-2xl font-bold text-[hsl(var(--lavender))]">
                   ${mockStats.websiteRequests.totalRevenue.toLocaleString()}
                 </div>
                 <p className="text-xs text-muted-foreground">
@@ -287,10 +287,10 @@ export default function PlatformDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Tiempo Promedio</CardTitle>
-                <Clock className="h-4 w-4 text-orange-500" />
+                <Clock className="h-4 w-4 text-[hsl(var(--warning))]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-orange-600">
+                <div className="text-2xl font-bold text-[hsl(var(--warning))]">
                   {mockStats.websiteRequests.avgCompletionTime} días
                 </div>
                 <p className="text-xs text-muted-foreground">
@@ -303,52 +303,52 @@ export default function PlatformDashboard() {
           {/* Invoice Alerts Section */}
           {invoiceAlerts && (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Card className="border-red-200">
+              <Card className="border-[hsl(var(--destructive)/0.3)]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Facturas Vencidas</CardTitle>
-                  <AlertTriangle className="h-4 w-4 text-red-500" />
+                  <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-red-600">{invoiceAlerts.summary?.overdue || 0}</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--destructive))]">{invoiceAlerts.summary?.overdue || 0}</div>
                   <p className="text-xs text-muted-foreground">
                     Requieren atención inmediata
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="border-orange-200">
+              <Card className="border-[hsl(var(--warning)/0.3)]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Por Vencer</CardTitle>
-                  <Calendar className="h-4 w-4 text-orange-500" />
+                  <Calendar className="h-4 w-4 text-[hsl(var(--warning))]" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-orange-600">{invoiceAlerts.summary?.dueSoon || 0}</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--warning))]">{invoiceAlerts.summary?.dueSoon || 0}</div>
                   <p className="text-xs text-muted-foreground">
                     Próximos 7 días
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="border-blue-200">
+              <Card className="border-[hsl(var(--info)/0.3)]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Pagos Pendientes</CardTitle>
-                  <CreditCard className="h-4 w-4 text-blue-500" />
+                  <CreditCard className="h-4 w-4 text-[hsl(var(--info))]" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-blue-600">{invoiceAlerts.summary?.totalPending || 0}</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--info))]">{invoiceAlerts.summary?.totalPending || 0}</div>
                   <p className="text-xs text-muted-foreground">
                     Facturas enviadas
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="border-purple-200">
+              <Card className="border-[hsl(var(--lavender)/0.3)]">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Pruebas Expirando</CardTitle>
-                  <Clock className="h-4 w-4 text-purple-500" />
+                  <Clock className="h-4 w-4 text-[hsl(var(--lavender))]" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-purple-600">{invoiceAlerts.summary?.trialsExpiring || 0}</div>
+                  <div className="text-2xl font-bold text-[hsl(var(--lavender))]">{invoiceAlerts.summary?.trialsExpiring || 0}</div>
                   <p className="text-xs text-muted-foreground">
                     Próximos 7 días
                   </p>
@@ -359,9 +359,9 @@ export default function PlatformDashboard() {
 
           {/* Quick Actions for Invoice Management */}
           {invoiceAlerts && (invoiceAlerts.summary?.overdue > 0 || invoiceAlerts.summary?.dueSoon > 0) && (
-            <Card className="border-yellow-200 bg-yellow-50">
+            <Card className="border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-yellow-800">
+                <CardTitle className="flex items-center gap-2 text-[hsl(var(--warning))]">
                   <FileText className="h-5 w-5" />
                   Acciones Rápidas - Facturación
                 </CardTitle>
@@ -408,28 +408,28 @@ export default function PlatformDashboard() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-orange-500" />
+                      <Clock className="h-4 w-4 text-[hsl(var(--warning))]" />
                       <span>Pendientes</span>
                     </div>
                     <Badge variant="secondary">{mockStats.websiteRequests.pending}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Activity className="h-4 w-4 text-blue-500" />
+                      <Activity className="h-4 w-4 text-[hsl(var(--info))]" />
                       <span>En Progreso</span>
                     </div>
                     <Badge variant="default">{mockStats.websiteRequests.inProgress}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                       <span>Completados</span>
                     </div>
                     <Badge variant="outline">{mockStats.websiteRequests.completed}</Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4 text-red-500" />
+                      <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
                       <span>Rechazados</span>
                     </div>
                     <Badge variant="destructive">{mockStats.websiteRequests.rejected}</Badge>
@@ -490,38 +490,38 @@ export default function PlatformDashboard() {
           </div>
           
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="border-orange-200 bg-orange-50">
+            <Card className="border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]">
               <CardHeader>
-                <CardTitle className="text-orange-800">Solicitudes Pendientes</CardTitle>
+                <CardTitle className="text-[hsl(var(--warning))]">Solicitudes Pendientes</CardTitle>
                 <CardDescription>Requieren atención inmediata</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-orange-600">
+                <div className="text-3xl font-bold text-[hsl(var(--warning))]">
                   {mockStats.websiteRequests.pending}
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-blue-200 bg-blue-50">
+            <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
               <CardHeader>
-                <CardTitle className="text-blue-800">En Desarrollo</CardTitle>
+                <CardTitle className="text-[hsl(var(--info))]">En Desarrollo</CardTitle>
                 <CardDescription>Proyectos activos</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-blue-600">
+                <div className="text-3xl font-bold text-[hsl(var(--info))]">
                   {mockStats.websiteRequests.inProgress}
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-green-200 bg-green-50">
+            <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
               <CardHeader>
-                <CardTitle className="text-green-800">Este Mes</CardTitle>
+                <CardTitle className="text-[hsl(var(--success))]">Este Mes</CardTitle>
                 <CardDescription>Proyectos completados</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-green-600">{mockStats.websiteRequests.completed}</div>
-                <p className="text-sm text-green-600 mt-1">+${mockStats.websiteRequests.totalRevenue?.toLocaleString() ?? 0} revenue</p>
+                <div className="text-3xl font-bold text-[hsl(var(--success))]">{mockStats.websiteRequests.completed}</div>
+                <p className="text-sm text-[hsl(var(--success))] mt-1">+${mockStats.websiteRequests.totalRevenue?.toLocaleString() ?? 0} revenue</p>
               </CardContent>
             </Card>
           </div>
@@ -532,10 +532,10 @@ export default function PlatformDashboard() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-blue-800">Iglesias Totales</CardTitle>
+                <CardTitle className="text-[hsl(var(--info))]">Iglesias Totales</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-blue-600">
+                <div className="text-3xl font-bold text-[hsl(var(--info))]">
                   {mockStats.totalChurches}
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -546,10 +546,10 @@ export default function PlatformDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-green-800">Usuarios Totales</CardTitle>
+                <CardTitle className="text-[hsl(var(--success))]">Usuarios Totales</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-green-600">
+                <div className="text-3xl font-bold text-[hsl(var(--success))]">
                   {mockStats.totalUsers}
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -560,10 +560,10 @@ export default function PlatformDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-purple-800">Tasa de Adopción</CardTitle>
+                <CardTitle className="text-[hsl(var(--lavender))]">Tasa de Adopción</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-purple-600">89%</div>
+                <div className="text-3xl font-bold text-[hsl(var(--lavender))]">89%</div>
                 <p className="text-sm text-muted-foreground">
                   Iglesias con usuarios activos
                 </p>
@@ -572,10 +572,10 @@ export default function PlatformDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-orange-800">Crecimiento</CardTitle>
+                <CardTitle className="text-[hsl(var(--warning))]">Crecimiento</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-orange-600">+12%</div>
+                <div className="text-3xl font-bold text-[hsl(var(--warning))]">+12%</div>
                 <p className="text-sm text-muted-foreground">
                   Nuevas iglesias este mes
                 </p>
@@ -587,48 +587,48 @@ export default function PlatformDashboard() {
         {/* System Health Tab */}
         <TabsContent value="system" className="space-y-6">
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="border-green-200 bg-green-50">
+            <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
               <CardHeader>
-                <CardTitle className="text-green-800 flex items-center gap-2">
+                <CardTitle className="text-[hsl(var(--success))] flex items-center gap-2">
                   <CheckCircle className="h-5 w-5" />
                   Uptime del Sistema
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-green-600">
+                <div className="text-3xl font-bold text-[hsl(var(--success))]">
                   {mockStats.systemHealth.uptime}%
                 </div>
-                <p className="text-sm text-green-600">Excelente estabilidad</p>
+                <p className="text-sm text-[hsl(var(--success))]">Excelente estabilidad</p>
               </CardContent>
             </Card>
 
-            <Card className="border-blue-200 bg-blue-50">
+            <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
               <CardHeader>
-                <CardTitle className="text-blue-800 flex items-center gap-2">
+                <CardTitle className="text-[hsl(var(--info))] flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
                   Tiempo de Respuesta
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-blue-600">
+                <div className="text-3xl font-bold text-[hsl(var(--info))]">
                   {mockStats.systemHealth.responseTime}ms
                 </div>
-                <p className="text-sm text-blue-600">Promedio últimas 24h</p>
+                <p className="text-sm text-[hsl(var(--info))]">Promedio últimas 24h</p>
               </CardContent>
             </Card>
 
-            <Card className="border-yellow-200 bg-yellow-50">
+            <Card className="border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]">
               <CardHeader>
-                <CardTitle className="text-yellow-800 flex items-center gap-2">
+                <CardTitle className="text-[hsl(var(--warning))] flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
                   Tasa de Error
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-yellow-600">
+                <div className="text-3xl font-bold text-[hsl(var(--warning))]">
                   {mockStats.systemHealth.errorRate}%
                 </div>
-                <p className="text-sm text-yellow-600">Dentro de límites normales</p>
+                <p className="text-sm text-[hsl(var(--warning))]">Dentro de límites normales</p>
               </CardContent>
             </Card>
           </div>

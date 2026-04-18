@@ -122,10 +122,10 @@ export function EnhancedSpiritualAssessment({
   }
 
   const getScoreLabel = (score: number): { label: string, color: string } => {
-    if (score >= 80) return { label: 'Excelente', color: 'bg-green-500' }
-    if (score >= 60) return { label: 'Bueno', color: 'bg-blue-500' }
-    if (score >= 40) return { label: 'Regular', color: 'bg-yellow-500' }
-    return { label: 'Necesita desarrollo', color: 'bg-red-500' }
+    if (score >= 80) return { label: 'Excelente', color: 'bg-[hsl(var(--success)/0.10)]0' }
+    if (score >= 60) return { label: 'Bueno', color: 'bg-[hsl(var(--info)/0.10)]0' }
+    if (score >= 40) return { label: 'Regular', color: 'bg-[hsl(var(--warning)/0.10)]0' }
+    return { label: 'Necesita desarrollo', color: 'bg-[hsl(var(--destructive)/0.10)]0' }
   }
 
   return (

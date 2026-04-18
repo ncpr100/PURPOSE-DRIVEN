@@ -97,7 +97,7 @@ export default function SubscriptionHelp() {
               </div>
               <div>
                 <h4 className="font-semibold">Estado</h4>
-                <Badge className="bg-green-100 text-green-800">✅ Activo</Badge>
+                <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">✅ Activo</Badge>
                 <p className="text-sm text-muted-foreground mt-1">Todos los servicios operando</p>
               </div>
             </div>
@@ -123,7 +123,7 @@ export default function SubscriptionHelp() {
                 <ul className="space-y-2">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start text-sm">
-                      <span className="mr-2 text-green-600">✓</span>
+                      <span className="mr-2 text-[hsl(var(--success))]">✓</span>
                       {feature}
                     </li>
                   ))}
@@ -160,7 +160,7 @@ export default function SubscriptionHelp() {
                 <ul className="space-y-1 mb-4">
                   {addon.features.map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
-                      <span className="mr-2 text-green-600">✓</span>
+                      <span className="mr-2 text-[hsl(var(--success))]">✓</span>
                       {feature}
                     </li>
                   ))}
@@ -228,7 +228,7 @@ export default function SubscriptionHelp() {
                   <p className="text-sm text-muted-foreground">Plan Profesional + SMS Masivos</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-green-600">✅ Pagado</p>
+                  <p className="text-sm text-[hsl(var(--success))]">✅ Pagado</p>
                 </div>
               </div>
               <div className="flex items-center justify-between py-2 border-b">
@@ -237,7 +237,7 @@ export default function SubscriptionHelp() {
                   <p className="text-sm text-muted-foreground">Plan Profesional</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-green-600">✅ Pagado</p>
+                  <p className="text-sm text-[hsl(var(--success))]">✅ Pagado</p>
                 </div>
               </div>
               <div className="flex items-center justify-between py-2">
@@ -246,7 +246,7 @@ export default function SubscriptionHelp() {
                   <p className="text-sm text-muted-foreground">Plan Profesional</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-green-600">✅ Pagado</p>
+                  <p className="text-sm text-[hsl(var(--success))]">✅ Pagado</p>
                 </div>
               </div>
             </div>

@@ -199,7 +199,7 @@ export default function CompleteAdminManual() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-3">
-          <Shield className="h-8 w-8 text-blue-600" />
+          <Shield className="h-8 w-8 text-[hsl(var(--info))]" />
           <div>
             <h1 className="text-3xl font-bold">📖 Manual Administrativo Completo</h1>
             <p className="text-muted-foreground">
@@ -342,22 +342,22 @@ export default function CompleteAdminManual() {
           <CardContent>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center">
-                <div className="h-3 w-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div className="h-3 w-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Plataforma</p>
                 <p className="text-muted-foreground">✅ Operacional</p>
               </div>
               <div className="text-center">
-                <div className="h-3 w-3 bg-green-500 rounded-full mx-auto mb-2"></div>
+                <div className="h-3 w-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Base de Datos</p>
                 <p className="text-muted-foreground">✅ Operacional</p>
               </div>
               <div className="text-center">
-                <div className="h-3 w-3 bg-blue-500 rounded-full mx-auto mb-2"></div>
+                <div className="h-3 w-3 bg-[hsl(var(--info)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Usuarios Activos</p>
                 <p className="text-muted-foreground">1,234 online</p>
               </div>
               <div className="text-center">
-                <div className="h-3 w-3 bg-yellow-500 rounded-full mx-auto mb-2"></div>
+                <div className="h-3 w-3 bg-[hsl(var(--warning)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Soporte</p>
                 <p className="text-muted-foreground">23 tickets</p>
               </div>

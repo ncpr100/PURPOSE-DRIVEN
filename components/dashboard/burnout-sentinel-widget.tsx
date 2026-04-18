@@ -64,7 +64,7 @@ export function BurnoutSentinelWidget({ initialAlerts }: Props) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 text-orange-500" />
+          <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))]" />
           Vigía de Agotamiento
         </CardTitle>
         <Button
@@ -120,7 +120,7 @@ export function BurnoutSentinelWidget({ initialAlerts }: Props) {
                       rel="noreferrer"
                     >
                       <Button variant="ghost" size="sm">
-                        <Phone className="h-4 w-4 text-green-600" />
+                        <Phone className="h-4 w-4 text-[hsl(var(--success))]" />
                       </Button>
                     </a>
                   )}
@@ -130,7 +130,7 @@ export function BurnoutSentinelWidget({ initialAlerts }: Props) {
                     onClick={() => resolve(alert.id)}
                     title="Marcar como resuelto"
                   >
-                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                   </Button>
                 </div>
               </li>

@@ -100,15 +100,15 @@ export function RealTimeAnalyticsOverview({
   }, [isRealTimeEnabled])
 
   const getChangeIcon = (change: number) => {
-    if (change > 0) return <TrendingUp className="h-3 w-3 text-green-500" />
-    if (change < 0) return <TrendingDown className="h-3 w-3 text-red-500" />
-    return <Minus className="h-3 w-3 text-gray-400" />
+    if (change > 0) return <TrendingUp className="h-3 w-3 text-[hsl(var(--success))]" />
+    if (change < 0) return <TrendingDown className="h-3 w-3 text-[hsl(var(--destructive))]" />
+    return <Minus className="h-3 w-3 text-muted-foreground/70" />
   }
 
   const getChangeColor = (change: number) => {
-    if (change > 0) return 'text-green-600'
-    if (change < 0) return 'text-red-600'
-    return 'text-gray-500'
+    if (change > 0) return 'text-[hsl(var(--success))]'
+    if (change < 0) return 'text-[hsl(var(--destructive))]'
+    return 'text-muted-foreground'
   }
 
   const metrics = [
@@ -117,32 +117,32 @@ export function RealTimeAnalyticsOverview({
       value: analyticsData?.memberCount ?? 0,
       change: analyticsData?.changes.members ?? 0,
       icon: Users,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50'
+      color: 'text-[hsl(var(--info))]',
+      bgColor: 'bg-[hsl(var(--info)/0.10)]'
     },
     {
       title: 'Donaciones Hoy',
       value: analyticsData?.donationCount ?? 0,
       change: analyticsData?.changes.donations ?? 0,
       icon: DollarSign,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50'
+      color: 'text-[hsl(var(--success))]',
+      bgColor: 'bg-[hsl(var(--success)/0.10)]'
     },
     {
       title: 'Eventos Hoy',
       value: analyticsData?.eventCount ?? 0,
       change: analyticsData?.changes.events ?? 0,
       icon: Calendar,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50'
+      color: 'text-[hsl(var(--lavender))]',
+      bgColor: 'bg-[hsl(var(--lavender)/0.10)]'
     },
     {
       title: 'Voluntarios',
       value: analyticsData?.volunteerCount ?? 0,
       change: analyticsData?.changes.volunteers ?? 0,
       icon: UserCheck,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50'
+      color: 'text-[hsl(var(--warning))]',
+      bgColor: 'bg-[hsl(var(--warning)/0.10)]'
     }
   ]
 
@@ -153,9 +153,9 @@ export function RealTimeAnalyticsOverview({
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             {isConnected ? (
-              <Wifi className="h-4 w-4 text-green-500" />
+              <Wifi className="h-4 w-4 text-[hsl(var(--success))]" />
             ) : (
-              <WifiOff className="h-4 w-4 text-red-500" />
+              <WifiOff className="h-4 w-4 text-[hsl(var(--destructive))]" />
             )}
             <span className="text-sm font-medium">
               {isConnected ? 'Tiempo Real Activo' : 'Sin Conexión'}
@@ -217,7 +217,7 @@ export function RealTimeAnalyticsOverview({
                 {/* Live Activity Indicator */}
                 {isConnected && metric.change > 0 && (
                   <div className="absolute top-2 right-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full animate-pulse" />
                   </div>
                 )}
               </CardContent>
@@ -237,7 +237,7 @@ export function RealTimeAnalyticsOverview({
                   <span>Estado:</span>
                   <span className={cn(
                     "font-medium",
-                    isConnected ? "text-green-600" : "text-red-600"
+                    isConnected ? "text-[hsl(var(--success))]" : "text-[hsl(var(--destructive))]"
                   )}>
                     {isConnected ? 'Conectado' : 'Desconectado'}
                   </span>

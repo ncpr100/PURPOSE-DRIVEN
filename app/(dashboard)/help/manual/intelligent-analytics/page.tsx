@@ -83,11 +83,11 @@ export default function IntelligentAnalyticsManual() {
             <CardTitle>📍 Acceder a Analíticas Inteligentes</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-blue-800">
+            <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
+              <p className="text-[hsl(var(--info))]">
                 <strong>Ruta:</strong> Panel de Control → Analíticas Inteligentes
               </p>
-              <p className="text-sm text-blue-700 mt-2">
+              <p className="text-sm text-[hsl(var(--info))] mt-2">
                 <strong>Permisos:</strong> Disponible para PASTOR, ADMIN_IGLESIA y SUPER_ADMIN
               </p>
             </div>
@@ -107,7 +107,7 @@ export default function IntelligentAnalyticsManual() {
             {/* Executive Report */}
             <div className="border rounded-lg p-4">
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-blue-500" />
+                <TrendingUp className="h-5 w-5 text-[hsl(var(--info))]" />
                 1. Reporte Ejecutivo IA
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
@@ -135,7 +135,7 @@ export default function IntelligentAnalyticsManual() {
             {/* Predictive Analytics */}
             <div className="border rounded-lg p-4">
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <Brain className="h-5 w-5 text-purple-500" />
+                <Brain className="h-5 w-5 text-[hsl(var(--lavender))]" />
                 2. Analíticas Predictivas
               </h3>
               <div className="grid md:grid-cols-3 gap-4">
@@ -172,7 +172,7 @@ export default function IntelligentAnalyticsManual() {
             {/* Member Journey */}
             <div className="border rounded-lg p-4">
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <Users className="h-5 w-5 text-green-500" />
+                <Users className="h-5 w-5 text-[hsl(var(--success))]" />
                 3. Análisis de Jornada del Miembro
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
@@ -200,7 +200,7 @@ export default function IntelligentAnalyticsManual() {
             {/* Recommendations */}
             <div className="border rounded-lg p-4">
               <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-yellow-500" />
+                <Lightbulb className="h-5 w-5 text-[hsl(var(--warning))]" />
                 4. Recomendaciones Estratégicas
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
@@ -281,7 +281,7 @@ export default function IntelligentAnalyticsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-green-600">✅ Recomendaciones:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Recomendaciones:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Revisión semanal:</strong> Revise insights cada semana</li>
                   <li>• <strong>Actuar en alertas:</strong> Responda rápido a riesgos de retención</li>
@@ -291,7 +291,7 @@ export default function IntelligentAnalyticsManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-red-600">❌ Evitar:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">❌ Evitar:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Dependencia exclusiva:</strong> IA complementa, no reemplaza discernimiento</li>
                   <li>• <strong>Decisiones precipitadas:</strong> Confirme insights con oración</li>
@@ -315,17 +315,17 @@ export default function IntelligentAnalyticsManual() {
             </p>
             <div className="grid md:grid-cols-3 gap-4">
               <div className="text-center p-3 border rounded-lg">
-                <Users className="h-6 w-6 mx-auto mb-2 text-blue-500" />
+                <Users className="h-6 w-6 mx-auto mb-2 text-[hsl(var(--info))]" />
                 <p className="font-medium text-sm">Gestión de Miembros</p>
                 <p className="text-xs text-muted-foreground">Perfil IA por miembro</p>
               </div>
               <div className="text-center p-3 border rounded-lg">
-                <BarChart3 className="h-6 w-6 mx-auto mb-2 text-green-500" />
+                <BarChart3 className="h-6 w-6 mx-auto mb-2 text-[hsl(var(--success))]" />
                 <p className="font-medium text-sm">Analíticas Generales</p>
                 <p className="text-xs text-muted-foreground">Datos base para IA</p>
               </div>
               <div className="text-center p-3 border rounded-lg">
-                <Target className="h-6 w-6 mx-auto mb-2 text-purple-500" />
+                <Target className="h-6 w-6 mx-auto mb-2 text-[hsl(var(--lavender))]" />
                 <p className="font-medium text-sm">Automatización</p>
                 <p className="text-xs text-muted-foreground">Reglas inteligentes</p>
               </div>

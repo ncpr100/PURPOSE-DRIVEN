@@ -51,16 +51,16 @@ interface Props {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  completed: "bg-green-100 text-green-800 border-green-200",
-  scheduled: "bg-blue-100 text-blue-800 border-blue-200",
-  skipped: "bg-gray-100 text-gray-600 border-gray-200",
+  pending: "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.3)]",
+  completed: "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] border-[hsl(var(--success)/0.3)]",
+  scheduled: "bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] border-[hsl(var(--info)/0.3)]",
+  skipped: "bg-muted/50 text-muted-foreground border-border",
 };
 
 const PRIORITY_COLORS: Record<string, string> = {
-  high: "bg-red-100 text-red-700",
-  medium: "bg-yellow-100 text-yellow-700",
-  low: "bg-gray-100 text-gray-600",
+  high: "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]",
+  medium: "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]",
+  low: "bg-muted/50 text-muted-foreground",
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -155,18 +155,18 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Clock className="h-6 w-6 text-orange-600" />
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Clock className="h-6 w-6 text-[hsl(var(--warning))]" />
             Seguimientos de Visitantes
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Tareas de contacto asignadas a nuevos visitantes y candidatos
           </p>
         </div>
         <div className="flex gap-2 items-center">
           <a
             href="/visitors"
-            className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+            className="text-sm text-[hsl(var(--info))] hover:underline flex items-center gap-1"
           >
             Ver CRM de Visitantes <ArrowRight className="h-4 w-4" />
           </a>
@@ -183,34 +183,34 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
           {
             label: "Pendientes",
             value: stats.pending,
-            icon: <Clock className="h-5 w-5 text-yellow-600" />,
-            bg: "bg-yellow-50",
+            icon: <Clock className="h-5 w-5 text-[hsl(var(--warning))]" />,
+            bg: "bg-[hsl(var(--warning)/0.10)]",
           },
           {
             label: "Para hoy",
             value: stats.today,
-            icon: <Calendar className="h-5 w-5 text-blue-600" />,
-            bg: "bg-blue-50",
+            icon: <Calendar className="h-5 w-5 text-[hsl(var(--info))]" />,
+            bg: "bg-[hsl(var(--info)/0.10)]",
           },
           {
             label: "Vencidos",
             value: stats.overdue,
-            icon: <AlertCircle className="h-5 w-5 text-red-600" />,
-            bg: "bg-red-50",
+            icon: <AlertCircle className="h-5 w-5 text-[hsl(var(--destructive))]" />,
+            bg: "bg-[hsl(var(--destructive)/0.10)]",
           },
           {
             label: "Primera visita",
             value: stats.firstTime,
-            icon: <Star className="h-5 w-5 text-green-600" />,
-            bg: "bg-green-50",
+            icon: <Star className="h-5 w-5 text-[hsl(var(--success))]" />,
+            bg: "bg-[hsl(var(--success)/0.10)]",
           },
         ].map((s) => (
           <Card key={s.label} className={`${s.bg} border-0`}>
             <CardContent className="p-4 flex items-center gap-3">
               {s.icon}
               <div>
-                <p className="text-2xl font-bold text-gray-900">{s.value}</p>
-                <p className="text-xs text-gray-600">{s.label}</p>
+                <p className="text-2xl font-bold text-foreground">{s.value}</p>
+                <p className="text-xs text-muted-foreground">{s.label}</p>
               </div>
             </CardContent>
           </Card>
@@ -237,18 +237,18 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
       {/* List */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold text-gray-700">
+          <CardTitle className="text-base font-semibold text-muted-foreground">
             {followUps.length} seguimiento{followUps.length !== 1 ? "s" : ""}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="p-8 text-center text-gray-400">
+            <div className="p-8 text-center text-muted-foreground/70">
               <RefreshCw className="h-6 w-6 animate-spin mx-auto mb-2" />
               <p>Cargando seguimientos…</p>
             </div>
           ) : followUps.length === 0 ? (
-            <div className="p-8 text-center text-gray-400">
+            <div className="p-8 text-center text-muted-foreground/70">
               <CheckCircle2 className="h-10 w-10 mx-auto mb-3 text-gray-300" />
               <p className="font-medium">
                 {statusFilter === "pending"
@@ -270,21 +270,21 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
                 return (
                   <div
                     key={fu.id}
-                    className={`px-4 py-3 flex items-start gap-3 ${isOverdue ? "bg-red-50" : ""}`}
+                    className={`px-4 py-3 flex items-start gap-3 ${isOverdue ? "bg-[hsl(var(--destructive)/0.10)]" : ""}`}
                   >
                     {/* Avatar */}
-                    <div className="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-700 font-semibold text-sm flex-shrink-0">
+                    <div className="h-10 w-10 rounded-full bg-[hsl(var(--warning)/0.15)] flex items-center justify-center text-[hsl(var(--warning))] font-semibold text-sm flex-shrink-0">
                       {fu.checkIn?.firstName?.[0] || "?"}
                       {fu.checkIn?.lastName?.[0] || ""}
                     </div>
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium text-gray-900 text-sm">
+                        <span className="font-medium text-foreground text-sm">
                           {fu.checkIn?.firstName} {fu.checkIn?.lastName}
                         </span>
                         {fu.checkIn?.isFirstTime && (
-                          <Badge className="text-xs px-1.5 py-0 bg-green-100 text-green-700">
+                          <Badge className="text-xs px-1.5 py-0 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                             Primera vez
                           </Badge>
                         )}
@@ -311,24 +311,24 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
                           </span>
                         )}
                         {isOverdue && (
-                          <Badge className="text-xs px-1.5 py-0 bg-red-100 text-red-700">
+                          <Badge className="text-xs px-1.5 py-0 bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]">
                             Vencido
                           </Badge>
                         )}
                         {isToday && !isOverdue && (
-                          <Badge className="text-xs px-1.5 py-0 bg-blue-100 text-blue-700">
+                          <Badge className="text-xs px-1.5 py-0 bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]">
                             Hoy
                           </Badge>
                         )}
                       </div>
-                      <div className="flex gap-3 mt-0.5 text-xs text-gray-500 flex-wrap">
+                      <div className="flex gap-3 mt-0.5 text-xs text-muted-foreground flex-wrap">
                         <span>
                           {TYPE_LABELS[fu.followUpType] || fu.followUpType}
                         </span>
                         {fu.checkIn?.email && (
                           <a
                             href={`mailto:${fu.checkIn.email}`}
-                            className="flex items-center gap-1 text-blue-600 hover:underline"
+                            className="flex items-center gap-1 text-[hsl(var(--info))] hover:underline"
                           >
                             <Mail className="h-3 w-3" />
                             {fu.checkIn.email}
@@ -337,7 +337,7 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
                         {fu.checkIn?.phone && (
                           <a
                             href={`tel:${fu.checkIn.phone}`}
-                            className="flex items-center gap-1 text-blue-600 hover:underline"
+                            className="flex items-center gap-1 text-[hsl(var(--info))] hover:underline"
                           >
                             <Phone className="h-3 w-3" />
                             {fu.checkIn.phone}
@@ -357,7 +357,7 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
                         )}
                       </div>
                       {fu.notes && (
-                        <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                           {fu.notes}
                         </p>
                       )}
@@ -367,7 +367,7 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="flex-shrink-0 text-green-700 border-green-300 hover:bg-green-50"
+                        className="flex-shrink-0 text-[hsl(var(--success))] border-[hsl(var(--success)/0.4)] hover:bg-[hsl(var(--success)/0.10)]"
                         onClick={() => markComplete(fu.id)}
                         disabled={completing === fu.id}
                       >

@@ -235,7 +235,7 @@ export function EnhancedSpiritualAssessment({
       {showHeader && (
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
+            <div className="p-3 bg-gradient-to-br from-[hsl(var(--lavender))] to-[hsl(var(--lavender))] rounded-lg">
               <Sparkles className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -254,7 +254,7 @@ export function EnhancedSpiritualAssessment({
             </div>
             <div className="h-2 bg-secondary rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500"
+                className="h-full bg-gradient-to-r from-[hsl(var(--lavender))] to-[hsl(var(--lavender))] transition-all duration-500"
                 style={{ width: `${completion}%` }}
               />
             </div>
@@ -262,13 +262,13 @@ export function EnhancedSpiritualAssessment({
 
           {/* Status Messages */}
           {saveSuccess && (
-            <div className="mt-4 p-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+            <div className="mt-4 p-4 bg-[hsl(var(--success)/0.10)] dark:bg-[hsl(var(--success))] border border-[hsl(var(--success)/0.3)] dark:border-[hsl(var(--success)/0.30)] rounded-lg flex items-start gap-3">
+              <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] dark:text-[hsl(var(--success)/0.7)] mt-0.5 flex-shrink-0" />
               <div>
-                <p className="font-semibold text-green-900 dark:text-green-100">
+                <p className="font-semibold text-foreground dark:text-[hsl(var(--success)/0.6)]">
                   ¡Evaluación Guardada!
                 </p>
-                <p className="text-sm text-green-700 dark:text-green-300 mt-1">
+                <p className="text-sm text-[hsl(var(--success))] dark:text-[hsl(var(--success)/0.8)] mt-1">
                   Tu evaluación de dones espirituales se ha guardado correctamente.
                 </p>
               </div>
@@ -276,11 +276,11 @@ export function EnhancedSpiritualAssessment({
           )}
 
           {saveError && (
-            <div className="mt-4 p-4 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+            <div className="mt-4 p-4 bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded-lg flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-[hsl(var(--destructive))] dark:text-[hsl(var(--destructive)/0.7)] mt-0.5 flex-shrink-0" />
               <div>
-                <p className="font-semibold text-red-900 dark:text-red-100">Error</p>
-                <p className="text-sm text-red-700 dark:text-red-300 mt-1">{saveError}</p>
+                <p className="font-semibold text-[hsl(var(--destructive))] dark:text-[hsl(var(--destructive)/0.6)]">Error</p>
+                <p className="text-sm text-[hsl(var(--destructive))] dark:text-[hsl(var(--destructive)/0.8)] mt-1">{saveError}</p>
               </div>
             </div>
           )}
@@ -585,7 +585,7 @@ export function EnhancedSpiritualAssessment({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 Llamado Espiritual
-                <span className="text-red-500">*</span>
+                <span className="text-[hsl(var(--destructive))]">*</span>
               </CardTitle>
               <CardDescription>
                 Describe brevemente lo que sientes que Dios te está llamando a hacer. Esto puede ser
@@ -607,7 +607,7 @@ export function EnhancedSpiritualAssessment({
                   {spiritualCalling.length}/500 caracteres
                 </span>
                 {!spiritualCalling.trim() && (
-                  <span className="text-xs text-red-500">Campo requerido</span>
+                  <span className="text-xs text-[hsl(var(--destructive))]">Campo requerido</span>
                 )}
               </div>
             </CardContent>
@@ -618,7 +618,7 @@ export function EnhancedSpiritualAssessment({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 Motivación para Servir
-                <span className="text-red-500">*</span>
+                <span className="text-[hsl(var(--destructive))]">*</span>
               </CardTitle>
               <CardDescription>
                 ¿Qué te motiva a servir en la iglesia? ¿Qué esperas lograr o aprender?
@@ -639,7 +639,7 @@ export function EnhancedSpiritualAssessment({
                   {motivation.length}/500 caracteres
                 </span>
                 {!motivation.trim() && (
-                  <span className="text-xs text-red-500">Campo requerido</span>
+                  <span className="text-xs text-[hsl(var(--destructive))]">Campo requerido</span>
                 )}
               </div>
             </CardContent>
@@ -675,10 +675,10 @@ export function EnhancedSpiritualAssessment({
 
           {/* Completion Info */}
           {!readOnly && completion < 60 && (
-            <div className="p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg flex items-start gap-3">
-              <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+            <div className="p-4 bg-[hsl(var(--info)/0.10)] dark:bg-[hsl(var(--info))] border border-[hsl(var(--info)/0.3)] dark:border-blue-800 rounded-lg flex items-start gap-3">
+              <Info className="h-5 w-5 text-[hsl(var(--info))] dark:text-[hsl(var(--info)/0.7)] mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-sm text-blue-900 dark:text-blue-100">
+                <p className="text-sm text-foreground dark:text-[hsl(var(--info)/0.6)]">
                   Completa al menos el 60% de la evaluación para poder guardarla. Necesitas
                   seleccionar dones espirituales, pasiones ministeriales y nivel de experiencia.
                 </p>

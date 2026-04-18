@@ -15,7 +15,7 @@ export default function Phase3MembersGuide() {
   return (
     <div className="container mx-auto p-6 max-w-6xl space-y-8">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-green-600 to-teal-600 text-white p-8 rounded-lg">
+      <div className="bg-[hsl(var(--success))] text-foreground p-8 rounded-lg">
         <div className="flex items-center gap-4">
           <Users className="h-12 w-12" />
           <div>
@@ -38,12 +38,12 @@ export default function Phase3MembersGuide() {
       </div>
 
       {/* Para Niños */}
-      <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
-        <h4 className="font-bold text-yellow-900 flex items-center gap-2 mb-2">
+      <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
+        <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
           <Heart className="h-5 w-5" />
           Para Niños: ¿Qué es un &quot;Miembro&quot;?
         </h4>
-        <p className="text-sm text-yellow-800">
+        <p className="text-sm text-[hsl(var(--warning))]">
           Un miembro es como una persona en tu lista de amigos. Así como tienes una agenda con 
           nombres y teléfonos de tus amigos, Khesed-tek es como una agenda super especial para 
           tu iglesia. Aquí guardas los nombres, cumpleaños, y datos de todas las personas que 
@@ -52,10 +52,10 @@ export default function Phase3MembersGuide() {
       </div>
 
       {/* Método 1: Agregar UN Miembro */}
-      <Card className="border-green-300">
-        <CardHeader className="bg-green-50">
+      <Card className="border-[hsl(var(--success)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--success)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <div className="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+            <div className="bg-[hsl(var(--success))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               A
             </div>
             Método A: Agregar UN Miembro a la Vez
@@ -70,7 +70,7 @@ export default function Phase3MembersGuide() {
               {
                 step: "A.1",
                 title: "Ir a la Página de Miembros",
-                icon: <Users className="h-5 w-5 text-blue-600" />,
+                icon: <Users className="h-5 w-5 text-[hsl(var(--info))]" />,
                 image: "🏠",
                 description: "En el menú de la izquierda, busca y haz clic en 'Miembros'",
                 tips: [
@@ -82,7 +82,7 @@ export default function Phase3MembersGuide() {
               {
                 step: "A.2",
                 title: "Hacer Clic en '+ Nuevo Miembro'",
-                icon: <UserPlus className="h-5 w-5 text-green-600" />,
+                icon: <UserPlus className="h-5 w-5 text-[hsl(var(--success))]" />,
                 image: "➕",
                 description: "Arriba a la derecha, verás un botón verde que dice '+ Nuevo Miembro'",
                 tips: [
@@ -94,7 +94,7 @@ export default function Phase3MembersGuide() {
               {
                 step: "A.3",
                 title: "Llenar Información BÁSICA (Requerida)",
-                icon: <FileText className="h-5 w-5 text-orange-600" />,
+                icon: <FileText className="h-5 w-5 text-[hsl(var(--warning))]" />,
                 image: "✏️",
                 description: "Completa estos campos obligatorios - tienen una estrellita roja *",
                 details: [
@@ -133,7 +133,7 @@ export default function Phase3MembersGuide() {
               {
                 step: "A.4",
                 title: "Agregar Información EXTRA (Opcional)",
-                icon: <Sparkles className="h-5 w-5 text-purple-600" />,
+                icon: <Sparkles className="h-5 w-5 text-[hsl(var(--lavender))]" />,
                 image: "⭐",
                 description: "Esta información NO es obligatoria, pero es muy útil:",
                 details: [
@@ -167,7 +167,7 @@ export default function Phase3MembersGuide() {
               {
                 step: "A.5",
                 title: "Seleccionar Etapa de Vida Espiritual",
-                icon: <Award className="h-5 w-5 text-yellow-600" />,
+                icon: <Award className="h-5 w-5 text-[hsl(var(--warning))]" />,
                 image: "🌱",
                 description: "Indica en qué etapa espiritual está la persona:",
                 details: [
@@ -201,7 +201,7 @@ export default function Phase3MembersGuide() {
               {
                 step: "A.6",
                 title: "Guardar el Nuevo Miembro",
-                icon: <CheckCircle className="h-5 w-5 text-green-600" />,
+                icon: <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />,
                 image: "💾",
                 description: "Haz clic en el botón verde 'Guardar' abajo del formulario",
                 tips: [
@@ -223,20 +223,20 @@ export default function Phase3MembersGuide() {
                           Paso {item.step}: {item.title}
                         </h5>
                       </div>
-                      <p className="text-gray-700 mb-3">{item.description}</p>
+                      <p className="text-muted-foreground mb-3">{item.description}</p>
                       
                       {item.details && (
                         <div className="space-y-2 mb-3">
                           {item.details.map((detail: any, idx: number) => (
-                            <div key={idx} className="bg-gray-50 p-3 rounded">
-                              <p className="font-medium text-sm text-green-800">
+                            <div key={idx} className="bg-muted/30 p-3 rounded">
+                              <p className="font-medium text-sm text-[hsl(var(--success))]">
                                 {detail.required ? '📝 *' : '📝'} {detail.field || detail.stage}
                               </p>
-                              <p className="text-xs text-gray-600 mt-1">
+                              <p className="text-xs text-muted-foreground mt-1">
                                 {detail.example || detail.description}
                               </p>
                               {detail.why && (
-                                <p className="text-xs text-purple-600 mt-1 italic">
+                                <p className="text-xs text-[hsl(var(--lavender))] mt-1 italic">
                                   💡 {detail.why}
                                 </p>
                               )}
@@ -246,11 +246,11 @@ export default function Phase3MembersGuide() {
                       )}
 
                       {item.tips && (
-                        <div className="bg-green-50 p-3 rounded-lg">
-                          <p className="text-xs font-medium text-green-800 mb-2">
+                        <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded-lg">
+                          <p className="text-xs font-medium text-[hsl(var(--success))] mb-2">
                             💡 Consejos Útiles:
                           </p>
-                          <ul className="text-xs text-green-700 space-y-1">
+                          <ul className="text-xs text-[hsl(var(--success))] space-y-1">
                             {item.tips.map((tip, idx) => (
                               <li key={idx}>• {tip}</li>
                             ))}
@@ -267,10 +267,10 @@ export default function Phase3MembersGuide() {
       </Card>
 
       {/* Método 2: Importar MUCHOS Miembros */}
-      <Card className="border-blue-300">
-        <CardHeader className="bg-blue-50">
+      <Card className="border-[hsl(var(--info)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--info)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <div className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+            <div className="bg-[hsl(var(--info))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               B
             </div>
             Método B: Importar MUCHOS Miembros (Excel/CSV)
@@ -280,12 +280,12 @@ export default function Phase3MembersGuide() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
-          <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
-            <h4 className="font-bold text-yellow-900 flex items-center gap-2 mb-2">
+          <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
+            <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
               <Lightbulb className="h-5 w-5" />
               ¿Cuándo Usar la Importación Masiva?
             </h4>
-            <ul className="text-sm text-yellow-800 space-y-1">
+            <ul className="text-sm text-[hsl(var(--warning))] space-y-1">
               <li>✓ Tienes una lista en Excel de 20+ personas</li>
               <li>✓ Estás migrando de otro sistema a Khesed-tek</li>
               <li>✓ Quieres ahorrar tiempo (1 vez vs 100 veces)</li>
@@ -347,14 +347,14 @@ export default function Phase3MembersGuide() {
                   <h5 className="font-semibold text-lg mb-3">
                     Paso {item.step}: {item.title}
                   </h5>
-                  <p className="text-gray-700 mb-3">{item.description}</p>
+                  <p className="text-muted-foreground mb-3">{item.description}</p>
                   
                   {item.instructions && (
-                    <div className="bg-blue-50 p-3 rounded">
+                    <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
                       <ol className="space-y-2 text-sm">
                         {item.instructions.map((instruction, idx) => (
                           <li key={idx} className="flex items-start gap-2">
-                            <span className="font-bold text-blue-600">{idx + 1}.</span>
+                            <span className="font-bold text-[hsl(var(--info))]">{idx + 1}.</span>
                             <span>{instruction}</span>
                           </li>
                         ))}
@@ -365,10 +365,10 @@ export default function Phase3MembersGuide() {
                   {item.columns && (
                     <div className="space-y-2 mt-3">
                       {item.columns.map((col, idx) => (
-                        <div key={idx} className="bg-gray-50 p-2 rounded text-xs">
-                          <span className="font-mono font-bold text-blue-700">{col.name}</span>
-                          <span className="text-gray-600"> - {col.description}</span>
-                          <div className="text-purple-600 italic mt-1">Ejemplo: {col.example}</div>
+                        <div key={idx} className="bg-muted/30 p-2 rounded text-xs">
+                          <span className="font-mono font-bold text-[hsl(var(--info))]">{col.name}</span>
+                          <span className="text-muted-foreground"> - {col.description}</span>
+                          <div className="text-[hsl(var(--lavender))] italic mt-1">Ejemplo: {col.example}</div>
                         </div>
                       ))}
                     </div>
@@ -381,8 +381,8 @@ export default function Phase3MembersGuide() {
       </Card>
 
       {/* Gestión de Miembros */}
-      <Card className="border-purple-300">
-        <CardHeader className="bg-purple-50">
+      <Card className="border-[hsl(var(--lavender)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--lavender)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
             <Gift className="h-6 w-6" />
             Acciones con Tus Miembros
@@ -395,37 +395,37 @@ export default function Phase3MembersGuide() {
           <div className="grid md:grid-cols-3 gap-4">
             {[
               {
-                icon: <Search className="h-8 w-8 text-blue-600" />,
+                icon: <Search className="h-8 w-8 text-[hsl(var(--info))]" />,
                 title: "Buscar Miembros",
                 description: "Escribe un nombre en la barra de búsqueda arriba",
                 tip: "Busca por nombre, email, o teléfono"
               },
               {
-                icon: <Filter className="h-8 w-8 text-green-600" />,
+                icon: <Filter className="h-8 w-8 text-[hsl(var(--success))]" />,
                 title: "Filtrar por Etapa",
                 description: "Haz clic en 'Filtros' y selecciona VISITANTE, LÍDER, etc.",
                 tip: "Útil para ver solo nuevos o líderes"
               },
               {
-                icon: <Edit className="h-8 w-8 text-orange-600" />,
+                icon: <Edit className="h-8 w-8 text-[hsl(var(--warning))]" />,
                 title: "Editar Información",
                 description: "Haz clic en el nombre del miembro → botón 'Editar'",
                 tip: "Actualiza teléfonos, direcciones, etc."
               },
               {
-                icon: <Mail className="h-8 w-8 text-purple-600" />,
+                icon: <Mail className="h-8 w-8 text-[hsl(var(--lavender))]" />,
                 title: "Enviar Emails",
                 description: "Selecciona miembros → 'Enviar Email Masivo'",
                 tip: "Comunícate con grupos específicos"
               },
               {
-                icon: <Download className="h-8 w-8 text-teal-600" />,
+                icon: <Download className="h-8 w-8 text-[hsl(var(--info))]" />,
                 title: "Exportar Lista",
                 description: "Descarga tu lista en Excel para imprimir",
                 tip: "Útil para directorios físicos"
               },
               {
-                icon: <Award className="h-8 w-8 text-yellow-600" />,
+                icon: <Award className="h-8 w-8 text-[hsl(var(--warning))]" />,
                 title: "Ver Perfil Espiritual",
                 description: "Haz clic en el miembro → pestaña 'Perfil Espiritual'",
                 tip: "Dones, ministerios, crecimiento"
@@ -435,8 +435,8 @@ export default function Phase3MembersGuide() {
                 <CardContent className="pt-6 text-center">
                   <div className="mb-3 flex justify-center">{action.icon}</div>
                   <h4 className="font-semibold mb-2">{action.title}</h4>
-                  <p className="text-sm text-gray-600 mb-2">{action.description}</p>
-                  <div className="bg-yellow-50 p-2 rounded text-xs text-yellow-800">
+                  <p className="text-sm text-muted-foreground mb-2">{action.description}</p>
+                  <div className="bg-[hsl(var(--warning)/0.10)] p-2 rounded text-xs text-[hsl(var(--warning))]">
                     💡 {action.tip}
                   </div>
                 </CardContent>
@@ -447,9 +447,9 @@ export default function Phase3MembersGuide() {
       </Card>
 
       {/* Troubleshooting */}
-      <Card className="border-red-300 bg-red-50">
+      <Card className="border-[hsl(var(--destructive)/0.4)] bg-[hsl(var(--destructive)/0.10)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-900">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <AlertTriangle className="h-6 w-6" />
             Problemas Comunes y Soluciones
           </CardTitle>
@@ -490,9 +490,9 @@ export default function Phase3MembersGuide() {
               ]
             }
           ].map((item, index) => (
-            <div key={index} className="bg-white p-4 rounded border border-red-200">
-              <p className="font-medium text-red-800 mb-2">{item.problem}</p>
-              <ul className="text-sm text-red-700 space-y-1 ml-4">
+            <div key={index} className="bg-white p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
+              <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
+              <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
                   <li key={idx}>✓ {solution}</li>
                 ))}
@@ -511,7 +511,7 @@ export default function Phase3MembersGuide() {
           </Button>
         </Link>
         <Link href="/help/manual/phase-4-events">
-          <Button size="lg" className="bg-green-600 hover:bg-green-700">
+          <Button size="lg" className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]">
             ¡Siguiente! Crear Eventos
             <ArrowRight className="h-5 w-5 ml-2" />
           </Button>

@@ -239,8 +239,8 @@ export default function DonationsSettingsClient({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Configuración de Donaciones</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-foreground">Configuración de Donaciones</h1>
+        <p className="text-muted-foreground mt-2">
           Administre categorías, métodos de pago y configuración de gateways
         </p>
       </div>
@@ -329,7 +329,7 @@ export default function DonationsSettingsClient({
                         </Badge>
                       </div>
                       {category.description && (
-                        <p className="text-sm text-gray-500 mt-1">{category.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{category.description}</p>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
@@ -341,7 +341,7 @@ export default function DonationsSettingsClient({
                   </div>
                 ))}
                 {categories.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No hay categorías configuradas. Cree la primera categoría.
                   </div>
                 )}
@@ -438,13 +438,13 @@ export default function DonationsSettingsClient({
                         </Badge>
                       </div>
                       {method.description && (
-                        <p className="text-sm text-gray-500 mt-1">{method.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{method.description}</p>
                       )}
                     </div>
                   </div>
                 ))}
                 {paymentMethods.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No hay métodos de pago configurados. Cree el primer método.
                   </div>
                 )}
@@ -457,9 +457,9 @@ export default function DonationsSettingsClient({
         <TabsContent value="gateways" className="space-y-6">
 
           {/* Country-aware banner */}
-          <Alert className="border-blue-200 bg-blue-50">
-            <MapPin className="h-4 w-4 text-blue-600" />
-            <AlertDescription className="text-blue-800">
+          <Alert className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
+            <MapPin className="h-4 w-4 text-[hsl(var(--info))]" />
+            <AlertDescription className="text-[hsl(var(--info))]">
               <strong>País de su iglesia: {churchCountry}.</strong>{' '}
               Se muestran las pasarelas disponibles en su región.{' '}
               Para cambiar el país vaya a <strong>Ajustes → Perfil de la Iglesia</strong>.
@@ -473,11 +473,11 @@ export default function DonationsSettingsClient({
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2">
-                    <Globe className="h-5 w-5 text-blue-600" />
+                    <Globe className="h-5 w-5 text-[hsl(var(--info))]" />
                     MercadoPago
-                    <Badge variant="secondary" className="ml-2 bg-green-100 text-green-800">Universal LATAM</Badge>
+                    <Badge variant="secondary" className="ml-2 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">Universal LATAM</Badge>
                     {!countryGateways.includes('mercadopago') && (
-                      <Badge variant="secondary" className="ml-1 bg-gray-100 text-gray-500 text-xs">No disponible en {churchCountry}</Badge>
+                      <Badge variant="secondary" className="ml-1 bg-muted/50 text-muted-foreground text-xs">No disponible en {churchCountry}</Badge>
                     )}
                   </CardTitle>
                   <CardDescription>
@@ -505,7 +505,7 @@ export default function DonationsSettingsClient({
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="APP_USR-..." />
                 </div>
               </div>
-              <div className="p-3 bg-gray-50 rounded-lg text-sm text-gray-600">
+              <div className="p-3 bg-muted/30 rounded-lg text-sm text-muted-foreground">
                 <strong>Métodos incluidos por país:</strong>
                 <div className="mt-2 grid grid-cols-2 gap-1 text-xs">
                   <span>🇨🇴 Colombia: PSE, Efecty, tarjetas</span>
@@ -532,11 +532,11 @@ export default function DonationsSettingsClient({
           <Card className={!countryGateways.includes('pse') ? 'opacity-60' : ''}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Building className="h-5 w-5 text-yellow-600" />
+                <Building className="h-5 w-5 text-[hsl(var(--warning))]" />
                 Pasarelas Colombia
-                <Badge variant="secondary" className="ml-2 bg-yellow-100 text-yellow-800">🇨🇴 Colombia</Badge>
+                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">🇨🇴 Colombia</Badge>
                 {!countryGateways.includes('pse') && (
-                  <Badge variant="secondary" className="ml-1 bg-gray-100 text-gray-500 text-xs">No disponible en {churchCountry}</Badge>
+                  <Badge variant="secondary" className="ml-1 bg-muted/50 text-muted-foreground text-xs">No disponible en {churchCountry}</Badge>
                 )}
               </CardTitle>
               <CardDescription>PSE (Pagos Seguros en Línea), Nequi y Daviplata</CardDescription>
@@ -572,11 +572,11 @@ export default function DonationsSettingsClient({
           <Card className={!countryGateways.includes('pix') ? 'opacity-60' : ''}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Phone className="h-5 w-5 text-green-600" />
+                <Phone className="h-5 w-5 text-[hsl(var(--success))]" />
                 PIX – Brasil
-                <Badge variant="secondary" className="ml-2 bg-green-100 text-green-800">🇧🇷 Brasil</Badge>
+                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">🇧🇷 Brasil</Badge>
                 {!countryGateways.includes('pix') && (
-                  <Badge variant="secondary" className="ml-1 bg-gray-100 text-gray-500 text-xs">No disponible en {churchCountry}</Badge>
+                  <Badge variant="secondary" className="ml-1 bg-muted/50 text-muted-foreground text-xs">No disponible en {churchCountry}</Badge>
                 )}
               </CardTitle>
               <CardDescription>Pago instantáneo 24/7. 70%+ del mercado digital brasileño. Tarifa: 0%-1%.</CardDescription>
@@ -607,11 +607,11 @@ export default function DonationsSettingsClient({
           <Card className={!countryGateways.includes('spei') ? 'opacity-60' : ''}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Mail className="h-5 w-5 text-red-600" />
+                <Mail className="h-5 w-5 text-[hsl(var(--destructive))]" />
                 Pasarelas México
-                <Badge variant="secondary" className="ml-2 bg-red-100 text-red-800">🇲🇽 México</Badge>
+                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]">🇲🇽 México</Badge>
                 {!countryGateways.includes('spei') && (
-                  <Badge variant="secondary" className="ml-1 bg-gray-100 text-gray-500 text-xs">No disponible en {churchCountry}</Badge>
+                  <Badge variant="secondary" className="ml-1 bg-muted/50 text-muted-foreground text-xs">No disponible en {churchCountry}</Badge>
                 )}
               </CardTitle>
               <CardDescription>SPEI (transferencia interbancaria) y OXXO (efectivo en 20,000+ tiendas)</CardDescription>
@@ -627,7 +627,7 @@ export default function DonationsSettingsClient({
                   <Input type={showSecrets ? 'text' : 'password'} placeholder="key_..." />
                 </div>
               </div>
-              <div className="p-3 bg-gray-50 rounded-lg text-sm text-gray-600">
+              <div className="p-3 bg-muted/30 rounded-lg text-sm text-muted-foreground">
                 <strong>SPEI:</strong> Transferencia entre bancos mexicanos. Mismo día. 1.5%–2.5%.<br/>
                 <strong>OXXO:</strong> Pago en tienda física. Hasta 72h. 2%–3%. Ideal para sin cuenta bancaria.
               </div>
@@ -650,9 +650,9 @@ export default function DonationsSettingsClient({
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5 text-indigo-600" />
+                <CreditCard className="h-5 w-5 text-primary" />
                 Stripe
-                <Badge variant="secondary" className="ml-2 bg-indigo-100 text-indigo-800">Internacional</Badge>
+                <Badge variant="secondary" className="ml-2 bg-primary/[0.12] text-primary">Internacional</Badge>
               </CardTitle>
               <CardDescription>
                 Tarjetas de crédito/débito internacionales. Ideal para iglesias con donantes en EE.UU. o Europa.

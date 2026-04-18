@@ -74,10 +74,10 @@ export default function SupportTicket() {
   ]
 
   const priorityLevels = [
-    { value: "low", label: "Baja - Pregunta general", color: "text-green-600" },
-    { value: "normal", label: "Normal - Problema no crítico", color: "text-blue-600" },
-    { value: "high", label: "Alta - Afecta funcionalidad", color: "text-orange-600" },
-    { value: "urgent", label: "Urgente - Sistema no funciona", color: "text-red-600" }
+    { value: "low", label: "Baja - Pregunta general", color: "text-[hsl(var(--success))]" },
+    { value: "normal", label: "Normal - Problema no crítico", color: "text-[hsl(var(--info))]" },
+    { value: "high", label: "Alta - Afecta funcionalidad", color: "text-[hsl(var(--warning))]" },
+    { value: "urgent", label: "Urgente - Sistema no funciona", color: "text-[hsl(var(--destructive))]" }
   ]
 
   return (
@@ -229,7 +229,7 @@ export default function SupportTicket() {
                 />
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold text-sm mb-2">💡 Consejos para un soporte más rápido:</h4>
                 <ul className="text-sm space-y-1">
                   <li>• Sea específico sobre los pasos que siguió</li>
@@ -259,19 +259,19 @@ export default function SupportTicket() {
           <CardContent>
             <div className="grid md:grid-cols-4 gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 mb-1">&lt; 1h</div>
+                <div className="text-2xl font-bold text-[hsl(var(--success))] mb-1">&lt; 1h</div>
                 <div className="text-sm text-muted-foreground">WhatsApp</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-1">&lt; 4h</div>
+                <div className="text-2xl font-bold text-[hsl(var(--info))] mb-1">&lt; 4h</div>
                 <div className="text-sm text-muted-foreground">Tickets Urgentes</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-orange-600 mb-1">&lt; 24h</div>
+                <div className="text-2xl font-bold text-[hsl(var(--warning))] mb-1">&lt; 24h</div>
                 <div className="text-sm text-muted-foreground">Tickets Normales</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600 mb-1">&lt; 48h</div>
+                <div className="text-2xl font-bold text-[hsl(var(--lavender))] mb-1">&lt; 48h</div>
                 <div className="text-sm text-muted-foreground">Consultas Email</div>
               </div>
             </div>

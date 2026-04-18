@@ -56,57 +56,57 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
   const stageConfig = {
     'VISITOR': {
       label: 'Visitantes',
-      color: 'bg-gray-500',
-      lightColor: 'bg-gray-100',
+      color: 'bg-muted/300',
+      lightColor: 'bg-muted/50',
       description: 'Personas que han mostrado interés inicial',
       icon: Users
     },
     'FIRST_TIME_GUEST': {
       label: 'Primera Visita',
-      color: 'bg-blue-500',
-      lightColor: 'bg-blue-100',
+      color: 'bg-[hsl(var(--info)/0.10)]0',
+      lightColor: 'bg-[hsl(var(--info)/0.15)]',
       description: 'Visitantes que asistieron por primera vez',
       icon: Users
     },
     'RETURNING_VISITOR': {
       label: 'Visitante Recurrente',
-      color: 'bg-indigo-500',
-      lightColor: 'bg-indigo-100',
+      color: 'bg-primary/[0.06]0',
+      lightColor: 'bg-primary/[0.12]',
       description: 'Visitantes que han regresado múltiples veces',
       icon: Users
     },
     'REGULAR_ATTENDEE': {
       label: 'Asistente Regular',
-      color: 'bg-purple-500',
-      lightColor: 'bg-purple-100',
+      color: 'bg-[hsl(var(--lavender)/0.10)]0',
+      lightColor: 'bg-[hsl(var(--lavender)/0.15)]',
       description: 'Asiste regularmente pero no es miembro',
       icon: CheckCircle
     },
     'NEW_MEMBER': {
       label: 'Nuevo Miembro',
-      color: 'bg-green-500',
-      lightColor: 'bg-green-100',
+      color: 'bg-[hsl(var(--success)/0.10)]0',
+      lightColor: 'bg-[hsl(var(--success)/0.15)]',
       description: 'Miembros recién unidos (menos de 6 meses)',
       icon: CheckCircle
     },
     'ESTABLISHED_MEMBER': {
       label: 'Miembro Establecido',
-      color: 'bg-emerald-500',
-      lightColor: 'bg-emerald-100',
+      color: 'bg-[hsl(var(--success))]',
+      lightColor: 'bg-[hsl(var(--success)/0.12)]',
       description: 'Miembros activos y comprometidos',
       icon: CheckCircle
     },
     'SERVING_MEMBER': {
       label: 'Miembro Servidor',
-      color: 'bg-teal-500',
-      lightColor: 'bg-teal-100',
+      color: 'bg-[hsl(var(--info)/0.10)]0',
+      lightColor: 'bg-[hsl(var(--info)/0.15)]',
       description: 'Miembros activos en ministerios',
       icon: TrendingUp
     },
     'LEADING_MEMBER': {
       label: 'Miembro Líder',
-      color: 'bg-orange-500',
-      lightColor: 'bg-orange-100',
+      color: 'bg-[hsl(var(--warning)/0.10)]0',
+      lightColor: 'bg-[hsl(var(--warning)/0.15)]',
       description: 'Líderes de ministerio y mentores',
       icon: TrendingUp
     }
@@ -196,7 +196,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
         <CardContent className="space-y-4">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="animate-pulse">
-              <div className="h-16 bg-gray-200 rounded-lg"></div>
+              <div className="h-16 bg-muted rounded-lg"></div>
             </div>
           ))}
         </CardContent>
@@ -208,13 +208,13 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
     return (
       <Card className={className}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-600">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <AlertTriangle className="h-5 w-5" />
             Error en el Embudo de Miembros
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-red-600">{error}</p>
+          <p className="text-[hsl(var(--destructive))]">{error}</p>
           <Button onClick={fetchFunnelData} className="mt-4">
             Reintentar
           </Button>
@@ -233,7 +233,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-500">No hay datos disponibles para el período seleccionado.</p>
+          <p className="text-muted-foreground">No hay datos disponibles para el período seleccionado.</p>
         </CardContent>
       </Card>
     );
@@ -254,39 +254,39 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
         <CardContent className="space-y-6">
           {/* Summary Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg">
+            <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-4 rounded-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-blue-700">Total Personas</p>
-                  <p className="text-2xl font-bold text-blue-900">{funnelData.totalVisitors.toLocaleString()}</p>
+                  <p className="text-sm font-medium text-[hsl(var(--info))]">Total Personas</p>
+                  <p className="text-2xl font-bold text-foreground">{funnelData.totalVisitors.toLocaleString()}</p>
                 </div>
-                <Users className="h-8 w-8 text-blue-500" />
+                <Users className="h-8 w-8 text-[hsl(var(--info))]" />
               </div>
             </div>
             
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg">
+            <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-green-700">Tasa Conversión Promedio</p>
-                  <p className="text-2xl font-bold text-green-900">
+                  <p className="text-sm font-medium text-[hsl(var(--success))]">Tasa Conversión Promedio</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {Math.round(Object.values(funnelData.conversionRates).reduce((a, b) => a + b, 0) / 6)}%
                   </p>
                 </div>
-                <TrendingUp className="h-8 w-8 text-green-500" />
+                <TrendingUp className="h-8 w-8 text-[hsl(var(--success))]" />
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg">
+            <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-purple-700">Tiempo Promedio Journey</p>
-                  <p className="text-2xl font-bold text-purple-900">
+                  <p className="text-sm font-medium text-[hsl(var(--lavender))]">Tiempo Promedio Journey</p>
+                  <p className="text-2xl font-bold text-foreground">
                     {formatDuration(
                       funnelData.stages.reduce((total, stage) => total + stage.averageDuration, 0) / funnelData.stages.length
                     )}
                   </p>
                 </div>
-                <Clock className="h-8 w-8 text-purple-500" />
+                <Clock className="h-8 w-8 text-[hsl(var(--lavender))]" />
               </div>
             </div>
           </div>
@@ -306,19 +306,19 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
                   {/* Conversion Rate Arrow (between stages) */}
                   {conversionRate !== null && (
                     <div className="flex items-center justify-center py-2">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <ArrowRight className="h-4 w-4" />
                         <span className="font-medium">{conversionRate}% conversión</span>
                         {conversionRate > 70 ? (
-                          <Badge variant="default" className="bg-green-100 text-green-700 border-green-300">
+                          <Badge variant="default" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] border-[hsl(var(--success)/0.4)]">
                             Excelente
                           </Badge>
                         ) : conversionRate > 40 ? (
-                          <Badge variant="secondary" className="bg-yellow-100 text-yellow-700 border-yellow-300">
+                          <Badge variant="secondary" className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.4)]">
                             Bueno
                           </Badge>
                         ) : (
-                          <Badge variant="destructive" className="bg-red-100 text-red-700 border-red-300">
+                          <Badge variant="destructive" className="bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] border-[hsl(var(--destructive)/0.4)]">
                             Mejorable
                           </Badge>
                         )}
@@ -339,7 +339,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
                         {/* Funnel Shape Background */}
                         <div 
                           className={`
-                            h-20 ${config.lightColor} rounded-lg border-2 border-gray-200 
+                            h-20 ${config.lightColor} rounded-lg border-2 border-border 
                             relative overflow-hidden
                             ${isSelected ? `border-opacity-100 shadow-lg ${config.color.replace('bg-', 'border-')}` : ''}
                           `}
@@ -357,23 +357,23 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
                           {/* Content */}
                           <div className="relative h-full flex items-center justify-between px-4 z-10">
                             <div className="flex items-center gap-3">
-                              <IconComponent className="h-6 w-6 text-gray-700" />
+                              <IconComponent className="h-6 w-6 text-muted-foreground" />
                               <div>
-                                <h4 className="font-semibold text-gray-900">{config.label}</h4>
-                                <p className="text-sm text-gray-600">{stage.count.toLocaleString()} personas</p>
+                                <h4 className="font-semibold text-foreground">{config.label}</h4>
+                                <p className="text-sm text-muted-foreground">{stage.count.toLocaleString()} personas</p>
                               </div>
                             </div>
                             
                             <div className="text-right">
                               <div className="flex items-center gap-2">
-                                <span className="text-lg font-bold text-gray-900">{stage.percentage}%</span>
+                                <span className="text-lg font-bold text-foreground">{stage.percentage}%</span>
                                 {stage.trend === 'up' ? (
-                                  <TrendingUp className="h-4 w-4 text-green-500" />
+                                  <TrendingUp className="h-4 w-4 text-[hsl(var(--success))]" />
                                 ) : (
-                                  <TrendingDown className="h-4 w-4 text-red-500" />
+                                  <TrendingDown className="h-4 w-4 text-[hsl(var(--destructive))]" />
                                 )}
                               </div>
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-muted-foreground">
                                 ⏱ {formatDuration(stage.averageDuration)}
                               </p>
                             </div>
@@ -384,7 +384,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
                     <TooltipContent>
                       <div className="max-w-xs">
                         <h4 className="font-semibold">{config.label}</h4>
-                        <p className="text-sm text-gray-600 mt-1">{config.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{config.description}</p>
                         <div className="mt-2 space-y-1">
                           <p className="text-xs">📊 {stage.count} personas ({stage.percentage}%)</p>
                           <p className="text-xs">⏱ Duración promedio: {formatDuration(stage.averageDuration)}</p>
@@ -402,16 +402,16 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
 
           {/* Detailed Stage Info (when selected) */}
           {selectedStage !== null && funnelData.stages[selectedStage] != null && (
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
+            <div className="mt-6 p-4 bg-muted/30 rounded-lg border">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-semibold text-gray-900">
+                <h4 className="font-semibold text-foreground">
                   Detalles: {stageConfig[funnelData.stages[selectedStage].name as keyof typeof stageConfig]?.label}
                 </h4>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedStage(null)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-muted-foreground hover:text-muted-foreground"
                 >
                   ✕
                 </Button>
@@ -419,15 +419,15 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Cantidad</p>
+                  <p className="text-sm font-medium text-muted-foreground">Cantidad</p>
                   <p className="text-xl font-bold">{funnelData.stages[selectedStage].count.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Porcentaje del Total</p>
+                  <p className="text-sm font-medium text-muted-foreground">Porcentaje del Total</p>
                   <p className="text-xl font-bold">{funnelData.stages[selectedStage].percentage}%</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Tiempo Promedio en Etapa</p>
+                  <p className="text-sm font-medium text-muted-foreground">Tiempo Promedio en Etapa</p>
                   <p className="text-xl font-bold">{formatDuration(funnelData.stages[selectedStage].averageDuration)}</p>
                 </div>
               </div>
@@ -452,7 +452,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
               onClick={fetchFunnelData}
               variant="outline"
               size="sm"
-              className="text-gray-600 hover:text-gray-900"
+              className="text-muted-foreground hover:text-foreground"
             >
               🔄 Actualizar Datos
             </Button>

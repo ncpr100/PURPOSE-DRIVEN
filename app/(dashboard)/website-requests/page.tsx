@@ -79,13 +79,13 @@ export default function WebsiteRequestsPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
-        return <Clock className="h-4 w-4 text-orange-500" />
+        return <Clock className="h-4 w-4 text-[hsl(var(--warning))]" />
       case 'in_progress':
-        return <AlertCircle className="h-4 w-4 text-blue-500" />
+        return <AlertCircle className="h-4 w-4 text-[hsl(var(--info))]" />
       case 'completed':
-        return <CheckCircle className="h-4 w-4 text-green-500" />
+        return <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
       case 'rejected':
-        return <AlertCircle className="h-4 w-4 text-red-500" />
+        return <AlertCircle className="h-4 w-4 text-[hsl(var(--destructive))]" />
       default:
         return <Clock className="h-4 w-4" />
     }
@@ -168,10 +168,10 @@ export default function WebsiteRequestsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Sitio Web Completo</CardTitle>
-            <Globe className="h-4 w-4 text-blue-500" />
+            <Globe className="h-4 w-4 text-[hsl(var(--info))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">$599 - $899</div>
+            <div className="text-2xl font-bold text-[hsl(var(--info))]">$599 - $899</div>
             <p className="text-xs text-muted-foreground">
               Sitio web profesional completo con múltiples páginas
             </p>
@@ -181,10 +181,10 @@ export default function WebsiteRequestsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Landing Page</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-500" />
+            <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">$199 - $399</div>
+            <div className="text-2xl font-bold text-[hsl(var(--success))]">$199 - $399</div>
             <p className="text-xs text-muted-foreground">
               Página única para campañas o eventos específicos
             </p>
@@ -194,10 +194,10 @@ export default function WebsiteRequestsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Tiempo de Entrega</CardTitle>
-            <Clock className="h-4 w-4 text-purple-500" />
+            <Clock className="h-4 w-4 text-[hsl(var(--lavender))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">5-10 días</div>
+            <div className="text-2xl font-bold text-[hsl(var(--lavender))]">5-10 días</div>
             <p className="text-xs text-muted-foreground">
               Desde la confirmación del proyecto
             </p>
@@ -256,8 +256,8 @@ export default function WebsiteRequestsPage() {
                         {request.description}
                       </p>
                       {request.adminNotes && (
-                        <div className="p-2 bg-blue-50 border border-blue-200 rounded text-sm">
-                          <p className="text-blue-800"><strong>Notas del equipo:</strong> {request.adminNotes}</p>
+                        <div className="p-2 bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded text-sm">
+                          <p className="text-[hsl(var(--info))]"><strong>Notas del equipo:</strong> {request.adminNotes}</p>
                         </div>
                       )}
                     </div>
@@ -267,7 +267,7 @@ export default function WebsiteRequestsPage() {
                         <p>Est. entrega: {new Date(request.estimatedCompletion).toLocaleDateString('es-ES')}</p>
                       )}
                       {request.estimatedPrice && (
-                        <p className="font-semibold text-green-600">${request.estimatedPrice}</p>
+                        <p className="font-semibold text-[hsl(var(--success))]">${request.estimatedPrice}</p>
                       )}
                     </div>
                   </div>
@@ -316,25 +316,25 @@ export default function WebsiteRequestsPage() {
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold mb-2 text-green-600">✅ Diseño Profesional</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--success))]">✅ Diseño Profesional</h4>
               <p className="text-sm text-muted-foreground">
                 Sitios web diseñados por expertos específicamente para iglesias, con mejores prácticas de UX/UI.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2 text-blue-600">🚀 Optimización Técnica</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--info))]">🚀 Optimización Técnica</h4>
               <p className="text-sm text-muted-foreground">
                 SEO optimizado, velocidad de carga rápida y compatibilidad móvil garantizada.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2 text-purple-600">⚡ Entrega Rápida</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--lavender))]">⚡ Entrega Rápida</h4>
               <p className="text-sm text-muted-foreground">
                 Tu sitio estará listo en 5-10 días laborales, sin complicaciones técnicas de tu parte.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2 text-orange-600">🎯 Enfoque Ministerial</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--warning))]">🎯 Enfoque Ministerial</h4>
               <p className="text-sm text-muted-foreground">
                 Funcionalidades específicas para iglesias: donaciones, eventos, sermones y más.
               </p>

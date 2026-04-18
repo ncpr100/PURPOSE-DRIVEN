@@ -44,7 +44,7 @@ const SUPER_ADMIN_SETTINGS = [
     description: 'Configuraciones avanzadas de la plataforma y sistema',
     href: '/platform/settings',
     icon: Settings,
-    color: 'text-red-500',
+    color: 'text-[hsl(var(--destructive))]',
     category: 'Sistema',
     badge: 'Admin'
   },
@@ -53,7 +53,7 @@ const SUPER_ADMIN_SETTINGS = [
     description: 'Administrar todos los usuarios de la plataforma',
     href: '/platform/users',
     icon: Users,
-    color: 'text-blue-500',
+    color: 'text-[hsl(var(--info))]',
     category: 'Usuarios',
     badge: null
   },
@@ -62,7 +62,7 @@ const SUPER_ADMIN_SETTINGS = [
     description: 'Métricas y análisis detallados de toda la plataforma',
     href: '/platform/analytics',
     icon: BarChart3,
-    color: 'text-green-500',
+    color: 'text-[hsl(var(--success))]',
     category: 'Analytics',
     badge: 'Pro'
   },
@@ -71,7 +71,7 @@ const SUPER_ADMIN_SETTINGS = [
     description: 'Supervisar y administrar todas las iglesias',
     href: '/platform/churches',
     icon: Building2,
-    color: 'text-purple-500',
+    color: 'text-[hsl(var(--lavender))]',
     category: 'Iglesias',
     badge: null
   },
@@ -80,7 +80,7 @@ const SUPER_ADMIN_SETTINGS = [
     description: 'Personalizar tema y apariencia para toda la plataforma',
     href: '/settings/theme',
     icon: Palette,
-    color: 'text-pink-500',
+    color: 'text-[hsl(var(--lavender))]',
     category: 'Personalización',
     badge: null
   },
@@ -89,7 +89,7 @@ const SUPER_ADMIN_SETTINGS = [
     description: 'Configurar alertas y notificaciones administrativas',
     href: '/settings/notifications',
     icon: Bell,
-    color: 'text-orange-500',
+    color: 'text-[hsl(var(--warning))]',
     category: 'Notificaciones',
     badge: 'Nuevo'
   },
@@ -249,22 +249,22 @@ export default function SuperAdminProfilePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <Crown className="h-8 w-8 text-yellow-500" />
+          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+            <Crown className="h-8 w-8 text-[hsl(var(--warning))]" />
             Perfil Super Administrador
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-muted-foreground mt-1">
             Gestión completa de tu perfil y configuraciones avanzadas de la plataforma
           </p>
         </div>
-        <Badge variant="default" className="bg-red-600 hover:bg-red-700">
+        <Badge variant="default" className="bg-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive))]">
           <Shield className="h-3 w-3 mr-1" />
           SUPER_ADMIN
         </Badge>
       </div>
 
       {/* Profile Overview */}
-      <Card className="border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <Card className="border-2 border-[hsl(var(--info)/0.3)] bg-gradient-to-r from-primary/20 to-primary/10">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span className="flex items-center gap-2">
@@ -299,9 +299,9 @@ export default function SuperAdminProfilePage() {
         <CardContent className="space-y-6">
           <div className="flex items-start gap-6">
             <div className="relative">
-              <Avatar className="w-24 h-24 border-4 border-blue-200">
+              <Avatar className="w-24 h-24 border-4 border-[hsl(var(--info)/0.3)]">
                 <AvatarImage src={profileData.avatar} alt={profileData.name} />
-                <AvatarFallback className="bg-blue-600 text-white text-2xl font-bold">
+                <AvatarFallback className="bg-[hsl(var(--info))] text-white text-2xl font-bold">
                   {userInitials}
                 </AvatarFallback>
               </Avatar>
@@ -345,7 +345,7 @@ export default function SuperAdminProfilePage() {
                   ) : (
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-gray-600">{profileData.email}</p>
+                      <p className="text-muted-foreground">{profileData.email}</p>
                     </div>
                   )}
                 </div>
@@ -362,7 +362,7 @@ export default function SuperAdminProfilePage() {
                   ) : (
                     <div className="flex items-center gap-2">
                       <Phone className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-gray-600">{profileData.phone || 'No especificado'}</p>
+                      <p className="text-muted-foreground">{profileData.phone || 'No especificado'}</p>
                     </div>
                   )}
                 </div>
@@ -379,7 +379,7 @@ export default function SuperAdminProfilePage() {
                   ) : (
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-gray-600">{profileData.location || 'No especificado'}</p>
+                      <p className="text-muted-foreground">{profileData.location || 'No especificado'}</p>
                     </div>
                   )}
                 </div>
@@ -396,18 +396,18 @@ export default function SuperAdminProfilePage() {
                     rows={3}
                   />
                 ) : (
-                  <p className="text-gray-600">{profileData.bio || 'Super Administrator de la Plataforma Kḥesed-tek'}</p>
+                  <p className="text-muted-foreground">{profileData.bio || 'Super Administrator de la Plataforma Kḥesed-tek'}</p>
                 )}
               </div>
 
               <div className="flex items-center gap-4 pt-2">
                 <div className="flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-green-500" />
-                  <span className="text-sm text-green-600 font-medium">En línea</span>
+                  <Activity className="h-4 w-4 text-[hsl(var(--success))]" />
+                  <span className="text-sm text-[hsl(var(--success))] font-medium">En línea</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm text-gray-600">Último acceso: Ahora</span>
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Último acceso: Ahora</span>
                 </div>
               </div>
             </div>
@@ -416,9 +416,9 @@ export default function SuperAdminProfilePage() {
       </Card>
 
       {/* Security Settings - Password Change */}
-      <Card className="border-2 border-orange-200 bg-gradient-to-r from-orange-50 to-red-50">
+      <Card className="border-2 border-[hsl(var(--warning)/0.3)] bg-gradient-to-r from-[hsl(var(--warning))] to-[hsl(var(--destructive))]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-orange-800">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--warning))]">
             <Key className="h-5 w-5" />
             Configuración de Seguridad
           </CardTitle>
@@ -447,9 +447,9 @@ export default function SuperAdminProfilePage() {
                   onClick={() => setShowPasswords({...showPasswords, current: !showPasswords.current})}
                 >
                   {showPasswords.current ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-4 w-4 text-muted-foreground/70" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-4 w-4 text-muted-foreground/70" />
                   )}
                 </Button>
               </div>
@@ -474,9 +474,9 @@ export default function SuperAdminProfilePage() {
                   onClick={() => setShowPasswords({...showPasswords, new: !showPasswords.new})}
                 >
                   {showPasswords.new ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-4 w-4 text-muted-foreground/70" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-4 w-4 text-muted-foreground/70" />
                   )}
                 </Button>
               </div>
@@ -501,17 +501,17 @@ export default function SuperAdminProfilePage() {
                   onClick={() => setShowPasswords({...showPasswords, confirm: !showPasswords.confirm})}
                 >
                   {showPasswords.confirm ? (
-                    <EyeOff className="h-4 w-4 text-gray-400" />
+                    <EyeOff className="h-4 w-4 text-muted-foreground/70" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400" />
+                    <Eye className="h-4 w-4 text-muted-foreground/70" />
                   )}
                 </Button>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-orange-200">
-            <div className="text-sm text-orange-700">
+          <div className="flex items-center justify-between pt-4 border-t border-[hsl(var(--warning)/0.3)]">
+            <div className="text-sm text-[hsl(var(--warning))]">
               <p className="font-medium">Requisitos de contraseña:</p>
               <ul className="list-disc list-inside text-xs space-y-1 mt-1">
                 <li>Mínimo 8 caracteres</li>
@@ -522,7 +522,7 @@ export default function SuperAdminProfilePage() {
             <Button
               onClick={handleChangePassword}
               disabled={isChangingPassword || !passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword}
-              className="bg-orange-600 hover:bg-orange-700"
+              className="bg-[hsl(var(--warning))] hover:bg-[hsl(var(--warning))]"
             >
               {isChangingPassword ? (
                 <>
@@ -541,9 +541,9 @@ export default function SuperAdminProfilePage() {
       </Card>
 
       {/* Contact Information Management */}
-      <Card className="border-2 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
+      <Card className="border-2 border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-green-800">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--success))]">
             <Globe className="h-5 w-5" />
             Gestión de Información de Contacto
           </CardTitle>
@@ -553,7 +553,7 @@ export default function SuperAdminProfilePage() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
-            <div className="text-sm text-green-700">
+            <div className="text-sm text-[hsl(var(--success))]">
               <p className="font-medium">Configuración Disponible:</p>
               <ul className="list-disc list-inside text-xs space-y-1 mt-1">
                 <li>WhatsApp y números de contacto</li>
@@ -565,7 +565,7 @@ export default function SuperAdminProfilePage() {
             </div>
             <Button
               onClick={() => window.open('/platform/support-settings', '_blank')}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]"
             >
               <Building2 className="h-4 w-4 mr-2" />
               Editar Información de Contacto
@@ -577,8 +577,8 @@ export default function SuperAdminProfilePage() {
       {/* Admin Settings Sections */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900">Configuraciones Administrativas</h2>
-          <Badge variant="outline" className="text-red-600 border-red-200">
+          <h2 className="text-xl font-semibold text-foreground">Configuraciones Administrativas</h2>
+          <Badge variant="outline" className="text-[hsl(var(--destructive))] border-[hsl(var(--destructive)/0.3)]">
             <Lock className="h-3 w-3 mr-1" />
             Acceso Restringido
           </Badge>
@@ -611,7 +611,7 @@ export default function SuperAdminProfilePage() {
                           <p className="text-sm text-muted-foreground">
                             {setting.description}
                           </p>
-                          <p className="text-xs text-blue-600 mt-1 font-medium">
+                          <p className="text-xs text-[hsl(var(--info))] mt-1 font-medium">
                             {setting.category}
                           </p>
                         </div>
@@ -627,9 +627,9 @@ export default function SuperAdminProfilePage() {
       </div>
 
       {/* System Status */}
-      <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+      <Card className="bg-[hsl(var(--success)/0.10)] border-[hsl(var(--success)/0.3)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-green-800">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--success))]">
             <Shield className="h-5 w-5" />
             Estado del Sistema
           </CardTitle>
@@ -637,20 +637,20 @@ export default function SuperAdminProfilePage() {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">24</div>
-              <div className="text-sm text-green-700">Iglesias Activas</div>
+              <div className="text-2xl font-bold text-[hsl(var(--success))]">24</div>
+              <div className="text-sm text-[hsl(var(--success))]">Iglesias Activas</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">1,234</div>
-              <div className="text-sm text-blue-700">Usuarios Totales</div>
+              <div className="text-2xl font-bold text-[hsl(var(--info))]">1,234</div>
+              <div className="text-sm text-[hsl(var(--info))]">Usuarios Totales</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">99.9%</div>
-              <div className="text-sm text-purple-700">Uptime</div>
+              <div className="text-2xl font-bold text-[hsl(var(--lavender))]">99.9%</div>
+              <div className="text-sm text-[hsl(var(--lavender))]">Uptime</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600">4.8/5</div>
-              <div className="text-sm text-orange-700">Satisfacción</div>
+              <div className="text-2xl font-bold text-[hsl(var(--warning))]">4.8/5</div>
+              <div className="text-sm text-[hsl(var(--warning))]">Satisfacción</div>
             </div>
           </div>
         </CardContent>

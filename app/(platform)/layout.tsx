@@ -13,7 +13,7 @@ export default async function PlatformLayout({
   const { session } = await validateSuperAdminAccess()
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-muted/50 overflow-hidden">
       {/* Mobile-responsive sidebar */}
       <PlatformSidebar />
       

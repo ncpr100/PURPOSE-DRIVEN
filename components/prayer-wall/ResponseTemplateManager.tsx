@@ -432,7 +432,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -443,7 +443,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Plantillas de Respuesta</h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Crea respuestas automáticas personalizadas para las peticiones de oración
           </p>
         </div>
@@ -474,7 +474,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
             <div>
               <Label>Buscar plantillas</Label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 w-4 h-4" />
                 <Input
                   placeholder="Nombre, asunto, contenido..."
                   value={searchTerm}
@@ -534,7 +534,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <CardTitle className="text-lg">{template.name}</CardTitle>
-                  <p className="text-sm text-gray-600 mt-1">{template.subject}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{template.subject}</p>
                 </div>
                 <div className="flex gap-1">
                   <Badge variant={template.isActive ? "default" : "secondary"}>
@@ -549,33 +549,33 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
             <CardContent className="space-y-3">
               <div className="text-sm">
                 <div className="flex items-center gap-2 mb-1">
-                  <Clock className="w-4 h-4 text-gray-500" />
+                  <Clock className="w-4 h-4 text-muted-foreground" />
                   <span className="font-medium">Envío:</span>
                   <span>{getTimingDisplay(template)}</span>
                 </div>
                 <div className="flex items-center gap-2 mb-1">
-                  <Send className="w-4 h-4 text-gray-500" />
+                  <Send className="w-4 h-4 text-muted-foreground" />
                   <span className="font-medium">Tipo:</span>
                   <span>{getMessageTypeDisplay(template.messageType)}</span>
                 </div>
                 {template.category && (
                   <div className="flex items-center gap-2 mb-1">
-                    <Heart className="w-4 h-4 text-gray-500" />
+                    <Heart className="w-4 h-4 text-muted-foreground" />
                     <span className="font-medium">Categoría:</span>
                     <span>{template.category.name}</span>
                   </div>
                 )}
                 {template._count && (
                   <div className="flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4 text-gray-500" />
+                    <MessageSquare className="w-4 h-4 text-muted-foreground" />
                     <span className="font-medium">Enviados:</span>
                     <span>{template._count.sentMessages}</span>
                   </div>
                 )}
               </div>
 
-              <div className="bg-gray-50 rounded p-2">
-                <p className="text-xs text-gray-600 line-clamp-3">
+              <div className="bg-muted/30 rounded p-2">
+                <p className="text-xs text-muted-foreground line-clamp-3">
                   {template.content.substring(0, 120)}...
                 </p>
               </div>
@@ -615,7 +615,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
                   size="sm"
                   onClick={() => handleDeleteTemplate(template.id)}
                 >
-                  <Trash2 className="w-4 h-4 text-red-500" />
+                  <Trash2 className="w-4 h-4 text-[hsl(var(--destructive))]" />
                 </Button>
               </div>
             </CardContent>
@@ -627,7 +627,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
         <Card>
           <CardContent className="text-center py-12">
             <MessageSquare className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500">No se encontraron plantillas</p>
+            <p className="text-muted-foreground">No se encontraron plantillas</p>
             {templates.length === 0 ? (
               <Button
                 className="mt-4"
@@ -637,7 +637,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
                 Crear Primera Plantilla
               </Button>
             ) : (
-              <p className="text-sm text-gray-400 mt-1">
+              <p className="text-sm text-muted-foreground/70 mt-1">
                 Intenta ajustar los filtros
               </p>
             )}
@@ -804,7 +804,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
             <div className="space-y-4">
               <div>
                 <h3 className="text-lg font-medium mb-3">Variables Disponibles</h3>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-muted-foreground mb-4">
                   Haz clic en una variable para insertarla en el mensaje
                 </p>
                 <div className="space-y-2">
@@ -816,16 +816,16 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
                       className="w-full text-left justify-start"
                       onClick={() => insertVariable(variable.key)}
                     >
-                      <code className="text-blue-600 mr-2">{variable.key}</code>
-                      <span className="text-xs text-gray-600">{variable.description}</span>
+                      <code className="text-[hsl(var(--info))] mr-2">{variable.key}</code>
+                      <span className="text-xs text-muted-foreground">{variable.description}</span>
                     </Button>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-blue-50 rounded-lg p-3">
-                <h4 className="font-medium text-blue-900 mb-2">💡 Consejos</h4>
-                <ul className="text-sm text-blue-800 space-y-1">
+              <div className="bg-[hsl(var(--info)/0.10)] rounded-lg p-3">
+                <h4 className="font-medium text-foreground mb-2">💡 Consejos</h4>
+                <ul className="text-sm text-[hsl(var(--info))] space-y-1">
                   <li>• Usa variables para personalizar los mensajes</li>
                   <li>• Las plantillas activas se aplicarán automáticamente</li>
                   <li>• Los envíos diferidos son más humanos</li>
@@ -866,17 +866,17 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
                   <>
                     <div>
                       <Label>Asunto:</Label>
-                      <div className="bg-gray-50 rounded p-3 mt-1">
+                      <div className="bg-muted/30 rounded p-3 mt-1">
                         <p className="font-medium">{preview.subject}</p>
                       </div>
                     </div>
                     <div>
                       <Label>Contenido:</Label>
-                      <div className="bg-gray-50 rounded p-3 mt-1 max-h-96 overflow-y-auto">
+                      <div className="bg-muted/30 rounded p-3 mt-1 max-h-96 overflow-y-auto">
                         <p className="whitespace-pre-wrap">{preview.content}</p>
                       </div>
                     </div>
-                    <div className="text-sm text-gray-600 bg-blue-50 rounded p-3">
+                    <div className="text-sm text-muted-foreground bg-[hsl(var(--info)/0.10)] rounded p-3">
                       <strong>Nota:</strong> Esta es una vista previa con datos de ejemplo. 
                       Los valores reales se sustituirán automáticamente cuando se envíe el mensaje.
                     </div>

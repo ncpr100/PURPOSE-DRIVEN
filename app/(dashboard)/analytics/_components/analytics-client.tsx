@@ -433,7 +433,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
   const formatGrowth = (growth: number) => {
     const isPositive = growth > 0;
     const icon = isPositive ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />;
-    const colorClass = isPositive ? 'text-green-600' : 'text-red-600';
+    const colorClass = isPositive ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--destructive))]';
     
     return (
       <div className={`flex items-center gap-1 text-xs ${colorClass}`}>
@@ -456,8 +456,8 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
   if (error) {
     return (
-      <Alert className="border-red-200 bg-red-50">
-        <AlertDescription className="text-red-800">
+      <Alert className="border-[hsl(var(--destructive)/0.3)] bg-[hsl(var(--destructive)/0.10)]">
+        <AlertDescription className="text-[hsl(var(--destructive))]">
           {error}
           <Button
             variant="outline"
@@ -478,8 +478,8 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Analíticas Generales</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-foreground">Analíticas Generales</h1>
+          <p className="text-muted-foreground mt-2">
             Métricas operacionales y perspectivas basadas en datos para la gestión diaria de tu ministerio
           </p>
         </div>
@@ -527,14 +527,14 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <Users className="h-4 w-4 text-blue-600" />
+                    <Users className="h-4 w-4 text-[hsl(var(--info))]" />
                     Miembros
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{overview.members.total}</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Miembros activos</span>
+                    <span className="text-xs text-muted-foreground">Miembros activos</span>
                     {formatGrowth(overview.members.growth)}
                   </div>
                 </CardContent>
@@ -543,14 +543,14 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-green-600" />
+                    <DollarSign className="h-4 w-4 text-[hsl(var(--success))]" />
                     Donaciones
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{formatCurrency(overview.donations.total)}</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">{overview.donations.count} donaciones</span>
+                    <span className="text-xs text-muted-foreground">{overview.donations.count} donaciones</span>
                     {formatGrowth(overview.donations.growth)}
                   </div>
                 </CardContent>
@@ -559,14 +559,14 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-purple-600" />
+                    <Calendar className="h-4 w-4 text-[hsl(var(--lavender))]" />
                     Eventos
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{overview.events.total}</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Eventos realizados</span>
+                    <span className="text-xs text-muted-foreground">Eventos realizados</span>
                     {formatGrowth(overview.events.growth)}
                   </div>
                 </CardContent>
@@ -575,14 +575,14 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-orange-600" />
+                    <MessageSquare className="h-4 w-4 text-[hsl(var(--warning))]" />
                     Comunicaciones
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{overview.communications.total}</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Mensajes enviados</span>
+                    <span className="text-xs text-muted-foreground">Mensajes enviados</span>
                     {formatGrowth(overview.communications.growth)}
                   </div>
                 </CardContent>
@@ -591,14 +591,14 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <Share2 className="h-4 w-4 text-pink-600" />
+                    <Share2 className="h-4 w-4 text-[hsl(var(--destructive))]" />
                     Redes Sociales
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{overview.socialMedia.posts}</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Publicaciones creadas</span>
+                    <span className="text-xs text-muted-foreground">Publicaciones creadas</span>
                     {formatGrowth(overview.socialMedia.growth)}
                   </div>
                 </CardContent>
@@ -607,14 +607,14 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <UserCheck className="h-4 w-4 text-teal-600" />
+                    <UserCheck className="h-4 w-4 text-[hsl(var(--info))]" />
                     Voluntarios
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{overview.volunteers.total}</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Voluntarios activos</span>
+                    <span className="text-xs text-muted-foreground">Voluntarios activos</span>
                     {formatGrowth(overview.volunteers.growth)}
                   </div>
                 </CardContent>
@@ -623,14 +623,14 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <BarChart3 className="h-4 w-4 text-indigo-600" />
+                    <BarChart3 className="h-4 w-4 text-primary" />
                     Donación Promedio
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{formatCurrency(overview.donations.average)}</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Por donación</span>
+                    <span className="text-xs text-muted-foreground">Por donación</span>
                     <Badge variant="secondary" className="text-xs">
                       {period} días
                     </Badge>
@@ -641,7 +641,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <Activity className="h-4 w-4 text-cyan-600" />
+                    <Activity className="h-4 w-4 text-[hsl(var(--info))]" />
                     Participación
                   </CardTitle>
                 </CardHeader>
@@ -650,7 +650,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                     {overview.communications.total + overview.socialMedia.posts}
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Interacciones totales</span>
+                    <span className="text-xs text-muted-foreground">Interacciones totales</span>
                     <Badge variant="outline" className="text-xs">
                       Alta
                     </Badge>
@@ -664,7 +664,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                   <Card>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm font-medium flex items-center gap-2">
-                        <Heart className="h-4 w-4 text-red-500" />
+                        <Heart className="h-4 w-4 text-[hsl(var(--destructive))]" />
                         Ministerio de Oración
                       </CardTitle>
                     </CardHeader>
@@ -673,7 +673,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                         {overview.comprehensive.prayerMinistry.requestsReceived}
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-600">Peticiones recibidas</span>
+                        <span className="text-xs text-muted-foreground">Peticiones recibidas</span>
                         <Badge variant="secondary" className="text-xs">
                           {Math.round(overview.comprehensive.prayerMinistry.responseRate)}% respondidas
                         </Badge>
@@ -684,7 +684,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                   <Card>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm font-medium flex items-center gap-2">
-                        <UserCheck className="h-4 w-4 text-green-600" />
+                        <UserCheck className="h-4 w-4 text-[hsl(var(--success))]" />
                         Asistencia
                       </CardTitle>
                     </CardHeader>
@@ -693,7 +693,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                         {overview.comprehensive.engagement.checkIns}
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-600">Check-ins registrados</span>
+                        <span className="text-xs text-muted-foreground">Check-ins registrados</span>
                         <Badge variant="outline" className="text-xs">
                           {Math.round(overview.comprehensive.insights.memberEngagement.checkInRate)}% miembros
                         </Badge>
@@ -704,7 +704,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                   <Card>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm font-medium flex items-center gap-2">
-                        <Phone className="h-4 w-4 text-blue-600" />
+                        <Phone className="h-4 w-4 text-[hsl(var(--info))]" />
                         Seguimientos
                       </CardTitle>
                     </CardHeader>
@@ -713,7 +713,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                         {overview.comprehensive.engagement.followUps}
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-600">Seguimientos realizados</span>
+                        <span className="text-xs text-muted-foreground">Seguimientos realizados</span>
                         <Badge variant="secondary" className="text-xs">
                           Cuidado pastoral
                         </Badge>
@@ -724,7 +724,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                   <Card>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm font-medium flex items-center gap-2">
-                        <Zap className="h-4 w-4 text-yellow-600" />
+                        <Zap className="h-4 w-4 text-[hsl(var(--warning))]" />
                         Automatizaciones
                       </CardTitle>
                     </CardHeader>
@@ -733,7 +733,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                         {overview.comprehensive.engagement.activeAutomations}
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-600">Reglas activas</span>
+                        <span className="text-xs text-muted-foreground">Reglas activas</span>
                         <Badge variant="outline" className="text-xs">
                           Optimizando
                         </Badge>
@@ -850,7 +850,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Brain className="h-5 w-5 text-purple-600" />
+                  <Brain className="h-5 w-5 text-[hsl(var(--lavender))]" />
                   Insights Inteligentes
                   <Badge variant="secondary" className="ml-2">
                     <Sparkles className="h-3 w-3 mr-1" />
@@ -882,9 +882,9 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {Array.from({ length: 4 }, (_, i) => (
                       <div key={i} className="border rounded-lg p-4 animate-pulse">
-                        <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                        <div className="h-3 bg-gray-200 rounded mb-1"></div>
-                        <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                        <div className="h-4 bg-muted rounded mb-2"></div>
+                        <div className="h-3 bg-muted rounded mb-1"></div>
+                        <div className="h-3 bg-muted rounded w-3/4"></div>
                       </div>
                     ))}
                   </div>
@@ -892,29 +892,29 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                   <div className="space-y-4">
                     {/* Summary Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                      <div className="text-center p-3 bg-purple-50 rounded-lg">
-                        <div className="text-2xl font-bold text-purple-600">
+                      <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
+                        <div className="text-2xl font-bold text-[hsl(var(--lavender))]">
                           {aiInsights?.insights?.length || 0}
                         </div>
-                        <div className="text-xs text-purple-700">Total Insights</div>
+                        <div className="text-xs text-[hsl(var(--lavender))]">Total Insights</div>
                       </div>
-                      <div className="text-center p-3 bg-red-50 rounded-lg">
-                        <div className="text-2xl font-bold text-red-600">
+                      <div className="text-center p-3 bg-[hsl(var(--destructive)/0.10)] rounded-lg">
+                        <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
                           {aiInsights?.summary?.highPriority}
                         </div>
-                        <div className="text-xs text-red-700">Alta Prioridad</div>
+                        <div className="text-xs text-[hsl(var(--destructive))]">Alta Prioridad</div>
                       </div>
-                      <div className="text-center p-3 bg-blue-50 rounded-lg">
-                        <div className="text-2xl font-bold text-blue-600">
+                      <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
+                        <div className="text-2xl font-bold text-[hsl(var(--info))]">
                           {aiInsights?.summary?.patterns}
                         </div>
-                        <div className="text-xs text-blue-700">Patrones</div>
+                        <div className="text-xs text-[hsl(var(--info))]">Patrones</div>
                       </div>
-                      <div className="text-center p-3 bg-green-50 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">
+                      <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
+                        <div className="text-2xl font-bold text-[hsl(var(--success))]">
                           {aiInsights?.summary?.opportunities}
                         </div>
-                        <div className="text-xs text-green-700">Oportunidades</div>
+                        <div className="text-xs text-[hsl(var(--success))]">Oportunidades</div>
                       </div>
                     </div>
 
@@ -933,17 +933,17 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
                         const getInsightColor = (priority: string) => {
                           switch (priority) {
-                            case 'high': return 'border-red-200 bg-red-50'
-                            case 'medium': return 'border-yellow-200 bg-yellow-50'
-                            default: return 'border-blue-200 bg-blue-50'
+                            case 'high': return 'border-[hsl(var(--destructive)/0.3)] bg-[hsl(var(--destructive)/0.10)]'
+                            case 'medium': return 'border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]'
+                            default: return 'border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]'
                           }
                         }
 
                         const getPriorityColor = (priority: string) => {
                           switch (priority) {
-                            case 'high': return 'bg-red-100 text-red-800'
-                            case 'medium': return 'bg-yellow-100 text-yellow-800'
-                            default: return 'bg-blue-100 text-blue-800'
+                            case 'high': return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
+                            case 'medium': return 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]'
+                            default: return 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]'
                           }
                         }
 
@@ -963,14 +963,14 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                                 </Badge>
                               </div>
                             </div>
-                            <p className="text-sm text-gray-700 mb-3">{insight.description}</p>
+                            <p className="text-sm text-muted-foreground mb-3">{insight.description}</p>
                             {insight.actionItems?.length > 0 && (
                               <div className="space-y-1">
-                                <div className="text-xs font-medium text-gray-600">Acciones recomendadas:</div>
-                                <ul className="text-xs text-gray-600 space-y-1">
+                                <div className="text-xs font-medium text-muted-foreground">Acciones recomendadas:</div>
+                                <ul className="text-xs text-muted-foreground space-y-1">
                                   {(insight.actionItems || []).slice(0, 2).map((action: string, i: number) => (
                                     <li key={i} className="flex items-start gap-1">
-                                      <span className="text-green-600 mt-0.5">•</span>
+                                      <span className="text-[hsl(var(--success))] mt-0.5">•</span>
                                       <span>{action}</span>
                                     </li>
                                   ))}
@@ -993,9 +993,9 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-600 mb-2">Generando Insights Inteligentes</h3>
-                    <p className="text-sm text-gray-500 mb-4">
+                    <Brain className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-muted-foreground mb-2">Generando Insights Inteligentes</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
                       Haz clic en &quot;Actualizar IA&quot; para generar análisis automático de patrones
                     </p>
                     <Button onClick={fetchAIInsights} disabled={aiInsightsLoading}>
@@ -1044,7 +1044,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-green-600" />
+                  <BarChart3 className="h-5 w-5 text-[hsl(var(--success))]" />
                   Multi-Format Export Features
                 </CardTitle>
               </CardHeader>
@@ -1052,11 +1052,11 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                 <div className="space-y-4">
                   {/* Export Format Features */}
                   <div className="grid grid-cols-1 gap-3">
-                    <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg border border-green-100">
-                      <FileSpreadsheet className="h-5 w-5 text-green-600 mt-0.5" />
+                    <div className="flex items-start gap-3 p-3 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.30)]">
+                      <FileSpreadsheet className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                       <div className="flex-1">
-                        <div className="font-medium text-green-800">Excel (.xlsx)</div>
-                        <div className="text-sm text-green-700 space-y-1">
+                        <div className="font-medium text-[hsl(var(--success))]">Excel (.xlsx)</div>
+                        <div className="text-sm text-[hsl(var(--success))] space-y-1">
                           <div>• Múltiples hojas de trabajo</div>
                           <div>• Tablas de datos organizadas</div>
                           <div>• Importación directa a Excel</div>
@@ -1064,11 +1064,11 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       </div>
                     </div>
                     
-                    <div className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg border border-orange-100">
-                      <Database className="h-5 w-5 text-orange-600 mt-0.5" />
+                    <div className="flex items-start gap-3 p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg border border-[hsl(var(--warning)/0.30)]">
+                      <Database className="h-5 w-5 text-[hsl(var(--warning))] mt-0.5" />
                       <div className="flex-1">
-                        <div className="font-medium text-orange-800">CSV (.csv)</div>
-                        <div className="text-sm text-orange-700 space-y-1">
+                        <div className="font-medium text-[hsl(var(--warning))]">CSV (.csv)</div>
+                        <div className="text-sm text-[hsl(var(--warning))] space-y-1">
                           <div>• Listo para Google Sheets</div>
                           <div>• Compatibilidad universal</div>
                           <div>• Importación fácil de datos</div>
@@ -1076,11 +1076,11 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       </div>
                     </div>
                     
-                    <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
-                      <Download className="h-5 w-5 text-blue-600 mt-0.5" />
+                    <div className="flex items-start gap-3 p-3 bg-[hsl(var(--info)/0.10)] rounded-lg border border-blue-100">
+                      <Download className="h-5 w-5 text-[hsl(var(--info))] mt-0.5" />
                       <div className="flex-1">
-                        <div className="font-medium text-blue-800">JSON (.json)</div>
-                        <div className="text-sm text-blue-700 space-y-1">
+                        <div className="font-medium text-[hsl(var(--info))]">JSON (.json)</div>
+                        <div className="text-sm text-[hsl(var(--info))] space-y-1">
                           <div>• Estructura de datos completa</div>
                           <div>• Integración con APIs</div>
                           <div>• Amigable para desarrolladores</div>
@@ -1089,8 +1089,8 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                     </div>
                   </div>
 
-                  <div className="mt-4 p-3 bg-gray-50 rounded-lg border">
-                    <p className="text-sm text-gray-600 text-center">
+                  <div className="mt-4 p-3 bg-muted/30 rounded-lg border">
+                    <p className="text-sm text-muted-foreground text-center">
                       Los reportes se generan en tiempo real con datos actuales y están listos para uso inmediato en tu plataforma de análisis preferida
                     </p>
                   </div>
@@ -1105,7 +1105,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <CardContent className="space-y-3">
                 {/* Advanced Export Section */}
                 <div className="space-y-3">
-                  <h4 className="font-medium text-sm text-gray-700">📊 Reportes Profesionales</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground">📊 Reportes Profesionales</h4>
                   <div className="grid grid-cols-1 gap-2">
                     <Button 
                       variant="outline" 
@@ -1116,11 +1116,11 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       {exportingReport ? (
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                       ) : (
-                        <FileImage className="h-4 w-4 mr-2 text-red-600" />
+                        <FileImage className="h-4 w-4 mr-2 text-[hsl(var(--destructive))]" />
                       )}
                       <div className="flex-1 text-left">
                         <div className="font-medium">PDF Ejecutivo</div>
-                        <div className="text-xs text-gray-500">Con branding • Gráficos • Insights IA</div>
+                        <div className="text-xs text-muted-foreground">Con branding • Gráficos • Insights IA</div>
                       </div>
                     </Button>
                     <Button 
@@ -1132,11 +1132,11 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       {exportingReport ? (
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                       ) : (
-                        <FileSpreadsheet className="h-4 w-4 mr-2 text-green-600" />
+                        <FileSpreadsheet className="h-4 w-4 mr-2 text-[hsl(var(--success))]" />
                       )}
                       <div className="flex-1 text-left">
                         <div className="font-medium">Excel Avanzado</div>
-                        <div className="text-xs text-gray-500">Múltiples hojas • Datos detallados • Métricas</div>
+                        <div className="text-xs text-muted-foreground">Múltiples hojas • Datos detallados • Métricas</div>
                       </div>
                     </Button>
                     <Button 
@@ -1148,11 +1148,11 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       {exportingReport ? (
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                       ) : (
-                        <FileCheck className="h-4 w-4 mr-2 text-blue-600" />
+                        <FileCheck className="h-4 w-4 mr-2 text-[hsl(var(--info))]" />
                       )}
                       <div className="flex-1 text-left">
                         <div className="font-medium">CSV Estructurado</div>
-                        <div className="text-xs text-gray-500">Optimizado • Insights IA incluidos</div>
+                        <div className="text-xs text-muted-foreground">Optimizado • Insights IA incluidos</div>
                       </div>
                     </Button>
                   </div>
@@ -1160,7 +1160,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
                 {/* Legacy Export Section */}
                 <div className="space-y-3 border-t pt-4">
-                  <h4 className="font-medium text-sm text-gray-700">📋 Exportes Básicos</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground">📋 Exportes Básicos</h4>
                   <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button 
@@ -1179,30 +1179,30 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       onClick={() => handleExportReport('excel')}
                       className="flex items-center p-3"
                     >
-                      <FileSpreadsheet className="h-4 w-4 mr-3 text-green-600" />
+                      <FileSpreadsheet className="h-4 w-4 mr-3 text-[hsl(var(--success))]" />
                       <div className="flex-1">
                         <div className="font-medium">Excel (.xlsx)</div>
-                        <div className="text-xs text-gray-500">Múltiples hojas • Tablas organizadas</div>
+                        <div className="text-xs text-muted-foreground">Múltiples hojas • Tablas organizadas</div>
                       </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => handleExportReport('csv')}
                       className="flex items-center p-3"
                     >
-                      <Database className="h-4 w-4 mr-3 text-orange-600" />
+                      <Database className="h-4 w-4 mr-3 text-[hsl(var(--warning))]" />
                       <div className="flex-1">
                         <div className="font-medium">CSV (.csv)</div>
-                        <div className="text-xs text-gray-500">Google Sheets listo • Compatible universal</div>
+                        <div className="text-xs text-muted-foreground">Google Sheets listo • Compatible universal</div>
                       </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => handleExportReport('json')}
                       className="flex items-center p-3"
                     >
-                      <Download className="h-4 w-4 mr-3 text-blue-600" />
+                      <Download className="h-4 w-4 mr-3 text-[hsl(var(--info))]" />
                       <div className="flex-1">
                         <div className="font-medium">JSON (.json)</div>
-                        <div className="text-xs text-gray-500">Estructura completa • Integración API</div>
+                        <div className="text-xs text-muted-foreground">Estructura completa • Integración API</div>
                       </div>
                     </DropdownMenuItem>
                   </DropdownMenuContent>

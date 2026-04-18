@@ -231,7 +231,7 @@ export default function FAQHelp() {
                   return (
                     <div key={index} className="border rounded-lg">
                       <button
-                        className="w-full p-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                        className="w-full p-4 text-left flex items-center justify-between hover:bg-muted/30 transition-colors"
                         onClick={() => toggleItem(globalIndex)}
                       >
                         <span className="font-medium pr-4">{item.q}</span>

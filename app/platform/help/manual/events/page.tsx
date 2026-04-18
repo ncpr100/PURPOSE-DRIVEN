@@ -16,7 +16,7 @@ export default function PlatformEventsGuide() {
   return (
     <div className="container mx-auto p-6 max-w-6xl space-y-8">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-8 rounded-lg">
+      <div className="bg-[hsl(var(--lavender))] text-foreground p-8 rounded-lg">
         <div className="flex items-center gap-4">
           <Shield className="h-12 w-12" />
           <div>
@@ -43,24 +43,24 @@ export default function PlatformEventsGuide() {
       </div>
 
       {/* SUPER_ADMIN Context */}
-      <div className="bg-purple-50 p-4 rounded-lg border-2 border-purple-300">
-        <h4 className="font-bold text-purple-900 flex items-center gap-2 mb-2">
+      <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--lavender)/0.4)]">
+        <h4 className="font-bold text-foreground flex items-center gap-2 mb-2">
           <Shield className="h-5 w-5" />
           Nota Importante para SUPER_ADMIN
         </h4>
-        <p className="text-sm text-purple-800 mb-3">
+        <p className="text-sm text-[hsl(var(--lavender))] mb-3">
           Como SUPER_ADMIN, tienes acceso completo al Sistema Inteligente de Eventos de TODAS las iglesias. 
           Puedes crear, editar, eliminar eventos, y usar todas las funcionalidades de IA (AUTO-ASIGNAR, 
           comunicaciones automáticas, analíticas) en cualquier iglesia de la plataforma.
         </p>
-        <p className="text-sm text-purple-800 font-semibold">
+        <p className="text-sm text-[hsl(var(--lavender))] font-semibold">
           ⚠️ Los eventos SIEMPRE están vinculados a una iglesia específica (churchId). Asegúrate de estar 
           en el contexto de la iglesia correcta antes de crear o modificar eventos.
         </p>
       </div>
 
       {/* Reference to Church Manual */}
-      <Card className="border-blue-300 bg-blue-50">
+      <Card className="border-[hsl(var(--info)/0.4)] bg-[hsl(var(--info)/0.10)]">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-xl">
             <Book className="h-6 w-6" />
@@ -68,7 +68,7 @@ export default function PlatformEventsGuide() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-gray-700">
+          <p className="text-muted-foreground">
             La documentación completa del Sistema Inteligente de Eventos está disponible en el manual 
             de iglesias. Este manual incluye:
           </p>
@@ -76,10 +76,10 @@ export default function PlatformEventsGuide() {
             <Card className="bg-white">
               <CardContent className="pt-4">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-blue-600" />
+                  <Calendar className="h-5 w-5 text-[hsl(var(--info))]" />
                   Flujo de Trabajo Completo
                 </h4>
-                <ul className="text-sm text-gray-700 space-y-1 ml-4">
+                <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• 8 módulos integrados (Planificación, Voluntarios, Miembros, etc.)</li>
                   <li>• Creación y edición de eventos paso a paso</li>
                   <li>• Categorías de eventos (CULTO, CONFERENCIA, SOCIAL, etc.)</li>
@@ -90,10 +90,10 @@ export default function PlatformEventsGuide() {
             <Card className="bg-white">
               <CardContent className="pt-4">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
-                  <Brain className="h-5 w-5 text-purple-600" />
+                  <Brain className="h-5 w-5 text-[hsl(var(--lavender))]" />
                   AUTO-ASIGNAR (IA)
                 </h4>
-                <ul className="text-sm text-gray-700 space-y-1 ml-4">
+                <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>• Algoritmo de 5 factores explicado</li>
                   <li>• Coincidencia de habilidades (+30 puntos)</li>
                   <li>• Balance de carga de trabajo</li>
@@ -115,8 +115,8 @@ export default function PlatformEventsGuide() {
       </Card>
 
       {/* Platform-Specific Features */}
-      <Card className="border-purple-300">
-        <CardHeader className="bg-purple-50">
+      <Card className="border-[hsl(var(--lavender)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--lavender)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
             <Shield className="h-8 w-8" />
             Funcionalidades Específicas de SUPER_ADMIN
@@ -135,16 +135,16 @@ export default function PlatformEventsGuide() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
-                <p className="font-medium text-gray-700">Qué puedes hacer:</p>
-                <ul className="ml-4 space-y-1 text-gray-600">
+                <p className="font-medium text-muted-foreground">Qué puedes hacer:</p>
+                <ul className="ml-4 space-y-1 text-muted-foreground">
                   <li>✓ Ver eventos de TODAS las iglesias</li>
                   <li>✓ Crear eventos en cualquier iglesia</li>
                   <li>✓ Editar/eliminar eventos de cualquier iglesia</li>
                   <li>✓ Monitorear estadísticas globales</li>
                 </ul>
-                <div className="bg-yellow-50 p-3 rounded mt-3 border border-yellow-200">
-                  <p className="text-xs font-semibold text-yellow-900">⚠️ Importante:</p>
-                  <p className="text-xs text-yellow-800">
+                <div className="bg-[hsl(var(--warning)/0.10)] p-3 rounded mt-3 border border-[hsl(var(--warning)/0.3)]">
+                  <p className="text-xs font-semibold text-[hsl(var(--warning))]">⚠️ Importante:</p>
+                  <p className="text-xs text-[hsl(var(--warning))]">
                     Siempre verifica el churchId antes de realizar cambios. Los eventos están 
                     estrictamente vinculados a iglesias específicas.
                   </p>
@@ -160,16 +160,16 @@ export default function PlatformEventsGuide() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
-                <p className="font-medium text-gray-700">Métricas disponibles:</p>
-                <ul className="ml-4 space-y-1 text-gray-600">
+                <p className="font-medium text-muted-foreground">Métricas disponibles:</p>
+                <ul className="ml-4 space-y-1 text-muted-foreground">
                   <li>✓ Total de eventos en toda la plataforma</li>
                   <li>✓ Promedio de asistencia por iglesia</li>
                   <li>✓ Uso de AUTO-ASIGNAR por iglesia</li>
                   <li>✓ Eventos activos vs completados</li>
                 </ul>
-                <div className="bg-blue-50 p-3 rounded mt-3 border border-blue-200">
-                  <p className="text-xs font-semibold text-blue-900">💡 Tip:</p>
-                  <p className="text-xs text-blue-800">
+                <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded mt-3 border border-[hsl(var(--info)/0.3)]">
+                  <p className="text-xs font-semibold text-foreground">💡 Tip:</p>
+                  <p className="text-xs text-[hsl(var(--info))]">
                     Usa /platform/analytics para ver métricas agregadas de todos los eventos
                   </p>
                 </div>
@@ -184,8 +184,8 @@ export default function PlatformEventsGuide() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
-                <p className="font-medium text-gray-700">Configuraciones disponibles:</p>
-                <ul className="ml-4 space-y-1 text-gray-600">
+                <p className="font-medium text-muted-foreground">Configuraciones disponibles:</p>
+                <ul className="ml-4 space-y-1 text-muted-foreground">
                   <li>✓ Límites de eventos por plan (Free/Pro/Enterprise)</li>
                   <li>✓ Funcionalidades habilitadas/deshabilitadas</li>
                   <li>✓ Configuración de AUTO-ASIGNAR global</li>
@@ -202,8 +202,8 @@ export default function PlatformEventsGuide() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
-                <p className="font-medium text-gray-700">Herramientas de soporte:</p>
-                <ul className="ml-4 space-y-1 text-gray-600">
+                <p className="font-medium text-muted-foreground">Herramientas de soporte:</p>
+                <ul className="ml-4 space-y-1 text-muted-foreground">
                   <li>✓ Logs de AUTO-ASIGNAR por evento</li>
                   <li>✓ Historial de asignaciones de voluntarios</li>
                   <li>✓ Errores de integración de QR/check-in</li>
@@ -216,7 +216,7 @@ export default function PlatformEventsGuide() {
       </Card>
 
       {/* Database Schema Reference */}
-      <Card className="border-indigo-300 bg-indigo-50">
+      <Card className="border-primary/30 bg-primary/[0.06]">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-xl">
             <Settings className="h-6 w-6" />
@@ -224,12 +224,12 @@ export default function PlatformEventsGuide() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="bg-white p-4 rounded-lg border border-indigo-200">
-            <h4 className="font-semibold mb-3 text-indigo-900">Tablas Principales del Sistema de Eventos:</h4>
+          <div className="bg-white p-4 rounded-lg border border-primary/20">
+            <h4 className="font-semibold mb-3 text-foreground">Tablas Principales del Sistema de Eventos:</h4>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="font-semibold text-gray-800 mb-1">📅 events</p>
-                <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                <p className="font-semibold text-foreground mb-1">📅 events</p>
+                <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• id, title, description, category</li>
                   <li>• startDate, endDate, location</li>
                   <li>• budget, isPublic, status</li>
@@ -237,8 +237,8 @@ export default function PlatformEventsGuide() {
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">👥 volunteer_assignments</p>
-                <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                <p className="font-semibold text-foreground mb-1">👥 volunteer_assignments</p>
+                <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• eventId, volunteerId</li>
                   <li>• role, assignedTasks (JSON)</li>
                   <li>• status (ASIGNADO, CONFIRMADO, COMPLETADO)</li>
@@ -246,32 +246,32 @@ export default function PlatformEventsGuide() {
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">✅ check_ins</p>
-                <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                <p className="font-semibold text-foreground mb-1">✅ check_ins</p>
+                <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• eventId, firstName, lastName</li>
                   <li>• email, phone, checkInTime</li>
                   <li>• Used for MEMBERS and VISITORS</li>
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">👶 children_check_ins</p>
-                <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                <p className="font-semibold text-foreground mb-1">👶 children_check_ins</p>
+                <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• eventId, childName, parentName</li>
                   <li>• checkInTime, checkOutTime</li>
                   <li>• Separate tracking for children</li>
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">🎛️ event_resources</p>
-                <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                <p className="font-semibold text-foreground mb-1">🎛️ event_resources</p>
+                <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• name, description, type</li>
                   <li>• type: EQUIPO, ESPACIO, MATERIAL</li>
                   <li>• capacity, isActive</li>
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">📧 event_communications</p>
-                <ul className="text-xs text-gray-600 ml-4 space-y-1">
+                <p className="font-semibold text-foreground mb-1">📧 event_communications</p>
+                <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• eventId, type (EMAIL, SMS, PUSH)</li>
                   <li>• subject, content, recipientCount</li>
                   <li>• status (BORRADOR, PROGRAMADA, ENVIADA)</li>
@@ -283,7 +283,7 @@ export default function PlatformEventsGuide() {
       </Card>
 
       {/* Quick Reference */}
-      <Card className="border-teal-300 bg-teal-50">
+      <Card className="border-[hsl(var(--info)/0.30)] bg-[hsl(var(--info)/0.10)]">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-xl">
             <Target className="h-6 w-6" />
@@ -293,28 +293,28 @@ export default function PlatformEventsGuide() {
         <CardContent>
           <div className="bg-white p-4 rounded-lg space-y-3 text-sm font-mono">
             <div>
-              <p className="font-semibold text-gray-800">GET /api/events</p>
-              <p className="text-xs text-gray-600 ml-4">Listar todos los eventos (filtrado por churchId en session)</p>
+              <p className="font-semibold text-foreground">GET /api/events</p>
+              <p className="text-xs text-muted-foreground ml-4">Listar todos los eventos (filtrado por churchId en session)</p>
             </div>
             <div>
-              <p className="font-semibold text-gray-800">POST /api/events</p>
-              <p className="text-xs text-gray-600 ml-4">Crear nuevo evento</p>
+              <p className="font-semibold text-foreground">POST /api/events</p>
+              <p className="text-xs text-muted-foreground ml-4">Crear nuevo evento</p>
             </div>
             <div>
-              <p className="font-semibold text-gray-800">GET /api/events/[id]</p>
-              <p className="text-xs text-gray-600 ml-4">Obtener detalles de evento específico</p>
+              <p className="font-semibold text-foreground">GET /api/events/[id]</p>
+              <p className="text-xs text-muted-foreground ml-4">Obtener detalles de evento específico</p>
             </div>
             <div>
-              <p className="font-semibold text-gray-800">PUT /api/events/[id]</p>
-              <p className="text-xs text-gray-600 ml-4">Actualizar evento existente</p>
+              <p className="font-semibold text-foreground">PUT /api/events/[id]</p>
+              <p className="text-xs text-muted-foreground ml-4">Actualizar evento existente</p>
             </div>
             <div>
-              <p className="font-semibold text-gray-800 text-purple-700">POST /api/events/[id]/auto-assign-volunteers</p>
-              <p className="text-xs text-purple-600 ml-4">🤖 AUTO-ASIGNAR - Asignación inteligente de voluntarios (IA)</p>
+              <p className="font-semibold text-foreground text-[hsl(var(--lavender))]">POST /api/events/[id]/auto-assign-volunteers</p>
+              <p className="text-xs text-[hsl(var(--lavender))] ml-4">🤖 AUTO-ASIGNAR - Asignación inteligente de voluntarios (IA)</p>
             </div>
             <div>
-              <p className="font-semibold text-gray-800">GET /api/events/analytics</p>
-              <p className="text-xs text-gray-600 ml-4">Analíticas de eventos (dashboard stats)</p>
+              <p className="font-semibold text-foreground">GET /api/events/analytics</p>
+              <p className="text-xs text-muted-foreground ml-4">Analíticas de eventos (dashboard stats)</p>
             </div>
           </div>
         </CardContent>
@@ -329,7 +329,7 @@ export default function PlatformEventsGuide() {
           </Button>
         </Link>
         <Link href="/help/manual/phase-4-events" target="_blank">
-          <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+          <Button size="lg" className="bg-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender))]">
             Ver Manual Completo de Iglesias
             <ArrowRight className="h-5 w-5 ml-2" />
           </Button>

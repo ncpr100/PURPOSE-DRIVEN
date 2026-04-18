@@ -110,7 +110,7 @@ export default function PlatformQRGenerator({ formId }: PlatformQRGeneratorProps
         {formId && (
           <div className="space-y-3">
             <h3 className="font-semibold">Generar QR para Formulario</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Crea un código QR que dirige al formulario de captura de leads
             </p>
             <Button 
@@ -155,8 +155,8 @@ export default function PlatformQRGenerator({ formId }: PlatformQRGeneratorProps
               <img src={qrImage} alt="QR Code" className="w-64 h-64 border rounded-lg" />
             </div>
             
-            <div className="bg-gray-50 p-3 rounded-md">
-              <p className="text-xs text-gray-600 mb-1">URL del QR:</p>
+            <div className="bg-muted/30 p-3 rounded-md">
+              <p className="text-xs text-muted-foreground mb-1">URL del QR:</p>
               <p className="text-sm font-mono break-all">{qrUrl}</p>
             </div>
 

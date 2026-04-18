@@ -250,10 +250,10 @@ export default function PublicVisitorForm(props: { params: Promise<{ slug: strin
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-muted/30">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Cargando formulario...</p>
+          <p className="text-muted-foreground">Cargando formulario...</p>
         </div>
       </div>
     )
@@ -261,14 +261,14 @@ export default function PublicVisitorForm(props: { params: Promise<{ slug: strin
 
   if (error || !formData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-muted/30">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <CardTitle className="text-red-600">Error</CardTitle>
+            <AlertCircle className="h-12 w-12 text-[hsl(var(--destructive))] mx-auto mb-4" />
+            <CardTitle className="text-[hsl(var(--destructive))]">Error</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-gray-600 mb-4">{error || 'Formulario no encontrado'}</p>
+            <p className="text-muted-foreground mb-4">{error || 'Formulario no encontrado'}</p>
             <Button onClick={() => window.location.reload()}>
               Intentar de nuevo
             </Button>
@@ -280,15 +280,15 @@ export default function PublicVisitorForm(props: { params: Promise<{ slug: strin
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-muted/30">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-            <CardTitle className="text-green-600">¡Gracias!</CardTitle>
+            <CheckCircle className="h-12 w-12 text-[hsl(var(--success))] mx-auto mb-4" />
+            <CardTitle className="text-[hsl(var(--success))]">¡Gracias!</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-gray-600 mb-4">{thankYouMessage}</p>
-            <p className="text-sm text-gray-500">
+            <p className="text-muted-foreground mb-4">{thankYouMessage}</p>
+            <p className="text-sm text-muted-foreground">
               Nos pondremos en contacto contigo pronto.
             </p>
           </CardContent>
@@ -312,10 +312,10 @@ export default function PublicVisitorForm(props: { params: Promise<{ slug: strin
         <Card className="mb-6">
           <CardContent className="pt-6">
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              <h1 className="text-2xl font-bold text-foreground mb-2">
                 {formData.church.name}
               </h1>
-              <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
+              <div className="flex items-center justify-center space-x-4 text-sm text-muted-foreground">
                 {formData.church.address && (
                   <div className="flex items-center space-x-1">
                     <MapPin className="h-4 w-4" />
@@ -361,10 +361,10 @@ export default function PublicVisitorForm(props: { params: Promise<{ slug: strin
                   className="text-sm font-medium"
                 >
                   {field.label}
-                  {field.required && <span className="text-red-500 ml-1">*</span>}
+                  {field.required && <span className="text-[hsl(var(--destructive))] ml-1">*</span>}
                 </Label>
                 {field.description && (
-                  <p className="text-sm text-gray-500">{field.description}</p>
+                  <p className="text-sm text-muted-foreground">{field.description}</p>
                 )}
                 {renderField(field)}
               </div>
@@ -392,7 +392,7 @@ export default function PublicVisitorForm(props: { params: Promise<{ slug: strin
             </div>
 
             {formData.qrCode && (
-              <p className="text-xs text-center text-gray-500">
+              <p className="text-xs text-center text-muted-foreground">
                 Accedido vía código QR
               </p>
             )}

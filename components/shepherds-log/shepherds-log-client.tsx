@@ -55,7 +55,7 @@ export default function ShepherdsLogClient() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-16 text-gray-500">
+      <div className="flex items-center justify-center py-16 text-muted-foreground">
         <RefreshCw className="h-5 w-5 animate-spin mr-2" />
         <span>Cargando diario del pastor...</span>
       </div>
@@ -65,8 +65,8 @@ export default function ShepherdsLogClient() {
   if (!data || data.members.length === 0) {
     return (
       <Card>
-        <CardContent className="flex flex-col items-center justify-center py-16 text-gray-500 gap-3">
-          <BookOpen className="h-10 w-10 text-indigo-400" />
+        <CardContent className="flex flex-col items-center justify-center py-16 text-muted-foreground gap-3">
+          <BookOpen className="h-10 w-10 text-[hsl(var(--lavender)/0.9)]" />
           <p className="text-lg font-medium">Sin alertas pastorales esta semana</p>
           <p className="text-sm text-center max-w-xs">
             No hay miembros con riesgo alto de desconexión ni ausencias
@@ -90,19 +90,19 @@ export default function ShepherdsLogClient() {
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           {criticalCount > 0 && (
-            <Badge className="bg-red-100 text-red-700 border-red-200">
-              <AlertTriangle className="h-3 w-3 mr-1 text-red-600" />
+            <Badge className="bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] border-[hsl(var(--destructive)/0.3)]">
+              <AlertTriangle className="h-3 w-3 mr-1 text-[hsl(var(--destructive))]" />
               {criticalCount} crítico{criticalCount > 1 ? "s" : ""}
             </Badge>
           )}
           {highCount > 0 && (
-            <Badge className="bg-orange-100 text-orange-700 border-orange-200">
+            <Badge className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.3)]">
               {highCount} prioritario{highCount > 1 ? "s" : ""}
             </Badge>
           )}
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-muted-foreground/70">
             {data.cached ? "En caché" : "En vivo"} ·{" "}
             {new Date(data.generatedAt).toLocaleDateString("es-CO", {
               weekday: "short",
@@ -119,7 +119,7 @@ export default function ShepherdsLogClient() {
             disabled={refreshing}
           >
             <RefreshCw
-              className={`h-4 w-4 text-gray-500 ${refreshing ? "animate-spin" : ""}`}
+              className={`h-4 w-4 text-muted-foreground ${refreshing ? "animate-spin" : ""}`}
             />
           </Button>
         </div>
@@ -142,8 +142,8 @@ export default function ShepherdsLogClient() {
                   <User
                     className={`h-5 w-5 ${
                       member.urgency === "CRITICAL"
-                        ? "text-red-600"
-                        : "text-orange-500"
+                        ? "text-[hsl(var(--destructive))]"
+                        : "text-[hsl(var(--warning))]"
                     }`}
                   />
                   <CardTitle className="text-base">{member.name}</CardTitle>
@@ -151,8 +151,8 @@ export default function ShepherdsLogClient() {
                 <Badge
                   className={
                     member.urgency === "CRITICAL"
-                      ? "bg-red-100 text-red-700 border-red-200 text-xs"
-                      : "bg-orange-100 text-orange-700 border-orange-200 text-xs"
+                      ? "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] border-[hsl(var(--destructive)/0.3)] text-xs"
+                      : "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.3)] text-xs"
                   }
                 >
                   {member.urgency === "CRITICAL" ? "Crítico" : "Prioritario"}
@@ -163,10 +163,10 @@ export default function ShepherdsLogClient() {
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0">
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                 {member.phone && (
                   <span className="flex items-center gap-1">
-                    <Phone className="h-3 w-3 text-gray-400" />
+                    <Phone className="h-3 w-3 text-muted-foreground/70" />
                     {member.phone}
                   </span>
                 )}
@@ -179,7 +179,7 @@ export default function ShepherdsLogClient() {
                 {member.lastContactedAt ? (
                   <span>Último contacto: {member.lastContactedAt}</span>
                 ) : (
-                  <span className="text-amber-600">Sin contacto registrado</span>
+                  <span className="text-[hsl(var(--warning))]">Sin contacto registrado</span>
                 )}
               </div>
             </CardContent>

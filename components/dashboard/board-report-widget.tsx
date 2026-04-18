@@ -69,7 +69,7 @@ export function BoardReportWidget({ initialReport }: Props) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
-          <FileText className="h-4 w-4 text-slate-500" />
+          <FileText className="h-4 w-4 text-muted-foreground" />
           Informe de Junta Directiva
         </CardTitle>
         <div className="flex items-center gap-1">
@@ -120,7 +120,7 @@ export function BoardReportWidget({ initialReport }: Props) {
             <div className="grid grid-cols-3 gap-3 text-center">
               <div className="bg-muted rounded-lg p-2">
                 <p
-                  className={`text-lg font-bold ${report.attendanceDelta >= 0 ? "text-green-600" : "text-red-500"}`}
+                  className={`text-lg font-bold ${report.attendanceDelta >= 0 ? "text-[hsl(var(--success))]" : "text-[hsl(var(--destructive))]"}`}
                 >
                   {report.attendanceDelta >= 0 ? "+" : ""}
                   {report.attendanceDelta}%
@@ -146,7 +146,7 @@ export function BoardReportWidget({ initialReport }: Props) {
                   {report.narrative}
                 </p>
                 <button
-                  className="text-xs text-blue-600 hover:underline mt-1 flex items-center gap-1"
+                  className="text-xs text-[hsl(var(--info))] hover:underline mt-1 flex items-center gap-1"
                   onClick={() => setShowFullNarrative(!showFullNarrative)}
                 >
                   {showFullNarrative ? (

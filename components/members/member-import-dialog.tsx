@@ -314,38 +314,38 @@ María,García,maria@email.com,555-0124,"Carrera 67, #89",Medellín,Antioquia,05
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   {importResult.success ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))]" />
                   ) : (
-                    <AlertCircle className="h-5 w-5 text-yellow-600" />
+                    <AlertCircle className="h-5 w-5 text-[hsl(var(--warning))]" />
                   )}
                   Resultados de la Importación
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-700">
+                  <div className="text-center p-4 bg-[hsl(var(--success)/0.10)] rounded-lg">
+                    <div className="text-2xl font-bold text-[hsl(var(--success))]">
                       {importResult.imported}
                     </div>
-                    <div className="text-sm text-green-600">Nuevos</div>
+                    <div className="text-sm text-[hsl(var(--success))]">Nuevos</div>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-700">
+                  <div className="text-center p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">
+                    <div className="text-2xl font-bold text-[hsl(var(--info))]">
                       {importResult.updated}
                     </div>
-                    <div className="text-sm text-blue-600">Actualizados</div>
+                    <div className="text-sm text-[hsl(var(--info))]">Actualizados</div>
                   </div>
-                  <div className="text-center p-4 bg-red-50 rounded-lg">
-                    <div className="text-2xl font-bold text-red-700">
+                  <div className="text-center p-4 bg-[hsl(var(--destructive)/0.10)] rounded-lg">
+                    <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
                       {importResult.failed}
                     </div>
-                    <div className="text-sm text-red-600">Fallaron</div>
+                    <div className="text-sm text-[hsl(var(--destructive))]">Fallaron</div>
                   </div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-2xl font-bold text-gray-700">
+                  <div className="text-center p-4 bg-muted/30 rounded-lg">
+                    <div className="text-2xl font-bold text-muted-foreground">
                       {importResult.imported + importResult.updated + importResult.failed}
                     </div>
-                    <div className="text-sm text-gray-600">Total</div>
+                    <div className="text-sm text-muted-foreground">Total</div>
                   </div>
                 </div>
 

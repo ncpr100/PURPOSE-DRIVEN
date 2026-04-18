@@ -73,10 +73,10 @@ interface UsersResponse {
 }
 
 const ROLE_COLORS = {
-  'ADMIN_IGLESIA': 'bg-red-100 text-red-700',
-  'PASTOR': 'bg-purple-100 text-purple-700',
-  'LIDER': 'bg-blue-100 text-blue-700',
-  'MIEMBRO': 'bg-green-100 text-green-700'
+  'ADMIN_IGLESIA': 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]',
+  'PASTOR': 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]',
+  'LIDER': 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]',
+  'MIEMBRO': 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
 }
 
 const ROLE_NAMES = {
@@ -244,7 +244,7 @@ export default function ChurchUsersPage() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver
           </Button>
-          <div className="h-6 bg-gray-200 rounded w-64 animate-pulse"></div>
+          <div className="h-6 bg-muted rounded w-64 animate-pulse"></div>
         </div>
         
         <div className="grid gap-6">
@@ -252,8 +252,8 @@ export default function ChurchUsersPage() {
             <Card key={i}>
               <CardContent className="p-6">
                 <div className="animate-pulse space-y-4">
-                  <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-                  <div className="h-4 bg-gray-200 rounded"></div>
+                  <div className="h-6 bg-muted rounded w-1/3"></div>
+                  <div className="h-4 bg-muted rounded"></div>
                 </div>
               </CardContent>
             </Card>
@@ -276,18 +276,18 @@ export default function ChurchUsersPage() {
           </Button>
           
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-              <Users className="h-8 w-8 text-blue-600" />
+            <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+              <Users className="h-8 w-8 text-[hsl(var(--info))]" />
               Usuarios de {church?.name || 'Iglesia'}
             </h1>
-            <p className="text-gray-600 mt-1">
+            <p className="text-muted-foreground mt-1">
               Gestionar usuarios y permisos de la iglesia
             </p>
           </div>
         </div>
         
         <div className="flex items-center gap-3">
-          <Badge variant="outline" className="text-blue-600 border-blue-200">
+          <Badge variant="outline" className="text-[hsl(var(--info))] border-[hsl(var(--info)/0.3)]">
             {totalUsers} Usuarios Totales
           </Badge>
           <Dialog open={showCreateUserModal} onOpenChange={setShowCreateUserModal}>
@@ -369,7 +369,7 @@ export default function ChurchUsersPage() {
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-4 flex-1">
               <div className="relative flex-1 max-w-sm">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                 <Input
                   placeholder="Buscar usuarios..."
                   value={searchTerm}
@@ -420,10 +420,10 @@ export default function ChurchUsersPage() {
               <CardContent className="p-6">
                 <div className="animate-pulse">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+                    <div className="w-12 h-12 bg-muted rounded-full"></div>
                     <div className="flex-1">
-                      <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/4"></div>
+                      <div className="h-4 bg-muted rounded w-1/3 mb-2"></div>
+                      <div className="h-3 bg-muted rounded w-1/4"></div>
                     </div>
                   </div>
                 </div>
@@ -435,8 +435,8 @@ export default function ChurchUsersPage() {
         <Card>
           <CardContent className="text-center p-12">
             <Users className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No hay usuarios registrados</h3>
-            <p className="text-gray-600 mb-6">Esta iglesia no tiene usuarios asignados aún</p>
+            <h3 className="text-lg font-semibold text-foreground mb-2">No hay usuarios registrados</h3>
+            <p className="text-muted-foreground mb-6">Esta iglesia no tiene usuarios asignados aún</p>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
               Crear Primer Usuario
@@ -452,23 +452,23 @@ export default function ChurchUsersPage() {
                   <div className="flex items-center gap-4">
                     <Avatar className="w-12 h-12">
                       <AvatarImage src="" alt={user.name} />
-                      <AvatarFallback className="bg-blue-100 text-blue-700 font-semibold">
+                      <AvatarFallback className="bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] font-semibold">
                         {getUserInitials(user.name)}
                       </AvatarFallback>
                     </Avatar>
                     
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900">{user.name}</h3>
+                        <h3 className="text-lg font-semibold text-foreground">{user.name}</h3>
                         <Badge 
                           variant="secondary" 
-                          className={ROLE_COLORS[user.role as keyof typeof ROLE_COLORS] || 'bg-gray-100 text-gray-700'}
+                          className={ROLE_COLORS[user.role as keyof typeof ROLE_COLORS] || 'bg-muted/50 text-muted-foreground'}
                         >
                           <Shield className="h-3 w-3 mr-1" />
                           {ROLE_NAMES[user.role as keyof typeof ROLE_NAMES] || user.role}
                         </Badge>
                         {user.isActive ? (
-                          <Badge variant="default" className="bg-green-100 text-green-700 hover:bg-green-200">
+                          <Badge variant="default" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] hover:bg-[hsl(var(--success)/0.20)]">
                             <UserCheck className="h-3 w-3 mr-1" />
                             Activo
                           </Badge>
@@ -480,12 +480,12 @@ export default function ChurchUsersPage() {
                         )}
                       </div>
                       
-                      <div className="text-sm text-gray-600 space-y-1">
+                      <div className="text-sm text-muted-foreground space-y-1">
                         <div className="flex items-center gap-2">
                           <Mail className="h-4 w-4" />
                           <span>{user.email}</span>
                         </div>
-                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <span>Registrado: {formatDate(user.createdAt)}</span>
                           {user.lastLogin && (
                             <span>Último acceso: {formatDate(user.lastLogin)}</span>
@@ -522,7 +522,7 @@ export default function ChurchUsersPage() {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem 
-                          className={user.isActive ? "text-red-600" : "text-green-600"}
+                          className={user.isActive ? "text-[hsl(var(--destructive))]" : "text-[hsl(var(--success))]"}
                           onClick={() => handleToggleUserStatus(user.id, user.isActive)}
                         >
                           {user.isActive ? (

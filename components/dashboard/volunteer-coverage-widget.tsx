@@ -31,14 +31,15 @@ const STATUS_LABELS: Record<string, string> = {
   NO_BACKUP_ASSIGNED: "Sin suplente",
 };
 
-const STATUS_VARIANT: Record<string, "destructive" | "outline" | "secondary"> = {
-  UNPROTECTED: "destructive",
-  NO_BACKUP_ASSIGNED: "destructive",
-  UNCONFIRMED: "outline",
-  CONFIRMED: "secondary",
-  COVERED: "secondary",
-  CANCELLED: "outline",
-};
+const STATUS_VARIANT: Record<string, "destructive" | "outline" | "secondary"> =
+  {
+    UNPROTECTED: "destructive",
+    NO_BACKUP_ASSIGNED: "destructive",
+    UNCONFIRMED: "outline",
+    CONFIRMED: "secondary",
+    COVERED: "secondary",
+    CANCELLED: "outline",
+  };
 
 export function VolunteerCoverageWidget({ initialSlots }: Props) {
   const [slots, setSlots] = useState(initialSlots);
@@ -74,14 +75,14 @@ export function VolunteerCoverageWidget({ initialSlots }: Props) {
   };
 
   const criticalCount = slots.filter((s) =>
-    ["UNPROTECTED", "NO_BACKUP_ASSIGNED"].includes(s.status)
+    ["UNPROTECTED", "NO_BACKUP_ASSIGNED"].includes(s.status),
   ).length;
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
-          <ShieldAlert className="h-4 w-4 text-red-500" />
+          <ShieldAlert className="h-4 w-4 text-[hsl(var(--destructive))]" />
           Cobertura de Voluntarios
           {criticalCount > 0 && (
             <Badge variant="destructive" className="text-xs">
@@ -98,7 +99,7 @@ export function VolunteerCoverageWidget({ initialSlots }: Props) {
             title="Ejecutar vigía ahora"
           >
             <CheckCircle
-              className={`h-4 w-4 text-green-600 ${isTriggering ? "animate-pulse" : ""}`}
+              className={`h-4 w-4 text-[hsl(var(--success))] ${isTriggering ? "animate-pulse" : ""}`}
             />
           </Button>
           <Button
@@ -143,10 +144,13 @@ export function VolunteerCoverageWidget({ initialSlots }: Props) {
                       ? ` · ${slot.primaryVolunteerName}`
                       : ""}
                     {slot.eventDate
-                      ? ` · ${new Date(slot.eventDate).toLocaleDateString("es-ES", {
-                          day: "numeric",
-                          month: "short",
-                        })}`
+                      ? ` · ${new Date(slot.eventDate).toLocaleDateString(
+                          "es-ES",
+                          {
+                            day: "numeric",
+                            month: "short",
+                          },
+                        )}`
                       : ""}
                   </p>
                 </div>

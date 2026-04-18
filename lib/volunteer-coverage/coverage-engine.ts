@@ -5,10 +5,20 @@
 import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
 
-export { buildBackupRosterForVolunteer, buildAllBackupRosters } from "./backup-roster-builder";
+export {
+  buildBackupRosterForVolunteer,
+  buildAllBackupRosters,
+} from "./backup-roster-builder";
 export { runCoverageSentinel } from "./coverage-sentinel";
-export { runPreEventCheck, checkConfirmationResponses } from "./pre-event-check";
-export { triggerCoverageCascade, advanceCascade, contactNextBackup } from "./cascade-contact-system";
+export {
+  runPreEventCheck,
+  checkConfirmationResponses,
+} from "./pre-event-check";
+export {
+  triggerCoverageCascade,
+  advanceCascade,
+  contactNextBackup,
+} from "./cascade-contact-system";
 export { runEmergencySubstitution } from "./emergency-skills-substitution";
 
 // Handle incoming WhatsApp YES/NO responses from volunteers
@@ -16,7 +26,7 @@ export async function handleVolunteerResponse(
   volunteerId: string,
   response: "YES" | "NO",
   coverageStatusId: string,
-  churchId: string
+  churchId: string,
 ): Promise<void> {
   // Mark all pending contact log entries for this volunteer/slot as responded
   await db.coverage_contact_log.updateMany({
@@ -83,7 +93,7 @@ export async function handleVolunteerResponse(
 
 async function sendConfirmationToVolunteer(
   phone: string,
-  firstName: string
+  firstName: string,
 ): Promise<void> {
   const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
   const token = process.env.WHATSAPP_ACCESS_TOKEN;

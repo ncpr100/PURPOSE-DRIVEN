@@ -48,7 +48,7 @@ const navigation = [
 // Desktop Sidebar Component
 function DesktopSidebar({ pathname }: { pathname: string }) {
   return (
-    <div className="hidden md:flex w-64 bg-gray-900 text-white flex-col">
+    <div className="hidden md:flex w-64 bg-background text-white flex-col">
       {/* Logo */}
       <div className="p-4 pb-2">
         <div className="flex items-center gap-3">
@@ -61,7 +61,7 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
           />
           <div>
             <h1 className="text-sm font-bold leading-tight">Kḥesed-tek</h1>
-            <p className="text-xs text-gray-400">Super Admin</p>
+            <p className="text-xs text-muted-foreground/70">Super Admin</p>
           </div>
         </div>
       </div>
@@ -80,13 +80,13 @@ function MobileSidebar({ pathname }: { pathname: string }) {
         <Button 
           variant="ghost" 
           size="sm" 
-          className="md:hidden fixed top-4 left-4 z-50 bg-white shadow-md hover:bg-gray-100"
+          className="md:hidden fixed top-4 left-4 z-50 bg-white shadow-md hover:bg-muted/50"
         >
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-64">
-        <div className="bg-gray-900 text-white h-full flex flex-col">
+        <div className="bg-background text-white h-full flex flex-col">
           {/* Logo */}
           <div className="p-4 pb-2">
             <div className="flex items-center gap-3">
@@ -99,7 +99,7 @@ function MobileSidebar({ pathname }: { pathname: string }) {
               />
               <div>
                 <h1 className="text-sm font-bold leading-tight">Kḥesed-tek</h1>
-                <p className="text-xs text-gray-400">Super Admin</p>
+                <p className="text-xs text-muted-foreground/70">Super Admin</p>
               </div>
             </div>
           </div>
@@ -127,8 +127,8 @@ function SidebarNavigation({ pathname, onNavigate }: { pathname: string; onNavig
               className={cn(
                 'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors',
                 isActive
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                  ? 'bg-[hsl(var(--info))] text-white'
+                  : 'text-gray-300 hover:bg-card hover:text-white'
               )}
             >
               <item.icon className="h-5 w-5" />
@@ -143,7 +143,7 @@ function SidebarNavigation({ pathname, onNavigate }: { pathname: string; onNavig
         <Link
           href="/platform/dashboard"
           onClick={onNavigate}
-          className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+          className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-card hover:text-white transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
           Panel Principal

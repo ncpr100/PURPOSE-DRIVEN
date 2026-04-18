@@ -118,16 +118,16 @@ export default function EnhancedPlatformDashboard() {
 
   const getAlertIcon = (type: string) => {
     switch (type) {
-      case 'CRITICAL': return <AlertTriangle className="h-4 w-4 text-red-600" />
-      case 'WARNING': return <AlertCircle className="h-4 w-4 text-yellow-600" />
-      default: return <CheckCircle className="h-4 w-4 text-blue-600" />
+      case 'CRITICAL': return <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
+      case 'WARNING': return <AlertCircle className="h-4 w-4 text-[hsl(var(--warning))]" />
+      default: return <CheckCircle className="h-4 w-4 text-[hsl(var(--info))]" />
     }
   }
 
   const getHealthScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 60) return 'text-yellow-600'
-    return 'text-red-600'
+    if (score >= 80) return 'text-[hsl(var(--success))]'
+    if (score >= 60) return 'text-[hsl(var(--warning))]'
+    return 'text-[hsl(var(--destructive))]'
   }
 
   const getRiskBadgeVariant = (risk: string) => {
@@ -141,7 +141,7 @@ export default function EnhancedPlatformDashboard() {
   if (isLoading && !data) {
     return (
       <div className="flex items-center justify-center h-64">
-        <RefreshCw className="h-8 w-8 animate-spin text-purple-600" />
+        <RefreshCw className="h-8 w-8 animate-spin text-[hsl(var(--lavender))]" />
         <span className="ml-2 text-lg">Cargando métricas de la plataforma...</span>
       </div>
     )
@@ -150,8 +150,8 @@ export default function EnhancedPlatformDashboard() {
   if (!data) {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-4">
-        <AlertCircle className="h-10 w-10 text-red-500" />
-        <p className="text-lg font-medium text-gray-700">
+        <AlertCircle className="h-10 w-10 text-[hsl(var(--destructive))]" />
+        <p className="text-lg font-medium text-muted-foreground">
           {error || 'No se pudieron cargar las métricas de la plataforma'}
         </p>
         <Button onClick={fetchMonitoringData} disabled={isLoading} variant="outline">
@@ -185,9 +185,9 @@ export default function EnhancedPlatformDashboard() {
 
       {/* Operational Alerts */}
       {data.operationalAlerts.length > 0 && (
-        <Card className="border-orange-200 bg-orange-50">
+        <Card className="border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)]">
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center text-orange-800">
+            <CardTitle className="flex items-center text-[hsl(var(--warning))]">
               <AlertTriangle className="h-5 w-5 mr-2" />
               Alertas Operacionales ({data.operationalAlerts.length})
             </CardTitle>
@@ -223,7 +223,7 @@ export default function EnhancedPlatformDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total de Iglesias</CardTitle>
-                <Users className="h-4 w-4 text-purple-600" />
+                <Users className="h-4 w-4 text-[hsl(var(--lavender))]" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{data.summary.totalTenants}</div>
@@ -236,7 +236,7 @@ export default function EnhancedPlatformDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Salud Promedio</CardTitle>
-                <Activity className="h-4 w-4 text-green-600" />
+                <Activity className="h-4 w-4 text-[hsl(var(--success))]" />
               </CardHeader>
               <CardContent>
                 <div className={cn("text-2xl font-bold", getHealthScoreColor(data.summary.averageHealthScore))}>
@@ -251,10 +251,10 @@ export default function EnhancedPlatformDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">En Riesgo</CardTitle>
-                <AlertTriangle className="h-4 w-4 text-red-600" />
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-red-600">
+                <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
                   {data.summary.atRiskTenants}
                 </div>
                 <p className="text-xs text-muted-foreground">
@@ -266,10 +266,10 @@ export default function EnhancedPlatformDashboard() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Disponibilidad</CardTitle>
-                <Server className="h-4 w-4 text-blue-600" />
+                <Server className="h-4 w-4 text-[hsl(var(--info))]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-[hsl(var(--success))]">
                   {data.systemHealth.uptime}%
                 </div>
                 <p className="text-xs text-muted-foreground">
@@ -355,7 +355,7 @@ export default function EnhancedPlatformDashboard() {
                     value={data.systemHealth.cpuUsage} 
                     className={cn(
                       "w-full",
-                      data.systemHealth.cpuUsage > 80 && "bg-red-100"
+                      data.systemHealth.cpuUsage > 80 && "bg-[hsl(var(--destructive)/0.15)]"
                     )} 
                   />
                 </div>
@@ -367,7 +367,7 @@ export default function EnhancedPlatformDashboard() {
                     value={data.systemHealth.memoryUsage} 
                     className={cn(
                       "w-full",
-                      data.systemHealth.memoryUsage > 80 && "bg-red-100"
+                      data.systemHealth.memoryUsage > 80 && "bg-[hsl(var(--destructive)/0.15)]"
                     )}
                   />
                 </div>
@@ -379,7 +379,7 @@ export default function EnhancedPlatformDashboard() {
                     value={data.systemHealth.diskUsage} 
                     className={cn(
                       "w-full",
-                      data.systemHealth.diskUsage > 80 && "bg-red-100"
+                      data.systemHealth.diskUsage > 80 && "bg-[hsl(var(--destructive)/0.15)]"
                     )}
                   />
                 </div>
@@ -476,13 +476,13 @@ export default function EnhancedPlatformDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <Shield className="h-5 w-5 mr-2 text-blue-600" />
+                  <Shield className="h-5 w-5 mr-2 text-[hsl(var(--info))]" />
                   Puntuación de Seguridad
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-green-600 mb-2">
+                  <div className="text-4xl font-bold text-[hsl(var(--success))] mb-2">
                     {data.securityMetrics.securityScore}%
                   </div>
                   <p className="text-muted-foreground">Sistema Seguro</p>

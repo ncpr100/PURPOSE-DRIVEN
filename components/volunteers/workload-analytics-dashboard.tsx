@@ -110,11 +110,11 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
 
   const getBurnoutRiskColor = (risk: string) => {
     switch (risk) {
-      case 'CRITICAL': return 'bg-red-500'
-      case 'HIGH': return 'bg-orange-500'
-      case 'MEDIUM': return 'bg-yellow-500'
-      case 'LOW': return 'bg-green-500'
-      default: return 'bg-gray-500'
+      case 'CRITICAL': return 'bg-[hsl(var(--destructive)/0.10)]0'
+      case 'HIGH': return 'bg-[hsl(var(--warning)/0.10)]0'
+      case 'MEDIUM': return 'bg-[hsl(var(--warning)/0.10)]0'
+      case 'LOW': return 'bg-[hsl(var(--success)/0.10)]0'
+      default: return 'bg-muted/300'
     }
   }
 
@@ -143,7 +143,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
-            <BarChart3 className="h-6 w-6 text-purple-600" />
+            <BarChart3 className="h-6 w-6 text-[hsl(var(--lavender))]" />
             Análisis de Carga de Trabajo
           </h2>
           <p className="text-muted-foreground">
@@ -170,7 +170,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4 text-blue-500" />
+                <Users className="h-4 w-4 text-[hsl(var(--info))]" />
                 <div>
                   <p className="text-2xl font-bold">{summary.totalVolunteers}</p>
                   <p className="text-xs text-muted-foreground">Total Voluntarios</p>
@@ -181,7 +181,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <Target className="h-4 w-4 text-green-500" />
+                <Target className="h-4 w-4 text-[hsl(var(--success))]" />
                 <div>
                   <p className="text-2xl font-bold">{summary.averageWorkloadScore}</p>
                   <p className="text-xs text-muted-foreground">Carga Promedio</p>
@@ -192,9 +192,9 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="h-4 w-4 text-red-500" />
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 <div>
-                  <p className="text-2xl font-bold text-red-600">{summary.highBurnoutRisk}</p>
+                  <p className="text-2xl font-bold text-[hsl(var(--destructive))]">{summary.highBurnoutRisk}</p>
                   <p className="text-xs text-muted-foreground">Alto Riesgo</p>
                 </div>
               </div>
@@ -203,7 +203,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <UserX className="h-4 w-4 text-yellow-500" />
+                <UserX className="h-4 w-4 text-[hsl(var(--warning))]" />
                 <div>
                   <p className="text-2xl font-bold">{summary.underutilized}</p>
                   <p className="text-xs text-muted-foreground">Subutilizados</p>
@@ -214,7 +214,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center space-x-2">
-                <TrendingUp className="h-4 w-4 text-purple-500" />
+                <TrendingUp className="h-4 w-4 text-[hsl(var(--lavender))]" />
                 <div>
                   <p className="text-2xl font-bold">{summary.balanceScore}</p>
                   <p className="text-xs text-muted-foreground">Balance Score</p>
@@ -389,7 +389,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
                           <ul className="text-sm space-y-1">
                             {recommendation.actionItems.map((item, itemIndex) => (
                               <li key={itemIndex} className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
                                 {item}
                               </li>
                             ))}
@@ -429,7 +429,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-green-500" />
+                          <div className="w-3 h-3 rounded-full bg-[hsl(var(--success)/0.10)]0" />
                           Bajo Riesgo
                         </span>
                         <span className="font-medium">
@@ -438,7 +438,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                          <div className="w-3 h-3 rounded-full bg-[hsl(var(--warning)/0.10)]0" />
                           Riesgo Moderado
                         </span>
                         <span className="font-medium">
@@ -447,7 +447,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-orange-500" />
+                          <div className="w-3 h-3 rounded-full bg-[hsl(var(--warning)/0.10)]0" />
                           Alto Riesgo
                         </span>
                         <span className="font-medium">
@@ -456,7 +456,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="flex items-center gap-2">
-                          <div className="w-3 h-3 rounded-full bg-red-500" />
+                          <div className="w-3 h-3 rounded-full bg-[hsl(var(--destructive)/0.10)]0" />
                           Riesgo Crítico
                         </span>
                         <span className="font-medium">
@@ -478,7 +478,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4 text-red-500" />
+                        <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
                         Alta Prioridad
                       </span>
                       <span className="font-medium">
@@ -487,7 +487,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2">
-                        <Activity className="h-4 w-4 text-yellow-500" />
+                        <Activity className="h-4 w-4 text-[hsl(var(--warning))]" />
                         Prioridad Media
                       </span>
                       <span className="font-medium">
@@ -496,7 +496,7 @@ export function WorkloadAnalyticsDashboard({ churchId, userRole }: WorkloadAnaly
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                         Baja Prioridad
                       </span>
                       <span className="font-medium">

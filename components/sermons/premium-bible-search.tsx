@@ -132,7 +132,7 @@ export function PremiumBibleSearch({ onVerseSelect }: BibleSearchProps) {
             <Search className="h-5 w-5" />
             Búsqueda Bíblica
             {subscription?.hasSubscription && (
-              <Badge variant="outline" className="bg-blue-50 text-blue-700">
+              <Badge variant="outline" className="bg-[hsl(var(--info)/0.10)] text-[hsl(var(--info))]">
                 Suscripción Activa
               </Badge>
             )}
@@ -209,9 +209,9 @@ export function PremiumBibleSearch({ onVerseSelect }: BibleSearchProps) {
 
       {/* Upgrade Prompts for Free Users */}
       {!subscription?.hasSubscription && (
-        <Card className="border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <Card className="border-[hsl(var(--info)/0.3)] bg-gradient-to-r from-primary/20 to-primary/10">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-800">
+            <CardTitle className="flex items-center gap-2 text-[hsl(var(--info))]">
               <BookOpen className="h-5 w-5" />
               Mejora tu Búsqueda Bíblica
             </CardTitle>
@@ -221,7 +221,7 @@ export function PremiumBibleSearch({ onVerseSelect }: BibleSearchProps) {
               {subscription?.plans?.map((plan: any) => (
                 <Card key={plan.id} className="relative">
                   {plan.id === 'bible-pro' && (
-                    <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-yellow-500">
+                    <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-[hsl(var(--warning)/0.10)]0">
                       <Star className="h-3 w-3 mr-1" />
                       Más Popular
                     </Badge>
@@ -236,7 +236,7 @@ export function PremiumBibleSearch({ onVerseSelect }: BibleSearchProps) {
                   <CardContent className="space-y-3">
                     {plan.features.map((feature: string, index: number) => (
                       <div key={index} className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                        <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                         <span className="text-sm">{feature}</span>
                       </div>
                     ))}
@@ -258,19 +258,19 @@ export function PremiumBibleSearch({ onVerseSelect }: BibleSearchProps) {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                   <span>Versiones españolas múltiples</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                   <span>Versiones inglesas incluidas</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                   <span>Comparación ilimitada</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+                  <span className="w-2 h-2 bg-[hsl(var(--success))] rounded-full"></span>
                   <span>Contenido auténtico</span>
                 </div>
               </div>

@@ -626,7 +626,7 @@ export function AutomationTemplates({
             {/* Name + Description */}
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <Label htmlFor="edit-name">Nombre <span className="text-red-500">*</span></Label>
+                <Label htmlFor="edit-name">Nombre <span className="text-[hsl(var(--destructive))]">*</span></Label>
                 <Input
                   id="edit-name"
                   value={editName}
@@ -715,7 +715,7 @@ export function AutomationTemplates({
                 </SelectContent>
               </Select>
               {editTemplate?.isSystem && (
-                <p className="text-xs text-amber-600 mt-1">
+                <p className="text-xs text-[hsl(var(--warning))] mt-1">
                   Nota: las plantillas del sistema solo permiten cambiar ícono, color, nombre y descripción. Los lógica (disparador, condiciones, acciones) solo puede editarla el Super Administrador.
                 </p>
               )}
@@ -816,7 +816,7 @@ export function AutomationTemplates({
                 </Button>
               </div>
               {editActions.length === 0 && (
-                <p className="text-xs text-amber-600">Agrega al menos una acción.</p>
+                <p className="text-xs text-[hsl(var(--warning))]">Agrega al menos una acción.</p>
               )}
               <div className="space-y-3">
                 {editActions.map((action, idx) => (
@@ -914,7 +914,7 @@ export function AutomationTemplates({
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-purple-600" />
+              <Zap className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Crear Plantilla Personalizada
             </DialogTitle>
           </DialogHeader>
@@ -923,7 +923,7 @@ export function AutomationTemplates({
             {/* Name */}
             <div>
               <Label htmlFor="create-name">
-                Nombre de la Plantilla <span className="text-red-500">*</span>
+                Nombre de la Plantilla <span className="text-[hsl(var(--destructive))]">*</span>
               </Label>
               <Input
                 id="create-name"
@@ -1045,7 +1045,7 @@ export function AutomationTemplates({
             {/* Action message */}
             <div>
               <Label htmlFor="create-action-msg">
-                Mensaje de la Acción <span className="text-red-500">*</span>
+                Mensaje de la Acción <span className="text-[hsl(var(--destructive))]">*</span>
               </Label>
               <Textarea
                 id="create-action-msg"
@@ -1091,7 +1091,7 @@ export function AutomationTemplates({
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-purple-600" />
+              <Zap className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Crear Plantilla Personalizada
             </DialogTitle>
           </DialogHeader>
@@ -1100,7 +1100,7 @@ export function AutomationTemplates({
             {/* Name */}
             <div>
               <Label htmlFor="create-name">
-                Nombre de la Plantilla <span className="text-red-500">*</span>
+                Nombre de la Plantilla <span className="text-[hsl(var(--destructive))]">*</span>
               </Label>
               <Input
                 id="create-name"
@@ -1183,7 +1183,7 @@ export function AutomationTemplates({
             {/* Action message */}
             <div>
               <Label htmlFor="create-action-msg">
-                Mensaje de la Acción <span className="text-red-500">*</span>
+                Mensaje de la Acción <span className="text-[hsl(var(--destructive))]">*</span>
               </Label>
               <Textarea
                 id="create-action-msg"

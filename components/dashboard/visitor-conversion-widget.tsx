@@ -35,9 +35,9 @@ interface Props {
 }
 
 const IMPACT_ICON = {
-  POSITIVE: <TrendingUp className="h-4 w-4 text-green-600" />,
-  NEGATIVE: <TrendingDown className="h-4 w-4 text-red-500" />,
-  NEUTRAL: <Minus className="h-4 w-4 text-gray-400" />,
+  POSITIVE: <TrendingUp className="h-4 w-4 text-[hsl(var(--success))]" />,
+  NEGATIVE: <TrendingDown className="h-4 w-4 text-[hsl(var(--destructive))]" />,
+  NEUTRAL: <Minus className="h-4 w-4 text-muted-foreground/70" />,
 };
 
 const IMPACT_LABEL = {
@@ -85,7 +85,7 @@ export function VisitorConversionWidget({ initialReport }: Props) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
-          <Users className="h-4 w-4 text-blue-500" />
+          <Users className="h-4 w-4 text-[hsl(var(--info))]" />
           Inteligencia de Conversión de Visitantes
         </CardTitle>
         <div className="flex items-center gap-1">

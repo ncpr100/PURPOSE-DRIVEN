@@ -242,36 +242,36 @@ export function PublicDonationForm({
     <div className="space-y-6">
       {/* Progress Indicator */}
       <div className="flex items-center justify-center space-x-4">
-        <div className={`flex items-center ${step === 'amount' ? 'text-blue-600' : 'text-gray-400'}`}>
+        <div className={`flex items-center ${step === 'amount' ? 'text-[hsl(var(--info))]' : 'text-muted-foreground/70'}`}>
           <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-            step === 'amount' ? 'bg-blue-600 text-white' : 'bg-gray-200'
+            step === 'amount' ? 'bg-[hsl(var(--info))] text-white' : 'bg-muted'
           }`}>
             1
           </div>
           <span className="ml-2 text-sm">Monto</span>
         </div>
-        <div className="w-8 h-1 bg-gray-200">
+        <div className="w-8 h-1 bg-muted">
           <div className={`h-full transition-all ${
-            ['details', 'payment'].includes(step) ? 'bg-blue-600 w-full' : 'bg-gray-200 w-0'
+            ['details', 'payment'].includes(step) ? 'bg-[hsl(var(--info))] w-full' : 'bg-muted w-0'
           }`}></div>
         </div>
-        <div className={`flex items-center ${step === 'details' ? 'text-blue-600' : 'text-gray-400'}`}>
+        <div className={`flex items-center ${step === 'details' ? 'text-[hsl(var(--info))]' : 'text-muted-foreground/70'}`}>
           <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-            step === 'details' ? 'bg-blue-600 text-white' : 
-            step === 'payment' ? 'bg-blue-600 text-white' : 'bg-gray-200'
+            step === 'details' ? 'bg-[hsl(var(--info))] text-white' : 
+            step === 'payment' ? 'bg-[hsl(var(--info))] text-white' : 'bg-muted'
           }`}>
             2
           </div>
           <span className="ml-2 text-sm">Detalles</span>
         </div>
-        <div className="w-8 h-1 bg-gray-200">
+        <div className="w-8 h-1 bg-muted">
           <div className={`h-full transition-all ${
-            step === 'payment' ? 'bg-blue-600 w-full' : 'bg-gray-200 w-0'
+            step === 'payment' ? 'bg-[hsl(var(--info))] w-full' : 'bg-muted w-0'
           }`}></div>
         </div>
-        <div className={`flex items-center ${step === 'payment' ? 'text-blue-600' : 'text-gray-400'}`}>
+        <div className={`flex items-center ${step === 'payment' ? 'text-[hsl(var(--info))]' : 'text-muted-foreground/70'}`}>
           <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-            step === 'payment' ? 'bg-blue-600 text-white' : 'bg-gray-200'
+            step === 'payment' ? 'bg-[hsl(var(--info))] text-white' : 'bg-muted'
           }`}>
             3
           </div>
@@ -309,17 +309,17 @@ export function PublicDonationForm({
                 max="20000000"
                 className="mt-1"
               />
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Monto mínimo: $1.000 - Monto máximo: $20.000.000
               </p>
             </div>
           </div>
 
           {formData.amount && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
               <div className="text-center">
-                <p className="text-sm text-blue-600">Monto de la donación</p>
-                <p className="text-2xl font-bold text-blue-900">
+                <p className="text-sm text-[hsl(var(--info))]">Monto de la donación</p>
+                <p className="text-2xl font-bold text-foreground">
                   {formatCurrency(parseFloat(formData.amount))}
                 </p>
               </div>
@@ -363,7 +363,7 @@ export function PublicDonationForm({
                   placeholder="tu@email.com"
                   className="mt-1"
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Recibirás el recibo de donación por email
                 </p>
               </div>
@@ -398,7 +398,7 @@ export function PublicDonationForm({
                       <div>
                         <div className="font-medium">{category.name}</div>
                         {category.description && (
-                          <div className="text-sm text-gray-500">{category.description}</div>
+                          <div className="text-sm text-muted-foreground">{category.description}</div>
                         )}
                       </div>
                     </SelectItem>
@@ -424,7 +424,7 @@ export function PublicDonationForm({
                         <div>
                           <div className="font-medium">{campaign.title}</div>
                           {campaign.goalAmount && (
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-muted-foreground">
                               Meta: {formatCurrency(campaign.goalAmount)}
                             </div>
                           )}
@@ -467,8 +467,8 @@ export function PublicDonationForm({
             <h3 className="text-lg font-semibold mb-4">Método de pago</h3>
             
             {/* https Security Notice */}
-            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-sm text-green-800">
+            <div className="mb-4 p-3 bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg">
+              <p className="text-sm text-[hsl(var(--success))]">
                 🔒 <strong>Pago seguro:</strong> Tu información está protegida con cifrado https y tecnología de seguridad de nivel bancario.
               </p>
             </div>
@@ -479,18 +479,18 @@ export function PublicDonationForm({
                   key={method.id}
                   className={`cursor-pointer transition-all ${
                     formData.gatewayType === method.id 
-                      ? 'ring-2 ring-blue-500 bg-blue-50' 
-                      : 'hover:bg-gray-50'
+                      ? 'ring-2 ring-[hsl(var(--info)/0.4)] bg-[hsl(var(--info)/0.10)]' 
+                      : 'hover:bg-muted/30'
                   }`}
                   onClick={() => setFormData(prev => ({ ...prev, gatewayType: method.id }))}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <method.icon className="h-6 w-6 text-gray-600" />
+                        <method.icon className="h-6 w-6 text-muted-foreground" />
                         <div>
                           <div className="font-medium">{method.name}</div>
-                          <div className="text-sm text-gray-500">{method.description}</div>
+                          <div className="text-sm text-muted-foreground">{method.description}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -499,8 +499,8 @@ export function PublicDonationForm({
                         )}
                         <div className={`w-4 h-4 rounded-full border-2 ${
                           formData.gatewayType === method.id 
-                            ? 'border-blue-500 bg-blue-500' 
-                            : 'border-gray-300'
+                            ? 'border-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]0' 
+                            : 'border-border'
                         }`}>
                           {formData.gatewayType === method.id && (
                             <div className="w-full h-full rounded-full bg-white scale-50"></div>
@@ -515,7 +515,7 @@ export function PublicDonationForm({
           </div>
 
           {/* Summary */}
-          <Card className="bg-gray-50">
+          <Card className="bg-muted/30">
             <CardHeader>
               <CardTitle className="text-lg">Resumen de donación</CardTitle>
             </CardHeader>

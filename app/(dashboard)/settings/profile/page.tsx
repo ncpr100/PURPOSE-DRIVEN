@@ -321,7 +321,7 @@ export default function ChurchProfilePage() {
   if (!session?.user) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -362,7 +362,7 @@ export default function ChurchProfilePage() {
             <CardContent className="space-y-4">
               {/* Logo Preview */}
               <div className="flex justify-center">
-                <div className="relative w-32 h-32 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50">
+                <div className="relative w-32 h-32 rounded-lg border-2 border-dashed border-border flex items-center justify-center overflow-hidden bg-muted/30">
                   {churchData.logo ? (
                     <>
                       <img
@@ -381,8 +381,8 @@ export default function ChurchProfilePage() {
                     </>
                   ) : (
                     <div className="text-center">
-                      <ImageIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                      <p className="text-xs text-gray-500">Sin logo</p>
+                      <ImageIcon className="w-8 h-8 text-muted-foreground/70 mx-auto mb-2" />
+                      <p className="text-xs text-muted-foreground">Sin logo</p>
                     </div>
                   )}
                 </div>
@@ -406,7 +406,7 @@ export default function ChurchProfilePage() {
                 >
                   {loading ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2" />
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[hsl(var(--info))] mr-2" />
                       Subiendo...
                     </>
                   ) : (
@@ -418,7 +418,7 @@ export default function ChurchProfilePage() {
                 </Button>
               </div>
 
-              <div className="text-xs text-gray-500 text-center">
+              <div className="text-xs text-muted-foreground text-center">
                 Formatos soportados: JPG, PNG, GIF<br />
                 Tamaño máximo: 2MB
               </div>
@@ -588,8 +588,8 @@ export default function ChurchProfilePage() {
                     onClick={() => applyChurchPreset(preset)}
                     className={`p-4 border-2 rounded-xl hover:shadow-md transition-all text-left ${
                       themeData.primaryColor === preset.primary 
-                        ? 'border-blue-500 bg-blue-50 shadow-md' 
-                        : 'hover:bg-gray-50 border-gray-200'
+                        ? 'border-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)] shadow-md' 
+                        : 'hover:bg-muted/30 border-border'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-3">
@@ -615,13 +615,13 @@ export default function ChurchProfilePage() {
                         )}
                       </div>
                       {themeData.primaryColor === preset.primary && (
-                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-[hsl(var(--info)/0.10)]0 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs">✓</span>
                         </div>
                       )}
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-1">{preset.name}</h3>
-                    <p className="text-sm text-gray-600">{preset.description}</p>
+                    <h3 className="font-semibold text-foreground mb-1">{preset.name}</h3>
+                    <p className="text-sm text-muted-foreground">{preset.description}</p>
                   </button>
                 ))}
               </div>
@@ -704,8 +704,8 @@ export default function ChurchProfilePage() {
                     onClick={() => handleThemeChange('badgeStyle', style.value)}
                     className={`p-4 border-2 rounded-xl hover:shadow-md transition-all text-left ${
                       themeData.badgeStyle === style.value 
-                        ? 'border-blue-500 bg-blue-50 shadow-md' 
-                        : 'hover:bg-gray-50 border-gray-200'
+                        ? 'border-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)] shadow-md' 
+                        : 'hover:bg-muted/30 border-border'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -718,11 +718,11 @@ export default function ChurchProfilePage() {
                         </Badge>
                         <div>
                           <p className="font-medium">{style.label}</p>
-                          <p className="text-sm text-gray-600">Estilo {style.value}</p>
+                          <p className="text-sm text-muted-foreground">Estilo {style.value}</p>
                         </div>
                       </div>
                       {themeData.badgeStyle === style.value && (
-                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-[hsl(var(--info)/0.10)]0 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs">✓</span>
                         </div>
                       )}
@@ -734,21 +734,21 @@ export default function ChurchProfilePage() {
           </Card>
 
           {/* Help Info & Reset */}
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-[hsl(var(--info)/0.10)] border-[hsl(var(--info)/0.3)]">
             <CardContent className="pt-6">
               <div className="text-center space-y-3">
-                <div className="flex items-center justify-center gap-2 text-blue-700">
+                <div className="flex items-center justify-center gap-2 text-[hsl(var(--info))]">
                   <span className="text-lg">💡</span>
                   <span className="font-medium">Información Importante</span>
                 </div>
-                <p className="text-sm text-blue-600">
+                <p className="text-sm text-[hsl(var(--info))]">
                   Estos colores personalizan solo la marca de tu iglesia.
                   Los colores generales del sistema los controla el administrador de la plataforma.
                 </p>
                 <Button 
                   variant="outline" 
                   onClick={resetTheme}
-                  className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                  className="border-[hsl(var(--info)/0.4)] text-[hsl(var(--info))] hover:bg-[hsl(var(--info)/0.15)]"
                 >
                   <RotateCcw className="w-4 h-4 mr-2" />
                   Volver al Predeterminado
@@ -794,7 +794,7 @@ export default function ChurchProfilePage() {
                 {/* Church Roles Preview */}
                 <div className="space-y-3">
                   <div>
-                    <p className="text-sm font-medium text-gray-700 mb-3">
+                    <p className="text-sm font-medium text-muted-foreground mb-3">
                       Roles en tu iglesia:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -820,7 +820,7 @@ export default function ChurchProfilePage() {
                   </div>
 
                   {/* Sample Church Content */}
-                  <div className="bg-gray-50 p-3 rounded-lg">
+                  <div className="bg-muted/30 p-3 rounded-lg">
                     <h4 
                       className="font-semibold mb-2"
                       style={{ 
@@ -831,7 +831,7 @@ export default function ChurchProfilePage() {
                       Próximo Servicio
                     </h4>
                     <p 
-                      className="text-gray-700 text-sm"
+                      className="text-muted-foreground text-sm"
                       style={{ fontFamily: themeData.primaryFont }}
                     >
                       Domingo 10:00 AM - Sala Principal
@@ -853,11 +853,11 @@ export default function ChurchProfilePage() {
     </TabsContent>
 
     {/* Save Button for All Changes */}
-    <div className="flex justify-end pt-4 border-t bg-gray-50 px-6 py-4 rounded-lg">
+    <div className="flex justify-end pt-4 border-t bg-muted/30 px-6 py-4 rounded-lg">
       <div className="flex items-center gap-4">
         <div className="text-right">
-          <p className="text-sm font-medium text-gray-900">¿Listo para aplicar los cambios?</p>
-          <p className="text-xs text-gray-600">Se guardará la información básica y el tema de tu iglesia</p>
+          <p className="text-sm font-medium text-foreground">¿Listo para aplicar los cambios?</p>
+          <p className="text-xs text-muted-foreground">Se guardará la información básica y el tema de tu iglesia</p>
         </div>
         <Button
           onClick={handleSave}

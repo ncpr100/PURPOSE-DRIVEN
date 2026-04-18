@@ -228,57 +228,57 @@ export function UnifiedAutomationInterface() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border border-gray-200 bg-white">
+        <Card className="border border-border bg-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Reglas</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
+                <p className="text-sm font-medium text-muted-foreground">Total Reglas</p>
+                <p className="text-3xl font-bold text-foreground">{stats.total}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50">
-                <Zap className="h-6 w-6 text-blue-600" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--info)/0.10)]">
+                <Zap className="h-6 w-6 text-[hsl(var(--info))]" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 bg-white">
+        <Card className="border border-border bg-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Activas</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.active}</p>
+                <p className="text-sm font-medium text-muted-foreground">Activas</p>
+                <p className="text-3xl font-bold text-foreground">{stats.active}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-50">
-                <CheckCircle className="h-6 w-6 text-green-600" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--success)/0.10)]">
+                <CheckCircle className="h-6 w-6 text-[hsl(var(--success))]" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 bg-white">
+        <Card className="border border-border bg-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Ejecuciones</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.totalExecutions}</p>
+                <p className="text-sm font-medium text-muted-foreground">Ejecuciones</p>
+                <p className="text-3xl font-bold text-foreground">{stats.totalExecutions}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-50">
-                <TrendingUp className="h-6 w-6 text-purple-600" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--lavender)/0.10)]">
+                <TrendingUp className="h-6 w-6 text-[hsl(var(--lavender))]" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-gray-200 bg-white">
+        <Card className="border border-border bg-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Tasa de Éxito</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.successRate}%</p>
+                <p className="text-sm font-medium text-muted-foreground">Tasa de Éxito</p>
+                <p className="text-3xl font-bold text-foreground">{stats.successRate}%</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-50">
-                <Sparkles className="h-6 w-6 text-orange-600" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--warning)/0.10)]">
+                <Sparkles className="h-6 w-6 text-[hsl(var(--warning))]" />
               </div>
             </div>
           </CardContent>
@@ -286,23 +286,23 @@ export function UnifiedAutomationInterface() {
       </div>
 
       {/* Branding Customization Banner */}
-      <Card className="border-blue-200 bg-blue-50/50">
+      <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.06)]">
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 border border-blue-200">
-                <Palette className="h-6 w-6 text-blue-600" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--info)/0.15)] border border-[hsl(var(--info)/0.3)]">
+                <Palette className="h-6 w-6 text-[hsl(var(--info))]" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Personaliza los Colores de tus Plantillas</h3>
-                <p className="text-gray-600 text-sm">
+                <h3 className="text-lg font-semibold text-foreground">Personaliza los Colores de tus Plantillas</h3>
+                <p className="text-muted-foreground text-sm">
                   Configura colores personalizados para cada categoría de automatización.
                 </p>
               </div>
             </div>
             <Button 
               onClick={() => window.location.href = '/settings/branding'}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-[hsl(var(--info))] hover:bg-[hsl(var(--info))] text-white"
               size="default"
             >
               Configurar Colores
@@ -327,7 +327,7 @@ export function UnifiedAutomationInterface() {
                       <div className="flex items-center gap-2">
                         <h3 className="font-semibold text-lg">{rule.name}</h3>
                         {rule.isActive ? (
-                          <Badge className="bg-green-100 text-green-800">Activa</Badge>
+                          <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">Activa</Badge>
                         ) : (
                           <Badge variant="secondary">Pausada</Badge>
                         )}
@@ -378,7 +378,7 @@ export function UnifiedAutomationInterface() {
             return (
               <Card 
                 key={template.id} 
-                className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-gray-200 bg-white"
+                className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-border bg-white"
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">
@@ -404,10 +404,10 @@ export function UnifiedAutomationInterface() {
                       >
                         {template.name}
                       </h3>
-                      <p className="text-sm text-gray-600 line-clamp-2">{template.description}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{template.description}</p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-gray-200/50">
+                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <div 
                         className="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full" 
                         style={{ backgroundColor: pastelColor, color: brightColor }}

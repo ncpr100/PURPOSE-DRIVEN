@@ -117,7 +117,7 @@ export default function MembersHelp() {
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{field.field}</span>
                     {field.required && (
-                      <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">
+                      <span className="text-xs bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] px-2 py-1 rounded">
                         Obligatorio
                       </span>
                     )}

@@ -42,7 +42,7 @@ export default function CheckInsManual() {
                 <h4 className="font-semibold">Check-In Tradicional</h4>
                 <p className="text-sm text-muted-foreground">Registro básico de visitantes con QR codes</p>
               </div>
-              <div className="p-4 border rounded-lg bg-blue-50">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--info)/0.10)]">
                 <Badge variant="secondary" className="mb-2">🆕 Automatización</Badge>
                 <h4 className="font-semibold">Sistema Inteligente de Visitantes</h4>
                 <p className="text-sm text-muted-foreground">Registro avanzado con seguimiento automático y conexión ministerial</p>
@@ -52,7 +52,7 @@ export default function CheckInsManual() {
                 <h4 className="font-semibold">Check-In Básico</h4>
                 <p className="text-sm text-muted-foreground">Registro tradicional con códigos QR</p>
               </div>
-              <div className="p-4 border rounded-lg bg-green-50">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--success)/0.10)]">
                 <Badge variant="secondary" className="mb-2">🆕 WebRTC</Badge>
                 <h4 className="font-semibold">Seguridad Biométrica</h4>
                 <p className="text-sm text-muted-foreground">Captura de fotos en tiempo real con verificación dual</p>
@@ -62,15 +62,15 @@ export default function CheckInsManual() {
         </Card>
 
         {/* New Feature: Visitor Automation */}
-        <Card className="border-blue-200">
+        <Card className="border-[hsl(var(--info)/0.3)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-blue-600" />
+              <Zap className="h-5 w-5 text-[hsl(var(--info))]" />
               🆕 Sistema de Automatización Inteligente de Visitantes
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="bg-blue-50 p-4 rounded-lg">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
               <h4 className="font-semibold mb-2">¿Qué es nuevo?</h4>
               <p className="text-sm">Sistema avanzado que categoriza automáticamente a los visitantes y activa secuencias de seguimiento personalizadas según su perfil e intereses ministeriales.</p>
             </div>
@@ -80,7 +80,7 @@ export default function CheckInsManual() {
               
               <div className="grid gap-4">
                 <div className="flex gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                   <div>
                     <h5 className="font-medium">Categorización Automática</h5>
                     <p className="text-sm text-muted-foreground">Clasifica visitantes como: Primeira Vez, Recurrente, Interés Ministerial, o Petición de Oración</p>
@@ -88,7 +88,7 @@ export default function CheckInsManual() {
                 </div>
                 
                 <div className="flex gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                   <div>
                     <h5 className="font-medium">Secuencia de 5 Toques (Primeras Visitas)</h5>
                     <ul className="text-sm text-muted-foreground list-disc list-inside ml-2">
@@ -102,7 +102,7 @@ export default function CheckInsManual() {
                 </div>
 
                 <div className="flex gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                   <div>
                     <h5 className="font-medium">Conexión Ministerial Automática</h5>
                     <p className="text-sm text-muted-foreground">Conecta automáticamente con líderes ministeriales basado en intereses expresados</p>
@@ -110,7 +110,7 @@ export default function CheckInsManual() {
                 </div>
 
                 <div className="flex gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                   <div>
                     <h5 className="font-medium">Puntuación de Compromiso</h5>
                     <p className="text-sm text-muted-foreground">Sistema de 0-100 puntos que mide el nivel de compromiso del visitante</p>
@@ -119,9 +119,9 @@ export default function CheckInsManual() {
               </div>
             </div>
 
-            <div className="bg-yellow-50 p-4 rounded-lg border-yellow-200">
+            <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-[hsl(var(--warning)/0.3)]">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))]" />
                 Cómo usar la Automatización
               </h4>
               <ol className="text-sm space-y-2 list-decimal list-inside">
@@ -136,15 +136,15 @@ export default function CheckInsManual() {
         </Card>
 
         {/* New Feature: Children WebRTC Security */}
-        <Card className="border-green-200">
+        <Card className="border-[hsl(var(--success)/0.3)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-green-600" />
+              <Shield className="h-5 w-5 text-[hsl(var(--success))]" />
               🆕 Sistema WebRTC de Seguridad Infantil
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="bg-green-50 p-4 rounded-lg">
+            <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
               <h4 className="font-semibold mb-2">¿Qué es nuevo?</h4>
               <p className="text-sm">Sistema de verificación biométrica que requiere AMBOS: código PIN de 6 dígitos Y verificación fotográfica para recoger a los niños.</p>
             </div>
@@ -154,7 +154,7 @@ export default function CheckInsManual() {
               
               <div className="grid gap-4">
                 <div className="flex gap-3">
-                  <div className="bg-blue-100 rounded-full p-1 text-xs font-bold text-blue-700 w-6 h-6 flex items-center justify-center">1</div>
+                  <div className="bg-[hsl(var(--info)/0.15)] rounded-full p-1 text-xs font-bold text-[hsl(var(--info))] w-6 h-6 flex items-center justify-center">1</div>
                   <div>
                     <h5 className="font-medium">Información del Niño</h5>
                     <p className="text-sm text-muted-foreground">Nombre, edad, alergias, necesidades especiales</p>
@@ -162,7 +162,7 @@ export default function CheckInsManual() {
                 </div>
                 
                 <div className="flex gap-3">
-                  <div className="bg-blue-100 rounded-full p-1 text-xs font-bold text-blue-700 w-6 h-6 flex items-center justify-center">2</div>
+                  <div className="bg-[hsl(var(--info)/0.15)] rounded-full p-1 text-xs font-bold text-[hsl(var(--info))] w-6 h-6 flex items-center justify-center">2</div>
                   <div>
                     <h5 className="font-medium">Datos del Padre/Madre</h5>
                     <p className="text-sm text-muted-foreground">Contacto principal y de emergencia</p>
@@ -170,7 +170,7 @@ export default function CheckInsManual() {
                 </div>
 
                 <div className="flex gap-3">
-                  <div className="bg-green-100 rounded-full p-1 text-xs font-bold text-green-700 w-6 h-6 flex items-center justify-center">3</div>
+                  <div className="bg-[hsl(var(--success)/0.15)] rounded-full p-1 text-xs font-bold text-[hsl(var(--success))] w-6 h-6 flex items-center justify-center">3</div>
                   <div>
                     <h5 className="font-medium">Captura de Fotos WebRTC</h5>
                     <p className="text-sm text-muted-foreground">Foto del niño/a + Foto del padre/madre (cámara web en tiempo real)</p>
@@ -178,7 +178,7 @@ export default function CheckInsManual() {
                 </div>
 
                 <div className="flex gap-3">
-                  <div className="bg-green-100 rounded-full p-1 text-xs font-bold text-green-700 w-6 h-6 flex items-center justify-center">4</div>
+                  <div className="bg-[hsl(var(--success)/0.15)] rounded-full p-1 text-xs font-bold text-[hsl(var(--success))] w-6 h-6 flex items-center justify-center">4</div>
                   <div>
                     <h5 className="font-medium">Generación de PIN Seguro</h5>
                     <p className="text-sm text-muted-foreground">Código de 6 dígitos + códigos de respaldo de emergencia</p>
@@ -187,9 +187,9 @@ export default function CheckInsManual() {
               </div>
             </div>
 
-            <div className="bg-red-50 p-4 rounded-lg border-red-200">
+            <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg border-[hsl(var(--destructive)/0.3)]">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <Shield className="h-4 w-4 text-red-600" />
+                <Shield className="h-4 w-4 text-[hsl(var(--destructive))]" />
                 Proceso de Recogida Segura
               </h4>
               <div className="space-y-2 text-sm">
@@ -198,11 +198,11 @@ export default function CheckInsManual() {
                   <li>PIN de 6 dígitos (proporcionado en el check-in)</li>
                   <li>Verificación fotográfica en tiempo real</li>
                 </ol>
-                <p className="text-red-700 font-medium">Si falla cualquiera de los dos, se requiere autorización del supervisor.</p>
+                <p className="text-[hsl(var(--destructive))] font-medium">Si falla cualquiera de los dos, se requiere autorización del supervisor.</p>
               </div>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg border-blue-200">
+            <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border-[hsl(var(--info)/0.3)]">
               <h4 className="font-semibold mb-2">Características de Seguridad:</h4>
               <ul className="text-sm space-y-1 list-disc list-inside">
                 <li><strong>Fotos Cifradas:</strong> Almacenadas con encriptación avanzada</li>
@@ -213,9 +213,9 @@ export default function CheckInsManual() {
               </ul>
             </div>
 
-            <div className="bg-yellow-50 p-4 rounded-lg border-yellow-200">
+            <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-[hsl(var(--warning)/0.3)]">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <Camera className="h-4 w-4 text-yellow-600" />
+                <Camera className="h-4 w-4 text-[hsl(var(--warning))]" />
                 Cómo usar el Sistema WebRTC
               </h4>
               <ol className="text-sm space-y-2 list-decimal list-inside">
@@ -241,15 +241,15 @@ export default function CheckInsManual() {
             <p className="mb-4">Las peticiones de oración de visitantes se integran automáticamente con el Muro de Oración:</p>
             <div className="space-y-2">
               <div className="flex gap-3">
-                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                 <p className="text-sm">Peticiones se crean automáticamente en el sistema</p>
               </div>
               <div className="flex gap-3">
-                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                 <p className="text-sm">Seguimiento automático después de 7 días</p>
               </div>
               <div className="flex gap-3">
-                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                 <p className="text-sm">Conexión con equipos de intercesión</p>
               </div>
             </div>

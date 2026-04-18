@@ -106,18 +106,18 @@ export default function AutomationDashboard() {
     switch (status.toUpperCase()) {
       case 'SUCCESS':
       case 'COMPLETED':
-        return 'text-green-600 bg-green-50'
+        return 'text-[hsl(var(--success))] bg-[hsl(var(--success)/0.10)]'
       case 'FAILED':
       case 'ERROR':
-        return 'text-red-600 bg-red-50'
+        return 'text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)]'
       case 'PENDING':
-        return 'text-yellow-600 bg-yellow-50'
+        return 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.10)]'
       case 'RETRYING':
-        return 'text-orange-600 bg-orange-50'
+        return 'text-[hsl(var(--warning))] bg-[hsl(var(--warning)/0.10)]'
       case 'RUNNING':
-        return 'text-blue-600 bg-blue-50'
+        return 'text-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]'
       default:
-        return 'text-gray-600 bg-gray-50'
+        return 'text-muted-foreground bg-muted/30'
     }
   }
 
@@ -165,7 +165,7 @@ export default function AutomationDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Reglas Activas</CardTitle>
-            <Zap className="h-4 w-4 text-green-600" />
+            <Zap className="h-4 w-4 text-[hsl(var(--success))]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.activeRules || 0}</div>
@@ -178,7 +178,7 @@ export default function AutomationDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Ejecuciones Hoy</CardTitle>
-            <Activity className="h-4 w-4 text-blue-600" />
+            <Activity className="h-4 w-4 text-[hsl(var(--info))]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.totalExecutions || 0}</div>
@@ -191,10 +191,10 @@ export default function AutomationDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Exitosas</CardTitle>
-            <CheckCircle2 className="h-4 w-4 text-green-600" />
+            <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-[hsl(var(--success))]">
               {stats?.successfulExecutions || 0}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -206,10 +206,10 @@ export default function AutomationDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Fallos/Reintentos</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-600" />
+            <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
               {stats?.failedExecutions || 0}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -232,9 +232,9 @@ export default function AutomationDashboard() {
             <div className="text-3xl font-bold">
               {stats?.successRate?.toFixed(1) || 0}%
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+            <div className="w-full bg-muted rounded-full h-2 mt-2">
               <div
-                className="bg-green-600 h-2 rounded-full transition-all"
+                className="bg-[hsl(var(--success))] h-2 rounded-full transition-all"
                 style={{ width: `${stats?.successRate || 0}%` }}
               />
             </div>
@@ -296,7 +296,7 @@ export default function AutomationDashboard() {
               {recentExecutions.map((execution) => (
                 <div
                   key={execution.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition"
+                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition"
                 >
                   <div className="flex items-center gap-4 flex-1">
                     <div className={`p-2 rounded-full ${getStatusColor(execution.status)}`}>
@@ -349,7 +349,7 @@ export default function AutomationDashboard() {
         <CardContent>
           {manualTasks.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-green-600 opacity-50" />
+              <CheckCircle2 className="h-12 w-12 mx-auto mb-4 text-[hsl(var(--success))] opacity-50" />
               <p>No hay tareas pendientes de aprobación</p>
               <p className="text-sm mt-2">Las tareas con bypassApproval=false aparecerán aquí</p>
             </div>
@@ -358,10 +358,10 @@ export default function AutomationDashboard() {
               {manualTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition"
+                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition"
                 >
                   <div className="flex items-center gap-4 flex-1">
-                    <div className="p-2 rounded-full bg-yellow-50 text-yellow-600">
+                    <div className="p-2 rounded-full bg-[hsl(var(--warning)/0.10)] text-[hsl(var(--warning))]">
                       <AlertTriangle className="h-4 w-4" />
                     </div>
                     <div className="flex-1">

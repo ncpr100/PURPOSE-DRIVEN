@@ -35,21 +35,21 @@ export default function CommunicationsManual() {
               Esta guía cubre todas las herramientas para comunicarse efectivamente con su congregación, desde emails individuales hasta campañas masivas.
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📋 Secciones</h4>
-                <p className="text-xl font-bold text-blue-600">7</p>
+                <p className="text-xl font-bold text-[hsl(var(--info))]">7</p>
               </div>
-              <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⏱️ Tiempo</h4>
-                <p className="text-xl font-bold text-green-600">18 min</p>
+                <p className="text-xl font-bold text-[hsl(var(--success))]">18 min</p>
               </div>
-              <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🎯 Nivel</h4>
-                <p className="text-lg font-bold text-purple-600">Básico</p>
+                <p className="text-lg font-bold text-[hsl(var(--lavender))]">Básico</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
                 <h4 className="font-semibold">👤 Rol Mínimo</h4>
-                <p className="text-lg font-bold text-orange-600">LIDER</p>
+                <p className="text-lg font-bold text-[hsl(var(--warning))]">LIDER</p>
               </div>
             </div>
           </CardContent>
@@ -59,7 +59,7 @@ export default function CommunicationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               Plantillas de Email
             </CardTitle>
           </CardHeader>
@@ -86,7 +86,7 @@ export default function CommunicationsManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📋 Plantillas Predefinidas</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>🎉 Bienvenida:</strong> Nuevos miembros</li>
@@ -97,7 +97,7 @@ export default function CommunicationsManual() {
                   <li>• <strong>📢 Anuncios:</strong> Noticias de la iglesia</li>
                   <li>• <strong>🎪 Invitación Evento:</strong> Eventos especiales</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-blue-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Personalice las plantillas con el tono de su iglesia</p>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function CommunicationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Comunicación Masiva
             </CardTitle>
           </CardHeader>
@@ -162,7 +162,7 @@ export default function CommunicationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               SMS y WhatsApp
             </CardTitle>
           </CardHeader>
@@ -188,7 +188,7 @@ export default function CommunicationsManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">💚 WhatsApp Business</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Funcionalidades especiales:</strong></p>
@@ -198,7 +198,7 @@ export default function CommunicationsManual() {
                     <li>• <strong>Multimedia:</strong> Enviar imágenes, documentos</li>
                     <li>• <strong>Grupos:</strong> Crear grupos por ministerio</li>
                   </ul>
-                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-green-400">
+                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                     <p className="text-xs"><strong>📞 Costo:</strong> SMS tiene costo por mensaje, WhatsApp Business es más económico</p>
                   </div>
                 </div>
@@ -211,7 +211,7 @@ export default function CommunicationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               Sistema de Notificaciones
             </CardTitle>
           </CardHeader>
@@ -265,7 +265,7 @@ export default function CommunicationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
               Gestión de Campañas
             </CardTitle>
           </CardHeader>
@@ -318,7 +318,7 @@ export default function CommunicationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
               Integraciones y Automatización
             </CardTitle>
           </CardHeader>
@@ -372,7 +372,7 @@ export default function CommunicationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">7</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">7</span>
               Analíticas y Reportes
             </CardTitle>
           </CardHeader>
@@ -398,7 +398,7 @@ export default function CommunicationsManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📊 KPIs Clave</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-2 gap-4">

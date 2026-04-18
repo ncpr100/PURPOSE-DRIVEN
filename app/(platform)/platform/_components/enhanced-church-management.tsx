@@ -183,23 +183,23 @@ export default function EnhancedChurchManagement() {
   }
 
   const getHealthScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600'
-    if (score >= 60) return 'text-yellow-600'
-    return 'text-red-600'
+    if (score >= 80) return 'text-[hsl(var(--success))]'
+    if (score >= 60) return 'text-[hsl(var(--warning))]'
+    return 'text-[hsl(var(--destructive))]'
   }
 
   const getSubscriptionBadgeColor = (subscription: string) => {
     switch (subscription.toLowerCase()) {
-      case 'premium': return 'bg-purple-100 text-purple-800'
-      case 'basic': return 'bg-blue-100 text-blue-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'premium': return 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]'
+      case 'basic': return 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]'
+      default: return 'bg-muted/50 text-foreground'
     }
   }
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <RefreshCw className="h-8 w-8 animate-spin text-purple-600" />
+        <RefreshCw className="h-8 w-8 animate-spin text-[hsl(var(--lavender))]" />
         <span className="ml-2 text-lg">Cargando gestión de iglesias...</span>
       </div>
     )
@@ -305,7 +305,7 @@ export default function EnhancedChurchManagement() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total de Iglesias</CardTitle>
-            <Building2 className="h-4 w-4 text-blue-600" />
+            <Building2 className="h-4 w-4 text-[hsl(var(--info))]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{filteredChurches.length}</div>
@@ -318,10 +318,10 @@ export default function EnhancedChurchManagement() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Salud Promedio</CardTitle>
-            <Activity className="h-4 w-4 text-green-600" />
+            <Activity className="h-4 w-4 text-[hsl(var(--success))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-2xl font-bold text-[hsl(var(--success))]">
               {Math.round(filteredChurches.reduce((sum, c) => sum + c.healthScore, 0) / filteredChurches.length || 0)}%
             </div>
             <p className="text-xs text-muted-foreground">
@@ -333,10 +333,10 @@ export default function EnhancedChurchManagement() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Alto Riesgo</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-600" />
+            <AlertTriangle className="h-4 w-4 text-[hsl(var(--destructive))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">
+            <div className="text-2xl font-bold text-[hsl(var(--destructive))]">
               {filteredChurches.filter(c => c.riskLevel === 'HIGH').length}
             </div>
             <p className="text-xs text-muted-foreground">Requieren atención</p>
@@ -346,10 +346,10 @@ export default function EnhancedChurchManagement() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Ingresos Mensuales</CardTitle>
-            <DollarSign className="h-4 w-4 text-purple-600" />
+            <DollarSign className="h-4 w-4 text-[hsl(var(--lavender))]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">
+            <div className="text-2xl font-bold text-[hsl(var(--lavender))]">
               ${filteredChurches.reduce((sum, c) => sum + c.monthlyRevenue, 0).toLocaleString()}
             </div>
             <p className="text-xs text-muted-foreground">Total estimado</p>
@@ -436,7 +436,7 @@ export default function EnhancedChurchManagement() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="font-medium text-green-600">
+                      <div className="font-medium text-[hsl(var(--success))]">
                         ${church.monthlyRevenue.toLocaleString()}
                       </div>
                     </TableCell>
@@ -463,7 +463,7 @@ export default function EnhancedChurchManagement() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                          className="text-[hsl(var(--destructive))] hover:text-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive)/0.10)] border-[hsl(var(--destructive)/0.3)]"
                           onClick={() => setDeleteChurchId(church.id)}
                           title="Eliminar permanentemente"
                         >
@@ -559,7 +559,7 @@ export default function EnhancedChurchManagement() {
                         <CardTitle>Ingresos Mensuales</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="text-2xl font-bold text-green-600">
+                        <div className="text-2xl font-bold text-[hsl(var(--success))]">
                           ${selectedChurch.monthlyRevenue.toLocaleString()}
                         </div>
                         <p className="text-sm text-muted-foreground">Estimado</p>
@@ -612,7 +612,7 @@ export default function EnhancedChurchManagement() {
             <AlertDialogAction
               onClick={handlePermanentDelete}
               disabled={deleteLoading}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive))] text-white"
             >
               {deleteLoading ? 'Eliminando...' : 'Eliminar Permanentemente'}
             </AlertDialogAction>

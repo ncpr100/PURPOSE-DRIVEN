@@ -284,8 +284,8 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Gestión Avanzada de Eventos</h1>
-          <p className="text-gray-600">Administra eventos, recursos y reservaciones</p>
+          <h1 className="text-2xl font-bold text-foreground">Gestión Avanzada de Eventos</h1>
+          <p className="text-muted-foreground">Administra eventos, recursos y reservaciones</p>
         </div>
 
         <div className="flex gap-2">
@@ -472,8 +472,8 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
           {events.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">No hay eventos programados</p>
+                <Calendar className="w-12 h-12 text-muted-foreground/70 mx-auto mb-4" />
+                <p className="text-muted-foreground">No hay eventos programados</p>
                 <Button 
                   className="mt-4" 
                   onClick={() => setIsNewEventDialogOpen(true)}
@@ -496,23 +496,23 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {Boolean(event.description) && (
-                      <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{event.description}</p>
                     )}
                     
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Clock className="w-4 h-4" />
                       <span>{new Date(event.startDate).toLocaleString('es-ES')}</span>
                     </div>
                     
                     {Boolean(event.location) && (
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <MapPin className="w-4 h-4" />
                         <span>{event.location}</span>
                       </div>
                     )}
 
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Settings className="w-4 h-4" />
                         <span>{(event.resourceReservations || []).length} recursos reservados</span>
                       </div>
@@ -539,8 +539,8 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
           {resources.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <Settings className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">No hay recursos registrados</p>
+                <Settings className="w-12 h-12 text-muted-foreground/70 mx-auto mb-4" />
+                <p className="text-muted-foreground">No hay recursos registrados</p>
                 <Button 
                   className="mt-4" 
                   onClick={() => setIsNewResourceDialogOpen(true)}
@@ -564,18 +564,18 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {Boolean(resource.description) && (
-                      <p className="text-sm text-gray-600 line-clamp-2">{resource.description}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{resource.description}</p>
                     )}
                     
                     {Boolean(resource.capacity) && (
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Users className="w-4 h-4" />
                         <span>Capacidad: {resource.capacity}</span>
                       </div>
                     )}
 
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar className="w-4 h-4" />
                         <span>{resource.reservations.length} reservaciones activas</span>
                       </div>
@@ -607,8 +607,8 @@ export function AdvancedEventsClient({ userRole, churchId }: AdvancedEventsClien
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8 text-gray-600">
-                <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+              <div className="text-center py-8 text-muted-foreground">
+                <Calendar className="w-16 h-16 mx-auto mb-4 text-muted-foreground/70" />
                 <p>Vista de calendario próximamente disponible</p>
                 <p className="text-sm mt-2">Esta funcionalidad incluirá un calendario interactivo para gestionar eventos y recursos</p>
               </div>

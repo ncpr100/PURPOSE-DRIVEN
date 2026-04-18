@@ -460,25 +460,25 @@ function SidebarContent() {
         <div className="mt-3 lg:hidden">
           <button
             onClick={toggleAllSections}
-            className="expand-button w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all border border-blue-200 shadow-sm mobile-section-header"
+            className="expand-button w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-accent-foreground bg-accent/30 hover:bg-accent/50 rounded-lg transition-all border border-accent/40 shadow-sm mobile-section-header"
           >
             <div className="flex items-center gap-3">
-              <PieChart className="h-5 w-5 text-blue-600" />
+              <PieChart className="h-5 w-5 text-primary" />
               <span className="font-semibold">
                 {showAllModules ? "Contraer" : "Expandir"} Todos los Módulos
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full module-counter">
+              <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full module-counter">
                 {filteredNavigationSections.reduce(
                   (acc, section) => acc + section.items.length,
                   0,
                 )}
               </span>
               {showAllModules ? (
-                <ChevronUp className="h-4 w-4 text-blue-600" />
+                <ChevronUp className="h-4 w-4 text-primary" />
               ) : (
-                <ChevronDown className="h-4 w-4 text-blue-600" />
+                <ChevronDown className="h-4 w-4 text-primary" />
               )}
             </div>
           </button>
@@ -729,14 +729,14 @@ export function Sidebar() {
             {/* Mobile sidebar header with close button - Fixed */}
             <div className="flex-shrink-0 flex items-center justify-between p-4 border-b bg-background">
               <div className="flex items-center gap-2">
-                <PieChart className="h-5 w-5 text-blue-600" />
+                <PieChart className="h-5 w-5 text-primary" />
                 <h2 className="text-lg font-semibold">Menú Principal</h2>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => sidebarContext.setIsMobileOpen(false)}
-                className="h-8 w-8 hover:bg-gray-100"
+                className="h-8 w-8 hover:bg-accent/60"
               >
                 <X className="h-4 w-4" />
                 <span className="sr-only">Cerrar menú</span>
@@ -749,7 +749,7 @@ export function Sidebar() {
             </div>
 
             {/* Mobile sidebar footer - Fixed at bottom */}
-            <div className="flex-shrink-0 p-3 border-t bg-gray-50">
+            <div className="flex-shrink-0 p-3 border-t bg-muted">
               <div className="text-xs text-center text-muted-foreground">
                 <span className="font-medium">Khesed-Tek v1.1.0</span>
                 <br />

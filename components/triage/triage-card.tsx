@@ -96,7 +96,7 @@ export function TriageCard({ event }: TriageCardProps) {
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-red-500 shrink-0" />
+            <AlertTriangle className="h-5 w-5 text-[hsl(var(--destructive))] shrink-0" />
             <span className="font-semibold text-base">
               {event.requesterName ?? "Persona anónima"}
             </span>
@@ -120,7 +120,7 @@ export function TriageCard({ event }: TriageCardProps) {
             <Tag className="h-3.5 w-3.5" />
             {SOURCE_LABELS[event.triggerSource] ?? event.triggerSource}
           </span>
-          <Badge variant="outline" className="text-red-600 border-red-300 bg-red-50">
+          <Badge variant="outline" className="text-[hsl(var(--destructive))] border-[hsl(var(--destructive)/0.4)] bg-[hsl(var(--destructive)/0.10)]">
             Palabra clave: &ldquo;{event.detectedKeyword}&rdquo;
           </Badge>
         </div>
@@ -154,7 +154,7 @@ export function TriageCard({ event }: TriageCardProps) {
             <Button
               size="sm"
               variant="outline"
-              className="text-green-700 border-green-400 hover:bg-green-50"
+              className="text-[hsl(var(--success))] border-[hsl(var(--success)/0.30)] hover:bg-[hsl(var(--success)/0.10)]"
               onClick={handleMarkResponded}
               disabled={loading}
             >

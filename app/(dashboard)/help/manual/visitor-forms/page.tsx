@@ -78,8 +78,8 @@ export default function VisitorFormsManual() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-sm text-blue-800 mb-2">
+            <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
+              <p className="text-sm text-[hsl(var(--info))] mb-2">
                 <strong>Ruta:</strong> Panel de Control → Formularios de Visitantes → Nuevo Formulario
               </p>
             </div>
@@ -152,8 +152,8 @@ export default function VisitorFormsManual() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <p className="text-sm text-green-800">
+            <div className="bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg p-4">
+              <p className="text-sm text-[hsl(var(--success))]">
                 Los códigos QR permiten a visitantes acceder fácilmente al formulario desde sus móviles
               </p>
             </div>
@@ -182,8 +182,8 @@ export default function VisitorFormsManual() {
               </div>
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <p className="text-sm text-yellow-800">
+            <div className="bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg p-4">
+              <p className="text-sm text-[hsl(var(--warning))]">
                 <strong>Sugerencia:</strong> Cree QR codes específicos para diferentes ubicaciones 
                 (Entrada Principal, Lobby, Santuario) para mejor tracking.
               </p>
@@ -231,12 +231,12 @@ export default function VisitorFormsManual() {
             </div>
 
             <h4 className="font-semibold mt-6">Integración con Sistema de Visitantes:</h4>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-sm text-blue-800 mb-2">
+            <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
+              <p className="text-sm text-[hsl(var(--info))] mb-2">
                 <strong>Auto-Conversión:</strong> Los formularios pueden convertir automáticamente 
                 submissions en registros de visitantes en el sistema principal.
               </p>
-              <ul className="text-sm text-blue-700 space-y-1">
+              <ul className="text-sm text-[hsl(var(--info))] space-y-1">
                 <li>• ✅ Crea check-in automático</li>
                 <li>• ✅ Marca como "primera vez"</li>
                 <li>• ✅ Asigna engagement score alto (70)</li>
@@ -257,7 +257,7 @@ export default function VisitorFormsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-green-600">✅ Recomendaciones:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Recomendaciones:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Formularios cortos:</strong> Máximo 7 campos para mejor conversión</li>
                   <li>• <strong>Campos obligatorios mínimos:</strong> Solo nombre y email esenciales</li>
@@ -269,7 +269,7 @@ export default function VisitorFormsManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3 text-red-600">❌ Evitar:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">❌ Evitar:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Formularios largos:</strong> Más de 10 campos reduce conversión</li>
                   <li>• <strong>Muchos campos obligatorios:</strong> Puede intimidar visitantes</li>
@@ -295,11 +295,11 @@ export default function VisitorFormsManual() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold mb-3">URLs del Sistema:</h4>
-                <div className="bg-gray-100 rounded p-3 font-mono text-sm">
+                <div className="bg-muted/50 rounded p-3 font-mono text-sm">
                   <p>Formulario público:</p>
-                  <p className="text-blue-600">/visitor-form/[slug]</p>
+                  <p className="text-[hsl(var(--info))]">/visitor-form/[slug]</p>
                   <p className="mt-2">Con QR code:</p>
-                  <p className="text-blue-600">/visitor-form/[slug]?qr=[code]</p>
+                  <p className="text-[hsl(var(--info))]">/visitor-form/[slug]?qr=[code]</p>
                 </div>
               </div>
               

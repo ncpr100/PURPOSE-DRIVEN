@@ -135,21 +135,21 @@ export default function OnlineDonationsHelp() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600" />
+              <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />
               Estado de Implementación
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Alert className="mb-6 bg-green-50 border-green-200">
+            <Alert className="mb-6 bg-[hsl(var(--success)/0.10)] border-[hsl(var(--success)/0.3)]">
               <CheckCircle className="h-4 w-4" />
-              <AlertDescription className="text-green-800 font-medium">
+              <AlertDescription className="text-[hsl(var(--success))] font-medium">
                 ✅ El sistema de donaciones online está COMPLETAMENTE IMPLEMENTADO y funcionando
               </AlertDescription>
             </Alert>
             
             <div className="grid md:grid-cols-2 gap-4">
               {implementations.map((item, index) => (
-                <Card key={index} className={item.status === 'implemented' ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}>
+                <Card key={index} className={item.status === 'implemented' ? 'bg-[hsl(var(--success)/0.10)] border-[hsl(var(--success)/0.3)]' : 'bg-[hsl(var(--warning)/0.10)] border-[hsl(var(--warning)/0.3)]'}>
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
                       <span className="text-2xl">{item.icon}</span>
@@ -160,7 +160,7 @@ export default function OnlineDonationsHelp() {
                             {item.status === 'implemented' ? '✅ Listo' : '🔄 Planeado'}
                           </Badge>
                         </h4>
-                        <p className="text-sm text-gray-600 mt-1">{item.details}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{item.details}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -183,14 +183,14 @@ export default function OnlineDonationsHelp() {
           <CardContent>
             <div className="space-y-6">
               {technicalSpecs.map((spec, index) => (
-                <div key={index} className="border-l-4 border-blue-500 pl-4">
+                <div key={index} className="border-l-4 border-[hsl(var(--info))] pl-4">
                   <h4 className="font-semibold flex items-center gap-2">
                     {spec.component}
                     <Badge variant="default" className="text-xs">{spec.status}</Badge>
                   </h4>
                   <ul className="mt-2 space-y-1">
                     {spec.details.map((detail, i) => (
-                      <li key={i} className="text-sm text-gray-600">• {detail}</li>
+                      <li key={i} className="text-sm text-muted-foreground">• {detail}</li>
                     ))}
                   </ul>
                 </div>
@@ -215,13 +215,13 @@ export default function OnlineDonationsHelp() {
                 <Card key={index} className="border-l-4 border-l-blue-500">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-lg">{task.title}</CardTitle>
-                    <p className="text-sm text-gray-600">{task.description}</p>
+                    <p className="text-sm text-muted-foreground">{task.description}</p>
                   </CardHeader>
                   <CardContent className="pt-0">
                     <ol className="space-y-2">
                       {task.steps.map((step, i) => (
                         <li key={i} className="text-sm flex items-start gap-2">
-                          <span className="text-blue-600 font-bold">{i + 1}.</span>
+                          <span className="text-[hsl(var(--info))] font-bold">{i + 1}.</span>
                           <span>{step}</span>
                         </li>
                       ))}
@@ -247,22 +247,22 @@ export default function OnlineDonationsHelp() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold mb-3">PSE (Pagos Seguros en Línea)</h4>
-                <div className="bg-gray-50 p-4 rounded-lg text-sm space-y-2">
+                <div className="bg-muted/30 p-4 rounded-lg text-sm space-y-2">
                   <p><strong>Merchant ID:</strong> Proporcionado por el banco</p>
                   <p><strong>API Key:</strong> Clave secreta de PSE</p>
                   <p><strong>Webhook URL:</strong> /api/online-payments/webhook</p>
                   <p><strong>Return URL:</strong> /donate/thank-you</p>
-                  <p className="text-blue-600">💡 Solicitar credenciales PSE al banco de la iglesia</p>
+                  <p className="text-[hsl(var(--info))]">💡 Solicitar credenciales PSE al banco de la iglesia</p>
                 </div>
               </div>
               <div>
                 <h4 className="font-semibold mb-3">Nequi</h4>
-                <div className="bg-gray-50 p-4 rounded-lg text-sm space-y-2">
+                <div className="bg-muted/30 p-4 rounded-lg text-sm space-y-2">
                   <p><strong>Client ID:</strong> ID de aplicación Nequi</p>
                   <p><strong>Client Secret:</strong> Secreto OAuth de Nequi</p>
                   <p><strong>API URL:</strong> https://api.nequi.com</p>
                   <p><strong>Test Mode:</strong> Habilitar para pruebas</p>
-                  <p className="text-blue-600">💡 Registrar aplicación en portal de desarrolladores Nequi</p>
+                  <p className="text-[hsl(var(--info))]">💡 Registrar aplicación en portal de desarrolladores Nequi</p>
                 </div>
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function OnlineDonationsHelp() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-green-700">✅ Indicadores de Salud</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Indicadores de Salud</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• Webhooks recibidos correctamente</li>
                   <li>• Pagos completados vs pendientes</li>
@@ -292,7 +292,7 @@ export default function OnlineDonationsHelp() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-red-700">⚠️ Problemas Comunes</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">⚠️ Problemas Comunes</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• Webhooks no recibidos → Verificar URLs</li>
                   <li>• Pagos pendientes → Consultar con gateway</li>
@@ -339,9 +339,9 @@ export default function OnlineDonationsHelp() {
       </section>
 
       {/* Summary */}
-      <Alert className="bg-blue-50 border-blue-200">
+      <Alert className="bg-[hsl(var(--info)/0.10)] border-[hsl(var(--info)/0.3)]">
         <CheckCircle className="h-4 w-4" />
-        <AlertDescription className="text-blue-800">
+        <AlertDescription className="text-[hsl(var(--info))]">
           <strong>Resumen:</strong> El sistema de donaciones online está completamente funcional con PSE y Nequi. 
           Las iglesias pueden comenzar a recibir donaciones inmediatamente después de configurar sus credenciales de pago.
         </AlertDescription>

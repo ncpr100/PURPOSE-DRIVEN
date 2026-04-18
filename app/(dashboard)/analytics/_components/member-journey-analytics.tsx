@@ -128,10 +128,10 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
           <div className="animate-pulse space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="bg-gray-200 h-24 rounded-lg"></div>
+                <div key={i} className="bg-muted h-24 rounded-lg"></div>
               ))}
             </div>
-            <div className="bg-gray-200 h-64 rounded-lg"></div>
+            <div className="bg-muted h-64 rounded-lg"></div>
           </div>
         </CardContent>
       </Card>
@@ -142,14 +142,14 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
     return (
       <Card className={className}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-600">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <Users className="h-5 w-5" />
             Error en Analíticas de Recorrido
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <p className="text-red-600 mb-4">{error}</p>
+            <p className="text-[hsl(var(--destructive))] mb-4">{error}</p>
             <Button onClick={() => fetchAnalyticsSummary()} variant="outline">
               Reintentar
             </Button>
@@ -204,83 +204,83 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
           <CardContent>
             {/* Key Metrics Summary */}
             <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-8 gap-4">
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-blue-700">Total Miembros</p>
-                    <p className="text-2xl font-bold text-blue-900">{summary.totalMembers}</p>
+                    <p className="text-sm font-medium text-[hsl(var(--info))]">Total Miembros</p>
+                    <p className="text-2xl font-bold text-foreground">{summary.totalMembers}</p>
                   </div>
-                  <Users className="h-8 w-8 text-blue-500" />
+                  <Users className="h-8 w-8 text-[hsl(var(--info))]" />
                 </div>
               </div>
               
-              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-green-700">Miembros Activos</p>
-                    <p className="text-2xl font-bold text-green-900">{summary.activeMembers}</p>
+                    <p className="text-sm font-medium text-[hsl(var(--success))]">Miembros Activos</p>
+                    <p className="text-2xl font-bold text-foreground">{summary.activeMembers}</p>
                   </div>
-                  <TrendingUp className="h-8 w-8 text-green-500" />
+                  <TrendingUp className="h-8 w-8 text-[hsl(var(--success))]" />
                 </div>
               </div>
 
-              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+              <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg border border-[hsl(var(--lavender)/0.3)]">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-purple-700">Nuevos (Este Mes)</p>
-                    <p className="text-2xl font-bold text-purple-900">{summary.newMembersThisMonth}</p>
+                    <p className="text-sm font-medium text-[hsl(var(--lavender))]">Nuevos (Este Mes)</p>
+                    <p className="text-2xl font-bold text-foreground">{summary.newMembersThisMonth}</p>
                   </div>
-                  <Badge className="bg-purple-100 text-purple-700 text-xs">+{Math.round((summary.newMembersThisMonth / summary.totalMembers) * 100)}%</Badge>
+                  <Badge className="bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))] text-xs">+{Math.round((summary.newMembersThisMonth / summary.totalMembers) * 100)}%</Badge>
                 </div>
               </div>
 
-              <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+              <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-orange-700">Compromiso Prom.</p>
-                    <p className="text-2xl font-bold text-orange-900">{summary.averageEngagement}%</p>
+                    <p className="text-sm font-medium text-[hsl(var(--warning))]">Compromiso Prom.</p>
+                    <p className="text-2xl font-bold text-[hsl(var(--warning))]">{summary.averageEngagement}%</p>
                   </div>
-                  <BarChart3 className="h-8 w-8 text-orange-500" />
+                  <BarChart3 className="h-8 w-8 text-[hsl(var(--warning))]" />
                 </div>
               </div>
 
-              <div className="bg-teal-50 p-4 rounded-lg border border-teal-200">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.30)]">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-teal-700">Retención</p>
-                    <p className="text-2xl font-bold text-teal-900">{summary.retentionRate}%</p>
+                    <p className="text-sm font-medium text-[hsl(var(--info))]">Retención</p>
+                    <p className="text-2xl font-bold text-[hsl(var(--info))]">{summary.retentionRate}%</p>
                   </div>
-                  <Target className="h-8 w-8 text-teal-500" />
+                  <Target className="h-8 w-8 text-[hsl(var(--info))]" />
                 </div>
               </div>
 
-              <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+              <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg border border-[hsl(var(--destructive)/0.3)]">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-red-700">En Riesgo</p>
-                    <p className="text-2xl font-bold text-red-900">{summary.atRiskMembers}</p>
+                    <p className="text-sm font-medium text-[hsl(var(--destructive))]">En Riesgo</p>
+                    <p className="text-2xl font-bold text-[hsl(var(--destructive))]">{summary.atRiskMembers}</p>
                   </div>
-                  <Badge className="bg-red-100 text-red-700 text-xs">{Math.round((summary.atRiskMembers / summary.totalMembers) * 100)}%</Badge>
+                  <Badge className="bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] text-xs">{Math.round((summary.atRiskMembers / summary.totalMembers) * 100)}%</Badge>
                 </div>
               </div>
 
-              <div className="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+              <div className="bg-primary/[0.06] p-4 rounded-lg border border-primary/20">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-indigo-700">Recorridos Completados</p>
-                    <p className="text-2xl font-bold text-indigo-900">{summary.completedJourneys}</p>
+                    <p className="text-sm font-medium text-primary">Recorridos Completados</p>
+                    <p className="text-2xl font-bold text-foreground">{summary.completedJourneys}</p>
                   </div>
-                  <Badge className="bg-indigo-100 text-indigo-700 text-xs">{Math.round((summary.completedJourneys / summary.totalMembers) * 100)}%</Badge>
+                  <Badge className="bg-primary/[0.12] text-primary text-xs">{Math.round((summary.completedJourneys / summary.totalMembers) * 100)}%</Badge>
                 </div>
               </div>
 
-              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+              <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-amber-700">Tiempo Promedio</p>
+                    <p className="text-sm font-medium text-[hsl(var(--warning))]">Tiempo Promedio</p>
                     <p className="text-2xl font-bold text-amber-900">{summary.avgJourneyTime}m</p>
                   </div>
-                  <Clock className="h-8 w-8 text-amber-500" />
+                  <Clock className="h-8 w-8 text-[hsl(var(--warning))]" />
                 </div>
               </div>
             </div>
@@ -288,12 +288,12 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
             {/* Status Indicator */}
             <div className="flex items-center justify-between mt-4 pt-4 border-t">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-600">
+                <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full animate-pulse"></div>
+                <span className="text-sm text-muted-foreground">
                   Última actualización: {new Date(summary.lastUpdated).toLocaleString()}
                 </span>
               </div>
-              <Button variant="ghost" size="sm" className="text-gray-500">
+              <Button variant="ghost" size="sm" className="text-muted-foreground">
                 <HelpCircle className="h-4 w-4 mr-1" />
                 Ayuda
               </Button>
@@ -354,7 +354,7 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
               <Users className="h-5 w-5" />
               <div className="text-left">
                 <div className="font-medium">Seguimiento de Miembros</div>
-                <div className="text-sm text-gray-600">Contactar miembros en riesgo</div>
+                <div className="text-sm text-muted-foreground">Contactar miembros en riesgo</div>
               </div>
             </Button>
 
@@ -362,7 +362,7 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
               <Target className="h-5 w-5" />
               <div className="text-left">
                 <div className="font-medium">Configurar Objetivos</div>
-                <div className="text-sm text-gray-600">Definir metas de crecimiento</div>
+                <div className="text-sm text-muted-foreground">Definir metas de crecimiento</div>
               </div>
             </Button>
 
@@ -370,7 +370,7 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
               <BarChart3 className="h-5 w-5" />
               <div className="text-left">
                 <div className="font-medium">Generar Reporte</div>
-                <div className="text-sm text-gray-600">Crear informe ejecutivo</div>
+                <div className="text-sm text-muted-foreground">Crear informe ejecutivo</div>
               </div>
             </Button>
           </div>

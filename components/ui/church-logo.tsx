@@ -96,8 +96,8 @@ export function ChurchLogo({
   if (!church && !fallbackToPlatform) {
     return (
       <div className={cn('flex items-center gap-3', className)}>
-        <div className={cn('relative flex items-center justify-center bg-gray-100 rounded-lg border-2 border-dashed border-gray-300', sizeClasses[size])}>
-          <Building2 className="w-4 h-4 text-gray-400" />
+        <div className={cn('relative flex items-center justify-center bg-muted/50 rounded-lg border-2 border-dashed border-border', sizeClasses[size])}>
+          <Building2 className="w-4 h-4 text-muted-foreground/70" />
         </div>
         {showText && (
           <div>

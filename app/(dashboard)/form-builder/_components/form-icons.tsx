@@ -22,15 +22,15 @@ export const getPresetFieldIcon = (iconName: string) => {
   
   switch (iconName) {
     case 'Mail':
-      return <Mail {...iconProps} className="h-4 w-4 mr-2 text-cyan-600" />
+      return <Mail {...iconProps} className="h-4 w-4 mr-2 text-[hsl(var(--info))]" />
     case 'Phone':
-      return <Phone {...iconProps} className="h-4 w-4 mr-2 text-green-600" />
+      return <Phone {...iconProps} className="h-4 w-4 mr-2 text-[hsl(var(--success))]" />
     case 'MapPin':
-      return <MapPin {...iconProps} className="h-4 w-4 mr-2 text-red-600" />
+      return <MapPin {...iconProps} className="h-4 w-4 mr-2 text-[hsl(var(--destructive))]" />
     case 'Share2':
-      return <Share2 {...iconProps} className="h-4 w-4 mr-2 text-blue-600" />
+      return <Share2 {...iconProps} className="h-4 w-4 mr-2 text-[hsl(var(--info))]" />
     default:
-      return <FileText {...iconProps} className="h-4 w-4 mr-2 text-gray-600" />
+      return <FileText {...iconProps} className="h-4 w-4 mr-2 text-muted-foreground" />
   }
 }
 
@@ -40,21 +40,21 @@ export const getTemplateIcon = (iconName: string) => {
   
   switch (iconName) {
     case 'Sparkles':
-      return <Sparkles {...iconProps} className="h-8 w-8 text-purple-600" />
+      return <Sparkles {...iconProps} className="h-8 w-8 text-[hsl(var(--lavender))]" />
     case 'BarChart3':
-      return <BarChart3 {...iconProps} className="h-8 w-8 text-blue-600" />
+      return <BarChart3 {...iconProps} className="h-8 w-8 text-[hsl(var(--info))]" />
     case 'Share2':
-      return <Share2 {...iconProps} className="h-8 w-8 text-green-600" />
+      return <Share2 {...iconProps} className="h-8 w-8 text-[hsl(var(--success))]" />
     case 'Heart':
-      return <Heart {...iconProps} className="h-8 w-8 text-pink-600" />
+      return <Heart {...iconProps} className="h-8 w-8 text-[hsl(var(--destructive))]" />
     case 'Calendar':
-      return <Calendar {...iconProps} className="h-8 w-8 text-orange-600" />
+      return <Calendar {...iconProps} className="h-8 w-8 text-[hsl(var(--warning))]" />
     case 'Users':
-      return <Users {...iconProps} className="h-8 w-8 text-indigo-600" />
+      return <Users {...iconProps} className="h-8 w-8 text-primary" />
     case 'HandHeart':
-      return <HandHeart {...iconProps} className="h-8 w-8 text-rose-600" />
+      return <HandHeart {...iconProps} className="h-8 w-8 text-[hsl(var(--destructive))]" />
     case 'FileText':
     default:
-      return <FileText {...iconProps} className="h-8 w-8 text-gray-600" />
+      return <FileText {...iconProps} className="h-8 w-8 text-muted-foreground" />
   }
 }

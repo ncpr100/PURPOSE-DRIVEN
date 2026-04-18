@@ -9,7 +9,7 @@ const CASCADE_WAIT_MINUTES = 30;
 export async function triggerCoverageCascade(
   churchId: string,
   coverageStatusId: string,
-  reason: string
+  reason: string,
 ): Promise<void> {
   if (process.env.ENABLE_VOLUNTEER_COVERAGE !== "true") return;
 
@@ -68,7 +68,7 @@ export async function triggerCoverageCascade(
     0,
     coverageStatus.role,
     eventDateLabel,
-    event?.title ?? "Servicio"
+    event?.title ?? "Servicio",
   );
 }
 
@@ -79,7 +79,7 @@ export async function contactNextBackup(
   currentIndex: number,
   role: string,
   eventDate: string,
-  eventTitle: string
+  eventTitle: string,
 ): Promise<void> {
   if (currentIndex >= backupRoster.length) {
     await triggerEmergencySubstitution(churchId, coverageStatusId);
@@ -101,7 +101,7 @@ export async function contactNextBackup(
       currentIndex + 1,
       role,
       eventDate,
-      eventTitle
+      eventTitle,
     );
     return;
   }
@@ -137,7 +137,7 @@ export async function contactNextBackup(
   });
 
   console.log(
-    `[CASCADE] Contacted backup #${currentIndex + 1} for slot ${coverageStatusId}`
+    `[CASCADE] Contacted backup #${currentIndex + 1} for slot ${coverageStatusId}`,
   );
 }
 
@@ -203,22 +203,24 @@ export async function advanceCascade(churchId: string): Promise<void> {
       slot.contactAttempts,
       slot.role,
       eventDateLabel,
-      event?.title ?? "Servicio"
+      event?.title ?? "Servicio",
     );
   }
 }
 
 async function triggerEmergencySubstitution(
   churchId: string,
-  coverageStatusId: string
+  coverageStatusId: string,
 ): Promise<void> {
-  const { runEmergencySubstitution } = await import(
-    "./emergency-skills-substitution"
-  );
+  const { runEmergencySubstitution } =
+    await import("./emergency-skills-substitution");
   await runEmergencySubstitution(churchId, coverageStatusId);
 }
 
-async function sendWhatsAppMessage(phone: string, message: string): Promise<void> {
+async function sendWhatsAppMessage(
+  phone: string,
+  message: string,
+): Promise<void> {
   const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
   const token = process.env.WHATSAPP_ACCESS_TOKEN;
   if (!phoneId || !token) {

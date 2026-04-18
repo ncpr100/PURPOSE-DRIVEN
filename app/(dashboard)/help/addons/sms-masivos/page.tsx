@@ -82,7 +82,7 @@ export default function SMSMasivosAddon() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge className="bg-orange-100 text-orange-800">🔥 Más Popular</Badge>
+          <Badge className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">🔥 Más Popular</Badge>
           <Badge variant="outline">Complemento Premium</Badge>
         </div>
       </div>
@@ -143,7 +143,7 @@ export default function SMSMasivosAddon() {
                   <Smartphone className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-sm mb-1">{useCase.scenario}</h4>
-                    <div className="bg-gray-100 p-3 rounded-lg text-sm">
+                    <div className="bg-muted/50 p-3 rounded-lg text-sm">
                       &quot;{useCase.example}&quot;
                     </div>
                   </div>
@@ -196,15 +196,15 @@ export default function SMSMasivosAddon() {
             <CardContent>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
+                  <Check className="h-4 w-4 text-[hsl(var(--success))]" />
                   98% de tasa de apertura (vs. 20% email)
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
+                  <Check className="h-4 w-4 text-[hsl(var(--success))]" />
                   Lectura en promedio en 3 minutos
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
+                  <Check className="h-4 w-4 text-[hsl(var(--success))]" />
                   Funciona sin internet
                 </li>
               </ul>
@@ -218,15 +218,15 @@ export default function SMSMasivosAddon() {
             <CardContent>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
+                  <Check className="h-4 w-4 text-[hsl(var(--success))]" />
                   Ideal para emergencias
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
+                  <Check className="h-4 w-4 text-[hsl(var(--success))]" />
                   Recordatorios de última hora
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-600" />
+                  <Check className="h-4 w-4 text-[hsl(var(--success))]" />
                   Confirmaciones rápidas
                 </li>
               </ul>

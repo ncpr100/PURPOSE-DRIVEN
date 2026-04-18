@@ -98,9 +98,9 @@ export function AntiphonyAnalysisTab({
         </Button>
       </div>
 
-      <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+      <div className="rounded-md border border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)] p-3 text-sm text-amber-800">
         <div className="flex items-start gap-2">
-          <AlertTriangle className="mt-0.5 h-4 w-4 text-amber-600" />
+          <AlertTriangle className="mt-0.5 h-4 w-4 text-[hsl(var(--warning))]" />
           <span>
             Generado por IA como apoyo ministerial. La decisión pastoral final
             pertenece al pastor.
@@ -110,35 +110,35 @@ export function AntiphonyAnalysisTab({
 
       {analysis && (
         <div className="grid gap-4">
-          <Card className="border-green-200">
+          <Card className="border-[hsl(var(--success)/0.3)]">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm">
-                <Heart className="h-4 w-4 text-green-600" />
+                <Heart className="h-4 w-4 text-[hsl(var(--success))]" />
                 Frase de consuelo
-                <Badge variant="outline" className="border-green-300 text-green-700">
+                <Badge variant="outline" className="border-[hsl(var(--success)/0.4)] text-[hsl(var(--success))]">
                   Para redes sociales
                 </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <blockquote className="border-l-4 border-green-400 pl-4 text-sm italic">
+              <blockquote className="border-l-4 border-[hsl(var(--success)/0.30)] pl-4 text-sm italic">
                 “{analysis.comfortSentence || "No disponible"}”
               </blockquote>
             </CardContent>
           </Card>
 
-          <Card className="border-orange-200">
+          <Card className="border-[hsl(var(--warning)/0.3)]">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm">
-                <Zap className="h-4 w-4 text-orange-600" />
+                <Zap className="h-4 w-4 text-[hsl(var(--warning))]" />
                 Frase de incomodidad profética
-                <Badge variant="outline" className="border-orange-300 text-orange-700">
+                <Badge variant="outline" className="border-[hsl(var(--warning)/0.30)] text-[hsl(var(--warning))]">
                   Para reflexión
                 </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <blockquote className="border-l-4 border-orange-400 pl-4 text-sm italic">
+              <blockquote className="border-l-4 border-[hsl(var(--warning)/0.30)] pl-4 text-sm italic">
                 “{analysis.discomfortSentence || "No disponible"}”
               </blockquote>
             </CardContent>
@@ -147,7 +147,7 @@ export function AntiphonyAnalysisTab({
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm">
-                <Globe className="h-4 w-4 text-blue-600" />
+                <Globe className="h-4 w-4 text-[hsl(var(--info))]" />
                 Espejo cultural
               </CardTitle>
             </CardHeader>
@@ -159,7 +159,7 @@ export function AntiphonyAnalysisTab({
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm">
-                <Eye className="h-4 w-4 text-purple-600" />
+                <Eye className="h-4 w-4 text-[hsl(var(--lavender))]" />
                 Filtro del escéptico
               </CardTitle>
             </CardHeader>
@@ -168,12 +168,12 @@ export function AntiphonyAnalysisTab({
             </CardContent>
           </Card>
 
-          <Card className="border-blue-200">
+          <Card className="border-[hsl(var(--info)/0.3)]">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm">
-                <HelpCircle className="h-4 w-4 text-blue-600" />
+                <HelpCircle className="h-4 w-4 text-[hsl(var(--info))]" />
                 Tensión no resuelta
-                <Badge variant="outline" className="border-blue-300 text-blue-700">
+                <Badge variant="outline" className="border-[hsl(var(--info)/0.4)] text-[hsl(var(--info))]">
                   Para grupos pequeños
                 </Badge>
               </CardTitle>

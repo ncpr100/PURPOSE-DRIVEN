@@ -450,7 +450,7 @@ export function VisitorFormBuilder({ form, onSave, onCancel }: VisitorFormBuilde
                     <div key={field.id} className="space-y-2">
                       <Label className="flex items-center gap-1">
                         {field.label}
-                        {field.required && <span className="text-red-500">*</span>}
+                        {field.required && <span className="text-[hsl(var(--destructive))]">*</span>}
                       </Label>
                       
                       {field.type === 'text' && (

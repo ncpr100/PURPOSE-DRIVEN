@@ -238,7 +238,7 @@ export function ProfilePageClient({ userRole, churchId }: ProfilePageClientProps
               <h2 className="text-xl font-semibold">{session.user.name}</h2>
               <p className="text-sm text-muted-foreground">{session.user.email}</p>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+                <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                 <span className="text-xs text-muted-foreground">Cuenta verificada</span>
               </div>
             </div>
@@ -532,7 +532,7 @@ export function ProfilePageClient({ userRole, churchId }: ProfilePageClientProps
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-start gap-3 p-3 border rounded-lg">
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
                   <div className="space-y-1 flex-1">
                     <p className="text-sm font-medium">Perfil actualizado</p>
                     <p className="text-xs text-muted-foreground">Hace 2 horas</p>
@@ -540,7 +540,7 @@ export function ProfilePageClient({ userRole, churchId }: ProfilePageClientProps
                 </div>
                 
                 <div className="flex items-start gap-3 p-3 border rounded-lg">
-                  <Info className="h-5 w-5 text-blue-500 mt-0.5" />
+                  <Info className="h-5 w-5 text-[hsl(var(--info))] mt-0.5" />
                   <div className="space-y-1 flex-1">
                     <p className="text-sm font-medium">Inicio de sesión</p>
                     <p className="text-xs text-muted-foreground">Hace 1 día</p>
@@ -548,7 +548,7 @@ export function ProfilePageClient({ userRole, churchId }: ProfilePageClientProps
                 </div>
                 
                 <div className="flex items-start gap-3 p-3 border rounded-lg">
-                  <Star className="h-5 w-5 text-yellow-500 mt-0.5" />
+                  <Star className="h-5 w-5 text-[hsl(var(--warning))] mt-0.5" />
                   <div className="space-y-1 flex-1">
                     <p className="text-sm font-medium">Completaste tu evaluación espiritual</p>
                     <p className="text-xs text-muted-foreground">Hace 3 días</p>

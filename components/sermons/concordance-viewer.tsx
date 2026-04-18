@@ -117,11 +117,11 @@ export function ConcordanceViewer({ initialVerse = '', onReferenceSelect }: Conc
 
   const getConnectionTypeColor = (type: string) => {
     switch (type) {
-      case 'direct': return 'bg-blue-100 text-blue-800'
-      case 'thematic': return 'bg-green-100 text-green-800'
-      case 'prophetic': return 'bg-purple-100 text-purple-800'
-      case 'typological': return 'bg-orange-100 text-orange-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'direct': return 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]'
+      case 'thematic': return 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
+      case 'prophetic': return 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]'
+      case 'typological': return 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]'
+      default: return 'bg-muted/50 text-foreground'
     }
   }
 
@@ -212,12 +212,12 @@ export function ConcordanceViewer({ initialVerse = '', onReferenceSelect }: Conc
                   {crossReferences
                     .sort((a, b) => b.relevanceScore - a.relevanceScore)
                     .map((ref, index) => (
-                      <Card key={index} className="p-4 hover:bg-gray-50 transition-colors">
+                      <Card key={index} className="p-4 hover:bg-muted/30 transition-colors">
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <Button
                               variant="link"
-                              className="p-0 h-auto font-semibold text-blue-600"
+                              className="p-0 h-auto font-semibold text-[hsl(var(--info))]"
                               onClick={() => handleReferenceClick(ref.reference)}
                             >
                               {ref.reference}
@@ -232,7 +232,7 @@ export function ConcordanceViewer({ initialVerse = '', onReferenceSelect }: Conc
                               </Badge>
                             </div>
                           </div>
-                          <p className="text-sm text-gray-600 leading-relaxed">
+                          <p className="text-sm text-muted-foreground leading-relaxed">
                             {ref.text}
                           </p>
                         </div>
@@ -261,7 +261,7 @@ export function ConcordanceViewer({ initialVerse = '', onReferenceSelect }: Conc
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <h3 className="font-semibold text-lg flex items-center gap-2">
-                            <Tag className="h-5 w-5 text-blue-600" />
+                            <Tag className="h-5 w-5 text-[hsl(var(--info))]" />
                             {topical.topic}
                           </h3>
                           <Badge variant="secondary">
@@ -271,16 +271,16 @@ export function ConcordanceViewer({ initialVerse = '', onReferenceSelect }: Conc
 
                         <div className="space-y-2">
                           {topical.references.map((ref, refIndex) => (
-                            <div key={refIndex} className="bg-gray-50 p-3 rounded-lg">
+                            <div key={refIndex} className="bg-muted/30 p-3 rounded-lg">
                               <Button
                                 variant="link"
-                                className="p-0 h-auto font-medium text-blue-600 mb-1"
+                                className="p-0 h-auto font-medium text-[hsl(var(--info))] mb-1"
                                 onClick={() => handleReferenceClick(ref.reference)}
                               >
                                 {ref.reference}
                                 <ExternalLink className="h-3 w-3 ml-1" />
                               </Button>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm text-muted-foreground">
                                 {ref.text}
                               </p>
                             </div>
@@ -289,13 +289,13 @@ export function ConcordanceViewer({ initialVerse = '', onReferenceSelect }: Conc
 
                         {topical.relatedTopics.length > 0 && (
                           <div className="pt-2 border-t">
-                            <p className="text-sm text-gray-500 mb-2">Temas relacionados:</p>
+                            <p className="text-sm text-muted-foreground mb-2">Temas relacionados:</p>
                             <div className="flex flex-wrap gap-1">
                               {topical.relatedTopics.map((relatedTopic, relIndex) => (
                                 <Badge 
                                   key={relIndex} 
                                   variant="outline" 
-                                  className="text-xs cursor-pointer hover:bg-gray-100"
+                                  className="text-xs cursor-pointer hover:bg-muted/50"
                                   onClick={() => setSelectedTopic(relatedTopic)}
                                 >
                                   {relatedTopic}

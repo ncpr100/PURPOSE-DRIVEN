@@ -127,21 +127,21 @@ export default function PlatformSocialMediaPage() {
   }
 
   const platformIcons: Record<string, React.ReactNode> = {
-    FACEBOOK: <Facebook className="h-6 w-6 text-blue-600" />,
-    INSTAGRAM: <Instagram className="h-6 w-6 text-pink-500" />,
-    YOUTUBE: <Youtube className="h-6 w-6 text-red-600" />,
+    FACEBOOK: <Facebook className="h-6 w-6 text-[hsl(var(--info))]" />,
+    INSTAGRAM: <Instagram className="h-6 w-6 text-[hsl(var(--lavender))]" />,
+    YOUTUBE: <Youtube className="h-6 w-6 text-[hsl(var(--destructive))]" />,
   }
 
   const platformColors: Record<string, string> = {
-    FACEBOOK: 'border-blue-300 hover:border-blue-500',
-    INSTAGRAM: 'border-pink-300 hover:border-pink-500',
-    YOUTUBE: 'border-red-300 hover:border-red-500',
+    FACEBOOK: 'border-[hsl(var(--info)/0.4)] hover:border-[hsl(var(--info))]',
+    INSTAGRAM: 'border-[hsl(var(--lavender)/0.30)] hover:border-[hsl(var(--lavender)/0.30)]',
+    YOUTUBE: 'border-[hsl(var(--destructive)/0.4)] hover:border-[hsl(var(--destructive))]',
   }
 
   const platformSelectedColors: Record<string, string> = {
-    FACEBOOK: 'border-blue-500 bg-blue-50 ring-2 ring-blue-400',
-    INSTAGRAM: 'border-pink-500 bg-pink-50 ring-2 ring-pink-400',
-    YOUTUBE: 'border-red-500 bg-red-50 ring-2 ring-red-400',
+    FACEBOOK: 'border-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)] ring-2 ring-[hsl(var(--info)/0.4)]',
+    INSTAGRAM: 'border-[hsl(var(--lavender)/0.30)] bg-[hsl(var(--destructive)/0.08)] ring-2 ring-[hsl(var(--lavender)/0.30)]',
+    YOUTUBE: 'border-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.10)] ring-2 ring-[hsl(var(--destructive)/0.30)]',
   }
 
   const charCount = content.length
@@ -152,11 +152,11 @@ export default function PlatformSocialMediaPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Share2 className="h-6 w-6 text-green-600" />
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Share2 className="h-6 w-6 text-[hsl(var(--success))]" />
             Redes Sociales — Plataforma
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Marketing de Khesed-Tek en Facebook, Instagram y YouTube
           </p>
         </div>
@@ -198,7 +198,7 @@ export default function PlatformSocialMediaPage() {
                       onClick={() => togglePlatform(acc.platform)}
                       className={`relative rounded-xl border-2 p-4 text-center transition-all ${
                         disabled
-                          ? 'opacity-40 cursor-not-allowed border-gray-200'
+                          ? 'opacity-40 cursor-not-allowed border-border'
                           : selected
                           ? platformSelectedColors[acc.platform]
                           : platformColors[acc.platform]
@@ -208,14 +208,14 @@ export default function PlatformSocialMediaPage() {
                         {platformIcons[acc.platform]}
                         <span className="font-medium text-sm">{acc.label}</span>
                         {acc.configured ? (
-                          <Badge className="bg-green-100 text-green-700 text-xs">Configurado</Badge>
+                          <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] text-xs">Configurado</Badge>
                         ) : (
-                          <Badge className="bg-gray-100 text-gray-500 text-xs">Sin credenciales</Badge>
+                          <Badge className="bg-muted/50 text-muted-foreground text-xs">Sin credenciales</Badge>
                         )}
                       </div>
                       {selected && (
                         <div className="absolute top-2 right-2">
-                          <CheckCircle2 className="h-4 w-4 text-green-600" />
+                          <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
                         </div>
                       )}
                     </button>
@@ -223,7 +223,7 @@ export default function PlatformSocialMediaPage() {
                 })}
               </div>
               {accounts.some((a) => !a.configured) && (
-                <p className="text-xs text-amber-600 mt-3 flex items-center gap-1">
+                <p className="text-xs text-[hsl(var(--warning))] mt-3 flex items-center gap-1">
                   <AlertCircle className="h-3 w-3" />
                   Las plataformas sin credenciales requieren variables de entorno en Vercel. Ve a la pestaña &quot;Cuentas&quot;.
                 </p>
@@ -247,7 +247,7 @@ export default function PlatformSocialMediaPage() {
                   rows={5}
                   className={`mt-1 ${charWarning ? 'border-amber-400' : ''}`}
                 />
-                <p className={`text-xs mt-1 text-right ${charWarning ? 'text-amber-600' : 'text-gray-400'}`}>
+                <p className={`text-xs mt-1 text-right ${charWarning ? 'text-[hsl(var(--warning))]' : 'text-muted-foreground/70'}`}>
                   {charCount} caracteres {charWarning && '— puede exceder límites de plataforma'}
                 </p>
               </div>
@@ -264,7 +264,7 @@ export default function PlatformSocialMediaPage() {
                   onChange={(e) => setImageUrl(e.target.value)}
                   className="mt-1"
                 />
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground/70 mt-1">
                   Instagram requiere imagen para publicar. Usa una URL pública de tu CDN o storage.
                 </p>
               </div>
@@ -319,23 +319,23 @@ export default function PlatformSocialMediaPage() {
                   <div
                     key={platform}
                     className={`flex items-start gap-3 p-3 rounded-lg ${
-                      result.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+                      result.success ? 'bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)]' : 'bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)]'
                     }`}
                   >
                     {platformIcons[platform]}
                     <div>
-                      <p className={`text-sm font-medium ${result.success ? 'text-green-700' : 'text-red-700'}`}>
+                      <p className={`text-sm font-medium ${result.success ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--destructive))]'}`}>
                         {platform}
                       </p>
-                      <p className="text-xs text-gray-600">{result.message}</p>
+                      <p className="text-xs text-muted-foreground">{result.message}</p>
                       {result.postId && (
-                        <p className="text-xs text-gray-400 mt-1">Post ID: {result.postId}</p>
+                        <p className="text-xs text-muted-foreground/70 mt-1">Post ID: {result.postId}</p>
                       )}
                     </div>
                     {result.success ? (
-                      <CheckCircle2 className="h-4 w-4 text-green-600 ml-auto flex-shrink-0" />
+                      <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))] ml-auto flex-shrink-0" />
                     ) : (
-                      <AlertCircle className="h-4 w-4 text-red-500 ml-auto flex-shrink-0" />
+                      <AlertCircle className="h-4 w-4 text-[hsl(var(--destructive))] ml-auto flex-shrink-0" />
                     )}
                   </div>
                 ))}
@@ -355,105 +355,105 @@ export default function PlatformSocialMediaPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Facebook */}
-              <div className="rounded-xl border border-blue-200 p-5">
+              <div className="rounded-xl border border-[hsl(var(--info)/0.3)] p-5">
                 <div className="flex items-center gap-3 mb-4">
-                  <Facebook className="h-7 w-7 text-blue-600" />
+                  <Facebook className="h-7 w-7 text-[hsl(var(--info))]" />
                   <div>
                     <h3 className="font-semibold">Facebook Page</h3>
-                    <p className="text-xs text-gray-500">Publica en la página de Facebook de Khesed-Tek</p>
+                    <p className="text-xs text-muted-foreground">Publica en la página de Facebook de Khesed-Tek</p>
                   </div>
                   <div className="ml-auto">
                     {accounts.find((a) => a.platform === 'FACEBOOK')?.configured ? (
-                      <Badge className="bg-green-100 text-green-700">Activo</Badge>
+                      <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">Activo</Badge>
                     ) : (
-                      <Badge className="bg-gray-100 text-gray-500">No configurado</Badge>
+                      <Badge className="bg-muted/50 text-muted-foreground">No configurado</Badge>
                     )}
                   </div>
                 </div>
                 <div className="space-y-2 text-sm">
-                  <div className="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
-                    <code className="text-purple-700 font-mono text-xs">PLATFORM_FB_PAGE_ID</code>
-                    <span className="text-gray-500 text-xs">ID de tu Página de Facebook</span>
+                  <div className="flex items-center justify-between bg-muted/30 rounded px-3 py-2">
+                    <code className="text-[hsl(var(--lavender))] font-mono text-xs">PLATFORM_FB_PAGE_ID</code>
+                    <span className="text-muted-foreground text-xs">ID de tu Página de Facebook</span>
                   </div>
-                  <div className="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
-                    <code className="text-purple-700 font-mono text-xs">PLATFORM_FB_ACCESS_TOKEN</code>
-                    <span className="text-gray-500 text-xs">Token de acceso de larga duración (Meta)</span>
+                  <div className="flex items-center justify-between bg-muted/30 rounded px-3 py-2">
+                    <code className="text-[hsl(var(--lavender))] font-mono text-xs">PLATFORM_FB_ACCESS_TOKEN</code>
+                    <span className="text-muted-foreground text-xs">Token de acceso de larga duración (Meta)</span>
                   </div>
                 </div>
-                <p className="text-xs text-gray-400 mt-3">
+                <p className="text-xs text-muted-foreground/70 mt-3">
                   Obtén el token en Meta for Developers → Tu App → Graph API Explorer → Generar token de página permanente.
                 </p>
               </div>
 
               {/* Instagram */}
-              <div className="rounded-xl border border-pink-200 p-5">
+              <div className="rounded-xl border border-[hsl(var(--lavender)/0.30)] p-5">
                 <div className="flex items-center gap-3 mb-4">
-                  <Instagram className="h-7 w-7 text-pink-500" />
+                  <Instagram className="h-7 w-7 text-[hsl(var(--lavender))]" />
                   <div>
                     <h3 className="font-semibold">Instagram Business</h3>
-                    <p className="text-xs text-gray-500">Publica en el perfil de Instagram de Khesed-Tek</p>
+                    <p className="text-xs text-muted-foreground">Publica en el perfil de Instagram de Khesed-Tek</p>
                   </div>
                   <div className="ml-auto">
                     {accounts.find((a) => a.platform === 'INSTAGRAM')?.configured ? (
-                      <Badge className="bg-green-100 text-green-700">Activo</Badge>
+                      <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">Activo</Badge>
                     ) : (
-                      <Badge className="bg-gray-100 text-gray-500">No configurado</Badge>
+                      <Badge className="bg-muted/50 text-muted-foreground">No configurado</Badge>
                     )}
                   </div>
                 </div>
                 <div className="space-y-2 text-sm">
-                  <div className="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
-                    <code className="text-purple-700 font-mono text-xs">PLATFORM_IG_ACCOUNT_ID</code>
-                    <span className="text-gray-500 text-xs">Instagram Business Account ID</span>
+                  <div className="flex items-center justify-between bg-muted/30 rounded px-3 py-2">
+                    <code className="text-[hsl(var(--lavender))] font-mono text-xs">PLATFORM_IG_ACCOUNT_ID</code>
+                    <span className="text-muted-foreground text-xs">Instagram Business Account ID</span>
                   </div>
-                  <div className="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
-                    <code className="text-purple-700 font-mono text-xs">PLATFORM_FB_ACCESS_TOKEN</code>
-                    <span className="text-gray-500 text-xs">Mismo token que Facebook (API de Meta)</span>
+                  <div className="flex items-center justify-between bg-muted/30 rounded px-3 py-2">
+                    <code className="text-[hsl(var(--lavender))] font-mono text-xs">PLATFORM_FB_ACCESS_TOKEN</code>
+                    <span className="text-muted-foreground text-xs">Mismo token que Facebook (API de Meta)</span>
                   </div>
                 </div>
-                <p className="text-xs text-gray-400 mt-3">
+                <p className="text-xs text-muted-foreground/70 mt-3">
                   Instagram usa la misma API de Meta. Requiere cuenta de Instagram Business conectada a una Página de Facebook.
                   Posts deben incluir imagen.
                 </p>
               </div>
 
               {/* YouTube */}
-              <div className="rounded-xl border border-red-200 p-5">
+              <div className="rounded-xl border border-[hsl(var(--destructive)/0.3)] p-5">
                 <div className="flex items-center gap-3 mb-4">
-                  <Youtube className="h-7 w-7 text-red-600" />
+                  <Youtube className="h-7 w-7 text-[hsl(var(--destructive))]" />
                   <div>
                     <h3 className="font-semibold">YouTube Community</h3>
-                    <p className="text-xs text-gray-500">Publica en el canal de YouTube de Khesed-Tek</p>
+                    <p className="text-xs text-muted-foreground">Publica en el canal de YouTube de Khesed-Tek</p>
                   </div>
                   <div className="ml-auto">
                     {accounts.find((a) => a.platform === 'YOUTUBE')?.configured ? (
-                      <Badge className="bg-green-100 text-green-700">Activo</Badge>
+                      <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">Activo</Badge>
                     ) : (
-                      <Badge className="bg-gray-100 text-gray-500">No configurado</Badge>
+                      <Badge className="bg-muted/50 text-muted-foreground">No configurado</Badge>
                     )}
                   </div>
                 </div>
                 <div className="space-y-2 text-sm">
-                  <div className="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
-                    <code className="text-purple-700 font-mono text-xs">PLATFORM_YT_CHANNEL_ID</code>
-                    <span className="text-gray-500 text-xs">ID del canal de YouTube</span>
+                  <div className="flex items-center justify-between bg-muted/30 rounded px-3 py-2">
+                    <code className="text-[hsl(var(--lavender))] font-mono text-xs">PLATFORM_YT_CHANNEL_ID</code>
+                    <span className="text-muted-foreground text-xs">ID del canal de YouTube</span>
                   </div>
-                  <div className="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
-                    <code className="text-purple-700 font-mono text-xs">PLATFORM_YT_ACCESS_TOKEN</code>
-                    <span className="text-gray-500 text-xs">OAuth2 Access Token de Google</span>
+                  <div className="flex items-center justify-between bg-muted/30 rounded px-3 py-2">
+                    <code className="text-[hsl(var(--lavender))] font-mono text-xs">PLATFORM_YT_ACCESS_TOKEN</code>
+                    <span className="text-muted-foreground text-xs">OAuth2 Access Token de Google</span>
                   </div>
                 </div>
-                <p className="text-xs text-gray-400 mt-3">
+                <p className="text-xs text-muted-foreground/70 mt-3">
                   Los posts de comunidad en YouTube requieren canal con 500+ suscriptores.
                   Token generado vía Google Cloud Console → YouTube Data API v3.
                 </p>
               </div>
 
-              <div className="rounded-lg bg-amber-50 border border-amber-200 p-4">
+              <div className="rounded-lg bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] p-4">
                 <p className="text-sm text-amber-800 font-medium mb-1">
                   Cómo agregar las variables en Vercel:
                 </p>
-                <ol className="text-xs text-amber-700 space-y-1 list-decimal list-inside">
+                <ol className="text-xs text-[hsl(var(--warning))] space-y-1 list-decimal list-inside">
                   <li>Ve a vercel.com → Tu proyecto → Settings → Environment Variables</li>
                   <li>Agrega cada variable con su valor correspondiente</li>
                   <li>Redeploya la aplicación (o espera el próximo push automático)</li>

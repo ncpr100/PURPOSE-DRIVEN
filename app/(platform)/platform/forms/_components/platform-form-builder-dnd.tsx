@@ -222,14 +222,14 @@ function SortableField({
               <Badge variant="secondary" className="text-xs shrink-0">Requerido</Badge>
             )}
             {field.showIf && (
-              <Badge variant="outline" className="text-xs text-purple-600 shrink-0">
+              <Badge variant="outline" className="text-xs text-[hsl(var(--lavender))] shrink-0">
                 <GitBranch className="h-3 w-3 mr-1" />
                 Condicional
               </Badge>
             )}
 
             <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0" onClick={() => onRemove(field.id)}>
-              <Trash2 className="h-4 w-4 text-red-500" />
+              <Trash2 className="h-4 w-4 text-[hsl(var(--destructive))]" />
             </Button>
           </div>
         </CardHeader>
@@ -303,7 +303,7 @@ function SortableField({
                     {otherFields.length > 0 && (
                       <div className="border-t pt-3 space-y-2">
                         <div className="flex items-center gap-2">
-                          <GitBranch className="h-4 w-4 text-purple-600" />
+                          <GitBranch className="h-4 w-4 text-[hsl(var(--lavender))]" />
                           <Label className="text-xs font-semibold">Lógica condicional</Label>
                         </div>
                         <p className="text-xs text-muted-foreground">
@@ -412,7 +412,7 @@ function FormPreview({ formData }: { formData: PlatformFormData }) {
       )}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold mb-2">{formData.name || 'Nombre del formulario'}</h2>
-        {formData.description && <p className="text-gray-600 text-sm">{formData.description}</p>}
+        {formData.description && <p className="text-muted-foreground text-sm">{formData.description}</p>}
       </div>
 
       <div className="space-y-5">
@@ -421,7 +421,7 @@ function FormPreview({ formData }: { formData: PlatformFormData }) {
           if (field.type === 'section') {
             return (
               <div key={field.id} className="border-t pt-4">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   {field.label}
                 </p>
               </div>
@@ -431,7 +431,7 @@ function FormPreview({ formData }: { formData: PlatformFormData }) {
             <div key={field.id} className="space-y-1">
               <label className="block text-sm font-medium">
                 {field.label}
-                {field.required && <span className="text-red-500 ml-1">*</span>}
+                {field.required && <span className="text-[hsl(var(--destructive))] ml-1">*</span>}
               </label>
               {['text', 'email', 'phone', 'number', 'date'].includes(field.type) && (
                 <input
@@ -439,7 +439,7 @@ function FormPreview({ formData }: { formData: PlatformFormData }) {
                   placeholder={field.placeholder}
                   value={values[field.id] || ''}
                   onChange={(e) => setValues({ ...values, [field.id]: e.target.value })}
-                  className="w-full p-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2"
+                  className="w-full p-2.5 border border-border rounded-md text-sm focus:outline-none focus:ring-2"
                   style={{ '--tw-ring-color': formData.style.primaryColor } as any}
                 />
               )}
@@ -449,14 +449,14 @@ function FormPreview({ formData }: { formData: PlatformFormData }) {
                   rows={3}
                   value={values[field.id] || ''}
                   onChange={(e) => setValues({ ...values, [field.id]: e.target.value })}
-                  className="w-full p-2.5 border border-gray-300 rounded-md text-sm resize-none"
+                  className="w-full p-2.5 border border-border rounded-md text-sm resize-none"
                 />
               )}
               {field.type === 'select' && (
                 <select
                   value={values[field.id] || ''}
                   onChange={(e) => setValues({ ...values, [field.id]: e.target.value })}
-                  className="w-full p-2.5 border border-gray-300 rounded-md text-sm"
+                  className="w-full p-2.5 border border-border rounded-md text-sm"
                 >
                   <option value="">Selecciona…</option>
                   {field.options?.map((o, i) => <option key={i} value={o}>{o}</option>)}
@@ -491,12 +491,12 @@ function FormPreview({ formData }: { formData: PlatformFormData }) {
                 <input
                   type="file"
                   accept={field.acceptedFiles}
-                  className="w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700"
+                  className="w-full text-sm text-muted-foreground file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-[hsl(var(--info)/0.10)] file:text-[hsl(var(--info))]"
                 />
               )}
               {field.type === 'signature' && (
-                <div className="h-24 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center bg-gray-50">
-                  <span className="text-xs text-gray-400">Área de firma digital</span>
+                <div className="h-24 border-2 border-dashed border-border rounded-md flex items-center justify-center bg-muted/30">
+                  <span className="text-xs text-muted-foreground/70">Área de firma digital</span>
                 </div>
               )}
             </div>

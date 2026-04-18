@@ -135,7 +135,7 @@ export default function CommunicationsHelp() {
                       <ul className="space-y-1">
                         {type.features.map((feature, index) => (
                           <li key={index} className="flex items-center text-sm">
-                            <span className="mr-2 text-green-600">✓</span>
+                            <span className="mr-2 text-[hsl(var(--success))]">✓</span>
                             {feature}
                           </li>
                         ))}

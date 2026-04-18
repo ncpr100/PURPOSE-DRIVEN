@@ -361,7 +361,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Settings className="h-5 w-5 text-blue-600" />
+              <Settings className="h-5 w-5 text-[hsl(var(--info))]" />
               Configuración de URL
             </CardTitle>
           </CardHeader>
@@ -371,7 +371,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
                 <Label>URL del Formulario (QR apunta aquí)</Label>
                 <Input
                   value={typeof window !== 'undefined' ? `${window.location.origin}/p/${formSlug}` : ''}
-                  readOnly className="bg-gray-50 text-sm font-mono"
+                  readOnly className="bg-muted/30 text-sm font-mono"
                 />
               </div>
             )}
@@ -388,7 +388,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <WandSparkles className="h-5 w-5 text-violet-600" />
+              <WandSparkles className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Temas Predefinidos
             </CardTitle>
           </CardHeader>
@@ -396,13 +396,13 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
             <div className="grid grid-cols-3 gap-2">
               {PRESET_THEMES.map((preset) => (
                 <button key={preset.name} onClick={() => applyPreset(preset)}
-                  className="flex flex-col items-center gap-1.5 p-2.5 rounded-lg border-2 border-gray-200 hover:border-violet-400 hover:shadow-sm transition-all group"
+                  className="flex flex-col items-center gap-1.5 p-2.5 rounded-lg border-2 border-border hover:border-[hsl(var(--lavender)/0.30)] hover:shadow-sm transition-all group"
                 >
-                  <div className="w-8 h-8 rounded-md border border-gray-200"
+                  <div className="w-8 h-8 rounded-md border border-border"
                     style={{ background: preset.config.useGradient
                       ? `linear-gradient(135deg, ${preset.config.gradientColor1}, ${preset.config.gradientColor2})`
                       : preset.config.foregroundColor }} />
-                  <span className="text-xs font-medium text-gray-600 group-hover:text-violet-600 text-center leading-tight">
+                  <span className="text-xs font-medium text-muted-foreground group-hover:text-[hsl(var(--lavender))] text-center leading-tight">
                     {preset.name}
                   </span>
                 </button>
@@ -415,7 +415,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Palette className="h-5 w-5 text-purple-600" />
+              <Palette className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Colores Base
             </CardTitle>
           </CardHeader>
@@ -451,7 +451,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Shapes className="h-5 w-5 text-indigo-600" />
+              <Shapes className="h-5 w-5 text-primary" />
               Estilo de Puntos y Esquinas
             </CardTitle>
           </CardHeader>
@@ -528,7 +528,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Layers className="h-5 w-5 text-blue-500" />
+              <Layers className="h-5 w-5 text-[hsl(var(--info))]" />
               Gradiente en Puntos
             </CardTitle>
           </CardHeader>
@@ -536,7 +536,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
             <div className="flex items-center justify-between">
               <div>
                 <Label>Activar Gradiente</Label>
-                <p className="text-xs text-gray-400">Dos colores en los puntos del QR</p>
+                <p className="text-xs text-muted-foreground/70">Dos colores en los puntos del QR</p>
               </div>
               <Switch checked={qrConfig.useGradient}
                 onCheckedChange={(v) => updateConfig({ useGradient: v })} />
@@ -582,7 +582,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <Label>Ángulo del Gradiente</Label>
-                      <span className="text-sm font-medium text-gray-600">{qrConfig.gradientAngle}°</span>
+                      <span className="text-sm font-medium text-muted-foreground">{qrConfig.gradientAngle}°</span>
                     </div>
                     <Slider value={[qrConfig.gradientAngle]}
                       onValueChange={([v]) => updateConfig({ gradientAngle: v })}
@@ -598,7 +598,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Image className="h-5 w-5 text-teal-600" />
+              <Image className="h-5 w-5 text-[hsl(var(--info))]" />
               Logo Central
             </CardTitle>
           </CardHeader>
@@ -606,20 +606,20 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
             <div className="space-y-2">
               <Label>Subir Logo de la Iglesia</Label>
               <Input type="file" accept="image/*" onChange={handleLogoUpload} />
-              <p className="text-xs text-gray-500">PNG con fondo transparente · Máx. 2MB</p>
+              <p className="text-xs text-muted-foreground">PNG con fondo transparente · Máx. 2MB</p>
             </div>
             {qrConfig.logoImage && (
               <>
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border">
+                <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border">
                   <img src={qrConfig.logoImage} alt="Vista previa del logo"
                     className="h-14 w-14 rounded-lg object-contain bg-white border shadow-sm" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-700">Logo cargado</p>
-                    <p className="text-xs text-gray-500">Se mostrará en el centro del QR</p>
+                    <p className="text-sm font-medium text-muted-foreground">Logo cargado</p>
+                    <p className="text-xs text-muted-foreground">Se mostrará en el centro del QR</p>
                   </div>
                   <Button variant="ghost" size="sm"
                     onClick={() => updateConfig({ logoImage: null })}
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50">
+                    className="text-[hsl(var(--destructive))] hover:text-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive)/0.10)]">
                     Quitar
                   </Button>
                 </div>
@@ -627,17 +627,17 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <Label>Tamaño del Logo</Label>
-                      <span className="text-sm font-medium text-gray-600">{Math.round(qrConfig.logoSize * 100)}%</span>
+                      <span className="text-sm font-medium text-muted-foreground">{Math.round(qrConfig.logoSize * 100)}%</span>
                     </div>
                     <Slider value={[qrConfig.logoSize * 100]}
                       onValueChange={([v]) => updateConfig({ logoSize: v / 100 })}
                       min={15} max={40} step={1} />
-                    <p className="text-xs text-gray-400">Recomendado: 25-30% para mejor escaneabilidad</p>
+                    <p className="text-xs text-muted-foreground/70">Recomendado: 25-30% para mejor escaneabilidad</p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <Label>Margen alrededor del Logo</Label>
-                      <span className="text-sm font-medium text-gray-600">{qrConfig.logoMargin}px</span>
+                      <span className="text-sm font-medium text-muted-foreground">{qrConfig.logoMargin}px</span>
                     </div>
                     <Slider value={[qrConfig.logoMargin]}
                       onValueChange={([v]) => updateConfig({ logoMargin: v })}
@@ -646,16 +646,16 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
                   <div className="flex items-center justify-between rounded-lg border p-3">
                     <div>
                       <Label className="text-sm">Ocultar puntos detrás del logo</Label>
-                      <p className="text-xs text-gray-400 mt-0.5">Crea espacio limpio alrededor del logo</p>
+                      <p className="text-xs text-muted-foreground/70 mt-0.5">Crea espacio limpio alrededor del logo</p>
                     </div>
                     <Switch checked={qrConfig.hideLogoDots}
                       onCheckedChange={(v) => updateConfig({ hideLogoDots: v })} />
                   </div>
                   <Separator />
                   <div className="space-y-3">
-                    <Label className="text-sm font-semibold text-gray-700">Fondo del Logo (Empresarial)</Label>
+                    <Label className="text-sm font-semibold text-muted-foreground">Fondo del Logo (Empresarial)</Label>
                     <div className="space-y-1.5">
-                      <Label className="text-xs text-gray-500">Forma del Fondo</Label>
+                      <Label className="text-xs text-muted-foreground">Forma del Fondo</Label>
                       <Select value={qrConfig.logoBackgroundShape}
                         onValueChange={(v) => updateConfig({ logoBackgroundShape: v as LogoBgShape })}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
@@ -670,7 +670,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
                     {qrConfig.logoBackgroundShape !== 'none' && (
                       <>
                         <div className="space-y-1.5">
-                          <Label className="text-xs text-gray-500">Color del Fondo</Label>
+                          <Label className="text-xs text-muted-foreground">Color del Fondo</Label>
                           <div className="flex gap-2 items-center">
                             <input type="color" value={qrConfig.logoBackgroundColor}
                               onChange={(e) => updateConfig({ logoBackgroundColor: e.target.value })}
@@ -682,13 +682,13 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
                         </div>
                         <div className="space-y-2">
                           <div className="flex justify-between items-center">
-                            <Label className="text-xs text-gray-500">Borde alrededor del Logo</Label>
-                            <span className="text-sm font-medium text-gray-600">{qrConfig.logoBorderWidth}px</span>
+                            <Label className="text-xs text-muted-foreground">Borde alrededor del Logo</Label>
+                            <span className="text-sm font-medium text-muted-foreground">{qrConfig.logoBorderWidth}px</span>
                           </div>
                           <Slider value={[qrConfig.logoBorderWidth]}
                             onValueChange={([v]) => updateConfig({ logoBorderWidth: v })}
                             min={0} max={20} step={1} />
-                          <p className="text-xs text-gray-400">Mayor borde = fondo más visible y limpio</p>
+                          <p className="text-xs text-muted-foreground/70">Mayor borde = fondo más visible y limpio</p>
                         </div>
                       </>
                     )}
@@ -703,7 +703,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <QrCode className="h-5 w-5 text-gray-600" />
+              <QrCode className="h-5 w-5 text-muted-foreground" />
               Tamaño y Margen
             </CardTitle>
           </CardHeader>
@@ -739,7 +739,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
 
         <Button onClick={generateQRCode}
           disabled={isGenerating || (!formSlug && !customUrl.trim())}
-          className="w-full bg-violet-600 hover:bg-violet-700 text-white" size="lg">
+          className="w-full bg-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender))] text-white" size="lg">
           <QrCode className="h-4 w-4 mr-2" />
           {isGenerating ? 'Generando QR...' : 'Generar Código QR Empresarial'}
         </Button>
@@ -750,18 +750,18 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <QrCode className="h-5 w-5 text-violet-600" />
+              <QrCode className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Vista Previa
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {qrBlobUrl ? (
               <>
-                <div className="flex flex-col items-center space-y-3 p-6 bg-white rounded-xl border-2 border-violet-100 shadow-sm">
+                <div className="flex flex-col items-center space-y-3 p-6 bg-white rounded-xl border-2 border-[hsl(var(--lavender)/0.30)] shadow-sm">
                   <img src={qrBlobUrl} alt="Código QR generado"
                     className="max-w-full h-auto rounded-xl shadow-md"
                     style={{ maxWidth: '380px' }} />
-                  <p className="text-xs text-gray-400 text-center">
+                  <p className="text-xs text-muted-foreground/70 text-center">
                     {qrConfig.size}px · {qrConfig.dotStyle} · {qrConfig.useGradient ? 'Con gradiente' : 'Color sólido'}
                   </p>
                 </div>
@@ -775,9 +775,9 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
                     Copiar URL
                   </Button>
                 </div>
-                <div className="bg-violet-50 border border-violet-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-sm text-violet-900 mb-2">Configuración Aplicada</h4>
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs text-violet-700">
+                <div className="bg-[hsl(var(--lavender)/0.08)] border border-[hsl(var(--lavender)/0.30)] rounded-lg p-4">
+                  <h4 className="font-semibold text-sm text-[hsl(var(--lavender))] mb-2">Configuración Aplicada</h4>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs text-[hsl(var(--lavender))]">
                     <p><strong>Resolución:</strong> {qrConfig.size}px</p>
                     <p><strong>Puntos:</strong> {qrConfig.dotStyle}</p>
                     <p><strong>Esquinas:</strong> {qrConfig.cornerSquareStyle}</p>
@@ -788,10 +788,10 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
                 </div>
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center py-20 text-center text-gray-400">
+              <div className="flex flex-col items-center justify-center py-20 text-center text-muted-foreground/70">
                 <QrCode className="h-20 w-20 mb-4 opacity-20" />
-                <p className="text-sm font-medium text-gray-500">Sin vista previa aún</p>
-                <p className="text-xs mt-1 text-gray-400">
+                <p className="text-sm font-medium text-muted-foreground">Sin vista previa aún</p>
+                <p className="text-xs mt-1 text-muted-foreground/70">
                   Elige un tema o personaliza las opciones<br />
                   y pulsa "Generar Código QR Empresarial"
                 </p>
@@ -801,14 +801,14 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
         </Card>
 
         {/* Enterprise Tips */}
-        <Card className="bg-amber-50 border-amber-200">
+        <Card className="bg-[hsl(var(--warning)/0.10)] border-[hsl(var(--warning)/0.3)]">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm text-amber-800 flex items-center gap-2">
               <WandSparkles className="h-4 w-4" />
               Consejos para QR Empresariales
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-xs text-amber-700 space-y-1.5">
+          <CardContent className="text-xs text-[hsl(var(--warning))] space-y-1.5">
             <p>• Usa <strong>PNG con fondo transparente</strong> para el logo de la iglesia</p>
             <p>• Tamaño de logo <strong>25-30%</strong> es la proporción ideal para escanear sin problema</p>
             <p>• Activa <strong>"Ocultar puntos detrás del logo"</strong> para un aspecto limpio y profesional</p>

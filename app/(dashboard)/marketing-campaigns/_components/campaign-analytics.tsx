@@ -86,7 +86,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
     return (
       <Card>
         <CardContent className="flex items-center justify-center h-64">
-          <div className="text-center text-gray-500">
+          <div className="text-center text-muted-foreground">
             <BarChart3 className="mx-auto h-12 w-12 text-gray-300" />
             <h3 className="mt-2 text-sm font-medium">No hay datos de campañas</h3>
             <p className="mt-1 text-sm">Crea campañas para ver analíticas.</p>
@@ -300,19 +300,19 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
                     : null;
                     
                   return (
-                    <tr key={campaign.id} className="border-b hover:bg-gray-50">
+                    <tr key={campaign.id} className="border-b hover:bg-muted/30">
                       <td className="p-2">
                         <div className="font-medium">{campaign.name}</div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-muted-foreground">
                           Inicio: {new Date(campaign.startDate).toLocaleDateString()}
                         </div>
                       </td>
                       <td className="p-2">
                         <Badge className={`text-xs px-2 py-1 ${
-                          campaign.status === 'ACTIVE' ? 'bg-green-100 text-green-800' :
-                          campaign.status === 'COMPLETED' ? 'bg-blue-100 text-blue-800' :
-                          campaign.status === 'PAUSED' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-gray-100 text-gray-800'
+                          campaign.status === 'ACTIVE' ? 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]' :
+                          campaign.status === 'COMPLETED' ? 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]' :
+                          campaign.status === 'PAUSED' ? 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]' :
+                          'bg-muted/50 text-foreground'
                         }`}>
                           {campaign.status.toLowerCase()}
                         </Badge>

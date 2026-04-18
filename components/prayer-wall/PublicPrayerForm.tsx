@@ -183,14 +183,14 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
   const renderField = (field: FormField) => {
     const hasError = !!validationErrors[field.id]
     
-    const baseClassName = `w-full ${hasError ? 'border-red-500' : ''}`
+    const baseClassName = `w-full ${hasError ? 'border-[hsl(var(--destructive))]' : ''}`
 
     switch (field.type) {
       case 'textarea':
         return (
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id}>
-              {field.label} {field.required && <span className="text-red-500">*</span>}
+              {field.label} {field.required && <span className="text-[hsl(var(--destructive))]">*</span>}
             </Label>
             <Textarea
               id={field.id}
@@ -200,7 +200,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
               className={baseClassName}
               rows={4}
             />
-            {hasError && <p className="text-sm text-red-500">{validationErrors[field.id]}</p>}
+            {hasError && <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors[field.id]}</p>}
           </div>
         )
 
@@ -208,7 +208,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
         return (
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id}>
-              {field.label} {field.required && <span className="text-red-500">*</span>}
+              {field.label} {field.required && <span className="text-[hsl(var(--destructive))]">*</span>}
             </Label>
             <Select
               value={formValues[field.id] || ''}
@@ -225,7 +225,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
                 ))}
               </SelectContent>
             </Select>
-            {hasError && <p className="text-sm text-red-500">{validationErrors[field.id]}</p>}
+            {hasError && <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors[field.id]}</p>}
           </div>
         )
 
@@ -233,7 +233,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
         return (
           <div key={field.id} className="space-y-3">
             <Label>
-              {field.label} {field.required && <span className="text-red-500">*</span>}
+              {field.label} {field.required && <span className="text-[hsl(var(--destructive))]">*</span>}
             </Label>
             <RadioGroup
               value={formValues[field.id] || ''}
@@ -248,7 +248,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
                 </div>
               ))}
             </RadioGroup>
-            {hasError && <p className="text-sm text-red-500">{validationErrors[field.id]}</p>}
+            {hasError && <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors[field.id]}</p>}
           </div>
         )
 
@@ -256,7 +256,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
         return (
           <div key={field.id} className="space-y-3">
             <Label>
-              {field.label} {field.required && <span className="text-red-500">*</span>}
+              {field.label} {field.required && <span className="text-[hsl(var(--destructive))]">*</span>}
             </Label>
             <div className="space-y-2">
               {field.options?.map((option) => (
@@ -279,7 +279,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
                 </div>
               ))}
             </div>
-            {hasError && <p className="text-sm text-red-500">{validationErrors[field.id]}</p>}
+            {hasError && <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors[field.id]}</p>}
           </div>
         )
 
@@ -287,7 +287,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
         return (
           <div key={field.id} className="space-y-2">
             <Label htmlFor={field.id}>
-              {field.label} {field.required && <span className="text-red-500">*</span>}
+              {field.label} {field.required && <span className="text-[hsl(var(--destructive))]">*</span>}
             </Label>
             <Input
               id={field.id}
@@ -297,7 +297,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
               onChange={(e) => handleFieldChange(field.id, e.target.value)}
               className={baseClassName}
             />
-            {hasError && <p className="text-sm text-red-500">{validationErrors[field.id]}</p>}
+            {hasError && <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors[field.id]}</p>}
           </div>
         )
     }
@@ -308,19 +308,19 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
       <div className="max-w-md mx-auto">
         <Card className="text-center">
           <CardContent className="p-8">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-green-700 mb-2">
+            <CheckCircle className="w-16 h-16 text-[hsl(var(--success))] mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-[hsl(var(--success))] mb-2">
               ¡Petición Enviada!
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted-foreground mb-6">
               Tu petición de oración ha sido recibida. Recibirás una respuesta personalizada muy pronto.
             </p>
-            <div className="bg-blue-50 rounded-lg p-4 mb-6">
-              <p className="text-sm text-blue-800">
+            <div className="bg-[hsl(var(--info)/0.10)] rounded-lg p-4 mb-6">
+              <p className="text-sm text-[hsl(var(--info))]">
                 <strong>Iglesia:</strong> {formData.church.name}
               </p>
               {formData.church.description && (
-                <p className="text-sm text-blue-700 mt-1">
+                <p className="text-sm text-[hsl(var(--info))] mt-1">
                   {formData.church.description}
                 </p>
               )}
@@ -362,17 +362,17 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
           </CardTitle>
           
           {formData.description && (
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-muted-foreground mt-2">
               {formData.description}
             </p>
           )}
 
-          <div className="bg-gray-50 rounded-lg p-3 mt-4">
-            <p className="text-sm font-medium text-gray-700">
+          <div className="bg-muted/30 rounded-lg p-3 mt-4">
+            <p className="text-sm font-medium text-muted-foreground">
               {formData.church.name}
             </p>
             {formData.church.description && (
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 {formData.church.description}
               </p>
             )}
@@ -384,7 +384,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
             {/* Prayer Category Selection */}
             <div className="space-y-3">
               <Label>
-                Tipo de oración <span className="text-red-500">*</span>
+                Tipo de oración <span className="text-[hsl(var(--destructive))]">*</span>
               </Label>
               <div className="grid grid-cols-1 gap-2">
                 {formData.categories.map((category) => (
@@ -392,8 +392,8 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
                     key={category.id}
                     className={`p-3 border rounded-lg cursor-pointer transition-all ${
                       selectedCategory === category.id
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]'
+                        : 'border-border hover:border-border'
                     }`}
                     onClick={() => {
                       setSelectedCategory(category.id)
@@ -406,8 +406,8 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
                       <div
                         className={`w-4 h-4 rounded-full border-2 ${
                           selectedCategory === category.id
-                            ? 'border-blue-500 bg-blue-500'
-                            : 'border-gray-300'
+                            ? 'border-[hsl(var(--info))] bg-[hsl(var(--info)/0.10)]0'
+                            : 'border-border'
                         }`}
                       >
                         {selectedCategory === category.id && (
@@ -417,7 +417,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
                       <div>
                         <p className="font-medium text-sm">{category.name}</p>
                         {category.description && (
-                          <p className="text-xs text-gray-600">{category.description}</p>
+                          <p className="text-xs text-muted-foreground">{category.description}</p>
                         )}
                       </div>
                     </div>
@@ -425,7 +425,7 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
                 ))}
               </div>
               {validationErrors.category && (
-                <p className="text-sm text-red-500">{validationErrors.category}</p>
+                <p className="text-sm text-[hsl(var(--destructive))]">{validationErrors.category}</p>
               )}
             </div>
 
@@ -456,8 +456,8 @@ export function PublicPrayerForm({ formData, qrCodeId, onSubmissionComplete }: P
             </Button>
 
             {/* Privacy Note */}
-            <div className="bg-gray-50 rounded-lg p-3 mt-4">
-              <p className="text-xs text-gray-600 text-center">
+            <div className="bg-muted/30 rounded-lg p-3 mt-4">
+              <p className="text-xs text-muted-foreground text-center">
                 Tu información será tratada con confidencialidad y solo será usada para responder a tu petición de oración.
               </p>
             </div>

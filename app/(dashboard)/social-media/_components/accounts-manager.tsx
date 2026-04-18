@@ -36,10 +36,10 @@ const platformIcons = {
 };
 
 const platformColors = {
-  FACEBOOK: 'bg-blue-500',
+  FACEBOOK: 'bg-[hsl(var(--info)/0.10)]0',
   TWITTER: 'bg-sky-500',
-  INSTAGRAM: 'bg-pink-500',
-  YOUTUBE: 'bg-red-500',
+  INSTAGRAM: 'bg-[hsl(var(--destructive)/0.08)]0',
+  YOUTUBE: 'bg-[hsl(var(--destructive)/0.10)]0',
   TIKTOK: 'bg-black'
 };
 
@@ -204,7 +204,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                       </div>
                       <div>
                         <h3 className="font-medium">{platformName}</h3>
-                        <div className="text-sm text-gray-500 space-x-2">
+                        <div className="text-sm text-muted-foreground space-x-2">
                           <span>{account.displayName || account.username}</span>
                           {account.lastSync && (
                             <span>• Last sync: {new Date(account.lastSync).toLocaleDateString()}</span>
@@ -239,7 +239,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
               })}
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-muted-foreground">
               <Settings className="mx-auto h-12 w-12 text-gray-300" />
               <h3 className="mt-2 text-sm font-medium">No hay cuentas conectadas</h3>
               <p className="mt-1 text-sm">Conecta tus cuentas de redes sociales para comenzar a publicar posts.</p>
@@ -278,11 +278,11 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
                 </Select>
               </div>
 
-              <div className="p-3 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-800 mb-2">
+              <div className="p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
+                <p className="text-sm text-[hsl(var(--info))] mb-2">
                   <strong>Instrucciones de Configuración:</strong>
                 </p>
-                <ol className="text-xs text-blue-700 space-y-1 list-decimal list-inside">
+                <ol className="text-xs text-[hsl(var(--info))] space-y-1 list-decimal list-inside">
                   <li>Visita el Portal de Desarrolladores de {platformNames[formData.platform as keyof typeof platformNames]}</li>
                   <li>Crea una aplicación y obtén tus claves API</li>
                   <li>Completa el flujo OAuth para obtener el token de acceso</li>

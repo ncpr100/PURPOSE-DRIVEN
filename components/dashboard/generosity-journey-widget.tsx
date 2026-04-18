@@ -36,11 +36,11 @@ const PATTERN_LABELS: Record<GenerosityPattern, string> = {
 };
 
 const PATTERN_COLORS: Record<GenerosityPattern, string> = {
-  FIRST_GIFT: "bg-green-100 text-green-800",
-  LAPSED_GIVER: "bg-yellow-100 text-yellow-800",
-  CAMPAIGN_ONLY_DONOR: "bg-blue-100 text-blue-800",
-  INCONSISTENT_GIVER: "bg-orange-100 text-orange-800",
-  RECURRING_MILESTONE: "bg-purple-100 text-purple-800",
+  FIRST_GIFT: "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]",
+  LAPSED_GIVER: "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]",
+  CAMPAIGN_ONLY_DONOR: "bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]",
+  INCONSISTENT_GIVER: "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]",
+  RECURRING_MILESTONE: "bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))]",
 };
 
 export function GenerosityJourneyWidget({ initialAlerts }: Props) {
@@ -65,7 +65,7 @@ export function GenerosityJourneyWidget({ initialAlerts }: Props) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
-          <Heart className="h-4 w-4 text-rose-500" />
+          <Heart className="h-4 w-4 text-[hsl(var(--destructive))]" />
           Jornada de Generosidad
         </CardTitle>
         <Button
@@ -113,7 +113,7 @@ export function GenerosityJourneyWidget({ initialAlerts }: Props) {
                       rel="noreferrer"
                     >
                       <Button variant="ghost" size="sm">
-                        <Phone className="h-4 w-4 text-green-600" />
+                        <Phone className="h-4 w-4 text-[hsl(var(--success))]" />
                       </Button>
                     </a>
                   )}

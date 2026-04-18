@@ -243,7 +243,7 @@ export function PrayerFormBuilder({ form, onSave, onCancel }: PrayerFormBuilderP
       </h2>
       
       {formData.description && (
-        <p className="text-sm text-gray-600 text-center mb-6">
+        <p className="text-sm text-muted-foreground text-center mb-6">
           {formData.description}
         </p>
       )}
@@ -252,7 +252,7 @@ export function PrayerFormBuilder({ form, onSave, onCancel }: PrayerFormBuilderP
         {formData.fields.map((field) => (
           <div key={field.id}>
             <Label className="block text-sm font-medium mb-1">
-              {field.label} {field.required && <span className="text-red-500">*</span>}
+              {field.label} {field.required && <span className="text-[hsl(var(--destructive))]">*</span>}
             </Label>
             
             {field.type === 'textarea' ? (
@@ -484,7 +484,7 @@ export function PrayerFormBuilder({ form, onSave, onCancel }: PrayerFormBuilderP
                       <FieldIcon type={field.type} />
                       <div>
                         <p className="font-medium">{field.label}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           {FIELD_TYPES.find(t => t.value === field.type)?.label}
                           {field.required && ' • Requerido'}
                         </p>
@@ -522,7 +522,7 @@ export function PrayerFormBuilder({ form, onSave, onCancel }: PrayerFormBuilderP
                         size="sm"
                         onClick={() => removeField(field.id)}
                       >
-                        <Trash2 className="w-4 h-4 text-red-500" />
+                        <Trash2 className="w-4 h-4 text-[hsl(var(--destructive))]" />
                       </Button>
                     </div>
                   </div>
@@ -531,7 +531,7 @@ export function PrayerFormBuilder({ form, onSave, onCancel }: PrayerFormBuilderP
             </div>
 
             {formData.fields.length === 0 && (
-              <div className="text-center py-12 text-gray-500">
+              <div className="text-center py-12 text-muted-foreground">
                 <MessageSquare className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                 <p>No hay campos en el formulario</p>
                 <p className="text-sm">Agrega campos desde el panel izquierdo</p>

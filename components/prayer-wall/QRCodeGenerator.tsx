@@ -193,11 +193,11 @@ export function QRCodeGenerator({ qrCode, forms, onSave, onCancel }: QRCodeGener
       
       {qrCode && (
         <div className="text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Escaneado {qrCodeData.scanCount || 0} veces
           </p>
           {qrCodeData.lastScan && (
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               Último escaneo: {new Date(qrCodeData.lastScan).toLocaleString()}
             </p>
           )}
@@ -254,7 +254,7 @@ export function QRCodeGenerator({ qrCode, forms, onSave, onCancel }: QRCodeGener
                       <div>
                         <div className="font-medium">{form.name}</div>
                         {form.description && (
-                          <div className="text-sm text-gray-500">{form.description}</div>
+                          <div className="text-sm text-muted-foreground">{form.description}</div>
                         )}
                       </div>
                     </SelectItem>
@@ -264,10 +264,10 @@ export function QRCodeGenerator({ qrCode, forms, onSave, onCancel }: QRCodeGener
             </div>
 
             {selectedForm && (
-              <div className="p-3 bg-blue-50 rounded-lg">
-                <p className="text-sm font-medium text-blue-900">Formulario seleccionado:</p>
-                <p className="text-sm text-blue-700">{selectedForm.name}</p>
-                <p className="text-xs text-blue-600 mt-1">
+              <div className="p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
+                <p className="text-sm font-medium text-foreground">Formulario seleccionado:</p>
+                <p className="text-sm text-[hsl(var(--info))]">{selectedForm.name}</p>
+                <p className="text-xs text-[hsl(var(--info))] mt-1">
                   URL: /prayer-form/{selectedForm.slug}
                 </p>
               </div>
@@ -450,7 +450,7 @@ export function QRCodeGenerator({ qrCode, forms, onSave, onCancel }: QRCodeGener
               <CardTitle>URL del código QR</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="p-3 bg-gray-50 rounded-lg">
+              <div className="p-3 bg-muted/30 rounded-lg">
                 <p className="text-sm font-mono break-all">{qrCodeUrl}</p>
               </div>
               <Button

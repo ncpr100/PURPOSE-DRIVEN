@@ -153,7 +153,7 @@ export function PlatformFormAnalytics({ forms = [], isOpen = true, onClose, sele
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{overview.conversionRate}%</div>
-            <div className="flex items-center text-xs text-green-600">
+            <div className="flex items-center text-xs text-[hsl(var(--success))]">
               <TrendingUp className="h-3 w-3 mr-1" />
               +2.4% vs mes anterior
             </div>

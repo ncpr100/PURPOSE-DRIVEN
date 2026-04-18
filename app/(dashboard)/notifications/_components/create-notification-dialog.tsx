@@ -46,10 +46,10 @@ interface NotificationTemplate {
 }
 
 const NOTIFICATION_TYPES = [
-  { value: 'INFO', label: 'Información', icon: Info, color: 'text-blue-500' },
-  { value: 'SUCCESS', label: 'Éxito', icon: CheckCircle, color: 'text-green-500' },
-  { value: 'WARNING', label: 'Advertencia', icon: AlertTriangle, color: 'text-yellow-500' },
-  { value: 'ERROR', label: 'Error', icon: XCircle, color: 'text-red-500' },
+  { value: 'INFO', label: 'Información', icon: Info, color: 'text-[hsl(var(--info))]' },
+  { value: 'SUCCESS', label: 'Éxito', icon: CheckCircle, color: 'text-[hsl(var(--success))]' },
+  { value: 'WARNING', label: 'Advertencia', icon: AlertTriangle, color: 'text-[hsl(var(--warning))]' },
+  { value: 'ERROR', label: 'Error', icon: XCircle, color: 'text-[hsl(var(--destructive))]' },
 ]
 
 const CATEGORIES = [

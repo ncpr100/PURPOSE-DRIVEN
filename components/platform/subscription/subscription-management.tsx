@@ -323,17 +323,17 @@ export function SubscriptionManagement() {
                             {plan.isActive ? 'Activo' : 'Inactivo'}
                           </Badge>
                         </div>
-                        <div className="text-2xl font-bold text-blue-600">
+                        <div className="text-2xl font-bold text-[hsl(var(--info))]">
                           ${plan.priceMonthly}/mes
                         </div>
                         {plan.priceYearly && (
-                          <div className="text-sm text-gray-600">
+                          <div className="text-sm text-muted-foreground">
                             ${plan.priceYearly}/año
                           </div>
                         )}
                       </CardHeader>
                       <CardContent className="space-y-3">
-                        <p className="text-sm text-gray-600">{plan.description}</p>
+                        <p className="text-sm text-muted-foreground">{plan.description}</p>
                         
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2">
@@ -420,7 +420,7 @@ export function SubscriptionManagement() {
               <Card>
                 <CardContent className="p-0">
                   {features.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+                    <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
                       <Settings className="h-10 w-10 mb-3 text-gray-300" />
                       <p className="text-sm mb-4">No hay características configuradas.</p>
                       <Button variant="outline" onClick={handleSeedFeatures}>
@@ -530,7 +530,7 @@ export function SubscriptionManagement() {
               </Dialog>
 
               {addons.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+                <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
                   <Package className="h-10 w-10 mb-3 text-gray-300" />
                   <p className="text-sm mb-4">No hay complementos configurados.</p>
                   <Button variant="outline" onClick={handleSeedAddons}>
@@ -548,7 +548,7 @@ export function SubscriptionManagement() {
                           {addon.isActive ? 'Activo' : 'Inactivo'}
                         </Badge>
                       </div>
-                      <div className="text-lg font-semibold text-green-600">
+                      <div className="text-lg font-semibold text-[hsl(var(--success))]">
                         {addon.billingType === 'PER_USE' ? (
                           `$${addon.pricePerUnit || '0'} por ${addon.unit}`
                         ) : (
@@ -557,7 +557,7 @@ export function SubscriptionManagement() {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-3">
-                      <p className="text-sm text-gray-600">{addon.description}</p>
+                      <p className="text-sm text-muted-foreground">{addon.description}</p>
                       
                       <div className="flex gap-2">
                         <Button 

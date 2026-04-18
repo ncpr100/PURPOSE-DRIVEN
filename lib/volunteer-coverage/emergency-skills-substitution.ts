@@ -12,17 +12,21 @@ function parseSkillsField(raw: string): string[] {
   if (trimmed.startsWith("[")) {
     try {
       const parsed = JSON.parse(trimmed);
-      if (Array.isArray(parsed)) return parsed.map((s) => String(s).trim()).filter(Boolean);
+      if (Array.isArray(parsed))
+        return parsed.map((s) => String(s).trim()).filter(Boolean);
     } catch {
       // fall through
     }
   }
-  return trimmed.split(",").map((s) => s.trim()).filter(Boolean);
+  return trimmed
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 export async function runEmergencySubstitution(
   churchId: string,
-  coverageStatusId: string
+  coverageStatusId: string,
 ): Promise<void> {
   if (process.env.ENABLE_VOLUNTEER_COVERAGE !== "true") return;
 
@@ -70,14 +74,17 @@ export async function runEmergencySubstitution(
     where: { volunteerId: { in: candidates.map((c) => c.id) } },
     select: { volunteerId: true, currentScore: true },
   });
-  const scoreMap = new Map(engagementRows.map((e) => [e.volunteerId, e.currentScore]));
+  const scoreMap = new Map(
+    engagementRows.map((e) => [e.volunteerId, e.currentScore]),
+  );
 
   // Score by skill match + engagement, pick top 3
   const scored = candidates
     .map((c) => {
       const cSkills = parseSkillsField(c.skills ?? "");
       const overlap = requiredSkills.filter((s) => cSkills.includes(s));
-      const skillScore = requiredSkills.length > 0 ? overlap.length / requiredSkills.length : 0;
+      const skillScore =
+        requiredSkills.length > 0 ? overlap.length / requiredSkills.length : 0;
       const engagement = (scoreMap.get(c.id) ?? 50) / 100;
       const composite = skillScore * 0.6 + engagement * 0.4;
       return { ...c, overlap, composite };
@@ -94,13 +101,16 @@ export async function runEmergencySubstitution(
     : null;
 
   const eventLabel = event
-    ? `${event.title} — ${new Date(event.startDate).toLocaleDateString("es-CO", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`
+    ? `${event.title} — ${new Date(event.startDate).toLocaleDateString(
+        "es-CO",
+        {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          hour: "2-digit",
+          minute: "2-digit",
+        },
+      )}`
     : "próximo evento";
 
   // Contact the top 3 via WhatsApp simultaneously
@@ -149,7 +159,10 @@ export async function runEmergencySubstitution(
   const substituteSummary =
     scored.length > 0
       ? scored
-          .map((c, i) => `#${i + 1} ${c.firstName} ${c.lastName} (habilidades: ${c.overlap.join(", ") || "compatibles"})`)
+          .map(
+            (c, i) =>
+              `#${i + 1} ${c.firstName} ${c.lastName} (habilidades: ${c.overlap.join(", ") || "compatibles"})`,
+          )
           .join("\n")
       : "No se encontraron voluntarios disponibles con habilidades compatibles.";
 
@@ -181,11 +194,14 @@ export async function runEmergencySubstitution(
   }
 
   console.log(
-    `[EMERGENCY] Contacted ${scored.length} skill-matched volunteers for slot ${coverageStatusId}`
+    `[EMERGENCY] Contacted ${scored.length} skill-matched volunteers for slot ${coverageStatusId}`,
   );
 }
 
-async function sendWhatsAppMessage(phone: string, message: string): Promise<void> {
+async function sendWhatsAppMessage(
+  phone: string,
+  message: string,
+): Promise<void> {
   const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
   const token = process.env.WHATSAPP_ACCESS_TOKEN;
   if (!phoneId || !token) {

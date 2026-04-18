@@ -15,7 +15,7 @@ export default function Phase6AnalyticsGuide() {
   return (
     <div className="container mx-auto p-6 max-w-6xl space-y-8">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white p-8 rounded-lg">
+      <div className="bg-[hsl(var(--info))] text-foreground p-8 rounded-lg">
         <div className="flex items-center gap-4">
           <BarChart3 className="h-12 w-12" />
           <div>
@@ -38,12 +38,12 @@ export default function Phase6AnalyticsGuide() {
       </div>
 
       {/* Para Niños */}
-      <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
-        <h4 className="font-bold text-yellow-900 flex items-center gap-2 mb-2">
+      <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
+        <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
           <Heart className="h-5 w-5" />
           Para Niños: ¿Qué son las &quot;Analíticas&quot;?
         </h4>
-        <p className="text-sm text-yellow-800">
+        <p className="text-sm text-[hsl(var(--warning))]">
           Imagina que tienes una caja mágica que cuenta todo lo que pasa en tu iglesia: cuántas 
           personas vinieron hoy, cuántos niños hay, cuánto dinero se donó, qué eventos fueron los 
           más populares. Las analíticas son como gráficas de colores que te muestran toda esa 
@@ -52,10 +52,10 @@ export default function Phase6AnalyticsGuide() {
       </div>
 
       {/* Dashboard Principal */}
-      <Card className="border-blue-300">
-        <CardHeader className="bg-blue-50">
+      <Card className="border-[hsl(var(--info)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--info)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <div className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+            <div className="bg-[hsl(var(--info))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               1
             </div>
             Tu Dashboard Principal (Página de Inicio)
@@ -65,9 +65,9 @@ export default function Phase6AnalyticsGuide() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
-          <div className="bg-blue-50 p-4 rounded-lg">
+          <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <Eye className="h-5 w-5 text-blue-600" />
+              <Eye className="h-5 w-5 text-[hsl(var(--info))]" />
               ¿Dónde Está el Dashboard?
             </h4>
             <p className="text-sm mb-2">
@@ -145,8 +145,8 @@ export default function Phase6AnalyticsGuide() {
                   <ul className="space-y-2 text-sm">
                     {card.metrics.map((metric, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{metric}</span>
+                        <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
+                        <span className="text-muted-foreground">{metric}</span>
                       </li>
                     ))}
                   </ul>
@@ -155,12 +155,12 @@ export default function Phase6AnalyticsGuide() {
             ))}
           </div>
 
-          <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
-            <h4 className="font-bold text-yellow-900 flex items-center gap-2 mb-2">
+          <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
+            <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
               <Lightbulb className="h-5 w-5" />
               Consejo de Experto
             </h4>
-            <p className="text-sm text-yellow-800">
+            <p className="text-sm text-[hsl(var(--warning))]">
               Tu dashboard se actualiza en TIEMPO REAL. Si alguien se registra, hace una donación, 
               o se inscribe a un evento, verás los números cambiar automáticamente. ¡Es como magia! 
               No necesitas refrescar la página.
@@ -170,10 +170,10 @@ export default function Phase6AnalyticsGuide() {
       </Card>
 
       {/* Analíticas Generales */}
-      <Card className="border-green-300">
-        <CardHeader className="bg-green-50">
+      <Card className="border-[hsl(var(--success)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--success)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <div className="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
+            <div className="bg-[hsl(var(--success))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               2
             </div>
             Analíticas Generales (Reportes Detallados)
@@ -184,7 +184,7 @@ export default function Phase6AnalyticsGuide() {
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
           <div className="space-y-4">
-            <div className="bg-green-50 p-4 rounded-lg">
+            <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
               <h4 className="font-semibold mb-2">📍 Cómo Llegar:</h4>
               <p className="text-sm">
                 En el menú izquierdo → <strong>Analíticas</strong> → <strong>Analíticas Generales</strong>
@@ -194,7 +194,7 @@ export default function Phase6AnalyticsGuide() {
             {[
               {
                 section: "👥 Analíticas de Miembros",
-                icon: <Users className="h-6 w-6 text-blue-600" />,
+                icon: <Users className="h-6 w-6 text-[hsl(var(--info))]" />,
                 reports: [
                   {
                     name: "Crecimiento de Membresía",
@@ -225,7 +225,7 @@ export default function Phase6AnalyticsGuide() {
               },
               {
                 section: "💰 Analíticas Financieras",
-                icon: <DollarSign className="h-6 w-6 text-green-600" />,
+                icon: <DollarSign className="h-6 w-6 text-[hsl(var(--success))]" />,
                 reports: [
                   {
                     name: "Ingresos por Mes",
@@ -256,7 +256,7 @@ export default function Phase6AnalyticsGuide() {
               },
               {
                 section: "📅 Analíticas de Eventos",
-                icon: <Calendar className="h-6 w-6 text-orange-600" />,
+                icon: <Calendar className="h-6 w-6 text-[hsl(var(--warning))]" />,
                 reports: [
                   {
                     name: "Asistencia por Evento",
@@ -289,12 +289,12 @@ export default function Phase6AnalyticsGuide() {
                   </div>
                   <div className="space-y-3">
                     {area.reports.map((report, idx) => (
-                      <div key={idx} className="bg-gray-50 p-3 rounded">
-                        <p className="font-medium text-sm text-green-800 mb-1">
+                      <div key={idx} className="bg-muted/30 p-3 rounded">
+                        <p className="font-medium text-sm text-[hsl(var(--success))] mb-1">
                           📊 {report.name}
                         </p>
-                        <p className="text-xs text-gray-600 mb-1">{report.description}</p>
-                        <p className="text-xs text-purple-600 italic">
+                        <p className="text-xs text-muted-foreground mb-1">{report.description}</p>
+                        <p className="text-xs text-[hsl(var(--lavender))] italic">
                           💡 Para qué sirve: {report.useCase}
                         </p>
                       </div>
@@ -308,10 +308,10 @@ export default function Phase6AnalyticsGuide() {
       </Card>
 
       {/* Analíticas Inteligentes (AI) */}
-      <Card className="border-purple-300">
-        <CardHeader className="bg-purple-50">
+      <Card className="border-[hsl(var(--lavender)/0.4)]">
+        <CardHeader className="bg-[hsl(var(--lavender)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Sparkles className="h-8 w-8 text-purple-600" />
+            <Sparkles className="h-8 w-8 text-[hsl(var(--lavender))]" />
             Analíticas Inteligentes (Con Inteligencia Artificial)
           </CardTitle>
           <CardDescription className="text-base mt-2">
@@ -319,12 +319,12 @@ export default function Phase6AnalyticsGuide() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
-          <div className="bg-yellow-50 p-4 rounded-lg border-2 border-yellow-300">
-            <h4 className="font-bold text-yellow-900 flex items-center gap-2 mb-2">
+          <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
+            <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
               <Lightbulb className="h-5 w-5" />
               ¿Qué es la Inteligencia Artificial en Analíticas?
             </h4>
-            <p className="text-sm text-yellow-800">
+            <p className="text-sm text-[hsl(var(--warning))]">
               Es como tener un asistente súper inteligente que mira todos los datos de tu iglesia 
               y te dice cosas como: &quot;Este miembro probablemente dejará de venir si no le contactas&quot;, 
               o &quot;Basado en tendencias, este mes recibirás $500,000 en donaciones&quot;. ¡El sistema 
@@ -338,37 +338,37 @@ export default function Phase6AnalyticsGuide() {
                 feature: "🎯 Predicción de Retención",
                 description: "Te dice qué miembros están en riesgo de dejar la iglesia",
                 example: "Juan no ha asistido en 3 semanas → Sistema sugiere: 'Contactar urgente'",
-                icon: <TrendingUp className="h-6 w-6 text-red-600" />
+                icon: <TrendingUp className="h-6 w-6 text-[hsl(var(--destructive))]" />
               },
               {
                 feature: "💎 Recomendaciones de Ministerios",
                 description: "Sugiere en qué ministerio cada persona encajaría mejor",
                 example: "María tiene don de enseñanza → Recomienda: 'Escuela Dominical'",
-                icon: <Award className="h-6 w-6 text-yellow-600" />
+                icon: <Award className="h-6 w-6 text-[hsl(var(--warning))]" />
               },
               {
                 feature: "📈 Proyecciones Financieras",
                 description: "Predice cuánto recibirás de donaciones próximo mes",
                 example: "Basado en 6 meses de datos: 'Enero estimado: $650,000 ±15%'",
-                icon: <LineChart className="h-6 w-6 text-green-600" />
+                icon: <LineChart className="h-6 w-6 text-[hsl(var(--success))]" />
               },
               {
                 feature: "🚨 Alertas Proactivas",
                 description: "Te avisa de problemas potenciales antes de que pasen",
                 example: "Asistencia bajó 20% → Alerta: 'Revisar programación de cultos'",
-                icon: <Bell className="h-6 w-6 text-orange-600" />
+                icon: <Bell className="h-6 w-6 text-[hsl(var(--warning))]" />
               },
               {
                 feature: "🌱 Análisis de Crecimiento Espiritual",
                 description: "Mide el progreso espiritual de cada miembro",
                 example: "Pedro pasó de VISITANTE a CRECIMIENTO en 3 meses → '¡Excelente!'",
-                icon: <Activity className="h-6 w-6 text-blue-600" />
+                icon: <Activity className="h-6 w-6 text-[hsl(var(--info))]" />
               },
               {
                 feature: "🎓 Sugerencias de Contenido",
                 description: "Recomienda qué temas predicar según necesidades",
                 example: "Muchos miembros en crisis financiera → 'Enseñar sobre mayordomía'",
-                icon: <MessageSquare className="h-6 w-6 text-purple-600" />
+                icon: <MessageSquare className="h-6 w-6 text-[hsl(var(--lavender))]" />
               }
             ].map((feature, index) => (
               <Card key={index} className="border-l-4 border-l-purple-500 hover:shadow-lg transition-shadow">
@@ -377,19 +377,19 @@ export default function Phase6AnalyticsGuide() {
                     {feature.icon}
                     <h4 className="font-semibold text-lg">{feature.feature}</h4>
                   </div>
-                  <p className="text-sm text-gray-700 mb-3">{feature.description}</p>
-                  <div className="bg-purple-50 p-3 rounded">
-                    <p className="text-xs font-medium text-purple-800 mb-1">💡 Ejemplo Real:</p>
-                    <p className="text-xs text-purple-700 italic">{feature.example}</p>
+                  <p className="text-sm text-muted-foreground mb-3">{feature.description}</p>
+                  <div className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded">
+                    <p className="text-xs font-medium text-[hsl(var(--lavender))] mb-1">💡 Ejemplo Real:</p>
+                    <p className="text-xs text-[hsl(var(--lavender))] italic">{feature.example}</p>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg">
+          <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <Target className="h-5 w-5 text-blue-600" />
+              <Target className="h-5 w-5 text-[hsl(var(--info))]" />
               Cómo Acceder a las Analíticas Inteligentes
             </h4>
             <ol className="text-sm space-y-2 ml-4">
@@ -404,8 +404,8 @@ export default function Phase6AnalyticsGuide() {
       </Card>
 
       {/* Exportar Reportes */}
-      <Card className="border-teal-300">
-        <CardHeader className="bg-teal-50">
+      <Card className="border-[hsl(var(--info)/0.30)]">
+        <CardHeader className="bg-[hsl(var(--info)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-xl">
             <Download className="h-6 w-6" />
             Exportar y Compartir Reportes
@@ -443,12 +443,12 @@ export default function Phase6AnalyticsGuide() {
                 <CardContent className="pt-6 text-center">
                   <div className="text-5xl mb-3">{format.icon}</div>
                   <h4 className="font-semibold text-lg mb-2">{format.format}</h4>
-                  <p className="text-sm text-gray-600 mb-3">{format.description}</p>
-                  <div className="bg-teal-50 p-3 rounded text-xs text-left">
-                    <p className="font-medium text-teal-800 mb-2">✅ Mejor Para:</p>
-                    <p className="text-teal-700 mb-2">{format.best}</p>
-                    <p className="font-medium text-teal-800 mb-1">Incluye:</p>
-                    <ul className="space-y-1 text-teal-700">
+                  <p className="text-sm text-muted-foreground mb-3">{format.description}</p>
+                  <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded text-xs text-left">
+                    <p className="font-medium text-[hsl(var(--info))] mb-2">✅ Mejor Para:</p>
+                    <p className="text-[hsl(var(--info))] mb-2">{format.best}</p>
+                    <p className="font-medium text-[hsl(var(--info))] mb-1">Incluye:</p>
+                    <ul className="space-y-1 text-[hsl(var(--info))]">
                       {format.includes.map((item, idx) => (
                         <li key={idx}>• {item}</li>
                       ))}
@@ -459,9 +459,9 @@ export default function Phase6AnalyticsGuide() {
             ))}
           </div>
 
-          <div className="bg-green-50 p-4 rounded-lg">
+          <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <Download className="h-5 w-5 text-green-600" />
+              <Download className="h-5 w-5 text-[hsl(var(--success))]" />
               Pasos para Exportar Reportes
             </h4>
             <ol className="text-sm space-y-2 ml-4">
@@ -477,20 +477,20 @@ export default function Phase6AnalyticsGuide() {
       </Card>
 
       {/* Personalizar Dashboard */}
-      <Card className="border-pink-300">
-        <CardHeader className="bg-pink-50">
+      <Card className="border-[hsl(var(--lavender)/0.30)]">
+        <CardHeader className="bg-[hsl(var(--destructive)/0.08)]">
           <CardTitle className="flex items-center gap-3 text-xl">
             <RefreshCw className="h-6 w-6" />
             Personalizar Tu Dashboard
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 pt-6">
-          <p className="text-sm text-gray-700">
+          <p className="text-sm text-muted-foreground">
             Puedes decidir qué tarjetas ver y en qué orden. ¡Hazlo tu dashboard ideal!
           </p>
 
           <div className="space-y-3">
-            <div className="bg-pink-50 p-3 rounded">
+            <div className="bg-[hsl(var(--destructive)/0.08)] p-3 rounded">
               <h5 className="font-medium text-sm mb-2">🎨 Cómo Personalizar:</h5>
               <ul className="text-xs space-y-1 ml-4">
                 <li>1. En tu Dashboard, haz clic en el botón ⚙️ &quot;Personalizar&quot; (arriba a la derecha)</li>
@@ -501,18 +501,18 @@ export default function Phase6AnalyticsGuide() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-3 text-xs">
-              <div className="bg-green-50 p-3 rounded">
-                <p className="font-medium text-green-800 mb-1">✅ Ideas de Personalización:</p>
-                <ul className="space-y-1 text-green-700">
+              <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded">
+                <p className="font-medium text-[hsl(var(--success))] mb-1">✅ Ideas de Personalización:</p>
+                <ul className="space-y-1 text-[hsl(var(--success))]">
                   <li>• Si eres pastor: Prioriza miembros y eventos</li>
                   <li>• Si eres tesorero: Finanzas arriba</li>
                   <li>• Si lideras jóvenes: Solo ver jóvenes</li>
                   <li>• Oculta tarjetas que no usas</li>
                 </ul>
               </div>
-              <div className="bg-blue-50 p-3 rounded">
-                <p className="font-medium text-blue-800 mb-1">💡 Consejo:</p>
-                <p className="text-blue-700">
+              <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
+                <p className="font-medium text-[hsl(var(--info))] mb-1">💡 Consejo:</p>
+                <p className="text-[hsl(var(--info))]">
                   Tu personalización se guarda automáticamente. La próxima vez que entres, 
                   verás TU dashboard personalizado, no el de otros usuarios.
                 </p>
@@ -523,9 +523,9 @@ export default function Phase6AnalyticsGuide() {
       </Card>
 
       {/* Troubleshooting */}
-      <Card className="border-red-300 bg-red-50">
+      <Card className="border-[hsl(var(--destructive)/0.4)] bg-[hsl(var(--destructive)/0.10)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-red-900">
+          <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <AlertTriangle className="h-6 w-6" />
             Problemas Comunes con Analíticas
           </CardTitle>
@@ -569,9 +569,9 @@ export default function Phase6AnalyticsGuide() {
               ]
             }
           ].map((item, index) => (
-            <div key={index} className="bg-white p-4 rounded border border-red-200">
-              <p className="font-medium text-red-800 mb-2">{item.problem}</p>
-              <ul className="text-sm text-red-700 space-y-1 ml-4">
+            <div key={index} className="bg-white p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
+              <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
+              <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
                   <li key={idx}>✓ {solution}</li>
                 ))}
@@ -582,9 +582,9 @@ export default function Phase6AnalyticsGuide() {
       </Card>
 
       {/* Completion Badge */}
-      <Card className="bg-gradient-to-r from-green-100 to-blue-100 border-4 border-green-400">
+      <Card className="bg-[hsl(var(--success)/0.15)] border-4 border-[hsl(var(--success)/0.30)]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl text-green-900">
+          <CardTitle className="flex items-center gap-3 text-2xl text-foreground">
             <Gift className="h-10 w-10" />
             ¡Felicidades! Completaste el Onboarding
           </CardTitle>
@@ -592,10 +592,10 @@ export default function Phase6AnalyticsGuide() {
         <CardContent className="space-y-4">
           <div className="text-center p-6">
             <div className="text-6xl mb-4">🎉</div>
-            <h3 className="text-2xl font-bold text-green-800 mb-2">
+            <h3 className="text-2xl font-bold text-[hsl(var(--success))] mb-2">
               ¡Ya Sabes Usar Khesed-tek!
             </h3>
-            <p className="text-gray-700 mb-6">
+            <p className="text-muted-foreground mb-6">
               Completaste las 6 fases del onboarding. Ahora estás listo para administrar 
               tu iglesia como un profesional.
             </p>
@@ -613,37 +613,37 @@ export default function Phase6AnalyticsGuide() {
               <div key={index} className="bg-white p-4 rounded-lg text-center">
                 <div className="text-3xl mb-2">{item.icon}</div>
                 <p className="font-semibold text-sm">{item.phase}</p>
-                <p className="text-xs text-gray-600">{item.name}</p>
+                <p className="text-xs text-muted-foreground">{item.name}</p>
               </div>
             ))}
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg mt-6">
+          <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg mt-6">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
-              <Star className="h-5 w-5 text-blue-600" />
+              <Star className="h-5 w-5 text-[hsl(var(--info))]" />
               Próximos Pasos Recomendados
             </h4>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
                 <div>
                   <strong>Explora las funciones avanzadas:</strong> Voluntarios, Sermons, Website Builder, Marketing
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
                 <div>
                   <strong>Configura automatizaciones:</strong> Emails automáticos, recordatorios, seguimientos
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
                 <div>
                   <strong>Invita a tu equipo:</strong> Agrega pastores, líderes, y voluntarios al sistema
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
                 <div>
                   <strong>Revisa la guía completa de funciones:</strong> 70+ funciones disponibles
                 </div>
@@ -662,7 +662,7 @@ export default function Phase6AnalyticsGuide() {
           </Button>
         </Link>
         <Link href="/help/manual/all-features">
-          <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+          <Button size="lg" className="btn-cta-gradient text-white">
             Ver Todas las Funciones (70+)
             <ArrowRight className="h-5 w-5 ml-2" />
           </Button>

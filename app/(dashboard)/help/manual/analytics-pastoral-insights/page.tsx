@@ -36,21 +36,21 @@ export default function AnalyticsPastoralInsightsPage() {
               Esta nueva sección combina métricas operacionales diarias con análisis estratégico a largo plazo para la toma de decisiones ministeriales informadas.
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📋 Tabs</h4>
-                <p className="text-xl font-bold text-blue-600">2</p>
+                <p className="text-xl font-bold text-[hsl(var(--info))]">2</p>
               </div>
-              <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⏱️ Tiempo</h4>
-                <p className="text-xl font-bold text-green-600">25 min</p>
+                <p className="text-xl font-bold text-[hsl(var(--success))]">25 min</p>
               </div>
-              <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🎯 Nivel</h4>
-                <p className="text-lg font-bold text-purple-600">Avanzado</p>
+                <p className="text-lg font-bold text-[hsl(var(--lavender))]">Avanzado</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
                 <h4 className="font-semibold">👤 Rol Mínimo</h4>
-                <p className="text-lg font-bold text-orange-600">PASTOR</p>
+                <p className="text-lg font-bold text-[hsl(var(--warning))]">PASTOR</p>
               </div>
             </div>
           </CardContent>
@@ -60,7 +60,7 @@ export default function AnalyticsPastoralInsightsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               Tab &quot;Analíticas Ministeriales&quot; - Métricas Operacionales
             </CardTitle>
           </CardHeader>
@@ -87,7 +87,7 @@ export default function AnalyticsPastoralInsightsPage() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">⚡ Funciones de las Acciones Rápidas</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Exportar Excel:</strong> Incluye gráficos y formateo</li>
@@ -95,7 +95,7 @@ export default function AnalyticsPastoralInsightsPage() {
                   <li>• <strong>Exportar JSON:</strong> Para desarrolladores/sistemas externos</li>
                   <li>• <strong>Todos funcionalmente completos:</strong> Datos reales, no demos</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-blue-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                   <p className="text-xs"><strong>🔄 Actualización:</strong> Los datos se actualizan cada 5 minutos automáticamente</p>
                 </div>
               </div>
@@ -107,7 +107,7 @@ export default function AnalyticsPastoralInsightsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Tab &quot;Perspectivas Pastorales&quot; - Análisis Estratégico
             </CardTitle>
           </CardHeader>
@@ -134,7 +134,7 @@ export default function AnalyticsPastoralInsightsPage() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-purple-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">🎯 KPIs Ministeriales Clave</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-1 gap-3">
@@ -165,7 +165,7 @@ export default function AnalyticsPastoralInsightsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               Interpretación de Métricas Clave
             </CardTitle>
           </CardHeader>
@@ -174,7 +174,7 @@ export default function AnalyticsPastoralInsightsPage() {
               {/* Engagement Score */}
               <div className="border rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Target className="h-4 w-4 text-blue-600" />
+                  <Target className="h-4 w-4 text-[hsl(var(--info))]" />
                   <h4 className="font-medium">Puntuación de Engagement</h4>
                   <Badge variant="outline">0-100</Badge>
                 </div>
@@ -183,15 +183,15 @@ export default function AnalyticsPastoralInsightsPage() {
                 </p>
                 <div className="grid md:grid-cols-3 gap-3 text-xs">
                   <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-[hsl(var(--destructive)/0.10)]0 rounded-full"></div>
                     <span>0-40: Necesita atención inmediata</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-[hsl(var(--warning)/0.10)]0 rounded-full"></div>
                     <span>40-70: Bueno, con oportunidades</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-[hsl(var(--success)/0.10)]0 rounded-full"></div>
                     <span>70+: Excelente participación</span>
                   </div>
                 </div>
@@ -200,7 +200,7 @@ export default function AnalyticsPastoralInsightsPage() {
               {/* Automation Success */}
               <div className="border rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                   <h4 className="font-medium">Tasa de Éxito de Automatización</h4>
                   <Badge variant="outline">%</Badge>
                 </div>
@@ -234,24 +234,24 @@ export default function AnalyticsPastoralInsightsPage() {
             <div className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <h4 className="font-medium text-green-700">✅ Indicadores Positivos</h4>
+                  <h4 className="font-medium text-[hsl(var(--success))]">✅ Indicadores Positivos</h4>
                   <div className="space-y-3">
                     <div className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5" />
                       <div>
                         <div className="text-sm font-medium">Engagement Score &gt; 70</div>
                         <div className="text-xs text-muted-foreground">Congregación activamente involucrada</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5" />
                       <div>
                         <div className="text-sm font-medium">Automatización &gt; 80%</div>
                         <div className="text-xs text-muted-foreground">Sistema de seguimiento efectivo</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                      <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5" />
                       <div>
                         <div className="text-sm font-medium">Visitantes recurrentes ↑</div>
                         <div className="text-xs text-muted-foreground">Buena retención de nuevas personas</div>
@@ -261,24 +261,24 @@ export default function AnalyticsPastoralInsightsPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="font-medium text-orange-700">⚠️ Áreas de Atención</h4>
+                  <h4 className="font-medium text-[hsl(var(--warning))]">⚠️ Áreas de Atención</h4>
                   <div className="space-y-3">
                     <div className="flex items-start gap-2">
-                      <AlertTriangle className="h-4 w-4 text-orange-600 mt-0.5" />
+                      <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))] mt-0.5" />
                       <div>
                         <div className="text-sm font-medium">Engagement Score &lt; 50</div>
                         <div className="text-xs text-muted-foreground">Revisar programas y servicios</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <AlertTriangle className="h-4 w-4 text-orange-600 mt-0.5" />
+                      <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))] mt-0.5" />
                       <div>
                         <div className="text-sm font-medium">Automatización &lt; 60%</div>
                         <div className="text-xs text-muted-foreground">Mejorar flujos de seguimiento</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <AlertTriangle className="h-4 w-4 text-orange-600 mt-0.5" />
+                      <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))] mt-0.5" />
                       <div>
                         <div className="text-sm font-medium">Pocos visitantes nuevos</div>
                         <div className="text-xs text-muted-foreground">Intensificar esfuerzos evangelísticos</div>
@@ -292,15 +292,15 @@ export default function AnalyticsPastoralInsightsPage() {
         </Card>
 
         {/* Best Practices */}
-        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <Card className="bg-gradient-to-r from-primary/20 to-primary/10 border-[hsl(var(--info)/0.3)]">
           <CardHeader>
-            <CardTitle className="text-blue-800">📋 Mejores Prácticas para Líderes</CardTitle>
+            <CardTitle className="text-[hsl(var(--info))]">📋 Mejores Prácticas para Líderes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-3">
-                <h4 className="font-medium text-blue-800">📊 Monitoreo Regular</h4>
-                <ul className="text-sm text-blue-700 space-y-1">
+                <h4 className="font-medium text-[hsl(var(--info))]">📊 Monitoreo Regular</h4>
+                <ul className="text-sm text-[hsl(var(--info))] space-y-1">
                   <li>• Revisar métricas semanalmente los lunes</li>
                   <li>• Identificar tendencias mensuales en reuniones de liderazgo</li>
                   <li>• Comparar con períodos anteriores para contexto</li>
@@ -309,8 +309,8 @@ export default function AnalyticsPastoralInsightsPage() {
               </div>
               
               <div className="space-y-3">
-                <h4 className="font-medium text-blue-800">🎯 Acciones Específicas</h4>
-                <ul className="text-sm text-blue-700 space-y-1">
+                <h4 className="font-medium text-[hsl(var(--info))]">🎯 Acciones Específicas</h4>
+                <ul className="text-sm text-[hsl(var(--info))] space-y-1">
                   <li>• Personalizar seguimientos según engagement score</li>
                   <li>• Ajustar programas basado en participación</li>
                   <li>• Celebrar y replicar éxitos medibles</li>

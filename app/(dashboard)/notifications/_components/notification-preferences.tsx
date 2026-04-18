@@ -77,28 +77,28 @@ const NOTIFICATION_CATEGORIES = [
     label: 'Eventos',
     description: 'Nuevos eventos, cambios de horario, recordatorios',
     icon: Calendar,
-    color: 'text-blue-500'
+    color: 'text-[hsl(var(--info))]'
   },
   {
     key: 'donations',
     label: 'Donaciones',
     description: 'Confirmaciones, recibos, campañas de donación',
     icon: Bell,
-    color: 'text-green-500'
+    color: 'text-[hsl(var(--success))]'
   },
   {
     key: 'communications',
     label: 'Comunicaciones',
     description: 'Anuncios, mensajes del pastor, noticias de la iglesia',
     icon: Mail,
-    color: 'text-purple-500'
+    color: 'text-[hsl(var(--lavender))]'
   },
   {
     key: 'systemUpdates',
     label: 'Sistema',
     description: 'Actualizaciones del sistema, mantenimiento, seguridad',
     icon: Settings,
-    color: 'text-orange-500'
+    color: 'text-[hsl(var(--warning))]'
   }
 ]
 
@@ -301,7 +301,7 @@ export function NotificationPreferences() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Mail className="h-5 w-5 text-blue-500" />
+                <Mail className="h-5 w-5 text-[hsl(var(--info))]" />
                 Notificaciones por Email
               </CardTitle>
               <CardDescription>
@@ -354,7 +354,7 @@ export function NotificationPreferences() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Bell className="h-5 w-5 text-green-500" />
+                <Bell className="h-5 w-5 text-[hsl(var(--success))]" />
                 Notificaciones en la App
               </CardTitle>
               <CardDescription>
@@ -431,7 +431,7 @@ export function NotificationPreferences() {
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Mail className="h-4 w-4 text-blue-500" />
+                        <Mail className="h-4 w-4 text-[hsl(var(--info))]" />
                         <Label>Email</Label>
                       </div>
                       <Switch
@@ -443,7 +443,7 @@ export function NotificationPreferences() {
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Bell className="h-4 w-4 text-green-500" />
+                        <Bell className="h-4 w-4 text-[hsl(var(--success))]" />
                         <Label>In-App</Label>
                       </div>
                       <Switch
@@ -455,7 +455,7 @@ export function NotificationPreferences() {
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Smartphone className="h-4 w-4 text-purple-500" />
+                        <Smartphone className="h-4 w-4 text-[hsl(var(--lavender))]" />
                         <Label>Push (Futuro)</Label>
                       </div>
                       <Switch
@@ -476,7 +476,7 @@ export function NotificationPreferences() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Moon className="h-5 w-5 text-indigo-500" />
+                <Moon className="h-5 w-5 text-primary" />
                 Horas Silenciosas
               </CardTitle>
               <CardDescription>
@@ -533,7 +533,7 @@ export function NotificationPreferences() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sun className="h-5 w-5 text-yellow-500" />
+                <Sun className="h-5 w-5 text-[hsl(var(--warning))]" />
                 Configuración de Fin de Semana
               </CardTitle>
               <CardDescription>
@@ -562,7 +562,7 @@ export function NotificationPreferences() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Mail className="h-5 w-5 text-orange-500" />
+                <Mail className="h-5 w-5 text-[hsl(var(--warning))]" />
                 Resumen Digest
               </CardTitle>
               <CardDescription>
@@ -614,7 +614,7 @@ export function NotificationPreferences() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Smartphone className="h-5 w-5 text-purple-500" />
+                <Smartphone className="h-5 w-5 text-[hsl(var(--lavender))]" />
                 Notificaciones Push (Futuro)
               </CardTitle>
               <CardDescription>
@@ -638,7 +638,7 @@ export function NotificationPreferences() {
 
               <div className="p-4 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Info className="h-4 w-4 text-blue-500" />
+                  <Info className="h-4 w-4 text-[hsl(var(--info))]" />
                   <Label className="font-medium">Próximamente</Label>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -655,7 +655,7 @@ export function NotificationPreferences() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Check className="h-5 w-5 text-green-500" />
+            <Check className="h-5 w-5 text-[hsl(var(--success))]" />
             Resumen de Configuración
           </CardTitle>
         </CardHeader>
@@ -663,19 +663,19 @@ export function NotificationPreferences() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div className="space-y-1">
               <Label className="font-medium">Email</Label>
-              <p className={preferences.emailEnabled ? 'text-green-600' : 'text-red-600'}>
+              <p className={preferences.emailEnabled ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--destructive))]'}>
                 {preferences.emailEnabled ? 'Habilitado' : 'Deshabilitado'}
               </p>
             </div>
             <div className="space-y-1">
               <Label className="font-medium">In-App</Label>
-              <p className={preferences.inAppEnabled ? 'text-green-600' : 'text-red-600'}>
+              <p className={preferences.inAppEnabled ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--destructive))]'}>
                 {preferences.inAppEnabled ? 'Habilitado' : 'Deshabilitado'}
               </p>
             </div>
             <div className="space-y-1">
               <Label className="font-medium">Horas Silenciosas</Label>
-              <p className={preferences.quietHoursEnabled ? 'text-blue-600' : 'text-gray-600'}>
+              <p className={preferences.quietHoursEnabled ? 'text-[hsl(var(--info))]' : 'text-muted-foreground'}>
                 {preferences.quietHoursEnabled 
                   ? `${preferences.quietHoursStart || '22:00'} - ${preferences.quietHoursEnd || '08:00'}`
                   : 'Deshabilitado'
@@ -684,7 +684,7 @@ export function NotificationPreferences() {
             </div>
             <div className="space-y-1">
               <Label className="font-medium">Digest</Label>
-              <p className={preferences.digestEnabled ? 'text-blue-600' : 'text-gray-600'}>
+              <p className={preferences.digestEnabled ? 'text-[hsl(var(--info))]' : 'text-muted-foreground'}>
                 {preferences.digestEnabled 
                   ? preferences.digestFrequency === 'DAILY' ? 'Diario' : 'Semanal'
                   : 'Deshabilitado'

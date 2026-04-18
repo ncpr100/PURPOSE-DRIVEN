@@ -239,7 +239,7 @@ export function BulkGenderUpdateClient({ userRole }: { userRole: string }) {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 text-orange-500" />
+                  <AlertCircle className="h-4 w-4 text-[hsl(var(--warning))]" />
                   <div>
                     <p className="text-2xl font-bold">{stats.total}</p>
                     <p className="text-sm text-muted-foreground">Sin Género</p>
@@ -251,7 +251,7 @@ export function BulkGenderUpdateClient({ userRole }: { userRole: string }) {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
-                  <Wand2 className="h-4 w-4 text-blue-500" />
+                  <Wand2 className="h-4 w-4 text-[hsl(var(--info))]" />
                   <div>
                     <p className="text-2xl font-bold">{stats.withSuggestions}</p>
                     <p className="text-sm text-muted-foreground">Con Sugerencia</p>
@@ -263,7 +263,7 @@ export function BulkGenderUpdateClient({ userRole }: { userRole: string }) {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <CheckCircle className="h-4 w-4 text-[hsl(var(--success))]" />
                   <div>
                     <p className="text-2xl font-bold">{stats.selected}</p>
                     <p className="text-sm text-muted-foreground">Seleccionados</p>
@@ -292,7 +292,7 @@ export function BulkGenderUpdateClient({ userRole }: { userRole: string }) {
                 <div className="space-y-4">
                   <div className="flex gap-2">
                     <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
                       <Input
                         placeholder="Buscar por nombre..."
                         value={searchTerm}

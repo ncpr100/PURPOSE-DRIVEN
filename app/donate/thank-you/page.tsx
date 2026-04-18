@@ -88,40 +88,40 @@ export default function ThankYouPage() {
       case 'completed':
         return {
           icon: CheckCircle,
-          color: 'text-green-600',
-          bgColor: 'bg-green-50',
+          color: 'text-[hsl(var(--success))]',
+          bgColor: 'bg-[hsl(var(--success)/0.10)]',
           title: '¡Donación Exitosa!',
           message: 'Tu donación se ha procesado correctamente. Gracias por tu generosidad.'
         }
       case 'pending':
         return {
           icon: Clock,
-          color: 'text-yellow-600',
-          bgColor: 'bg-yellow-50',
+          color: 'text-[hsl(var(--warning))]',
+          bgColor: 'bg-[hsl(var(--warning)/0.10)]',
           title: 'Pago en Proceso',
           message: 'Tu pago está siendo procesado. Te notificaremos cuando se complete.'
         }
       case 'failed':
         return {
           icon: XCircle,
-          color: 'text-red-600',
-          bgColor: 'bg-red-50',
+          color: 'text-[hsl(var(--destructive))]',
+          bgColor: 'bg-[hsl(var(--destructive)/0.10)]',
           title: 'Pago Fallido',
           message: 'No pudimos procesar tu pago. Por favor, intenta nuevamente.'
         }
       case 'cancelled':
         return {
           icon: XCircle,
-          color: 'text-gray-600',
-          bgColor: 'bg-gray-50',
+          color: 'text-muted-foreground',
+          bgColor: 'bg-muted/30',
           title: 'Pago Cancelado',
           message: 'El pago fue cancelado. Puedes intentar nuevamente cuando gustes.'
         }
       default:
         return {
           icon: Clock,
-          color: 'text-gray-600',
-          bgColor: 'bg-gray-50',
+          color: 'text-muted-foreground',
+          bgColor: 'bg-muted/30',
           title: 'Estado Desconocido',
           message: 'Verificando el estado de tu pago...'
         }
@@ -147,12 +147,12 @@ export default function ThankYouPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="flex items-center justify-center p-8">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Verificando estado del pago...</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[hsl(var(--info))] mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Verificando estado del pago...</p>
             </div>
           </CardContent>
         </Card>
@@ -162,12 +162,12 @@ export default function ThankYouPage() {
 
   if (error || !paymentStatus) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--destructive))] to-[hsl(var(--lavender))] flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="text-center p-8">
-            <XCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-            <h1 className="text-xl font-bold text-gray-900 mb-2">Error</h1>
-            <p className="text-gray-600 mb-6">{error}</p>
+            <XCircle className="h-16 w-16 text-[hsl(var(--destructive))] mx-auto mb-4" />
+            <h1 className="text-xl font-bold text-foreground mb-2">Error</h1>
+            <p className="text-muted-foreground mb-6">{error}</p>
             <Button onClick={() => window.location.href = '/'}>
               <Home className="mr-2 h-4 w-4" />
               Volver al Inicio
@@ -182,7 +182,7 @@ export default function ThankYouPage() {
   const StatusIcon = statusInfo.icon
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           {/* Status Card */}
@@ -191,12 +191,12 @@ export default function ThankYouPage() {
               <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${statusInfo.bgColor} mb-4`}>
                 <StatusIcon className={`h-8 w-8 ${statusInfo.color}`} />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">{statusInfo.title}</h1>
-              <p className="text-gray-600 mb-6">{statusInfo.message}</p>
+              <h1 className="text-2xl font-bold text-foreground mb-2">{statusInfo.title}</h1>
+              <p className="text-muted-foreground mb-6">{statusInfo.message}</p>
               
               {paymentStatus.status === 'completed' && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-green-700 flex items-center gap-2 justify-center">
+                <div className="bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg p-4 mb-4">
+                  <p className="text-sm text-[hsl(var(--success))] flex items-center gap-2 justify-center">
                     <Mail className="h-4 w-4" />
                     Se ha enviado un recibo a <strong>{paymentStatus.donorEmail}</strong>
                   </p>
@@ -215,37 +215,37 @@ export default function ThankYouPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-600">Referencia:</span>
+                <span className="text-muted-foreground">Referencia:</span>
                 <span className="font-medium">{paymentStatus.reference}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Monto:</span>
+                <span className="text-muted-foreground">Monto:</span>
                 <span className="font-medium text-lg">
                   {formatCurrency(paymentStatus.amount, paymentStatus.currency)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Iglesia:</span>
+                <span className="text-muted-foreground">Iglesia:</span>
                 <span className="font-medium">{paymentStatus.churchName}</span>
               </div>
               {paymentStatus.categoryName && (
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Categoría:</span>
+                  <span className="text-muted-foreground">Categoría:</span>
                   <span className="font-medium">{paymentStatus.categoryName}</span>
                 </div>
               )}
               <div className="flex justify-between">
-                <span className="text-gray-600">Donante:</span>
+                <span className="text-muted-foreground">Donante:</span>
                 <span className="font-medium">{paymentStatus.donorName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Fecha:</span>
+                <span className="text-muted-foreground">Fecha:</span>
                 <span className="font-medium">
                   {formatDate(paymentStatus.completedAt || paymentStatus.createdAt)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Estado:</span>
+                <span className="text-muted-foreground">Estado:</span>
                 <span className={`font-medium ${statusInfo.color}`}>
                   {paymentStatus.status === 'completed' ? 'Completado' :
                    paymentStatus.status === 'pending' ? 'Pendiente' :
@@ -289,13 +289,13 @@ export default function ThankYouPage() {
             <Card className="mt-6">
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-3">Tu impacto</h3>
-                <p className="text-gray-600 text-sm mb-4">
+                <p className="text-muted-foreground text-sm mb-4">
                   Gracias a tu donación de <strong>{formatCurrency(paymentStatus.amount)}</strong>, 
                   estás contribuyendo directamente a los ministerios y programas que transforman 
                   vidas en nuestra comunidad.
                 </p>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800">
+                <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
+                  <p className="text-sm text-[hsl(var(--info))]">
                     💙 <strong>¡Tu generosidad marca la diferencia!</strong> 
                     Cada donación nos ayuda a continuar nuestro trabajo de servicio y amor en la comunidad.
                   </p>
@@ -308,7 +308,7 @@ export default function ThankYouPage() {
           {paymentStatus.status === 'failed' && (
             <Card className="mt-6">
               <CardContent className="p-6 text-center">
-                <p className="text-gray-600 mb-4">
+                <p className="text-muted-foreground mb-4">
                   Si el problema persiste, puedes contactarnos o intentar con otro método de pago.
                 </p>
                 <Button 

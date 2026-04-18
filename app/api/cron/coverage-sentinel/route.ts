@@ -43,10 +43,7 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         errors.push(`church:${church.id}: ${msg}`);
-        console.error(
-          `[COVERAGE_SENTINEL] Run failed for ${church.id}:`,
-          err
-        );
+        console.error(`[COVERAGE_SENTINEL] Run failed for ${church.id}:`, err);
       }
     }
 
@@ -60,7 +57,7 @@ export async function GET(req: NextRequest) {
     console.error("[COVERAGE_SENTINEL] Cron error:", err);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

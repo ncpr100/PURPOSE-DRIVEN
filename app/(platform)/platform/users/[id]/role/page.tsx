@@ -114,15 +114,15 @@ export default function EditUserRolePage() {
   const getRoleColor = (role: string) => {
     switch (role) {
       case 'SUPER_ADMIN':
-        return 'bg-red-100 text-red-700 hover:bg-red-200'
+        return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive)/0.20)]'
       case 'ADMIN_IGLESIA':
-        return 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+        return 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] hover:bg-[hsl(var(--info)/0.20)]'
       case 'PASTOR':
-        return 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+        return 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender)/0.20)]'
       case 'LIDER':
-        return 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+        return 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] hover:bg-[hsl(var(--warning)/0.15)]'
       default:
-        return 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+        return 'bg-muted/50 text-muted-foreground hover:bg-muted'
     }
   }
 
@@ -140,8 +140,8 @@ export default function EditUserRolePage() {
           <h1 className="text-2xl font-semibold">Cargando...</h1>
         </div>
         <div className="animate-pulse space-y-4">
-          <div className="h-32 bg-gray-200 rounded-lg"></div>
-          <div className="h-48 bg-gray-200 rounded-lg"></div>
+          <div className="h-32 bg-muted rounded-lg"></div>
+          <div className="h-48 bg-muted rounded-lg"></div>
         </div>
       </div>
     )
@@ -156,7 +156,7 @@ export default function EditUserRolePage() {
           </Button>
           <h1 className="text-2xl font-semibold">Usuario no encontrado</h1>
         </div>
-        <p className="text-gray-600">No se pudo encontrar el usuario solicitado.</p>
+        <p className="text-muted-foreground">No se pudo encontrar el usuario solicitado.</p>
       </div>
     )
   }
@@ -173,7 +173,7 @@ export default function EditUserRolePage() {
           </Button>
           <div>
             <h1 className="text-2xl font-semibold">Editar Rol de Usuario</h1>
-            <p className="text-gray-600">Modificar permisos y accesos del usuario</p>
+            <p className="text-muted-foreground">Modificar permisos y accesos del usuario</p>
           </div>
         </div>
       </div>
@@ -190,12 +190,12 @@ export default function EditUserRolePage() {
           <CardContent className="space-y-4">
             <div className="grid gap-3">
               <div>
-                <label className="text-sm font-medium text-gray-600">Nombre</label>
+                <label className="text-sm font-medium text-muted-foreground">Nombre</label>
                 <p className="text-lg font-medium">{user.name}</p>
               </div>
               
               <div>
-                <label className="text-sm font-medium text-gray-600">Correo</label>
+                <label className="text-sm font-medium text-muted-foreground">Correo</label>
                 <p className="flex items-center gap-2">
                   <Mail className="h-4 w-4" />
                   {user.email}
@@ -204,7 +204,7 @@ export default function EditUserRolePage() {
 
               {user.church && (
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Iglesia</label>
+                  <label className="text-sm font-medium text-muted-foreground">Iglesia</label>
                   <p className="flex items-center gap-2">
                     <Church className="h-4 w-4" />
                     {user.church.name}
@@ -213,7 +213,7 @@ export default function EditUserRolePage() {
               )}
 
               <div>
-                <label className="text-sm font-medium text-gray-600">Rol Actual</label>
+                <label className="text-sm font-medium text-muted-foreground">Rol Actual</label>
                 <Badge variant="secondary" className={getRoleColor(user.role)}>
                   <Shield className="h-3 w-3 mr-1" />
                   {ROLES.find(r => r.value === user.role)?.label || user.role}
@@ -245,7 +245,7 @@ export default function EditUserRolePage() {
                         <Shield className="h-4 w-4" />
                         <div>
                           <div className="font-medium">{role.label}</div>
-                          <div className="text-sm text-gray-600">{role.description}</div>
+                          <div className="text-sm text-muted-foreground">{role.description}</div>
                         </div>
                       </div>
                     </SelectItem>
@@ -255,11 +255,11 @@ export default function EditUserRolePage() {
             </div>
 
             {getSelectedRoleInfo() && (
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">
+              <div className="p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">
+                <h4 className="font-medium text-foreground mb-2">
                   {getSelectedRoleInfo()?.label}
                 </h4>
-                <p className="text-sm text-blue-700">
+                <p className="text-sm text-[hsl(var(--info))]">
                   {getSelectedRoleInfo()?.description}
                 </p>
               </div>
@@ -296,7 +296,7 @@ export default function EditUserRolePage() {
           </Button>
 
           {hasRoleChanged && (
-            <div className="text-sm text-amber-600">
+            <div className="text-sm text-[hsl(var(--warning))]">
               ⚠️ Tienes cambios sin guardar
             </div>
           )}

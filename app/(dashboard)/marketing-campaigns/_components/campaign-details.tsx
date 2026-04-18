@@ -20,11 +20,11 @@ interface CampaignDetailsProps {
 }
 
 const statusColors = {
-  DRAFT: 'bg-gray-100 text-gray-800',
-  ACTIVE: 'bg-green-100 text-green-800',
-  PAUSED: 'bg-yellow-100 text-yellow-800',
-  COMPLETED: 'bg-blue-100 text-blue-800',
-  CANCELLED: 'bg-red-100 text-red-800'
+  DRAFT: 'bg-muted/50 text-foreground',
+  ACTIVE: 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]',
+  PAUSED: 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]',
+  COMPLETED: 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]',
+  CANCELLED: 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
 };
 
 export default function CampaignDetails({
@@ -129,7 +129,7 @@ export default function CampaignDetails({
                campaign.status.toLowerCase() === 'cancelled' ? 'Cancelada' :
                campaign.status.toLowerCase()}
               </Badge>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted-foreground">
                 Creado el {new Date(campaign.createdAt || campaign.startDate).toLocaleDateString()}
               </span>
             </div>
@@ -256,7 +256,7 @@ export default function CampaignDetails({
                 {campaign.description && (
                   <div>
                     <h4 className="font-medium mb-2">Descripción</h4>
-                    <p className="text-sm text-gray-600">{campaign.description}</p>
+                    <p className="text-sm text-muted-foreground">{campaign.description}</p>
                   </div>
                 )}
 
@@ -376,10 +376,10 @@ export default function CampaignDetails({
                             </Badge>
                             {post.title && <span className="font-medium">{post.title}</span>}
                           </div>
-                          <p className="text-sm text-gray-900 mb-2 line-clamp-3">
+                          <p className="text-sm text-foreground mb-2 line-clamp-3">
                             {post.content}
                           </p>
-                          <div className="flex items-center text-xs text-gray-500 space-x-4">
+                          <div className="flex items-center text-xs text-muted-foreground space-x-4">
                             <span>Plataformas: {JSON.parse(post.platforms || '[]').join(', ')}</span>
                             {post.scheduledAt && (
                               <span>Programado: {new Date(post.scheduledAt).toLocaleDateString()}</span>
@@ -394,7 +394,7 @@ export default function CampaignDetails({
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-muted-foreground">
                   <Target className="mx-auto h-12 w-12 text-gray-300" />
                   <h3 className="mt-2 text-sm font-medium">Sin posts aún</h3>
                   <p className="mt-1 text-sm">Cree posts en redes sociales y asígnelos a esta campaña.</p>
@@ -410,7 +410,7 @@ export default function CampaignDetails({
               <CardTitle>Analíticas de Campaña</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 <BarChart3 className="mx-auto h-12 w-12 text-gray-300" />
                 <h3 className="mt-2 text-sm font-medium">Analíticas próximamente</h3>
                 <p className="mt-1 text-sm">Las métricas de desempeño de la campaña estarán disponibles aquí.</p>

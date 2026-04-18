@@ -88,15 +88,15 @@ export default function UserDetailsPage() {
   const getRoleColor = (role: string) => {
     switch (role) {
       case 'SUPER_ADMIN':
-        return 'bg-red-100 text-red-700 hover:bg-red-200'
+        return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] hover:bg-[hsl(var(--destructive)/0.20)]'
       case 'ADMIN_IGLESIA':
-        return 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+        return 'bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] hover:bg-[hsl(var(--info)/0.20)]'
       case 'PASTOR':
-        return 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+        return 'bg-[hsl(var(--lavender)/0.15)] text-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender)/0.20)]'
       case 'LIDER':
-        return 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+        return 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] hover:bg-[hsl(var(--warning)/0.15)]'
       default:
-        return 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+        return 'bg-muted/50 text-muted-foreground hover:bg-muted'
     }
   }
 
@@ -110,8 +110,8 @@ export default function UserDetailsPage() {
           <h1 className="text-2xl font-semibold">Cargando...</h1>
         </div>
         <div className="animate-pulse space-y-4">
-          <div className="h-32 bg-gray-200 rounded-lg"></div>
-          <div className="h-48 bg-gray-200 rounded-lg"></div>
+          <div className="h-32 bg-muted rounded-lg"></div>
+          <div className="h-48 bg-muted rounded-lg"></div>
         </div>
       </div>
     )
@@ -126,7 +126,7 @@ export default function UserDetailsPage() {
           </Button>
           <h1 className="text-2xl font-semibold">Usuario no encontrado</h1>
         </div>
-        <p className="text-gray-600">No se pudo encontrar el usuario solicitado.</p>
+        <p className="text-muted-foreground">No se pudo encontrar el usuario solicitado.</p>
       </div>
     )
   }
@@ -141,7 +141,7 @@ export default function UserDetailsPage() {
           </Button>
           <div>
             <h1 className="text-2xl font-semibold">Detalles del Usuario</h1>
-            <p className="text-gray-600">Información completa del usuario</p>
+            <p className="text-muted-foreground">Información completa del usuario</p>
           </div>
         </div>
 
@@ -168,12 +168,12 @@ export default function UserDetailsPage() {
           <CardContent className="space-y-4">
             <div className="grid gap-3">
               <div>
-                <label className="text-sm font-medium text-gray-600">Nombre Completo</label>
+                <label className="text-sm font-medium text-muted-foreground">Nombre Completo</label>
                 <p className="text-lg font-medium">{user.name}</p>
               </div>
               
               <div>
-                <label className="text-sm font-medium text-gray-600">Correo Electrónico</label>
+                <label className="text-sm font-medium text-muted-foreground">Correo Electrónico</label>
                 <p className="flex items-center gap-2">
                   <Mail className="h-4 w-4" />
                   {user.email}
@@ -181,7 +181,7 @@ export default function UserDetailsPage() {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-600">Rol</label>
+                <label className="text-sm font-medium text-muted-foreground">Rol</label>
                 <div className="flex items-center gap-2">
                   <Shield className="h-4 w-4" />
                   <Badge variant="secondary" className={getRoleColor(user.role)}>
@@ -191,18 +191,18 @@ export default function UserDetailsPage() {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-600">Estado</label>
+                <label className="text-sm font-medium text-muted-foreground">Estado</label>
                 <div className="flex items-center gap-2">
                   {user.isActive ? (
                     <>
-                      <UserCheck className="h-4 w-4 text-green-600" />
-                      <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-200">
+                      <UserCheck className="h-4 w-4 text-[hsl(var(--success))]" />
+                      <Badge variant="secondary" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] hover:bg-[hsl(var(--success)/0.20)]">
                         Activo
                       </Badge>
                     </>
                   ) : (
                     <>
-                      <UserX className="h-4 w-4 text-red-600" />
+                      <UserX className="h-4 w-4 text-[hsl(var(--destructive))]" />
                       <Badge variant="destructive">
                         Inactivo
                       </Badge>
@@ -226,7 +226,7 @@ export default function UserDetailsPage() {
             {user.church ? (
               <div className="space-y-3">
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Nombre de la Iglesia</label>
+                  <label className="text-sm font-medium text-muted-foreground">Nombre de la Iglesia</label>
                   <p className="text-lg font-medium">{user.church.name}</p>
                 </div>
                 <Button 
@@ -238,7 +238,7 @@ export default function UserDetailsPage() {
                 </Button>
               </div>
             ) : (
-              <div className="text-center py-6 text-gray-500">
+              <div className="text-center py-6 text-muted-foreground">
                 <Church className="h-12 w-12 mx-auto mb-3 opacity-50" />
                 <p>Sin iglesia asignada</p>
                 <p className="text-sm">Este usuario no está asociado a ninguna iglesia</p>
@@ -258,7 +258,7 @@ export default function UserDetailsPage() {
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <label className="text-sm font-medium text-gray-600">Fecha de Registro</label>
+                <label className="text-sm font-medium text-muted-foreground">Fecha de Registro</label>
                 <p className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
                   {formatDate(user.createdAt)}

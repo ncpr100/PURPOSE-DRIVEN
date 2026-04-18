@@ -169,7 +169,7 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <User className="h-5 w-5 text-blue-600" />
+            <User className="h-5 w-5 text-[hsl(var(--info))]" />
             Editar Usuario
           </DialogTitle>
           <DialogDescription>
@@ -182,7 +182,7 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
           <div className="space-y-2">
             <Label htmlFor="name">Nombre Completo</Label>
             <div className="relative">
-              <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground/70" />
               <Input
                 id="name"
                 value={formData.name}
@@ -198,7 +198,7 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground/70" />
               <Input
                 id="email"
                 type="email"
@@ -215,7 +215,7 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
           <div className="space-y-2">
             <Label htmlFor="phone">Teléfono</Label>
             <div className="relative">
-              <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground/70" />
               <Input
                 id="phone"
                 type="tel"
@@ -231,7 +231,7 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
           <div className="space-y-2">
             <Label htmlFor="role">Rol</Label>
             <div className="relative">
-              <Shield className="absolute left-3 top-3 h-4 w-4 text-gray-400 z-10" />
+              <Shield className="absolute left-3 top-3 h-4 w-4 text-muted-foreground/70 z-10" />
               <Select
                 value={formData.role}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, role: value }))}
@@ -252,8 +252,8 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
           {/* Password Reset Section */}
           <div className="border-t pt-4 space-y-3">
             <div className="flex items-center justify-between">
-              <Label className="flex items-center gap-2 text-gray-700">
-                <Lock className="h-4 w-4 text-orange-600" />
+              <Label className="flex items-center gap-2 text-muted-foreground">
+                <Lock className="h-4 w-4 text-[hsl(var(--warning))]" />
                 Restablecer Contraseña
               </Label>
               <Button
@@ -268,7 +268,7 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
             </div>
 
             {showPasswordReset && (
-              <div className="space-y-2 bg-orange-50 p-4 rounded-lg">
+              <div className="space-y-2 bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
                 <Label htmlFor="newPassword">Nueva Contraseña Temporal (Generada Automáticamente)</Label>
                 <Input
                   id="newPassword"
@@ -279,11 +279,11 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
                   minLength={8}
                   className="font-mono"
                 />
-                <p className="text-xs text-orange-700 flex items-center gap-1">
+                <p className="text-xs text-[hsl(var(--warning))] flex items-center gap-1">
                   <Mail className="h-3 w-3" />
                   Esta contraseña se enviará automáticamente por email al guardar
                 </p>
-                <p className="text-xs text-orange-600">
+                <p className="text-xs text-[hsl(var(--warning))]">
                   El usuario deberá cambiar esta contraseña en su próximo inicio de sesión
                 </p>
               </div>

@@ -212,7 +212,7 @@ export default function CreateWebsitePage() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-3">
-                        <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
+                        <div className="aspect-video bg-muted/50 rounded-lg flex items-center justify-center text-muted-foreground/70">
                           <Globe className="h-12 w-12" />
                         </div>
                         <div>
@@ -454,8 +454,8 @@ export default function CreateWebsitePage() {
                   <h4 className="font-semibold mb-2">Plantilla Seleccionada</h4>
                   {selectedTemplate && (
                     <div className="flex items-center gap-4 p-4 border rounded-lg">
-                      <div className="w-16 h-12 bg-gray-100 rounded flex items-center justify-center">
-                        <Globe className="h-6 w-6 text-gray-400" />
+                      <div className="w-16 h-12 bg-muted/50 rounded flex items-center justify-center">
+                        <Globe className="h-6 w-6 text-muted-foreground/70" />
                       </div>
                       <div className="flex-1">
                         <p className="font-medium">
@@ -523,17 +523,17 @@ export default function CreateWebsitePage() {
                 </div>
 
                 {/* Estimated Cost */}
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="p-4 bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-green-800">Precio Estimado del Proyecto</p>
-                      <p className="text-sm text-green-600">Incluye diseño, desarrollo y configuración inicial</p>
+                      <p className="font-semibold text-[hsl(var(--success))]">Precio Estimado del Proyecto</p>
+                      <p className="text-sm text-[hsl(var(--success))]">Incluye diseño, desarrollo y configuración inicial</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-green-800">
+                      <p className="text-2xl font-bold text-[hsl(var(--success))]">
                         ${selectedTemplate ? churchTemplates.find(t => t.id === selectedTemplate)?.price : 599}
                       </p>
-                      <p className="text-sm text-green-600">USD</p>
+                      <p className="text-sm text-[hsl(var(--success))]">USD</p>
                     </div>
                   </div>
                 </div>

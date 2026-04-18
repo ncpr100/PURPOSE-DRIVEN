@@ -22,14 +22,14 @@ export default function AllFeaturesGuide() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   const categories = [
-    { id: 'core', name: 'Funciones Principales', icon: <Home className="h-4 w-4" />, color: 'bg-blue-500' },
-    { id: 'analytics', name: 'Analíticas', icon: <BarChart3 className="h-4 w-4" />, color: 'bg-purple-500' },
-    { id: 'automation', name: 'Automatización', icon: <Zap className="h-4 w-4" />, color: 'bg-yellow-500' },
-    { id: 'communication', name: 'Comunicación', icon: <Mail className="h-4 w-4" />, color: 'bg-green-500' },
-    { id: 'volunteers', name: 'Voluntarios', icon: <Award className="h-4 w-4" />, color: 'bg-orange-500' },
-    { id: 'forms', name: 'Formularios', icon: <FileText className="h-4 w-4" />, color: 'bg-pink-500' },
-    { id: 'advanced', name: 'Avanzadas', icon: <Sparkles className="h-4 w-4" />, color: 'bg-indigo-500' },
-    { id: 'settings', name: 'Configuración', icon: <Settings className="h-4 w-4" />, color: 'bg-gray-500' }
+    { id: 'core', name: 'Funciones Principales', icon: <Home className="h-4 w-4" />, color: 'bg-[hsl(var(--info)/0.10)]0' },
+    { id: 'analytics', name: 'Analíticas', icon: <BarChart3 className="h-4 w-4" />, color: 'bg-[hsl(var(--lavender)/0.10)]0' },
+    { id: 'automation', name: 'Automatización', icon: <Zap className="h-4 w-4" />, color: 'bg-[hsl(var(--warning)/0.10)]0' },
+    { id: 'communication', name: 'Comunicación', icon: <Mail className="h-4 w-4" />, color: 'bg-[hsl(var(--success)/0.10)]0' },
+    { id: 'volunteers', name: 'Voluntarios', icon: <Award className="h-4 w-4" />, color: 'bg-[hsl(var(--warning)/0.10)]0' },
+    { id: 'forms', name: 'Formularios', icon: <FileText className="h-4 w-4" />, color: 'bg-[hsl(var(--destructive)/0.08)]0' },
+    { id: 'advanced', name: 'Avanzadas', icon: <Sparkles className="h-4 w-4" />, color: 'bg-primary/[0.06]0' },
+    { id: 'settings', name: 'Configuración', icon: <Settings className="h-4 w-4" />, color: 'bg-muted/300' }
   ]
 
   const allFeatures = [
@@ -732,13 +732,13 @@ export default function AllFeaturesGuide() {
   })
 
   const getCategoryColor = (categoryId: string) => {
-    return categories.find(c => c.id === categoryId)?.color || 'bg-gray-500'
+    return categories.find(c => c.id === categoryId)?.color || 'bg-muted/300'
   }
 
   return (
     <div className="container mx-auto p-6 max-w-7xl space-y-8">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 rounded-lg">
+      <div className="btn-cta-gradient text-white p-8 rounded-lg">
         <div className="flex items-center gap-4">
           <List className="h-12 w-12" />
           <div>
@@ -768,13 +768,13 @@ export default function AllFeaturesGuide() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Search className="h-6 w-6 text-blue-600" />
+            <Search className="h-6 w-6 text-[hsl(var(--info))]" />
             Buscar Funciones
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
             <Input
               type="text"
               placeholder="Buscar por nombre o descripción..."
@@ -816,7 +816,7 @@ export default function AllFeaturesGuide() {
 
       {/* Results Count */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Mostrando <strong>{filteredFeatures.length}</strong> de <strong>{allFeatures.length}</strong> funciones
         </p>
         {searchQuery && (
@@ -838,12 +838,12 @@ export default function AllFeaturesGuide() {
                   <h3 className="font-semibold text-lg flex-1">{feature.name}</h3>
                   <div className="flex gap-1">
                     {feature.popular && (
-                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                      <Badge variant="secondary" className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">
                         <Star className="h-3 w-3" />
                       </Badge>
                     )}
                     {feature.videoAvailable && (
-                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                      <Badge variant="secondary" className="bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))]">
                         <PlayCircle className="h-3 w-3" />
                       </Badge>
                     )}
@@ -858,10 +858,10 @@ export default function AllFeaturesGuide() {
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-gray-600">{feature.description}</p>
+                <p className="text-sm text-muted-foreground">{feature.description}</p>
 
                 {/* Access Path */}
-                <div className="bg-gray-50 p-2 rounded text-xs font-mono text-gray-700">
+                <div className="bg-muted/30 p-2 rounded text-xs font-mono text-muted-foreground">
                   {feature.accessPath}
                 </div>
 
@@ -892,8 +892,8 @@ export default function AllFeaturesGuide() {
           <div className="flex flex-col items-center gap-4">
             <Search className="h-16 w-16 text-gray-300" />
             <div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">No se encontraron funciones</h3>
-              <p className="text-gray-500 mb-4">
+              <h3 className="text-xl font-semibold text-muted-foreground mb-2">No se encontraron funciones</h3>
+              <p className="text-muted-foreground mb-4">
                 Intenta con otros términos de búsqueda o cambia el filtro de categoría
               </p>
               <Button onClick={() => { setSearchQuery(''); setSelectedCategory(null) }}>
@@ -905,10 +905,10 @@ export default function AllFeaturesGuide() {
       )}
 
       {/* Summary Statistics */}
-      <Card className="bg-gradient-to-r from-blue-50 to-purple-50">
+      <Card className="btn-cta-gradient">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-6 w-6 text-purple-600" />
+            <BarChart3 className="h-6 w-6 text-[hsl(var(--lavender))]" />
             Resumen de Funcionalidades
           </CardTitle>
         </CardHeader>
@@ -925,7 +925,7 @@ export default function AllFeaturesGuide() {
                     </div>
                     <div className="flex-1">
                       <p className="font-semibold text-sm">{category.name}</p>
-                      <p className="text-xs text-gray-500">{count} funciones</p>
+                      <p className="text-xs text-muted-foreground">{count} funciones</p>
                     </div>
                   </div>
                   {popularCount > 0 && (
@@ -950,7 +950,7 @@ export default function AllFeaturesGuide() {
           </Button>
         </Link>
         <Link href="/help/manual/troubleshooting">
-          <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+          <Button size="lg" className="bg-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender))]">
             Ver Troubleshooting
             <ArrowRight className="h-5 w-5 ml-2" />
           </Button>

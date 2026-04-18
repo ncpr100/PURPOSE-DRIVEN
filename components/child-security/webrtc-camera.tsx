@@ -137,7 +137,7 @@ export function WebRTCCamera({ onPhotoCapture, captureType, isActive, className 
           <Camera className="h-5 w-5" />
           {getCameraTitle()}
           {capturedPhoto && (
-            <Badge variant="outline" className="bg-green-50 text-green-700">
+            <Badge variant="outline" className="bg-[hsl(var(--success)/0.10)] text-[hsl(var(--success))]">
               <Check className="h-3 w-3 mr-1" />
               Capturada
             </Badge>
@@ -171,7 +171,7 @@ export function WebRTCCamera({ onPhotoCapture, captureType, isActive, className 
                     onClick={capturePhoto}
                     disabled={isCapturing}
                     size="lg"
-                    className="rounded-full h-16 w-16 bg-white text-black hover:bg-gray-200"
+                    className="rounded-full h-16 w-16 bg-white text-black hover:bg-muted"
                   >
                     <Camera className="h-6 w-6" />
                   </Button>
@@ -217,12 +217,12 @@ export function WebRTCCamera({ onPhotoCapture, captureType, isActive, className 
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             {isStreaming ? (
-              <Badge variant="outline" className="bg-green-50 text-green-700">
-                <div className="h-2 w-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+              <Badge variant="outline" className="bg-[hsl(var(--success)/0.10)] text-[hsl(var(--success))]">
+                <div className="h-2 w-2 bg-[hsl(var(--success)/0.10)]0 rounded-full mr-2 animate-pulse"></div>
                 Cámara Activa
               </Badge>
             ) : (
-              <Badge variant="outline" className="bg-gray-50 text-gray-700">
+              <Badge variant="outline" className="bg-muted/30 text-muted-foreground">
                 <CameraOff className="h-3 w-3 mr-2" />
                 Cámara Inactiva
               </Badge>

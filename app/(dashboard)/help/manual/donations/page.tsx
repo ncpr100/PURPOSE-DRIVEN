@@ -35,21 +35,21 @@ export default function DonationsManual() {
               Esta guía cubre todas las funcionalidades para configurar, gestionar y hacer seguimiento de las donaciones de su iglesia.
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
                 <h4 className="font-semibold">📋 Secciones</h4>
-                <p className="text-xl font-bold text-green-600">6</p>
+                <p className="text-xl font-bold text-[hsl(var(--success))]">6</p>
               </div>
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                 <h4 className="font-semibold">⏱️ Tiempo</h4>
-                <p className="text-xl font-bold text-blue-600">20 min</p>
+                <p className="text-xl font-bold text-[hsl(var(--info))]">20 min</p>
               </div>
-              <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
                 <h4 className="font-semibold">🎯 Nivel</h4>
-                <p className="text-lg font-bold text-purple-600">Básico</p>
+                <p className="text-lg font-bold text-[hsl(var(--lavender))]">Básico</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
+              <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
                 <h4 className="font-semibold">👤 Rol Mínimo</h4>
-                <p className="text-lg font-bold text-orange-600">ADMIN</p>
+                <p className="text-lg font-bold text-[hsl(var(--warning))]">ADMIN</p>
               </div>
             </div>
           </CardContent>
@@ -59,7 +59,7 @@ export default function DonationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">1</span>
               Configuración Inicial del Sistema
             </CardTitle>
           </CardHeader>
@@ -85,7 +85,7 @@ export default function DonationsManual() {
                   <p><strong>1.4.</strong> Haga clic en &quot;💾 Guardar Configuración&quot;</p>
                 </div>
               </div>
-              <div className="bg-yellow-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">⚠️ Requisitos Legales</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Registro religioso:</strong> Debe tener estatus legal como iglesia</li>
@@ -93,7 +93,7 @@ export default function DonationsManual() {
                   <li>• <strong>Recibos obligatorios:</strong> Para donaciones deducibles</li>
                   <li>• <strong>Reportes anuales:</strong> Declaraciones de impuestos</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-yellow-400">
+                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--warning)/0.30)]">
                   <p className="text-xs"><strong>💡 Consulte:</strong> Su contador o asesor legal sobre requisitos específicos</p>
                 </div>
               </div>
@@ -105,7 +105,7 @@ export default function DonationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">2</span>
               Categorías de Donaciones
             </CardTitle>
           </CardHeader>
@@ -131,7 +131,7 @@ export default function DonationsManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📋 Categorías Recomendadas</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>💰 Diezmos:</strong> 10% de ingresos regulares</li>
@@ -151,7 +151,7 @@ export default function DonationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">3</span>
               Métodos de Pago
             </CardTitle>
           </CardHeader>
@@ -213,7 +213,7 @@ export default function DonationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">4</span>
               Registro de Donaciones
             </CardTitle>
           </CardHeader>
@@ -237,7 +237,7 @@ export default function DonationsManual() {
                   <p><strong>4.5.</strong> El sistema genera recibo automáticamente</p>
                 </div>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">⚡ Registro Rápido</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Para donaciones frecuentes:</strong></p>
@@ -246,7 +246,7 @@ export default function DonationsManual() {
                     <li>• <strong>&quot;🎁 Ofrenda Rápida&quot;:</strong> Ofrenda dominical estándar</li>
                     <li>• <strong>&quot;📋 Importar Lote&quot;:</strong> Carga masiva desde Excel</li>
                   </ul>
-                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-blue-400">
+                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                     <p className="text-xs"><strong>💡 Tip:</strong> Configure donadores frecuentes para autocompletar</p>
                   </div>
                 </div>
@@ -259,7 +259,7 @@ export default function DonationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">5</span>
               Gestión de Recibos
             </CardTitle>
           </CardHeader>
@@ -312,7 +312,7 @@ export default function DonationsManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
+              <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">6</span>
               Reportes Financieros
             </CardTitle>
           </CardHeader>
@@ -339,7 +339,7 @@ export default function DonationsManual() {
                   </ul>
                 </div>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
+              <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
                 <h4 className="font-semibold mb-2">📈 Métricas Financieras</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-2 gap-4">
@@ -360,7 +360,7 @@ export default function DonationsManual() {
                       <p className="text-muted-foreground">Únicos este mes</p>
                     </div>
                   </div>
-                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-green-400">
+                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                     <p className="text-xs"><strong>📊 Export:</strong> Todos los reportes se pueden exportar en Excel, CSV, PDF</p>
                   </div>
                 </div>

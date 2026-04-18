@@ -278,7 +278,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
       <div className="container mx-auto py-6">
         <div className="flex items-center justify-center h-64">
           <div className="flex items-center gap-2">
-            <Brain className="h-6 w-6 animate-pulse text-purple-600" />
+            <Brain className="h-6 w-6 animate-pulse text-[hsl(var(--lavender))]" />
             <span className="text-lg">Cargando Analíticas Inteligentes...</span>
           </div>
         </div>
@@ -291,35 +291,35 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
+            <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-[hsl(var(--lavender))]" />
             Analíticas Inteligentes
             {/* Real-time status indicator */}
             <div className="flex items-center gap-2 ml-2 sm:ml-4">
               {isConnected ? (
-                <Badge variant="secondary" className="flex items-center gap-1 bg-green-100 text-green-800">
+                <Badge variant="secondary" className="flex items-center gap-1 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
                   <Wifi className="h-3 w-3" />
                   En Vivo
                 </Badge>
               ) : isConnecting ? (
-                <Badge variant="secondary" className="flex items-center gap-1 bg-yellow-100 text-yellow-800">
+                <Badge variant="secondary" className="flex items-center gap-1 bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">
                   <RefreshCw className="h-3 w-3 animate-spin" />
                   Conectando
                 </Badge>
               ) : (
-                <Badge variant="secondary" className="flex items-center gap-1 bg-gray-100 text-gray-600">
+                <Badge variant="secondary" className="flex items-center gap-1 bg-muted/50 text-muted-foreground">
                   <WifiOff className="h-3 w-3" />
                   Sin Conexión
                 </Badge>
               )}
               {lastUpdate !== null && (
-                <span className="hidden sm:inline text-xs text-gray-500">
+                <span className="hidden sm:inline text-xs text-muted-foreground">
                   Actualizado: {lastUpdate.toLocaleTimeString()}
                 </span>
               )}
             </div>
           </h1>
-          <p className="text-sm sm:text-base text-gray-600">Insights avanzados y predicciones para el crecimiento de la iglesia</p>
+          <p className="text-sm sm:text-base text-muted-foreground">Insights avanzados y predicciones para el crecimiento de la iglesia</p>
         </div>
         
         <div className="flex gap-2 w-full sm:w-auto">
@@ -343,10 +343,10 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
 
       {/* Church Health Score */}
       {executiveData !== null && executiveData.summary !== undefined && (
-        <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+        <Card className="bg-[hsl(var(--lavender)/0.10)] border-[hsl(var(--lavender)/0.3)]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5 text-purple-600" />
+              <Activity className="h-5 w-5 text-[hsl(var(--lavender))]" />
               Puntuación de Salud de la Iglesia
             </CardTitle>
           </CardHeader>
@@ -354,7 +354,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4">
               <div className="md:col-span-2">
                 <div className="text-center">
-                                    <div className="text-4xl font-bold text-purple-900 mb-2">
+                                    <div className="text-4xl font-bold text-foreground mb-2">
                     {Math.round(executiveData.summary.churchHealthScore)}/100
                   </div>
                   <Badge 
@@ -371,17 +371,17 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-medium w-20">Miembros</span>
                   <Progress value={executiveData.summary.engagementScore} className="flex-1" />
-                  <span className="text-sm text-gray-600 w-10">{Math.round(executiveData.summary.engagementScore)}%</span>
+                  <span className="text-sm text-muted-foreground w-10">{Math.round(executiveData.summary.engagementScore)}%</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-medium w-20">Asistencia</span>
                   <Progress value={Math.min(100, (executiveData.summary.avgAttendanceThisMonth / executiveData.summary.totalMembers) * 100)} className="flex-1" />
-                  <span className="text-sm text-gray-600 w-10">{Math.round(Math.min(100, (executiveData.summary.avgAttendanceThisMonth / executiveData.summary.totalMembers) * 100))}%</span>
+                  <span className="text-sm text-muted-foreground w-10">{Math.round(Math.min(100, (executiveData.summary.avgAttendanceThisMonth / executiveData.summary.totalMembers) * 100))}%</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-medium w-20">Crecimiento</span>
                   <Progress value={Math.min(100, Math.max(0, executiveData.summary.memberGrowthThisMonth * 10))} className="flex-1" />
-                  <span className="text-sm text-gray-600 w-10">{Math.round(Math.min(100, Math.max(0, executiveData.summary.memberGrowthThisMonth * 10)))}%</span>
+                  <span className="text-sm text-muted-foreground w-10">{Math.round(Math.min(100, Math.max(0, executiveData.summary.memberGrowthThisMonth * 10)))}%</span>
                 </div>
               </div>
             </div>
@@ -404,29 +404,29 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Target className="h-5 w-5 text-blue-600" />
+                    <Target className="h-5 w-5 text-[hsl(var(--info))]" />
                     Predicción de Retención de Miembros
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-900">
+                      <div className="text-2xl font-bold text-foreground">
                         {predictiveData.memberRetention.predicted30Day}%
                       </div>
-                      <div className="text-sm text-gray-600">Retención 30 días</div>
+                      <div className="text-sm text-muted-foreground">Retención 30 días</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-900">
+                      <div className="text-2xl font-bold text-foreground">
                         {predictiveData.memberRetention.predicted90Day}%
                       </div>
-                      <div className="text-sm text-gray-600">Retención 90 días</div>
+                      <div className="text-sm text-muted-foreground">Retención 90 días</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-900">
+                      <div className="text-2xl font-bold text-foreground">
                         {predictiveData.memberRetention.confidenceLevel}%
                       </div>
-                      <div className="text-sm text-gray-600">Nivel de Confianza</div>
+                      <div className="text-sm text-muted-foreground">Nivel de Confianza</div>
                     </div>
                   </div>
                   
@@ -438,7 +438,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                           {factor.impact > 0 ? '+' : ''}{factor.impact}%
                         </Badge>
                         <span className="font-medium">{factor.factor}:</span>
-                        <span className="text-gray-600">{factor.description}</span>
+                        <span className="text-muted-foreground">{factor.description}</span>
                       </div>
                     ))}
                   </div>
@@ -477,43 +477,43 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="h-5 w-5 text-green-600" />
+                    <DollarSign className="h-5 w-5 text-[hsl(var(--success))]" />
                     Tendencias de Donaciones Predictivas
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-green-900">
+                      <div className="text-2xl font-bold text-foreground">
                         ${predictiveData.givingTrends.predictedNextMonth.toLocaleString()}
                       </div>
-                      <div className="text-sm text-gray-600">Próximo Mes Proyectado</div>
+                      <div className="text-sm text-muted-foreground">Próximo Mes Proyectado</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-green-900">
+                      <div className="text-2xl font-bold text-foreground">
                         {predictiveData.givingTrends.seasonalVariation > 0 ? '+' : ''}{predictiveData.givingTrends.seasonalVariation}%
                       </div>
-                      <div className="text-sm text-gray-600">Variación Estacional</div>
+                      <div className="text-sm text-muted-foreground">Variación Estacional</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-green-900">
+                      <div className="text-2xl font-bold text-foreground">
                         {predictiveData.givingTrends.donorRetentionRate}%
                       </div>
-                      <div className="text-sm text-gray-600">Retención de Donantes</div>
+                      <div className="text-sm text-muted-foreground">Retención de Donantes</div>
                     </div>
                     <div className="text-center">
                       <div className="flex items-center justify-center gap-1">
                         {predictiveData.givingTrends.averageGiftTrend === 'increasing' && (
-                          <TrendingUp className="h-5 w-5 text-green-600" />
+                          <TrendingUp className="h-5 w-5 text-[hsl(var(--success))]" />
                         )}
                         {predictiveData.givingTrends.averageGiftTrend === 'decreasing' && (
-                          <TrendingDown className="h-5 w-5 text-red-600" />
+                          <TrendingDown className="h-5 w-5 text-[hsl(var(--destructive))]" />
                         )}
                         <span className="text-sm font-medium capitalize">
                           {predictiveData.givingTrends.averageGiftTrend}
                         </span>
                       </div>
-                      <div className="text-sm text-gray-600">Tendencia Promedio</div>
+                      <div className="text-sm text-muted-foreground">Tendencia Promedio</div>
                     </div>
                   </div>
 
@@ -562,7 +562,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Activity className="h-5 w-5 text-orange-600" />
+                    <Activity className="h-5 w-5 text-[hsl(var(--warning))]" />
                     Pronóstico de Compromiso
                   </CardTitle>
                 </CardHeader>
@@ -572,7 +572,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Asistencia a Eventos</span>
-                        <span className="text-lg font-bold text-orange-600">
+                        <span className="text-lg font-bold text-[hsl(var(--warning))]">
                           {predictiveData.engagementForecast.eventAttendanceTrend}%
                         </span>
                       </div>
@@ -580,7 +580,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                       
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Participación Voluntarios</span>
-                        <span className="text-lg font-bold text-orange-600">
+                        <span className="text-lg font-bold text-[hsl(var(--warning))]">
                           {predictiveData.engagementForecast.volunteerParticipationTrend}%
                         </span>
                       </div>
@@ -588,7 +588,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                       
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Compromiso de Comunicación</span>
-                        <span className="text-lg font-bold text-orange-600">
+                        <span className="text-lg font-bold text-[hsl(var(--warning))]">
                           {predictiveData.engagementForecast.communicationEngagement}%
                         </span>
                       </div>
@@ -619,10 +619,10 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                         </RechartsPieChart>
                       </ResponsiveContainer>
                       <div className="text-center mt-2">
-                        <span className="text-2xl font-bold text-orange-600">
+                        <span className="text-2xl font-bold text-[hsl(var(--warning))]">
                           {predictiveData.engagementForecast.overallEngagementScore}%
                         </span>
-                        <p className="text-sm text-gray-600">Score Total</p>
+                        <p className="text-sm text-muted-foreground">Score Total</p>
                       </div>
                     </div>
                   </div>
@@ -633,29 +633,29 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-purple-600" />
+                    <TrendingUp className="h-5 w-5 text-[hsl(var(--lavender))]" />
                     Proyección de Crecimiento
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-900">
+                      <div className="text-2xl font-bold text-foreground">
                         {predictiveData.churchGrowth.projectedMonthlyGrowth > 0 ? '+' : ''}{predictiveData.churchGrowth.projectedMonthlyGrowth}%
                       </div>
-                      <div className="text-sm text-gray-600">Crecimiento Mensual</div>
+                      <div className="text-sm text-muted-foreground">Crecimiento Mensual</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-900">
+                      <div className="text-2xl font-bold text-foreground">
                         {predictiveData.churchGrowth.projected6MonthMembers}
                       </div>
-                      <div className="text-sm text-gray-600">Miembros en 6 Meses</div>
+                      <div className="text-sm text-muted-foreground">Miembros en 6 Meses</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-900">
+                      <div className="text-2xl font-bold text-foreground">
                         {predictiveData.churchGrowth.projectedYearlyGrowth > 0 ? '+' : ''}{predictiveData.churchGrowth.projectedYearlyGrowth}%
                       </div>
-                      <div className="text-sm text-gray-600">Crecimiento Anual</div>
+                      <div className="text-sm text-muted-foreground">Crecimiento Anual</div>
                     </div>
                   </div>
                   
@@ -676,9 +676,9 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
             <Card>
               <CardContent className="flex items-center justify-center h-64">
                 <div className="text-center">
-                  <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-600 mb-2">Cargando Analítica Predictiva</h3>
-                  <p className="text-gray-500">Analizando datos históricos para generar predicciones...</p>
+                  <Brain className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-muted-foreground mb-2">Cargando Analítica Predictiva</h3>
+                  <p className="text-muted-foreground">Analizando datos históricos para generar predicciones...</p>
                   {!loading && (
                     <Button 
                       onClick={refreshData} 
@@ -702,26 +702,26 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-blue-600" />
+                    <Users className="h-5 w-5 text-[hsl(var(--info))]" />
                     Embudo de Conversión de Miembros
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {Object.entries(journeyData.conversionFunnel).map(([key, stage]) => (
-                      <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div key={key} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                         <div className="flex-1">
                           <div className="font-medium">{stage.stage}</div>
-                          <div className="text-sm text-gray-600">{stage.count} personas</div>
+                          <div className="text-sm text-muted-foreground">{stage.count} personas</div>
                         </div>
                         <div className="flex items-center gap-4">
                           <div className="text-right">
                             <div className="font-medium">{stage.percentage}%</div>
-                            <div className="text-xs text-gray-600">del total</div>
+                            <div className="text-xs text-muted-foreground">del total</div>
                           </div>
                           {stage.conversionRate > 0 && (
                             <div className="flex items-center gap-1">
-                              <ArrowRight className="h-4 w-4 text-gray-400" />
+                              <ArrowRight className="h-4 w-4 text-muted-foreground/70" />
                               <div className="text-sm font-medium">{stage.conversionRate}%</div>
                             </div>
                           )}
@@ -750,12 +750,12 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                       </div>
                       <div className="flex items-center gap-1 mt-2">
                         {journeyData.spiritualGrowth.baptisms.growthRate >= 0 ? (
-                          <TrendingUp className="h-4 w-4 text-green-600" />
+                          <TrendingUp className="h-4 w-4 text-[hsl(var(--success))]" />
                         ) : (
-                          <TrendingDown className="h-4 w-4 text-red-600" />
+                          <TrendingDown className="h-4 w-4 text-[hsl(var(--destructive))]" />
                         )}
                         <span className={`text-sm font-medium ${
-                          journeyData.spiritualGrowth.baptisms.growthRate >= 0 ? 'text-green-600' : 'text-red-600'
+                          journeyData.spiritualGrowth.baptisms.growthRate >= 0 ? 'text-[hsl(var(--success))]' : 'text-[hsl(var(--destructive))]'
                         }`}>
                           {journeyData.spiritualGrowth.baptisms.growthRate > 0 ? '+' : ''}{journeyData.spiritualGrowth.baptisms.growthRate}%
                         </span>
@@ -812,9 +812,9 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
             <Card>
               <CardContent className="flex items-center justify-center h-64">
                 <div className="text-center">
-                  <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-600 mb-2">Cargando Jornada del Miembro</h3>
-                  <p className="text-gray-500">Analizando el viaje de los miembros en la iglesia...</p>
+                  <Users className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-muted-foreground mb-2">Cargando Jornada del Miembro</h3>
+                  <p className="text-muted-foreground">Analizando el viaje de los miembros en la iglesia...</p>
                   {!loading && (
                     <Button 
                       onClick={refreshData} 
@@ -839,15 +839,15 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2">
-                      <Users className="h-4 w-4 text-blue-600" />
+                      <Users className="h-4 w-4 text-[hsl(var(--info))]" />
                       Membresía
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{executiveData.summary.totalMembers}</div>
                     <div className="flex items-center gap-1 mt-1">
-                      <TrendingUp className="h-3 w-3 text-green-600" />
-                      <span className="text-xs text-green-600">+{executiveData.summary.memberGrowthThisMonth}</span>
+                      <TrendingUp className="h-3 w-3 text-[hsl(var(--success))]" />
+                      <span className="text-xs text-[hsl(var(--success))]">+{executiveData.summary.memberGrowthThisMonth}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -855,13 +855,13 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-purple-600" />
+                      <Calendar className="h-4 w-4 text-[hsl(var(--lavender))]" />
                       Asistencia
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{executiveData.summary.avgAttendanceThisMonth}</div>
-                    <div className="text-xs text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       {Math.round((executiveData.summary.avgAttendanceThisMonth / executiveData.summary.totalMembers) * 100)}% tasa de asistencia
                     </div>
                   </CardContent>
@@ -870,7 +870,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2">
-                      <DollarSign className="h-4 w-4 text-green-600" />
+                      <DollarSign className="h-4 w-4 text-[hsl(var(--success))]" />
                       Finanzas
                     </CardTitle>
                   </CardHeader>
@@ -878,7 +878,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                     <div className="text-2xl font-bold">
                       ${executiveData.summary.totalDonationsThisMonth.toLocaleString()}
                     </div>
-                    <div className="text-xs text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       Este mes
                     </div>
                   </CardContent>
@@ -887,13 +887,13 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2">
-                      <Zap className="h-4 w-4 text-orange-600" />
+                      <Zap className="h-4 w-4 text-[hsl(var(--warning))]" />
                       Ministerio
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{executiveData.summary.activeVolunteersThisMonth}</div>
-                    <div className="text-xs text-gray-600">
+                    <div className="text-xs text-muted-foreground">
                       voluntarios activos
                     </div>
                   </CardContent>
@@ -904,44 +904,44 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />
                     Resumen de Desempeño
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-semibold text-green-900">Salud General</h4>
-                          <p className="text-sm text-green-700">
+                          <h4 className="font-semibold text-foreground">Salud General</h4>
+                          <p className="text-sm text-[hsl(var(--success))]">
                             {executiveData.summary.churchHealthScore >= 80 ? 'Excelente estado' : 
                              executiveData.summary.churchHealthScore >= 60 ? 'Buen estado' : 'Requiere atención'}
                           </p>
                         </div>
-                        <div className="text-2xl font-bold text-green-600">
+                        <div className="text-2xl font-bold text-[hsl(var(--success))]">
                           {Math.round(executiveData.summary.churchHealthScore)}%
                         </div>
                       </div>
                     </div>
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-semibold text-blue-900">Compromiso</h4>
-                          <p className="text-sm text-blue-700">Nivel de participación activa</p>
+                          <h4 className="font-semibold text-foreground">Compromiso</h4>
+                          <p className="text-sm text-[hsl(var(--info))]">Nivel de participación activa</p>
                         </div>
-                        <div className="text-2xl font-bold text-blue-600">
+                        <div className="text-2xl font-bold text-[hsl(var(--info))]">
                           {Math.round(executiveData.summary.engagementScore)}%
                         </div>
                       </div>
                     </div>
-                    <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg border border-[hsl(var(--lavender)/0.3)]">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-semibold text-purple-900">Crecimiento</h4>
-                          <p className="text-sm text-purple-700">Nuevos miembros este mes</p>
+                          <h4 className="font-semibold text-foreground">Crecimiento</h4>
+                          <p className="text-sm text-[hsl(var(--lavender))]">Nuevos miembros este mes</p>
                         </div>
-                        <div className="text-2xl font-bold text-purple-600">
+                        <div className="text-2xl font-bold text-[hsl(var(--lavender))]">
                           +{executiveData.summary.newMembersThisMonth}
                         </div>
                       </div>
@@ -954,21 +954,21 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <AlertTriangle className="h-5 w-5 text-orange-600" />
+                    <AlertTriangle className="h-5 w-5 text-[hsl(var(--warning))]" />
                     Áreas de Oportunidad
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {executiveData.summary.churchHealthScore < 70 && (
-                      <div className="border-l-4 border-orange-400 pl-4">
+                      <div className="border-l-4 border-[hsl(var(--warning)/0.30)] pl-4">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h4 className="font-semibold text-gray-900">Puntuación de Salud</h4>
-                            <p className="text-sm text-gray-600 mb-2">
+                            <h4 className="font-semibold text-foreground">Puntuación de Salud</h4>
+                            <p className="text-sm text-muted-foreground mb-2">
                               La puntuación actual ({Math.round(executiveData.summary.churchHealthScore)}%) sugiere áreas de mejora.
                             </p>
-                            <p className="text-sm text-blue-700 italic">
+                            <p className="text-sm text-[hsl(var(--info))] italic">
                               Considere revisar los programas de compromiso y seguimiento de miembros.
                             </p>
                           </div>
@@ -977,14 +977,14 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                       </div>
                     )}
                     {executiveData.summary.memberGrowthThisMonth < 1 && (
-                      <div className="border-l-4 border-orange-400 pl-4">
+                      <div className="border-l-4 border-[hsl(var(--warning)/0.30)] pl-4">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h4 className="font-semibold text-gray-900">Crecimiento de Membresía</h4>
-                            <p className="text-sm text-gray-600 mb-2">
+                            <h4 className="font-semibold text-foreground">Crecimiento de Membresía</h4>
+                            <p className="text-sm text-muted-foreground mb-2">
                               El crecimiento de este mes ({executiveData.summary.memberGrowthThisMonth}) es bajo.
                             </p>
-                            <p className="text-sm text-blue-700 italic">
+                            <p className="text-sm text-[hsl(var(--info))] italic">
                               Implementar estrategias de evangelización y retención de visitantes.
                             </p>
                           </div>
@@ -993,14 +993,14 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                       </div>
                     )}
                     {executiveData.summary.engagementScore < 50 && (
-                      <div className="border-l-4 border-orange-400 pl-4">
+                      <div className="border-l-4 border-[hsl(var(--warning)/0.30)] pl-4">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h4 className="font-semibold text-gray-900">Nivel de Compromiso</h4>
-                            <p className="text-sm text-gray-600 mb-2">
+                            <h4 className="font-semibold text-foreground">Nivel de Compromiso</h4>
+                            <p className="text-sm text-muted-foreground mb-2">
                               El nivel de compromiso ({Math.round(executiveData.summary.engagementScore)}%) necesita atención.
                             </p>
-                            <p className="text-sm text-blue-700 italic">
+                            <p className="text-sm text-[hsl(var(--info))] italic">
                               Desarrollar programas de voluntariado y participación activa.
                             </p>
                           </div>
@@ -1011,14 +1011,14 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
                     {executiveData.summary.churchHealthScore >= 70 && 
                      executiveData.summary.memberGrowthThisMonth >= 1 && 
                      executiveData.summary.engagementScore >= 50 && (
-                      <div className="border-l-4 border-green-400 pl-4">
+                      <div className="border-l-4 border-[hsl(var(--success)/0.30)] pl-4">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h4 className="font-semibold text-gray-900">Desempeño Satisfactorio</h4>
-                            <p className="text-sm text-gray-600 mb-2">
+                            <h4 className="font-semibold text-foreground">Desempeño Satisfactorio</h4>
+                            <p className="text-sm text-muted-foreground mb-2">
                               Los indicadores principales muestran un buen desempeño general.
                             </p>
-                            <p className="text-sm text-blue-700 italic">
+                            <p className="text-sm text-[hsl(var(--info))] italic">
                               Continuar con las estrategias actuales y buscar oportunidades de crecimiento.
                             </p>
                           </div>
@@ -1034,9 +1034,9 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
             <Card>
               <CardContent className="flex items-center justify-center h-64">
                 <div className="text-center">
-                  <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-600 mb-2">Cargando Reporte Ejecutivo</h3>
-                  <p className="text-gray-500">Preparando métricas ejecutivas y análisis...</p>
+                  <BarChart3 className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-muted-foreground mb-2">Cargando Reporte Ejecutivo</h3>
+                  <p className="text-muted-foreground">Preparando métricas ejecutivas y análisis...</p>
                   {!loading && (
                     <Button 
                       onClick={refreshData} 
@@ -1058,19 +1058,19 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5 text-blue-600" />
+                  <Target className="h-5 w-5 text-[hsl(var(--info))]" />
                   Insights Inteligentes
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h4 className="font-medium text-blue-900 mb-2">Análisis Predictivo</h4>
-                    <p className="text-sm text-blue-700">Basado en los datos de los últimos 30 días, se proyecta un crecimiento estable de la membresía y el compromiso.</p>
+                  <div className="p-4 bg-[hsl(var(--info)/0.10)] rounded-lg border border-[hsl(var(--info)/0.3)]">
+                    <h4 className="font-medium text-foreground mb-2">Análisis Predictivo</h4>
+                    <p className="text-sm text-[hsl(var(--info))]">Basado en los datos de los últimos 30 días, se proyecta un crecimiento estable de la membresía y el compromiso.</p>
                   </div>
-                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <h4 className="font-medium text-green-900 mb-2">Recomendaciones</h4>
-                    <p className="text-sm text-green-700">Continuar enfocándose en el seguimiento de nuevos miembros y fortalecer los programas de voluntariado.</p>
+                  <div className="p-4 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
+                    <h4 className="font-medium text-foreground mb-2">Recomendaciones</h4>
+                    <p className="text-sm text-[hsl(var(--success))]">Continuar enfocándose en el seguimiento de nuevos miembros y fortalecer los programas de voluntariado.</p>
                   </div>
                 </div>
               </CardContent>
@@ -1079,9 +1079,9 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
             <Card>
               <CardContent className="flex items-center justify-center h-64">
                 <div className="text-center">
-                  <Zap className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-600 mb-2">Cargando Recomendaciones</h3>
-                  <p className="text-gray-500">Generando recomendaciones estratégicas...</p>
+                  <Zap className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-muted-foreground mb-2">Cargando Recomendaciones</h3>
+                  <p className="text-muted-foreground">Generando recomendaciones estratégicas...</p>
                   {!loading && (
                     <Button 
                       onClick={refreshData} 

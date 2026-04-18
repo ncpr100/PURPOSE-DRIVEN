@@ -257,7 +257,7 @@ export function PlatformFormBuilder({ form, onSave, onCancel }: PlatformFormBuil
               size="sm"
               onClick={() => handleRemoveField(field.id)}
             >
-              <Trash2 className="h-4 w-4 text-red-500" />
+              <Trash2 className="h-4 w-4 text-[hsl(var(--destructive))]" />
             </Button>
           </div>
         </div>
@@ -329,7 +329,7 @@ export function PlatformFormBuilder({ form, onSave, onCancel }: PlatformFormBuil
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold mb-2">{formData.name}</h2>
           {formData.description && (
-            <p className="text-gray-600">{formData.description}</p>
+            <p className="text-muted-foreground">{formData.description}</p>
           )}
         </div>
 
@@ -338,14 +338,14 @@ export function PlatformFormBuilder({ form, onSave, onCancel }: PlatformFormBuil
             <div key={field.id} className="space-y-2">
               <label className="block text-sm font-medium">
                 {field.label}
-                {field.required && <span className="text-red-500 ml-1">*</span>}
+                {field.required && <span className="text-[hsl(var(--destructive))] ml-1">*</span>}
               </label>
               
               {field.type === 'text' && (
                 <input
                   type="text"
                   placeholder={field.placeholder}
-                  className="w-full p-3 border border-gray-300 rounded-md"
+                  className="w-full p-3 border border-border rounded-md"
                   style={{ borderColor: formData.style.primaryColor }}
                 />
               )}
@@ -354,7 +354,7 @@ export function PlatformFormBuilder({ form, onSave, onCancel }: PlatformFormBuil
                 <input
                   type="email"
                   placeholder={field.placeholder}
-                  className="w-full p-3 border border-gray-300 rounded-md"
+                  className="w-full p-3 border border-border rounded-md"
                 />
               )}
               
@@ -362,7 +362,7 @@ export function PlatformFormBuilder({ form, onSave, onCancel }: PlatformFormBuil
                 <input
                   type="tel"
                   placeholder={field.placeholder}
-                  className="w-full p-3 border border-gray-300 rounded-md"
+                  className="w-full p-3 border border-border rounded-md"
                 />
               )}
               
@@ -370,7 +370,7 @@ export function PlatformFormBuilder({ form, onSave, onCancel }: PlatformFormBuil
                 <input
                   type="number"
                   placeholder={field.placeholder}
-                  className="w-full p-3 border border-gray-300 rounded-md"
+                  className="w-full p-3 border border-border rounded-md"
                 />
               )}
               
@@ -378,12 +378,12 @@ export function PlatformFormBuilder({ form, onSave, onCancel }: PlatformFormBuil
                 <textarea
                   placeholder={field.placeholder}
                   rows={4}
-                  className="w-full p-3 border border-gray-300 rounded-md resize-none"
+                  className="w-full p-3 border border-border rounded-md resize-none"
                 />
               )}
               
               {field.type === 'select' && (
-                <select className="w-full p-3 border border-gray-300 rounded-md">
+                <select className="w-full p-3 border border-border rounded-md">
                   <option value="">Selecciona una opción</option>
                   {field.options?.map((option, i) => (
                     <option key={i} value={option}>{option}</option>

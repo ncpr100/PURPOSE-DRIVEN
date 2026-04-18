@@ -374,10 +374,10 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800'
-      case 'inactive': return 'bg-gray-100 text-gray-800'
-      case 'unsubscribed': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'active': return 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]'
+      case 'inactive': return 'bg-muted/50 text-foreground'
+      case 'unsubscribed': return 'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
+      default: return 'bg-muted/50 text-foreground'
     }
   }
 
@@ -404,20 +404,20 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
-            <User className="w-5 h-5 text-gray-400" />
+            <User className="w-5 h-5 text-muted-foreground/70" />
             <div>
               <p className="font-medium">{contact.fullName}</p>
               <div className="flex items-center gap-3 mt-1">
                 {contact.email && (
                   <div className="flex items-center gap-1">
-                    <Mail className="w-3 h-3 text-gray-400" />
-                    <span className="text-xs text-gray-600">{contact.email}</span>
+                    <Mail className="w-3 h-3 text-muted-foreground/70" />
+                    <span className="text-xs text-muted-foreground">{contact.email}</span>
                   </div>
                 )}
                 {contact.phone && (
                   <div className="flex items-center gap-1">
-                    <Phone className="w-3 h-3 text-gray-400" />
-                    <span className="text-xs text-gray-600">{contact.phone}</span>
+                    <Phone className="w-3 h-3 text-muted-foreground/70" />
+                    <span className="text-xs text-muted-foreground">{contact.phone}</span>
                   </div>
                 )}
               </div>
@@ -431,8 +431,8 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
         <div className="space-y-2 text-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
-              <Heart className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600">Peticiones:</span>
+              <Heart className="w-4 h-4 text-muted-foreground/70" />
+              <span className="text-muted-foreground">Peticiones:</span>
             </div>
             <span className="font-medium">{contact.totalRequests}</span>
           </div>
@@ -440,15 +440,15 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
               {getContactMethodIcon(contact.preferredContact)}
-              <span className="text-gray-600">Contacto preferido:</span>
+              <span className="text-muted-foreground">Contacto preferido:</span>
             </div>
             <span className="capitalize">{contact.preferredContact}</span>
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
-              <Calendar className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600">Registrado:</span>
+              <Calendar className="w-4 h-4 text-muted-foreground/70" />
+              <span className="text-muted-foreground">Registrado:</span>
             </div>
             <span>{format(new Date(contact.createdAt), 'dd/MM/yyyy', { locale: es })}</span>
           </div>
@@ -456,8 +456,8 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
           {contact.lastContactDate && (
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
-                <Clock className="w-4 h-4 text-gray-400" />
-                <span className="text-gray-600">Último contacto:</span>
+                <Clock className="w-4 h-4 text-muted-foreground/70" />
+                <span className="text-muted-foreground">Último contacto:</span>
               </div>
               <span>{format(new Date(contact.lastContactDate), 'dd/MM/yyyy', { locale: es })}</span>
             </div>
@@ -497,7 +497,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
             size="sm"
             onClick={() => handleDeleteContact(contact.id)}
           >
-            <Trash2 className="w-4 h-4 text-red-500" />
+            <Trash2 className="w-4 h-4 text-[hsl(var(--destructive))]" />
           </Button>
         </div>
       </CardContent>
@@ -506,20 +506,20 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
 
   const ContactDetail = ({ contact }: { contact: PrayerContact }) => (
     <div className="space-y-6">
-      <div className="bg-gray-50 rounded-lg p-4">
+      <div className="bg-muted/30 rounded-lg p-4">
         <div className="flex items-start justify-between">
           <div>
             <h3 className="text-lg font-medium">{contact.fullName}</h3>
             <div className="flex items-center gap-4 mt-2">
               {contact.email && (
                 <div className="flex items-center gap-1">
-                  <Mail className="w-4 h-4 text-gray-500" />
+                  <Mail className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm">{contact.email}</span>
                 </div>
               )}
               {contact.phone && (
                 <div className="flex items-center gap-1">
-                  <Phone className="w-4 h-4 text-gray-500" />
+                  <Phone className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm">{contact.phone}</span>
                 </div>
               )}
@@ -532,23 +532,23 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
 
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
-            <p className="text-sm text-gray-600">Contacto preferido</p>
+            <p className="text-sm text-muted-foreground">Contacto preferido</p>
             <div className="flex items-center gap-1">
               {getContactMethodIcon(contact.preferredContact)}
               <span className="capitalize">{contact.preferredContact}</span>
             </div>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Total de peticiones</p>
+            <p className="text-sm text-muted-foreground">Total de peticiones</p>
             <p className="font-medium">{contact.totalRequests}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Registrado</p>
+            <p className="text-sm text-muted-foreground">Registrado</p>
             <p>{format(new Date(contact.createdAt), "d 'de' MMMM, yyyy", { locale: es })}</p>
           </div>
           {contact.lastContactDate && (
             <div>
-              <p className="text-sm text-gray-600">Último contacto</p>
+              <p className="text-sm text-muted-foreground">Último contacto</p>
               <p>{format(new Date(contact.lastContactDate), "d 'de' MMMM, yyyy", { locale: es })}</p>
             </div>
           )}
@@ -556,7 +556,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
 
         {contact.tags && contact.tags.length > 0 && (
           <div className="mt-4">
-            <p className="text-sm text-gray-600 mb-2">Etiquetas</p>
+            <p className="text-sm text-muted-foreground mb-2">Etiquetas</p>
             <div className="flex flex-wrap gap-1">
               {contact.tags.map(tag => (
                 <Badge key={tag} variant="outline">
@@ -569,7 +569,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
 
         {contact.notes && (
           <div className="mt-4">
-            <p className="text-sm text-gray-600 mb-2">Notas</p>
+            <p className="text-sm text-muted-foreground mb-2">Notas</p>
             <p className="text-sm bg-white rounded p-2">{contact.notes}</p>
           </div>
         )}
@@ -580,24 +580,24 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
           <h4 className="font-medium mb-3">Historial de Peticiones ({contact.requests.length})</h4>
           <div className="space-y-3">
             {contact.requests.map(request => (
-              <div key={request.id} className="bg-gray-50 rounded p-3">
+              <div key={request.id} className="bg-muted/30 rounded p-3">
                 <div className="flex items-start justify-between mb-2">
                   <Badge className={
-                    request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                    request.status === 'approved' ? 'bg-green-100 text-green-800' :
-                    'bg-red-100 text-red-800'
+                    request.status === 'pending' ? 'bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]' :
+                    request.status === 'approved' ? 'bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]' :
+                    'bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]'
                   }>
                     {request.status === 'pending' ? 'Pendiente' :
                      request.status === 'approved' ? 'Aprobado' : 'Rechazado'}
                   </Badge>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-muted-foreground">
                     {format(new Date(request.createdAt), "d 'de' MMM, yyyy", { locale: es })}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 mb-1">
+                <p className="text-sm text-muted-foreground mb-1">
                   <strong>Categoría:</strong> {request.category.name}
                 </p>
-                <p className="text-sm text-gray-700">{request.message}</p>
+                <p className="text-sm text-muted-foreground">{request.message}</p>
               </div>
             ))}
           </div>
@@ -611,9 +611,9 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600">{title}</p>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
             <p className="text-2xl font-bold">{value}</p>
-            {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+            {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
           </div>
           <Icon className={`w-8 h-8 ${color}`} />
         </div>
@@ -624,7 +624,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[hsl(var(--info))]"></div>
       </div>
     )
   }
@@ -635,7 +635,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Gestión de Contactos</h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Administra los contactos de las peticiones de oración
           </p>
         </div>
@@ -668,27 +668,27 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
               title="Total de Contactos"
               value={stats.totalContacts}
               icon={Users}
-              color="text-blue-600"
+              color="text-[hsl(var(--info))]"
             />
             <StatCard
               title="Contactos Activos"
               value={stats.activeContacts}
               subtitle={`${Math.round((stats.activeContacts / Math.max(stats.totalContacts, 1)) * 100)}% del total`}
               icon={TrendingUp}
-              color="text-green-600"
+              color="text-[hsl(var(--success))]"
             />
             <StatCard
               title="Nuevos este mes"
               value={stats.newThisMonth}
               icon={Plus}
-              color="text-purple-600"
+              color="text-[hsl(var(--lavender))]"
             />
             <StatCard
               title="Promedio de peticiones"
               value={stats.avgRequestsPerContact.toFixed(1)}
               subtitle="por contacto"
               icon={Heart}
-              color="text-red-600"
+              color="text-[hsl(var(--destructive))]"
             />
           </div>
 
@@ -699,7 +699,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
             </CardHeader>
             <CardContent>
               {stats.topCategories.length === 0 ? (
-                <p className="text-center text-gray-500 py-4">
+                <p className="text-center text-muted-foreground py-4">
                   No hay datos de categorías disponibles
                 </p>
               ) : (
@@ -707,7 +707,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
                   {stats.topCategories.map((category, index) => (
                     <div key={category.name} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-medium">
+                        <span className="w-6 h-6 bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] rounded-full flex items-center justify-center text-sm font-medium">
                           {index + 1}
                         </span>
                         <span>{category.name}</span>
@@ -735,7 +735,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
                 <div>
                   <Label>Buscar</Label>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 w-4 h-4" />
                     <Input
                       placeholder="Nombre, email, teléfono..."
                       value={filters.search}
@@ -838,7 +838,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
           {/* Results */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Mostrando {filteredContacts.length} de {contacts.length} contactos
               </p>
             </div>
@@ -847,7 +847,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
               <Card>
                 <CardContent className="text-center py-12">
                   <Users className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                  <p className="text-gray-500">No se encontraron contactos</p>
+                  <p className="text-muted-foreground">No se encontraron contactos</p>
                   {contacts.length === 0 ? (
                     <Button
                       className="mt-4"
@@ -857,7 +857,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
                       Crear Primer Contacto
                     </Button>
                   ) : (
-                    <p className="text-sm text-gray-400 mt-1">
+                    <p className="text-sm text-muted-foreground/70 mt-1">
                       Intenta ajustar los filtros
                     </p>
                   )}
@@ -879,7 +879,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
               <CardTitle>Análisis de Contactos</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-center text-gray-500 py-8">
+              <p className="text-center text-muted-foreground py-8">
                 Las funciones de análisis avanzado se implementarán en futuras versiones.
                 Por ahora, puedes ver las estadísticas básicas en la pestaña de Resumen.
               </p>
@@ -987,7 +987,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
               />
             </div>
 
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               * Debe proporcionar email o teléfono
             </p>
           </div>

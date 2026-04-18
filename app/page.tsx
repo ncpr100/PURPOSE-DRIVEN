@@ -23,7 +23,7 @@ export default function HomePage() {
 
   // Show branded loading page while checking session
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500">
+    <div className="min-h-screen flex items-center justify-center bg-card">
       <div className="text-center">
         <div className="mb-8">
           <h1 className="text-6xl font-bold text-white mb-4">Kḥesed-tek</h1>

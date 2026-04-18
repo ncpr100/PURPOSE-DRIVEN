@@ -81,10 +81,10 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
-          <Logo size="xl" className="text-gray-900" />
+          <Logo size="xl" className="text-foreground" />
         </div>
         
         <Card>
@@ -136,7 +136,7 @@ export default function SignInPage() {
               </div>
 
               {error && (
-                <div className="text-sm text-red-600 bg-red-50 p-3 rounded-md">
+                <div className="text-sm text-[hsl(var(--destructive))] bg-[hsl(var(--destructive)/0.12)] p-3 rounded-md">
                   {error}
                 </div>
               )}
@@ -149,10 +149,10 @@ export default function SignInPage() {
               </Button>
 
               <div className="text-center text-sm">
-                <span className="text-gray-600">¿No tienes una cuenta? </span>
+                <span className="text-muted-foreground">¿No tienes una cuenta? </span>
                 <Link
                   href="/auth/fresh-signup"
-                  className="text-blue-600 hover:underline font-medium"
+                  className="text-primary hover:underline font-medium"
                 >
                   Regístrate aquí
                 </Link>
