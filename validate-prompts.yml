@@ -1,0 +1,93 @@
+name: Validate Prompt Library
+
+# Runs on every push and on every PR targeting main.
+# Fails the job if: XML is malformed, IDs are duplicated,
+# content violates the XSD schema, or extraction returns empty output.
+# Set this as a required status check in branch protection rules
+# to block any broken prompt library from reaching main.
+
+on:
+  push:
+    paths:
+      - '.prompts/**'          # Only runs when prompt files change
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.prompts/**'
+  workflow_dispatch:           # Allow manual trigger from Actions tab
+
+jobs:
+  validate:
+    name: XML schema + smoke test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .prompts
+
+    steps:
+
+      # ── 1. Checkout ─────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Python setup ─────────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # ── 3. Cache pip to keep the job fast (~10s on repeat runs) ─
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-lxml
+          restore-keys: ${{ runner.os }}-pip-
+
+      # ── 4. Install lxml ─────────────────────────────────────────
+      - name: Install dependencies
+        run: pip install --quiet lxml
+
+      # ── 5. Validate XML against XSD schema ──────────────────────
+      - name: Validate prompt_library.xml against XSD
+        run: |
+          echo "Running schema validation..."
+          python extract_prompt.py --validate
+          echo "Schema validation passed."
+
+      # ── 6. List all prompt IDs (smoke test the parser) ──────────
+      - name: List all prompt IDs
+        run: |
+          echo "Listing all prompt IDs..."
+          python extract_prompt.py --list
+          echo "List succeeded."
+
+      # ── 7. Extract one CMS and one marketing prompt ──────────────
+      #    Verifies that content is non-empty and parsing works end-to-end.
+      - name: Smoke test – extract cms_universal
+        run: |
+          OUTPUT=$(python extract_prompt.py cms_universal)
+          if [ -z "$OUTPUT" ]; then
+            echo "ERROR: cms_universal returned empty output"
+            exit 1
+          fi
+          echo "cms_universal OK ($(echo "$OUTPUT" | wc -c) bytes)"
+
+      - name: Smoke test – extract marketing_universal
+        run: |
+          OUTPUT=$(python extract_prompt.py marketing_universal)
+          if [ -z "$OUTPUT" ]; then
+            echo "ERROR: marketing_universal returned empty output"
+            exit 1
+          fi
+          echo "marketing_universal OK ($(echo "$OUTPUT" | wc -c) bytes)"
+
+      # ── 8. Verify bad ID returns a non-zero exit code ─────────── 
+      #    Guards against future changes that accidentally swallow errors.
+      - name: Confirm error on invalid ID
+        run: |
+          if python extract_prompt.py nonexistent_id_xyz 2>/dev/null; then
+            echo "ERROR: Script should have exited non-zero for unknown ID"
+            exit 1
+          fi
+          echo "Error-handling confirmed."
