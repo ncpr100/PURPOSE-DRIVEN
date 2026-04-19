@@ -1,0 +1,113 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+
+    // ─────────────────────────────────────────────────────────────
+    // TASK 1: Extract a prompt by ID (interactive dropdown picker)
+    // Ctrl+Shift+P → Run Task → Extract Prompt
+    // ─────────────────────────────────────────────────────────────
+    {
+      "label": "Extract Prompt",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/.prompts/extract_prompt.py",
+        "${input:promptId}"
+      ],
+      "group": "none",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": true,
+        "close": false
+      },
+      "problemMatcher": []
+    },
+
+    // ─────────────────────────────────────────────────────────────
+    // TASK 2: Validate prompt_library.xml against XSD schema
+    // Ctrl+Shift+P → Run Task → Validate Prompt Library
+    // ─────────────────────────────────────────────────────────────
+    {
+      "label": "Validate Prompt Library",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/.prompts/extract_prompt.py",
+        "--validate"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+
+    // ─────────────────────────────────────────────────────────────
+    // TASK 3: List all available prompt IDs
+    // Ctrl+Shift+P → Run Task → List All Prompts
+    // ─────────────────────────────────────────────────────────────
+    {
+      "label": "List All Prompts",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/.prompts/extract_prompt.py",
+        "--list"
+      ],
+      "group": "none",
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    }
+
+  ],
+
+  // ─────────────────────────────────────────────────────────────
+  // INPUT: Dropdown picker – add new prompt IDs here as you create them
+  // ─────────────────────────────────────────────────────────────
+  "inputs": [
+    {
+      "id": "promptId",
+      "type": "pickString",
+      "description": "Select the prompt to extract",
+      "options": [
+        // ── CMS ──────────────────────────────────────────────
+        { "label": "[CMS] Universal pre-task (start here)",  "value": "cms_universal" },
+        { "label": "[CMS] Bug fixing",                        "value": "cms_bug_fixing" },
+        { "label": "[CMS] Feature development",               "value": "cms_feature_dev" },
+        { "label": "[CMS] Refactoring & cleanup",             "value": "cms_refactoring" },
+        { "label": "[CMS] Testing & validation",              "value": "cms_testing" },
+        { "label": "[CMS] Code review",                       "value": "cms_code_review" },
+        { "label": "[CMS] Emergency hotfix",                  "value": "cms_emergency" },
+        { "label": "[CMS] Advanced debugging (forensic)",     "value": "cms_debugging_advanced" },
+        { "label": "[CMS] Verification first (fix failed)",   "value": "cms_verification_first" },
+        { "label": "[CMS] Project recovery & audit",          "value": "cms_recovery" },
+        { "label": "[CMS] State analyzer (Supabase/files)",   "value": "cms_state_analyzer" },
+        { "label": "[CMS] Full module QA testing",            "value": "cms_module_testing" },
+        // ── MARKETING ────────────────────────────────────────
+        { "label": "[MKT] Universal pre-task (start here)",  "value": "marketing_universal" },
+        { "label": "[MKT] Bug fixing",                        "value": "marketing_bug_fixing" },
+        { "label": "[MKT] Feature development",               "value": "marketing_feature_dev" },
+        { "label": "[MKT] Content update",                    "value": "marketing_content_update" },
+        { "label": "[MKT] SEO & analytics audit",             "value": "marketing_seo_audit" },
+        { "label": "[MKT] Performance optimization",          "value": "marketing_performance" },
+        { "label": "[MKT] Emergency hotfix",                  "value": "marketing_emergency" },
+        { "label": "[MKT] Site health check",                 "value": "marketing_health_check" },
+        { "label": "[MKT] Content consistency audit",         "value": "marketing_content_consistency" }
+      ],
+      "default": "cms_universal"
+    }
+  ]
+}
