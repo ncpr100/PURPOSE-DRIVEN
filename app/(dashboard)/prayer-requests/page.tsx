@@ -323,7 +323,7 @@ export default function PrayerRequestsPage() {
       </div>
 
       {/* Mobile Characteristics Status Card - PWA Features for Church Team */}
-      <Card className="btn-cta-gradient border-[hsl(var(--info)/0.3)]">
+      <Card className="bg-[hsl(var(--card))] border border-[hsl(var(--info)/0.3)]">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">

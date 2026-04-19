@@ -1,10 +1,16 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -12,8 +18,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { 
+} from "@/components/ui/dialog";
+import {
   MessageSquare,
   Clock,
   Send,
@@ -32,8 +38,8 @@ import {
   Bell,
   BellOff,
   HardDrive,
-  HelpCircle
-} from 'lucide-react'
+  HelpCircle,
+} from "lucide-react";
 import {
   LineChart as RechartsLineChart,
   Line,
@@ -49,206 +55,230 @@ import {
   Cell,
   Pie,
   Area,
-  AreaChart
-} from 'recharts'
+  AreaChart,
+} from "recharts";
 
 interface PrayerAnalytics {
   overview: {
-    totalRequestsCount: number
-    totalContactos: number
-    averageResponseTime: number // in hours
-    approvalRate: number // percentage
-    userEngagementScore: number // 0-100
-  }
+    totalRequestsCount: number;
+    totalContactos: number;
+    averageResponseTime: number; // in hours
+    approvalRate: number; // percentage
+    userEngagementScore: number; // 0-100
+  };
   categories: Array<{
-    id: string
-    name: string
-    cantidadPeticiones: number
-    approvalRate: number
-    color?: string
-  }>
+    id: string;
+    name: string;
+    cantidadPeticiones: number;
+    approvalRate: number;
+    color?: string;
+  }>;
   trends?: {
     requestsOverTime: Array<{
-      date: string
-      peticiones: number
-      aprobaciones: number
-      rechazos: number
-    }>
+      date: string;
+      peticiones: number;
+      aprobaciones: number;
+      rechazos: number;
+    }>;
     contactGrowth: Array<{
-      date: string
-      contactosNuevos: number
-      totalContactos: number
-    }>
+      date: string;
+      contactosNuevos: number;
+      totalContactos: number;
+    }>;
     responseMetrics: Array<{
-      date: string
-      respuestasEnviadas: number
-      tasaEntrega: number
-      tasaRespuesta: number
-    }>
-  }
+      date: string;
+      respuestasEnviadas: number;
+      tasaEntrega: number;
+      tasaRespuesta: number;
+    }>;
+  };
   engagement?: {
     mostActiveHours: Array<{
-      hour: number
-      cantidad: number
-    }>
+      hour: number;
+      cantidad: number;
+    }>;
     mostActiveDays: Array<{
-      day: string
-      cantidad: number
-    }>
-  }
+      day: string;
+      cantidad: number;
+    }>;
+  };
 }
 
 // Colors for charts
-const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#00ff00', '#ff00ff', '#00ffff']
+const COLORS = [
+  "#8884d8",
+  "#82ca9d",
+  "#ffc658",
+  "#ff7300",
+  "#00ff00",
+  "#ff00ff",
+  "#00ffff",
+];
 
 export default function PrayerWallPage() {
-  const [viewMode, setViewMode] = useState<'overview'>('overview')
-  const [analytics, setAnalytics] = useState<PrayerAnalytics | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  
+  const [viewMode, setViewMode] = useState<"overview">("overview");
+  const [analytics, setAnalytics] = useState<PrayerAnalytics | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   // PWA State Management (User-Facing Features)
-  const [isOnline, setIsOnline] = useState(true)
-  const [isInstallable, setIsInstallable] = useState(false)
-  const [installPrompt, setInstallPrompt] = useState<any>(null)
-  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
-  const [isInstalled, setIsInstalled] = useState(false)
-  const [showHelpModal, setShowHelpModal] = useState(false)
+  const [isOnline, setIsOnline] = useState(true);
+  const [isInstallable, setIsInstallable] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [notificationPermission, setNotificationPermission] =
+    useState<NotificationPermission>("default");
+  const [isInstalled, setIsInstalled] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // PWA Installation and Notifications Setup
   useEffect(() => {
     // Check if already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true)
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setIsInstalled(true);
     }
 
     // Handle PWA install prompt
     const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault()
-      setInstallPrompt(e)
-      setIsInstallable(true)
-    }
+      e.preventDefault();
+      setInstallPrompt(e);
+      setIsInstallable(true);
+    };
 
     // Handle app installed
     const handleAppInstalled = () => {
-      setIsInstalled(true)
-      setIsInstallable(false)
-      setInstallPrompt(null)
-    }
+      setIsInstalled(true);
+      setIsInstallable(false);
+      setInstallPrompt(null);
+    };
 
     // Online/Offline detection
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
     // Check notification permission
-    if ('Notification' in window) {
-      setNotificationPermission(Notification.permission)
+    if ("Notification" in window) {
+      setNotificationPermission(Notification.permission);
     }
 
     // Add event listeners
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-    window.addEventListener('appinstalled', handleAppInstalled)
-    window.addEventListener('online', handleOnline)
-    window.addEventListener('offline', handleOffline)
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     // Cleanup
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-      window.removeEventListener('appinstalled', handleAppInstalled)
-      window.removeEventListener('online', handleOnline)
-      window.removeEventListener('offline', handleOffline)
-    }
-  }, [])
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt,
+      );
+      window.removeEventListener("appinstalled", handleAppInstalled);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   // PWA Installation Handler
   const handleInstallApp = async () => {
-    if (!installPrompt) return
+    if (!installPrompt) return;
 
-    installPrompt.prompt()
-    const result = await installPrompt.userChoice
-    
-    if (result.outcome === 'accepted') {
-      console.log('User accepted the install prompt')
+    installPrompt.prompt();
+    const result = await installPrompt.userChoice;
+
+    if (result.outcome === "accepted") {
+      console.log("User accepted the install prompt");
     }
-    
-    setInstallPrompt(null)
-    setIsInstallable(false)
-  }
+
+    setInstallPrompt(null);
+    setIsInstallable(false);
+  };
 
   // Notification Permission Handler
   const handleEnableNotifications = async () => {
-    if (!('Notification' in window)) {
-      alert('Este navegador no soporta notificaciones')
-      return
+    if (!("Notification" in window)) {
+      alert("Este navegador no soporta notificaciones");
+      return;
     }
 
-    const permission = await Notification.requestPermission()
-    setNotificationPermission(permission)
+    const permission = await Notification.requestPermission();
+    setNotificationPermission(permission);
 
-    if (permission === 'granted') {
+    if (permission === "granted") {
       // Subscribe to push notifications
-      if ('serviceWorker' in navigator && 'PushManager' in window) {
+      if ("serviceWorker" in navigator && "PushManager" in window) {
         try {
-          await navigator.serviceWorker.ready
-          console.log('Notificaciones activadas correctamente')
+          await navigator.serviceWorker.ready;
+          console.log("Notificaciones activadas correctamente");
         } catch (error) {
-          console.error('Error setting up push notifications:', error)
+          console.error("Error setting up push notifications:", error);
         }
       }
     }
-  }
+  };
 
   // Fetch real-time prayer analytics with proper authentication
   useEffect(() => {
-    let eventSource: EventSource | null = null
-    
+    let eventSource: EventSource | null = null;
+
     async function fetchAnalytics() {
       try {
-        setLoading(true)
-        setError(null)
-        
+        setLoading(true);
+        setError(null);
+
         // Fetch initial data with proper headers
-        const response = await fetch('/api/prayer-analytics?days=30', {
-          method: 'GET',
+        const response = await fetch("/api/prayer-analytics?days=30", {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          credentials: 'include'
-        })
-        
+          credentials: "include",
+        });
+
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({ error: 'Error de red' }))
-          throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`)
+          const errorData = await response
+            .json()
+            .catch(() => ({ error: "Error de red" }));
+          throw new Error(
+            errorData.error ||
+              `Error ${response.status}: ${response.statusText}`,
+          );
         }
-        
-        const data = await response.json()
-        setAnalytics(data.analytics || data)
-        
+
+        const data = await response.json();
+        setAnalytics(data.analytics || data);
+
         // Set up real-time updates via Server-Sent Events
         try {
-          eventSource = new EventSource('/api/prayer-analytics/realtime-updates')
-          
+          eventSource = new EventSource(
+            "/api/prayer-analytics/realtime-updates",
+          );
+
           eventSource.onmessage = (event) => {
             try {
-              const updateData = JSON.parse(event.data)
-              if (updateData.type === 'prayer_analytics_update') {
-                setAnalytics(updateData.data)
+              const updateData = JSON.parse(event.data);
+              if (updateData.type === "prayer_analytics_update") {
+                setAnalytics(updateData.data);
               }
             } catch (e) {
-              console.warn('Error parsing SSE data:', e)
+              console.warn("Error parsing SSE data:", e);
             }
-          }
-          
+          };
+
           eventSource.onerror = () => {
-            console.warn('SSE connection failed, continuing with periodic updates')
-          }
+            console.warn(
+              "SSE connection failed, continuing with periodic updates",
+            );
+          };
         } catch (sseError) {
-          console.warn('SSE not available, using periodic updates:', sseError)
+          console.warn("SSE not available, using periodic updates:", sseError);
         }
-        
       } catch (err) {
-        console.error('Analytics fetch error:', err)
-        setError(err instanceof Error ? err.message : 'Error al cargar datos en tiempo real')
+        console.error("Analytics fetch error:", err);
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Error al cargar datos en tiempo real",
+        );
         // Enhanced fallback data with trends
         setAnalytics({
           overview: {
@@ -256,33 +286,64 @@ export default function PrayerWallPage() {
             totalContactos: 89,
             averageResponseTime: 4.2,
             approvalRate: 87.5,
-            userEngagementScore: 78
-        },
+            userEngagementScore: 78,
+          },
           categories: [
-            { id: '1', name: 'Salud', cantidadPeticiones: 45, approvalRate: 92 },
-            { id: '2', name: 'Familia', cantidadPeticiones: 38, approvalRate: 89 },
-            { id: '3', name: 'Trabajo', cantidadPeticiones: 28, approvalRate: 94 },
-            { id: '4', name: 'Ministerio', cantidadPeticiones: 25, approvalRate: 96 },
-            { id: '5', name: 'Finanzas', cantidadPeticiones: 20, approvalRate: 85 }
+            {
+              id: "1",
+              name: "Salud",
+              cantidadPeticiones: 45,
+              approvalRate: 92,
+            },
+            {
+              id: "2",
+              name: "Familia",
+              cantidadPeticiones: 38,
+              approvalRate: 89,
+            },
+            {
+              id: "3",
+              name: "Trabajo",
+              cantidadPeticiones: 28,
+              approvalRate: 94,
+            },
+            {
+              id: "4",
+              name: "Ministerio",
+              cantidadPeticiones: 25,
+              approvalRate: 96,
+            },
+            {
+              id: "5",
+              name: "Finanzas",
+              cantidadPeticiones: 20,
+              approvalRate: 85,
+            },
           ],
           trends: {
             requestsOverTime: Array.from({ length: 7 }, (_, i) => ({
-              date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+              date: new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split("T")[0],
               peticiones: Math.floor(Math.random() * 10) + 5,
               aprobaciones: Math.floor(Math.random() * 8) + 4,
-              rechazos: Math.floor(Math.random() * 2)
+              rechazos: Math.floor(Math.random() * 2),
             })).reverse(),
             contactGrowth: Array.from({ length: 7 }, (_, i) => ({
-              date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+              date: new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split("T")[0],
               contactosNuevos: Math.floor(Math.random() * 5) + 1,
-              totalContactos: 89 - i * 2
+              totalContactos: 89 - i * 2,
             })).reverse(),
             responseMetrics: Array.from({ length: 7 }, (_, i) => ({
-              date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+              date: new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+                .toISOString()
+                .split("T")[0],
               respuestasEnviadas: Math.floor(Math.random() * 8) + 4,
               tasaEntrega: 95 + Math.random() * 5,
-              tasaRespuesta: 20 + Math.random() * 10
-            })).reverse()
+              tasaRespuesta: 20 + Math.random() * 10,
+            })).reverse(),
           },
           engagement: {
             mostActiveHours: [
@@ -290,61 +351,63 @@ export default function PrayerWallPage() {
               { hour: 10, cantidad: 12 },
               { hour: 11, cantidad: 20 },
               { hour: 14, cantidad: 18 },
-              { hour: 19, cantidad: 25 }
+              { hour: 19, cantidad: 25 },
             ],
             mostActiveDays: [
-              { day: 'Domingo', cantidad: 45 },
-              { day: 'Lunes', cantidad: 20 },
-              { day: 'Martes', cantidad: 25 },
-              { day: 'Miércoles', cantidad: 30 },
-              { day: 'Jueves', cantidad: 22 },
-              { day: 'Viernes', cantidad: 28 },
-              { day: 'Sábado', cantidad: 18 }
-            ]
-          }
-        })
+              { day: "Domingo", cantidad: 45 },
+              { day: "Lunes", cantidad: 20 },
+              { day: "Martes", cantidad: 25 },
+              { day: "Miércoles", cantidad: 30 },
+              { day: "Jueves", cantidad: 22 },
+              { day: "Viernes", cantidad: 28 },
+              { day: "Sábado", cantidad: 18 },
+            ],
+          },
+        });
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    fetchAnalytics()
-    
+    fetchAnalytics();
+
     // Set up periodic refresh every 2 minutes as fallback
-    const interval = setInterval(fetchAnalytics, 120000)
-    
-    return () => {
-      clearInterval(interval)
-      if (eventSource) {
-        eventSource.close()
-      }
-    }
-  }, [])
+    const interval = setInterval(fetchAnalytics, 120000);
 
-  const handleModeSwitch = async (mode: 'overview') => {
-    setViewMode(mode)
-  }
+    return () => {
+      clearInterval(interval);
+      if (eventSource) {
+        eventSource.close();
+      }
+    };
+  }, []);
+
+  const handleModeSwitch = async (mode: "overview") => {
+    setViewMode(mode);
+  };
 
   const handleExportData = () => {
-    if (!analytics) return
-    
+    if (!analytics) return;
+
     const exportData = {
       exportDate: new Date().toISOString(),
       overview: analytics.overview,
       categories: analytics.categories,
-      trends: analytics.trends
-    }
-    
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `prayer-analytics-${new Date().toISOString().split('T')[0]}.json`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }
+      trends: analytics.trends,
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `prayer-analytics-${new Date().toISOString().split("T")[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -368,7 +431,8 @@ export default function PrayerWallPage() {
                   {error}
                 </span>
                 <span className="text-xs text-muted-foreground">
-                  Mostrando datos de ejemplo. La conexión se reintentará automáticamente.
+                  Mostrando datos de ejemplo. La conexión se reintentará
+                  automáticamente.
                 </span>
               </div>
             ) : (
@@ -380,7 +444,7 @@ export default function PrayerWallPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button 
+          <Button
             variant="outline"
             onClick={handleExportData}
             disabled={!analytics}
@@ -388,16 +452,16 @@ export default function PrayerWallPage() {
             <Download className="w-4 h-4 mr-2" />
             Exportar
           </Button>
-          <Button 
-            variant={viewMode === 'overview' ? 'default' : 'outline'}
-            onClick={() => handleModeSwitch('overview')}
+          <Button
+            variant={viewMode === "overview" ? "default" : "outline"}
+            onClick={() => handleModeSwitch("overview")}
           >
             <PieChart className="w-4 h-4 mr-2" />
             Estadísticas
           </Button>
-          <Button 
+          <Button
             variant="outline"
-            onClick={() => window.open('/prayer-requests', '_blank')}
+            onClick={() => window.open("/prayer-requests", "_blank")}
           >
             <ExternalLink className="w-4 h-4 mr-2" />
             Ver Todas
@@ -411,7 +475,9 @@ export default function PrayerWallPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Smartphone className="h-5 w-5 text-[hsl(var(--lavender))]" />
-              <CardTitle className="text-lg">Estado de Características Mobile</CardTitle>
+              <CardTitle className="text-lg">
+                Estado de Características Mobile
+              </CardTitle>
             </div>
             <Dialog>
               <DialogTrigger asChild>
@@ -437,25 +503,44 @@ export default function PrayerWallPage() {
                       Instalar Aplicación
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      Convierte el Muro de Oración en una aplicación independiente en tu dispositivo.
+                      Convierte el Muro de Oración en una aplicación
+                      independiente en tu dispositivo.
                     </p>
                     <div className="bg-muted/30 p-4 rounded-lg space-y-2">
-                      <p className="font-medium text-sm">Método Automático (Recomendado):</p>
+                      <p className="font-medium text-sm">
+                        Método Automático (Recomendado):
+                      </p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
-                        <li>Haz clic en el botón "Instalar Aplicación" arriba</li>
-                        <li>Confirma la instalación en el diálogo del navegador</li>
+                        <li>
+                          Haz clic en el botón "Instalar Aplicación" arriba
+                        </li>
+                        <li>
+                          Confirma la instalación en el diálogo del navegador
+                        </li>
                         <li>La app aparecerá en tu pantalla de inicio</li>
                       </ol>
-                      <p className="font-medium text-sm mt-3">Método Manual (Chrome/Edge):</p>
+                      <p className="font-medium text-sm mt-3">
+                        Método Manual (Chrome/Edge):
+                      </p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
                         <li>Clic en el menú del navegador (⋮)</li>
-                        <li>Selecciona "Instalar aplicación" o "Añadir a pantalla de inicio"</li>
+                        <li>
+                          Selecciona "Instalar aplicación" o "Añadir a pantalla
+                          de inicio"
+                        </li>
                         <li>Confirma la instalación</li>
                       </ol>
-                      <p className="font-medium text-sm mt-3">Método Manual (Safari iOS):</p>
+                      <p className="font-medium text-sm mt-3">
+                        Método Manual (Safari iOS):
+                      </p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
-                        <li>Toca el botón Compartir <span className="inline-block">□↑</span></li>
-                        <li>Desliza y selecciona "Añadir a pantalla de inicio"</li>
+                        <li>
+                          Toca el botón Compartir{" "}
+                          <span className="inline-block">□↑</span>
+                        </li>
+                        <li>
+                          Desliza y selecciona "Añadir a pantalla de inicio"
+                        </li>
                         <li>Confirma el nombre y toca "Añadir"</li>
                       </ol>
                     </div>
@@ -468,19 +553,31 @@ export default function PrayerWallPage() {
                       Activar Notificaciones
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      Recibe alertas instantáneas cuando se publiquen nuevas peticiones de oración.
+                      Recibe alertas instantáneas cuando se publiquen nuevas
+                      peticiones de oración.
                     </p>
                     <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                       <p className="font-medium text-sm">Método Automático:</p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
                         <li>Haz clic en "Activar Notificaciones" arriba</li>
-                        <li>El navegador te pedirá permiso - haz clic en "Permitir"</li>
+                        <li>
+                          El navegador te pedirá permiso - haz clic en
+                          "Permitir"
+                        </li>
                         <li>Recibirás una notificación de prueba</li>
                       </ol>
-                      <p className="font-medium text-sm mt-3">Solución de Problemas:</p>
+                      <p className="font-medium text-sm mt-3">
+                        Solución de Problemas:
+                      </p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2">
-                        <li>Si bloqueaste las notificaciones: Ve a Configuración del navegador → Notificaciones → Permitir este sitio</li>
-                        <li>En móviles: Verifica que las notificaciones estén habilitadas en Ajustes del sistema</li>
+                        <li>
+                          Si bloqueaste las notificaciones: Ve a Configuración
+                          del navegador → Notificaciones → Permitir este sitio
+                        </li>
+                        <li>
+                          En móviles: Verifica que las notificaciones estén
+                          habilitadas en Ajustes del sistema
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -497,9 +594,15 @@ export default function PrayerWallPage() {
                     <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                       <p className="font-medium text-sm">Cómo Funciona:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2">
-                        <li>Las peticiones recientes se guardan automáticamente en tu dispositivo</li>
+                        <li>
+                          Las peticiones recientes se guardan automáticamente en
+                          tu dispositivo
+                        </li>
                         <li>Puedes leer y revisar peticiones sin conexión</li>
-                        <li>Los cambios se sincronizarán cuando recuperes la conexión</li>
+                        <li>
+                          Los cambios se sincronizarán cuando recuperes la
+                          conexión
+                        </li>
                       </ul>
                       <p className="font-medium text-sm mt-3">Beneficios:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2">
@@ -523,12 +626,16 @@ export default function PrayerWallPage() {
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-[hsl(var(--success)/0.10)]0 rounded-full"></div>
                         <span className="text-sm font-medium">Online:</span>
-                        <span className="text-sm text-muted-foreground">Datos en tiempo real activos</span>
+                        <span className="text-sm text-muted-foreground">
+                          Datos en tiempo real activos
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-[hsl(var(--destructive)/0.10)]0 rounded-full"></div>
                         <span className="text-sm font-medium">Offline:</span>
-                        <span className="text-sm text-muted-foreground">Usando datos guardados</span>
+                        <span className="text-sm text-muted-foreground">
+                          Usando datos guardados
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -541,11 +648,28 @@ export default function PrayerWallPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {/* Installable Badge */}
             <div className="flex items-center gap-2">
-              <Smartphone className={`h-5 w-5 ${isInstalled || isInstallable ? 'text-[hsl(var(--success))]' : 'text-muted-foreground/70'}`} />
+              <Smartphone
+                className={`h-5 w-5 ${isInstalled || isInstallable ? "text-[hsl(var(--success))]" : "text-muted-foreground/70"}`}
+              />
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Instalable</p>
-                <Badge variant={isInstalled ? 'default' : isInstallable ? 'secondary' : 'outline'} className="text-xs">
-                  {isInstalled ? 'Instalada' : isInstallable ? 'Disponible' : 'No disponible'}
+                <p className="text-xs font-medium text-muted-foreground">
+                  Instalable
+                </p>
+                <Badge
+                  variant={
+                    isInstalled
+                      ? "default"
+                      : isInstallable
+                        ? "secondary"
+                        : "outline"
+                  }
+                  className="text-xs"
+                >
+                  {isInstalled
+                    ? "Instalada"
+                    : isInstallable
+                      ? "Disponible"
+                      : "No disponible"}
                 </Badge>
               </div>
             </div>
@@ -558,38 +682,56 @@ export default function PrayerWallPage() {
                 <WifiOff className="h-5 w-5 text-[hsl(var(--destructive))]" />
               )}
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Conectividad</p>
-                <Badge variant={isOnline ? 'default' : 'destructive'} className="text-xs">
-                  {isOnline ? 'Online' : 'Offline'}
+                <p className="text-xs font-medium text-muted-foreground">
+                  Conectividad
+                </p>
+                <Badge
+                  variant={isOnline ? "default" : "destructive"}
+                  className="text-xs"
+                >
+                  {isOnline ? "Online" : "Offline"}
                 </Badge>
               </div>
             </div>
 
             {/* Notifications Badge */}
             <div className="flex items-center gap-2">
-              {notificationPermission === 'granted' ? (
+              {notificationPermission === "granted" ? (
                 <Bell className="h-5 w-5 text-[hsl(var(--warning))]" />
               ) : (
                 <BellOff className="h-5 w-5 text-muted-foreground/70" />
               )}
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Notificaciones</p>
-                <Badge 
-                  variant={notificationPermission === 'granted' ? 'default' : 'outline'} 
+                <p className="text-xs font-medium text-muted-foreground">
+                  Notificaciones
+                </p>
+                <Badge
+                  variant={
+                    notificationPermission === "granted" ? "default" : "outline"
+                  }
                   className="text-xs"
                 >
-                  {notificationPermission === 'granted' ? 'Activas' : 'Inactivas'}
+                  {notificationPermission === "granted"
+                    ? "Activas"
+                    : "Inactivas"}
                 </Badge>
               </div>
             </div>
 
             {/* Offline Ready Badge */}
             <div className="flex items-center gap-2">
-              <HardDrive className={`h-5 w-5 ${isInstalled ? 'text-[hsl(var(--info))]' : 'text-muted-foreground/70'}`} />
+              <HardDrive
+                className={`h-5 w-5 ${isInstalled ? "text-[hsl(var(--info))]" : "text-muted-foreground/70"}`}
+              />
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Modo Offline</p>
-                <Badge variant={isInstalled ? 'default' : 'outline'} className="text-xs">
-                  {isInstalled ? 'Listo' : 'Requiere instalación'}
+                <p className="text-xs font-medium text-muted-foreground">
+                  Modo Offline
+                </p>
+                <Badge
+                  variant={isInstalled ? "default" : "outline"}
+                  className="text-xs"
+                >
+                  {isInstalled ? "Listo" : "Requiere instalación"}
                 </Badge>
               </div>
             </div>
@@ -598,8 +740,8 @@ export default function PrayerWallPage() {
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-2 mt-4">
             {isInstallable && !isInstalled && (
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 onClick={handleInstallApp}
                 className="bg-[hsl(var(--lavender))] hover:bg-[hsl(var(--lavender))]"
               >
@@ -607,10 +749,10 @@ export default function PrayerWallPage() {
                 Instalar Aplicación
               </Button>
             )}
-            
-            {notificationPermission !== 'granted' && (
-              <Button 
-                size="sm" 
+
+            {notificationPermission !== "granted" && (
+              <Button
+                size="sm"
                 variant="outline"
                 onClick={handleEnableNotifications}
               >
@@ -635,17 +777,23 @@ export default function PrayerWallPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[hsl(var(--info))]">Total Peticiones</p>
+                <p className="text-sm font-medium text-[hsl(var(--info))]">
+                  Total Peticiones
+                </p>
                 <p className="text-2xl font-bold text-[hsl(var(--info))]">
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.overview?.totalRequestsCount ?? 0
+                    (analytics?.overview?.totalRequestsCount ?? 0)
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-[hsl(var(--info))] mt-1">
-                    {analytics.trends?.requestsOverTime?.reduce((sum, day) => sum + day.aprobaciones, 0) ?? 0} aprobadas
+                    {analytics.trends?.requestsOverTime?.reduce(
+                      (sum, day) => sum + day.aprobaciones,
+                      0,
+                    ) ?? 0}{" "}
+                    aprobadas
                   </p>
                 )}
               </div>
@@ -654,21 +802,30 @@ export default function PrayerWallPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-amber-50 to-amber-100">
+        <Card className="bg-[hsl(var(--warning)/0.10)]">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[hsl(var(--warning))]">Pendientes</p>
-                <p className="text-2xl font-bold text-amber-800">
+                <p className="text-sm font-medium text-[hsl(var(--warning))]">
+                  Pendientes
+                </p>
+                <p className="text-2xl font-bold text-[hsl(var(--warning))]">
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.trends?.requestsOverTime?.reduce((sum, day) => sum + day.rechazos, 0) ?? 0
+                    (analytics?.trends?.requestsOverTime?.reduce(
+                      (sum, day) => sum + day.rechazos,
+                      0,
+                    ) ?? 0)
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-[hsl(var(--warning))] mt-1">
-                    {analytics.trends?.requestsOverTime?.reduce((sum, day) => sum + day.rechazos, 0) ?? 0} rechazadas
+                    {analytics.trends?.requestsOverTime?.reduce(
+                      (sum, day) => sum + day.rechazos,
+                      0,
+                    ) ?? 0}{" "}
+                    rechazadas
                   </p>
                 )}
               </div>
@@ -681,12 +838,14 @@ export default function PrayerWallPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[hsl(var(--success))]">Contactos</p>
+                <p className="text-sm font-medium text-[hsl(var(--success))]">
+                  Contactos
+                </p>
                 <p className="text-2xl font-bold text-[hsl(var(--success))]">
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.overview?.totalContactos ?? 0
+                    (analytics?.overview?.totalContactos ?? 0)
                   )}
                 </p>
                 {analytics && !loading && (
@@ -704,17 +863,23 @@ export default function PrayerWallPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-[hsl(var(--lavender))]">Respuestas</p>
+                <p className="text-sm font-medium text-[hsl(var(--lavender))]">
+                  Respuestas
+                </p>
                 <p className="text-2xl font-bold text-[hsl(var(--lavender))]">
                   {loading ? (
                     <Loader2 className="w-6 h-6 animate-spin" />
                   ) : (
-                    analytics?.trends?.requestsOverTime?.reduce((sum, day) => sum + day.aprobaciones, 0) ?? 0
+                    (analytics?.trends?.requestsOverTime?.reduce(
+                      (sum, day) => sum + day.aprobaciones,
+                      0,
+                    ) ?? 0)
                   )}
                 </p>
                 {analytics && !loading && (
                   <p className="text-xs text-[hsl(var(--lavender))] mt-1">
-                    {(analytics.overview?.averageResponseTime ?? 0).toFixed(1)}h promedio
+                    {(analytics.overview?.averageResponseTime ?? 0).toFixed(1)}h
+                    promedio
                   </p>
                 )}
               </div>
@@ -725,7 +890,7 @@ export default function PrayerWallPage() {
       </div>
 
       {/* Content based on mode */}
-      {viewMode === 'overview' ? (
+      {viewMode === "overview" ? (
         <div className="space-y-6">
           {/* Interactive Charts Section */}
           {analytics && analytics.trends && (
@@ -743,15 +908,35 @@ export default function PrayerWallPage() {
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
-                    <RechartsLineChart data={analytics.trends?.requestsOverTime ?? []}>
+                    <RechartsLineChart
+                      data={analytics.trends?.requestsOverTime ?? []}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Line type="monotone" dataKey="peticiones" stroke="#8884d8" strokeWidth={2} name="Peticiones" />
-                      <Line type="monotone" dataKey="aprobaciones" stroke="#82ca9d" strokeWidth={2} name="Aprobaciones" />
-                      <Line type="monotone" dataKey="rechazos" stroke="#ff7300" strokeWidth={2} name="Rechazos" />
+                      <Line
+                        type="monotone"
+                        dataKey="peticiones"
+                        stroke="#8884d8"
+                        strokeWidth={2}
+                        name="Peticiones"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="aprobaciones"
+                        stroke="#82ca9d"
+                        strokeWidth={2}
+                        name="Aprobaciones"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="rechazos"
+                        stroke="#ff7300"
+                        strokeWidth={2}
+                        name="Rechazos"
+                      />
                     </RechartsLineChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -776,13 +961,18 @@ export default function PrayerWallPage() {
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        label={({ name, percent }) =>
+                          `${name} ${(percent * 100).toFixed(0)}%`
+                        }
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="cantidadPeticiones"
                       >
                         {(analytics.categories ?? []).map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
                         ))}
                       </Pie>
                       <Tooltip />
@@ -815,8 +1005,22 @@ export default function PrayerWallPage() {
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Area type="monotone" dataKey="totalContactos" stackId="1" stroke="#8884d8" fill="#8884d8" name="Total de Contactos" />
-                      <Area type="monotone" dataKey="contactosNuevos" stackId="2" stroke="#82ca9d" fill="#82ca9d" name="Contactos Nuevos" />
+                      <Area
+                        type="monotone"
+                        dataKey="totalContactos"
+                        stackId="1"
+                        stroke="#8884d8"
+                        fill="#8884d8"
+                        name="Total de Contactos"
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="contactosNuevos"
+                        stackId="2"
+                        stroke="#82ca9d"
+                        fill="#82ca9d"
+                        name="Contactos Nuevos"
+                      />
                     </AreaChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -835,7 +1039,9 @@ export default function PrayerWallPage() {
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
-                    <RechartsBarChart data={analytics.engagement?.mostActiveHours ?? []}>
+                    <RechartsBarChart
+                      data={analytics.engagement?.mostActiveHours ?? []}
+                    >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="hour" />
                       <YAxis />
@@ -859,13 +1065,15 @@ export default function PrayerWallPage() {
               Muro de Oración
             </h2>
             <p className="text-[hsl(var(--lavender))]">
-              Sistema completo de peticiones de oración con análisis y estadísticas.
+              Sistema completo de peticiones de oración con análisis y
+              estadísticas.
             </p>
             {analytics && !loading && (
-              <div className="mt-4 p-3 bg-white rounded-lg border border-[hsl(var(--lavender)/0.3)]">
+              <div className="mt-4 p-3 bg-muted/20 rounded-lg border border-[hsl(var(--lavender)/0.3)]">
                 <p className="text-sm text-[hsl(var(--lavender))]">
-                  {analytics.overview?.totalRequestsCount ?? 0} peticiones registradas | 
-                  {analytics.trends?.requestsOverTime?.length ?? 0} días de estadísticas
+                  {analytics.overview?.totalRequestsCount ?? 0} peticiones
+                  registradas |{analytics.trends?.requestsOverTime?.length ?? 0}{" "}
+                  días de estadísticas
                 </p>
               </div>
             )}
@@ -873,5 +1081,5 @@ export default function PrayerWallPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
