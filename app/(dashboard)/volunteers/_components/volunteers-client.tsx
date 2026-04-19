@@ -1,473 +1,573 @@
+"use client";
 
-
-'use client'
-
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { UserPlus, Search, Users, Calendar, Phone, Mail, MapPin, Brain, Sparkles, Zap, BarChart3, Crown, PlayCircle, Target, Activity, CheckCircle, Star, Eye, Lightbulb, User } from 'lucide-react'
-import { toast } from 'sonner'
-import { SmartSchedulingDashboard } from '@/components/volunteers/smart-scheduling-dashboard'
-import { IntelligentSchedulingEngine } from '@/components/volunteers/intelligent-scheduling-engine'
-import { WorkloadAnalyticsDashboard } from '@/components/volunteers/workload-analytics-dashboard'
-import { RecruitmentPipelineDashboard } from '@/components/volunteers/recruitment-pipeline-dashboard'
-import { LeadershipDevelopmentDashboard } from '@/components/volunteers/leadership-development-dashboard'
-import { OnboardingWorkflowsDashboard } from '@/components/volunteers/onboarding-workflows-dashboard'
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  UserPlus,
+  Search,
+  Users,
+  Calendar,
+  Phone,
+  Mail,
+  MapPin,
+  Brain,
+  Sparkles,
+  Zap,
+  BarChart3,
+  Crown,
+  PlayCircle,
+  Target,
+  Activity,
+  CheckCircle,
+  Star,
+  Eye,
+  Lightbulb,
+  User,
+} from "lucide-react";
+import { toast } from "sonner";
+import { SmartSchedulingDashboard } from "@/components/volunteers/smart-scheduling-dashboard";
+import { IntelligentSchedulingEngine } from "@/components/volunteers/intelligent-scheduling-engine";
+import { WorkloadAnalyticsDashboard } from "@/components/volunteers/workload-analytics-dashboard";
+import { RecruitmentPipelineDashboard } from "@/components/volunteers/recruitment-pipeline-dashboard";
+import { LeadershipDevelopmentDashboard } from "@/components/volunteers/leadership-development-dashboard";
+import { OnboardingWorkflowsDashboard } from "@/components/volunteers/onboarding-workflows-dashboard";
 
 interface Volunteer {
-  id: string
-  firstName: string
-  lastName: string
-  email?: string
-  phone?: string
-  skills?: string
-  availability?: string
-  ministry?: { name: string }
-  member?: { id: string; firstName: string; lastName: string }
-  assignments: any[]
-  isActive: boolean
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+  skills?: string;
+  availability?: string;
+  ministry?: { name: string };
+  member?: { id: string; firstName: string; lastName: string };
+  assignments: any[];
+  isActive: boolean;
 }
 
 interface Ministry {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
 interface VolunteersClientProps {
-  userRole: string
-  churchId: string
+  userRole: string;
+  churchId: string;
 }
 
-export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) {
-  const [volunteers, setVolunteers] = useState<Volunteer[]>([])
-  const [ministries, setMinistries] = useState<Ministry[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false)
-  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(null)
+export function VolunteersClient({
+  userRole,
+  churchId,
+}: VolunteersClientProps) {
+  const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
+  const [ministries, setMinistries] = useState<Ministry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false);
+  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(
+    null,
+  );
   const [editFormData, setEditFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    skills: '',
-    availability: '',
-    ministryId: 'no-ministry'
-  })
-  const [spiritualGifts, setSpiritualGifts] = useState<any[]>([])
-  const [member_spiritual_profiles, setMemberSpiritualProfile] = useState<any>(null)
-  const [volunteerProfiles, setVolunteerProfiles] = useState<Map<string, any>>(new Map())
-  const [memberAvailabilityMatrix, setMemberAvailabilityMatrix] = useState<any>(null)
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    skills: "",
+    availability: "",
+    ministryId: "no-ministry",
+  });
+  const [spiritualGifts, setSpiritualGifts] = useState<any[]>([]);
+  const [member_spiritual_profiles, setMemberSpiritualProfile] =
+    useState<any>(null);
+  const [volunteerProfiles, setVolunteerProfiles] = useState<Map<string, any>>(
+    new Map(),
+  );
+  const [memberAvailabilityMatrix, setMemberAvailabilityMatrix] =
+    useState<any>(null);
 
   // State management for dialogs
 
   // Handler functions for buttons
   const handleOpenEditDialog = (volunteer: Volunteer) => {
-    setSelectedVolunteer(volunteer)
+    setSelectedVolunteer(volunteer);
     setEditFormData({
       firstName: volunteer.firstName,
       lastName: volunteer.lastName,
-      email: volunteer.email || '',
-      phone: volunteer.phone || '',
-      skills: volunteer.skills || '',
-      availability: volunteer.availability || '',
-      ministryId: volunteer.ministry ? (ministries.find(m => m.name === volunteer.ministry?.name)?.id || 'no-ministry') : 'no-ministry'
-    })
-    setIsEditDialogOpen(true)
-  }
+      email: volunteer.email || "",
+      phone: volunteer.phone || "",
+      skills: volunteer.skills || "",
+      availability: volunteer.availability || "",
+      ministryId: volunteer.ministry
+        ? ministries.find((m) => m.name === volunteer.ministry?.name)?.id ||
+          "no-ministry"
+        : "no-ministry",
+    });
+    setIsEditDialogOpen(true);
+  };
 
   const handleEditVolunteer = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!selectedVolunteer) return
+    e.preventDefault();
+    if (!selectedVolunteer) return;
     if (!editFormData.firstName || !editFormData.lastName) {
-      toast.error('Nombre y apellido son requeridos')
-      return
+      toast.error("Nombre y apellido son requeridos");
+      return;
     }
     try {
       const response = await fetch(`/api/volunteers/${selectedVolunteer.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...editFormData,
-          skills: editFormData.skills ? editFormData.skills.split(',').map((s: string) => s.trim()) : [],
-          ministryId: editFormData.ministryId === 'no-ministry' ? null : editFormData.ministryId
-        })
-      })
+          skills: editFormData.skills
+            ? editFormData.skills.split(",").map((s: string) => s.trim())
+            : [],
+          ministryId:
+            editFormData.ministryId === "no-ministry"
+              ? null
+              : editFormData.ministryId,
+        }),
+      });
       if (response.ok) {
-        toast.success('Voluntario actualizado exitosamente')
-        setIsEditDialogOpen(false)
-        fetchVolunteers()
+        toast.success("Voluntario actualizado exitosamente");
+        setIsEditDialogOpen(false);
+        fetchVolunteers();
       } else {
-        const error = await response.json()
-        toast.error(error.message || 'Error al actualizar voluntario')
+        const error = await response.json();
+        toast.error(error.message || "Error al actualizar voluntario");
       }
     } catch {
-      toast.error('Error al actualizar voluntario')
+      toast.error("Error al actualizar voluntario");
     }
-  }
+  };
 
   const handleOpenAssignDialog = (volunteer: Volunteer) => {
-    setSelectedVolunteer(volunteer)
-    setIsAssignDialogOpen(true)
-  }
+    setSelectedVolunteer(volunteer);
+    setIsAssignDialogOpen(true);
+  };
 
   const handleOpenProfileDialog = (volunteer: Volunteer) => {
-    const memberId = volunteer.member?.id
-    setSelectedVolunteer(volunteer)
-    setIsProfileDialogOpen(true)
+    const memberId = volunteer.member?.id;
+    setSelectedVolunteer(volunteer);
+    setIsProfileDialogOpen(true);
 
     if (memberId) {
-      fetchMemberSpiritualProfile(memberId)
-      fetchMemberAvailabilityMatrix(memberId)
+      fetchMemberSpiritualProfile(memberId);
+      fetchMemberAvailabilityMatrix(memberId);
     } else {
-      setMemberSpiritualProfile(null)
-      setMemberAvailabilityMatrix(null)
+      setMemberSpiritualProfile(null);
+      setMemberAvailabilityMatrix(null);
     }
-  }
+  };
 
   // Form states
-  const [allMembers, setAllMembers] = useState<{id: string; firstName: string; lastName: string; email?: string; phone?: string}[]>([])
+  const [allMembers, setAllMembers] = useState<
+    {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email?: string;
+      phone?: string;
+    }[]
+  >([]);
   const [formData, setFormData] = useState({
-    memberId: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    skills: '',
-    availability: '',
-    ministryId: 'no-ministry'
-  })
+    memberId: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    skills: "",
+    availability: "",
+    ministryId: "no-ministry",
+  });
 
   const [assignmentData, setAssignmentData] = useState({
-    title: '',
-    description: '',
-    assignmentType: 'temporary', // 'temporary' or 'permanent'
-    date: '',
-    endDate: '', // For temporary assignments
-    startTime: '',
-    endTime: '',
-    notes: ''
-  })
+    title: "",
+    description: "",
+    assignmentType: "temporary", // 'temporary' or 'permanent'
+    date: "",
+    endDate: "", // For temporary assignments
+    startTime: "",
+    endTime: "",
+    notes: "",
+  });
 
   useEffect(() => {
-    fetchVolunteers()
-    fetchMinistries()
-    fetchSpiritualGifts()
-    fetchAllMembers()
-  }, [])
+    fetchVolunteers();
+    fetchMinistries();
+    fetchSpiritualGifts();
+    fetchAllMembers();
+  }, []);
 
   const fetchAllMembers = async () => {
     try {
-      const response = await fetch('/api/members?smartList=volunteer-candidates&limit=500')
+      const response = await fetch(
+        "/api/members?smartList=volunteer-candidates&limit=500",
+      );
       if (response.ok) {
-        const data = await response.json()
-        setAllMembers(data.members || [])
+        const data = await response.json();
+        setAllMembers(data.members || []);
       }
     } catch (error) {
-      console.error('Error fetching members for volunteer form:', error)
+      console.error("Error fetching members for volunteer form:", error);
     }
-  }
+  };
 
   // Fetch spiritual profiles for all volunteers (for recommendations)
   useEffect(() => {
     if (volunteers.length > 0) {
-      fetchAllSpiritualProfiles()
+      fetchAllSpiritualProfiles();
     }
-  }, [volunteers.length])
+  }, [volunteers.length]);
 
   const fetchAllSpiritualProfiles = async () => {
-    console.log('🔄 Fetching spiritual profiles for all volunteers...')
-    const profiles = new Map()
-    
+    console.log("🔄 Fetching spiritual profiles for all volunteers...");
+    const profiles = new Map();
+
     for (const volunteer of volunteers) {
       // Skip volunteers without a linked member
       // Note: API includes member relation, so we check volunteer.member
-      const memberId = volunteer.member?.id
-      
+      const memberId = volunteer.member?.id;
+
       if (!memberId) {
-        console.warn(`⚠️ Volunteer ${volunteer.firstName} ${volunteer.lastName} has no linked member`)
-        continue
+        console.warn(
+          `⚠️ Volunteer ${volunteer.firstName} ${volunteer.lastName} has no linked member`,
+        );
+        continue;
       }
-      
+
       try {
-        const response = await fetch(`/api/members/${memberId}/spiritual-profile`)
+        const response = await fetch(
+          `/api/members/${memberId}/spiritual-profile`,
+        );
         if (response.ok) {
-          const data = await response.json()
+          const data = await response.json();
           if (data.profile) {
-            profiles.set(volunteer.id, data.profile)
+            profiles.set(volunteer.id, data.profile);
           }
         }
       } catch (error) {
-        console.error(`Error loading profile for ${volunteer.firstName}:`, error)
+        console.error(
+          `Error loading profile for ${volunteer.firstName}:`,
+          error,
+        );
       }
     }
-    
-    console.log('✅ Loaded spiritual profiles for', profiles.size, 'volunteers')
-    setVolunteerProfiles(profiles)
-  }
+
+    console.log(
+      "✅ Loaded spiritual profiles for",
+      profiles.size,
+      "volunteers",
+    );
+    setVolunteerProfiles(profiles);
+  };
 
   const fetchVolunteers = async () => {
     try {
-      const response = await fetch('/api/volunteers')
+      const response = await fetch("/api/volunteers");
       if (response.ok) {
-        const data = await response.json()
+        const data = await response.json();
         // Ensure all volunteers have proper structure
         // FIX #005b: Prisma returns 'members' and 'ministries' (plural, matching schema relation
         // field names). The old code read volunteer.member / volunteer.ministry (singular) which
         // were always undefined → both showed null. Also normalise assignment relation name.
         const safeVolunteers = data.map((volunteer: any) => ({
           ...volunteer,
-          assignments: volunteer.volunteer_assignments || volunteer.assignments || [],
+          assignments:
+            volunteer.volunteer_assignments || volunteer.assignments || [],
           member: volunteer.members || volunteer.member || null,
-          ministry: volunteer.ministries || volunteer.ministry || null
-        }))
-        setVolunteers(safeVolunteers)
+          ministry: volunteer.ministries || volunteer.ministry || null,
+        }));
+        setVolunteers(safeVolunteers);
       } else {
-        toast.error('Error al cargar voluntarios')
+        toast.error("Error al cargar voluntarios");
       }
     } catch (error) {
-      console.error('Error fetching volunteers:', error)
-      toast.error('Error al cargar voluntarios')
+      console.error("Error fetching volunteers:", error);
+      toast.error("Error al cargar voluntarios");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchMinistries = async () => {
     try {
-      const response = await fetch('/api/ministries')
+      const response = await fetch("/api/ministries");
       if (response.ok) {
-        const data = await response.json()
-        setMinistries(data)
+        const data = await response.json();
+        setMinistries(data);
       }
     } catch (error) {
-      console.error('Error fetching ministries:', error)
+      console.error("Error fetching ministries:", error);
     }
-  }
+  };
 
   const fetchSpiritualGifts = async () => {
     try {
-      const response = await fetch('/api/spiritual-gifts')
+      const response = await fetch("/api/spiritual-gifts");
       if (response.ok) {
-        const data = await response.json()
-        setSpiritualGifts(data.gifts || [])
+        const data = await response.json();
+        setSpiritualGifts(data.gifts || []);
       } else {
-        console.error('Error loading spiritual gifts')
+        console.error("Error loading spiritual gifts");
       }
     } catch (error) {
-      console.error('Error loading spiritual gifts:', error)
+      console.error("Error loading spiritual gifts:", error);
     }
-  }
+  };
 
   const fetchMemberSpiritualProfile = async (memberId: string) => {
     try {
-      console.log('🔄 Fetching spiritual profile for member:', memberId)
-      const response = await fetch(`/api/members/${memberId}/spiritual-profile`)
+      console.log("🔄 Fetching spiritual profile for member:", memberId);
+      const response = await fetch(
+        `/api/members/${memberId}/spiritual-profile`,
+      );
       if (response.ok) {
-        const data = await response.json()
-        console.log('✅ Spiritual profile loaded:', data.profile)
-        setMemberSpiritualProfile(data.profile)
+        const data = await response.json();
+        console.log("✅ Spiritual profile loaded:", data.profile);
+        setMemberSpiritualProfile(data.profile);
       } else {
-        console.log('ℹ️ No spiritual profile found')
-        setMemberSpiritualProfile(null)
+        console.log("ℹ️ No spiritual profile found");
+        setMemberSpiritualProfile(null);
       }
     } catch (error) {
-      console.error('❌ Error loading member spiritual profile:', error)
-      setMemberSpiritualProfile(null)
+      console.error("❌ Error loading member spiritual profile:", error);
+      setMemberSpiritualProfile(null);
     }
-  }
+  };
 
   const fetchMemberAvailabilityMatrix = async (memberId: string) => {
     try {
-      console.log('🔄 Fetching availability matrix for member:', memberId)
-      const response = await fetch(`/api/availability-matrix?memberId=${memberId}`)
+      console.log("🔄 Fetching availability matrix for member:", memberId);
+      const response = await fetch(
+        `/api/availability-matrix?memberId=${memberId}`,
+      );
       if (response.ok) {
-        const data = await response.json()
-        console.log('✅ Availability matrix loaded:', data.matrix)
-        setMemberAvailabilityMatrix(data.matrix)
+        const data = await response.json();
+        console.log("✅ Availability matrix loaded:", data.matrix);
+        setMemberAvailabilityMatrix(data.matrix);
       } else {
-        console.log('ℹ️ No availability matrix found')
-        setMemberAvailabilityMatrix(null)
+        console.log("ℹ️ No availability matrix found");
+        setMemberAvailabilityMatrix(null);
       }
     } catch (error) {
-      console.error('❌ Error loading availability matrix:', error)
-      setMemberAvailabilityMatrix(null)
+      console.error("❌ Error loading availability matrix:", error);
+      setMemberAvailabilityMatrix(null);
     }
-  }
+  };
 
   // Helper function to format availability matrix display
   const formatAvailabilityDisplay = (matrix: any) => {
-    if (!matrix || !matrix.recurringAvailability || Object.keys(matrix.recurringAvailability).length === 0) {
-      return 'No se ha registrado disponibilidad'
+    if (
+      !matrix ||
+      !matrix.recurringAvailability ||
+      Object.keys(matrix.recurringAvailability).length === 0
+    ) {
+      return "No se ha registrado disponibilidad";
     }
 
     const dayNames: { [key: string]: string } = {
-      monday: 'Lunes',
-      tuesday: 'Martes',
-      wednesday: 'Miércoles',
-      thursday: 'Jueves',
-      friday: 'Viernes',
-      saturday: 'Sábado',
-      sunday: 'Domingo'
-    }
+      monday: "Lunes",
+      tuesday: "Martes",
+      wednesday: "Miércoles",
+      thursday: "Jueves",
+      friday: "Viernes",
+      saturday: "Sábado",
+      sunday: "Domingo",
+    };
 
     const timeNames: { [key: string]: string } = {
-      morning: 'Mañana (6:00 - 12:00)',
-      afternoon: 'Tarde (12:00 - 18:00)',
-      evening: 'Noche (18:00 - 22:00)'
-    }
+      morning: "Mañana (6:00 - 12:00)",
+      afternoon: "Tarde (12:00 - 18:00)",
+      evening: "Noche (18:00 - 22:00)",
+    };
 
     // Extract days and times from recurringAvailability object
-    const availableDays: string[] = []
-    const timeSlots = new Set<string>()
-    
-    Object.entries(matrix.recurringAvailability).forEach(([day, times]: [string, any]) => {
-      if (times && typeof times === 'object') {
-        const hasTimes = Object.values(times).some(val => val === true)
-        if (hasTimes) {
-          availableDays.push(dayNames[day] || day)
-          Object.entries(times).forEach(([time, available]) => {
-            if (available) {
-              timeSlots.add(timeNames[time] || time)
-            }
-          })
+    const availableDays: string[] = [];
+    const timeSlots = new Set<string>();
+
+    Object.entries(matrix.recurringAvailability).forEach(
+      ([day, times]: [string, any]) => {
+        if (times && typeof times === "object") {
+          const hasTimes = Object.values(times).some((val) => val === true);
+          if (hasTimes) {
+            availableDays.push(dayNames[day] || day);
+            Object.entries(times).forEach(([time, available]) => {
+              if (available) {
+                timeSlots.add(timeNames[time] || time);
+              }
+            });
+          }
         }
-      }
-    })
+      },
+    );
 
     if (availableDays.length === 0) {
-      return 'No se ha registrado disponibilidad'
+      return "No se ha registrado disponibilidad";
     }
 
-    let display = `Disponible ${availableDays.join(', ')}`
+    let display = `Disponible ${availableDays.join(", ")}`;
     if (timeSlots.size > 0) {
-      display += ` - ${Array.from(timeSlots).join(', ')}`
+      display += ` - ${Array.from(timeSlots).join(", ")}`;
     }
-    
-    return display
-  }
+
+    return display;
+  };
 
   const handleCreateVolunteer = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!formData.firstName || !formData.lastName) {
-      toast.error('Nombre y apellido son requeridos')
-      return
+      toast.error("Nombre y apellido son requeridos");
+      return;
     }
 
     try {
-      const response = await fetch('/api/volunteers', {
-        method: 'POST',
+      const response = await fetch("/api/volunteers", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...formData,
-          skills: formData.skills ? formData.skills.split(',').map(s => s.trim()) : [],
+          skills: formData.skills
+            ? formData.skills.split(",").map((s) => s.trim())
+            : [],
           availability: formData.availability || null,
-          ministryId: formData.ministryId || 'no-ministry'
+          ministryId: formData.ministryId || "no-ministry",
         }),
-      })
+      });
 
       if (response.ok) {
-        toast.success('Voluntario creado exitosamente')
+        toast.success("Voluntario creado exitosamente");
         setFormData({
-          memberId: '',
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          skills: '',
-          availability: '',
-          ministryId: 'no-ministry'
-        })
-        setIsCreateDialogOpen(false)
-        fetchVolunteers()
-        fetchAllMembers() // Refresh candidates list
+          memberId: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          skills: "",
+          availability: "",
+          ministryId: "no-ministry",
+        });
+        setIsCreateDialogOpen(false);
+        fetchVolunteers();
+        fetchAllMembers(); // Refresh candidates list
       } else {
-        const error = await response.json()
-        toast.error(error.message || 'Error al crear voluntario')
+        const error = await response.json();
+        toast.error(error.message || "Error al crear voluntario");
       }
     } catch (error) {
-      toast.error('Error al crear voluntario')
+      toast.error("Error al crear voluntario");
     }
-  }
+  };
 
   const handleCreateAssignment = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Validation based on assignment type
     if (!selectedVolunteer || !assignmentData.title) {
-      toast.error('El título de la asignación es requerido')
-      return
+      toast.error("El título de la asignación es requerido");
+      return;
     }
 
-    if (assignmentData.assignmentType === 'temporary') {
-      if (!assignmentData.date || !assignmentData.startTime || !assignmentData.endTime) {
-        toast.error('Para asignaciones temporales, la fecha y horarios son requeridos')
-        return
+    if (assignmentData.assignmentType === "temporary") {
+      if (
+        !assignmentData.date ||
+        !assignmentData.startTime ||
+        !assignmentData.endTime
+      ) {
+        toast.error(
+          "Para asignaciones temporales, la fecha y horarios son requeridos",
+        );
+        return;
       }
     }
 
     try {
-      const response = await fetch('/api/volunteer-assignments', {
-        method: 'POST',
+      const response = await fetch("/api/volunteer-assignments", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...assignmentData,
-          volunteerId: selectedVolunteer?.id
+          volunteerId: selectedVolunteer?.id,
         }),
-      })
+      });
 
       if (response.ok) {
-        const isPermanent = assignmentData.assignmentType === 'permanent'
+        const isPermanent = assignmentData.assignmentType === "permanent";
         toast.success(
-          isPermanent 
-            ? 'Asignación permanente creada exitosamente' 
-            : 'Asignación temporal creada exitosamente'
-        )
+          isPermanent
+            ? "Asignación permanente creada exitosamente"
+            : "Asignación temporal creada exitosamente",
+        );
         setAssignmentData({
-          title: '',
-          description: '',
-          assignmentType: 'temporary',
-          date: '',
-          endDate: '',
-          startTime: '',
-          endTime: '',
-          notes: ''
-        })
-        setIsAssignDialogOpen(false)
-        setSelectedVolunteer(null)
-        fetchVolunteers()
+          title: "",
+          description: "",
+          assignmentType: "temporary",
+          date: "",
+          endDate: "",
+          startTime: "",
+          endTime: "",
+          notes: "",
+        });
+        setIsAssignDialogOpen(false);
+        setSelectedVolunteer(null);
+        fetchVolunteers();
       } else {
-        const error = await response.json()
-        toast.error(error.message || 'Error al crear asignación')
+        const error = await response.json();
+        toast.error(error.message || "Error al crear asignación");
       }
     } catch (error) {
-      toast.error('Error al crear asignación')
+      toast.error("Error al crear asignación");
     }
-  }
+  };
 
-  const filteredVolunteers = volunteers.filter(volunteer =>
-    `${volunteer.firstName} ${volunteer.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    volunteer.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    volunteer.ministry?.name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredVolunteers = volunteers.filter(
+    (volunteer) =>
+      `${volunteer.firstName} ${volunteer.lastName}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      volunteer.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      volunteer.ministry?.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Cargando...</div>
+    return (
+      <div className="flex justify-center items-center h-64">Cargando...</div>
+    );
   }
 
   return (
@@ -480,7 +580,8 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
             Sistema de Voluntarios Inteligente
           </h1>
           <p className="text-muted-foreground">
-            Gestión completa con IA: Reclutamiento, Programación, y Desarrollo de Liderazgo
+            Gestión completa con IA: Reclutamiento, Programación, y Desarrollo
+            de Liderazgo
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -498,7 +599,10 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
             <UserPlus className="h-4 w-4" />
             Reclutamiento
           </TabsTrigger>
-          <TabsTrigger value="recommendations" className="flex items-center gap-1">
+          <TabsTrigger
+            value="recommendations"
+            className="flex items-center gap-1"
+          >
             <Lightbulb className="h-4 w-4" />
             Recomendaciones
           </TabsTrigger>
@@ -523,7 +627,10 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
         {/* Phase 3: Recruitment Pipeline Dashboard */}
         <TabsContent value="recruitment">
-          <RecruitmentPipelineDashboard churchId={churchId} userRole={userRole} />
+          <RecruitmentPipelineDashboard
+            churchId={churchId}
+            userRole={userRole}
+          />
         </TabsContent>
 
         {/* Recommendations Tab */}
@@ -535,162 +642,225 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 Sistema de Recomendaciones Inteligente
               </h2>
               <p className="text-muted-foreground">
-                Sugerencias personalizadas basadas en habilidades, disponibilidad y dones espirituales
+                Sugerencias personalizadas basadas en habilidades,
+                disponibilidad y dones espirituales
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {volunteers.filter(v => v.isActive).map((volunteer) => {
-                const profile = volunteerProfiles.get(volunteer.id)
-                const skillsArray = volunteer.skills ? JSON.parse(volunteer.skills) : []
-                
-                // Calculate REAL match score based on spiritual profile
-                let matchScore = 50 // Base score
-                if (profile) {
-                  const primaryGifts = profile.primaryGifts || []
-                  const secondaryGifts = profile.secondaryGifts || []
-                  const ministryPassions = profile.ministryPassions || []
-                  
-                  matchScore = 50 + (primaryGifts.length * 10) + (secondaryGifts.length * 5) + (ministryPassions.length * 3)
-                  matchScore = Math.min(matchScore, 99) // Cap at 99%
-                }
-                
-                // Get primary gift categories for display
-                const primaryGiftNames = profile?.primaryGifts?.slice(0, 2).map((giftId: string) => {
-                  // Extract category from gift ID (e.g., "MUSICA" from "musica-instrumento")
-                  const categoryId = giftId.split('-')[0]
-                  return categoryId.charAt(0).toUpperCase() + categoryId.slice(1).toLowerCase()
-                }) || []
-                
-                // Determine leadership potential
-                const hasLeadershipGifts = profile?.primaryGifts?.some((giftId: string) => 
-                  giftId.includes('liderazgo') || giftId.includes('vision')
-                ) || false
-                
-                // Determine availability status from actual volunteer availability field
-                const availabilityStr = (volunteer.availability || '').toLowerCase()
-                const isAvailableWeekend = availabilityStr.includes('fin') || availabilityStr.includes('week') ||
-                  availabilityStr.includes('sábado') || availabilityStr.includes('sabado') ||
-                  availabilityStr.includes('domingo') || availabilityStr.includes('todo')
-                
-                return (
-                  <Card key={volunteer.id} className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-yellow-400">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg">
-                          {volunteer.firstName} {volunteer.lastName}
-                        </CardTitle>
-                        <Badge variant="secondary" className={
-                          matchScore >= 80 ? "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]" :
-                          matchScore >= 60 ? "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]" :
-                          "bg-muted/50 text-foreground"
-                        }>
-                          {matchScore}% match
-                        </Badge>
-                      </div>
-                      <CardDescription>
-                        {volunteer.ministry?.name || 'Sin ministerio asignado'}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {/* Show Spiritual Gifts if available */}
-                      {profile && (profile.primaryGifts?.length > 0 || profile.secondaryGifts?.length > 0) ? (
+              {volunteers
+                .filter((v) => v.isActive)
+                .map((volunteer) => {
+                  const profile = volunteerProfiles.get(volunteer.id);
+                  const skillsArray = volunteer.skills
+                    ? JSON.parse(volunteer.skills)
+                    : [];
+
+                  // Calculate REAL match score based on spiritual profile
+                  let matchScore = 50; // Base score
+                  if (profile) {
+                    const primaryGifts = profile.primaryGifts || [];
+                    const secondaryGifts = profile.secondaryGifts || [];
+                    const ministryPassions = profile.ministryPassions || [];
+
+                    matchScore =
+                      50 +
+                      primaryGifts.length * 10 +
+                      secondaryGifts.length * 5 +
+                      ministryPassions.length * 3;
+                    matchScore = Math.min(matchScore, 99); // Cap at 99%
+                  }
+
+                  // Get primary gift categories for display
+                  const primaryGiftNames =
+                    profile?.primaryGifts?.slice(0, 2).map((giftId: string) => {
+                      // Extract category from gift ID (e.g., "MUSICA" from "musica-instrumento")
+                      const categoryId = giftId.split("-")[0];
+                      return (
+                        categoryId.charAt(0).toUpperCase() +
+                        categoryId.slice(1).toLowerCase()
+                      );
+                    }) || [];
+
+                  // Determine leadership potential
+                  const hasLeadershipGifts =
+                    profile?.primaryGifts?.some(
+                      (giftId: string) =>
+                        giftId.includes("liderazgo") ||
+                        giftId.includes("vision"),
+                    ) || false;
+
+                  // Determine availability status from actual volunteer availability field
+                  const availabilityStr = (
+                    volunteer.availability || ""
+                  ).toLowerCase();
+                  const isAvailableWeekend =
+                    availabilityStr.includes("fin") ||
+                    availabilityStr.includes("week") ||
+                    availabilityStr.includes("sábado") ||
+                    availabilityStr.includes("sabado") ||
+                    availabilityStr.includes("domingo") ||
+                    availabilityStr.includes("todo");
+
+                  return (
+                    <Card
+                      key={volunteer.id}
+                      className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-yellow-400"
+                    >
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-lg">
+                            {volunteer.firstName} {volunteer.lastName}
+                          </CardTitle>
+                          <Badge
+                            variant="secondary"
+                            className={
+                              matchScore >= 80
+                                ? "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]"
+                                : matchScore >= 60
+                                  ? "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]"
+                                  : "bg-muted/50 text-foreground"
+                            }
+                          >
+                            {matchScore}% match
+                          </Badge>
+                        </div>
+                        <CardDescription>
+                          {volunteer.ministry?.name ||
+                            "Sin ministerio asignado"}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {/* Show Spiritual Gifts if available */}
+                        {profile &&
+                        (profile.primaryGifts?.length > 0 ||
+                          profile.secondaryGifts?.length > 0) ? (
+                          <div>
+                            <h4 className="font-medium text-sm text-muted-foreground mb-2">
+                              Dones Espirituales
+                            </h4>
+                            <div className="flex flex-wrap gap-1">
+                              {profile.primaryGifts
+                                ?.slice(0, 3)
+                                .map((giftId: string, index: number) => (
+                                  <Badge
+                                    key={index}
+                                    variant="default"
+                                    className="text-xs"
+                                  >
+                                    {giftId
+                                      .split("-")
+                                      .pop()
+                                      ?.replace(/_/g, " ")}
+                                  </Badge>
+                                ))}
+                              {profile.primaryGifts?.length > 3 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{profile.primaryGifts.length - 3}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        ) : skillsArray.length > 0 ? (
+                          <div>
+                            <h4 className="font-medium text-sm text-muted-foreground mb-2">
+                              Habilidades Destacadas
+                            </h4>
+                            <div className="flex flex-wrap gap-1">
+                              {skillsArray
+                                .slice(0, 3)
+                                .map((skill: string, index: number) => (
+                                  <Badge
+                                    key={index}
+                                    variant="outline"
+                                    className="text-xs border-[hsl(var(--warning)/0.30)] text-[hsl(var(--warning))]"
+                                  >
+                                    {skill}
+                                  </Badge>
+                                ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-md">
+                            <p className="text-xs text-amber-800">
+                              <strong>Nota:</strong> Este voluntario no ha
+                              completado su evaluación espiritual. Recomendamos
+                              completarla para mejores recomendaciones.
+                            </p>
+                          </div>
+                        )}
+
                         <div>
-                          <h4 className="font-medium text-sm text-muted-foreground mb-2">Dones Espirituales</h4>
-                          <div className="flex flex-wrap gap-1">
-                            {profile.primaryGifts?.slice(0, 3).map((giftId: string, index: number) => (
-                              <Badge key={index} variant="default" className="text-xs">
-                                {giftId.split('-').pop()?.replace(/_/g, ' ')}
-                              </Badge>
-                            ))}
-                            {profile.primaryGifts?.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{profile.primaryGifts.length - 3}
-                              </Badge>
+                          <h4 className="font-medium text-sm text-muted-foreground mb-2">
+                            Recomendaciones
+                          </h4>
+                          <div className="space-y-2">
+                            {profile && primaryGiftNames.length > 0 ? (
+                              <div className="flex items-center gap-2 text-sm">
+                                <Target className="h-4 w-4 text-[hsl(var(--success))]" />
+                                <span>
+                                  Ideal para Ministerio de {primaryGiftNames[0]}
+                                </span>
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Target className="h-4 w-4" />
+                                <span>
+                                  Completar evaluación para recomendaciones
+                                </span>
+                              </div>
+                            )}
+                            {isAvailableWeekend && (
+                              <div className="flex items-center gap-2 text-sm">
+                                <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
+                                <span>Disponible fines de semana</span>
+                              </div>
+                            )}
+                            {hasLeadershipGifts && (
+                              <div className="flex items-center gap-2 text-sm">
+                                <Star className="h-4 w-4 text-[hsl(var(--lavender))]" />
+                                <span>Alto potencial de liderazgo</span>
+                              </div>
                             )}
                           </div>
                         </div>
-                      ) : skillsArray.length > 0 ? (
-                        <div>
-                          <h4 className="font-medium text-sm text-muted-foreground mb-2">Habilidades Destacadas</h4>
-                          <div className="flex flex-wrap gap-1">
-                            {skillsArray.slice(0, 3).map((skill: string, index: number) => (
-                              <Badge key={index} variant="outline" className="text-xs border-[hsl(var(--warning)/0.30)] text-[hsl(var(--warning))]">
-                                {skill}
-                              </Badge>
-                            ))}
-                          </div>
+
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            size="sm"
+                            className="flex-1"
+                            type="button"
+                            onClick={() => handleOpenAssignDialog(volunteer)}
+                          >
+                            <Activity className="h-4 w-4 mr-1" />
+                            Asignar Actividad
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleOpenProfileDialog(volunteer)}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            Ver Perfil
+                          </Button>
                         </div>
-                      ) : (
-                        <div className="p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-md">
-                          <p className="text-xs text-amber-800">
-                            <strong>Nota:</strong> Este voluntario no ha completado su evaluación espiritual. 
-                            Recomendamos completarla para mejores recomendaciones.
-                          </p>
-                        </div>
-                      )}
-                      
-                      <div>
-                        <h4 className="font-medium text-sm text-muted-foreground mb-2">Recomendaciones</h4>
-                        <div className="space-y-2">
-                          {profile && primaryGiftNames.length > 0 ? (
-                            <div className="flex items-center gap-2 text-sm">
-                              <Target className="h-4 w-4 text-[hsl(var(--success))]" />
-                              <span>Ideal para Ministerio de {primaryGiftNames[0]}</span>
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <Target className="h-4 w-4" />
-                              <span>Completar evaluación para recomendaciones</span>
-                            </div>
-                          )}
-                          {isAvailableWeekend && (
-                            <div className="flex items-center gap-2 text-sm">
-                              <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
-                              <span>Disponible fines de semana</span>
-                            </div>
-                          )}
-                          {hasLeadershipGifts && (
-                            <div className="flex items-center gap-2 text-sm">
-                              <Star className="h-4 w-4 text-[hsl(var(--lavender))]" />
-                              <span>Alto potencial de liderazgo</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="flex gap-2 pt-2">
-                        <Button 
-                          size="sm" 
-                          className="flex-1"
-                          type="button"
-                          onClick={() => handleOpenAssignDialog(volunteer)}
-                        >
-                          <Activity className="h-4 w-4 mr-1" />
-                          Asignar Actividad
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleOpenProfileDialog(volunteer)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" />
-                          Ver Perfil
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )
-              })}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
             </div>
 
-            {volunteers.filter(v => v.isActive).length === 0 && (
+            {volunteers.filter((v) => v.isActive).length === 0 && (
               <Card>
                 <CardContent className="text-center py-12">
                   <Lightbulb className="mx-auto h-12 w-12 text-[hsl(var(--warning)/0.9)] mb-4" />
-                  <h3 className="text-lg font-medium text-foreground mb-2">No hay voluntarios activos</h3>
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    No hay voluntarios activos
+                  </h3>
                   <p className="text-muted-foreground">
-                    {volunteers.length === 0 ? 'Agrega voluntarios para generar recomendaciones personalizadas' : 'Los voluntarios existentes no están marcados como activos'}
+                    {volunteers.length === 0
+                      ? "Agrega voluntarios para generar recomendaciones personalizadas"
+                      : "Los voluntarios existentes no están marcados como activos"}
                   </p>
                 </CardContent>
               </Card>
@@ -700,12 +870,18 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
         {/* Phase 3: Leadership Development Dashboard */}
         <TabsContent value="leadership">
-          <LeadershipDevelopmentDashboard churchId={churchId} userRole={userRole} />
+          <LeadershipDevelopmentDashboard
+            churchId={churchId}
+            userRole={userRole}
+          />
         </TabsContent>
 
         {/* Phase 3: Onboarding Workflows Dashboard */}
         <TabsContent value="onboarding">
-          <OnboardingWorkflowsDashboard churchId={churchId} userRole={userRole} />
+          <OnboardingWorkflowsDashboard
+            churchId={churchId}
+            userRole={userRole}
+          />
         </TabsContent>
 
         {/* Smart Dashboard Tab */}
@@ -715,7 +891,10 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
 
         {/* Phase 2: Intelligent Scheduling Engine */}
         <TabsContent value="intelligent">
-          <IntelligentSchedulingEngine churchId={churchId} userRole={userRole} />
+          <IntelligentSchedulingEngine
+            churchId={churchId}
+            userRole={userRole}
+          />
         </TabsContent>
 
         {/* Phase 2: Workload Analytics Dashboard */}
@@ -728,299 +907,401 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold">Gestión de Voluntarios</h2>
-              <p className="text-muted-foreground">Administra los voluntarios de tu iglesia</p>
+              <p className="text-muted-foreground">
+                Administra los voluntarios de tu iglesia
+              </p>
             </div>
 
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <UserPlus className="w-4 h-4 mr-2" />
-              Nuevo Voluntario
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Crear Nuevo Voluntario</DialogTitle>
-              <DialogDescription>
-                Agrega un nuevo voluntario a tu iglesia
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleCreateVolunteer} className="space-y-4">
-              {/* Member selection — links volunteer to existing member */}
-              {allMembers.length > 0 && (
-                <div className="space-y-2">
-                  <Label htmlFor="memberId">Vincular a miembro existente (recomendado)</Label>
-                  <Select
-                    value={formData.memberId}
-                    onValueChange={(value) => {
-                      if (value === 'none') {
-                        setFormData(prev => ({ ...prev, memberId: '' }))
-                        return
-                      }
-                      const member = allMembers.find(m => m.id === value)
-                      if (member) {
-                        setFormData(prev => ({
+            <Dialog
+              open={isCreateDialogOpen}
+              onOpenChange={setIsCreateDialogOpen}
+            >
+              <DialogTrigger asChild>
+                <Button>
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Nuevo Voluntario
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Crear Nuevo Voluntario</DialogTitle>
+                  <DialogDescription>
+                    Agrega un nuevo voluntario a tu iglesia
+                  </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handleCreateVolunteer} className="space-y-4">
+                  {/* Member selection — links volunteer to existing member */}
+                  {allMembers.length > 0 && (
+                    <div className="space-y-2">
+                      <Label htmlFor="memberId">
+                        Vincular a miembro existente (recomendado)
+                      </Label>
+                      <Select
+                        value={formData.memberId}
+                        onValueChange={(value) => {
+                          if (value === "none") {
+                            setFormData((prev) => ({ ...prev, memberId: "" }));
+                            return;
+                          }
+                          const member = allMembers.find((m) => m.id === value);
+                          if (member) {
+                            setFormData((prev) => ({
+                              ...prev,
+                              memberId: member.id,
+                              firstName: member.firstName,
+                              lastName: member.lastName,
+                              email: member.email || prev.email,
+                              phone: member.phone || prev.phone,
+                            }));
+                          }
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Seleccionar miembro..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">
+                            Sin vincular (nuevo voluntario externo)
+                          </SelectItem>
+                          {allMembers.map((member) => (
+                            <SelectItem key={member.id} value={member.id}>
+                              {member.firstName} {member.lastName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Vincular evita que el miembro aparezca como candidato
+                        simultáneamente
+                      </p>
+                    </div>
+                  )}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName">Nombre *</Label>
+                      <Input
+                        id="firstName"
+                        value={formData.firstName}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            firstName: e.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName">Apellido *</Label>
+                      <Input
+                        id="lastName"
+                        value={formData.lastName}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            lastName: e.target.value,
+                          }))
+                        }
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
                           ...prev,
-                          memberId: member.id,
-                          firstName: member.firstName,
-                          lastName: member.lastName,
-                          email: member.email || prev.email,
-                          phone: member.phone || prev.phone
+                          email: e.target.value,
                         }))
                       }
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar miembro..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">Sin vincular (nuevo voluntario externo)</SelectItem>
-                      {allMembers.map((member) => (
-                        <SelectItem key={member.id} value={member.id}>
-                          {member.firstName} {member.lastName}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Teléfono</Label>
+                    <Input
+                      id="phone"
+                      value={formData.phone}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          phone: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="ministryId">Ministerio</Label>
+                    <Select
+                      value={formData.ministryId}
+                      onValueChange={(value) =>
+                        setFormData((prev) => ({ ...prev, ministryId: value }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar ministerio" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="no-ministry">
+                          Sin ministerio
                         </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground">Vincular evita que el miembro aparezca como candidato simultáneamente</p>
-                </div>
-              )}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName">Nombre *</Label>
-                  <Input
-                    id="firstName"
-                    value={formData.firstName}
-                    onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastName">Apellido *</Label>
-                  <Input
-                    id="lastName"
-                    value={formData.lastName}
-                    onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
-                    required
-                  />
-                </div>
-              </div>
+                        {ministries.map((ministry) => (
+                          <SelectItem key={ministry.id} value={ministry.id}>
+                            {ministry.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="skills">
+                      Habilidades (separadas por comas)
+                    </Label>
+                    <Textarea
+                      id="skills"
+                      value={formData.skills}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          skills: e.target.value,
+                        }))
+                      }
+                      placeholder="Música, Sonido, Niños, etc."
+                    />
+                  </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone">Teléfono</Label>
-                <Input
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                />
-              </div>
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsCreateDialogOpen(false)}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button type="submit">Crear Voluntario</Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="ministryId">Ministerio</Label>
-                <Select value={formData.ministryId} onValueChange={(value) => setFormData(prev => ({ ...prev, ministryId: value }))}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar ministerio" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="no-ministry">Sin ministerio</SelectItem>
-                    {ministries.map((ministry) => (
-                      <SelectItem key={ministry.id} value={ministry.id}>
-                        {ministry.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="skills">Habilidades (separadas por comas)</Label>
-                <Textarea
-                  id="skills"
-                  value={formData.skills}
-                  onChange={(e) => setFormData(prev => ({ ...prev, skills: e.target.value }))}
-                  placeholder="Música, Sonido, Niños, etc."
-                />
-              </div>
-
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                  Cancelar
-                </Button>
-                <Button type="submit">Crear Voluntario</Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {/* Search */}
-      <div className="flex items-center space-x-4">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 w-4 h-4" />
-          <Input
-            placeholder="Buscar voluntarios..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Voluntarios</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{volunteers.filter(v => v.isActive).length}</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Asignaciones Activas</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {volunteers.reduce((acc, v) => acc + (v.assignments?.length || 0), 0)}
+          {/* Search */}
+          <div className="flex items-center space-x-4">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground/70 w-4 h-4" />
+              <Input
+                placeholder="Buscar voluntarios..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Ministerios Activos</CardTitle>
-            <MapPin className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {new Set(volunteers.filter(v => v.ministry?.name).map(v => v.ministry?.name)).size}
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">% Con Disponibilidad</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {volunteers.length > 0 ? (
-                Math.round((volunteers.filter(v => v.availability && v.availability !== '').length / volunteers.length) * 100)
-              ) : 0}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {volunteers.filter(v => v.availability && v.availability !== '').length} de {volunteers.length} tienen disponibilidad
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Volunteers Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredVolunteers.map((volunteer) => (
-          <Card key={volunteer.id} className="hover:shadow-md transition-shadow">
-            <CardHeader>
-              <CardTitle className="text-lg">
-                {volunteer.firstName} {volunteer.lastName}
-              </CardTitle>
-              <CardDescription>
-                {volunteer.ministry?.name || 'Sin ministerio asignado'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {volunteer.email && (
-                <div className="flex items-center space-x-2">
-                  <Mail className="w-4 h-4 text-muted-foreground/70" />
-                  <span className="text-sm text-muted-foreground">{volunteer.email}</span>
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Voluntarios
+                </CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {volunteers.filter((v) => v.isActive).length}
                 </div>
-              )}
-              
-              {volunteer.phone && (
-                <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4 text-muted-foreground/70" />
-                  <span className="text-sm text-muted-foreground">{volunteer.phone}</span>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Asignaciones Activas
+                </CardTitle>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {volunteers.reduce(
+                    (acc, v) => acc + (v.assignments?.length || 0),
+                    0,
+                  )}
                 </div>
-              )}
+              </CardContent>
+            </Card>
 
-              {volunteer.skills && (
-                <div className="flex flex-wrap gap-1">
-                  {(() => {
-                    try {
-                      const skills = JSON.parse(volunteer.skills)
-                      return (skills || []).slice(0, 3).map((skill: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {skill}
-                        </Badge>
-                      ))
-                    } catch {
-                      return null
-                    }
-                  })()}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Ministerios Activos
+                </CardTitle>
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {
+                    new Set(
+                      volunteers
+                        .filter((v) => v.ministry?.name)
+                        .map((v) => v.ministry?.name),
+                    ).size
+                  }
                 </div>
-              )}
+              </CardContent>
+            </Card>
 
-              <div className="flex items-center justify-between">
-                <Badge variant={volunteer.assignments.length > 0 ? "default" : "secondary"}>
-                  {volunteer.assignments.length} asignaciones
-                </Badge>
-              </div>
-              
-              <div className="flex gap-2 pt-2">
-                <Button 
-                  size="sm" 
-                  variant="outline"
-                  className="flex-1"
-                  type="button"
-                  onClick={() => handleOpenAssignDialog(volunteer)}
-                >
-                  <Activity className="h-4 w-4 mr-1" />
-                  Asignar Actividad
-                </Button>
-                <Button 
-                  size="sm" 
-                  variant="secondary"
-                  className="flex-1"
-                  type="button"
-                  onClick={() => handleOpenProfileDialog(volunteer)}
-                >
-                  <Eye className="h-4 w-4 mr-1" />
-                  Ver Perfil
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  % Con Disponibilidad
+                </CardTitle>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {volunteers.length > 0
+                    ? Math.round(
+                        (volunteers.filter(
+                          (v) => v.availability && v.availability !== "",
+                        ).length /
+                          volunteers.length) *
+                          100,
+                      )
+                    : 0}
+                  %
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {
+                    volunteers.filter(
+                      (v) => v.availability && v.availability !== "",
+                    ).length
+                  }{" "}
+                  de {volunteers.length} tienen disponibilidad
+                </p>
+              </CardContent>
+            </Card>
+          </div>
 
-      {filteredVolunteers.length === 0 && (
-        <Card>
-          <CardContent className="text-center py-8">
-            <Users className="mx-auto h-12 w-12 text-muted-foreground/70 mb-4" />
-            <h3 className="text-lg font-medium text-foreground mb-2">No se encontraron voluntarios</h3>
-            <p className="text-muted-foreground">
-              {searchTerm ? 'Intenta con otros términos de búsqueda' : 'Comienza agregando tu primer voluntario'}
-            </p>
-          </CardContent>
-        </Card>
-      )}
-      </TabsContent>
+          {/* Volunteers Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredVolunteers.map((volunteer) => (
+              <Card
+                key={volunteer.id}
+                className="hover:shadow-md transition-shadow"
+              >
+                <CardHeader>
+                  <CardTitle className="text-lg">
+                    {volunteer.firstName} {volunteer.lastName}
+                  </CardTitle>
+                  <CardDescription>
+                    {volunteer.ministry?.name || "Sin ministerio asignado"}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {volunteer.email && (
+                    <div className="flex items-center space-x-2">
+                      <Mail className="w-4 h-4 text-muted-foreground/70" />
+                      <span className="text-sm text-muted-foreground">
+                        {volunteer.email}
+                      </span>
+                    </div>
+                  )}
 
+                  {volunteer.phone && (
+                    <div className="flex items-center space-x-2">
+                      <Phone className="w-4 h-4 text-muted-foreground/70" />
+                      <span className="text-sm text-muted-foreground">
+                        {volunteer.phone}
+                      </span>
+                    </div>
+                  )}
 
+                  {volunteer.skills && (
+                    <div className="flex flex-wrap gap-1">
+                      {(() => {
+                        try {
+                          const skills = JSON.parse(volunteer.skills);
+                          return (skills || [])
+                            .slice(0, 3)
+                            .map((skill: string, index: number) => (
+                              <Badge
+                                key={index}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {skill}
+                              </Badge>
+                            ));
+                        } catch {
+                          return null;
+                        }
+                      })()}
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between">
+                    <Badge
+                      variant={
+                        volunteer.assignments.length > 0
+                          ? "default"
+                          : "secondary"
+                      }
+                    >
+                      {volunteer.assignments.length} asignaciones
+                    </Badge>
+                  </div>
+
+                  <div className="flex gap-2 pt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1"
+                      type="button"
+                      onClick={() => handleOpenAssignDialog(volunteer)}
+                    >
+                      <Activity className="h-4 w-4 mr-1" />
+                      Asignar Actividad
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="flex-1"
+                      type="button"
+                      onClick={() => handleOpenProfileDialog(volunteer)}
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      Ver Perfil
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {filteredVolunteers.length === 0 && (
+            <Card>
+              <CardContent className="text-center py-8">
+                <Users className="mx-auto h-12 w-12 text-muted-foreground/70 mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">
+                  No se encontraron voluntarios
+                </h3>
+                <p className="text-muted-foreground">
+                  {searchTerm
+                    ? "Intenta con otros términos de búsqueda"
+                    : "Comienza agregando tu primer voluntario"}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
       </Tabs>
 
       {/* Assignment Dialog - Moved outside Tabs so it works from all tabs */}
@@ -1029,16 +1310,27 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           <DialogHeader>
             <DialogTitle>Crear Asignación</DialogTitle>
             <DialogDescription>
-              Asignar tarea a {selectedVolunteer?.firstName} {selectedVolunteer?.lastName}
+              Asignar tarea a {selectedVolunteer?.firstName}{" "}
+              {selectedVolunteer?.lastName}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleCreateAssignment} className="space-y-4">
             {/* Assignment Type Selector */}
             <div className="space-y-2 border-b pb-4">
-              <Label htmlFor="assignmentType" className="text-base font-semibold">Tipo de Asignación *</Label>
+              <Label
+                htmlFor="assignmentType"
+                className="text-base font-semibold"
+              >
+                Tipo de Asignación *
+              </Label>
               <Select
                 value={assignmentData.assignmentType}
-                onValueChange={(value) => setAssignmentData(prev => ({ ...prev, assignmentType: value }))}
+                onValueChange={(value) =>
+                  setAssignmentData((prev) => ({
+                    ...prev,
+                    assignmentType: value,
+                  }))
+                }
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Seleccionar tipo" />
@@ -1049,7 +1341,9 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                       <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
                       <div>
                         <div className="font-medium">Temporal</div>
-                        <div className="text-xs text-muted-foreground">Para eventos o días específicos</div>
+                        <div className="text-xs text-muted-foreground">
+                          Para eventos o días específicos
+                        </div>
                       </div>
                     </div>
                   </SelectItem>
@@ -1058,25 +1352,30 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                       <Crown className="h-4 w-4 text-[hsl(var(--lavender))]" />
                       <div>
                         <div className="font-medium">Permanente</div>
-                        <div className="text-xs text-muted-foreground">Rol continuo sin fecha de finalización</div>
+                        <div className="text-xs text-muted-foreground">
+                          Rol continuo sin fecha de finalización
+                        </div>
                       </div>
                     </div>
                   </SelectItem>
                 </SelectContent>
               </Select>
-              {assignmentData.assignmentType === 'permanent' && (
+              {assignmentData.assignmentType === "permanent" && (
                 <div className="mt-2 p-3 bg-primary/10 border border-primary/20 rounded-md">
                   <p className="text-sm text-foreground">
-                    <strong>Nota:</strong> Las asignaciones permanentes no tienen fecha de finalización. 
-                    El voluntario puede tener múltiples asignaciones temporales además de su rol permanente.
+                    <strong>Nota:</strong> Las asignaciones permanentes no
+                    tienen fecha de finalización. El voluntario puede tener
+                    múltiples asignaciones temporales además de su rol
+                    permanente.
                   </p>
                 </div>
               )}
-              {assignmentData.assignmentType === 'temporary' && (
+              {assignmentData.assignmentType === "temporary" && (
                 <div className="mt-2 p-3 bg-info/10 border border-info/20 rounded-md">
                   <p className="text-sm text-foreground">
-                    <strong>Nota:</strong> Las asignaciones temporales requieren fecha y horario específicos.
-                    Recibirás notificación cuando la asignación esté próxima a finalizar.
+                    <strong>Nota:</strong> Las asignaciones temporales requieren
+                    fecha y horario específicos. Recibirás notificación cuando
+                    la asignación esté próxima a finalizar.
                   </p>
                 </div>
               )}
@@ -1086,9 +1385,18 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               <Label htmlFor="title">Título de la Asignación *</Label>
               <Input
                 id="title"
-                placeholder={assignmentData.assignmentType === 'permanent' ? 'Ej: Líder de Alabanza' : 'Ej: Ayuda en Evento de Navidad'}
+                placeholder={
+                  assignmentData.assignmentType === "permanent"
+                    ? "Ej: Líder de Alabanza"
+                    : "Ej: Ayuda en Evento de Navidad"
+                }
                 value={assignmentData.title}
-                onChange={(e) => setAssignmentData(prev => ({ ...prev, title: e.target.value }))}
+                onChange={(e) =>
+                  setAssignmentData((prev) => ({
+                    ...prev,
+                    title: e.target.value,
+                  }))
+                }
                 required
               />
             </div>
@@ -1099,13 +1407,18 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 id="description"
                 placeholder="Describe las responsabilidades y expectativas..."
                 value={assignmentData.description}
-                onChange={(e) => setAssignmentData(prev => ({ ...prev, description: e.target.value }))}
+                onChange={(e) =>
+                  setAssignmentData((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
                 rows={3}
               />
             </div>
 
             {/* Conditional fields based on assignment type */}
-            {assignmentData.assignmentType === 'temporary' && (
+            {assignmentData.assignmentType === "temporary" && (
               <>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -1114,17 +1427,29 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                       id="date"
                       type="date"
                       value={assignmentData.date}
-                      onChange={(e) => setAssignmentData(prev => ({ ...prev, date: e.target.value }))}
+                      onChange={(e) =>
+                        setAssignmentData((prev) => ({
+                          ...prev,
+                          date: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="endDate">Fecha de Finalización (Opcional)</Label>
+                    <Label htmlFor="endDate">
+                      Fecha de Finalización (Opcional)
+                    </Label>
                     <Input
                       id="endDate"
                       type="date"
                       value={assignmentData.endDate}
-                      onChange={(e) => setAssignmentData(prev => ({ ...prev, endDate: e.target.value }))}
+                      onChange={(e) =>
+                        setAssignmentData((prev) => ({
+                          ...prev,
+                          endDate: e.target.value,
+                        }))
+                      }
                     />
                   </div>
                 </div>
@@ -1136,7 +1461,12 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                       id="startTime"
                       type="time"
                       value={assignmentData.startTime}
-                      onChange={(e) => setAssignmentData(prev => ({ ...prev, startTime: e.target.value }))}
+                      onChange={(e) =>
+                        setAssignmentData((prev) => ({
+                          ...prev,
+                          startTime: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -1146,7 +1476,12 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                       id="endTime"
                       type="time"
                       value={assignmentData.endTime}
-                      onChange={(e) => setAssignmentData(prev => ({ ...prev, endTime: e.target.value }))}
+                      onChange={(e) =>
+                        setAssignmentData((prev) => ({
+                          ...prev,
+                          endTime: e.target.value,
+                        }))
+                      }
                       required
                     />
                   </div>
@@ -1154,15 +1489,18 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               </>
             )}
 
-            {assignmentData.assignmentType === 'permanent' && (
+            {assignmentData.assignmentType === "permanent" && (
               <div className="p-4 bg-primary/10 border border-primary/20 rounded-md">
                 <div className="flex items-center gap-2 mb-2">
                   <Crown className="h-5 w-5 text-primary" />
-                  <h4 className="font-medium text-foreground">Rol Permanente</h4>
+                  <h4 className="font-medium text-foreground">
+                    Rol Permanente
+                  </h4>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Este voluntario será asignado de manera continua. No se requiere fecha o horario específico.
-                  Puedes agregar asignaciones temporales adicionales en cualquier momento.
+                  Este voluntario será asignado de manera continua. No se
+                  requiere fecha o horario específico. Puedes agregar
+                  asignaciones temporales adicionales en cualquier momento.
                 </p>
               </div>
             )}
@@ -1172,12 +1510,21 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               <Textarea
                 id="notes"
                 value={assignmentData.notes}
-                onChange={(e) => setAssignmentData(prev => ({ ...prev, notes: e.target.value }))}
+                onChange={(e) =>
+                  setAssignmentData((prev) => ({
+                    ...prev,
+                    notes: e.target.value,
+                  }))
+                }
               />
             </div>
 
             <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => setIsAssignDialogOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsAssignDialogOpen(false)}
+              >
                 Cancelar
               </Button>
               <Button type="submit">Crear Asignación</Button>
@@ -1192,44 +1539,57 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Eye className="h-5 w-5" />
-              Perfil Completo de {selectedVolunteer?.firstName} {selectedVolunteer?.lastName}
+              Perfil Completo de {selectedVolunteer?.firstName}{" "}
+              {selectedVolunteer?.lastName}
             </DialogTitle>
             <DialogDescription>
               Información detallada del voluntario y recomendaciones
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedVolunteer && (
             <div className="space-y-6">
               {/* Basic Information */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Información Personal</Label>
+                  <Label className="text-sm font-medium text-muted-foreground">
+                    Información Personal
+                  </Label>
                   <div className="mt-2 space-y-2">
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-muted-foreground/70" />
-                      <span className="text-sm">{selectedVolunteer.firstName} {selectedVolunteer.lastName}</span>
+                      <span className="text-sm">
+                        {selectedVolunteer.firstName}{" "}
+                        {selectedVolunteer.lastName}
+                      </span>
                     </div>
                     {selectedVolunteer.email && (
                       <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4 text-muted-foreground/70" />
-                        <span className="text-sm">{selectedVolunteer.email}</span>
+                        <span className="text-sm">
+                          {selectedVolunteer.email}
+                        </span>
                       </div>
                     )}
                     {selectedVolunteer.phone && (
                       <div className="flex items-center gap-2">
                         <Phone className="h-4 w-4 text-muted-foreground/70" />
-                        <span className="text-sm">{selectedVolunteer.phone}</span>
+                        <span className="text-sm">
+                          {selectedVolunteer.phone}
+                        </span>
                       </div>
                     )}
                   </div>
                 </div>
-                
+
                 <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Ministerio</Label>
+                  <Label className="text-sm font-medium text-muted-foreground">
+                    Ministerio
+                  </Label>
                   <div className="mt-2">
                     <Badge variant="outline" className="text-sm">
-                      {selectedVolunteer.ministry?.name || 'Sin ministerio asignado'}
+                      {selectedVolunteer.ministry?.name ||
+                        "Sin ministerio asignado"}
                     </Badge>
                   </div>
                 </div>
@@ -1238,46 +1598,94 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               {/* Skills and Availability */}
               <div className="space-y-4">
                 <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Habilidades</Label>
+                  <Label className="text-sm font-medium text-muted-foreground">
+                    Habilidades
+                  </Label>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {(() => {
                       // Prefer member skillsMatrix if available
-                      if (selectedVolunteer.member && Array.isArray((selectedVolunteer.member as any).skillsMatrix) && ((selectedVolunteer.member as any).skillsMatrix as string[]).length > 0) {
-                        return ((selectedVolunteer.member as any).skillsMatrix as string[]).map((skill: string, index: number) => (
-                          <Badge key={index} variant="secondary" className="text-xs">{skill}</Badge>
-                        ))
+                      if (
+                        selectedVolunteer.member &&
+                        Array.isArray(
+                          (selectedVolunteer.member as any).skillsMatrix,
+                        ) &&
+                        (
+                          (selectedVolunteer.member as any)
+                            .skillsMatrix as string[]
+                        ).length > 0
+                      ) {
+                        return (
+                          (selectedVolunteer.member as any)
+                            .skillsMatrix as string[]
+                        ).map((skill: string, index: number) => (
+                          <Badge
+                            key={index}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {skill}
+                          </Badge>
+                        ));
                       }
                       // Fall back to volunteer's own skills field
                       if (selectedVolunteer.skills) {
                         try {
-                          const parsed = JSON.parse(selectedVolunteer.skills)
+                          const parsed = JSON.parse(selectedVolunteer.skills);
                           if (Array.isArray(parsed) && parsed.length > 0) {
-                            return parsed.map((skill: string, index: number) => (
-                              <Badge key={index} variant="secondary" className="text-xs">{skill}</Badge>
-                            ))
+                            return parsed.map(
+                              (skill: string, index: number) => (
+                                <Badge
+                                  key={index}
+                                  variant="secondary"
+                                  className="text-xs"
+                                >
+                                  {skill}
+                                </Badge>
+                              ),
+                            );
                           }
-                        } catch { /* not JSON, show as-is */ }
-                        return <span className="text-sm">{selectedVolunteer.skills}</span>
+                        } catch {
+                          /* not JSON, show as-is */
+                        }
+                        return (
+                          <span className="text-sm">
+                            {selectedVolunteer.skills}
+                          </span>
+                        );
                       }
-                      return <span className="text-sm text-muted-foreground">No se han registrado habilidades</span>
+                      return (
+                        <span className="text-sm text-muted-foreground">
+                          No se han registrado habilidades
+                        </span>
+                      );
                     })()}
                   </div>
                 </div>
-                
+
                 <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Disponibilidad</Label>
+                  <Label className="text-sm font-medium text-muted-foreground">
+                    Disponibilidad
+                  </Label>
                   <div className="mt-2">
                     {memberAvailabilityMatrix ? (
                       <div className="space-y-2">
-                        <p className="text-sm">{formatAvailabilityDisplay(memberAvailabilityMatrix)}</p>
+                        <p className="text-sm">
+                          {formatAvailabilityDisplay(memberAvailabilityMatrix)}
+                        </p>
                         {memberAvailabilityMatrix.notes && (
-                          <p className="text-xs text-muted-foreground italic">{memberAvailabilityMatrix.notes}</p>
+                          <p className="text-xs text-muted-foreground italic">
+                            {memberAvailabilityMatrix.notes}
+                          </p>
                         )}
                       </div>
                     ) : selectedVolunteer.availability ? (
-                      <p className="text-sm">{selectedVolunteer.availability}</p>
+                      <p className="text-sm">
+                        {selectedVolunteer.availability}
+                      </p>
                     ) : (
-                      <p className="text-sm text-muted-foreground">No se ha registrado disponibilidad</p>
+                      <p className="text-sm text-muted-foreground">
+                        No se ha registrado disponibilidad
+                      </p>
                     )}
                   </div>
                 </div>
@@ -1286,77 +1694,120 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               {/* Spiritual Gifts */}
               <div className="space-y-4">
                 <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Dones Espirituales</Label>
+                  <Label className="text-sm font-medium text-muted-foreground">
+                    Dones Espirituales
+                  </Label>
                   <div className="mt-2">
                     {member_spiritual_profiles ? (
                       <div className="space-y-3">
                         {/* Primary Gifts */}
-                        {member_spiritual_profiles.primaryGifts && member_spiritual_profiles.primaryGifts.length > 0 && (
-                          <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Dones Primarios</Label>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {member_spiritual_profiles.primaryGifts.map((giftId: string, index: number) => {
-                                const gift = spiritualGifts.find(g => g.id === giftId)
-                                return (
-                                  <Badge key={index} variant="default" className="text-xs bg-primary/20 text-primary">
-                                    {gift?.name || giftId}
-                                  </Badge>
-                                )
-                              })}
+                        {member_spiritual_profiles.primaryGifts &&
+                          member_spiritual_profiles.primaryGifts.length > 0 && (
+                            <div>
+                              <Label className="text-xs font-medium text-muted-foreground">
+                                Dones Primarios
+                              </Label>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {member_spiritual_profiles.primaryGifts.map(
+                                  (giftId: string, index: number) => {
+                                    const gift = spiritualGifts.find(
+                                      (g) => g.id === giftId,
+                                    );
+                                    return (
+                                      <Badge
+                                        key={index}
+                                        variant="default"
+                                        className="text-xs bg-primary/20 text-primary"
+                                      >
+                                        {gift?.name || giftId}
+                                      </Badge>
+                                    );
+                                  },
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        )}
-                        
+                          )}
+
                         {/* Secondary Gifts */}
-                        {member_spiritual_profiles.secondaryGifts && member_spiritual_profiles.secondaryGifts.length > 0 && (
-                          <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Dones Secundarios</Label>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {member_spiritual_profiles.secondaryGifts.map((giftId: string, index: number) => {
-                                const gift = spiritualGifts.find(g => g.id === giftId)
-                                return (
-                                  <Badge key={index} variant="outline" className="text-xs">
-                                    {gift?.name || giftId}
-                                  </Badge>
-                                )
-                              })}
+                        {member_spiritual_profiles.secondaryGifts &&
+                          member_spiritual_profiles.secondaryGifts.length >
+                            0 && (
+                            <div>
+                              <Label className="text-xs font-medium text-muted-foreground">
+                                Dones Secundarios
+                              </Label>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {member_spiritual_profiles.secondaryGifts.map(
+                                  (giftId: string, index: number) => {
+                                    const gift = spiritualGifts.find(
+                                      (g) => g.id === giftId,
+                                    );
+                                    return (
+                                      <Badge
+                                        key={index}
+                                        variant="outline"
+                                        className="text-xs"
+                                      >
+                                        {gift?.name || giftId}
+                                      </Badge>
+                                    );
+                                  },
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
 
                         {/* Spiritual Calling */}
                         {member_spiritual_profiles.spiritualCalling && (
                           <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Llamado Espiritual</Label>
-                            <p className="text-sm mt-1">{member_spiritual_profiles.spiritualCalling}</p>
+                            <Label className="text-xs font-medium text-muted-foreground">
+                              Llamado Espiritual
+                            </Label>
+                            <p className="text-sm mt-1">
+                              {member_spiritual_profiles.spiritualCalling}
+                            </p>
                           </div>
                         )}
 
                         {/* Ministry Passions */}
-                        {member_spiritual_profiles.ministryPassions && member_spiritual_profiles.ministryPassions.length > 0 && (
-                          <div>
-                            <Label className="text-xs font-medium text-muted-foreground">Pasiones Ministeriales</Label>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {member_spiritual_profiles.ministryPassions.map((passion: string, index: number) => (
-                                <Badge key={index} variant="secondary" className="text-xs bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
-                                  {passion}
-                                </Badge>
-                              ))}
+                        {member_spiritual_profiles.ministryPassions &&
+                          member_spiritual_profiles.ministryPassions.length >
+                            0 && (
+                            <div>
+                              <Label className="text-xs font-medium text-muted-foreground">
+                                Pasiones Ministeriales
+                              </Label>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {member_spiritual_profiles.ministryPassions.map(
+                                  (passion: string, index: number) => (
+                                    <Badge
+                                      key={index}
+                                      variant="secondary"
+                                      className="text-xs bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]"
+                                    >
+                                      {passion}
+                                    </Badge>
+                                  ),
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
                       </div>
                     ) : (
                       <div className="text-center py-4">
                         <Brain className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
-                        <p className="text-sm text-muted-foreground">No hay evaluación de dones espirituales</p>
-                        <p className="text-xs text-muted-foreground mt-1">El voluntario no ha completado la evaluación</p>
+                        <p className="text-sm text-muted-foreground">
+                          No hay evaluación de dones espirituales
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          El voluntario no ha completado la evaluación
+                        </p>
                         <Button
                           variant="outline"
                           size="sm"
                           className="mt-3"
                           onClick={() => {
-                            window.location.href = `/volunteers/spiritual-assessment?volunteerId=${selectedVolunteer.id}&memberId=${selectedVolunteer.member?.id || selectedVolunteer.id}`
+                            window.location.href = `/volunteers/spiritual-assessment?volunteerId=${selectedVolunteer.id}&memberId=${selectedVolunteer.member?.id || selectedVolunteer.id}`;
                           }}
                         >
                           <Brain className="h-4 w-4 mr-2" />
@@ -1371,95 +1822,168 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               {/* Assignment History */}
               <div>
                 <Label className="text-sm font-medium text-muted-foreground">
-                  Historial de Asignaciones ({selectedVolunteer.assignments.length})
+                  Historial de Asignaciones (
+                  {selectedVolunteer.assignments.length})
                 </Label>
                 <div className="mt-2">
                   {(selectedVolunteer.assignments || []).length > 0 ? (
                     <div className="space-y-2">
-                      {(selectedVolunteer.assignments || []).slice(0, 3).map((assignment: any, index: number) => (
-                        <div key={index} className="flex items-center gap-2 p-2 bg-muted rounded">
-                          <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
-                          <span className="text-sm">Asignación {index + 1}</span>
-                          <Badge variant="outline" className="ml-auto text-xs">Activa</Badge>
-                        </div>
-                      ))}
+                      {(selectedVolunteer.assignments || [])
+                        .slice(0, 3)
+                        .map((assignment: any, index: number) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-2 p-2 bg-muted rounded"
+                          >
+                            <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
+                            <span className="text-sm">
+                              Asignación {index + 1}
+                            </span>
+                            <Badge
+                              variant="outline"
+                              className="ml-auto text-xs"
+                            >
+                              Activa
+                            </Badge>
+                          </div>
+                        ))}
                       {(selectedVolunteer.assignments || []).length > 3 && (
                         <div className="text-sm text-muted-foreground">
-                          +{selectedVolunteer.assignments.length - 3} asignaciones más
+                          +{selectedVolunteer.assignments.length - 3}{" "}
+                          asignaciones más
                         </div>
                       )}
                     </div>
                   ) : (
-                    <p className="text-sm text-muted-foreground">No hay asignaciones registradas</p>
+                    <p className="text-sm text-muted-foreground">
+                      No hay asignaciones registradas
+                    </p>
                   )}
                 </div>
               </div>
 
               {/* Recommendations */}
               <div>
-                <Label className="text-sm font-medium text-muted-foreground">Recomendaciones Inteligentes</Label>
+                <Label className="text-sm font-medium text-muted-foreground">
+                  Recomendaciones Inteligentes
+                </Label>
                 <div className="mt-2 space-y-2">
                   {member_spiritual_profiles ? (
                     <>
                       {/* Calculate real match score based on spiritual profile */}
                       {(() => {
-                        const primaryGifts = member_spiritual_profiles.primaryGifts || []
-                        const secondaryGifts = member_spiritual_profiles.secondaryGifts || []
-                        const ministryPassions = member_spiritual_profiles.ministryPassions || []
-                        const hasLeadershipGifts = primaryGifts.some((giftId: string) => 
-                          ['leadership', 'administration', 'wisdom', 'teaching'].includes(giftId)
-                        )
-                        
-                        const matchScore = Math.min(100, 50 + (primaryGifts.length * 10) + (secondaryGifts.length * 5) + (ministryPassions.length * 3))
-                        
+                        const primaryGifts =
+                          member_spiritual_profiles.primaryGifts || [];
+                        const secondaryGifts =
+                          member_spiritual_profiles.secondaryGifts || [];
+                        const ministryPassions =
+                          member_spiritual_profiles.ministryPassions || [];
+                        const hasLeadershipGifts = primaryGifts.some(
+                          (giftId: string) =>
+                            [
+                              "leadership",
+                              "administration",
+                              "wisdom",
+                              "teaching",
+                            ].includes(giftId),
+                        );
+
+                        const matchScore = Math.min(
+                          100,
+                          50 +
+                            primaryGifts.length * 10 +
+                            secondaryGifts.length * 5 +
+                            ministryPassions.length * 3,
+                        );
+
                         return (
                           <>
                             {primaryGifts.length > 0 && (
                               <div className="flex items-center gap-2 p-2 bg-primary/10 rounded text-sm">
                                 <Sparkles className="h-4 w-4 text-primary" />
                                 <span>
-                                  {primaryGifts.length === 1 ? 'Don primario identificado' : `${primaryGifts.length} dones primarios identificados`}
-                                  {primaryGifts.length > 0 && `: ${primaryGifts.map((id: string) => spiritualGifts.find(g => g.id === id)?.name || id).join(', ')}`}
+                                  {primaryGifts.length === 1
+                                    ? "Don primario identificado"
+                                    : `${primaryGifts.length} dones primarios identificados`}
+                                  {primaryGifts.length > 0 &&
+                                    `: ${primaryGifts.map((id: string) => spiritualGifts.find((g) => g.id === id)?.name || id).join(", ")}`}
                                 </span>
-                                <Badge variant="outline" className="ml-auto text-xs bg-primary/20 text-primary">{matchScore}% match</Badge>
+                                <Badge
+                                  variant="outline"
+                                  className="ml-auto text-xs bg-primary/20 text-primary"
+                                >
+                                  {matchScore}% match
+                                </Badge>
                               </div>
                             )}
-                            
+
                             {hasLeadershipGifts && (
                               <div className="flex items-center gap-2 p-2 bg-warning/10 rounded text-sm">
                                 <Crown className="h-4 w-4 text-warning" />
-                                <span>Potencial para desarrollo de liderazgo</span>
-                                <Badge variant="outline" className="ml-auto text-xs bg-warning/20 text-warning">Alto</Badge>
+                                <span>
+                                  Potencial para desarrollo de liderazgo
+                                </span>
+                                <Badge
+                                  variant="outline"
+                                  className="ml-auto text-xs bg-warning/20 text-warning"
+                                >
+                                  Alto
+                                </Badge>
                               </div>
                             )}
-                            
-                            {memberAvailabilityMatrix && memberAvailabilityMatrix.recurringAvailability?.sunday && Object.values(memberAvailabilityMatrix.recurringAvailability.sunday as Record<string, boolean>).some(v => v) && (
-                              <div className="flex items-center gap-2 p-2 bg-[hsl(var(--success)/0.10)] rounded text-sm">
-                                <Calendar className="h-4 w-4 text-[hsl(var(--success))]" />
-                                <span>Disponibilidad dominical confirmada</span>
-                                <Badge variant="outline" className="ml-auto text-xs bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">Excelente</Badge>
-                              </div>
-                            )}
-                            
+
+                            {memberAvailabilityMatrix &&
+                              memberAvailabilityMatrix.recurringAvailability
+                                ?.sunday &&
+                              Object.values(
+                                memberAvailabilityMatrix.recurringAvailability
+                                  .sunday as Record<string, boolean>,
+                              ).some((v) => v) && (
+                                <div className="flex items-center gap-2 p-2 bg-[hsl(var(--success)/0.10)] rounded text-sm">
+                                  <Calendar className="h-4 w-4 text-[hsl(var(--success))]" />
+                                  <span>
+                                    Disponibilidad dominical confirmada
+                                  </span>
+                                  <Badge
+                                    variant="outline"
+                                    className="ml-auto text-xs bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]"
+                                  >
+                                    Excelente
+                                  </Badge>
+                                </div>
+                              )}
+
                             {ministryPassions.length > 0 && (
                               <div className="flex items-center gap-2 p-2 bg-[hsl(var(--warning)/0.10)] rounded text-sm">
                                 <Target className="h-4 w-4 text-[hsl(var(--warning))]" />
                                 <span>
-                                  {ministryPassions.length === 1 ? 'Pasión ministerial identificada' : `${ministryPassions.length} pasiones ministeriales identificadas`}
+                                  {ministryPassions.length === 1
+                                    ? "Pasión ministerial identificada"
+                                    : `${ministryPassions.length} pasiones ministeriales identificadas`}
                                 </span>
-                                <Badge variant="outline" className="ml-auto text-xs bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">Activo</Badge>
+                                <Badge
+                                  variant="outline"
+                                  className="ml-auto text-xs bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]"
+                                >
+                                  Activo
+                                </Badge>
                               </div>
                             )}
                           </>
-                        )
+                        );
                       })()}
                     </>
                   ) : (
                     <div className="flex items-center gap-2 p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded text-sm">
                       <Lightbulb className="h-4 w-4 text-[hsl(var(--warning))]" />
                       <div className="flex-1">
-                        <p className="font-medium text-[hsl(var(--warning))]">Evaluación espiritual pendiente</p>
-                        <p className="text-xs text-[hsl(var(--warning))] mt-1">Complete la evaluación para obtener recomendaciones inteligentes</p>
+                        <p className="font-medium text-[hsl(var(--warning))]">
+                          Evaluación espiritual pendiente
+                        </p>
+                        <p className="text-xs text-[hsl(var(--warning))] mt-1">
+                          Complete la evaluación para obtener recomendaciones
+                          inteligentes
+                        </p>
                       </div>
                     </div>
                   )}
@@ -1467,20 +1991,29 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
-                <Button variant="outline" onClick={() => setIsProfileDialogOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsProfileDialogOpen(false)}
+                >
                   Cerrar
                 </Button>
-                <Button variant="outline" onClick={() => {
-                  setIsProfileDialogOpen(false)
-                  if (selectedVolunteer) handleOpenEditDialog(selectedVolunteer)
-                }}>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsProfileDialogOpen(false);
+                    if (selectedVolunteer)
+                      handleOpenEditDialog(selectedVolunteer);
+                  }}
+                >
                   <User className="h-4 w-4 mr-1" />
                   Editar
                 </Button>
-                <Button onClick={() => {
-                  setIsProfileDialogOpen(false)
-                  setIsAssignDialogOpen(true)
-                }}>
+                <Button
+                  onClick={() => {
+                    setIsProfileDialogOpen(false);
+                    setIsAssignDialogOpen(true);
+                  }}
+                >
                   <Activity className="h-4 w-4 mr-1" />
                   Crear Asignación
                 </Button>
@@ -1506,7 +2039,12 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 <Input
                   id="edit-firstName"
                   value={editFormData.firstName}
-                  onChange={(e) => setEditFormData(prev => ({ ...prev, firstName: e.target.value }))}
+                  onChange={(e) =>
+                    setEditFormData((prev) => ({
+                      ...prev,
+                      firstName: e.target.value,
+                    }))
+                  }
                   required
                 />
               </div>
@@ -1515,7 +2053,12 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 <Input
                   id="edit-lastName"
                   value={editFormData.lastName}
-                  onChange={(e) => setEditFormData(prev => ({ ...prev, lastName: e.target.value }))}
+                  onChange={(e) =>
+                    setEditFormData((prev) => ({
+                      ...prev,
+                      lastName: e.target.value,
+                    }))
+                  }
                   required
                 />
               </div>
@@ -1526,7 +2069,12 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
                 id="edit-email"
                 type="email"
                 value={editFormData.email}
-                onChange={(e) => setEditFormData(prev => ({ ...prev, email: e.target.value }))}
+                onChange={(e) =>
+                  setEditFormData((prev) => ({
+                    ...prev,
+                    email: e.target.value,
+                  }))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -1534,14 +2082,21 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               <Input
                 id="edit-phone"
                 value={editFormData.phone}
-                onChange={(e) => setEditFormData(prev => ({ ...prev, phone: e.target.value }))}
+                onChange={(e) =>
+                  setEditFormData((prev) => ({
+                    ...prev,
+                    phone: e.target.value,
+                  }))
+                }
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="edit-ministryId">Ministerio</Label>
               <Select
                 value={editFormData.ministryId}
-                onValueChange={(value) => setEditFormData(prev => ({ ...prev, ministryId: value }))}
+                onValueChange={(value) =>
+                  setEditFormData((prev) => ({ ...prev, ministryId: value }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Seleccionar ministerio" />
@@ -1557,16 +2112,27 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-skills">Habilidades (separadas por comas)</Label>
+              <Label htmlFor="edit-skills">
+                Habilidades (separadas por comas)
+              </Label>
               <Textarea
                 id="edit-skills"
                 value={editFormData.skills}
-                onChange={(e) => setEditFormData(prev => ({ ...prev, skills: e.target.value }))}
+                onChange={(e) =>
+                  setEditFormData((prev) => ({
+                    ...prev,
+                    skills: e.target.value,
+                  }))
+                }
                 placeholder="Música, Sonido, Niños, etc."
               />
             </div>
             <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsEditDialogOpen(false)}
+              >
                 Cancelar
               </Button>
               <Button type="submit">Guardar Cambios</Button>
@@ -1575,6 +2141,5 @@ export function VolunteersClient({ userRole, churchId }: VolunteersClientProps) 
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
-

@@ -97,7 +97,9 @@ function StatsCard({
           {description && (
             <p className="text-xs text-muted-foreground">{description}</p>
           )}
-          {trend && <p className="text-xs text-[hsl(var(--success))] mt-1">{trend}</p>}
+          {trend && (
+            <p className="text-xs text-[hsl(var(--success))] mt-1">{trend}</p>
+          )}
         </CardContent>
       </Card>
     </motion.div>
@@ -632,7 +634,9 @@ export function DashboardClient({
             {stats.existingWebsites > 0 ? (
               <div className="text-center py-6">
                 <CheckCircle className="h-12 w-12 text-[hsl(var(--success))] mx-auto mb-4" />
-                <p className="font-medium text-[hsl(var(--success))]">¡Sitio Web Activo!</p>
+                <p className="font-medium text-[hsl(var(--success))]">
+                  ¡Sitio Web Activo!
+                </p>
                 <p className="text-sm text-muted-foreground mb-4">
                   Tu iglesia ya tiene un sitio web publicado
                 </p>
