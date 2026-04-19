@@ -257,7 +257,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
         <CardContent className="p-6">
           <div className="space-y-6">
             {CATEGORY_COLOR_PAIRS.map(({ bgKey, textKey, label, bgDesc, textDesc }) => (
-              <div key={bgKey} className="p-4 rounded-lg border border-border bg-white">
+              <div key={bgKey} className="p-4 rounded-lg border border-border bg-[hsl(var(--card))]">
                 <p className="text-sm font-semibold text-foreground mb-3">{label}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Background color */}
@@ -330,7 +330,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
         <CardContent className="p-6">
           <div className="space-y-4">
             {/* Badge preview row */}
-            <div className="p-4 rounded-lg border border-border bg-white">
+            <div className="p-4 rounded-lg border border-border bg-[hsl(var(--card))]">
               <p className="text-xs font-medium text-muted-foreground mb-3">Vista previa de insignia</p>
               <div className="flex items-center gap-3 flex-wrap">
                 <span
@@ -373,7 +373,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
             </div>
 
             {/* Button preview row */}
-            <div className="p-4 rounded-lg border border-border bg-white">
+            <div className="p-4 rounded-lg border border-border bg-[hsl(var(--card))]">
               <p className="text-xs font-medium text-muted-foreground mb-3">Vista previa de botón</p>
               <button
                 className="px-4 py-2 rounded-md text-sm font-medium mb-3"
@@ -424,7 +424,7 @@ export default function BrandingPageClient({ churchId }: BrandingPageClientProps
               const info = COLOR_DESCRIPTIONS[key as keyof typeof COLOR_DESCRIPTIONS]
               if (!info) return null
               return (
-                <div key={key} className="flex items-center gap-4 p-4 rounded-lg border border-border bg-white hover:border-border transition-colors">
+                <div key={key} className="flex items-center gap-4 p-4 rounded-lg border border-border bg-[hsl(var(--card))] hover:border-border transition-colors">
                   <div className="w-12 h-12 rounded-lg border-2 border-border shadow-sm flex-shrink-0" style={{ backgroundColor: colors[key] }} />
                   <div className="flex-1 min-w-0">
                     <Label htmlFor={key} className="text-sm font-medium text-foreground">{info.label}</Label>

@@ -227,7 +227,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
         <Button 
           onClick={runRecruitmentAnalysis}
           disabled={loading}
-          className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--success))] hover:from-[hsl(var(--primary))] hover:to-[hsl(var(--success))]"
+          className="bg-[hsl(var(--primary))] text-[hsl(var(--brand-navy-deep))] font-semibold hover:bg-[hsl(var(--primary)/0.85)] hover:text-[hsl(var(--brand-navy-deep))]"
         >
           {loading ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />

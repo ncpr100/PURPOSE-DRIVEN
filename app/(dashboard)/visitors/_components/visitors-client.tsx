@@ -246,10 +246,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
           </Button>
           <Dialog open={isManualOpen} onOpenChange={setIsManualOpen}>
             <DialogTrigger asChild>
-              <Button
-                size="sm"
-                className=""
-              >
+              <Button size="sm" className="">
                 <UserPlus className="h-4 w-4 mr-2" />
                 Registro Manual
               </Button>
@@ -418,10 +415,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
                   >
                     Cancelar
                   </Button>
-                  <Button
-                    type="submit"
-                    disabled={saving}
-                  >
+                  <Button type="submit" disabled={saving}>
                     {saving ? "Guardando…" : "Registrar Visitante"}
                   </Button>
                 </div>
@@ -620,7 +614,9 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
                   </div>
                   {/* Engagement bar */}
                   <div className="hidden sm:flex flex-col items-end gap-1 flex-shrink-0">
-                    <span className="text-xs text-muted-foreground">Compromiso</span>
+                    <span className="text-xs text-muted-foreground">
+                      Compromiso
+                    </span>
                     <div className="w-16 h-1.5 bg-muted rounded-full">
                       <div
                         className="h-1.5 rounded-full bg-primary"

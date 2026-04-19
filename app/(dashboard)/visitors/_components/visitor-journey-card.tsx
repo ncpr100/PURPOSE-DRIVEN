@@ -253,7 +253,9 @@ export function VisitorJourneyCard({
                 className="text-center bg-muted rounded-lg p-3"
               >
                 <div className="flex justify-center mb-1">{stat.icon}</div>
-                <p className="text-lg font-bold text-foreground">{stat.value}</p>
+                <p className="text-lg font-bold text-foreground">
+                  {stat.value}
+                </p>
                 <p className="text-xs text-muted-foreground">{stat.label}</p>
               </div>
             ))}

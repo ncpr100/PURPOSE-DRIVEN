@@ -1,55 +1,61 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { 
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
   SPIRITUAL_GIFT_CATEGORIES,
   MINISTRY_PASSIONS,
   EXPERIENCE_LEVELS,
   type SpiritualGiftCategory,
   type SpiritualGiftSubcategory,
   type MinistryPassion,
-  type SpiritualAssessmentData
-} from '@/lib/spiritual-gifts-config'
-import { 
-  Sparkles, 
-  Save, 
-  CheckCircle2, 
+  type SpiritualAssessmentData,
+} from "@/lib/spiritual-gifts-config";
+import {
+  Sparkles,
+  Save,
+  CheckCircle2,
   AlertCircle,
   Info,
   ChevronDown,
-  ChevronUp
-} from 'lucide-react'
-import { cn } from '@/lib/utils'
+  ChevronUp,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface EnhancedSpiritualAssessmentProps {
-  memberId?: string
-  initialData?: SpiritualAssessmentData
-  onSave?: (data: SpiritualAssessmentData) => Promise<void>
-  onCancel?: () => void
-  readOnly?: boolean
-  showHeader?: boolean
-  className?: string
+  memberId?: string;
+  initialData?: SpiritualAssessmentData;
+  onSave?: (data: SpiritualAssessmentData) => Promise<void>;
+  onCancel?: () => void;
+  readOnly?: boolean;
+  showHeader?: boolean;
+  className?: string;
 }
 
 interface GiftSelection {
-  subcategoryId: string
-  type: 'primary' | 'secondary'
+  subcategoryId: string;
+  type: "primary" | "secondary";
 }
 
 export function EnhancedSpiritualAssessment({
@@ -59,138 +65,165 @@ export function EnhancedSpiritualAssessment({
   onCancel,
   readOnly = false,
   showHeader = true,
-  className
+  className,
 }: EnhancedSpiritualAssessmentProps) {
   // State management
-  const [giftSelections, setGiftSelections] = useState<GiftSelection[]>([])
-  const [ministryPassions, setMinistryPassions] = useState<string[]>([])
-  const [experienceLevel, setExperienceLevel] = useState<string>('')
-  const [spiritualCalling, setSpiritualCalling] = useState('')
-  const [motivation, setMotivation] = useState('')
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([])
-  const [isSaving, setIsSaving] = useState(false)
-  const [saveError, setSaveError] = useState<string | null>(null)
-  const [saveSuccess, setSaveSuccess] = useState(false)
+  const [giftSelections, setGiftSelections] = useState<GiftSelection[]>([]);
+  const [ministryPassions, setMinistryPassions] = useState<string[]>([]);
+  const [experienceLevel, setExperienceLevel] = useState<string>("");
+  const [spiritualCalling, setSpiritualCalling] = useState("");
+  const [motivation, setMotivation] = useState("");
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Initialize from existing data
   useEffect(() => {
     if (initialData) {
-      setGiftSelections(initialData.giftSelections || [])
-      setMinistryPassions(initialData.ministryPassions || [])
-      setExperienceLevel(initialData.experienceLevel || '')
-      setSpiritualCalling(initialData.spiritualCalling || '')
-      setMotivation(initialData.motivation || '')
-      
+      setGiftSelections(initialData.giftSelections || []);
+      setMinistryPassions(initialData.ministryPassions || []);
+      setExperienceLevel(initialData.experienceLevel || "");
+      setSpiritualCalling(initialData.spiritualCalling || "");
+      setMotivation(initialData.motivation || "");
+
       // Expand categories with selections
-      const categoriesWithSelections = initialData.giftSelections
-        ?.map(sel => {
-          const category = SPIRITUAL_GIFT_CATEGORIES.find(cat =>
-            cat.subcategories.some(sub => sub.id === sel.subcategoryId)
-          )
-          return category?.id
-        })
-        .filter((id): id is string => id !== undefined) || []
-      
-      setExpandedCategories(Array.from(new Set(categoriesWithSelections)))
+      const categoriesWithSelections =
+        initialData.giftSelections
+          ?.map((sel) => {
+            const category = SPIRITUAL_GIFT_CATEGORIES.find((cat) =>
+              cat.subcategories.some((sub) => sub.id === sel.subcategoryId),
+            );
+            return category?.id;
+          })
+          .filter((id): id is string => id !== undefined) || [];
+
+      setExpandedCategories(Array.from(new Set(categoriesWithSelections)));
     }
-  }, [initialData])
+  }, [initialData]);
 
   // Toggle category expansion
   const toggleCategory = (categoryId: string) => {
-    setExpandedCategories(prev =>
+    setExpandedCategories((prev) =>
       prev.includes(categoryId)
-        ? prev.filter(id => id !== categoryId)
-        : [...prev, categoryId]
-    )
-  }
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId],
+    );
+  };
 
   // Handle gift selection (primary/secondary/none)
-  const handleGiftSelection = (subcategoryId: string, type: 'primary' | 'secondary' | 'none') => {
-    setGiftSelections(prev => {
+  const handleGiftSelection = (
+    subcategoryId: string,
+    type: "primary" | "secondary" | "none",
+  ) => {
+    setGiftSelections((prev) => {
       // Remove existing selection for this subcategory
-      const filtered = prev.filter(sel => sel.subcategoryId !== subcategoryId)
-      
+      const filtered = prev.filter(
+        (sel) => sel.subcategoryId !== subcategoryId,
+      );
+
       // Add new selection if not 'none'
-      if (type !== 'none') {
-        return [...filtered, { subcategoryId, type }]
+      if (type !== "none") {
+        return [...filtered, { subcategoryId, type }];
       }
-      
-      return filtered
-    })
-  }
+
+      return filtered;
+    });
+  };
 
   // Get current selection for a subcategory
-  const getGiftSelectionType = (subcategoryId: string): 'primary' | 'secondary' | 'none' => {
-    const selection = giftSelections.find(sel => sel.subcategoryId === subcategoryId)
-    return selection?.type || 'none'
-  }
+  const getGiftSelectionType = (
+    subcategoryId: string,
+  ): "primary" | "secondary" | "none" => {
+    const selection = giftSelections.find(
+      (sel) => sel.subcategoryId === subcategoryId,
+    );
+    return selection?.type || "none";
+  };
 
   // Handle ministry passion toggle
   const handlePassionToggle = (passionId: string) => {
-    setMinistryPassions(prev =>
+    setMinistryPassions((prev) =>
       prev.includes(passionId)
-        ? prev.filter(id => id !== passionId)
-        : [...prev, passionId]
-    )
-  }
+        ? prev.filter((id) => id !== passionId)
+        : [...prev, passionId],
+    );
+  };
 
   // Calculate completion percentage
   const calculateCompletion = (): number => {
-    let completed = 0
-    let total = 5 // 5 sections: gifts, passions, experience, calling, motivation
+    let completed = 0;
+    let total = 5; // 5 sections: gifts, passions, experience, calling, motivation
 
     // Check if at least one gift is selected
-    if (giftSelections.length > 0) completed++
-    
-    // Check if at least one passion is selected
-    if (ministryPassions.length > 0) completed++
-    
-    // Check experience level
-    if (experienceLevel) completed++
-    
-    // Check spiritual calling (optional but recommended)
-    if (spiritualCalling.trim()) completed++
-    
-    // Check motivation (optional but recommended)
-    if (motivation.trim()) completed++
+    if (giftSelections.length > 0) completed++;
 
-    return Math.round((completed / total) * 100)
-  }
+    // Check if at least one passion is selected
+    if (ministryPassions.length > 0) completed++;
+
+    // Check experience level
+    if (experienceLevel) completed++;
+
+    // Check spiritual calling (optional but recommended)
+    if (spiritualCalling.trim()) completed++;
+
+    // Check motivation (optional but recommended)
+    if (motivation.trim()) completed++;
+
+    return Math.round((completed / total) * 100);
+  };
 
   // Validate before save
   const validateAssessment = (): { valid: boolean; message?: string } => {
     if (giftSelections.length === 0) {
-      return { valid: false, message: 'Por favor selecciona al menos un don espiritual' }
+      return {
+        valid: false,
+        message: "Por favor selecciona al menos un don espiritual",
+      };
     }
 
     if (ministryPassions.length === 0) {
-      return { valid: false, message: 'Por favor selecciona al menos una pasión ministerial' }
+      return {
+        valid: false,
+        message: "Por favor selecciona al menos una pasión ministerial",
+      };
     }
 
     if (!experienceLevel) {
-      return { valid: false, message: 'Por favor selecciona tu nivel de experiencia' }
+      return {
+        valid: false,
+        message: "Por favor selecciona tu nivel de experiencia",
+      };
     }
 
     if (!spiritualCalling.trim()) {
-      return { valid: false, message: 'Por favor describe tu llamado espiritual' }
+      return {
+        valid: false,
+        message: "Por favor describe tu llamado espiritual",
+      };
     }
 
     if (!motivation.trim()) {
-      return { valid: false, message: 'Por favor describe tu motivación para servir' }
+      return {
+        valid: false,
+        message: "Por favor describe tu motivación para servir",
+      };
     }
 
-    return { valid: true }
-  }
+    return { valid: true };
+  };
 
   // Handle save
   const handleSave = async () => {
-    setSaveError(null)
-    setSaveSuccess(false)
+    setSaveError(null);
+    setSaveSuccess(false);
 
-    const validation = validateAssessment()
+    const validation = validateAssessment();
     if (!validation.valid) {
-      setSaveError(validation.message || 'Por favor completa todos los campos requeridos')
-      return
+      setSaveError(
+        validation.message || "Por favor completa todos los campos requeridos",
+      );
+      return;
     }
 
     const assessmentData: SpiritualAssessmentData = {
@@ -199,38 +232,44 @@ export function EnhancedSpiritualAssessment({
       experienceLevel,
       spiritualCalling,
       motivation,
-      completedAt: new Date().toISOString()
-    }
+      completedAt: new Date().toISOString(),
+    };
 
-    setIsSaving(true)
+    setIsSaving(true);
 
     try {
       if (onSave) {
-        await onSave(assessmentData)
-        setSaveSuccess(true)
-        
+        await onSave(assessmentData);
+        setSaveSuccess(true);
+
         // Clear success message after 3 seconds
         setTimeout(() => {
-          setSaveSuccess(false)
-        }, 3000)
+          setSaveSuccess(false);
+        }, 3000);
       } else {
-        console.log('Assessment data:', assessmentData)
-        setSaveSuccess(true)
+        console.log("Assessment data:", assessmentData);
+        setSaveSuccess(true);
       }
     } catch (error) {
-      console.error('Error saving assessment:', error)
-      setSaveError(error instanceof Error ? error.message : 'Error al guardar la evaluación')
+      console.error("Error saving assessment:", error);
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : "Error al guardar la evaluación",
+      );
     } finally {
-      setIsSaving(false)
+      setIsSaving(false);
     }
-  }
+  };
 
-  const completion = calculateCompletion()
-  const primaryGifts = giftSelections.filter(sel => sel.type === 'primary')
-  const secondaryGifts = giftSelections.filter(sel => sel.type === 'secondary')
+  const completion = calculateCompletion();
+  const primaryGifts = giftSelections.filter((sel) => sel.type === "primary");
+  const secondaryGifts = giftSelections.filter(
+    (sel) => sel.type === "secondary",
+  );
 
   return (
-    <div className={cn('w-full max-w-6xl mx-auto', className)}>
+    <div className={cn("w-full max-w-6xl mx-auto", className)}>
       {/* Header Section */}
       {showHeader && (
         <div className="mb-8">
@@ -239,7 +278,9 @@ export function EnhancedSpiritualAssessment({
               <Sparkles className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h2 className="text-3xl font-bold">Evaluación de Dones Espirituales</h2>
+              <h2 className="text-3xl font-bold">
+                Evaluación de Dones Espirituales
+              </h2>
               <p className="text-muted-foreground mt-1">
                 Descubre tus dones y encuentra tu lugar en el ministerio
               </p>
@@ -249,7 +290,9 @@ export function EnhancedSpiritualAssessment({
           {/* Progress Bar */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Progreso de Evaluación</span>
+              <span className="text-muted-foreground">
+                Progreso de Evaluación
+              </span>
               <span className="font-semibold">{completion}%</span>
             </div>
             <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -269,7 +312,8 @@ export function EnhancedSpiritualAssessment({
                   ¡Evaluación Guardada!
                 </p>
                 <p className="text-sm text-[hsl(var(--success))] dark:text-[hsl(var(--success)/0.8)] mt-1">
-                  Tu evaluación de dones espirituales se ha guardado correctamente.
+                  Tu evaluación de dones espirituales se ha guardado
+                  correctamente.
                 </p>
               </div>
             </div>
@@ -279,8 +323,12 @@ export function EnhancedSpiritualAssessment({
             <div className="mt-4 p-4 bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded-lg flex items-start gap-3">
               <AlertCircle className="h-5 w-5 text-[hsl(var(--destructive))] dark:text-[hsl(var(--destructive)/0.7)] mt-0.5 flex-shrink-0" />
               <div>
-                <p className="font-semibold text-[hsl(var(--destructive))] dark:text-[hsl(var(--destructive)/0.6)]">Error</p>
-                <p className="text-sm text-[hsl(var(--destructive))] dark:text-[hsl(var(--destructive)/0.8)] mt-1">{saveError}</p>
+                <p className="font-semibold text-[hsl(var(--destructive))] dark:text-[hsl(var(--destructive)/0.6)]">
+                  Error
+                </p>
+                <p className="text-sm text-[hsl(var(--destructive))] dark:text-[hsl(var(--destructive)/0.8)] mt-1">
+                  {saveError}
+                </p>
               </div>
             </div>
           )}
@@ -330,7 +378,9 @@ export function EnhancedSpiritualAssessment({
           </CardHeader>
           <CardContent>
             <div className="text-lg font-semibold">
-              {experienceLevel ? EXPERIENCE_LEVELS.find(e => e.id === experienceLevel)?.name : '-'}
+              {experienceLevel
+                ? EXPERIENCE_LEVELS.find((e) => e.id === experienceLevel)?.name
+                : "-"}
             </div>
           </CardContent>
         </Card>
@@ -349,16 +399,19 @@ export function EnhancedSpiritualAssessment({
                 </Badge>
               </CardTitle>
               <CardDescription>
-                Selecciona <strong>Promete</strong> para dones primarios o <strong>Secundario</strong> para
-                dones de apoyo. Puedes seleccionar múltiples dones en diferentes categorías.
+                Selecciona <strong>Promete</strong> para dones primarios o{" "}
+                <strong>Secundario</strong> para dones de apoyo. Puedes
+                seleccionar múltiples dones en diferentes categorías.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {SPIRITUAL_GIFT_CATEGORIES.map((category) => {
-                const isExpanded = expandedCategories.includes(category.id)
-                const categorySelections = giftSelections.filter(sel =>
-                  category.subcategories.some(sub => sub.id === sel.subcategoryId)
-                )
+                const isExpanded = expandedCategories.includes(category.id);
+                const categorySelections = giftSelections.filter((sel) =>
+                  category.subcategories.some(
+                    (sub) => sub.id === sel.subcategoryId,
+                  ),
+                );
 
                 return (
                   <div key={category.id} className="space-y-3">
@@ -367,23 +420,27 @@ export function EnhancedSpiritualAssessment({
                       onClick={() => toggleCategory(category.id)}
                       disabled={readOnly}
                       className={cn(
-                        'w-full p-4 rounded-lg border-2 transition-all',
-                        'flex items-center justify-between',
-                        'hover:shadow-md disabled:cursor-not-allowed',
-                        isExpanded ? 'border-primary bg-primary/5' : 'border-border'
+                        "w-full p-4 rounded-lg border-2 transition-all",
+                        "flex items-center justify-between",
+                        "hover:shadow-md disabled:cursor-not-allowed",
+                        isExpanded
+                          ? "border-primary bg-primary/5"
+                          : "border-border",
                       )}
                     >
                       <div className="flex items-center gap-3">
                         <div
                           className={cn(
-                            'w-12 h-12 rounded-lg flex items-center justify-center text-2xl',
-                            `bg-gradient-to-br ${category.color}`
+                            "w-12 h-12 rounded-lg flex items-center justify-center text-2xl",
+                            `bg-gradient-to-br ${category.color}`,
                           )}
                         >
                           {category.icon}
                         </div>
                         <div className="text-left">
-                          <h3 className="font-semibold text-lg">{category.name}</h3>
+                          <h3 className="font-semibold text-lg">
+                            {category.name}
+                          </h3>
                           <p className="text-sm text-muted-foreground line-clamp-1">
                             {category.description}
                           </p>
@@ -407,33 +464,45 @@ export function EnhancedSpiritualAssessment({
                     {isExpanded && (
                       <div className="pl-4 space-y-3 animate-in slide-in-from-top-2">
                         {category.subcategories.map((subcategory) => {
-                          const selectionType = getGiftSelectionType(subcategory.id)
+                          const selectionType = getGiftSelectionType(
+                            subcategory.id,
+                          );
 
                           return (
                             <div
                               key={subcategory.id}
                               className={cn(
-                                'p-4 rounded-lg border-2 transition-all',
-                                selectionType === 'primary' && 'border-primary bg-primary/5',
-                                selectionType === 'secondary' && 'border-secondary bg-secondary/5',
-                                selectionType === 'none' && 'border-border'
+                                "p-4 rounded-lg border-2 transition-all",
+                                selectionType === "primary" &&
+                                  "border-primary bg-primary/5",
+                                selectionType === "secondary" &&
+                                  "border-secondary bg-secondary/5",
+                                selectionType === "none" && "border-border",
                               )}
                             >
                               <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1">
-                                  <h4 className="font-medium mb-1">{subcategory.name}</h4>
+                                  <h4 className="font-medium mb-1">
+                                    {subcategory.name}
+                                  </h4>
                                   <p className="text-sm text-muted-foreground mb-3">
                                     {subcategory.description}
                                   </p>
-                                  
+
                                   {/* Related Ministries */}
                                   {subcategory.relatedMinistries.length > 0 && (
                                     <div className="flex flex-wrap gap-1">
-                                      {subcategory.relatedMinistries.map((ministry) => (
-                                        <Badge key={ministry} variant="outline" className="text-xs">
-                                          {ministry}
-                                        </Badge>
-                                      ))}
+                                      {subcategory.relatedMinistries.map(
+                                        (ministry) => (
+                                          <Badge
+                                            key={ministry}
+                                            variant="outline"
+                                            className="text-xs"
+                                          >
+                                            {ministry}
+                                          </Badge>
+                                        ),
+                                      )}
                                     </div>
                                   )}
                                 </div>
@@ -445,13 +514,19 @@ export function EnhancedSpiritualAssessment({
                                     onValueChange={(value) =>
                                       handleGiftSelection(
                                         subcategory.id,
-                                        value as 'primary' | 'secondary' | 'none'
+                                        value as
+                                          | "primary"
+                                          | "secondary"
+                                          | "none",
                                       )
                                     }
                                     className="flex flex-col gap-2"
                                   >
                                     <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="primary" id={`${subcategory.id}-primary`} />
+                                      <RadioGroupItem
+                                        value="primary"
+                                        id={`${subcategory.id}-primary`}
+                                      />
                                       <Label
                                         htmlFor={`${subcategory.id}-primary`}
                                         className="text-sm font-medium cursor-pointer"
@@ -472,7 +547,10 @@ export function EnhancedSpiritualAssessment({
                                       </Label>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="none" id={`${subcategory.id}-none`} />
+                                      <RadioGroupItem
+                                        value="none"
+                                        id={`${subcategory.id}-none`}
+                                      />
                                       <Label
                                         htmlFor={`${subcategory.id}-none`}
                                         className="text-sm text-muted-foreground cursor-pointer"
@@ -483,21 +561,27 @@ export function EnhancedSpiritualAssessment({
                                   </RadioGroup>
                                 )}
 
-                                {readOnly && selectionType !== 'none' && (
+                                {readOnly && selectionType !== "none" && (
                                   <Badge
-                                    variant={selectionType === 'primary' ? 'default' : 'secondary'}
+                                    variant={
+                                      selectionType === "primary"
+                                        ? "default"
+                                        : "secondary"
+                                    }
                                   >
-                                    {selectionType === 'primary' ? 'Promete' : 'Secundario'}
+                                    {selectionType === "primary"
+                                      ? "Promete"
+                                      : "Secundario"}
                                   </Badge>
                                 )}
                               </div>
                             </div>
-                          )
+                          );
                         })}
                       </div>
                     )}
                   </div>
-                )
+                );
               })}
             </CardContent>
           </Card>
@@ -512,7 +596,8 @@ export function EnhancedSpiritualAssessment({
                 </Badge>
               </CardTitle>
               <CardDescription>
-                ¿Qué áreas del ministerio te apasionan? Selecciona todas las que apliquen.
+                ¿Qué áreas del ministerio te apasionan? Selecciona todas las que
+                apliquen.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -521,23 +606,27 @@ export function EnhancedSpiritualAssessment({
                   <div
                     key={passion.id}
                     className={cn(
-                      'p-4 rounded-lg border-2 transition-all cursor-pointer',
+                      "p-4 rounded-lg border-2 transition-all cursor-pointer",
                       ministryPassions.includes(passion.id)
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border hover:border-primary/50',
-                      readOnly && 'cursor-default'
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/50",
+                      readOnly && "cursor-default",
                     )}
                     onClick={() => !readOnly && handlePassionToggle(passion.id)}
                   >
                     <div className="flex items-start gap-3">
                       <Checkbox
                         checked={ministryPassions.includes(passion.id)}
-                        onCheckedChange={() => !readOnly && handlePassionToggle(passion.id)}
+                        onCheckedChange={() =>
+                          !readOnly && handlePassionToggle(passion.id)
+                        }
                         disabled={readOnly}
                         className="mt-1"
                       />
                       <div className="flex-1">
-                        <Label className="font-medium cursor-pointer">{passion.name}</Label>
+                        <Label className="font-medium cursor-pointer">
+                          {passion.name}
+                        </Label>
                         <p className="text-sm text-muted-foreground mt-1">
                           {passion.description}
                         </p>
@@ -571,7 +660,9 @@ export function EnhancedSpiritualAssessment({
                     <SelectItem key={level.id} value={level.id}>
                       <div className="flex flex-col items-start">
                         <span className="font-medium">{level.name}</span>
-                        <span className="text-sm text-muted-foreground">{level.description}</span>
+                        <span className="text-sm text-muted-foreground">
+                          {level.description}
+                        </span>
                       </div>
                     </SelectItem>
                   ))}
@@ -588,8 +679,8 @@ export function EnhancedSpiritualAssessment({
                 <span className="text-[hsl(var(--destructive))]">*</span>
               </CardTitle>
               <CardDescription>
-                Describe brevemente lo que sientes que Dios te está llamando a hacer. Esto puede ser
-                general o específico.
+                Describe brevemente lo que sientes que Dios te está llamando a
+                hacer. Esto puede ser general o específico.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -607,7 +698,9 @@ export function EnhancedSpiritualAssessment({
                   {spiritualCalling.length}/500 caracteres
                 </span>
                 {!spiritualCalling.trim() && (
-                  <span className="text-xs text-[hsl(var(--destructive))]">Campo requerido</span>
+                  <span className="text-xs text-[hsl(var(--destructive))]">
+                    Campo requerido
+                  </span>
                 )}
               </div>
             </CardContent>
@@ -621,7 +714,8 @@ export function EnhancedSpiritualAssessment({
                 <span className="text-[hsl(var(--destructive))]">*</span>
               </CardTitle>
               <CardDescription>
-                ¿Qué te motiva a servir en la iglesia? ¿Qué esperas lograr o aprender?
+                ¿Qué te motiva a servir en la iglesia? ¿Qué esperas lograr o
+                aprender?
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -639,7 +733,9 @@ export function EnhancedSpiritualAssessment({
                   {motivation.length}/500 caracteres
                 </span>
                 {!motivation.trim() && (
-                  <span className="text-xs text-[hsl(var(--destructive))]">Campo requerido</span>
+                  <span className="text-xs text-[hsl(var(--destructive))]">
+                    Campo requerido
+                  </span>
                 )}
               </div>
             </CardContent>
@@ -649,7 +745,11 @@ export function EnhancedSpiritualAssessment({
           {!readOnly && (
             <div className="flex items-center justify-end gap-4 pt-4 pb-8">
               {onCancel && (
-                <Button variant="outline" onClick={onCancel} disabled={isSaving}>
+                <Button
+                  variant="outline"
+                  onClick={onCancel}
+                  disabled={isSaving}
+                >
                   Cancelar
                 </Button>
               )}
@@ -679,8 +779,9 @@ export function EnhancedSpiritualAssessment({
               <Info className="h-5 w-5 text-[hsl(var(--info))] dark:text-[hsl(var(--info)/0.7)] mt-0.5 flex-shrink-0" />
               <div>
                 <p className="text-sm text-foreground dark:text-[hsl(var(--info)/0.6)]">
-                  Completa al menos el 60% de la evaluación para poder guardarla. Necesitas
-                  seleccionar dones espirituales, pasiones ministeriales y nivel de experiencia.
+                  Completa al menos el 60% de la evaluación para poder
+                  guardarla. Necesitas seleccionar dones espirituales, pasiones
+                  ministeriales y nivel de experiencia.
                 </p>
               </div>
             </div>
@@ -688,5 +789,5 @@ export function EnhancedSpiritualAssessment({
         </div>
       </ScrollArea>
     </div>
-  )
+  );
 }
