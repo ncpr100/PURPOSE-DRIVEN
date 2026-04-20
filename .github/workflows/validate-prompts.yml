@@ -16,6 +16,10 @@ on:
       - '.prompts/**'
   workflow_dispatch:           # Allow manual trigger from Actions tab
 
+# This workflow only reads repository contents; no write access is needed.
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: XML schema + smoke test
