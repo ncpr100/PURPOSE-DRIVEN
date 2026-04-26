@@ -32,7 +32,7 @@ const MEMBER_STATS = [
   { label: "Nuevos (30 días)",  value: 18,  delta: "+8%",    deltaDir: "up"   as const, color: "#26D9D9" },
 ];
 
-export function CosmossMembersPage() {
+export function CosmosMembersPage() {
   const [search, setSearch] = useState("");
   const [activeStage, setActiveStage] = useState<string | null>(null);
 
