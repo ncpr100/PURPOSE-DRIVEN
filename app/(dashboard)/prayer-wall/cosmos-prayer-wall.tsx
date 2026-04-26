@@ -166,7 +166,7 @@ export function CosmosPrayerWall() {
                         {req.isAnonymous ? (
                           <span className="flex items-center gap-1">
                             <Lock size={11} className="text-muted-foreground" />
-                            Anonimo
+                            Anónimo
                           </span>
                         ) : req.title}
                       </CardTitle>
