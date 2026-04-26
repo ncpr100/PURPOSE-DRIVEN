@@ -116,7 +116,7 @@ export function CosmossMembersPage() {
               <Badge
                 variant={cfg.variant}
                 className={activeStage === key ? "ring-1 ring-offset-1 ring-offset-[rgba(13,22,40,0.8)]" : "opacity-70 hover:opacity-100"}
-                style={activeStage === key ? { ringColor: cfg.color } : {}}
+                style={activeStage === key ? ({ "--tw-ring-color": cfg.color } as React.CSSProperties) : {}}
               >
                 {cfg.label}
               </Badge>
