@@ -148,7 +148,7 @@ export function CosmosMembersPage() {
                 <th>Miembro</th>
                 <th>Etapa</th>
                 <th className="hidden md:table-cell">Ministerio</th>
-                <th className="hidden lg:table-cell">Eng. Score</th>
+                <th className="hidden lg:table-cell">Puntaje de participación</th>
                 <th className="hidden lg:table-cell">Riesgo</th>
                 <th className="hidden sm:table-cell">Última asistencia</th>
                 <th></th>
