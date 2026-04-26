@@ -12,10 +12,7 @@
 @tailwind utilities;
 
 /* ── FONTS ────────────────────────────────────────────────────── */
-/* Add to app/layout.tsx via next/font/google instead:
-   import { Cinzel, DM_Sans } from 'next/font/google'
-   If you prefer CSS import, use this: */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+/* Fonts loaded via next/font/google in app/layout.tsx (Cinzel + DM_Sans) */
 
 /* ── DESIGN TOKENS — DARK MODE (PRIMARY) ────────────────────── */
 :root {
