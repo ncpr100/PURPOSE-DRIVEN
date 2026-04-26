@@ -1,0 +1,20 @@
+<!-- prompt_library.dtd -->
+<!-- DTD for KHESED-TEK Prompt Library -->
+<!-- Note: CDATA sections inside elements are automatically allowed by the XML spec; -->
+<!-- #PCDATA covers both plain text and CDATA sections. -->
+
+<!ELEMENT prompt_library (project+)>
+
+<!ELEMENT project (prompt+)>
+<!ATTLIST project
+  name CDATA #REQUIRED
+>
+
+<!ELEMENT prompt (context, instructions, output_requirements)>
+<!ATTLIST prompt
+  id   ID    #REQUIRED
+>
+
+<!ELEMENT context            (#PCDATA)>
+<!ELEMENT instructions       (#PCDATA)>
+<!ELEMENT output_requirements (#PCDATA)>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Library – Integration Map</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary:    #ffffff;
+    --bg-secondary:  #f5f4f0;
+    --text-primary:  #1a1a18;
+    --text-secondary:#6b6a63;
+    --border-light:  rgba(0,0,0,0.10);
+    --border-mid:    rgba(0,0,0,0.18);
+    --radius-md:     8px;
+    --radius-lg:     12px;
+    --font-sans:     -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono:     "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary:    #1c1c1a;
+      --bg-secondary:  #252523;
+      --text-primary:  #e8e6de;
+      --text-secondary:#9c9a92;
+      --border-light:  rgba(255,255,255,0.09);
+      --border-mid:    rgba(255,255,255,0.16);
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    padding: 2rem;
+    max-width: 860px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  header {
+    margin-bottom: 1.75rem;
+    border-bottom: 0.5px solid var(--border-light);
+    padding-bottom: 1.25rem;
+  }
+  header h1 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+  header p  { font-size: 13px; color: var(--text-secondary); }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    border-bottom: 0.5px solid var(--border-light);
+    padding-bottom: 0;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color .15s, border-color .15s;
+    user-select: none;
+  }
+  .tab.active  { color: var(--text-primary); border-color: var(--text-primary); font-weight: 500; }
+  .tab:hover:not(.active) { color: var(--text-primary); }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── Section label ── */
+  h2 {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin: 0 0 12px;
+  }
+
+  /* ── Tree ── */
+  .tree {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 2;
+    padding: 14px 18px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-light);
+    overflow-x: auto;
+  }
+  .dir  { color: var(--text-secondary); }
+  .key  { color: #5F8DD3; }
+  .new-badge { font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+    margin-left: 6px; background: rgba(76,175,125,.15); color: #2E7D5B;
+    padding: 1px 6px; border-radius: 3px; }
+  .badge {
+    font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    padding: 1px 6px; border-radius: 3px; margin-left: 6px;
+  }
+  .badge-ci  { background: rgba(95,141,211,.12); color: #4B7FC4; }
+  .badge-vsc { background: rgba(239,159,39,.12);  color: #A07020; }
+  .badge-cop { background: rgba(76,175,125,.12);  color: #2E7D5B; }
+
+  /* ── Card grid ── */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    padding: 14px 16px;
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+  }
+  .card h3 {
+    font-size: 13px; font-weight: 500;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  .icon {
+    width: 22px; height: 22px; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+    color: #fff;
+  }
+  .ic-gh  { background: #6e40c9; }
+  .ic-vs  { background: #0065A9; }
+
+  /* ── Trigger table ── */
+  .trig-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .trig-table th {
+    text-align: left; font-weight: 500; font-size: 11px;
+    color: var(--text-secondary); padding: 8px 10px;
+    border-bottom: 0.5px solid var(--border-light);
+    text-transform: uppercase; letter-spacing: .05em;
+  }
+  .trig-table td {
+    padding: 9px 10px;
+    border-bottom: 0.5px solid var(--border-light);
+    vertical-align: top;
+  }
+  .trig-table tr:last-child td { border-bottom: none; }
+  .trig-table tr:hover td { background: var(--bg-secondary); }
+  .trig-table .section-head td {
+    font-size: 11px; font-weight: 600; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: .05em;
+    padding-top: 14px; background: transparent;
+  }
+
+  .pill {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+  }
+  .pill-red    { background: rgba(226,75,74,.10);  color: #9B2C2C; }
+  .pill-amber  { background: rgba(239,159,39,.10); color: #8A4F0C; }
+  .pill-green  { background: rgba(76,175,125,.10); color: #2E7D5B; }
+  .pill-blue   { background: rgba(55,138,221,.10); color: #1A5FA8; }
+
+  .id-code {
+    font-family: var(--font-mono); font-size: 11px;
+    background: var(--bg-secondary);
+    border: 0.5px solid var(--border-light);
+    padding: 2px 6px; border-radius: 3px; white-space: nowrap;
+  }
+
+  /* ── CI steps ── */
+  .ci-steps { display: flex; flex-direction: column; }
+  .ci-step {
+    display: flex; gap: 14px; padding: 14px 0;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .ci-step:last-child { border-bottom: none; }
+  .ci-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 0.5px solid var(--border-mid);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 500; color: var(--text-secondary);
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .ci-body h4 { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .ci-body p  { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  kbd {
+    display: inline-block; font-family: var(--font-mono); font-size: 11px;
+    padding: 2px 6px; border: 0.5px solid var(--border-mid);
+    border-radius: 4px; background: var(--bg-primary);
+    color: var(--text-primary); margin: 0 2px;
+  }
+  code {
+    font-family: var(--font-mono); font-size: 11px;
+    background: var(--bg-secondary); padding: 1px 5px; border-radius: 3px;
+  }
+
+  /* ── VS Code steps ── */
+  .step-list { display: flex; flex-direction: column; gap: 10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>KHESED-TEK — Prompt Library Integration Map</h1>
+  <p>How the prompt library connects to GitHub, VS Code, and GitHub Copilot.</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active"  onclick="show('structure')">Repo layout</div>
+  <div class="tab"         onclick="show('vscode')">VS Code setup</div>
+  <div class="tab"         onclick="show('triggers')">When to invoke</div>
+  <div class="tab"         onclick="show('ci')">GitHub CI</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL 1 — REPO STRUCTURE
+═══════════════════════════════════════════════════════════════════ -->
+<div id="panel-structure" class="panel active">
+  <h2>Where every file lives in your repo</h2>
+  <div class="tree">
+    <div><span class="dir">your-project/</span></div>
+    <div>&nbsp;&nbsp;<span class="dir">.github/</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">copilot-instructions.md</span><span class="badge badge-cop">Copilot auto-loads</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">workflows/</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">validate-prompts.yml</span><span class="badge badge-ci">CI on push</span></div>
+    <div>&nbsp;&nbsp;<span class="dir">.vscode/</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">tasks.json</span><span class="badge badge-vsc">Ctrl+Shift+P → Tasks</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">keybindings.json</span><span class="badge badge-vsc">keyboard shortcuts</span></div>
+    <div>&nbsp;&nbsp;<span class="dir">.prompts/</span><span class="new-badge">NEW</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">prompt_library.xml</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">prompt_library.xsd</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">prompt_library.dtd</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">extract_prompt.py</span></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key">extract_prompt.js</span></div>
+    <div>&nbsp;&nbsp;<span class="dir">src/ &nbsp;tests/ &nbsp;…</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3><span class="icon ic-gh">G</span> copilot-instructions.md</h3>
+      <p>GitHub Copilot reads this file automatically on every chat session in this workspace. Put your universal rules here so they are always active — no paste needed.</p>
+    </div>
+    <div class="card">
+      <h3><span class="icon ic-vs">T</span> tasks.json</h3>
+      <p>Runs <code>extract_prompt.py</code> from a VS Code task menu. Pick a prompt ID from a dropdown; output appears in the terminal ready to copy into any AI chat.</p>
+    </div>
+    <div class="card">
+      <h3><span class="icon ic-vs">K</span> keybindings.json</h3>
+      <p>One keyboard shortcut opens the prompt picker task without leaving your editor. Works project-wide once committed to <code>.vscode/</code>.</p>
+    </div>
+    <div class="card">
+      <h3><span class="icon ic-gh">A</span> validate-prompts.yml</h3>
+      <p>GitHub Actions runs <code>extract_prompt.py --validate</code> on every push and PR. Broken XML or schema violations block the merge before they reach the team.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL 2 — VS CODE
+═══════════════════════════════════════════════════════════════════ -->
+<div id="panel-vscode" class="panel">
+  <h2>How to invoke in VS Code</h2>
+  <div class="step-list">
+    <div class="card">
+      <h3>1 — Run a prompt extraction</h3>
+      <p>Press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd> → type <strong>Run Task</strong> → select <strong>Extract Prompt</strong>. A dropdown appears with all prompt IDs. Pick one; the full prompt prints in the terminal. Copy and paste it into GitHub Copilot Chat, Claude, or any AI assistant.</p>
+    </div>
+    <div class="card">
+      <h3>2 — Keyboard shortcut</h3>
+      <p>Press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>X</kbd> (configured in <code>keybindings.json</code>) to jump straight to the Extract Prompt task — skipping the command palette entirely.</p>
+    </div>
+    <div class="card">
+      <h3>3 — Reference the XML directly in Copilot Chat</h3>
+      <p>In Copilot Chat, type <code>#file:.prompts/prompt_library.xml</code> to attach the full library as context. Then ask: <em>"Use the cms_bug_fixing prompt for this issue."</em></p>
+    </div>
+    <div class="card">
+      <h3>4 — copilot-instructions.md (always-on)</h3>
+      <p>The universal pre-task rules (no new files, wait for PROCEED, etc.) live in <code>.github/copilot-instructions.md</code>. Copilot loads them automatically on every session — no action needed.</p>
+    </div>
+    <div class="card">
+      <h3>5 — Validate before committing</h3>
+      <p>Press <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>V</kbd> → runs <strong>Validate Prompt Library</strong>. Catches XML errors locally before CI sees them. Use <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>L</kbd> to list all IDs without opening the XML.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL 3 — TRIGGER TABLE
+═══════════════════════════════════════════════════════════════════ -->
+<div id="panel-triggers" class="panel">
+  <h2>Which prompt to invoke and when</h2>
+  <table class="trig-table">
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Prompt ID</th>
+        <th>Urgency</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="section-head"><td colspan="3">CMS</td></tr>
+      <tr><td>Starting any task in the CMS</td>              <td><span class="id-code">cms_universal</span></td>           <td><span class="pill pill-blue">Always first</span></td></tr>
+      <tr><td>Something broke, need to fix it</td>           <td><span class="id-code">cms_bug_fixing</span></td>          <td><span class="pill pill-amber">Routine</span></td></tr>
+      <tr><td>Adding a new feature or screen</td>            <td><span class="id-code">cms_feature_dev</span></td>         <td><span class="pill pill-green">Planned</span></td></tr>
+      <tr><td>Cleaning up duplicates / dead code</td>        <td><span class="id-code">cms_refactoring</span></td>         <td><span class="pill pill-green">Planned</span></td></tr>
+      <tr><td>Writing or updating tests</td>                 <td><span class="id-code">cms_testing</span></td>             <td><span class="pill pill-green">Planned</span></td></tr>
+      <tr><td>Reviewing a PR or diff</td>                    <td><span class="id-code">cms_code_review</span></td>         <td><span class="pill pill-blue">Always first</span></td></tr>
+      <tr><td>Production is down or broken NOW</td>          <td><span class="id-code">cms_emergency</span></td>           <td><span class="pill pill-red">Emergency</span></td></tr>
+      <tr><td>Deep, tricky bug that resists fixes</td>       <td><span class="id-code">cms_debugging_advanced</span></td>  <td><span class="pill pill-amber">Routine</span></td></tr>
+      <tr><td>Previous fix didn't work</td>                  <td><span class="id-code">cms_verification_first</span></td>  <td><span class="pill pill-amber">Routine</span></td></tr>
+      <tr><td>Codebase is in chaos / needs audit</td>        <td><span class="id-code">cms_recovery</span></td>            <td><span class="pill pill-red">Emergency</span></td></tr>
+      <tr><td>Supabase policies broken after migration</td>  <td><span class="id-code">cms_state_analyzer</span></td>      <td><span class="pill pill-red">Emergency</span></td></tr>
+      <tr><td>Full QA pass of all modules</td>               <td><span class="id-code">cms_module_testing</span></td>      <td><span class="pill pill-green">Planned</span></td></tr>
+
+      <tr class="section-head"><td colspan="3">Marketing Website</td></tr>
+      <tr><td>Starting any marketing task</td>               <td><span class="id-code">marketing_universal</span></td>           <td><span class="pill pill-blue">Always first</span></td></tr>
+      <tr><td>Visual / form bug on the site</td>             <td><span class="id-code">marketing_bug_fixing</span></td>          <td><span class="pill pill-amber">Routine</span></td></tr>
+      <tr><td>New page, section, or form</td>                <td><span class="id-code">marketing_feature_dev</span></td>         <td><span class="pill pill-green">Planned</span></td></tr>
+      <tr><td>Updating copy, images, assets</td>             <td><span class="id-code">marketing_content_update</span></td>      <td><span class="pill pill-green">Planned</span></td></tr>
+      <tr><td>Check SEO / analytics health</td>              <td><span class="id-code">marketing_seo_audit</span></td>           <td><span class="pill pill-green">Planned</span></td></tr>
+      <tr><td>Lighthouse score is low</td>                   <td><span class="id-code">marketing_performance</span></td>         <td><span class="pill pill-amber">Routine</span></td></tr>
+      <tr><td>Site is down or form is broken</td>            <td><span class="id-code">marketing_emergency</span></td>           <td><span class="pill pill-red">Emergency</span></td></tr>
+      <tr><td>Periodic site audit</td>                       <td><span class="id-code">marketing_health_check</span></td>        <td><span class="pill pill-green">Planned</span></td></tr>
+      <tr><td>Brand / copy consistency check</td>            <td><span class="id-code">marketing_content_consistency</span></td> <td><span class="pill pill-green">Planned</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL 4 — CI
+═══════════════════════════════════════════════════════════════════ -->
+<div id="panel-ci" class="panel">
+  <h2>What GitHub CI does automatically</h2>
+  <div class="ci-steps">
+    <div class="ci-step">
+      <div class="ci-num">1</div>
+      <div class="ci-body">
+        <h4>Triggered on every push &amp; PR</h4>
+        <p>The workflow runs whenever any file in <code>.prompts/</code> changes, plus on every PR targeting <code>main</code>. No manual step needed.</p>
+      </div>
+    </div>
+    <div class="ci-step">
+      <div class="ci-num">2</div>
+      <div class="ci-body">
+        <h4>Installs lxml and validates XML vs XSD</h4>
+        <p>Runs <code>python extract_prompt.py --validate</code>. Fails the job if the XML is malformed, has duplicate IDs, or violates the schema.</p>
+      </div>
+    </div>
+    <div class="ci-step">
+      <div class="ci-num">3</div>
+      <div class="ci-body">
+        <h4>Smoke-tests every prompt ID</h4>
+        <p>Runs <code>--list</code> then extracts a sample prompt to confirm the parser returns real content, not empty strings.</p>
+      </div>
+    </div>
+    <div class="ci-step">
+      <div class="ci-num">4</div>
+      <div class="ci-body">
+        <h4>Blocks merge on failure</h4>
+        <p>Set the workflow as a required status check in your branch protection rules. No broken prompt library can reach <code>main</code>.</p>
+      </div>
+    </div>
+    <div class="ci-step">
+      <div class="ci-num">5</div>
+      <div class="ci-body">
+        <h4>Caches pip dependencies</h4>
+        <p>Uses <code>actions/cache</code> on the <code>lxml</code> install so the job runs in roughly 10 seconds on repeat pushes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>

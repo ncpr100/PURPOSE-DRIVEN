@@ -1,0 +1,46 @@
+// .vscode/keybindings.json
+// Project-level keyboard shortcuts for the KHESED-TEK prompt library.
+//
+// HOW TO ACTIVATE:
+//   These are workspace-level bindings. VS Code loads them automatically
+//   when you open this folder. No global settings change is needed.
+//
+// CUSTOMISE:
+//   Change the "key" values to any combo that doesn't conflict with
+//   your existing shortcuts. Check conflicts via:
+//   Ctrl+Shift+P → "Open Keyboard Shortcuts" → search the key combo.
+
+[
+  // ─────────────────────────────────────────────────────────────
+  // Ctrl+Shift+X  →  Open the prompt picker (Extract Prompt task)
+  // The most common shortcut: pick any prompt from the dropdown.
+  // ─────────────────────────────────────────────────────────────
+  {
+    "key": "ctrl+shift+x",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Extract Prompt",
+    "when": "editorTextFocus || terminalFocus"
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Ctrl+Shift+V  →  Validate prompt library (quick schema check)
+  // Run this before committing changes to prompt_library.xml.
+  // ─────────────────────────────────────────────────────────────
+  {
+    "key": "ctrl+shift+v",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Validate Prompt Library",
+    "when": "editorTextFocus || terminalFocus"
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // Ctrl+Shift+L  →  List all available prompt IDs
+  // Useful when you've forgotten an ID and don't want to open the XML.
+  // ─────────────────────────────────────────────────────────────
+  {
+    "key": "ctrl+shift+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "List All Prompts",
+    "when": "editorTextFocus || terminalFocus"
+  }
+]
