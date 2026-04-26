@@ -262,7 +262,7 @@ export function CosmosCheckInsPage() {
                     variant={r.type === "first_time" ? "gold" : r.type === "child" ? "info" : "success"}
                     size="sm"
                   >
-                    {r.type === "first_time" ? "1ra" : r.type === "child" ? "Nino" : "Reg"}
+                    {r.type === "first_time" ? "1ra" : r.type === "child" ? "Niño" : "Reg"}
                   </Badge>
                 </div>
               ))}
