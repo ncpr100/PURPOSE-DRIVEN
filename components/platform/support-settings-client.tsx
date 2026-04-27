@@ -99,7 +99,6 @@ export default function SupportSettingsClient({ user }: Props) {
         ? `${window.location.protocol}//${window.location.host}/api/support-contact`
         : '/api/support-contact'
       
-      console.log('🔍 API URL Override:', { isLocalDev, apiUrl, hostname: window.location.hostname })
 
       const response = await fetch(apiUrl, {
         method: 'PUT',
@@ -135,7 +134,6 @@ export default function SupportSettingsClient({ user }: Props) {
       // Re-fetch with cache busting
       await fetchContactInfo()
       
-      console.log('✅ Support contact info updated successfully:', result.data)
     } catch (error: any) {
       console.error('Error saving contact info:', error)
       

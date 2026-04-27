@@ -194,7 +194,7 @@ export default function EnhancedPlatformDashboard() {
           </CardHeader>
           <CardContent className="space-y-2">
             {data.operationalAlerts.map((alert) => (
-              <div key={alert.id} className="flex items-center justify-between p-3 bg-white rounded border">
+              <div key={alert.id} className="flex items-center justify-between p-3 bg-[hsl(var(--card))] rounded border">
                 <div className="flex items-center">
                   {getAlertIcon(alert.type)}
                   <span className="ml-2">{alert.message}</span>

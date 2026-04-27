@@ -127,7 +127,6 @@ export function SubscriptionManagement() {
         })
         .then(data => {
           if (data.currency !== platformCurrency) {
-            console.log('🔄 Currency changed, refreshing subscription data...')
             fetchData()
           }
         })

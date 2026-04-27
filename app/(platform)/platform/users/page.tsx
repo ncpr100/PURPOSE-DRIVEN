@@ -204,7 +204,7 @@ export default function PlatformUsersPage() {
       </div>
 
       {/* Users Table */}
-      <div className="bg-white rounded-lg border">
+      <div className="bg-[hsl(var(--card))] rounded-lg border">
         <Table>
           <TableHeader>
             <TableRow>

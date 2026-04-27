@@ -288,7 +288,7 @@ export default function TenantCredentialsPage() {
                 <p className="text-sm text-[hsl(var(--success))]">Guarda esta contraseña - no se mostrará nuevamente</p>
               </div>
               <div className="flex items-center gap-2">
-                <code className="bg-white px-3 py-1 rounded border">{generatedPassword}</code>
+                <code className="bg-[hsl(var(--muted))] px-3 py-1 rounded border font-mono">{generatedPassword}</code>
                 <Button 
                   size="sm" 
                   variant="outline"

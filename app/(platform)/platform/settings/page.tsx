@@ -126,7 +126,6 @@ export default function PlatformSettingsPage() {
       if (response.ok) {
         const data = await response.json()
         toast.success('Backup de base de datos completado exitosamente')
-        console.log('Database backup completed:', data.backup)
       } else {
         const error = await response.json()
         toast.error(error.message || 'Error al crear backup de base de datos')
@@ -149,7 +148,6 @@ export default function PlatformSettingsPage() {
       if (response.ok) {
         const data = await response.json()
         toast.success('Cache del sistema limpiado exitosamente')
-        console.log('Cache cleared:', data.operations)
       } else {
         const error = await response.json()
         toast.error(error.message || 'Error al limpiar cache del sistema')
@@ -176,7 +174,6 @@ export default function PlatformSettingsPage() {
       if (response.ok) {
         const data = await response.json()
         toast.success('Claves del sistema regeneradas exitosamente')
-        console.log('Keys regenerated:', data.operations)
         
         // Show warning about application restart
         setTimeout(() => {
@@ -664,7 +661,7 @@ export default function PlatformSettingsPage() {
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2 text-xs">
                         <Key className="h-3.5 w-3.5 text-muted-foreground" />
-                        <code className="bg-white border rounded px-1.5 py-0.5 font-mono text-[11px]">{gw.envVar}</code>
+                        <code className="bg-[hsl(var(--muted))] border rounded px-1.5 py-0.5 font-mono text-[11px]">{gw.envVar}</code>
                         {gw.configured ? (
                           <span className="text-[hsl(var(--success))] font-medium">Configurado</span>
                         ) : (
