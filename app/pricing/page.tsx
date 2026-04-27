@@ -244,7 +244,7 @@ export default function PricingPage() {
         <div className="max-w-6xl mx-auto">
           <Link href="/" className="flex items-center gap-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Khesed-Tek" className="h-9 w-auto" />
+            <img src="/logo-light.png" alt="Khesed-Tek" className="h-9 w-auto" />
           </Link>
         </div>
       </div>
