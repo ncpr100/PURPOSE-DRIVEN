@@ -620,7 +620,7 @@ export default function BrandedFormBuilder({
       {/* ═══════════════════════════════════════════════
           TOP HEADER BAR
       ═══════════════════════════════════════════════ */}
-      <div className="flex-none bg-white border-b border-border px-4 py-2 flex items-center justify-between z-10">
+      <div className="flex-none bg-[hsl(var(--card))] border-b border-border px-4 py-2 flex items-center justify-between z-10">
         <div className="flex items-center gap-3">
           {!showTemplates ? (
             <Button
@@ -756,7 +756,7 @@ export default function BrandedFormBuilder({
                     <div className="flex items-center gap-3">
                       {getTemplateIcon(template.icon)}
                       <div>
-                        <CardTitle className="text-base">
+                        <CardTitle className="text-base font-sans normal-case">
                           {template.name}
                         </CardTitle>
                         <Badge variant="outline" className="text-xs mt-1">
@@ -786,7 +786,7 @@ export default function BrandedFormBuilder({
           {/* ──────────────────────────────
               LEFT PANEL — Block Picker
           ────────────────────────────── */}
-          <div className="w-52 flex-none bg-white border-r border-border overflow-y-auto flex flex-col">
+          <div className="w-52 flex-none bg-[hsl(var(--card))] border-r border-border overflow-y-auto flex flex-col">
             <div className="p-3 border-b border-border/50">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                 Bloques
@@ -995,7 +995,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 moveField(field.id, "up");
                               }}
-                              className="bg-white border rounded p-0.5 hover:bg-muted/50"
+                              className="bg-[hsl(var(--background))] border border-border rounded p-0.5 hover:bg-muted/50"
                             >
                               <ChevronUp className="h-3 w-3" />
                             </button>
@@ -1004,7 +1004,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 moveField(field.id, "down");
                               }}
-                              className="bg-white border rounded p-0.5 hover:bg-muted/50"
+                              className="bg-[hsl(var(--background))] border border-border rounded p-0.5 hover:bg-muted/50"
                             >
                               <ChevronDown className="h-3 w-3" />
                             </button>
@@ -1013,7 +1013,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 removeField(field.id);
                               }}
-                              className="bg-white border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)]"
+                              className="bg-[hsl(var(--background))] border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)]"
                             >
                               <Trash2 className="h-3 w-3 text-[hsl(var(--destructive))]" />
                             </button>
@@ -1060,7 +1060,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 moveField(field.id, "up");
                               }}
-                              className="bg-white border rounded p-0.5 hover:bg-muted/50"
+                              className="bg-[hsl(var(--background))] border border-border rounded p-0.5 hover:bg-muted/50"
                             >
                               <ChevronUp className="h-3 w-3" />
                             </button>
@@ -1069,7 +1069,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 moveField(field.id, "down");
                               }}
-                              className="bg-white border rounded p-0.5 hover:bg-muted/50"
+                              className="bg-[hsl(var(--background))] border border-border rounded p-0.5 hover:bg-muted/50"
                             >
                               <ChevronDown className="h-3 w-3" />
                             </button>
@@ -1078,7 +1078,7 @@ export default function BrandedFormBuilder({
                                 e.stopPropagation();
                                 removeField(field.id);
                               }}
-                              className="bg-white border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)]"
+                              className="bg-[hsl(var(--background))] border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)]"
                             >
                               <Trash2 className="h-3 w-3 text-[hsl(var(--destructive))]" />
                             </button>
@@ -1103,7 +1103,7 @@ export default function BrandedFormBuilder({
                               e.stopPropagation();
                               moveField(field.id, "up");
                             }}
-                            className="bg-white border rounded p-0.5 hover:bg-muted/50 shadow-sm"
+                            className="bg-[hsl(var(--background))] border border-border rounded p-0.5 hover:bg-muted/50 shadow-sm"
                           >
                             <ChevronUp className="h-3 w-3" />
                           </button>
@@ -1112,7 +1112,7 @@ export default function BrandedFormBuilder({
                               e.stopPropagation();
                               moveField(field.id, "down");
                             }}
-                            className="bg-white border rounded p-0.5 hover:bg-muted/50 shadow-sm"
+                            className="bg-[hsl(var(--background))] border border-border rounded p-0.5 hover:bg-muted/50 shadow-sm"
                           >
                             <ChevronDown className="h-3 w-3" />
                           </button>
@@ -1121,7 +1121,7 @@ export default function BrandedFormBuilder({
                               e.stopPropagation();
                               removeField(field.id);
                             }}
-                            className="bg-white border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)] shadow-sm"
+                            className="bg-[hsl(var(--background))] border border-[hsl(var(--destructive)/0.4)] rounded p-0.5 hover:bg-[hsl(var(--destructive)/0.10)] shadow-sm"
                           >
                             <Trash2 className="h-3 w-3 text-[hsl(var(--destructive))]" />
                           </button>
@@ -1282,7 +1282,7 @@ export default function BrandedFormBuilder({
           {/* ──────────────────────────────
               RIGHT PANEL — Properties / Style
           ────────────────────────────── */}
-          <div className="w-72 flex-none bg-white border-l border-border overflow-y-auto flex flex-col">
+          <div className="w-72 flex-none bg-[hsl(var(--card))] border-l border-border overflow-y-auto flex flex-col">
             {/* Panel toggle */}
             <div className="flex border-b border-border">
               <button
@@ -1922,7 +1922,7 @@ export default function BrandedFormBuilder({
       ═══════════════════════════════════════════════ */}
       {showQRModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-[hsl(var(--popover))] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-border">
             <div className="flex items-center justify-between p-4 border-b">
               <div className="flex items-center gap-2">
                 <QrCode className="h-5 w-5 text-[hsl(var(--lavender))]" />
