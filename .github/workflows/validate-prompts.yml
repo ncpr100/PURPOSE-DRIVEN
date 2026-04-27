@@ -107,10 +107,17 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            // For pull_request events github.sha is the ephemeral MERGE commit SHA,
+            // not the branch HEAD SHA that rulesets evaluate against.
+            // Use head.sha for PRs; fall back to github.sha for push/dispatch.
+            const sha = context.payload.pull_request
+              ? context.payload.pull_request.head.sha
+              : context.sha;
+            console.log(`Posting commit status on SHA: ${sha}`);
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              sha: context.sha,
+              sha,
               state: 'success',
               context: 'Validate Prompt Library / XML schema + smoke test',
               description: 'All prompt library validations passed'
