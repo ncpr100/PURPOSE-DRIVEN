@@ -80,8 +80,8 @@ const NAV_STRUCTURE: NavSection[] = [
     section: "Sistema",
     items: [
       { href: "/notifications", label: "Notificaciones",  icon: <Bell size={15} /> },
-      { href: "/users",         label: "Usuarios y Roles", icon: <UserCheck size={15} />, roles: ["PASTOR", "ADMIN_IGLESIA"] },
-      { href: "/settings",      label: "Configuraci├│n",   icon: <Settings size={15} /> },
+      { href: "/settings/permissions", label: "Usuarios y Roles", icon: <UserCheck size={15} />, roles: ["PASTOR", "ADMIN_IGLESIA"] },
+      { href: "/settings",             label: "Configuraci├│n",   icon: <Settings size={15} /> },
     ],
   },
 ];
