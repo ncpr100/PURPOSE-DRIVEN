@@ -12,6 +12,7 @@ import { Logo } from '@/components/ui/logo'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect } from 'react'
+import { CosmosBackground } from '@/components/cosmos/cosmos-background'
 
 export default function SignInPage() {
   const [email, setEmail] = useState('')
@@ -81,7 +82,9 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <>
+      <CosmosBackground />
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
           <Logo size="xl" className="text-foreground" />
@@ -162,5 +165,6 @@ export default function SignInPage() {
         </Card>
       </div>
     </div>
+    </>
   )
 }
