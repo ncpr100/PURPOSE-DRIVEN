@@ -18,6 +18,16 @@ const globalForPrisma = globalThis as unknown as {
  */
 function buildDatabaseUrl(): string {
   const url = process.env.DATABASE_URL || ''
+  if (!url) {
+    console.error(
+      '🚨 CRITICAL: DATABASE_URL environment variable is not set.\n' +
+      '   All database operations will fail until this is configured.\n' +
+      '   → Set DATABASE_URL in Vercel: Settings → Environment Variables\n' +
+      '   → Value: your Supabase connection string (port 6543 for pooler or 5432 for direct)\n' +
+      '   → Also verify: NEXTAUTH_SECRET and NEXTAUTH_URL are set.'
+    )
+    return ''
+  }
   if (url.includes(':6543') && !url.includes('pgbouncer=true')) {
     const separator = url.includes('?') ? '&' : '?'
     return `${url}${separator}pgbouncer=true&connection_limit=1`
