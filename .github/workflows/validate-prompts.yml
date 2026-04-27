@@ -11,9 +11,7 @@ on:
     paths:
       - '.prompts/**'          # Only runs when prompt files change
   pull_request:
-    branches: [ main ]
-    paths:
-      - '.prompts/**'
+    branches: [ main ]         # Runs on all PRs to main (required status check)
   workflow_dispatch:           # Allow manual trigger from Actions tab
 
 # This workflow only reads repository contents; no write access is needed.
