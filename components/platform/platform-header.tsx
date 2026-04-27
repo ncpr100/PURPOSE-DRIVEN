@@ -32,7 +32,7 @@ export function PlatformHeader({ user }: PlatformHeaderProps) {
     .toUpperCase() || 'SA'
 
   return (
-    <header className="bg-white border-b border-border px-3 md:px-6 py-4">
+    <header className="bg-[hsl(var(--card))] border-b border-border px-3 md:px-6 py-4">
       <div className="flex items-center justify-between">
         {/* Left side - current page info */}
         <div className="flex items-center gap-2 md:gap-3">

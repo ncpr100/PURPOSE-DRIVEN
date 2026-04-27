@@ -67,9 +67,6 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
     setLoading(true)
 
     try {
-      console.log('🔧 EDIT USER: Submitting edit for user ID:', user.id)
-      console.log('   API URL:', `/api/platform/users/${user.id}`)
-      console.log('   User data:', user)
       
       const payload: any = {
         name: formData.name,
@@ -90,7 +87,6 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
         payload.newPassword = newPassword
       }
 
-      console.log('   Payload:', payload)
 
       const response = await fetch(`/api/platform/users/${user.id}`, {
         method: 'PUT',
@@ -98,7 +94,6 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
         body: JSON.stringify(payload)
       })
 
-      console.log('   Response status:', response.status)
 
       if (!response.ok) {
         const error = await response.json()
@@ -107,7 +102,6 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
       }
 
       const result = await response.json()
-      console.log('   Success result:', result)
 
       toast.success(
         showPasswordReset 

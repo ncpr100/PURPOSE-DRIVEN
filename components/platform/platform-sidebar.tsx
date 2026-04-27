@@ -36,9 +36,9 @@ const navigation = [
   { name: 'Facturas', href: '/platform/invoices', icon: FileText },
   { name: 'Credenciales', href: '/platform/tenant-credentials', icon: Key },
   { name: 'Servicios Web', href: '/platform/website-services', icon: Globe },
-  { name: 'Marketing Tools', href: '/platform/forms', icon: ClipboardList },
+  { name: 'Herramientas de Marketing', href: '/platform/forms', icon: ClipboardList },
   { name: 'Redes Sociales', href: '/platform/social-media', icon: Share2 },
-  { name: 'Analytics', href: '/platform/analytics', icon: BarChart3 },
+  { name: 'Analítica', href: '/platform/analytics', icon: BarChart3 },
   { name: 'Mi Perfil', href: '/platform/profile', icon: User },
   { name: 'Configuración', href: '/platform/settings', icon: Settings },
   { name: 'Config. Soporte', href: '/platform/support-settings', icon: MessageCircle },
@@ -80,7 +80,7 @@ function MobileSidebar({ pathname }: { pathname: string }) {
         <Button 
           variant="ghost" 
           size="sm" 
-          className="md:hidden fixed top-4 left-4 z-50 bg-white shadow-md hover:bg-muted/50"
+          className="md:hidden fixed top-4 left-4 z-50 bg-[hsl(var(--card))] shadow-md hover:bg-muted/50"
         >
           <Menu className="h-5 w-5" />
         </Button>

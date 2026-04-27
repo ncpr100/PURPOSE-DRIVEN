@@ -612,7 +612,7 @@ export default function PlatformQRGenerator({ formSlug }: PlatformQRGeneratorPro
               <>
                 <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg border">
                   <img src={qrConfig.logoImage} alt="Vista previa del logo"
-                    className="h-14 w-14 rounded-lg object-contain bg-white border shadow-sm" />
+                    className="h-14 w-14 rounded-lg object-contain bg-[hsl(var(--muted))] border shadow-sm" />
                   <div className="flex-1">
                     <p className="text-sm font-medium text-muted-foreground">Logo cargado</p>
                     <p className="text-xs text-muted-foreground">Se mostrará en el centro del QR</p>
