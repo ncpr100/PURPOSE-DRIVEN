@@ -111,7 +111,12 @@ export class IntelligentCacheWarmer {
 
       console.log('✅ Initial cache warm-up completed - 100% hit rate target achieved');
     } catch (error) {
-      console.error('❌ Initial warm-up failed:', error);
+      // Log the actual error message so Vercel logs show the root cause clearly
+      const msg = error instanceof Error ? error.message : String(error)
+      const code = (error as any)?.errorCode ?? (error as any)?.code ?? 'unknown'
+      console.error(`❌ Initial warm-up failed [${code}]: ${msg}`)
+      // PrismaClientInitializationError with "Environment variable not found: DIRECT_URL"
+      // means both DATABASE_URL and DIRECT_URL must be set in Vercel env vars.
     }
   }
 
