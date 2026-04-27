@@ -2,8 +2,9 @@
 import { getServerSession } from 'next-auth/next'
 import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
-import { Header } from '@/components/layout/header'
-import { Sidebar, SidebarProvider } from '@/components/layout/sidebar'
+import { CosmosBackground } from '@/components/cosmos/cosmos-background'
+import { CosmosHeader } from '@/components/layout/cosmos-header'
+import { CosmosSidebar } from '@/components/layout/cosmos-sidebar'
 import { SessionErrorBoundary } from '@/components/error-boundary'
 
 export default async function DashboardLayout({
@@ -19,19 +20,28 @@ export default async function DashboardLayout({
 
   return (
     <SessionErrorBoundary>
-      <SidebarProvider>
-        <div className="min-h-screen bg-background">
-          <Header />
-          <div className="flex">
-            <Sidebar />
-            <main className="flex-1 min-w-0 p-4 lg:p-6 transition-all duration-300">
-              <div className="max-w-7xl mx-auto">
-                {children}
-              </div>
-            </main>
-          </div>
+      <CosmosBackground />
+      <div
+        className="relative z-10 h-screen overflow-hidden"
+        style={{
+          display: 'grid',
+          gridTemplateRows: '56px 1fr',
+          gridTemplateColumns: '216px 1fr',
+        }}
+      >
+        {/* Header spans both columns */}
+        <div style={{ gridColumn: '1 / -1' }}>
+          <CosmosHeader />
         </div>
-      </SidebarProvider>
+        {/* Sidebar */}
+        <CosmosSidebar />
+        {/* Main content */}
+        <main className="overflow-y-auto p-4 lg:p-6">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
+        </main>
+      </div>
     </SessionErrorBoundary>
   )
 }

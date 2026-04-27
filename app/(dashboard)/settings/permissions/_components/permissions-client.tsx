@@ -95,7 +95,18 @@ export function PermissionsClient() {
 
       if (rolesRes.ok) {
         const rolesData = await rolesRes.json();
-        setRoles(rolesData);
+        // Transform snake_case API response to camelCase expected by components
+        const mapped = rolesData.map((r: any) => ({
+          ...r,
+          rolePermissions: (r.role_permissions || []).map((rp: any) => ({
+            permission: rp.permissions ?? rp,
+          })),
+          _count: {
+            userRoles: r._count?.user_roles_advanced ?? r._count?.userRoles ?? 0,
+            rolePermissions: r._count?.role_permissions ?? r._count?.rolePermissions ?? 0,
+          },
+        }));
+        setRoles(mapped);
       }
     } catch (error) {
       console.error('Error loading data:', error);
