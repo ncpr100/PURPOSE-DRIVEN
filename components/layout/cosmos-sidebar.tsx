@@ -42,7 +42,7 @@ const NAV_STRUCTURE: NavSection[] = [
     items: [
       { href: "/home",          label: "Dashboard",          icon: <LayoutDashboard size={15} /> },
       { href: "/members",       label: "Miembros",           icon: <Users size={15} /> },
-      { href: "/prayer-wall",   label: "Muro de Oraci├│n",    icon: <HandHeart size={15} />,     badge: 3,  badgeType: "alert" },
+      { href: "/prayer-wall",   label: "Muro de Oración",     icon: <HandHeart size={15} />,     badge: 3,  badgeType: "alert" },
       { href: "/check-ins",     label: "Visitantes",         icon: <QrCode size={15} />,        badge: 8,  badgeType: "success" },
       { href: "/sermons",       label: "Sermones",           icon: <BookOpen size={15} /> },
     ],
@@ -52,7 +52,7 @@ const NAV_STRUCTURE: NavSection[] = [
     items: [
       { href: "/volunteers",    label: "Voluntarios",        icon: <HandHeart size={15} />,     badge: 1,  badgeType: "alert" },
       { href: "/events",        label: "Eventos",            icon: <Calendar size={15} /> },
-      { href: "/donations",     label: "Mayordom├¡a",         icon: <DollarSign size={15} /> },
+      { href: "/donations",     label: "Mayordomía",          icon: <DollarSign size={15} /> },
       { href: "/communications",label: "Comunicaciones",     icon: <MessageSquare size={15} /> },
       { href: "/form-builder",  label: "Formularios",        icon: <FormInput size={15} /> },
     ],
@@ -61,7 +61,7 @@ const NAV_STRUCTURE: NavSection[] = [
     section: "Inteligencia IA",
     items: [
       { href: "/home#agents",           label: "12 Agentes IA",          icon: <Brain size={15} /> },
-      { href: "/analytics",             label: "Anal├¡tica",               icon: <BarChart3 size={15} /> },
+      { href: "/analytics",             label: "Analítica",               icon: <BarChart3 size={15} /> },
       { href: "/intelligent-analytics", label: "IA Predictiva",          icon: <Lightbulb size={15} /> },
       { href: "/automation-rules",      label: "Automatizaciones",       icon: <Zap size={15} /> },
       { href: "/business-intelligence", label: "Inteligencia Negocio",   icon: <ClipboardList size={15} /> },
@@ -80,8 +80,8 @@ const NAV_STRUCTURE: NavSection[] = [
     section: "Sistema",
     items: [
       { href: "/notifications", label: "Notificaciones",  icon: <Bell size={15} /> },
-      { href: "/users",         label: "Usuarios y Roles", icon: <UserCheck size={15} />, roles: ["PASTOR", "ADMIN_IGLESIA"] },
-      { href: "/settings",      label: "Configuraci├│n",   icon: <Settings size={15} /> },
+      { href: "/settings/permissions", label: "Usuarios y Roles", icon: <UserCheck size={15} />, roles: ["PASTOR", "ADMIN_IGLESIA"] },
+      { href: "/settings",             label: "Configuración",    icon: <Settings size={15} /> },
     ],
   },
 ];
