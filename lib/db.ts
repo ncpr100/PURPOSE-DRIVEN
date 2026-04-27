@@ -18,16 +18,30 @@ const globalForPrisma = globalThis as unknown as {
  */
 function buildDatabaseUrl(): string {
   const url = process.env.DATABASE_URL || ''
-  if (!url) {
+  const directUrl = process.env.DIRECT_URL || ''
+
+  // Log a clear diagnostic for any missing env vars so Vercel logs show the root cause
+  const missing: string[] = []
+  if (!url) missing.push('DATABASE_URL')
+  if (!directUrl) missing.push('DIRECT_URL')
+
+  if (missing.length > 0) {
     console.error(
-      '🚨 CRITICAL: DATABASE_URL environment variable is not set.\n' +
-      '   All database operations will fail until this is configured.\n' +
-      '   → Set DATABASE_URL in Vercel: Settings → Environment Variables\n' +
-      '   → Value: your Supabase connection string (port 6543 for pooler or 5432 for direct)\n' +
-      '   → Also verify: NEXTAUTH_SECRET and NEXTAUTH_URL are set.'
+      `🚨 CRITICAL: The following required environment variables are NOT set: ${missing.join(', ')}\n` +
+      '   Both DATABASE_URL and DIRECT_URL are required by prisma/schema.prisma.\n' +
+      '   All database operations will fail until these are configured.\n\n' +
+      '   → In Vercel: Project → Settings → Environment Variables\n\n' +
+      '   DATABASE_URL  (Supabase transaction pooler – port 6543):\n' +
+      '     postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1\n\n' +
+      '   DIRECT_URL  (Supabase direct connection – port 5432):\n' +
+      '     postgresql://postgres:[password]@db.[ref].supabase.co:5432/postgres\n\n' +
+      '   Get both strings from: Supabase Dashboard → Project → Settings → Database → Connection String\n' +
+      '   Also verify NEXTAUTH_SECRET and NEXTAUTH_URL are set.'
     )
-    return ''
   }
+
+  if (!url) return ''
+
   if (url.includes(':6543') && !url.includes('pgbouncer=true')) {
     const separator = url.includes('?') ? '&' : '?'
     return `${url}${separator}pgbouncer=true&connection_limit=1`
