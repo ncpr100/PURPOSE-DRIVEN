@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -771,7 +771,7 @@ export default function ChurchProfilePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4 p-4 border rounded-lg bg-white">
+              <div className="space-y-4 p-4 border rounded-lg bg-[hsl(var(--card))]">
                 {/* Church Header Preview */}
                 <div 
                   className="p-4 rounded-xl text-white text-center"

@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { useState } from 'react'
@@ -1017,7 +1017,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                       </div>
                     </div>
 
-                    <div className="mt-6 p-4 bg-white rounded-lg border border-[hsl(var(--success)/0.3)]">
+                    <div className="mt-6 p-4 bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--success)/0.3)]">
                       <div className="text-center">
                         <p className="text-sm text-[hsl(var(--success))] mb-2">
                           <strong>🎯 RESULTADO:</strong> Herramientas 100% gratuitas que eliminan la necesidad de suscripciones premium

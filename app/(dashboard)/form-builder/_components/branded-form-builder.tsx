@@ -1386,7 +1386,7 @@ export default function BrandedFormBuilder({
                         </div>
                       ) : (
                         <>
-                          <ImageIcon className="h-8 w-8 text-gray-300 mx-auto mb-1" />
+                          <ImageIcon className="h-8 w-8 text-muted-foreground/30 mx-auto mb-1" />
                           <Button
                             type="button"
                             variant="outline"
@@ -1887,7 +1887,7 @@ export default function BrandedFormBuilder({
                     </div>
                   ) : (
                     <>
-                      <ImageIcon className="h-8 w-8 text-gray-300 mx-auto mb-1" />
+                      <ImageIcon className="h-8 w-8 text-muted-foreground/30 mx-auto mb-1" />
                       <Button
                         type="button"
                         variant="outline"

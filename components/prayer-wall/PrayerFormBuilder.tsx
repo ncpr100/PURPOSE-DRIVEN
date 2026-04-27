@@ -532,7 +532,7 @@ export function PrayerFormBuilder({ form, onSave, onCancel }: PrayerFormBuilderP
 
             {formData.fields.length === 0 && (
               <div className="text-center py-12 text-muted-foreground">
-                <MessageSquare className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                <MessageSquare className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
                 <p>No hay campos en el formulario</p>
                 <p className="text-sm">Agrega campos desde el panel izquierdo</p>
               </div>

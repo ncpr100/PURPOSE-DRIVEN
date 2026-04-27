@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -288,7 +288,7 @@ export default function DonacionesOnlineAddon() {
                 </ul>
               </div>
             </div>
-            <div className="bg-white border border-[hsl(var(--info)/0.4)] rounded-lg p-4 mt-4">
+            <div className="bg-[hsl(var(--card))] border border-[hsl(var(--info)/0.4)] rounded-lg p-4 mt-4">
               <h5 className="font-semibold text-foreground mb-2">🔗 Su enlace de donaciones:</h5>
               <p className="text-sm text-[hsl(var(--info))]">
                 <code className="bg-[hsl(var(--info)/0.15)] px-2 py-1 rounded text-xs font-mono">

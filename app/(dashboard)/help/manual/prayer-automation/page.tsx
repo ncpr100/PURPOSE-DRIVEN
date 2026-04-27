@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -108,7 +108,7 @@ export default function PrayerAutomationManual() {
                   <p className="text-sm text-muted-foreground">
                     Busca reglas de automatización activas que coincidan:
                   </p>
-                  <div className="bg-white p-3 rounded mt-2 border">
+                  <div className="bg-[hsl(var(--card))] p-3 rounded mt-2 border">
                     <p className="text-xs font-mono text-muted-foreground">
                       SI prioridad = URGENTE Y categoría = Salud<br/>
                       ENTONCES ejecutar: &quot;Notificación Urgente al Equipo&quot;
@@ -155,15 +155,15 @@ export default function PrayerAutomationManual() {
                     Las acciones se ejecutan en secuencia con reintentos automáticos:
                   </p>
                   <div className="space-y-2">
-                    <div className="bg-white p-2 rounded text-xs border">
+                    <div className="bg-[hsl(var(--card))] p-2 rounded text-xs border">
                       <strong>Acción 1:</strong> Enviar SMS al coordinador de oración<br/>
                       <span className="text-[hsl(var(--success))]">✓ Entregado (intento 1/3)</span>
                     </div>
-                    <div className="bg-white p-2 rounded text-xs border">
+                    <div className="bg-[hsl(var(--card))] p-2 rounded text-xs border">
                       <strong>Acción 2:</strong> Email de confirmación al solicitante<br/>
                       <span className="text-[hsl(var(--success))]">✓ Enviado (intento 1/3)</span>
                     </div>
-                    <div className="bg-white p-2 rounded text-xs border">
+                    <div className="bg-[hsl(var(--card))] p-2 rounded text-xs border">
                       <strong>Acción 3:</strong> WhatsApp al equipo de intercesión<br/>
                       <span className="text-[hsl(var(--success))]">✓ Entregado (intento 1/3)</span>
                     </div>
@@ -188,7 +188,7 @@ export default function PrayerAutomationManual() {
               <p className="text-sm text-[hsl(var(--destructive))] mb-3">
                 Para peticiones marcadas como urgentes. Notifica inmediatamente al equipo pastoral 24/7.
               </p>
-              <div className="bg-white p-3 rounded space-y-2 text-xs">
+              <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Petición de oración con prioridad URGENTE</div>
                 <div><strong>Bypass Approval:</strong> ✅ Sí (ejecución inmediata)</div>
                 <div><strong>Acciones:</strong></div>
@@ -210,7 +210,7 @@ export default function PrayerAutomationManual() {
               <p className="text-sm text-[hsl(var(--info))] mb-3">
                 Envía un mensaje automático de confirmación a quien envió la petición.
               </p>
-              <div className="bg-white p-3 rounded space-y-2 text-xs">
+              <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Cualquier petición de oración recibida</div>
                 <div><strong>Bypass Approval:</strong> ✅ Sí</div>
                 <div><strong>Acciones:</strong></div>
@@ -231,7 +231,7 @@ export default function PrayerAutomationManual() {
               <p className="text-sm text-[hsl(var(--success))] mb-3">
                 Envía una oración personalizada al solicitante después de 24 horas.
               </p>
-              <div className="bg-white p-3 rounded space-y-2 text-xs">
+              <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Petición de oración (prioridad NORMAL o ALTA)</div>
                 <div><strong>Bypass Approval:</strong> ❌ No (requiere aprobación del pastor)</div>
                 <div><strong>Acciones:</strong></div>
@@ -252,7 +252,7 @@ export default function PrayerAutomationManual() {
               <p className="text-sm text-[hsl(var(--lavender))] mb-3">
                 Programa una llamada telefónica personal para peticiones muy sensibles.
               </p>
-              <div className="bg-white p-3 rounded space-y-2 text-xs">
+              <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Petición URGENTE con categoría &quot;Salud&quot; o &quot;Duelo&quot;</div>
                 <div><strong>Bypass Approval:</strong> ❌ No</div>
                 <div><strong>Acciones:</strong></div>

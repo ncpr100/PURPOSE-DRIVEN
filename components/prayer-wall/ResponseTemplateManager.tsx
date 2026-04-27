@@ -626,7 +626,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
       {filteredTemplates.length === 0 && (
         <Card>
           <CardContent className="text-center py-12">
-            <MessageSquare className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+            <MessageSquare className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
             <p className="text-muted-foreground">No se encontraron plantillas</p>
             {templates.length === 0 ? (
               <Button

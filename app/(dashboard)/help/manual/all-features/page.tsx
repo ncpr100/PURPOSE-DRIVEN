@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -749,15 +749,15 @@ export default function AllFeaturesGuide() {
           </div>
         </div>
         <div className="mt-6 flex gap-4 text-sm">
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <CheckCircle className="h-3 w-3 mr-1" />
             {allFeatures.filter(f => f.implemented).length} Implementadas
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Star className="h-3 w-3 mr-1" />
             {allFeatures.filter(f => f.popular).length} Populares
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <PlayCircle className="h-3 w-3 mr-1" />
             {allFeatures.filter(f => f.videoAvailable).length} Con Video
           </Badge>
@@ -890,7 +890,7 @@ export default function AllFeaturesGuide() {
       {filteredFeatures.length === 0 && (
         <Card className="p-12 text-center">
           <div className="flex flex-col items-center gap-4">
-            <Search className="h-16 w-16 text-gray-300" />
+            <Search className="h-16 w-16 text-muted-foreground/30" />
             <div>
               <h3 className="text-xl font-semibold text-muted-foreground mb-2">No se encontraron funciones</h3>
               <p className="text-muted-foreground mb-4">
@@ -918,7 +918,7 @@ export default function AllFeaturesGuide() {
               const count = allFeatures.filter(f => f.category === category.id).length
               const popularCount = allFeatures.filter(f => f.category === category.id && f.popular).length
               return (
-                <div key={category.id} className="bg-white p-4 rounded-lg">
+                <div key={category.id} className="bg-[hsl(var(--card))] p-4 rounded-lg">
                   <div className="flex items-center gap-2 mb-2">
                     <div className={`${category.color} text-white p-2 rounded`}>
                       {category.icon}

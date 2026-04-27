@@ -249,7 +249,7 @@ export function VisitorFollowUpsClient({ userRole }: Props) {
             </div>
           ) : followUps.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground/70">
-              <CheckCircle2 className="h-10 w-10 mx-auto mb-3 text-gray-300" />
+              <CheckCircle2 className="h-10 w-10 mx-auto mb-3 text-muted-foreground/30" />
               <p className="font-medium">
                 {statusFilter === "pending"
                   ? "No hay seguimientos pendientes"

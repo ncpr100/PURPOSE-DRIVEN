@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -95,7 +95,7 @@ export default function AnalyticsPastoralInsightsPage() {
                   <li>• <strong>Exportar JSON:</strong> Para desarrolladores/sistemas externos</li>
                   <li>• <strong>Todos funcionalmente completos:</strong> Datos reales, no demos</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                   <p className="text-xs"><strong>🔄 Actualización:</strong> Los datos se actualizan cada 5 minutos automáticamente</p>
                 </div>
               </div>

@@ -711,7 +711,7 @@ export function PrayerRequestManager({ initialRequests = [], onRequestUpdate }: 
         {filteredRequests.length === 0 ? (
           <Card>
             <CardContent className="text-center py-12">
-              <MessageSquare className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+              <MessageSquare className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
               <p className="text-muted-foreground">No se encontraron peticiones</p>
               {filters.search || filters.status !== 'all' || filters.category !== 'all' ? (
                 <p className="text-sm text-muted-foreground/70 mt-1">

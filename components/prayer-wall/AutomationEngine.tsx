@@ -512,7 +512,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
           {automationRules.length === 0 ? (
             <Card>
               <CardContent className="text-center py-12">
-                <Settings className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                <Settings className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
                 <p className="text-muted-foreground">No hay reglas de automatización configuradas</p>
                 <Button
                   className="mt-4"
@@ -632,7 +632,7 @@ export function AutomationEngine({ onUpdate }: AutomationEngineProps) {
           {messageQueue.length === 0 ? (
             <Card>
               <CardContent className="text-center py-12">
-                <Send className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                <Send className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
                 <p className="text-muted-foreground">No hay mensajes en cola</p>
               </CardContent>
             </Card>

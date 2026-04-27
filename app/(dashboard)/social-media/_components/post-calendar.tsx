@@ -1,4 +1,4 @@
-
+﻿
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -96,7 +96,7 @@ export default function PostCalendar({ posts, onPostSelect, onPostDeleted }: Pos
         <div className="grid grid-cols-7 gap-px bg-muted">
           {/* Header Row */}
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="bg-white p-2 text-center text-sm font-medium text-muted-foreground">
+            <div key={day} className="bg-[hsl(var(--card))] p-2 text-center text-sm font-medium text-muted-foreground">
               {day}
             </div>
           ))}
@@ -110,12 +110,12 @@ export default function PostCalendar({ posts, onPostSelect, onPostDeleted }: Pos
             return (
               <div
                 key={day.toISOString()}
-                className={`bg-white min-h-[120px] p-2 ${
-                  !isCurrentMonth ? 'text-gray-300' : ''
+                className={`bg-[hsl(var(--card))] min-h-[120px] p-2 ${
+                  !isCurrentMonth ? 'text-muted-foreground/30' : ''
                 } ${isCurrentDay ? 'bg-[hsl(var(--info)/0.10)]' : ''}`}
               >
                 <div className={`text-sm font-medium mb-2 ${
-                  isCurrentDay ? 'text-[hsl(var(--info))]' : isCurrentMonth ? 'text-foreground' : 'text-gray-300'
+                  isCurrentDay ? 'text-[hsl(var(--info))]' : isCurrentMonth ? 'text-foreground' : 'text-muted-foreground/30'
                 }`}>
                   {format(day, 'd')}
                 </div>

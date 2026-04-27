@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
@@ -228,7 +228,7 @@ export function UnifiedAutomationInterface() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border border-border bg-white">
+        <Card className="border border-border bg-[hsl(var(--card))]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -242,7 +242,7 @@ export function UnifiedAutomationInterface() {
           </CardContent>
         </Card>
 
-        <Card className="border border-border bg-white">
+        <Card className="border border-border bg-[hsl(var(--card))]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -256,7 +256,7 @@ export function UnifiedAutomationInterface() {
           </CardContent>
         </Card>
 
-        <Card className="border border-border bg-white">
+        <Card className="border border-border bg-[hsl(var(--card))]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -270,7 +270,7 @@ export function UnifiedAutomationInterface() {
           </CardContent>
         </Card>
 
-        <Card className="border border-border bg-white">
+        <Card className="border border-border bg-[hsl(var(--card))]">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -378,7 +378,7 @@ export function UnifiedAutomationInterface() {
             return (
               <Card 
                 key={template.id} 
-                className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-border bg-white"
+                className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-2 border-border bg-[hsl(var(--card))]"
               >
                 <CardContent className="p-6">
                   <div className="space-y-4">

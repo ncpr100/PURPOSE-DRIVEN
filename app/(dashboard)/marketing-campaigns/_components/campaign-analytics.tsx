@@ -87,7 +87,7 @@ export default function CampaignAnalytics({ campaigns }: CampaignAnalyticsProps)
       <Card>
         <CardContent className="flex items-center justify-center h-64">
           <div className="text-center text-muted-foreground">
-            <BarChart3 className="mx-auto h-12 w-12 text-gray-300" />
+            <BarChart3 className="mx-auto h-12 w-12 text-muted-foreground/30" />
             <h3 className="mt-2 text-sm font-medium">No hay datos de campañas</h3>
             <p className="mt-1 text-sm">Crea campañas para ver analíticas.</p>
           </div>

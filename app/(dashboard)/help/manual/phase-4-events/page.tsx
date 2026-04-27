@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -26,15 +26,15 @@ export default function Phase4EventsGuide() {
           </div>
         </div>
         <div className="mt-6 flex gap-4 text-sm">
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Target className="h-3 w-3 mr-1" />
             Sistema Unificado
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Star className="h-3 w-3 mr-1" />
             8 Módulos Integrados
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Star className="h-3 w-3 mr-1" />
             15 minutos
           </Badge>
@@ -77,7 +77,7 @@ export default function Phase4EventsGuide() {
             { icon: <BarChart className="h-6 w-6 text-primary" />, name: "Analíticas", desc: "Reportes y métricas", status: "🔄 En desarrollo" },
             { icon: <CalendarPlus className="h-6 w-6 text-[hsl(var(--info))]" />, name: "Calendario", desc: "Vista mensual", status: "🔄 En desarrollo" }
           ].map((module, idx) => (
-            <Card key={idx} className="hover:shadow-lg transition-shadow bg-white">
+            <Card key={idx} className="hover:shadow-lg transition-shadow bg-[hsl(var(--card))]">
               <CardContent className="pt-4 text-center">
                 <div className="mb-2 flex justify-center">{module.icon}</div>
                 <h4 className="font-semibold mb-1 text-sm">{module.name}</h4>
@@ -137,7 +137,7 @@ export default function Phase4EventsGuide() {
                 <div className="bg-[hsl(var(--success))] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">1</div>
                 PLANIFICACIÓN (Pestaña: Planificación)
               </h4>
-              <Card className="bg-white">
+              <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
                   <p className="font-medium">📝 Crear Evento:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -168,7 +168,7 @@ export default function Phase4EventsGuide() {
                 <div className="bg-[hsl(var(--info))] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">2</div>
                 AUTO-ASIGNACIÓN (Botón: Auto-Asignar)
               </h4>
-              <Card className="bg-white">
+              <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
                   <p className="font-medium">🤖 IA Asigna Voluntarios:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -195,7 +195,7 @@ export default function Phase4EventsGuide() {
                 <div className="bg-[hsl(var(--lavender))] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">3</div>
                 RECURSOS (Pestaña: Recursos)
               </h4>
-              <Card className="bg-white">
+              <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
                   <p className="font-medium">🎛️ Gestión de Recursos:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -219,7 +219,7 @@ export default function Phase4EventsGuide() {
                 <div className="bg-[hsl(var(--lavender))] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">4</div>
                 COMUNICACIONES (Botón: Comunicar)
               </h4>
-              <Card className="bg-white">
+              <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
                   <p className="font-medium">📧 Invitaciones Automáticas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -247,7 +247,7 @@ export default function Phase4EventsGuide() {
                 CHECK-IN Y ASISTENCIA (Durante el Evento)
               </h4>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
-                <div className="bg-white p-4 rounded-lg">
+                <div className="bg-[hsl(var(--card))] p-4 rounded-lg">
                   <p className="font-semibold text-[hsl(var(--success))] mb-2">👥 Miembros</p>
                   <ul className="space-y-1 text-muted-foreground">
                     <li>• Escaneo de QR personal</li>
@@ -255,7 +255,7 @@ export default function Phase4EventsGuide() {
                     <li>• Guarda: nombre, email, phone, fecha/hora</li>
                   </ul>
                 </div>
-                <div className="bg-white p-4 rounded-lg">
+                <div className="bg-[hsl(var(--card))] p-4 rounded-lg">
                   <p className="font-semibold text-[hsl(var(--info))] mb-2">👶 Niños</p>
                   <ul className="space-y-1 text-muted-foreground">
                     <li>• Sistema separado children_check_ins</li>
@@ -263,7 +263,7 @@ export default function Phase4EventsGuide() {
                     <li>• Seguridad y rastreo</li>
                   </ul>
                 </div>
-                <div className="bg-white p-4 rounded-lg">
+                <div className="bg-[hsl(var(--card))] p-4 rounded-lg">
                   <p className="font-semibold text-[hsl(var(--lavender))] mb-2">🆕 Visitantes</p>
                   <ul className="space-y-1 text-muted-foreground">
                     <li>• Mismo tabla check_ins</li>
@@ -281,7 +281,7 @@ export default function Phase4EventsGuide() {
                 <div className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">6</div>
                 PRESUPUESTO (Pestaña: Presupuesto)
               </h4>
-              <Card className="bg-white">
+              <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
                   <p className="font-medium">💰 Control de Gastos:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -300,7 +300,7 @@ export default function Phase4EventsGuide() {
                 <div className="bg-[hsl(var(--info))] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm">7</div>
                 ANALÍTICAS (Pestaña: Analíticas)
               </h4>
-              <Card className="bg-white">
+              <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
                   <p className="font-medium">📊 Reportes y Métricas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -730,7 +730,7 @@ export default function Phase4EventsGuide() {
                 <CheckCircle className="h-6 w-6" />
                 ¿Qué verás cuando hagas clic?
               </h4>
-              <Card className="bg-white border-[hsl(var(--success)/0.3)]">
+              <Card className="bg-[hsl(var(--card))] border-[hsl(var(--success)/0.3)]">
                 <CardContent className="pt-4 space-y-3 text-sm">
                   <div className="flex items-start gap-3">
                     <div className="text-2xl">1️⃣</div>
@@ -769,7 +769,7 @@ export default function Phase4EventsGuide() {
                 <Brain className="h-6 w-6" />
                 Algoritmo de Selección (5 Factores)
               </h4>
-              <Card className="bg-white border-[hsl(var(--lavender)/0.3)]">
+              <Card className="bg-[hsl(var(--card))] border-[hsl(var(--lavender)/0.3)]">
                 <CardContent className="pt-4 space-y-2 text-sm">
                   <div className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded">
                     <p className="font-semibold text-foreground mb-1">1. Coincidencia de Habilidades (+30 puntos)</p>
@@ -816,15 +816,15 @@ export default function Phase4EventsGuide() {
                 Límites y Reglas del Sistema
               </h4>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
-                <div className="bg-white p-3 rounded-lg border-l-4 border-l-teal-600">
+                <div className="bg-[hsl(var(--card))] p-3 rounded-lg border-l-4 border-l-teal-600">
                   <p className="font-semibold text-[hsl(var(--info))] mb-1">📊 Máximo por Evento</p>
                   <p className="text-muted-foreground">Asigna <strong>hasta 5 voluntarios</strong> automáticamente</p>
                 </div>
-                <div className="bg-white p-3 rounded-lg border-l-4 border-l-blue-600">
+                <div className="bg-[hsl(var(--card))] p-3 rounded-lg border-l-4 border-l-blue-600">
                   <p className="font-semibold text-foreground mb-1">🎯 Selección</p>
                   <p className="text-muted-foreground">Escoge los <strong>TOP 5</strong> con mayor puntuación</p>
                 </div>
-                <div className="bg-white p-3 rounded-lg border-l-4 border-l-purple-600">
+                <div className="bg-[hsl(var(--card))] p-3 rounded-lg border-l-4 border-l-purple-600">
                   <p className="font-semibold text-foreground mb-1">🔄 Repetible</p>
                   <p className="text-muted-foreground">Puedes hacer clic <strong>múltiples veces</strong> si necesitas más</p>
                 </div>
@@ -832,7 +832,7 @@ export default function Phase4EventsGuide() {
             </CardContent>
           </Card>
 
-          <div className="bg-white border-2 border-[hsl(var(--warning)/0.30)] rounded-lg p-6">
+          <div className="bg-[hsl(var(--card))] border-2 border-[hsl(var(--warning)/0.30)] rounded-lg p-6">
             <h4 className="font-bold text-xl text-[hsl(var(--warning))] mb-4 flex items-center gap-2">
               <AlertTriangle className="h-6 w-6" />
               Problemas Comunes con AUTO-ASIGNAR y Soluciones
@@ -847,7 +847,7 @@ export default function Phase4EventsGuide() {
                   <li>✓ <strong>Ya asignaste a todos</strong> - Todos los voluntarios ya están en este evento</li>
                   <li>✓ <strong>El evento ya pasó</strong> - Solo asigna a eventos futuros</li>
                 </ul>
-                <div className="mt-3 bg-white p-3 rounded">
+                <div className="mt-3 bg-[hsl(var(--card))] p-3 rounded">
                   <p className="text-xs font-semibold text-[hsl(var(--success))]">💡 Solución Rápida:</p>
                   <p className="text-xs text-muted-foreground">Ir a <strong>Voluntarios</strong> → Verificar estado ACTIVO → Revisar disponibilidad en calendario</p>
                 </div>
@@ -861,7 +861,7 @@ export default function Phase4EventsGuide() {
                   <li>✓ Muchos tienen conflictos de horario</li>
                   <li>✓ Algunos ya están asignados a este evento</li>
                 </ul>
-                <div className="mt-3 bg-white p-3 rounded">
+                <div className="mt-3 bg-[hsl(var(--card))] p-3 rounded">
                   <p className="text-xs font-semibold text-[hsl(var(--info))]">💡 Mejora:</p>
                   <p className="text-xs text-muted-foreground">Agregar más voluntarios al sistema o hacer <strong>asignación manual</strong> adicional</p>
                 </div>
@@ -875,7 +875,7 @@ export default function Phase4EventsGuide() {
                   <li>✓ Balancea la carga de trabajo (no siempre escoge a los mismos)</li>
                   <li>✓ Puede que las habilidades no estén bien configuradas en el perfil</li>
                 </ul>
-                <div className="mt-3 bg-white p-3 rounded">
+                <div className="mt-3 bg-[hsl(var(--card))] p-3 rounded">
                   <p className="text-xs font-semibold text-[hsl(var(--lavender))]">💡 Optimización:</p>
                   <p className="text-xs text-muted-foreground">
                     Ve a <strong>Voluntarios</strong> → Editar perfil → Actualizar <strong>Habilidades</strong> y <strong>Dones Espirituales</strong>
@@ -886,25 +886,25 @@ export default function Phase4EventsGuide() {
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border-l-4 border-l-green-600">
                 <p className="font-semibold text-foreground mb-2">💚 Cómo Mejorar la Precisión de AUTO-ASIGNAR</p>
                 <div className="grid md:grid-cols-2 gap-3 mt-3">
-                  <div className="bg-white p-3 rounded">
+                  <div className="bg-[hsl(var(--card))] p-3 rounded">
                     <p className="text-xs font-semibold text-[hsl(var(--success))] mb-1">1. Actualiza Habilidades</p>
                     <p className="text-xs text-muted-foreground">
                       Agrega habilidades específicas: &quot;Música&quot;, &quot;Sonido&quot;, &quot;Cocina&quot;, &quot;Limpieza&quot;
                     </p>
                   </div>
-                  <div className="bg-white p-3 rounded">
+                  <div className="bg-[hsl(var(--card))] p-3 rounded">
                     <p className="text-xs font-semibold text-[hsl(var(--info))] mb-1">2. Marca Estado ACTIVO</p>
                     <p className="text-xs text-muted-foreground">
                       Solo voluntarios con estado &quot;ACTIVO&quot; son considerados
                     </p>
                   </div>
-                  <div className="bg-white p-3 rounded">
+                  <div className="bg-[hsl(var(--card))] p-3 rounded">
                     <p className="text-xs font-semibold text-[hsl(var(--lavender))] mb-1">3. Evita Doble-Reserva</p>
                     <p className="text-xs text-muted-foreground">
                       No programes eventos simultáneos si necesitas los mismos voluntarios
                     </p>
                   </div>
-                  <div className="bg-white p-3 rounded">
+                  <div className="bg-[hsl(var(--card))] p-3 rounded">
                     <p className="text-xs font-semibold text-[hsl(var(--warning))] mb-1">4. Usa Categorías Correctas</p>
                     <p className="text-xs text-muted-foreground">
                       CULTO, CONFERENCIA, SOCIAL asignan roles diferentes automáticamente
@@ -953,7 +953,7 @@ export default function Phase4EventsGuide() {
               ]
             }
           ].map((item, index) => (
-            <div key={index} className="bg-white p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
+            <div key={index} className="bg-[hsl(var(--card))] p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
               <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
               <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
