@@ -542,7 +542,7 @@ export function VisitorsClient({ userRole, churchId }: VisitorsClientProps) {
             </div>
           ) : visitors.length === 0 ? (
             <div className="p-8 text-center text-muted-foreground/70">
-              <Users className="h-10 w-10 mx-auto mb-3 text-gray-300" />
+              <Users className="h-10 w-10 mx-auto mb-3 text-muted-foreground/30" />
               <p className="font-medium">No se encontraron visitantes</p>
               <p className="text-sm mt-1">
                 Ajusta los filtros o registra un visitante manualmente.

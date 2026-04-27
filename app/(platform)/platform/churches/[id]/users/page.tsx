@@ -1,4 +1,4 @@
-
+﻿
 
 'use client'
 
@@ -434,7 +434,7 @@ export default function ChurchUsersPage() {
       ) : users.length === 0 ? (
         <Card>
           <CardContent className="text-center p-12">
-            <Users className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <Users className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">No hay usuarios registrados</h3>
             <p className="text-muted-foreground mb-6">Esta iglesia no tiene usuarios asignados aún</p>
             <Button>

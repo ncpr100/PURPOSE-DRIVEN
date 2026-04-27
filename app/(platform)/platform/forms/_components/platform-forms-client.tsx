@@ -491,7 +491,7 @@ export default function PlatformFormsClient({ userRole }: PlatformFormsClientPro
               </div>
               {forms.length === 0 ? (
                 <div className="text-center py-16 border-2 border-dashed rounded-lg">
-                  <Layers className="h-10 w-10 mx-auto mb-3 text-gray-300" />
+                  <Layers className="h-10 w-10 mx-auto mb-3 text-muted-foreground/30" />
                   <p className="text-muted-foreground">Crea tu primer formulario con el constructor</p>
                   <Button className="mt-4" onClick={() => openBuilder()}>Abrir Constructor</Button>
                 </div>

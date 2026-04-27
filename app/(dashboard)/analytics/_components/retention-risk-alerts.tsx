@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -291,7 +291,7 @@ export function RetentionRiskAlerts({ churchId, className }: RetentionRiskAlerts
                       {/* Avatar */}
                       <Avatar className="h-12 w-12">
                         <AvatarImage src={member.avatar} />
-                        <AvatarFallback className="bg-white text-muted-foreground">
+                        <AvatarFallback className="bg-muted text-muted-foreground">
                           {member.name.split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
@@ -394,7 +394,7 @@ export function RetentionRiskAlerts({ churchId, className }: RetentionRiskAlerts
                     .map((member) => (
                       <div key={member.id} className="flex items-center gap-3 p-3 border rounded-lg bg-[hsl(var(--warning)/0.10)]">
                         <Avatar className="h-8 w-8">
-                          <AvatarFallback className="bg-white text-muted-foreground text-xs">
+                          <AvatarFallback className="bg-muted text-muted-foreground text-xs">
                             {member.name.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
@@ -555,7 +555,7 @@ export function RetentionRiskAlerts({ churchId, className }: RetentionRiskAlerts
         {/* Member Detail Modal (simplified) */}
         {selectedMember && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-[hsl(var(--card))] rounded-lg p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-start mb-4">
                 <h3 className="text-lg font-semibold">{selectedMember.name}</h3>
                 <Button

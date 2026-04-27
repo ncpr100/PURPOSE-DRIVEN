@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -93,7 +93,7 @@ export default function DonationsManual() {
                   <li>• <strong>Recibos obligatorios:</strong> Para donaciones deducibles</li>
                   <li>• <strong>Reportes anuales:</strong> Declaraciones de impuestos</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--warning)/0.30)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--warning)/0.30)]">
                   <p className="text-xs"><strong>💡 Consulte:</strong> Su contador o asesor legal sobre requisitos específicos</p>
                 </div>
               </div>
@@ -246,7 +246,7 @@ export default function DonationsManual() {
                     <li>• <strong>&quot;🎁 Ofrenda Rápida&quot;:</strong> Ofrenda dominical estándar</li>
                     <li>• <strong>&quot;📋 Importar Lote&quot;:</strong> Carga masiva desde Excel</li>
                   </ul>
-                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
+                  <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                     <p className="text-xs"><strong>💡 Tip:</strong> Configure donadores frecuentes para autocompletar</p>
                   </div>
                 </div>
@@ -360,7 +360,7 @@ export default function DonationsManual() {
                       <p className="text-muted-foreground">Únicos este mes</p>
                     </div>
                   </div>
-                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
+                  <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                     <p className="text-xs"><strong>📊 Export:</strong> Todos los reportes se pueden exportar en Excel, CSV, PDF</p>
                   </div>
                 </div>

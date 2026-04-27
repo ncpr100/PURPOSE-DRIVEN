@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -27,11 +27,11 @@ export default function ComprehensiveTroubleshootingGuide() {
           </div>
         </div>
         <div className="mt-6 flex gap-4 text-sm">
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Bug className="h-3 w-3 mr-1" />
             100+ Problemas Resueltos
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Clock className="h-3 w-3 mr-1" />
             Soluciones en 5 Minutos
           </Badge>
@@ -50,7 +50,7 @@ export default function ComprehensiveTroubleshootingGuide() {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
-          <div className="bg-white p-4 rounded-lg border-2 border-border">
+          <div className="bg-[hsl(var(--card))] p-4 rounded-lg border-2 border-border">
             <input
               type="text"
               placeholder="Ejemplo: 'no puedo iniciar sesión', 'el email no llega', 'error al guardar miembro'..."
@@ -255,7 +255,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                       </div>
                     </div>
 
-                    <div className="bg-white p-4 rounded-lg mb-3">
+                    <div className="bg-[hsl(var(--card))] p-4 rounded-lg mb-3">
                       <h5 className="font-semibold text-sm text-[hsl(var(--success))] mb-3 flex items-center gap-2">
                         <CheckCircle className="h-5 w-5" />
                         Solución Paso a Paso:
@@ -627,7 +627,7 @@ export default function ComprehensiveTroubleshootingGuide() {
             </Link>
           </div>
 
-          <div className="mt-6 bg-white p-4 rounded-lg">
+          <div className="mt-6 bg-[hsl(var(--card))] p-4 rounded-lg">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <Phone className="h-5 w-5 text-[hsl(var(--success))]" />
               Contacto de Emergencia (24/7)

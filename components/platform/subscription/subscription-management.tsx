@@ -420,7 +420,7 @@ export function SubscriptionManagement() {
                 <CardContent className="p-0">
                   {features.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-                      <Settings className="h-10 w-10 mb-3 text-gray-300" />
+                      <Settings className="h-10 w-10 mb-3 text-muted-foreground/30" />
                       <p className="text-sm mb-4">No hay características configuradas.</p>
                       <Button variant="outline" onClick={handleSeedFeatures}>
                         Inicializar Características Predeterminadas
@@ -530,7 +530,7 @@ export function SubscriptionManagement() {
 
               {addons.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-                  <Package className="h-10 w-10 mb-3 text-gray-300" />
+                  <Package className="h-10 w-10 mb-3 text-muted-foreground/30" />
                   <p className="text-sm mb-4">No hay complementos configurados.</p>
                   <Button variant="outline" onClick={handleSeedAddons}>
                     Inicializar Complementos Predeterminados

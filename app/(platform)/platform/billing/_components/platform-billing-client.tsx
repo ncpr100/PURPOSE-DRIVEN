@@ -303,7 +303,7 @@ export default function PlatformBillingClient() {
             </div>
           ) : churches.length === 0 ? (
             <div className="text-center py-10 text-muted-foreground">
-              <Building2 className="h-10 w-10 mx-auto mb-2 text-gray-300" />
+              <Building2 className="h-10 w-10 mx-auto mb-2 text-muted-foreground/30" />
               <p>No hay iglesias registradas</p>
             </div>
           ) : (

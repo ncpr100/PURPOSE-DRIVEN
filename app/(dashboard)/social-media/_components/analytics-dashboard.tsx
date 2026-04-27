@@ -153,7 +153,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
       <Card>
         <CardContent className="flex items-center justify-center h-64">
           <div className="text-center text-muted-foreground">
-            <BarChart3 className="mx-auto h-12 w-12 text-gray-300" />
+            <BarChart3 className="mx-auto h-12 w-12 text-muted-foreground/30" />
             <h3 className="mt-2 text-sm font-medium">No hay analíticas disponibles</h3>
             <p className="mt-1 text-sm">Conecta cuentas de redes sociales para ver analíticas.</p>
           </div>
@@ -210,7 +210,7 @@ export default function AnalyticsDashboard({ accounts }: AnalyticsDashboardProps
       {chartData.length === 0 && (
         <Card>
           <CardContent className="flex flex-col items-center justify-center h-48 text-muted-foreground/70 space-y-2">
-            <BarChart3 className="h-12 w-12 text-gray-300" />
+            <BarChart3 className="h-12 w-12 text-muted-foreground/30" />
             <p className="text-sm font-medium text-muted-foreground">No hay datos disponibles</p>
             <p className="text-xs text-muted-foreground/70">Conecta tus redes sociales y publica contenido para ver analíticas reales</p>
           </CardContent>

@@ -37,12 +37,12 @@ export default function SuperAdminCheckInsManual() {
           <CardContent className="space-y-4">
             <p>Como SUPER_ADMIN, tiene control total sobre la configuración y administración del sistema de Check-In avanzado:</p>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 border rounded-lg bg-white">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--card))]">
                 <Badge variant="secondary" className="mb-2">Administración</Badge>
                 <h4 className="font-semibold">Gestión de Sistema</h4>
                 <p className="text-sm text-muted-foreground">Configurar automatizaciones, revisar logs, gestionar permisos</p>
               </div>
-              <div className="p-4 border rounded-lg bg-white">
+              <div className="p-4 border rounded-lg bg-[hsl(var(--card))]">
                 <Badge variant="secondary" className="mb-2">Seguridad</Badge>
                 <h4 className="font-semibold">Control de Acceso</h4>
                 <p className="text-sm text-muted-foreground">Supervisar intentos fallidos, códigos de emergencia, auditorías</p>

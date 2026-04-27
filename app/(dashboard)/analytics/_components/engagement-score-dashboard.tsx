@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -279,7 +279,7 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
                 const IconComponent = metric.icon;
                 
                 return (
-                  <div key={metric.key} className="bg-white p-4 rounded-lg border shadow-sm">
+                  <div key={metric.key} className="bg-[hsl(var(--card))] p-4 rounded-lg border shadow-sm">
                     <div className="flex items-center justify-between mb-2">
                       <div className={`p-2 rounded-lg bg-${metric.color}-100`}>
                         <IconComponent className={`h-4 w-4 text-${metric.color}-600`} />

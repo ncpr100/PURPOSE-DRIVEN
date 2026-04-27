@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -26,11 +26,11 @@ export default function Phase6AnalyticsGuide() {
           </div>
         </div>
         <div className="mt-6 flex gap-4 text-sm">
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Target className="h-3 w-3 mr-1" />
             Fase 6 de 6 - ¡Última Fase!
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Star className="h-3 w-3 mr-1" />
             10 minutos
           </Badge>
@@ -569,7 +569,7 @@ export default function Phase6AnalyticsGuide() {
               ]
             }
           ].map((item, index) => (
-            <div key={index} className="bg-white p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
+            <div key={index} className="bg-[hsl(var(--card))] p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
               <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
               <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
@@ -610,7 +610,7 @@ export default function Phase6AnalyticsGuide() {
               { phase: "Fase 5", name: "Comunicaciones Enviadas", icon: "✅" },
               { phase: "Fase 6", name: "Analíticas Dominadas", icon: "✅" }
             ].map((item, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg text-center">
+              <div key={index} className="bg-[hsl(var(--card))] p-4 rounded-lg text-center">
                 <div className="text-3xl mb-2">{item.icon}</div>
                 <p className="font-semibold text-sm">{item.phase}</p>
                 <p className="text-xs text-muted-foreground">{item.name}</p>

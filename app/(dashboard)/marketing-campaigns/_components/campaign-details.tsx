@@ -395,7 +395,7 @@ export default function CampaignDetails({
                 </div>
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
-                  <Target className="mx-auto h-12 w-12 text-gray-300" />
+                  <Target className="mx-auto h-12 w-12 text-muted-foreground/30" />
                   <h3 className="mt-2 text-sm font-medium">Sin posts aún</h3>
                   <p className="mt-1 text-sm">Cree posts en redes sociales y asígnelos a esta campaña.</p>
                 </div>
@@ -411,7 +411,7 @@ export default function CampaignDetails({
             </CardHeader>
             <CardContent>
               <div className="text-center py-8 text-muted-foreground">
-                <BarChart3 className="mx-auto h-12 w-12 text-gray-300" />
+                <BarChart3 className="mx-auto h-12 w-12 text-muted-foreground/30" />
                 <h3 className="mt-2 text-sm font-medium">Analíticas próximamente</h3>
                 <p className="mt-1 text-sm">Las métricas de desempeño de la campaña estarán disponibles aquí.</p>
               </div>

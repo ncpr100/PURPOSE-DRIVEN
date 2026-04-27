@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -37,25 +37,25 @@ export default function VisitorAutomationManual() {
               El sistema analiza automáticamente cada visitante y determina el seguimiento perfecto basado en:
             </p>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-white p-4 rounded-lg shadow-sm">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg shadow-sm">
                 <h4 className="font-semibold mb-2">📊 Historial de Visitas</h4>
                 <p className="text-sm text-muted-foreground">
                   ¿Primera vez? ¿Visitante recurrente? ¿Candidato a membresía? El sistema lo detecta automáticamente.
                 </p>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg shadow-sm">
                 <h4 className="font-semibold mb-2">🎯 Intereses Personalizados</h4>
                 <p className="text-sm text-muted-foreground">
                   Conecta visitantes con ministerios relevantes basado en sus intereses expresados.
                 </p>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg shadow-sm">
                 <h4 className="font-semibold mb-2">⚡ Respuesta Instantánea</h4>
                 <p className="text-sm text-muted-foreground">
                   Envía bienvenidas y seguimientos automáticos en segundos, no días.
                 </p>
               </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg shadow-sm">
                 <h4 className="font-semibold mb-2">📈 Escalamiento Inteligente</h4>
                 <p className="text-sm text-muted-foreground">
                   Aumenta el nivel de seguimiento automáticamente según el compromiso.
@@ -81,7 +81,7 @@ export default function VisitorAutomationManual() {
                   <UserPlus className="h-5 w-5 text-[hsl(var(--success))]" />
                   <h4 className="font-semibold text-foreground">FIRST_TIME - Primera Vez</h4>
                 </div>
-                <div className="bg-white p-3 rounded">
+                <div className="bg-[hsl(var(--card))] p-3 rounded">
                   <p className="text-sm mb-2"><strong>Criterio:</strong> 0 visitas anteriores</p>
                   <p className="text-sm mb-2"><strong>Seguimiento automático:</strong></p>
                   <ul className="text-sm text-muted-foreground space-y-1 ml-4">
@@ -99,7 +99,7 @@ export default function VisitorAutomationManual() {
                   <Users className="h-5 w-5 text-[hsl(var(--info))]" />
                   <h4 className="font-semibold text-foreground">RETURNING - Visitante Recurrente</h4>
                 </div>
-                <div className="bg-white p-3 rounded">
+                <div className="bg-[hsl(var(--card))] p-3 rounded">
                   <p className="text-sm mb-2"><strong>Criterio:</strong> 1-2 visitas anteriores</p>
                   <p className="text-sm mb-2"><strong>Seguimiento automático:</strong></p>
                   <ul className="text-sm text-muted-foreground space-y-1 ml-4">
@@ -115,7 +115,7 @@ export default function VisitorAutomationManual() {
                   <TrendingUp className="h-5 w-5 text-[hsl(var(--lavender))]" />
                   <h4 className="font-semibold text-foreground">REGULAR - Asistente Regular</h4>
                 </div>
-                <div className="bg-white p-3 rounded">
+                <div className="bg-[hsl(var(--card))] p-3 rounded">
                   <p className="text-sm mb-2"><strong>Criterio:</strong> 3+ visitas</p>
                   <p className="text-sm mb-2"><strong>Seguimiento automático:</strong></p>
                   <ul className="text-sm text-muted-foreground space-y-1 ml-4">
@@ -131,7 +131,7 @@ export default function VisitorAutomationManual() {
                   <Star className="h-5 w-5 text-[hsl(var(--warning))]" />
                   <h4 className="font-semibold text-[hsl(var(--warning))]">MEMBER_CANDIDATE - Candidato a Miembro</h4>
                 </div>
-                <div className="bg-white p-3 rounded">
+                <div className="bg-[hsl(var(--card))] p-3 rounded">
                   <p className="text-sm mb-2"><strong>Criterio:</strong> 4+ visitas O expresó interés en membresía</p>
                   <p className="text-sm mb-2"><strong>Seguimiento automático:</strong></p>
                   <ul className="text-sm text-muted-foreground space-y-1 ml-4">
@@ -174,7 +174,7 @@ export default function VisitorAutomationManual() {
                   <p className="text-sm text-muted-foreground mb-2">
                     El sistema busca check-ins anteriores por email/teléfono:
                   </p>
-                  <div className="bg-white p-2 rounded text-xs font-mono">
+                  <div className="bg-[hsl(var(--muted))] p-2 rounded text-xs font-mono">
                     visitasPrevias = count(check-ins anteriores)<br/>
                     SI visitasPrevias === 0 → FIRST_TIME<br/>
                     SI visitasPrevias === 1-2 → RETURNING<br/>
@@ -212,7 +212,7 @@ export default function VisitorAutomationManual() {
                   <p className="text-sm text-muted-foreground mb-2">
                     Busca reglas activas que coincidan con la categoría:
                   </p>
-                  <div className="bg-white p-2 rounded text-xs">
+                  <div className="bg-[hsl(var(--card))] p-2 rounded text-xs">
                     <strong>Ejemplo:</strong> Para FIRST_TIME, busca reglas con trigger &quot;VISITOR_FIRST_TIME&quot;
                   </div>
                 </div>
@@ -248,7 +248,7 @@ export default function VisitorAutomationManual() {
               <p className="text-sm text-[hsl(var(--success))] mb-3">
                 Secuencia completa de 5 toques para visitantes nuevos.
               </p>
-              <div className="bg-white p-3 rounded space-y-2 text-xs">
+              <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Check-in con categoría FIRST_TIME</div>
                 <div><strong>Bypass Approval:</strong> ✅ Sí (para bienvenida inmediata)</div>
                 <div><strong>Secuencia de 5 Toques:</strong></div>
@@ -270,7 +270,7 @@ export default function VisitorAutomationManual() {
               <p className="text-sm text-[hsl(var(--info))] mb-3">
                 Profundiza la relación con visitantes que regresan.
               </p>
-              <div className="bg-white p-3 rounded space-y-2 text-xs">
+              <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Check-in con categoría RETURNING</div>
                 <div><strong>Bypass Approval:</strong> ✅ Sí</div>
                 <div><strong>Acciones:</strong></div>
@@ -291,7 +291,7 @@ export default function VisitorAutomationManual() {
               <p className="text-sm text-[hsl(var(--warning))] mb-3">
                 Para visitantes regulares listos para dar el siguiente paso.
               </p>
-              <div className="bg-white p-3 rounded space-y-2 text-xs">
+              <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Check-in con categoría MEMBER_CANDIDATE</div>
                 <div><strong>Bypass Approval:</strong> ❌ No (requiere revisión pastoral)</div>
                 <div><strong>Acciones:</strong></div>
@@ -312,7 +312,7 @@ export default function VisitorAutomationManual() {
               <p className="text-sm text-[hsl(var(--destructive))] mb-3">
                 Para visitantes que necesitan atención pastoral inmediata.
               </p>
-              <div className="bg-white p-3 rounded space-y-2 text-xs">
+              <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Check-in con petición de oración o necesidad especial</div>
                 <div><strong>Bypass Approval:</strong> ✅ Sí</div>
                 <div><strong>Modo Urgente 24/7:</strong> ✅ Activo</div>

@@ -128,7 +128,7 @@ function SidebarNavigation({ pathname, onNavigate }: { pathname: string; onNavig
                 'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors',
                 isActive
                   ? 'bg-[hsl(var(--info))] text-white'
-                  : 'text-gray-300 hover:bg-card hover:text-white'
+                  : 'text-muted-foreground/70 hover:bg-muted/50 hover:text-foreground'
               )}
             >
               <item.icon className="h-5 w-5" />
@@ -139,11 +139,11 @@ function SidebarNavigation({ pathname, onNavigate }: { pathname: string; onNavig
       </nav>
 
       {/* Back to Platform Dashboard */}
-      <div className="p-4 border-t border-gray-700">
+      <div className="p-4 border-t border-border">
         <Link
           href="/platform/dashboard"
           onClick={onNavigate}
-          className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-card hover:text-white transition-colors"
+          className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground/70 hover:bg-muted/50 hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
           Panel Principal

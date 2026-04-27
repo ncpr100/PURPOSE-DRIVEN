@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -196,7 +196,7 @@ export default function SuperAdminAutomationManual() {
               <div className="p-4 border rounded-lg bg-[hsl(var(--warning)/0.10)]">
                 <h4 className="font-semibold mb-2">⚙️ Variables de Entorno Críticas</h4>
                 <div className="text-sm space-y-1">
-                  <div className="bg-white p-3 rounded font-mono text-xs">
+                  <div className="bg-[hsl(var(--muted))] p-3 rounded font-mono text-xs">
                     <div>TWILIO_ACCOUNT_SID=your_twilio_account_sid</div>
                     <div>TWILIO_AUTH_TOKEN=your_twilio_auth_token</div>
                     <div>MAILGUN_API_KEY=your_mailgun_api_key</div>

@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -213,7 +213,7 @@ export default function SubscriptionManual() {
                   <li>• <strong>Período de gracia:</strong> 7 días después de vencimiento</li>
                   <li>• <strong>Suspensión:</strong> Después de 15 días sin pago</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Active recordatorios por email 3 días antes</p>
                 </div>
               </div>
