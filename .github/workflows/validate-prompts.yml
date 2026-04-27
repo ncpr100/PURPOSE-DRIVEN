@@ -14,9 +14,11 @@ on:
     branches: [ main ]         # Runs on all PRs to main (required status check)
   workflow_dispatch:           # Allow manual trigger from Actions tab
 
-# This workflow only reads repository contents; no write access is needed.
+# statuses:write is required to post a legacy commit status that satisfies
+# the ruleset required_status_checks context (without app_id).
 permissions:
   contents: read
+  statuses: write
 
 jobs:
   validate:
@@ -93,3 +95,24 @@ jobs:
             exit 1
           fi
           echo "Error-handling confirmed."
+
+      # ── 9. Post legacy commit status to satisfy ruleset required check ──
+      #    The ruleset "MAIN BRANCH RULES" requires a status-check context of
+      #    "Validate Prompt Library / XML schema + smoke test" with no app_id,
+      #    which matches the legacy Status API rather than the Checks API.
+      #    This step explicitly writes that status so the ruleset is satisfied.
+      - name: Report success status for ruleset
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              context: 'Validate Prompt Library / XML schema + smoke test',
+              description: 'All prompt library validations passed'
+            });
+            console.log('Commit status posted successfully');
