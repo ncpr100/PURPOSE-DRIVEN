@@ -30,7 +30,7 @@ const AGENTS: AgentNode[] = [
   { name: "Ag.9 Coach Mayordomía",     shortName: "Ag.9",  x: 0.66, y: 0.78, color: AGENT_LAYER_COLORS.intelligence, active: false, layer: 2 },
   { name: "Ag.10 Monitor Grupos",      shortName: "Ag.10", x: 0.44, y: 0.84, color: AGENT_LAYER_COLORS.content,      active: true,  layer: 2 },
   { name: "Ag.11 Sintetizador Junta",  shortName: "Ag.11", x: 0.30, y: 0.65, color: AGENT_LAYER_COLORS.intelligence, active: true,  layer: 2 },
-  { name: "★ Ag.12 Cobertura",        shortName: "★12",   x: 0.87, y: 0.50, color: "#F0B83C",                       active: true,  layer: 3, star: true },
+  { name: "* Ag.12 Cobertura",        shortName: "*12",   x: 0.87, y: 0.50, color: "#F0B83C",                       active: true,  layer: 3, star: true },
 ];
 
 // Connection pairs [a_index, b_index]
@@ -211,8 +211,8 @@ export function ConstellationMap({ className }: Props) {
         position: "relative",
         borderRadius: "12px",
         overflow: "hidden",
-        border: "1px solid rgba(201,146,42,0.12)",
-        background: "rgba(8,14,28,0.85)",
+          border: "1px solid var(--glass-divider)",
+          background: "var(--glass-card-bg)",
         height: "220px",
       }}
     >
@@ -241,11 +241,11 @@ export function ConstellationMap({ className }: Props) {
           { label: "Pastoral", color: AGENT_LAYER_COLORS.pastoral },
           { label: "Contenido", color: AGENT_LAYER_COLORS.content },
           { label: "Inteligencia", color: AGENT_LAYER_COLORS.intelligence },
-          { label: "★ Cobertura", color: "#F0B83C" },
+          { label: "* Cobertura", color: "#F0B83C" },
         ].map(({ label, color }) => (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: color }} />
-            <span style={{ fontSize: "9px", color: "rgba(138,147,168,0.7)" }}>{label}</span>
+            <span style={{ fontSize: "9px", color: "hsl(var(--muted-foreground) / 0.7)" }}>{label}</span>
           </div>
         ))}
       </div>

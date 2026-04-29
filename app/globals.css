@@ -93,10 +93,29 @@
   --ease-spring:          cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth:          cubic-bezier(0.4, 0, 0.2, 1);
   --ease-bounce:          cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* GLASS COMPOSITION — Dark (rgba values for theme-aware components) */
+  --glass-header-bg:      rgba(5,8,15,0.78);
+  --glass-sidebar-bg:     rgba(5,8,15,0.60);
+  --glass-panel-bg:       rgba(5,8,15,0.55);
+  --glass-card-bg:        rgba(13,22,40,0.72);
+  --glass-card-bg-hover:  rgba(13,22,40,0.88);
+  --glass-inner-bg:       rgba(13,22,40,0.45);
+  --glass-subtle-bg:      rgba(255,255,255,0.025);
+  --glass-divider:        rgba(201,146,42,0.10);
+  --glass-divider-strong: rgba(201,146,42,0.15);
+  --glass-border-soft:    rgba(255,255,255,0.04);
+  --glass-border-softer:  rgba(255,255,255,0.06);
+  --glass-prayer-bg:      rgba(38,217,217,0.06);
+  --glass-prayer-border:  rgba(38,217,217,0.15);
+  --section-label:        #7A5218;
+  color-scheme: dark;
 }
 
 /* ΓöÇΓöÇ LIGHT MODE (for future toggle support) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 [data-theme="light"] {
+  color-scheme: light;
+
   --background:           210 20% 98%;
   --foreground:           222 58%  7%;
   --card:                 0   0% 100%;
@@ -115,16 +134,41 @@
   --success-foreground:   0   0% 100%;
   --warning:              38  92% 42%;
   --warning-foreground:   0   0% 100%;
+  --info:                 200 70% 38%;
+  --info-foreground:      0   0% 100%;
   --destructive:          356 73% 50%;
   --destructive-foreground: 0 0% 100%;
   --border:               220 13% 88%;
   --input:                220 13% 88%;
   --ring:                 35  50% 40%;
+  --section-label:        #7A5218;
+
+  /* ─ Glass tokens (light) ─ */
+  --glass-header-bg:      rgba(245,247,250,0.92);
+  --glass-sidebar-bg:     rgba(240,243,247,0.90);
+  --glass-panel-bg:       rgba(248,249,252,0.88);
+  --glass-card-bg:        rgba(255,255,255,0.85);
+  --glass-card-bg-hover:  rgba(255,255,255,0.97);
+  --glass-inner-bg:       rgba(255,255,255,0.60);
+  --glass-subtle-bg:      rgba(0,0,0,0.025);
+  --glass-divider:        rgba(201,146,42,0.15);
+  --glass-divider-strong: rgba(201,146,42,0.25);
+  --glass-border-soft:    rgba(0,0,0,0.06);
+  --glass-border-softer:  rgba(0,0,0,0.08);
+  --glass-prayer-bg:      rgba(38,217,217,0.08);
+  --glass-prayer-border:  rgba(38,217,217,0.20);
 }
 
 /* ΓöÇΓöÇ BASE STYLES ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 @layer base {
   * { @apply border-border; }
+
+  /* Smooth theme transition */
+  *, *::before, *::after {
+    transition: background-color 0.2s var(--ease-smooth),
+                border-color 0.2s var(--ease-smooth),
+                color 0.15s var(--ease-smooth);
+  }
 
   html {
     font-size: 16px;

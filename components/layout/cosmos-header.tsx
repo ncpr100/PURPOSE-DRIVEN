@@ -9,8 +9,9 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import {
   Search, Bell, ChevronDown, Shield, Brain, Calendar, CheckCircle,
-  Settings, LogOut, User, Activity, X,
+  Settings, LogOut, User, Activity, X, Sun, Moon,
 } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
 
 // ΓöÇΓöÇΓöÇ STATIC AGENT CHIPS (TODO: replace with real agent status API) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
@@ -30,6 +31,7 @@ export function CosmosHeader() {
   const [currentTime, setCurrentTime]   = useState("");
   // TODO: replace with real coverage API call
   const [coverageRate]                  = useState(94);
+  const { isDark, toggle: toggleTheme }  = useTheme();
 
   // Live clock
   useEffect(() => {
@@ -153,6 +155,15 @@ export function CosmosHeader() {
         <span>12 IA</span>
       </Link>
 
+
+      {/* ── Theme toggle ── */}
+      <button
+        onClick={toggleTheme}
+        title={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+        className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[hsl(var(--accent)/0.2)] transition-colors text-muted-foreground hover:text-foreground flex-shrink-0"
+      >
+        {isDark ? <Sun size={15} /> : <Moon size={15} />}
+      </button>
       {/* ΓöÇΓöÇ Divider ΓöÇΓöÇ */}
       <div className="h-4 w-px bg-[rgba(255,255,255,0.06)] flex-shrink-0" />
 
