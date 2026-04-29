@@ -28,10 +28,9 @@ export function Providers({
   return (
     <SessionProvider session={session}>
       <ThemeProvider
-        attribute="class"
-        defaultTheme="light"
+        attribute="data-theme"
+        defaultTheme="dark"
         enableSystem={false}
-        disableTransitionOnChange
       >
         <RealTimeProvider
           enableToasts={true}

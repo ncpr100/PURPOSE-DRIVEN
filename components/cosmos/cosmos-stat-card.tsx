@@ -79,8 +79,8 @@ export function CosmosStatCard({
       )}
       style={{
         padding: "14px 16px",
-        border: "1px solid rgba(255,255,255,0.06)",
-        background: "rgba(13,22,40,0.75)",
+        border: "1px solid var(--glass-border-softer)",
+        background: "var(--glass-card-bg)",
         backdropFilter: "blur(12px)",
         transition: "transform 0.2s var(--ease-spring), border-color 0.2s",
       }}
@@ -88,7 +88,7 @@ export function CosmosStatCard({
         (e.currentTarget as HTMLDivElement).style.borderColor = accentColor + "50";
       }}
       onMouseLeave={(e) => {
-        (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.06)";
+        (e.currentTarget as HTMLDivElement).style.borderColor = "var(--glass-border-softer)";
       }}
     >
       {/* Radial gradient overlay */}
@@ -151,7 +151,7 @@ export function CosmosStatCard({
         style={{
           position: "absolute", bottom: 0, left: 0,
           height: "2px",
-          background: "rgba(255,255,255,0.05)",
+          background: "var(--glass-subtle-bg)",
           width: "100%",
         }}
       >

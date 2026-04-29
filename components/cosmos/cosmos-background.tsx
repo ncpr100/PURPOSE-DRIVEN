@@ -4,6 +4,7 @@
 // Renders behind all dashboard content via CSS z-index.
 
 import { useEffect, useRef, useCallback } from "react";
+import { useTheme } from "@/hooks/use-theme";
 
 interface Star {
   x: number;
@@ -38,6 +39,7 @@ function createStars(): Star[] {
 }
 
 export function CosmosBackground() {
+  const { isDark } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const starsRef = useRef<Star[]>(createStars());
   const mouseRef = useRef<Mouse>({ x: 0, y: 0 });
@@ -67,33 +69,62 @@ export function CosmosBackground() {
     function draw() {
       ctx!.clearRect(0, 0, W, H);
 
-      // Deep space background
-      const bg = ctx!.createRadialGradient(W * 0.3, H * 0.3, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.9);
-      bg.addColorStop(0, "rgba(13,22,40,0.98)");
-      bg.addColorStop(0.5, "rgba(8,14,28,0.99)");
-      bg.addColorStop(1, "rgba(5,8,15,1)");
-      ctx!.fillStyle = bg;
-      ctx!.fillRect(0, 0, W, H);
-
-      // Gold nebula following mouse
-      const nebula = ctx!.createRadialGradient(
-        mouseRef.current.x, mouseRef.current.y, 0,
-        mouseRef.current.x, mouseRef.current.y, 280
-      );
-      nebula.addColorStop(0, "rgba(201,146,42,0.05)");
-      nebula.addColorStop(0.5, "rgba(201,146,42,0.01)");
-      nebula.addColorStop(1, "transparent");
-      ctx!.fillStyle = nebula;
-      ctx!.fillRect(0, 0, W, H);
-
-      // Ambient nebula clusters
-      [[W * 0.15, H * 0.2, "rgba(38,217,217,0.03)"], [W * 0.8, H * 0.7, "rgba(155,143,255,0.025)"]].forEach(([x, y, c]) => {
-        const g = ctx!.createRadialGradient(x as number, y as number, 0, x as number, y as number, 200);
-        g.addColorStop(0, c as string);
-        g.addColorStop(1, "transparent");
-        ctx!.fillStyle = g;
+      if (isDark) {
+        // Deep space background
+        const bg = ctx!.createRadialGradient(W * 0.3, H * 0.3, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.9);
+        bg.addColorStop(0, "rgba(13,22,40,0.98)");
+        bg.addColorStop(0.5, "rgba(8,14,28,0.99)");
+        bg.addColorStop(1, "rgba(5,8,15,1)");
+        ctx!.fillStyle = bg;
         ctx!.fillRect(0, 0, W, H);
-      });
+
+        // Gold nebula following mouse
+        const nebula = ctx!.createRadialGradient(
+          mouseRef.current.x, mouseRef.current.y, 0,
+          mouseRef.current.x, mouseRef.current.y, 280
+        );
+        nebula.addColorStop(0, "rgba(201,146,42,0.05)");
+        nebula.addColorStop(0.5, "rgba(201,146,42,0.01)");
+        nebula.addColorStop(1, "transparent");
+        ctx!.fillStyle = nebula;
+        ctx!.fillRect(0, 0, W, H);
+
+        // Ambient nebula clusters
+        [[W * 0.15, H * 0.2, "rgba(38,217,217,0.03)"], [W * 0.8, H * 0.7, "rgba(155,143,255,0.025)"]].forEach(([x, y, c]) => {
+          const g = ctx!.createRadialGradient(x as number, y as number, 0, x as number, y as number, 200);
+          g.addColorStop(0, c as string);
+          g.addColorStop(1, "transparent");
+          ctx!.fillStyle = g;
+          ctx!.fillRect(0, 0, W, H);
+        });
+      } else {
+        // Light mode: soft pearl sky
+        const bg = ctx!.createRadialGradient(W * 0.3, H * 0.2, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.9);
+        bg.addColorStop(0, "rgba(235,240,250,1)");
+        bg.addColorStop(0.6, "rgba(220,228,242,1)");
+        bg.addColorStop(1, "rgba(210,218,235,1)");
+        ctx!.fillStyle = bg;
+        ctx!.fillRect(0, 0, W, H);
+
+        // Warm gold shimmer following mouse
+        const shimmer = ctx!.createRadialGradient(
+          mouseRef.current.x, mouseRef.current.y, 0,
+          mouseRef.current.x, mouseRef.current.y, 300
+        );
+        shimmer.addColorStop(0, "rgba(201,146,42,0.06)");
+        shimmer.addColorStop(1, "transparent");
+        ctx!.fillStyle = shimmer;
+        ctx!.fillRect(0, 0, W, H);
+
+        // Soft ambient clusters
+        [[W * 0.15, H * 0.2, "rgba(38,217,217,0.04)"], [W * 0.8, H * 0.7, "rgba(155,143,255,0.03)"]].forEach(([x, y, c]) => {
+          const g = ctx!.createRadialGradient(x as number, y as number, 0, x as number, y as number, 220);
+          g.addColorStop(0, c as string);
+          g.addColorStop(1, "transparent");
+          ctx!.fillStyle = g;
+          ctx!.fillRect(0, 0, W, H);
+        });
+      }
 
       // Stars with parallax
       starsRef.current.forEach((s) => {
@@ -127,7 +158,7 @@ export function CosmosBackground() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [handleMouseMove]);
+  }, [handleMouseMove, isDark]);
 
   return (
     <canvas
