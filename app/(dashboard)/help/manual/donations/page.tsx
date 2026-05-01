@@ -28,7 +28,7 @@ export default function DonationsManual() {
         {/* Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>💰 Sistema de Donaciones - Manual Completo</CardTitle>
+            <CardTitle> Sistema de Donaciones - Manual Completo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -36,19 +36,19 @@ export default function DonationsManual() {
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">📋 Secciones</h4>
+                <h4 className="font-semibold"> Secciones</h4>
                 <p className="text-xl font-bold text-[hsl(var(--success))]">6</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⏱️ Tiempo</h4>
+                <h4 className="font-semibold">️ Tiempo</h4>
                 <p className="text-xl font-bold text-[hsl(var(--info))]">20 min</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🎯 Nivel</h4>
+                <h4 className="font-semibold"> Nivel</h4>
                 <p className="text-lg font-bold text-[hsl(var(--lavender))]">Básico</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
-                <h4 className="font-semibold">👤 Rol Mínimo</h4>
+                <h4 className="font-semibold"> Rol Mínimo</h4>
                 <p className="text-lg font-bold text-[hsl(var(--warning))]">ADMIN</p>
               </div>
             </div>
@@ -66,9 +66,9 @@ export default function DonationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">⚙️ Configuración Básica</h4>
+                <h4 className="font-semibold mb-3">️ Configuración Básica</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>1.1.</strong> Navegue a <code>Donaciones → ⚙️ Configuración</code></p>
+                  <p><strong>1.1.</strong> Navegue a <code>Donaciones → ️ Configuración</code></p>
                   <p><strong>1.2.</strong> Configure información de la iglesia:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Nombre oficial:</strong> Para recibos fiscales</li>
@@ -82,11 +82,11 @@ export default function DonationsManual() {
                     <li>• Formato de números</li>
                     <li>• Idioma de recibos</li>
                   </ul>
-                  <p><strong>1.4.</strong> Haga clic en &quot;💾 Guardar Configuración&quot;</p>
+                  <p><strong>1.4.</strong> Haga clic en &quot; Guardar Configuración&quot;</p>
                 </div>
               </div>
               <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">⚠️ Requisitos Legales</h4>
+                <h4 className="font-semibold mb-2">️ Requisitos Legales</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Registro religioso:</strong> Debe tener estatus legal como iglesia</li>
                   <li>• <strong>Documentación fiscal:</strong> RIF/NIT actualizado</li>
@@ -94,7 +94,7 @@ export default function DonationsManual() {
                   <li>• <strong>Reportes anuales:</strong> Declaraciones de impuestos</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--warning)/0.30)]">
-                  <p className="text-xs"><strong>💡 Consulte:</strong> Su contador o asesor legal sobre requisitos específicos</p>
+                  <p className="text-xs"><strong> Consulte:</strong> Su contador o asesor legal sobre requisitos específicos</p>
                 </div>
               </div>
             </div>
@@ -112,10 +112,10 @@ export default function DonationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🏷️ Crear Categorías</h4>
+                <h4 className="font-semibold mb-3">️ Crear Categorías</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> En Donaciones, haga clic en &quot;🏷️ Categorías&quot;</p>
-                  <p><strong>2.2.</strong> Haga clic en &quot;➕ Nueva Categoría&quot;</p>
+                  <p><strong>2.1.</strong> En Donaciones, haga clic en &quot;️ Categorías&quot;</p>
+                  <p><strong>2.2.</strong> Haga clic en &quot; Nueva Categoría&quot;</p>
                   <p><strong>2.3.</strong> Complete la información:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Nombre:</strong> Ej: &quot;Diezmos&quot;, &quot;Ofrendas&quot;, &quot;Misiones&quot;</li>
@@ -132,15 +132,15 @@ export default function DonationsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📋 Categorías Recomendadas</h4>
+                <h4 className="font-semibold mb-2"> Categorías Recomendadas</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• <strong>💰 Diezmos:</strong> 10% de ingresos regulares</li>
-                  <li>• <strong>🎁 Ofrendas:</strong> Donaciones adicionales voluntarias</li>
-                  <li>• <strong>🌍 Misiones:</strong> Evangelismo y trabajo misionero</li>
-                  <li>• <strong>🏗️ Construcción:</strong> Infraestructura y mantenimiento</li>
-                  <li>• <strong>❤️ Ayuda Social:</strong> Asistencia a necesitados</li>
-                  <li>• <strong>🎪 Eventos Especiales:</strong> Conferencias, retiros</li>
-                  <li>• <strong>🎵 Ministerio de Música:</strong> Instrumentos, equipo</li>
+                  <li>• <strong> Diezmos:</strong> 10% de ingresos regulares</li>
+                  <li>• <strong> Ofrendas:</strong> Donaciones adicionales voluntarias</li>
+                  <li>• <strong> Misiones:</strong> Evangelismo y trabajo misionero</li>
+                  <li>• <strong>️ Construcción:</strong> Infraestructura y mantenimiento</li>
+                  <li>• <strong>️ Ayuda Social:</strong> Asistencia a necesitados</li>
+                  <li>• <strong> Eventos Especiales:</strong> Conferencias, retiros</li>
+                  <li>• <strong> Ministerio de Música:</strong> Instrumentos, equipo</li>
                 </ul>
               </div>
             </div>
@@ -158,25 +158,25 @@ export default function DonationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">💳 Configurar Métodos</h4>
+                <h4 className="font-semibold mb-3"> Configurar Métodos</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>3.1.</strong> Vaya a <code>Donaciones → 💳 Métodos de Pago</code></p>
-                  <p><strong>3.2.</strong> Haga clic en &quot;➕ Nuevo Método&quot;</p>
+                  <p><strong>3.1.</strong> Vaya a <code>Donaciones →  Métodos de Pago</code></p>
+                  <p><strong>3.2.</strong> Haga clic en &quot; Nuevo Método&quot;</p>
                   <p><strong>3.3.</strong> Opciones disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>💵 Efectivo:</strong> Donaciones en persona
+                    <li>• <strong> Efectivo:</strong> Donaciones en persona
                       <br />Registra: cantidad, fecha, donador</li>
-                    <li>• <strong>💳 Tarjeta de Crédito:</strong> Pagos en línea
+                    <li>• <strong> Tarjeta de Crédito:</strong> Pagos en línea
                       <br />Requiere: configuración de gateway</li>
-                    <li>• <strong>🏦 Transferencia Bancaria:</strong> Depósitos directos
+                    <li>• <strong> Transferencia Bancaria:</strong> Depósitos directos
                       <br />Incluya: número de cuenta, banco</li>
-                    <li>• <strong>📱 Pago Móvil:</strong> Apps de pago
+                    <li>• <strong> Pago Móvil:</strong> Apps de pago
                       <br />Configure: cuentas digitales</li>
                   </ul>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">🔧 Configuración Avanzada</h4>
+                <h4 className="font-semibold mb-3"> Configuración Avanzada</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Para pagos online LATAM:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -192,7 +192,7 @@ export default function DonationsManual() {
                   <p><strong>Configuración en Ajustes:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Vaya a <code>Configuración → Donaciones</code></li>
-                    <li>• Pestaña &quot;💳 Métodos de Pago&quot;</li>
+                    <li>• Pestaña &quot; Métodos de Pago&quot;</li>
                     <li>• Seleccione el gateway según su país</li>
                     <li>• Configure credenciales API (modo prueba/producción)</li>
                     <li>• Active webhooks para confirmaciones automáticas</li>
@@ -220,9 +220,9 @@ export default function DonationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📝 Registro Manual</h4>
+                <h4 className="font-semibold mb-3"> Registro Manual</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>4.1.</strong> Haga clic en &quot;➕ Nueva Donación&quot;</p>
+                  <p><strong>4.1.</strong> Haga clic en &quot; Nueva Donación&quot;</p>
                   <p><strong>4.2.</strong> Complete el formulario:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Donador:</strong> Seleccione de lista o agregue nuevo</li>
@@ -233,21 +233,21 @@ export default function DonationsManual() {
                     <li>• <strong>Notas:</strong> Información adicional</li>
                   </ul>
                   <p><strong>4.3.</strong> Adjunte comprobante si es transferencia</p>
-                  <p><strong>4.4.</strong> Haga clic en &quot;💾 Registrar Donación&quot;</p>
+                  <p><strong>4.4.</strong> Haga clic en &quot; Registrar Donación&quot;</p>
                   <p><strong>4.5.</strong> El sistema genera recibo automáticamente</p>
                 </div>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">⚡ Registro Rápido</h4>
+                <h4 className="font-semibold mb-2"> Registro Rápido</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Para donaciones frecuentes:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;⚡ Diezmo Rápido&quot;:</strong> Registro de diezmo con información predefinida</li>
-                    <li>• <strong>&quot;🎁 Ofrenda Rápida&quot;:</strong> Ofrenda dominical estándar</li>
-                    <li>• <strong>&quot;📋 Importar Lote&quot;:</strong> Carga masiva desde Excel</li>
+                    <li>• <strong>&quot; Diezmo Rápido&quot;:</strong> Registro de diezmo con información predefinida</li>
+                    <li>• <strong>&quot; Ofrenda Rápida&quot;:</strong> Ofrenda dominical estándar</li>
+                    <li>• <strong>&quot; Importar Lote&quot;:</strong> Carga masiva desde Excel</li>
                   </ul>
                   <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
-                    <p className="text-xs"><strong>💡 Tip:</strong> Configure donadores frecuentes para autocompletar</p>
+                    <p className="text-xs"><strong> Tip:</strong> Configure donadores frecuentes para autocompletar</p>
                   </div>
                 </div>
               </div>
@@ -266,7 +266,7 @@ export default function DonationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🧾 Generar Recibos</h4>
+                <h4 className="font-semibold mb-3"> Generar Recibos</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>5.1.</strong> Los recibos se generan automáticamente al registrar donación</p>
                   <p><strong>5.2.</strong> Información incluida en el recibo:</p>
@@ -287,11 +287,11 @@ export default function DonationsManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">📄 Certificados Anuales</h4>
+                <h4 className="font-semibold mb-3"> Certificados Anuales</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Al final del año fiscal:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;📄 Generar Certificados&quot;:</strong> Resumen anual por donador</li>
+                    <li>• <strong>&quot; Generar Certificados&quot;:</strong> Resumen anual por donador</li>
                     <li>• <strong>Filtrar por período:</strong> Enero-Diciembre</li>
                     <li>• <strong>Incluir solo deducibles:</strong> Según normativa fiscal</li>
                     <li>• <strong>Envío masivo:</strong> Email a todos los donadores</li>
@@ -319,7 +319,7 @@ export default function DonationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📊 Reportes Disponibles</h4>
+                <h4 className="font-semibold mb-3"> Reportes Disponibles</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>6.1.</strong> Acceda a <code>Analíticas → Finanzas</code></p>
                   <p><strong>6.2.</strong> Tipos de reportes:</p>
@@ -340,28 +340,28 @@ export default function DonationsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📈 Métricas Financieras</h4>
+                <h4 className="font-semibold mb-2"> Métricas Financieras</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="font-semibold">💰 Total Recaudado</p>
+                      <p className="font-semibold"> Total Recaudado</p>
                       <p className="text-muted-foreground">Este mes</p>
                     </div>
                     <div>
-                      <p className="font-semibold">📈 Crecimiento</p>
+                      <p className="font-semibold"> Crecimiento</p>
                       <p className="text-muted-foreground">vs. mes anterior</p>
                     </div>
                     <div>
-                      <p className="font-semibold">🎯 Meta Mensual</p>
+                      <p className="font-semibold"> Meta Mensual</p>
                       <p className="text-muted-foreground">% alcanzado</p>
                     </div>
                     <div>
-                      <p className="font-semibold">👥 Donadores Activos</p>
+                      <p className="font-semibold"> Donadores Activos</p>
                       <p className="text-muted-foreground">Únicos este mes</p>
                     </div>
                   </div>
                   <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
-                    <p className="text-xs"><strong>📊 Export:</strong> Todos los reportes se pueden exportar en Excel, CSV, PDF</p>
+                    <p className="text-xs"><strong> Export:</strong> Todos los reportes se pueden exportar en Excel, CSV, PDF</p>
                   </div>
                 </div>
               </div>
@@ -372,35 +372,35 @@ export default function DonationsManual() {
         {/* Quick Reference */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Referencia Rápida de Botones</CardTitle>
+            <CardTitle> Referencia Rápida de Botones</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">💰 Botones Principales</h4>
+                <h4 className="font-semibold mb-2"> Botones Principales</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;➕ Nueva Donación&quot;:</strong> Registro individual</li>
-                  <li>• <strong>&quot;⚡ Diezmo Rápido&quot;:</strong> Registro rápido diezmo</li>
-                  <li>• <strong>&quot;📊 Reportes&quot;:</strong> Ver analíticas financieras</li>
-                  <li>• <strong>&quot;⚙️ Configuración&quot;:</strong> Ajustes del sistema</li>
+                  <li>• <strong>&quot; Nueva Donación&quot;:</strong> Registro individual</li>
+                  <li>• <strong>&quot; Diezmo Rápido&quot;:</strong> Registro rápido diezmo</li>
+                  <li>• <strong>&quot; Reportes&quot;:</strong> Ver analíticas financieras</li>
+                  <li>• <strong>&quot;️ Configuración&quot;:</strong> Ajustes del sistema</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🛠️ Botones de Gestión</h4>
+                <h4 className="font-semibold mb-2">️ Botones de Gestión</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;🏷️ Categorías&quot;:</strong> Gestionar tipos de donación</li>
-                  <li>• <strong>&quot;💳 Métodos&quot;:</strong> Configurar formas de pago</li>
-                  <li>• <strong>&quot;📥 Importar&quot;:</strong> Carga masiva Excel</li>
-                  <li>• <strong>&quot;📊 Exportar&quot;:</strong> Descargar reportes</li>
+                  <li>• <strong>&quot;️ Categorías&quot;:</strong> Gestionar tipos de donación</li>
+                  <li>• <strong>&quot; Métodos&quot;:</strong> Configurar formas de pago</li>
+                  <li>• <strong>&quot; Importar&quot;:</strong> Carga masiva Excel</li>
+                  <li>• <strong>&quot; Exportar&quot;:</strong> Descargar reportes</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🧾 Botones de Recibos</h4>
+                <h4 className="font-semibold mb-2"> Botones de Recibos</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;🧾 Ver Recibo&quot;:</strong> Mostrar PDF</li>
-                  <li>• <strong>&quot;📧 Enviar Email&quot;:</strong> Reenviar recibo</li>
-                  <li>• <strong>&quot;🖨️ Imprimir&quot;:</strong> Copia física</li>
-                  <li>• <strong>&quot;📄 Certificado Anual&quot;:</strong> Resumen fiscal</li>
+                  <li>• <strong>&quot; Ver Recibo&quot;:</strong> Mostrar PDF</li>
+                  <li>• <strong>&quot; Enviar Email&quot;:</strong> Reenviar recibo</li>
+                  <li>• <strong>&quot;️ Imprimir&quot;:</strong> Copia física</li>
+                  <li>• <strong>&quot; Certificado Anual&quot;:</strong> Resumen fiscal</li>
                 </ul>
               </div>
             </div>

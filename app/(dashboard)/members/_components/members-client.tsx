@@ -87,13 +87,13 @@ interface MembersClientProps {
 export function MembersClient({ userRole, churchId }: MembersClientProps) {
   // DIAGNOSTIC: Log component mount
   useEffect(() => {
-    console.log("🎯 MEMBERS CLIENT COMPONENT MOUNTED!", {
+    console.log(" MEMBERS CLIENT COMPONENT MOUNTED!", {
       userRole,
       churchId,
       timestamp: new Date().toISOString(),
     });
     return () => {
-      console.log("❌ MEMBERS CLIENT COMPONENT UNMOUNTED");
+      console.log(" MEMBERS CLIENT COMPONENT UNMOUNTED");
     };
   }, []);
 
@@ -129,9 +129,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   const [showLeadershipTrack, setShowLeadershipTrack] = useState(false);
 
   useEffect(() => {
-    console.log("🚀 MembersClient component mounted");
+    console.log(" MembersClient component mounted");
     console.log(
-      "🚀 Initial state - isLoading:",
+      " Initial state - isLoading:",
       isLoading,
       "members.length:",
       members.length,
@@ -144,7 +144,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
   // Re-fetch data when filters change (server-side filtering)
   useEffect(() => {
-    console.log("🔄 Filters changed, re-fetching data from server");
+    console.log(" Filters changed, re-fetching data from server");
     setIsLoading(true);
     Promise.all([fetchMembers(), fetchFilterCounts()]).finally(() => {
       setIsLoading(false);
@@ -160,7 +160,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   // Debug effect to monitor state changes
   useEffect(() => {
     console.log(
-      "📊 State update - members:",
+      " State update - members:",
       members.length,
       "filteredMembers:",
       filteredMembers.length,
@@ -169,8 +169,8 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
   const fetchMembers = async () => {
     try {
-      console.log("🔍 Starting fetchMembers...");
-      console.log("🔍 About to call /api/members with credentials and filters");
+      console.log(" Starting fetchMembers...");
+      console.log(" About to call /api/members with credentials and filters");
 
       // Build URL with current filter parameters for server-side filtering
       const params = new URLSearchParams();
@@ -183,7 +183,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       params.set("limit", "2000"); // Get all members for now
 
       const url = `/api/members?${params.toString()}`;
-      console.log("🔍 Fetching URL:", url);
+      console.log(" Fetching URL:", url);
 
       const response = await fetch(url, {
         method: "GET",
@@ -192,50 +192,50 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
           "Content-Type": "application/json",
         },
       });
-      console.log("📡 Members API response status:", response.status);
-      console.log("📡 Members API response ok:", response.ok);
+      console.log(" Members API response status:", response.status);
+      console.log(" Members API response ok:", response.ok);
 
       if (response.ok) {
         const data = await response.json();
-        console.log("📊 Members API response data structure:", {
+        console.log(" Members API response data structure:", {
           hasMembers: !!data.members,
           membersLength: data.members?.length,
           hasPagination: !!data.pagination,
           totalFromPagination: data.pagination?.total,
           dataKeys: Object.keys(data),
         });
-        console.log("📊 First member sample:", data.members?.[0]);
-        console.log("📊 Raw data:", data);
+        console.log(" First member sample:", data.members?.[0]);
+        console.log(" Raw data:", data);
 
         // API returns { members: [...], pagination: {...} }
         const membersArray = data.members || data;
         const totalCount = data.pagination?.total || membersArray.length;
         console.log(
-          "🎯 Setting members state with:",
+          " Setting members state with:",
           membersArray.length,
           "members",
         );
-        console.log("📊 Total count from API:", totalCount);
+        console.log(" Total count from API:", totalCount);
         setMembers(membersArray);
         setTotalMemberCount(totalCount); // Store total count for display
 
         // Since server-side filtering is now active, set filtered members to the same data
         setFilteredMembers(membersArray);
-        console.log("✅ Members state updated successfully");
+        console.log(" Members state updated successfully");
       } else {
-        console.error("❌ Members API failed with status:", response.status);
+        console.error(" Members API failed with status:", response.status);
         const errorText = await response.text();
-        console.error("❌ Error response:", errorText);
+        console.error(" Error response:", errorText);
 
         if (response.status === 401) {
-          console.error("🚨 AUTHENTICATION ERROR: Session may have expired");
+          console.error(" AUTHENTICATION ERROR: Session may have expired");
         }
       }
     } catch (error) {
-      console.error("💥 Error in fetchMembers:", (error as Error).message);
-      console.error("💥 Full error:", error);
+      console.error(" Error in fetchMembers:", (error as Error).message);
+      console.error(" Full error:", error);
     } finally {
-      console.log("🏁 Setting isLoading to false");
+      console.log(" Setting isLoading to false");
       setIsLoading(false);
     }
   };
@@ -279,70 +279,70 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
   // Handle volunteer recruitment for a member
   const handleVolunteerRecruitment = async (member: any) => {
     console.log(
-      "🎯 [DEBUG] handleVolunteerRecruitment called with member:",
+      " [DEBUG] handleVolunteerRecruitment called with member:",
       member,
     );
     setSelectedMemberForVolunteer(member);
-    console.log("🎯 [DEBUG] selectedMemberForVolunteer set to:", member);
+    console.log(" [DEBUG] selectedMemberForVolunteer set to:", member);
 
     // Fetch volunteer recommendations for this member
     try {
       console.log(
-        "🔍 [DEBUG] Fetching recommendations for memberId:",
+        " [DEBUG] Fetching recommendations for memberId:",
         member.id,
       );
       const response = await fetch(
         `/api/volunteer-matching?memberId=${member.id}`,
       );
       console.log(
-        "🔍 [DEBUG] Recommendations API response status:",
+        " [DEBUG] Recommendations API response status:",
         response.status,
       );
 
       if (response.ok) {
         const data = await response.json();
-        console.log("🔍 [DEBUG] Recommendations API response data:", data);
+        console.log(" [DEBUG] Recommendations API response data:", data);
         setVolunteerRecommendations(data.recommendations || []);
         console.log(
-          "🎯 [DEBUG] Volunteer recommendations set:",
+          " [DEBUG] Volunteer recommendations set:",
           data.recommendations,
         );
         console.log(
-          "🎯 [DEBUG] Recommendations length:",
+          " [DEBUG] Recommendations length:",
           (data.recommendations || []).length,
         );
       } else {
         console.error(
-          "❌ [DEBUG] Recommendations API failed with status:",
+          " [DEBUG] Recommendations API failed with status:",
           response.status,
         );
         const errorText = await response.text();
-        console.error("❌ [DEBUG] Error response:", errorText);
+        console.error(" [DEBUG] Error response:", errorText);
       }
     } catch (error) {
       console.error(
-        "❌ [DEBUG] Error fetching volunteer recommendations:",
+        " [DEBUG] Error fetching volunteer recommendations:",
         error,
       );
     }
 
     setIsVolunteerRecruitOpen(true);
-    console.log("🎯 [DEBUG] Volunteer recruitment dialog opened");
+    console.log(" [DEBUG] Volunteer recruitment dialog opened");
   };
 
   // Handle creating volunteer from member
   const handleCreateVolunteerFromMember = async (ministryId: string) => {
     console.log(
-      "🔥 [DEBUG] handleCreateVolunteerFromMember called with ministryId:",
+      " [DEBUG] handleCreateVolunteerFromMember called with ministryId:",
       ministryId,
     );
     console.log(
-      "🔥 [DEBUG] selectedMemberForVolunteer:",
+      " [DEBUG] selectedMemberForVolunteer:",
       selectedMemberForVolunteer,
     );
 
     if (!selectedMemberForVolunteer) {
-      console.log("❌ [DEBUG] No selected member for volunteer!");
+      console.log(" [DEBUG] No selected member for volunteer!");
       return;
     }
 
@@ -374,15 +374,15 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
       // Check if memberId is valid using standardized CUID validation
       const cuidAnalysis = analyzeCUID(volunteerData.memberId || "");
-      console.log("🔍 [DEBUG] CUID validation using standardized utility:");
-      console.log("🔍 [DEBUG] memberId:", volunteerData.memberId);
-      console.log("🔍 [DEBUG] CUID analysis:", cuidAnalysis);
+      console.log(" [DEBUG] CUID validation using standardized utility:");
+      console.log(" [DEBUG] memberId:", volunteerData.memberId);
+      console.log(" [DEBUG] CUID analysis:", cuidAnalysis);
       console.log(
-        "🔍 [DEBUG] isValidCUID result:",
+        " [DEBUG] isValidCUID result:",
         isValidCUID(volunteerData.memberId || ""),
       );
       console.log(
-        "🔍 [DEBUG] Supports: Legacy (23 chars) + Current (25 chars) CUIDs",
+        " [DEBUG] Supports: Legacy (23 chars) + Current (25 chars) CUIDs",
       );
 
       // The member ID should now pass validation for both legacy and current formats
@@ -390,35 +390,35 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       // Fix email format if it has issues
       if (volunteerData.email && volunteerData.email.includes(".@")) {
         volunteerData.email = volunteerData.email.replace(".@", "@");
-        console.log("🔧 [DEBUG] Fixed email format:", volunteerData.email);
+        console.log(" [DEBUG] Fixed email format:", volunteerData.email);
       }
 
       // Test validation locally before sending to API
-      console.log("🔍 [DEBUG] Testing field validations:");
+      console.log(" [DEBUG] Testing field validations:");
       console.log(
-        "🔍 [DEBUG] firstName regex test:",
+        " [DEBUG] firstName regex test:",
         /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/.test(volunteerData.firstName),
       );
       console.log(
-        "🔍 [DEBUG] lastName regex test:",
+        " [DEBUG] lastName regex test:",
         /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/.test(volunteerData.lastName),
       );
       console.log(
-        "🔍 [DEBUG] email format test:",
+        " [DEBUG] email format test:",
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(volunteerData.email),
       );
       console.log(
-        "🔍 [DEBUG] phone format test:",
+        " [DEBUG] phone format test:",
         /^\+?[\d\s\-()]+$/.test(volunteerData.phone),
       );
-      console.log("🔍 [DEBUG] memberId format:", volunteerData.memberId);
+      console.log(" [DEBUG] memberId format:", volunteerData.memberId);
       console.log(
-        "🔍 [DEBUG] memberId length:",
+        " [DEBUG] memberId length:",
         volunteerData.memberId?.length,
       );
 
-      console.log("🚀 [DEBUG] Creating volunteer with data:", volunteerData);
-      console.log("🚀 [DEBUG] Raw member data for comparison:", {
+      console.log(" [DEBUG] Creating volunteer with data:", volunteerData);
+      console.log(" [DEBUG] Raw member data for comparison:", {
         id: selectedMemberForVolunteer.id,
         firstName: selectedMemberForVolunteer.firstName,
         lastName: selectedMemberForVolunteer.lastName,
@@ -434,15 +434,15 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
         body: JSON.stringify(volunteerData),
       });
 
-      console.log("📡 [DEBUG] API response status:", response.status);
-      console.log("📡 [DEBUG] API response ok:", response.ok);
+      console.log(" [DEBUG] API response status:", response.status);
+      console.log(" [DEBUG] API response ok:", response.ok);
 
       if (response.ok) {
-        console.log("✅ [DEBUG] Volunteer created successfully!");
-        console.log("✅ [DEBUG] Refreshing volunteers list...");
+        console.log(" [DEBUG] Volunteer created successfully!");
+        console.log(" [DEBUG] Refreshing volunteers list...");
         await fetchVolunteers(); // Make sure this completes
         console.log(
-          "✅ [DEBUG] Current volunteers after refresh:",
+          " [DEBUG] Current volunteers after refresh:",
           volunteers.length,
         );
         setIsVolunteerRecruitOpen(false);
@@ -451,14 +451,14 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
 
         // Force a re-render of the members list
         await fetchMembers();
-        console.log("✅ [DEBUG] Members list refreshed");
+        console.log(" [DEBUG] Members list refreshed");
       } else {
         const errorData = await response.json();
-        console.error("❌ [DEBUG] Error response:", errorData);
-        console.error("❌ [DEBUG] Validation errors:", errorData.errors);
+        console.error(" [DEBUG] Error response:", errorData);
+        console.error(" [DEBUG] Validation errors:", errorData.errors);
         if (errorData.errors && Array.isArray(errorData.errors)) {
           errorData.errors.forEach((error: any, index: number) => {
-            console.error(`❌ [DEBUG] Validation Error ${index + 1}:`, {
+            console.error(` [DEBUG] Validation Error ${index + 1}:`, {
               field: error.field,
               message: error.message,
               value: volunteerData[error.field as keyof typeof volunteerData],
@@ -469,7 +469,7 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       }
     } catch (error) {
       console.error(
-        "💥 [DEBUG] Exception in handleCreateVolunteerFromMember:",
+        " [DEBUG] Exception in handleCreateVolunteerFromMember:",
         error,
       );
       toast.error("Error al reclutar voluntario");
@@ -502,10 +502,10 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
       if (response.ok) {
         const data = await response.json();
         setFilterCounts(data.counts);
-        console.log("📊 Filter counts updated:", data.counts);
+        console.log(" Filter counts updated:", data.counts);
       }
     } catch (error) {
-      console.error("💥 Error fetching filter counts:", error);
+      console.error(" Error fetching filter counts:", error);
     }
   };
 
@@ -1538,9 +1538,9 @@ export function MembersClient({ userRole, churchId }: MembersClientProps) {
               <Button
                 variant="default"
                 onClick={() => {
-                  console.log("🔘 [DEBUG] Volunteer button clicked!");
+                  console.log(" [DEBUG] Volunteer button clicked!");
                   console.log(
-                    "🔘 [DEBUG] Selected member:",
+                    " [DEBUG] Selected member:",
                     selectedMemberForVolunteer,
                   );
                   handleCreateVolunteerFromMember("no-ministry");

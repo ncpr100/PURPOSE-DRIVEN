@@ -5,11 +5,11 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function seedSubscriptionData() {
-  console.log('🎯 Seeding subscription data...')
+  console.log(' Seeding subscription data...')
 
   try {
     // Create Plan Features
-    console.log('📋 Creating plan features...')
+    console.log(' Creating plan features...')
     
     const features = await Promise.all([
       // Core Features (BÁSICO)
@@ -159,10 +159,10 @@ async function seedSubscriptionData() {
       })
     ])
 
-    console.log(`✅ Created ${features.length} plan features`)
+    console.log(` Created ${features.length} plan features`)
 
     // Create Subscription Plans
-    console.log('💳 Creating subscription plans...')
+    console.log(' Creating subscription plans...')
 
     const basicFeatures = [
       'members_management',
@@ -257,10 +257,10 @@ async function seedSubscriptionData() {
       })
     ])
 
-    console.log(`✅ Created ${plans.length} subscription plans`)
+    console.log(` Created ${plans.length} subscription plans`)
 
     // Create Subscription Add-ons
-    console.log('🔧 Creating subscription add-ons...')
+    console.log(' Creating subscription add-ons...')
 
     const addons = await Promise.all([
       // SMS Notifications
@@ -335,16 +335,16 @@ async function seedSubscriptionData() {
       })
     ])
 
-    console.log(`✅ Created ${addons.length} subscription add-ons`)
+    console.log(` Created ${addons.length} subscription add-ons`)
 
-    console.log('✅ Subscription data seeded successfully!')
+    console.log(' Subscription data seeded successfully!')
     console.log('')
-    console.log('📊 PRICING SUMMARY (CORRECTED):')
+    console.log(' PRICING SUMMARY (CORRECTED):')
     console.log('├── BÁSICO: $25.00 USD/mes ($270.00 USD/año)')
     console.log('├── PROFESIONAL: $75.00 USD/mes ($810.00 USD/año)')
     console.log('└── ENTERPRISE: $150.00 USD/mes ($1,620.00 USD/año)')
     console.log('')
-    console.log('🔧 ADD-ONS AVAILABLE:')
+    console.log(' ADD-ONS AVAILABLE:')
     console.log('├── SMS Notifications: $0.50 COP por SMS')
     console.log('├── WhatsApp Integration: $50,000 COP/mes')
     console.log('├── Custom Branding: $30,000 COP/mes')
@@ -352,7 +352,7 @@ async function seedSubscriptionData() {
     console.log('└── Priority Support: $60,000 COP/mes')
 
   } catch (error) {
-    console.error('❌ Error seeding subscription data:', error)
+    console.error(' Error seeding subscription data:', error)
     throw error
   } finally {
     await prisma.$disconnect()

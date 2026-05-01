@@ -22,7 +22,7 @@ export default function FAQHelp() {
 
   const faqCategories = [
     {
-      category: "🚀 Primeros Pasos",
+      category: " Primeros Pasos",
       questions: [
         {
           q: "¿Cómo registro mi iglesia por primera vez?",
@@ -43,7 +43,7 @@ export default function FAQHelp() {
       ]
     },
     {
-      category: "👥 Gestión de Miembros",
+      category: " Gestión de Miembros",
       questions: [
         {
           q: "¿Puedo tener miembros duplicados?",
@@ -64,7 +64,7 @@ export default function FAQHelp() {
       ]
     },
     {
-      category: "💰 Donaciones y Finanzas",
+      category: " Donaciones y Finanzas",
       questions: [
         {
           q: "¿Qué métodos de pago puedo aceptar?",
@@ -85,7 +85,7 @@ export default function FAQHelp() {
       ]
     },
     {
-      category: "📅 Eventos",
+      category: " Eventos",
       questions: [
         {
           q: "¿Cómo creo eventos recurrentes?",
@@ -106,7 +106,7 @@ export default function FAQHelp() {
       ]
     },
     {
-      category: "📢 Comunicaciones",
+      category: " Comunicaciones",
       questions: [
         {
           q: "¿Cuál es la diferencia entre email y SMS?",
@@ -127,7 +127,7 @@ export default function FAQHelp() {
       ]
     },
     {
-      category: "💳 Facturación y Suscripciones",
+      category: " Facturación y Suscripciones",
       questions: [
         {
           q: "¿Puedo cambiar de plan en cualquier momento?",
@@ -148,7 +148,7 @@ export default function FAQHelp() {
       ]
     },
     {
-      category: "🔧 Soporte Técnico",
+      category: " Soporte Técnico",
       questions: [
         {
           q: "¿Qué horarios de soporte tienen?",
@@ -290,18 +290,18 @@ export default function FAQHelp() {
             </p>
             <div className="flex flex-wrap gap-2">
               <Button onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
-                📱 WhatsApp
+                 WhatsApp
               </Button>
               <Link href="/help/support/ticket">
                 <Button variant="outline">
-                  🎫 Crear Ticket
+                   Crear Ticket
                 </Button>
               </Link>
               <Button variant="outline" onClick={() => alert('Chat en vivo será implementado próximamente')}>
-                💬 Chat en Vivo
+                 Chat en Vivo
               </Button>
               <Button variant="outline" onClick={() => window.location.href = 'mailto:soporte@khesed-tek-systems.org'}>
-                📧 Email
+                 Email
               </Button>
             </div>
           </CardContent>
@@ -318,17 +318,17 @@ export default function FAQHelp() {
             <div className="grid md:grid-cols-3 gap-4">
               <Link href="/help/manual/complete">
                 <Button variant="outline" className="w-full justify-start">
-                  📖 Manual Completo
+                   Manual Completo
                 </Button>
               </Link>
               <Link href="/help/videos">
                 <Button variant="outline" className="w-full justify-start">
-                  🎥 Videotutoriales
+                   Videotutoriales
                 </Button>
               </Link>
               <Link href="/help">
                 <Button variant="outline" className="w-full justify-start">
-                  🏠 Centro de Ayuda
+                   Centro de Ayuda
                 </Button>
               </Link>
             </div>

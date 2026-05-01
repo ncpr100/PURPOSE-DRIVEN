@@ -21,7 +21,9 @@ import {
   CheckCircle,
   Calendar,
   DollarSign,
-  UserX
+  UserX,
+  X,
+  RefreshCw
 } from 'lucide-react';
 
 interface Member {
@@ -563,7 +565,7 @@ export function RetentionRiskAlerts({ churchId, className }: RetentionRiskAlerts
                   size="sm"
                   onClick={() => setSelectedMember(null)}
                 >
-                  ✕
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
               
@@ -627,7 +629,7 @@ export function RetentionRiskAlerts({ churchId, className }: RetentionRiskAlerts
             size="sm"
             className="text-muted-foreground hover:text-foreground"
           >
-            🔄 Actualizar Alertas
+            <RefreshCw className="h-4 w-4 mr-1" /> Actualizar Alertas
           </Button>
         </div>
       </CardContent>

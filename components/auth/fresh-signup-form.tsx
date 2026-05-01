@@ -511,8 +511,8 @@ export default function FreshSignupForm() {
                     )}
 
                     <div className="text-xs text-muted-foreground bg-[hsl(var(--warning)/0.10)] p-2 rounded border border-[hsl(var(--warning)/0.3)]">
-                      ⭐ Todos los planes incluyen 14 días de prueba gratuita<br />
-                      💰 Precios en USD - Facturación manual por administrador
+                      Todos los planes incluyen 14 días de prueba gratuita<br />
+                      Precios en USD - Facturación manual por administrador
                     </div>
                   </div>
                 )}

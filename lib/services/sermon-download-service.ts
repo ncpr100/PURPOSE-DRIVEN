@@ -303,31 +303,31 @@ class SermonDownloadService {
       {
         id: 'pdf',
         name: 'PDF',
-        icon: '📄',
+        icon: '',
         description: 'Formato PDF para compartir y archivar'
       },
       {
         id: 'word',
         name: 'Word',
-        icon: '📝',
+        icon: '',
         description: 'Documento Word para editar'
       },
       {
         id: 'text',
         name: 'Texto',
-        icon: '📋',
+        icon: '',
         description: 'Archivo de texto plano'
       },
       {
         id: 'markdown',
         name: 'Markdown',
-        icon: '📓',
+        icon: '',
         description: 'Formato Markdown para blogs'
       },
       {
         id: 'html',
         name: 'HTML',
-        icon: '🌐',
+        icon: '',
         description: 'Página web para publicar online'
       }
     ]

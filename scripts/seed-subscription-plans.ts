@@ -1,7 +1,7 @@
 import { db } from '../lib/db'
 
 async function seedSubscriptionPlans() {
-  console.log('🌱 Seeding subscription plans...')
+  console.log(' Seeding subscription plans...')
 
   const plans = [
     {
@@ -98,15 +98,15 @@ async function seedSubscriptionPlans() {
         updatedAt: new Date()
       }
     })
-    console.log(`✅ Plan ${result.displayName} creado/actualizado`)
+    console.log(` Plan ${result.displayName} creado/actualizado`)
   }
 
-  console.log('✅ Subscription plans seeded successfully!')
+  console.log(' Subscription plans seeded successfully!')
 }
 
 seedSubscriptionPlans()
   .catch((e) => {
-    console.error('❌ Error seeding subscription plans:', e)
+    console.error(' Error seeding subscription plans:', e)
     process.exit(1)
   })
   .finally(async () => {

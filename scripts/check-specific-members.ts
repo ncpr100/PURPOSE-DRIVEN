@@ -5,7 +5,7 @@ import { db } from '../lib/db'
 
 async function checkSpecificMembers() {
   try {
-    console.log('🔍 CHECKING SPECIFIC MEMBERS FROM SCREENSHOT...\n')
+    console.log(' CHECKING SPECIFIC MEMBERS FROM SCREENSHOT...\n')
     
     // Check members that were visible in the screenshot
     const memberNames = [
@@ -44,7 +44,7 @@ async function checkSpecificMembers() {
       })
 
       if (member) {
-        console.log(`✅ Found: ${member.firstName} ${member.lastName}`)
+        console.log(` Found: ${member.firstName} ${member.lastName}`)
         console.log(`   Gender: "${member.gender}" (${member.gender === null ? 'NULL' : typeof member.gender})`)
         console.log(`   Marital: "${member.maritalStatus}"`)
         console.log(`   Church: ${member.churchId}`)
@@ -60,12 +60,12 @@ async function checkSpecificMembers() {
         console.log(`   Would be counted as: ${countCategory}`)
         console.log('')
       } else {
-        console.log(`❌ Not found: ${fullName}`)
+        console.log(` Not found: ${fullName}`)
       }
     }
 
     // Also get a random sample of members to see their gender values
-    console.log('\n🎲 Random Sample of 10 Members:')
+    console.log('\n Random Sample of 10 Members:')
     const randomMembers = await db.members.findMany({
       where: {
         isActive: true
@@ -82,13 +82,13 @@ async function checkSpecificMembers() {
       console.log(`${member.firstName} ${member.lastName}: gender="${member.gender}"`)
     })
 
-    console.log('\n🧩 CONCLUSION:')
+    console.log('\n CONCLUSION:')
     console.log('If members in your screenshot show gender badges, those specific members DO have gender data.')
     console.log('But the majority (845/868) have NULL gender values, which explains the count.')
     console.log('The counting logic is working correctly - the issue is data quality, not code.')
 
   } catch (error) {
-    console.error('❌ Error checking members:', error)
+    console.error(' Error checking members:', error)
   } finally {
     await db.$disconnect()
   }

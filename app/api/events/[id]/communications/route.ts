@@ -88,7 +88,7 @@ export async function POST(request: NextRequest, props: { params: Promise<{ id: 
     // If not scheduled, simulate sending immediately
     if (!scheduledFor) {
       // Here you would integrate with actual email/SMS/push notification services
-      console.log(`📧 Sending ${type} communication: ${subject}`)
+      console.log(` Sending ${type} communication: ${subject}`)
       console.log(`Recipients: ${recipientCount}`)
       console.log(`Content: ${content}`)
       

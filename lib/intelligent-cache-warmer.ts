@@ -54,7 +54,7 @@ export class IntelligentCacheWarmer {
     if (this.isRunning) return;
     
     this.isRunning = true;
-    console.log('🚀 Intelligent Cache Warmer started - targeting 100% hit rate');
+    console.log(' Intelligent Cache Warmer started - targeting 100% hit rate');
 
     // Initial comprehensive warm-up
     await this.performInitialWarmup();
@@ -79,14 +79,14 @@ export class IntelligentCacheWarmer {
       this.warmingInterval = null;
     }
     this.isRunning = false;
-    console.log('🛑 Intelligent Cache Warmer stopped');
+    console.log(' Intelligent Cache Warmer stopped');
   }
 
   /**
    * Perform initial comprehensive cache warming
    */
   private async performInitialWarmup(): Promise<void> {
-    console.log('🔥 Starting initial cache warm-up for 100% hit rate...');
+    console.log(' Starting initial cache warm-up for 100% hit rate...');
     
     try {
       // Get all churches for multi-tenant warming
@@ -94,7 +94,7 @@ export class IntelligentCacheWarmer {
         select: { id: true, name: true }
       });
 
-      console.log(`📊 Warming cache for ${churches.length} churches`);
+      console.log(` Warming cache for ${churches.length} churches`);
 
       // Warm critical data for each church
       const warmingPromises = churches.map(church => 
@@ -109,12 +109,12 @@ export class IntelligentCacheWarmer {
       // Pre-load predictive data
       await this.preloadPredictiveData();
 
-      console.log('✅ Initial cache warm-up completed - 100% hit rate target achieved');
+      console.log(' Initial cache warm-up completed - 100% hit rate target achieved');
     } catch (error) {
       // Log the actual error message so Vercel logs show the root cause clearly
       const msg = error instanceof Error ? error.message : String(error)
       const code = (error as any)?.errorCode ?? (error as any)?.code ?? 'unknown'
-      console.error(`❌ Initial warm-up failed [${code}]: ${msg}`)
+      console.error(` Initial warm-up failed [${code}]: ${msg}`)
       // PrismaClientInitializationError with "Environment variable not found: DIRECT_URL"
       // means both DATABASE_URL and DIRECT_URL must be set in Vercel env vars.
     }
@@ -153,9 +153,9 @@ export class IntelligentCacheWarmer {
       // Warm individual member journeys for recent members
       await this.warmRecentMemberJourneys(churchId, analyticsService);
 
-      console.log(`✅ Critical data warmed for church: ${churchId}`);
+      console.log(` Critical data warmed for church: ${churchId}`);
     } catch (error) {
-      console.error(`❌ Failed to warm church ${churchId}:`, error);
+      console.error(` Failed to warm church ${churchId}:`, error);
     }
   }
 
@@ -184,9 +184,9 @@ export class IntelligentCacheWarmer {
 
       await Promise.allSettled(journeyPromises);
       
-      console.log(`🎯 Warmed ${recentMembers.length} member journeys for church: ${churchId}`);
+      console.log(` Warmed ${recentMembers.length} member journeys for church: ${churchId}`);
     } catch (error) {
-      console.error('❌ Failed to warm member journeys:', error);
+      console.error(' Failed to warm member journeys:', error);
     }
   }
 
@@ -195,7 +195,7 @@ export class IntelligentCacheWarmer {
    */
   private async warmCommonPatterns(): Promise<void> {
     try {
-      console.log('🔄 Warming common access patterns...');
+      console.log(' Warming common access patterns...');
 
       // Common time periods that users frequently request
       const commonPeriods = [7, 30, 90, 180, 365];
@@ -210,9 +210,9 @@ export class IntelligentCacheWarmer {
       ];
 
       // This would be expanded based on actual usage patterns
-      console.log('✅ Common patterns warmed');
+      console.log(' Common patterns warmed');
     } catch (error) {
-      console.error('❌ Failed to warm common patterns:', error);
+      console.error(' Failed to warm common patterns:', error);
     }
   }
 
@@ -221,7 +221,7 @@ export class IntelligentCacheWarmer {
    */
   private async preloadPredictiveData(): Promise<void> {
     try {
-      console.log('🧠 Pre-loading predictive data...');
+      console.log(' Pre-loading predictive data...');
       
       // Analyze usage patterns to predict next requests
       const predictions = await this.generatePredictiveInsights();
@@ -233,9 +233,9 @@ export class IntelligentCacheWarmer {
         }
       }
 
-      console.log(`✅ Pre-loaded ${predictions.length} predictive cache entries`);
+      console.log(` Pre-loaded ${predictions.length} predictive cache entries`);
     } catch (error) {
-      console.error('❌ Failed to pre-load predictive data:', error);
+      console.error(' Failed to pre-load predictive data:', error);
     }
   }
 
@@ -261,7 +261,7 @@ export class IntelligentCacheWarmer {
       await this.performTimeBasedWarming();
 
     } catch (error) {
-      console.error('❌ Predictive warming failed:', error);
+      console.error(' Predictive warming failed:', error);
     }
   }
 
@@ -288,7 +288,7 @@ export class IntelligentCacheWarmer {
         await analyticsService.getExecutiveReport({ period: 30 });
       }
     } catch (error) {
-      console.error('❌ Failed to identify missing data:', error);
+      console.error(' Failed to identify missing data:', error);
     }
   }
 
@@ -299,9 +299,9 @@ export class IntelligentCacheWarmer {
     try {
       // This would identify cache entries close to expiration and refresh them
       // Implementation would require tracking TTL remaining for each key
-      console.log('🔄 Refreshing expiring cache entries...');
+      console.log(' Refreshing expiring cache entries...');
     } catch (error) {
-      console.error('❌ Failed to refresh expiring cache:', error);
+      console.error(' Failed to refresh expiring cache:', error);
     }
   }
 
@@ -327,7 +327,7 @@ export class IntelligentCacheWarmer {
         await this.warmEveningData();
       }
     } catch (error) {
-      console.error('❌ Time-based warming failed:', error);
+      console.error(' Time-based warming failed:', error);
     }
   }
 
@@ -398,7 +398,7 @@ export class IntelligentCacheWarmer {
       // Update warming strategies based on performance
       this.optimizeWarmingStrategies(cacheMetrics);
     } catch (error) {
-      console.error('❌ Failed to update usage patterns:', error);
+      console.error(' Failed to update usage patterns:', error);
     }
   }
 
@@ -436,7 +436,7 @@ export class IntelligentCacheWarmer {
 
       return insights;
     } catch (error) {
-      console.error('❌ Failed to generate predictive insights:', error);
+      console.error(' Failed to generate predictive insights:', error);
       return [];
     }
   }
@@ -462,7 +462,7 @@ export class IntelligentCacheWarmer {
         await analyticsService.getComprehensiveAnalytics({ period: 365 });
       }
     } catch (error) {
-      console.error('❌ Failed to pre-load specific cache:', error);
+      console.error(' Failed to pre-load specific cache:', error);
     }
   }
 
@@ -472,12 +472,12 @@ export class IntelligentCacheWarmer {
   private optimizeWarmingStrategies(metrics: any): void {
     // Adjust warming frequency based on hit rates
     if (metrics.hitRate < 95) {
-      console.log('🎯 Increasing warming frequency to achieve 100% hit rate');
+      console.log(' Increasing warming frequency to achieve 100% hit rate');
       // Increase warming frequency
     }
     
     if (metrics.hitRate >= 99) {
-      console.log('🎉 Excellent hit rate maintained!');
+      console.log(' Excellent hit rate maintained!');
     }
   }
 
@@ -541,9 +541,9 @@ export class IntelligentCacheWarmer {
    * Force immediate comprehensive warm-up
    */
   async forceWarmup(): Promise<void> {
-    console.log('🚀 Force warming all cache for 100% hit rate...');
+    console.log(' Force warming all cache for 100% hit rate...');
     await this.performInitialWarmup();
-    console.log('✅ Force warm-up completed');
+    console.log(' Force warm-up completed');
   }
 }
 

@@ -134,7 +134,7 @@ export async function GET(request: NextRequest) {
       engagementData = results[3];
     } catch (dbError) {
       console.log(
-        "⚠️ Database unavailable for predictive analytics, using fallback data",
+        "️ Database unavailable for predictive analytics, using fallback data",
       );
       // Fallback data already initialized above
     }

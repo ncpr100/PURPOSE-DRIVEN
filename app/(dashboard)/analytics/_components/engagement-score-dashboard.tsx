@@ -18,7 +18,8 @@ import {
   Target,
   AlertCircle,
   CheckCircle2,
-  Activity
+  Activity,
+  RefreshCw
 } from 'lucide-react';
 
 interface EngagementMetrics {
@@ -446,7 +447,7 @@ export function EngagementScoreDashboard({ churchId, className }: EngagementScor
             size="sm"
             className="text-muted-foreground hover:text-foreground"
           >
-            🔄 Actualizar Métricas
+            <RefreshCw className="h-4 w-4 mr-1" /> Actualizar Métricas
           </Button>
         </div>
       </CardContent>

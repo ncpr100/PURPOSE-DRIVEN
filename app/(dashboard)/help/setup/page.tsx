@@ -96,7 +96,7 @@ export default function SetupHelp() {
                   </div>
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  ⏱️ {step.time}
+                  ️ {step.time}
                 </div>
               </div>
             </CardHeader>
@@ -118,7 +118,7 @@ export default function SetupHelp() {
       <div className="mt-8">
         <Card>
           <CardHeader>
-            <CardTitle>🎉 ¡Listo para Comenzar!</CardTitle>
+            <CardTitle> ¡Listo para Comenzar!</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">
@@ -132,7 +132,7 @@ export default function SetupHelp() {
               </Link>
               <Link href="/help/manual/getting-started">
                 <Button variant="outline">
-                  📖 Ver Manual Detallado
+                   Ver Manual Detallado
                 </Button>
               </Link>
             </div>

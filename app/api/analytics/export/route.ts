@@ -268,7 +268,7 @@ async function generatePDFReport(data: any, branding: ChurchBranding, reportType
 
     doc.setFontSize(10);
     data.aiInsights.insights.slice(0, 5).forEach((insight: any) => {
-      const priority = insight.priority === 'high' ? '🔴' : insight.priority === 'medium' ? '🟡' : '🟢';
+      const priority = insight.priority === 'high' ? '' : insight.priority === 'medium' ? '🟡' : '🟢';
       doc.text(`${priority} ${insight.description}`, 25, yPos);
       yPos += 6;
       if (insight.recommendation) {

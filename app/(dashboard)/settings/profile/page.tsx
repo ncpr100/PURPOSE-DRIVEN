@@ -157,11 +157,11 @@ export default function ChurchProfilePage() {
           if (response.ok) {
             const data = await response.json()
             console.log('Loading church data from API...')
-            console.log('📋 Church name:', data.church?.name)
-            console.log('🖼️  Logo exists:', !!data.church?.logo)
+            console.log(' Church name:', data.church?.name)
+            console.log('️  Logo exists:', !!data.church?.logo)
             if (data.church?.logo) {
-              console.log('📏 Logo length:', data.church.logo.length)
-              console.log('🎨 Logo preview:', data.church.logo.substring(0, 50))
+              console.log(' Logo length:', data.church.logo.length)
+              console.log(' Logo preview:', data.church.logo.substring(0, 50))
             }
             
             setChurchData({
@@ -179,7 +179,7 @@ export default function ChurchProfilePage() {
           console.error('Error loading church data:', error)
         }
       } else {
-        console.log('⚠️  No churchId in session')
+        console.log('️  No churchId in session')
         console.log('Session user:', session?.user)
       }
     }
@@ -208,7 +208,7 @@ export default function ChurchProfilePage() {
       secondaryColor: preset.secondary,
       accentColor: preset.accent
     }))
-    toast.success(`🎨 Tema "${preset.name}" aplicado exitosamente`)
+    toast.success(`Tema "${preset.name}" aplicado exitosamente`)
   }
 
   const resetTheme = () => {
@@ -254,17 +254,17 @@ export default function ChurchProfilePage() {
         credentials: 'include'  // Include cookies for authentication
       })
 
-      console.log(`📊 Settings upload response: ${response.status} ${response.statusText}`)
+      console.log(` Settings upload response: ${response.status} ${response.statusText}`)
 
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ Upload successful, URL:', data.url?.substring(0, 50) + '...')
+        console.log(' Upload successful, URL:', data.url?.substring(0, 50) + '...')
         // Update the state immediately with the base64 data URL
         handleInputChange('logo', data.url)
         toast.success('Logo subido exitosamente')
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
-        console.error('❌ Settings upload error:', errorData)
+        console.error(' Settings upload error:', errorData)
         throw new Error(errorData.error || 'Error al subir el archivo')
       }
     } catch (error) {
@@ -499,29 +499,29 @@ export default function ChurchProfilePage() {
                     <SelectValue placeholder="Seleccionar país" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Colombia">🇨🇴 Colombia</SelectItem>
-                    <SelectItem value="México">🇲🇽 México</SelectItem>
-                    <SelectItem value="Brasil">🇧🇷 Brasil</SelectItem>
-                    <SelectItem value="Argentina">🇦🇷 Argentina</SelectItem>
-                    <SelectItem value="Chile">🇨🇱 Chile</SelectItem>
-                    <SelectItem value="Perú">🇵🇪 Perú</SelectItem>
-                    <SelectItem value="Venezuela">🇻🇪 Venezuela</SelectItem>
-                    <SelectItem value="Ecuador">🇪🇨 Ecuador</SelectItem>
-                    <SelectItem value="Guatemala">🇬🇹 Guatemala</SelectItem>
-                    <SelectItem value="Honduras">🇭🇳 Honduras</SelectItem>
-                    <SelectItem value="El Salvador">🇸🇻 El Salvador</SelectItem>
-                    <SelectItem value="Nicaragua">🇳🇮 Nicaragua</SelectItem>
-                    <SelectItem value="Costa Rica">🇨🇷 Costa Rica</SelectItem>
-                    <SelectItem value="Panamá">🇵🇦 Panamá</SelectItem>
-                    <SelectItem value="Uruguay">🇺🇾 Uruguay</SelectItem>
-                    <SelectItem value="Paraguay">🇵🇾 Paraguay</SelectItem>
-                    <SelectItem value="Bolivia">🇧🇴 Bolivia</SelectItem>
-                    <SelectItem value="República Dominicana">🇩🇴 República Dominicana</SelectItem>
-                    <SelectItem value="Cuba">🇨🇺 Cuba</SelectItem>
-                    <SelectItem value="Puerto Rico">🇵🇷 Puerto Rico</SelectItem>
-                    <SelectItem value="Estados Unidos">🇺🇸 Estados Unidos</SelectItem>
-                    <SelectItem value="España">🇪🇸 España</SelectItem>
-                    <SelectItem value="Otro">🌎 Otro</SelectItem>
+                    <SelectItem value="Colombia">Colombia</SelectItem>
+                    <SelectItem value="México">México</SelectItem>
+                    <SelectItem value="Brasil">Brasil</SelectItem>
+                    <SelectItem value="Argentina">Argentina</SelectItem>
+                    <SelectItem value="Chile">Chile</SelectItem>
+                    <SelectItem value="Perú">Perú</SelectItem>
+                    <SelectItem value="Venezuela">Venezuela</SelectItem>
+                    <SelectItem value="Ecuador">Ecuador</SelectItem>
+                    <SelectItem value="Guatemala">Guatemala</SelectItem>
+                    <SelectItem value="Honduras">Honduras</SelectItem>
+                    <SelectItem value="El Salvador">El Salvador</SelectItem>
+                    <SelectItem value="Nicaragua">Nicaragua</SelectItem>
+                    <SelectItem value="Costa Rica">Costa Rica</SelectItem>
+                    <SelectItem value="Panamá">Panamá</SelectItem>
+                    <SelectItem value="Uruguay">Uruguay</SelectItem>
+                    <SelectItem value="Paraguay">Paraguay</SelectItem>
+                    <SelectItem value="Bolivia">Bolivia</SelectItem>
+                    <SelectItem value="República Dominicana">República Dominicana</SelectItem>
+                    <SelectItem value="Cuba">Cuba</SelectItem>
+                    <SelectItem value="Puerto Rico">Puerto Rico</SelectItem>
+                    <SelectItem value="Estados Unidos">Estados Unidos</SelectItem>
+                    <SelectItem value="España">España</SelectItem>
+                    <SelectItem value="Otro">Otro</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -616,7 +616,7 @@ export default function ChurchProfilePage() {
                       </div>
                       {themeData.primaryColor === preset.primary && (
                         <div className="w-6 h-6 bg-[hsl(var(--info)/0.10)]0 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs">✓</span>
+                          <span className="text-white text-xs"></span>
                         </div>
                       )}
                     </div>
@@ -689,7 +689,7 @@ export default function ChurchProfilePage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <span className="text-lg">🏷️</span>
+                <span className="text-lg">️</span>
                 Estilo de Insignias
               </CardTitle>
               <CardDescription>
@@ -723,7 +723,7 @@ export default function ChurchProfilePage() {
                       </div>
                       {themeData.badgeStyle === style.value && (
                         <div className="w-6 h-6 bg-[hsl(var(--info)/0.10)]0 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs">✓</span>
+                          <span className="text-white text-xs"></span>
                         </div>
                       )}
                     </div>
@@ -738,7 +738,7 @@ export default function ChurchProfilePage() {
             <CardContent className="pt-6">
               <div className="text-center space-y-3">
                 <div className="flex items-center justify-center gap-2 text-[hsl(var(--info))]">
-                  <span className="text-lg">💡</span>
+                  <span className="text-lg"></span>
                   <span className="font-medium">Información Importante</span>
                 </div>
                 <p className="text-sm text-[hsl(var(--info))]">

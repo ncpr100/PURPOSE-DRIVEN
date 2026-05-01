@@ -20,7 +20,7 @@ export default function PlatformEventsGuide() {
         <div className="flex items-center gap-4">
           <Shield className="h-12 w-12" />
           <div>
-            <h1 className="text-4xl font-bold mb-2">🏛️ Sistema de Eventos - SUPER_ADMIN</h1>
+            <h1 className="text-4xl font-bold mb-2">️ Sistema de Eventos - SUPER_ADMIN</h1>
             <p className="text-xl opacity-90">
               Guía completa del Sistema Inteligente de Eventos para administradores de plataforma
             </p>
@@ -54,7 +54,7 @@ export default function PlatformEventsGuide() {
           comunicaciones automáticas, analíticas) en cualquier iglesia de la plataforma.
         </p>
         <p className="text-sm text-[hsl(var(--lavender))] font-semibold">
-          ⚠️ Los eventos SIEMPRE están vinculados a una iglesia específica (churchId). Asegúrate de estar 
+          ️ Los eventos SIEMPRE están vinculados a una iglesia específica (churchId). Asegúrate de estar 
           en el contexto de la iglesia correcta antes de crear o modificar eventos.
         </p>
       </div>
@@ -137,13 +137,13 @@ export default function PlatformEventsGuide() {
               <CardContent className="space-y-2 text-sm">
                 <p className="font-medium text-muted-foreground">Qué puedes hacer:</p>
                 <ul className="ml-4 space-y-1 text-muted-foreground">
-                  <li>✓ Ver eventos de TODAS las iglesias</li>
-                  <li>✓ Crear eventos en cualquier iglesia</li>
-                  <li>✓ Editar/eliminar eventos de cualquier iglesia</li>
-                  <li>✓ Monitorear estadísticas globales</li>
+                  <li> Ver eventos de TODAS las iglesias</li>
+                  <li> Crear eventos en cualquier iglesia</li>
+                  <li> Editar/eliminar eventos de cualquier iglesia</li>
+                  <li> Monitorear estadísticas globales</li>
                 </ul>
                 <div className="bg-[hsl(var(--warning)/0.10)] p-3 rounded mt-3 border border-[hsl(var(--warning)/0.3)]">
-                  <p className="text-xs font-semibold text-[hsl(var(--warning))]">⚠️ Importante:</p>
+                  <p className="text-xs font-semibold text-[hsl(var(--warning))]">️ Importante:</p>
                   <p className="text-xs text-[hsl(var(--warning))]">
                     Siempre verifica el churchId antes de realizar cambios. Los eventos están 
                     estrictamente vinculados a iglesias específicas.
@@ -162,13 +162,13 @@ export default function PlatformEventsGuide() {
               <CardContent className="space-y-2 text-sm">
                 <p className="font-medium text-muted-foreground">Métricas disponibles:</p>
                 <ul className="ml-4 space-y-1 text-muted-foreground">
-                  <li>✓ Total de eventos en toda la plataforma</li>
-                  <li>✓ Promedio de asistencia por iglesia</li>
-                  <li>✓ Uso de AUTO-ASIGNAR por iglesia</li>
-                  <li>✓ Eventos activos vs completados</li>
+                  <li> Total de eventos en toda la plataforma</li>
+                  <li> Promedio de asistencia por iglesia</li>
+                  <li> Uso de AUTO-ASIGNAR por iglesia</li>
+                  <li> Eventos activos vs completados</li>
                 </ul>
                 <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded mt-3 border border-[hsl(var(--info)/0.3)]">
-                  <p className="text-xs font-semibold text-foreground">💡 Tip:</p>
+                  <p className="text-xs font-semibold text-foreground"> Tip:</p>
                   <p className="text-xs text-[hsl(var(--info))]">
                     Usa /platform/analytics para ver métricas agregadas de todos los eventos
                   </p>
@@ -186,10 +186,10 @@ export default function PlatformEventsGuide() {
               <CardContent className="space-y-2 text-sm">
                 <p className="font-medium text-muted-foreground">Configuraciones disponibles:</p>
                 <ul className="ml-4 space-y-1 text-muted-foreground">
-                  <li>✓ Límites de eventos por plan (Free/Pro/Enterprise)</li>
-                  <li>✓ Funcionalidades habilitadas/deshabilitadas</li>
-                  <li>✓ Configuración de AUTO-ASIGNAR global</li>
-                  <li>✓ Límites de voluntarios por evento</li>
+                  <li> Límites de eventos por plan (Free/Pro/Enterprise)</li>
+                  <li> Funcionalidades habilitadas/deshabilitadas</li>
+                  <li> Configuración de AUTO-ASIGNAR global</li>
+                  <li> Límites de voluntarios por evento</li>
                 </ul>
               </CardContent>
             </Card>
@@ -204,10 +204,10 @@ export default function PlatformEventsGuide() {
               <CardContent className="space-y-2 text-sm">
                 <p className="font-medium text-muted-foreground">Herramientas de soporte:</p>
                 <ul className="ml-4 space-y-1 text-muted-foreground">
-                  <li>✓ Logs de AUTO-ASIGNAR por evento</li>
-                  <li>✓ Historial de asignaciones de voluntarios</li>
-                  <li>✓ Errores de integración de QR/check-in</li>
-                  <li>✓ Monitoreo de performance de eventos</li>
+                  <li> Logs de AUTO-ASIGNAR por evento</li>
+                  <li> Historial de asignaciones de voluntarios</li>
+                  <li> Errores de integración de QR/check-in</li>
+                  <li> Monitoreo de performance de eventos</li>
                 </ul>
               </CardContent>
             </Card>
@@ -228,7 +228,7 @@ export default function PlatformEventsGuide() {
             <h4 className="font-semibold mb-3 text-foreground">Tablas Principales del Sistema de Eventos:</h4>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="font-semibold text-foreground mb-1">📅 events</p>
+                <p className="font-semibold text-foreground mb-1"> events</p>
                 <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• id, title, description, category</li>
                   <li>• startDate, endDate, location</li>
@@ -237,7 +237,7 @@ export default function PlatformEventsGuide() {
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-foreground mb-1">👥 volunteer_assignments</p>
+                <p className="font-semibold text-foreground mb-1"> volunteer_assignments</p>
                 <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• eventId, volunteerId</li>
                   <li>• role, assignedTasks (JSON)</li>
@@ -246,7 +246,7 @@ export default function PlatformEventsGuide() {
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-foreground mb-1">✅ check_ins</p>
+                <p className="font-semibold text-foreground mb-1"> check_ins</p>
                 <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• eventId, firstName, lastName</li>
                   <li>• email, phone, checkInTime</li>
@@ -254,7 +254,7 @@ export default function PlatformEventsGuide() {
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-foreground mb-1">👶 children_check_ins</p>
+                <p className="font-semibold text-foreground mb-1"> children_check_ins</p>
                 <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• eventId, childName, parentName</li>
                   <li>• checkInTime, checkOutTime</li>
@@ -262,7 +262,7 @@ export default function PlatformEventsGuide() {
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-foreground mb-1">🎛️ event_resources</p>
+                <p className="font-semibold text-foreground mb-1">️ event_resources</p>
                 <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• name, description, type</li>
                   <li>• type: EQUIPO, ESPACIO, MATERIAL</li>
@@ -270,7 +270,7 @@ export default function PlatformEventsGuide() {
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-foreground mb-1">📧 event_communications</p>
+                <p className="font-semibold text-foreground mb-1"> event_communications</p>
                 <ul className="text-xs text-muted-foreground ml-4 space-y-1">
                   <li>• eventId, type (EMAIL, SMS, PUSH)</li>
                   <li>• subject, content, recipientCount</li>
@@ -310,7 +310,7 @@ export default function PlatformEventsGuide() {
             </div>
             <div>
               <p className="font-semibold text-foreground text-[hsl(var(--lavender))]">POST /api/events/[id]/auto-assign-volunteers</p>
-              <p className="text-xs text-[hsl(var(--lavender))] ml-4">🤖 AUTO-ASIGNAR - Asignación inteligente de voluntarios (IA)</p>
+              <p className="text-xs text-[hsl(var(--lavender))] ml-4"> AUTO-ASIGNAR - Asignación inteligente de voluntarios (IA)</p>
             </div>
             <div>
               <p className="font-semibold text-foreground">GET /api/events/analytics</p>

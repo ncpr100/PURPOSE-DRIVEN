@@ -282,7 +282,7 @@ export default function CheckInsManual() {
             </div>
             <div className="mt-4 pt-4 border-t">
               <Button variant="outline" onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
-                💬 Contactar Soporte WhatsApp
+                 Contactar Soporte WhatsApp
               </Button>
             </div>
           </CardContent>

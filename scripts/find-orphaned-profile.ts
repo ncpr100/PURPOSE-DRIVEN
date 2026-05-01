@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 async function findOrphanedProfile() {
   try {
-    console.log('🔍 Finding orphaned spiritual profile...\n')
+    console.log(' Finding orphaned spiritual profile...\n')
 
     // Get the spiritual profile
     const profile = await prisma.memberSpiritualProfile.findFirst({
@@ -14,11 +14,11 @@ async function findOrphanedProfile() {
     })
 
     if (!profile) {
-      console.log('❌ No spiritual profiles found')
+      console.log(' No spiritual profiles found')
       return
     }
 
-    console.log('✅ Found spiritual profile:')
+    console.log(' Found spiritual profile:')
     console.log(`   Profile ID: ${profile.id}`)
     console.log(`   Member ID: ${profile.memberId}`)
     console.log(`   Member Name: ${profile.member?.firstName} ${profile.member?.lastName}`)
@@ -34,11 +34,11 @@ async function findOrphanedProfile() {
       }
     })
 
-    console.log('🔍 Checking volunteer record:')
+    console.log(' Checking volunteer record:')
     if (volunteer) {
-      console.log(`   ✅ Volunteer record exists for member ID: ${volunteer.id}`)
+      console.log(`    Volunteer record exists for member ID: ${volunteer.id}`)
     } else {
-      console.log(`   ❌ NO volunteer record found for member ID: ${profile.memberId}`)
+      console.log(`    NO volunteer record found for member ID: ${profile.memberId}`)
     }
     console.log('')
 
@@ -51,22 +51,22 @@ async function findOrphanedProfile() {
     })
 
     if (juanHerrera) {
-      console.log('🔍 Found "Juan Herrera" member record:')
+      console.log(' Found "Juan Herrera" member record:')
       console.log(`   Member ID: ${juanHerrera.id}`)
       console.log(`   Email: ${juanHerrera.email}`)
       console.log('')
 
       if (juanHerrera.id !== profile.memberId) {
-        console.log('⚠️ MISMATCH DETECTED:')
+        console.log('️ MISMATCH DETECTED:')
         console.log(`   Spiritual Profile member ID: ${profile.memberId}`)
         console.log(`   Juan Herrera member ID: ${juanHerrera.id}`)
         console.log('')
-        console.log('💡 SOLUTION: Update spiritual profile to point to correct member ID')
+        console.log(' SOLUTION: Update spiritual profile to point to correct member ID')
       }
     }
 
   } catch (error) {
-    console.error('❌ Error:', error)
+    console.error(' Error:', error)
   } finally {
     await prisma.$disconnect()
   }

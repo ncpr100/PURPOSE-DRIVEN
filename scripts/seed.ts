@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import { nanoid } from 'nanoid'
 
 async function main() {
-  console.log('🌱 Iniciando seed de la base de datos...')
+  console.log(' Iniciando seed de la base de datos...')
 
   try {
     // Crear iglesia de ejemplo
@@ -25,12 +25,12 @@ async function main() {
       }
     })
 
-    console.log('✅ Iglesia creada:', church.name)
+    console.log(' Iglesia creada:', church.name)
 
     // Hash password para usuarios de prueba
     const hashedPassword = await bcrypt.hash('password123', 12)
     const testHashedPassword = await bcrypt.hash('johndoe123', 12)
-    // 🚨 OFFICIAL SUPER_ADMIN PASSWORD - SINGLE SOURCE OF TRUTH
+    //  OFFICIAL SUPER_ADMIN PASSWORD - SINGLE SOURCE OF TRUTH
     const superAdminHashedPassword = await bcrypt.hash('Bendecido100%$$%', 12)
 
     // Controlar cuándo se permite resetear credenciales del SUPER_ADMIN desde el seed
@@ -40,7 +40,7 @@ async function main() {
 
     if (isProduction && process.env.ALLOW_SUPER_ADMIN_SEED_RESET === 'true') {
       console.warn(
-        '⚠️ ALLOW_SUPER_ADMIN_SEED_RESET está habilitado en producción, pero el reset del SUPER_ADMIN está bloqueado explícitamente por razones de seguridad.'
+        '️ ALLOW_SUPER_ADMIN_SEED_RESET está habilitado en producción, pero el reset del SUPER_ADMIN está bloqueado explícitamente por razones de seguridad.'
       )
     }
 
@@ -62,7 +62,7 @@ async function main() {
           updatedAt: new Date()
         }
 
-    // 🚨 Crear usuario SUPER_ADMIN (ONLY ONE - PLATFORM ADMINISTRATOR)
+    //  Crear usuario SUPER_ADMIN (ONLY ONE - PLATFORM ADMINISTRATOR)
     const superAdminUser = await prisma.users.upsert({
       where: { email: 'soporte@khesed-tek-systems.org' },
       update: superAdminUpdateData,
@@ -78,7 +78,7 @@ async function main() {
       }
     })
 
-    console.log('✅ SUPER_ADMIN creado:', superAdminUser.name, '(', superAdminUser.email, ')')
+    console.log(' SUPER_ADMIN creado:', superAdminUser.name, '(', superAdminUser.email, ')')
 
     // Crear usuario administrador (CHURCH LEVEL)
     const adminUser = await prisma.users.upsert({
@@ -96,7 +96,7 @@ async function main() {
       }
     })
 
-    console.log('✅ Usuario administrador creado:', adminUser.name)
+    console.log(' Usuario administrador creado:', adminUser.name)
 
     // Crear usuario de prueba (john@doe.com)
     const testUser = await prisma.users.upsert({
@@ -114,7 +114,7 @@ async function main() {
       }
     })
 
-    console.log('✅ Usuario de prueba creado:', testUser.name)
+    console.log(' Usuario de prueba creado:', testUser.name)
 
     // Crear pastor
     const pastorUser = await prisma.users.upsert({
@@ -132,7 +132,7 @@ async function main() {
       }
     })
 
-    console.log('✅ Pastor creado:', pastorUser.name)
+    console.log(' Pastor creado:', pastorUser.name)
 
     // Crear ministerios
     const ministeriosData = [
@@ -159,7 +159,7 @@ async function main() {
       ministries.push(ministry)
     }
 
-    console.log('✅ Ministerios creados')
+    console.log(' Ministerios creados')
 
     // Crear miembros de ejemplo con diversidad para AI analytics
     const miembrosEjemplo = [
@@ -637,7 +637,7 @@ async function main() {
       })
     }
 
-    console.log('✅ Miembros de ejemplo creados')
+    console.log(' Miembros de ejemplo creados')
 
     // Crear miembro para el administrador
     await prisma.members.upsert({
@@ -709,10 +709,10 @@ async function main() {
       }
     })
 
-    console.log('✅ Miembros para usuarios creados')
+    console.log(' Miembros para usuarios creados')
 
     // Crear datos de analíticas de miembros para AI testing
-    console.log('📊 Creando datos de analíticas para AI...')
+    console.log(' Creando datos de analíticas para AI...')
     
     // Obtener miembros creados para análisis
     const miembrosCreados = await prisma.members.findMany({
@@ -720,9 +720,9 @@ async function main() {
       take: 20 // Tomar más miembros para datos diversos
     })
 
-    console.log('✅ Datos de analíticas de miembros creados para AI testing')
+    console.log(' Datos de analíticas de miembros creados para AI testing')
 
-    console.log('✅ Miembros para usuarios creados')
+    console.log(' Miembros para usuarios creados')
 
     // Crear sermones de ejemplo
     const sermonesEjemplo = [
@@ -760,7 +760,7 @@ async function main() {
       })
     }
 
-    console.log('✅ Sermones de ejemplo creados')
+    console.log(' Sermones de ejemplo creados')
 
     // Crear eventos de ejemplo
     const eventosEjemplo = [
@@ -802,7 +802,7 @@ async function main() {
       events.push(event)
     }
 
-    console.log('✅ Eventos de ejemplo creados')
+    console.log(' Eventos de ejemplo creados')
 
     // Crear voluntarios de ejemplo
     const volunteers = await Promise.all([
@@ -865,7 +865,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Voluntarios de ejemplo creados')
+    console.log(' Voluntarios de ejemplo creados')
 
     // Crear asignaciones de voluntarios
     const assignments = await Promise.all([
@@ -899,7 +899,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Asignaciones de voluntarios creadas')
+    console.log(' Asignaciones de voluntarios creadas')
 
     // Crear check-ins de visitantes de ejemplo
     const checkIns = await Promise.all([
@@ -948,7 +948,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Check-ins de visitantes creados')
+    console.log(' Check-ins de visitantes creados')
 
     // Crear seguimientos automáticos para primeras visitas
     const followUps = await Promise.all([
@@ -1002,7 +1002,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Seguimientos de visitantes creados')
+    console.log(' Seguimientos de visitantes creados')
 
     // Crear check-ins de niños de ejemplo
     const childrenCheckIns = await Promise.all([
@@ -1059,7 +1059,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Check-ins de niños creados')
+    console.log(' Check-ins de niños creados')
 
     // Crear categorías de donaciones
     const donationCategories = await Promise.all([
@@ -1109,7 +1109,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Categorías de donaciones creadas')
+    console.log(' Categorías de donaciones creadas')
 
     // Crear métodos de pago
     const paymentMethods = await Promise.all([
@@ -1163,7 +1163,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Métodos de pago creados')
+    console.log(' Métodos de pago creados')
 
     // Crear donaciones de ejemplo
     const now = new Date()
@@ -1277,10 +1277,10 @@ async function main() {
       })
     ])
 
-    console.log('✅ Donaciones de ejemplo creadas')
+    console.log(' Donaciones de ejemplo creadas')
 
-    console.log('🎉 Seed completado exitosamente!')
-    console.log('\n📋 Resumen de datos creados:')
+    console.log(' Seed completado exitosamente!')
+    console.log('\n Resumen de datos creados:')
     console.log('• 1 Iglesia: Iglesia Central Ejemplo')
     console.log('• 3 Usuarios: Admin, Pastor, Test User')
     console.log('• 5 Ministerios')
@@ -1295,23 +1295,23 @@ async function main() {
     console.log('• 4 Categorías de donaciones')
     console.log('• 4 Métodos de pago disponibles')
     console.log('• 6 Donaciones de ejemplo ($1,375,000 COP total)')
-    console.log('\n🔐 Credenciales de acceso:')
-    console.log('📧 admin@iglesiacentral.com | 🔑 password123 (Administrador)')
-    console.log('📧 pastor@iglesiacentral.com | 🔑 password123 (Pastor)')
-    console.log('📧 john@doe.com | 🔑 johndoe123 (Usuario de prueba)')
-    console.log('👑 nelson.castro@khesedtek.com | 🔑 SuperAdmin2024! (SUPER_ADMIN)')
+    console.log('\n Credenciales de acceso:')
+    console.log(' admin@iglesiacentral.com |  password123 (Administrador)')
+    console.log(' pastor@iglesiacentral.com |  password123 (Pastor)')
+    console.log(' john@doe.com |  johndoe123 (Usuario de prueba)')
+    console.log(' nelson.castro@khesedtek.com |  SuperAdmin2024! (SUPER_ADMIN)')
     console.log('\n🆕 Nuevas características Fase 2:')
-    console.log('✅ Gestión de Voluntarios con asignaciones inteligentes')
-    console.log('✅ Sistema de Check-in para visitantes con QR')
-    console.log('✅ Check-in seguro para niños con WebRTC/QR')
-    console.log('✅ Seguimiento automático de visitantes')
-    console.log('✅ Dashboard actualizado con nuevas métricas')
+    console.log(' Gestión de Voluntarios con asignaciones inteligentes')
+    console.log(' Sistema de Check-in para visitantes con QR')
+    console.log(' Check-in seguro para niños con WebRTC/QR')
+    console.log(' Seguimiento automático de visitantes')
+    console.log(' Dashboard actualizado con nuevas métricas')
     console.log('\n🆕 Nuevas características Fase 3:')
-    console.log('✅ Sistema completo de Donaciones con categorías')
-    console.log('✅ Métodos de pago múltiples (Efectivo, Transferencia, Nequi, Tarjeta)')
-    console.log('✅ Dashboard de estadísticas de donaciones')
-    console.log('✅ Reportes financieros por período y categoría')
-    console.log('✅ Seguimiento de top donantes y métricas')
+    console.log(' Sistema completo de Donaciones con categorías')
+    console.log(' Métodos de pago múltiples (Efectivo, Transferencia, Nequi, Tarjeta)')
+    console.log(' Dashboard de estadísticas de donaciones')
+    console.log(' Reportes financieros por período y categoría')
+    console.log(' Seguimiento de top donantes y métricas')
 
     // FASE 4: Advanced Communications + Events
     // Crear templates de comunicación
@@ -1368,7 +1368,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Templates de comunicación creados')
+    console.log(' Templates de comunicación creados')
 
     // Crear recursos para eventos
     const eventResources = await Promise.all([
@@ -1436,7 +1436,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Recursos para eventos creados')
+    console.log(' Recursos para eventos creados')
 
     // Crear algunas reservaciones de recursos
     await Promise.all([
@@ -1481,7 +1481,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Reservaciones de recursos creadas')
+    console.log(' Reservaciones de recursos creadas')
 
     // Crear configuraciones de integración de ejemplo (inactivas por seguridad)
     await Promise.all([
@@ -1529,7 +1529,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Configuraciones de integración creadas')
+    console.log(' Configuraciones de integración creadas')
 
     // Crear automatizaciones básicas de ejemplo
     const automations = await Promise.all([
@@ -1605,7 +1605,7 @@ async function main() {
       })
     ])
 
-    console.log('✅ Automatizaciones básicas creadas')
+    console.log(' Automatizaciones básicas creadas')
 
     // Crear algunas comunicaciones de ejemplo
     await Promise.all([
@@ -1655,18 +1655,18 @@ async function main() {
       })
     ])
 
-    console.log('✅ Comunicaciones de ejemplo creadas')
+    console.log(' Comunicaciones de ejemplo creadas')
 
     console.log('\n🆕 Nuevas características Fase 4:')
-    console.log('✅ Integración completa de Twilio para SMS')
-    console.log('✅ Sistema de comunicaciones masivas con templates')
-    console.log('✅ Gestión avanzada de eventos con recursos')
-    console.log('✅ Reservaciones de recursos con calendario')
-    console.log('✅ Automatizaciones básicas configurables')
-    console.log('✅ Templates personalizables con variables')
+    console.log(' Integración completa de Twilio para SMS')
+    console.log(' Sistema de comunicaciones masivas con templates')
+    console.log(' Gestión avanzada de eventos con recursos')
+    console.log(' Reservaciones de recursos con calendario')
+    console.log(' Automatizaciones básicas configurables')
+    console.log(' Templates personalizables con variables')
 
   } catch (error) {
-    console.error('❌ Error durante el seed:', error)
+    console.error(' Error durante el seed:', error)
     throw error
   }
 }

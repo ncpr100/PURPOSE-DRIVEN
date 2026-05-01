@@ -141,7 +141,7 @@ export function QRChildrenCheckInClient({
     }))
 
     stopCamera()
-    toast.success(`✅ Foto ${cameraMode === 'child' ? 'del niño' : 'del padre'} capturada exitosamente`)
+    toast.success(` Foto ${cameraMode === 'child' ? 'del niño' : 'del padre'} capturada exitosamente`)
   }
 
   // Retake photo
@@ -187,7 +187,7 @@ export function QRChildrenCheckInClient({
         const data = await response.json()
         setResult(data)
         setStep(3)
-        toast.success('🎉 Check-in completado exitosamente')
+        toast.success(' Check-in completado exitosamente')
       } else {
         const error = await response.json()
         toast.error(error.message || 'Error al completar check-in')
@@ -229,7 +229,7 @@ export function QRChildrenCheckInClient({
           </p>
           {eventInfo && (
             <Badge variant="secondary" className="mt-2">
-              📅 {eventInfo.title}
+               {eventInfo.title}
             </Badge>
           )}
         </div>
@@ -397,7 +397,7 @@ export function QRChildrenCheckInClient({
               <Alert>
                 <Shield className="h-4 w-4" />
                 <AlertDescription>
-                  🔒 Las fotos se eliminan automáticamente después de 7 días por seguridad.
+                   Las fotos se eliminan automáticamente después de 7 días por seguridad.
                   Se requieren ambas fotos para completar el check-in.
                 </AlertDescription>
               </Alert>
@@ -653,7 +653,7 @@ export function QRChildrenCheckInClient({
                     {result.securityPin}
                   </div>
                   <p className="text-sm text-[hsl(var(--info))]">
-                    💡 Guarde este código para recoger a su hijo/a
+                     Guarde este código para recoger a su hijo/a
                   </p>
                 </div>
               </div>

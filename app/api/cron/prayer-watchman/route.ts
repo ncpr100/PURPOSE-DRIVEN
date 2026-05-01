@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
         }
 
         const name = pr?.prayer_contacts?.fullName || "Querido/a";
-        const body = `Hola ${name} 👋 Estamos orando por ti y recordamos que tienes "${event.eventDescription}" pronto. Dios te acompaña. 🙏`;
+        const body = `Hola ${name}  Estamos orando por ti y recordamos que tienes "${event.eventDescription}" pronto. Dios te acompaña. `;
 
         await whatsappBusinessService.sendTextMessage(phone, body);
         await db.prayer_watchman_events.update({
@@ -132,7 +132,7 @@ export async function GET(req: NextRequest) {
         }
 
         const name = pr?.prayer_contacts?.fullName || "Querido/a";
-        const body = `Hola ${name}, ¿cómo estuvo "${event.eventDescription}"? Seguimos orando por ti. Si quieres compartir algo, responde a este mensaje. 🙏`;
+        const body = `Hola ${name}, ¿cómo estuvo "${event.eventDescription}"? Seguimos orando por ti. Si quieres compartir algo, responde a este mensaje. `;
 
         await whatsappBusinessService.sendTextMessage(phone, body);
         await db.prayer_watchman_events.update({

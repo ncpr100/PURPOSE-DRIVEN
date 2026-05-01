@@ -72,12 +72,12 @@ function generateAddress(): string {
 
 async function migratePlanningCenterChurch() {
   try {
-    console.log('🚀 CHURCH MIGRATION - Planning Center Import')
+    console.log(' CHURCH MIGRATION - Planning Center Import')
     console.log('━'.repeat(80))
     console.log('Starting migration of large church with 1,000 members...\n')
 
     // 1. Create the church
-    console.log('📍 Step 1/5: Creating church...')
+    console.log(' Step 1/5: Creating church...')
     const church = await db.church.create({
       data: {
         name: 'Iglesia Comunidad de Fe',
@@ -90,10 +90,10 @@ async function migratePlanningCenterChurch() {
         isActive: true
       }
     })
-    console.log(`✅ Church created: ${church.name} (ID: ${church.id})\n`)
+    console.log(` Church created: ${church.name} (ID: ${church.id})\n`)
 
     // 2. Create church admin
-    console.log('👤 Step 2/5: Creating church admin...')
+    console.log(' Step 2/5: Creating church admin...')
     const adminPassword = await bcrypt.hash('Pastor2024!', 10)
     const admin = await db.user.create({
       data: {
@@ -106,10 +106,10 @@ async function migratePlanningCenterChurch() {
         emailVerified: new Date()
       }
     })
-    console.log(`✅ Admin created: ${admin.name}\n`)
+    console.log(` Admin created: ${admin.name}\n`)
 
     // 3. Create staff users
-    console.log('👥 Step 3/5: Creating staff members (10)...')
+    console.log(' Step 3/5: Creating staff members (10)...')
     const staffRoles = [
       { name: 'Pastora Ana Torres', email: 'ana.torres@comunidadfe.org', role: 'PASTOR' as const },
       { name: 'David González', email: 'david.gonzalez@comunidadfe.org', role: 'LIDER' as const },
@@ -137,10 +137,10 @@ async function migratePlanningCenterChurch() {
         }
       })
     }
-    console.log(`✅ Created ${staffRoles.length} staff members\n`)
+    console.log(` Created ${staffRoles.length} staff members\n`)
 
     // 4. Create 1,000 members in batches
-    console.log('👨‍👩‍👧‍👦 Step 4/5: Creating 1,000 members...')
+    console.log('‍‍‍ Step 4/5: Creating 1,000 members...')
     const batchSize = 100
     const totalMembers = 1000
     let created = 0
@@ -193,12 +193,12 @@ async function migratePlanningCenterChurch() {
       })
 
       created += batchSize
-      console.log(`   📊 Progress: ${created}/${totalMembers} members created`)
+      console.log(`    Progress: ${created}/${totalMembers} members created`)
     }
-    console.log(`✅ All ${totalMembers} members created successfully\n`)
+    console.log(` All ${totalMembers} members created successfully\n`)
 
     // 5. Generate summary statistics
-    console.log('📊 Step 5/5: Generating migration summary...\n')
+    console.log(' Step 5/5: Generating migration summary...\n')
     
     const stats = await db.member.groupBy({
       by: ['status'],
@@ -213,9 +213,9 @@ async function migratePlanningCenterChurch() {
     })
 
     console.log('━'.repeat(80))
-    console.log('✅ MIGRATION COMPLETED SUCCESSFULLY!')
+    console.log(' MIGRATION COMPLETED SUCCESSFULLY!')
     console.log('━'.repeat(80))
-    console.log('\n📈 MIGRATION SUMMARY:')
+    console.log('\n MIGRATION SUMMARY:')
     console.log(`Church: ${church.name}`)
     console.log(`Church ID: ${church.id}`)
     console.log(`Total Members: ${totalMembers}`)
@@ -229,7 +229,7 @@ async function migratePlanningCenterChurch() {
       console.log(`  - ${s.gender}: ${s._count} members`)
     })
 
-    console.log('\n🔐 LOGIN CREDENTIALS:')
+    console.log('\n LOGIN CREDENTIALS:')
     console.log('━'.repeat(80))
     console.log('CHURCH ADMIN:')
     console.log('  Email: pastor@comunidadfe.org')
@@ -242,7 +242,7 @@ async function migratePlanningCenterChurch() {
     })
     console.log('━'.repeat(80))
 
-    console.log('\n✨ READY TO TEST:')
+    console.log('\n READY TO TEST:')
     console.log('  1. Login at: https://khesed-tek-cms.up.railway.app/auth/signin')
     console.log('  2. Use pastor@comunidadfe.org / Pastor2024!')
     console.log('  3. Access Members: /members')
@@ -251,7 +251,7 @@ async function migratePlanningCenterChurch() {
     console.log('  6. Prayer Requests: /prayer-wall')
 
   } catch (error) {
-    console.error('\n❌ MIGRATION FAILED:', error)
+    console.error('\n MIGRATION FAILED:', error)
     throw error
   } finally {
     await db.$disconnect()

@@ -242,7 +242,7 @@ async function executeSendWhatsApp(action: any, data: any): Promise<void> {
 function buildDefaultWhatsAppMessage(data: any): string {
   const section = data.prayerSection ? `Sección ${data.prayerSection} - ` : ''
   const sla = data.responseTimeMinutes ? ` Recibirás respuesta en máximo ${data.responseTimeMinutes} minutos.` : ''
-  return `🙏 Hola ${data.contactName ?? ''}, hemos recibido tu petición de ${section}oración.${sla} Estamos orando por ti.`
+  return ` Hola ${data.contactName ?? ''}, hemos recibido tu petición de ${section}oración.${sla} Estamos orando por ti.`
 }
 
 // ── SEND_SMS ─────────────────────────────────────────────────

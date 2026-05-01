@@ -89,7 +89,7 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
     try {
       setLoading(true);
       
-      // 🔥 FIXED: Use the SAME real member data as all other components
+      //  FIXED: Use the SAME real member data as all other components
       const response = await fetch('/api/members?limit=10000'); // Get all members
       
       if (response.ok) {
@@ -126,7 +126,7 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
           ]
         }));
         
-        console.log('📊 Individual Member Timeline using REAL data:', realMembers.length, 'members from', membersArray.length, 'total');
+        console.log(' Individual Member Timeline using REAL data:', realMembers.length, 'members from', membersArray.length, 'total');
         setMembers(realMembers);
       } else {
         throw new Error(`Error fetching members: ${response.status}`);

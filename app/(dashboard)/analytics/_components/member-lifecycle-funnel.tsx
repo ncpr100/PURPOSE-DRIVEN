@@ -14,7 +14,9 @@ import {
   ArrowRight,
   Info,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  X,
+  RefreshCw
 } from 'lucide-react';
 
 // Types based on our member-journey-analytics.ts
@@ -386,10 +388,10 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
                         <h4 className="font-semibold">{config.label}</h4>
                         <p className="text-sm text-muted-foreground mt-1">{config.description}</p>
                         <div className="mt-2 space-y-1">
-                          <p className="text-xs">📊 {stage.count} personas ({stage.percentage}%)</p>
+                          <p className="text-xs">{stage.count} personas ({stage.percentage}%)</p>
                           <p className="text-xs">⏱ Duración promedio: {formatDuration(stage.averageDuration)}</p>
                           {Boolean(conversionRate) && (
-                            <p className="text-xs">🔄 Tasa de conversión: {conversionRate}%</p>
+                            <p className="text-xs">Tasa de conversión: {conversionRate}%</p>
                           )}
                         </div>
                       </div>
@@ -413,7 +415,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
                   onClick={() => setSelectedStage(null)}
                   className="text-muted-foreground hover:text-muted-foreground"
                 >
-                  ✕
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
               
@@ -454,7 +456,7 @@ export function MemberLifecycleFunnel({ churchId, period = 365, className }: Mem
               size="sm"
               className="text-muted-foreground hover:text-foreground"
             >
-              🔄 Actualizar Datos
+              <RefreshCw className="h-4 w-4 mr-1" /> Actualizar Datos
             </Button>
           </div>
         </CardContent>

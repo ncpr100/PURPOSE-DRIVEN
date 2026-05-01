@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized - Admin access required' }, { status: 403 })
     }
 
-    console.log('🔧 Starting spiritual profile fix...')
+    console.log(' Starting spiritual profile fix...')
 
     // Find JUAN PACHANGA spiritual profile
     const orphanedProfile = await prisma.member_spiritual_profiles.findFirst({
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    console.log('✅ Found orphaned profile:', orphanedProfile.id)
+    console.log(' Found orphaned profile:', orphanedProfile.id)
     console.log('   Current member:', orphanedProfile.members.firstName, orphanedProfile.members.lastName)
 
     // Find Juan Herrera (the target member)
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    console.log('✅ Found Juan Herrera:', juanHerrera.id)
+    console.log(' Found Juan Herrera:', juanHerrera.id)
 
     // Check if Juan Herrera already has a profile
     const existingProfile = await prisma.member_spiritual_profiles.findUnique({
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (existingProfile && existingProfile.id !== orphanedProfile.id) {
-      console.log('⚠️ Juan Herrera already has a different spiritual profile, deleting it...')
+      console.log('️ Juan Herrera already has a different spiritual profile, deleting it...')
       await prisma.member_spiritual_profiles.delete({
         where: { memberId: juanHerrera.id }
       })
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
       data: { memberId: juanHerrera.id }
     })
 
-    console.log('✅ Spiritual profile linked to Juan Herrera!')
+    console.log(' Spiritual profile linked to Juan Herrera!')
 
     // Verify the fix
     const verification = await prisma.members.findUnique({
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('❌ Error fixing spiritual profile:', error)
+    console.error(' Error fixing spiritual profile:', error)
     return NextResponse.json(
       { 
         success: false, 

@@ -20,7 +20,7 @@ export default function VisitorFormsManual() {
     <div className="container mx-auto p-6 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-          📝 Sistema de Formularios de Visitantes
+           Sistema de Formularios de Visitantes
           <Badge variant="secondary">🆕 Nuevo</Badge>
         </h1>
         <p className="text-muted-foreground">
@@ -237,10 +237,10 @@ export default function VisitorFormsManual() {
                 submissions en registros de visitantes en el sistema principal.
               </p>
               <ul className="text-sm text-[hsl(var(--info))] space-y-1">
-                <li>• ✅ Crea check-in automático</li>
-                <li>• ✅ Marca como "primera vez"</li>
-                <li>• ✅ Asigna engagement score alto (70)</li>
-                <li>• ✅ Activa secuencia de seguimiento</li>
+                <li>•  Crea check-in automático</li>
+                <li>•  Marca como "primera vez"</li>
+                <li>•  Asigna engagement score alto (70)</li>
+                <li>•  Activa secuencia de seguimiento</li>
               </ul>
             </div>
           </CardContent>
@@ -257,7 +257,7 @@ export default function VisitorFormsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Recomendaciones:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]"> Recomendaciones:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Formularios cortos:</strong> Máximo 7 campos para mejor conversión</li>
                   <li>• <strong>Campos obligatorios mínimos:</strong> Solo nombre y email esenciales</li>
@@ -269,7 +269,7 @@ export default function VisitorFormsManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">❌ Evitar:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]"> Evitar:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Formularios largos:</strong> Más de 10 campos reduce conversión</li>
                   <li>• <strong>Muchos campos obligatorios:</strong> Puede intimidar visitantes</li>
@@ -306,11 +306,11 @@ export default function VisitorFormsManual() {
               <div>
                 <h4 className="font-semibold mb-3">Características Móviles:</h4>
                 <ul className="text-sm space-y-1">
-                  <li>• ✅ Totalmente responsive</li>
-                  <li>• ✅ Touch-friendly</li>
-                  <li>• ✅ Validación en tiempo real</li>
-                  <li>• ✅ Carga rápida (&lt;2s)</li>
-                  <li>• ✅ Funciona sin JavaScript</li>
+                  <li>•  Totalmente responsive</li>
+                  <li>•  Touch-friendly</li>
+                  <li>•  Validación en tiempo real</li>
+                  <li>•  Carga rápida (&lt;2s)</li>
+                  <li>•  Funciona sin JavaScript</li>
                 </ul>
               </div>
             </div>

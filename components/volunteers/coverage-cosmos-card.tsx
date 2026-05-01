@@ -51,14 +51,14 @@ const STATUS_CONFIG: Record<
     bg: "rgba(29,201,140,0.08)",
     border: "rgba(29,201,140,0.0)",
     icon: ShieldCheck,
-    label: "✓",
+    label: "",
   },
   COVERED: {
     color: "#26D9D9",
     bg: "rgba(38,217,217,0.08)",
     border: "rgba(38,217,217,0.15)",
     icon: ShieldCheck,
-    label: "✓",
+    label: "",
   },
   CANCELLED: {
     color: "#F0B83C",
@@ -289,7 +289,7 @@ function CascadeTimeline({
               }}
             >
               {step.state === "done"
-                ? "✓"
+                ? ""
                 : step.state === "active"
                   ? "→"
                   : i + 1}

@@ -9,7 +9,7 @@ async function createSuperAdmin() {
     })
 
     if (existingUser) {
-      console.log('✅ User already exists!')
+      console.log(' User already exists!')
       console.log('Email:', existingUser.email)
       console.log('Name:', existingUser.name)
       console.log('Role:', existingUser.role)
@@ -31,14 +31,14 @@ async function createSuperAdmin() {
       }
     })
 
-    console.log('✅ Super Admin created successfully!')
+    console.log(' Super Admin created successfully!')
     console.log('Email:', user.email)
     console.log('Password: Bendecido100%$$%')
     console.log('Role:', user.role)
     console.log('ID:', user.id)
 
   } catch (error) {
-    console.error('❌ Error creating super admin:', error)
+    console.error(' Error creating super admin:', error)
   } finally {
     await db.$disconnect()
   }

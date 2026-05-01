@@ -80,7 +80,7 @@ export async function sendEmail(emailData: EmailData): Promise<boolean> {
   try {
     // In development, log email instead of sending
     if (EMAIL_CONFIG.isDevelopment) {
-      console.log('\n📧 EMAIL (DEVELOPMENT MODE):')
+      console.log('\n EMAIL (DEVELOPMENT MODE):')
       console.log(`To: ${emailData.to}`)
       console.log(`Subject: ${emailData.subject}`)
       console.log(`From: ${EMAIL_CONFIG.fromName} <${EMAIL_CONFIG.from}>`)
@@ -104,7 +104,7 @@ export async function sendEmail(emailData: EmailData): Promise<boolean> {
       try {
         const success = await method()
         if (success) {
-          console.log(`📧 Email sent successfully to ${emailData.to}: ${emailData.subject}`)
+          console.log(` Email sent successfully to ${emailData.to}: ${emailData.subject}`)
           return true
         }
       } catch (methodError) {
@@ -143,7 +143,7 @@ async function sendViaResend(emailData: EmailData): Promise<boolean> {
       throw new Error(`Resend API error: ${error.message}`)
     }
     
-    console.log(`✅ Resend email sent: ${data?.id}`)
+    console.log(` Resend email sent: ${data?.id}`)
     return true
     
   } catch (error) {
@@ -179,7 +179,7 @@ async function sendViaSMTP(emailData: EmailData): Promise<boolean> {
     }
     
     const result = await transporter.sendMail(mailOptions)
-    console.log(`✅ SMTP email sent: ${result.messageId}`)
+    console.log(` SMTP email sent: ${result.messageId}`)
     return true
     
   } catch (error) {
@@ -190,7 +190,7 @@ async function sendViaSMTP(emailData: EmailData): Promise<boolean> {
 
 // Console log fallback (for when all else fails)
 async function sendViaConsoleLog(emailData: EmailData): Promise<boolean> {
-  console.log('\n🔔 EMAIL FALLBACK (Console Log):')
+  console.log('\n EMAIL FALLBACK (Console Log):')
   console.log(`To: ${emailData.to}`)
   console.log(`Subject: ${emailData.subject}`)
   console.log(`From: ${EMAIL_CONFIG.fromName} <${EMAIL_CONFIG.from}>`)
@@ -220,13 +220,13 @@ export function renderEmailTemplate(component: React.ReactElement): string {
 
 // Helper to generate email content based on notification type
 export function getEmailSubjectPrefix(type: string, priority: string): string {
-  const priorityPrefix = priority === 'URGENT' ? '🚨 URGENTE: ' : 
-                        priority === 'HIGH' ? '⚡ ' : ''
+  const priorityPrefix = priority === 'URGENT' ? ' URGENTE: ' : 
+                        priority === 'HIGH' ? ' ' : ''
   
-  const typePrefix = type === 'ERROR' ? '❌ ' :
-                    type === 'WARNING' ? '⚠️ ' :
-                    type === 'SUCCESS' ? '✅ ' : 
-                    '📢 '
+  const typePrefix = type === 'ERROR' ? ' ' :
+                    type === 'WARNING' ? '️ ' :
+                    type === 'SUCCESS' ? ' ' : 
+                    ' '
   
   return priorityPrefix + typePrefix
 }

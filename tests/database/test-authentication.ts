@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 
 async function testAuthentication() {
   try {
-    console.log('🧪 COMPREHENSIVE AUTHENTICATION TEST\n');
+    console.log(' COMPREHENSIVE AUTHENTICATION TEST\n');
     
     const testCredentials = [
       { 
@@ -33,7 +33,7 @@ async function testAuthentication() {
     
     for (let i = 0; i < testCredentials.length; i++) {
       const cred = testCredentials[i];
-      console.log(`\n${i + 1}. 🔐 TESTING: ${cred.email}`);
+      console.log(`\n${i + 1}.  TESTING: ${cred.email}`);
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       
       // Step 1: Find user
@@ -42,11 +42,11 @@ async function testAuthentication() {
       });
       
       if (!user) {
-        console.log('❌ USER NOT FOUND');
+        console.log(' USER NOT FOUND');
         continue;
       }
       
-      console.log(`✅ User found: ${user.name || 'No name'}`);
+      console.log(` User found: ${user.name || 'No name'}`);
       console.log(`   Role: ${user.role} (expected: ${cred.expectedRole})`);
       console.log(`   Church ID: ${user.churchId || 'NULL'} (expected: ${cred.expectedChurchId || 'NULL'})`);
       console.log(`   Active: ${user.isActive}`);
@@ -54,13 +54,13 @@ async function testAuthentication() {
       // Step 2: Test password
       if (user.password) {
         const passwordMatch = await bcrypt.compare(cred.password, user.password);
-        console.log(`🔑 Password: ${passwordMatch ? '✅ MATCH' : '❌ NO MATCH'}`);
+        console.log(` Password: ${passwordMatch ? ' MATCH' : ' NO MATCH'}`);
         
         if (!passwordMatch) {
-          console.log('     🔧 Password issue detected'); 
+          console.log('      Password issue detected'); 
         }
       } else {
-        console.log('🔑 Password: ❌ NO PASSWORD HASH');
+        console.log(' Password:  NO PASSWORD HASH');
       }
       
       // Step 3: Test church mapping (if applicable)
@@ -70,18 +70,18 @@ async function testAuthentication() {
         });
         
         if (church) {
-          console.log(`🏛️ Church: ✅ ${church.name} (Active: ${church.isActive})`);
+          console.log(`️ Church:  ${church.name} (Active: ${church.isActive})`);
           
           // Test data access
           const memberCount = await db.members.count({ where: { churchId: user.churchId } });
           const eventCount = await db.events.count({ where: { churchId: user.churchId } });
           
-          console.log(`📊 Data Access: ${memberCount} members, ${eventCount} events`);
+          console.log(` Data Access: ${memberCount} members, ${eventCount} events`);
         } else {
-          console.log('🏛️ Church: ❌ INVALID CHURCH ID');
+          console.log('️ Church:  INVALID CHURCH ID');
         }
       } else {
-        console.log('🏛️ Church: 🔵 Platform Level (SUPER_ADMIN)');
+        console.log('️ Church:  Platform Level (SUPER_ADMIN)');
       }
       
       // Step 4: Overall status
@@ -91,11 +91,11 @@ async function testAuthentication() {
                      user.isActive &&
                      user.password;
       
-      console.log(`📋 Overall Status: ${isValid ? '✅ AUTHENTICATION READY' : '❌ ISSUES FOUND'}`);
+      console.log(` Overall Status: ${isValid ? ' AUTHENTICATION READY' : ' ISSUES FOUND'}`);
     }
     
     // Summary
-    console.log('\n\n🎯 AUTHENTICATION TEST SUMMARY:');
+    console.log('\n\n AUTHENTICATION TEST SUMMARY:');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     
     const allUsers = await db.users.findMany({ 
@@ -111,19 +111,19 @@ async function testAuthentication() {
       }
     }
     
-    console.log(`✅ ${workingCredentials.length}/${testCredentials.length} accounts ready for login`);
-    console.log(`📝 Working accounts: ${workingCredentials.join(', ')}`);
+    console.log(` ${workingCredentials.length}/${testCredentials.length} accounts ready for login`);
+    console.log(` Working accounts: ${workingCredentials.join(', ')}`);
     
     if (workingCredentials.length === testCredentials.length) {
-      console.log('\n🎉 ALL AUTHENTICATION TESTS PASSED!');
+      console.log('\n ALL AUTHENTICATION TESTS PASSED!');
       console.log('   Ready for production login testing');
     } else {
-      console.log('\n⚠️ SOME AUTHENTICATION ISSUES REMAIN');
+      console.log('\n️ SOME AUTHENTICATION ISSUES REMAIN');
     }
     
     process.exit(0);
   } catch (error) {
-    console.error('❌ AUTHENTICATION TEST FAILED:', error.message);
+    console.error(' AUTHENTICATION TEST FAILED:', error.message);
     process.exit(1);
   }
 }

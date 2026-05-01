@@ -21,7 +21,7 @@ export default function AdvancedExportSystemManual() {
     <div className="container mx-auto p-6 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-          📤 Sistema de Exportación Avanzado
+           Sistema de Exportación Avanzado
           <Badge variant="secondary">🆕 Nuevo</Badge>
         </h1>
         <p className="text-muted-foreground">
@@ -182,7 +182,7 @@ export default function AdvancedExportSystemManual() {
             
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📊 Datos Administrativos:</h4>
+                <h4 className="font-semibold mb-3"> Datos Administrativos:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Miembros:</strong> Perfiles completos, estado espiritual, contactos</li>
                   <li>• <strong>Voluntarios:</strong> Posiciones, habilidades, disponibilidad</li>
@@ -193,7 +193,7 @@ export default function AdvancedExportSystemManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">📈 Datos Analíticos:</h4>
+                <h4 className="font-semibold mb-3"> Datos Analíticos:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Analíticas Generales:</strong> Métricas de crecimiento</li>
                   <li>• <strong>Analíticas IA:</strong> Predicciones y recomendaciones</li>
@@ -205,7 +205,7 @@ export default function AdvancedExportSystemManual() {
             </div>
 
             <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4 mt-6">
-              <h4 className="font-semibold text-[hsl(var(--info))] mb-2">🔐 Datos Sensibles:</h4>
+              <h4 className="font-semibold text-[hsl(var(--info))] mb-2"> Datos Sensibles:</h4>
               <p className="text-sm text-[hsl(var(--info))]">
                 El sistema automáticamente anonimiza datos personales sensibles según configuración de privacidad. 
                 Solo usuarios con permisos adecuados pueden exportar información completa.
@@ -226,7 +226,7 @@ export default function AdvancedExportSystemManual() {
             
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🎨 Elementos de Branding:</h4>
+                <h4 className="font-semibold mb-3"> Elementos de Branding:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Logo de iglesia:</strong> Automáticamente incluido en header</li>
                   <li>• <strong>Colores corporativos:</strong> Según configuración de tema</li>
@@ -237,7 +237,7 @@ export default function AdvancedExportSystemManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">📋 Metadatos Incluidos:</h4>
+                <h4 className="font-semibold mb-3"> Metadatos Incluidos:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Fecha de generación:</strong> Timestamp automático</li>
                   <li>• <strong>Usuario generador:</strong> Responsable del reporte</li>
@@ -249,7 +249,7 @@ export default function AdvancedExportSystemManual() {
             </div>
 
             <div className="bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg p-4">
-              <h4 className="font-semibold text-[hsl(var(--success))] mb-2">✨ Auto-Configuración:</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-2"> Auto-Configuración:</h4>
               <p className="text-sm text-[hsl(var(--success))]">
                 El branding se configura automáticamente desde el perfil de la iglesia. 
                 No necesita configurar nada adicional - el sistema usa la información ya guardada.
@@ -364,7 +364,7 @@ export default function AdvancedExportSystemManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-3 gap-4">
               <div className="border rounded-lg p-4">
-                <h4 className="font-semibold mb-2">⚡ Velocidad:</h4>
+                <h4 className="font-semibold mb-2"> Velocidad:</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Hasta 1,000 registros:</strong> &lt;3 segundos</li>
                   <li>• <strong>1,000-10,000 registros:</strong> &lt;10 segundos</li>
@@ -372,7 +372,7 @@ export default function AdvancedExportSystemManual() {
                 </ul>
               </div>
               <div className="border rounded-lg p-4">
-                <h4 className="font-semibold mb-2">📏 Límites:</h4>
+                <h4 className="font-semibold mb-2"> Límites:</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Máximo por export:</strong> 50,000 registros</li>
                   <li>• <strong>Tamaño de archivo:</strong> &lt;50MB</li>
@@ -380,7 +380,7 @@ export default function AdvancedExportSystemManual() {
                 </ul>
               </div>
               <div className="border rounded-lg p-4">
-                <h4 className="font-semibold mb-2">🎯 Optimización:</h4>
+                <h4 className="font-semibold mb-2"> Optimización:</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Caching inteligente:</strong> Datos pre-procesados</li>
                   <li>• <strong>Compresión automática:</strong> Archivos más pequeños</li>
@@ -402,7 +402,7 @@ export default function AdvancedExportSystemManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">🏛️ Uso Administrativo:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">️ Uso Administrativo:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Reportes de junta:</strong> PDF ejecutivo con métricas clave</li>
                   <li>• <strong>Informes ministeriales:</strong> Performance por departamento</li>
@@ -411,7 +411,7 @@ export default function AdvancedExportSystemManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--info))]">⚙️ Uso Técnico:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--info))]">️ Uso Técnico:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Migración de datos:</strong> CSV para otros sistemas</li>
                   <li>• <strong>Backup selectivo:</strong> Respaldo de información crítica</li>
@@ -422,7 +422,7 @@ export default function AdvancedExportSystemManual() {
             </div>
 
             <div className="bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-lg p-4 mt-6">
-              <h4 className="font-semibold text-[hsl(var(--warning))] mb-2">💡 Sugerencia Pro:</h4>
+              <h4 className="font-semibold text-[hsl(var(--warning))] mb-2"> Sugerencia Pro:</h4>
               <p className="text-sm text-[hsl(var(--warning))]">
                 Para reportes recurrentes (mensuales, trimestrales), considere configurar automatización 
                 que envíe exportes por email en fechas específicas.

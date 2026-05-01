@@ -31,7 +31,7 @@ export default function UserMembersManual() {
         {/* Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>🏢 Sistema de Importación de Miembros - Perspectiva SUPER ADMIN</CardTitle>
+            <CardTitle> Sistema de Importación de Miembros - Perspectiva SUPER ADMIN</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Alert>
@@ -45,22 +45,22 @@ export default function UserMembersManual() {
             
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🏛️ Iglesias</h4>
+                <h4 className="font-semibold">️ Iglesias</h4>
                 <p className="text-xl font-bold text-[hsl(var(--info))]">100%</p>
                 <p className="text-xs text-muted-foreground">Con acceso al sistema</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">📊 Formatos</h4>
+                <h4 className="font-semibold"> Formatos</h4>
                 <p className="text-xl font-bold text-[hsl(var(--success))]">3</p>
                 <p className="text-xs text-muted-foreground">Excel, CSV, Direct</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🤖 Auto-Map</h4>
+                <h4 className="font-semibold"> Auto-Map</h4>
                 <p className="text-xl font-bold text-[hsl(var(--lavender))]">25+</p>
                 <p className="text-xs text-muted-foreground">Campos reconocidos</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⚡ Límites</h4>
+                <h4 className="font-semibold"> Límites</h4>
                 <p className="text-xl font-bold text-[hsl(var(--warning))]">1K</p>
                 <p className="text-xs text-muted-foreground">Registros por lote</p>
               </div>
@@ -72,14 +72,14 @@ export default function UserMembersManual() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span className="bg-muted/300 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">🔧</span>
+              <span className="bg-muted/300 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"></span>
               Arquitectura Técnica del Sistema
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🛠️ Componentes del Sistema</h4>
+                <h4 className="font-semibold mb-3">️ Componentes del Sistema</h4>
                 <div className="space-y-3 text-sm">
                   <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>API Endpoint:</strong> <code>/api/members/import</code></p>
@@ -109,7 +109,7 @@ export default function UserMembersManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">📋 Especificaciones Técnicas</h4>
+                <h4 className="font-semibold mb-3"> Especificaciones Técnicas</h4>
                 <div className="space-y-3 text-sm">
                   <div className="p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
                     <p><strong>Límites del Sistema:</strong></p>
@@ -157,7 +157,7 @@ export default function UserMembersManual() {
           <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🏢 Planning Center Online (PCO)</h4>
+                <h4 className="font-semibold mb-3"> Planning Center Online (PCO)</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Proceso de Exportación:</strong></p>
                   <ol className="ml-4 space-y-1 text-muted-foreground">
@@ -168,17 +168,17 @@ export default function UserMembersManual() {
                   </ol>
                   <p><strong>Campos Comunes en PCO:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground text-xs">
-                    <li>• First Name, Last Name ✅</li>
-                    <li>• Email, Phone ✅</li>
-                    <li>• Address, City, State, Zip ✅</li>
-                    <li>• Birthdate, Anniversary ✅</li>
-                    <li>• Status, Membership Date ✅</li>
+                    <li>• First Name, Last Name </li>
+                    <li>• Email, Phone </li>
+                    <li>• Address, City, State, Zip </li>
+                    <li>• Birthdate, Anniversary </li>
+                    <li>• Status, Membership Date </li>
                   </ul>
                 </div>
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">🏛️ ChurchTrac</h4>
+                <h4 className="font-semibold mb-3">️ ChurchTrac</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Proceso de Exportación:</strong></p>
                   <ol className="ml-4 space-y-1 text-muted-foreground">
@@ -189,17 +189,17 @@ export default function UserMembersManual() {
                   </ol>
                   <p><strong>Campos Comunes en ChurchTrac:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground text-xs">
-                    <li>• FirstName, LastName ✅</li>
-                    <li>• EmailAddress, CellPhone ✅</li>
-                    <li>• HomeAddress, City, State ✅</li>
-                    <li>• Birthday, JoinDate ✅</li>
-                    <li>• Gender, MaritalStatus ✅</li>
+                    <li>• FirstName, LastName </li>
+                    <li>• EmailAddress, CellPhone </li>
+                    <li>• HomeAddress, City, State </li>
+                    <li>• Birthday, JoinDate </li>
+                    <li>• Gender, MaritalStatus </li>
                   </ul>
                 </div>
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">⛪ FellowshipOne</h4>
+                <h4 className="font-semibold mb-3"> FellowshipOne</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Proceso de Exportación:</strong></p>
                   <ol className="ml-4 space-y-1 text-muted-foreground">
@@ -219,7 +219,7 @@ export default function UserMembersManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">🎸 Rock RMS</h4>
+                <h4 className="font-semibold mb-3"> Rock RMS</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Proceso de Exportación:</strong></p>
                   <ol className="ml-4 space-y-1 text-muted-foreground">
@@ -230,11 +230,11 @@ export default function UserMembersManual() {
                   </ol>
                   <p><strong>Campos de Rock RMS:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground text-xs">
-                    <li>• NickName, LastName ✅</li>
-                    <li>• Email, MobilePhone ✅</li>
-                    <li>• ConnectionStatus ✅</li>
-                    <li>• BirthDate, AnniversaryDate ✅</li>
-                    <li>• Campus, GroupMemberships ✅</li>
+                    <li>• NickName, LastName </li>
+                    <li>• Email, MobilePhone </li>
+                    <li>• ConnectionStatus </li>
+                    <li>• BirthDate, AnniversaryDate </li>
+                    <li>• Campus, GroupMemberships </li>
                   </ul>
                 </div>
               </div>
@@ -253,7 +253,7 @@ export default function UserMembersManual() {
           <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔍 Validaciones Automáticas</h4>
+                <h4 className="font-semibold mb-3"> Validaciones Automáticas</h4>
                 <div className="space-y-3">
                   <div className="p-3 bg-muted/30 rounded-lg">
                     <p className="font-semibold text-sm">Validación de Campos Requeridos</p>
@@ -287,10 +287,10 @@ export default function UserMembersManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">📊 Métricas de Importación</h4>
+                <h4 className="font-semibold mb-3"> Métricas de Importación</h4>
                 <div className="space-y-3">
                   <div className="p-4 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
-                    <h5 className="font-semibold text-sm mb-2">✅ Importaciones Exitosas</h5>
+                    <h5 className="font-semibold text-sm mb-2"> Importaciones Exitosas</h5>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       <li>• Registros procesados sin errores</li>
                       <li>• Automatizaciones trigger correctamente</li>
@@ -299,7 +299,7 @@ export default function UserMembersManual() {
                   </div>
                   
                   <div className="p-4 bg-[hsl(var(--info)/0.10)] rounded-lg border border-[hsl(var(--info)/0.3)]">
-                    <h5 className="font-semibold text-sm mb-2">🔄 Actualizaciones</h5>
+                    <h5 className="font-semibold text-sm mb-2"> Actualizaciones</h5>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       <li>• Miembros existentes actualizados</li>
                       <li>• Preservación de datos críticos</li>
@@ -308,7 +308,7 @@ export default function UserMembersManual() {
                   </div>
                   
                   <div className="p-4 bg-[hsl(var(--destructive)/0.10)] rounded-lg border border-[hsl(var(--destructive)/0.3)]">
-                    <h5 className="font-semibold text-sm mb-2">❌ Fallos y Errores</h5>
+                    <h5 className="font-semibold text-sm mb-2"> Fallos y Errores</h5>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       <li>• Datos inválidos o incompletos</li>
                       <li>• Duplicados sin permiso de actualización</li>
@@ -341,7 +341,7 @@ export default function UserMembersManual() {
             
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <h5 className="font-semibold mb-2 text-sm">👤 Campos de Identificación</h5>
+                <h5 className="font-semibold mb-2 text-sm"> Campos de Identificación</h5>
                 <div className="text-xs bg-muted/30 p-3 rounded-lg">
                   <p><strong>firstName:</strong></p>
                   <p className="text-muted-foreground">first name, firstname, first_name, name (si es completo)</p>
@@ -355,7 +355,7 @@ export default function UserMembersManual() {
               </div>
               
               <div>
-                <h5 className="font-semibold mb-2 text-sm">📞 Campos de Contacto</h5>
+                <h5 className="font-semibold mb-2 text-sm"> Campos de Contacto</h5>
                 <div className="text-xs bg-muted/30 p-3 rounded-lg">
                   <p><strong>phone:</strong></p>
                   <p className="text-muted-foreground">phone, phone number, mobile, cell, telephone</p>
@@ -369,7 +369,7 @@ export default function UserMembersManual() {
               </div>
               
               <div>
-                <h5 className="font-semibold mb-2 text-sm">📅 Campos de Fecha</h5>
+                <h5 className="font-semibold mb-2 text-sm"> Campos de Fecha</h5>
                 <div className="text-xs bg-muted/30 p-3 rounded-lg">
                   <p><strong>birthDate:</strong></p>
                   <p className="text-muted-foreground">birth date, birthdate, date of birth, dob</p>
@@ -384,7 +384,7 @@ export default function UserMembersManual() {
             </div>
 
             <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
-              <h5 className="font-semibold mb-2">🤖 Procesamientos Automáticos Especiales</h5>
+              <h5 className="font-semibold mb-2"> Procesamientos Automáticos Especiales</h5>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
                 <div>
                   <p><strong>Nombres Completos:</strong></p>
@@ -416,7 +416,7 @@ export default function UserMembersManual() {
           <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔍 Métricas de Uso del Sistema</h4>
+                <h4 className="font-semibold mb-3"> Métricas de Uso del Sistema</h4>
                 <div className="space-y-3 text-sm">
                   <p><strong>Acceder a Analytics:</strong></p>
                   <ol className="ml-4 space-y-1 text-muted-foreground">
@@ -441,7 +441,7 @@ export default function UserMembersManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">🚨 Troubleshooting y Soporte</h4>
+                <h4 className="font-semibold mb-3"> Troubleshooting y Soporte</h4>
                 <div className="space-y-3 text-sm">
                   <p><strong>Problemas Comunes:</strong></p>
                   
@@ -461,7 +461,7 @@ export default function UserMembersManual() {
                   </div>
                   
                   <div className="mt-4 p-3 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
-                    <p><strong>💡 Escalación a Soporte:</strong></p>
+                    <p><strong> Escalación a Soporte:</strong></p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-1">
                       <li>• Migraciones de +5000 miembros</li>
                       <li>• Sistemas no estándar</li>
@@ -486,7 +486,7 @@ export default function UserMembersManual() {
           <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">⚙️ Configuraciones del Sistema</h4>
+                <h4 className="font-semibold mb-3">️ Configuraciones del Sistema</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Límites Configurables:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground text-xs">
@@ -507,7 +507,7 @@ export default function UserMembersManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">📋 Logging y Auditoría</h4>
+                <h4 className="font-semibold mb-3"> Logging y Auditoría</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Logs Automáticos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground text-xs">
@@ -527,7 +527,7 @@ export default function UserMembersManual() {
                   </ol>
                   
                   <div className="mt-3 p-2 bg-[hsl(var(--warning)/0.10)] rounded border border-[hsl(var(--warning)/0.3)]">
-                    <p className="text-xs"><strong>🔒 Privacidad:</strong> Los logs están aislados por iglesia y solo son accesibles por SUPER_ADMIN y la iglesia propietaria.</p>
+                    <p className="text-xs"><strong> Privacidad:</strong> Los logs están aislados por iglesia y solo son accesibles por SUPER_ADMIN y la iglesia propietaria.</p>
                   </div>
                 </div>
               </div>
@@ -546,7 +546,7 @@ export default function UserMembersManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🤝 Protocolo de Migración Asistida</h4>
+                <h4 className="font-semibold mb-3"> Protocolo de Migración Asistida</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Para iglesias con +1000 miembros:</strong></p>
                   <ol className="ml-4 space-y-1 text-muted-foreground">
@@ -559,7 +559,7 @@ export default function UserMembersManual() {
                   </ol>
                   
                   <div className="mt-3 p-3 bg-[hsl(var(--info)/0.10)] rounded-lg border border-[hsl(var(--info)/0.3)]">
-                    <p><strong>🎯 SLA de Migración:</strong></p>
+                    <p><strong> SLA de Migración:</strong></p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-1">
                       <li>• Iglesias pequeñas (&lt;500): 2-4 horas</li>
                       <li>• Iglesias medianas (500-2000): 1 día</li>
@@ -570,7 +570,7 @@ export default function UserMembersManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">📞 Escalación y Soporte Especializado</h4>
+                <h4 className="font-semibold mb-3"> Escalación y Soporte Especializado</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Casos para Escalación:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -582,14 +582,14 @@ export default function UserMembersManual() {
                   </ul>
                   
                   <div className="mt-3 p-3 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
-                    <p><strong>📋 Checklist Pre-Migración:</strong></p>
+                    <p><strong> Checklist Pre-Migración:</strong></p>
                     <ul className="text-xs text-muted-foreground space-y-1 mt-1">
-                      <li>☑️ Backup de datos actual</li>
-                      <li>☑️ Validar acceso de administrador</li>
-                      <li>☑️ Confirmar format compliance</li>
-                      <li>☑️ Test con muestra pequeña</li>
-                      <li>☑️ Plan de rollback definido</li>
-                      <li>☑️ Ventana de mantenimiento coordinada</li>
+                      <li>️ Backup de datos actual</li>
+                      <li>️ Validar acceso de administrador</li>
+                      <li>️ Confirmar format compliance</li>
+                      <li>️ Test con muestra pequeña</li>
+                      <li>️ Plan de rollback definido</li>
+                      <li>️ Ventana de mantenimiento coordinada</li>
                     </ul>
                   </div>
                 </div>
@@ -601,12 +601,12 @@ export default function UserMembersManual() {
         {/* Quick Reference */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Referencia Rápida para SUPER ADMIN</CardTitle>
+            <CardTitle> Referencia Rápida para SUPER ADMIN</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">🔧 Comandos de Diagnóstico</h4>
+                <h4 className="font-semibold mb-2"> Comandos de Diagnóstico</h4>
                 <ul className="space-y-1 text-muted-foreground text-xs">
                   <li>• <code>GET /api/members?churchId=X</code> - Listar miembros</li>
                   <li>• <code>POST /api/members/import</code> - Procesar importación</li>
@@ -615,7 +615,7 @@ export default function UserMembersManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">📊 Métricas Clave</h4>
+                <h4 className="font-semibold mb-2"> Métricas Clave</h4>
                 <ul className="space-y-1 text-muted-foreground text-xs">
                   <li>• <strong>Éxito Rate:</strong> Target &gt;95%</li>
                   <li>• <strong>Processing Time:</strong> &lt;30 seg per 100 records</li>
@@ -624,7 +624,7 @@ export default function UserMembersManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🚨 Alertas Críticas</h4>
+                <h4 className="font-semibold mb-2"> Alertas Críticas</h4>
                 <ul className="space-y-1 text-muted-foreground text-xs">
                   <li>• <strong>High Error Rate:</strong> &gt;20% fallos</li>
                   <li>• <strong>Large Import:</strong> &gt;500 registros</li>

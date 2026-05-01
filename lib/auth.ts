@@ -39,16 +39,16 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        devLog("🔐 AUTH: authorize() called with email:", credentials?.email);
+        devLog(" AUTH: authorize() called with email:", credentials?.email);
 
         if (!credentials?.email || !credentials?.password) {
-          devLog("❌ AUTH: Missing credentials");
+          devLog(" AUTH: Missing credentials");
           return null;
         }
 
         // Database authentication ONLY - no fallback users
         try {
-          console.log("🔐 AUTH[PROD]: Looking up user:", credentials.email);
+          console.log(" AUTH[PROD]: Looking up user:", credentials.email);
 
           const user = await db.users.findUnique({
             where: {
@@ -57,13 +57,13 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user || !user.password) {
-            console.error("❌ AUTH[PROD]: User not found for email:", credentials.email);
-            devLog("❌ AUTH: User not found or no password in database");
+            console.error(" AUTH[PROD]: User not found for email:", credentials.email);
+            devLog(" AUTH: User not found or no password in database");
             return null;
           }
 
-          devLog("✅ AUTH: User found:", user.email, "Role:", user.role);
-          console.log("✅ AUTH[PROD]: User found, role:", user.role, "active:", user.isActive, "hasPassword:", !!user.password);
+          devLog(" AUTH: User found:", user.email, "Role:", user.role);
+          console.log(" AUTH[PROD]: User found, role:", user.role, "active:", user.isActive, "hasPassword:", !!user.password);
 
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
@@ -71,14 +71,14 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!isPasswordValid) {
-            console.error("❌ AUTH[PROD]: Password mismatch for:", credentials.email, "hash_prefix:", user.password.substring(0, 7));
-            devLog("❌ AUTH: Invalid password");
+            console.error(" AUTH[PROD]: Password mismatch for:", credentials.email, "hash_prefix:", user.password.substring(0, 7));
+            devLog(" AUTH: Invalid password");
             return null;
           }
 
-          console.log("✅ AUTH[PROD]: Login successful for:", credentials.email);
+          console.log(" AUTH[PROD]: Login successful for:", credentials.email);
 
-          devLog("✅ AUTH: Password valid, returning user object");
+          devLog(" AUTH: Password valid, returning user object");
           devLog("   ID:", user.id);
           devLog("   Role:", user.role);
           devLog("   churchId:", user.churchId);
@@ -91,7 +91,7 @@ export const authOptions: NextAuthOptions = {
             churchId: user.churchId,
           };
         } catch (error) {
-          console.error("❌ AUTH: Database connection FAILED");
+          console.error(" AUTH: Database connection FAILED");
           console.error(
             "Error type:",
             error instanceof Error ? error.constructor.name : "Unknown",
@@ -111,7 +111,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        devLog("🔐 JWT: Storing user in token");
+        devLog(" JWT: Storing user in token");
         devLog("   user.id:", user.id);
         devLog("   user.role:", user.role);
         devLog("   user.churchId:", user.churchId);
@@ -126,7 +126,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      devLog("🔐 SESSION: Building session from token");
+      devLog(" SESSION: Building session from token");
       devLog("   token.sub:", token.sub);
       devLog("   token.role:", token.role);
       devLog("   token.churchId:", token.churchId);
@@ -146,7 +146,7 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (user) {
-            devLog("✅ SESSION: User fetched from DB");
+            devLog(" SESSION: User fetched from DB");
             devLog("   role:", user.role);
             devLog("   churchId:", user.churchId);
 
@@ -159,12 +159,12 @@ export const authOptions: NextAuthOptions = {
             };
           } else {
             devLog(
-              "❌ SESSION: User not found in DB for token.sub:",
+              " SESSION: User not found in DB for token.sub:",
               token.sub,
             );
           }
         } catch (error) {
-          devLog("⚠️ SESSION: Database connection failed, using token data");
+          devLog("️ SESSION: Database connection failed, using token data");
           devLog(
             "Error:",
             error instanceof Error ? error.message : String(error),

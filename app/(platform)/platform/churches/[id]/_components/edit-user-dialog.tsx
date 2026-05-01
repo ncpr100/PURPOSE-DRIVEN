@@ -105,7 +105,7 @@ export default function EditUserDialog({ isOpen, onClose, user, onSuccess }: Edi
 
       toast.success(
         showPasswordReset 
-          ? '✅ Usuario actualizado. Contraseña temporal enviada por email.'
+          ? 'Usuario actualizado. Contraseña temporal enviada por email.'
           : 'Usuario actualizado exitosamente'
       )
       

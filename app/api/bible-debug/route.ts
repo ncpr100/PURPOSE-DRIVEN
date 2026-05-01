@@ -6,13 +6,13 @@ export const dynamic = 'force-dynamic'
 export async function POST(request: NextRequest) {
   try {
     const { reference, version } = await request.json()
-    console.log(`🔍 DEBUG: Testing ${reference} in ${version}`)
+    console.log(` DEBUG: Testing ${reference} in ${version}`)
     
     // Step 1: Test direct Bible API call
     const refString = `${reference}`
     const url = `https://bible-api.com/${encodeURIComponent(refString)}`
     
-    console.log(`🔗 Testing URL: ${url}`)
+    console.log(` Testing URL: ${url}`)
     
     const response = await fetch(url, {
       headers: {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
     
     const data = await response.json()
-    console.log(`📖 Raw API data:`, data)
+    console.log(` Raw API data:`, data)
     
     return NextResponse.json({
       success: true,

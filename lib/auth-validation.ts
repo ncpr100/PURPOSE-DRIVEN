@@ -20,7 +20,7 @@ export function validateJWTForMiddleware(token: JWT): token is JWT & RequiredJWT
     typeof token.role === 'string'
   
   if (!hasRequiredFields) {
-    console.error('❌ JWT VALIDATION FAILED - Missing required fields:', {
+    console.error(' JWT VALIDATION FAILED - Missing required fields:', {
       hasSub: !!token.sub,
       hasRole: !!token.role,
       hasChurchId: !!token.churchId
@@ -33,11 +33,11 @@ export function validateJWTForMiddleware(token: JWT): token is JWT & RequiredJWT
 /**
  * VALIDATION CHECKLIST for JWT Changes:
  * 
- * ✅ Does middleware.ts use this field?
- * ✅ Does any page-level authorization check this field?
- * ✅ Is this field needed for multi-tenant data scoping?
- * ✅ Have you tested with a FRESH login (new JWT)?
- * ✅ Have you checked ALL protected routes still work?
+ *  Does middleware.ts use this field?
+ *  Does any page-level authorization check this field?
+ *  Is this field needed for multi-tenant data scoping?
+ *  Have you tested with a FRESH login (new JWT)?
+ *  Have you checked ALL protected routes still work?
  * 
  * NEVER remove fields from JWT without checking:
  * - middleware.ts (line 130-180)
@@ -53,9 +53,9 @@ export const MIDDLEWARE_REQUIRED_FIELDS = [
 
 // Validate at build time
 export function validateAuthArchitecture() {
-  console.log('🔐 Validating Auth Architecture...')
-  console.log('✅ JWT must include:', MIDDLEWARE_REQUIRED_FIELDS)
-  console.log('✅ Middleware checks: token.role')
-  console.log('✅ Multi-tenant scoping uses: token.churchId')
-  console.log('⚠️  IMPORTANT: Changes to lib/auth.ts JWT callback require testing ALL protected routes')
+  console.log(' Validating Auth Architecture...')
+  console.log(' JWT must include:', MIDDLEWARE_REQUIRED_FIELDS)
+  console.log(' Middleware checks: token.role')
+  console.log(' Multi-tenant scoping uses: token.churchId')
+  console.log('️  IMPORTANT: Changes to lib/auth.ts JWT callback require testing ALL protected routes')
 }

@@ -28,7 +28,7 @@ export default function EventsManual() {
         {/* Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>📅 Gestión de Eventos - Manual Completo</CardTitle>
+            <CardTitle> Gestión de Eventos - Manual Completo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -36,19 +36,19 @@ export default function EventsManual() {
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
-                <h4 className="font-semibold">📋 Secciones</h4>
+                <h4 className="font-semibold"> Secciones</h4>
                 <p className="text-xl font-bold text-[hsl(var(--info))]">7</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⏱️ Tiempo</h4>
+                <h4 className="font-semibold">️ Tiempo</h4>
                 <p className="text-xl font-bold text-[hsl(var(--success))]">30 min</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🎯 Nivel</h4>
+                <h4 className="font-semibold"> Nivel</h4>
                 <p className="text-lg font-bold text-[hsl(var(--lavender))]">Intermedio</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
-                <h4 className="font-semibold">👤 Rol Mínimo</h4>
+                <h4 className="font-semibold"> Rol Mínimo</h4>
                 <p className="text-lg font-bold text-[hsl(var(--warning))]">LIDER</p>
               </div>
             </div>
@@ -66,9 +66,9 @@ export default function EventsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">➕ Proceso de Creación</h4>
+                <h4 className="font-semibold mb-3"> Proceso de Creación</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>1.1.</strong> Navegue a <code>Eventos → ➕ Nuevo Evento</code></p>
+                  <p><strong>1.1.</strong> Navegue a <code>Eventos →  Nuevo Evento</code></p>
                   <p><strong>1.2.</strong> Complete la información básica:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Nombre del evento:</strong> Título descriptivo</li>
@@ -84,11 +84,11 @@ export default function EventsManual() {
                     <li>• Notificaciones automáticas</li>
                     <li>• Requiere aprobación</li>
                   </ul>
-                  <p><strong>1.4.</strong> Haga clic en &quot;💾 Crear Evento&quot;</p>
+                  <p><strong>1.4.</strong> Haga clic en &quot; Crear Evento&quot;</p>
                 </div>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📋 Tipos de Eventos</h4>
+                <h4 className="font-semibold mb-2"> Tipos de Eventos</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Servicios Regulares:</strong> Cultos dominicales, estudios bíblicos</li>
                   <li>• <strong>Eventos Especiales:</strong> Conferencias, retiros, celebraciones</li>
@@ -97,7 +97,7 @@ export default function EventsManual() {
                   <li>• <strong>Eventos Externos:</strong> Evangelismo, visitas</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
-                  <p className="text-xs"><strong>💡 Tip:</strong> Use plantillas para eventos recurrentes</p>
+                  <p className="text-xs"><strong> Tip:</strong> Use plantillas para eventos recurrentes</p>
                 </div>
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function EventsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📝 Configurar Registro</h4>
+                <h4 className="font-semibold mb-3"> Configurar Registro</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>2.1.</strong> Al crear evento, active &quot;Registro Requerido&quot;</p>
                   <p><strong>2.2.</strong> Configure campos del formulario:</p>
@@ -134,16 +134,16 @@ export default function EventsManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">👥 Gestionar Registros</h4>
+                <h4 className="font-semibold mb-3"> Gestionar Registros</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Desde la página del evento:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;👁️ Ver Registrados&quot;:</strong> Lista completa</li>
-                    <li>• <strong>&quot;➕ Registro Manual&quot;:</strong> Agregar directamente</li>
-                    <li>• <strong>&quot;📧 Comunicar&quot;:</strong> Enviar mensaje a registrados</li>
-                    <li>• <strong>&quot;📈 Exportar Lista&quot;:</strong> Descargar Excel/CSV</li>
-                    <li>• <strong>&quot;✅ Aprobar Pendientes&quot;:</strong> Si requiere aprobación</li>
-                    <li>• <strong>&quot;❌ Cancelar Registro&quot;:</strong> Remover asistente</li>
+                    <li>• <strong>&quot;️ Ver Registrados&quot;:</strong> Lista completa</li>
+                    <li>• <strong>&quot; Registro Manual&quot;:</strong> Agregar directamente</li>
+                    <li>• <strong>&quot; Comunicar&quot;:</strong> Enviar mensaje a registrados</li>
+                    <li>• <strong>&quot; Exportar Lista&quot;:</strong> Descargar Excel/CSV</li>
+                    <li>• <strong>&quot; Aprobar Pendientes&quot;:</strong> Si requiere aprobación</li>
+                    <li>• <strong>&quot; Cancelar Registro&quot;:</strong> Remover asistente</li>
                   </ul>
                 </div>
               </div>
@@ -162,7 +162,7 @@ export default function EventsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📱 Configuración de QR</h4>
+                <h4 className="font-semibold mb-3"> Configuración de QR</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>3.1.</strong> En el evento, active &quot;Check-in con QR&quot;</p>
                   <p><strong>3.2.</strong> El sistema genera automáticamente:</p>
@@ -177,7 +177,7 @@ export default function EventsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📲 Instrucciones para Asistentes</h4>
+                <h4 className="font-semibold mb-2"> Instrucciones para Asistentes</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Para registrar asistencia:</strong></p>
                   <ol className="ml-4 space-y-1 text-muted-foreground">
@@ -188,7 +188,7 @@ export default function EventsManual() {
                     <li>5. Confirme su asistencia</li>
                   </ol>
                   <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
-                    <p className="text-xs"><strong>✨ Automático:</strong> Miembros existentes se registran instantáneamente</p>
+                    <p className="text-xs"><strong> Automático:</strong> Miembros existentes se registran instantáneamente</p>
                   </div>
                 </div>
               </div>
@@ -207,29 +207,29 @@ export default function EventsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📋 Plantillas Predefinidas</h4>
+                <h4 className="font-semibold mb-3"> Plantillas Predefinidas</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>4.1.</strong> Al crear evento, seleccione plantilla:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>⛪ Servicio Dominical:</strong>
+                    <li>• <strong> Servicio Dominical:</strong>
                       <br />Horario típico, check-in activado, capacidad estándar</li>
-                    <li>• <strong>📖 Estudio Bíblico:</strong>
+                    <li>• <strong> Estudio Bíblico:</strong>
                       <br />Grupo pequeño, registro opcional, materiales</li>
-                    <li>• <strong>🎉 Evento Especial:</strong>
+                    <li>• <strong> Evento Especial:</strong>
                       <br />Capacidad grande, registro requerido, promoción</li>
-                    <li>• <strong>👥 Reunión Ministerial:</strong>
+                    <li>• <strong> Reunión Ministerial:</strong>
                       <br />Privado, solo invitados, sin check-in público</li>
-                    <li>• <strong>🍽️ Actividad Social:</strong>
+                    <li>• <strong>️ Actividad Social:</strong>
                       <br />Familiar, comida, confirmación necesaria</li>
                   </ul>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">🛠️ Personalizar Plantillas</h4>
+                <h4 className="font-semibold mb-3">️ Personalizar Plantillas</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Para modificar plantillas:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;⚙️ Configurar Plantillas&quot;:</strong> Desde página de eventos</li>
+                    <li>• <strong>&quot;️ Configurar Plantillas&quot;:</strong> Desde página de eventos</li>
                     <li>• <strong>Modificar campos:</strong> Agregar/quitar información</li>
                     <li>• <strong>Establecer valores por defecto:</strong> Duración, ubicación</li>
                     <li>• <strong>Guardar plantilla custom:</strong> Para uso futuro</li>
@@ -258,41 +258,41 @@ export default function EventsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📊 Dashboard de Eventos</h4>
+                <h4 className="font-semibold mb-3"> Dashboard de Eventos</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Desde la página principal de eventos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;📅 Calendario&quot;:</strong> Vista mensual/semanal</li>
-                    <li>• <strong>&quot;📋 Lista&quot;:</strong> Todos los eventos próximos</li>
-                    <li>• <strong>&quot;📊 Estadísticas&quot;:</strong> Métricas de asistencia</li>
-                    <li>• <strong>&quot;🔍 Buscar&quot;:</strong> Filtrar por fecha/tipo</li>
+                    <li>• <strong>&quot; Calendario&quot;:</strong> Vista mensual/semanal</li>
+                    <li>• <strong>&quot; Lista&quot;:</strong> Todos los eventos próximos</li>
+                    <li>• <strong>&quot; Estadísticas&quot;:</strong> Métricas de asistencia</li>
+                    <li>• <strong>&quot; Buscar&quot;:</strong> Filtrar por fecha/tipo</li>
                   </ul>
                   <p><strong>Para cada evento individual:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;👁️ Ver Detalles&quot;:</strong> Información completa</li>
-                    <li>• <strong>&quot;✏️ Editar&quot;:</strong> Modificar configuración</li>
-                    <li>• <strong>&quot;👥 Ver Asistentes&quot;:</strong> Lista de registrados</li>
-                    <li>• <strong>&quot;📱 QR Check-in&quot;:</strong> Activar registro</li>
-                    <li>• <strong>&quot;📧 Comunicar&quot;:</strong> Mensaje a asistentes</li>
+                    <li>• <strong>&quot;️ Ver Detalles&quot;:</strong> Información completa</li>
+                    <li>• <strong>&quot;️ Editar&quot;:</strong> Modificar configuración</li>
+                    <li>• <strong>&quot; Ver Asistentes&quot;:</strong> Lista de registrados</li>
+                    <li>• <strong>&quot; QR Check-in&quot;:</strong> Activar registro</li>
+                    <li>• <strong>&quot; Comunicar&quot;:</strong> Mensaje a asistentes</li>
                   </ul>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">⚡ Acciones Rápidas</h4>
+                <h4 className="font-semibold mb-3"> Acciones Rápidas</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Botones de acción rápida:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;🚀 Evento Rápido&quot;:</strong> Crear servicio dominical automático</li>
-                    <li>• <strong>&quot;📂 Duplicar Evento&quot;:</strong> Copiar configuración existente</li>
-                    <li>• <strong>&quot;📅 Serie de Eventos&quot;:</strong> Crear eventos recurrentes</li>
-                    <li>• <strong>&quot;📊 Reporte Rápido&quot;:</strong> Estadísticas instantáneas</li>
+                    <li>• <strong>&quot; Evento Rápido&quot;:</strong> Crear servicio dominical automático</li>
+                    <li>• <strong>&quot; Duplicar Evento&quot;:</strong> Copiar configuración existente</li>
+                    <li>• <strong>&quot; Serie de Eventos&quot;:</strong> Crear eventos recurrentes</li>
+                    <li>• <strong>&quot; Reporte Rápido&quot;:</strong> Estadísticas instantáneas</li>
                   </ul>
                   <p><strong>Estados de eventos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>🟢 Activo:</strong> Registros abiertos</li>
                     <li>• <strong>🟡 En Curso:</strong> Evento sucediendo</li>
-                    <li>• <strong>🔴 Finalizado:</strong> Completado</li>
-                    <li>• <strong>⚫ Cancelado:</strong> No realizado</li>
+                    <li>• <strong> Finalizado:</strong> Completado</li>
+                    <li>• <strong> Cancelado:</strong> No realizado</li>
                   </ul>
                 </div>
               </div>
@@ -311,7 +311,7 @@ export default function EventsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔐 Seguridad Infantil</h4>
+                <h4 className="font-semibold mb-3"> Seguridad Infantil</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>6.1.</strong> Para eventos con niños, active &quot;Seguridad Infantil&quot;</p>
                   <p><strong>6.2.</strong> Funcionalidades incluidas:</p>
@@ -331,7 +331,7 @@ export default function EventsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">🚨 Protocolo de Emergencia</h4>
+                <h4 className="font-semibold mb-2"> Protocolo de Emergencia</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Contacto inmediato:</strong> Notificación automática a padres</li>
                   <li>• <strong>Información médica:</strong> Alergias y medicamentos</li>
@@ -354,7 +354,7 @@ export default function EventsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📈 Reportes Disponibles</h4>
+                <h4 className="font-semibold mb-3"> Reportes Disponibles</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>7.1.</strong> Acceda a <code>Analíticas → Eventos</code></p>
                   <p><strong>7.2.</strong> Tipos de reportes:</p>
@@ -370,23 +370,23 @@ export default function EventsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📊 Métricas Clave</h4>
+                <h4 className="font-semibold mb-2"> Métricas Clave</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="font-semibold">📅 Eventos Totales</p>
+                      <p className="font-semibold"> Eventos Totales</p>
                       <p className="text-muted-foreground">Este mes</p>
                     </div>
                     <div>
-                      <p className="font-semibold">👥 Asistencia Promedio</p>
+                      <p className="font-semibold"> Asistencia Promedio</p>
                       <p className="text-muted-foreground">Por evento</p>
                     </div>
                     <div>
-                      <p className="font-semibold">📈 Tendencia</p>
+                      <p className="font-semibold"> Tendencia</p>
                       <p className="text-muted-foreground">Crecimiento %</p>
                     </div>
                     <div>
-                      <p className="font-semibold">🎯 Cumplimiento</p>
+                      <p className="font-semibold"> Cumplimiento</p>
                       <p className="text-muted-foreground">vs. Capacidad</p>
                     </div>
                   </div>
@@ -399,35 +399,35 @@ export default function EventsManual() {
         {/* Quick Reference */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Referencia Rápida de Botones</CardTitle>
+            <CardTitle> Referencia Rápida de Botones</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">📅 Botones Principales</h4>
+                <h4 className="font-semibold mb-2"> Botones Principales</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;➕ Nuevo Evento&quot;:</strong> Crear evento desde cero</li>
-                  <li>• <strong>&quot;🚀 Evento Rápido&quot;:</strong> Servicio dominical automático</li>
-                  <li>• <strong>&quot;📊 Estadísticas&quot;:</strong> Ver analíticas generales</li>
-                  <li>• <strong>&quot;📅 Vista Calendario&quot;:</strong> Cambiar a calendario</li>
+                  <li>• <strong>&quot; Nuevo Evento&quot;:</strong> Crear evento desde cero</li>
+                  <li>• <strong>&quot; Evento Rápido&quot;:</strong> Servicio dominical automático</li>
+                  <li>• <strong>&quot; Estadísticas&quot;:</strong> Ver analíticas generales</li>
+                  <li>• <strong>&quot; Vista Calendario&quot;:</strong> Cambiar a calendario</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🛠️ Botones de Gestión</h4>
+                <h4 className="font-semibold mb-2">️ Botones de Gestión</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;👁️ Ver Detalles&quot;:</strong> Información completa</li>
-                  <li>• <strong>&quot;✏️ Editar&quot;:</strong> Modificar evento</li>
-                  <li>• <strong>&quot;📂 Duplicar&quot;:</strong> Copiar configuración</li>
-                  <li>• <strong>&quot;❌ Cancelar&quot;:</strong> Cancelar evento</li>
+                  <li>• <strong>&quot;️ Ver Detalles&quot;:</strong> Información completa</li>
+                  <li>• <strong>&quot;️ Editar&quot;:</strong> Modificar evento</li>
+                  <li>• <strong>&quot; Duplicar&quot;:</strong> Copiar configuración</li>
+                  <li>• <strong>&quot; Cancelar&quot;:</strong> Cancelar evento</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">👥 Botones de Asistentes</h4>
+                <h4 className="font-semibold mb-2"> Botones de Asistentes</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;👥 Ver Registrados&quot;:</strong> Lista de asistentes</li>
-                  <li>• <strong>&quot;➕ Registro Manual&quot;:</strong> Agregar directamente</li>
-                  <li>• <strong>&quot;📧 Comunicar&quot;:</strong> Mensaje a grupo</li>
-                  <li>• <strong>&quot;📊 Exportar&quot;:</strong> Descargar lista</li>
+                  <li>• <strong>&quot; Ver Registrados&quot;:</strong> Lista de asistentes</li>
+                  <li>• <strong>&quot; Registro Manual&quot;:</strong> Agregar directamente</li>
+                  <li>• <strong>&quot; Comunicar&quot;:</strong> Mensaje a grupo</li>
+                  <li>• <strong>&quot; Exportar&quot;:</strong> Descargar lista</li>
                 </ul>
               </div>
             </div>

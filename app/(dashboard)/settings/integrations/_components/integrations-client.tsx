@@ -372,12 +372,12 @@ export function IntegrationsClient({ userRole }: IntegrationsClientProps) {
                   <AlertDescription>
                     {testResults.success ? (
                       <div className="text-[hsl(var(--success))]">
-                        ✅ Mensaje enviado exitosamente via {testResults.provider}
+                        Mensaje enviado exitosamente via {testResults.provider}
                         {testResults.messageId && <div className="text-sm mt-1">ID: {testResults.messageId}</div>}
                       </div>
                     ) : (
                       <div className="text-[hsl(var(--destructive))]">
-                        ❌ Error: {testResults.error}
+                        Error: {testResults.error}
                       </div>
                     )}
                   </AlertDescription>
@@ -469,11 +469,11 @@ export function IntegrationsClient({ userRole }: IntegrationsClientProps) {
                   <AlertDescription>
                     {bulkResults.success ? (
                       <div className="text-[hsl(var(--success))]">
-                        ✅ Envío completado: {bulkResults.successful}/{bulkResults.total} mensajes enviados
+                        Envío completado: {bulkResults.successful}/{bulkResults.total} mensajes enviados
                       </div>
                     ) : (
                       <div className="text-[hsl(var(--destructive))]">
-                        ❌ Error en envío masivo: {bulkResults.error}
+                        Error en envío masivo: {bulkResults.error}
                       </div>
                     )}
                   </AlertDescription>

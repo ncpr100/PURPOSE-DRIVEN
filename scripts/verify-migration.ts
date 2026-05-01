@@ -4,7 +4,7 @@ const db = new PrismaClient()
 
 async function verifyMigration() {
   try {
-    console.log('🔍 VERIFYING MIGRATION DATA\n')
+    console.log(' VERIFYING MIGRATION DATA\n')
     console.log('═'.repeat(80))
 
     // Get church
@@ -13,11 +13,11 @@ async function verifyMigration() {
     })
 
     if (!church) {
-      console.log('❌ Church not found!')
+      console.log(' Church not found!')
       return
     }
 
-    console.log('✅ Church Found:')
+    console.log(' Church Found:')
     console.log(`   Name: ${church.name}`)
     console.log(`   ID: ${church.id}`)
     console.log(`   Email: ${church.email}\n`)
@@ -27,7 +27,7 @@ async function verifyMigration() {
       where: { churchId: church.id }
     })
 
-    console.log('👥 Member Count:')
+    console.log(' Member Count:')
     console.log(`   Total: ${totalMembers}\n`)
 
     // Count users by role
@@ -43,7 +43,7 @@ async function verifyMigration() {
       where: { churchId: church.id, role: 'LIDER' }
     })
 
-    console.log('👤 User Accounts by Role:')
+    console.log(' User Accounts by Role:')
     console.log(`   ADMIN_IGLESIA: ${adminCount}`)
     console.log(`   PASTOR: ${pastorCount}`)
     console.log(`   LIDER: ${liderCount}\n`)
@@ -58,7 +58,7 @@ async function verifyMigration() {
       select: { name: true }
     })
 
-    console.log('🎯 Ministries:')
+    console.log(' Ministries:')
     console.log(`   Total: ${ministryCount}`)
     ministries.forEach(m => console.log(`   - ${m.name}`))
     console.log()
@@ -77,7 +77,7 @@ async function verifyMigration() {
       }
     })
 
-    console.log('📋 Sample Members:')
+    console.log(' Sample Members:')
     sampleMembers.forEach(m => {
       console.log(`   - ${m.firstName} ${m.lastName}`)
       console.log(`     Email: ${m.email}`)
@@ -98,22 +98,22 @@ async function verifyMigration() {
       }
     })
 
-    console.log('🔐 Admin User:')
+    console.log(' Admin User:')
     if (admin) {
-      console.log(`   ✅ Found: ${admin.name}`)
+      console.log(`    Found: ${admin.name}`)
       console.log(`   Email: ${admin.email}`)
       console.log(`   Role: ${admin.role}`)
       console.log(`   Active: ${admin.isActive}`)
       console.log(`   Church ID: ${admin.churchId}`)
     } else {
-      console.log(`   ❌ Admin user not found!`)
+      console.log(`    Admin user not found!`)
     }
 
     console.log('\n' + '═'.repeat(80))
-    console.log('✅ VERIFICATION COMPLETE')
+    console.log(' VERIFICATION COMPLETE')
 
   } catch (error) {
-    console.error('❌ Verification failed:', error)
+    console.error(' Verification failed:', error)
   } finally {
     await db.$disconnect()
   }

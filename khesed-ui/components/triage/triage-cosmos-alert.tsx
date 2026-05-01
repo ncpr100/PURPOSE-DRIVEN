@@ -81,7 +81,7 @@ export function TriageCosmosAlert({
         fontSize: "22px", flexShrink: 0,
         animation: "alertPulse 0.8s ease-in-out infinite",
       }}>
-        🚨
+        
       </div>
 
       <div style={{ flex: 1, minWidth: 0 }}>

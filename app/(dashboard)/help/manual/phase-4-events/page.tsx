@@ -19,7 +19,7 @@ export default function Phase4EventsGuide() {
         <div className="flex items-center gap-4">
           <Calendar className="h-12 w-12" />
           <div>
-            <h1 className="text-4xl font-bold mb-2">📅 Sistema Inteligente de Eventos</h1>
+            <h1 className="text-4xl font-bold mb-2"> Sistema Inteligente de Eventos</h1>
             <p className="text-xl opacity-90">
               Planificación completa con IA, gestión de voluntarios, y comunicaciones automatizadas
             </p>
@@ -51,7 +51,7 @@ export default function Phase4EventsGuide() {
           Es como tener un asistente súper inteligente que te ayuda a organizar fiestas y reuniones de la iglesia. 
           No solo creas el evento, ¡también te ayuda a encontrar voluntarios, enviar invitaciones automáticas, 
           reservar salones y equipos, llevar el control del dinero, y ver quién asistió! Todo en un solo lugar, 
-          sin tener que usar muchas apps diferentes. ¡Es como magia organizada! ✨
+          sin tener que usar muchas apps diferentes. ¡Es como magia organizada! 
         </p>
       </div>
 
@@ -68,14 +68,14 @@ export default function Phase4EventsGuide() {
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { icon: <Calendar className="h-6 w-6 text-[hsl(var(--info))]" />, name: "Planificación", desc: "Crear y editar eventos", status: "✅ Funcional" },
-            { icon: <UserCheck className="h-6 w-6 text-[hsl(var(--success))]" />, name: "Voluntarios", desc: "Auto-asignación IA", status: "✅ Funcional" },
-            { icon: <Users className="h-6 w-6 text-[hsl(var(--lavender))]" />, name: "Miembros", desc: "Gestión de asistentes", status: "🔄 En desarrollo" },
-            { icon: <Coffee className="h-6 w-6 text-[hsl(var(--warning))]" />, name: "Recursos", desc: "Equipos y espacios", status: "✅ Funcional" },
-            { icon: <MessageSquare className="h-6 w-6 text-[hsl(var(--destructive))]" />, name: "Comunicaciones", desc: "Invitaciones automáticas", status: "🔄 En desarrollo" },
-            { icon: <Gift className="h-6 w-6 text-[hsl(var(--warning))]" />, name: "Presupuesto", desc: "Control de gastos", status: "🔄 En desarrollo" },
-            { icon: <BarChart className="h-6 w-6 text-primary" />, name: "Analíticas", desc: "Reportes y métricas", status: "🔄 En desarrollo" },
-            { icon: <CalendarPlus className="h-6 w-6 text-[hsl(var(--info))]" />, name: "Calendario", desc: "Vista mensual", status: "🔄 En desarrollo" }
+            { icon: <Calendar className="h-6 w-6 text-[hsl(var(--info))]" />, name: "Planificación", desc: "Crear y editar eventos", status: " Funcional" },
+            { icon: <UserCheck className="h-6 w-6 text-[hsl(var(--success))]" />, name: "Voluntarios", desc: "Auto-asignación IA", status: " Funcional" },
+            { icon: <Users className="h-6 w-6 text-[hsl(var(--lavender))]" />, name: "Miembros", desc: "Gestión de asistentes", status: " En desarrollo" },
+            { icon: <Coffee className="h-6 w-6 text-[hsl(var(--warning))]" />, name: "Recursos", desc: "Equipos y espacios", status: " Funcional" },
+            { icon: <MessageSquare className="h-6 w-6 text-[hsl(var(--destructive))]" />, name: "Comunicaciones", desc: "Invitaciones automáticas", status: " En desarrollo" },
+            { icon: <Gift className="h-6 w-6 text-[hsl(var(--warning))]" />, name: "Presupuesto", desc: "Control de gastos", status: " En desarrollo" },
+            { icon: <BarChart className="h-6 w-6 text-primary" />, name: "Analíticas", desc: "Reportes y métricas", status: " En desarrollo" },
+            { icon: <CalendarPlus className="h-6 w-6 text-[hsl(var(--info))]" />, name: "Calendario", desc: "Vista mensual", status: " En desarrollo" }
           ].map((module, idx) => (
             <Card key={idx} className="hover:shadow-lg transition-shadow bg-[hsl(var(--card))]">
               <CardContent className="pt-4 text-center">
@@ -139,7 +139,7 @@ export default function Phase4EventsGuide() {
               </h4>
               <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
-                  <p className="font-medium">📝 Crear Evento:</p>
+                  <p className="font-medium"> Crear Evento:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Clic en "+ Nuevo Evento"</li>
                     <li>• Título, descripción, categoría (CULTO, CONFERENCIA, etc.)</li>
@@ -148,13 +148,13 @@ export default function Phase4EventsGuide() {
                     <li>• Presupuesto estimado (en USD $)</li>
                     <li>• Público o privado</li>
                   </ul>
-                  <p className="font-medium mt-3">✏️ Editar Evento:</p>
+                  <p className="font-medium mt-3">️ Editar Evento:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Clic en botón "Editar" en la tarjeta del evento</li>
                     <li>• Modificar cualquier campo</li>
                     <li>• Guardar cambios</li>
                   </ul>
-                  <p className="font-medium mt-3">💡 Sugerencias IA:</p>
+                  <p className="font-medium mt-3"> Sugerencias IA:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Botón "Generar Sugerencias IA"</li>
                     <li>• Sistema sugiere título, descripción, horarios</li>
@@ -170,7 +170,7 @@ export default function Phase4EventsGuide() {
               </h4>
               <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
-                  <p className="font-medium">🤖 IA Asigna Voluntarios:</p>
+                  <p className="font-medium"> IA Asigna Voluntarios:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Clic en "Auto-Asignar" en tarjeta de evento</li>
                     <li>• Sistema analiza habilidades de voluntarios</li>
@@ -178,7 +178,7 @@ export default function Phase4EventsGuide() {
                     <li>• Balancea carga de trabajo</li>
                     <li>• Asigna automáticamente roles</li>
                   </ul>
-                  <p className="font-medium mt-3">👥 Roles Típicos:</p>
+                  <p className="font-medium mt-3"> Roles Típicos:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Sonido y multimedia</li>
                     <li>• Recepción y acomodadores</li>
@@ -197,14 +197,14 @@ export default function Phase4EventsGuide() {
               </h4>
               <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
-                  <p className="font-medium">🎛️ Gestión de Recursos:</p>
+                  <p className="font-medium">️ Gestión de Recursos:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Crear recursos (EQUIPO, ESPACIO, MATERIAL)</li>
                     <li>• Ejemplo: Proyector, Auditorio, Sillas</li>
                     <li>• Reservar para evento específico</li>
                     <li>• Ver conflictos de disponibilidad</li>
                   </ul>
-                  <p className="font-medium mt-3">📦 Tipos de Recursos:</p>
+                  <p className="font-medium mt-3"> Tipos de Recursos:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• EQUIPO: Proyectores, micrófonos, cámaras</li>
                     <li>• ESPACIO: Auditorio, salones, estacionamiento</li>
@@ -221,7 +221,7 @@ export default function Phase4EventsGuide() {
               </h4>
               <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
-                  <p className="font-medium">📧 Invitaciones Automáticas:</p>
+                  <p className="font-medium"> Invitaciones Automáticas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Clic en "Comunicar" en tarjeta de evento</li>
                     <li>• Seleccionar audiencia (todos, miembros, líderes)</li>
@@ -229,7 +229,7 @@ export default function Phase4EventsGuide() {
                     <li>• Envío por EMAIL, SMS, PUSH, SOCIAL</li>
                     <li>• Programar recordatorios 24h/1h antes</li>
                   </ul>
-                  <p className="font-medium mt-3">🔔 Estados:</p>
+                  <p className="font-medium mt-3"> Estados:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• BORRADOR: Guardado sin enviar</li>
                     <li>• PROGRAMADA: Agendada para envío</li>
@@ -248,7 +248,7 @@ export default function Phase4EventsGuide() {
               </h4>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div className="bg-[hsl(var(--card))] p-4 rounded-lg">
-                  <p className="font-semibold text-[hsl(var(--success))] mb-2">👥 Miembros</p>
+                  <p className="font-semibold text-[hsl(var(--success))] mb-2"> Miembros</p>
                   <ul className="space-y-1 text-muted-foreground">
                     <li>• Escaneo de QR personal</li>
                     <li>• Registro automático en tabla check_ins</li>
@@ -256,7 +256,7 @@ export default function Phase4EventsGuide() {
                   </ul>
                 </div>
                 <div className="bg-[hsl(var(--card))] p-4 rounded-lg">
-                  <p className="font-semibold text-[hsl(var(--info))] mb-2">👶 Niños</p>
+                  <p className="font-semibold text-[hsl(var(--info))] mb-2"> Niños</p>
                   <ul className="space-y-1 text-muted-foreground">
                     <li>• Sistema separado children_check_ins</li>
                     <li>• Control de padres/tutores</li>
@@ -283,14 +283,14 @@ export default function Phase4EventsGuide() {
               </h4>
               <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
-                  <p className="font-medium">💰 Control de Gastos:</p>
+                  <p className="font-medium"> Control de Gastos:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Presupuesto estimado vs real</li>
                     <li>• Registro de donaciones específicas</li>
                     <li>• Métodos: EFECTIVO, TRANSFERENCIA, TARJETA, ONLINE</li>
                     <li>• Tracking por categoría</li>
                   </ul>
-                  <p className="text-xs text-muted-foreground mt-2 italic">⚠️ Módulo en desarrollo - próximamente completo</p>
+                  <p className="text-xs text-muted-foreground mt-2 italic">️ Módulo en desarrollo - próximamente completo</p>
                 </CardContent>
               </Card>
             </div>
@@ -302,7 +302,7 @@ export default function Phase4EventsGuide() {
               </h4>
               <Card className="bg-[hsl(var(--card))]">
                 <CardContent className="pt-4 space-y-2 text-sm">
-                  <p className="font-medium">📊 Reportes y Métricas:</p>
+                  <p className="font-medium"> Reportes y Métricas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Total de asistentes vs esperados</li>
                     <li>• Tasa de asistencia (%)</li>
@@ -310,7 +310,7 @@ export default function Phase4EventsGuide() {
                     <li>• Nuevos visitantes identificados</li>
                     <li>• Exportar Excel/PDF</li>
                   </ul>
-                  <p className="text-xs text-muted-foreground mt-2 italic">⚠️ Módulo en desarrollo - próximamente completo</p>
+                  <p className="text-xs text-muted-foreground mt-2 italic">️ Módulo en desarrollo - próximamente completo</p>
                 </CardContent>
               </Card>
             </div>
@@ -326,7 +326,7 @@ export default function Phase4EventsGuide() {
                 Vista mensual y semanal de todos los eventos, con drag-and-drop para reagendar, 
                 vista de conflictos de recursos, y sincronización con calendarios externos.
               </p>
-              <p className="text-xs text-muted-foreground mt-2 italic">⚠️ Módulo en desarrollo - próximamente completo</p>
+              <p className="text-xs text-muted-foreground mt-2 italic">️ Módulo en desarrollo - próximamente completo</p>
             </CardContent>
           </Card>
         </CardContent>
@@ -352,7 +352,7 @@ export default function Phase4EventsGuide() {
                 step: "1.1",
                 title: "Ir a la Sección de Eventos",
                 icon: <Calendar className="h-5 w-5 text-[hsl(var(--info))]" />,
-                image: "📅",
+                image: "",
                 description: "En el menú izquierdo, haz clic en 'Eventos'",
                 tips: ["Busca el ícono de calendario", "Verás la lista de eventos actuales"]
               },
@@ -360,7 +360,7 @@ export default function Phase4EventsGuide() {
                 step: "1.2",
                 title: "Hacer Clic en '+ Nuevo Evento'",
                 icon: <CalendarPlus className="h-5 w-5 text-[hsl(var(--success))]" />,
-                image: "➕",
+                image: "",
                 description: "Botón verde arriba a la derecha",
                 tips: ["Se abrirá un formulario para llenar", "Puedes cancelar en cualquier momento"]
               },
@@ -368,38 +368,38 @@ export default function Phase4EventsGuide() {
                 step: "1.3",
                 title: "Información Básica del Evento",
                 icon: <CheckCircle className="h-5 w-5 text-[hsl(var(--warning))]" />,
-                image: "✏️",
+                image: "️",
                 description: "Completa estos campos esenciales:",
                 details: [
                   {
                     field: "Nombre del Evento *",
                     example: "Culto Dominical - Alabanza y Adoración",
-                    icon: "📝"
+                    icon: ""
                   },
                   {
                     field: "Descripción",
                     example: "Culto principal con predicación del Pastor Juan, alabanza con el grupo Crystal, y oración por los enfermos",
-                    icon: "📄"
+                    icon: ""
                   },
                   {
                     field: "Tipo de Evento",
                     example: "Selecciona: Culto, Conferencia, Retiro, Social, Otro",
-                    icon: "🏷️"
+                    icon: "️"
                   },
                   {
                     field: "Fecha *",
                     example: "12/01/2026 (próximo domingo)",
-                    icon: "📆"
+                    icon: ""
                   },
                   {
                     field: "Hora de Inicio *",
                     example: "10:00 AM",
-                    icon: "🕐"
+                    icon: ""
                   },
                   {
                     field: "Hora de Finalización",
                     example: "12:30 PM",
-                    icon: "🕐"
+                    icon: ""
                   }
                 ]
               },
@@ -407,33 +407,33 @@ export default function Phase4EventsGuide() {
                 step: "1.4",
                 title: "Ubicación del Evento",
                 icon: <MapPin className="h-5 w-5 text-[hsl(var(--destructive))]" />,
-                image: "📍",
+                image: "",
                 description: "Indica dónde será el evento:",
                 details: [
                   {
                     field: "Lugar",
                     example: "Templo Principal - Iglesia El Buen Pastor",
-                    icon: "🏛️"
+                    icon: "️"
                   },
                   {
                     field: "Dirección Completa",
                     example: "Carrera 15 #20-30, Bogotá, Colombia",
-                    icon: "🗺️"
+                    icon: "️"
                   },
                   {
                     field: "Enlace de Mapa (Opcional)",
                     example: "https://maps.google.com/?q=tu-iglesia",
-                    icon: "🔗"
+                    icon: ""
                   },
                   {
                     field: "¿Es Virtual?",
                     example: "Marca esta casilla si es por Zoom/YouTube",
-                    icon: "💻"
+                    icon: ""
                   },
                   {
                     field: "Enlace Virtual",
                     example: "https://zoom.us/j/123456789 o enlace de YouTube",
-                    icon: "🎥"
+                    icon: ""
                   }
                 ]
               },
@@ -441,33 +441,33 @@ export default function Phase4EventsGuide() {
                 step: "1.5",
                 title: "Capacidad y Registro",
                 icon: <Users className="h-5 w-5 text-[hsl(var(--lavender))]" />,
-                image: "👥",
+                image: "",
                 description: "Configura límites de asistencia:",
                 details: [
                   {
                     field: "Capacidad Máxima",
                     example: "150 personas (deja vacío si no hay límite)",
-                    icon: "🎫"
+                    icon: ""
                   },
                   {
                     field: "¿Requiere Inscripción?",
                     example: "Marca SÍ si la gente debe registrarse antes",
-                    icon: "✅"
+                    icon: ""
                   },
                   {
                     field: "Fecha Límite de Inscripción",
                     example: "11/01/2026 (un día antes del evento)",
-                    icon: "⏰"
+                    icon: ""
                   },
                   {
                     field: "¿Requiere Pago?",
                     example: "Marca SÍ si hay costo de entrada",
-                    icon: "💰"
+                    icon: ""
                   },
                   {
                     field: "Precio (si aplica)",
                     example: "$50,000 COP para retiros con alimentación",
-                    icon: "💵"
+                    icon: ""
                   }
                 ]
               },
@@ -475,7 +475,7 @@ export default function Phase4EventsGuide() {
                 step: "1.6",
                 title: "Guardar y Publicar",
                 icon: <Star className="h-5 w-5 text-[hsl(var(--warning))]" />,
-                image: "💾",
+                image: "",
                 description: "Finaliza la creación del evento",
                 tips: [
                   "Haz clic en 'Guardar Borrador' para guardarlo sin publicar",
@@ -516,7 +516,7 @@ export default function Phase4EventsGuide() {
                       {item.tips && (
                         <div className="bg-[hsl(var(--warning)/0.10)] p-3 rounded-lg">
                           <p className="text-xs font-medium text-[hsl(var(--warning))] mb-2">
-                            💡 Consejos:
+                             Consejos:
                           </p>
                           <ul className="text-xs text-[hsl(var(--warning))] space-y-1">
                             {item.tips.map((tip, idx) => (
@@ -566,7 +566,7 @@ export default function Phase4EventsGuide() {
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
                 <div className="space-y-2">
-                  <p className="font-medium">📱 Pasos para el Miembro:</p>
+                  <p className="font-medium"> Pasos para el Miembro:</p>
                   <ol className="space-y-2 ml-4">
                     <li>1. Reciben un email/SMS con el código QR del evento</li>
                     <li>2. Al llegar, abren el código QR en su celular</li>
@@ -575,7 +575,7 @@ export default function Phase4EventsGuide() {
                   </ol>
                 </div>
                 <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded">
-                  <p className="text-xs font-medium text-[hsl(var(--success))]">✅ Ventajas:</p>
+                  <p className="text-xs font-medium text-[hsl(var(--success))]"> Ventajas:</p>
                   <ul className="text-xs text-[hsl(var(--success))] space-y-1 mt-1">
                     <li>• Rápido y sin contacto</li>
                     <li>• No necesitas personal en la puerta</li>
@@ -592,7 +592,7 @@ export default function Phase4EventsGuide() {
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
                 <div className="space-y-2">
-                  <p className="font-medium">👆 Pasos para el Administrador:</p>
+                  <p className="font-medium"> Pasos para el Administrador:</p>
                   <ol className="space-y-2 ml-4">
                     <li>1. Ve a Eventos → [Tu Evento] → Check-Ins</li>
                     <li>2. Haz clic en &quot;Registrar Asistencia Manual&quot;</li>
@@ -601,7 +601,7 @@ export default function Phase4EventsGuide() {
                   </ol>
                 </div>
                 <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
-                  <p className="text-xs font-medium text-[hsl(var(--info))]">✅ Ventajas:</p>
+                  <p className="text-xs font-medium text-[hsl(var(--info))]"> Ventajas:</p>
                   <ul className="text-xs text-[hsl(var(--info))] space-y-1 mt-1">
                     <li>• Útil para personas sin celular</li>
                     <li>• Mejor para eventos pequeños (10-30 personas)</li>
@@ -621,11 +621,11 @@ export default function Phase4EventsGuide() {
               <div className="space-y-2 text-sm">
                 <p>Después del evento, puedes ver:</p>
                 <ul className="space-y-1 ml-4">
-                  <li>✓ <strong>Total de asistentes:</strong> Cuántas personas vinieron</li>
-                  <li>✓ <strong>Tasa de asistencia:</strong> % de inscritos que realmente llegaron</li>
-                  <li>✓ <strong>Hora de llegada:</strong> A qué hora llegó cada persona</li>
-                  <li>✓ <strong>Nuevos visitantes:</strong> Personas que vienen por primera vez</li>
-                  <li>✓ <strong>Exportar lista:</strong> Descarga Excel de todos los asistentes</li>
+                  <li> <strong>Total de asistentes:</strong> Cuántas personas vinieron</li>
+                  <li> <strong>Tasa de asistencia:</strong> % de inscritos que realmente llegaron</li>
+                  <li> <strong>Hora de llegada:</strong> A qué hora llegó cada persona</li>
+                  <li> <strong>Nuevos visitantes:</strong> Personas que vienen por primera vez</li>
+                  <li> <strong>Exportar lista:</strong> Descarga Excel de todos los asistentes</li>
                 </ul>
               </div>
             </CardContent>
@@ -689,7 +689,7 @@ export default function Phase4EventsGuide() {
                       <h4 className="font-semibold mb-1">{item.action}</h4>
                       <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
                       <div className="bg-muted/30 p-2 rounded text-xs text-muted-foreground">
-                        📍 {item.how}
+                         {item.how}
                       </div>
                     </div>
                   </div>
@@ -705,7 +705,7 @@ export default function Phase4EventsGuide() {
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl text-foreground">
             <Brain className="h-8 w-8" />
-            🤖 Cómo Funciona AUTO-ASIGNAR (Asignación Inteligente)
+             Cómo Funciona AUTO-ASIGNAR (Asignación Inteligente)
           </CardTitle>
           <CardDescription className="text-base mt-2">
             Entender el algoritmo de IA para optimizar asignaciones de voluntarios
@@ -742,14 +742,14 @@ export default function Phase4EventsGuide() {
                   <div className="flex items-start gap-3">
                     <div className="text-2xl">2️⃣</div>
                     <div>
-                      <p className="font-medium text-[hsl(var(--info))]">Notificación: &quot;🎯 Asignando voluntarios...&quot;</p>
+                      <p className="font-medium text-[hsl(var(--info))]">Notificación: &quot; Asignando voluntarios...&quot;</p>
                       <p className="text-muted-foreground text-xs">Aparece en la esquina superior derecha</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="text-2xl">3️⃣</div>
                     <div>
-                      <p className="font-medium text-[hsl(var(--success))]">Resultado: &quot;✅ 3 voluntarios asignados&quot;</p>
+                      <p className="font-medium text-[hsl(var(--success))]">Resultado: &quot; 3 voluntarios asignados&quot;</p>
                       <p className="text-muted-foreground text-xs">O mensaje de advertencia si no hay disponibles</p>
                     </div>
                   </div>
@@ -780,9 +780,9 @@ export default function Phase4EventsGuide() {
                   <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded">
                     <p className="font-semibold text-foreground mb-1">2. Disponibilidad (CRÍTICO)</p>
                     <p className="text-xs text-[hsl(var(--success))]">
-                      ✅ Solo voluntarios ACTIVOS<br/>
-                      ✅ Sin conflictos de horario (no doble-reserva)<br/>
-                      ✅ No asignados ya a este evento
+                       Solo voluntarios ACTIVOS<br/>
+                       Sin conflictos de horario (no doble-reserva)<br/>
+                       No asignados ya a este evento
                     </p>
                   </div>
                   <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
@@ -817,15 +817,15 @@ export default function Phase4EventsGuide() {
               </h4>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div className="bg-[hsl(var(--card))] p-3 rounded-lg border-l-4 border-l-teal-600">
-                  <p className="font-semibold text-[hsl(var(--info))] mb-1">📊 Máximo por Evento</p>
+                  <p className="font-semibold text-[hsl(var(--info))] mb-1"> Máximo por Evento</p>
                   <p className="text-muted-foreground">Asigna <strong>hasta 5 voluntarios</strong> automáticamente</p>
                 </div>
                 <div className="bg-[hsl(var(--card))] p-3 rounded-lg border-l-4 border-l-blue-600">
-                  <p className="font-semibold text-foreground mb-1">🎯 Selección</p>
+                  <p className="font-semibold text-foreground mb-1"> Selección</p>
                   <p className="text-muted-foreground">Escoge los <strong>TOP 5</strong> con mayor puntuación</p>
                 </div>
                 <div className="bg-[hsl(var(--card))] p-3 rounded-lg border-l-4 border-l-purple-600">
-                  <p className="font-semibold text-foreground mb-1">🔄 Repetible</p>
+                  <p className="font-semibold text-foreground mb-1"> Repetible</p>
                   <p className="text-muted-foreground">Puedes hacer clic <strong>múltiples veces</strong> si necesitas más</p>
                 </div>
               </div>
@@ -839,44 +839,44 @@ export default function Phase4EventsGuide() {
             </h4>
             <div className="space-y-4">
               <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg border-l-4 border-l-red-600">
-                <p className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ &quot;No se encontraron voluntarios elegibles&quot;</p>
+                <p className="font-semibold text-[hsl(var(--destructive))] mb-2"> &quot;No se encontraron voluntarios elegibles&quot;</p>
                 <p className="text-sm text-[hsl(var(--destructive))] mb-2"><strong>Posibles Causas:</strong></p>
                 <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
-                  <li>✓ <strong>No tienes voluntarios activos</strong> - Ve a Voluntarios y activa algunos</li>
-                  <li>✓ <strong>Todos están ocupados</strong> - Hay conflictos de horario con otros eventos</li>
-                  <li>✓ <strong>Ya asignaste a todos</strong> - Todos los voluntarios ya están en este evento</li>
-                  <li>✓ <strong>El evento ya pasó</strong> - Solo asigna a eventos futuros</li>
+                  <li> <strong>No tienes voluntarios activos</strong> - Ve a Voluntarios y activa algunos</li>
+                  <li> <strong>Todos están ocupados</strong> - Hay conflictos de horario con otros eventos</li>
+                  <li> <strong>Ya asignaste a todos</strong> - Todos los voluntarios ya están en este evento</li>
+                  <li> <strong>El evento ya pasó</strong> - Solo asigna a eventos futuros</li>
                 </ul>
                 <div className="mt-3 bg-[hsl(var(--card))] p-3 rounded">
-                  <p className="text-xs font-semibold text-[hsl(var(--success))]">💡 Solución Rápida:</p>
+                  <p className="text-xs font-semibold text-[hsl(var(--success))]"> Solución Rápida:</p>
                   <p className="text-xs text-muted-foreground">Ir a <strong>Voluntarios</strong> → Verificar estado ACTIVO → Revisar disponibilidad en calendario</p>
                 </div>
               </div>
 
               <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-l-4 border-l-yellow-600">
-                <p className="font-semibold text-[hsl(var(--warning))] mb-2">⚠️ Solo asignó 1-2 voluntarios (menos de 5)</p>
+                <p className="font-semibold text-[hsl(var(--warning))] mb-2">️ Solo asignó 1-2 voluntarios (menos de 5)</p>
                 <p className="text-sm text-[hsl(var(--warning))] mb-2"><strong>Causas Normales:</strong></p>
                 <ul className="text-sm text-[hsl(var(--warning))] space-y-1 ml-4">
-                  <li>✓ Tienes pocos voluntarios en total (menos de 5 activos)</li>
-                  <li>✓ Muchos tienen conflictos de horario</li>
-                  <li>✓ Algunos ya están asignados a este evento</li>
+                  <li> Tienes pocos voluntarios en total (menos de 5 activos)</li>
+                  <li> Muchos tienen conflictos de horario</li>
+                  <li> Algunos ya están asignados a este evento</li>
                 </ul>
                 <div className="mt-3 bg-[hsl(var(--card))] p-3 rounded">
-                  <p className="text-xs font-semibold text-[hsl(var(--info))]">💡 Mejora:</p>
+                  <p className="text-xs font-semibold text-[hsl(var(--info))]"> Mejora:</p>
                   <p className="text-xs text-muted-foreground">Agregar más voluntarios al sistema o hacer <strong>asignación manual</strong> adicional</p>
                 </div>
               </div>
 
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border-l-4 border-l-blue-600">
-                <p className="font-semibold text-foreground mb-2">🔄 Los voluntarios asignados no coinciden con lo esperado</p>
+                <p className="font-semibold text-foreground mb-2"> Los voluntarios asignados no coinciden con lo esperado</p>
                 <p className="text-sm text-[hsl(var(--info))] mb-2"><strong>Explicación:</strong></p>
                 <ul className="text-sm text-[hsl(var(--info))] space-y-1 ml-4">
-                  <li>✓ El algoritmo prioriza <strong>disponibilidad</strong> sobre habilidades</li>
-                  <li>✓ Balancea la carga de trabajo (no siempre escoge a los mismos)</li>
-                  <li>✓ Puede que las habilidades no estén bien configuradas en el perfil</li>
+                  <li> El algoritmo prioriza <strong>disponibilidad</strong> sobre habilidades</li>
+                  <li> Balancea la carga de trabajo (no siempre escoge a los mismos)</li>
+                  <li> Puede que las habilidades no estén bien configuradas en el perfil</li>
                 </ul>
                 <div className="mt-3 bg-[hsl(var(--card))] p-3 rounded">
-                  <p className="text-xs font-semibold text-[hsl(var(--lavender))]">💡 Optimización:</p>
+                  <p className="text-xs font-semibold text-[hsl(var(--lavender))]"> Optimización:</p>
                   <p className="text-xs text-muted-foreground">
                     Ve a <strong>Voluntarios</strong> → Editar perfil → Actualizar <strong>Habilidades</strong> y <strong>Dones Espirituales</strong>
                   </p>
@@ -884,7 +884,7 @@ export default function Phase4EventsGuide() {
               </div>
 
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border-l-4 border-l-green-600">
-                <p className="font-semibold text-foreground mb-2">💚 Cómo Mejorar la Precisión de AUTO-ASIGNAR</p>
+                <p className="font-semibold text-foreground mb-2"> Cómo Mejorar la Precisión de AUTO-ASIGNAR</p>
                 <div className="grid md:grid-cols-2 gap-3 mt-3">
                   <div className="bg-[hsl(var(--card))] p-3 rounded">
                     <p className="text-xs font-semibold text-[hsl(var(--success))] mb-1">1. Actualiza Habilidades</p>
@@ -928,7 +928,7 @@ export default function Phase4EventsGuide() {
         <CardContent className="space-y-3">
           {[
             {
-              problem: "❌ El código QR no funciona al escanearlo",
+              problem: " El código QR no funciona al escanearlo",
               solutions: [
                 "Asegúrate que el evento esté publicado (no en borrador)",
                 "Verifica que la fecha del evento no haya pasado",
@@ -937,7 +937,7 @@ export default function Phase4EventsGuide() {
               ]
             },
             {
-              problem: "❌ No puedo editar un evento ya pasado",
+              problem: " No puedo editar un evento ya pasado",
               solutions: [
                 "Los eventos pasados se archivan automáticamente",
                 "Puedes ver las estadísticas pero no editar",
@@ -945,7 +945,7 @@ export default function Phase4EventsGuide() {
               ]
             },
             {
-              problem: "❌ Los inscritos no reciben el email de confirmación",
+              problem: " Los inscritos no reciben el email de confirmación",
               solutions: [
                 "Verifica en Configuración → Integraciones que el email esté configurado",
                 "Revisa la carpeta de Spam del usuario",
@@ -957,7 +957,7 @@ export default function Phase4EventsGuide() {
               <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
               <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
-                  <li key={idx}>✓ {solution}</li>
+                  <li key={idx}> {solution}</li>
                 ))}
               </ul>
             </div>

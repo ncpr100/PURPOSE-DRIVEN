@@ -14,44 +14,44 @@ export default function OnlineDonationsHelp() {
       feature: "Procesadores de Pago Colombianos",
       status: "implemented",
       details: "PSE (Pagos Seguros en Línea) y Nequi totalmente integrados",
-      icon: "🏦"
+      icon: ""
     },
     {
       feature: "Formularios Públicos",
       status: "implemented", 
       details: "Páginas de donación accesibles sin registro previo",
-      icon: "🌐"
+      icon: ""
     },
     {
       feature: "Webhooks y Confirmaciones",
       status: "implemented",
       details: "Procesamiento automático y confirmación de pagos",
-      icon: "⚡"
+      icon: ""
     },
     {
       feature: "Campañas de Donación",
       status: "implemented",
       details: "Crear campañas públicas con metas y seguimiento",
-      icon: "🎯"
+      icon: ""
     },
     {
       feature: "Dashboard Integrado",
       status: "implemented",
       details: "Reportes completos integrados con el sistema existente",
-      icon: "📊"
+      icon: ""
     },
     {
       feature: "Donaciones Recurrentes",
       status: "planned",
       details: "Próximamente - suscripciones mensuales automáticas",
-      icon: "🔄"
+      icon: ""
     }
   ]
 
   const technicalSpecs = [
     {
       component: "API Routes",
-      status: "✅ Completo",
+      status: " Completo",
       details: [
         "/api/online-payments - Crear y consultar pagos",
         "/api/online-payments/webhook - Procesamiento de confirmaciones",
@@ -60,7 +60,7 @@ export default function OnlineDonationsHelp() {
     },
     {
       component: "Base de Datos",
-      status: "✅ Completo", 
+      status: " Completo", 
       details: [
         "Tabla OnlinePayment - Transacciones online",
         "Tabla PaymentGatewayConfig - Configuraciones",
@@ -69,7 +69,7 @@ export default function OnlineDonationsHelp() {
     },
     {
       component: "Páginas Públicas",
-      status: "✅ Completo",
+      status: " Completo",
       details: [
         "/donate/[churchId] - Formulario de donación",
         "/donate/thank-you - Página de confirmación",
@@ -143,7 +143,7 @@ export default function OnlineDonationsHelp() {
             <Alert className="mb-6 bg-[hsl(var(--success)/0.10)] border-[hsl(var(--success)/0.3)]">
               <CheckCircle className="h-4 w-4" />
               <AlertDescription className="text-[hsl(var(--success))] font-medium">
-                ✅ El sistema de donaciones online está COMPLETAMENTE IMPLEMENTADO y funcionando
+                 El sistema de donaciones online está COMPLETAMENTE IMPLEMENTADO y funcionando
               </AlertDescription>
             </Alert>
             
@@ -157,7 +157,7 @@ export default function OnlineDonationsHelp() {
                         <h4 className="font-semibold flex items-center gap-2">
                           {item.feature}
                           <Badge variant={item.status === 'implemented' ? 'default' : 'secondary'} className="text-xs">
-                            {item.status === 'implemented' ? '✅ Listo' : '🔄 Planeado'}
+                            {item.status === 'implemented' ? ' Listo' : ' Planeado'}
                           </Badge>
                         </h4>
                         <p className="text-sm text-muted-foreground mt-1">{item.details}</p>
@@ -252,7 +252,7 @@ export default function OnlineDonationsHelp() {
                   <p><strong>API Key:</strong> Clave secreta de PSE</p>
                   <p><strong>Webhook URL:</strong> /api/online-payments/webhook</p>
                   <p><strong>Return URL:</strong> /donate/thank-you</p>
-                  <p className="text-[hsl(var(--info))]">💡 Solicitar credenciales PSE al banco de la iglesia</p>
+                  <p className="text-[hsl(var(--info))]"> Solicitar credenciales PSE al banco de la iglesia</p>
                 </div>
               </div>
               <div>
@@ -262,7 +262,7 @@ export default function OnlineDonationsHelp() {
                   <p><strong>Client Secret:</strong> Secreto OAuth de Nequi</p>
                   <p><strong>API URL:</strong> https://api.nequi.com</p>
                   <p><strong>Test Mode:</strong> Habilitar para pruebas</p>
-                  <p className="text-[hsl(var(--info))]">💡 Registrar aplicación en portal de desarrolladores Nequi</p>
+                  <p className="text-[hsl(var(--info))]"> Registrar aplicación en portal de desarrolladores Nequi</p>
                 </div>
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function OnlineDonationsHelp() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Indicadores de Salud</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]"> Indicadores de Salud</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• Webhooks recibidos correctamente</li>
                   <li>• Pagos completados vs pendientes</li>
@@ -292,7 +292,7 @@ export default function OnlineDonationsHelp() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">⚠️ Problemas Comunes</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">️ Problemas Comunes</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• Webhooks no recibidos → Verificar URLs</li>
                   <li>• Pagos pendientes → Consultar con gateway</li>

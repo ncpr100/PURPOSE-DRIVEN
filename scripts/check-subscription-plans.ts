@@ -2,13 +2,13 @@ import { db } from '../lib/db'
 
 async function checkSubscriptionPlans() {
   try {
-    console.log('🔍 Checking current subscription plans...')
+    console.log(' Checking current subscription plans...')
     
     const plans = await db.subscription_plans.findMany({
       orderBy: { sortOrder: 'asc' }
     })
     
-    console.log(`📊 Found ${plans.length} subscription plans:`)
+    console.log(` Found ${plans.length} subscription plans:`)
     
     plans.forEach((plan, index) => {
       console.log(`\n${index + 1}. ${plan.displayName} (${plan.name})`)
@@ -29,7 +29,7 @@ async function checkSubscriptionPlans() {
     })
     
   } catch (error) {
-    console.error('❌ Error checking subscription plans:', error)
+    console.error(' Error checking subscription plans:', error)
   } finally {
     await db.$disconnect()
   }

@@ -103,21 +103,21 @@ export async function POST(request: NextRequest) {
 // UPDATE a subscription plan
 export async function PUT(request: NextRequest) {
   try {
-    console.log('🔍 PUT /api/platform/subscription-plans - Starting request')
+    console.log(' PUT /api/platform/subscription-plans - Starting request')
     const session = await getServerSession(authOptions)
 
-    console.log('📋 Session data:', { 
+    console.log(' Session data:', { 
       userId: session?.user?.id, 
       userRole: session?.user?.role 
     })
 
     if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
-      console.log('❌ Access denied - Not SUPER_ADMIN')
+      console.log(' Access denied - Not SUPER_ADMIN')
       return NextResponse.json({ message: 'Acceso denegado' }, { status: 403 })
     }
 
     const data = await request.json()
-    console.log('📋 Request data received:', data)
+    console.log(' Request data received:', data)
 
     const {
       id,
@@ -135,14 +135,14 @@ export async function PUT(request: NextRequest) {
     } = data
 
     if (!id) {
-      console.log('❌ Missing plan ID')
+      console.log(' Missing plan ID')
       return NextResponse.json(
         { message: 'ID del plan es requerido' },
         { status: 400 }
       )
     }
 
-    console.log('🔄 Updating subscription plan with ID:', id)
+    console.log(' Updating subscription plan with ID:', id)
     const plan = await db.subscription_plans.update({
       where: { id },
       data: {
@@ -160,12 +160,12 @@ export async function PUT(request: NextRequest) {
       }
     })
 
-    console.log('✅ Plan updated successfully:', plan.id)
+    console.log(' Plan updated successfully:', plan.id)
     return NextResponse.json(plan)
 
   } catch (error) {
-    console.error('💥 Error updating subscription plan:', error)
-    console.error('💥 Error stack:', error instanceof Error ? error.stack : 'No stack available')
+    console.error(' Error updating subscription plan:', error)
+    console.error(' Error stack:', error instanceof Error ? error.stack : 'No stack available')
     return NextResponse.json(
       { 
         message: 'Error interno del servidor',

@@ -1,5 +1,5 @@
 /**
- * SAAS PLATFORM OAUTH ENGINE 🚀
+ * SAAS PLATFORM OAUTH ENGINE 
  * Buffer/Hootsuite-style centralized OAuth for ALL churches
  * NO technical setupRequired by tenants - truly one-click connections
  * Platform-managed OAuth credentials serve all church tenants

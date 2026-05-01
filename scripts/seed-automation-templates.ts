@@ -101,7 +101,7 @@ async function main() {
       description: 'Sends an immediate acknowledgment to the prayer requester confirming receipt and explaining next steps. Respects requester\'s preferred contact method.',
       category: 'PRAYER_REQUEST',
       subcategory: 'REQUESTER_ACKNOWLEDGMENT',
-      icon: '✅',
+      icon: '',
       color: '#10B981',
       isSystemTemplate: true,
       isActive: true,
@@ -174,7 +174,7 @@ async function main() {
       description: 'When requester chooses "prayer via message", either sends a pre-written prayer template immediately OR creates a task for staff to write a custom prayer. Fully configurable.',
       category: 'PRAYER_REQUEST',
       subcategory: 'PRAYER_DELIVERY',
-      icon: '💌',
+      icon: '',
       color: '#8B5CF6',
       isSystemTemplate: true,
       isActive: true,
@@ -262,7 +262,7 @@ async function main() {
       description: 'When requester chooses "prayer via call", assigns a staff member to call the requester and creates a follow-up task with reminder notifications.',
       category: 'PRAYER_REQUEST',
       subcategory: 'PRAYER_DELIVERY',
-      icon: '📞',
+      icon: '',
       color: '#F59E0B',
       isSystemTemplate: true,
       isActive: true,
@@ -359,7 +359,7 @@ async function main() {
       description: 'Sends an immediate welcome message to first-time visitors and creates their visitor profile in the CRM. Triggers a 7-day follow-up sequence.',
       category: 'VISITOR_FOLLOWUP',
       subcategory: 'FIRST_TIME',
-      icon: '👋',
+      icon: '',
       color: '#EC4899',
       isSystemTemplate: true,
       isActive: true,
@@ -408,7 +408,7 @@ async function main() {
             recipient: 'VISITOR',
             condition: 'preferredContact === "sms" || phone !== null',
             template: 'visitor-welcome-sms',
-            message: '¡Bienvenido a {{churchName}}! 🎉 Nos alegra mucho que nos hayas visitado hoy. Esperamos verte pronto. Que Dios te bendiga!'
+            message: '¡Bienvenido a {{churchName}}!  Nos alegra mucho que nos hayas visitado hoy. Esperamos verte pronto. Que Dios te bendiga!'
           }
         },
         {
@@ -469,7 +469,7 @@ async function main() {
       description: 'Recognizes and engages returning visitors (2-3 visits). Updates CRM category and sends personalized follow-up with ministry connection opportunities.',
       category: 'VISITOR_FOLLOWUP',
       subcategory: 'RETURNING',
-      icon: '🔄',
+      icon: '',
       color: '#6366F1',
       isSystemTemplate: true,
       isActive: true,
@@ -552,7 +552,7 @@ async function main() {
       description: 'For visitors who have attended 4+ times but are not members. Automatically invites them to membership classes and assigns a membership coordinator.',
       category: 'VISITOR_FOLLOWUP',
       subcategory: 'MEMBERSHIP_TRACK',
-      icon: '🤝',
+      icon: '',
       color: '#14B8A6',
       isSystemTemplate: true,
       isActive: true,
@@ -752,7 +752,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Created 8 automation rule templates:');
+  console.log(' Created 8 automation rule templates:');
   console.log('   1. Prayer Request: Church Notification');
   console.log('   2. Prayer Request: Auto-Acknowledgment');
   console.log('   3. Prayer Request: Prayer via Message');
@@ -762,7 +762,7 @@ async function main() {
   console.log('   7. Visitor: Regular Non-Member Invitation');
   console.log('   8. Visitor: Urgent Prayer Request (24/7)');
   
-  console.log('\n📊 Template Statistics:');
+  console.log('\n Template Statistics:');
   const totalTemplates = await prisma.automation_rule_templates.count();
   console.log(`   Total templates: ${totalTemplates}`);
   
@@ -776,7 +776,7 @@ async function main() {
   });
   console.log(`   Visitor follow-up templates: ${visitorTemplates}`);
   
-  console.log('\n✨ Templates are ready to be activated by churches!');
+  console.log('\n Templates are ready to be activated by churches!');
   console.log('   Churches can browse, activate, and customize these templates via:');
   console.log('   - API: /api/automation-templates');
   console.log('   - UI: /automation-rules (Templates tab)');
@@ -784,7 +784,7 @@ async function main() {
 
 main()
   .catch((e) => {
-    console.error('❌ Error seeding automation templates:', e);
+    console.error(' Error seeding automation templates:', e);
     process.exit(1);
   })
   .finally(async () => {

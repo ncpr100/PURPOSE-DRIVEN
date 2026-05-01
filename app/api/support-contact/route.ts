@@ -110,7 +110,7 @@ export async function PUT(request: NextRequest) {
       }
     })
 
-    console.log('✅ Support contact info updated by SUPER_ADMIN:', user.role)
+    console.log(' Support contact info updated by SUPER_ADMIN:', user.role)
 
     return NextResponse.json({
       success: true,

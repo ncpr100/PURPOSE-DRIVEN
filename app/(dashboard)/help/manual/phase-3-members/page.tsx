@@ -19,7 +19,7 @@ export default function Phase3MembersGuide() {
         <div className="flex items-center gap-4">
           <Users className="h-12 w-12" />
           <div>
-            <h1 className="text-4xl font-bold mb-2">👥 Fase 3: Agregar Tus Primeros Miembros</h1>
+            <h1 className="text-4xl font-bold mb-2"> Fase 3: Agregar Tus Primeros Miembros</h1>
             <p className="text-xl opacity-90">
               Aprende a registrar a las personas de tu iglesia en el sistema
             </p>
@@ -71,11 +71,11 @@ export default function Phase3MembersGuide() {
                 step: "A.1",
                 title: "Ir a la Página de Miembros",
                 icon: <Users className="h-5 w-5 text-[hsl(var(--info))]" />,
-                image: "🏠",
+                image: "",
                 description: "En el menú de la izquierda, busca y haz clic en 'Miembros'",
                 tips: [
                   "Es el menú con iconos a la izquierda de tu pantalla",
-                  "Busca un ícono de dos personitas 👥",
+                  "Busca un ícono de dos personitas ",
                   "La palabra 'Miembros' aparece al lado del ícono"
                 ]
               },
@@ -83,7 +83,7 @@ export default function Phase3MembersGuide() {
                 step: "A.2",
                 title: "Hacer Clic en '+ Nuevo Miembro'",
                 icon: <UserPlus className="h-5 w-5 text-[hsl(var(--success))]" />,
-                image: "➕",
+                image: "",
                 description: "Arriba a la derecha, verás un botón verde que dice '+ Nuevo Miembro'",
                 tips: [
                   "Es un botón verde grande - no puedes perderlo",
@@ -95,7 +95,7 @@ export default function Phase3MembersGuide() {
                 step: "A.3",
                 title: "Llenar Información BÁSICA (Requerida)",
                 icon: <FileText className="h-5 w-5 text-[hsl(var(--warning))]" />,
-                image: "✏️",
+                image: "️",
                 description: "Completa estos campos obligatorios - tienen una estrellita roja *",
                 details: [
                   {
@@ -168,7 +168,7 @@ export default function Phase3MembersGuide() {
                 step: "A.5",
                 title: "Seleccionar Etapa de Vida Espiritual",
                 icon: <Award className="h-5 w-5 text-[hsl(var(--warning))]" />,
-                image: "🌱",
+                image: "",
                 description: "Indica en qué etapa espiritual está la persona:",
                 details: [
                   {
@@ -177,22 +177,22 @@ export default function Phase3MembersGuide() {
                     example: "María vino por primera vez el domingo pasado"
                   },
                   {
-                    stage: "🌱 NUEVO CREYENTE",
+                    stage: " NUEVO CREYENTE",
                     description: "Recién aceptó a Cristo, está aprendiendo lo básico",
                     example: "Pedro se bautizó hace 2 meses"
                   },
                   {
-                    stage: "📈 CRECIMIENTO",
+                    stage: " CRECIMIENTO",
                     description: "Asiste regularmente, está creciendo en la fe",
                     example: "Ana viene hace 1 año y participa en estudios bíblicos"
                   },
                   {
-                    stage: "🌳 MADURO",
+                    stage: " MADURO",
                     description: "Cristiano consolidado, puede ayudar a otros",
                     example: "Carlos lleva 5 años, conoce bien la Biblia"
                   },
                   {
-                    stage: "👑 LÍDER",
+                    stage: " LÍDER",
                     description: "Sirve activamente liderando ministerios",
                     example: "Laura dirige el grupo de jóvenes"
                   }
@@ -202,7 +202,7 @@ export default function Phase3MembersGuide() {
                 step: "A.6",
                 title: "Guardar el Nuevo Miembro",
                 icon: <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />,
-                image: "💾",
+                image: "",
                 description: "Haz clic en el botón verde 'Guardar' abajo del formulario",
                 tips: [
                   "¡No olvides hacer clic en Guardar! Si cierras sin guardar, perderás todo",
@@ -230,14 +230,14 @@ export default function Phase3MembersGuide() {
                           {item.details.map((detail: any, idx: number) => (
                             <div key={idx} className="bg-muted/30 p-3 rounded">
                               <p className="font-medium text-sm text-[hsl(var(--success))]">
-                                {detail.required ? '📝 *' : '📝'} {detail.field || detail.stage}
+                                {detail.required ? ' *' : ''} {detail.field || detail.stage}
                               </p>
                               <p className="text-xs text-muted-foreground mt-1">
                                 {detail.example || detail.description}
                               </p>
                               {detail.why && (
                                 <p className="text-xs text-[hsl(var(--lavender))] mt-1 italic">
-                                  💡 {detail.why}
+                                   {detail.why}
                                 </p>
                               )}
                             </div>
@@ -248,7 +248,7 @@ export default function Phase3MembersGuide() {
                       {item.tips && (
                         <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded-lg">
                           <p className="text-xs font-medium text-[hsl(var(--success))] mb-2">
-                            💡 Consejos Útiles:
+                             Consejos Útiles:
                           </p>
                           <ul className="text-xs text-[hsl(var(--success))] space-y-1">
                             {item.tips.map((tip, idx) => (
@@ -286,10 +286,10 @@ export default function Phase3MembersGuide() {
               ¿Cuándo Usar la Importación Masiva?
             </h4>
             <ul className="text-sm text-[hsl(var(--warning))] space-y-1">
-              <li>✓ Tienes una lista en Excel de 20+ personas</li>
-              <li>✓ Estás migrando de otro sistema a Khesed-tek</li>
-              <li>✓ Quieres ahorrar tiempo (1 vez vs 100 veces)</li>
-              <li>✓ Ya tienes los datos organizados en una hoja de cálculo</li>
+              <li> Tienes una lista en Excel de 20+ personas</li>
+              <li> Estás migrando de otro sistema a Khesed-tek</li>
+              <li> Quieres ahorrar tiempo (1 vez vs 100 veces)</li>
+              <li> Ya tienes los datos organizados en una hoja de cálculo</li>
             </ul>
           </div>
 
@@ -437,7 +437,7 @@ export default function Phase3MembersGuide() {
                   <h4 className="font-semibold mb-2">{action.title}</h4>
                   <p className="text-sm text-muted-foreground mb-2">{action.description}</p>
                   <div className="bg-[hsl(var(--warning)/0.10)] p-2 rounded text-xs text-[hsl(var(--warning))]">
-                    💡 {action.tip}
+                     {action.tip}
                   </div>
                 </CardContent>
               </Card>
@@ -457,7 +457,7 @@ export default function Phase3MembersGuide() {
         <CardContent className="space-y-3">
           {[
             {
-              problem: "❌ Dice que el email ya existe",
+              problem: " Dice que el email ya existe",
               solutions: [
                 "Ese miembro ya está registrado - búscalo en la lista",
                 "Si es un email duplicado real, usa +1 al final (juan+1@gmail.com)",
@@ -465,7 +465,7 @@ export default function Phase3MembersGuide() {
               ]
             },
             {
-              problem: "❌ La importación falla con errores",
+              problem: " La importación falla con errores",
               solutions: [
                 "Verifica que las columnas tengan exactamente los nombres de la plantilla",
                 "Revisa que las fechas estén en formato DD/MM/AAAA",
@@ -474,7 +474,7 @@ export default function Phase3MembersGuide() {
               ]
             },
             {
-              problem: "❌ No puedo editar un miembro",
+              problem: " No puedo editar un miembro",
               solutions: [
                 "Verifica que tienes permiso de ADMIN o PASTOR",
                 "Si eres LÍDER, solo puedes ver pero no editar",
@@ -482,7 +482,7 @@ export default function Phase3MembersGuide() {
               ]
             },
             {
-              problem: "❌ Eliminé un miembro por error",
+              problem: " Eliminé un miembro por error",
               solutions: [
                 "¡CUIDADO! Las eliminaciones son permanentes",
                 "No se puede recuperar - deberás volver a crearlo",
@@ -494,7 +494,7 @@ export default function Phase3MembersGuide() {
               <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
               <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
-                  <li key={idx}>✓ {solution}</li>
+                  <li key={idx}> {solution}</li>
                 ))}
               </ul>
             </div>

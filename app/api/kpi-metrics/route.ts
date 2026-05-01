@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
         ]
       });
     } catch (dbError) {
-      console.log('⚠️ KPI-METRICS: Database connection failed, returning empty metrics')
+      console.log('️ KPI-METRICS: Database connection failed, returning empty metrics')
       kpiMetrics = []
     }
 

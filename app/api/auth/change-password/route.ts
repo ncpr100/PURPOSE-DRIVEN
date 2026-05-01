@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Log de seguridad
-    console.log(`🔐 Contraseña actualizada para usuario: ${user.email} (${user.id})`)
+    console.log(` Contraseña actualizada para usuario: ${user.email} (${user.id})`)
 
     return NextResponse.json({
       message: 'Contraseña actualizada exitosamente'

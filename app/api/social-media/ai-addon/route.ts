@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Log the subscription event
-    console.log(`✅ AI Content addon activated for church ${churchId}`)
+    console.log(` AI Content addon activated for church ${churchId}`)
 
     return NextResponse.json({
       success: true,
@@ -216,7 +216,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Log the unsubscription event
-    console.log(`⚠️ AI Content addon deactivated for church ${churchId}`)
+    console.log(`️ AI Content addon deactivated for church ${churchId}`)
 
     return NextResponse.json({
       success: true,

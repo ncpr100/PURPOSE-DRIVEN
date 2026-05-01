@@ -9,7 +9,7 @@ import { ZodError } from 'zod'
 
 export const dynamic = 'force-dynamic'
 
-// ✅ PERFORMANCE FIX: Pure function - no database queries
+//  PERFORMANCE FIX: Pure function - no database queries
 // Receives all data pre-fetched to eliminate N+1 query problem
 // BEFORE: 3 queries per member × 500 members = 1,500 queries
 // AFTER: 0 queries (pure function with pre-fetched data)
@@ -97,11 +97,11 @@ export async function POST(request: NextRequest) {
     // Parse and validate request body
     const body = await request.json()
     
-    // ✅ SECURITY FIX: Validate matching parameters with Zod
+    //  SECURITY FIX: Validate matching parameters with Zod
     // Prevents: Invalid ministry IDs, malicious maxRecommendations values
     const validated = volunteerMatchingSchema.parse(body)
 
-    // ✅ PERFORMANCE FIX: Fetch ministry ONCE before loop (eliminates N+1)
+    //  PERFORMANCE FIX: Fetch ministry ONCE before loop (eliminates N+1)
     // BEFORE: 1 query × 500 members = 500 queries
     // AFTER: 1 query total
     const ministry = await prisma.ministries.findUnique({ 
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // ✅ PERFORMANCE FIX: Eager load ALL relations in single query
+    //  PERFORMANCE FIX: Eager load ALL relations in single query
     // BEFORE: Member query + (availabilityMatrix × 500) + (assignments × 500) = 1,001+ queries
     // AFTER: 1 query with all includes
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // ✅ PERFORMANCE FIX: Pure function - no more database queries in loop
+    //  PERFORMANCE FIX: Pure function - no more database queries in loop
     // Calculate scores for each member
     const recommendations = []
     for (const member of members) {
@@ -212,7 +212,7 @@ export async function POST(request: NextRequest) {
       }
     })
   } catch (error) {
-    // ✅ SECURITY FIX: Handle validation errors with user-friendly messages
+    //  SECURITY FIX: Handle validation errors with user-friendly messages
     if (error instanceof ZodError) {
       return NextResponse.json(
         { 
@@ -244,10 +244,10 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const ministryId = searchParams.get('ministryId')
-    const memberId = searchParams.get('memberId') // 🔍 Support for fetching recommendations for specific member
+    const memberId = searchParams.get('memberId') //  Support for fetching recommendations for specific member
     const status = searchParams.get('status') || 'PENDING'
 
-    console.log('🔍 [DEBUG] Volunteer-matching GET request params:', {
+    console.log(' [DEBUG] Volunteer-matching GET request params:', {
       ministryId,
       memberId,
       status,
@@ -264,13 +264,13 @@ export async function GET(request: NextRequest) {
       where.ministryId = ministryId
     }
 
-    // 🎯 Add support for fetching recommendations for a specific member (for crown badge display)
+    //  Add support for fetching recommendations for a specific member (for crown badge display)
     if (memberId) {
       where.memberId = memberId
-      console.log('🔍 [DEBUG] Filtering by memberId:', memberId)
+      console.log(' [DEBUG] Filtering by memberId:', memberId)
     }
 
-    console.log('🔍 [DEBUG] Final where clause:', where)
+    console.log(' [DEBUG] Final where clause:', where)
 
     const recommendations = await prisma.volunteer_recommendations.findMany({
       where,
@@ -302,8 +302,8 @@ export async function GET(request: NextRequest) {
       ]
     })
 
-    console.log('🔍 [DEBUG] Found recommendations:', recommendations.length)
-    console.log('🔍 [DEBUG] Recommendations data:', recommendations)
+    console.log(' [DEBUG] Found recommendations:', recommendations.length)
+    console.log(' [DEBUG] Recommendations data:', recommendations)
 
     return NextResponse.json({ recommendations })
   } catch (error) {

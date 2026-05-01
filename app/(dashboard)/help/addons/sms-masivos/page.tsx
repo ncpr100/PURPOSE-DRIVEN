@@ -12,51 +12,51 @@ export default function SMSMasivosAddon() {
     {
       title: "SMS Incluidos",
       description: "Cada mes incluye una cantidad de mensajes de texto",
-      icon: "📱"
+      icon: ""
     },
     {
       title: "Plantillas Prediseñadas",
       description: "Plantillas listas para usar en diferentes ocasiones",
-      icon: "📝"
+      icon: ""
     },
     {
       title: "Programación Automática",
       description: "Programe mensajes para envío futuro",
-      icon: "⏰"
+      icon: ""
     },
     {
       title: "Reportes de Entrega",
       description: "Estadísticas detalladas de entrega y lectura",
-      icon: "📊"
+      icon: ""
     },
     {
       title: "Segmentación Inteligente",
       description: "Envíe a grupos específicos de su congregación",
-      icon: "🎯"
+      icon: ""
     },
     {
       title: "Confirmación de Lectura",
       description: "Vea quién ha leído sus mensajes",
-      icon: "✅"
+      icon: ""
     }
   ]
 
   const useCases = [
     {
       scenario: "Recordatorio de Evento",
-      example: "🎪 Recordatorio: Conferencia Familiar mañana 7PM en el santuario. ¡No faltes!"
+      example: " Recordatorio: Conferencia Familiar mañana 7PM en el santuario. ¡No faltes!"
     },
     {
       scenario: "Cambio de Horario",
-      example: "⚠️ IMPORTANTE: El servicio de mañana domingo cambia a las 9AM por evento especial."
+      example: "️ IMPORTANTE: El servicio de mañana domingo cambia a las 9AM por evento especial."
     },
     {
       scenario: "Oración Urgente",
-      example: "🙏 Hermanos, oremos por la Hna. María que está en el hospital. Unidos en oración."
+      example: " Hermanos, oremos por la Hna. María que está en el hospital. Unidos en oración."
     },
     {
       scenario: "Confirmación de Asistencia",
-      example: "✅ Confirma tu asistencia al retiro juvenil respondiendo SÍ o NO."
+      example: " Confirma tu asistencia al retiro juvenil respondiendo SÍ o NO."
     }
   ]
 
@@ -82,7 +82,7 @@ export default function SMSMasivosAddon() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">🔥 Más Popular</Badge>
+          <Badge className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]"> Más Popular</Badge>
           <Badge variant="outline">Complemento Premium</Badge>
         </div>
       </div>
@@ -106,7 +106,7 @@ export default function SMSMasivosAddon() {
               className="w-full"
               onClick={() => alert('Funcionalidad de suscripción será implementada próximamente. Contacte soporte para activar.')}
             >
-              💰 Suscribirse Ahora
+               Suscribirse Ahora
             </Button>
           </CardContent>
         </Card>
@@ -191,7 +191,7 @@ export default function SMSMasivosAddon() {
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">📱 Alto Alcance</CardTitle>
+              <CardTitle className="text-lg"> Alto Alcance</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
@@ -213,7 +213,7 @@ export default function SMSMasivosAddon() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">⚡ Comunicación Inmediata</CardTitle>
+              <CardTitle className="text-lg"> Comunicación Inmediata</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
@@ -239,7 +239,7 @@ export default function SMSMasivosAddon() {
       <section className="mb-8">
         <Card>
           <CardHeader>
-            <CardTitle>❓ Preguntas Frecuentes</CardTitle>
+            <CardTitle> Preguntas Frecuentes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -277,10 +277,10 @@ export default function SMSMasivosAddon() {
                 size="lg"
                 onClick={() => alert('Funcionalidad de suscripción será implementada próximamente. Contacte soporte para activar.')}
               >
-                💰 Suscribirse Ahora
+                 Suscribirse Ahora
               </Button>
               <Button variant="outline" size="lg" onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
-                💬 Consultar por WhatsApp
+                 Consultar por WhatsApp
               </Button>
             </div>
           </CardContent>

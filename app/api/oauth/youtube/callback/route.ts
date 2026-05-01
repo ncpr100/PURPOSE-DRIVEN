@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
       const result = await SocialOAuth.processCallback('YOUTUBE', code, state)
       
       if (result.success) {
-        console.log('✅ YouTube channel connected successfully:', result.account.displayName)
+        console.log(' YouTube channel connected successfully:', result.account.displayName)
         
         // Redirect to social media page with success message
         return NextResponse.redirect(

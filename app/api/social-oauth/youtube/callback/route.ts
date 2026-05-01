@@ -170,7 +170,7 @@ export async function GET(request: NextRequest) {
 
     // Log successful connection
     console.log(
-      `✅ YouTube channel connected for church ${oauthState.churchId}: ${snippet.title}`,
+      ` YouTube channel connected for church ${oauthState.churchId}: ${snippet.title}`,
     );
 
     // Redirect back to social media page with success

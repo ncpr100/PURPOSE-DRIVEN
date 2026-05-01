@@ -469,7 +469,7 @@ export function PublicDonationForm({
             {/* https Security Notice */}
             <div className="mb-4 p-3 bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg">
               <p className="text-sm text-[hsl(var(--success))]">
-                🔒 <strong>Pago seguro:</strong> Tu información está protegida con cifrado https y tecnología de seguridad de nivel bancario.
+                 <strong>Pago seguro:</strong> Tu información está protegida con cifrado https y tecnología de seguridad de nivel bancario.
               </p>
             </div>
             

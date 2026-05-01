@@ -4,7 +4,7 @@
 import { inferGenderFromName, getEffectiveGender, categorizeGender, matchesGenderFilter } from '../lib/gender-utils'
 
 async function testAppWideConsistency() {
-  console.log('🧪 COMPREHENSIVE GENDER CONSISTENCY TEST\n')
+  console.log(' COMPREHENSIVE GENDER CONSISTENCY TEST\n')
   
   // Test data that represents the database structure
   const testMembers = [
@@ -39,7 +39,7 @@ async function testAppWideConsistency() {
     console.log(`Filter: "${filter}"`)
     testMembers.forEach(member => {
       const matches = matchesGenderFilter(member, filter)
-      console.log(`  ${member.firstName || 'NULL'}: ${matches ? '✅' : '❌'}`)
+      console.log(`  ${member.firstName || 'NULL'}: ${matches ? '' : ''}`)
     })
     console.log('')
   })
@@ -60,9 +60,9 @@ async function testAppWideConsistency() {
   const actualTotal = counts.masculino + counts.femenino + counts.sinEspecificar
   
   if (actualTotal === expectedTotal) {
-    console.log('✅ Count math is correct!')
+    console.log(' Count math is correct!')
   } else {
-    console.log('❌ Count math is wrong!')
+    console.log(' Count math is wrong!')
   }
   
   console.log('\n4. Testing Consistency Across Components:')
@@ -77,13 +77,13 @@ async function testAppWideConsistency() {
   })
   
   console.log('\n5. Expected Results After Implementation:')
-  console.log('✅ Dashboard counts will show inferred gender distribution')
-  console.log('✅ Member list will show gender badges for most members')  
-  console.log('✅ Filtering will work with both actual and inferred genders')
-  console.log('✅ Analytics will include inferred gender data')
-  console.log('✅ All systems use identical inference logic')
+  console.log(' Dashboard counts will show inferred gender distribution')
+  console.log(' Member list will show gender badges for most members')  
+  console.log(' Filtering will work with both actual and inferred genders')
+  console.log(' Analytics will include inferred gender data')
+  console.log(' All systems use identical inference logic')
   
-  console.log('\n🎯 CONSISTENCY CHECK COMPLETE!')
+  console.log('\n CONSISTENCY CHECK COMPLETE!')
   console.log('All components now use shared gender-utils for consistent behavior.')
 }
 

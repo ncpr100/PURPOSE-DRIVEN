@@ -1086,8 +1086,8 @@ export function EnhancedMemberForm({ member, onSave, onCancel, isLoading }: Enha
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
             {hasUnsavedChanges 
-              ? '⚠️ Hay cambios sin guardar en esta sección' 
-              : '✓ Todos los cambios guardados'}
+              ? 'Hay cambios sin guardar en esta sección' 
+              : 'Todos los cambios guardados'}
           </p>
           <Button 
             onClick={handleSaveAndClose}

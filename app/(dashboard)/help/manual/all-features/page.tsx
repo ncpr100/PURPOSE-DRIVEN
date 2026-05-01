@@ -742,7 +742,7 @@ export default function AllFeaturesGuide() {
         <div className="flex items-center gap-4">
           <List className="h-12 w-12" />
           <div>
-            <h1 className="text-4xl font-bold mb-2">📚 Todas las Funciones de Khesed-tek</h1>
+            <h1 className="text-4xl font-bold mb-2"> Todas las Funciones de Khesed-tek</h1>
             <p className="text-xl opacity-90">
               Catálogo completo de {allFeatures.length} funciones disponibles en la plataforma
             </p>

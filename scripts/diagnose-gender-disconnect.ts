@@ -5,7 +5,7 @@ import { db } from '../lib/db'
 
 async function diagnoseGenderDisconnect() {
   try {
-    console.log('🔍 CRITICAL DIAGNOSTIC: Database vs UI Gender Display\n')
+    console.log(' CRITICAL DIAGNOSTIC: Database vs UI Gender Display\n')
     
     // Check if there are multiple gender-related fields
     console.log('1. Checking Member model structure for gender-related fields...')
@@ -100,7 +100,7 @@ async function diagnoseGenderDisconnect() {
     
     console.log(`\nTotal active members: ${totalCount}`)
     
-    console.log('\n🚨 CRITICAL QUESTIONS:')
+    console.log('\n CRITICAL QUESTIONS:')
     console.log('1. If database shows 845 NULL gender values...')
     console.log('2. But UI shows gender badges for ALL members...')
     console.log('3. Then where is the UI getting the gender information from?')
@@ -112,7 +112,7 @@ async function diagnoseGenderDisconnect() {
     console.log('- API transformation we haven\'t found yet')
 
   } catch (error) {
-    console.error('❌ Error in diagnostic:', error)
+    console.error(' Error in diagnostic:', error)
   } finally {
     await db.$disconnect()
   }

@@ -7,7 +7,7 @@ import { db } from './lib/db';
 
 async function generateChurchSQLForSupabase() {
   try {
-    console.log('🏛️ GENERATING CANONICAL CHURCH MAPPING SQL FOR SUPABASE\n');
+    console.log('️ GENERATING CANONICAL CHURCH MAPPING SQL FOR SUPABASE\n');
     
     // Get current church data
     const churches = await db.churches.findMany({
@@ -27,7 +27,7 @@ async function generateChurchSQLForSupabase() {
       }
     });
     
-    console.log('📋 COPY AND PASTE THIS SQL INTO SUPABASE SQL EDITOR:');
+    console.log(' COPY AND PASTE THIS SQL INTO SUPABASE SQL EDITOR:');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('');
     console.log('-- CANONICAL SOURCE OF TRUTH: CHURCH MAPPING RECORDS');
@@ -119,13 +119,13 @@ ORDER BY member_count DESC;`);
     console.log('');
     
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('✅ COPY THE ABOVE SQL AND EXECUTE IN SUPABASE SQL EDITOR');
-    console.log('📝 This will ensure canonical church mapping consistency');
-    console.log('🎯 All user authentication and data access depends on this canonical source');
+    console.log(' COPY THE ABOVE SQL AND EXECUTE IN SUPABASE SQL EDITOR');
+    console.log(' This will ensure canonical church mapping consistency');
+    console.log(' All user authentication and data access depends on this canonical source');
     
     process.exit(0);
   } catch (error) {
-    console.error('❌ ERROR:', error.message);
+    console.error(' ERROR:', error.message);
     process.exit(1);
   }
 }

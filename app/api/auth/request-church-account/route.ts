@@ -1,6 +1,6 @@
 
 /**
- * ✅ SECURITY-HARDENED: Church Account Request API
+ *  SECURITY-HARDENED: Church Account Request API
  * 
  * Security Features:
  * - Input validation and sanitization
@@ -19,7 +19,7 @@ import { sanitizeHtml } from '@/lib/validation-schemas'
 
 export const dynamic = 'force-dynamic'
 
-// ✅ SECURITY: Input validation schema
+//  SECURITY: Input validation schema
 const churchAccountRequestSchema = z.object({
   churchName: z.string()
     .min(2, 'Nombre de iglesia muy corto')
@@ -56,12 +56,12 @@ const churchAccountRequestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    // ✅ DEVELOPMENT MODE: Bypass for testing
+    //  DEVELOPMENT MODE: Bypass for testing
     if (process.env.NODE_ENV === 'development') {
-      console.log('🔧 DEV MODE: Simplified church account request processing')
+      console.log(' DEV MODE: Simplified church account request processing')
       
       const body = await request.json()
-      console.log('📝 Request data:', { 
+      console.log(' Request data:', { 
         churchName: body.churchName,
         firstName: body.firstName,
         lastName: body.lastName,
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     // no real protection. Proper rate limiting via @upstash/ratelimit is a Phase 4 task.
     const body = await request.json()
 
-    // ✅ SECURITY: Input validation and sanitization
+    //  SECURITY: Input validation and sanitization
     let validatedData
     try {
       validatedData = churchAccountRequestSchema.parse(body)
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       throw error
     }
 
-    // ✅ SECURITY: Additional sanitization
+    //  SECURITY: Additional sanitization
     const sanitizedData = {
       churchName: sanitizeHtml(validatedData.churchName),
       firstName: sanitizeHtml(validatedData.firstName),
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
       message: validatedData.message ? sanitizeHtml(validatedData.message) : undefined
     }
 
-    // ✅ SECURITY: Check for existing user with parameterized query
+    //  SECURITY: Check for existing user with parameterized query
     const existingUser = await db.users.findUnique({
       where: { email: sanitizedData.email },
       select: { id: true, email: true } // Limit data exposure
@@ -126,10 +126,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // ✅ SECURITY: Generate secure request ID
+    //  SECURITY: Generate secure request ID
     const requestId = `church-req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     
-    // ✅ SECURITY: Secure logging (no sensitive data in logs)
+    //  SECURITY: Secure logging (no sensitive data in logs)
     const logData = {
       requestId,
       churchName: sanitizedData.churchName,
@@ -141,13 +141,13 @@ export async function POST(request: NextRequest) {
       ip: request.headers.get('x-forwarded-for') || 'unknown'
     }
 
-    console.log('🎯 NUEVA SOLICITUD DE CUENTA RECIBIDA:', logData)
+    console.log(' NUEVA SOLICITUD DE CUENTA RECIBIDA:', logData)
 
     // TODO: Integrar con sistema de notificaciones para SUPER_ADMIN
     // TODO: Enviar email de confirmación al solicitante
     // TODO: Crear dashboard para gestionar estas solicitudes
 
-    // ✅ SECURITY: Store request securely (if database storage is needed)
+    //  SECURITY: Store request securely (if database storage is needed)
     // For now, we only log for manual processing by SUPER_ADMIN
     // Future enhancement: Store in database with encryption for sensitive data
 
@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
     }, { status: 201 })
 
   } catch (error: any) {
-    // ✅ SECURITY: Secure error logging (no sensitive data)
+    //  SECURITY: Secure error logging (no sensitive data)
     console.error('Error al crear solicitud de cuenta:', {
       error: error.message,
       timestamp: new Date().toISOString(),

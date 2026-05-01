@@ -1,4 +1,4 @@
-// 🎨 ADVANCED QR CODE GENERATOR (Vercel-optimized with memory management)
+//  ADVANCED QR CODE GENERATOR (Vercel-optimized with memory management)
 import QRCode from 'qrcode'
 import type { QRConfig } from './form-types'
 
@@ -157,7 +157,7 @@ async function applyCanvasCustomizations(baseQR: string, qrConfig: QRConfig): Pr
         // Convert to data URL and cleanup
         const finalQR = canvas.toDataURL('image/png', 1.0)
         
-        // 🧹 CRITICAL: Memory cleanup
+        //  CRITICAL: Memory cleanup
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         canvas.width = 0
         canvas.height = 0
@@ -197,7 +197,7 @@ export async function uploadImage(
     reader.onload = (e) => {
       const result = e.target?.result
       if (typeof result === 'string') {
-        console.log(`✅ ${type} converted to data URL (${(result.length / 1024).toFixed(1)}KB)`)
+        console.log(` ${type} converted to data URL (${(result.length / 1024).toFixed(1)}KB)`)
         resolve(result)
       } else {
         reject(new Error('Error al leer el archivo de imagen'))

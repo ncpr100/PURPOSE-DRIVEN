@@ -536,7 +536,7 @@ export default function PrayerWallPage() {
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
                         <li>
                           Toca el botón Compartir{" "}
-                          <span className="inline-block">□↑</span>
+                          <span className="inline-block">↑</span>
                         </li>
                         <li>
                           Desliza y selecciona "Añadir a pantalla de inicio"

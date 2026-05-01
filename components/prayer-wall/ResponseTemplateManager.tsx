@@ -824,7 +824,7 @@ export function ResponseTemplateManager({ onTemplateUpdate }: ResponseTemplateMa
               </div>
 
               <div className="bg-[hsl(var(--info)/0.10)] rounded-lg p-3">
-                <h4 className="font-medium text-foreground mb-2">💡 Consejos</h4>
+                <h4 className="font-medium text-foreground mb-2"> Consejos</h4>
                 <ul className="text-sm text-[hsl(var(--info))] space-y-1">
                   <li>• Usa variables para personalizar los mensajes</li>
                   <li>• Las plantillas activas se aplicarán automáticamente</li>

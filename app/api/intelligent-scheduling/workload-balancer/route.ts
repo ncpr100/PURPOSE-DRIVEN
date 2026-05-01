@@ -299,10 +299,10 @@ export async function POST(request: NextRequest) {
 
     const { includeInactive = false, autoImplement = false } = await request.json()
 
-    console.log('📊 Analizando cargas de trabajo de voluntarios...')
+    console.log(' Analizando cargas de trabajo de voluntarios...')
     const workloads = await analyzeVolunteerWorkloads(session.user.churchId)
 
-    console.log('🎯 Generando recomendaciones de balanceo...')
+    console.log(' Generando recomendaciones de balanceo...')
     const recommendations = await generateBalancingRecommendations(workloads, session.user.churchId)
 
     // Calculate summary statistics
@@ -352,7 +352,7 @@ export async function POST(request: NextRequest) {
       }
     })
   } catch (error) {
-    console.error('❌ Error en balanceador de carga de trabajo:', error)
+    console.error(' Error en balanceador de carga de trabajo:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' }, 
       { status: 500 }

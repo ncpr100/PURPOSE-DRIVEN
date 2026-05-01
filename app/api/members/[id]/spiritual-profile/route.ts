@@ -145,9 +145,9 @@ export async function POST(request: NextRequest, props: { params: Promise<{ id: 
       }
     });
 
-    // 🤖 AUTOMATED WORKFLOW: Trigger spiritual assessment automation
+    //  AUTOMATED WORKFLOW: Trigger spiritual assessment automation
     try {
-      console.log('🤖 Triggering SPIRITUAL_ASSESSMENT_SUBMITTED automation for member:', memberId)
+      console.log(' Triggering SPIRITUAL_ASSESSMENT_SUBMITTED automation for member:', memberId)
       
       // Import automation engine
       const { AutomationTriggers } = await import('@/lib/automation-engine')
@@ -169,9 +169,9 @@ export async function POST(request: NextRequest, props: { params: Promise<{ id: 
         motivation
       }, member.churchId)
       
-      console.log('✅ Spiritual assessment automation triggered successfully')
+      console.log(' Spiritual assessment automation triggered successfully')
     } catch (automationError) {
-      console.error('⚠️ Error triggering spiritual assessment automation:', automationError)
+      console.error('️ Error triggering spiritual assessment automation:', automationError)
       // Don't fail the main request if automation fails
     }
     

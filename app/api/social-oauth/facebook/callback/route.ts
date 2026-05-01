@@ -151,7 +151,7 @@ export async function GET(request: NextRequest) {
 
     // Log successful connection
     console.log(
-      `✅ Facebook account connected for church ${oauthState.churchId}: ${profile.name}`,
+      ` Facebook account connected for church ${oauthState.churchId}: ${profile.name}`,
     );
 
     // Redirect back to social media page with success

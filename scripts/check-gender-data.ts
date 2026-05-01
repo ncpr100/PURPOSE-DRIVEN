@@ -4,14 +4,14 @@ const db = new PrismaClient()
 
 async function checkGenderDistribution() {
   try {
-    console.log('🔍 CHECKING ACTUAL GENDER DISTRIBUTION\n')
+    console.log(' CHECKING ACTUAL GENDER DISTRIBUTION\n')
 
     const church = await db.church.findFirst({
       where: { name: 'Iglesia Comunidad de Fe' }
     })
 
     if (!church) {
-      console.log('❌ Church not found!')
+      console.log(' Church not found!')
       return
     }
 
@@ -31,7 +31,7 @@ async function checkGenderDistribution() {
     const nullGender = allMembers.filter(m => !m.gender).length
     const other = allMembers.filter(m => m.gender && m.gender !== 'Masculino' && m.gender !== 'Femenino').length
 
-    console.log('\n📊 GENDER BREAKDOWN:')
+    console.log('\n GENDER BREAKDOWN:')
     console.log(`   Masculino (exact): ${masculino}`)
     console.log(`   Femenino (exact): ${femenino}`)
     console.log(`   NULL: ${nullGender}`)
@@ -39,7 +39,7 @@ async function checkGenderDistribution() {
     console.log(`   TOTAL: ${masculino + femenino + nullGender + other}`)
 
     // Sample 10 members to see actual values
-    console.log('\n📋 SAMPLE MEMBER GENDERS (first 10):')
+    console.log('\n SAMPLE MEMBER GENDERS (first 10):')
     const sample = allMembers.slice(0, 10)
     sample.forEach((m, i) => {
       console.log(`   ${i+1}. gender = "${m.gender}" (type: ${typeof m.gender})`)
@@ -47,14 +47,14 @@ async function checkGenderDistribution() {
 
     // Check unique gender values
     const uniqueGenders = [...new Set(allMembers.map(m => m.gender))]
-    console.log('\n🔤 UNIQUE GENDER VALUES IN DATABASE:')
+    console.log('\n UNIQUE GENDER VALUES IN DATABASE:')
     uniqueGenders.forEach(g => {
       const count = allMembers.filter(m => m.gender === g).length
       console.log(`   "${g}" → ${count} members`)
     })
 
   } catch (error) {
-    console.error('❌ Error:', error)
+    console.error(' Error:', error)
   } finally {
     await db.$disconnect()
   }

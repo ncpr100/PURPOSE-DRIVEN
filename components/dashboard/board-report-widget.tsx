@@ -179,7 +179,7 @@ export function BoardReportWidget({ initialReport }: Props) {
             )}
 
             <p className="text-xs text-muted-foreground italic border-t pt-2">
-              ⚠️ Generado por IA como apoyo ministerial. La decisión pastoral
+              ️ Generado por IA como apoyo ministerial. La decisión pastoral
               pertenece al pastor.
             </p>
           </div>

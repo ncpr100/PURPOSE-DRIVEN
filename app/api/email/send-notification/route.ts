@@ -207,7 +207,7 @@ export async function POST(request: NextRequest) {
     await emailQueue.addBulk(emails)
 
     // Log the email sending activity
-    console.log(`📧 Queued ${emails.length} notification emails for notification: ${notification.title}`)
+    console.log(` Queued ${emails.length} notification emails for notification: ${notification.title}`)
 
     return NextResponse.json({
       success: true,

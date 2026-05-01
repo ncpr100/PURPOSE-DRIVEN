@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
           checkIns = results[3];
         } catch (dbError) {
           console.log(
-            "⚠️ Database unavailable for trends interval, using fallback data",
+            "️ Database unavailable for trends interval, using fallback data",
           );
           // Fallback data already initialized above
         }

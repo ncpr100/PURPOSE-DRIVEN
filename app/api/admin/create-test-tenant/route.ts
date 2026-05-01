@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: "✅ Fresh test tenant created successfully!",
+        message: " Fresh test tenant created successfully!",
         data: {
           church: {
             id: church.id,

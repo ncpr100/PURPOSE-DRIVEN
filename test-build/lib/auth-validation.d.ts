@@ -13,11 +13,11 @@ export declare function validateJWTForMiddleware(token: JWT): token is JWT & Req
 /**
  * VALIDATION CHECKLIST for JWT Changes:
  *
- * ✅ Does middleware.ts use this field?
- * ✅ Does any page-level authorization check this field?
- * ✅ Is this field needed for multi-tenant data scoping?
- * ✅ Have you tested with a FRESH login (new JWT)?
- * ✅ Have you checked ALL protected routes still work?
+ *  Does middleware.ts use this field?
+ *  Does any page-level authorization check this field?
+ *  Is this field needed for multi-tenant data scoping?
+ *  Have you tested with a FRESH login (new JWT)?
+ *  Have you checked ALL protected routes still work?
  *
  * NEVER remove fields from JWT without checking:
  * - middleware.ts (line 130-180)

@@ -14,7 +14,7 @@ async function main() {
   const shouldCleanup = args.includes('--cleanup');
   const dryRun = !args.includes('--no-dry-run');
   
-  console.log('🧠 Starting Memory Assessment...\n');
+  console.log(' Starting Memory Assessment...\n');
   
   const assessment = new MemoryAssessment();
   
@@ -27,11 +27,11 @@ async function main() {
     const reportPath = path.join(process.cwd(), 'MEMORY_ASSESSMENT_REPORT.md');
     await fs.writeFile(reportPath, reportContent);
     
-    console.log('📊 Memory Assessment Complete!');
-    console.log(`📁 Detailed report saved: ${reportPath}\n`);
+    console.log(' Memory Assessment Complete!');
+    console.log(` Detailed report saved: ${reportPath}\n`);
     
     // Display summary
-    console.log('📋 Summary:');
+    console.log(' Summary:');
     console.log(`Total project size: ${formatBytes(report.totalSize)}`);
     console.log(`Potential savings: ${formatBytes(report.cleanupRecommendations.totalSavings)}`);
     console.log(`Files safe to delete: ${report.cleanupRecommendations.safeToDelete.length}`);
@@ -39,7 +39,7 @@ async function main() {
     
     // Top cleanup candidates
     if (report.cleanupRecommendations.safeToDelete.length > 0) {
-      console.log('🗑 Top cleanup candidates:');
+      console.log(' Top cleanup candidates:');
       report.cleanupRecommendations.safeToDelete.slice(0, 10).forEach(file => {
         console.log(`  - ${file.path} (${formatBytes(file.size)})`);
       });
@@ -48,18 +48,18 @@ async function main() {
     
     // Perform cleanup if requested
     if (shouldCleanup) {
-      console.log(`🧹 ${dryRun ? 'DRY RUN' : 'ACTUAL'} Cleanup Starting...\n`);
+      console.log(` ${dryRun ? 'DRY RUN' : 'ACTUAL'} Cleanup Starting...\n`);
       await assessment.performSafeCleanup(report, dryRun);
       
       if (dryRun) {
-        console.log('\n💡 To perform actual cleanup, run with --no-dry-run flag');
+        console.log('\n To perform actual cleanup, run with --no-dry-run flag');
       }
     } else {
-      console.log('💡 To perform cleanup, run with --cleanup flag');
+      console.log(' To perform cleanup, run with --cleanup flag');
     }
     
   } catch (error) {
-    console.error('❌ Memory assessment failed:', error);
+    console.error(' Memory assessment failed:', error);
     process.exit(1);
   }
 }

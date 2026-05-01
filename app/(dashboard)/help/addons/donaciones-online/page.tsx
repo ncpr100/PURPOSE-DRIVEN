@@ -10,51 +10,51 @@ import Link from 'next/link'
 export default function DonacionesOnlineAddon() {
   const features = [
     {
-      title: "✅ PSE - Pagos Seguros en Línea",
+      title: " PSE - Pagos Seguros en Línea",
       description: "Integración directa con todos los bancos colombianos",
-      icon: "🏦",
+      icon: "",
       status: "implemented"
     },
     {
-      title: "✅ Nequi",
+      title: " Nequi",
       description: "Pagos instantáneos desde cuentas Nequi",
-      icon: "📱",
+      icon: "",
       status: "implemented"
     },
     {
-      title: "✅ Formularios Públicos",
+      title: " Formularios Públicos",
       description: "Página de donación accesible sin registro previo",
-      icon: "🌐",
+      icon: "",
       status: "implemented"
     },
     {
-      title: "✅ Recibos Automáticos",
+      title: " Recibos Automáticos",
       description: "Se envían por email inmediatamente después del pago",
-      icon: "🧾",
+      icon: "",
       status: "implemented"
     },
     {
-      title: "✅ Dashboard Financiero",
+      title: " Dashboard Financiero",
       description: "Reportes detallados integrados con el sistema existente",
-      icon: "📊",
+      icon: "",
       status: "implemented"
     },
     {
-      title: "✅ Campañas de Donación",
+      title: " Campañas de Donación",
       description: "Cree campañas públicas con metas y seguimiento",
-      icon: "🎯",
+      icon: "",
       status: "implemented"
     },
     {
-      title: "✅ Procesamiento Seguro",
+      title: " Procesamiento Seguro",
       description: "Webhooks y verificación automática de pagos",
-      icon: "🔒",
+      icon: "",
       status: "implemented"
     },
     {
-      title: "🔄 Donaciones Recurrentes",
+      title: " Donaciones Recurrentes",
       description: "Próximamente - donaciones automáticas mensuales",
-      icon: "🔄",
+      icon: "",
       status: "coming-soon"
     }
   ]
@@ -64,19 +64,19 @@ export default function DonacionesOnlineAddon() {
       type: "PSE - Pagos Seguros en Línea",
       brands: ["Bancolombia", "Davivienda", "BBVA", "Banco de Bogotá", "Todos los bancos"],
       fee: "Comisión bancaria estándar",
-      icon: "🏦"
+      icon: ""
     },
     {
       type: "Nequi",
       brands: ["Pagos desde cuenta Nequi", "Instantáneo"],
       fee: "Sin comisión adicional",
-      icon: "📱"
+      icon: ""
     },
     {
       type: "Daviplata",
       brands: ["Billetera digital Davivienda", "Próximamente"],
       fee: "Comisión preferencial",
-      icon: "💳"
+      icon: ""
     }
   ]
 
@@ -148,7 +148,7 @@ export default function DonacionesOnlineAddon() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">💰 Más Ingresos</Badge>
+          <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]"> Más Ingresos</Badge>
           <Badge variant="outline">Complemento Premium</Badge>
         </div>
       </div>
@@ -164,7 +164,7 @@ export default function DonacionesOnlineAddon() {
             <div className="bg-primary/10 p-4 rounded-lg mb-4">
               <p className="font-semibold mb-2">Tarifas competitivas por transacción</p>
               <div className="text-sm space-y-1">
-                <p>💳 Tarjetas: Comisión preferencial</p>
+                <p> Tarjetas: Comisión preferencial</p>
                 <p>🅿️ PayPal: Comisión estándar</p>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function DonacionesOnlineAddon() {
               className="w-full"
               onClick={() => alert('Funcionalidad de suscripción será implementada próximamente. Contacte soporte para activar.')}
             >
-              💰 Activar Donaciones Online
+               Activar Donaciones Online
             </Button>
             <p className="text-xs text-muted-foreground mt-2">
               Contacte soporte para información detallada de precios
@@ -266,30 +266,30 @@ export default function DonacionesOnlineAddon() {
                 <h4 className="font-semibold text-[hsl(var(--success))] mb-3">Para los donantes:</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
-                    <span className="text-[hsl(var(--success))]">✓</span>
+                    <span className="text-[hsl(var(--success))]"></span>
                     <span>Acceso directo sin registro previo</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[hsl(var(--success))]">✓</span>
+                    <span className="text-[hsl(var(--success))]"></span>
                     <span>Selección fácil de montos y categorías</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[hsl(var(--success))]">✓</span>
+                    <span className="text-[hsl(var(--success))]"></span>
                     <span>Pago seguro con PSE o Nequi</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[hsl(var(--success))]">✓</span>
+                    <span className="text-[hsl(var(--success))]"></span>
                     <span>Recibo instantáneo por email</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-[hsl(var(--success))]">✓</span>
+                    <span className="text-[hsl(var(--success))]"></span>
                     <span>Confirmación inmediata del pago</span>
                   </li>
                 </ul>
               </div>
             </div>
             <div className="bg-[hsl(var(--card))] border border-[hsl(var(--info)/0.4)] rounded-lg p-4 mt-4">
-              <h5 className="font-semibold text-foreground mb-2">🔗 Su enlace de donaciones:</h5>
+              <h5 className="font-semibold text-foreground mb-2"> Su enlace de donaciones:</h5>
               <p className="text-sm text-[hsl(var(--info))]">
                 <code className="bg-[hsl(var(--info)/0.15)] px-2 py-1 rounded text-xs font-mono">
                   https://khesedtek.app/donate/[ID-DE-SU-IGLESIA]
@@ -415,7 +415,7 @@ export default function DonacionesOnlineAddon() {
       <section className="mb-8">
         <Card>
           <CardHeader>
-            <CardTitle>❓ Preguntas Frecuentes</CardTitle>
+            <CardTitle> Preguntas Frecuentes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -444,7 +444,7 @@ export default function DonacionesOnlineAddon() {
       <section className="mb-8">
         <Card>
           <CardHeader>
-            <CardTitle>📊 Calculadora de Ingresos Adicionales</CardTitle>
+            <CardTitle> Calculadora de Ingresos Adicionales</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="bg-[hsl(var(--success)/0.08)] p-6 rounded-lg">
@@ -485,10 +485,10 @@ export default function DonacionesOnlineAddon() {
                 size="lg"
                 onClick={() => alert('Funcionalidad de suscripción será implementada próximamente. Contacte soporte para activar.')}
               >
-                💳 Activar Donaciones Online
+                 Activar Donaciones Online
               </Button>
               <Button variant="outline" size="lg" onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
-                💬 Consultar por WhatsApp
+                 Consultar por WhatsApp
               </Button>
             </div>
             <p className="text-xs text-muted-foreground mt-4">

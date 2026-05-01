@@ -357,7 +357,7 @@ export default function PrayerRequestsPage() {
                       Convierte el sistema de peticiones en una app independiente para responder rápidamente desde cualquier lugar.
                     </p>
                     <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--info)/0.3)]">
-                      <p className="font-medium text-sm text-foreground">✨ Beneficios para el Equipo:</p>
+                      <p className="font-medium text-sm text-foreground">Beneficios para el Equipo:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--info))]">
                         <li>Responde a peticiones urgentes al instante</li>
                         <li>Funciona sin conexión (modo offline)</li>
@@ -387,7 +387,7 @@ export default function PrayerRequestsPage() {
                       Recibe alertas inmediatas cuando lleguen peticiones urgentes o nuevas solicitudes.
                     </p>
                     <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--warning)/0.3)]">
-                      <p className="font-medium text-sm text-[hsl(var(--warning))]">🔔 Tipos de Notificaciones:</p>
+                      <p className="font-medium text-sm text-[hsl(var(--warning))]">Tipos de Notificaciones:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--warning))]">
                         <li><strong>Urgentes:</strong> Peticiones marcadas como prioritarias</li>
                         <li><strong>Nuevas Solicitudes:</strong> Cuando alguien envía una petición</li>
@@ -416,7 +416,7 @@ export default function PrayerRequestsPage() {
                       Accede a peticiones recientes incluso sin internet. Ideal para áreas con señal débil.
                     </p>
                     <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--success)/0.3)]">
-                      <p className="font-medium text-sm text-foreground">💾 Qué Funciona Offline:</p>
+                      <p className="font-medium text-sm text-foreground">Qué Funciona Offline:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--success))]">
                         <li>Ver últimas 100 peticiones guardadas</li>
                         <li>Leer detalles completos de cada solicitud</li>

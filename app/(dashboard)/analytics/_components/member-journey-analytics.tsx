@@ -62,7 +62,7 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
         setLoading(true);
       }
       
-      // 🔥 FIXED: Use the SAME real member data as all other components
+      //  FIXED: Use the SAME real member data as all other components
       const [membersResponse, analyticsResponse] = await Promise.all([
         fetch('/api/members?limit=10000'), // Get all members
         fetch('/api/analytics/member-journey') // Get journey analytics
@@ -76,7 +76,7 @@ export function MemberJourneyAnalytics({ userRole, churchId, className }: Member
         const members = membersData.members || membersData;
         totalMembers = membersData.pagination?.total || members.length;
         activeMembers = members.filter((m: any) => m.isActive).length;
-        console.log('📊 Using REAL member data from same API:', { totalMembers, activeMembers });
+        console.log(' Using REAL member data from same API:', { totalMembers, activeMembers });
       }
       
       // Use real member counts with calculated analytics

@@ -24,7 +24,9 @@ import {
   Target,
   CheckCircle,
   ArrowRight,
-  Lightbulb
+  Lightbulb,
+  X,
+  RefreshCw
 } from 'lucide-react';
 
 interface PathwayRecommendation {
@@ -499,7 +501,7 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
                   size="sm"
                   onClick={() => setSelectedRecommendation(null)}
                 >
-                  ✕
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
               
@@ -580,7 +582,7 @@ export function MinistryRecommendationsPanel({ churchId, className }: MinistryRe
             size="sm"
             className="text-muted-foreground hover:text-foreground"
           >
-            🔄 Actualizar Recomendaciones
+            <RefreshCw className="h-4 w-4 mr-1" /> Actualizar Recomendaciones
           </Button>
         </div>
       </CardContent>

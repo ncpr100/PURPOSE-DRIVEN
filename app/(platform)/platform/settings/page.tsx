@@ -228,7 +228,7 @@ export default function PlatformSettingsPage() {
         
         // If currency was changed, show notification about refreshing subscription display
         if (section === 'billing') {
-          toast.success('💱 Precios de suscripción actualizados con nueva moneda', {
+          toast.success('Precios de suscripción actualizados con nueva moneda', {
             duration: 4000
           })
         }

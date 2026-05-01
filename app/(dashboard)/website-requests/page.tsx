@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Plus, Globe, Clock, CheckCircle, AlertCircle, Eye, MessageSquare } from 'lucide-react'
+import { Plus, Globe, Clock, CheckCircle, AlertCircle, Eye, MessageSquare, Rocket, Zap, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -126,8 +126,7 @@ export default function WebsiteRequestsPage() {
       <div className="flex flex-col gap-8 p-8">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold tracking-tight">🌐 Solicitudes de Sitio Web</h1>
-            <p className="text-muted-foreground">Cargando...</p>
+            <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2"><Globe className="h-8 w-8" /> Solicitudes de Sitio Web</h1>
           </div>
         </div>
       </div>
@@ -139,7 +138,7 @@ export default function WebsiteRequestsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">🌐 Solicitudes de Sitio Web</h1>
+          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2"><Globe className="h-8 w-8" /> Solicitudes de Sitio Web</h1>
           <p className="text-muted-foreground">
             Solicita sitios web profesionales creados por nuestros expertos
           </p>
@@ -316,25 +315,25 @@ export default function WebsiteRequestsPage() {
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold mb-2 text-[hsl(var(--success))]">✅ Diseño Profesional</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--success))] flex items-center gap-1"><CheckCircle className="h-4 w-4" /> Diseño Profesional</h4>
               <p className="text-sm text-muted-foreground">
                 Sitios web diseñados por expertos específicamente para iglesias, con mejores prácticas de UX/UI.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2 text-[hsl(var(--info))]">🚀 Optimización Técnica</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--info))] flex items-center gap-1"><Rocket className="h-4 w-4" /> Optimización Técnica</h4>
               <p className="text-sm text-muted-foreground">
                 SEO optimizado, velocidad de carga rápida y compatibilidad móvil garantizada.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2 text-[hsl(var(--lavender))]">⚡ Entrega Rápida</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--lavender))] flex items-center gap-1"><Zap className="h-4 w-4" /> Entrega Rápida</h4>
               <p className="text-sm text-muted-foreground">
                 Tu sitio estará listo en 5-10 días laborales, sin complicaciones técnicas de tu parte.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-2 text-[hsl(var(--warning))]">🎯 Enfoque Ministerial</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--warning))] flex items-center gap-1"><Target className="h-4 w-4" /> Enfoque Ministerial</h4>
               <p className="text-sm text-muted-foreground">
                 Funcionalidades específicas para iglesias: donaciones, eventos, sermones y más.
               </p>

@@ -22,7 +22,7 @@ export default function SpiritualGiftsManual() {
     <div className="container mx-auto p-6 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-          🧠 Sistema de Dones Espirituales
+           Sistema de Dones Espirituales
           <Badge variant="secondary">🆕 Nuevo</Badge>
         </h1>
         <p className="text-muted-foreground">
@@ -80,7 +80,7 @@ export default function SpiritualGiftsManual() {
         {/* Access */}
         <Card>
           <CardHeader>
-            <CardTitle>📍 Acceder al Sistema</CardTitle>
+            <CardTitle> Acceder al Sistema</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
@@ -107,7 +107,7 @@ export default function SpiritualGiftsManual() {
               
               {/* Leadership Gifts */}
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--info))]">👑 Dones de Liderazgo</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--info))]"> Dones de Liderazgo</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
                     <Zap className="h-4 w-4 text-[hsl(var(--warning))]" />
@@ -130,7 +130,7 @@ export default function SpiritualGiftsManual() {
 
               {/* Communication Gifts */}
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">💬 Dones de Comunicación</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]"> Dones de Comunicación</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
                     <BookOpen className="h-4 w-4 text-[hsl(var(--info))]" />
@@ -153,7 +153,7 @@ export default function SpiritualGiftsManual() {
 
               {/* Service Gifts */}
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--lavender))]">🤝 Dones de Servicio</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--lavender))]"> Dones de Servicio</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
                     <Heart className="h-4 w-4 text-[hsl(var(--destructive))]" />
@@ -181,7 +181,7 @@ export default function SpiritualGiftsManual() {
               
               {/* Supernatural Gifts */}
               <div>
-                <h4 className="font-semibold mb-3 text-primary">✨ Dones Sobrenaturales</h4>
+                <h4 className="font-semibold mb-3 text-primary"> Dones Sobrenaturales</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
                     <Zap className="h-4 w-4 text-[hsl(var(--info))]" />
@@ -212,7 +212,7 @@ export default function SpiritualGiftsManual() {
 
               {/* Special Gifts */}
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--warning))]">🎁 Dones Especiales</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--warning))]"> Dones Especiales</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
                     <Heart className="h-4 w-4 text-[hsl(var(--info))]" />
@@ -228,7 +228,7 @@ export default function SpiritualGiftsManual() {
                   </li>
                 </ul>
                 
-                <h4 className="font-semibold mt-6 mb-3 text-[hsl(var(--info))]">🗣️ Dones de Lenguas</h4>
+                <h4 className="font-semibold mt-6 mb-3 text-[hsl(var(--info))]">️ Dones de Lenguas</h4>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center gap-2">
                     <BookOpen className="h-4 w-4 text-[hsl(var(--lavender))]" />
@@ -452,7 +452,7 @@ export default function SpiritualGiftsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Recomendaciones:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]"> Recomendaciones:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Evaluación temprana:</strong> Nuevos miembros en primeros 3 meses</li>
                   <li>• <strong>Contexto bíblico:</strong> Enseñe sobre dones antes de evaluación</li>
@@ -463,7 +463,7 @@ export default function SpiritualGiftsManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">❌ Evitar:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]"> Evitar:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Evaluación forzada:</strong> Debe ser voluntaria y educativa</li>
                   <li>• <strong>Etiquetado rígido:</strong> Dones pueden desarrollarse</li>
@@ -480,7 +480,7 @@ export default function SpiritualGiftsManual() {
         {/* Integration */}
         <Card>
           <CardHeader>
-            <CardTitle>🔗 Integración con Otros Sistemas</CardTitle>
+            <CardTitle> Integración con Otros Sistemas</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">

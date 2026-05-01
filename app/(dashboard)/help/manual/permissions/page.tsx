@@ -28,7 +28,7 @@ export default function PermissionsManual() {
         {/* Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>🛡️ Sistema de Usuarios y Permisos - Manual Completo</CardTitle>
+            <CardTitle>️ Sistema de Usuarios y Permisos - Manual Completo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -36,19 +36,19 @@ export default function PermissionsManual() {
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-[hsl(var(--destructive)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🔐 Niveles</h4>
+                <h4 className="font-semibold"> Niveles</h4>
                 <p className="text-xl font-bold text-[hsl(var(--destructive))]">5</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⏱️ Tiempo</h4>
+                <h4 className="font-semibold">️ Tiempo</h4>
                 <p className="text-xl font-bold text-[hsl(var(--success))]">12 min</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🎯 Nivel</h4>
+                <h4 className="font-semibold"> Nivel</h4>
                 <p className="text-lg font-bold text-[hsl(var(--lavender))]">Avanzado</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
-                <h4 className="font-semibold">👤 Rol Mínimo</h4>
+                <h4 className="font-semibold"> Rol Mínimo</h4>
                 <p className="text-lg font-bold text-[hsl(var(--warning))]">ADMIN</p>
               </div>
             </div>
@@ -67,13 +67,13 @@ export default function PermissionsManual() {
             <div className="space-y-4">
               <div className="border-l-4 border-[hsl(var(--destructive))] pl-4 bg-[hsl(var(--destructive)/0.10)] p-3 rounded-r-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-[hsl(var(--destructive))]">🔴 SUPER_ADMIN</h4>
+                  <h4 className="font-semibold text-[hsl(var(--destructive))]"> SUPER_ADMIN</h4>
                   <span className="text-xs bg-[hsl(var(--destructive))] text-white px-2 py-1 rounded">Prioridad: 100</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-2">Acceso total al sistema y configuración global</p>
                 <div className="grid md:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <p className="font-semibold">✅ Puede hacer:</p>
+                    <p className="font-semibold"> Puede hacer:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Gestionar todos los usuarios</li>
                       <li>• Configurar el sistema completo</li>
@@ -83,7 +83,7 @@ export default function PermissionsManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold">🔍 Pestañas Disponibles:</p>
+                    <p className="font-semibold"> Pestañas Disponibles:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Resumen, Permisos, Roles</li>
                       <li>• Asignaciones, Sistema</li>
@@ -101,7 +101,7 @@ export default function PermissionsManual() {
                 <p className="text-sm text-muted-foreground mb-2">Gestión completa de la iglesia y usuarios</p>
                 <div className="grid md:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <p className="font-semibold">✅ Puede hacer:</p>
+                    <p className="font-semibold"> Puede hacer:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Gestionar miembros y voluntarios</li>
                       <li>• Crear y asignar roles</li>
@@ -110,7 +110,7 @@ export default function PermissionsManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold">❌ No puede:</p>
+                    <p className="font-semibold"> No puede:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Acceso a configuración de sistema</li>
                       <li>• Gestión de plataforma</li>
@@ -121,13 +121,13 @@ export default function PermissionsManual() {
 
               <div className="border-l-4 border-[hsl(var(--info))] pl-4 bg-[hsl(var(--info)/0.10)] p-3 rounded-r-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-[hsl(var(--info))]">🔵 PASTOR</h4>
+                  <h4 className="font-semibold text-[hsl(var(--info))]"> PASTOR</h4>
                   <span className="text-xs bg-[hsl(var(--info))] text-white px-2 py-1 rounded">Prioridad: 60</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-2">Supervisión ministerial y gestión pastoral</p>
                 <div className="grid md:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <p className="font-semibold">✅ Puede hacer:</p>
+                    <p className="font-semibold"> Puede hacer:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Gestionar ministerios</li>
                       <li>• Acceso pastoral especial</li>
@@ -135,7 +135,7 @@ export default function PermissionsManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold">❌ No puede:</p>
+                    <p className="font-semibold"> No puede:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Gestión de usuarios</li>
                       <li>• Configuración financiera</li>
@@ -152,7 +152,7 @@ export default function PermissionsManual() {
                 <p className="text-sm text-muted-foreground mb-2">Gestión de ministerios específicos y equipos</p>
                 <div className="grid md:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <p className="font-semibold">✅ Puede hacer:</p>
+                    <p className="font-semibold"> Puede hacer:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Gestionar su equipo</li>
                       <li>• Ver información de miembros</li>
@@ -160,7 +160,7 @@ export default function PermissionsManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold">❌ No puede:</p>
+                    <p className="font-semibold"> No puede:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Crear roles</li>
                       <li>• Asignar permisos</li>
@@ -172,13 +172,13 @@ export default function PermissionsManual() {
 
               <div className="border-l-4 border-gray-500 pl-4 bg-muted/30 p-3 rounded-r-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-semibold text-muted-foreground">⚫ MIEMBRO</h4>
+                  <h4 className="font-semibold text-muted-foreground"> MIEMBRO</h4>
                   <span className="text-xs bg-gray-600 text-white px-2 py-1 rounded">Prioridad: 20</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-2">Acceso básico de consulta y participación</p>
                 <div className="grid md:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <p className="font-semibold">✅ Puede hacer:</p>
+                    <p className="font-semibold"> Puede hacer:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Ver eventos y servicios</li>
                       <li>• Leer sermones</li>
@@ -186,7 +186,7 @@ export default function PermissionsManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold">❌ No puede:</p>
+                    <p className="font-semibold"> No puede:</p>
                     <ul className="ml-4 text-muted-foreground space-y-1">
                       <li>• Gestionar otros usuarios</li>
                       <li>• Ver información financiera</li>
@@ -210,14 +210,14 @@ export default function PermissionsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔧 Configuración Inicial</h4>
+                <h4 className="font-semibold mb-3"> Configuración Inicial</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>2.1.</strong> <span className="text-[hsl(var(--info))] font-bold">IMPORTANTE:</span> Solo usuarios con rol de <strong>Pastor</strong> o <strong>Administrador</strong> de su iglesia pueden inicializar el sistema de permisos</p>
                   <p className="text-xs text-muted-foreground ml-6">
                     <em>Nota: El SUPER_ADMIN gestiona la plataforma Khesed-Tek completa, NO los roles internos de cada iglesia</em>
                   </p>
                   <p><strong>2.2.</strong> Vaya a <code>Configuración → Permisos</code></p>
-                  <p><strong>2.3.</strong> Haga clic en &quot;🗄️ Inicializar Sistema&quot;</p>
+                  <p><strong>2.3.</strong> Haga clic en &quot;️ Inicializar Sistema&quot;</p>
                   <p><strong>2.4.</strong> El sistema creará automáticamente:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Permisos base para todos los recursos</li>
@@ -228,7 +228,7 @@ export default function PermissionsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">⚠️ Importante</h4>
+                <h4 className="font-semibold mb-2">️ Importante</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Solo ejecute una vez:</strong> La inicialización no se puede deshacer</li>
                   <li>• <strong>Backup recomendado:</strong> Antes de cualquier cambio mayor</li>
@@ -250,36 +250,36 @@ export default function PermissionsManual() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <h4 className="font-semibold mb-3">📑 Sistema de Pestañas por Rol</h4>
+              <h4 className="font-semibold mb-3"> Sistema de Pestañas por Rol</h4>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div className="border rounded-lg p-3">
-                  <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">🔴 SUPER_ADMIN</h4>
+                  <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> SUPER_ADMIN</h4>
                   <ul className="space-y-1 text-muted-foreground">
-                    <li>• 📊 Resumen</li>
-                    <li>• 🔑 Permisos</li>
-                    <li>• 🛡️ Roles</li>
-                    <li>• 👥 Asignaciones</li>
-                    <li>• ⚙️ Sistema</li>
-                    <li>• 📄 Auditoría</li>
+                    <li>•  Resumen</li>
+                    <li>•  Permisos</li>
+                    <li>• ️ Roles</li>
+                    <li>•  Asignaciones</li>
+                    <li>• ️ Sistema</li>
+                    <li>•  Auditoría</li>
                   </ul>
                 </div>
                 
                 <div className="border rounded-lg p-3">
                   <h4 className="font-semibold text-[hsl(var(--warning))] mb-2">🟠 ADMIN_IGLESIA</h4>
                   <ul className="space-y-1 text-muted-foreground">
-                    <li>• 📊 Resumen</li>
-                    <li>• 🛡️ Roles</li>
-                    <li>• 👥 Asignaciones</li>
-                    <li>• ⚙️ Configuración Iglesia</li>
+                    <li>•  Resumen</li>
+                    <li>• ️ Roles</li>
+                    <li>•  Asignaciones</li>
+                    <li>• ️ Configuración Iglesia</li>
                   </ul>
                 </div>
 
                 <div className="border rounded-lg p-3">
-                  <h4 className="font-semibold text-[hsl(var(--info))] mb-2">🔵 PASTOR</h4>
+                  <h4 className="font-semibold text-[hsl(var(--info))] mb-2"> PASTOR</h4>
                   <ul className="space-y-1 text-muted-foreground">
-                    <li>• 📊 Resumen</li>
-                    <li>• ❤️ Roles Ministeriales</li>
-                    <li>• 📖 Acceso Pastoral</li>
+                    <li>•  Resumen</li>
+                    <li>• ️ Roles Ministeriales</li>
+                    <li>•  Acceso Pastoral</li>
                   </ul>
                 </div>
               </div>
@@ -298,10 +298,10 @@ export default function PermissionsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">👥 Proceso de Asignación</h4>
+                <h4 className="font-semibold mb-3"> Proceso de Asignación</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>4.1.</strong> En Permisos, vaya a la pestaña &quot;Asignaciones&quot;</p>
-                  <p><strong>4.2.</strong> Haga clic en &quot;👤 Asignar Rol&quot;</p>
+                  <p><strong>4.2.</strong> Haga clic en &quot; Asignar Rol&quot;</p>
                   <p><strong>4.3.</strong> Seleccione el usuario de la lista</p>
                   <p><strong>4.4.</strong> Escoja el rol apropiado:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -314,7 +314,7 @@ export default function PermissionsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">🎯 Mejores Prácticas</h4>
+                <h4 className="font-semibold mb-2"> Mejores Prácticas</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Principio de menor privilegio:</strong> Asigne el rol mínimo necesario</li>
                   <li>• <strong>Revisión periódica:</strong> Evalúe roles cada 6 meses</li>
@@ -338,22 +338,22 @@ export default function PermissionsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔘 Botones Dinámicos</h4>
+                <h4 className="font-semibold mb-3"> Botones Dinámicos</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>El sistema muestra botones según su rol:</strong></p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>&quot;➕ Crear Permiso&quot;:</strong> Solo SUPER_ADMIN</li>
-                    <li>• <strong>&quot;🛡️ Crear Rol&quot;:</strong> SUPER_ADMIN + ADMIN_IGLESIA</li>
-                    <li>• <strong>&quot;👤 Asignar Rol&quot;:</strong> SUPER_ADMIN + ADMIN_IGLESIA</li>
-                    <li>• <strong>&quot;❤️ Gestionar Ministerio&quot;:</strong> Hasta PASTOR</li>
-                    <li>• <strong>&quot;👥 Gestionar Equipo&quot;:</strong> Hasta LIDER</li>
-                    <li>• <strong>&quot;📄 Ver Auditoría&quot;:</strong> Solo SUPER_ADMIN</li>
-                    <li>• <strong>&quot;⚠️ Anulación Emergencia&quot;:</strong> Solo SUPER_ADMIN</li>
+                    <li>• <strong>&quot; Crear Permiso&quot;:</strong> Solo SUPER_ADMIN</li>
+                    <li>• <strong>&quot;️ Crear Rol&quot;:</strong> SUPER_ADMIN + ADMIN_IGLESIA</li>
+                    <li>• <strong>&quot; Asignar Rol&quot;:</strong> SUPER_ADMIN + ADMIN_IGLESIA</li>
+                    <li>• <strong>&quot;️ Gestionar Ministerio&quot;:</strong> Hasta PASTOR</li>
+                    <li>• <strong>&quot; Gestionar Equipo&quot;:</strong> Hasta LIDER</li>
+                    <li>• <strong>&quot; Ver Auditoría&quot;:</strong> Solo SUPER_ADMIN</li>
+                    <li>• <strong>&quot;️ Anulación Emergencia&quot;:</strong> Solo SUPER_ADMIN</li>
                   </ul>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">⚡ Funciones de Botones</h4>
+                <h4 className="font-semibold mb-3"> Funciones de Botones</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Al hacer clic en cada botón:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -381,7 +381,7 @@ export default function PermissionsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔒 Seguridad de Roles</h4>
+                <h4 className="font-semibold mb-3"> Seguridad de Roles</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Recomendaciones generales:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -394,7 +394,7 @@ export default function PermissionsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">🚨 Señales de Alerta</h4>
+                <h4 className="font-semibold mb-2"> Señales de Alerta</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Intentos de acceso no autorizado</li>
                   <li>• Cambios frecuentes de roles</li>
@@ -403,7 +403,7 @@ export default function PermissionsManual() {
                   <li>• Modificaciones inesperadas de datos</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--destructive)/0.30)]">
-                  <p className="text-xs"><strong>🚨 En caso de compromiso:</strong> Use &quot;Anulación de Emergencia&quot; para revocar todos los accesos temporalmente</p>
+                  <p className="text-xs"><strong> En caso de compromiso:</strong> Use &quot;Anulación de Emergencia&quot; para revocar todos los accesos temporalmente</p>
                 </div>
               </div>
             </div>
@@ -421,7 +421,7 @@ export default function PermissionsManual() {
           <CardContent>
             <div className="space-y-4 text-sm">
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ &quot;No tienes permisos para acceder a esta sección&quot;</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> &quot;No tienes permisos para acceder a esta sección&quot;</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Causa:</strong> Su rol no tiene acceso a esa funcionalidad específica.
                 </p>
@@ -432,7 +432,7 @@ export default function PermissionsManual() {
               </div>
               
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ &quot;No puedo asignar roles a otros usuarios&quot;</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> &quot;No puedo asignar roles a otros usuarios&quot;</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Causa:</strong> Solo puede asignar roles de menor prioridad que el suyo.
                 </p>
@@ -443,7 +443,7 @@ export default function PermissionsManual() {
               </div>
 
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ &quot;Los botones no aparecen&quot;</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> &quot;Los botones no aparecen&quot;</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Causa:</strong> Su rol no tiene acceso a esas acciones específicas.
                 </p>
@@ -459,7 +459,7 @@ export default function PermissionsManual() {
         {/* Quick Reference */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Referencia Rápida de Permisos</CardTitle>
+            <CardTitle> Referencia Rápida de Permisos</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -477,51 +477,51 @@ export default function PermissionsManual() {
                 <tbody className="text-xs">
                   <tr className="border-b">
                     <td className="p-2">Ver permisos del sistema</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">❌</td>
-                    <td className="text-center p-2">❌</td>
-                    <td className="text-center p-2">❌</td>
-                    <td className="text-center p-2">❌</td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-2">Gestionar roles</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">❌</td>
-                    <td className="text-center p-2">❌</td>
-                    <td className="text-center p-2">❌</td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-2">Asignar roles</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">❌</td>
-                    <td className="text-center p-2">❌</td>
-                    <td className="text-center p-2">❌</td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-2">Gestionar ministerios</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">❌</td>
-                    <td className="text-center p-2">❌</td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-2">Gestionar equipos</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">❌</td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
                   </tr>
                   <tr>
                     <td className="p-2">Ver información personal</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
-                    <td className="text-center p-2">✅</td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
+                    <td className="text-center p-2"></td>
                   </tr>
                 </tbody>
               </table>

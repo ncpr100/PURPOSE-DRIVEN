@@ -217,7 +217,7 @@ export async function GET(request: NextRequest) {
     // Log successful connection
     const accountType = businessAccounts.length > 0 ? "Business" : "Personal";
     console.log(
-      `✅ Instagram ${accountType} account connected for church ${oauthState.churchId}: ${profile.username || profile.name}`,
+      ` Instagram ${accountType} account connected for church ${oauthState.churchId}: ${profile.username || profile.name}`,
     );
 
     // Redirect back to social media page with success

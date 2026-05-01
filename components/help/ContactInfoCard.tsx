@@ -71,7 +71,7 @@ export default function ContactInfoCard() {
       if (response.ok) {
         const data = await response.json()
         setContactInfo(data)
-        console.log('✅ ContactInfoCard: Fetched latest data:', data)
+        console.log(' ContactInfoCard: Fetched latest data:', data)
       } else {
         console.error('ContactInfoCard: Failed to fetch contact info:', response.status)
       }

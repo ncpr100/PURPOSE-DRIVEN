@@ -84,7 +84,7 @@ export default function FormViewer() {
       // LEGACY: Support old Base64 URLs but warn about length
       if (data.length > 2000) {
         console.warn(
-          "⚠️ URL muy larga detectada. Recomendamos guardar el formulario para URLs más cortas.",
+          "URL muy larga detectada. Recomendamos guardar el formulario para URLs más cortas.",
         );
         toast.error(
           "URL muy larga. Por favor, usa la versión guardada del formulario para obtener un enlace más corto.",

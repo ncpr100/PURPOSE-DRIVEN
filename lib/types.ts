@@ -1,5 +1,5 @@
 
-// ✅ ENTERPRISE-FIRST APPROACH: Create custom types replacing broken @prisma/client imports
+//  ENTERPRISE-FIRST APPROACH: Create custom types replacing broken @prisma/client imports
 // Following established patterns from working platform files
 
 // Custom database table types (replacing Prisma table imports)

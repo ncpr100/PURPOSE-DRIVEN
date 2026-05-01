@@ -70,7 +70,7 @@ export default function SpiritualGiftsManagement() {
     
     // Add window focus listener for automatic refresh when returning from assessment
     const handleWindowFocus = () => {
-      console.log('🔄 Window focused - refreshing spiritual gifts data...')
+      console.log(' Window focused - refreshing spiritual gifts data...')
       fetchData()
     }
     
@@ -94,24 +94,24 @@ export default function SpiritualGiftsManagement() {
 
   const fetchMembers = async () => {
     try {
-      console.log('🔄 Fetching members from /api/members (SAME AS OTHER DASHBOARDS)...')
+      console.log(' Fetching members from /api/members (SAME AS OTHER DASHBOARDS)...')
       const response = await fetch('/api/members?limit=10000') // Get all members for consistency
       if (response.ok) {
         const data = await response.json()
-        console.log('📊 Members fetched from SAME API as other dashboards:', data.members?.length || data.length, 'members')
+        console.log(' Members fetched from SAME API as other dashboards:', data.members?.length || data.length, 'members')
         
         // Use the same data structure as other parts of the app
         const membersArray = data.members || data
-        console.log('🔍 Members with spiritual gifts:', membersArray.filter((m: any) => getSafeGiftsArray(m.spiritualGifts).length > 0).length)
-        console.log('🔍 Members with spiritual profiles:', membersArray.filter((m: any) => m.spiritualProfile).length)
+        console.log(' Members with spiritual gifts:', membersArray.filter((m: any) => getSafeGiftsArray(m.spiritualGifts).length > 0).length)
+        console.log(' Members with spiritual profiles:', membersArray.filter((m: any) => m.spiritualProfile).length)
         
         setMembers(membersArray)
       } else {
-        console.error('❌ Failed to fetch members:', response.status)
+        console.error(' Failed to fetch members:', response.status)
         toast.error('Error al cargar miembros')
       }
     } catch (error) {
-      console.error('❌ Network error fetching members:', error)
+      console.error(' Network error fetching members:', error)
       toast.error('Error al cargar miembros')
     }
   }
@@ -131,28 +131,28 @@ export default function SpiritualGiftsManagement() {
   }
 
   const openAssessmentDialog = (member: Member) => {
-    console.log('🔄 Opening spiritual assessment for member:', member.id, member.firstName, member.lastName)
-    console.log('📍 Redirecting to:', `/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
+    console.log(' Opening spiritual assessment for member:', member.id, member.firstName, member.lastName)
+    console.log(' Redirecting to:', `/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
     
     // Redirect to dedicated spiritual assessment page with returnTo parameter
     router.push(`/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
   }
 
   const handleAssessmentSave = (profile: any) => {
-    console.log('🔄 handleAssessmentSave called with profile:', profile)
+    console.log(' handleAssessmentSave called with profile:', profile)
     toast.success('Perfil espiritual guardado exitosamente')
     
-    console.log('🔄 Triggering fetchData() to refresh metrics...')
+    console.log(' Triggering fetchData() to refresh metrics...')
     // Refresh data to ensure metrics and profiles are updated
     fetchData().then(() => {
-      console.log('✅ fetchData() completed - UI should be refreshed')
+      console.log(' fetchData() completed - UI should be refreshed')
     }).catch((error) => {
-      console.error('❌ fetchData() failed:', error)
+      console.error(' fetchData() failed:', error)
     })
     
     // If the response indicates metrics should be refreshed, trigger any necessary cache updates
     if (profile.refreshMetrics) {
-      console.log('🔄 Profile has refreshMetrics flag, refreshing metrics...')
+      console.log(' Profile has refreshMetrics flag, refreshing metrics...')
       // Additional metrics refresh logic could go here
     }
   }
@@ -168,7 +168,7 @@ export default function SpiritualGiftsManagement() {
                          member.spiritualProfile.primaryGifts && 
                          member.spiritualProfile.primaryGifts.length > 0
     
-    // 🔄 OLD SYSTEM - Check legacy fields (fallback)
+    //  OLD SYSTEM - Check legacy fields (fallback)
     const hasOldGifts = getSafeGiftsArray(member.spiritualGifts).length > 0
     
     // Use NEW system if available, fallback to OLD system
@@ -181,7 +181,7 @@ export default function SpiritualGiftsManagement() {
                          member.spiritualProfile.primaryGifts && 
                          member.spiritualProfile.primaryGifts.length > 0
     
-    // 🔄 OLD SYSTEM - Check legacy fields (fallback)
+    //  OLD SYSTEM - Check legacy fields (fallback)
     const hasOldGifts = getSafeGiftsArray(member.spiritualGifts).length > 0
     
     // Member lacks profile if NEITHER system has data

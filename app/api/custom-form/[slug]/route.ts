@@ -200,13 +200,13 @@ export async function POST(
             messageBody: textToScan,
           });
           console.log(
-            `🚨 Triage event created for visitor form submission ${submission.id} — keyword: "${keyword}"`,
+            ` Triage event created for visitor form submission ${submission.id} — keyword: "${keyword}"`,
           );
         }
       }
     } catch (triageError) {
       // Never block the response if triage fails
-      console.error("❌ Spiritual triage failed:", triageError);
+      console.error(" Spiritual triage failed:", triageError);
     }
 
     return NextResponse.json(

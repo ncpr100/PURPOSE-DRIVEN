@@ -296,7 +296,7 @@ export default function ThankYouPage() {
                 </p>
                 <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
                   <p className="text-sm text-[hsl(var(--info))]">
-                    💙 <strong>¡Tu generosidad marca la diferencia!</strong> 
+                    <strong>¡Tu generosidad marca la diferencia!</strong> 
                     Cada donación nos ayuda a continuar nuestro trabajo de servicio y amor en la comunidad.
                   </p>
                 </div>

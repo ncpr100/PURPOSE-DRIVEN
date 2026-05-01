@@ -214,13 +214,13 @@ class FreeBibleService {
 
   // Try multiple strategies to get a verse
   private async getVerseWithFallback(reference: string, version: string): Promise<BibleVerse | null> {
-    console.log(`🔄 Getting verse fallback for ${reference} (${version})`)
+    console.log(` Getting verse fallback for ${reference} (${version})`)
     
     // Spanish versions - use Bible Gateway scraping for reliable content
     const spanishVersions = ['RVR1960', 'NVI', 'TLA', 'RVA2015', 'RVC', 'NTV', 'DHH', 'BLP', 'BLPH', 'PDT', 'LBLA', 'BLA']
     
     if (spanishVersions.includes(version)) {
-      console.log(`🇪🇸 Using Bible Gateway for Spanish version: ${version}`)
+      console.log(` Using Bible Gateway for Spanish version: ${version}`)
       return await this.getVerseFromBibleGateway(reference, version)
     }
 
@@ -262,7 +262,7 @@ class FreeBibleService {
   // Bible Gateway scraping for Spanish versions (reliable source)
   private async getVerseFromBibleGateway(reference: string, version: string): Promise<BibleVerse | null> {
     try {
-      console.log(`📖 Fetching from Bible Gateway: ${reference} (${version})`)
+      console.log(` Fetching from Bible Gateway: ${reference} (${version})`)
       
       // Format reference for Bible Gateway URL
       const encodedRef = encodeURIComponent(reference)
@@ -275,7 +275,7 @@ class FreeBibleService {
       })
       
       if (!response.ok) {
-        console.log(`❌ Bible Gateway response not ok: ${response.status}`)
+        console.log(` Bible Gateway response not ok: ${response.status}`)
         return null
       }
       
@@ -304,11 +304,11 @@ class FreeBibleService {
         }
       }
       
-      console.log(`⚠️ Could not extract verse from Bible Gateway for ${reference}`)
+      console.log(`️ Could not extract verse from Bible Gateway for ${reference}`)
       return null
       
     } catch (error) {
-      console.log(`❌ Bible Gateway fetch failed:`, error instanceof Error ? error.message : 'Unknown error')
+      console.log(` Bible Gateway fetch failed:`, error instanceof Error ? error.message : 'Unknown error')
       return null
     }
   }
@@ -502,7 +502,7 @@ class FreeBibleService {
       const normalizedRef = reference.toLowerCase().replace(/\s+/g, '+')
       const url = `https://bible-api.com/${normalizedRef}`
       
-      console.log(`📡 Fetching from Bible-API.com: ${url}`)
+      console.log(` Fetching from Bible-API.com: ${url}`)
       
       const response = await fetch(url)
       if (response.ok) {
@@ -548,7 +548,7 @@ class FreeBibleService {
       const apiVersion = versionMap[version.toUpperCase()] || 'net'
       const url = `https://labs.bible.org/api/?passage=${normalizedRef}&version=${apiVersion}&type=json`
       
-      console.log(`📡 Fetching from Bible.org Labs: ${url}`)
+      console.log(` Fetching from Bible.org Labs: ${url}`)
       
       const response = await fetch(url)
       if (response.ok) {
@@ -579,56 +579,56 @@ class FreeBibleService {
    */
   async getVerseEnhanced(reference: string, version: string = 'RVR1960'): Promise<BibleVerse | null> {
     try {
-      console.log(`🔍 Enhanced verse lookup: ${reference} (${version})`)
+      console.log(` Enhanced verse lookup: ${reference} (${version})`)
       
       // Spanish versions detection
       const spanishVersions = ['RVR1960', 'RVA2015', 'NVI', 'NTV', 'TLA', 'DHH', 'LBLA', 'PDT']
       const isSpanishVersion = spanishVersions.includes(version)
       
       if (isSpanishVersion) {
-        console.log('🇪🇸 Spanish version detected, using Spanish-specific methods')
+        console.log(' Spanish version detected, using Spanish-specific methods')
         
         // For Spanish versions, try original method and fallback first
         let verse = await this.getVerse(reference, version)
         if (verse) {
-          console.log('✅ Retrieved from original Spanish service')
+          console.log(' Retrieved from original Spanish service')
           return verse
         }
         
         // Try Spanish fallback strategy
         verse = await this.getVerseWithFallback(reference, version)
         if (verse) {
-          console.log('✅ Retrieved from Spanish fallback service')
+          console.log(' Retrieved from Spanish fallback service')
           return verse
         }
         
-        console.log('⚠️ Spanish verse not found in Spanish APIs')
+        console.log('️ Spanish verse not found in Spanish APIs')
         return null
       } else {
-        console.log('🇺🇸 English version detected, using enhanced APIs')
+        console.log(' English version detected, using enhanced APIs')
         
         // For English versions, try enhanced APIs first
         let verse = await this.getVerseFromBibleAPICom(reference, version)
         if (verse) {
-          console.log('✅ Retrieved from Bible-API.com')
+          console.log(' Retrieved from Bible-API.com')
           return verse
         }
         
         // Try Bible.org Labs API (excellent backup, multiple versions)
         verse = await this.getVerseFromBibleOrgLabs(reference, version)
         if (verse) {
-          console.log('✅ Retrieved from Bible.org Labs')
+          console.log(' Retrieved from Bible.org Labs')
           return verse
         }
         
         // Fallback to existing methods
         verse = await this.getVerse(reference, version)
         if (verse) {
-          console.log('✅ Retrieved from existing service')
+          console.log(' Retrieved from existing service')
           return verse
         }
         
-        console.log('⚠️ English verse not found in any API')
+        console.log('️ English verse not found in any API')
         return null
       }
       

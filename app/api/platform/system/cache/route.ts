@@ -96,7 +96,7 @@ export async function DELETE(request: NextRequest) {
       status: 'cleared'
     })
 
-    console.log('🧹 System cache cleared:', cacheOperations)
+    console.log(' System cache cleared:', cacheOperations)
 
     return NextResponse.json({
       message: 'Cache del sistema limpiado exitosamente',

@@ -73,22 +73,22 @@ async function updateTemplates() {
       });
 
       if (result.count > 0) {
-        console.log(`✅ Actualizado: "${englishName}"`);
+        console.log(` Actualizado: "${englishName}"`);
         console.log(`   → "${spanish.name}"\n`);
         updated++;
       } else {
-        console.log(`⚠️  No encontrado: "${englishName}"\n`);
+        console.log(`️  No encontrado: "${englishName}"\n`);
         notFound++;
       }
     } catch (error) {
-      console.error(`❌ Error actualizando "${englishName}":`, error);
+      console.error(` Error actualizando "${englishName}":`, error);
     }
   }
 
   console.log('\n=== RESUMEN ===');
-  console.log(`✅ Plantillas actualizadas: ${updated}`);
-  console.log(`⚠️  Plantillas no encontradas: ${notFound}`);
-  console.log(`📊 Total procesadas: ${Object.keys(SPANISH_TEMPLATES).length}\n`);
+  console.log(` Plantillas actualizadas: ${updated}`);
+  console.log(`️  Plantillas no encontradas: ${notFound}`);
+  console.log(` Total procesadas: ${Object.keys(SPANISH_TEMPLATES).length}\n`);
 
   // Verificar resultado
   console.log('=== VERIFICACIÓN ===\n');
@@ -106,7 +106,7 @@ async function updateTemplates() {
   );
 
   if (hasEnglish) {
-    console.log('⚠️  ADVERTENCIA: Aún hay plantillas con texto en inglés:\n');
+    console.log('️  ADVERTENCIA: Aún hay plantillas con texto en inglés:\n');
     allTemplates
       .filter(
         (t) =>
@@ -118,7 +118,7 @@ async function updateTemplates() {
         console.log(`   - ${t.name} (${t.category})`);
       });
   } else {
-    console.log('✅ ÉXITO: Todas las plantillas están en español');
+    console.log(' ÉXITO: Todas las plantillas están en español');
     console.log('\nPlantillas actuales:');
     allTemplates.forEach((t, i) => {
       console.log(`   ${i + 1}. ${t.name}`);
@@ -130,10 +130,10 @@ async function updateTemplates() {
 
 updateTemplates()
   .then(() => {
-    console.log('\n✅ Actualización completada');
+    console.log('\n Actualización completada');
     process.exit(0);
   })
   .catch((error) => {
-    console.error('\n❌ Error en actualización:', error);
+    console.error('\n Error en actualización:', error);
     process.exit(1);
   });

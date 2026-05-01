@@ -33,7 +33,7 @@ class UIValidationFramework {
     const testId = 'VAL-01-AUTOMATED';
     
     try {
-      console.log('🔍 Starting automated volunteer recruitment test...');
+      console.log(' Starting automated volunteer recruitment test...');
       
       // Test sequence for VAL-01
       const steps = [
@@ -46,7 +46,7 @@ class UIValidationFramework {
         'Check database constraints'
       ];
       
-      console.log('📋 Test steps:');
+      console.log(' Test steps:');
       steps.forEach((step, i) => console.log(`${i + 1}. ${step}`));
       
       // Simulate test execution (would be real browser automation)
@@ -83,16 +83,16 @@ class UIValidationFramework {
    */
   private async simulateVolunteerRecruitment(): Promise<{success: boolean, error?: string}> {
     // Simulate API checks
-    console.log('📡 Checking API endpoints...');
+    console.log(' Checking API endpoints...');
     
     // Check volunteer creation endpoint
-    console.log('✓ /api/volunteers endpoint available');
+    console.log(' /api/volunteers endpoint available');
     
     // Check member-volunteer linking
-    console.log('✓ Member-volunteer relationship system operational');
+    console.log(' Member-volunteer relationship system operational');
     
     // Check badge display logic
-    console.log('✓ Blue badge display logic implemented');
+    console.log(' Blue badge display logic implemented');
     
     return { success: true };
   }
@@ -124,13 +124,13 @@ ${this.results.map(r => `${r.testId}: ${r.status} - ${r.message}`).join('\n')}
    * Run all automated validations
    */
   async runAllTests(): Promise<TestResult[]> {
-    console.log('🚀 Starting comprehensive UI validation...\n');
+    console.log(' Starting comprehensive UI validation...\n');
     
     // VAL-01: Volunteer recruitment flow
     const val01Result = await this.testVolunteerRecruitmentFlow();
     this.results.push(val01Result);
     
-    console.log('\n📊 Validation complete!');
+    console.log('\n Validation complete!');
     console.log(this.generateReport());
     
     return this.results;

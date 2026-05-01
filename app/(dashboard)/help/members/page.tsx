@@ -81,7 +81,7 @@ export default function MembersHelp() {
                       <CardTitle className="text-lg">{option.title}</CardTitle>
                       <p className="text-sm text-muted-foreground">{option.description}</p>
                       <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full mt-2 inline-block">
-                        ⏱️ {option.time}
+                        ️ {option.time}
                       </span>
                     </div>
                   </div>
@@ -136,15 +136,15 @@ export default function MembersHelp() {
       <section className="mb-8">
         <Card>
           <CardHeader>
-            <CardTitle>💡 Consejos Importantes</CardTitle>
+            <CardTitle> Consejos Importantes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2 text-sm">
-              <p>✅ <strong>Emails únicos:</strong> Cada miembro debe tener un email diferente</p>
-              <p>✅ <strong>Formato de teléfono:</strong> Use código de país seguido del número sin espacios (ejemplo: +52 México, +57 Colombia, +54 Argentina)</p>
-              <p>✅ <strong>Fechas:</strong> Use formato DD/MM/AAAA (ejemplo: 15/08/1990)</p>
-              <p>✅ <strong>Respaldo:</strong> Guarde una copia de sus datos antes de importar</p>
-              <p>⚠️ <strong>Duplicados:</strong> El sistema rechazará emails o teléfonos duplicados</p>
+              <p> <strong>Emails únicos:</strong> Cada miembro debe tener un email diferente</p>
+              <p> <strong>Formato de teléfono:</strong> Use código de país seguido del número sin espacios (ejemplo: +52 México, +57 Colombia, +54 Argentina)</p>
+              <p> <strong>Fechas:</strong> Use formato DD/MM/AAAA (ejemplo: 15/08/1990)</p>
+              <p> <strong>Respaldo:</strong> Guarde una copia de sus datos antes de importar</p>
+              <p>️ <strong>Duplicados:</strong> El sistema rechazará emails o teléfonos duplicados</p>
             </div>
           </CardContent>
         </Card>
@@ -159,7 +159,7 @@ export default function MembersHelp() {
         </Link>
         <Link href="/help/manual/members">
           <Button variant="outline">
-            📖 Ver Manual Detallado
+             Ver Manual Detallado
           </Button>
         </Link>
       </div>

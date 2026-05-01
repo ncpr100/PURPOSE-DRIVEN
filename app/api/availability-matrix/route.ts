@@ -9,19 +9,19 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🔵 POST /api/availability-matrix called')
+    console.log(' POST /api/availability-matrix called')
     
     const session = await getServerSession(authOptions)
     
     if (!session?.user) {
-      console.log('❌ Unauthorized - No session')
+      console.log(' Unauthorized - No session')
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    console.log('✅ Session valid:', session.user.email)
+    console.log(' Session valid:', session.user.email)
 
     const body = await request.json()
-    console.log('📥 Request body:', body)
+    console.log(' Request body:', body)
     
     const {
       memberId,
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       travelWillingness
     } = body
 
-    console.log('🔄 Upserting availability matrix for member:', memberId)
+    console.log(' Upserting availability matrix for member:', memberId)
 
     const matrix = await prisma.availability_matrices.upsert({
       where: { memberId },
@@ -67,18 +67,18 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log('✅ Matrix saved:', matrix.id)
+    console.log(' Matrix saved:', matrix.id)
 
     // Update member's availability score
     const availabilityScore = calculateAvailabilityScore(matrix)
-    console.log('📊 Calculated availability score:', availabilityScore)
+    console.log(' Calculated availability score:', availabilityScore)
     
     await prisma.members.update({
       where: { id: memberId },
       data: { availabilityScore }
     })
 
-    console.log('✅ Member availability score updated')
+    console.log(' Member availability score updated')
 
     return NextResponse.json({
       success: true,
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       message: 'Matriz de disponibilidad actualizada exitosamente'
     })
   } catch (error) {
-    console.error('❌ Error updating availability matrix:', error)
+    console.error(' Error updating availability matrix:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor', details: error instanceof Error ? error.message : 'Unknown error' }, 
       { status: 500 }

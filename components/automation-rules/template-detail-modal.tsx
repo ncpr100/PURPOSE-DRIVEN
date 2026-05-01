@@ -381,10 +381,10 @@ export function TemplateDetailModal({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="URGENT">🔴 URGENTE</SelectItem>
-                    <SelectItem value="HIGH">🟠 ALTA</SelectItem>
-                    <SelectItem value="NORMAL">🟢 NORMAL</SelectItem>
-                    <SelectItem value="LOW">⚪ BAJA</SelectItem>
+                    <SelectItem value="URGENT"><span className="inline-block h-2 w-2 rounded-full bg-destructive mr-2" />URGENTE</SelectItem>
+                    <SelectItem value="HIGH"><span className="inline-block h-2 w-2 rounded-full bg-warning mr-2" />ALTA</SelectItem>
+                    <SelectItem value="NORMAL"><span className="inline-block h-2 w-2 rounded-full bg-success mr-2" />NORMAL</SelectItem>
+                    <SelectItem value="LOW"><span className="inline-block h-2 w-2 rounded-full bg-muted-foreground mr-2" />BAJA</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

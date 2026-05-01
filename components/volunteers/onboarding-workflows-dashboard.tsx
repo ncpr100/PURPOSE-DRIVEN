@@ -107,7 +107,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
   const createWorkflow = async () => {
     try {
       setLoading(true)
-      toast.info('🚀 Creando workflow de onboarding...')
+      toast.info(' Creando workflow de onboarding...')
       
       const response = await fetch('/api/recruitment-pipeline/onboarding-workflows', {
         method: 'POST',
@@ -119,7 +119,7 @@ export function OnboardingWorkflowsDashboard({ churchId, userRole }: OnboardingW
       
       const data = await response.json()
       
-      toast.success(`✅ Workflow creado: ${data.workflow.totalSteps} pasos programados`)
+      toast.success(`Workflow creado: ${data.workflow.totalSteps} pasos programados`)
       setIsCreateDialogOpen(false)
       setCreateWorkflowData({
         memberId: '',

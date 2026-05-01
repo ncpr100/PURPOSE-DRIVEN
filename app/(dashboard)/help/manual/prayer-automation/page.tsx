@@ -60,7 +60,7 @@ export default function PrayerAutomationManual() {
         {/* How Prayer Automation Works */}
         <Card>
           <CardHeader>
-            <CardTitle>🔄 Flujo de Automatización de Oración</CardTitle>
+            <CardTitle> Flujo de Automatización de Oración</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-4">
@@ -128,14 +128,14 @@ export default function PrayerAutomationManual() {
                   </p>
                   <div className="grid md:grid-cols-2 gap-3">
                     <div className="bg-[hsl(var(--success)/0.15)] p-3 rounded border border-[hsl(var(--success)/0.4)]">
-                      <p className="font-semibold text-foreground text-sm mb-1">✅ CON Bypass (Recomendado)</p>
+                      <p className="font-semibold text-foreground text-sm mb-1"> CON Bypass (Recomendado)</p>
                       <p className="text-xs text-[hsl(var(--success))]">
                         Ejecuta las acciones inmediatamente sin esperar aprobación manual. 
                         Ideal para confirmaciones y notificaciones.
                       </p>
                     </div>
                     <div className="bg-[hsl(var(--warning)/0.15)] p-3 rounded border border-[hsl(var(--warning)/0.4)]">
-                      <p className="font-semibold text-[hsl(var(--warning))] text-sm mb-1">⏸️ SIN Bypass</p>
+                      <p className="font-semibold text-[hsl(var(--warning))] text-sm mb-1">️ SIN Bypass</p>
                       <p className="text-xs text-[hsl(var(--warning))]">
                         Crea una tarea de aprobación para el pastor/admin. 
                         Las acciones se ejecutan después de la aprobación manual.
@@ -157,15 +157,15 @@ export default function PrayerAutomationManual() {
                   <div className="space-y-2">
                     <div className="bg-[hsl(var(--card))] p-2 rounded text-xs border">
                       <strong>Acción 1:</strong> Enviar SMS al coordinador de oración<br/>
-                      <span className="text-[hsl(var(--success))]">✓ Entregado (intento 1/3)</span>
+                      <span className="text-[hsl(var(--success))]"> Entregado (intento 1/3)</span>
                     </div>
                     <div className="bg-[hsl(var(--card))] p-2 rounded text-xs border">
                       <strong>Acción 2:</strong> Email de confirmación al solicitante<br/>
-                      <span className="text-[hsl(var(--success))]">✓ Enviado (intento 1/3)</span>
+                      <span className="text-[hsl(var(--success))]"> Enviado (intento 1/3)</span>
                     </div>
                     <div className="bg-[hsl(var(--card))] p-2 rounded text-xs border">
                       <strong>Acción 3:</strong> WhatsApp al equipo de intercesión<br/>
-                      <span className="text-[hsl(var(--success))]">✓ Entregado (intento 1/3)</span>
+                      <span className="text-[hsl(var(--success))]"> Entregado (intento 1/3)</span>
                     </div>
                   </div>
                 </div>
@@ -177,12 +177,12 @@ export default function PrayerAutomationManual() {
         {/* Templates Available */}
         <Card>
           <CardHeader>
-            <CardTitle>📦 Plantillas de Oración Disponibles</CardTitle>
+            <CardTitle> Plantillas de Oración Disponibles</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="p-4 border-2 border-[hsl(var(--destructive)/0.3)] rounded-lg bg-[hsl(var(--destructive)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🚨</span>
+                <span className="text-2xl"></span>
                 <h4 className="font-semibold text-[hsl(var(--destructive))]">Petición Urgente - Notificación Inmediata</h4>
               </div>
               <p className="text-sm text-[hsl(var(--destructive))] mb-3">
@@ -190,7 +190,7 @@ export default function PrayerAutomationManual() {
               </p>
               <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Petición de oración con prioridad URGENTE</div>
-                <div><strong>Bypass Approval:</strong> ✅ Sí (ejecución inmediata)</div>
+                <div><strong>Bypass Approval:</strong>  Sí (ejecución inmediata)</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• SMS al pastor y coordinador de oración (inmediato)</li>
@@ -204,7 +204,7 @@ export default function PrayerAutomationManual() {
 
             <div className="p-4 border-2 border-[hsl(var(--info)/0.3)] rounded-lg bg-[hsl(var(--info)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">📧</span>
+                <span className="text-2xl"></span>
                 <h4 className="font-semibold text-foreground">Auto-Confirmación al Solicitante</h4>
               </div>
               <p className="text-sm text-[hsl(var(--info))] mb-3">
@@ -212,7 +212,7 @@ export default function PrayerAutomationManual() {
               </p>
               <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Cualquier petición de oración recibida</div>
-                <div><strong>Bypass Approval:</strong> ✅ Sí</div>
+                <div><strong>Bypass Approval:</strong>  Sí</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• Email/SMS de confirmación (inmediato)</li>
@@ -225,7 +225,7 @@ export default function PrayerAutomationManual() {
 
             <div className="p-4 border-2 border-[hsl(var(--success)/0.3)] rounded-lg bg-[hsl(var(--success)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">💬</span>
+                <span className="text-2xl"></span>
                 <h4 className="font-semibold text-foreground">Oración por Mensaje</h4>
               </div>
               <p className="text-sm text-[hsl(var(--success))] mb-3">
@@ -233,7 +233,7 @@ export default function PrayerAutomationManual() {
               </p>
               <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Petición de oración (prioridad NORMAL o ALTA)</div>
-                <div><strong>Bypass Approval:</strong> ❌ No (requiere aprobación del pastor)</div>
+                <div><strong>Bypass Approval:</strong>  No (requiere aprobación del pastor)</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• Espera 24 horas</li>
@@ -246,7 +246,7 @@ export default function PrayerAutomationManual() {
 
             <div className="p-4 border-2 border-[hsl(var(--lavender)/0.3)] rounded-lg bg-[hsl(var(--lavender)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">📞</span>
+                <span className="text-2xl"></span>
                 <h4 className="font-semibold text-foreground">Llamada de Oración para Casos Críticos</h4>
               </div>
               <p className="text-sm text-[hsl(var(--lavender))] mb-3">
@@ -254,7 +254,7 @@ export default function PrayerAutomationManual() {
               </p>
               <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Petición URGENTE con categoría &quot;Salud&quot; o &quot;Duelo&quot;</div>
-                <div><strong>Bypass Approval:</strong> ❌ No</div>
+                <div><strong>Bypass Approval:</strong>  No</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• Crea tarea de llamada para pastor/consejero</li>
@@ -270,26 +270,26 @@ export default function PrayerAutomationManual() {
         {/* Configuration */}
         <Card>
           <CardHeader>
-            <CardTitle>⚙️ Configuración Recomendada</CardTitle>
+            <CardTitle>️ Configuración Recomendada</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
-              <h4 className="font-semibold mb-2 text-[hsl(var(--warning))]">⚡ Para Respuesta Instantánea</h4>
+              <h4 className="font-semibold mb-2 text-[hsl(var(--warning))]"> Para Respuesta Instantánea</h4>
               <ul className="text-sm space-y-2">
-                <li>✅ <strong>Activar bypass approval</strong> en reglas de confirmación</li>
-                <li>✅ <strong>Modo urgente 24/7</strong> para peticiones urgentes</li>
-                <li>✅ <strong>Canales múltiples:</strong> SMS + Email + WhatsApp</li>
-                <li>✅ <strong>Reintentos:</strong> 3 intentos con respaldo automático</li>
+                <li> <strong>Activar bypass approval</strong> en reglas de confirmación</li>
+                <li> <strong>Modo urgente 24/7</strong> para peticiones urgentes</li>
+                <li> <strong>Canales múltiples:</strong> SMS + Email + WhatsApp</li>
+                <li> <strong>Reintentos:</strong> 3 intentos con respaldo automático</li>
               </ul>
             </div>
 
             <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
-              <h4 className="font-semibold mb-2 text-foreground">🔒 Para Privacidad y Control</h4>
+              <h4 className="font-semibold mb-2 text-foreground"> Para Privacidad y Control</h4>
               <ul className="text-sm space-y-2">
-                <li>✅ <strong>Desactivar bypass approval</strong> para revisión manual</li>
-                <li>✅ <strong>Horario laboral:</strong> Solo durante horas de oficina</li>
-                <li>✅ <strong>Aprobación del pastor</strong> antes de enviar mensajes personalizados</li>
-                <li>✅ <strong>Peticiones anónimas:</strong> No incluir datos personales en notificaciones</li>
+                <li> <strong>Desactivar bypass approval</strong> para revisión manual</li>
+                <li> <strong>Horario laboral:</strong> Solo durante horas de oficina</li>
+                <li> <strong>Aprobación del pastor</strong> antes de enviar mensajes personalizados</li>
+                <li> <strong>Peticiones anónimas:</strong> No incluir datos personales en notificaciones</li>
               </ul>
             </div>
           </CardContent>
@@ -298,7 +298,7 @@ export default function PrayerAutomationManual() {
         {/* Best Practices */}
         <Card className="border-[hsl(var(--success)/0.3)]">
           <CardHeader>
-            <CardTitle className="text-foreground">✨ Mejores Prácticas</CardTitle>
+            <CardTitle className="text-foreground"> Mejores Prácticas</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="flex items-start gap-2">
@@ -337,7 +337,7 @@ export default function PrayerAutomationManual() {
         {/* Next Steps */}
         <Card className="border-[hsl(var(--lavender)/0.3)] bg-[hsl(var(--lavender)/0.10)]">
           <CardHeader>
-            <CardTitle className="text-foreground">🚀 Activar Ahora</CardTitle>
+            <CardTitle className="text-foreground"> Activar Ahora</CardTitle>
           </CardHeader>
           <CardContent>
             <ol className="space-y-3 text-sm">

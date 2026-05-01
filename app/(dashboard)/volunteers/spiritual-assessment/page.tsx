@@ -32,12 +32,12 @@ export default function SpiritualAssessmentTestPage() {
 
   const loadExistingProfile = async () => {
     try {
-      console.log('🔄 Loading spiritual profile for member:', memberId)
+      console.log(' Loading spiritual profile for member:', memberId)
       const response = await fetch(`/api/members/${memberId}/spiritual-profile`)
       
       if (response.ok) {
         const { profile } = await response.json()
-        console.log('📊 Profile loaded:', profile ? 'Found existing profile' : 'No existing profile')
+        console.log(' Profile loaded:', profile ? 'Found existing profile' : 'No existing profile')
         
         if (profile) {
           // Convert database format to component format
@@ -52,10 +52,10 @@ export default function SpiritualAssessmentTestPage() {
             motivation: profile.servingMotivation || ''
           }
           setInitialData(data)
-          console.log('✅ Profile data converted and loaded successfully')
+          console.log(' Profile data converted and loaded successfully')
         }
       } else {
-        console.warn('⚠️ Failed to load spiritual profile:', response.status, response.statusText)
+        console.warn('️ Failed to load spiritual profile:', response.status, response.statusText)
         if (response.status === 404) {
           console.log('ℹ️ No existing profile found - this is normal for new assessments')
         } else {
@@ -63,7 +63,7 @@ export default function SpiritualAssessmentTestPage() {
         }
       }
     } catch (error) {
-      console.error('❌ Error loading spiritual profile:', error)
+      console.error(' Error loading spiritual profile:', error)
       toast.error('Error de conexión al cargar el perfil espiritual')
     } finally {
       setIsLoading(false)
@@ -72,14 +72,14 @@ export default function SpiritualAssessmentTestPage() {
 
   const handleSave = async (data: SpiritualAssessmentData) => {
     if (!memberId) {
-      console.error('❌ No memberId provided for spiritual assessment save')
+      console.error(' No memberId provided for spiritual assessment save')
       toast.error('No se pudo identificar al miembro')
       return
     }
 
     try {
-      console.log('🔄 Saving spiritual assessment for member:', memberId)
-      console.log('📊 Assessment data:', {
+      console.log(' Saving spiritual assessment for member:', memberId)
+      console.log(' Assessment data:', {
         primaryGifts: data.giftSelections.filter(g => g.type === 'primary').length,
         secondaryGifts: data.giftSelections.filter(g => g.type === 'secondary').length,
         ministryPassions: data.ministryPassions.length,
@@ -95,19 +95,19 @@ export default function SpiritualAssessmentTestPage() {
       const result = await response.json()
 
       if (!response.ok) {
-        console.error('❌ Spiritual assessment save failed:', response.status, result.error)
+        console.error(' Spiritual assessment save failed:', response.status, result.error)
         throw new Error(result.error || 'Error al guardar')
       }
 
       setSavedData(data)
-      console.log('✅ Spiritual assessment saved successfully')
+      console.log(' Spiritual assessment saved successfully')
       toast.success('Evaluación espiritual guardada exitosamente')
       
       // Immediate redirect after successful save
-      console.log('🔄 Redirecting back to:', returnTo)
+      console.log(' Redirecting back to:', returnTo)
       router.push(returnTo)
     } catch (error) {
-      console.error('❌ Error saving spiritual assessment:', error)
+      console.error(' Error saving spiritual assessment:', error)
       throw error
     }
   }
@@ -135,14 +135,14 @@ export default function SpiritualAssessmentTestPage() {
           Completa esta evaluación para identificar tus dones espirituales y áreas de ministerio.
           {!memberId && (
             <span className="block mt-2 text-[hsl(var(--warning))] font-medium">
-              ⚠️ Advertencia: No se proporcionó ID de miembro. Los datos no se guardarán.
+              ️ Advertencia: No se proporcionó ID de miembro. Los datos no se guardarán.
             </span>
           )}
         </p>
         {savedData && (
           <div className="mt-4 p-3 bg-[hsl(var(--success)/0.15)] dark:bg-[hsl(var(--success))] rounded-lg">
             <p className="text-sm font-medium text-foreground dark:text-[hsl(var(--success)/0.6)]">
-              ✅ Datos guardados exitosamente
+               Datos guardados exitosamente
             </p>
             <div className="mt-2 text-xs text-[hsl(var(--success))] dark:text-[hsl(var(--success)/0.7)]">
               <p>• Dones primarios: {savedData.giftSelections.filter(g => g.type === 'primary').length}</p>

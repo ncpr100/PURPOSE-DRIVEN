@@ -259,7 +259,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(stats)
 
     } catch (dbError) {
-      console.log('⚠️ DONATIONS-STATS: Database connection failed, returning empty stats')
+      console.log('️ DONATIONS-STATS: Database connection failed, returning empty stats')
       // Return empty stats when database unavailable
       return NextResponse.json({
         overview: {

@@ -305,7 +305,7 @@ async function generateAIContent({
   // Mock AI enhancement (replace with actual GPT-4 call)
   const enhancedContent = `${baseContent}
 
-🙏 Join us at ${churchContext} as we grow together in faith!
+ Join us at ${churchContext} as we grow together in faith!
 
 #Faith #Community #Church #Spiritual #Blessings`;
 
@@ -483,7 +483,7 @@ async function publishPostImmediately(postId: string) {
     });
 
     console.log(
-      `✅ Post ${postId} published to ${successCount}/${accounts.length} platforms`,
+      ` Post ${postId} published to ${successCount}/${accounts.length} platforms`,
     );
   } catch (error) {
     console.error("Error in immediate publishing:", error);

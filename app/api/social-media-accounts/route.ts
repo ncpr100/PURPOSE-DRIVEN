@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       });
     } catch (dbError) {
       console.log(
-        "⚠️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, using session data",
+        "️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, using session data",
       );
       // Fallback to session data when database unavailable
       user = {
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
       });
     } catch (dbError) {
       console.log(
-        "⚠️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, returning empty accounts",
+        "️ SOCIAL-MEDIA-ACCOUNTS: Database connection failed, returning empty accounts",
       );
       accounts = [];
     }

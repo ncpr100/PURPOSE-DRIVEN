@@ -28,7 +28,7 @@ export default function SetupManual() {
         {/* Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>⚙️ Configuración Inicial - Manual Completo</CardTitle>
+            <CardTitle>️ Configuración Inicial - Manual Completo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -36,19 +36,19 @@ export default function SetupManual() {
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
-                <h4 className="font-semibold">📋 Pasos</h4>
+                <h4 className="font-semibold"> Pasos</h4>
                 <p className="text-xl font-bold text-[hsl(var(--info))]">8</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⏱️ Tiempo</h4>
+                <h4 className="font-semibold">️ Tiempo</h4>
                 <p className="text-xl font-bold text-[hsl(var(--success))]">45 min</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🎯 Nivel</h4>
+                <h4 className="font-semibold"> Nivel</h4>
                 <p className="text-lg font-bold text-[hsl(var(--lavender))]">Básico</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
-                <h4 className="font-semibold">👤 Rol Mínimo</h4>
+                <h4 className="font-semibold"> Rol Mínimo</h4>
                 <p className="text-lg font-bold text-[hsl(var(--warning))]">ADMIN</p>
               </div>
             </div>
@@ -66,7 +66,7 @@ export default function SetupManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">⛪ Datos Principales</h4>
+                <h4 className="font-semibold mb-3"> Datos Principales</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>1.1.</strong> Navegue a <code>Configuración → Información de la Iglesia</code></p>
                   <p><strong>1.2.</strong> Complete los campos obligatorios:</p>
@@ -87,7 +87,7 @@ export default function SetupManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📸 Logo de la Iglesia</h4>
+                <h4 className="font-semibold mb-2"> Logo de la Iglesia</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Formato recomendado:</strong> PNG con fondo transparente</li>
                   <li>• <strong>Tamaño mínimo:</strong> 300x300 píxeles</li>
@@ -95,7 +95,7 @@ export default function SetupManual() {
                   <li>• <strong>Uso:</strong> Recibos, emails, reportes</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
-                  <p className="text-xs"><strong>💡 Tip:</strong> Un logo profesional mejora la imagen de su iglesia</p>
+                  <p className="text-xs"><strong> Tip:</strong> Un logo profesional mejora la imagen de su iglesia</p>
                 </div>
               </div>
             </div>
@@ -113,14 +113,14 @@ export default function SetupManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🛡️ Inicializar Permisos</h4>
+                <h4 className="font-semibold mb-3">️ Inicializar Permisos</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>2.1.</strong> <span className="text-[hsl(var(--info))] font-bold">IMPORTANTE:</span> Solo usuarios con rol de <strong>Pastor</strong> o <strong>Administrador</strong> de su iglesia pueden hacer esto</p>
                   <p className="text-xs text-muted-foreground ml-6">
                     <em>Nota: El SUPER_ADMIN gestiona la plataforma Khesed-Tek completa, NO los roles internos de cada iglesia</em>
                   </p>
                   <p><strong>2.2.</strong> Vaya a <code>Configuración → Permisos</code></p>
-                  <p><strong>2.3.</strong> Haga clic en &quot;🗄️ Inicializar Sistema&quot;</p>
+                  <p><strong>2.3.</strong> Haga clic en &quot;️ Inicializar Sistema&quot;</p>
                   <p><strong>2.4.</strong> El sistema creará automáticamente:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• 5 roles de iglesia predefinidos (Pastores, Administradores, Líderes, Servidores, Miembros)</li>
@@ -137,7 +137,7 @@ export default function SetupManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--destructive)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2 text-[hsl(var(--destructive))]">⚠️ Seguridad Crítica</h4>
+                <h4 className="font-semibold mb-2 text-[hsl(var(--destructive))]">️ Seguridad Crítica</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Solo ejecute una vez:</strong> No se puede deshacer</li>
                   <li>• <strong>Backup recomendado:</strong> Antes de inicializar</li>
@@ -160,18 +160,18 @@ export default function SetupManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🏛️ Ministerios Esenciales</h4>
+                <h4 className="font-semibold mb-3">️ Ministerios Esenciales</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>3.1.</strong> Navegue a <code>Miembros → 🏛️ Ministerios</code></p>
+                  <p><strong>3.1.</strong> Navegue a <code>Miembros → ️ Ministerios</code></p>
                   <p><strong>3.2.</strong> Cree los ministerios básicos:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>🎵 Ministerio de Música:</strong> Líderes de alabanza</li>
-                    <li>• <strong>👥 Ministerio de Hospitalidad:</strong> Recepción y bienvenida</li>
-                    <li>• <strong>👶 Ministerio Infantil:</strong> Cuidado de niños</li>
-                    <li>• <strong>👦 Ministerio Juvenil:</strong> Adolescentes</li>
-                    <li>• <strong>👴 Ministerio de Adultos Mayores:</strong> Tercera edad</li>
-                    <li>• <strong>🙏 Ministerio de Intercesión:</strong> Oración</li>
-                    <li>• <strong>🌍 Ministerio de Misiones:</strong> Evangelismo</li>
+                    <li>• <strong> Ministerio de Música:</strong> Líderes de alabanza</li>
+                    <li>• <strong> Ministerio de Hospitalidad:</strong> Recepción y bienvenida</li>
+                    <li>• <strong> Ministerio Infantil:</strong> Cuidado de niños</li>
+                    <li>• <strong> Ministerio Juvenil:</strong> Adolescentes</li>
+                    <li>• <strong> Ministerio de Adultos Mayores:</strong> Tercera edad</li>
+                    <li>• <strong> Ministerio de Intercesión:</strong> Oración</li>
+                    <li>• <strong> Ministerio de Misiones:</strong> Evangelismo</li>
                   </ul>
                   <p><strong>3.3.</strong> Para cada ministerio configure:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -183,16 +183,16 @@ export default function SetupManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📋 Lista de Verificación</h4>
+                <h4 className="font-semibold mb-2"> Lista de Verificación</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>☐ Al menos 5 ministerios creados</li>
-                  <li>☐ Cada ministerio tiene un líder asignado</li>
-                  <li>☐ Descripciones completas agregadas</li>
-                  <li>☐ Horarios de reunión establecidos</li>
-                  <li>☐ Primeros miembros asignados</li>
+                  <li> Al menos 5 ministerios creados</li>
+                  <li> Cada ministerio tiene un líder asignado</li>
+                  <li> Descripciones completas agregadas</li>
+                  <li> Horarios de reunión establecidos</li>
+                  <li> Primeros miembros asignados</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
-                  <p className="text-xs"><strong>💡 Tip:</strong> Puede agregar más ministerios después según crezca</p>
+                  <p className="text-xs"><strong> Tip:</strong> Puede agregar más ministerios después según crezca</p>
                 </div>
               </div>
             </div>
@@ -210,9 +210,9 @@ export default function SetupManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📧 Email y Plantillas</h4>
+                <h4 className="font-semibold mb-3"> Email y Plantillas</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>4.1.</strong> Vaya a <code>Comunicaciones → ⚙️ Configuración</code></p>
+                  <p><strong>4.1.</strong> Vaya a <code>Comunicaciones → ️ Configuración</code></p>
                   <p><strong>4.2.</strong> Configure servidor de email:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Email &quot;desde&quot;: iglesia@sudominio.com</li>
@@ -230,7 +230,7 @@ export default function SetupManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">📱 SMS y WhatsApp</h4>
+                <h4 className="font-semibold mb-3"> SMS y WhatsApp</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Configuración opcional pero recomendada:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -261,9 +261,9 @@ export default function SetupManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">💰 Información Fiscal</h4>
+                <h4 className="font-semibold mb-3"> Información Fiscal</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>5.1.</strong> Vaya a <code>Donaciones → ⚙️ Configuración</code></p>
+                  <p><strong>5.1.</strong> Vaya a <code>Donaciones → ️ Configuración</code></p>
                   <p><strong>5.2.</strong> Configure datos fiscales:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>RIF/NIT:</strong> Identificación tributaria</li>
@@ -281,7 +281,7 @@ export default function SetupManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">⚖️ Consideraciones Legales</h4>
+                <h4 className="font-semibold mb-2">️ Consideraciones Legales</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Estatus religioso:</strong> Verifique que esté registrado como iglesia</li>
                   <li>• <strong>Exención fiscal:</strong> Confirme beneficios tributarios</li>
@@ -289,7 +289,7 @@ export default function SetupManual() {
                   <li>• <strong>Reportes anuales:</strong> Declaraciones requeridas</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--warning)/0.30)]">
-                  <p className="text-xs"><strong>💼 Consulte:</strong> Su contador sobre requisitos específicos</p>
+                  <p className="text-xs"><strong> Consulte:</strong> Su contador sobre requisitos específicos</p>
                 </div>
               </div>
             </div>
@@ -307,9 +307,9 @@ export default function SetupManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📅 Eventos Regulares</h4>
+                <h4 className="font-semibold mb-3"> Eventos Regulares</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>6.1.</strong> Navegue a <code>Eventos → ⚙️ Configuración</code></p>
+                  <p><strong>6.1.</strong> Navegue a <code>Eventos → ️ Configuración</code></p>
                   <p><strong>6.2.</strong> Configure plantillas para servicios regulares:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Servicio Dominical:</strong> Horario, duración, ubicación</li>
@@ -326,7 +326,7 @@ export default function SetupManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">🎪 Configuración Avanzada</h4>
+                <h4 className="font-semibold mb-3"> Configuración Avanzada</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Para eventos con niños:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -357,9 +357,9 @@ export default function SetupManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📊 Proceso de Importación</h4>
+                <h4 className="font-semibold mb-3"> Proceso de Importación</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>7.1.</strong> Vaya a <code>Miembros → 📥 Importar</code></p>
+                  <p><strong>7.1.</strong> Vaya a <code>Miembros →  Importar</code></p>
                   <p><strong>7.2.</strong> Descargue la plantilla Excel</p>
                   <p><strong>7.3.</strong> Complete con información de su congregación:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -374,7 +374,7 @@ export default function SetupManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📋 Preparación de Datos</h4>
+                <h4 className="font-semibold mb-2"> Preparación de Datos</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Limpie datos:</strong> Elimine duplicados</li>
                   <li>• <strong>Estandarice formatos:</strong> Fechas DD/MM/AAAA</li>
@@ -382,7 +382,7 @@ export default function SetupManual() {
                   <li>• <strong>Organice por lotes:</strong> Máximo 100 por archivo</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
-                  <p className="text-xs"><strong>💾 Backup:</strong> Mantenga una copia de sus datos originales</p>
+                  <p className="text-xs"><strong> Backup:</strong> Mantenga una copia de sus datos originales</p>
                 </div>
               </div>
             </div>
@@ -400,16 +400,16 @@ export default function SetupManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🧪 Lista de Pruebas</h4>
+                <h4 className="font-semibold mb-3"> Lista de Pruebas</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>8.1.</strong> Pruebe cada funcionalidad principal:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>☐ <strong>Crear miembro:</strong> Formulario manual</li>
-                    <li>☐ <strong>Crear evento:</strong> Servicio dominical de prueba</li>
-                    <li>☐ <strong>Registrar donación:</strong> Transacción de prueba</li>
-                    <li>☐ <strong>Enviar comunicación:</strong> Email a usted mismo</li>
-                    <li>☐ <strong>Check-in QR:</strong> Escanear código</li>
-                    <li>☐ <strong>Roles y permisos:</strong> Acceso según rol</li>
+                    <li> <strong>Crear miembro:</strong> Formulario manual</li>
+                    <li> <strong>Crear evento:</strong> Servicio dominical de prueba</li>
+                    <li> <strong>Registrar donación:</strong> Transacción de prueba</li>
+                    <li> <strong>Enviar comunicación:</strong> Email a usted mismo</li>
+                    <li> <strong>Check-in QR:</strong> Escanear código</li>
+                    <li> <strong>Roles y permisos:</strong> Acceso según rol</li>
                   </ul>
                   <p><strong>8.2.</strong> Invite a líderes clave para probar</p>
                   <p><strong>8.3.</strong> Entrene al equipo en funcionalidades básicas</p>
@@ -417,19 +417,19 @@ export default function SetupManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">🚀 Lista de Go-Live</h4>
+                <h4 className="font-semibold mb-2"> Lista de Go-Live</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>☐ Información de iglesia completa</li>
-                  <li>☐ Roles asignados a equipo</li>
-                  <li>☐ Ministerios creados y configurados</li>
-                  <li>☐ Miembros importados exitosamente</li>
-                  <li>☐ Comunicaciones funcionando</li>
-                  <li>☐ Sistema de donaciones activo</li>
-                  <li>☐ Eventos de prueba realizados</li>
-                  <li>☐ Equipo capacitado</li>
+                  <li> Información de iglesia completa</li>
+                  <li> Roles asignados a equipo</li>
+                  <li> Ministerios creados y configurados</li>
+                  <li> Miembros importados exitosamente</li>
+                  <li> Comunicaciones funcionando</li>
+                  <li> Sistema de donaciones activo</li>
+                  <li> Eventos de prueba realizados</li>
+                  <li> Equipo capacitado</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
-                  <p className="text-xs"><strong>🎉 ¡Listo!</strong> Su iglesia está lista para usar el sistema</p>
+                  <p className="text-xs"><strong> ¡Listo!</strong> Su iglesia está lista para usar el sistema</p>
                 </div>
               </div>
             </div>
@@ -439,12 +439,12 @@ export default function SetupManual() {
         {/* Quick Reference */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Orden Recomendado de Configuración</CardTitle>
+            <CardTitle> Orden Recomendado de Configuración</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">🔥 Configuración Urgente (Día 1)</h4>
+                <h4 className="font-semibold mb-2"> Configuración Urgente (Día 1)</h4>
                 <ol className="space-y-1 text-muted-foreground list-decimal list-inside">
                   <li>Información de la iglesia</li>
                   <li>Inicializar permisos y roles</li>
@@ -453,7 +453,7 @@ export default function SetupManual() {
                 </ol>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">📈 Configuración Progresiva (Semana 1)</h4>
+                <h4 className="font-semibold mb-2"> Configuración Progresiva (Semana 1)</h4>
                 <ol className="space-y-1 text-muted-foreground list-decimal list-inside" start={5}>
                   <li>Configurar comunicaciones</li>
                   <li>Importar miembros existentes</li>

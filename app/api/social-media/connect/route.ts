@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
       
       // Performance monitoring for enterprise scaling
       if (duration > 1000) {
-        console.warn(`🚨 OAuth URL generation took ${duration}ms for ${platform}`)
+        console.warn(` OAuth URL generation took ${duration}ms for ${platform}`)
       }
       
       return NextResponse.json({

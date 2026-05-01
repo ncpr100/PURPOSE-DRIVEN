@@ -219,9 +219,9 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
       }
 
       if (successCount > 0) {
-        toast.success(`📊 ${successCount}/3 módulos de analíticas cargados exitosamente`);
+        toast.success(`${successCount}/3 módulos de analíticas cargados exitosamente`);
       } else {
-        toast.warning('⚠️ No se pudieron cargar los datos de analíticas');
+        toast.warning('No se pudieron cargar los datos de analíticas');
       }
     } catch (error) {
       console.error('Error fetching intelligent analytics:', error);
@@ -239,7 +239,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
 
   const generateExecutiveReport = async () => {
     try {
-      toast.info('📄 Generando reporte ejecutivo...');
+      toast.info(' Generando reporte ejecutivo...');
       const response = await fetch('/api/analytics/executive-report?type=monthly&format=pdf', {
         method: 'POST'
       });
@@ -254,7 +254,7 @@ export default function IntelligentAnalyticsDashboard({ userRole, churchId }: In
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
-        toast.success('📄 Reporte ejecutivo descargado');
+        toast.success(' Reporte ejecutivo descargado');
       }
     } catch (error) {
       toast.error('Error al generar reporte ejecutivo');

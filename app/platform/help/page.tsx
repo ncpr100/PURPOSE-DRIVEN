@@ -146,37 +146,37 @@ export default function HelpCenterSuperAdmin() {
   ]
 
   const adminSections = [
-    { title: "🏢 Gestión de Plataforma", items: [
-      { name: "Administrar Iglesias", href: "/platform/help/manual/churches", icon: "🏛️" },
-      { name: "Analytics Globales", href: "/platform/help/manual/analytics", icon: "📊" },
-      { name: "🆕 Analíticas Inteligentes Globales", href: "/platform/help/manual/global-intelligent-analytics", icon: "🤖" },
-      { name: "Gestión de Usuarios", href: "/platform/help/manual/users", icon: "👥" },
-      { name: "🆕 Sistema de Formularios Globales", href: "/platform/help/manual/global-visitor-forms", icon: "📝" },
-      { name: "🆕 Sistema Inteligente de Eventos", href: "/platform/help/manual/events", icon: "📅" },
-      { name: "Monitoreo del Sistema", href: "/platform/help/manual/monitoring", icon: "🔍" }
+    { title: " Gestión de Plataforma", items: [
+      { name: "Administrar Iglesias", href: "/platform/help/manual/churches", icon: "️" },
+      { name: "Analytics Globales", href: "/platform/help/manual/analytics", icon: "" },
+      { name: "🆕 Analíticas Inteligentes Globales", href: "/platform/help/manual/global-intelligent-analytics", icon: "" },
+      { name: "Gestión de Usuarios", href: "/platform/help/manual/users", icon: "" },
+      { name: "🆕 Sistema de Formularios Globales", href: "/platform/help/manual/global-visitor-forms", icon: "" },
+      { name: "🆕 Sistema Inteligente de Eventos", href: "/platform/help/manual/events", icon: "" },
+      { name: "Monitoreo del Sistema", href: "/platform/help/manual/monitoring", icon: "" }
     ]},
-    { title: "💰 Configuración de Negocio", items: [
-      { name: "Crear/Editar Planes", href: "/platform/help/manual/plans", icon: "📋" },
-      { name: "Gestionar Add-ons", href: "/platform/help/manual/addons", icon: "🛒" },
-      { name: "Configurar Precios", href: "/platform/help/manual/pricing", icon: "💵" },
-      { name: "Métodos de Pago", href: "/platform/help/manual/payments", icon: "🏦" },
-      { name: "✅ Donaciones Online", href: "/platform/help/manual/online-donations", icon: "💳" },
-      { name: "Reportes Financieros", href: "/platform/help/manual/financial", icon: "📈" }
+    { title: " Configuración de Negocio", items: [
+      { name: "Crear/Editar Planes", href: "/platform/help/manual/plans", icon: "" },
+      { name: "Gestionar Add-ons", href: "/platform/help/manual/addons", icon: "" },
+      { name: "Configurar Precios", href: "/platform/help/manual/pricing", icon: "" },
+      { name: "Métodos de Pago", href: "/platform/help/manual/payments", icon: "" },
+      { name: " Donaciones Online", href: "/platform/help/manual/online-donations", icon: "" },
+      { name: "Reportes Financieros", href: "/platform/help/manual/financial", icon: "" }
     ]},
-    { title: "🔧 Herramientas Técnicas", items: [
-      { name: "🆕 Sistema Check-In Avanzado", href: "/platform/help/manual/check-ins", icon: "🔐" },
-      { name: "🆕 Criterios de Calificación", href: "/platform/help/manual/qualification-settings", icon: "🎯" },
-      { name: "🆕 Manual de Troubleshooting", href: "/platform/help/troubleshooting", icon: "🛠️" },
-      { name: "Respaldos de BD", href: "/platform/help/manual/backups", icon: "🗄️" },
-      { name: "Regenerar Claves", href: "/platform/help/manual/keys", icon: "🔑" },
-      { name: "Logs del Sistema", href: "/platform/help/manual/logs", icon: "📊" },
-      { name: "Configuración Avanzada", href: "/platform/help/manual/advanced", icon: "⚙️" }
+    { title: " Herramientas Técnicas", items: [
+      { name: "🆕 Sistema Check-In Avanzado", href: "/platform/help/manual/check-ins", icon: "" },
+      { name: "🆕 Criterios de Calificación", href: "/platform/help/manual/qualification-settings", icon: "" },
+      { name: "🆕 Manual de Troubleshooting", href: "/platform/help/troubleshooting", icon: "️" },
+      { name: "Respaldos de BD", href: "/platform/help/manual/backups", icon: "️" },
+      { name: "Regenerar Claves", href: "/platform/help/manual/keys", icon: "" },
+      { name: "Logs del Sistema", href: "/platform/help/manual/logs", icon: "" },
+      { name: "Configuración Avanzada", href: "/platform/help/manual/advanced", icon: "️" }
     ]},
-    { title: "👥 Manual de Usuarios", items: [
-      { name: "🆕 Gestión de Miembros + Import", href: "/platform/help/manual/user-members", icon: "👥" },
-      { name: "Sistema de Donaciones", href: "/platform/help/manual/user-donations", icon: "💰" },
-      { name: "Gestión de Eventos", href: "/platform/help/manual/user-events", icon: "📅" },
-      { name: "Comunicaciones", href: "/platform/help/manual/user-communications", icon: "📢" }
+    { title: " Manual de Usuarios", items: [
+      { name: "🆕 Gestión de Miembros + Import", href: "/platform/help/manual/user-members", icon: "" },
+      { name: "Sistema de Donaciones", href: "/platform/help/manual/user-donations", icon: "" },
+      { name: "Gestión de Eventos", href: "/platform/help/manual/user-events", icon: "" },
+      { name: "Comunicaciones", href: "/platform/help/manual/user-communications", icon: "" }
     ]}
   ]
 
@@ -221,7 +221,7 @@ export default function HelpCenterSuperAdmin() {
   return (
     <div className="container mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">🔧 Centro de Documentación - SUPER ADMIN</h1>
+        <h1 className="text-3xl font-bold mb-2"> Centro de Documentación - SUPER ADMIN</h1>
         <p className="text-muted-foreground">
           Herramientas, documentación y recursos para administrar la plataforma Kḥesed-tek
         </p>
@@ -257,7 +257,7 @@ export default function HelpCenterSuperAdmin() {
 
       {/* Platform Management Guides */}
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">🏢 Guías de Gestión de Plataforma</h2>
+        <h2 className="text-xl font-semibold mb-4"> Guías de Gestión de Plataforma</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {platformGuides.map((guide) => {
             const IconComponent = guide.icon
@@ -315,7 +315,7 @@ export default function HelpCenterSuperAdmin() {
             <div className="pt-4 border-t">
               <Link href="/platform/help/manual/complete">
                 <Button className="w-full">
-                  📖 Manual Administrativo Completo
+                   Manual Administrativo Completo
                 </Button>
               </Link>
             </div>
@@ -339,20 +339,20 @@ export default function HelpCenterSuperAdmin() {
               <div className="space-y-2">
                 <Button variant="outline" className="w-full justify-start text-xs">
                   <Phone className="h-4 w-4 mr-2" />
-                  📞 Línea Directa Admin
+                   Línea Directa Admin
                 </Button>
                 <Button variant="outline" className="w-full justify-start text-xs">
                   <MessageCircle className="h-4 w-4 mr-2" />
-                  💬 Chat Prioritario
+                   Chat Prioritario
                 </Button>
                 <Button variant="outline" className="w-full justify-start text-xs">
                   <Mail className="h-4 w-4 mr-2" />
-                  📧 admin@khesedtek.com
+                   admin@khesedtek.com
                 </Button>
               </div>
               <div className="text-xs text-muted-foreground">
-                <p>⚡ Respuesta prioritaria: &lt; 2 horas</p>
-                <p>📞 Soporte 24/7 disponible</p>
+                <p> Respuesta prioritaria: &lt; 2 horas</p>
+                <p> Soporte 24/7 disponible</p>
               </div>
             </CardContent>
           </Card>
@@ -367,15 +367,15 @@ export default function HelpCenterSuperAdmin() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2 text-xs text-muted-foreground">
-                <p>🎥 Configuración de Plataforma (25 min)</p>
-                <p>🎥 Gestión de Iglesias (18 min)</p>
-                <p>🎥 Creación de Add-ons (22 min)</p>
-                <p>🎥 Analytics y Reportes (15 min)</p>
-                <p>🎥 Troubleshooting Avanzado (30 min)</p>
+                <p> Configuración de Plataforma (25 min)</p>
+                <p> Gestión de Iglesias (18 min)</p>
+                <p> Creación de Add-ons (22 min)</p>
+                <p> Analytics y Reportes (15 min)</p>
+                <p> Troubleshooting Avanzado (30 min)</p>
               </div>
               <Link href="/platform/help/videos">
                 <Button variant="outline" className="w-full">
-                  🎥 Ver Videos Admin
+                   Ver Videos Admin
                 </Button>
               </Link>
             </CardContent>
@@ -385,7 +385,7 @@ export default function HelpCenterSuperAdmin() {
 
       {/* Admin Tools */}
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">🔧 Herramientas Administrativas</h2>
+        <h2 className="text-xl font-semibold mb-4"> Herramientas Administrativas</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           {adminTools.map((tool) => {
             const IconComponent = tool.icon
@@ -430,28 +430,28 @@ export default function HelpCenterSuperAdmin() {
               <div className="text-center">
                 <div className="h-3 w-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Servidores</p>
-                <p className="text-muted-foreground">✅ Operacional</p>
+                <p className="text-muted-foreground"> Operacional</p>
               </div>
               <div className="text-center">
                 <div className="h-3 w-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Base de Datos</p>
-                <p className="text-muted-foreground">✅ Operacional</p>
+                <p className="text-muted-foreground"> Operacional</p>
               </div>
               <div className="text-center">
                 <div className="h-3 w-3 bg-[hsl(var(--warning)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">APIs Externas</p>
-                <p className="text-muted-foreground">⚠️ Parcial</p>
+                <p className="text-muted-foreground">️ Parcial</p>
               </div>
               <div className="text-center">
                 <div className="h-3 w-3 bg-[hsl(var(--success)/0.10)]0 rounded-full mx-auto mb-2"></div>
                 <p className="font-semibold">Pagos</p>
-                <p className="text-muted-foreground">✅ Operacional</p>
+                <p className="text-muted-foreground"> Operacional</p>
               </div>
             </div>
             <div className="mt-4 flex justify-between">
               <Link href="/platform/help/status">
                 <Button variant="outline" size="sm">
-                  📊 Ver Estado Detallado
+                   Ver Estado Detallado
                 </Button>
               </Link>
               <p className="text-xs text-muted-foreground self-center">

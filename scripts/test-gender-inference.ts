@@ -5,7 +5,7 @@ import { db } from '../lib/db'
 
 async function testGenderInference() {
   try {
-    console.log('🧪 TESTING GENDER INFERENCE WITH REAL MEMBER DATA...\n')
+    console.log(' TESTING GENDER INFERENCE WITH REAL MEMBER DATA...\n')
 
     // Gender inference function (matches the one in components)
     const inferGenderFromName = (firstName: string): string => {
@@ -85,7 +85,7 @@ async function testGenderInference() {
       }
     })
 
-    console.log('📊 COUNT COMPARISON:')
+    console.log(' COUNT COMPARISON:')
     console.log('OLD COUNTING (database only):')
     console.log(`  Masculino: 11`)
     console.log(`  Femenino: 12`)
@@ -98,18 +98,18 @@ async function testGenderInference() {
     console.log(`  Sin Especificar: ${sinEspecificarCount}`)
     console.log(`  Total: ${masculinoCount + femeninoCount + sinEspecificarCount}`)
 
-    console.log(`\n✅ Expected result: Math should add up to 868`)
+    console.log(`\n Expected result: Math should add up to 868`)
     const newTotal = masculinoCount + femeninoCount + sinEspecificarCount
-    console.log(`✅ Actual result: ${masculinoCount} + ${femeninoCount} + ${sinEspecificarCount} = ${newTotal}`)
+    console.log(` Actual result: ${masculinoCount} + ${femeninoCount} + ${sinEspecificarCount} = ${newTotal}`)
 
     if (newTotal === 868) {
-      console.log('🎉 INFERENCE COUNTING IS CORRECT!')
+      console.log(' INFERENCE COUNTING IS CORRECT!')
     } else {
-      console.log('❌ COUNTING ERROR!')
+      console.log(' COUNTING ERROR!')
     }
 
   } catch (error) {
-    console.error('❌ Error testing gender inference:', error)
+    console.error(' Error testing gender inference:', error)
   } finally {
     await db.$disconnect()
   }

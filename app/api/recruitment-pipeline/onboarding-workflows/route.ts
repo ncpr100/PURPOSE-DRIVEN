@@ -176,12 +176,12 @@ export async function POST(request: NextRequest) {
 
     // Send notification to member (simplified)
     if (autoStart) {
-      console.log(`📧 Notificación enviada a ${member.firstName} ${member.lastName} sobre inicio de onboarding`)
+      console.log(` Notificación enviada a ${member.firstName} ${member.lastName} sobre inicio de onboarding`)
     }
 
     // Send notification to mentor if assigned
     if (mentorId) {
-      console.log(`👥 Notificación enviada al mentor ${mentorName} sobre nueva asignación`)
+      console.log(` Notificación enviada al mentor ${mentorName} sobre nueva asignación`)
     }
 
     return NextResponse.json({
@@ -196,7 +196,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('❌ Error creando workflow de onboarding:', error)
+    console.error(' Error creando workflow de onboarding:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' }, 
       { status: 500 }

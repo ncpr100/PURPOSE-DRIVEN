@@ -19,7 +19,7 @@ export default function CompleteOnboardingGuide() {
         <div className="flex items-center gap-4">
           <Rocket className="h-12 w-12" />
           <div>
-            <h1 className="text-4xl font-bold mb-2">🎉 ¡Bienvenido a Khesed-tek!</h1>
+            <h1 className="text-4xl font-bold mb-2"> ¡Bienvenido a Khesed-tek!</h1>
             <p className="text-xl opacity-90">
               Guía Completa de Inicio - Paso a Paso para Niños y Adultos
             </p>
@@ -125,7 +125,7 @@ export default function CompleteOnboardingGuide() {
                     title: "Abrir el Navegador",
                     description: "Abre Google Chrome, Firefox, o Safari en tu computadora o teléfono.",
                     icon: <Home className="h-5 w-5 text-[hsl(var(--lavender))]" />,
-                    image: "🌐",
+                    image: "",
                     tips: [
                       "Puedes usar cualquier navegador que tengas",
                       "También funciona en tablets y teléfonos celulares",
@@ -137,7 +137,7 @@ export default function CompleteOnboardingGuide() {
                     title: "Ir a la Página de Khesed-tek",
                     description: "En la barra de arriba (donde escribes las direcciones web), escribe: khesed-tek-cms.up.railway.app",
                     icon: <ArrowRight className="h-5 w-5 text-[hsl(var(--success))]" />,
-                    image: "🔍",
+                    image: "",
                     tips: [
                       "Copia la dirección exactamente como está",
                       "Presiona la tecla 'Enter' después de escribirla",
@@ -149,7 +149,7 @@ export default function CompleteOnboardingGuide() {
                     title: "Hacer Clic en 'Crear Cuenta'",
                     description: "Busca un botón azul que diga 'Crear Cuenta' o 'Registrarse'. Haz clic en él.",
                     icon: <CheckCircle className="h-5 w-5 text-[hsl(var(--info))]" />,
-                    image: "👆",
+                    image: "",
                     tips: [
                       "El botón está en la esquina superior derecha",
                       "Si no lo ves, busca 'Registrarse' o 'Sign Up'",
@@ -161,7 +161,7 @@ export default function CompleteOnboardingGuide() {
                     title: "Llenar el Formulario",
                     description: "Completa estos espacios con tu información:",
                     icon: <FileText className="h-5 w-5 text-[hsl(var(--warning))]" />,
-                    image: "✏️",
+                    image: "️",
                     details: [
                       {
                         field: "Tu Nombre Completo",
@@ -195,7 +195,7 @@ export default function CompleteOnboardingGuide() {
                     title: "Verificar Tu Email",
                     description: "Después de crear tu cuenta, revisa tu correo electrónico.",
                     icon: <Mail className="h-5 w-5 text-[hsl(var(--destructive))]" />,
-                    image: "📧",
+                    image: "",
                     tips: [
                       "Te enviaremos un correo con un enlace especial",
                       "Abre ese correo y haz clic en el enlace azul",
@@ -208,7 +208,7 @@ export default function CompleteOnboardingGuide() {
                     title: "¡Iniciar Sesión Por Primera Vez!",
                     description: "Vuelve a khesed-tek-cms.up.railway.app y entra con tu email y contraseña.",
                     icon: <Star className="h-5 w-5 text-[hsl(var(--warning))]" />,
-                    image: "🎊",
+                    image: "",
                     tips: [
                       "Usa el mismo email y contraseña que creaste",
                       "Si olvidaste tu contraseña, haz clic en '¿Olvidaste tu contraseña?'",
@@ -234,11 +234,11 @@ export default function CompleteOnboardingGuide() {
                               {item.details.map((detail, idx) => (
                                 <div key={idx} className="bg-muted/30 p-3 rounded">
                                   <p className="font-medium text-sm text-[hsl(var(--info))]">
-                                    📝 {detail.field}
+                                     {detail.field}
                                   </p>
                                   <p className="text-xs text-muted-foreground mt-1">{detail.example}</p>
                                   <p className="text-xs text-[hsl(var(--lavender))] mt-1 italic">
-                                    💡 {detail.why}
+                                     {detail.why}
                                   </p>
                                 </div>
                               ))}
@@ -248,7 +248,7 @@ export default function CompleteOnboardingGuide() {
                           {item.tips && (
                             <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded-lg">
                               <p className="text-xs font-medium text-[hsl(var(--success))] mb-2">
-                                💡 Consejos Útiles:
+                                 Consejos Útiles:
                               </p>
                               <ul className="text-xs text-[hsl(var(--success))] space-y-1">
                                 {item.tips.map((tip, idx) => (
@@ -274,7 +274,7 @@ export default function CompleteOnboardingGuide() {
               <div className="space-y-3 text-sm">
                 {[
                   {
-                    problem: "❌ No me llega el correo de verificación",
+                    problem: " No me llega el correo de verificación",
                     solutions: [
                       "Espera 2-3 minutos, a veces tarda un poco",
                       "Revisa tu carpeta de Spam o Correo no deseado",
@@ -283,7 +283,7 @@ export default function CompleteOnboardingGuide() {
                     ]
                   },
                   {
-                    problem: "❌ Dice que mi contraseña es muy débil",
+                    problem: " Dice que mi contraseña es muy débil",
                     solutions: [
                       "Asegúrate que tenga mínimo 8 caracteres",
                       "Incluye al menos una letra MAYÚSCULA",
@@ -292,7 +292,7 @@ export default function CompleteOnboardingGuide() {
                     ]
                   },
                   {
-                    problem: "❌ Dice que mi email ya existe",
+                    problem: " Dice que mi email ya existe",
                     solutions: [
                       "Probablemente ya creaste una cuenta antes",
                       "Haz clic en '¿Olvidaste tu contraseña?' para recuperarla",
@@ -304,7 +304,7 @@ export default function CompleteOnboardingGuide() {
                     <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
                     <ul className="text-[hsl(var(--destructive))] space-y-1 ml-4">
                       {item.solutions.map((solution, idx) => (
-                        <li key={idx}>✓ {solution}</li>
+                        <li key={idx}> {solution}</li>
                       ))}
                     </ul>
                   </div>
@@ -365,16 +365,16 @@ export default function CompleteOnboardingGuide() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
-                  <p className="font-medium">📍 Dónde Configurar:</p>
+                  <p className="font-medium"> Dónde Configurar:</p>
                   <div className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded">
                     <p className="text-xs mb-2">Haz clic en estos lugares en orden:</p>
                     <ol className="space-y-1 text-xs">
-                      <li>1. Botón de <strong>Configuración</strong> (⚙️ arriba a la derecha)</li>
+                      <li>1. Botón de <strong>Configuración</strong> (️ arriba a la derecha)</li>
                       <li>2. Luego <strong>&quot;Perfil de la Iglesia&quot;</strong></li>
                     </ol>
                   </div>
 
-                  <p className="font-medium mt-4">✏️ Información a Completar:</p>
+                  <p className="font-medium mt-4">️ Información a Completar:</p>
                   <ul className="space-y-2">
                     <li className="flex items-start gap-2">
                       <CheckCircle className="h-4 w-4 text-[hsl(var(--success))] mt-0.5 flex-shrink-0" />
@@ -424,7 +424,7 @@ export default function CompleteOnboardingGuide() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
-                  <p className="font-medium">🎨 Hacer Tu Iglesia Bonita:</p>
+                  <p className="font-medium"> Hacer Tu Iglesia Bonita:</p>
                   
                   <div className="space-y-3">
                     <div className="bg-[hsl(var(--destructive)/0.08)] p-3 rounded">
@@ -471,21 +471,21 @@ export default function CompleteOnboardingGuide() {
               </h4>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
                 <div className="bg-[hsl(var(--card))] p-3 rounded">
-                  <p className="font-medium text-[hsl(var(--info))] mb-2">✅ Sí Hacer:</p>
+                  <p className="font-medium text-[hsl(var(--info))] mb-2"> Sí Hacer:</p>
                   <ul className="space-y-1 text-[hsl(var(--info))]">
-                    <li>✓ Usa fotos de buena calidad (no borrosas)</li>
-                    <li>✓ Escribe toda la información completa</li>
-                    <li>✓ Revisa que no haya errores de ortografía</li>
-                    <li>✓ Guarda los cambios al terminar</li>
+                    <li> Usa fotos de buena calidad (no borrosas)</li>
+                    <li> Escribe toda la información completa</li>
+                    <li> Revisa que no haya errores de ortografía</li>
+                    <li> Guarda los cambios al terminar</li>
                   </ul>
                 </div>
                 <div className="bg-[hsl(var(--card))] p-3 rounded">
-                  <p className="font-medium text-[hsl(var(--destructive))] mb-2">❌ No Hacer:</p>
+                  <p className="font-medium text-[hsl(var(--destructive))] mb-2"> No Hacer:</p>
                   <ul className="space-y-1 text-[hsl(var(--destructive))]">
-                    <li>✗ No uses imágenes con copyright</li>
-                    <li>✗ No pongas información falsa</li>
-                    <li>✗ No uses colores muy brillantes que lastimen los ojos</li>
-                    <li>✗ No olvides hacer clic en &quot;Guardar&quot;</li>
+                    <li> No uses imágenes con copyright</li>
+                    <li> No pongas información falsa</li>
+                    <li> No uses colores muy brillantes que lastimen los ojos</li>
+                    <li> No olvides hacer clic en &quot;Guardar&quot;</li>
                   </ul>
                 </div>
               </div>
@@ -525,12 +525,12 @@ export default function CompleteOnboardingGuide() {
             <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg">
               <CheckCircle className="h-8 w-8 text-[hsl(var(--success))] mx-auto mb-2" />
               <p className="font-semibold">Fase 1</p>
-              <p className="text-xs text-muted-foreground">Cuenta Creada ✓</p>
+              <p className="text-xs text-muted-foreground">Cuenta Creada </p>
             </div>
             <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg">
               <CheckCircle className="h-8 w-8 text-[hsl(var(--lavender))] mx-auto mb-2" />
               <p className="font-semibold">Fase 2</p>
-              <p className="text-xs text-muted-foreground">Iglesia Configurada ✓</p>
+              <p className="text-xs text-muted-foreground">Iglesia Configurada </p>
             </div>
             <div className="text-center p-4 bg-muted/50 rounded-lg opacity-50">
               <Users className="h-8 w-8 text-muted-foreground/70 mx-auto mb-2" />

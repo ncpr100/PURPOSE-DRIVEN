@@ -1,4 +1,4 @@
-// 🎨 FORM BUILDER ICON UTILITIES
+//  FORM BUILDER ICON UTILITIES
 // Extracted from branded-form-builder.tsx to reduce bundle size
 
 import React from 'react'

@@ -29,7 +29,7 @@ export default function SuperAdminAutomationManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
               <Shield className="h-5 w-5" />
-              ⚠️ Solo Super Administradores
+              ️ Solo Super Administradores
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -45,7 +45,7 @@ export default function SuperAdminAutomationManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Database className="h-5 w-5" />
-              🏠 Arquitectura del Ecosistema Completo
+               Arquitectura del Ecosistema Completo
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -56,7 +56,7 @@ export default function SuperAdminAutomationManual() {
 
             {/* Architecture Diagram */}
             <div className="p-4 bg-muted/30 rounded-lg border">
-              <h4 className="font-semibold mb-4">📋 Flujo de Arquitectura:</h4>
+              <h4 className="font-semibold mb-4"> Flujo de Arquitectura:</h4>
               <div className="space-y-2 text-sm font-mono">
                 <div className="flex items-center gap-2">
                   <span className="bg-[hsl(var(--success)/0.10)]0 text-white px-2 py-1 rounded text-xs">1</span>
@@ -88,7 +88,7 @@ export default function SuperAdminAutomationManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Code className="h-5 w-5" />
-              🚀 Implementación Técnica del Ecosistema
+               Implementación Técnica del Ecosistema
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -99,7 +99,7 @@ export default function SuperAdminAutomationManual() {
             
             <div className="grid gap-6">
               <div className="p-4 border rounded-lg">
-                <h4 className="font-semibold mb-3">📝 1. FORM BUILDER SYSTEM</h4>
+                <h4 className="font-semibold mb-3"> 1. FORM BUILDER SYSTEM</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Ubicación:</strong> <code>/app/(dashboard)/form-builder/</code></p>
                   <p><strong>Características Técnicas:</strong></p>
@@ -113,7 +113,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg">
-                <h4 className="font-semibold mb-3">📱 2. QR CODE SYSTEM</h4>
+                <h4 className="font-semibold mb-3"> 2. QR CODE SYSTEM</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Tecnologías:</strong> <code>qrcode.js + sharp</code> para generación dinámica</p>
                   <p><strong>Funcionalidades:</strong></p>
@@ -127,7 +127,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg">
-                <h4 className="font-semibold mb-3">⚡ 3. FORM AUTOMATION ENGINE</h4>
+                <h4 className="font-semibold mb-3"> 3. FORM AUTOMATION ENGINE</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Archivo:</strong> <code>/lib/automation-engine.ts</code> (1,215+ líneas)</p>
                   <p><strong>Integraciones Automáticas:</strong></p>
@@ -141,7 +141,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg">
-                <h4 className="font-semibold mb-3">🤖 4. AUTOMATION TEMPLATES</h4>
+                <h4 className="font-semibold mb-3"> 4. AUTOMATION TEMPLATES</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Templates Disponibles:</strong> 8+ plantillas pre-configuradas</p>
                   <p><strong>Configuraciones Avanzadas:</strong></p>
@@ -155,7 +155,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg">
-                <h4 className="font-semibold mb-3">📊 5. SUBMISSIONS DASHBOARD</h4>
+                <h4 className="font-semibold mb-3"> 5. SUBMISSIONS DASHBOARD</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Dashboard Unificado:</strong> <code>/app/(dashboard)/form-submissions/</code></p>
                   <p><strong>Funcionalidades del Dashboard:</strong></p>
@@ -170,7 +170,7 @@ export default function SuperAdminAutomationManual() {
             </div>
             
             <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)] mt-6">
-              <h4 className="font-semibold text-foreground mb-2">🎯 Flujo Técnico Completo</h4>
+              <h4 className="font-semibold text-foreground mb-2"> Flujo Técnico Completo</h4>
               <div className="text-xs text-[hsl(var(--info))] space-y-1">
                 <p><strong>1.</strong> Usuario escanea QR → Abre formulario público</p>
                 <p><strong>2.</strong> Submite formulario → POST /api/visitor-form/[slug]</p>
@@ -188,13 +188,13 @@ export default function SuperAdminAutomationManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Settings className="h-5 w-5" />
-              🔧 Configuración Avanzada del Sistema
+               Configuración Avanzada del Sistema
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-4">
               <div className="p-4 border rounded-lg bg-[hsl(var(--warning)/0.10)]">
-                <h4 className="font-semibold mb-2">⚙️ Variables de Entorno Críticas</h4>
+                <h4 className="font-semibold mb-2">️ Variables de Entorno Críticas</h4>
                 <div className="text-sm space-y-1">
                   <div className="bg-[hsl(var(--muted))] p-3 rounded font-mono text-xs">
                     <div>TWILIO_ACCOUNT_SID=your_twilio_account_sid</div>
@@ -207,7 +207,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg bg-[hsl(var(--info)/0.10)]">
-                <h4 className="font-semibold mb-2">🔄 Pipeline de Automatización</h4>
+                <h4 className="font-semibold mb-2"> Pipeline de Automatización</h4>
                 <div className="text-sm space-y-1">
                   <p><strong>Orden de Procesamiento:</strong></p>
                   <ol className="ml-4 space-y-1">
@@ -221,7 +221,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg bg-[hsl(var(--success)/0.10)]">
-                <h4 className="font-semibold mb-2">📈 Métricas de Sistema</h4>
+                <h4 className="font-semibold mb-2"> Métricas de Sistema</h4>
                 <div className="text-sm space-y-1">
                   <ul className="ml-4 space-y-1">
                     <li>• <strong>Throughput:</strong> 1000+ form submissions/hour</li>
@@ -240,7 +240,7 @@ export default function SuperAdminAutomationManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Settings className="h-5 w-5" />
-              💳 Configuración de Pasarelas de Pago LATAM
+               Configuración de Pasarelas de Pago LATAM
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -251,7 +251,7 @@ export default function SuperAdminAutomationManual() {
 
             <div className="grid gap-6">
               <div className="p-4 border rounded-lg bg-[hsl(var(--info)/0.10)]">
-                <h4 className="font-semibold mb-3">🌎 Pasarelas Disponibles (Enero 2026)</h4>
+                <h4 className="font-semibold mb-3"> Pasarelas Disponibles (Enero 2026)</h4>
                 <div className="grid md:grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="font-semibold mb-2">Universal LATAM:</p>
@@ -293,7 +293,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg bg-[hsl(var(--lavender)/0.10)]">
-                <h4 className="font-semibold mb-3">🔐 Variables de Entorno Requeridas</h4>
+                <h4 className="font-semibold mb-3"> Variables de Entorno Requeridas</h4>
                 <div className="text-sm space-y-3 font-mono">
                   <div className="space-y-1">
                     <p className="font-semibold text-xs">MercadoPago (Universal):</p>
@@ -325,7 +325,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg bg-[hsl(var(--warning)/0.10)]">
-                <h4 className="font-semibold mb-3">🔄 Webhooks de Pasarelas</h4>
+                <h4 className="font-semibold mb-3"> Webhooks de Pasarelas</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>URLs a Registrar en Dashboards:</strong></p>
                   <ul className="ml-4 space-y-1 font-mono text-xs">
@@ -345,7 +345,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg bg-[hsl(var(--success)/0.10)]">
-                <h4 className="font-semibold mb-3">📊 Base de Datos: online_payments</h4>
+                <h4 className="font-semibold mb-3"> Base de Datos: online_payments</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Tabla Principal de Pagos Online:</strong></p>
                   <ul className="ml-4 space-y-1">
@@ -363,7 +363,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg bg-[hsl(var(--destructive)/0.10)]">
-                <h4 className="font-semibold mb-3">⚙️ Configuración por Tenant (Multi-Iglesia)</h4>
+                <h4 className="font-semibold mb-3">️ Configuración por Tenant (Multi-Iglesia)</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Tabla: payment_gateway_configs</strong></p>
                   <ul className="ml-4 space-y-1">
@@ -383,7 +383,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg bg-[hsl(var(--warning)/0.10)]">
-                <h4 className="font-semibold mb-3">🚀 Roadmap Phase 4 (Semanas 8-12)</h4>
+                <h4 className="font-semibold mb-3"> Roadmap Phase 4 (Semanas 8-12)</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Pasarelas Pendientes:</strong></p>
                   <ul className="ml-4 space-y-1">
@@ -403,7 +403,7 @@ export default function SuperAdminAutomationManual() {
               </div>
 
               <div className="p-4 border rounded-lg bg-muted/50">
-                <h4 className="font-semibold mb-3">📚 Documentación Técnica</h4>
+                <h4 className="font-semibold mb-3"> Documentación Técnica</h4>
                 <div className="text-sm space-y-1">
                   <ul className="ml-4 space-y-1">
                     <li>• <strong>Setup Guide:</strong> LATAM_PAYMENT_GATEWAYS_GUIDE.md</li>

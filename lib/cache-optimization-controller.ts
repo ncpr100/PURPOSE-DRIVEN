@@ -92,9 +92,9 @@ export class CacheOptimizationController {
       // Start optimization monitoring
       await this.startOptimizationMonitoring();
       
-      console.log('✅ Cache optimization controller initialized');
+      console.log(' Cache optimization controller initialized');
     } catch (error) {
-      console.error('❌ Cache optimization controller initialization failed:', error);
+      console.error(' Cache optimization controller initialization failed:', error);
       throw error;
     }
   }
@@ -160,12 +160,12 @@ export class CacheOptimizationController {
       this.lastOptimizationReport = report;
       
       const duration = Date.now() - startTime;
-      console.log(`✅ Optimization cycle completed in ${duration}ms - Status: ${overallStatus}`);
+      console.log(` Optimization cycle completed in ${duration}ms - Status: ${overallStatus}`);
       
       return report;
       
     } catch (error) {
-      console.error('❌ Optimization cycle failed:', error);
+      console.error(' Optimization cycle failed:', error);
       throw error;
     } finally {
       this.isOptimizing = false;
@@ -183,9 +183,9 @@ export class CacheOptimizationController {
         // Force comprehensive warmup for this pattern
         await this.cacheWarmer.forceWarmup();
         
-        console.log(`🔥 Intensive warming completed for pattern: ${target.pattern}`);
+        console.log(` Intensive warming completed for pattern: ${target.pattern}`);
       } catch (error) {
-        console.error(`❌ Intensive warming failed for pattern ${target.pattern}:`, error);
+        console.error(` Intensive warming failed for pattern ${target.pattern}:`, error);
       }
     }
   }
@@ -282,15 +282,15 @@ export class CacheOptimizationController {
           // Emergency optimization
           await this.cacheWarmer.forceWarmup();
           
-          console.log(`🚨 Emergency optimization executed for ${target.pattern}`);
+          console.log(` Emergency optimization executed for ${target.pattern}`);
         } else if (achievement.status === 'warning') {
           // Standard optimization
           await this.cacheWarmer.forceWarmup();
           
-          console.log(`⚠️ Warning optimization executed for ${target.pattern}`);
+          console.log(`️ Warning optimization executed for ${target.pattern}`);
         }
       } catch (error) {
-        console.error(`❌ Optimization execution failed for ${achievement.target.pattern}:`, error);
+        console.error(` Optimization execution failed for ${achievement.target.pattern}:`, error);
       }
     }
   }
@@ -307,7 +307,7 @@ export class CacheOptimizationController {
    */
   addOptimizationTarget(target: OptimizationTarget): void {
     this.optimizationTargets.push(target);
-    console.log(`✅ Added optimization target: ${target.pattern} (${target.priority})`);
+    console.log(` Added optimization target: ${target.pattern} (${target.priority})`);
   }
 
   /**
@@ -318,7 +318,7 @@ export class CacheOptimizationController {
     this.optimizationTargets = this.optimizationTargets.filter(t => t.pattern !== pattern);
     
     if (this.optimizationTargets.length < initialLength) {
-      console.log(`✅ Removed optimization target: ${pattern}`);
+      console.log(` Removed optimization target: ${pattern}`);
     }
   }
 
@@ -329,9 +329,9 @@ export class CacheOptimizationController {
     try {
       await this.cacheWarmer.forceWarmup();
       
-      console.log(`🔥 Forced optimization completed for pattern: ${pattern}`);
+      console.log(` Forced optimization completed for pattern: ${pattern}`);
     } catch (error) {
-      console.error(`❌ Forced optimization failed for pattern ${pattern}:`, error);
+      console.error(` Forced optimization failed for pattern ${pattern}:`, error);
       throw error;
     }
   }
@@ -361,7 +361,7 @@ export class CacheOptimizationController {
   shutdown(): void {
     // Clear any running intervals
     this.isOptimizing = false;
-    console.log('🛑 Cache optimization controller shutdown');
+    console.log(' Cache optimization controller shutdown');
   }
 }
 
