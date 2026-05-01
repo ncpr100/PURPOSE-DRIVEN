@@ -118,6 +118,10 @@
   --glass-scrollbar-hi:   rgba(201,146,42,0.40);
   --glass-card-shimmer:   rgba(201,146,42,0.40);
   --section-label:        #7A5218;
+
+  /* Card elevation (dark: glass + blur = depth; no box-shadow needed) */
+  --card-shadow: none;
+
   color-scheme: dark;
 }
 
@@ -125,8 +129,8 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  --background:           210 20% 98%;
-  --foreground:           222 58%  7%;
+  --background:           220 14% 95%;   /* #F0F2F5 — Sunshine base */
+  --foreground:           222 58%  7%;   /* #111827 — near-black headings */
   --card:                 0   0% 100%;
   --card-foreground:      222 58%  7%;
   --popover:              0   0% 100%;
@@ -175,6 +179,9 @@
   --glass-scrollbar:      rgba(201,146,42,0.20);
   --glass-scrollbar-hi:   rgba(201,146,42,0.35);
   --glass-card-shimmer:   rgba(201,146,42,0.50);
+
+  /* Card elevation (light: shadows replace glass depth) */
+  --card-shadow: 0 4px 12px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.04);
 }
 
 /* ΓöÇΓöÇ BASE STYLES ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
@@ -309,6 +316,7 @@
     border: 1px solid var(--glass-divider);
     border-radius: 12px;
     backdrop-filter: blur(12px);
+    box-shadow: var(--card-shadow);
     position: relative;
     overflow: hidden;
     transition: border-color 0.2s var(--ease-smooth), transform 0.2s var(--ease-spring);
