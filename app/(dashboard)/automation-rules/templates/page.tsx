@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import { TemplateBrowser } from '@/components/automation-rules/template-browser';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Lightbulb } from 'lucide-react';
 
 export const metadata = {
   title: 'Plantillas de Automatización | Khesed-tek',
@@ -70,26 +71,27 @@ export default function TemplateManagementPage() {
         {/* Info Footer */}
         <Card className="p-6 bg-muted/50">
           <div className="space-y-4">
-            <h3 className="font-semibold text-lg">
-              💡 ¿Cómo funcionan las plantillas?
+            <h3 className="font-semibold text-lg flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-warning" />
+              ¿Cómo funcionan las plantillas?
             </h3>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 text-sm">
               <div className="space-y-2">
-                <p className="font-medium">1️⃣ Explora</p>
+                <p className="font-medium">1. Explora</p>
                 <p className="text-muted-foreground">
                   Navega por las plantillas disponibles organizadas por categorías
                   (Peticiones de Oración, Seguimiento de Visitantes, etc.)
                 </p>
               </div>
               <div className="space-y-2">
-                <p className="font-medium">2️⃣ Personaliza</p>
+                <p className="font-medium">2. Personaliza</p>
                 <p className="text-muted-foreground">
                   Ajusta el nombre, prioridad, horarios, y configuración de cada
                   plantilla según tu iglesia
                 </p>
               </div>
               <div className="space-y-2">
-                <p className="font-medium">3️⃣ Activa</p>
+                <p className="font-medium">3. Activa</p>
                 <p className="text-muted-foreground">
                   Con un clic, la regla de automatización se activará y comenzará a
                   procesar eventos automáticamente

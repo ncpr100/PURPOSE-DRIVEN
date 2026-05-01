@@ -198,25 +198,23 @@ export function AutomationTemplates({
   };
 
   const getCategoryBg = (category: string): string => {
-    const map: Record<string, keyof BrandColors> = {
-      PRAYER_REQUEST: "prayerRequest",
-      VISITOR_FOLLOWUP: "visitorFollowup",
-      SOCIAL_MEDIA: "socialMedia",
-      EVENT_MANAGEMENT: "events",
+    const map: Record<string, string> = {
+      PRAYER_REQUEST:    "hsl(var(--accent) / 0.18)",
+      VISITOR_FOLLOWUP:  "hsl(var(--info)   / 0.18)",
+      SOCIAL_MEDIA:      "hsl(var(--success)/ 0.18)",
+      EVENT_MANAGEMENT:  "hsl(var(--warning)/ 0.18)",
     };
-    const key = map[category];
-    return key ? brandColors[key] : brandColors.primary;
+    return map[category] ?? "hsl(var(--muted))"
   };
 
   const getCategoryText = (category: string): string => {
-    const map: Record<string, keyof BrandColors> = {
-      PRAYER_REQUEST: "prayerRequestText",
-      VISITOR_FOLLOWUP: "visitorFollowupText",
-      SOCIAL_MEDIA: "socialMediaText",
-      EVENT_MANAGEMENT: "eventsText",
+    const map: Record<string, string> = {
+      PRAYER_REQUEST:    "hsl(var(--accent-foreground))",
+      VISITOR_FOLLOWUP:  "hsl(var(--info))",
+      SOCIAL_MEDIA:      "hsl(var(--success))",
+      EVENT_MANAGEMENT:  "hsl(var(--warning))",
     };
-    const key = map[category];
-    return key ? brandColors[key] : brandColors.prayerRequestText;
+    return map[category] ?? "hsl(var(--foreground))"
   };
 
   const getCategoryLabel = (category: string) => {
@@ -490,10 +488,7 @@ export function AutomationTemplates({
         <Button
           onClick={() => setCreateOpen(true)}
           className="gap-2 ml-auto"
-          style={{
-            backgroundColor: brandColors.buttonBackground,
-            color: brandColors.buttonText,
-          }}
+          variant="default"
         >
           <Plus className="h-4 w-4" />
           Crear Plantilla Personalizada
@@ -510,7 +505,7 @@ export function AutomationTemplates({
                   <div
                     className="p-2 rounded-lg flex-shrink-0"
                     style={{
-                      backgroundColor: (template as any).color || getCategoryBg(template.category),
+                      backgroundColor: getCategoryBg(template.category),
                     }}
                   >
                     <span style={{ color: getCategoryText(template.category) }}>
@@ -520,8 +515,7 @@ export function AutomationTemplates({
                     </span>
                   </div>
                   <CardTitle
-                    className="text-base leading-tight"
-                    style={{ color: getCategoryText(template.category) }}
+                    className="text-base leading-tight text-foreground"
                   >
                     {template.name}
                   </CardTitle>
@@ -531,10 +525,6 @@ export function AutomationTemplates({
                     <Badge
                       variant="secondary"
                       className="gap-1 text-xs"
-                      style={{
-                        backgroundColor: brandColors.badgeBackground,
-                        color: brandColors.badgeText,
-                      }}
                     >
                       <Sparkles className="h-3 w-3" />
                       Sistema
@@ -565,12 +555,9 @@ export function AutomationTemplates({
                   </div>
                   <Button
                     size="sm"
+                    variant="default"
                     onClick={() => onSelectTemplate(template)}
                     className="gap-2"
-                    style={{
-                      backgroundColor: brandColors.buttonBackground,
-                      color: brandColors.buttonText,
-                    }}
                   >
                     Usar Plantilla
                   </Button>
@@ -578,11 +565,7 @@ export function AutomationTemplates({
 
                 {/* Category Badge */}
                 <span
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
-                  style={{
-                    backgroundColor: brandColors.badgeBackground,
-                    color: brandColors.badgeText,
-                  }}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground"
                 >
                   {getCategoryLabel(template.category)}
                 </span>
@@ -893,10 +876,7 @@ export function AutomationTemplates({
             <Button
               onClick={handleSaveEdit}
               disabled={editSaving || !editName.trim()}
-              style={{
-                backgroundColor: brandColors.buttonBackground,
-                color: brandColors.buttonText,
-              }}
+              variant="default"
             >
               {editSaving ? "Guardando..." : "Guardar Cambios"}
             </Button>
@@ -1075,10 +1055,7 @@ export function AutomationTemplates({
                 !createName.trim() ||
                 !createActionMessage.trim()
               }
-              style={{
-                backgroundColor: brandColors.buttonBackground,
-                color: brandColors.buttonText,
-              }}
+              variant="default"
             >
               {createSaving ? "Creando..." : "Crear Plantilla"}
             </Button>
@@ -1206,7 +1183,7 @@ export function AutomationTemplates({
             <Button
               onClick={handleCreateTemplate}
               disabled={createSaving || !createName.trim() || !createActionMessage.trim()}
-              style={{ backgroundColor: brandColors.buttonBackground, color: brandColors.buttonText }}
+              variant="default"
             >
               {createSaving ? 'Creando...' : 'Crear Plantilla'}
             </Button>
