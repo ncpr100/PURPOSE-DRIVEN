@@ -61,24 +61,28 @@ export default async function RootLayout({
     <html
       lang="es"
       data-theme="dark"
-      style={{ background: '#05080F', colorScheme: 'dark' } as React.CSSProperties}
+      style={
+        { background: "#05080F", colorScheme: "dark" } as React.CSSProperties
+      }
       suppressHydrationWarning
     >
       <head>
         {/*
           Anti-FOUC inline script — runs synchronously BEFORE any CSS or React loads.
           Strategy:
-            1. Adds 'no-fouc' class → disables all CSS transitions so nothing animates in
-            2. Only overrides when user has chosen light/Sunshine theme (dark is already set server-side)
-            3. Removes 'no-fouc' after first paint via requestAnimationFrame double-frame trick
-          This completely eliminates:
-            - White body flash (html now has server-side bg + min-height:100dvh in CSS)
-            - Transition animation from white→dark on load
-            - Logo swap flash (CSS dual-image approach handles logo, no JS needed)
+            1. Server already sends data-theme="dark" + bg #05080F (correct default).
+            2. Script ONLY runs when user has explicitly saved light/Sunshine preference
+               under storageKey 'cosmos-theme' (ignores stale 'theme' key from old sessions).
+            3. no-fouc added ONLY on the dark→light flip path to suppress the 0.2 s CSS
+               transition that would otherwise animate the background change visibly.
+            4. no-fouc removed on window 'load' event — ensures React + next-themes are
+               fully hydrated before transitions re-enable (fixes residual flash; hydration
+               takes ~200 ms but double-rAF only waited ~33 ms).
+            5. Dark users (the default) never get no-fouc → animations work from first load.
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var el=document.documentElement;el.classList.add('no-fouc');var t=localStorage.getItem('theme');if(t==='light'){el.setAttribute('data-theme','light');el.style.background='#F0F2F5';el.style.colorScheme='light'}requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.remove('no-fouc')})})}catch(e){}})()`,
+            __html: `(function(){try{var el=document.documentElement;var t=localStorage.getItem('cosmos-theme');if(t==='light'){el.classList.add('no-fouc');el.setAttribute('data-theme','light');el.style.background='#F0F2F5';el.style.colorScheme='light';var rm=function(){el.classList.remove('no-fouc')};window.addEventListener('load',rm,{once:true});setTimeout(rm,800)}}catch(e){}})()`
           }}
         />
         <script src="/cache-invalidation.js" defer></script>

@@ -21,26 +21,21 @@ export default async function DashboardLayout({
   return (
     <SessionErrorBoundary>
       <CosmosBackground />
-      <div
-        className="relative z-10 h-screen overflow-hidden"
-        style={{
-          display: 'grid',
-          gridTemplateRows: '56px 1fr',
-          gridTemplateColumns: '216px 1fr',
-        }}
-      >
-        {/* Header spans both columns */}
-        <div style={{ gridColumn: '1 / -1' }}>
-          <CosmosHeader />
+      {/* Flex column: header row + body row. On mobile, sidebar becomes a fixed overlay. */}
+      <div className="relative z-10 flex flex-col h-screen overflow-hidden">
+        {/* Header — full width */}
+        <CosmosHeader />
+        {/* Body row: sidebar + main content */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* Sidebar — flex-shrink-0 on desktop, fixed overlay on mobile (handled in component) */}
+          <CosmosSidebar />
+          {/* Main content */}
+          <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+            <div className="max-w-7xl mx-auto">
+              {children}
+            </div>
+          </main>
         </div>
-        {/* Sidebar */}
-        <CosmosSidebar />
-        {/* Main content */}
-        <main className="overflow-y-auto p-4 lg:p-6">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
       </div>
     </SessionErrorBoundary>
   )
