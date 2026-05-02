@@ -200,7 +200,31 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    /* Must cover full viewport so the server-side background-color fills the screen
+       before any JS or CSS loads — eliminates the white body flash beneath html. */
+    min-height: 100dvh;
   }
+
+  /* ── No-FOUC transition suppressor ─────────────────────────────────────────
+     Applied by the inline <head> script for exactly two animation frames.
+     Blocks all CSS transitions so background/color changes happen instantly
+     during initial theme detection — no white→dark or dark→white animation. */
+  html.no-fouc *,
+  html.no-fouc *::before,
+  html.no-fouc *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* ── CSS-only Logo Theme Switcher ──────────────────────────────────────────
+     Render both logo variants in HTML; CSS controls which is visible.
+     Responds to data-theme on <html> — set server-side + by inline script.
+     Zero JavaScript dependency = zero logo flash on theme load or toggle. */
+  .logo-cosmos-dark  { display: block; }
+  .logo-cosmos-light { display: none;  }
+
+  [data-theme="light"] .logo-cosmos-dark  { display: none;  }
+  [data-theme="light"] .logo-cosmos-light { display: block; }
 
   body {
     @apply bg-background text-foreground;
