@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -10,7 +10,7 @@ import {
   QrCode, MessageSquare, BarChart3, Zap, FormInput,
   Share2, BookOpen, Settings, Bell, FileText,
   ChevronDown, ChevronRight, UserCheck, Lightbulb,
-  Brain, ShieldCheck, ClipboardList, Wifi, Star,
+  Brain, ShieldCheck, ClipboardList, Wifi, Star, X,
 } from "lucide-react";
 
 interface NavItem {
@@ -100,6 +100,25 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
     "Social & Web": true,
   });
 
+  // Mobile overlay state — toggled by header hamburger via custom event
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const onToggle = () => setMobileOpen((o) => !o);
+    const onClose  = () => setMobileOpen(false);
+    window.addEventListener("cosmos:sidebar:toggle", onToggle);
+    window.addEventListener("cosmos:sidebar:close",  onClose);
+    return () => {
+      window.removeEventListener("cosmos:sidebar:toggle", onToggle);
+      window.removeEventListener("cosmos:sidebar:close",  onClose);
+    };
+  }, []);
+
+  // Close sidebar on route change (mobile UX)
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
   const toggleSection = (section: string) => {
     setCollapsed((prev) => ({ ...prev, [section]: !prev[section] }));
   };
@@ -115,26 +134,51 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
   };
 
   return (
-    <aside
-      className={cn(
-        "flex flex-col h-full",
-        "border-r border-[var(--glass-divider)]",
-        "bg-[var(--glass-sidebar-bg)] backdrop-blur-cosmos",
-        "no-scrollbar overflow-y-auto overflow-x-hidden",
-        className
+    <>
+      {/* ── Mobile backdrop overlay ── */}
+      {mobileOpen && (
+        <div
+          className="md:hidden fixed inset-0 top-14 z-40 bg-black/60 backdrop-blur-sm"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
       )}
-    >
-      {/* Logo */}
+
+      <aside
+        className={cn(
+          "flex flex-col",
+          "border-r border-[var(--glass-divider)]",
+          "bg-[var(--glass-sidebar-bg)] backdrop-blur-cosmos",
+          "no-scrollbar overflow-y-auto overflow-x-hidden",
+          "w-[216px]",
+          // Desktop: static, fills body-row height
+          "md:flex-shrink-0 md:h-full md:relative md:translate-x-0",
+          // Mobile: fixed overlay, slides in/out
+          "max-md:fixed max-md:top-14 max-md:left-0 max-md:bottom-0 max-md:z-50",
+          "max-md:transition-transform max-md:duration-300 max-md:ease-out",
+          mobileOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full",
+          className
+        )}
+      >
+      {/* Logo + mobile close button */}
       <div className="flex items-center gap-2.5 px-4 py-3.5 border-b border-[var(--glass-divider)]">
         <CosmosLogoMark size={26} />
-        <div>
+        <div className="flex-1">
           <div className="font-display text-[13px] font-bold tracking-widest text-[hsl(var(--brand-gold-bright))] leading-none">
-            KHESED┬╖TEK
+            KHESED·TEK
           </div>
           <div className="text-[9px] text-[hsl(var(--brand-gold-dim))] tracking-[0.12em] mt-0.5">
             SYSTEMS CMS
           </div>
         </div>
+        {/* Close button — mobile only */}
+        <button
+          onClick={() => setMobileOpen(false)}
+          aria-label="Cerrar menú"
+          className="md:hidden flex items-center justify-center w-6 h-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--accent)/0.3)] transition-colors flex-shrink-0"
+        >
+          <X size={14} />
+        </button>
       </div>
 
       {/* Live status */}
@@ -229,10 +273,11 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
         </div>
       </div>
     </aside>
+    </>
   );
 }
 
-// ΓöÇΓöÇΓöÇ Logo Mark Component ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ─── Logo Mark Component ──────────────────────────────────────────────────────
 function CosmosLogoMark({ size = 26 }: { size?: number }) {
   return (
     <div style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
