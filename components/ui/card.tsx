@@ -11,33 +11,34 @@ const cardVariants = cva(
       variant: {
         // ΓöÇ Default cosmos card ΓöÇ
         default: [
-          "rounded-xl border border-[rgba(201,146,42,0.12)]",
-          "bg-[rgba(13,22,40,0.72)] backdrop-blur-cosmos",
+          "rounded-xl border border-[var(--glass-divider)]",
+          "bg-[var(--glass-card-bg)] backdrop-blur-cosmos",
+          "shadow-[var(--card-shadow)]",
           "before:absolute before:inset-x-0 before:top-0 before:h-px",
-          "before:bg-gradient-to-r before:from-transparent before:via-[rgba(201,146,42,0.35)] before:to-transparent",
-          "hover:border-[rgba(201,146,42,0.22)] hover:-translate-y-px",
+          "before:bg-gradient-to-r before:from-transparent before:via-[var(--glass-card-shimmer)] before:to-transparent",
+          "hover:border-[var(--glass-divider-strong)] hover:-translate-y-px",
         ].join(" "),
 
         // ΓöÇ Glass panel ΓöÇ
         glass: [
-          "rounded-xl border border-[rgba(255,255,255,0.06)]",
-          "bg-[rgba(5,8,15,0.65)] backdrop-blur-cosmos",
+          "rounded-xl border border-[var(--glass-border-softer)]",
+          "bg-[var(--glass-panel-bg)] backdrop-blur-cosmos",
         ].join(" "),
 
         // ΓöÇ Elevated ΓöÇ
         elevated: [
-          "rounded-xl border border-[rgba(201,146,42,0.2)]",
-          "bg-[rgba(13,22,40,0.85)] backdrop-blur-cosmos",
+          "rounded-xl border border-[var(--glass-divider-strong)]",
+          "bg-[var(--glass-card-bg-hover)] backdrop-blur-cosmos",
           "shadow-cosmos",
         ].join(" "),
 
-        // ΓöÇ Alert ΓöÇ
+        // ΓöÇ Alert (semantic brand color) ΓöÇ
         alert: [
           "rounded-xl border border-[rgba(232,72,85,0.3)]",
           "bg-[rgba(232,72,85,0.06)] backdrop-blur-sm",
         ].join(" "),
 
-        // ΓöÇ Success ΓöÇ
+        // ΓöÇ Success (semantic brand color) ΓöÇ
         success: [
           "rounded-xl border border-[rgba(29,201,140,0.25)]",
           "bg-[rgba(29,201,140,0.06)] backdrop-blur-sm",
@@ -45,8 +46,8 @@ const cardVariants = cva(
 
         // ΓöÇ Flat (no blur, for performance in lists) ΓöÇ
         flat: [
-          "rounded-lg border border-[rgba(255,255,255,0.06)]",
-          "bg-[rgba(13,22,40,0.5)]",
+          "rounded-lg border border-[var(--glass-border-softer)]",
+          "bg-[var(--glass-inner-bg)]",
         ].join(" "),
       },
     },

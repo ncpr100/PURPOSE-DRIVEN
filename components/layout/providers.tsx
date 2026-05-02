@@ -6,7 +6,6 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { RealTimeProvider } from '@/components/realtime/realtime-provider'
 import { ServiceWorkerRegistration } from '@/components/service-worker-registration'
 import { Toaster } from 'react-hot-toast'
-import { useEffect, useState } from 'react'
 
 export function Providers({
   children,
@@ -15,23 +14,12 @@ export function Providers({
   children: React.ReactNode
   session?: any
 }) {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) {
-    return null
-  }
-
   return (
     <SessionProvider session={session}>
       <ThemeProvider
-        attribute="class"
-        defaultTheme="light"
+        attribute="data-theme"
+        defaultTheme="dark"
         enableSystem={false}
-        disableTransitionOnChange
       >
         <RealTimeProvider
           enableToasts={true}

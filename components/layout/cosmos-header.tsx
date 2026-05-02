@@ -9,8 +9,9 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import {
   Search, Bell, ChevronDown, Shield, Brain, Calendar, CheckCircle,
-  Settings, LogOut, User, Activity, X,
+  Settings, LogOut, User, Activity, X, Sun, Moon,
 } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
 
 // ΓöÇΓöÇΓöÇ STATIC AGENT CHIPS (TODO: replace with real agent status API) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
@@ -30,6 +31,7 @@ export function CosmosHeader() {
   const [currentTime, setCurrentTime]   = useState("");
   // TODO: replace with real coverage API call
   const [coverageRate]                  = useState(94);
+  const { isDark, toggle: toggleTheme }  = useTheme();
 
   // Live clock
   useEffect(() => {
@@ -47,8 +49,8 @@ export function CosmosHeader() {
     <header
       className={cn(
         "h-14 flex items-center gap-3 px-4",
-        "border-b border-[rgba(201,146,42,0.12)]",
-        "bg-[rgba(5,8,15,0.75)] backdrop-blur-cosmos",
+        "border-b border-[var(--glass-divider)]",
+        "bg-[var(--glass-header-bg)] backdrop-blur-cosmos",
         "sticky top-0 z-nav",
         "w-full"
       )}
@@ -62,7 +64,7 @@ export function CosmosHeader() {
       </div>
 
       {/* ΓöÇΓöÇ Divider ΓöÇΓöÇ */}
-      <div className="h-4 w-px bg-[rgba(255,255,255,0.06)] flex-shrink-0" />
+      <div className="h-4 w-px bg-[var(--glass-border-softer)] flex-shrink-0" />
 
       {/* ΓöÇΓöÇ Live agent chips ΓöÇΓöÇ */}
       <div className="hidden md:flex items-center gap-1.5">
@@ -119,7 +121,7 @@ export function CosmosHeader() {
       )}
 
       {/* ΓöÇΓöÇ Clock chip ΓöÇΓöÇ */}
-      <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.06)] text-muted-foreground flex-shrink-0">
+      <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] bg-[var(--glass-subtle-bg)] border border-[var(--glass-border-softer)] text-muted-foreground flex-shrink-0">
         <Calendar size={10} className="text-gold-dim" />
         {currentTime}
       </div>
@@ -130,8 +132,8 @@ export function CosmosHeader() {
         className={cn(
           "hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] flex-shrink-0 transition-all duration-150 hover:opacity-80",
           coverageRate >= 90
-            ? "bg-[rgba(29,201,140,0.1)] border border-[rgba(29,201,140,0.25)] text-cosmos-emerald"
-            : "bg-[rgba(232,72,85,0.1)] border border-[rgba(232,72,85,0.25)] text-cosmos-rose"
+            ? "bg-[#1DC98C1A] border border-[#1DC98C40] text-cosmos-emerald"
+            : "bg-[#E848551A] border border-[#E8485540] text-cosmos-rose"
         )}
       >
         <span
@@ -147,14 +149,23 @@ export function CosmosHeader() {
       {/* ΓöÇΓöÇ AI agents quick link ΓöÇΓöÇ */}
       <Link
         href="/home#agents"
-        className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] bg-[rgba(155,143,255,0.1)] border border-[rgba(155,143,255,0.25)] text-[#9B8FFF] hover:opacity-80 transition-opacity flex-shrink-0"
+        className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] bg-[#9B8FFF1A] border border-[#9B8FFF40] text-[#9B8FFF] hover:opacity-80 transition-opacity flex-shrink-0"
       >
         <Brain size={10} />
         <span>12 IA</span>
       </Link>
 
+
+      {/* ── Theme toggle ── */}
+      <button
+        onClick={toggleTheme}
+        title={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+        className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[hsl(var(--accent)/0.2)] transition-colors text-muted-foreground hover:text-foreground flex-shrink-0"
+      >
+        {isDark ? <Sun size={15} /> : <Moon size={15} />}
+      </button>
       {/* ΓöÇΓöÇ Divider ΓöÇΓöÇ */}
-      <div className="h-4 w-px bg-[rgba(255,255,255,0.06)] flex-shrink-0" />
+      <div className="h-4 w-px bg-[var(--glass-border-softer)] flex-shrink-0" />
 
       {/* ΓöÇΓöÇ Notifications ΓöÇΓöÇ */}
       <div className="relative">
@@ -168,7 +179,7 @@ export function CosmosHeader() {
 
         {notifOpen && (
           <div className="absolute right-0 top-10 w-72 cosmos-card p-0 z-overlay shadow-cosmos-lg">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[rgba(255,255,255,0.06)]">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--glass-border-softer)]">
               <span className="text-[12px] font-medium text-foreground">Notificaciones</span>
               <button onClick={() => setNotifOpen(false)}>
                 <X size={13} className="text-muted-foreground hover:text-foreground" />
@@ -212,7 +223,7 @@ export function CosmosHeader() {
 
         {userOpen && (
           <div className="absolute right-0 top-10 w-52 cosmos-card p-1 z-overlay shadow-cosmos-lg">
-            <div className="px-3 py-2 border-b border-[rgba(255,255,255,0.06)] mb-1">
+            <div className="px-3 py-2 border-b border-[var(--glass-border-softer)] mb-1">
               <p className="text-[12px] font-medium text-foreground truncate">{session?.user?.name || "Usuario"}</p>
               <p className="text-[10px] text-muted-foreground truncate">{session?.user?.email || ""}</p>
             </div>
@@ -232,7 +243,7 @@ export function CosmosHeader() {
               <User size={13} className="text-muted-foreground" />
               Mi Perfil
             </Link>
-            <div className="border-t border-[rgba(255,255,255,0.06)] mt-1 pt-1">
+            <div className="border-t border-[var(--glass-border-softer)] mt-1 pt-1">
               <button
                 onClick={() => signOut({ callbackUrl: "/auth/signin" })}
                 className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-[12px] text-destructive hover:bg-[hsl(var(--destructive)/0.1)] transition-colors text-left"

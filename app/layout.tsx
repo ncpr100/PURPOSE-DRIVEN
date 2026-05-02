@@ -58,6 +58,12 @@ export default async function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
+        {/* Anti-FOUC: read localStorage before React hydrates — sets data-theme synchronously */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){}})()`,
+          }}
+        />
         <script src="/cache-invalidation.js" defer></script>
       </head>
       <body className={`${cinzel.variable} ${dmSans.variable} font-sans`}>

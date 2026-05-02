@@ -118,14 +118,14 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
     <aside
       className={cn(
         "flex flex-col h-full",
-        "border-r border-[rgba(201,146,42,0.1)]",
-        "bg-[rgba(5,8,15,0.65)] backdrop-blur-cosmos",
+        "border-r border-[var(--glass-divider)]",
+        "bg-[var(--glass-sidebar-bg)] backdrop-blur-cosmos",
         "no-scrollbar overflow-y-auto overflow-x-hidden",
         className
       )}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-4 py-3.5 border-b border-[rgba(201,146,42,0.1)]">
+      <div className="flex items-center gap-2.5 px-4 py-3.5 border-b border-[var(--glass-divider)]">
         <CosmosLogoMark size={26} />
         <div>
           <div className="font-display text-[13px] font-bold tracking-widest text-[hsl(var(--brand-gold-bright))] leading-none">
@@ -138,7 +138,7 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
       </div>
 
       {/* Live status */}
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[rgba(255,255,255,0.04)]">
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[var(--glass-border-soft)]">
         <div className="live-dot" />
         <span className="text-[9px] tracking-[0.12em] text-[#1DC98C] uppercase">
           12 Agentes Activos
@@ -165,7 +165,7 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
                 )}
               >
                 <span className="text-[hsl(var(--brand-gold-dim))]">{group.section}</span>
-                <div className="flex-1 h-px bg-[rgba(201,146,42,0.1)]" />
+                <div className="flex-1 h-px bg-[var(--glass-divider)]" />
                 {collapsed[group.section] ? (
                   <ChevronRight size={9} className="text-[hsl(var(--brand-gold-dim))]" />
                 ) : (
@@ -208,7 +208,7 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
       </nav>
 
       {/* User footer */}
-      <div className="border-t border-[rgba(201,146,42,0.1)] p-3">
+      <div className="border-t border-[var(--glass-divider)] p-3">
         <div className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[hsl(var(--accent)/0.3)] cursor-pointer transition-colors">
           <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--brand-gold-dim))] to-[hsl(var(--brand-gold))] flex items-center justify-center text-[11px] font-display font-bold text-[hsl(var(--brand-navy-deep))] flex-shrink-0">
             {session?.user?.name?.charAt(0) || "N"}
