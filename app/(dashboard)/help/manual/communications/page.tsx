@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -97,7 +97,7 @@ export default function CommunicationsManual() {
                   <li>• <strong>📢 Anuncios:</strong> Noticias de la iglesia</li>
                   <li>• <strong>🎪 Invitación Evento:</strong> Eventos especiales</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Personalice las plantillas con el tono de su iglesia</p>
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function CommunicationsManual() {
                     <li>• <strong>Multimedia:</strong> Enviar imágenes, documentos</li>
                     <li>• <strong>Grupos:</strong> Crear grupos por ministerio</li>
                   </ul>
-                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
+                  <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                     <p className="text-xs"><strong>📞 Costo:</strong> SMS tiene costo por mensaje, WhatsApp Business es más económico</p>
                   </div>
                 </div>

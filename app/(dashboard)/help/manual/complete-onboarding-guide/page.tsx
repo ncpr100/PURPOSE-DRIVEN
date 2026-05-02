@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -26,15 +26,15 @@ export default function CompleteOnboardingGuide() {
           </div>
         </div>
         <div className="mt-6 flex gap-4 text-sm">
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Book className="h-3 w-3 mr-1" />
             Guía Completa
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Target className="h-3 w-3 mr-1" />
             Nivel: Principiante
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Star className="h-3 w-3 mr-1" />
             60 minutos
           </Badge>
@@ -300,7 +300,7 @@ export default function CompleteOnboardingGuide() {
                     ]
                   }
                 ].map((item, index) => (
-                  <div key={index} className="bg-white p-3 rounded border border-[hsl(var(--destructive)/0.3)]">
+                  <div key={index} className="bg-[hsl(var(--card))] p-3 rounded border border-[hsl(var(--destructive)/0.3)]">
                     <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
                     <ul className="text-[hsl(var(--destructive))] space-y-1 ml-4">
                       {item.solutions.map((solution, idx) => (
@@ -470,7 +470,7 @@ export default function CompleteOnboardingGuide() {
                 Consejos de Experto
               </h4>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
-                <div className="bg-white p-3 rounded">
+                <div className="bg-[hsl(var(--card))] p-3 rounded">
                   <p className="font-medium text-[hsl(var(--info))] mb-2">✅ Sí Hacer:</p>
                   <ul className="space-y-1 text-[hsl(var(--info))]">
                     <li>✓ Usa fotos de buena calidad (no borrosas)</li>
@@ -479,7 +479,7 @@ export default function CompleteOnboardingGuide() {
                     <li>✓ Guarda los cambios al terminar</li>
                   </ul>
                 </div>
-                <div className="bg-white p-3 rounded">
+                <div className="bg-[hsl(var(--card))] p-3 rounded">
                   <p className="font-medium text-[hsl(var(--destructive))] mb-2">❌ No Hacer:</p>
                   <ul className="space-y-1 text-[hsl(var(--destructive))]">
                     <li>✗ No uses imágenes con copyright</li>
@@ -522,12 +522,12 @@ export default function CompleteOnboardingGuide() {
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-white rounded-lg">
+            <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg">
               <CheckCircle className="h-8 w-8 text-[hsl(var(--success))] mx-auto mb-2" />
               <p className="font-semibold">Fase 1</p>
               <p className="text-xs text-muted-foreground">Cuenta Creada ✓</p>
             </div>
-            <div className="text-center p-4 bg-white rounded-lg">
+            <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg">
               <CheckCircle className="h-8 w-8 text-[hsl(var(--lavender))] mx-auto mb-2" />
               <p className="font-semibold">Fase 2</p>
               <p className="text-xs text-muted-foreground">Iglesia Configurada ✓</p>

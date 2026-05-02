@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -570,7 +570,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
         {contact.notes && (
           <div className="mt-4">
             <p className="text-sm text-muted-foreground mb-2">Notas</p>
-            <p className="text-sm bg-white rounded p-2">{contact.notes}</p>
+            <p className="text-sm bg-[hsl(var(--card))] rounded p-2">{contact.notes}</p>
           </div>
         )}
       </div>
@@ -846,7 +846,7 @@ export function PrayerContactManager({ onContactUpdate }: PrayerContactManagerPr
             {filteredContacts.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-12">
-                  <Users className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                  <Users className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
                   <p className="text-muted-foreground">No se encontraron contactos</p>
                   {contacts.length === 0 ? (
                     <Button

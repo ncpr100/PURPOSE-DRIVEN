@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -96,7 +96,7 @@ export default function EventsManual() {
                   <li>• <strong>Actividades Sociales:</strong> Cenas, picnics, deportes</li>
                   <li>• <strong>Eventos Externos:</strong> Evangelismo, visitas</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Use plantillas para eventos recurrentes</p>
                 </div>
               </div>
@@ -187,7 +187,7 @@ export default function EventsManual() {
                     <li>4. Complete información si es primera vez</li>
                     <li>5. Confirme su asistencia</li>
                   </ol>
-                  <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
+                  <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                     <p className="text-xs"><strong>✨ Automático:</strong> Miembros existentes se registran instantáneamente</p>
                   </div>
                 </div>

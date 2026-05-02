@@ -93,12 +93,44 @@
   --ease-spring:          cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth:          cubic-bezier(0.4, 0, 0.2, 1);
   --ease-bounce:          cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* GLASS COMPOSITION — Dark (rgba values for theme-aware components) */
+  --glass-header-bg:      rgba(5,8,15,0.78);
+  --glass-sidebar-bg:     rgba(5,8,15,0.60);
+  --glass-panel-bg:       rgba(5,8,15,0.55);
+  --glass-card-bg:        rgba(13,22,40,0.72);
+  --glass-card-bg-hover:  rgba(13,22,40,0.88);
+  --glass-inner-bg:       rgba(13,22,40,0.45);
+  --glass-subtle-bg:      rgba(255,255,255,0.025);
+  --glass-divider:        rgba(201,146,42,0.10);
+  --glass-divider-strong: rgba(201,146,42,0.15);
+  --glass-border-soft:    rgba(255,255,255,0.04);
+  --glass-border-softer:  rgba(255,255,255,0.06);
+  --glass-prayer-bg:      rgba(38,217,217,0.06);
+  --glass-prayer-border:  rgba(38,217,217,0.15);
+  --glass-input-bg:       rgba(13,22,40,0.60);
+  --glass-tooltip-bg:     rgba(13,22,40,0.95);
+  --glass-grid-line:      rgba(255,255,255,0.05);
+  --glass-shimmer-hi:     rgba(255,255,255,0.04);
+  --glass-table-row:      rgba(255,255,255,0.04);
+  --glass-hover-gold:     rgba(201,146,42,0.04);
+  --glass-scrollbar:      rgba(201,146,42,0.20);
+  --glass-scrollbar-hi:   rgba(201,146,42,0.40);
+  --glass-card-shimmer:   rgba(201,146,42,0.40);
+  --section-label:        #7A5218;
+
+  /* Card elevation (dark: glass + blur = depth; no box-shadow needed) */
+  --card-shadow: none;
+
+  color-scheme: dark;
 }
 
 /* ΓöÇΓöÇ LIGHT MODE (for future toggle support) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 [data-theme="light"] {
-  --background:           210 20% 98%;
-  --foreground:           222 58%  7%;
+  color-scheme: light;
+
+  --background:           220 14% 95%;   /* #F0F2F5 — Sunshine base */
+  --foreground:           222 58%  7%;   /* #111827 — near-black headings */
   --card:                 0   0% 100%;
   --card-foreground:      222 58%  7%;
   --popover:              0   0% 100%;
@@ -115,16 +147,53 @@
   --success-foreground:   0   0% 100%;
   --warning:              38  92% 42%;
   --warning-foreground:   0   0% 100%;
+  --info:                 200 70% 38%;
+  --info-foreground:      0   0% 100%;
   --destructive:          356 73% 50%;
   --destructive-foreground: 0 0% 100%;
   --border:               220 13% 88%;
   --input:                220 13% 88%;
   --ring:                 35  50% 40%;
+  --section-label:        #7A5218;
+
+  /* ─ Glass tokens (light) ─ */
+  --glass-header-bg:      rgba(245,247,250,0.92);
+  --glass-sidebar-bg:     rgba(240,243,247,0.90);
+  --glass-panel-bg:       rgba(248,249,252,0.88);
+  --glass-card-bg:        rgba(255,255,255,0.85);
+  --glass-card-bg-hover:  rgba(255,255,255,0.97);
+  --glass-inner-bg:       rgba(255,255,255,0.60);
+  --glass-subtle-bg:      rgba(0,0,0,0.025);
+  --glass-divider:        rgba(201,146,42,0.15);
+  --glass-divider-strong: rgba(201,146,42,0.25);
+  --glass-border-soft:    rgba(0,0,0,0.06);
+  --glass-border-softer:  rgba(0,0,0,0.08);
+  --glass-prayer-bg:      rgba(38,217,217,0.08);
+  --glass-prayer-border:  rgba(38,217,217,0.20);
+  --glass-input-bg:       rgba(255,255,255,0.90);
+  --glass-tooltip-bg:     rgba(255,255,255,0.98);
+  --glass-grid-line:      rgba(0,0,0,0.05);
+  --glass-shimmer-hi:     rgba(0,0,0,0.04);
+  --glass-table-row:      rgba(0,0,0,0.04);
+  --glass-hover-gold:     rgba(201,146,42,0.04);
+  --glass-scrollbar:      rgba(201,146,42,0.20);
+  --glass-scrollbar-hi:   rgba(201,146,42,0.35);
+  --glass-card-shimmer:   rgba(201,146,42,0.50);
+
+  /* Card elevation (light: shadows replace glass depth) */
+  --card-shadow: 0 4px 12px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.04);
 }
 
 /* ΓöÇΓöÇ BASE STYLES ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 @layer base {
   * { @apply border-border; }
+
+  /* Smooth theme transition */
+  *, *::before, *::after {
+    transition: background-color 0.2s var(--ease-smooth),
+                border-color 0.2s var(--ease-smooth),
+                color 0.15s var(--ease-smooth);
+  }
 
   html {
     font-size: 16px;
@@ -243,10 +312,11 @@
 
   /* ΓöÇΓöÇ COSMOS CARD ΓöÇΓöÇ */
   .cosmos-card {
-    background: rgba(13, 22, 40, 0.72);
-    border: 1px solid rgba(201, 146, 42, 0.12);
+    background: var(--glass-card-bg);
+    border: 1px solid var(--glass-divider);
     border-radius: 12px;
     backdrop-filter: blur(12px);
+    box-shadow: var(--card-shadow);
     position: relative;
     overflow: hidden;
     transition: border-color 0.2s var(--ease-smooth), transform 0.2s var(--ease-spring);
@@ -257,19 +327,19 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,146,42,0.4), transparent);
+    background: linear-gradient(90deg, transparent, var(--glass-card-shimmer), transparent);
   }
 
   .cosmos-card:hover {
-    border-color: rgba(201, 146, 42, 0.25);
+    border-color: var(--glass-divider-strong);
     transform: translateY(-1px);
   }
 
   /* ΓöÇΓöÇ COSMOS GLASS PANEL ΓöÇΓöÇ */
   .cosmos-glass {
-    background: rgba(5, 8, 15, 0.65);
+    background: var(--glass-panel-bg);
     backdrop-filter: blur(16px);
-    border: 1px solid rgba(201, 146, 42, 0.1);
+    border: 1px solid var(--glass-divider);
   }
 
   /* ΓöÇΓöÇ SIDEBAR NAV ITEM (fixes P1-D: was text-blue-700 bg-blue-50) ΓöÇΓöÇ */
@@ -345,8 +415,8 @@
   .metric-card {
     padding: 14px 16px;
     border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.06);
-    background: rgba(13, 22, 40, 0.75);
+    border: 1px solid var(--glass-border-softer);
+    background: var(--glass-card-bg);
     backdrop-filter: blur(12px);
     position: relative;
     overflow: hidden;
@@ -360,7 +430,7 @@
 
   /* ΓöÇΓöÇ FORM INPUT ΓöÇΓöÇ */
   .cosmos-input {
-    background: rgba(13, 22, 40, 0.6);
+    background: var(--glass-input-bg);
     border: 1px solid hsl(var(--border));
     border-radius: 8px;
     color: hsl(var(--foreground));
@@ -404,12 +474,12 @@
     font-size: 13px;
     color: hsl(var(--foreground));
     padding: 11px 14px;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid var(--glass-table-row);
     transition: background 0.1s;
   }
 
   .cosmos-table tr:hover td {
-    background: rgba(201, 146, 42, 0.04);
+    background: var(--glass-hover-gold);
   }
 
   .cosmos-table tr:last-child td {
@@ -447,7 +517,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: rgba(201, 146, 42, 0.15);
+    background: var(--glass-divider-strong);
   }
 
   /* ΓöÇΓöÇ SHIMMER LOADING ΓöÇΓöÇ */
@@ -464,7 +534,7 @@
     background: linear-gradient(
       105deg,
       transparent 35%,
-      rgba(255,255,255,0.04) 50%,
+      var(--glass-shimmer-hi) 50%,
       transparent 65%
     );
     animation: shimmerSlide 2s ease-in-out infinite;
@@ -482,9 +552,9 @@
   .text-gold        { color: hsl(var(--brand-gold-bright)); }
   .text-gold-dim    { color: hsl(var(--brand-gold-dim)); }
   .bg-cosmos        { background: hsl(var(--brand-navy-deep)); }
-  .bg-cosmos-card   { background: rgba(13, 22, 40, 0.72); }
-  .border-gold      { border-color: rgba(201, 146, 42, 0.2); }
-  .border-gold-hot  { border-color: rgba(201, 146, 42, 0.5); }
+  .bg-cosmos-card   { background: var(--glass-card-bg); }
+  .border-gold      { border-color: var(--glass-divider); }
+  .border-gold-hot  { border-color: var(--glass-divider-strong); }
   .glow-gold        { box-shadow: var(--shadow-gold); }
   .glow-emerald     { box-shadow: var(--shadow-emerald); }
   .glow-rose        { box-shadow: var(--shadow-rose); }
@@ -572,14 +642,14 @@
 /* ΓöÇΓöÇ SCROLLBARS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 ::-webkit-scrollbar          { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track    { background: transparent; }
-::-webkit-scrollbar-thumb    { background: rgba(201,146,42,0.2); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(201,146,42,0.4); }
-* { scrollbar-width: thin; scrollbar-color: rgba(201,146,42,0.2) transparent; }
+::-webkit-scrollbar-thumb    { background: var(--glass-scrollbar); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--glass-scrollbar-hi); }
+* { scrollbar-width: thin; scrollbar-color: var(--glass-scrollbar) transparent; }
 
 /* ΓöÇΓöÇ RECHARTS DARK MODE (fixes P4-B) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 .recharts-cartesian-grid-horizontal line,
 .recharts-cartesian-grid-vertical line {
-  stroke: rgba(255, 255, 255, 0.05);
+  stroke: var(--glass-grid-line);
 }
 
 .recharts-text.recharts-cartesian-axis-tick-value {
@@ -589,8 +659,8 @@
 }
 
 .recharts-tooltip-wrapper .recharts-default-tooltip {
-  background: rgba(13, 22, 40, 0.95) !important;
-  border: 1px solid rgba(201, 146, 42, 0.2) !important;
+  background: var(--glass-tooltip-bg) !important;
+  border: 1px solid var(--glass-divider-strong) !important;
   border-radius: 8px !important;
   font-family: var(--font-body) !important;
 }

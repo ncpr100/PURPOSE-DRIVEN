@@ -698,7 +698,7 @@ export function PrayerAnalyticsDashboard({ onExport }: PrayerAnalyticsDashboardP
             {analytics.categories.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-12">
-                  <PieChart className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                  <PieChart className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
                   <p className="text-muted-foreground">No hay datos de categorías disponibles</p>
                 </CardContent>
               </Card>

@@ -196,7 +196,7 @@ export function SentNotificationsList({
   if (!loading && sentNotifications.length === 0) {
     return (
       <div className="text-center py-12">
-        <Send className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+        <Send className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground mb-2">
           No has enviado notificaciones
         </h3>

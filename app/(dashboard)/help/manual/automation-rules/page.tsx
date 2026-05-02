@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -55,7 +55,7 @@ export default function AutomationRulesManual() {
               QR + Plantillas de Automatización = Seguimiento automático 24/7 de
               visitantes, peticiones de oración, voluntarios y eventos.
             </p>
-            <div className="p-4 bg-white rounded-lg border border-[hsl(var(--info)/0.3)] my-4">
+            <div className="p-4 bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--info)/0.3)] my-4">
               <h4 className="font-semibold text-foreground mb-2">
                 🔄 Flujo de Trabajo Completo:
               </h4>
@@ -93,28 +93,28 @@ export default function AutomationRulesManual() {
               </div>
             </div>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
-              <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+              <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg shadow-sm">
                 <h4 className="font-semibold">⚡ Velocidad</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--info))]">Instantánea</p>
                 <p className="text-xs text-muted-foreground">
                   Respuesta en segundos
                 </p>
               </div>
-              <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+              <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg shadow-sm">
                 <h4 className="font-semibold">🔄 Reintentos</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--success))]">3x</p>
                 <p className="text-xs text-muted-foreground">
                   Con respaldo automático
                 </p>
               </div>
-              <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+              <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg shadow-sm">
                 <h4 className="font-semibold">📱 Canales</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--lavender))]">5</p>
                 <p className="text-xs text-muted-foreground">
                   SMS, Email, WhatsApp, Push, Phone
                 </p>
               </div>
-              <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+              <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg shadow-sm">
                 <h4 className="font-semibold">🎯 Plantillas</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--warning))]">8+</p>
                 <p className="text-xs text-muted-foreground">
@@ -388,7 +388,7 @@ export default function AutomationRulesManual() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
-              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
                   🛠️ PASO 1: Crear Primer Formulario
                 </h4>
@@ -415,7 +415,7 @@ export default function AutomationRulesManual() {
                   </li>
                 </ol>
               </div>
-              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
                   ⚡ PASO 2: Activar Primera Automatización
                 </h4>
@@ -442,7 +442,7 @@ export default function AutomationRulesManual() {
                   </li>
                 </ol>
               </div>
-              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
                   🧪 PASO 3: Probar el Sistema
                 </h4>
@@ -494,7 +494,7 @@ export default function AutomationRulesManual() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
-              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
                   🛠️ PASO 1: Crear Primer Formulario
                 </h4>
@@ -521,7 +521,7 @@ export default function AutomationRulesManual() {
                   </li>
                 </ol>
               </div>
-              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
                   ⚡ PASO 2: Activar Primera Automatización
                 </h4>
@@ -548,7 +548,7 @@ export default function AutomationRulesManual() {
                   </li>
                 </ol>
               </div>
-              <div className="bg-white p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
                   🧪 PASO 3: Probar el Sistema
                 </h4>
@@ -679,7 +679,7 @@ export default function AutomationRulesManual() {
 
             <div className="space-y-3">
               {/* Section A */}
-              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-[hsl(var(--success)/0.3)]">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <div className="bg-[hsl(var(--success)/0.15)] rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
                   <span className="text-lg font-bold text-[hsl(var(--success))]">A</span>
                 </div>
@@ -704,7 +704,7 @@ export default function AutomationRulesManual() {
               </div>
 
               {/* Section B */}
-              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-[hsl(var(--warning)/0.3)]">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--warning)/0.3)]">
                 <div className="bg-[hsl(var(--warning)/0.15)] rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
                   <span className="text-lg font-bold text-[hsl(var(--warning))]">B</span>
                 </div>
@@ -729,7 +729,7 @@ export default function AutomationRulesManual() {
               </div>
 
               {/* Section C */}
-              <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-[hsl(var(--destructive)/0.3)]">
+              <div className="flex items-start gap-4 p-4 bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--destructive)/0.3)]">
                 <div className="bg-[hsl(var(--destructive)/0.15)] rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
                   <span className="text-lg font-bold text-[hsl(var(--destructive))]">C</span>
                 </div>
@@ -755,7 +755,7 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Setup steps */}
-            <div className="bg-white rounded-lg border border-[hsl(var(--lavender)/0.3)] p-4 mt-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--lavender)/0.3)] p-4 mt-4">
               <h4 className="font-semibold text-foreground mb-3">
                 <Settings className="h-4 w-4 inline mr-1 text-[hsl(var(--lavender))]" />
                 Cómo Activar el Sistema de Secciones
@@ -822,7 +822,7 @@ export default function AutomationRulesManual() {
               de su iglesia.
             </p>
 
-            <div className="bg-white rounded-lg border border-primary/20 p-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-primary/20 p-4">
               <h4 className="font-semibold text-foreground mb-3">
                 Pasos para crear una plantilla
               </h4>
@@ -928,7 +928,7 @@ export default function AutomationRulesManual() {
               usa para contactar miembros.
             </p>
 
-            <div className="bg-white rounded-lg border border-[hsl(var(--success)/0.3)] p-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--success)/0.3)] p-4">
               <h4 className="font-semibold text-foreground mb-3">Requisitos</h4>
               <ul className="text-sm space-y-2 text-muted-foreground">
                 <li className="flex items-start gap-2">
@@ -1097,7 +1097,7 @@ export default function AutomationRulesManual() {
             <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded text-sm text-[hsl(var(--info))] border border-[hsl(var(--info)/0.3)]">
               <strong>Ejemplo de mensaje con variables:</strong>
               <br />
-              <code className="block mt-1 bg-white rounded p-2 text-xs">{`Hola {{contactName}}, recibimos tu petición de oración (Sección {{prayerSection}}). Nuestro equipo responderá en {{responseTimeMinutes}} minutos. ¡Dios te bendiga!`}</code>
+              <code className="block mt-1 bg-[hsl(var(--card))] rounded p-2 text-xs">{`Hola {{contactName}}, recibimos tu petición de oración (Sección {{prayerSection}}). Nuestro equipo responderá en {{responseTimeMinutes}} minutos. ¡Dios te bendiga!`}</code>
             </div>
           </CardContent>
         </Card>
@@ -1328,7 +1328,7 @@ export default function AutomationRulesManual() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
-              <div className="bg-white p-4 rounded-lg border">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border">
                 <h4 className="font-semibold mb-2">📝 Ampliar Formularios</h4>
                 <ul className="text-sm space-y-1">
                   <li>
@@ -1349,7 +1349,7 @@ export default function AutomationRulesManual() {
                   </li>
                 </ul>
               </div>
-              <div className="bg-white p-4 rounded-lg border">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border">
                 <h4 className="font-semibold mb-2">
                   ⚡ Activar Más Automatizaciones
                 </h4>
@@ -1372,7 +1372,7 @@ export default function AutomationRulesManual() {
                   </li>
                 </ul>
               </div>
-              <div className="bg-white p-4 rounded-lg border">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border">
                 <h4 className="font-semibold mb-2">
                   📊 Monitoreo y Optimización
                 </h4>
@@ -1400,7 +1400,7 @@ export default function AutomationRulesManual() {
                   </li>
                 </ul>
               </div>
-              <div className="bg-white p-4 rounded-lg border">
+              <div className="bg-[hsl(var(--card))] p-4 rounded-lg border">
                 <h4 className="font-semibold mb-2">🌐 Distribución de QR</h4>
                 <ul className="text-sm space-y-1">
                   <li>
@@ -1638,7 +1638,7 @@ export default function AutomationRulesManual() {
             </p>
 
             {/* Test 1 */}
-            <div className="bg-white rounded-lg border border-primary/20 p-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-primary/20 p-4">
               <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                 <span className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</span>
                 Prueba: Petición de Oración Sección A (Normal / 1 hora)
@@ -1666,7 +1666,7 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 2 */}
-            <div className="bg-white rounded-lg border border-primary/20 p-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-primary/20 p-4">
               <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                 <span className="bg-[hsl(var(--warning)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</span>
                 Prueba: Petición de Oración Sección B (Alta / 4 horas)
@@ -1692,7 +1692,7 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 3 */}
-            <div className="bg-white rounded-lg border border-[hsl(var(--destructive)/0.3)] p-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--destructive)/0.3)] p-4">
               <h4 className="font-semibold text-[hsl(var(--destructive))] mb-3 flex items-center gap-2">
                 <span className="bg-[hsl(var(--destructive))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</span>
                 Prueba: Petición de Oración Sección C (Urgente / 10 minutos)
@@ -1718,7 +1718,7 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 4 */}
-            <div className="bg-white rounded-lg border border-primary/20 p-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-primary/20 p-4">
               <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                 <span className="bg-[hsl(var(--info))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</span>
                 Prueba: Pausar y Reactivar una Regla
@@ -1747,7 +1747,7 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 5 */}
-            <div className="bg-white rounded-lg border border-primary/20 p-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-primary/20 p-4">
               <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                 <span className="bg-[hsl(var(--lavender))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">5</span>
                 Prueba: Editar una Regla Existente
@@ -1772,7 +1772,7 @@ export default function AutomationRulesManual() {
             </div>
 
             {/* Test 6 */}
-            <div className="bg-white rounded-lg border border-primary/20 p-4">
+            <div className="bg-[hsl(var(--card))] rounded-lg border border-primary/20 p-4">
               <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                 <span className="bg-[hsl(var(--success))] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">6</span>
                 Prueba: Personalizar Icono y Color de Plantilla

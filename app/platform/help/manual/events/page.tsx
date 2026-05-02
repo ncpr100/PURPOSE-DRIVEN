@@ -73,7 +73,7 @@ export default function PlatformEventsGuide() {
             de iglesias. Este manual incluye:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <Card className="bg-white">
+            <Card className="bg-[hsl(var(--card))]">
               <CardContent className="pt-4">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
                   <Calendar className="h-5 w-5 text-[hsl(var(--info))]" />
@@ -87,7 +87,7 @@ export default function PlatformEventsGuide() {
                 </ul>
               </CardContent>
             </Card>
-            <Card className="bg-white">
+            <Card className="bg-[hsl(var(--card))]">
               <CardContent className="pt-4">
                 <h4 className="font-semibold mb-2 flex items-center gap-2">
                   <Brain className="h-5 w-5 text-[hsl(var(--lavender))]" />
@@ -224,7 +224,7 @@ export default function PlatformEventsGuide() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="bg-white p-4 rounded-lg border border-primary/20">
+          <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-primary/20">
             <h4 className="font-semibold mb-3 text-foreground">Tablas Principales del Sistema de Eventos:</h4>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
@@ -291,7 +291,7 @@ export default function PlatformEventsGuide() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="bg-white p-4 rounded-lg space-y-3 text-sm font-mono">
+          <div className="bg-[hsl(var(--muted))] p-4 rounded-lg space-y-3 text-sm font-mono">
             <div>
               <p className="font-semibold text-foreground">GET /api/events</p>
               <p className="text-xs text-muted-foreground ml-4">Listar todos los eventos (filtrado por churchId en session)</p>

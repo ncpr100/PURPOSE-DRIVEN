@@ -240,7 +240,7 @@ export default function AccountsManager({ accounts, onAccountsChanged }: Account
             </div>
           ) : (
             <div className="text-center py-8 text-muted-foreground">
-              <Settings className="mx-auto h-12 w-12 text-gray-300" />
+              <Settings className="mx-auto h-12 w-12 text-muted-foreground/30" />
               <h3 className="mt-2 text-sm font-medium">No hay cuentas conectadas</h3>
               <p className="mt-1 text-sm">Conecta tus cuentas de redes sociales para comenzar a publicar posts.</p>
               <div className="mt-6">

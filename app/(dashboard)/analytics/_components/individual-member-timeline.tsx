@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -474,7 +474,7 @@ export function IndividualMemberTimeline({ churchId, className }: IndividualMemb
                           
                           {/* Event Content */}
                           <div className="flex-1 pb-6">
-                            <div className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="bg-[hsl(var(--card))] border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                               <div className="flex items-start justify-between">
                                 <div className="flex-1">
                                   <h4 className="font-semibold text-foreground">{event.title}</h4>

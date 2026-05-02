@@ -547,7 +547,7 @@ export default function FreshChurchWizard() {
             <CheckCircle className="h-4 w-4" />
             Iglesia creada — credenciales generadas (NO enviadas por email)
           </p>
-          <div className="bg-white rounded border border-[hsl(var(--success)/0.3)] p-3 space-y-1 text-sm font-mono">
+          <div className="bg-[hsl(var(--muted))] rounded border border-[hsl(var(--success)/0.3)] p-3 space-y-1 text-sm font-mono">
             <p><span className="text-muted-foreground">Email:</span> {createdResult.email}</p>
             <p><span className="text-muted-foreground">Contraseña:</span> <strong>{createdResult.password}</strong></p>
           </div>
@@ -604,7 +604,7 @@ export default function FreshChurchWizard() {
       </div>
 
       {/* Step Content */}
-      <div className="bg-white rounded-lg border border-border p-8">
+      <div className="bg-[hsl(var(--card))] rounded-lg border border-border p-8">
         {currentStep === 1 && renderStep1()}
         {currentStep === 2 && renderStep2()}
         {currentStep === 3 && renderStep3()}

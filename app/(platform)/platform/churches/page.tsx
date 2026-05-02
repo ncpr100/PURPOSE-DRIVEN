@@ -275,7 +275,7 @@ export default function PlatformChurchesPage() {
       ) : churches.length === 0 ? (
         <Card>
           <CardContent className="text-center p-12">
-            <Building2 className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <Building2 className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">No hay iglesias registradas</h3>
             <p className="text-muted-foreground mb-6">Comienza creando tu primera iglesia en la plataforma</p>
             <Button asChild>

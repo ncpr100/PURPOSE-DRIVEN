@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -26,11 +26,11 @@ export default function Phase3MembersGuide() {
           </div>
         </div>
         <div className="mt-6 flex gap-4 text-sm">
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Target className="h-3 w-3 mr-1" />
             Fase 3 de 6
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Star className="h-3 w-3 mr-1" />
             15 minutos
           </Badge>
@@ -490,7 +490,7 @@ export default function Phase3MembersGuide() {
               ]
             }
           ].map((item, index) => (
-            <div key={index} className="bg-white p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
+            <div key={index} className="bg-[hsl(var(--card))] p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
               <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
               <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (

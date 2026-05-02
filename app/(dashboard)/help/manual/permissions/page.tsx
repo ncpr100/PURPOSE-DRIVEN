@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -402,7 +402,7 @@ export default function PermissionsManual() {
                   <li>• Múltiples fallas de autenticación</li>
                   <li>• Modificaciones inesperadas de datos</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--destructive)/0.30)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--destructive)/0.30)]">
                   <p className="text-xs"><strong>🚨 En caso de compromiso:</strong> Use &quot;Anulación de Emergencia&quot; para revocar todos los accesos temporalmente</p>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -26,11 +26,11 @@ export default function Phase5CommunicationsGuide() {
           </div>
         </div>
         <div className="mt-6 flex gap-4 text-sm">
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Target className="h-3 w-3 mr-1" />
             Fase 5 de 6
           </Badge>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Star className="h-3 w-3 mr-1" />
             10 minutos
           </Badge>
@@ -547,7 +547,7 @@ export default function Phase5CommunicationsGuide() {
               ]
             }
           ].map((item, index) => (
-            <div key={index} className="bg-white p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
+            <div key={index} className="bg-[hsl(var(--card))] p-4 rounded border border-[hsl(var(--destructive)/0.3)]">
               <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
               <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
@@ -569,7 +569,7 @@ export default function Phase5CommunicationsGuide() {
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
-            <div className="bg-white p-4 rounded">
+            <div className="bg-[hsl(var(--card))] p-4 rounded">
               <h4 className="font-semibold text-[hsl(var(--success))] mb-2">✅ SÍ Hacer:</h4>
               <ul className="space-y-1 text-muted-foreground">
                 <li>✓ Personaliza los mensajes con nombres</li>
@@ -580,7 +580,7 @@ export default function Phase5CommunicationsGuide() {
                 <li>✓ Revisa ortografía y gramática</li>
               </ul>
             </div>
-            <div className="bg-white p-4 rounded">
+            <div className="bg-[hsl(var(--card))] p-4 rounded">
               <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ NO Hacer:</h4>
               <ul className="space-y-1 text-muted-foreground">
                 <li>✗ Enviar mensajes todos los días (saturación)</li>

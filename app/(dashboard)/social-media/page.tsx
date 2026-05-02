@@ -4,7 +4,7 @@ import SocialMediaClient from './_components/social-media-client';
 
 export const metadata: Metadata = {
   title: 'Social Media | Kḥesed-tek Church Management Systems',
-  description: 'Manage your church social media accounts and schedule posts',
+  description: 'Administra las cuentas de redes sociales de tu iglesia y programa publicaciones',
 };
 
 export default function SocialMediaPage() {

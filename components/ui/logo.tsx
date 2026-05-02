@@ -9,6 +9,8 @@ interface LogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl'
   className?: string
   showText?: boolean
+  /** 'dark' (default) = white logo for dark backgrounds; 'light' = black logo for light backgrounds */
+  theme?: 'dark' | 'light'
 }
 
 const sizeClasses = {
@@ -29,8 +31,10 @@ export function Logo({
   variant = 'default', 
   size = 'md', 
   className, 
-  showText = true 
+  showText = true,
+  theme = 'dark'
 }: LogoProps) {
+  const logoSrc = theme === 'light' ? '/logo-light.png' : '/logo.png'
   if (variant === 'text-only') {
     return (
       <div className={cn('flex items-center', className)}>
@@ -46,7 +50,7 @@ export function Logo({
       <div className={cn('flex items-center gap-2', className)}>
         <div className={cn('relative', sizeClasses[size])}>
           <Image
-            src="/logo.png"
+            src={logoSrc}
             alt="Kḥesed-tek Logo"
             fill
             className="object-contain"
@@ -66,7 +70,7 @@ export function Logo({
     <div className={cn('flex items-center gap-3', className)}>
       <div className={cn('relative', sizeClasses[size])}>
         <Image
-          src="/logo.png"
+          src={logoSrc}
           alt="Kḥesed-tek Church Management Systems"
           fill
           className="object-contain"

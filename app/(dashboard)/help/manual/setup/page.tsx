@@ -1,4 +1,4 @@
-
+﻿
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -94,7 +94,7 @@ export default function SetupManual() {
                   <li>• <strong>Tamaño máximo:</strong> 2MB</li>
                   <li>• <strong>Uso:</strong> Recibos, emails, reportes</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--info)/0.5)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Un logo profesional mejora la imagen de su iglesia</p>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default function SetupManual() {
                   <li>☐ Horarios de reunión establecidos</li>
                   <li>☐ Primeros miembros asignados</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <p className="text-xs"><strong>💡 Tip:</strong> Puede agregar más ministerios después según crezca</p>
                 </div>
               </div>
@@ -288,7 +288,7 @@ export default function SetupManual() {
                   <li>• <strong>Recibos obligatorios:</strong> Para donaciones deducibles</li>
                   <li>• <strong>Reportes anuales:</strong> Declaraciones requeridas</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--warning)/0.30)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--warning)/0.30)]">
                   <p className="text-xs"><strong>💼 Consulte:</strong> Su contador sobre requisitos específicos</p>
                 </div>
               </div>
@@ -381,7 +381,7 @@ export default function SetupManual() {
                   <li>• <strong>Verifique emails:</strong> Deben ser únicos y válidos</li>
                   <li>• <strong>Organice por lotes:</strong> Máximo 100 por archivo</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <p className="text-xs"><strong>💾 Backup:</strong> Mantenga una copia de sus datos originales</p>
                 </div>
               </div>
@@ -428,7 +428,7 @@ export default function SetupManual() {
                   <li>☐ Eventos de prueba realizados</li>
                   <li>☐ Equipo capacitado</li>
                 </ul>
-                <div className="mt-3 p-2 bg-white rounded border-l-4 border-[hsl(var(--success)/0.30)]">
+                <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
                   <p className="text-xs"><strong>🎉 ¡Listo!</strong> Su iglesia está lista para usar el sistema</p>
                 </div>
               </div>
