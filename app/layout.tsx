@@ -56,15 +56,29 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    <html lang="es" suppressHydrationWarning>
+    // style/data-theme set server-side so the HTML arrives with correct dark background.
+    // suppressHydrationWarning allows next-themes to differ on client without error.
+    <html
+      lang="es"
+      data-theme="dark"
+      style={{ background: '#05080F', colorScheme: 'dark' } as React.CSSProperties}
+      suppressHydrationWarning
+    >
       <head>
-        {/* Anti-FOUC: read localStorage before React hydrates — sets data-theme AND background synchronously
-            so the browser never shows a white flash before CSS/JS loads.
-            Dark background: #05080F (--brand-navy-deep)
-            Light background: #F0F2F5 (--background light / Sunshine palette) */}
+        {/*
+          Anti-FOUC inline script — runs synchronously BEFORE any CSS or React loads.
+          Strategy:
+            1. Adds 'no-fouc' class → disables all CSS transitions so nothing animates in
+            2. Only overrides when user has chosen light/Sunshine theme (dark is already set server-side)
+            3. Removes 'no-fouc' after first paint via requestAnimationFrame double-frame trick
+          This completely eliminates:
+            - White body flash (html now has server-side bg + min-height:100dvh in CSS)
+            - Transition animation from white→dark on load
+            - Logo swap flash (CSS dual-image approach handles logo, no JS needed)
+        */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t!=='light';var el=document.documentElement;el.setAttribute('data-theme',d?'dark':'light');el.style.background=d?'#05080F':'#F0F2F5';el.style.colorScheme=d?'dark':'light'}catch(e){}})()`,
+            __html: `(function(){try{var el=document.documentElement;el.classList.add('no-fouc');var t=localStorage.getItem('theme');if(t==='light'){el.setAttribute('data-theme','light');el.style.background='#F0F2F5';el.style.colorScheme='light'}requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.remove('no-fouc')})})}catch(e){}})()`,
           }}
         />
         <script src="/cache-invalidation.js" defer></script>
