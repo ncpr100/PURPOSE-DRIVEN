@@ -58,10 +58,13 @@ export default async function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
-        {/* Anti-FOUC: read localStorage before React hydrates — sets data-theme synchronously */}
+        {/* Anti-FOUC: read localStorage before React hydrates — sets data-theme AND background synchronously
+            so the browser never shows a white flash before CSS/JS loads.
+            Dark background: #05080F (--brand-navy-deep)
+            Light background: #F0F2F5 (--background light / Sunshine palette) */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t!=='light';var el=document.documentElement;el.setAttribute('data-theme',d?'dark':'light');el.style.background=d?'#05080F':'#F0F2F5';el.style.colorScheme=d?'dark':'light'}catch(e){}})()`,
           }}
         />
         <script src="/cache-invalidation.js" defer></script>

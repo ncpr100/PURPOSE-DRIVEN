@@ -3,13 +3,19 @@
 
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import { useTheme } from '@/hooks/use-theme'
 
 interface LogoProps {
   variant?: 'default' | 'compact' | 'text-only'
   size?: 'sm' | 'md' | 'lg' | 'xl'
   className?: string
   showText?: boolean
-  /** 'dark' (default) = white logo for dark backgrounds; 'light' = black logo for light backgrounds */
+  /**
+   * Optional explicit override.
+   * If omitted, the logo auto-detects the active Cosmos theme:
+   *   dark  → /logo.png      (light-colored logo for dark backgrounds)
+   *   light  → /logo-light.png (dark-colored logo for Sunshine backgrounds)
+   */
   theme?: 'dark' | 'light'
 }
 
@@ -32,9 +38,13 @@ export function Logo({
   size = 'md', 
   className, 
   showText = true,
-  theme = 'dark'
+  theme: themeProp
 }: LogoProps) {
-  const logoSrc = theme === 'light' ? '/logo-light.png' : '/logo.png'
+  // Auto-detect the active theme; explicit prop overrides auto-detection.
+  // useTheme defaults to 'dark' on SSR (resolvedTheme undefined) — prevents flash.
+  const { isDark } = useTheme()
+  const useDark = themeProp !== undefined ? themeProp === 'dark' : isDark
+  const logoSrc = useDark ? '/logo.png' : '/logo-light.png'
   if (variant === 'text-only') {
     return (
       <div className={cn('flex items-center', className)}>
