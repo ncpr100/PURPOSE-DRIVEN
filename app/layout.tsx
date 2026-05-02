@@ -56,29 +56,41 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   return (
-    // style/data-theme set server-side so the HTML arrives with correct dark background.
-    // suppressHydrationWarning allows next-themes to differ on client without error.
+    // data-theme="dark" server-side so CSS tokens arrive correct on first byte.
+    // NO inline style prop — backgrounds are governed by the <style> tag below
+    // so CSS cascade (and theme toggling) work correctly without any JS cleanup.
+    // suppressHydrationWarning lets next-themes reconcile on client silently.
     <html
       lang="es"
       data-theme="dark"
-      style={{ background: '#05080F', colorScheme: 'dark' } as React.CSSProperties}
       suppressHydrationWarning
     >
       <head>
         {/*
-          Anti-FOUC inline script — runs synchronously BEFORE any CSS or React loads.
-          Strategy:
-            1. Adds 'no-fouc' class → disables all CSS transitions so nothing animates in
-            2. Only overrides when user has chosen light/Sunshine theme (dark is already set server-side)
-            3. Removes 'no-fouc' after first paint via requestAnimationFrame double-frame trick
-          This completely eliminates:
-            - White body flash (html now has server-side bg + min-height:100dvh in CSS)
-            - Transition animation from white→dark on load
-            - Logo swap flash (CSS dual-image approach handles logo, no JS needed)
+          Critical CSS — render-blocking <style> applied before any external
+          stylesheet.  Sets html background for both themes so the browser never
+          shows a white flash.  Using a <style> rule (not inline style attr) means
+          the CASCADE is respected: when next-themes toggles data-theme the rule
+          html[data-theme="light"] fires automatically — no JS cleanup required.
+          This resolves the inline-style specificity issue flagged in PR #67 review.
+        */}
+        <style dangerouslySetInnerHTML={{ __html:
+          `html{background:#05080F;color-scheme:dark;}html[data-theme="light"]{background:#F0F2F5;color-scheme:light;}`
+        }} />
+        {/*
+          Anti-FOUC inline script — runs synchronously BEFORE any CSS or React.
+          Background is handled by the <style> tag above; script only needs to:
+            1. Read 'cosmos-theme' from localStorage (new key — old 'theme' key ignored).
+            2. Set data-theme='light' when user has a saved light preference.
+            3. Add no-fouc ONLY on the dark→light flip to suppress the 0.2 s CSS
+               transition that would animate the background switch visibly.
+            4. Remove no-fouc on window.load (React + next-themes fully hydrated
+               by then; ~200 ms — double-rAF at ~33 ms was too early).
+          Dark users never get no-fouc — all animations work from first load.
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var el=document.documentElement;el.classList.add('no-fouc');var t=localStorage.getItem('theme');if(t==='light'){el.setAttribute('data-theme','light');el.style.background='#F0F2F5';el.style.colorScheme='light'}requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.remove('no-fouc')})})}catch(e){}})()`,
+            __html: `(function(){try{var el=document.documentElement;var t=localStorage.getItem('cosmos-theme');if(t==='light'){el.classList.add('no-fouc');el.setAttribute('data-theme','light');var rm=function(){el.classList.remove('no-fouc')};window.addEventListener('load',rm,{once:true});setTimeout(rm,800)}}catch(e){}})()`
           }}
         />
         <script src="/cache-invalidation.js" defer></script>

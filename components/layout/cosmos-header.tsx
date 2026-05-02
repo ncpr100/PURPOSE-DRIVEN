@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import {
   Search, Bell, ChevronDown, Shield, Brain, Calendar, CheckCircle,
-  Settings, LogOut, User, Activity, X, Sun, Moon,
+  Settings, LogOut, User, Activity, X, Sun, Moon, Menu,
 } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
@@ -55,7 +55,16 @@ export function CosmosHeader() {
         "w-full"
       )}
     >
-      {/* ΓöÇΓöÇ Live system status ΓöÇΓöÇ */}
+      {/* ── Hamburger — mobile only ── */}
+      <button
+        onClick={() => window.dispatchEvent(new Event('cosmos:sidebar:toggle'))}
+        aria-label="Abrir menú"
+        className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[hsl(var(--accent)/0.2)] transition-colors text-muted-foreground hover:text-foreground flex-shrink-0"
+      >
+        <Menu size={18} />
+      </button>
+
+      {/* ── Live system status ── */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <div className="live-dot" />
         <span className="text-[9px] tracking-[0.14em] text-cosmos-emerald uppercase hidden sm:block">

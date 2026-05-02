@@ -20,6 +20,7 @@ export function Providers({
         attribute="data-theme"
         defaultTheme="dark"
         enableSystem={false}
+        storageKey="cosmos-theme"
       >
         <RealTimeProvider
           enableToasts={true}
