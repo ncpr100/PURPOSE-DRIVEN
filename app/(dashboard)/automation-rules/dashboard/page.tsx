@@ -141,7 +141,7 @@ export default function AutomationDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold">📊 Dashboard de Automatización</h1>
+          <h1 className="text-3xl font-bold"> Dashboard de Automatización</h1>
           <p className="text-muted-foreground">Monitoreo en tiempo real del sistema de automatización</p>
         </div>
         <div className="flex items-center gap-2">

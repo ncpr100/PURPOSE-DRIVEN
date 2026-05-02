@@ -278,7 +278,7 @@ export default function VolunteersManualPage() {
         <CardContent className="space-y-4">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-[hsl(var(--lavender))]">🔧 Criterios Personalizables</h4>
+              <h4 className="font-semibold text-[hsl(var(--lavender))]"> Criterios Personalizables</h4>
               <p className="text-sm text-muted-foreground mb-2">
                 Configura criterios específicos para tu iglesia en: <strong>Configuración → Criterios de Calificación</strong>
               </p>
@@ -290,7 +290,7 @@ export default function VolunteersManualPage() {
             </div>
             
             <div>
-              <h4 className="font-semibold text-[hsl(var(--info))]">🧠 Evaluación Espiritual Integral</h4>
+              <h4 className="font-semibold text-[hsl(var(--info))]"> Evaluación Espiritual Integral</h4>
               <p className="text-sm text-muted-foreground mb-2">
                 Nueva evaluación de 4 pasos que incluye:
               </p>
@@ -303,7 +303,7 @@ export default function VolunteersManualPage() {
             </div>
 
             <div>
-              <h4 className="font-semibold text-[hsl(var(--success))]">📊 Puntuaciones Automáticas</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))]"> Puntuaciones Automáticas</h4>
               <p className="text-sm text-muted-foreground mb-2">
                 El sistema ahora calcula automáticamente:
               </p>
@@ -328,7 +328,7 @@ export default function VolunteersManualPage() {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <h4 className="font-semibold text-[hsl(var(--success))]">✅ Haz Esto</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))]"> Haz Esto</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Configura criterios personalizados para tu contexto</li>
                 <li>• Completa evaluaciones espirituales integrales</li>
@@ -339,7 +339,7 @@ export default function VolunteersManualPage() {
               </ul>
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Evita Esto</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]"> Evita Esto</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Usar criterios predeterminados sin personalizar</li>
                 <li>• Saltarse las evaluaciones espirituales</li>

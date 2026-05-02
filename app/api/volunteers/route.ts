@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     // Parse and validate request body
     const body = await request.json()
     
-    // ✅ SECURITY FIX: Validate all input with Zod schema
+    //  SECURITY FIX: Validate all input with Zod schema
     // Prevents: XSS attacks, SQL injection, data corruption, invalid emails
     const validated = volunteerCreateSchema.parse(body)
 
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
         lastName: validated.lastName,
         email: validated.email || null,
         phone: validated.phone || null,
-        // ✅ VALIDATED: skills is now guaranteed to be an array
+        //  VALIDATED: skills is now guaranteed to be an array
         skills: validated.skills?.length ? JSON.stringify(validated.skills) : null,
         // FIX #005a: availability is a string (text), not an object — no JSON.stringify needed.
         availability: validated.availability || null,
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(volunteer, { status: 201 })
 
   } catch (error) {
-    // ✅ SECURITY FIX: User-friendly error messages for validation failures
+    //  SECURITY FIX: User-friendly error messages for validation failures
     if (error instanceof ZodError) {
       return NextResponse.json(
         { 

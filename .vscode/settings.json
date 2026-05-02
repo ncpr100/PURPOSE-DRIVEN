@@ -48,5 +48,13 @@
     "*.sql": "plaintext",
     "copilot-instructions.md": "plaintext"
   },
-  "problems.decorations.enabled": false
+  "problems.decorations.enabled": false,
+  "chat.mcp.serverSampling": {
+    "PURPOSE-DRIVEN/.vscode/mcp.json: com.supabase/mcp": {
+      "allowedModels": [
+        "copilot/auto",
+        "copilotcli/claude-sonnet-4.6"
+      ]
+    }
+  }
 }

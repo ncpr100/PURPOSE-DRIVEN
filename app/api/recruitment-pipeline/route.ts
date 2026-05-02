@@ -395,7 +395,7 @@ export async function POST(request: NextRequest) {
 
     const { targetMemberId, includeVolunteers = false, minScore = 40 } = await request.json()
 
-    console.log('🎯 Iniciando análisis de pipeline de reclutamiento...')
+    console.log(' Iniciando análisis de pipeline de reclutamiento...')
 
     let memberFilter: any = {
       churchId: session.user.churchId,
@@ -427,7 +427,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log(`📊 Analizando ${members.length} miembros...`)
+    console.log(` Analizando ${members.length} miembros...`)
 
     const recruitmentProfiles: MemberRecruitmentProfile[] = []
 
@@ -518,7 +518,7 @@ export async function POST(request: NextRequest) {
       }
     })
   } catch (error) {
-    console.error('❌ Error en pipeline de reclutamiento:', error)
+    console.error(' Error en pipeline de reclutamiento:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' }, 
       { status: 500 }

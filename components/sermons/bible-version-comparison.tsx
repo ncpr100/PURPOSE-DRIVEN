@@ -41,18 +41,18 @@ export default function BibleVersionComparison() {
    * Search and compare Bible versions
    */
   const handleSearch = async () => {
-    console.log('🔍 Bible comparison search initiated')
-    console.log('📍 Search reference:', searchReference)
-    console.log('📚 Selected versions:', selectedVersions)
+    console.log(' Bible comparison search initiated')
+    console.log(' Search reference:', searchReference)
+    console.log(' Selected versions:', selectedVersions)
     
     if (!searchReference.trim()) {
-      console.log('❌ Empty search reference')
+      console.log(' Empty search reference')
       toast.error('Por favor ingresa una referencia bíblica')
       return
     }
 
     if (selectedVersions.length === 0) {
-      console.log('❌ No versions selected')
+      console.log(' No versions selected')
       toast.error('Selecciona al menos una versión para comparar')
       return
     }
@@ -65,17 +65,17 @@ export default function BibleVersionComparison() {
     })
 
     try {
-      console.log('✅ Starting Bible service calls...')
+      console.log(' Starting Bible service calls...')
       
       // Get verses from selected versions
-      console.log('📖 Calling compareVerses with:', searchReference, selectedVersions)
+      console.log(' Calling compareVerses with:', searchReference, selectedVersions)
       const verses = await freeBibleService.compareVerses(searchReference, selectedVersions)
-      console.log('📝 Verses received:', verses.length, verses)
+      console.log(' Verses received:', verses.length, verses)
       
       // Get cross-references
-      console.log('🔗 Calling getCrossReferences with:', searchReference, topic)
+      console.log(' Calling getCrossReferences with:', searchReference, topic)
       const crossRefs = await freeBibleService.getCrossReferences(searchReference, topic)
-      console.log('🔗 Cross references received:', crossRefs.length, crossRefs)
+      console.log(' Cross references received:', crossRefs.length, crossRefs)
       
       setComparisonResult({
         reference: searchReference,
@@ -87,15 +87,15 @@ export default function BibleVersionComparison() {
       setCrossReferences(crossRefs)
       
       if (verses.length === 0) {
-        console.log('⚠️ No verses found')
+        console.log('️ No verses found')
         toast.warning('No se encontraron versículos para esta referencia')
       } else {
-        console.log('✅ Search completed successfully')
+        console.log(' Search completed successfully')
         toast.success(`Se encontraron ${verses.length} versiones`)
       }
       
     } catch (error) {
-      console.error('❌ Bible comparison search error:', error)
+      console.error(' Bible comparison search error:', error)
       setComparisonResult({
         reference: searchReference,
         verses: [],

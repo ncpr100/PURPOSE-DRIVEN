@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
         select: { id: true, churchId: true, role: true, name: true }
       })
     } catch (error) {
-      console.log('⚠️ Database unavailable, using session data for realtime message')
+      console.log('️ Database unavailable, using session data for realtime message')
       // Fallback to session data when database fails
       user = {
         id: session.user.id,
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     const { type, data } = messageSchema.parse(body)
 
     // Log the message (in production, you might want to store or process this)
-    console.log(`📡 Real-time message from ${user.name}: ${type}`, data)
+    console.log(` Real-time message from ${user.name}: ${type}`, data)
 
     // For now, we just acknowledge the message
     // In a full implementation, you might:

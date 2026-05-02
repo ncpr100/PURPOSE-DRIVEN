@@ -22,23 +22,23 @@ import { useMouseTrail } from "@/hooks/use-mouse-trail";
 const NAV_ITEMS = [
   { section: "Ministerio" },
   { icon: "⬡", label: "Dashboard",        active: true },
-  { icon: "🐑", label: "Miembros" },
-  { icon: "🙏", label: "Muro de Oración",  badge: "3",  badgeType: "alert" as const },
-  { icon: "👥", label: "Visitantes",       badge: "8",  badgeType: "success" as const },
-  { icon: "📖", label: "Sermones" },
+  { icon: "", label: "Miembros" },
+  { icon: "", label: "Muro de Oración",  badge: "3",  badgeType: "alert" as const },
+  { icon: "", label: "Visitantes",       badge: "8",  badgeType: "success" as const },
+  { icon: "", label: "Sermones" },
   { section: "Operaciones" },
-  { icon: "🤝", label: "Voluntarios",     badge: "1",  badgeType: "alert" as const },
-  { icon: "📅", label: "Eventos" },
-  { icon: "💛", label: "Grupos Pequeños" },
-  { icon: "💰", label: "Mayordomía" },
+  { icon: "", label: "Voluntarios",     badge: "1",  badgeType: "alert" as const },
+  { icon: "", label: "Eventos" },
+  { icon: "", label: "Grupos Pequeños" },
+  { icon: "", label: "Mayordomía" },
   { section: "Inteligencia" },
-  { icon: "⚡", label: "12 Agentes IA" },
-  { icon: "📊", label: "Analítica" },
-  { icon: "🛡", label: "Triaje Espiritual" },
-  { icon: "📋", label: "Informe de Junta" },
+  { icon: "", label: "12 Agentes IA" },
+  { icon: "", label: "Analítica" },
+  { icon: "", label: "Triaje Espiritual" },
+  { icon: "", label: "Informe de Junta" },
   { section: "Sistema" },
-  { icon: "⚙", label: "Configuración" },
-  { icon: "🔐", label: "Seguridad" },
+  { icon: "", label: "Configuración" },
+  { icon: "", label: "Seguridad" },
 ] as const;
 
 type BadgeType = "alert" | "success";
@@ -67,18 +67,18 @@ interface PrayerEvent {
 }
 
 const PRAYER_EVENTS: PrayerEvent[] = [
-  { icon: "🏥", name: "Cirugía — María L.",       location: "Hospital Santa Sofía", time: "9:00 AM",  countdown: "EN 12 MIN", urgent: true },
-  { icon: "⚖️", name: "Audiencia — Carlos B.",     location: "Juzgado Civil",       time: "10:30 AM", countdown: "en 1h 42m" },
-  { icon: "✈️", name: "Viaje misionero — Fam. Torres", location: "Vuelo a Bogotá",  time: "2:15 PM",  countdown: "en 5h 27m" },
+  { icon: "", name: "Cirugía — María L.",       location: "Hospital Santa Sofía", time: "9:00 AM",  countdown: "EN 12 MIN", urgent: true },
+  { icon: "️", name: "Audiencia — Carlos B.",     location: "Juzgado Civil",       time: "10:30 AM", countdown: "en 1h 42m" },
+  { icon: "️", name: "Viaje misionero — Fam. Torres", location: "Vuelo a Bogotá",  time: "2:15 PM",  countdown: "en 5h 27m" },
 ];
 
 // ─── AGENT LIST ──────────────────────────────────────────────
 const AGENTS_STATUS = [
-  { name: "Ag.2 Triaje",          color: "#E84855", runs: "ACTIVO — alerta",    emoji: "🔴" },
+  { name: "Ag.2 Triaje",          color: "#E84855", runs: "ACTIVO — alerta",    emoji: "" },
   { name: "Ag.4 Vigilante Oración", color: "#26D9D9", runs: "En 12 min",         emoji: "🟡" },
   { name: "Ag.5 Shepherd Log",    color: "#F0B83C", runs: "4 alertas activas",  emoji: "🟢" },
   { name: "Ag.7 Burnout Sentinel", color: "#F0B83C", runs: "1 alerta detectada", emoji: "🟢" },
-  { name: "★ Ag.12 Cobertura",   color: "#F0B83C", runs: "Cascada activa",      emoji: "🟡" },
+  { name: " Ag.12 Cobertura",   color: "#F0B83C", runs: "Cascada activa",      emoji: "🟡" },
   { name: "Ag.6 Liderazgo",       color: "#1DC98C", runs: "3 candidatos",        emoji: "🟢" },
   { name: "Ag.8 Visitantes",      color: "#26D9D9", runs: "Últ: hace 3 días",    emoji: "🟢" },
   { name: "Ag.11 Junta",          color: "#9B8FFF", runs: "Generado 1-Abr",      emoji: "🟢" },
@@ -163,7 +163,7 @@ export function CosmosDashboard() {
 
           {/* Right controls */}
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            {["🗓 Domingo · 9:00 AM", "✅ Cobertura 94%"].map(label => (
+            {[" Domingo · 9:00 AM", " Cobertura 94%"].map(label => (
               <div key={label} style={{
                 padding: "4px 10px", borderRadius: "20px", fontSize: "11px",
                 border: "1px solid rgba(201,146,42,0.3)",
@@ -249,7 +249,7 @@ export function CosmosDashboard() {
           {/* Stat cards */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "8px", marginBottom: "14px" }}>
             <CosmosStatCard label="Asistencia Hoy"      value={347} delta="12% vs sem. anterior" deltaDir="up"   accentColor="#1DC98C" progressWidth={78} animationDelay={0}   />
-            <CosmosStatCard label="Voluntarios Activos" value={89}  delta="Cobertura 94% ✓"      deltaDir="up"   accentColor="#C9922A" progressWidth={68} animationDelay={120} />
+            <CosmosStatCard label="Voluntarios Activos" value={89}  delta="Cobertura 94% "      deltaDir="up"   accentColor="#C9922A" progressWidth={68} animationDelay={120} />
             <CosmosStatCard label="Nuevos Visitantes"   value={23}  delta="8% este mes"          deltaDir="up"   accentColor="#26D9D9" progressWidth={55} animationDelay={240} />
             <CosmosStatCard label="Peticiones Oración"  value={47}  delta="3 sin respuesta →"    deltaDir="down" accentColor="#E84855" progressWidth={42} animationDelay={360} />
           </div>
@@ -306,7 +306,7 @@ export function CosmosDashboard() {
                       color: ev.urgent ? "#E84855" : "hsl(var(--muted-foreground))",
                       animation: ev.urgent ? "countdown 1s step-start infinite" : "none",
                     }}>
-                      {ev.urgent ? "⚡ " : ""}{ev.countdown}
+                      {ev.urgent ? " " : ""}{ev.countdown}
                     </div>
                   </div>
                 </div>
@@ -319,13 +319,13 @@ export function CosmosDashboard() {
                 border: "1px solid rgba(38,217,217,0.15)",
               }}>
                 <div style={{ fontSize: "10px", color: "#26D9D9", fontWeight: 500, marginBottom: "4px" }}>
-                  📲 Seguimiento 24h enviado ayer:
+                   Seguimiento 24h enviado ayer:
                 </div>
                 <div style={{ fontSize: "10px", color: "hsl(var(--muted-foreground))" }}>
                   "Oramos por ti. ¿Cómo estás hoy?" → Ana García, Pedro Ruiz (+2)
                 </div>
                 <div style={{ fontSize: "9px", color: "#1DC98C", marginTop: "3px" }}>
-                  ✓ 2 de 3 respondieron con gratitud
+                   2 de 3 respondieron con gratitud
                 </div>
               </div>
             </div>

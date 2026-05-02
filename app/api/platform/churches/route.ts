@@ -73,7 +73,7 @@ async function createSupabaseAuthUser(email: string, password: string, name: str
     }
 
     const user = await response.json()
-    console.log('✅ Supabase Auth user created:', email)
+    console.log(' Supabase Auth user created:', email)
     return user
   } catch (error) {
     console.error('Error creating Supabase Auth user:', error)
@@ -282,7 +282,7 @@ export async function POST(request: NextRequest) {
         }
       })
 
-      // 🚀 AUTOMATICALLY CREATE SUPABASE AUTH USER
+      //  AUTOMATICALLY CREATE SUPABASE AUTH USER
       const supabaseUser = await createSupabaseAuthUser(
         adminUser.email, 
         temporaryPassword,
@@ -290,9 +290,9 @@ export async function POST(request: NextRequest) {
       )
 
       if (supabaseUser) {
-        console.log(`✅ Auto-created Supabase Auth user for ${adminUser.email}`)
+        console.log(` Auto-created Supabase Auth user for ${adminUser.email}`)
       } else {
-        console.warn(`⚠️ Could not create Supabase Auth user for ${adminUser.email} - will need manual creation`)
+        console.warn(`️ Could not create Supabase Auth user for ${adminUser.email} - will need manual creation`)
       }
 
       // Create corresponding member
@@ -319,8 +319,8 @@ export async function POST(request: NextRequest) {
     })
 
     const authStatusMessage = result.supabaseUser 
-      ? '✅ Tu cuenta de autenticación ha sido creada automáticamente.'
-      : '⚠️ Por favor contacta al soporte para activar tu cuenta de autenticación.'
+      ? ' Tu cuenta de autenticación ha sido creada automáticamente.'
+      : '️ Por favor contacta al soporte para activar tu cuenta de autenticación.'
       
     const welcomeEmailContent = `
       <html>
@@ -345,24 +345,24 @@ export async function POST(request: NextRequest) {
             <p>Tu cuenta de administrador ha sido creada exitosamente para la iglesia <strong>${name}</strong>.</p>
             
             <div class="auth-status">
-              <h3>🔐 Estado de Autenticación:</h3>
+              <h3> Estado de Autenticación:</h3>
               <p>${authStatusMessage}</p>
             </div>
             
             <div class="credentials">
-              <h3>📧 Credenciales de Acceso:</h3>
+              <h3> Credenciales de Acceso:</h3>
               <p><strong>Usuario:</strong> ${adminUser.email}</p>
               <p><strong>Contraseña temporal:</strong> <code>${temporaryPassword}</code></p>
               <p><strong>URL de acceso:</strong> <a href="${getServerBaseUrl()}">${getServerBaseUrl()}</a></p>
             </div>
             
             <div class="warning">
-              <h3>⚠️ Importante:</h3>
+              <h3>️ Importante:</h3>
               <p>Por razones de seguridad, <strong>debes cambiar esta contraseña temporal</strong> en tu primer inicio de sesión.</p>
               <p>Ve a <strong>Perfil > Cambiar Contraseña</strong> una vez que ingreses al sistema.</p>
             </div>
             
-            <h3>🚀 Primeros Pasos:</h3>
+            <h3> Primeros Pasos:</h3>
             <ol>
               <li>Inicia sesión con las credenciales proporcionadas</li>
               <li>Cambia tu contraseña temporal</li>

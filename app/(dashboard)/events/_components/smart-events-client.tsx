@@ -48,7 +48,14 @@ import {
   TrendingUp,
   Activity,
   Loader2,
-  Save
+  Save,
+  Church,
+  BookOpen,
+  Music,
+  Baby,
+  Mountain,
+  Mic,
+  Megaphone
 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -227,12 +234,27 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
   // Get all event dates for highlighting in calendar
   const eventDates = events.map(event => new Date(event.startDate))
 
+  // Template icon renderer — maps string names to lucide components
+  const renderTemplateIcon = (iconName: string) => {
+    const map: Record<string, React.ReactNode> = {
+      Church:    <Church    className="h-5 w-5" />,
+      BookOpen:  <BookOpen  className="h-5 w-5" />,
+      Music:     <Music     className="h-5 w-5" />,
+      Baby:      <Baby      className="h-5 w-5" />,
+      Mountain:  <Mountain  className="h-5 w-5" />,
+      Mic:       <Mic       className="h-5 w-5" />,
+      Home:      <Home      className="h-5 w-5" />,
+      Megaphone: <Megaphone className="h-5 w-5" />,
+    }
+    return map[iconName] ?? <Zap className="h-5 w-5" />
+  }
+
   // Event Templates System
   const eventTemplates = [
     {
       id: 'culto-dominical',
       name: 'Culto Dominical',
-      icon: '⛪',
+      icon: 'Church',
       category: 'CULTO',
       duration: 120, // minutes
       description: 'Servicio principal dominical con predicación y adoración',
@@ -245,7 +267,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     {
       id: 'estudio-biblico',
       name: 'Estudio Bíblico',
-      icon: '📖',
+      icon: 'BookOpen',
       category: 'ESTUDIO',
       duration: 90,
       description: 'Estudio profundo de las Escrituras',
@@ -258,7 +280,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     {
       id: 'reunion-jovenes',
       name: 'Reunión de Jóvenes',
-      icon: '🎵',
+      icon: 'Music',
       category: 'JUVENTUD',
       duration: 150,
       description: 'Actividad para jóvenes con música, mensaje y compañerismo',
@@ -271,7 +293,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     {
       id: 'actividad-ninos',
       name: 'Escuela Dominical Niños',
-      icon: '👶',
+      icon: 'Baby',
       category: 'NIÑOS',
       duration: 60,
       description: 'Enseñanza bíblica para niños con actividades didácticas',
@@ -284,7 +306,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     {
       id: 'retiro-espiritual',
       name: 'Retiro Espiritual',
-      icon: '🏔️',
+      icon: 'Mountain',
       category: 'RETIRO',
       duration: 1440, // 24 horas
       description: 'Fin de semana de crecimiento espiritual fuera de la iglesia',
@@ -297,7 +319,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     {
       id: 'conferencia-ministerial',
       name: 'Conferencia Ministerial',
-      icon: '🎤',
+      icon: 'Mic',
       category: 'CONFERENCIA',
       duration: 480, // 8 horas
       description: 'Eventos especiales con invitados y múltiples sesiones',
@@ -310,7 +332,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     {
       id: 'reunion-celula',
       name: 'Reunión de Célula',
-      icon: '🏠',
+      icon: 'Home',
       category: 'CELULA',
       duration: 90,
       description: 'Reunión íntima en hogar para estudio y oración',
@@ -323,7 +345,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     {
       id: 'campana-evangelistica',
       name: 'Campaña Evangelística',
-      icon: '📢',
+      icon: 'Megaphone',
       category: 'EVANGELISMO',
       duration: 180,
       description: 'Evento de alcance comunitario con mensaje evangelístico',
@@ -406,7 +428,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
   const handleCreateEvent = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    console.log('🎯 Starting event creation...')
+    console.log(' Starting event creation...')
     console.log('Event form data:', eventForm)
 
     if (!eventForm.title || !eventForm.startDate) {
@@ -436,7 +458,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       if (response.ok) {
         const createdEvent = await response.json()
         console.log('Event created successfully:', createdEvent)
-        toast.success('✅ Evento creado exitosamente')
+        toast.success('Evento creado exitosamente')
         resetEventForm()
         setIsNewEventDialogOpen(false)
         fetchEvents()
@@ -470,7 +492,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       })
 
       if (response.ok) {
-        toast.success('✅ Recurso creado exitosamente')
+        toast.success('Recurso creado exitosamente')
         resetResourceForm()
         setIsResourceDialogOpen(false)
         fetchResources()
@@ -485,11 +507,11 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
   const generateEventSuggestions = async () => {
     try {
-      console.log('🧠 Starting AI suggestions generation...')
+      console.log(' Starting AI suggestions generation...')
       console.log('Church ID:', churchId)
       console.log('Events for context:', events.slice(-10))
       
-      toast.info('🧠 Generando sugerencias inteligentes...')
+      toast.info('Generando sugerencias inteligentes...')
       
       const requestBody = { 
         churchId,
@@ -521,7 +543,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
             category: suggestion.category || 'CULTO',
             location: suggestion.location || ''
           }))
-          toast.success('✨ Sugerencia aplicada - puedes editarla antes de guardar')
+          toast.success('Sugerencia aplicada. Puedes editarla antes de guardar')
         } else {
           toast.info('No se encontraron sugerencias específicas')
         }
@@ -541,7 +563,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     
     try {
       setIsAutoAssigning(true)
-      toast.info('🎯 Asignando voluntarios automáticamente...')
+      toast.info('Asignando voluntarios automáticamente...')
       
       const response = await fetch(`/api/events/${eventId}/auto-assign-volunteers`, {
         method: 'POST',
@@ -557,9 +579,9 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         }
         
         if (data.assignedCount === 0) {
-          toast.warning('⚠️ No se encontraron voluntarios elegibles para asignar')
+          toast.warning('No se encontraron voluntarios elegibles para asignar')
         } else {
-          toast.success(`✅ ${data.assignedCount} voluntarios asignados automáticamente`)
+          toast.success(`${data.assignedCount} voluntarios asignados automáticamente`)
         }
         
         fetchEvents()
@@ -635,7 +657,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       })
 
       if (response.ok) {
-        toast.success('✅ Evento actualizado exitosamente')
+        toast.success('Evento actualizado exitosamente')
         setIsEditEventDialogOpen(false)
         setSelectedEvent(null)
         resetEventForm()
@@ -855,7 +877,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                 {/* Event Templates Section */}
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-medium text-muted-foreground">🎯 Plantillas Rápidas</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1.5"><Target className="h-4 w-4" /> Plantillas Rápidas</h3>
                     <span className="text-xs text-muted-foreground">Haz clic para aplicar</span>
                   </div>
                   <div className="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto">
@@ -866,7 +888,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                         onClick={() => applyEventTemplate(template)}
                         className="p-2 text-xs border rounded-lg hover:bg-muted/50 hover:border-primary transition-all group"
                       >
-                        <div className="text-lg mb-1">{template.icon}</div>
+                        <div className="flex justify-center mb-1">{renderTemplateIcon(template.icon)}</div>
                         <div className="font-medium text-muted-foreground group-hover:text-primary">
                           {template.name}
                         </div>
@@ -1544,7 +1566,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
                   {/* Mobile: Quick event indicator */}
                   <div className="block lg:hidden mt-3 p-2 bg-muted/30 rounded text-xs text-center">
-                    📅 Días con eventos en azul • Toque fecha para ver detalles
+                    <Calendar className="inline h-3.5 w-3.5 mr-1" />Días con eventos en azul • Toque fecha para ver detalles
                   </div>
                 </CardContent>
               </Card>
@@ -1554,8 +1576,8 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
             <div>
               <Card>
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-base lg:text-lg">
-                    📅 {selectedDate.toLocaleDateString('es-ES', { 
+                    <CardTitle className="text-base lg:text-lg flex items-center gap-1.5">
+                    <Calendar className="h-4 w-4" /> {selectedDate.toLocaleDateString('es-ES', { 
                       weekday: 'short', 
                       month: 'short', 
                       day: 'numeric' 

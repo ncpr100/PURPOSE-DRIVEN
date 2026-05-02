@@ -149,7 +149,7 @@ const AGENTS_STATUS = [
     color: "#F0B83C",
     runs: "1 alerta detectada",
   },
-  { name: "★ Ag.12 Cobertura", color: "#F0B83C", runs: "Cascada activa" },
+  { name: " Ag.12 Cobertura", color: "#F0B83C", runs: "Cascada activa" },
   { name: "Ag.6 Liderazgo", color: "#1DC98C", runs: "3 candidatos" },
   { name: "Ag.8 Visitantes", color: "#26D9D9", runs: "Últ: hace 3 días" },
   { name: "Ag.11 Junta", color: "#9B8FFF", runs: "Generado 1-Abr" },

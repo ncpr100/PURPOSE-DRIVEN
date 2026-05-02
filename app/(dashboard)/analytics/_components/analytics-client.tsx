@@ -258,7 +258,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
   const handleAdvancedExport = async (format: 'pdf' | 'excel' | 'csv') => {
     try {
       setExportingReport(true);
-      toast.info(`🔄 Generando reporte profesional en formato ${format.toUpperCase()}...`);
+      toast.info(`Generando reporte profesional en formato ${format.toUpperCase()}...`);
       
       const exportRequest = {
         format,
@@ -301,10 +301,10 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
         csv: 'CSV (Compatible con sistemas externos)'
       };
 
-      toast.success(`📊 Reporte ${formatLabels[format]} generado exitosamente`);
+      toast.success(`Reporte ${formatLabels[format]} generado exitosamente`);
     } catch (error) {
       console.error('Export error:', error);
-      toast.error(`❌ Error generando reporte: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+      toast.error(`Error generando reporte: ${error instanceof Error ? error.message : 'Error desconocido'}`);
     } finally {
       setExportingReport(false);
     }
@@ -313,7 +313,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
   // Legacy Export for Backward Compatibility
   const handleExportReport = async (format: 'json' | 'csv' | 'excel') => {
     try {
-      toast.info(`🔄 Preparando reporte en formato ${format.toUpperCase()}...`)
+      toast.info(`Preparando reporte en formato ${format.toUpperCase()}...`)
       
       const timestamp = new Date().toISOString().split('T')[0]
       const baseFilename = `reporte-analitico-${timestamp}`
@@ -382,7 +382,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
           excel: 'Excel (múltiples hojas)'
         }
         
-        toast.success(`📊 Reporte ${formatLabels[format]} descargado exitosamente`)
+        toast.success(`Reporte ${formatLabels[format]} descargado exitosamente`)
       }, 1500)
       
     } catch (error) {
@@ -392,7 +392,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
   }
 
   const handleViewDashboard = () => {
-    toast.info('🚀 Navegando a Perspectivas Pastorales...')
+    toast.info(' Navegando a Perspectivas Pastorales...')
     router.push('/business-intelligence')
   }
 
@@ -410,7 +410,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
       if (response.ok) {
         // Refresh current data
         await fetchAnalyticsData(false)
-        toast.success('✅ KPIs actualizados exitosamente')
+        toast.success('KPIs actualizados exitosamente')
       } else {
         throw new Error('Failed to update KPIs')
       }
@@ -1105,7 +1105,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <CardContent className="space-y-3">
                 {/* Advanced Export Section */}
                 <div className="space-y-3">
-                  <h4 className="font-medium text-sm text-muted-foreground">📊 Reportes Profesionales</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground flex items-center gap-1"><BarChart3 className="h-4 w-4" /> Reportes Profesionales</h4>
                   <div className="grid grid-cols-1 gap-2">
                     <Button 
                       variant="outline" 
@@ -1160,7 +1160,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
                 {/* Legacy Export Section */}
                 <div className="space-y-3 border-t pt-4">
-                  <h4 className="font-medium text-sm text-muted-foreground">📋 Exportes Básicos</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground flex items-center gap-1"><FileText className="h-4 w-4" /> Exportes Básicos</h4>
                   <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button 

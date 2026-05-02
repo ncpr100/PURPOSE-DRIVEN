@@ -43,14 +43,14 @@ export function MemberSpiritualAssessment({
   useEffect(() => {
     const loadAssessmentData = async () => {
       try {
-        console.log('🔄 Loading spiritual assessment for member:', memberId)
+        console.log(' Loading spiritual assessment for member:', memberId)
         const response = await fetch(`/api/members/${memberId}/spiritual-profile`)
         
         if (response.ok) {
           const { profile } = await response.json()
           
           if (profile) {
-            console.log('✅ Existing assessment found:', profile)
+            console.log(' Existing assessment found:', profile)
             // Convert database format to component format
             const existingData: SpiritualAssessmentData = {
               giftSelections: [
@@ -89,7 +89,7 @@ export function MemberSpiritualAssessment({
           throw new Error('Error al cargar datos de evaluación')
         }
       } catch (error) {
-        console.error('❌ Error loading assessment:', error)
+        console.error(' Error loading assessment:', error)
         setAssessmentState({
           data: null,
           loading: false,
@@ -104,8 +104,8 @@ export function MemberSpiritualAssessment({
 
   const handleSave = async (data: SpiritualAssessmentData) => {
     try {
-      console.log('💾 Saving spiritual assessment for member:', memberId)
-      console.log('📊 Assessment data:', data)
+      console.log(' Saving spiritual assessment for member:', memberId)
+      console.log(' Assessment data:', data)
       
       const response = await fetch(`/api/members/${memberId}/spiritual-profile`, {
         method: 'POST',
@@ -121,7 +121,7 @@ export function MemberSpiritualAssessment({
         throw new Error(result.error || 'Error al guardar evaluación')
       }
 
-      console.log('✅ Assessment saved successfully:', result)
+      console.log(' Assessment saved successfully:', result)
       
       // Show success notification
       toast.success('Evaluación espiritual guardada exitosamente', {
@@ -144,7 +144,7 @@ export function MemberSpiritualAssessment({
       }
 
     } catch (error) {
-      console.error('❌ Error saving assessment:', error)
+      console.error(' Error saving assessment:', error)
       toast.error('Error al guardar evaluación', {
         description: error instanceof Error ? error.message : 'Error desconocido'
       })

@@ -20,7 +20,7 @@ async function checkOccupation() {
       }
     })
 
-    console.log(`📋 Found ${members.length} members with 'Juan' in name:`)
+    console.log(` Found ${members.length} members with 'Juan' in name:`)
     members.forEach(member => {
       console.log('\n---')
       console.log('ID:', member.id)

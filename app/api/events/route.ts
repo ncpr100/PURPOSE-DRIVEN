@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    console.log('📅 Events API debug:', {
+    console.log(' Events API debug:', {
       hasSession: !!session,
       hasUser: !!session?.user,
       userEmail: session?.user?.email,
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
       select: { id: true, churchId: true, role: true }
     })
 
-    console.log('🏛️ User data from DB (events):', user)
+    console.log('️ User data from DB (events):', user)
 
     if (!user || !user.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })
@@ -106,10 +106,10 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    console.log('📋 Request body:', body)
+    console.log(' Request body:', body)
     
     const validatedData = createEventSchema.parse(body)
-    console.log('✅ Validated data:', validatedData)
+    console.log(' Validated data:', validatedData)
 
     // Date validation
     const startDate = new Date(validatedData.startDate)
@@ -143,9 +143,9 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log(`📅 Event created: ${event.id} - ${event.title} by user ${user.id}`)
+    console.log(` Event created: ${event.id} - ${event.title} by user ${user.id}`)
 
-    // ✅ ENTERPRISE: Trigger automation for event creation
+    //  ENTERPRISE: Trigger automation for event creation
     try {
       const { AutomationTriggers } = await import('@/lib/automation-engine')
       await AutomationTriggers.eventCreated({
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
         churchId: event.churchId
       }, user.churchId, user.id)
       
-      console.log(`🤖 Triggered event creation automation for ${event.title}`)
+      console.log(` Triggered event creation automation for ${event.title}`)
     } catch (automationError) {
       console.error('Error triggering event creation automation:', automationError)
       // Don't fail the event creation if automation fails

@@ -159,7 +159,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
     setEngineStatus('analyzing')
     
     try {
-      toast.info('🧠 Iniciando análisis inteligente de programación...')
+      toast.info(' Iniciando análisis inteligente de programación...')
       
       const response = await fetch('/api/intelligent-scheduling', {
         method: 'POST',
@@ -175,13 +175,13 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
       
       // Safely access data properties with null checks
       if (data && data.summary && typeof data.summary.totalGapsIdentified !== 'undefined') {
-        toast.success(`✅ Análisis completo: ${data.summary.totalGapsIdentified} brechas identificadas`)
+        toast.success(`Análisis completo: ${data.summary.totalGapsIdentified} brechas identificadas`)
       } else {
-        toast.success('✅ Análisis completo')
+        toast.success('Análisis completo')
       }
       
       if (data && data.summary && data.summary.autoAssignments > 0) {
-        toast.success(`🤖 ${data.summary.autoAssignments} asignaciones automáticas creadas`)
+        toast.success(` ${data.summary.autoAssignments} asignaciones automáticas creadas`)
       }
 
       // Refresh all data
@@ -206,7 +206,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
   const autoResolveConflicts = async () => {
     try {
       setLoading(true)
-      toast.info('🔧 Resolviendo conflictos automáticamente...')
+      toast.info(' Resolviendo conflictos automáticamente...')
       
       const response = await fetch('/api/intelligent-scheduling/conflict-resolution', {
         method: 'POST',
@@ -219,7 +219,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
       const data = await response.json()
       
       if (data && Array.isArray(data.resolvedConflicts) && data.resolvedConflicts.length > 0) {
-        toast.success(`✅ ${data.resolvedConflicts.length} conflictos resueltos automáticamente`)
+        toast.success(`${data.resolvedConflicts.length} conflictos resueltos automáticamente`)
         fetchSchedulingConflicts() // Refresh conflicts
       } else {
         toast.info('No hay conflictos que puedan resolverse automáticamente')
@@ -237,7 +237,7 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
   const runWorkloadBalancing = async () => {
     try {
       setLoading(true)
-      toast.info('⚖️ Analizando y balanceando cargas de trabajo...')
+      toast.info('Analizando y balanceando cargas de trabajo...')
       
       const response = await fetch('/api/intelligent-scheduling/workload-balancer', {
         method: 'POST',
@@ -250,13 +250,13 @@ export function IntelligentSchedulingEngine({ churchId, userRole }: IntelligentS
       const data = await response.json()
       
       if (data && data.summary && typeof data.summary.totalVolunteers !== 'undefined') {
-        toast.success(`✅ Análisis de carga completado: ${data.summary.totalVolunteers} voluntarios analizados`)
+        toast.success(`Análisis de carga completado: ${data.summary.totalVolunteers} voluntarios analizados`)
       } else {
-        toast.success('✅ Análisis de carga completado')
+        toast.success('Análisis de carga completado')
       }
       
       if (data && Array.isArray(data.implementedActions) && data.implementedActions.length > 0) {
-        toast.success(`🎯 ${data.implementedActions.length} acciones implementadas automáticamente`)
+        toast.success(` ${data.implementedActions.length} acciones implementadas automáticamente`)
       }
 
       if (data && data.summary) {

@@ -117,7 +117,7 @@ export default function SupportSettingsClient({ user }: Props) {
       
       // SUCCESS: Show notification and update UI
       toast({
-        title: "✅ Cambios Guardados",
+        title: " Cambios Guardados",
         description: "La información de contacto se actualizó exitosamente",
         duration: 5000
       })
@@ -209,7 +209,7 @@ export default function SupportSettingsClient({ user }: Props) {
           </Link>
         </Button>
         <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-bold">⚙️ Configuración de Soporte</h1>
+          <h1 className="text-3xl font-bold">️ Configuración de Soporte</h1>
           <div className="flex items-center gap-2 px-3 py-1 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] rounded-full text-sm">
             <Shield className="h-4 w-4" />
             <span>Validado como SUPER_ADMIN</span>
@@ -338,7 +338,7 @@ export default function SupportSettingsClient({ user }: Props) {
         <div className="mt-8">
           <Card>
             <CardHeader>
-              <CardTitle>👀 Vista Previa</CardTitle>
+              <CardTitle> Vista Previa</CardTitle>
               <p className="text-sm text-muted-foreground">
                 Así verán los usuarios esta información en el centro de ayuda:
               </p>
@@ -349,7 +349,7 @@ export default function SupportSettingsClient({ user }: Props) {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="font-medium text-[hsl(var(--destructive))] mb-3 flex items-center gap-2">
-                      📞 Contacto Directo
+                       Contacto Directo
                     </h4>
                     <div className="space-y-2 text-sm">
                       <p><strong>WhatsApp:</strong> {contactInfo.whatsappNumber}</p>
@@ -359,7 +359,7 @@ export default function SupportSettingsClient({ user }: Props) {
                   </div>
                   <div>
                     <h4 className="font-medium text-[hsl(var(--info))] mb-3 flex items-center gap-2">
-                      🏢 Información Empresarial
+                       Información Empresarial
                     </h4>
                     <div className="space-y-2 text-sm">
                       <p><strong>Empresa:</strong> {contactInfo.companyName}</p>

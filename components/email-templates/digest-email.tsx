@@ -106,7 +106,7 @@ export function DigestEmail({
           {/* Header */}
           <Section style={header}>
             <Heading style={h1}>
-              📊 Resumen {periodLabel.charAt(0).toUpperCase() + periodLabel.slice(1)}
+               Resumen {periodLabel.charAt(0).toUpperCase() + periodLabel.slice(1)}
             </Heading>
             <Heading style={h2}>
               {churchName}
@@ -153,16 +153,16 @@ export function DigestEmail({
             <>
               <Section style={urgentSection}>
                 <Heading style={h3}>
-                  🚨 Notificaciones Urgentes
+                   Notificaciones Urgentes
                 </Heading>
                 {urgentNotifications.map((notification, index) => (
                   <div key={index} style={notificationCard}>
                     <div style={{ ...notificationHeader, backgroundColor: notificationColors[notification.type] }}>
                       <Text style={notificationTitle}>
-                        {notification.type === 'INFO' && '📢'}
-                        {notification.type === 'SUCCESS' && '✅'}
-                        {notification.type === 'WARNING' && '⚠️'}
-                        {notification.type === 'ERROR' && '❌'}
+                        {notification.type === 'INFO' && ''}
+                        {notification.type === 'SUCCESS' && ''}
+                        {notification.type === 'WARNING' && '️'}
+                        {notification.type === 'ERROR' && ''}
                         {' '}{notification.title}
                       </Text>
                       <Text style={notificationDate}>
@@ -189,13 +189,13 @@ export function DigestEmail({
           {/* Regular Notifications */}
           <Section>
             <Heading style={h3}>
-              📋 Todas las Notificaciones
+               Todas las Notificaciones
             </Heading>
             
             {normalNotifications.length === 0 && urgentNotifications.length === 0 ? (
               <div style={emptyState}>
                 <Text style={emptyStateText}>
-                  🎉 ¡Excelente! No tienes notificaciones pendientes en este período.
+                   ¡Excelente! No tienes notificaciones pendientes en este período.
                 </Text>
               </div>
             ) : (
@@ -205,10 +205,10 @@ export function DigestEmail({
                     <Row>
                       <Column style={{ width: '60px' }}>
                         <div style={{ ...priorityBadge, backgroundColor: notificationColors[notification.type] }}>
-                          {notification.type === 'INFO' && '📢'}
-                          {notification.type === 'SUCCESS' && '✅'}
-                          {notification.type === 'WARNING' && '⚠️'}
-                          {notification.type === 'ERROR' && '❌'}
+                          {notification.type === 'INFO' && ''}
+                          {notification.type === 'SUCCESS' && ''}
+                          {notification.type === 'WARNING' && '️'}
+                          {notification.type === 'ERROR' && ''}
                         </div>
                       </Column>
                       <Column>

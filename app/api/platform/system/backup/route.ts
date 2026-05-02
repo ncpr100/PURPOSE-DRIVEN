@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       location: 'database-backups/' + backupFilename
     }
 
-    console.log('📦 Database backup initiated:', backupSummary)
+    console.log(' Database backup initiated:', backupSummary)
 
     // In a real implementation, you would:
     // 1. Use pg_dump or similar tool to create actual backup

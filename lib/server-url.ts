@@ -38,8 +38,8 @@ export function getServerBaseUrl(): string {
     // Additional check: If NODE_ENV is development and URL is production,
     // override to localhost (workaround for platform injection)
     if (process.env.NODE_ENV === 'development' && !url.includes('localhost')) {
-      console.warn(`⚠️ [Server URL] Development mode detected but NEXTAUTH_URL is production: ${url}`)
-      console.warn(`⚠️ [Server URL] Overriding to localhost. Set NEXT_PUBLIC_APP_URL to disable this behavior.`)
+      console.warn(`️ [Server URL] Development mode detected but NEXTAUTH_URL is production: ${url}`)
+      console.warn(`️ [Server URL] Overriding to localhost. Set NEXT_PUBLIC_APP_URL to disable this behavior.`)
       return 'http://localhost:3000'
     }
     
@@ -48,7 +48,7 @@ export function getServerBaseUrl(): string {
 
   // Option 3: Localhost fallback (development default)
   const fallbackUrl = 'http://localhost:3000'
-  console.warn(`⚠️ [Server URL] No NEXTAUTH_URL or NEXT_PUBLIC_APP_URL set, using fallback: ${fallbackUrl}`)
+  console.warn(`️ [Server URL] No NEXTAUTH_URL or NEXT_PUBLIC_APP_URL set, using fallback: ${fallbackUrl}`)
   return fallbackUrl
 }
 
@@ -118,5 +118,5 @@ export function getEnvironmentConfig() {
 
 // Export for debugging/logging purposes
 if (process.env.NODE_ENV === 'development') {
-  console.log('🔧 [Server URL Utility] Configuration:', getEnvironmentConfig())
+  console.log(' [Server URL Utility] Configuration:', getEnvironmentConfig())
 }

@@ -21,7 +21,7 @@ export default function IntelligentAnalyticsManual() {
     <div className="container mx-auto p-6 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-          🤖 Analíticas Inteligentes
+           Analíticas Inteligentes
           <Badge variant="secondary">🆕 IA Powered</Badge>
         </h1>
         <p className="text-muted-foreground">
@@ -80,7 +80,7 @@ export default function IntelligentAnalyticsManual() {
         {/* Access Path */}
         <Card>
           <CardHeader>
-            <CardTitle>📍 Acceder a Analíticas Inteligentes</CardTitle>
+            <CardTitle> Acceder a Analíticas Inteligentes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
@@ -276,12 +276,12 @@ export default function IntelligentAnalyticsManual() {
         {/* Usage Tips */}
         <Card>
           <CardHeader>
-            <CardTitle>💡 Mejores Prácticas de Uso</CardTitle>
+            <CardTitle> Mejores Prácticas de Uso</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Recomendaciones:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]"> Recomendaciones:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Revisión semanal:</strong> Revise insights cada semana</li>
                   <li>• <strong>Actuar en alertas:</strong> Responda rápido a riesgos de retención</li>
@@ -291,7 +291,7 @@ export default function IntelligentAnalyticsManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">❌ Evitar:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]"> Evitar:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Dependencia exclusiva:</strong> IA complementa, no reemplaza discernimiento</li>
                   <li>• <strong>Decisiones precipitadas:</strong> Confirme insights con oración</li>
@@ -307,7 +307,7 @@ export default function IntelligentAnalyticsManual() {
         {/* Integration */}
         <Card>
           <CardHeader>
-            <CardTitle>🔗 Integración con Otros Sistemas</CardTitle>
+            <CardTitle> Integración con Otros Sistemas</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">

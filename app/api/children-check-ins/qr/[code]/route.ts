@@ -133,7 +133,7 @@ export async function POST(request: NextRequest, props: { params: Promise<{ code
       success: true,
       check_ins: children_check_ins,
       securityPin: children_check_ins.securityPin,
-      message: '✅ Check-in completado exitosamente via QR'
+      message: ' Check-in completado exitosamente via QR'
     }, { status: 201 })
 
   } catch (error) {

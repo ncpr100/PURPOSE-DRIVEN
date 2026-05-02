@@ -135,7 +135,7 @@ export function ChurchLogo({
             className="object-contain rounded-lg"
             priority
             onError={(e) => {
-              console.error('❌ Logo failed to load:', logoUrl)
+              console.error(' Logo failed to load:', logoUrl)
               setLogoUrl(null)
             }}
           />

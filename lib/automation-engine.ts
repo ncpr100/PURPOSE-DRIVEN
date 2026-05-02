@@ -77,7 +77,7 @@ export class AutomationEngine {
     this.isProcessing = true
     
     try {
-      console.log(`🎯 Processing automation trigger: ${triggerType} for church ${churchId}`)
+      console.log(` Processing automation trigger: ${triggerType} for church ${churchId}`)
       
       // Handle specific trigger types with leadership notifications
       switch (triggerType) {
@@ -91,7 +91,7 @@ export class AutomationEngine {
           
         default:
           // For all other triggers, just log for now
-          console.log(`📋 Automation data:`, { 
+          console.log(` Automation data:`, { 
             triggerType, 
             churchId, 
             contextId, 
@@ -113,7 +113,7 @@ export class AutomationEngine {
    */
   private async handleSpiritualAssessmentSubmission(churchId: string, data: any): Promise<void> {
     try {
-      console.log('🙏 Processing spiritual assessment submission notification')
+      console.log(' Processing spiritual assessment submission notification')
       
       // Get church leadership (Pastores and Administradores)
       const leadership = await db.users.findMany({
@@ -130,7 +130,7 @@ export class AutomationEngine {
       })
       
       if (leadership.length === 0) {
-        console.log('⚠️ No leadership found for spiritual assessment notification')
+        console.log('️ No leadership found for spiritual assessment notification')
         return
       }
       
@@ -166,9 +166,9 @@ export class AutomationEngine {
         })
         
         if (emailSuccess) {
-          console.log(`✅ Spiritual assessment notification sent to ${leader.email}`)
+          console.log(` Spiritual assessment notification sent to ${leader.email}`)
         } else {
-          console.error(`❌ Failed to send spiritual assessment notification to ${leader.email}`)
+          console.error(` Failed to send spiritual assessment notification to ${leader.email}`)
         }
       }
       
@@ -182,7 +182,7 @@ export class AutomationEngine {
    */
   private async handleVolunteerApplicationSubmission(churchId: string, data: any): Promise<void> {
     try {
-      console.log('🙋‍♂️ Processing volunteer application submission notification')
+      console.log('‍️ Processing volunteer application submission notification')
       
       // Get church leadership (Pastores and Administradores)
       const leadership = await db.users.findMany({
@@ -199,7 +199,7 @@ export class AutomationEngine {
       })
       
       if (leadership.length === 0) {
-        console.log('⚠️ No leadership found for volunteer application notification')
+        console.log('️ No leadership found for volunteer application notification')
         return
       }
       
@@ -237,9 +237,9 @@ export class AutomationEngine {
         })
         
         if (emailSuccess) {
-          console.log(`✅ Volunteer application notification sent to ${leader.email}`)
+          console.log(` Volunteer application notification sent to ${leader.email}`)
         } else {
-          console.error(`❌ Failed to send volunteer application notification to ${leader.email}`)
+          console.error(` Failed to send volunteer application notification to ${leader.email}`)
         }
       }
       
@@ -280,7 +280,7 @@ export class AutomationEngine {
     </head>
     <body>
       <div class="header">
-        <h1>🙏 Nueva Evaluación Espiritual</h1>
+        <h1> Nueva Evaluación Espiritual</h1>
         <p>Sistema de Gestión Khesed-Tek</p>
       </div>
       
@@ -376,7 +376,7 @@ export class AutomationEngine {
     </head>
     <body>
       <div class="header">
-        <h1>🙋‍♂️ Nueva Aplicación de Voluntario</h1>
+        <h1>‍️ Nueva Aplicación de Voluntario</h1>
         <p>Sistema de Gestión Khesed-Tek</p>
       </div>
       
@@ -478,7 +478,7 @@ export class FormAutomationEngine {
     userId?: string
   ): Promise<void> {
     try {
-      console.log(`📝 Processing custom form submission: ${formType} (ID: ${formId}) for church ${churchId}`)
+      console.log(` Processing custom form submission: ${formType} (ID: ${formId}) for church ${churchId}`)
       
       // Trigger automation based on form type
       const triggerType = this.mapFormTypeToTrigger(formType)
@@ -486,7 +486,7 @@ export class FormAutomationEngine {
         await triggerAutomation(triggerType, formData, churchId, formId, 'form', userId)
       }
       
-      console.log(`✅ Custom form automation processed successfully`)
+      console.log(` Custom form automation processed successfully`)
     } catch (error) {
       console.error('Custom form automation error:', error)
     }
@@ -499,7 +499,7 @@ export class FormAutomationEngine {
     userId?: string
   ): Promise<void> {
     try {
-      console.log(`📝 Processing form submission: ${formType} for church ${churchId}`)
+      console.log(` Processing form submission: ${formType} for church ${churchId}`)
       
       // Trigger automation based on form type
       const triggerType = this.mapFormTypeToTrigger(formType)
@@ -507,7 +507,7 @@ export class FormAutomationEngine {
         await triggerAutomation(triggerType, formData, churchId, formData.id, 'form', userId)
       }
       
-      console.log(`✅ Form automation processed successfully`)
+      console.log(` Form automation processed successfully`)
     } catch (error) {
       console.error('Form automation error:', error)
     }

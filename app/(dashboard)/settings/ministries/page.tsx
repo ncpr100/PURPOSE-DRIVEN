@@ -65,7 +65,7 @@ export default async function MinistriesSettingsPage() {
       }
     }) || []
   } catch (error) {
-    console.log('⚠️ Database unavailable for ministries page, using fallback data')
+    console.log('️ Database unavailable for ministries page, using fallback data')
     ministries = []
   }
 

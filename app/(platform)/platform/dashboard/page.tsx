@@ -25,7 +25,8 @@ import {
   FileText,
   CreditCard,
   Calendar,
-  Zap
+  Zap,
+  LayoutDashboard
 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -207,7 +208,7 @@ export default function PlatformDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">🚀 Platform Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2"><LayoutDashboard className="h-7 w-7" /> Platform Dashboard</h1>
           <p className="text-muted-foreground">
             Centro de control para administración de la plataforma Kḥesed-tek
           </p>

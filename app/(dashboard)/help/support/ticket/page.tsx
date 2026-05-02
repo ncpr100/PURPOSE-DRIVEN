@@ -230,7 +230,7 @@ export default function SupportTicket() {
               </div>
 
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold text-sm mb-2">💡 Consejos para un soporte más rápido:</h4>
+                <h4 className="font-semibold text-sm mb-2"> Consejos para un soporte más rápido:</h4>
                 <ul className="text-sm space-y-1">
                   <li>• Sea específico sobre los pasos que siguió</li>
                   <li>• Incluya capturas de pantalla si es posible</li>
@@ -240,7 +240,7 @@ export default function SupportTicket() {
               </div>
 
               <Button type="submit" className="w-full">
-                🎫 Crear Ticket de Soporte
+                 Crear Ticket de Soporte
               </Button>
             </form>
           </CardContent>
@@ -288,7 +288,7 @@ export default function SupportTicket() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📞 Contacto Directo</h4>
+                <h4 className="font-semibold mb-3"> Contacto Directo</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>WhatsApp:</strong> +57 302 123 4410</p>
                   <p><strong>Email:</strong> soporte@khesed-tek-systems.org</p>
@@ -296,7 +296,7 @@ export default function SupportTicket() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">🏢 Información Empresarial</h4>
+                <h4 className="font-semibold mb-3"> Información Empresarial</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Empresa:</strong> Khesed-tek Systems</p>
                   <p><strong>Ubicación:</strong> Barranquilla Atlántico, Colombia</p>

@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 
 // ΓöÇΓöÇΓöÇ STATIC AGENT CHIPS (TODO: replace with real agent status API) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const LIVE_AGENTS = [
-  { id: "retention",  label: "Retenci├│n",    color: "#1DC98C", active: true },
+  { id: "retention",  label: "Retención",    color: "#1DC98C", active: true },
   { id: "triage",     label: "Triage",       color: "#E84855", active: true },
   { id: "followup",   label: "Seguimiento",  color: "#F0B83C", active: true },
 ];

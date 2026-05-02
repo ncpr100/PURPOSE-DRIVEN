@@ -50,7 +50,7 @@ const spiritualGifts = [
 ]
 
 async function seedSpiritualGifts() {
-  console.log('🌱 Seeding spiritual gifts...')
+  console.log(' Seeding spiritual gifts...')
   
   for (const gift of spiritualGifts) {
     await prisma.spiritualGift.upsert({
@@ -67,13 +67,13 @@ async function seedSpiritualGifts() {
     })
   }
   
-  console.log(`✅ Successfully seeded ${spiritualGifts.length} spiritual gifts`)
+  console.log(` Successfully seeded ${spiritualGifts.length} spiritual gifts`)
 }
 
 if (require.main === module) {
   seedSpiritualGifts()
     .catch((e) => {
-      console.error('❌ Error seeding spiritual gifts:', e)
+      console.error(' Error seeding spiritual gifts:', e)
       process.exit(1)
     })
     .finally(async () => {

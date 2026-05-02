@@ -29,7 +29,7 @@ export default function VisitorAutomationManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5 text-[hsl(var(--info))]" />
-              🎯 Seguimiento Inteligente de Visitantes
+               Seguimiento Inteligente de Visitantes
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -38,25 +38,25 @@ export default function VisitorAutomationManual() {
             </p>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg shadow-sm">
-                <h4 className="font-semibold mb-2">📊 Historial de Visitas</h4>
+                <h4 className="font-semibold mb-2"> Historial de Visitas</h4>
                 <p className="text-sm text-muted-foreground">
                   ¿Primera vez? ¿Visitante recurrente? ¿Candidato a membresía? El sistema lo detecta automáticamente.
                 </p>
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg shadow-sm">
-                <h4 className="font-semibold mb-2">🎯 Intereses Personalizados</h4>
+                <h4 className="font-semibold mb-2"> Intereses Personalizados</h4>
                 <p className="text-sm text-muted-foreground">
                   Conecta visitantes con ministerios relevantes basado en sus intereses expresados.
                 </p>
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg shadow-sm">
-                <h4 className="font-semibold mb-2">⚡ Respuesta Instantánea</h4>
+                <h4 className="font-semibold mb-2"> Respuesta Instantánea</h4>
                 <p className="text-sm text-muted-foreground">
                   Envía bienvenidas y seguimientos automáticos en segundos, no días.
                 </p>
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg shadow-sm">
-                <h4 className="font-semibold mb-2">📈 Escalamiento Inteligente</h4>
+                <h4 className="font-semibold mb-2"> Escalamiento Inteligente</h4>
                 <p className="text-sm text-muted-foreground">
                   Aumenta el nivel de seguimiento automáticamente según el compromiso.
                 </p>
@@ -68,7 +68,7 @@ export default function VisitorAutomationManual() {
         {/* Auto-Categorization */}
         <Card>
           <CardHeader>
-            <CardTitle>🤖 Auto-Categorización de Visitantes</CardTitle>
+            <CardTitle> Auto-Categorización de Visitantes</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground mb-4">
@@ -149,7 +149,7 @@ export default function VisitorAutomationManual() {
         {/* Complete Flow */}
         <Card>
           <CardHeader>
-            <CardTitle>🔄 Flujo Completo de Automatización</CardTitle>
+            <CardTitle> Flujo Completo de Automatización</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-4">
@@ -237,12 +237,12 @@ export default function VisitorAutomationManual() {
         {/* Templates Available */}
         <Card>
           <CardHeader>
-            <CardTitle>📦 Plantillas de Visitantes Disponibles</CardTitle>
+            <CardTitle> Plantillas de Visitantes Disponibles</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="p-4 border-2 border-[hsl(var(--success)/0.3)] rounded-lg bg-[hsl(var(--success)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">👋</span>
+                <span className="text-2xl"></span>
                 <h4 className="font-semibold text-foreground">Bienvenida Visitante Primera Vez</h4>
               </div>
               <p className="text-sm text-[hsl(var(--success))] mb-3">
@@ -250,7 +250,7 @@ export default function VisitorAutomationManual() {
               </p>
               <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Check-in con categoría FIRST_TIME</div>
-                <div><strong>Bypass Approval:</strong> ✅ Sí (para bienvenida inmediata)</div>
+                <div><strong>Bypass Approval:</strong>  Sí (para bienvenida inmediata)</div>
                 <div><strong>Secuencia de 5 Toques:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• <strong>Toque 1 (Inmediato):</strong> SMS/Email de bienvenida</li>
@@ -264,7 +264,7 @@ export default function VisitorAutomationManual() {
 
             <div className="p-4 border-2 border-[hsl(var(--info)/0.3)] rounded-lg bg-[hsl(var(--info)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🔄</span>
+                <span className="text-2xl"></span>
                 <h4 className="font-semibold text-foreground">Engagement Visitante Recurrente</h4>
               </div>
               <p className="text-sm text-[hsl(var(--info))] mb-3">
@@ -272,7 +272,7 @@ export default function VisitorAutomationManual() {
               </p>
               <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Check-in con categoría RETURNING</div>
-                <div><strong>Bypass Approval:</strong> ✅ Sí</div>
+                <div><strong>Bypass Approval:</strong>  Sí</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• Mensaje de &quot;¡Qué bueno verte de nuevo!&quot;</li>
@@ -285,7 +285,7 @@ export default function VisitorAutomationManual() {
 
             <div className="p-4 border-2 border-[hsl(var(--warning)/0.3)] rounded-lg bg-[hsl(var(--warning)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🌟</span>
+                <span className="text-2xl"></span>
                 <h4 className="font-semibold text-[hsl(var(--warning))]">Invitación a Membresía</h4>
               </div>
               <p className="text-sm text-[hsl(var(--warning))] mb-3">
@@ -293,7 +293,7 @@ export default function VisitorAutomationManual() {
               </p>
               <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Check-in con categoría MEMBER_CANDIDATE</div>
-                <div><strong>Bypass Approval:</strong> ❌ No (requiere revisión pastoral)</div>
+                <div><strong>Bypass Approval:</strong>  No (requiere revisión pastoral)</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• Notifica al pastor sobre candidato</li>
@@ -306,7 +306,7 @@ export default function VisitorAutomationManual() {
 
             <div className="p-4 border-2 border-[hsl(var(--destructive)/0.3)] rounded-lg bg-[hsl(var(--destructive)/0.10)]">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🚨</span>
+                <span className="text-2xl"></span>
                 <h4 className="font-semibold text-[hsl(var(--destructive))]">Seguimiento Urgente 24/7</h4>
               </div>
               <p className="text-sm text-[hsl(var(--destructive))] mb-3">
@@ -314,8 +314,8 @@ export default function VisitorAutomationManual() {
               </p>
               <div className="bg-[hsl(var(--card))] p-3 rounded space-y-2 text-xs">
                 <div><strong>Disparador:</strong> Check-in con petición de oración o necesidad especial</div>
-                <div><strong>Bypass Approval:</strong> ✅ Sí</div>
-                <div><strong>Modo Urgente 24/7:</strong> ✅ Activo</div>
+                <div><strong>Bypass Approval:</strong>  Sí</div>
+                <div><strong>Modo Urgente 24/7:</strong>  Activo</div>
                 <div><strong>Acciones:</strong></div>
                 <ul className="ml-4 space-y-1">
                   <li>• Notificación inmediata al pastor y equipo pastoral</li>
@@ -330,7 +330,7 @@ export default function VisitorAutomationManual() {
         {/* Visitor Profile Tracking */}
         <Card>
           <CardHeader>
-            <CardTitle>📊 Seguimiento del Perfil de Visitante</CardTitle>
+            <CardTitle> Seguimiento del Perfil de Visitante</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -338,7 +338,7 @@ export default function VisitorAutomationManual() {
             </p>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div className="p-3 border rounded-lg bg-muted/30">
-                <h4 className="font-semibold mb-2">📈 Métricas de Compromiso</h4>
+                <h4 className="font-semibold mb-2"> Métricas de Compromiso</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• Número total de visitas</li>
                   <li>• Fecha de primera visita</li>
@@ -348,7 +348,7 @@ export default function VisitorAutomationManual() {
                 </ul>
               </div>
               <div className="p-3 border rounded-lg bg-muted/30">
-                <h4 className="font-semibold mb-2">💬 Historial de Comunicación</h4>
+                <h4 className="font-semibold mb-2"> Historial de Comunicación</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• Follow-ups enviados</li>
                   <li>• Follow-ups respondidos</li>
@@ -357,7 +357,7 @@ export default function VisitorAutomationManual() {
                 </ul>
               </div>
               <div className="p-3 border rounded-lg bg-muted/30">
-                <h4 className="font-semibold mb-2">🎯 Intereses y Conexiones</h4>
+                <h4 className="font-semibold mb-2"> Intereses y Conexiones</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• Ministerios de interés</li>
                   <li>• Eventos a los que asistió</li>
@@ -366,7 +366,7 @@ export default function VisitorAutomationManual() {
                 </ul>
               </div>
               <div className="p-3 border rounded-lg bg-muted/30">
-                <h4 className="font-semibold mb-2">🔄 Acciones Automatizadas</h4>
+                <h4 className="font-semibold mb-2"> Acciones Automatizadas</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• Auto-agregado a CRM</li>
                   <li>• Follow-ups programados</li>
@@ -381,7 +381,7 @@ export default function VisitorAutomationManual() {
         {/* Best Practices */}
         <Card className="border-[hsl(var(--success)/0.3)]">
           <CardHeader>
-            <CardTitle className="text-foreground">✨ Mejores Prácticas</CardTitle>
+            <CardTitle className="text-foreground"> Mejores Prácticas</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="flex items-start gap-2">
@@ -420,7 +420,7 @@ export default function VisitorAutomationManual() {
         {/* Quick Start */}
         <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
           <CardHeader>
-            <CardTitle className="text-foreground">🚀 Inicio Rápido</CardTitle>
+            <CardTitle className="text-foreground"> Inicio Rápido</CardTitle>
           </CardHeader>
           <CardContent>
             <ol className="space-y-3 text-sm">

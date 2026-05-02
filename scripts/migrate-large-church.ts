@@ -72,13 +72,13 @@ function randomDate(start: Date, end: Date): Date {
 }
 
 async function createMigratedChurch() {
-  console.log('🚀 CHURCH MIGRATION FROM PLANNING CENTER')
+  console.log(' CHURCH MIGRATION FROM PLANNING CENTER')
   console.log('━'.repeat(80))
   console.log('Creating large church with 1,000 members...\n')
 
   try {
     // 0. CLEANUP: Check if church already exists and clean up
-    console.log('🧹 Step 0: Checking for existing church...')
+    console.log(' Step 0: Checking for existing church...')
     const existingChurch = await db.church.findFirst({
       where: { name: 'Iglesia Comunidad de Fe' }
     })
@@ -90,27 +90,27 @@ async function createMigratedChurch() {
       const deletedMembers = await db.member.deleteMany({
         where: { churchId: existingChurch.id }
       })
-      console.log(`   ✅ Deleted ${deletedMembers.count} members`)
+      console.log(`    Deleted ${deletedMembers.count} members`)
       
       // Delete ministries
       const deletedMinistries = await db.ministry.deleteMany({
         where: { churchId: existingChurch.id }
       })
-      console.log(`   ✅ Deleted ${deletedMinistries.count} ministries`)
+      console.log(`    Deleted ${deletedMinistries.count} ministries`)
       
       // Delete users associated with this church
       const deletedUsers = await db.user.deleteMany({
         where: { churchId: existingChurch.id }
       })
-      console.log(`   ✅ Deleted ${deletedUsers.count} users`)
+      console.log(`    Deleted ${deletedUsers.count} users`)
       
       // Delete the church
       await db.church.delete({
         where: { id: existingChurch.id }
       })
-      console.log(`   ✅ Deleted church\n`)
+      console.log(`    Deleted church\n`)
     } else {
-      console.log(`   ✅ No existing church found. Proceeding with fresh migration.`)
+      console.log(`    No existing church found. Proceeding with fresh migration.`)
     }
     
     // Also check for orphaned admin user with this email
@@ -123,11 +123,11 @@ async function createMigratedChurch() {
       await db.user.delete({
         where: { email: 'admin@comunidaddefe.org' }
       })
-      console.log(`   ✅ Deleted orphaned admin\n`)
+      console.log(`    Deleted orphaned admin\n`)
     }
 
     // 1. CREATE CHURCH
-    console.log('📍 Step 1: Creating church...')
+    console.log(' Step 1: Creating church...')
     const church = await db.church.create({
       data: {
         name: 'Iglesia Comunidad de Fe',
@@ -140,10 +140,10 @@ async function createMigratedChurch() {
         isActive: true
       }
     })
-    console.log(`✅ Church created: ${church.name} (ID: ${church.id})\n`)
+    console.log(` Church created: ${church.name} (ID: ${church.id})\n`)
 
     // 2. CREATE CHURCH ADMIN (ADMIN_IGLESIA) - Only 1 per church
-    console.log('👤 Step 2: Creating church administrator (ADMIN_IGLESIA)...')
+    console.log(' Step 2: Creating church administrator (ADMIN_IGLESIA)...')
     const hashedPassword = await bcrypt.hash('ChurchAdmin2025!', 10)
     
     const churchAdmin = await db.user.create({
@@ -157,13 +157,13 @@ async function createMigratedChurch() {
         emailVerified: new Date()
       }
     })
-    console.log(`✅ Church Admin created: ${churchAdmin.name}`)
+    console.log(` Church Admin created: ${churchAdmin.name}`)
     console.log(`   Email: admin@comunidaddefe.org`)
     console.log(`   Password: ChurchAdmin2025!`)
     console.log(`   Role: ADMIN_IGLESIA (manages this church only)\n`)
 
     // 3. CREATE MINISTRIES
-    console.log('🎯 Step 3: Creating ministries...')
+    console.log(' Step 3: Creating ministries...')
     const createdMinistries = await Promise.all(
       ministries.map(name =>
         db.ministry.create({
@@ -176,10 +176,10 @@ async function createMigratedChurch() {
         })
       )
     )
-    console.log(`✅ Created ${createdMinistries.length} ministries\n`)
+    console.log(` Created ${createdMinistries.length} ministries\n`)
 
     // 4. CREATE MEMBERS WITH PROPER ROLE DISTRIBUTION
-    console.log('👥 Step 4: Creating 1,000 members...')
+    console.log(' Step 4: Creating 1,000 members...')
     console.log('   Role distribution:')
     console.log('   - ADMIN_IGLESIA: 1 (already created)')
     console.log('   - PASTOR: 5 (senior + associate pastors)')
@@ -232,7 +232,7 @@ async function createMigratedChurch() {
       members.push(member)
       memberCount++
     }
-    console.log(`   ✅ Created ${memberCount} pastors`)
+    console.log(`    Created ${memberCount} pastors`)
 
     // Create 50 LIDERES (ministry leaders)
     console.log('   Creating ministry leaders...')
@@ -277,7 +277,7 @@ async function createMigratedChurch() {
       members.push(member)
       memberCount++
     }
-    console.log(`   ✅ Created ${memberCount} total (including leaders)`)
+    console.log(`    Created ${memberCount} total (including leaders)`)
 
     // Create 944 MIEMBROS (regular members) - in batches for performance
     console.log('   Creating regular members (in batches of 100)...')
@@ -316,16 +316,16 @@ async function createMigratedChurch() {
       await db.member.createMany({ data: batchMembers })
       memberCount += batchMembers.length
       
-      console.log(`   ✅ Batch ${batch + 1}: ${memberCount} members created...`)
+      console.log(`    Batch ${batch + 1}: ${memberCount} members created...`)
     }
 
-    console.log(`✅ Total members created: ${memberCount}\n`)
+    console.log(` Total members created: ${memberCount}\n`)
 
     // 5. SUMMARY
     console.log('━'.repeat(80))
-    console.log('✅ MIGRATION COMPLETE!')
+    console.log(' MIGRATION COMPLETE!')
     console.log('━'.repeat(80))
-    console.log('\n📊 MIGRATION SUMMARY:')
+    console.log('\n MIGRATION SUMMARY:')
     console.log(`   Church: ${church.name}`)
     console.log(`   Total Members: ${memberCount}`)
     console.log(`   Ministries: ${createdMinistries.length}`)
@@ -334,7 +334,7 @@ async function createMigratedChurch() {
     console.log(`   Leaders: 50 (LIDER)`)
     console.log(`   Members: 944 (MIEMBRO)`)
     console.log('')
-    console.log('🔐 CHURCH ADMIN CREDENTIALS:')
+    console.log(' CHURCH ADMIN CREDENTIALS:')
     console.log('━'.repeat(80))
     console.log('   URL: https://khesed-tek-cms.up.railway.app/auth/signin')
     console.log('   Email: admin@comunidaddefe.org')
@@ -343,12 +343,12 @@ async function createMigratedChurch() {
     console.log('   Church: Iglesia Comunidad de Fe')
     console.log('━'.repeat(80))
     console.log('')
-    console.log('📝 NOTE: SUPER_ADMIN (soporte@khesed-tek.com) can manage ALL churches')
+    console.log(' NOTE: SUPER_ADMIN (soporte@khesed-tek.com) can manage ALL churches')
     console.log('         ADMIN_IGLESIA can only manage their specific church')
     console.log('')
 
   } catch (error) {
-    console.error('❌ Migration failed:', error)
+    console.error(' Migration failed:', error)
     throw error
   } finally {
     await db.$disconnect()

@@ -12,7 +12,7 @@ async function checkAutomationRules() {
   });
   
   if (!church) {
-    console.log('❌ Church not found');
+    console.log(' Church not found');
     await prisma.$disconnect();
     return;
   }
@@ -27,7 +27,7 @@ async function checkAutomationRules() {
   console.log(`Active automation rules: ${count}`);
   
   if (count === 0) {
-    console.log('\n⚠️  NO AUTOMATION RULES CREATED YET!');
+    console.log('\n️  NO AUTOMATION RULES CREATED YET!');
     console.log('This is expected. You need to:');
     console.log('  1. Go to /automation-rules/templates');
     console.log('  2. Select a template (e.g., Prayer Request Automation)');

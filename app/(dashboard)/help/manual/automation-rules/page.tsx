@@ -46,7 +46,7 @@ export default function AutomationRulesManual() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-[hsl(var(--info))]" />
-              🎉 NUEVO: Ecosistema de Automatización Completo
+               NUEVO: Ecosistema de Automatización Completo
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -57,7 +57,7 @@ export default function AutomationRulesManual() {
             </p>
             <div className="p-4 bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--info)/0.3)] my-4">
               <h4 className="font-semibold text-foreground mb-2">
-                🔄 Flujo de Trabajo Completo:
+                 Flujo de Trabajo Completo:
               </h4>
               <div className="text-sm space-y-1 text-[hsl(var(--info))]">
                 <div className="flex items-center gap-2">
@@ -94,28 +94,28 @@ export default function AutomationRulesManual() {
             </div>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg shadow-sm">
-                <h4 className="font-semibold">⚡ Velocidad</h4>
+                <h4 className="font-semibold"> Velocidad</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--info))]">Instantánea</p>
                 <p className="text-xs text-muted-foreground">
                   Respuesta en segundos
                 </p>
               </div>
               <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg shadow-sm">
-                <h4 className="font-semibold">🔄 Reintentos</h4>
+                <h4 className="font-semibold"> Reintentos</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--success))]">3x</p>
                 <p className="text-xs text-muted-foreground">
                   Con respaldo automático
                 </p>
               </div>
               <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg shadow-sm">
-                <h4 className="font-semibold">📱 Canales</h4>
+                <h4 className="font-semibold"> Canales</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--lavender))]">5</p>
                 <p className="text-xs text-muted-foreground">
                   SMS, Email, WhatsApp, Push, Phone
                 </p>
               </div>
               <div className="text-center p-4 bg-[hsl(var(--card))] rounded-lg shadow-sm">
-                <h4 className="font-semibold">🎯 Plantillas</h4>
+                <h4 className="font-semibold"> Plantillas</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--warning))]">8+</p>
                 <p className="text-xs text-muted-foreground">
                   Listas para usar
@@ -128,7 +128,7 @@ export default function AutomationRulesManual() {
         {/* How It Works */}
         <Card>
           <CardHeader>
-            <CardTitle>🔧 ¿Cómo Funciona?</CardTitle>
+            <CardTitle> ¿Cómo Funciona?</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-start gap-4 p-4 bg-muted/30 rounded-lg">
@@ -209,7 +209,7 @@ export default function AutomationRulesManual() {
         <Card>
           <CardHeader>
             <CardTitle>
-              🎯 Ecosistema Completo: Formularios + QR + Automatización
+               Ecosistema Completo: Formularios + QR + Automatización
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -226,7 +226,7 @@ export default function AutomationRulesManual() {
                   <span className="bg-[hsl(var(--success)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     1
                   </span>
-                  📝 CREACIÓN DE FORMULARIOS
+                   CREACIÓN DE FORMULARIOS
                 </h4>
                 <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
                   <li>
@@ -250,7 +250,7 @@ export default function AutomationRulesManual() {
                   <span className="bg-[hsl(var(--info)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     2
                   </span>
-                  📱 GENERACIÓN DE CÓDIGOS QR
+                   GENERACIÓN DE CÓDIGOS QR
                 </h4>
                 <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
                   <li>
@@ -273,7 +273,7 @@ export default function AutomationRulesManual() {
                   <span className="bg-[hsl(var(--lavender)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     3
                   </span>
-                  🤖 PLANTILLAS DE AUTOMATIZACIÓN
+                   PLANTILLAS DE AUTOMATIZACIÓN
                 </h4>
                 <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
                   <li>
@@ -296,7 +296,7 @@ export default function AutomationRulesManual() {
                   <span className="bg-[hsl(var(--destructive)/0.08)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     4
                   </span>
-                  ⚡ AUTOMATIZACIÓN INTELIGENTE
+                   AUTOMATIZACIÓN INTELIGENTE
                 </h4>
                 <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
                   <li>
@@ -319,7 +319,7 @@ export default function AutomationRulesManual() {
                   <span className="bg-[hsl(var(--destructive)/0.10)]0 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
                     5
                   </span>
-                  📊 DASHBOARD DE SEGUIMIENTO
+                   DASHBOARD DE SEGUIMIENTO
                 </h4>
                 <ul className="text-sm space-y-1 ml-8 text-muted-foreground">
                   <li>
@@ -340,7 +340,7 @@ export default function AutomationRulesManual() {
 
             <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
               <h4 className="font-semibold mb-2 text-[hsl(var(--warning))]">
-                🚀 Ejemplo Práctico: Visitante Primera Vez
+                 Ejemplo Práctico: Visitante Primera Vez
               </h4>
               <ol className="text-sm text-[hsl(var(--warning))] space-y-2">
                 <li>
@@ -383,14 +383,14 @@ export default function AutomationRulesManual() {
         <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
           <CardHeader>
             <CardTitle className="text-foreground">
-              🚀 Guía de Inicio Rápido (5 Minutos)
+               Guía de Inicio Rápido (5 Minutos)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
-                  🛠️ PASO 1: Crear Primer Formulario
+                  ️ PASO 1: Crear Primer Formulario
                 </h4>
                 <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
@@ -417,7 +417,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
-                  ⚡ PASO 2: Activar Primera Automatización
+                   PASO 2: Activar Primera Automatización
                 </h4>
                 <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
@@ -444,7 +444,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
-                  🧪 PASO 3: Probar el Sistema
+                   PASO 3: Probar el Sistema
                 </h4>
                 <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
@@ -474,7 +474,7 @@ export default function AutomationRulesManual() {
             </div>
             <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)] mt-4">
               <h4 className="font-semibold mb-2 text-foreground">
-                🎉 ¡Felicitaciones!
+                 ¡Felicitaciones!
               </h4>
               <p className="text-sm text-[hsl(var(--info))]">
                 Su sistema de automatización ahora está funcionando. Cada nuevo
@@ -489,14 +489,14 @@ export default function AutomationRulesManual() {
         <Card className="border-[hsl(var(--success)/0.3)] bg-[hsl(var(--success)/0.10)]">
           <CardHeader>
             <CardTitle className="text-foreground">
-              🚀 Guía de Inicio Rápido (5 Minutos)
+               Guía de Inicio Rápido (5 Minutos)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
-                  🛠️ PASO 1: Crear Primer Formulario
+                  ️ PASO 1: Crear Primer Formulario
                 </h4>
                 <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
@@ -523,7 +523,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
-                  ⚡ PASO 2: Activar Primera Automatización
+                   PASO 2: Activar Primera Automatización
                 </h4>
                 <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
@@ -550,7 +550,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
                 <h4 className="font-semibold mb-2 text-foreground">
-                  🧪 PASO 3: Probar el Sistema
+                   PASO 3: Probar el Sistema
                 </h4>
                 <ol className="text-sm text-[hsl(var(--success))] space-y-1">
                   <li>
@@ -580,7 +580,7 @@ export default function AutomationRulesManual() {
             </div>
             <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)] mt-4">
               <h4 className="font-semibold mb-2 text-foreground">
-                🎉 ¡Felicitaciones!
+                 ¡Felicitaciones!
               </h4>
               <p className="text-sm text-[hsl(var(--info))]">
                 Su sistema de automatización ahora está funcionando. Cada nuevo
@@ -594,7 +594,7 @@ export default function AutomationRulesManual() {
         {/* Template Browser */}
         <Card>
           <CardHeader>
-            <CardTitle>📚 Explorador de Plantillas</CardTitle>
+            <CardTitle> Explorador de Plantillas</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -605,7 +605,7 @@ export default function AutomationRulesManual() {
             <div className="space-y-3">
               <div className="p-4 border rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl">🙏</span>
+                  <span className="text-2xl"></span>
                   <h4 className="font-semibold">Peticiones de Oración</h4>
                 </div>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-8">
@@ -618,7 +618,7 @@ export default function AutomationRulesManual() {
 
               <div className="p-4 border rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl">👋</span>
+                  <span className="text-2xl"></span>
                   <h4 className="font-semibold">Seguimiento de Visitantes</h4>
                 </div>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-8">
@@ -632,7 +632,7 @@ export default function AutomationRulesManual() {
 
             <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg border border-[hsl(var(--info)/0.3)]">
               <h4 className="font-semibold mb-2 text-foreground">
-                💡 Cómo Activar una Plantilla
+                 Cómo Activar una Plantilla
               </h4>
               <ol className="text-sm text-[hsl(var(--info))] space-y-2">
                 <li>
@@ -1105,7 +1105,7 @@ export default function AutomationRulesManual() {
         {/* Key Features */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Características Clave</CardTitle>
+            <CardTitle> Características Clave</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
@@ -1159,11 +1159,11 @@ export default function AutomationRulesManual() {
         {/* Priority Levels */}
         <Card>
           <CardHeader>
-            <CardTitle>🎯 Niveles de Prioridad</CardTitle>
+            <CardTitle> Niveles de Prioridad</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center gap-3 p-3 bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded-lg">
-              <span className="text-2xl">🔴</span>
+              <span className="text-2xl"></span>
               <div className="flex-1">
                 <h4 className="font-semibold text-[hsl(var(--destructive))]">URGENTE</h4>
                 <p className="text-sm text-[hsl(var(--destructive))]">
@@ -1196,7 +1196,7 @@ export default function AutomationRulesManual() {
             </div>
 
             <div className="flex items-center gap-3 p-3 bg-muted/30 border border-border rounded-lg">
-              <span className="text-2xl">⚪</span>
+              <span className="text-2xl"></span>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground">BAJA</h4>
                 <p className="text-sm text-muted-foreground">
@@ -1211,13 +1211,13 @@ export default function AutomationRulesManual() {
         {/* Troubleshooting */}
         <Card>
           <CardHeader>
-            <CardTitle>🔍 Solución de Problemas</CardTitle>
+            <CardTitle> Solución de Problemas</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
               <div>
                 <h4 className="font-semibold mb-2">
-                  ❓ La automatización no se ejecuta
+                   La automatización no se ejecuta
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>
@@ -1234,7 +1234,7 @@ export default function AutomationRulesManual() {
 
               <div>
                 <h4 className="font-semibold mb-2">
-                  ❓ Los mensajes no llegan
+                   Los mensajes no llegan
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>
@@ -1254,7 +1254,7 @@ export default function AutomationRulesManual() {
 
               <div>
                 <h4 className="font-semibold mb-2">
-                  ❓ Quiero desactivar una regla temporalmente
+                   Quiero desactivar una regla temporalmente
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
                   <li>
@@ -1275,7 +1275,7 @@ export default function AutomationRulesManual() {
         <Card className="border-[hsl(var(--success)/0.3)]">
           <CardHeader>
             <CardTitle className="text-foreground">
-              ✅ Mejores Prácticas
+               Mejores Prácticas
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -1323,13 +1323,13 @@ export default function AutomationRulesManual() {
         <Card className="border-[hsl(var(--info)/0.3)] bg-[hsl(var(--info)/0.10)]">
           <CardHeader>
             <CardTitle className="text-foreground">
-              🚀 Siguientes Pasos Recomendados
+               Siguientes Pasos Recomendados
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border">
-                <h4 className="font-semibold mb-2">📝 Ampliar Formularios</h4>
+                <h4 className="font-semibold mb-2"> Ampliar Formularios</h4>
                 <ul className="text-sm space-y-1">
                   <li>
                     • <strong>Peticiones de Oración:</strong> Cree formulario
@@ -1351,7 +1351,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border">
                 <h4 className="font-semibold mb-2">
-                  ⚡ Activar Más Automatizaciones
+                   Activar Más Automatizaciones
                 </h4>
                 <ul className="text-sm space-y-1">
                   <li>
@@ -1374,7 +1374,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border">
                 <h4 className="font-semibold mb-2">
-                  📊 Monitoreo y Optimización
+                   Monitoreo y Optimización
                 </h4>
                 <ul className="text-sm space-y-1">
                   <li>
@@ -1401,7 +1401,7 @@ export default function AutomationRulesManual() {
                 </ul>
               </div>
               <div className="bg-[hsl(var(--card))] p-4 rounded-lg border">
-                <h4 className="font-semibold mb-2">🌐 Distribución de QR</h4>
+                <h4 className="font-semibold mb-2"> Distribución de QR</h4>
                 <ul className="text-sm space-y-1">
                   <li>
                     • <strong>Bancos de Iglesia:</strong> Imprima QR de
@@ -1424,7 +1424,7 @@ export default function AutomationRulesManual() {
             </div>
             <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border border-[hsl(var(--success)/0.3)] mt-4">
               <h4 className="font-semibold mb-2 text-foreground">
-                🏆 Meta de Implementación Completa
+                 Meta de Implementación Completa
               </h4>
               <p className="text-sm text-[hsl(var(--success))]">
                 <strong>Objetivo:</strong> Que el 100% de las interacciones de
@@ -1439,13 +1439,13 @@ export default function AutomationRulesManual() {
         {/* Advanced Tips */}
         <Card>
           <CardHeader>
-            <CardTitle>🧠 Consejos Avanzados de Automatización</CardTitle>
+            <CardTitle> Consejos Avanzados de Automatización</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4">
               <div className="p-4 border rounded-lg">
                 <h4 className="font-semibold mb-2">
-                  🔗 Integración con Sistemas Existentes
+                   Integración con Sistemas Existentes
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>
@@ -1468,7 +1468,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="p-4 border rounded-lg">
                 <h4 className="font-semibold mb-2">
-                  📋 Personalización de Plantillas
+                   Personalización de Plantillas
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>
@@ -1490,7 +1490,7 @@ export default function AutomationRulesManual() {
                 </ul>
               </div>
               <div className="p-4 border rounded-lg">
-                <h4 className="font-semibold mb-2">📈 Métricas de Éxito</h4>
+                <h4 className="font-semibold mb-2"> Métricas de Éxito</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>
                     • <strong>Tasa de Respuesta:</strong> % de visitantes que
@@ -1517,13 +1517,13 @@ export default function AutomationRulesManual() {
         {/* Troubleshooting */}
         <Card>
           <CardHeader>
-            <CardTitle>🔧 Solución de Problemas Comunes</CardTitle>
+            <CardTitle> Solución de Problemas Comunes</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-4">
               <div className="p-4 border rounded-lg bg-[hsl(var(--warning)/0.10)]">
                 <h4 className="font-semibold mb-2">
-                  ⚠️ Problema: No se envían mensajes automáticos
+                  ️ Problema: No se envían mensajes automáticos
                 </h4>
                 <div className="text-sm space-y-1">
                   <p>
@@ -1556,7 +1556,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="p-4 border rounded-lg bg-[hsl(var(--info)/0.10)]">
                 <h4 className="font-semibold mb-2">
-                  📱 Problema: Código QR no funciona
+                   Problema: Código QR no funciona
                 </h4>
                 <div className="text-sm space-y-1">
                   <p>
@@ -1577,7 +1577,7 @@ export default function AutomationRulesManual() {
               </div>
               <div className="p-4 border rounded-lg bg-[hsl(var(--success)/0.10)]">
                 <h4 className="font-semibold mb-2">
-                  📋 Problema: Datos no aparecen en dashboard
+                   Problema: Datos no aparecen en dashboard
                 </h4>
                 <div className="text-sm space-y-1">
                   <p>
@@ -1606,7 +1606,7 @@ export default function AutomationRulesManual() {
               </div>
             </div>
             <div className="bg-muted/50 p-4 rounded-lg mt-4">
-              <h4 className="font-semibold mb-2">📞 Soporte Técnico</h4>
+              <h4 className="font-semibold mb-2"> Soporte Técnico</h4>
               <p className="text-sm text-muted-foreground">
                 Para problemas técnicos avanzados, contacte al equipo de soporte
                 en
@@ -1656,10 +1656,10 @@ export default function AutomationRulesManual() {
                 <div className="flex items-start gap-2 mt-2">
                   <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
-                    <li>✅ Email de confirmación enviado al solicitante (si tiene email)</li>
-                    <li>✅ Registro de petición creado en Dashboard de Oración</li>
-                    <li>✅ Tarea de respuesta creada (responder en 1 hora)</li>
-                    <li>✅ En <strong>Mis Reglas</strong> → contador de ejecuciones aumenta en 1</li>
+                    <li> Email de confirmación enviado al solicitante (si tiene email)</li>
+                    <li> Registro de petición creado en Dashboard de Oración</li>
+                    <li> Tarea de respuesta creada (responder en 1 hora)</li>
+                    <li> En <strong>Mis Reglas</strong> → contador de ejecuciones aumenta en 1</li>
                   </ul>
                 </div>
               </div>
@@ -1683,9 +1683,9 @@ export default function AutomationRulesManual() {
                 <div className="flex items-start gap-2 mt-2">
                   <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
-                    <li>✅ Email de confirmación enviado</li>
-                    <li>✅ <strong>WhatsApp enviado al pastor</strong> con información de la petición</li>
-                    <li>✅ Prioridad mostrada como <strong>ALTA</strong> en el dashboard</li>
+                    <li> Email de confirmación enviado</li>
+                    <li> <strong>WhatsApp enviado al pastor</strong> con información de la petición</li>
+                    <li> Prioridad mostrada como <strong>ALTA</strong> en el dashboard</li>
                   </ul>
                 </div>
               </div>
@@ -1709,9 +1709,9 @@ export default function AutomationRulesManual() {
                 <div className="flex items-start gap-2 mt-2">
                   <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
-                    <li>✅ WhatsApp urgente enviado al pastor <strong>en menos de 10 minutos</strong></li>
-                    <li>✅ Modo 24/7 activo — llega aunque sea fuera de horario</li>
-                    <li>✅ Prioridad mostrada como <strong>URGENTE</strong></li>
+                    <li> WhatsApp urgente enviado al pastor <strong>en menos de 10 minutos</strong></li>
+                    <li> Modo 24/7 activo — llega aunque sea fuera de horario</li>
+                    <li> Prioridad mostrada como <strong>URGENTE</strong></li>
                   </ul>
                 </div>
               </div>
@@ -1738,9 +1738,9 @@ export default function AutomationRulesManual() {
                 <div className="flex items-start gap-2 mt-2">
                   <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
-                    <li>✅ Badge cambia entre <strong>Activa</strong> e <strong>Inactiva</strong> sin error</li>
-                    <li>✅ La regla pausada NO dispara automatizaciones</li>
-                    <li>✅ La regla reactivada SÍ dispara automatizaciones</li>
+                    <li> Badge cambia entre <strong>Activa</strong> e <strong>Inactiva</strong> sin error</li>
+                    <li> La regla pausada NO dispara automatizaciones</li>
+                    <li> La regla reactivada SÍ dispara automatizaciones</li>
                   </ul>
                 </div>
               </div>
@@ -1764,8 +1764,8 @@ export default function AutomationRulesManual() {
                 <div className="flex items-start gap-2 mt-2">
                   <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
-                    <li>✅ El nombre actualizado aparece en la lista inmediatamente</li>
-                    <li>✅ No aparece mensaje de error rojo</li>
+                    <li> El nombre actualizado aparece en la lista inmediatamente</li>
+                    <li> No aparece mensaje de error rojo</li>
                   </ul>
                 </div>
               </div>
@@ -1792,10 +1792,10 @@ export default function AutomationRulesManual() {
                 <div className="flex items-start gap-2 mt-2">
                   <span className="font-bold text-[hsl(var(--success))] whitespace-nowrap">Resultado esperado:</span>
                   <ul className="space-y-1 text-muted-foreground ml-2">
-                    <li>✅ La tarjeta muestra el nuevo icono seleccionado</li>
-                    <li>✅ El fondo de la tarjeta refleja el nuevo color</li>
-                    <li>✅ El nombre/descripción actualizados son visibles</li>
-                    <li>✅ No aparece error rojo</li>
+                    <li> La tarjeta muestra el nuevo icono seleccionado</li>
+                    <li> El fondo de la tarjeta refleja el nuevo color</li>
+                    <li> El nombre/descripción actualizados son visibles</li>
+                    <li> No aparece error rojo</li>
                   </ul>
                 </div>
               </div>
@@ -1806,16 +1806,16 @@ export default function AutomationRulesManual() {
               <h4 className="font-semibold text-foreground mb-3">Lista de Verificación Rápida</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-primary">
                 {[
-                  "Sección A → Email confirmación ✓",
-                  "Sección B → Email + WhatsApp pastor ✓",
-                  "Sección C → WhatsApp urgente ≤ 10 min ✓",
-                  "Pausar regla → sin ejecuciones ✓",
-                  "Reactivar regla → ejecuciones reinician ✓",
-                  "Editar nombre → sin error 500 ✓",
-                  "Cambiar icono → visible en tarjeta ✓",
-                  "Cambiar color → visible en tarjeta ✓",
-                  "Editar disparador → guardado correctamente ✓",
-                  "Agregar/eliminar acciones → guardado ✓",
+                  "Sección A → Email confirmación ",
+                  "Sección B → Email + WhatsApp pastor ",
+                  "Sección C → WhatsApp urgente ≤ 10 min ",
+                  "Pausar regla → sin ejecuciones ",
+                  "Reactivar regla → ejecuciones reinician ",
+                  "Editar nombre → sin error 500 ",
+                  "Cambiar icono → visible en tarjeta ",
+                  "Cambiar color → visible en tarjeta ",
+                  "Editar disparador → guardado correctamente ",
+                  "Agregar/eliminar acciones → guardado ",
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />

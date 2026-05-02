@@ -1,4 +1,4 @@
-// 📋 SMART TEMPLATES & PRESET FIELDS DEFINITIONS
+//  SMART TEMPLATES & PRESET FIELDS DEFINITIONS
 // Extracted from branded-form-builder.tsx to reduce bundle size
 
 export const SMART_TEMPLATES = [

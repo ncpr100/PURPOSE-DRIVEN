@@ -357,11 +357,11 @@ export async function POST(request: NextRequest) {
     const { daysAhead = 30, autoAssign = false, maxRecommendations = 3 } = await request.json()
 
     // Step 1: Identify scheduling gaps
-    console.log('🔍 Identificando brechas de programación...')
+    console.log(' Identificando brechas de programación...')
     const gaps = await identifySchedulingGaps(session.user.churchId, daysAhead)
 
     // Step 2: Find optimal matches for gaps
-    console.log('🎯 Buscando coincidencias óptimas...')
+    console.log(' Buscando coincidencias óptimas...')
     const allMatches = await findOptimalMatches(gaps, session.user.churchId)
 
     // Step 3: Group matches by gap and take top recommendations
@@ -379,7 +379,7 @@ export async function POST(request: NextRequest) {
     // Step 4: If auto-assign enabled, create assignments for top matches
     let autoAssignments = []
     if (autoAssign) {
-      console.log('🤖 Auto-asignando recomendaciones principales...')
+      console.log(' Auto-asignando recomendaciones principales...')
       
       for (const { gap, recommendations } of gapRecommendations) {
         if (recommendations.length > 0 && gap.priority === 'CRITICAL') {
@@ -444,7 +444,7 @@ export async function POST(request: NextRequest) {
       }
     })
   } catch (error) {
-    console.error('❌ Error en motor de programación inteligente:', error)
+    console.error(' Error en motor de programación inteligente:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' }, 
       { status: 500 }

@@ -334,7 +334,7 @@ export async function POST(request: NextRequest) {
         
         if (realtimeResponse.ok) {
           realTimeSent++
-          console.log(`📡 Real-time notification sent: ${notification.title}`)
+          console.log(` Real-time notification sent: ${notification.title}`)
         }
       } catch (realtimeError) {
         console.error('Error sending real-time notification:', realtimeError)

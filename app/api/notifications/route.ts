@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
         select: { id: true, churchId: true, role: true }
       })
     } catch (dbError) {
-      console.log('⚠️ NOTIFICATIONS: Database connection failed, using session data')
+      console.log('️ NOTIFICATIONS: Database connection failed, using session data')
       // Fallback to session data when database unavailable
       user = {
         id: session.user.id,
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
         notifications = notificationResults
         totalCount = countResult
       } catch (dbError) {
-        console.log('⚠️ NOTIFICATIONS: Database connection failed, returning empty notifications')
+        console.log('️ NOTIFICATIONS: Database connection failed, returning empty notifications')
         notifications = []
         totalCount = 0
       }
@@ -149,7 +149,7 @@ export async function GET(request: NextRequest) {
         deliveries = deliveryResults
         totalCount = countResult
       } catch (dbError) {
-        console.log('⚠️ NOTIFICATIONS: Database connection failed, returning empty deliveries')
+        console.log('️ NOTIFICATIONS: Database connection failed, returning empty deliveries')
         deliveries = []
         totalCount = 0
       }

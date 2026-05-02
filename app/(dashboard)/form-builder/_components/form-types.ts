@@ -1,4 +1,4 @@
-// 🎯 FORM BUILDER TYPE DEFINITIONS
+//  FORM BUILDER TYPE DEFINITIONS
 // Extracted from branded-form-builder.tsx to reduce bundle size
 
 export interface FormField {

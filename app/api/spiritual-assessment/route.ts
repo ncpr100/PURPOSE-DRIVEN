@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log(`✅ Spiritual assessment saved for member: ${targetMemberId}`)
+    console.log(` Spiritual assessment saved for member: ${targetMemberId}`)
 
     return NextResponse.json({
       success: true,

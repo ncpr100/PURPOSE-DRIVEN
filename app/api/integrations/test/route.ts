@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         select: { id: true, role: true, churchId: true }
       })
     } catch (error) {
-      console.log('⚠️ Database unavailable, using session data for integration test')
+      console.log('️ Database unavailable, using session data for integration test')
       sessionUser = {
         id: session.user.id,
         role: session.user.role,

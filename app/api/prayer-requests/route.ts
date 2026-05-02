@@ -229,11 +229,11 @@ export async function POST(request: Request) {
       
       if (result.success && result.rulesTriggered > 0) {
         await markAutomationTriggered('prayer_request', prayer_requests.id, result.executionIds)
-        console.log(`✅ Triggered ${result.rulesTriggered} automation rule(s) for prayer request ${prayer_requests.id}`)
+        console.log(` Triggered ${result.rulesTriggered} automation rule(s) for prayer request ${prayer_requests.id}`)
       }
     } catch (automationError) {
       // Don't fail the request if automation fails, just log it
-      console.error('❌ Automation trigger failed:', automationError)
+      console.error(' Automation trigger failed:', automationError)
     }
 
     // SPIRITUAL TRIAGE: Detect distress keywords and route to pastoral care
@@ -252,11 +252,11 @@ export async function POST(request: Request) {
           requesterEmail: contact.email ?? undefined,
           messageBody: message,
         })
-        console.log(`🚨 Triage event created for prayer request ${prayer_requests.id} — keyword: "${keyword}"`)
+        console.log(` Triage event created for prayer request ${prayer_requests.id} — keyword: "${keyword}"`)
       }
     } catch (triageError) {
       // Never block the response if triage fails
-      console.error('❌ Spiritual triage failed:', triageError)
+      console.error(' Spiritual triage failed:', triageError)
     }
 
     // PRAYER WATCHMAN: Extract scheduled events and queue care touchpoints
@@ -275,7 +275,7 @@ export async function POST(request: Request) {
       }
     } catch (watchmanError) {
       // Never block the response if watchman fails
-      console.error('❌ Prayer watchman failed:', watchmanError)
+      console.error(' Prayer watchman failed:', watchmanError)
     }
 
     return NextResponse.json(prayer_requests, { status: 201 });

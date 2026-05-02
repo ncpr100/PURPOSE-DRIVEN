@@ -14,7 +14,7 @@ export async function validateSuperAdminAccess() {
   const session = await getServerSession(authOptions)
 
   if (!session?.user) {
-    console.warn('🔒 SECURITY: No session found during SUPER_ADMIN validation')
+    console.warn(' SECURITY: No session found during SUPER_ADMIN validation')
     redirect('/auth/signin?error=no_session')
   }
 
@@ -34,28 +34,28 @@ export async function validateSuperAdminAccess() {
       }
     })
   } catch (error) {
-    console.error('🔒 SECURITY: Database validation error during SUPER_ADMIN check:', error)
+    console.error(' SECURITY: Database validation error during SUPER_ADMIN check:', error)
     redirect('/auth/signin?error=validation_error')
   }
 
   // All redirect() calls are outside the try-catch so NEXT_REDIRECT propagates correctly
   if (!dbUser) {
-    console.error(`🔒 CRITICAL SECURITY: User ${session.user.id} not found in database during validation`)
+    console.error(` CRITICAL SECURITY: User ${session.user.id} not found in database during validation`)
     redirect('/auth/signin?error=user_not_found')
   }
 
   if (!dbUser.isActive) {
-    console.warn(`🔒 SECURITY: Inactive user ${dbUser.email} attempted SUPER_ADMIN access`)
+    console.warn(` SECURITY: Inactive user ${dbUser.email} attempted SUPER_ADMIN access`)
     redirect('/auth/signin?error=account_inactive')
   }
 
   if (dbUser.role !== 'SUPER_ADMIN') {
-    console.warn(`🔒 SECURITY: Unauthorized access attempt by user ${dbUser.email} with role ${dbUser.role}`)
+    console.warn(` SECURITY: Unauthorized access attempt by user ${dbUser.email} with role ${dbUser.role}`)
     redirect('/home?error=access_denied')
   }
 
   if (session.user.role !== dbUser.role) {
-    console.error(`🔒 CRITICAL SECURITY: Role mismatch! Session: ${session.user.role}, Database: ${dbUser.role} for ${dbUser.email}`)
+    console.error(` CRITICAL SECURITY: Role mismatch! Session: ${session.user.role}, Database: ${dbUser.role} for ${dbUser.email}`)
     redirect('/auth/signin?error=role_mismatch&message=Security validation failed')
   }
 
@@ -89,12 +89,12 @@ export async function validateUserRole(requiredRole: UserRole) {
       }
     })
   } catch (error) {
-    console.error('🔒 SECURITY: Role validation error:', error)
+    console.error(' SECURITY: Role validation error:', error)
     redirect('/auth/signin?error=validation_error')
   }
 
   if (!dbUser || !dbUser.isActive || dbUser.role !== requiredRole) {
-    console.warn(`🔒 SECURITY: Access denied for user ${session.user.email}. Required: ${requiredRole}, Has: ${dbUser?.role}`)
+    console.warn(` SECURITY: Access denied for user ${session.user.email}. Required: ${requiredRole}, Has: ${dbUser?.role}`)
     redirect('/home?error=insufficient_permissions')
   }
 

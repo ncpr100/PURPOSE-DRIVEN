@@ -5,7 +5,7 @@ import { db } from '../lib/db'
 
 async function debugGenderValues() {
   try {
-    console.log('🔍 INVESTIGATING ACTUAL DATABASE GENDER VALUES...\n')
+    console.log(' INVESTIGATING ACTUAL DATABASE GENDER VALUES...\n')
     
     // Get all active members with their gender values
     const members = await db.members.findMany({
@@ -22,7 +22,7 @@ async function debugGenderValues() {
       // Remove the take: 50 limit to see all members
     })
 
-    console.log(`📊 Found ${members.length} total active members across all churches:\n`)
+    console.log(` Found ${members.length} total active members across all churches:\n`)
 
     // Group by gender value
     const genderGroups = members.reduce((acc, member) => {
@@ -35,7 +35,7 @@ async function debugGenderValues() {
       return acc
     }, {} as Record<string, typeof members>)
 
-    console.log('🎯 Gender Value Analysis:')
+    console.log(' Gender Value Analysis:')
     Object.entries(genderGroups).forEach(([genderValue, memberList]) => {
       console.log(`\n"${genderValue}": ${memberList.length} members`)
       console.log(`   Examples: ${memberList.slice(0, 3).map(m => `${m.firstName} ${m.lastName}`).join(', ')}`)
@@ -61,19 +61,19 @@ async function debugGenderValues() {
       return acc
     }, {} as Record<string, number>)
 
-    console.log('\n🏛️ Church Distribution:')
+    console.log('\n️ Church Distribution:')
     Object.entries(churchGroups).forEach(([churchId, count]) => {
       console.log(`   ${churchId}: ${count} members`)
     })
 
-    console.log('\n🔍 DIAGNOSIS:')
+    console.log('\n DIAGNOSIS:')
     console.log('1. Look at the exact gender values above')
     console.log('2. Check if they match our filter logic')
     console.log('3. Verify church ID distribution')
     console.log('4. Compare with the screenshot showing 11/12/845 split')
 
   } catch (error) {
-    console.error('❌ Error investigating gender data:', error)
+    console.error(' Error investigating gender data:', error)
   } finally {
     await db.$disconnect()
   }

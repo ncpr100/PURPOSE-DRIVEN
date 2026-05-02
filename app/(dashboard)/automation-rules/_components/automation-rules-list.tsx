@@ -17,7 +17,8 @@ import {
   Target,
   AlertCircle,
   CheckCircle,
-  Plus
+  Plus,
+  Lightbulb
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -219,8 +220,8 @@ export function AutomationRulesList({
               </Button>
             </div>
 
-            <p className="text-sm text-muted-foreground mt-6">
-              💡 <strong>Consejo:</strong> Empieza con una plantilla pre-configurada. Solo toma 30 segundos activarla.
+              <p className="text-sm text-muted-foreground mt-6 flex items-center gap-1.5">
+              <Lightbulb className="h-4 w-4 text-warning flex-shrink-0" /> <strong>Consejo:</strong> Empieza con una plantilla pre-configurada. Solo toma 30 segundos activarla.
             </p>
           </div>
         </CardContent>

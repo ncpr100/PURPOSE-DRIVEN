@@ -94,7 +94,7 @@ export default function FreshChurchWizard() {
     
     if (isTestData) {
       console.warn(`[FRESH-WIZARD] Test data blocked on field: ${fieldName}`)
-      toast.error('⚠️ Datos de prueba detectados. Campo limpiado automáticamente.')
+      toast.error('️ Datos de prueba detectados. Campo limpiado automáticamente.')
       return '' // Return empty value instead of test data
     }
     
@@ -509,7 +509,7 @@ export default function FreshChurchWizard() {
               <p className="text-sm">{wizardData.primaryUser.phone || 'No especificado'}</p>
             </div>
             <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
-              ✓ ADMIN_IGLESIA
+               ADMIN_IGLESIA
             </div>
           </div>
         </div>

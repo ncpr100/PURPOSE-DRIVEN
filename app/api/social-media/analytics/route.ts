@@ -455,7 +455,7 @@ async function updateChurchAnalyticsSummary(churchId: string) {
 
     // Store summary in database (you might want to create a separate table for this)
     console.log(
-      `📊 Updated analytics summary for church ${churchId}:`,
+      ` Updated analytics summary for church ${churchId}:`,
       summary,
     );
 

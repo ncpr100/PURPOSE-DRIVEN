@@ -184,7 +184,7 @@ export function RoleBasedNav({
         </div>
         <div className="text-center p-3 bg-muted/30 rounded-lg">
           <p className="text-2xl font-bold text-primary">
-            {roleConfig.emergencyOverride ? '✓' : '✗'}
+            {roleConfig.emergencyOverride ? '' : ''}
           </p>
           <p className="text-xs text-muted-foreground">Override</p>
         </div>

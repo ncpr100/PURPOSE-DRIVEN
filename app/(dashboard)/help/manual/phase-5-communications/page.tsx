@@ -19,7 +19,7 @@ export default function Phase5CommunicationsGuide() {
         <div className="flex items-center gap-4">
           <MessageSquare className="h-12 w-12" />
           <div>
-            <h1 className="text-4xl font-bold mb-2">💬 Fase 5: Comunicaciones y Mensajería</h1>
+            <h1 className="text-4xl font-bold mb-2"> Fase 5: Comunicaciones y Mensajería</h1>
             <p className="text-xl opacity-90">
               Envía emails, SMS, y notificaciones a tu congregación
             </p>
@@ -64,12 +64,12 @@ export default function Phase5CommunicationsGuide() {
             <Card className="border-l-4 border-l-blue-500 hover:shadow-lg transition-shadow">
               <CardContent className="pt-6 text-center">
                 <Mail className="h-12 w-12 text-[hsl(var(--info))] mx-auto mb-3" />
-                <h4 className="font-semibold text-lg mb-2">📧 Email</h4>
+                <h4 className="font-semibold text-lg mb-2"> Email</h4>
                 <p className="text-sm text-muted-foreground mb-3">
                   Correos electrónicos profesionales con diseño bonito
                 </p>
                 <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded text-xs text-left">
-                  <p className="font-medium mb-2">✅ Mejor Para:</p>
+                  <p className="font-medium mb-2"> Mejor Para:</p>
                   <ul className="space-y-1">
                     <li>• Newsletters semanales</li>
                     <li>• Invitaciones a eventos</li>
@@ -83,12 +83,12 @@ export default function Phase5CommunicationsGuide() {
             <Card className="border-l-4 border-l-green-500 hover:shadow-lg transition-shadow">
               <CardContent className="pt-6 text-center">
                 <Phone className="h-12 w-12 text-[hsl(var(--success))] mx-auto mb-3" />
-                <h4 className="font-semibold text-lg mb-2">📱 SMS</h4>
+                <h4 className="font-semibold text-lg mb-2"> SMS</h4>
                 <p className="text-sm text-muted-foreground mb-3">
                   Mensajes de texto cortos y urgentes
                 </p>
                 <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded text-xs text-left">
-                  <p className="font-medium mb-2">✅ Mejor Para:</p>
+                  <p className="font-medium mb-2"> Mejor Para:</p>
                   <ul className="space-y-1">
                     <li>• Recordatorios urgentes</li>
                     <li>• Cambios de último minuto</li>
@@ -102,12 +102,12 @@ export default function Phase5CommunicationsGuide() {
             <Card className="border-l-4 border-l-purple-500 hover:shadow-lg transition-shadow">
               <CardContent className="pt-6 text-center">
                 <Bell className="h-12 w-12 text-[hsl(var(--lavender))] mx-auto mb-3" />
-                <h4 className="font-semibold text-lg mb-2">🔔 Notificaciones</h4>
+                <h4 className="font-semibold text-lg mb-2"> Notificaciones</h4>
                 <p className="text-sm text-muted-foreground mb-3">
                   Push notifications en celulares
                 </p>
                 <div className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded text-xs text-left">
-                  <p className="font-medium mb-2">✅ Mejor Para:</p>
+                  <p className="font-medium mb-2"> Mejor Para:</p>
                   <ul className="space-y-1">
                     <li>• Recordatorios de eventos</li>
                     <li>• Nuevas peticiones de oración</li>
@@ -141,7 +141,7 @@ export default function Phase5CommunicationsGuide() {
                 step: "1.1",
                 title: "Ir a Comunicaciones",
                 icon: <MessageSquare className="h-5 w-5 text-[hsl(var(--info))]" />,
-                image: "💬",
+                image: "",
                 description: "En el menú izquierdo, haz clic en 'Comunicaciones'",
                 tips: ["Busca el ícono de mensajes", "Verás tus comunicaciones anteriores"]
               },
@@ -149,7 +149,7 @@ export default function Phase5CommunicationsGuide() {
                 step: "1.2",
                 title: "Hacer Clic en '+ Nueva Comunicación'",
                 icon: <Send className="h-5 w-5 text-[hsl(var(--success))]" />,
-                image: "➕",
+                image: "",
                 description: "Botón verde arriba a la derecha para empezar",
                 tips: ["Se abrirá el editor de mensajes", "Puedes elegir email, SMS, o notificación"]
               },
@@ -157,31 +157,31 @@ export default function Phase5CommunicationsGuide() {
                 step: "1.3",
                 title: "Seleccionar los Destinatarios",
                 icon: <Users className="h-5 w-5 text-[hsl(var(--warning))]" />,
-                image: "👥",
+                image: "",
                 description: "Elige a quién le quieres enviar el mensaje:",
                 details: [
                   {
-                    option: "📋 Todos los Miembros",
+                    option: " Todos los Miembros",
                     description: "Enviar a toda la congregación (cuidado, puede ser mucho!)",
                     when: "Anuncios generales importantes"
                   },
                   {
-                    option: "🎯 Filtrar por Etapa",
+                    option: " Filtrar por Etapa",
                     description: "Solo VISITANTES, solo LÍDERES, solo NUEVOS CREYENTES",
                     when: "Mensajes específicos para cada grupo"
                   },
                   {
-                    option: "📅 Filtrar por Evento",
+                    option: " Filtrar por Evento",
                     description: "Solo quienes asistieron/se inscribieron a un evento",
                     when: "Seguimiento después de un retiro"
                   },
                   {
-                    option: "✋ Selección Manual",
+                    option: " Selección Manual",
                     description: "Elegir personas específicas una por una",
                     when: "Mensaje a un grupo pequeño (10-20 personas)"
                   },
                   {
-                    option: "🏷️ Por Etiquetas",
+                    option: "️ Por Etiquetas",
                     description: "Grupos personalizados (Jóvenes, Parejas, Niños)",
                     when: "Comunicaciones regulares a ministerios"
                   }
@@ -191,33 +191,33 @@ export default function Phase5CommunicationsGuide() {
                 step: "1.4",
                 title: "Escribir el Asunto (Email) o Título",
                 icon: <FileText className="h-5 w-5 text-[hsl(var(--lavender))]" />,
-                image: "✏️",
+                image: "️",
                 description: "Crea un título atractivo que la gente quiera abrir:",
                 examples: [
-                  { bad: "❌ Información", good: "✅ ¡Retiro de Jóvenes - Cupos Limitados!" },
-                  { bad: "❌ Mensaje importante", good: "✅ Cambio de Horario para Culto del Domingo" },
-                  { bad: "❌ Newsletter", good: "✅ Lo Mejor de Esta Semana en la Iglesia 🌟" }
+                  { bad: " Información", good: " ¡Retiro de Jóvenes - Cupos Limitados!" },
+                  { bad: " Mensaje importante", good: " Cambio de Horario para Culto del Domingo" },
+                  { bad: " Newsletter", good: " Lo Mejor de Esta Semana en la Iglesia " }
                 ]
               },
               {
                 step: "1.5",
                 title: "Diseñar el Contenido del Mensaje",
                 icon: <Edit className="h-5 w-5 text-[hsl(var(--destructive))]" />,
-                image: "🎨",
+                image: "",
                 description: "Usa el editor visual para crear un mensaje profesional:",
                 features: [
-                  { icon: "📝", name: "Texto Enriquecido", description: "Negrita, cursiva, colores" },
-                  { icon: "🖼️", name: "Agregar Imágenes", description: "Logos, fotos de eventos" },
-                  { icon: "🔗", name: "Enlaces", description: "Links a formularios o videos" },
-                  { icon: "📊", name: "Listas y Tablas", description: "Organizar información" },
-                  { icon: "😊", name: "Emojis", description: "Hacer mensajes más amigables" }
+                  { icon: "", name: "Texto Enriquecido", description: "Negrita, cursiva, colores" },
+                  { icon: "️", name: "Agregar Imágenes", description: "Logos, fotos de eventos" },
+                  { icon: "", name: "Enlaces", description: "Links a formularios o videos" },
+                  { icon: "", name: "Listas y Tablas", description: "Organizar información" },
+                  { icon: "", name: "Emojis", description: "Hacer mensajes más amigables" }
                 ]
               },
               {
                 step: "1.6",
                 title: "Personalización Automática",
                 icon: <Star className="h-5 w-5 text-[hsl(var(--warning))]" />,
-                image: "✨",
+                image: "",
                 description: "Usa variables para personalizar cada mensaje:",
                 variables: [
                   { code: "{{nombre}}", result: "Hola Juan," },
@@ -231,7 +231,7 @@ export default function Phase5CommunicationsGuide() {
                 step: "1.7",
                 title: "Vista Previa y Prueba",
                 icon: <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />,
-                image: "👀",
+                image: "",
                 description: "Antes de enviar a todos, prueba el mensaje:",
                 steps: [
                   "Haz clic en 'Vista Previa' para ver cómo se verá",
@@ -244,7 +244,7 @@ export default function Phase5CommunicationsGuide() {
                 step: "1.8",
                 title: "Programar o Enviar Ahora",
                 icon: <Clock className="h-5 w-5 text-[hsl(var(--info))]" />,
-                image: "⏰",
+                image: "",
                 description: "Decide cuándo enviar el mensaje:",
                 options: [
                   {
@@ -287,7 +287,7 @@ export default function Phase5CommunicationsGuide() {
                               </p>
                               <p className="text-xs text-muted-foreground mt-1">{detail.description}</p>
                               <p className="text-xs text-[hsl(var(--info))] mt-1 italic">
-                                💡 Cuándo usar: {detail.when}
+                                 Cuándo usar: {detail.when}
                               </p>
                             </div>
                           ))}
@@ -296,7 +296,7 @@ export default function Phase5CommunicationsGuide() {
 
                       {item.examples && (
                         <div className="bg-muted/30 p-3 rounded mb-3">
-                          <p className="font-medium text-sm mb-2">📋 Ejemplos:</p>
+                          <p className="font-medium text-sm mb-2"> Ejemplos:</p>
                           {item.examples.map((ex: any, idx: number) => (
                             <div key={idx} className="text-xs mb-2">
                               <p className="text-[hsl(var(--destructive))]">{ex.bad}</p>
@@ -330,7 +330,7 @@ export default function Phase5CommunicationsGuide() {
                             ))}
                           </div>
                           {item.tip && (
-                            <p className="text-xs text-[hsl(var(--warning))] mt-2 italic">💡 {item.tip}</p>
+                            <p className="text-xs text-[hsl(var(--warning))] mt-2 italic"> {item.tip}</p>
                           )}
                         </div>
                       )}
@@ -339,7 +339,7 @@ export default function Phase5CommunicationsGuide() {
                         <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded mb-3">
                           <ol className="space-y-1 text-sm">
                             {item.steps.map((step: string, idx: number) => (
-                              <li key={idx}>✓ {step}</li>
+                              <li key={idx}> {step}</li>
                             ))}
                           </ol>
                         </div>
@@ -352,7 +352,7 @@ export default function Phase5CommunicationsGuide() {
                               <p className="font-medium text-sm text-[hsl(var(--info))]">{opt.type}</p>
                               <p className="text-xs text-muted-foreground mt-1">{opt.description}</p>
                               <p className="text-xs text-[hsl(var(--lavender))] mt-1 italic">
-                                ✅ Mejor para: {opt.best}
+                                 Mejor para: {opt.best}
                               </p>
                             </div>
                           ))}
@@ -362,7 +362,7 @@ export default function Phase5CommunicationsGuide() {
                       {item.tips && (
                         <div className="bg-[hsl(var(--lavender)/0.10)] p-3 rounded-lg">
                           <p className="text-xs font-medium text-[hsl(var(--lavender))] mb-2">
-                            💡 Consejos:
+                             Consejos:
                           </p>
                           <ul className="text-xs text-[hsl(var(--lavender))] space-y-1">
                             {item.tips.map((tip, idx) => (
@@ -396,25 +396,25 @@ export default function Phase5CommunicationsGuide() {
             {[
               {
                 name: "Bienvenida a Nuevos Miembros",
-                emoji: "👋",
+                emoji: "",
                 description: "Email automático cuando alguien se registra",
                 includes: ["Saludo personalizado", "Próximos pasos", "Contactos importantes"]
               },
               {
                 name: "Recordatorio de Evento",
-                emoji: "⏰",
+                emoji: "",
                 description: "24 horas antes del evento",
                 includes: ["Detalles del evento", "Ubicación con mapa", "Botón para confirmar"]
               },
               {
                 name: "Newsletter Semanal",
-                emoji: "📰",
+                emoji: "",
                 description: "Resumen de la semana en la iglesia",
                 includes: ["Próximos eventos", "Anuncios", "Versículo de la semana"]
               },
               {
                 name: "Felicitación de Cumpleaños",
-                emoji: "🎂",
+                emoji: "",
                 description: "Mensaje automático el día del cumpleaños",
                 includes: ["Felicitaciones personales", "Bendición bíblica", "Invitación a celebrar"]
               },
@@ -426,7 +426,7 @@ export default function Phase5CommunicationsGuide() {
               },
               {
                 name: "Petición de Oración Respondida",
-                emoji: "🙏",
+                emoji: "",
                 description: "Cuando una petición se marca como respondida",
                 includes: ["Celebración", "Testimonio", "Invitación a compartir"]
               }
@@ -439,7 +439,7 @@ export default function Phase5CommunicationsGuide() {
                       <h4 className="font-semibold text-lg mb-1">{template.name}</h4>
                       <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
                       <div className="bg-[hsl(var(--success)/0.10)] p-2 rounded text-xs">
-                        <p className="font-medium text-[hsl(var(--success))] mb-1">✅ Incluye:</p>
+                        <p className="font-medium text-[hsl(var(--success))] mb-1"> Incluye:</p>
                         <ul className="space-y-1 text-[hsl(var(--success))]">
                           {template.includes.map((item, idx) => (
                             <li key={idx}>• {item}</li>
@@ -483,12 +483,12 @@ export default function Phase5CommunicationsGuide() {
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { metric: "📬 Enviados", description: "Cuántos mensajes se enviaron en total", example: "150 emails enviados" },
-              { metric: "✅ Entregados", description: "Cuántos llegaron exitosamente", example: "147 entregados (98%)" },
-              { metric: "👁️ Abiertos", description: "Cuántas personas abrieron el email", example: "89 abiertos (60%)" },
-              { metric: "🖱️ Clics", description: "Clics en enlaces dentro del mensaje", example: "34 clics en formulario" },
-              { metric: "❌ Rebotados", description: "Emails que no se pudieron entregar", example: "3 emails inválidos" },
-              { metric: "📊 Tasa de Apertura", description: "% de personas que leyeron el mensaje", example: "60% - ¡Excelente!" }
+              { metric: " Enviados", description: "Cuántos mensajes se enviaron en total", example: "150 emails enviados" },
+              { metric: " Entregados", description: "Cuántos llegaron exitosamente", example: "147 entregados (98%)" },
+              { metric: "️ Abiertos", description: "Cuántas personas abrieron el email", example: "89 abiertos (60%)" },
+              { metric: "️ Clics", description: "Clics en enlaces dentro del mensaje", example: "34 clics en formulario" },
+              { metric: " Rebotados", description: "Emails que no se pudieron entregar", example: "3 emails inválidos" },
+              { metric: " Tasa de Apertura", description: "% de personas que leyeron el mensaje", example: "60% - ¡Excelente!" }
             ].map((stat, index) => (
               <div key={index} className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
                 <p className="font-semibold text-[hsl(var(--info))] mb-1">{stat.metric}</p>
@@ -511,7 +511,7 @@ export default function Phase5CommunicationsGuide() {
         <CardContent className="space-y-3">
           {[
             {
-              problem: "❌ Los emails llegan a la carpeta de Spam",
+              problem: " Los emails llegan a la carpeta de Spam",
               solutions: [
                 "Pide a tus miembros agregar tu email a 'Contactos'",
                 "Evita palabras como 'GRATIS', 'URGENTE', 'HACER CLIC AQUÍ' en mayúsculas",
@@ -520,7 +520,7 @@ export default function Phase5CommunicationsGuide() {
               ]
             },
             {
-              problem: "❌ Baja tasa de apertura (menos del 20%)",
+              problem: " Baja tasa de apertura (menos del 20%)",
               solutions: [
                 "Mejora tus asuntos - que sean específicos y atractivos",
                 "Envía en el momento adecuado (no 3am ni 11pm)",
@@ -529,7 +529,7 @@ export default function Phase5CommunicationsGuide() {
               ]
             },
             {
-              problem: "❌ No puedo enviar SMS (dice que no hay créditos)",
+              problem: " No puedo enviar SMS (dice que no hay créditos)",
               solutions: [
                 "Los SMS tienen costo - verifica tu plan en Configuración",
                 "Compra créditos de SMS adicionales si se agotaron",
@@ -538,7 +538,7 @@ export default function Phase5CommunicationsGuide() {
               ]
             },
             {
-              problem: "❌ El mensaje se envió con errores de formato",
+              problem: " El mensaje se envió con errores de formato",
               solutions: [
                 "Siempre usa 'Vista Previa' antes de enviar",
                 "Envía un 'Email de Prueba' a ti mismo primero",
@@ -551,7 +551,7 @@ export default function Phase5CommunicationsGuide() {
               <p className="font-medium text-[hsl(var(--destructive))] mb-2">{item.problem}</p>
               <ul className="text-sm text-[hsl(var(--destructive))] space-y-1 ml-4">
                 {item.solutions.map((solution, idx) => (
-                  <li key={idx}>✓ {solution}</li>
+                  <li key={idx}> {solution}</li>
                 ))}
               </ul>
             </div>
@@ -570,25 +570,25 @@ export default function Phase5CommunicationsGuide() {
         <CardContent>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div className="bg-[hsl(var(--card))] p-4 rounded">
-              <h4 className="font-semibold text-[hsl(var(--success))] mb-2">✅ SÍ Hacer:</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-2"> SÍ Hacer:</h4>
               <ul className="space-y-1 text-muted-foreground">
-                <li>✓ Personaliza los mensajes con nombres</li>
-                <li>✓ Sé breve y claro - no escribas párrafos largos</li>
-                <li>✓ Incluye un llamado a la acción claro (&quot;Regístrate aquí&quot;)</li>
-                <li>✓ Usa imágenes atractivas pero no muchas</li>
-                <li>✓ Envía en horarios razonables (10am - 7pm)</li>
-                <li>✓ Revisa ortografía y gramática</li>
+                <li> Personaliza los mensajes con nombres</li>
+                <li> Sé breve y claro - no escribas párrafos largos</li>
+                <li> Incluye un llamado a la acción claro (&quot;Regístrate aquí&quot;)</li>
+                <li> Usa imágenes atractivas pero no muchas</li>
+                <li> Envía en horarios razonables (10am - 7pm)</li>
+                <li> Revisa ortografía y gramática</li>
               </ul>
             </div>
             <div className="bg-[hsl(var(--card))] p-4 rounded">
-              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ NO Hacer:</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> NO Hacer:</h4>
               <ul className="space-y-1 text-muted-foreground">
-                <li>✗ Enviar mensajes todos los días (saturación)</li>
-                <li>✗ Usar TODO MAYÚSCULAS o muchos emojis !!!</li>
-                <li>✗ Compartir información privada de miembros</li>
-                <li>✗ Enviar sin probar primero</li>
-                <li>✗ Ignorar a quienes piden no recibir mensajes</li>
-                <li>✗ Mezclar temas en un solo mensaje (confunde)</li>
+                <li> Enviar mensajes todos los días (saturación)</li>
+                <li> Usar TODO MAYÚSCULAS o muchos emojis !!!</li>
+                <li> Compartir información privada de miembros</li>
+                <li> Enviar sin probar primero</li>
+                <li> Ignorar a quienes piden no recibir mensajes</li>
+                <li> Mezclar temas en un solo mensaje (confunde)</li>
               </ul>
             </div>
           </div>

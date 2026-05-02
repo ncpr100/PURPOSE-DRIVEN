@@ -73,7 +73,7 @@ export default function StreamlinedChurchRegistration() {
     
     if (isTestData) {
       console.warn(`[STREAMLINED-REGISTRATION] Test data blocked on field: ${fieldName}`)
-      toast.error('⚠️ Datos de prueba detectados. Campo limpiado automáticamente.')
+      toast.error('Datos de prueba detectados. Campo limpiado automáticamente.')
       return '' // Return empty value instead of test data
     }
     
@@ -442,9 +442,9 @@ export default function StreamlinedChurchRegistration() {
                     )}
 
                     <div className="text-xs text-muted-foreground bg-[hsl(var(--warning)/0.10)] p-2 rounded border border-[hsl(var(--warning)/0.3)]">
-                      ⭐ Todos los planes incluyen 14 días de prueba gratuita<br />
-                      🔑 Las credenciales serán proporcionadas por nuestro equipo<br />
-                      💰 Facturación le llegará al correo electrónico
+                      Todos los planes incluyen 14 días de prueba gratuita<br />
+                      Las credenciales serán proporcionadas por nuestro equipo<br />
+                      Facturación le llegará al correo electrónico
                     </div>
                   </div>
                 )}

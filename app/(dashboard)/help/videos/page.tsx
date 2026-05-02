@@ -10,7 +10,7 @@ import Link from 'next/link'
 export default function VideosHelp() {
   const videoSeries = [
     {
-      title: "🚀 Primeros Pasos",
+      title: " Primeros Pasos",
       description: "Serie completa para comenzar con Khesed-tek Systems",
       videos: 6,
       totalTime: "45 min",
@@ -18,7 +18,7 @@ export default function VideosHelp() {
       popular: true
     },
     {
-      title: "👥 Gestión Avanzada de Miembros", 
+      title: " Gestión Avanzada de Miembros", 
       description: "Técnicas avanzadas para administrar su congregación",
       videos: 4,
       totalTime: "32 min",
@@ -26,7 +26,7 @@ export default function VideosHelp() {
       popular: false
     },
     {
-      title: "💰 Donaciones y Finanzas",
+      title: " Donaciones y Finanzas",
       description: "Configuración completa del sistema financiero",
       videos: 5,
       totalTime: "38 min", 
@@ -34,7 +34,7 @@ export default function VideosHelp() {
       popular: true
     },
     {
-      title: "📅 Eventos Exitosos",
+      title: " Eventos Exitosos",
       description: "Cómo organizar y promocionar eventos efectivamente",
       videos: 3,
       totalTime: "28 min",
@@ -50,7 +50,7 @@ export default function VideosHelp() {
       views: "2.8k",
       category: "Primeros Pasos",
       description: "Aprenda a configurar su iglesia desde cero en menos de 15 minutos",
-      thumbnail: "🎥"
+      thumbnail: ""
     },
     {
       title: "Importar Miembros desde Excel",
@@ -58,7 +58,7 @@ export default function VideosHelp() {
       views: "1.9k",
       category: "Miembros",
       description: "Guía paso a paso para importar su lista existente de miembros",
-      thumbnail: "📊"
+      thumbnail: ""
     },
     {
       title: "Configurar Donaciones con Nequi",
@@ -66,7 +66,7 @@ export default function VideosHelp() {
       views: "1.2k", 
       category: "Finanzas",
       description: "Integre Nequi como método de pago para donaciones digitales",
-      thumbnail: "💳"
+      thumbnail: ""
     },
     {
       title: "Crear y Promocionar Eventos",
@@ -74,7 +74,7 @@ export default function VideosHelp() {
       views: "987",
       category: "Eventos", 
       description: "Desde la creación hasta el check-in con códigos QR",
-      thumbnail: "🎪"
+      thumbnail: ""
     },
     {
       title: "Comunicaciones Masivas Efectivas",
@@ -82,7 +82,7 @@ export default function VideosHelp() {
       views: "1.5k",
       category: "Comunicaciones",
       description: "Mejores prácticas para emails y mensajes que generen acción",
-      thumbnail: "📧"
+      thumbnail: ""
     },
     {
       title: "Reportes y Analytics",
@@ -90,7 +90,7 @@ export default function VideosHelp() {
       views: "756",
       category: "Analytics",
       description: "Interprete las métricas de su iglesia para tomar mejores decisiones",
-      thumbnail: "📈"
+      thumbnail: ""
     }
   ]
 
@@ -153,7 +153,7 @@ export default function VideosHelp() {
             <Card key={series.title} className="relative">
               {series.popular && (
                 <div className="absolute -top-2 right-2">
-                  <Badge className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">🔥 Popular</Badge>
+                  <Badge className="bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]"> Popular</Badge>
                 </div>
               )}
               <CardHeader>
@@ -180,7 +180,7 @@ export default function VideosHelp() {
                   className="w-full"
                   onClick={() => alert('Los videotutoriales serán implementados próximamente. Por ahora consulte el manual escrito.')}
                 >
-                  ▶️ Ver Serie Completa
+                  ️ Ver Serie Completa
                 </Button>
               </CardContent>
             </Card>
@@ -218,7 +218,7 @@ export default function VideosHelp() {
                     className="w-full text-xs"
                     onClick={() => alert('Los videotutoriales serán implementados próximamente. Consulte el manual para información detallada.')}
                   >
-                    ▶️ Reproducir
+                    ️ Reproducir
                   </Button>
                 </div>
               </CardContent>
@@ -307,16 +307,16 @@ export default function VideosHelp() {
             </p>
             <div className="flex gap-2">
               <Button onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
-                📱 WhatsApp
+                 WhatsApp
               </Button>
               <Link href="/help/support/ticket">
                 <Button variant="outline">
-                  🎫 Solicitar Tutorial
+                   Solicitar Tutorial
                 </Button>
               </Link>
               <Link href="/help/manual/complete">
                 <Button variant="outline">
-                  📖 Ver Manual Escrito
+                   Ver Manual Escrito
                 </Button>
               </Link>
             </div>

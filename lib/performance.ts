@@ -173,7 +173,7 @@ export function logBundleInfo() {
     const domReady = timing.domContentLoadedEventEnd - timing.navigationStart;
     const firstPaint = performance.getEntriesByType('paint')[0]?.startTime || 0;
 
-    console.group('🚀 Performance Metrics');
+    console.group(' Performance Metrics');
     console.log(`Page Load Time: ${loadTime}ms`);
     console.log(`DOM Ready: ${domReady}ms`);
     console.log(`First Paint: ${firstPaint.toFixed(2)}ms`);
@@ -204,7 +204,7 @@ export function logMemoryUsage() {
 
   const memory = (performance as any).memory;
   
-  console.group('💾 Memory Usage');
+  console.group(' Memory Usage');
   console.log(`Used: ${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)} MB`);
   console.log(`Total: ${(memory.totalJSHeapSize / 1024 / 1024).toFixed(2)} MB`);
   console.log(`Limit: ${(memory.jsHeapSizeLimit / 1024 / 1024).toFixed(2)} MB`);

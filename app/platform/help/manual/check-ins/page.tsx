@@ -261,7 +261,7 @@ export default function SuperAdminCheckInsManual() {
         {/* Monitoring & Maintenance */}
         <Card>
           <CardHeader>
-            <CardTitle>🔧 Monitoreo y Mantenimiento</CardTitle>
+            <CardTitle> Monitoreo y Mantenimiento</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -307,10 +307,10 @@ export default function SuperAdminCheckInsManual() {
               <p>Para asistencia técnica especializada en configuración de sistema:</p>
               <div className="grid md:grid-cols-2 gap-4">
                 <Button variant="outline" onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
-                  💬 Soporte WhatsApp
+                   Soporte WhatsApp
                 </Button>
                 <Button variant="outline" onClick={() => window.open('mailto:soporte@khesed-tek-systems.org', '_blank')}>
-                  ✉️ Email Técnico
+                  ️ Email Técnico
                 </Button>
               </div>
             </div>

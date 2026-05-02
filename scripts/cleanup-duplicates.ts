@@ -4,7 +4,7 @@ const db = new PrismaClient()
 
 async function cleanupDuplicates() {
   try {
-    console.log('🧹 CLEANING UP DUPLICATE CHURCHES\n')
+    console.log(' CLEANING UP DUPLICATE CHURCHES\n')
 
     // Keep only the church with 999 members
     const correctChurchId = 'cmgu3bev8000078ltyfy89pil'
@@ -43,14 +43,14 @@ async function cleanupDuplicates() {
       await db.church.delete({
         where: { id: church.id }
       })
-      console.log(`  ✅ Deleted church\n`)
+      console.log(`   Deleted church\n`)
     }
 
-    console.log('✅ CLEANUP COMPLETE')
+    console.log(' CLEANUP COMPLETE')
     console.log(`\nKept church: ${correctChurchId} with 999 members`)
 
   } catch (error) {
-    console.error('❌ Error:', error)
+    console.error(' Error:', error)
   } finally {
     await db.$disconnect()
   }

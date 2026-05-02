@@ -162,7 +162,7 @@ export default function CreateWebsitePage() {
           </Button>
         </Link>
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">🚀 Crear Sitio Web Profesional</h1>
+          <h1 className="text-3xl font-bold tracking-tight"> Crear Sitio Web Profesional</h1>
           <p className="text-muted-foreground">
             Herramientas avanzadas para crear sitios web de iglesias de clase empresarial
           </p>

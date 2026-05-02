@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
         select: { id: true, churchId: true, role: true, name: true },
       });
     } catch (error) {
-      console.log("⚠️ Database unavailable, using session data for broadcast");
+      console.log("️ Database unavailable, using session data for broadcast");
       sessionUser = {
         id: session.user.id,
         churchId: session.user.churchId,
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
             }
           } catch (error) {
             console.log(
-              "⚠️ Database unavailable for user verification, allowing broadcast",
+              "️ Database unavailable for user verification, allowing broadcast",
             );
             // Allow broadcast to continue when database fails
           }
@@ -220,7 +220,7 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(
-      `📡 Real-time notification broadcast to ${targetInfo}: ${validatedData.title}`,
+      ` Real-time notification broadcast to ${targetInfo}: ${validatedData.title}`,
     );
 
     return NextResponse.json({
@@ -264,7 +264,7 @@ export async function GET(request: NextRequest) {
       });
     } catch (error) {
       console.log(
-        "⚠️ Database unavailable, using session data for connection stats",
+        "️ Database unavailable, using session data for connection stats",
       );
       user = {
         id: session.user.id,

@@ -97,7 +97,7 @@ export default function SubscriptionHelp() {
               </div>
               <div>
                 <h4 className="font-semibold">Estado</h4>
-                <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">✅ Activo</Badge>
+                <Badge className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]"> Activo</Badge>
                 <p className="text-sm text-muted-foreground mt-1">Todos los servicios operando</p>
               </div>
             </div>
@@ -123,7 +123,7 @@ export default function SubscriptionHelp() {
                 <ul className="space-y-2">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start text-sm">
-                      <span className="mr-2 text-[hsl(var(--success))]">✓</span>
+                      <span className="mr-2 text-[hsl(var(--success))]"></span>
                       {feature}
                     </li>
                   ))}
@@ -149,7 +149,7 @@ export default function SubscriptionHelp() {
             <Card key={addon.name} className="relative">
               {addon.popular && (
                 <div className="absolute -top-2 right-2">
-                  <Badge variant="secondary" className="text-xs">🔥 Popular</Badge>
+                  <Badge variant="secondary" className="text-xs"> Popular</Badge>
                 </div>
               )}
               <CardHeader>
@@ -160,7 +160,7 @@ export default function SubscriptionHelp() {
                 <ul className="space-y-1 mb-4">
                   {addon.features.map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
-                      <span className="mr-2 text-[hsl(var(--success))]">✓</span>
+                      <span className="mr-2 text-[hsl(var(--success))]"></span>
                       {feature}
                     </li>
                   ))}
@@ -171,10 +171,10 @@ export default function SubscriptionHelp() {
                     size="sm"
                     onClick={() => alert('Funcionalidad de suscripción a complementos será implementada próximamente. Contacte soporte.')}
                   >
-                    💰 Suscribirse
+                     Suscribirse
                   </Button>
                   <Button variant="outline" className="w-full" size="sm" onClick={() => alert('Información detallada del complemento disponible en la documentación o contacte soporte.')}>
-                    📖 Más Info
+                     Más Info
                   </Button>
                 </div>
               </CardContent>
@@ -228,7 +228,7 @@ export default function SubscriptionHelp() {
                   <p className="text-sm text-muted-foreground">Plan Profesional + SMS Masivos</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-[hsl(var(--success))]">✅ Pagado</p>
+                  <p className="text-sm text-[hsl(var(--success))]"> Pagado</p>
                 </div>
               </div>
               <div className="flex items-center justify-between py-2 border-b">
@@ -237,7 +237,7 @@ export default function SubscriptionHelp() {
                   <p className="text-sm text-muted-foreground">Plan Profesional</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-[hsl(var(--success))]">✅ Pagado</p>
+                  <p className="text-sm text-[hsl(var(--success))]"> Pagado</p>
                 </div>
               </div>
               <div className="flex items-center justify-between py-2">
@@ -246,13 +246,13 @@ export default function SubscriptionHelp() {
                   <p className="text-sm text-muted-foreground">Plan Profesional</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-[hsl(var(--success))]">✅ Pagado</p>
+                  <p className="text-sm text-[hsl(var(--success))]"> Pagado</p>
                 </div>
               </div>
             </div>
             <div className="mt-4">
               <Button variant="outline" className="w-full" onClick={() => alert('Historial completo de facturación será implementado próximamente. Esta información estará disponible en el panel principal.')}>
-                📄 Ver Historial Completo
+                 Ver Historial Completo
               </Button>
             </div>
           </CardContent>
@@ -271,14 +271,14 @@ export default function SubscriptionHelp() {
             </p>
             <div className="flex gap-2">
               <Button onClick={() => window.open('https://wa.me/573003435733', '_blank')}>
-                📱 WhatsApp
+                 WhatsApp
               </Button>
               <Button variant="outline" onClick={() => window.location.href = 'mailto:soporte@khesed-tek-systems.org'}>
-                📧 Email Soporte
+                 Email Soporte
               </Button>
               <Link href="/help/support/ticket">
                 <Button variant="outline">
-                  🎫 Crear Ticket
+                   Crear Ticket
                 </Button>
               </Link>
             </div>

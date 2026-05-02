@@ -164,7 +164,7 @@ export async function PUT(request: NextRequest, props: { params: Promise<{ id: s
             <body>
               <div class="container">
                 <div class="header">
-                  <h1>🔐 Contraseña Restablecida</h1>
+                  <h1> Contraseña Restablecida</h1>
                   <p>${churchName}</p>
                 </div>
                 <div class="content">
@@ -179,7 +179,7 @@ export async function PUT(request: NextRequest, props: { params: Promise<{ id: s
                   </div>
                   
                   <div class="warning">
-                    <p><strong>⚠️ IMPORTANTE:</strong></p>
+                    <p><strong>️ IMPORTANTE:</strong></p>
                     <ul>
                       <li>Esta es una contraseña temporal generada por el administrador</li>
                       <li>Se te pedirá que cambies esta contraseña al iniciar sesión</li>
@@ -229,7 +229,7 @@ Kḥesed-tek Church Management Systems
           `.trim()
         })
         
-        console.log(`✅ Password reset email sent to ${updatedUser.email}`)
+        console.log(` Password reset email sent to ${updatedUser.email}`)
       } catch (emailError) {
         console.error('Failed to send password reset email:', emailError)
         // Don't fail the request if email fails - user is still updated

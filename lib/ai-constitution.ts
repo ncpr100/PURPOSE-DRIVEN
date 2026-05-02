@@ -50,7 +50,7 @@ like: 'Estos datos sugieren...' rather than 'Estos datos demuestran...'
 Suggest, don't declare.`,
 
   // Disclaimer to append to all AI-generated content shown to end users:
-  disclaimer: `⚠️ Generado por IA como apoyo ministerial. La decisión pastoral pertenece al pastor.`,
+  disclaimer: `️ Generado por IA como apoyo ministerial. La decisión pastoral pertenece al pastor.`,
 } as const;
 
 // Helper: build a system prompt with applicable clauses

@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
         description: validatedData.description,
         category: validatedData.category,
         subcategory: validatedData.subcategory,
-        icon: validatedData.icon || '⚡',
+        icon: validatedData.icon || '',
         color: validatedData.color || '#3B82F6',
         isSystemTemplate: false,
         isPublic: validatedData.isPublic !== undefined ? validatedData.isPublic : false,

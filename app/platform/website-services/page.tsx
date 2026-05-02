@@ -99,7 +99,7 @@ export default function WebsiteServicesPage() {
             </Link>
           </Button>
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold tracking-tight">🌐 Servicios de Sitios Web</h1>
+            <h1 className="text-3xl font-bold tracking-tight"> Servicios de Sitios Web</h1>
             <p className="text-muted-foreground">
               Centro de administración profesional para crear y gestionar sitios web de iglesias
             </p>

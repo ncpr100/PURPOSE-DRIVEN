@@ -38,7 +38,7 @@ export default function QualificationSettingsManual() {
       </div>
 
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">🎯 Criterios de Calificación Personalizables</h1>
+        <h1 className="text-3xl font-bold tracking-tight"> Criterios de Calificación Personalizables</h1>
         <p className="text-xl text-muted-foreground">
           Manual completo para configurar criterios de voluntarios y liderazgo por iglesia
         </p>
@@ -96,7 +96,7 @@ export default function QualificationSettingsManual() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-3">❌ Sistema Anterior (Fijo)</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-3"> Sistema Anterior (Fijo)</h4>
               <ul className="space-y-2 text-sm">
                 <li>• Candidatos voluntarios: Solo verificación de estado no-voluntario</li>
                 <li>• Liderazgo: Requisito fijo de 1 año de membresía</li>
@@ -106,7 +106,7 @@ export default function QualificationSettingsManual() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-[hsl(var(--success))] mb-3">✅ Sistema Nuevo (Personalizable)</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-3"> Sistema Nuevo (Personalizable)</h4>
               <ul className="space-y-2 text-sm">
                 <li>• Tiempo mínimo de membresía configurable</li>
                 <li>• Requisitos de evaluación espiritual opcionales</li>
@@ -177,7 +177,7 @@ export default function QualificationSettingsManual() {
         <CardContent className="space-y-6">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-[hsl(var(--success))] mb-2">📑 Tab 1: Candidatos Voluntarios</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-2"> Tab 1: Candidatos Voluntarios</h4>
               <div className="ml-4 space-y-2 text-sm">
                 <p><strong>Mínimo de días como miembro:</strong> Input numérico (0 = sin restricción)</p>
                 <p><strong>Puntaje mínimo de madurez espiritual:</strong> Slider 0-100%</p>
@@ -187,7 +187,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div>
-              <h4 className="font-semibold text-[hsl(var(--lavender))] mb-2">👑 Tab 2: Listos para Liderazgo</h4>
+              <h4 className="font-semibold text-[hsl(var(--lavender))] mb-2"> Tab 2: Listos para Liderazgo</h4>
               <div className="ml-4 space-y-2 text-sm">
                 <p><strong>Mínimo de días como miembro:</strong> Input numérico (predeterminado: 365)</p>
                 <p><strong>Mínimo de días como voluntario:</strong> Input numérico (0 = sin restricción)</p>
@@ -198,7 +198,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div>
-              <h4 className="font-semibold text-[hsl(var(--info))] mb-2">🧠 Tab 3: Sistema de Puntuación</h4>
+              <h4 className="font-semibold text-[hsl(var(--info))] mb-2"> Tab 3: Sistema de Puntuación</h4>
               <div className="ml-4 space-y-2 text-sm">
                 <p><strong>Sistemas habilitados:</strong> Switches para evaluación de madurez, aptitud y pasión ministerial</p>
                 <p><strong>Pesos de puntuación:</strong> Sliders para ajustar importancia de cada factor (deben sumar 100%)</p>
@@ -233,7 +233,7 @@ export default function QualificationSettingsManual() {
 
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold">📊 Puntuaciones Automáticas Generadas</h4>
+              <h4 className="font-semibold"> Puntuaciones Automáticas Generadas</h4>
               <ul className="text-sm space-y-1 ml-4 mt-2">
                 <li>• <strong>Puntuación de Preparación de Voluntario</strong> (0-100): Madurez espiritual + Pasión ministerial + Disponibilidad + Experiencia</li>
                 <li>• <strong>Puntuación de Preparación de Liderazgo</strong> (0-100): Aptitudes de liderazgo + Capacitación + Experiencia + Mentoría</li>
@@ -242,7 +242,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div>
-              <h4 className="font-semibold">🔄 Actualización en Tiempo Real</h4>
+              <h4 className="font-semibold"> Actualización en Tiempo Real</h4>
               <p className="text-sm text-muted-foreground">
                 Los cambios en criterios se reflejan inmediatamente en:
               </p>
@@ -268,7 +268,7 @@ export default function QualificationSettingsManual() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="border rounded-lg p-4">
-              <h4 className="font-semibold text-[hsl(var(--info))] mb-3">🏛️ Iglesia Tradicional Grande</h4>
+              <h4 className="font-semibold text-[hsl(var(--info))] mb-3">️ Iglesia Tradicional Grande</h4>
               <div className="text-sm space-y-2">
                 <p><strong>Voluntarios:</strong> 6 meses membresía, evaluación espiritual obligatoria</p>
                 <p><strong>Liderazgo:</strong> 2 años membresía, 1 año como voluntario, capacitación requerida</p>
@@ -277,7 +277,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div className="border rounded-lg p-4">
-              <h4 className="font-semibold text-[hsl(var(--success))] mb-3">⛪ Iglesia Contemporánea Mediana</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-3"> Iglesia Contemporánea Mediana</h4>
               <div className="text-sm space-y-2">
                 <p><strong>Voluntarios:</strong> 3 meses membresía, evaluación opcional</p>
                 <p><strong>Liderazgo:</strong> 1 año membresía, experiencia voluntaria opcional</p>
@@ -286,7 +286,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div className="border rounded-lg p-4">
-              <h4 className="font-semibold text-[hsl(var(--lavender))] mb-3">🌱 Iglesia Plantación Nueva</h4>
+              <h4 className="font-semibold text-[hsl(var(--lavender))] mb-3"> Iglesia Plantación Nueva</h4>
               <div className="text-sm space-y-2">
                 <p><strong>Voluntarios:</strong> Sin restricción de tiempo, solo estado activo</p>
                 <p><strong>Liderazgo:</strong> 6 meses membresía, sin experiencia voluntaria requerida</p>
@@ -295,7 +295,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div className="border rounded-lg p-4">
-              <h4 className="font-semibold text-[hsl(var(--warning))] mb-3">🎯 Iglesia Enfocada en Misiones</h4>
+              <h4 className="font-semibold text-[hsl(var(--warning))] mb-3"> Iglesia Enfocada en Misiones</h4>
               <div className="text-sm space-y-2">
                 <p><strong>Voluntarios:</strong> 1 mes membresía, evaluación espiritual requerida</p>
                 <p><strong>Liderazgo:</strong> 1 año membresía, capacitación misionera obligatoria</p>
@@ -317,7 +317,7 @@ export default function QualificationSettingsManual() {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h4 className="font-semibold mb-2">🗄️ Base de Datos</h4>
+              <h4 className="font-semibold mb-2">️ Base de Datos</h4>
               <ul className="text-sm space-y-1">
                 <li>• Tabla: <code>church_qualification_settings</code></li>
                 <li>• Campos: 20+ configuraciones por iglesia</li>
@@ -327,7 +327,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-2">🔌 APIs</h4>
+              <h4 className="font-semibold mb-2"> APIs</h4>
               <ul className="text-sm space-y-1">
                 <li>• <code>GET /api/qualification-settings</code></li>
                 <li>• <code>PUT /api/qualification-settings</code></li>
@@ -337,7 +337,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-2">⚡ Performance</h4>
+              <h4 className="font-semibold mb-2"> Performance</h4>
               <ul className="text-sm space-y-1">
                 <li>• Configuración cacheada por iglesia</li>
                 <li>• Actualización en tiempo real de smart lists</li>
@@ -347,7 +347,7 @@ export default function QualificationSettingsManual() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-2">🔒 Seguridad</h4>
+              <h4 className="font-semibold mb-2"> Seguridad</h4>
               <ul className="text-sm space-y-1">
                 <li>• Control de acceso basado en roles</li>
                 <li>• Validación de rangos numéricos</li>
@@ -370,28 +370,28 @@ export default function QualificationSettingsManual() {
         <CardContent className="space-y-4">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ No aparece la opción &quot;Criterios de Calificación&quot;</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]"> No aparece la opción &quot;Criterios de Calificación&quot;</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Verificar que el usuario tenga rol SUPER_ADMIN, ADMIN_IGLESIA o PASTOR
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Los pesos de IA no suman 100%</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]"> Los pesos de IA no suman 100%</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Ajustar sliders hasta que la suma sea exactamente 1.00 (100%). El sistema muestra alerta en tiempo real.
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Los smart lists no se actualizan</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]"> Los smart lists no se actualizan</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Refrescar la página de Miembros. Los contadores se actualizan automáticamente al guardar cambios.
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Error al guardar configuración</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]"> Error al guardar configuración</h4>
               <p className="text-sm text-muted-foreground ml-4">
                 <strong>Solución:</strong> Verificar conexión de red y que todos los campos estén dentro de rangos válidos (0-100 para porcentajes, positivos para días).
               </p>
@@ -411,7 +411,7 @@ export default function QualificationSettingsManual() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <h4 className="font-semibold text-[hsl(var(--success))]">✅ Recomendaciones</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))]"> Recomendaciones</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Iniciar con configuración conservadora y ajustar gradualmente</li>
                 <li>• Documentar cambios con fecha y razón</li>
@@ -422,7 +422,7 @@ export default function QualificationSettingsManual() {
               </ul>
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold text-[hsl(var(--destructive))]">❌ Evitar</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))]"> Evitar</h4>
               <ul className="space-y-1 text-sm">
                 <li>• Cambios frecuentes sin análisis de impacto</li>
                 <li>• Criterios extremadamente restrictivos desde el inicio</li>

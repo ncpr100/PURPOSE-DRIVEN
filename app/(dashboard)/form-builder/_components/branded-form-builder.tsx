@@ -155,7 +155,7 @@ export default function BrandedFormBuilder({
     "properties",
   );
 
-  // 🚀 AUTO-SAVE FUNCTIONALITY - NEVER LOSE YOUR WORK!
+  //  AUTO-SAVE FUNCTIONALITY - NEVER LOSE YOUR WORK!
   // CRITICAL: Key is scoped to churchId to prevent cross-tenant draft leakage
   const AUTO_SAVE_KEY = churchId
     ? `form-builder-draft-${churchId}`
@@ -194,9 +194,9 @@ export default function BrandedFormBuilder({
         };
         localStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(draftData));
         setHasLocalDraft(true);
-        console.log("💾 Auto-saved to localStorage"); // DEBUG
+        console.log(" Auto-saved to localStorage"); // DEBUG
       } catch (error) {
-        console.error("❌ Failed to save to localStorage:", error);
+        console.error(" Failed to save to localStorage:", error);
       }
     },
     [AUTO_SAVE_KEY],
@@ -224,7 +224,7 @@ export default function BrandedFormBuilder({
           toast.success(
             `Borrador restaurado desde ${savedTime.toLocaleTimeString()}`,
           );
-          console.log("✅ Draft restored from localStorage"); // DEBUG
+          console.log(" Draft restored from localStorage"); // DEBUG
           return true;
         } else {
           // Clear expired draft
@@ -233,7 +233,7 @@ export default function BrandedFormBuilder({
       }
       return false;
     } catch (error) {
-      console.error("❌ Failed to restore from localStorage:", error);
+      console.error(" Failed to restore from localStorage:", error);
       return false;
     }
   }, [AUTO_SAVE_KEY]);
@@ -283,9 +283,9 @@ export default function BrandedFormBuilder({
       localStorage.removeItem(AUTO_SAVE_KEY);
       setHasUnsavedChanges(false);
       setHasLocalDraft(false);
-      console.log("🗑️ Auto-save cleared after successful save"); // DEBUG
+      console.log("️ Auto-save cleared after successful save"); // DEBUG
     } catch (error) {
-      console.error("❌ Failed to clear auto-save:", error);
+      console.error(" Failed to clear auto-save:", error);
     }
   }, [AUTO_SAVE_KEY]);
 
@@ -340,7 +340,7 @@ export default function BrandedFormBuilder({
   }, [hasUnsavedChanges]);
 
   // Generate QR Code
-  // 🎨 ADVANCED QR GENERATION (using modular function)
+  //  ADVANCED QR GENERATION (using modular function)
   const generateQRCode = async () => {
     // FIXED: Block QR generation if form hasn't been saved yet (prevents unscannable QR codes)
     if (!currentFormSlug) {
@@ -363,16 +363,16 @@ export default function BrandedFormBuilder({
     }
   };
 
-  // 📤 HANDLE IMAGE UPLOADS (using modular function)
+  //  HANDLE IMAGE UPLOADS (using modular function)
   const handleImageUpload = async (
     file: File,
     type: "form-background" | "qr-logo" | "qr-background",
   ) => {
     try {
-      console.log(`📤 Starting ${type} upload:`, file.name, file.size);
+      console.log(` Starting ${type} upload:`, file.name, file.size);
       const url = await uploadImage(file, type);
       console.log(
-        `✅ ${type} upload successful:`,
+        ` ${type} upload successful:`,
         url.substring(0, 50) + "...",
       );
 
@@ -392,7 +392,7 @@ export default function BrandedFormBuilder({
         toast.success("Fondo del formulario subido exitosamente");
       }
     } catch (error: any) {
-      console.error(`❌ ${type} upload failed:`, error);
+      console.error(` ${type} upload failed:`, error);
       toast.error(error.message || "Error al subir la imagen");
     }
   };
@@ -436,7 +436,7 @@ export default function BrandedFormBuilder({
             formMaxWidth: formConfig.formMaxWidth,
           },
           qrConfig: {
-            // 🎨 ALL ADVANCED QR CUSTOMIZATION FIELDS
+            //  ALL ADVANCED QR CUSTOMIZATION FIELDS
             size: qrConfig.size,
             margin: qrConfig.margin,
             backgroundColor: qrConfig.backgroundColor,
@@ -472,14 +472,14 @@ export default function BrandedFormBuilder({
         setSavedForms((prev) => [savedForm.form, ...prev]);
         clearAutoSave();
         toast.success(
-          "✅ Formulario guardado con personalización completa de iglesia",
+          " Formulario guardado con personalización completa de iglesia",
         );
       } else {
         const error = await response.json();
         throw new Error(error.error || "Failed to save form");
       }
     } catch (error: any) {
-      console.error("❌ Save error:", error);
+      console.error(" Save error:", error);
       toast.error(error.message || "Error guardando formulario");
     }
   };

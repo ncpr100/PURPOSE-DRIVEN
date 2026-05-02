@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
       volunteerStats = results[5];
     } catch (dbError) {
       console.log(
-        "⚠️ Database unavailable for analytics overview, using fallback data",
+        "️ Database unavailable for analytics overview, using fallback data",
       );
       // Fallback data already initialized above
     }
@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
       previousSocialPosts = growthResults[3];
     } catch (dbError) {
       console.log(
-        "⚠️ Database unavailable for growth analytics, using zero growth",
+        "️ Database unavailable for growth analytics, using zero growth",
       );
       // Fallback data already initialized above
     }

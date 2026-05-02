@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log(`📨 Push notification sent - Success: ${result.success}, Failed: ${result.failed}`)
+    console.log(` Push notification sent - Success: ${result.success}, Failed: ${result.failed}`)
 
     return NextResponse.json({
       success: true,

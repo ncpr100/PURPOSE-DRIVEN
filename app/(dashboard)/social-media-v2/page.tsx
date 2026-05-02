@@ -67,7 +67,7 @@ export default async function SocialMediaV2Page() {
     }) || null
 
   } catch (error) {
-    console.log('⚠️ Database unavailable for social media page, using fallback data')
+    console.log('️ Database unavailable for social media page, using fallback data')
     // Use fallback data when database fails
     connectedAccounts = []
     aiAddon = null

@@ -118,7 +118,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
     setLoading(true)
     
     try {
-      toast.info('🎯 Iniciando análisis completo del pipeline de reclutamiento...')
+      toast.info(' Iniciando análisis completo del pipeline de reclutamiento...')
       
       const response = await fetch('/api/recruitment-pipeline', {
         method: 'POST',
@@ -134,7 +134,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
       setSummary(data.summary)
       setInsights(data.insights)
       
-      toast.success(`✅ Análisis completado: ${data.summary.qualifiedCandidates} candidatos identificados`)
+      toast.success(`Análisis completado: ${data.summary.qualifiedCandidates} candidatos identificados`)
       
     } catch (error) {
       console.error('Error running recruitment analysis:', error)
@@ -147,7 +147,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
   // Start onboarding workflow for a candidate
   const startOnboardingWorkflow = async (profile: MemberRecruitmentProfile, ministryId: string) => {
     try {
-      toast.info(`🚀 Iniciando workflow de onboarding para ${profile.memberName}...`)
+      toast.info(` Iniciando workflow de onboarding para ${profile.memberName}...`)
       
       const response = await fetch('/api/recruitment-pipeline/onboarding-workflows', {
         method: 'POST',
@@ -164,7 +164,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
       
       const data = await response.json()
       
-      toast.success(`✅ Workflow iniciado: ${data.workflow.totalSteps} pasos programados`)
+      toast.success(`Workflow iniciado: ${data.workflow.totalSteps} pasos programados`)
       
     } catch (error) {
       console.error('Error starting onboarding:', error)
@@ -174,7 +174,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
 
   // Contact candidate directly
   const contactCandidate = async (profile: MemberRecruitmentProfile) => {
-    toast.success(`📧 Contacto programado para ${profile.memberName}`)
+    toast.success(` Contacto programado para ${profile.memberName}`)
     // In a real implementation, this would send an email or create a task
   }
 
@@ -421,7 +421,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                       if (!insights) return;
                       // Switch to detailed insights tab
                       setActiveTab('insights');
-                      toast.info('📊 Mostrando oportunidades de ministerio identificadas');
+                      toast.info('Mostrando oportunidades de ministerio identificadas');
                     }}
                   >
                     <Eye className="h-4 w-4 mr-2" />
@@ -597,7 +597,7 @@ export function RecruitmentPipelineDashboard({ churchId, userRole }: Recruitment
                             variant="outline"
                             onClick={() => {
                               // Show member profile details
-                              toast.info(`👤 Abriendo perfil de ${profile.memberName}`);
+                              toast.info(` Abriendo perfil de ${profile.memberName}`);
                               // NOTE: In production, this would navigate to member profile page
                               // window.location.href = `/members/${profile.memberId}`;
                             }}

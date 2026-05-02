@@ -68,7 +68,7 @@ export const SPIRITUAL_GIFT_CATEGORIES: SpiritualGiftCategory[] = [
   {
     id: 'artistico',
     name: 'Artístico',
-    icon: '🎨',
+    icon: '',
     color: 'from-purple-500 to-pink-500',
     description: 'Dones creativos y expresivos para la adoración y comunicación visual',
     subcategories: [
@@ -109,7 +109,7 @@ export const SPIRITUAL_GIFT_CATEGORIES: SpiritualGiftCategory[] = [
   {
     id: 'comunicacion',
     name: 'Comunicación',
-    icon: '💬',
+    icon: '',
     color: 'from-blue-500 to-cyan-500',
     description: 'Dones de proclamación, enseñanza y comunicación de la Palabra',
     subcategories: [
@@ -150,7 +150,7 @@ export const SPIRITUAL_GIFT_CATEGORIES: SpiritualGiftCategory[] = [
   {
     id: 'equilibrar',
     name: 'Equilibrar',
-    icon: '⚖️',
+    icon: '️',
     color: 'from-green-500 to-teal-500',
     description: 'Dones de discernimiento, sabiduría y balance espiritual',
     subcategories: [
@@ -175,7 +175,7 @@ export const SPIRITUAL_GIFT_CATEGORIES: SpiritualGiftCategory[] = [
   {
     id: 'liderazgo',
     name: 'Liderazgo',
-    icon: '👑',
+    icon: '',
     color: 'from-yellow-500 to-orange-500',
     description: 'Dones de liderazgo, administración y gestión de recursos',
     subcategories: [
@@ -200,7 +200,7 @@ export const SPIRITUAL_GIFT_CATEGORIES: SpiritualGiftCategory[] = [
   {
     id: 'ministerial',
     name: 'Ministerial',
-    icon: '🙏',
+    icon: '',
     color: 'from-indigo-500 to-purple-500',
     description: 'Dones para ministerios específicos y grupos demográficos',
     subcategories: [
@@ -225,7 +225,7 @@ export const SPIRITUAL_GIFT_CATEGORIES: SpiritualGiftCategory[] = [
   {
     id: 'relacional',
     name: 'Relacional',
-    icon: '🤝',
+    icon: '',
     color: 'from-pink-500 to-rose-500',
     description: 'Dones de relaciones, cuidado pastoral y construcción de comunidad',
     subcategories: [
@@ -258,7 +258,7 @@ export const SPIRITUAL_GIFT_CATEGORIES: SpiritualGiftCategory[] = [
   {
     id: 'servicio',
     name: 'Servicio',
-    icon: '❤️',
+    icon: '️',
     color: 'from-red-500 to-pink-500',
     description: 'Dones prácticos de servicio, ayuda y compasión',
     subcategories: [
@@ -299,7 +299,7 @@ export const SPIRITUAL_GIFT_CATEGORIES: SpiritualGiftCategory[] = [
   {
     id: 'tecnico',
     name: 'Técnico',
-    icon: '🔧',
+    icon: '',
     color: 'from-gray-500 to-slate-500',
     description: 'Dones técnicos, tecnológicos y especializados',
     subcategories: [
@@ -536,7 +536,7 @@ export function getCategoryIcon(subcategoryId: string): string {
       return category.icon
     }
   }
-  return '🎯' // default
+  return '' // default
 }
 
 /**
@@ -585,9 +585,9 @@ export const SPIRITUAL_GIFTS_SUMMARY = {
 
 // Log configuration summary (development only)
 if (process.env.NODE_ENV === 'development') {
-  console.log('✅ Spiritual Gifts Configuration Loaded')
-  console.log(`   📊 ${SPIRITUAL_GIFTS_SUMMARY.totalCategories} categories`)
-  console.log(`   🎯 ${SPIRITUAL_GIFTS_SUMMARY.totalSubcategories} subcategories`)
-  console.log(`   👑 ${SPIRITUAL_GIFTS_SUMMARY.highLeadershipGifts} leadership gifts`)
-  console.log(`   ❤️  ${SPIRITUAL_GIFTS_SUMMARY.totalMinistryPassions} ministry passions`)
+  console.log(' Spiritual Gifts Configuration Loaded')
+  console.log(`    ${SPIRITUAL_GIFTS_SUMMARY.totalCategories} categories`)
+  console.log(`    ${SPIRITUAL_GIFTS_SUMMARY.totalSubcategories} subcategories`)
+  console.log(`    ${SPIRITUAL_GIFTS_SUMMARY.highLeadershipGifts} leadership gifts`)
+  console.log(`   ️  ${SPIRITUAL_GIFTS_SUMMARY.totalMinistryPassions} ministry passions`)
 }

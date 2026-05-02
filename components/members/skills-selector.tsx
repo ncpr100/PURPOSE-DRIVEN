@@ -16,11 +16,11 @@ interface SkillsSelectorProps {
 }
 
 const SKILL_CATEGORIES = [
-  { id: 'Technical', name: '🔧 Técnicas' },
-  { id: 'Creative', name: '🎨 Creativas' },
-  { id: 'Administrative', name: '📋 Administrativas' },
-  { id: 'Professional', name: '💼 Profesionales' },
-  { id: 'Trades', name: '🛠️ Oficios' }
+  { id: 'Technical', name: ' Técnicas' },
+  { id: 'Creative', name: ' Creativas' },
+  { id: 'Administrative', name: ' Administrativas' },
+  { id: 'Professional', name: ' Profesionales' },
+  { id: 'Trades', name: '️ Oficios' }
 ] as const
 
 const PREDEFINED_SKILLS: Record<string, string[]> = {

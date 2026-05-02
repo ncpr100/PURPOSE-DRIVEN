@@ -390,7 +390,7 @@ export async function POST(request: NextRequest) {
       resolvedConflicts
     })
   } catch (error) {
-    console.error('❌ Error en sistema de resolución de conflictos:', error)
+    console.error(' Error en sistema de resolución de conflictos:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' }, 
       { status: 500 }

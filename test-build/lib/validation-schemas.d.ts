@@ -1,5 +1,5 @@
 /**
- * ✅ SECURITY: Comprehensive Input Validation Schemas
+ *  SECURITY: Comprehensive Input Validation Schemas
  *
  * This file contains Zod validation schemas for all API endpoints
  * to prevent injection attacks and ensure data integrity.

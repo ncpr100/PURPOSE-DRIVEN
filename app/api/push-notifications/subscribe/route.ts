@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     // Send welcome push notification
     try {
       await PushNotificationService.sendToUser(user.id, {
-        title: '🔔 ¡Notificaciones Activadas!',
+        title: ' ¡Notificaciones Activadas!',
         body: 'Ahora recibirás notificaciones importantes de la iglesia.',
         icon: '/icons/icon-192.png',
         tag: 'welcome-push',
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       // Don't fail the subscription if welcome notification fails
     }
 
-    console.log(`✅ Push notification subscription created for user ${user.id}`)
+    console.log(` Push notification subscription created for user ${user.id}`)
 
     return NextResponse.json({ 
       success: true, 

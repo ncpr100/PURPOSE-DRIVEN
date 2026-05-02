@@ -73,7 +73,7 @@ export async function PUT(request: NextRequest, props: { params: Promise<{ id: s
       }
     })
 
-    console.log(`✅ Event updated: ${updatedEvent.id} - ${updatedEvent.title} by user ${session.user.id}`)
+    console.log(` Event updated: ${updatedEvent.id} - ${updatedEvent.title} by user ${session.user.id}`)
 
     return NextResponse.json(updatedEvent)
   } catch (error) {
@@ -119,7 +119,7 @@ export async function DELETE(request: NextRequest, props: { params: Promise<{ id
       }
     })
 
-    console.log(`🗑️ Event cancelled: ${deletedEvent.id} - ${deletedEvent.title} by user ${session.user.id}`)
+    console.log(`️ Event cancelled: ${deletedEvent.id} - ${deletedEvent.title} by user ${session.user.id}`)
 
     return NextResponse.json({ success: true, message: 'Evento cancelado exitosamente' })
   } catch (error) {

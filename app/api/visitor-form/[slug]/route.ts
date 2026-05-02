@@ -132,7 +132,7 @@ export async function POST(
       },
     });
 
-    // 🔥 TRIGGER AUTOMATION for visitor form submission
+    //  TRIGGER AUTOMATION for visitor form submission
     try {
       const { triggerAutomations, markAutomationTriggered } =
         await import("@/lib/automation-trigger-service");
@@ -162,12 +162,12 @@ export async function POST(
           result.executionIds,
         );
         console.log(
-          `✅ Triggered ${result.rulesTriggered} automation rule(s) for visitor form ${form.name}`,
+          ` Triggered ${result.rulesTriggered} automation rule(s) for visitor form ${form.name}`,
         );
       }
     } catch (automationError) {
       console.error(
-        "❌ Automation trigger failed for visitor submission:",
+        " Automation trigger failed for visitor submission:",
         automationError,
       );
     }

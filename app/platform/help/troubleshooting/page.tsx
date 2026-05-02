@@ -23,7 +23,7 @@ export default function PlatformTroubleshootingManual() {
     <div className="container mx-auto p-6 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-          🛠️ Manual de Resolución de Problemas - Super Admin
+          ️ Manual de Resolución de Problemas - Super Admin
           <Badge variant="destructive">Confidencial</Badge>
         </h1>
         <p className="text-muted-foreground">
@@ -59,7 +59,7 @@ export default function PlatformTroubleshootingManual() {
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-medium mb-2 text-[hsl(var(--destructive))]">🚨 Síntomas:</h4>
+                  <h4 className="font-medium mb-2 text-[hsl(var(--destructive))]"> Síntomas:</h4>
                   <ul className="text-sm space-y-1">
                     <li>• "Session expired" frecuente</li>
                     <li>• Login loops infinitos</li>
@@ -68,7 +68,7 @@ export default function PlatformTroubleshootingManual() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2 text-[hsl(var(--success))]">✅ Soluciones:</h4>
+                  <h4 className="font-medium mb-2 text-[hsl(var(--success))]"> Soluciones:</h4>
                   <ul className="text-sm space-y-1">
                     <li>• <strong>Verificar JWT_SECRET:</strong> En variables de entorno</li>
                     <li>• <strong>Limpiar cookies:</strong> Hard refresh del navegador</li>
@@ -91,7 +91,7 @@ export default function PlatformTroubleshootingManual() {
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-medium mb-2 text-[hsl(var(--destructive))]">🚨 Síntomas:</h4>
+                  <h4 className="font-medium mb-2 text-[hsl(var(--destructive))]"> Síntomas:</h4>
                   <ul className="text-sm space-y-1">
                     <li>• Queries lentas (&gt;5 segundos)</li>
                     <li>• Timeouts en dashboards</li>
@@ -100,7 +100,7 @@ export default function PlatformTroubleshootingManual() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2 text-[hsl(var(--success))]">✅ Soluciones:</h4>
+                  <h4 className="font-medium mb-2 text-[hsl(var(--success))]"> Soluciones:</h4>
                   <ul className="text-sm space-y-1">
                     <li>• <strong>Reiniciar conexiones:</strong> Pool de Prisma</li>
                     <li>• <strong>Revisar índices:</strong> EXPLAIN queries lentas</li>
@@ -119,7 +119,7 @@ export default function PlatformTroubleshootingManual() {
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-medium mb-2 text-[hsl(var(--destructive))]">🚨 Síntomas:</h4>
+                  <h4 className="font-medium mb-2 text-[hsl(var(--destructive))]"> Síntomas:</h4>
                   <ul className="text-sm space-y-1">
                     <li>• Datos incorrectos en dashboards</li>
                     <li>• Predicciones IA erróneas</li>
@@ -128,7 +128,7 @@ export default function PlatformTroubleshootingManual() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2 text-[hsl(var(--success))]">✅ Soluciones:</h4>
+                  <h4 className="font-medium mb-2 text-[hsl(var(--success))]"> Soluciones:</h4>
                   <ul className="text-sm space-y-1">
                     <li>• <strong>Recalcular métricas:</strong> Trigger manual</li>
                     <li>• <strong>Validar fuentes:</strong> Data integrity check</li>
@@ -147,7 +147,7 @@ export default function PlatformTroubleshootingManual() {
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-medium mb-2 text-[hsl(var(--destructive))]">🚨 Síntomas:</h4>
+                  <h4 className="font-medium mb-2 text-[hsl(var(--destructive))]"> Síntomas:</h4>
                   <ul className="text-sm space-y-1">
                     <li>• Reglas no se ejecutan</li>
                     <li>• Redes sociales no publican</li>
@@ -156,7 +156,7 @@ export default function PlatformTroubleshootingManual() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2 text-[hsl(var(--success))]">✅ Soluciones:</h4>
+                  <h4 className="font-medium mb-2 text-[hsl(var(--success))]"> Soluciones:</h4>
                   <ul className="text-sm space-y-1">
                     <li>• <strong>Verificar APIs externas:</strong> Facebook, etc.</li>
                     <li>• <strong>Revisar cron jobs:</strong> Scheduled tasks</li>
@@ -222,7 +222,7 @@ export default function PlatformTroubleshootingManual() {
             </div>
 
             <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
-              <h4 className="font-semibold text-[hsl(var(--info))] mb-2">🔧 Comando de Diagnóstico Rápido:</h4>
+              <h4 className="font-semibold text-[hsl(var(--info))] mb-2"> Comando de Diagnóstico Rápido:</h4>
               <div className="font-mono text-sm bg-[hsl(var(--info)/0.15)] p-2 rounded">
                 <code>node scripts/platform-health-check.js</code>
               </div>
@@ -246,7 +246,7 @@ export default function PlatformTroubleshootingManual() {
             <div className="grid gap-4">
               <div className="border border-[hsl(var(--warning)/0.3)] rounded-lg p-4 bg-[hsl(var(--warning)/0.10)]">
                 <h3 className="font-semibold text-lg mb-3 text-[hsl(var(--warning))]">
-                  ⚠️ Nivel 1 - Problemas Menores
+                  ️ Nivel 1 - Problemas Menores
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -272,7 +272,7 @@ export default function PlatformTroubleshootingManual() {
 
               <div className="border border-[hsl(var(--warning)/0.3)] rounded-lg p-4 bg-[hsl(var(--warning)/0.10)]">
                 <h3 className="font-semibold text-lg mb-3 text-[hsl(var(--warning))]">
-                  🚨 Nivel 2 - Problemas Críticos
+                   Nivel 2 - Problemas Críticos
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -298,7 +298,7 @@ export default function PlatformTroubleshootingManual() {
 
               <div className="border border-[hsl(var(--destructive)/0.3)] rounded-lg p-4 bg-[hsl(var(--destructive)/0.10)]">
                 <h3 className="font-semibold text-lg mb-3 text-[hsl(var(--destructive))]">
-                  🔥 Nivel 3 - Emergencia de Sistema
+                   Nivel 3 - Emergencia de Sistema
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -337,40 +337,40 @@ export default function PlatformTroubleshootingManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🚨 Escalamiento Técnico:</h4>
+                <h4 className="font-semibold mb-3"> Escalamiento Técnico:</h4>
                 <div className="space-y-2 text-sm">
                   <div className="border rounded p-2">
                     <strong>Desarrollo Senior:</strong><br />
-                    📧 tech-emergency@khesed-tek.com<br />
-                    📱 +1 (555) 123-TECH
+                     tech-emergency@khesed-tek.com<br />
+                     +1 (555) 123-TECH
                   </div>
                   <div className="border rounded p-2">
                     <strong>DevOps/Infraestructura:</strong><br />
-                    📧 infra-alert@khesed-tek.com<br />
-                    📱 +1 (555) 456-INFRA
+                     infra-alert@khesed-tek.com<br />
+                     +1 (555) 456-INFRA
                   </div>
                 </div>
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">🏢 Escalamiento Ejecutivo:</h4>
+                <h4 className="font-semibold mb-3"> Escalamiento Ejecutivo:</h4>
                 <div className="space-y-2 text-sm">
                   <div className="border rounded p-2">
                     <strong>CTO:</strong><br />
-                    📧 cto@khesed-tek.com<br />
-                    📱 +1 (555) 789-CTO
+                     cto@khesed-tek.com<br />
+                     +1 (555) 789-CTO
                   </div>
                   <div className="border rounded p-2">
                     <strong>CEO (Solo Nivel 3):</strong><br />
-                    📧 ceo@khesed-tek.com<br />
-                    📱 +1 (555) 000-CEO
+                     ceo@khesed-tek.com<br />
+                     +1 (555) 000-CEO
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded-lg p-4">
-              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">⚡ Protocolo de Emergencia 24/7:</h4>
+              <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> Protocolo de Emergencia 24/7:</h4>
               <ol className="text-sm text-[hsl(var(--destructive))] space-y-1">
                 <li>1. <strong>Evaluar severidad:</strong> Usar niveles 1-3 definidos arriba</li>
                 <li>2. <strong>Documentar problema:</strong> Screenshot, logs, pasos para reproducir</li>
@@ -394,7 +394,7 @@ export default function PlatformTroubleshootingManual() {
             
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔄 Recuperación de Datos:</h4>
+                <h4 className="font-semibold mb-3"> Recuperación de Datos:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Backup automático:</strong> Daily 2 AM UTC</li>
                   <li>• <strong>Retención:</strong> 30 días rolling</li>
@@ -405,7 +405,7 @@ export default function PlatformTroubleshootingManual() {
               </div>
               
               <div>
-                <h4 className="font-semibold mb-3">🚀 Recuperación de Servicio:</h4>
+                <h4 className="font-semibold mb-3"> Recuperación de Servicio:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Rollback de código:</strong> Git previous stable</li>
                   <li>• <strong>Restart servicios:</strong> PM2 cluster restart</li>
@@ -417,22 +417,22 @@ export default function PlatformTroubleshootingManual() {
             </div>
 
             <div className="bg-[hsl(var(--success)/0.10)] border border-[hsl(var(--success)/0.3)] rounded-lg p-4">
-              <h4 className="font-semibold text-[hsl(var(--success))] mb-2">✅ Checklist Post-Recuperación:</h4>
+              <h4 className="font-semibold text-[hsl(var(--success))] mb-2"> Checklist Post-Recuperación:</h4>
               <div className="grid md:grid-cols-2 gap-4 text-sm text-[hsl(var(--success))]">
                 <div>
                   <ul className="space-y-1">
-                    <li>☐ Servicios críticos funcionando</li>
-                    <li>☐ Autenticación operativa</li>
-                    <li>☐ Base de datos respondiendo</li>
-                    <li>☐ APIs externas conectadas</li>
+                    <li> Servicios críticos funcionando</li>
+                    <li> Autenticación operativa</li>
+                    <li> Base de datos respondiendo</li>
+                    <li> APIs externas conectadas</li>
                   </ul>
                 </div>
                 <div>
                   <ul className="space-y-1">
-                    <li>☐ Cache repopulado</li>
-                    <li>☐ Analíticas actualizadas</li>
-                    <li>☐ Notificaciones funcionando</li>
-                    <li>☐ Usuarios notificados de resolución</li>
+                    <li> Cache repopulado</li>
+                    <li> Analíticas actualizadas</li>
+                    <li> Notificaciones funcionando</li>
+                    <li> Usuarios notificados de resolución</li>
                   </ul>
                 </div>
               </div>

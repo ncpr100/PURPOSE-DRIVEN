@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // 🔥 TRIGGER AUTOMATION for visitor check-in
+    //  TRIGGER AUTOMATION for visitor check-in
     try {
       const { triggerAutomations, markAutomationTriggered } = await import('@/lib/automation-trigger-service')
       
@@ -168,10 +168,10 @@ export async function POST(request: NextRequest) {
       
       if (result.success && result.rulesTriggered > 0) {
         await markAutomationTriggered('check_in', checkIn.id, result.executionIds)
-        console.log(`✅ Triggered ${result.rulesTriggered} automation rule(s) for ${triggerType}`)
+        console.log(` Triggered ${result.rulesTriggered} automation rule(s) for ${triggerType}`)
       }
     } catch (automationError) {
-      console.error('❌ Automation trigger failed for check-in:', automationError)
+      console.error(' Automation trigger failed for check-in:', automationError)
     }
 
     return NextResponse.json(checkIn, { status: 201 })

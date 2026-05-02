@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       });
     } catch (dbError) {
       console.log(
-        "⚠️ REPORTS: Database connection failed, returning empty reports",
+        "️ REPORTS: Database connection failed, returning empty reports",
       );
       reports = [];
     }

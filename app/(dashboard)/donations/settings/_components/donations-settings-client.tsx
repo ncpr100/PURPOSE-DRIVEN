@@ -508,12 +508,12 @@ export default function DonationsSettingsClient({
               <div className="p-3 bg-muted/30 rounded-lg text-sm text-muted-foreground">
                 <strong>Métodos incluidos por país:</strong>
                 <div className="mt-2 grid grid-cols-2 gap-1 text-xs">
-                  <span>🇨🇴 Colombia: PSE, Efecty, tarjetas</span>
-                  <span>🇧🇷 Brasil: PIX, Boleto, tarjetas</span>
-                  <span>🇲🇽 México: OXXO, SPEI, tarjetas</span>
-                  <span>🇦🇷 Argentina: Rapipago, Pago Fácil, tarjetas</span>
-                  <span>🇨🇱 Chile: Khipu, tarjetas</span>
-                  <span>🇵🇪 Perú: PagoEfectivo, tarjetas</span>
+                  <span>Colombia: PSE, Efecty, tarjetas</span>
+                  <span>Brasil: PIX, Boleto, tarjetas</span>
+                  <span>México: OXXO, SPEI, tarjetas</span>
+                  <span>Argentina: Rapipago, Pago Fácil, tarjetas</span>
+                  <span>Chile: Khipu, tarjetas</span>
+                  <span>Perú: PagoEfectivo, tarjetas</span>
                 </div>
               </div>
               <div className="flex justify-between items-center">
@@ -534,7 +534,7 @@ export default function DonationsSettingsClient({
               <CardTitle className="flex items-center gap-2">
                 <Building className="h-5 w-5 text-[hsl(var(--warning))]" />
                 Pasarelas Colombia
-                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">🇨🇴 Colombia</Badge>
+                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))]">Colombia</Badge>
                 {!countryGateways.includes('pse') && (
                   <Badge variant="secondary" className="ml-1 bg-muted/50 text-muted-foreground text-xs">No disponible en {churchCountry}</Badge>
                 )}
@@ -574,7 +574,7 @@ export default function DonationsSettingsClient({
               <CardTitle className="flex items-center gap-2">
                 <Phone className="h-5 w-5 text-[hsl(var(--success))]" />
                 PIX – Brasil
-                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">🇧🇷 Brasil</Badge>
+                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">Brasil</Badge>
                 {!countryGateways.includes('pix') && (
                   <Badge variant="secondary" className="ml-1 bg-muted/50 text-muted-foreground text-xs">No disponible en {churchCountry}</Badge>
                 )}
@@ -609,7 +609,7 @@ export default function DonationsSettingsClient({
               <CardTitle className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-[hsl(var(--destructive))]" />
                 Pasarelas México
-                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]">🇲🇽 México</Badge>
+                <Badge variant="secondary" className="ml-2 bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]">México</Badge>
                 {!countryGateways.includes('spei') && (
                   <Badge variant="secondary" className="ml-1 bg-muted/50 text-muted-foreground text-xs">No disponible en {churchCountry}</Badge>
                 )}

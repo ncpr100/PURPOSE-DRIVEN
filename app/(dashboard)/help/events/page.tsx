@@ -8,12 +8,12 @@ import Link from 'next/link'
 
 export default function EventsHelp() {
   const eventTypes = [
-    { type: "Servicio Regular", icon: "⛪", description: "Servicios dominicales y semanales", frequency: "Semanal" },
-    { type: "Evento Especial", icon: "🎉", description: "Conferencias, conciertos, celebraciones", frequency: "Ocasional" },
-    { type: "Retiro Espiritual", icon: "🙏", description: "Retiros de fin de semana o días", frequency: "Mensual/Trimestral" },
-    { type: "Actividad Juvenil", icon: "🎸", description: "Eventos para jóvenes y adolescentes", frequency: "Semanal" },
-    { type: "Reunión de Oración", icon: "🕊️", description: "Encuentros de oración y adoración", frequency: "Semanal" },
-    { type: "Estudio Bíblico", icon: "📖", description: "Clases y estudios grupales", frequency: "Semanal" }
+    { type: "Servicio Regular", icon: "", description: "Servicios dominicales y semanales", frequency: "Semanal" },
+    { type: "Evento Especial", icon: "", description: "Conferencias, conciertos, celebraciones", frequency: "Ocasional" },
+    { type: "Retiro Espiritual", icon: "", description: "Retiros de fin de semana o días", frequency: "Mensual/Trimestral" },
+    { type: "Actividad Juvenil", icon: "", description: "Eventos para jóvenes y adolescentes", frequency: "Semanal" },
+    { type: "Reunión de Oración", icon: "️", description: "Encuentros de oración y adoración", frequency: "Semanal" },
+    { type: "Estudio Bíblico", icon: "", description: "Clases y estudios grupales", frequency: "Semanal" }
   ]
 
   const eventFeatures = [
@@ -122,7 +122,7 @@ export default function EventsHelp() {
                   <div className="grid md:grid-cols-2 gap-2">
                     {feature.features.map((item, index) => (
                       <div key={index} className="flex items-center text-sm">
-                        <span className="mr-2 text-[hsl(var(--success))]">✓</span>
+                        <span className="mr-2 text-[hsl(var(--success))]"></span>
                         {item}
                       </div>
                     ))}
@@ -164,28 +164,28 @@ export default function EventsHelp() {
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>💡 Consejos para el Éxito</CardTitle>
+              <CardTitle> Consejos para el Éxito</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 text-sm">
-                <p>📅 <strong>Planifique con anticipación:</strong> Cree eventos con al menos 2 semanas de anticipación</p>
-                <p>📱 <strong>Promocione activamente:</strong> Use todas las herramientas de comunicación disponibles</p>
-                <p>🎯 <strong>Sea específico:</strong> Proporcione detalles claros sobre qué esperar</p>
-                <p>⏰ <strong>Confirme asistencia:</strong> Envíe recordatorios 24-48 horas antes</p>
+                <p> <strong>Planifique con anticipación:</strong> Cree eventos con al menos 2 semanas de anticipación</p>
+                <p> <strong>Promocione activamente:</strong> Use todas las herramientas de comunicación disponibles</p>
+                <p> <strong>Sea específico:</strong> Proporcione detalles claros sobre qué esperar</p>
+                <p> <strong>Confirme asistencia:</strong> Envíe recordatorios 24-48 horas antes</p>
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>📊 Métricas Importantes</CardTitle>
+              <CardTitle> Métricas Importantes</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 text-sm">
-                <p>👥 <strong>Tasa de asistencia:</strong> % de registrados que asisten</p>
-                <p>📈 <strong>Crecimiento:</strong> Comparar asistencia mes a mes</p>
+                <p> <strong>Tasa de asistencia:</strong> % de registrados que asisten</p>
+                <p> <strong>Crecimiento:</strong> Comparar asistencia mes a mes</p>
                 <p>⭐ <strong>Satisfacción:</strong> Feedback post-evento</p>
-                <p>🔄 <strong>Retención:</strong> Miembros que regresan a eventos</p>
+                <p> <strong>Retención:</strong> Miembros que regresan a eventos</p>
               </div>
             </CardContent>
           </Card>
@@ -201,7 +201,7 @@ export default function EventsHelp() {
         </Link>
         <Link href="/help/manual/events">
           <Button variant="outline">
-            📖 Ver Manual Detallado
+             Ver Manual Detallado
           </Button>
         </Link>
       </div>

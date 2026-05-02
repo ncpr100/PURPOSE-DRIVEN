@@ -340,16 +340,16 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
   }
 
   const handleDownload = async (format: 'pdf' | 'word' | 'text' | 'markdown' | 'html') => {
-    console.log('🚀 Download button clicked for format:', format)
+    console.log(' Download button clicked for format:', format)
     
     if (!generatedContent.trim() || !formData.title.trim()) {
-      console.log('❌ Validation failed - missing content or title')
+      console.log(' Validation failed - missing content or title')
       toast.error('Por favor genera un sermón y agrega un título antes de descargar')
       return
     }
 
     try {
-      console.log(`✅ Starting download process for ${format}...`)
+      console.log(` Starting download process for ${format}...`)
       
       const sermonData: SermonData = {
         title: formData.title,
@@ -361,37 +361,37 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
         church: 'Iglesia'
       }
 
-      console.log('📄 Sermon data prepared:', { title: sermonData.title, contentLength: sermonData.content.length })
+      console.log(' Sermon data prepared:', { title: sermonData.title, contentLength: sermonData.content.length })
 
       // Simple direct download approach
       switch (format) {
         case 'pdf':
-          console.log('📱 Attempting PDF download...')
+          console.log(' Attempting PDF download...')
           await downloadSimplePDF(sermonData)
           break
         case 'word':
-          console.log('📝 Attempting Word download...')
+          console.log(' Attempting Word download...')
           await downloadSimpleWord(sermonData)
           break
         case 'text':
-          console.log('📄 Attempting Text download...')
+          console.log(' Attempting Text download...')
           await downloadSimpleText(sermonData)
           break
         case 'markdown':
-          console.log('📋 Attempting Markdown download...')
+          console.log(' Attempting Markdown download...')
           await downloadSimpleMarkdown(sermonData)
           break
         case 'html':
-          console.log('🌐 Attempting HTML download...')
+          console.log(' Attempting HTML download...')
           await downloadSimpleHTML(sermonData)
           break
       }
 
-      console.log(`✅ ${format} download completed successfully`)
+      console.log(` ${format} download completed successfully`)
       toast.success(`Sermón descargado exitosamente en formato ${format.toUpperCase()}`)
       
     } catch (error) {
-      console.error('❌ Download error:', error)
+      console.error(' Download error:', error)
       toast.error(`Error descargando el sermón en formato ${format.toUpperCase()}: ${error instanceof Error ? error.message : 'Error desconocido'}`)
     }
   }
@@ -483,16 +483,16 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
   }
 
   const handleSave = async () => {
-    console.log('💾 Save button clicked')
+    console.log(' Save button clicked')
     
     if (!generatedContent.trim() || !formData.title.trim()) {
-      console.log('❌ Save validation failed - missing content or title')
+      console.log(' Save validation failed - missing content or title')
       toast.error('Por favor genera un sermón y agrega un título antes de guardar')
       return
     }
 
     try {
-      console.log('✅ Starting save process...', formData.title)
+      console.log(' Starting save process...', formData.title)
       
       // Simple approach - try to save directly without complex authentication
       const sermonData = {
@@ -503,7 +503,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
         date: new Date().toISOString()
       }
 
-      console.log('📄 Attempting to call save API...', sermonData.title)
+      console.log(' Attempting to call save API...', sermonData.title)
       
       const response = await fetch('/api/sermons', {
         method: 'POST',
@@ -514,28 +514,28 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
         body: JSON.stringify(sermonData),
       })
 
-      console.log('📡 Save API response status:', response.status)
+      console.log(' Save API response status:', response.status)
 
       if (response.status === 401) {
-        console.log('🔒 Authentication issue detected')
+        console.log(' Authentication issue detected')
         toast.error('Error de autenticación. Por favor inicia sesión de nuevo.')
         return
       }
 
       if (response.status === 403) {
-        console.log('🚫 Permission issue detected')
+        console.log(' Permission issue detected')
         toast.error('No tienes permisos para guardar sermones.')
         return
       }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ message: 'Error desconocido' }))
-        console.error('❌ Save API error:', errorData)
+        console.error(' Save API error:', errorData)
         throw new Error(errorData.message || `Error del servidor: ${response.status}`)
       }
 
       const data = await response.json()
-      console.log('✅ Sermon saved successfully:', data.id || 'success')
+      console.log(' Sermon saved successfully:', data.id || 'success')
       
       toast.success('Sermón guardado exitosamente')
       
@@ -555,7 +555,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
         onSave(data)
       }
     } catch (error) {
-      console.error('❌ Save error:', error)
+      console.error(' Save error:', error)
       toast.error(`Error guardando el sermón: ${error instanceof Error ? error.message : 'Error desconocido'}`)
     }
   }
@@ -583,7 +583,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
               15+ Versiones Gratuitas
             </Badge>
             <Badge variant="outline" className="text-xs bg-[hsl(var(--warning)/0.10)] text-[hsl(var(--warning))] border-[hsl(var(--warning)/0.30)]">
-              📄 5 Formatos de Descarga
+               5 Formatos de Descarga
             </Badge>
           </div>
         </CardHeader>
@@ -926,7 +926,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-3">
                         <h4 className="font-semibold text-[hsl(var(--success))] flex items-center gap-2">
-                          ✅ Características Incluidas
+                           Características Incluidas
                         </h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2">
@@ -958,7 +958,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                       
                       <div className="space-y-3">
                         <h4 className="font-semibold text-[hsl(var(--info))] flex items-center gap-2">
-                          🔄 APIs Gratuitas
+                           APIs Gratuitas
                         </h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2">
@@ -986,7 +986,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
 
                       <div className="space-y-3">
                         <h4 className="font-semibold text-[hsl(var(--lavender))] flex items-center gap-2">
-                          📚 Versiones Disponibles
+                           Versiones Disponibles
                         </h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2">
@@ -1020,7 +1020,7 @@ ${scripture ? `**Texto Principal:** ${scripture}` : ''}
                     <div className="mt-6 p-4 bg-[hsl(var(--card))] rounded-lg border border-[hsl(var(--success)/0.3)]">
                       <div className="text-center">
                         <p className="text-sm text-[hsl(var(--success))] mb-2">
-                          <strong>🎯 RESULTADO:</strong> Herramientas 100% gratuitas que eliminan la necesidad de suscripciones premium
+                          <strong> RESULTADO:</strong> Herramientas 100% gratuitas que eliminan la necesidad de suscripciones premium
                         </p>
                         <p className="text-xs text-[hsl(var(--success))]">
                           Usa estas herramientas para encontrar versículos, compararlos y obtener referencias. 

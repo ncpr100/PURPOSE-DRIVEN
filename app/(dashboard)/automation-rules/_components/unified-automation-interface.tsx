@@ -11,7 +11,7 @@ import { CreateAutomationRuleDialog } from './create-automation-rule-dialog'
 import { AutomationTemplates } from './automation-templates'
 import { 
   Zap, Plus, CheckCircle, Clock, TrendingUp, Sparkles,
-  Users, Calendar, MessageCircle, MessageSquare, ArrowRight, Palette, HandHeart
+  Users, Calendar, MessageCircle, MessageSquare, ArrowRight, Palette, HandHeart, Lightbulb
 } from 'lucide-react'
 
 interface AutomationRule {
@@ -438,18 +438,18 @@ export function UnifiedAutomationInterface() {
       <Card className="bg-muted/50">
         <CardContent className="p-6">
           <div className="space-y-4">
-            <h3 className="font-semibold text-lg flex items-center gap-2">💡 ¿Cómo funcionan las automatizaciones?</h3>
+            <h3 className="font-semibold text-lg flex items-center gap-2"><Lightbulb className="h-5 w-5 text-warning" /> ¿Cómo funcionan las automatizaciones?</h3>
             <div className="grid gap-4 md:grid-cols-3 text-sm">
               <div className="space-y-2">
-                <p className="font-medium">1️⃣ Disparador</p>
+                <p className="font-medium">1. Disparador</p>
                 <p className="text-muted-foreground">La automatización se activa cuando ocurre un evento específico (nueva petición de oración, visitante, etc.)</p>
               </div>
               <div className="space-y-2">
-                <p className="font-medium">2️⃣ Condiciones</p>
+                <p className="font-medium">2. Condiciones</p>
                 <p className="text-muted-foreground">Se evalúan condiciones (ej: categoría URGENTE, primera visita) para determinar si continuar</p>
               </div>
               <div className="space-y-2">
-                <p className="font-medium">3️⃣ Acciones</p>
+                <p className="font-medium">3. Acciones</p>
                 <p className="text-muted-foreground">Se ejecutan acciones automáticas (enviar email, SMS, crear tarea, notificar equipo)</p>
               </div>
             </div>

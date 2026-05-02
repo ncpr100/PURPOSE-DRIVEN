@@ -28,7 +28,7 @@ export default function MembersManual() {
         {/* Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>👥 Gestión de Miembros - Manual Completo</CardTitle>
+            <CardTitle> Gestión de Miembros - Manual Completo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -36,19 +36,19 @@ export default function MembersManual() {
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
-                <h4 className="font-semibold">📋 Secciones</h4>
+                <h4 className="font-semibold"> Secciones</h4>
                 <p className="text-xl font-bold text-[hsl(var(--info))]">8</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⏱️ Tiempo</h4>
+                <h4 className="font-semibold">️ Tiempo</h4>
                 <p className="text-xl font-bold text-[hsl(var(--success))]">35 min</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🎯 Nivel</h4>
+                <h4 className="font-semibold"> Nivel</h4>
                 <p className="text-lg font-bold text-[hsl(var(--lavender))]">Básico-Int.</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
-                <h4 className="font-semibold">👤 Rol Mínimo</h4>
+                <h4 className="font-semibold"> Rol Mínimo</h4>
                 <p className="text-lg font-bold text-[hsl(var(--warning))]">LIDER</p>
               </div>
             </div>
@@ -67,19 +67,19 @@ export default function MembersManual() {
             {/* Migration from Church Systems */}
             <div className="bg-gradient-to-r from-primary/20 to-primary/10 p-6 rounded-lg border border-[hsl(var(--info)/0.3)]">
               <h4 className="font-semibold mb-3 flex items-center gap-2">
-                🔄 Migrar desde Otros Sistemas de Iglesia
+                 Migrar desde Otros Sistemas de Iglesia
               </h4>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm mb-3"><strong>Sistemas Soportados:</strong></p>
                   <ul className="text-xs space-y-1 text-muted-foreground">
-                    <li>✅ ChurchTrac → Export to Excel</li>
-                    <li>✅ Planning Center → CSV Export</li>
-                    <li>✅ Church Community Builder → Member Export</li>
-                    <li>✅ FellowshipOne → Excel/CSV</li>
-                    <li>✅ Breeze ChMS → Data Export</li>
-                    <li>✅ Rock RMS → Export Tools</li>
-                    <li>✅ Cualquier sistema con exportación Excel/CSV</li>
+                    <li> ChurchTrac → Export to Excel</li>
+                    <li> Planning Center → CSV Export</li>
+                    <li> Church Community Builder → Member Export</li>
+                    <li> FellowshipOne → Excel/CSV</li>
+                    <li> Breeze ChMS → Data Export</li>
+                    <li> Rock RMS → Export Tools</li>
+                    <li> Cualquier sistema con exportación Excel/CSV</li>
                   </ul>
                 </div>
                 <div>
@@ -99,7 +99,7 @@ export default function MembersManual() {
             {/* Step by Step Process */}
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📊 Proceso Paso a Paso</h4>
+                <h4 className="font-semibold mb-3"> Proceso Paso a Paso</h4>
                 <div className="space-y-3 text-sm">
                   <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Paso 1:</strong> Acceder a Importación</p>
@@ -108,7 +108,7 @@ export default function MembersManual() {
                   
                   <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Paso 2:</strong> Descargar Plantilla</p>
-                    <p className="text-muted-foreground">Haga clic en &quot;📅 Descargar Plantilla CSV&quot; para obtener formato correcto</p>
+                    <p className="text-muted-foreground">Haga clic en &quot; Descargar Plantilla CSV&quot; para obtener formato correcto</p>
                   </div>
                   
                   <div className="p-3 bg-muted/30 rounded-lg">
@@ -118,7 +118,7 @@ export default function MembersManual() {
                   
                   <div className="p-3 bg-muted/30 rounded-lg">
                     <p><strong>Paso 4:</strong> Configurar Opciones</p>
-                    <p className="text-muted-foreground">✅ Marque &quot;Actualizar miembros existentes&quot; si desea sobreescribir</p>
+                    <p className="text-muted-foreground"> Marque &quot;Actualizar miembros existentes&quot; si desea sobreescribir</p>
                   </div>
                   
                   <div className="p-3 bg-muted/30 rounded-lg">
@@ -128,36 +128,36 @@ export default function MembersManual() {
                   
                   <div className="p-3 bg-[hsl(var(--success)/0.10)] rounded-lg border border-[hsl(var(--success)/0.3)]">
                     <p><strong>Paso 6:</strong> Verificar Resultados</p>
-                    <p className="text-muted-foreground">Revise resumen: ✅ Nuevos, 🔄 Actualizados, ❌ Errores</p>
+                    <p className="text-muted-foreground">Revise resumen:  Nuevos,  Actualizados,  Errores</p>
                   </div>
                 </div>
               </div>
               
               <div className="space-y-4">
                 <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border border-[hsl(var(--warning)/0.3)]">
-                  <h4 className="font-semibold mb-2">⚠️ Errores Comunes y Soluciones</h4>
+                  <h4 className="font-semibold mb-2">️ Errores Comunes y Soluciones</h4>
                   <ul className="text-sm space-y-2">
                     <li>
                       <p><strong>Email duplicado:</strong></p>
-                      <p className="text-muted-foreground">✅ Active &quot;Actualizar existentes&quot; o use emails únicos</p>
+                      <p className="text-muted-foreground"> Active &quot;Actualizar existentes&quot; o use emails únicos</p>
                     </li>
                     <li>
                       <p><strong>Formato de fecha inválido:</strong></p>
-                      <p className="text-muted-foreground">✅ Use YYYY-MM-DD o DD/MM/YYYY</p>
+                      <p className="text-muted-foreground"> Use YYYY-MM-DD o DD/MM/YYYY</p>
                     </li>
                     <li>
                       <p><strong>Nombres faltantes:</strong></p>
-                      <p className="text-muted-foreground">✅ firstName y lastName son obligatorios</p>
+                      <p className="text-muted-foreground"> firstName y lastName son obligatorios</p>
                     </li>
                     <li>
                       <p><strong>Archivo muy grande:</strong></p>
-                      <p className="text-muted-foreground">✅ Máximo 10MB, 1000 registros por importación</p>
+                      <p className="text-muted-foreground"> Máximo 10MB, 1000 registros por importación</p>
                     </li>
                   </ul>
                 </div>
                 
                 <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg border border-[hsl(var(--success)/0.3)]">
-                  <h4 className="font-semibold mb-2">💡 Mejores Prácticas</h4>
+                  <h4 className="font-semibold mb-2"> Mejores Prácticas</h4>
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Haga respaldo antes de importación masiva</li>
                     <li>• Pruebe con muestra pequeña primero</li>
@@ -171,7 +171,7 @@ export default function MembersManual() {
 
             {/* Supported Fields Table */}
             <div className="mt-6">
-              <h4 className="font-semibold mb-3">📋 Campos Soportados y Mapeo Automático</h4>
+              <h4 className="font-semibold mb-3"> Campos Soportados y Mapeo Automático</h4>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs border border-border rounded-lg">
@@ -214,7 +214,7 @@ export default function MembersManual() {
                       <tr className="border-t"><td className="p-2">name, full name</td><td className="p-2">Dividido automáticamente</td></tr>
                     </tbody>
                   </table>
-                  <p className="text-xs text-muted-foreground mt-2">🤖 = Procesamiento automático</p>
+                  <p className="text-xs text-muted-foreground mt-2"> = Procesamiento automático</p>
                 </div>
               </div>
             </div>
@@ -232,9 +232,9 @@ export default function MembersManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">➕ Nuevo Miembro</h4>
+                <h4 className="font-semibold mb-3"> Nuevo Miembro</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> En la página de Miembros, haga clic en &quot;➕ Nuevo Miembro&quot;</p>
+                  <p><strong>2.1.</strong> En la página de Miembros, haga clic en &quot; Nuevo Miembro&quot;</p>
                   <p><strong>2.2.</strong> Complete el formulario:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Información Personal:</strong> Nombre, apellidos, email, teléfono</li>
@@ -244,11 +244,11 @@ export default function MembersManual() {
                   </ul>
                   <p><strong>2.3.</strong> Suba foto del miembro (opcional pero recomendado)</p>
                   <p><strong>2.4.</strong> Asigne a ministerios existentes</p>
-                  <p><strong>2.5.</strong> Haga clic en &quot;💾 Guardar Miembro&quot;</p>
+                  <p><strong>2.5.</strong> Haga clic en &quot; Guardar Miembro&quot;</p>
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">✅ Mejores Prácticas</h4>
+                <h4 className="font-semibold mb-2"> Mejores Prácticas</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Siempre incluya email para comunicaciones</li>
                   <li>• Registre fechas importantes (cumpleaños, aniversario)</li>
@@ -272,7 +272,7 @@ export default function MembersManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔍 Búsqueda y Filtros</h4>
+                <h4 className="font-semibold mb-3"> Búsqueda y Filtros</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Barra de Búsqueda:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -289,16 +289,16 @@ export default function MembersManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">🛠️ Acciones por Miembro</h4>
+                <h4 className="font-semibold mb-3">️ Acciones por Miembro</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Desde la lista de miembros:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>👁️ Ver:</strong> Perfil completo del miembro</li>
-                    <li>• <strong>✏️ Editar:</strong> Modificar información</li>
-                    <li>• <strong>📧 Contactar:</strong> Enviar email directo</li>
-                    <li>• <strong>📱 Llamar:</strong> Llamada telefónica directa</li>
-                    <li>• <strong>🗂️ Asignar Ministerio:</strong> Agregar a grupos</li>
-                    <li>• <strong>🗑️ Archivar:</strong> Miembro inactivo (no elimina)</li>
+                    <li>• <strong>️ Ver:</strong> Perfil completo del miembro</li>
+                    <li>• <strong>️ Editar:</strong> Modificar información</li>
+                    <li>• <strong> Contactar:</strong> Enviar email directo</li>
+                    <li>• <strong> Llamar:</strong> Llamada telefónica directa</li>
+                    <li>• <strong>️ Asignar Ministerio:</strong> Agregar a grupos</li>
+                    <li>• <strong>️ Archivar:</strong> Miembro inactivo (no elimina)</li>
                   </ul>
                 </div>
               </div>
@@ -317,7 +317,7 @@ export default function MembersManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📋 Perfil Completo</h4>
+                <h4 className="font-semibold mb-3"> Perfil Completo</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Al hacer clic en un miembro, verá:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -331,16 +331,16 @@ export default function MembersManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">🔧 Acciones del Perfil</h4>
+                <h4 className="font-semibold mb-3"> Acciones del Perfil</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Botones disponibles:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;✏️ Editar Información&quot;:</strong> Modificar datos</li>
-                    <li>• <strong>&quot;📧 Enviar Email&quot;:</strong> Comunicación directa</li>
-                    <li>• <strong>&quot;📞 Registrar Llamada&quot;:</strong> Log de contactos</li>
-                    <li>• <strong>&quot;🏷️ Asignar Etiquetas&quot;:</strong> Clasificación custom</li>
-                    <li>• <strong>&quot;📝 Agregar Nota&quot;:</strong> Seguimiento pastoral</li>
-                    <li>• <strong>&quot;🔄 Ver Historial&quot;:</strong> Actividad completa</li>
+                    <li>• <strong>&quot;️ Editar Información&quot;:</strong> Modificar datos</li>
+                    <li>• <strong>&quot; Enviar Email&quot;:</strong> Comunicación directa</li>
+                    <li>• <strong>&quot; Registrar Llamada&quot;:</strong> Log de contactos</li>
+                    <li>• <strong>&quot;️ Asignar Etiquetas&quot;:</strong> Clasificación custom</li>
+                    <li>• <strong>&quot; Agregar Nota&quot;:</strong> Seguimiento pastoral</li>
+                    <li>• <strong>&quot; Ver Historial&quot;:</strong> Actividad completa</li>
                   </ul>
                 </div>
               </div>
@@ -359,10 +359,10 @@ export default function MembersManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🏛️ Crear Ministerios</h4>
+                <h4 className="font-semibold mb-3">️ Crear Ministerios</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>5.1.</strong> En Miembros, haga clic en &quot;🏛️ Ministerios&quot;</p>
-                  <p><strong>5.2.</strong> Haga clic en &quot;➕ Nuevo Ministerio&quot;</p>
+                  <p><strong>5.1.</strong> En Miembros, haga clic en &quot;️ Ministerios&quot;</p>
+                  <p><strong>5.2.</strong> Haga clic en &quot; Nuevo Ministerio&quot;</p>
                   <p><strong>5.3.</strong> Complete la información:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Nombre del ministerio</li>
@@ -376,15 +376,15 @@ export default function MembersManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">👥 Gestionar Participación</h4>
+                <h4 className="font-semibold mb-3"> Gestionar Participación</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Desde el perfil del ministerio:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;➕ Agregar Miembro&quot;:</strong> Invitar nuevos</li>
-                    <li>• <strong>&quot;🔄 Cambiar Rol&quot;:</strong> Líder, participante</li>
-                    <li>• <strong>&quot;📊 Ver Estadísticas&quot;:</strong> Participación</li>
-                    <li>• <strong>&quot;📅 Programar Reunión&quot;:</strong> Crear eventos</li>
-                    <li>• <strong>&quot;📧 Comunicar&quot;:</strong> Mensaje al grupo</li>
+                    <li>• <strong>&quot; Agregar Miembro&quot;:</strong> Invitar nuevos</li>
+                    <li>• <strong>&quot; Cambiar Rol&quot;:</strong> Líder, participante</li>
+                    <li>• <strong>&quot; Ver Estadísticas&quot;:</strong> Participación</li>
+                    <li>• <strong>&quot; Programar Reunión&quot;:</strong> Crear eventos</li>
+                    <li>• <strong>&quot; Comunicar&quot;:</strong> Mensaje al grupo</li>
                   </ul>
                 </div>
               </div>
@@ -403,7 +403,7 @@ export default function MembersManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🎁 Gestión de Dones Espirituales</h4>
+                <h4 className="font-semibold mb-3"> Gestión de Dones Espirituales</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>6.1.</strong> Navegue a <code>Dones Espirituales</code></p>
                   <p><strong>6.2.</strong> Filtros disponibles:</p>
@@ -415,14 +415,14 @@ export default function MembersManual() {
                   <p><strong>6.3.</strong> Para crear evaluación:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Seleccione miembro</li>
-                    <li>• Haga clic en &quot;📝 Evaluar Dones&quot;</li>
+                    <li>• Haga clic en &quot; Evaluar Dones&quot;</li>
                     <li>• Complete el cuestionario</li>
                     <li>• Revise resultados y recomendaciones</li>
                   </ul>
                 </div>
               </div>
               <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">🎯 Categorías de Dones</h4>
+                <h4 className="font-semibold mb-2"> Categorías de Dones</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Liderazgo:</strong> Administración, enseñanza</li>
                   <li>• <strong>Ministerial:</strong> Pastoral, evangelismo</li>
@@ -446,7 +446,7 @@ export default function MembersManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📧 Contacto Directo</h4>
+                <h4 className="font-semibold mb-3"> Contacto Directo</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Desde la lista de miembros:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -457,14 +457,14 @@ export default function MembersManual() {
                   <p><strong>Comunicación Masiva:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Seleccione múltiples miembros</li>
-                    <li>• Haga clic en &quot;📧 Enviar Mensaje&quot;</li>
+                    <li>• Haga clic en &quot; Enviar Mensaje&quot;</li>
                     <li>• Escoja plantilla o escriba mensaje custom</li>
                     <li>• Programe envío o envíe inmediatamente</li>
                   </ul>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">📊 Seguimiento de Comunicaciones</h4>
+                <h4 className="font-semibold mb-3"> Seguimiento de Comunicaciones</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Métricas disponibles:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -496,7 +496,7 @@ export default function MembersManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📈 Reportes Disponibles</h4>
+                <h4 className="font-semibold mb-3"> Reportes Disponibles</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>8.1.</strong> Vaya a <code>Analíticas → Miembros</code></p>
                   <p><strong>8.2.</strong> Reportes disponibles:</p>
@@ -512,23 +512,23 @@ export default function MembersManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📊 Métricas Clave</h4>
+                <h4 className="font-semibold mb-2"> Métricas Clave</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="font-semibold">👥 Membresía Total</p>
+                      <p className="font-semibold"> Membresía Total</p>
                       <p className="text-muted-foreground">Miembros activos</p>
                     </div>
                     <div>
-                      <p className="font-semibold">📈 Crecimiento</p>
+                      <p className="font-semibold"> Crecimiento</p>
                       <p className="text-muted-foreground">% mensual</p>
                     </div>
                     <div>
-                      <p className="font-semibold">🎂 Cumpleaños</p>
+                      <p className="font-semibold"> Cumpleaños</p>
                       <p className="text-muted-foreground">Este mes</p>
                     </div>
                     <div>
-                      <p className="font-semibold">🏛️ Ministerios</p>
+                      <p className="font-semibold">️ Ministerios</p>
                       <p className="text-muted-foreground">Participación</p>
                     </div>
                   </div>
@@ -541,12 +541,12 @@ export default function MembersManual() {
         {/* Quick Actions Reference */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Referencia Rápida de Botones</CardTitle>
+            <CardTitle> Referencia Rápida de Botones</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">📋 Botones de Lista</h4>
+                <h4 className="font-semibold mb-2"> Botones de Lista</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   <li>• <strong>&quot;Todos los Miembros&quot;:</strong> Reset filtros</li>
                   <li>• <strong>&quot;Nuevos Miembros&quot;:</strong> Últimos 30 días</li>
@@ -555,24 +555,24 @@ export default function MembersManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🛠️ Botones de Acción</h4>
+                <h4 className="font-semibold mb-2">️ Botones de Acción</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;➕ Agregar Miembro&quot;:</strong> Formulario individual</li>
-                  <li>• <strong>&quot;📥 Importar Miembros&quot;:</strong> 🆕 Carga masiva Excel/CSV/Sistemas</li>
-                  <li>• <strong>&quot;📊 Exportar&quot;:</strong> Descarga lista actual</li>
-                  <li>• <strong>&quot;🏦 Ministerios&quot;:</strong> Gestión de grupos</li>
+                  <li>• <strong>&quot; Agregar Miembro&quot;:</strong> Formulario individual</li>
+                  <li>• <strong>&quot; Importar Miembros&quot;:</strong> 🆕 Carga masiva Excel/CSV/Sistemas</li>
+                  <li>• <strong>&quot; Exportar&quot;:</strong> Descarga lista actual</li>
+                  <li>• <strong>&quot; Ministerios&quot;:</strong> Gestión de grupos</li>
                 </ul>
                 <div className="mt-2 p-2 bg-[hsl(var(--info)/0.10)] rounded border border-[hsl(var(--info)/0.3)]">
                   <p className="text-xs text-[hsl(var(--info))]"><strong>🆕 NUEVO:</strong> El botón &quot;Importar Miembros&quot; permite migrar desde ChurchTrac, Planning Center, Rock RMS y más!</p>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">👤 Botones de Perfil</h4>
+                <h4 className="font-semibold mb-2"> Botones de Perfil</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;👁️ Ver&quot;:</strong> Perfil completo</li>
-                  <li>• <strong>&quot;✏️ Editar&quot;:</strong> Modificar datos</li>
-                  <li>• <strong>&quot;📧 Email&quot;:</strong> Contacto directo</li>
-                  <li>• <strong>&quot;🗑️ Archivar&quot;:</strong> Inactivar miembro</li>
+                  <li>• <strong>&quot;️ Ver&quot;:</strong> Perfil completo</li>
+                  <li>• <strong>&quot;️ Editar&quot;:</strong> Modificar datos</li>
+                  <li>• <strong>&quot; Email&quot;:</strong> Contacto directo</li>
+                  <li>• <strong>&quot;️ Archivar&quot;:</strong> Inactivar miembro</li>
                 </ul>
               </div>
             </div>

@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     // Parse and validate request body
     const body = await request.json()
     
-    // ✅ SECURITY FIX: Validate all assignment data with Zod
+    //  SECURITY FIX: Validate all assignment data with Zod
     // Prevents: Invalid dates, malformed times, XSS attacks
     const validated = volunteer_assignmentsSchema.parse(body)
 
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // ✅ BUSINESS LOGIC FIX: Check for scheduling conflicts (temporary assignments only)
+    //  BUSINESS LOGIC FIX: Check for scheduling conflicts (temporary assignments only)
     // Prevents: Double-booking volunteers at the same time
     const isPermanent = validated.assignmentType === 'permanent'
     const assignmentDate = isPermanent ? new Date() : new Date(validated.date!)
@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // ✅ No conflicts - proceed with creation
+    //  No conflicts - proceed with creation
     const assignment = await db.volunteer_assignments.create({
       data: {
         id: nanoid(),
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(assignment, { status: 201 })
 
   } catch (error) {
-    // ✅ SECURITY FIX: Handle validation errors with user-friendly messages
+    //  SECURITY FIX: Handle validation errors with user-friendly messages
     if (error instanceof ZodError) {
       return NextResponse.json(
         { 

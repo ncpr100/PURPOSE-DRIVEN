@@ -20,16 +20,16 @@ interface VisitorProfileFormProps {
 }
 
 const MINISTRY_OPTIONS = [
-  { id: 'worship', label: 'Adoración y Música', icon: '🎵' },
-  { id: 'children', label: 'Ministerio Infantil', icon: '👶' },
-  { id: 'youth', label: 'Ministerio Juvenil', icon: '🧑‍🤝‍🧑' },
-  { id: 'seniors', label: 'Adultos Mayores', icon: '👴' },
-  { id: 'kitchen', label: 'Cocina y Alimentación', icon: '🍽️' },
-  { id: 'security', label: 'Seguridad', icon: '🛡️' },
-  { id: 'tech', label: 'Tecnología y Multimedia', icon: '💻' },
-  { id: 'prayer', label: 'Intercesión y Oración', icon: '🙏' },
-  { id: 'evangelism', label: 'Evangelización', icon: '📢' },
-  { id: 'discipleship', label: 'Discipulado', icon: '📖' }
+  { id: 'worship', label: 'Adoración y Música', icon: '' },
+  { id: 'children', label: 'Ministerio Infantil', icon: '' },
+  { id: 'youth', label: 'Ministerio Juvenil', icon: '‍‍' },
+  { id: 'seniors', label: 'Adultos Mayores', icon: '' },
+  { id: 'kitchen', label: 'Cocina y Alimentación', icon: '️' },
+  { id: 'security', label: 'Seguridad', icon: '️' },
+  { id: 'tech', label: 'Tecnología y Multimedia', icon: '' },
+  { id: 'prayer', label: 'Intercesión y Oración', icon: '' },
+  { id: 'evangelism', label: 'Evangelización', icon: '' },
+  { id: 'discipleship', label: 'Discipulado', icon: '' }
 ]
 
 const REFERRAL_SOURCES = [

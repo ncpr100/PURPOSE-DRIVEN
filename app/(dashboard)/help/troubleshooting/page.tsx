@@ -20,7 +20,7 @@ export default function ComprehensiveTroubleshootingGuide() {
         <div className="flex items-center gap-4">
           <AlertTriangle className="h-12 w-12" />
           <div>
-            <h1 className="text-4xl font-bold mb-2">🔧 Guía Completa de Solución de Problemas</h1>
+            <h1 className="text-4xl font-bold mb-2"> Guía Completa de Solución de Problemas</h1>
             <p className="text-xl opacity-90">
               Resuelve cualquier problema en Khesed-tek - ¡Sin necesidad de soporte técnico!
             </p>
@@ -116,7 +116,7 @@ export default function ComprehensiveTroubleshootingGuide() {
             <CardContent className="space-y-4">
               {[
                 {
-                  problem: "❌ Olvidé mi contraseña",
+                  problem: " Olvidé mi contraseña",
                   severity: "high",
                   solutions: [
                     {
@@ -143,7 +143,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   prevention: "Usa un administrador de contraseñas (LastPass, 1Password) para nunca olvidarla"
                 },
                 {
-                  problem: "❌ Dice que mi email o contraseña son incorrectos",
+                  problem: " Dice que mi email o contraseña son incorrectos",
                   severity: "high",
                   solutions: [
                     {
@@ -170,7 +170,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   prevention: "Guarda tus credenciales en un lugar seguro inmediatamente después de crear la cuenta"
                 },
                 {
-                  problem: "❌ No me llega el email para restablecer contraseña",
+                  problem: " No me llega el email para restablecer contraseña",
                   severity: "medium",
                   solutions: [
                     {
@@ -201,7 +201,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   prevention: "Al crear tu cuenta, inmediatamente agrega noreply@khesed-tek-systems.org a contactos seguros"
                 },
                 {
-                  problem: "❌ Dice que mi cuenta está bloqueada / inactiva",
+                  problem: " Dice que mi cuenta está bloqueada / inactiva",
                   severity: "high",
                   solutions: [
                     {
@@ -220,7 +220,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   prevention: "No compartas tu contraseña. Si sospechas que alguien la sabe, cámbiala inmediatamente"
                 },
                 {
-                  problem: "❌ La página me saca automáticamente (me hace logout)",
+                  problem: " La página me saca automáticamente (me hace logout)",
                   severity: "low",
                   solutions: [
                     {
@@ -278,7 +278,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                     {item.prevention && (
                       <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded-lg">
                         <p className="text-xs font-medium text-[hsl(var(--info))] mb-1">
-                          🛡️ Cómo Prevenir Este Problema:
+                          ️ Cómo Prevenir Este Problema:
                         </p>
                         <p className="text-xs text-[hsl(var(--info))]">{item.prevention}</p>
                       </div>
@@ -302,7 +302,7 @@ export default function ComprehensiveTroubleshootingGuide() {
             <CardContent className="space-y-4">
               {[
                 {
-                  problem: "❌ No puedo agregar un nuevo miembro (botón no funciona)",
+                  problem: " No puedo agregar un nuevo miembro (botón no funciona)",
                   solutions: [
                     "Verifica que tienes permiso de ADMIN o PASTOR en Configuración → Usuarios",
                     "Si eres LIDER, solo puedes VER miembros, no agregar - contacta a tu pastor",
@@ -312,7 +312,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ Dice que el email ya existe al agregar miembro",
+                  problem: " Dice que el email ya existe al agregar miembro",
                   solutions: [
                     "Ese email ya está registrado - búscalo en la lista de miembros con Ctrl+F",
                     "Si es un duplicado real, usa un pequeño truco: juan+1@gmail.com",
@@ -322,7 +322,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ La importación de Excel falla / muestra errores",
+                  problem: " La importación de Excel falla / muestra errores",
                   solutions: [
                     "Descarga la plantilla oficial desde Miembros → Importar → Descargar Plantilla",
                     "NO cambies los nombres de las columnas - deben ser exactos",
@@ -334,7 +334,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ No aparecen todos los miembros en la lista",
+                  problem: " No aparecen todos los miembros en la lista",
                   solutions: [
                     "Revisa los FILTROS arriba - puede que estés viendo solo VISITANTES",
                     "Haz clic en 'Limpiar Filtros' o 'Ver Todos'",
@@ -344,9 +344,9 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ Eliminé un miembro por error - ¿puedo recuperarlo?",
+                  problem: " Eliminé un miembro por error - ¿puedo recuperarlo?",
                   solutions: [
-                    "❗ Las eliminaciones son PERMANENTES - no hay recuperación automática",
+                    " Las eliminaciones son PERMANENTES - no hay recuperación automática",
                     "Contacta urgente a soporte@khesed-tek-systems.org si fue hace menos de 24 horas",
                     "Si tienes un backup reciente, puedes importar ese miembro de nuevo",
                     "PREVENCIÓN: Usa 'Inactivo' en vez de Eliminar para miembros que ya no asisten"
@@ -360,7 +360,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                       {item.problem}
                     </h4>
                     <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                      <p className="font-medium text-sm text-[hsl(var(--success))] mb-2">✅ Soluciones:</p>
+                      <p className="font-medium text-sm text-[hsl(var(--success))] mb-2"> Soluciones:</p>
                       <ul className="space-y-2 text-sm">
                         {item.solutions.map((solution, idx) => (
                           <li key={idx} className="flex items-start gap-2">
@@ -389,7 +389,7 @@ export default function ComprehensiveTroubleshootingGuide() {
             <CardContent className="space-y-4">
               {[
                 {
-                  problem: "❌ Los emails no llegan a los destinatarios",
+                  problem: " Los emails no llegan a los destinatarios",
                   severity: "critical",
                   quickFix: "90% está en la carpeta de SPAM - pide a tus miembros revisar ahí",
                   solutions: [
@@ -403,7 +403,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ Baja tasa de apertura (menos del 20%)",
+                  problem: " Baja tasa de apertura (menos del 20%)",
                   severity: "medium",
                   quickFix: "Mejora tus asuntos - específicos y atractivos funcionan mejor",
                   solutions: [
@@ -416,7 +416,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ No puedo enviar SMS (dice que no hay créditos)",
+                  problem: " No puedo enviar SMS (dice que no hay créditos)",
                   severity: "medium",
                   quickFix: "Los SMS tienen costo - verifica tu plan en Configuración",
                   solutions: [
@@ -428,7 +428,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ El email se envió con formato roto / sin imágenes",
+                  problem: " El email se envió con formato roto / sin imágenes",
                   severity: "low",
                   quickFix: "Siempre usa Vista Previa antes de enviar",
                   solutions: [
@@ -447,7 +447,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                     {item.quickFix && (
                       <div className="bg-[hsl(var(--warning)/0.15)] border-l-4 border-[hsl(var(--warning)/0.30)] p-3 mb-3">
                         <p className="text-sm font-medium text-[hsl(var(--warning))]">
-                          ⚡ Solución Rápida: {item.quickFix}
+                           Solución Rápida: {item.quickFix}
                         </p>
                       </div>
                     )}
@@ -478,7 +478,7 @@ export default function ComprehensiveTroubleshootingGuide() {
             <CardContent className="space-y-4">
               {[
                 {
-                  problem: "❌ El sistema está muy lento / tarda en cargar",
+                  problem: " El sistema está muy lento / tarda en cargar",
                   impact: "Alto - afecta toda la experiencia",
                   solutions: [
                     {
@@ -511,7 +511,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ Las gráficas no cargan / salen en blanco",
+                  problem: " Las gráficas no cargan / salen en blanco",
                   impact: "Medio - solo afecta analíticas",
                   solutions: [
                     {
@@ -526,7 +526,7 @@ export default function ComprehensiveTroubleshootingGuide() {
                   ]
                 },
                 {
-                  problem: "❌ La página se congela / no responde",
+                  problem: " La página se congela / no responde",
                   impact: "Crítico - bloquea el trabajo",
                   solutions: [
                     {
@@ -634,13 +634,13 @@ export default function ComprehensiveTroubleshootingGuide() {
             </h4>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-muted-foreground mb-1">📧 Email de Soporte:</p>
+                <p className="text-muted-foreground mb-1"> Email de Soporte:</p>
                 <a href="mailto:soporte@khesed-tek-systems.org" className="text-[hsl(var(--info))] hover:underline font-medium">
                   soporte@khesed-tek-systems.org
                 </a>
               </div>
               <div>
-                <p className="text-muted-foreground mb-1">💬 WhatsApp:</p>
+                <p className="text-muted-foreground mb-1"> WhatsApp:</p>
                 <a href="https://wa.me/573021234410" className="text-[hsl(var(--success))] hover:underline font-medium flex items-center gap-1">
                   +57 302 123 4410 <ExternalLink className="h-3 w-3" />
                 </a>

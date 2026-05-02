@@ -35,7 +35,7 @@ async function investigateTemplates() {
   const systemTemplates = allTemplates.filter(t => t.isSystemTemplate);
   const customTemplates = allTemplates.filter(t => !t.isSystemTemplate);
   
-  console.log('📊 CLASIFICACIÓN:\n');
+  console.log(' CLASIFICACIÓN:\n');
   console.log(`  Sistema: ${systemTemplates.length} plantillas`);
   console.log(`  Personalizadas: ${customTemplates.length} plantillas\n`);
   

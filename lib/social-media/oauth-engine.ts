@@ -1,5 +1,5 @@
 /**
- * SAAS PLATFORM OAUTH ENGINE 🚀
+ * SAAS PLATFORM OAUTH ENGINE 
  * Buffer/Hootsuite-style centralized OAuth for ALL churches
  * NO technical setupRequired by tenants - truly one-click connections
  * Platform-managed OAuth credentials serve all church tenants
@@ -82,7 +82,7 @@ export class SecureTokenManager {
   
   private static validateEncryptionKey(): void {
     if (this.encryptionKey === 'default-key-change-in-production' && process.env.NODE_ENV === 'production') {
-      console.warn('⚠️ SECURITY: Using default encryption key in production')
+      console.warn('️ SECURITY: Using default encryption key in production')
     }
   }
   
@@ -94,7 +94,7 @@ export class SecureTokenManager {
       encrypted += cipher.final('hex')
       return encrypted
     } catch (error) {
-      console.error('❌ Encryption failed:', error)
+      console.error(' Encryption failed:', error)
       throw new Error('Error de encriptación del token')
     }
   }

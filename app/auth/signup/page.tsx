@@ -64,7 +64,7 @@ export default function SignUpPage() {
       const data = await response.json()
       // Public API already filters for active plans, no need to filter again
       setSubscriptionPlans(data)
-      console.log('📋 Loaded subscription plans for registration:', data.length)
+      console.log(' Loaded subscription plans for registration:', data.length)
       
       // Set default to first active plan if available
       if (data.length > 0 && !formData.subscriptionPlan) {
@@ -339,9 +339,9 @@ export default function SignUpPage() {
                   </Select>
                 )}
                 <div className="text-xs text-muted-foreground space-y-1">
-                  <div>✨ Todos los planes incluyen 14 días de prueba gratuita</div>
+                  <div>Todos los planes incluyen 14 días de prueba gratuita</div>
                   <div className="flex items-center gap-1 text-[hsl(var(--info))]">
-                    🇺🇸 <span className="font-medium">Precios en USD</span> - Facturación manual por administrador
+                    <span className="font-medium">Precios en USD</span> - Facturación manual por administrador
                   </div>
                 </div>
               </div>

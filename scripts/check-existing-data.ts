@@ -2,7 +2,7 @@ import { db } from '../lib/db'
 
 async function checkExistingData() {
   try {
-    console.log('🔍 CHECKING EXISTING DATA...\n')
+    console.log(' CHECKING EXISTING DATA...\n')
 
     // Check churches
     const churches = await db.church.findMany({
@@ -22,7 +22,7 @@ async function checkExistingData() {
       take: 10
     })
 
-    console.log('📍 CHURCHES FOUND:', churches.length)
+    console.log(' CHURCHES FOUND:', churches.length)
     churches.forEach((church, i) => {
       console.log(`\n${i + 1}. ${church.name}`)
       console.log(`   - ID: ${church.id}`)
@@ -48,7 +48,7 @@ async function checkExistingData() {
       take: 20
     })
 
-    console.log('👥 USERS FOUND:', users.length)
+    console.log(' USERS FOUND:', users.length)
     
     for (const user of users) {
       console.log(`\n${users.indexOf(user) + 1}. ${user.name} (${user.email})`)
@@ -66,7 +66,7 @@ async function checkExistingData() {
     }
 
   } catch (error) {
-    console.error('❌ Error:', error)
+    console.error(' Error:', error)
   } finally {
     await db.$disconnect()
   }

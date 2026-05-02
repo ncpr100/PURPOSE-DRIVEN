@@ -116,7 +116,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
     setLoading(true)
     
     try {
-      toast.info('🌟 Iniciando análisis de desarrollo de liderazgo...')
+      toast.info(' Iniciando análisis de desarrollo de liderazgo...')
       
       const response = await fetch('/api/recruitment-pipeline/leadership-development', {
         method: 'POST',
@@ -132,7 +132,7 @@ export function LeadershipDevelopmentDashboard({ churchId, userRole }: Leadershi
       setSummary(data.summary)
       setInsights(data.insights)
       
-      toast.success(`✅ Análisis completado: ${data.summary.qualifiedLeaders} líderes potenciales identificados`)
+      toast.success(`Análisis completado: ${data.summary.qualifiedLeaders} líderes potenciales identificados`)
       
     } catch (error) {
       console.error('Error running leadership analysis:', error)

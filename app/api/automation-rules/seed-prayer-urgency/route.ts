@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
             type: "SEND_WHATSAPP",
             config: {
               message:
-                "🙏 Hola {{contactName}}, recibimos tu petición de oración (Sección B). Te responderemos en un máximo de 4 horas. Estamos orando por ti.",
+                " Hola {{contactName}}, recibimos tu petición de oración (Sección B). Te responderemos en un máximo de 4 horas. Estamos orando por ti.",
             },
           },
         ],
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
           {
             type: "SEND_EMAIL",
             config: {
-              subject: "🚨 PETICIÓN URGENTE – Respuesta en 10 minutos",
+              subject: " PETICIÓN URGENTE – Respuesta en 10 minutos",
               body: "URGENTE: {{contactName}} ha enviado una petición de oración de emergencia (Sección C). Se requiere respuesta inmediata dentro de 10 minutos. Categoría: {{prayerCategory}}.",
             },
           },
@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
             type: "SEND_WHATSAPP",
             config: {
               message:
-                "🚨 URGENTE: {{contactName}} necesita oración inmediata (Sección C). Por favor comuníquense con esta persona en los próximos 10 minutos.",
+                " URGENTE: {{contactName}} necesita oración inmediata (Sección C). Por favor comuníquense con esta persona en los próximos 10 minutos.",
             },
           },
         ],

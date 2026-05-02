@@ -159,13 +159,13 @@ export function TemplateBrowser() {
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
-      'PRAYER_REQUEST': 'bg-[hsl(var(--info)/0.10)]0',
-      'VISITOR_FOLLOWUP': 'bg-[hsl(var(--lavender)/0.10)]0',
-      'SOCIAL_MEDIA': 'bg-[hsl(var(--destructive)/0.08)]0',
-      'EVENT': 'bg-[hsl(var(--success)/0.10)]0',
-      'DONATION': 'bg-[hsl(var(--warning)/0.10)]0'
+      'PRAYER_REQUEST':   'bg-accent/20 text-accent-foreground',
+      'VISITOR_FOLLOWUP': 'bg-primary/20 text-primary',
+      'SOCIAL_MEDIA':     'bg-success/20 text-success',
+      'EVENT':            'bg-warning/20 text-warning-foreground',
+      'DONATION':         'bg-secondary/50 text-secondary-foreground'
     };
-    return colors[category] || 'bg-muted/300';
+    return colors[category] || 'bg-muted/30 text-muted-foreground';
   };
 
   const getPriorityBadge = (priority: string) => {
@@ -268,10 +268,9 @@ export function TemplateBrowser() {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div
-                          className="flex h-12 w-12 items-center justify-center rounded-lg text-2xl"
-                          style={{ backgroundColor: template.color + '20' }}
+                          className={`flex h-12 w-12 items-center justify-center rounded-lg ${getCategoryColor(template.category)}`}
                         >
-                          {template.icon}
+                          {getCategoryIcon(template.category)}
                         </div>
                         <div>
                           <CardTitle className="text-lg">{template.name}</CardTitle>

@@ -145,9 +145,9 @@ export function AvailabilityMatrix({
   }
 
   const handleSave = async () => {
-    console.log('🔵 handleSave called - Starting save process')
-    console.log('📊 Form data:', formData)
-    console.log('👤 Member ID:', memberId)
+    console.log(' handleSave called - Starting save process')
+    console.log(' Form data:', formData)
+    console.log(' Member ID:', memberId)
     
     setSaving(true)
     try {
@@ -158,7 +158,7 @@ export function AvailabilityMatrix({
         travelWillingness: formData.travelWillingness[0]
       }
       
-      console.log('📤 Sending payload to API:', payload)
+      console.log(' Sending payload to API:', payload)
       
       const response = await fetch('/api/availability-matrix', {
         method: 'POST',
@@ -166,24 +166,24 @@ export function AvailabilityMatrix({
         body: JSON.stringify(payload)
       })
 
-      console.log('📥 Response status:', response.status)
-      console.log('📥 Response ok:', response.ok)
+      console.log(' Response status:', response.status)
+      console.log(' Response ok:', response.ok)
 
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ Save successful! Data:', data)
+        console.log(' Save successful! Data:', data)
         toast.success('Disponibilidad guardada exitosamente')
         onSave?.(data.matrix)
       } else {
         const errorData = await response.json().catch(() => ({}))
-        console.error('❌ Save failed! Status:', response.status, 'Error:', errorData)
+        console.error(' Save failed! Status:', response.status, 'Error:', errorData)
         throw new Error('Error saving availability')
       }
     } catch (error) {
-      console.error('❌ Error saving availability matrix:', error)
+      console.error(' Error saving availability matrix:', error)
       toast.error('Error al guardar la disponibilidad')
     } finally {
-      console.log('🏁 Save process finished, setting saving=false')
+      console.log(' Save process finished, setting saving=false')
       setSaving(false)
     }
   }

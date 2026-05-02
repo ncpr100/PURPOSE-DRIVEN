@@ -240,7 +240,7 @@ export function DashboardClient({
             stats.pendingWebsiteRequests > 0
               ? `${stats.pendingWebsiteRequests} pendiente(s)`
               : stats.existingWebsites > 0
-                ? "✅ Publicado"
+                ? "Publicado"
                 : undefined
           }
           index={3}
@@ -267,7 +267,7 @@ export function DashboardClient({
           icon={Phone}
           description={`${stats.completedFollowUpsThisMonth} completados este mes`}
           trend={
-            stats.pendingFollowUps > 0 ? "⚠️ Requiere atención" : "✅ Al día"
+            stats.pendingFollowUps > 0 ? "Requiere atención" : "Al día"
           }
           index={1}
         />
@@ -278,10 +278,10 @@ export function DashboardClient({
           description="Puntuación promedio"
           trend={
             stats.averageEngagementScore >= 70
-              ? "🎯 Excelente"
+              ? "Excelente"
               : stats.averageEngagementScore >= 50
-                ? "⚡ Bueno"
-                : "📈 Mejorar"
+                ? "Bueno"
+                : "Mejorar"
           }
           index={2}
         />

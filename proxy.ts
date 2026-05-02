@@ -129,7 +129,7 @@ export async function proxy(request: NextRequest) {
   );
 
   if (isProtectedRoute || isProtectedApiRoute) {
-    console.log("🔐 MIDDLEWARE: Checking protected route:", pathname);
+    console.log(" MIDDLEWARE: Checking protected route:", pathname);
 
     const token = await getToken({
       req: request,
@@ -138,8 +138,8 @@ export async function proxy(request: NextRequest) {
         "build-time-fallback-secret-change-in-production",
     });
 
-    console.log("🔐 MIDDLEWARE: Token exists:", !!token);
-    console.log("🔐 MIDDLEWARE: Token role:", token?.role);
+    console.log(" MIDDLEWARE: Token exists:", !!token);
+    console.log(" MIDDLEWARE: Token role:", token?.role);
 
     if (!token) {
       if (isProtectedApiRoute) {
@@ -154,9 +154,9 @@ export async function proxy(request: NextRequest) {
 
     // Platform routes are restricted to SUPER_ADMIN only
     if (pathname.startsWith("/platform")) {
-      console.log("🔐 MIDDLEWARE: Platform route check, role:", token.role);
+      console.log(" MIDDLEWARE: Platform route check, role:", token.role);
       if (token.role !== "SUPER_ADMIN") {
-        console.log("🔐 MIDDLEWARE: Not SUPER_ADMIN, redirecting to /home");
+        console.log(" MIDDLEWARE: Not SUPER_ADMIN, redirecting to /home");
         if (isProtectedApiRoute) {
           return NextResponse.json(
             {
@@ -173,30 +173,30 @@ export async function proxy(request: NextRequest) {
 
     // SUPER_ADMIN and ADMIN_IGLESIA have access to everything (including church-level routes)
     console.log(
-      "🔐 ADMIN CHECK - token.role:",
+      " ADMIN CHECK - token.role:",
       token.role,
       "type:",
       typeof token.role,
     );
     console.log(
-      "🔐 ADMIN CHECK - equals ADMIN_IGLESIA?",
+      " ADMIN CHECK - equals ADMIN_IGLESIA?",
       token.role === "ADMIN_IGLESIA",
     );
     console.log(
-      "🔐 ADMIN CHECK - equals SUPER_ADMIN?",
+      " ADMIN CHECK - equals SUPER_ADMIN?",
       token.role === "SUPER_ADMIN",
     );
     if (token.role === "SUPER_ADMIN" || token.role === "ADMIN_IGLESIA") {
       console.log(
-        "✅ MIDDLEWARE: User is SUPER_ADMIN or ADMIN_IGLESIA, allowing access to",
+        " MIDDLEWARE: User is SUPER_ADMIN or ADMIN_IGLESIA, allowing access to",
         pathname,
       );
       return response;
     }
-    console.log("❌ MIDDLEWARE: User is NOT admin, role is:", token.role);
+    console.log(" MIDDLEWARE: User is NOT admin, role is:", token.role);
 
     console.log(
-      "🔐 MIDDLEWARE: Checking specific route permissions for role:",
+      " MIDDLEWARE: Checking specific route permissions for role:",
       token.role,
     );
 
@@ -206,7 +206,7 @@ export async function proxy(request: NextRequest) {
 
     if (requiredPermission) {
       console.log(
-        "🔐 MIDDLEWARE: Route requires permission:",
+        " MIDDLEWARE: Route requires permission:",
         requiredPermission,
       );
       const userRole = token.role as string;
@@ -217,10 +217,10 @@ export async function proxy(request: NextRequest) {
         requiredPermission.resource,
       );
 
-      console.log("🔐 MIDDLEWARE: Has access:", hasAccess);
+      console.log(" MIDDLEWARE: Has access:", hasAccess);
 
       if (!hasAccess) {
-        console.log("🔐 MIDDLEWARE: No access, redirecting to /home");
+        console.log(" MIDDLEWARE: No access, redirecting to /home");
         if (isProtectedApiRoute) {
           return NextResponse.json(
             { error: "Sin permisos para acceder a este recurso" },

@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json(dashboards);
     } catch (dbError) {
-      console.log('⚠️ DASHBOARD: Database connection failed, returning empty dashboards')
+      console.log('️ DASHBOARD: Database connection failed, returning empty dashboards')
       // Return empty array when database unavailable during initialization
       return NextResponse.json([]);
     }

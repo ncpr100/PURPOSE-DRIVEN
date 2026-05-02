@@ -28,7 +28,7 @@ export default function GettingStartedManual() {
         {/* Quick Start Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>🚀 Bienvenido a Khesed-tek Systems Church Management Platform</CardTitle>
+            <CardTitle> Bienvenido a Khesed-tek Systems Church Management Platform</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -36,15 +36,15 @@ export default function GettingStartedManual() {
             </p>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="text-center p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⏱️ Tiempo Total</h4>
+                <h4 className="font-semibold">️ Tiempo Total</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--info))]">15 min</p>
               </div>
               <div className="text-center p-4 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">📋 Pasos</h4>
+                <h4 className="font-semibold"> Pasos</h4>
                 <p className="text-2xl font-bold text-[hsl(var(--success))]">5</p>
               </div>
               <div className="text-center p-4 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">👥 Usuario</h4>
+                <h4 className="font-semibold"> Usuario</h4>
                 <p className="text-lg font-bold text-[hsl(var(--lavender))]">Cualquiera</p>
               </div>
             </div>
@@ -62,7 +62,7 @@ export default function GettingStartedManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📝 Registro Inicial</h4>
+                <h4 className="font-semibold mb-3"> Registro Inicial</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>1.1.</strong> Haga clic en &quot;Crear Cuenta&quot; en la página principal</p>
                   <p><strong>1.2.</strong> Complete el formulario con:</p>
@@ -78,7 +78,7 @@ export default function GettingStartedManual() {
                 </div>
               </div>
               <div className="bg-muted/30 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">💡 Consejos</h4>
+                <h4 className="font-semibold mb-2"> Consejos</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Use un email que revise frecuentemente</li>
                   <li>• Anote su contraseña en lugar seguro</li>
@@ -101,7 +101,7 @@ export default function GettingStartedManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">⛪ Información Básica</h4>
+                <h4 className="font-semibold mb-3"> Información Básica</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>2.1.</strong> Vaya a <code>Configuración → Perfil de Iglesia</code></p>
                   <p><strong>2.2.</strong> Complete la información:</p>
@@ -118,7 +118,7 @@ export default function GettingStartedManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">⚠️ Importante</h4>
+                <h4 className="font-semibold mb-2">️ Importante</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Esta información aparecerá en todos los recibos de donaciones</li>
                   <li>• Los horarios de servicios se usan para eventos automáticos</li>
@@ -141,7 +141,7 @@ export default function GettingStartedManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">👥 Jerarquía de Roles</h4>
+                <h4 className="font-semibold mb-3"> Jerarquía de Roles</h4>
                 <div className="space-y-3 text-sm">
                   <div className="border-l-4 border-[hsl(var(--destructive))] pl-3">
                     <p><strong>SUPER_ADMIN</strong> - Acceso total al sistema</p>
@@ -166,7 +166,7 @@ export default function GettingStartedManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">🔧 Cómo Configurar</h4>
+                <h4 className="font-semibold mb-2"> Cómo Configurar</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>3.1.</strong> Vaya a <code>Configuración → Permisos</code></p>
                   <p><strong>3.2.</strong> Haga clic en "Inicializar Sistema" (Solo PASTOR o ADMINISTRADOR de su iglesia)</p>
@@ -197,7 +197,7 @@ export default function GettingStartedManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📊 Importación de Miembros</h4>
+                <h4 className="font-semibold mb-3"> Importación de Miembros</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>4.1.</strong> Vaya a <code>Miembros → Importar</code></p>
                   <p><strong>4.2.</strong> Descargue la plantilla Excel</p>
@@ -216,7 +216,7 @@ export default function GettingStartedManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📋 Lista de Verificación</h4>
+                <h4 className="font-semibold mb-2"> Lista de Verificación</h4>
                 <div className="text-sm space-y-2">
                   <label className="flex items-center gap-2">
                     <input type="checkbox" /> Perfil de iglesia completado
@@ -250,7 +250,7 @@ export default function GettingStartedManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🎯 Acciones Recomendadas</h4>
+                <h4 className="font-semibold mb-3"> Acciones Recomendadas</h4>
                 <div className="space-y-3 text-sm">
                   <div className="border-l-4 border-[hsl(var(--info))] pl-3">
                     <p><strong>Crear su primer evento</strong></p>
@@ -271,7 +271,7 @@ export default function GettingStartedManual() {
                 </div>
               </div>
               <div className="bg-muted/30 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">🔗 Enlaces Útiles</h4>
+                <h4 className="font-semibold mb-2"> Enlaces Útiles</h4>
                 <div className="space-y-2 text-sm">
                   <Link href="/members" className="block text-[hsl(var(--info))] hover:underline">
                     → Gestión de Miembros
@@ -297,12 +297,12 @@ export default function GettingStartedManual() {
         {/* Common Issues */}
         <Card>
           <CardHeader>
-            <CardTitle>❓ Problemas Comunes y Soluciones</CardTitle>
+            <CardTitle> Problemas Comunes y Soluciones</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4 text-sm">
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ No puedo acceder a ciertas funciones</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> No puedo acceder a ciertas funciones</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Solución:</strong> Verifique que tenga el rol correcto asignado. Contacte a su ADMIN_IGLESIA para ajustar permisos.
                 </p>
@@ -310,7 +310,7 @@ export default function GettingStartedManual() {
               </div>
               
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ Los miembros no aparecen después de importar</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> Los miembros no aparecen después de importar</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Solución:</strong> Revise que el archivo Excel tenga las columnas correctas y que los emails sean únicos.
                 </p>
@@ -318,7 +318,7 @@ export default function GettingStartedManual() {
               </div>
 
               <div className="border rounded-lg p-3">
-                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2">❌ No recibo emails de confirmación</h4>
+                <h4 className="font-semibold text-[hsl(var(--destructive))] mb-2"> No recibo emails de confirmación</h4>
                 <p className="text-muted-foreground mb-2">
                   <strong>Solución:</strong> Revise su carpeta de spam/correo no deseado. Agregue nuestro dominio a su lista de contactos seguros.
                 </p>
@@ -331,27 +331,27 @@ export default function GettingStartedManual() {
         {/* Next Steps */}
         <Card>
           <CardHeader>
-            <CardTitle>➡️ Próximos Pasos</CardTitle>
+            <CardTitle>️ Próximos Pasos</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4">
               <Link href="/help/manual/members">
                 <Button variant="outline" className="w-full h-auto p-4 flex flex-col gap-2">
-                  <span className="text-lg">👥</span>
+                  <span className="text-lg"></span>
                   <span className="font-semibold">Gestión de Miembros</span>
                   <span className="text-xs text-muted-foreground">Administrar su congregación</span>
                 </Button>
               </Link>
               <Link href="/help/manual/donations">
                 <Button variant="outline" className="w-full h-auto p-4 flex flex-col gap-2">
-                  <span className="text-lg">💰</span>
+                  <span className="text-lg"></span>
                   <span className="font-semibold">Sistema de Donaciones</span>
                   <span className="text-xs text-muted-foreground">Configurar pagos</span>
                 </Button>
               </Link>
               <Link href="/help/manual/events">
                 <Button variant="outline" className="w-full h-auto p-4 flex flex-col gap-2">
-                  <span className="text-lg">📅</span>
+                  <span className="text-lg"></span>
                   <span className="font-semibold">Gestión de Eventos</span>
                   <span className="text-xs text-muted-foreground">Crear eventos</span>
                 </Button>

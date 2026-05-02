@@ -251,7 +251,7 @@ export function VolunteersClient({
   }, [volunteers.length]);
 
   const fetchAllSpiritualProfiles = async () => {
-    console.log("🔄 Fetching spiritual profiles for all volunteers...");
+    console.log(" Fetching spiritual profiles for all volunteers...");
     const profiles = new Map();
 
     for (const volunteer of volunteers) {
@@ -261,7 +261,7 @@ export function VolunteersClient({
 
       if (!memberId) {
         console.warn(
-          `⚠️ Volunteer ${volunteer.firstName} ${volunteer.lastName} has no linked member`,
+          `️ Volunteer ${volunteer.firstName} ${volunteer.lastName} has no linked member`,
         );
         continue;
       }
@@ -285,7 +285,7 @@ export function VolunteersClient({
     }
 
     console.log(
-      "✅ Loaded spiritual profiles for",
+      " Loaded spiritual profiles for",
       profiles.size,
       "volunteers",
     );
@@ -348,40 +348,40 @@ export function VolunteersClient({
 
   const fetchMemberSpiritualProfile = async (memberId: string) => {
     try {
-      console.log("🔄 Fetching spiritual profile for member:", memberId);
+      console.log(" Fetching spiritual profile for member:", memberId);
       const response = await fetch(
         `/api/members/${memberId}/spiritual-profile`,
       );
       if (response.ok) {
         const data = await response.json();
-        console.log("✅ Spiritual profile loaded:", data.profile);
+        console.log(" Spiritual profile loaded:", data.profile);
         setMemberSpiritualProfile(data.profile);
       } else {
         console.log("ℹ️ No spiritual profile found");
         setMemberSpiritualProfile(null);
       }
     } catch (error) {
-      console.error("❌ Error loading member spiritual profile:", error);
+      console.error(" Error loading member spiritual profile:", error);
       setMemberSpiritualProfile(null);
     }
   };
 
   const fetchMemberAvailabilityMatrix = async (memberId: string) => {
     try {
-      console.log("🔄 Fetching availability matrix for member:", memberId);
+      console.log(" Fetching availability matrix for member:", memberId);
       const response = await fetch(
         `/api/availability-matrix?memberId=${memberId}`,
       );
       if (response.ok) {
         const data = await response.json();
-        console.log("✅ Availability matrix loaded:", data.matrix);
+        console.log(" Availability matrix loaded:", data.matrix);
         setMemberAvailabilityMatrix(data.matrix);
       } else {
         console.log("ℹ️ No availability matrix found");
         setMemberAvailabilityMatrix(null);
       }
     } catch (error) {
-      console.error("❌ Error loading availability matrix:", error);
+      console.error(" Error loading availability matrix:", error);
       setMemberAvailabilityMatrix(null);
     }
   };

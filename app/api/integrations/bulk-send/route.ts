@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         select: { id: true, churchId: true, role: true, name: true }
       })
     } catch (error) {
-      console.log('⚠️ Database unavailable, using session data for bulk send')
+      console.log('️ Database unavailable, using session data for bulk send')
       sessionUser = {
         id: session.user.id,
         churchId: session.user.churchId,

@@ -1,6 +1,6 @@
 
 /**
- * ✅ SECURITY-HARDENED: Members API Endpoint
+ *  SECURITY-HARDENED: Members API Endpoint
  * 
  * Security Features:
  * - Authentication and authorization checks
@@ -24,13 +24,13 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {
-    // ✅ SECURITY: Authentication check
+    //  SECURITY: Authentication check
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    // ✅ SECURITY: Church membership validation
+    //  SECURITY: Church membership validation
     let user
     try {
       user = await db.users.findUnique({
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
         select: { id: true, churchId: true, role: true }
       })
     } catch (dbError) {
-      console.log('⚠️ MEMBERS: Database connection failed, using session data')
+      console.log('️ MEMBERS: Database connection failed, using session data')
       // Fallback to session data when database unavailable
       user = {
         id: session.user.id,
@@ -51,13 +51,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
 
-    // ✅ SECURITY: Role-based access control
+    //  SECURITY: Role-based access control
     const allowedRoles = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR', 'LIDER']
     if (!allowedRoles.includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes' }, { status: 403 })
     }
 
-    // ✅ SECURITY: Query parameter validation
+    //  SECURITY: Query parameter validation
     const url = new URL(request.url)
     
     // Handle pagination with proper defaults
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
       sortOrder: (rawSearchParams.sortOrder === 'asc' ? 'asc' : 'desc') as 'asc' | 'desc'
     }
 
-    // ✅ SECURITY: Build secure where clause
+    //  SECURITY: Build secure where clause
     const whereClause: any = {
       churchId: user.churchId,
       isActive: queryParams.status === 'inactive' ? false : true
@@ -231,7 +231,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // ✅ SECURITY: Limited data exposure with secure select
+    //  SECURITY: Limited data exposure with secure select
     let members: any[]
     try {
       members = await db.members.findMany({
@@ -283,7 +283,7 @@ export async function GET(request: NextRequest) {
       take: queryParams.limit
     })
     } catch (dbError) {
-      console.log('⚠️ MEMBERS: Database connection failed, returning empty members list')
+      console.log('️ MEMBERS: Database connection failed, returning empty members list')
       // Return empty array when database unavailable during initialization
       members = []
     }
@@ -332,14 +332,14 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // ✅ SECURITY: Get total count for pagination (adjusted for post-query filters)
+    //  SECURITY: Get total count for pagination (adjusted for post-query filters)
     let totalCount = members.length
     try {
       totalCount = await db.members.count({
         where: whereClause
       })
     } catch (countError) {
-      console.log('⚠️ MEMBERS: Count query failed, using array length as fallback:', members.length)
+      console.log('️ MEMBERS: Count query failed, using array length as fallback:', members.length)
     }
 
     // Adjust count for post-query filters if needed
@@ -353,7 +353,7 @@ export async function GET(request: NextRequest) {
           select: { id: true, birthDate: true, lastName: true, membershipDate: true }
         })
       } catch (adjustCountError) {
-        console.log('⚠️ MEMBERS: Adjust-count query failed, skipping adjustment')
+        console.log('️ MEMBERS: Adjust-count query failed, skipping adjustment')
         allMembers = []
       }
       
@@ -400,7 +400,7 @@ export async function GET(request: NextRequest) {
       totalCount = filteredCount.length
     }
 
-    console.log('📊 Members API returning:', members.length, 'of', totalCount, 'members')
+    console.log(' Members API returning:', members.length, 'of', totalCount, 'members')
     
     return NextResponse.json({
       success: true,
@@ -413,7 +413,7 @@ export async function GET(request: NextRequest) {
       }
     })
   } catch (error) {
-    console.error('❌ Error in Members API:', {
+    console.error(' Error in Members API:', {
       error: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
       type: typeof error,
@@ -441,7 +441,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    // ✅ SECURITY: Authentication check
+    //  SECURITY: Authentication check
     // NOTE: Session validation is sufficient CSRF protection for same-origin requests.
     // validateCSRFToken() was removed — it used an in-memory Map that is always empty
     // in serverless/Vercel deployments, causing every member creation to fail with 403.
@@ -450,7 +450,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
-    // ✅ SECURITY: User validation and role check
+    //  SECURITY: User validation and role check
     const user = await db.users.findUnique({
       where: { id: session.user.id },
       select: { id: true, churchId: true, role: true }
@@ -460,7 +460,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 403 })
     }
 
-    // ✅ SECURITY: Role-based access control for creation
+    //  SECURITY: Role-based access control for creation
     const allowedRoles = ['SUPER_ADMIN', 'ADMIN_IGLESIA', 'CHURCH_ADMIN', 'PASTOR', 'LIDER']
     if (!allowedRoles.includes(user.role)) {
       return NextResponse.json({ error: 'Permisos insuficientes para crear miembros' }, { status: 403 })
@@ -468,7 +468,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
-    // ✅ SECURITY: Input validation and sanitization
+    //  SECURITY: Input validation and sanitization
     let validatedData
     try {
       validatedData = memberSchema.parse(body)
@@ -486,7 +486,7 @@ export async function POST(request: NextRequest) {
       throw error
     }
 
-    // ✅ SECURITY: Check for duplicate email within church
+    //  SECURITY: Check for duplicate email within church
     if (validatedData.email) {
       const existingMember = await db.members.findFirst({
         where: {
@@ -508,7 +508,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // ✅ SECURITY: Create member with validated data
+    //  SECURITY: Create member with validated data
     const member = await db.members.create({
       data: {
         ...validatedData,
@@ -527,7 +527,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // ✅ SECURITY: Trigger automation securely
+    //  SECURITY: Trigger automation securely
     try {
       const { AutomationTriggers } = await import('@/lib/automation-engine')
       await AutomationTriggers.memberJoined({
@@ -540,7 +540,7 @@ export async function POST(request: NextRequest) {
         isActive: member.isActive
       }, user.churchId)
       
-      console.log(`🤖 Triggered member joined automation for ${member.firstName} ${member.lastName}`)
+      console.log(` Triggered member joined automation for ${member.firstName} ${member.lastName}`)
     } catch (automationError) {
       console.error('Error triggering member joined automation:', automationError)
       // Don't fail the member creation if automation fails

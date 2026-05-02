@@ -81,7 +81,7 @@ export function ShepherdsLogCosmos({ entries = DEFAULT_ENTRIES, onRefresh }: Pro
           textAlign: "center", padding: "20px 0",
           fontSize: "11px", color: "rgba(138,147,168,0.5)",
         }}>
-          ✅ Todas las ovejas cuidadas esta semana
+           Todas las ovejas cuidadas esta semana
         </div>
       ) : (
         localEntries.map((entry) => (

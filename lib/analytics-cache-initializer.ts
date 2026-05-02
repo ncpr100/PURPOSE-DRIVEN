@@ -31,7 +31,7 @@ class AnalyticsCacheInitializer {
 
   private static async _doInitialize(): Promise<void> {
     try {
-      console.log('🚀 Initializing analytics cache optimization for 100% hit rates...');
+      console.log(' Initializing analytics cache optimization for 100% hit rates...');
 
       // Initialize the cache optimization controller
       await cacheOptimizationController.initialize();
@@ -75,12 +75,12 @@ class AnalyticsCacheInitializer {
 
       this.isInitialized = true;
       
-      console.log('✅ Analytics cache optimization initialized successfully');
-      console.log('🎯 Target: 100% cache hit rate for critical analytics operations');
-      console.log('⚡ Real-time monitoring and auto-optimization enabled');
+      console.log(' Analytics cache optimization initialized successfully');
+      console.log(' Target: 100% cache hit rate for critical analytics operations');
+      console.log(' Real-time monitoring and auto-optimization enabled');
 
     } catch (error) {
-      console.error('❌ Analytics cache optimization initialization failed:', error);
+      console.error(' Analytics cache optimization initialization failed:', error);
       this.initializationPromise = null; // Allow retry
       throw error;
     }

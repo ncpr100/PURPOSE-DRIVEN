@@ -28,7 +28,7 @@ export default function SubscriptionManual() {
         {/* Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>💳 Mi Suscripción - Manual Completo</CardTitle>
+            <CardTitle> Mi Suscripción - Manual Completo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -36,19 +36,19 @@ export default function SubscriptionManual() {
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">📋 Secciones</h4>
+                <h4 className="font-semibold"> Secciones</h4>
                 <p className="text-xl font-bold text-[hsl(var(--lavender))]">5</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⏱️ Tiempo</h4>
+                <h4 className="font-semibold">️ Tiempo</h4>
                 <p className="text-xl font-bold text-[hsl(var(--info))]">15 min</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🎯 Nivel</h4>
+                <h4 className="font-semibold"> Nivel</h4>
                 <p className="text-lg font-bold text-[hsl(var(--success))]">Básico</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
-                <h4 className="font-semibold">👤 Rol Mínimo</h4>
+                <h4 className="font-semibold"> Rol Mínimo</h4>
                 <p className="text-lg font-bold text-[hsl(var(--warning))]">ADMIN</p>
               </div>
             </div>
@@ -66,21 +66,21 @@ export default function SubscriptionManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📦 Planes Base</h4>
+                <h4 className="font-semibold mb-3"> Planes Base</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>1.1.</strong> Navegue a <code>Mi Suscripción → Ver Planes</code></p>
                   <p><strong>1.2.</strong> Planes disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>📦 BÁSICO - Iglesia Pequeña:</strong>
+                    <li>• <strong> BÁSICO - Iglesia Pequeña:</strong>
                       <br />Gestión básica de miembros, donaciones manuales, eventos simples, comunicaciones por email, soporte por email</li>
-                    <li>• <strong>🚀 PROFESIONAL - Iglesia Mediana - RECOMENDADO:</strong>
+                    <li>• <strong> PROFESIONAL - Iglesia Mediana - RECOMENDADO:</strong>
                       <br />Todas las funciones básicas + Analytics avanzados + Automatizaciones + Reportes personalizados + Soporte prioritario</li>
-                    <li>• <strong>💼 EMPRESARIAL - Iglesia Grande:</strong>
+                    <li>• <strong> EMPRESARIAL - Iglesia Grande:</strong>
                       <br />Todas las funciones profesionales + API personalizada + Integraciones avanzadas + Soporte telefónico + Consultoría estratégica</li>
                   </ul>
                   <p><strong>1.3.</strong> Para cambiar plan:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• Haga clic en &quot;🔄 Cambiar Plan&quot;</li>
+                    <li>• Haga clic en &quot; Cambiar Plan&quot;</li>
                     <li>• Seleccione nuevo plan</li>
                     <li>• Configure método de pago</li>
                     <li>• Confirme cambio</li>
@@ -88,10 +88,10 @@ export default function SubscriptionManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">✨ Características por Plan</h4>
+                <h4 className="font-semibold mb-2"> Características por Plan</h4>
                 <div className="text-sm space-y-3">
                   <div>
-                    <p className="font-semibold text-muted-foreground">📦 BÁSICO - Iglesia Pequeña</p>
+                    <p className="font-semibold text-muted-foreground"> BÁSICO - Iglesia Pequeña</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
                       <li>• Gestión básica de miembros</li>
                       <li>• Donaciones manuales</li>
@@ -101,7 +101,7 @@ export default function SubscriptionManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold text-[hsl(var(--info))]">🚀 PROFESIONAL - Iglesia Mediana - Recomendado</p>
+                    <p className="font-semibold text-[hsl(var(--info))]"> PROFESIONAL - Iglesia Mediana - Recomendado</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
                       <li>• Todas las funciones básicas</li>
                       <li>• Analytics avanzados</li>
@@ -111,7 +111,7 @@ export default function SubscriptionManual() {
                     </ul>
                   </div>
                   <div>
-                    <p className="font-semibold text-[hsl(var(--success))]">💼 EMPRESARIAL - Iglesia Grande</p>
+                    <p className="font-semibold text-[hsl(var(--success))]"> EMPRESARIAL - Iglesia Grande</p>
                     <ul className="text-muted-foreground text-xs space-y-1">
                       <li>• Todas las funciones profesionales</li>
                       <li>• API personalizada</li>
@@ -137,32 +137,32 @@ export default function SubscriptionManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔌 Complementos Disponibles</h4>
+                <h4 className="font-semibold mb-3"> Complementos Disponibles</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> En Mi Suscripción, haga clic en &quot;🔌 Complementos&quot;</p>
+                  <p><strong>2.1.</strong> En Mi Suscripción, haga clic en &quot; Complementos&quot;</p>
                   <p><strong>2.2.</strong> Opciones disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
                     <li>• <strong>� Integración WhatsApp ($50,000 COP/mes):</strong>
                       <br />WhatsApp Business API completo integrado</li>
-                    <li>• <strong>🎨 Marca Personalizada ($30,000 COP/mes):</strong>
+                    <li>• <strong> Marca Personalizada ($30,000 COP/mes):</strong>
                       <br />Personalización completa de colores, logo y marca</li>
-                    <li>• <strong>📊 Analytics Avanzados ($40,000 COP/mes):</strong>
+                    <li>• <strong> Analytics Avanzados ($40,000 COP/mes):</strong>
                       <br />Dashboards personalizados y métricas detalladas</li>
                     <li>• <strong>🆘 Soporte Prioritario ($60,000 COP/mes):</strong>
                       <br />Soporte 24/7 con respuesta en menos de 2 horas</li>
-                    <li>• <strong>📱 SMS Notificaciones ($50 COP por SMS):</strong>
+                    <li>• <strong> SMS Notificaciones ($50 COP por SMS):</strong>
                       <br />Envío de notificaciones por SMS (pago por uso)</li>
                   </ul>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">💰 Gestión de Complementos</h4>
+                <h4 className="font-semibold mb-3"> Gestión de Complementos</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Para activar/desactivar:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;✅ Activar&quot;:</strong> Se cobra en próxima factura</li>
-                    <li>• <strong>&quot;❌ Desactivar&quot;:</strong> Válido hasta fin del período</li>
-                    <li>• <strong>&quot;⏰ Programar&quot;:</strong> Activar en fecha específica</li>
+                    <li>• <strong>&quot; Activar&quot;:</strong> Se cobra en próxima factura</li>
+                    <li>• <strong>&quot; Desactivar&quot;:</strong> Válido hasta fin del período</li>
+                    <li>• <strong>&quot; Programar&quot;:</strong> Activar en fecha específica</li>
                   </ul>
                   <p><strong>Facturación de complementos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -187,9 +187,9 @@ export default function SubscriptionManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">💳 Métodos de Pago</h4>
+                <h4 className="font-semibold mb-3"> Métodos de Pago</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>3.1.</strong> Vaya a <code>Mi Suscripción → 💳 Facturación</code></p>
+                  <p><strong>3.1.</strong> Vaya a <code>Mi Suscripción →  Facturación</code></p>
                   <p><strong>3.2.</strong> Configure método de pago principal:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Tarjeta de crédito:</strong> Visa, MasterCard, American Express</li>
@@ -206,7 +206,7 @@ export default function SubscriptionManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📅 Ciclo de Facturación</h4>
+                <h4 className="font-semibold mb-2"> Ciclo de Facturación</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• <strong>Facturación mensual:</strong> Mismo día cada mes</li>
                   <li>• <strong>Descuento anual:</strong> 15% pagando por adelantado</li>
@@ -214,7 +214,7 @@ export default function SubscriptionManual() {
                   <li>• <strong>Suspensión:</strong> Después de 15 días sin pago</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
-                  <p className="text-xs"><strong>💡 Tip:</strong> Active recordatorios por email 3 días antes</p>
+                  <p className="text-xs"><strong> Tip:</strong> Active recordatorios por email 3 días antes</p>
                 </div>
               </div>
             </div>
@@ -232,9 +232,9 @@ export default function SubscriptionManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📊 Monitorear Uso</h4>
+                <h4 className="font-semibold mb-3"> Monitorear Uso</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>4.1.</strong> En Mi Suscripción, vea la sección &quot;📊 Uso Actual&quot;</p>
+                  <p><strong>4.1.</strong> En Mi Suscripción, vea la sección &quot; Uso Actual&quot;</p>
                   <p><strong>4.2.</strong> Métricas monitoreadas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Miembros registrados:</strong> vs. límite del plan</li>
@@ -252,19 +252,19 @@ export default function SubscriptionManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">⚠️ Límites Importantes</h4>
+                <h4 className="font-semibold mb-2">️ Límites Importantes</h4>
                 <div className="text-sm space-y-2">
                   <div className="space-y-2">
                     <div>
-                      <p className="font-semibold">👥 Miembros</p>
+                      <p className="font-semibold"> Miembros</p>
                       <p className="text-muted-foreground text-xs">Al exceder el límite se requiere upgrade inmediato</p>
                     </div>
                     <div>
-                      <p className="font-semibold">💾 Almacenamiento</p>
+                      <p className="font-semibold"> Almacenamiento</p>
                       <p className="text-muted-foreground text-xs">Al llenarse no se pueden subir más archivos</p>
                     </div>
                     <div>
-                      <p className="font-semibold">📧 Comunicaciones</p>
+                      <p className="font-semibold"> Comunicaciones</p>
                       <p className="text-muted-foreground text-xs">Límites blandos - se cobra el exceso</p>
                     </div>
                   </div>
@@ -295,22 +295,22 @@ export default function SubscriptionManual() {
                   </ul>
                   <p><strong>5.2.</strong> Canales de contacto:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>📧 Email:</strong> soporte@khesed-tek-systems.org</li>
-                    <li>• <strong>💬 WhatsApp:</strong> +57 302 123 4410</li>
-                    <li>• <strong>💻 Chat en vivo:</strong> Planes Mediana y Grande</li>
-                    <li>• <strong>📞 Teléfono:</strong> Solo plan Iglesia Grande</li>
+                    <li>• <strong> Email:</strong> soporte@khesed-tek-systems.org</li>
+                    <li>• <strong> WhatsApp:</strong> +57 302 123 4410</li>
+                    <li>• <strong> Chat en vivo:</strong> Planes Mediana y Grande</li>
+                    <li>• <strong> Teléfono:</strong> Solo plan Iglesia Grande</li>
                   </ul>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">📚 Recursos de Autoayuda</h4>
+                <h4 className="font-semibold mb-3"> Recursos de Autoayuda</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Antes de contactar soporte:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;📖 Manual Completo&quot;:</strong> Guía detallada paso a paso</li>
-                    <li>• <strong>&quot;❓ Preguntas Frecuentes&quot;:</strong> Soluciones comunes</li>
-                    <li>• <strong>&quot;🎥 Videotutoriales&quot;:</strong> Demostraciones visuales</li>
-                    <li>• <strong>&quot;💡 Guías Interactivas&quot;:</strong> Tutoriales paso a paso</li>
+                    <li>• <strong>&quot; Manual Completo&quot;:</strong> Guía detallada paso a paso</li>
+                    <li>• <strong>&quot; Preguntas Frecuentes&quot;:</strong> Soluciones comunes</li>
+                    <li>• <strong>&quot; Videotutoriales&quot;:</strong> Demostraciones visuales</li>
+                    <li>• <strong>&quot; Guías Interactivas&quot;:</strong> Tutoriales paso a paso</li>
                   </ul>
                   <p><strong>Para emergencias:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -327,35 +327,35 @@ export default function SubscriptionManual() {
         {/* Quick Reference */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Referencia Rápida de Botones</CardTitle>
+            <CardTitle> Referencia Rápida de Botones</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">💳 Botones de Suscripción</h4>
+                <h4 className="font-semibold mb-2"> Botones de Suscripción</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;📦 Ver Planes&quot;:</strong> Comparar opciones</li>
-                  <li>• <strong>&quot;🔄 Cambiar Plan&quot;:</strong> Upgrade/downgrade</li>
-                  <li>• <strong>&quot;💳 Actualizar Pago&quot;:</strong> Cambiar tarjeta</li>
-                  <li>• <strong>&quot;📊 Ver Uso&quot;:</strong> Límites actuales</li>
+                  <li>• <strong>&quot; Ver Planes&quot;:</strong> Comparar opciones</li>
+                  <li>• <strong>&quot; Cambiar Plan&quot;:</strong> Upgrade/downgrade</li>
+                  <li>• <strong>&quot; Actualizar Pago&quot;:</strong> Cambiar tarjeta</li>
+                  <li>• <strong>&quot; Ver Uso&quot;:</strong> Límites actuales</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🔌 Botones de Complementos</h4>
+                <h4 className="font-semibold mb-2"> Botones de Complementos</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;✅ Activar&quot;:</strong> Agregar complemento</li>
-                  <li>• <strong>&quot;❌ Desactivar&quot;:</strong> Cancelar complemento</li>
-                  <li>• <strong>&quot;⏰ Programar&quot;:</strong> Activar después</li>
-                  <li>• <strong>&quot;📊 Ver Detalles&quot;:</strong> Información completa</li>
+                  <li>• <strong>&quot; Activar&quot;:</strong> Agregar complemento</li>
+                  <li>• <strong>&quot; Desactivar&quot;:</strong> Cancelar complemento</li>
+                  <li>• <strong>&quot; Programar&quot;:</strong> Activar después</li>
+                  <li>• <strong>&quot; Ver Detalles&quot;:</strong> Información completa</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🧾 Botones de Facturación</h4>
+                <h4 className="font-semibold mb-2"> Botones de Facturación</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;🧾 Ver Facturas&quot;:</strong> Historial completo</li>
-                  <li>• <strong>&quot;📥 Descargar PDF&quot;:</strong> Factura específica</li>
-                  <li>• <strong>&quot;🔄 Reintentar Pago&quot;:</strong> Si falló</li>
-                  <li>• <strong>&quot;📧 Contactar Soporte&quot;:</strong> Ayuda directa</li>
+                  <li>• <strong>&quot; Ver Facturas&quot;:</strong> Historial completo</li>
+                  <li>• <strong>&quot; Descargar PDF&quot;:</strong> Factura específica</li>
+                  <li>• <strong>&quot; Reintentar Pago&quot;:</strong> Si falló</li>
+                  <li>• <strong>&quot; Contactar Soporte&quot;:</strong> Ayuda directa</li>
                 </ul>
               </div>
             </div>

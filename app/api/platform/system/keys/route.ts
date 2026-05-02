@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       status: 'generated'
     })
 
-    console.log('🔐 System keys regenerated:', {
+    console.log(' System keys regenerated:', {
       timestamp,
       keys_count: keyOperations.keys_regenerated.length
     })

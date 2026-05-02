@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.log("⚠️ REALTIME: Database connection failed, using session data");
+    console.log("️ REALTIME: Database connection failed, using session data");
     // Fallback to session data when database unavailable
     user = {
       id: session.user.id,
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
         startTime: new Date(),
       });
 
-      console.log(`📡 SSE connection established: ${u.name} (${u.role})`);
+      console.log(` SSE connection established: ${u.name} (${u.role})`);
 
       // Send initial connection message
       const welcomeMessage = {
@@ -130,7 +130,7 @@ export async function GET(request: NextRequest) {
         clearInterval(heartbeat);
         removeConnection(connectionId);
 
-        console.log(`📡 SSE connection closed: ${u.name}`);
+        console.log(` SSE connection closed: ${u.name}`);
 
         // Broadcast user offline if no more connections
         if (!hasUserConnections(u.id) && u.churchId) {

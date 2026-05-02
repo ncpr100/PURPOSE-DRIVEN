@@ -51,7 +51,7 @@ export class PushNotificationClient {
 
     // Request permission
     const permission = await Notification.requestPermission()
-    console.log('📨 Notification permission:', permission)
+    console.log(' Notification permission:', permission)
     
     return permission
   }
@@ -73,7 +73,7 @@ export class PushNotificationClient {
         scope: '/'
       })
 
-      console.log('✅ Service Worker registered:', registration.scope)
+      console.log(' Service Worker registered:', registration.scope)
       
       // Wait for service worker to be ready
       await navigator.serviceWorker.ready
@@ -81,7 +81,7 @@ export class PushNotificationClient {
       this.swRegistration = registration
       return registration
     } catch (error) {
-      console.error('❌ Service Worker registration failed:', error)
+      console.error(' Service Worker registration failed:', error)
       throw error
     }
   }
@@ -102,7 +102,7 @@ export class PushNotificationClient {
     // Check if already subscribed
     const existingSubscription = await registration.pushManager.getSubscription()
     if (existingSubscription) {
-      console.log('📱 Using existing push subscription')
+      console.log(' Using existing push subscription')
       return this.convertSubscription(existingSubscription)
     }
 
@@ -113,10 +113,10 @@ export class PushNotificationClient {
         applicationServerKey: this.urlBase64ToUint8Array(vapidPublicKey)
       })
 
-      console.log('✅ Push subscription created')
+      console.log(' Push subscription created')
       return this.convertSubscription(subscription)
     } catch (error) {
-      console.error('❌ Push subscription failed:', error)
+      console.error(' Push subscription failed:', error)
       throw error
     }
   }
@@ -133,12 +133,12 @@ export class PushNotificationClient {
       const subscription = await this.swRegistration.pushManager.getSubscription()
       if (subscription) {
         const result = await subscription.unsubscribe()
-        console.log('✅ Push subscription removed')
+        console.log(' Push subscription removed')
         return result
       }
       return true
     } catch (error) {
-      console.error('❌ Push unsubscribe failed:', error)
+      console.error(' Push unsubscribe failed:', error)
       return false
     }
   }
@@ -159,7 +159,7 @@ export class PushNotificationClient {
       const subscription = await this.swRegistration!.pushManager.getSubscription()
       return subscription ? this.convertSubscription(subscription) : null
     } catch (error) {
-      console.error('❌ Error getting subscription:', error)
+      console.error(' Error getting subscription:', error)
       return null
     }
   }

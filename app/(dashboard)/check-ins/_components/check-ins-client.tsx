@@ -383,7 +383,7 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
         const qrInfo = await response.json();
         setGeneratedQrInfo(qrInfo);
         setIsQrGeneratorOpen(true);
-        toast.success("🎉 Código QR generado para check-in de niños");
+        toast.success("Código QR generado para check-in de niños");
       } else {
         const error = await response.json();
         toast.error(error.message || "Error al generar código QR");
@@ -777,10 +777,10 @@ export function CheckInsClient({ userRole, churchId }: CheckInsClientProps) {
                       Características de Seguridad
                     </h4>
                     <ul className="text-sm text-[hsl(var(--success))] space-y-1">
-                      <li>✅ Fotos del niño y padre requeridas</li>
-                      <li>✅ PIN de seguridad generado automáticamente</li>
-                      <li>✅ Fotos se eliminan después de 7 días</li>
-                      <li>✅ Verificación dual para recogida</li>
+                      <li>Fotos del niño y padre requeridas</li>
+                      <li>PIN de seguridad generado automáticamente</li>
+                      <li>Fotos se eliminan después de 7 días</li>
+                      <li>Verificación dual para recogida</li>
                     </ul>
                   </div>
 

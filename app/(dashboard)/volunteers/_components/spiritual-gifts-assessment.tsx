@@ -205,9 +205,9 @@ export function SpiritualGiftsAssessment({
     return acc
   }, {} as Record<string, SpiritualGift[]>)
   
-  console.log('🏷️ GIFTS BY CATEGORY:', giftsByCategory)
-  console.log('🏷️ TOTAL CATEGORIES:', Object.keys(giftsByCategory).length)
-  console.log('🏷️ SPIRITUAL GIFTS COUNT:', spiritualGifts.length)
+  console.log('️ GIFTS BY CATEGORY:', giftsByCategory)
+  console.log('️ TOTAL CATEGORIES:', Object.keys(giftsByCategory).length)
+  console.log('️ SPIRITUAL GIFTS COUNT:', spiritualGifts.length)
 
   const categoryIcons: Record<string, any> = {
     'Liderazgo': Crown,
@@ -253,7 +253,7 @@ export function SpiritualGiftsAssessment({
           <CardContent className="space-y-6">
             {Object.entries(giftsByCategory).map(([category, gifts]) => {
               const IconComponent = categoryIcons[category] || Brain
-              console.log(`🎯 RENDERING CATEGORY: ${category} with ${gifts.length} gifts`)
+              console.log(` RENDERING CATEGORY: ${category} with ${gifts.length} gifts`)
               return (
                 <div key={category} className="border rounded-lg p-4">
                   <h4 className="flex items-center gap-2 font-medium mb-3">
@@ -264,7 +264,7 @@ export function SpiritualGiftsAssessment({
                     {gifts.map((gift) => {
                       const isPrimarySelected = formData.primaryGifts.includes(gift.id)
                       const isSecondarySelected = formData.secondaryGifts.includes(gift.id)
-                      console.log(`🎯 RENDERING GIFT: ${gift.name} (ID: ${gift.id}) - Primary: ${isPrimarySelected}, Secondary: ${isSecondarySelected}`)
+                      console.log(` RENDERING GIFT: ${gift.name} (ID: ${gift.id}) - Primary: ${isPrimarySelected}, Secondary: ${isSecondarySelected}`)
                       return (
                       <div key={gift.id} className="space-y-2">
                         <div className="flex items-center gap-3">
@@ -273,7 +273,7 @@ export function SpiritualGiftsAssessment({
                               id={`primary-${gift.id}`}
                               checked={isPrimarySelected}
                               onCheckedChange={(checked) => {
-                                console.log(`🎯 PRIMARY CHECKBOX CLICKED: ${gift.name} (${gift.id}) - New state: ${checked}`)
+                                console.log(` PRIMARY CHECKBOX CLICKED: ${gift.name} (${gift.id}) - New state: ${checked}`)
                                 handleGiftToggle(gift.id, true)
                               }}
                             />
@@ -289,7 +289,7 @@ export function SpiritualGiftsAssessment({
                               id={`secondary-${gift.id}`}
                               checked={isSecondarySelected}
                               onCheckedChange={(checked) => {
-                                console.log(`🎯 SECONDARY CHECKBOX CLICKED: ${gift.name} (${gift.id}) - New state: ${checked}`)
+                                console.log(` SECONDARY CHECKBOX CLICKED: ${gift.name} (${gift.id}) - New state: ${checked}`)
                                 handleGiftToggle(gift.id, false)
                               }}
                             />
@@ -356,13 +356,13 @@ export function SpiritualGiftsAssessment({
                     id={`passion-${passion}`}
                     checked={formData.ministryPassions.includes(passion)}
                     onCheckedChange={(checked) => {
-                      console.log('🎯 MINISTRY PASSION SELECTION:', { passion, checked })
-                      console.log('🎯 MINISTRY PASSION - Current array:', formData.ministryPassions)
+                      console.log(' MINISTRY PASSION SELECTION:', { passion, checked })
+                      console.log(' MINISTRY PASSION - Current array:', formData.ministryPassions)
                       
                       if (checked) {
                         setFormData(prev => {
                           const newPassions = [...prev.ministryPassions, passion]
-                          console.log('🎯 MINISTRY PASSION - Adding, new array:', newPassions)
+                          console.log(' MINISTRY PASSION - Adding, new array:', newPassions)
                           return {
                             ...prev,
                             ministryPassions: newPassions
@@ -371,7 +371,7 @@ export function SpiritualGiftsAssessment({
                       } else {
                         setFormData(prev => {
                           const newPassions = prev.ministryPassions.filter((p: string) => p !== passion)
-                          console.log('🎯 MINISTRY PASSION - Removing, new array:', newPassions)
+                          console.log(' MINISTRY PASSION - Removing, new array:', newPassions)
                           return {
                             ...prev,
                             ministryPassions: newPassions

@@ -253,7 +253,7 @@ export class MemoryAssessment {
    * This is new functionality. Files are backed up before deletion.
    */
   async performSafeCleanup(report: MemoryReport, dryRun = true): Promise<void> {
-    console.log(`🧹 Starting ${dryRun ? 'DRY RUN' : 'ACTUAL'} cleanup...`);
+    console.log(` Starting ${dryRun ? 'DRY RUN' : 'ACTUAL'} cleanup...`);
     
     let totalCleaned = 0;
     let filesDeleted = 0;
@@ -275,22 +275,22 @@ export class MemoryAssessment {
           
           // Delete original file
           await fs.unlink(fullPath);
-          console.log(`✅ Deleted: ${file.path} (${this.formatBytes(file.size)})`);
+          console.log(` Deleted: ${file.path} (${this.formatBytes(file.size)})`);
         }
         
         totalCleaned += file.size;
         filesDeleted++;
       } catch (error) {
-        console.error(`❌ Failed to process ${file.path}:`, error);
+        console.error(` Failed to process ${file.path}:`, error);
       }
     }
     
-    console.log(`\n📊 Cleanup Summary:`);
+    console.log(`\n Cleanup Summary:`);
     console.log(`Files processed: ${filesDeleted}`);
     console.log(`Space ${dryRun ? 'that would be' : ''} freed: ${this.formatBytes(totalCleaned)}`);
     
     if (!dryRun) {
-      console.log(`📁 Backup created in: .cleanup-backup/`);
+      console.log(` Backup created in: .cleanup-backup/`);
     }
   }
 
@@ -313,22 +313,22 @@ export class MemoryAssessment {
   async generateMemoryReport(): Promise<string> {
     const report = await this.analyzeProjectMemory();
     
-    let output = `# 🧠 Memory Assessment Report\n`;
+    let output = `#  Memory Assessment Report\n`;
     output += `**Generated**: ${new Date().toISOString()}\n\n`;
     
-    output += `## 📊 Overview\n`;
+    output += `##  Overview\n`;
     output += `- **Total Project Size**: ${this.formatBytes(report.totalSize)}\n`;
     output += `- **Potential Savings**: ${this.formatBytes(report.cleanupRecommendations.totalSavings)}\n`;
     output += `- **Files Safe to Delete**: ${report.cleanupRecommendations.safeToDelete.length}\n`;
     output += `- **Files Requiring Review**: ${report.cleanupRecommendations.requiresReview.length}\n\n`;
     
-    output += `## 🗂 Files by Type\n`;
+    output += `##  Files by Type\n`;
     for (const [type, files] of Object.entries(report.filesByType)) {
       const totalSize = files.reduce((sum, f) => sum + f.size, 0);
       output += `- **${type}**: ${files.length} files (${this.formatBytes(totalSize)})\n`;
     }
     
-    output += `\n## 🗑 Safe to Delete (${report.cleanupRecommendations.safeToDelete.length} files)\n`;
+    output += `\n##  Safe to Delete (${report.cleanupRecommendations.safeToDelete.length} files)\n`;
     for (const file of report.cleanupRecommendations.safeToDelete.slice(0, 20)) {
       output += `- \`${file.path}\` (${this.formatBytes(file.size)})\n`;
     }
@@ -337,12 +337,12 @@ export class MemoryAssessment {
       output += `... and ${report.cleanupRecommendations.safeToDelete.length - 20} more files\n`;
     }
     
-    output += `\n## ⚠️ Requires Review (${report.cleanupRecommendations.requiresReview.length} files)\n`;
+    output += `\n## ️ Requires Review (${report.cleanupRecommendations.requiresReview.length} files)\n`;
     for (const file of report.cleanupRecommendations.requiresReview.slice(0, 10)) {
       output += `- \`${file.path}\` (${this.formatBytes(file.size)}) - Last modified: ${file.lastModified.toLocaleDateString()}\n`;
     }
     
-    output += `\n## 📈 Largest Files\n`;
+    output += `\n##  Largest Files\n`;
     for (const file of report.largestFiles.slice(0, 10)) {
       output += `- \`${file.path}\` (${this.formatBytes(file.size)}) - ${file.priority}\n`;
     }

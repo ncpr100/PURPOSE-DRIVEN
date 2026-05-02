@@ -130,7 +130,7 @@ export default function DonationsHelp() {
         <div className="grid md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>📝 Registro Manual</CardTitle>
+              <CardTitle> Registro Manual</CardTitle>
             </CardHeader>
             <CardContent>
               <ol className="space-y-2 text-sm">
@@ -147,16 +147,16 @@ export default function DonationsHelp() {
           
           <Card>
             <CardHeader>
-              <CardTitle>📊 Reportes Automáticos</CardTitle>
+              <CardTitle> Reportes Automáticos</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
-                <li>✅ Reporte mensual de donaciones</li>
-                <li>✅ Desglose por categorías</li>
-                <li>✅ Estadísticas por método de pago</li>
-                <li>✅ Histórico de donantes frecuentes</li>
-                <li>✅ Exportación a Excel/PDF</li>
-                <li>✅ Gráficos de tendencias</li>
+                <li> Reporte mensual de donaciones</li>
+                <li> Desglose por categorías</li>
+                <li> Estadísticas por método de pago</li>
+                <li> Histórico de donantes frecuentes</li>
+                <li> Exportación a Excel/PDF</li>
+                <li> Gráficos de tendencias</li>
               </ul>
             </CardContent>
           </Card>
@@ -167,15 +167,15 @@ export default function DonationsHelp() {
       <section className="mb-8">
         <Card>
           <CardHeader>
-            <CardTitle>💡 Consejos para Maximizar Donaciones</CardTitle>
+            <CardTitle> Consejos para Maximizar Donaciones</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2 text-sm">
-              <p>💰 <strong>Transparencia:</strong> Comparta reportes financieros con la congregación</p>
-              <p>📱 <strong>Facilidad:</strong> Ofrezca múltiples métodos de pago</p>
-              <p>🎯 <strong>Propósito:</strong> Sea específico sobre el uso de los fondos</p>
-              <p>📧 <strong>Agradecimiento:</strong> Envíe recibos y notas de agradecimiento</p>
-              <p>📈 <strong>Seguimiento:</strong> Monitoree tendencias y patrones</p>
+              <p> <strong>Transparencia:</strong> Comparta reportes financieros con la congregación</p>
+              <p> <strong>Facilidad:</strong> Ofrezca múltiples métodos de pago</p>
+              <p> <strong>Propósito:</strong> Sea específico sobre el uso de los fondos</p>
+              <p> <strong>Agradecimiento:</strong> Envíe recibos y notas de agradecimiento</p>
+              <p> <strong>Seguimiento:</strong> Monitoree tendencias y patrones</p>
             </div>
           </CardContent>
         </Card>
@@ -190,7 +190,7 @@ export default function DonationsHelp() {
         </Link>
         <Link href="/help/manual/donations">
           <Button variant="outline">
-            📖 Ver Manual Detallado
+             Ver Manual Detallado
           </Button>
         </Link>
       </div>

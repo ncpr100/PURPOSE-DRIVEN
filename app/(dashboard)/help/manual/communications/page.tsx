@@ -28,7 +28,7 @@ export default function CommunicationsManual() {
         {/* Overview */}
         <Card>
           <CardHeader>
-            <CardTitle>📧 Sistema de Comunicaciones - Manual Completo</CardTitle>
+            <CardTitle> Sistema de Comunicaciones - Manual Completo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
@@ -36,19 +36,19 @@ export default function CommunicationsManual() {
             </p>
             <div className="grid md:grid-cols-4 gap-4 text-sm">
               <div className="text-center p-3 bg-[hsl(var(--info)/0.10)] rounded-lg">
-                <h4 className="font-semibold">📋 Secciones</h4>
+                <h4 className="font-semibold"> Secciones</h4>
                 <p className="text-xl font-bold text-[hsl(var(--info))]">7</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--success)/0.10)] rounded-lg">
-                <h4 className="font-semibold">⏱️ Tiempo</h4>
+                <h4 className="font-semibold">️ Tiempo</h4>
                 <p className="text-xl font-bold text-[hsl(var(--success))]">18 min</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--lavender)/0.10)] rounded-lg">
-                <h4 className="font-semibold">🎯 Nivel</h4>
+                <h4 className="font-semibold"> Nivel</h4>
                 <p className="text-lg font-bold text-[hsl(var(--lavender))]">Básico</p>
               </div>
               <div className="text-center p-3 bg-[hsl(var(--warning)/0.10)] rounded-lg">
-                <h4 className="font-semibold">👤 Rol Mínimo</h4>
+                <h4 className="font-semibold"> Rol Mínimo</h4>
                 <p className="text-lg font-bold text-[hsl(var(--warning))]">LIDER</p>
               </div>
             </div>
@@ -66,10 +66,10 @@ export default function CommunicationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📝 Crear Plantillas</h4>
+                <h4 className="font-semibold mb-3"> Crear Plantillas</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>1.1.</strong> Navegue a <code>Comunicaciones → 📝 Plantillas</code></p>
-                  <p><strong>1.2.</strong> Haga clic en &quot;➕ Nueva Plantilla&quot;</p>
+                  <p><strong>1.1.</strong> Navegue a <code>Comunicaciones →  Plantillas</code></p>
+                  <p><strong>1.2.</strong> Haga clic en &quot; Nueva Plantilla&quot;</p>
                   <p><strong>1.3.</strong> Complete la información:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Nombre de plantilla:</strong> Identificación interna</li>
@@ -87,18 +87,18 @@ export default function CommunicationsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📋 Plantillas Predefinidas</h4>
+                <h4 className="font-semibold mb-2"> Plantillas Predefinidas</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• <strong>🎉 Bienvenida:</strong> Nuevos miembros</li>
-                  <li>• <strong>📅 Recordatorio Evento:</strong> Próximos servicios</li>
-                  <li>• <strong>🎂 Cumpleaños:</strong> Felicitaciones personales</li>
-                  <li>• <strong>💰 Agradecimiento:</strong> Por donaciones</li>
-                  <li>• <strong>🙏 Oración:</strong> Peticiones especiales</li>
-                  <li>• <strong>📢 Anuncios:</strong> Noticias de la iglesia</li>
-                  <li>• <strong>🎪 Invitación Evento:</strong> Eventos especiales</li>
+                  <li>• <strong> Bienvenida:</strong> Nuevos miembros</li>
+                  <li>• <strong> Recordatorio Evento:</strong> Próximos servicios</li>
+                  <li>• <strong> Cumpleaños:</strong> Felicitaciones personales</li>
+                  <li>• <strong> Agradecimiento:</strong> Por donaciones</li>
+                  <li>• <strong> Oración:</strong> Peticiones especiales</li>
+                  <li>• <strong> Anuncios:</strong> Noticias de la iglesia</li>
+                  <li>• <strong> Invitación Evento:</strong> Eventos especiales</li>
                 </ul>
                 <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--info)/0.5)]">
-                  <p className="text-xs"><strong>💡 Tip:</strong> Personalice las plantillas con el tono de su iglesia</p>
+                  <p className="text-xs"><strong> Tip:</strong> Personalice las plantillas con el tono de su iglesia</p>
                 </div>
               </div>
             </div>
@@ -116,9 +116,9 @@ export default function CommunicationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📢 Envío Masivo</h4>
+                <h4 className="font-semibold mb-3"> Envío Masivo</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>2.1.</strong> Haga clic en &quot;📧 Nuevo Mensaje&quot;</p>
+                  <p><strong>2.1.</strong> Haga clic en &quot; Nuevo Mensaje&quot;</p>
                   <p><strong>2.2.</strong> Seleccione destinatarios:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>&quot;Todos los Miembros&quot;:</strong> Congregación completa</li>
@@ -137,13 +137,13 @@ export default function CommunicationsManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">⏰ Programación Avanzada</h4>
+                <h4 className="font-semibold mb-3"> Programación Avanzada</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Para programar envíos:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;⏰ Programar Envío&quot;:</strong> Fecha y hora específica</li>
-                    <li>• <strong>&quot;🔄 Recurrente&quot;:</strong> Mensajes repetitivos</li>
-                    <li>• <strong>&quot;📅 Basado en Eventos&quot;:</strong> Antes/después de servicios</li>
+                    <li>• <strong>&quot; Programar Envío&quot;:</strong> Fecha y hora específica</li>
+                    <li>• <strong>&quot; Recurrente&quot;:</strong> Mensajes repetitivos</li>
+                    <li>• <strong>&quot; Basado en Eventos&quot;:</strong> Antes/después de servicios</li>
                   </ul>
                   <p><strong>Opciones de recurrencia:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -169,9 +169,9 @@ export default function CommunicationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📱 Configuración SMS</h4>
+                <h4 className="font-semibold mb-3"> Configuración SMS</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>3.1.</strong> Vaya a <code>Comunicaciones → ⚙️ Configuración</code></p>
+                  <p><strong>3.1.</strong> Vaya a <code>Comunicaciones → ️ Configuración</code></p>
                   <p><strong>3.2.</strong> En la sección SMS/WhatsApp:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Active el servicio SMS</li>
@@ -189,7 +189,7 @@ export default function CommunicationsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">💚 WhatsApp Business</h4>
+                <h4 className="font-semibold mb-2"> WhatsApp Business</h4>
                 <div className="text-sm space-y-2">
                   <p><strong>Funcionalidades especiales:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -199,7 +199,7 @@ export default function CommunicationsManual() {
                     <li>• <strong>Grupos:</strong> Crear grupos por ministerio</li>
                   </ul>
                   <div className="mt-3 p-2 bg-[hsl(var(--card))] rounded border-l-4 border-[hsl(var(--success)/0.30)]">
-                    <p className="text-xs"><strong>📞 Costo:</strong> SMS tiene costo por mensaje, WhatsApp Business es más económico</p>
+                    <p className="text-xs"><strong> Costo:</strong> SMS tiene costo por mensaje, WhatsApp Business es más económico</p>
                   </div>
                 </div>
               </div>
@@ -218,9 +218,9 @@ export default function CommunicationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔔 Configurar Notificaciones</h4>
+                <h4 className="font-semibold mb-3"> Configurar Notificaciones</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>4.1.</strong> Vaya a <code>Configuración → 🔔 Notificaciones</code></p>
+                  <p><strong>4.1.</strong> Vaya a <code>Configuración →  Notificaciones</code></p>
                   <p><strong>4.2.</strong> Tipos de notificaciones automáticas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Nuevos Miembros:</strong> Bienvenida automática</li>
@@ -238,14 +238,14 @@ export default function CommunicationsManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">📮 Bandeja de Entrada</h4>
+                <h4 className="font-semibold mb-3"> Bandeja de Entrada</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Gestionar notificaciones recibidas:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;📥 Bandeja de Entrada&quot;:</strong> Mensajes recibidos</li>
-                    <li>• <strong>&quot;✉️ No Leídos&quot;:</strong> Filtrar pendientes</li>
-                    <li>• <strong>&quot;📧 Responder&quot;:</strong> Contestar directamente</li>
-                    <li>• <strong>&quot;🗑️ Archivar&quot;:</strong> Organizar mensajes</li>
+                    <li>• <strong>&quot; Bandeja de Entrada&quot;:</strong> Mensajes recibidos</li>
+                    <li>• <strong>&quot;️ No Leídos&quot;:</strong> Filtrar pendientes</li>
+                    <li>• <strong>&quot; Responder&quot;:</strong> Contestar directamente</li>
+                    <li>• <strong>&quot;️ Archivar&quot;:</strong> Organizar mensajes</li>
                   </ul>
                   <p><strong>Métodos de entrega disponibles:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -272,10 +272,10 @@ export default function CommunicationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🎯 Crear Campañas</h4>
+                <h4 className="font-semibold mb-3"> Crear Campañas</h4>
                 <div className="space-y-2 text-sm">
-                  <p><strong>5.1.</strong> En Comunicaciones, haga clic en &quot;📈 Campañas&quot;</p>
-                  <p><strong>5.2.</strong> Haga clic en &quot;➕ Nueva Campaña&quot;</p>
+                  <p><strong>5.1.</strong> En Comunicaciones, haga clic en &quot; Campañas&quot;</p>
+                  <p><strong>5.2.</strong> Haga clic en &quot; Nueva Campaña&quot;</p>
                   <p><strong>5.3.</strong> Configure la campaña:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• <strong>Nombre de campaña:</strong> Ej: &quot;Bienvenida 2025&quot;</li>
@@ -292,7 +292,7 @@ export default function CommunicationsManual() {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">📊 Seguimiento de Resultados</h4>
+                <h4 className="font-semibold mb-3"> Seguimiento de Resultados</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Métricas de campaña:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -325,7 +325,7 @@ export default function CommunicationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">🔗 Integraciones Disponibles</h4>
+                <h4 className="font-semibold mb-3"> Integraciones Disponibles</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>6.1.</strong> Conecte con plataformas externas:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -337,14 +337,14 @@ export default function CommunicationsManual() {
                   <p><strong>6.2.</strong> Para activar integraciones:</p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
                     <li>• Vaya a Configuración → Integraciones</li>
-                    <li>• Haga clic en &quot;🔗 Conectar [Plataforma]&quot;</li>
+                    <li>• Haga clic en &quot; Conectar [Plataforma]&quot;</li>
                     <li>• Autentique con sus credenciales</li>
                     <li>• Configure sincronización automática</li>
                   </ul>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">🤖 Automatización</h4>
+                <h4 className="font-semibold mb-3"> Automatización</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>Triggers automáticos disponibles:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
@@ -356,7 +356,7 @@ export default function CommunicationsManual() {
                   </ul>
                   <p><strong>Para configurar:</strong></p>
                   <ul className="ml-4 space-y-1 text-muted-foreground">
-                    <li>• <strong>&quot;🤖 Reglas de Automatización&quot;</strong></li>
+                    <li>• <strong>&quot; Reglas de Automatización&quot;</strong></li>
                     <li>• Seleccione trigger</li>
                     <li>• Configure acción (email, SMS, etc.)</li>
                     <li>• Establezca condiciones</li>
@@ -379,7 +379,7 @@ export default function CommunicationsManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📈 Métricas de Comunicación</h4>
+                <h4 className="font-semibold mb-3"> Métricas de Comunicación</h4>
                 <div className="space-y-2 text-sm">
                   <p><strong>7.1.</strong> Acceda a <code>Analíticas → Comunicaciones</code></p>
                   <p><strong>7.2.</strong> Reportes disponibles:</p>
@@ -399,23 +399,23 @@ export default function CommunicationsManual() {
                 </div>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">📊 KPIs Clave</h4>
+                <h4 className="font-semibold mb-2"> KPIs Clave</h4>
                 <div className="text-sm space-y-2">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="font-semibold">📧 Tasa de Apertura</p>
+                      <p className="font-semibold"> Tasa de Apertura</p>
                       <p className="text-muted-foreground">25-35% es bueno</p>
                     </div>
                     <div>
-                      <p className="font-semibold">👆 Tasa de Clic</p>
+                      <p className="font-semibold"> Tasa de Clic</p>
                       <p className="text-muted-foreground">2-5% es bueno</p>
                     </div>
                     <div>
-                      <p className="font-semibold">📱 Entrega SMS</p>
+                      <p className="font-semibold"> Entrega SMS</p>
                       <p className="text-muted-foreground">95%+ esperado</p>
                     </div>
                     <div>
-                      <p className="font-semibold">💬 Respuestas</p>
+                      <p className="font-semibold"> Respuestas</p>
                       <p className="text-muted-foreground">Interacción directa</p>
                     </div>
                   </div>
@@ -428,35 +428,35 @@ export default function CommunicationsManual() {
         {/* Quick Reference */}
         <Card>
           <CardHeader>
-            <CardTitle>⚡ Referencia Rápida de Botones</CardTitle>
+            <CardTitle> Referencia Rápida de Botones</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div>
-                <h4 className="font-semibold mb-2">📧 Botones de Email</h4>
+                <h4 className="font-semibold mb-2"> Botones de Email</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;📧 Nuevo Mensaje&quot;:</strong> Crear comunicación</li>
-                  <li>• <strong>&quot;📝 Plantillas&quot;:</strong> Gestionar plantillas</li>
-                  <li>• <strong>&quot;📈 Campañas&quot;:</strong> Marketing automation</li>
-                  <li>• <strong>&quot;📊 Estadísticas&quot;:</strong> Ver métricas</li>
+                  <li>• <strong>&quot; Nuevo Mensaje&quot;:</strong> Crear comunicación</li>
+                  <li>• <strong>&quot; Plantillas&quot;:</strong> Gestionar plantillas</li>
+                  <li>• <strong>&quot; Campañas&quot;:</strong> Marketing automation</li>
+                  <li>• <strong>&quot; Estadísticas&quot;:</strong> Ver métricas</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">📱 Botones de SMS/WhatsApp</h4>
+                <h4 className="font-semibold mb-2"> Botones de SMS/WhatsApp</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;📱 Enviar SMS&quot;:</strong> Mensaje de texto masivo</li>
-                  <li>• <strong>&quot;💚 WhatsApp&quot;:</strong> Envío por WhatsApp</li>
-                  <li>• <strong>&quot;👥 Grupos&quot;:</strong> Gestionar grupos de chat</li>
-                  <li>• <strong>&quot;⚙️ Configurar&quot;:</strong> APIs y límites</li>
+                  <li>• <strong>&quot; Enviar SMS&quot;:</strong> Mensaje de texto masivo</li>
+                  <li>• <strong>&quot; WhatsApp&quot;:</strong> Envío por WhatsApp</li>
+                  <li>• <strong>&quot; Grupos&quot;:</strong> Gestionar grupos de chat</li>
+                  <li>• <strong>&quot;️ Configurar&quot;:</strong> APIs y límites</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">🔔 Botones de Notificaciones</h4>
+                <h4 className="font-semibold mb-2"> Botones de Notificaciones</h4>
                 <ul className="space-y-1 text-muted-foreground">
-                  <li>• <strong>&quot;📥 Bandeja de Entrada&quot;:</strong> Mensajes recibidos</li>
-                  <li>• <strong>&quot;🔔 Configurar&quot;:</strong> Notificaciones automáticas</li>
-                  <li>• <strong>&quot;🤖 Automatización&quot;:</strong> Reglas inteligentes</li>
-                  <li>• <strong>&quot;📊 Métricas de Entrega&quot;:</strong> Rendimiento</li>
+                  <li>• <strong>&quot; Bandeja de Entrada&quot;:</strong> Mensajes recibidos</li>
+                  <li>• <strong>&quot; Configurar&quot;:</strong> Notificaciones automáticas</li>
+                  <li>• <strong>&quot; Automatización&quot;:</strong> Reglas inteligentes</li>
+                  <li>• <strong>&quot; Métricas de Entrega&quot;:</strong> Rendimiento</li>
                 </ul>
               </div>
             </div>

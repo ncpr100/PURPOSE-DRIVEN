@@ -21,17 +21,17 @@ export class SessionErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('🚨 Session error boundary caught an error:', error)
-    console.error('🚨 Error details:', error.message)
-    console.error('🚨 Error stack:', error.stack)
-    console.error('🚨 Component stack:', errorInfo.componentStack)
+    console.error(' Session error boundary caught an error:', error)
+    console.error(' Error details:', error.message)
+    console.error(' Error stack:', error.stack)
+    console.error(' Component stack:', errorInfo.componentStack)
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div className="p-6">
-          <h2 className="text-lg font-semibold mb-2 text-[hsl(var(--destructive))]">🚨 Application Error</h2>
+          <h2 className="text-lg font-semibold mb-2 text-[hsl(var(--destructive))]"> Application Error</h2>
           <div className="bg-[hsl(var(--destructive)/0.10)] border border-[hsl(var(--destructive)/0.3)] rounded p-4 mb-4">
             <p className="text-sm font-mono text-[hsl(var(--destructive))]">
               {this.state.error?.message || 'Unknown error occurred'}

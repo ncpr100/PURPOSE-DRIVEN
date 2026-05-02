@@ -22,7 +22,7 @@ export class MemoryMonitor {
    * Start memory monitoring
    */
   startMonitoring(): void {
-    console.log('🔍 Starting memory monitoring...');
+    console.log(' Starting memory monitoring...');
     
     this.intervalId = setInterval(() => {
       this.checkMemoryUsage();
@@ -61,11 +61,11 @@ export class MemoryMonitor {
     };
 
     // Log memory stats
-    console.log(`📊 Memory: ${stats.heapUsed}/${stats.heapTotal} (${stats.percentage}%)`);
+    console.log(` Memory: ${stats.heapUsed}/${stats.heapTotal} (${stats.percentage}%)`);
 
     // Alert if memory usage is high
     if (memoryPercent > this.memoryThreshold * 100) {
-      console.warn(`⚠️ HIGH MEMORY USAGE: ${stats.percentage}%`);
+      console.warn(`️ HIGH MEMORY USAGE: ${stats.percentage}%`);
       this.triggerCleanup();
     }
   }
@@ -87,12 +87,12 @@ export class MemoryMonitor {
    * Trigger garbage collection and cleanup
    */
   private triggerCleanup(): void {
-    console.log('🧹 Triggering memory cleanup...');
+    console.log(' Triggering memory cleanup...');
     
     // Force garbage collection if available
     if (global.gc) {
       global.gc();
-      console.log('✅ Garbage collection completed');
+      console.log(' Garbage collection completed');
     }
 
     // Clear any caches
@@ -116,7 +116,7 @@ export class MemoryMonitor {
     });
 
     if (testModules.length > 0) {
-      console.log(`🗑️ Cleared ${testModules.length} test modules from cache`);
+      console.log(`️ Cleared ${testModules.length} test modules from cache`);
     }
   }
 

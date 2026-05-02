@@ -38,8 +38,8 @@ const STATUS_CONFIG: Record<CoverageStatus, {
   icon: typeof ShieldCheck;
   label: string;
 }> = {
-  CONFIRMED:   { color: "#1DC98C", bg: "rgba(29,201,140,0.08)",  border: "rgba(29,201,140,0.0)",  icon: ShieldCheck, label: "✓" },
-  COVERED:     { color: "#26D9D9", bg: "rgba(38,217,217,0.08)",  border: "rgba(38,217,217,0.15)", icon: ShieldCheck, label: "✓" },
+  CONFIRMED:   { color: "#1DC98C", bg: "rgba(29,201,140,0.08)",  border: "rgba(29,201,140,0.0)",  icon: ShieldCheck, label: "" },
+  COVERED:     { color: "#26D9D9", bg: "rgba(38,217,217,0.08)",  border: "rgba(38,217,217,0.15)", icon: ShieldCheck, label: "" },
   CANCELLED:   { color: "#F0B83C", bg: "rgba(240,184,60,0.06)",  border: "rgba(240,184,60,0.25)", icon: ShieldAlert, label: "Cascada" },
   UNPROTECTED: { color: "#E84855", bg: "rgba(232,72,85,0.08)",   border: "rgba(232,72,85,0.25)",  icon: ShieldX,     label: "Sin cobertura" },
   UNCONFIRMED: { color: "#94A3B8", bg: "rgba(148,163,184,0.05)", border: "rgba(148,163,184,0.1)", icon: Shield,      label: "Sin confirmar" },
@@ -161,7 +161,7 @@ function CascadeTimeline({ steps, volunteerName, role }: NonNullable<Props["acti
                   step.state === "active"  ? { background: "rgba(240,184,60,0.2)",  borderColor: "#F0B83C", color: "#F0B83C", animation: "cascadeActive 1.2s ease-in-out infinite" } :
                                              { background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.15)", color: "rgba(138,147,168,0.6)" }),
             }}>
-              {step.state === "done" ? "✓" : step.state === "active" ? "→" : i + 1}
+              {step.state === "done" ? "" : step.state === "active" ? "→" : i + 1}
             </div>
 
             <div style={{ fontSize: "8px", color: "rgba(138,147,168,0.7)", textAlign: "center", lineHeight: 1.35 }}>
@@ -223,7 +223,7 @@ export function CoverageCosmosCard({
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
         <div style={{ fontSize: "12px", fontWeight: 500, color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}>
-          🛡 Agente 12 — Cobertura Dominical
+           Agente 12 — Cobertura Dominical
         </div>
         <div style={{
           display: "flex", alignItems: "center", gap: "6px",

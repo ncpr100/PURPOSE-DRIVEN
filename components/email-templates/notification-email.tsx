@@ -83,7 +83,7 @@ export function NotificationEmail({
           {/* Header */}
           <Section style={header}>
             <Heading style={h1}>
-              🏛️ {churchName}
+              ️ {churchName}
             </Heading>
             <Text style={subtitle}>
               Sistema de Gestión Kḥesed-tek
@@ -94,7 +94,7 @@ export function NotificationEmail({
           {notification.priority === 'URGENT' && (
             <Section style={{ ...alertBox, backgroundColor: '#fee2e2', border: '1px solid #fecaca' }}>
               <Text style={{ ...alertText, color: '#dc2626' }}>
-                🚨 <strong>NOTIFICACIÓN URGENTE</strong>
+                 <strong>NOTIFICACIÓN URGENTE</strong>
               </Text>
             </Section>
           )}
@@ -102,10 +102,10 @@ export function NotificationEmail({
           {/* Main Content */}
           <Section style={content}>
             <div style={{ ...badge, backgroundColor: accentColor }}>
-              {notification.type === 'INFO' && '📢'}
-              {notification.type === 'SUCCESS' && '✅'}
-              {notification.type === 'WARNING' && '⚠️'}
-              {notification.type === 'ERROR' && '❌'}
+              {notification.type === 'INFO' && ''}
+              {notification.type === 'SUCCESS' && ''}
+              {notification.type === 'WARNING' && '️'}
+              {notification.type === 'ERROR' && ''}
               <span style={{ marginLeft: '8px' }}>
                 {notification.type}
               </span>

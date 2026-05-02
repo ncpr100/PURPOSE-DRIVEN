@@ -104,9 +104,9 @@ export class PushNotificationService {
         })
       }
 
-      console.log('✅ Push subscription saved for user:', userId)
+      console.log(' Push subscription saved for user:', userId)
     } catch (error) {
-      console.error('❌ Error saving push subscription:', error)
+      console.error(' Error saving push subscription:', error)
       throw error
     }
   }
@@ -126,9 +126,9 @@ export class PushNotificationService {
         }
       })
 
-      console.log('✅ Push subscription removed for user:', userId)
+      console.log(' Push subscription removed for user:', userId)
     } catch (error) {
-      console.error('❌ Error removing push subscription:', error)
+      console.error(' Error removing push subscription:', error)
       throw error
     }
   }
@@ -179,7 +179,7 @@ export class PushNotificationService {
 
       return { success, failed }
     } catch (error) {
-      console.error('❌ Error sending push notification to user:', error)
+      console.error(' Error sending push notification to user:', error)
       return { success: 0, failed: 1 }
     }
   }
@@ -240,7 +240,7 @@ export class PushNotificationService {
       const userIds = users.map(u => u.id)
       return await this.sendToUsers(userIds, payload)
     } catch (error) {
-      console.error('❌ Error sending push notification to church:', error)
+      console.error(' Error sending push notification to church:', error)
       return { success: 0, failed: 1, totalUsers: 0 }
     }
   }
@@ -269,7 +269,7 @@ export class PushNotificationService {
 
     // In a real implementation, you would use a library like 'web-push'
     // For now, we'll simulate the push notification
-    console.log('📨 Sending push notification:', {
+    console.log(' Sending push notification:', {
       endpoint: subscription.endpoint.substring(0, 50) + '...',
       title: payload.title,
       body: payload.body
@@ -299,7 +299,7 @@ export class PushNotificationService {
       throw new Error('Push notification delivery failed')
     }
 
-    console.log('✅ Push notification sent successfully')
+    console.log(' Push notification sent successfully')
   }
 
   /**
@@ -355,7 +355,7 @@ export class PushNotificationService {
         recentActivity
       }
     } catch (error) {
-      console.error('❌ Error getting push notification stats:', error)
+      console.error(' Error getting push notification stats:', error)
       return {
         totalSubscriptions: 0,
         activeSubscriptions: 0,
@@ -405,7 +405,7 @@ export const NotificationTemplates = {
   }),
 
   birthday: (memberName: string): PushNotificationPayload => ({
-    title: '🎉 ¡Feliz Cumpleaños!',
+    title: ' ¡Feliz Cumpleaños!',
     body: `Hoy es el cumpleaños de ${memberName}. ¡Únete a las felicitaciones!`,
     icon: '/icons/birthday.png',
     tag: 'birthday',

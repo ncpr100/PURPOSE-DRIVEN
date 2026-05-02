@@ -135,7 +135,7 @@ export default function CommunicationsHelp() {
                       <ul className="space-y-1">
                         {type.features.map((feature, index) => (
                           <li key={index} className="flex items-center text-sm">
-                            <span className="mr-2 text-[hsl(var(--success))]">✓</span>
+                            <span className="mr-2 text-[hsl(var(--success))]"></span>
                             {feature}
                           </li>
                         ))}
@@ -194,7 +194,7 @@ export default function CommunicationsHelp() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">📝 Preparación</h4>
+                <h4 className="font-semibold mb-3"> Preparación</h4>
                 <ol className="space-y-2 text-sm">
                   <li><span className="font-bold">1.</span> Definir objetivo del mensaje</li>
                   <li><span className="font-bold">2.</span> Seleccionar audiencia objetivo</li>
@@ -203,7 +203,7 @@ export default function CommunicationsHelp() {
                 </ol>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">🚀 Envío</h4>
+                <h4 className="font-semibold mb-3"> Envío</h4>
                 <ol className="space-y-2 text-sm">
                   <li><span className="font-bold">5.</span> Revisar contenido y destinatarios</li>
                   <li><span className="font-bold">6.</span> Programar fecha y hora (opcional)</li>
@@ -244,7 +244,7 @@ export default function CommunicationsHelp() {
       <section className="mb-8">
         <Card>
           <CardHeader>
-            <CardTitle>📊 Métricas de Comunicación</CardTitle>
+            <CardTitle> Métricas de Comunicación</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-4 gap-4">
@@ -278,7 +278,7 @@ export default function CommunicationsHelp() {
         </Link>
         <Link href="/help/manual/communications">
           <Button variant="outline">
-            📖 Ver Manual Detallado
+             Ver Manual Detallado
           </Button>
         </Link>
       </div>

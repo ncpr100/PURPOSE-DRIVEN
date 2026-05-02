@@ -14,7 +14,7 @@ export default function CompleteManual() {
   const manualSections = [
     {
       id: 'getting-started',
-      title: '🚀 Primeros Pasos',
+      title: ' Primeros Pasos',
       description: 'Configuración inicial y registro',
       pages: 12,
       timeToRead: '15 min',
@@ -27,7 +27,7 @@ export default function CompleteManual() {
     },
     {
       id: 'members',
-      title: '👥 Gestión de Miembros',
+      title: ' Gestión de Miembros',
       description: 'Administrar su congregación',
       pages: 18,
       timeToRead: '25 min',
@@ -40,7 +40,7 @@ export default function CompleteManual() {
     },
     {
       id: 'donations',
-      title: '💰 Sistema de Donaciones',
+      title: ' Sistema de Donaciones',
       description: 'Configurar y gestionar donaciones',
       pages: 15,
       timeToRead: '20 min',
@@ -53,7 +53,7 @@ export default function CompleteManual() {
     },
     {
       id: 'events',
-      title: '📅 Gestión de Eventos',
+      title: ' Gestión de Eventos',
       description: 'Crear y administrar eventos',
       pages: 22,
       timeToRead: '30 min',
@@ -66,7 +66,7 @@ export default function CompleteManual() {
     },
     {
       id: 'communications',
-      title: '📢 Comunicaciones',
+      title: ' Comunicaciones',
       description: 'Enviar mensajes y notificaciones',
       pages: 14,
       timeToRead: '18 min',
@@ -79,7 +79,7 @@ export default function CompleteManual() {
     },
     {
       id: 'analytics-pastoral-insights',
-      title: '🆕 📊 Analíticas y Perspectivas Pastorales',
+      title: '🆕  Analíticas y Perspectivas Pastorales',
       description: 'Sistema mejorado de reportes y análisis ministerial',
       pages: 20,
       timeToRead: '25 min',
@@ -96,7 +96,7 @@ export default function CompleteManual() {
     },
     {
       id: 'check-ins',
-      title: '🆕 🔐 Sistema de Check-In Avanzado',
+      title: '🆕  Sistema de Check-In Avanzado',
       description: 'WebRTC, Automatización de Visitantes y Seguridad Infantil',
       pages: 28,
       timeToRead: '35 min',
@@ -111,7 +111,7 @@ export default function CompleteManual() {
     },
     {
       id: 'permissions',
-      title: '👨‍💼 Usuarios y Permisos',
+      title: '‍ Usuarios y Permisos',
       description: 'Administrar accesos y roles',
       pages: 10,
       timeToRead: '12 min',
@@ -124,7 +124,7 @@ export default function CompleteManual() {
     },
     {
       id: 'subscription',
-      title: '💳 Mi Suscripción',
+      title: ' Mi Suscripción',
       description: 'Gestionar plan y complementos',
       pages: 8,
       timeToRead: '10 min',
@@ -137,7 +137,7 @@ export default function CompleteManual() {
     },
     {
       id: 'automation-rules',
-      title: '🆕 ⚡ Reglas de Automatización',
+      title: '🆕  Reglas de Automatización',
       description: 'Sistema completo de automatización inteligente',
       pages: 25,
       timeToRead: '30 min',
@@ -154,7 +154,7 @@ export default function CompleteManual() {
     },
     {
       id: 'prayer-automation',
-      title: '🆕 🙏 Automatización de Peticiones de Oración',
+      title: '🆕  Automatización de Peticiones de Oración',
       description: 'Respuesta automática a peticiones de oración',
       pages: 18,
       timeToRead: '22 min',
@@ -171,7 +171,7 @@ export default function CompleteManual() {
     },
     {
       id: 'visitor-automation',
-      title: '🆕 👥 Automatización de Seguimiento de Visitantes',
+      title: '🆕  Automatización de Seguimiento de Visitantes',
       description: 'Categorización y seguimiento automático inteligente',
       pages: 20,
       timeToRead: '25 min',
@@ -188,7 +188,7 @@ export default function CompleteManual() {
     },
     {
       id: 'super-admin-automation',
-      title: '🆕 ⚙️ Configuración Avanzada (Super Admin)',
+      title: '🆕 ️ Configuración Avanzada (Super Admin)',
       description: 'Arquitectura técnica y personalización del sistema',
       pages: 22,
       timeToRead: '28 min',
@@ -208,21 +208,21 @@ export default function CompleteManual() {
     },
     {
       id: 'whats-new-august-2025',
-      title: '🎉 Novedades - Agosto 2025',
+      title: ' Novedades - Agosto 2025',
       description: 'Últimas funcionalidades y mejoras disponibles',
       pages: 16,
       timeToRead: '20 min',
       topics: [
-        '📊 Nueva sección "Perspectivas Pastorales" (antes Inteligencia de Negocios)',
-        '⚡ Acciones Rápidas ahora completamente funcionales',
-        '📋 Multi-Format Export: descarga reportes en Excel, CSV, JSON',
-        '📈 Analíticas mejoradas con datos de toda la plataforma',
-        '🎯 Métricas ministeriales específicas para iglesias',
-        '💡 Reportes en tiempo real con datos actuales',
-        '🔄 Actualización automática de KPIs',
-        '📱 Interface mejorada para exportación de datos',
-        '🔗 Integración directa con Google Sheets',
-        '✨ Experiencia de usuario optimizada en analíticas'
+        ' Nueva sección "Perspectivas Pastorales" (antes Inteligencia de Negocios)',
+        ' Acciones Rápidas ahora completamente funcionales',
+        ' Multi-Format Export: descarga reportes en Excel, CSV, JSON',
+        ' Analíticas mejoradas con datos de toda la plataforma',
+        ' Métricas ministeriales específicas para iglesias',
+        ' Reportes en tiempo real con datos actuales',
+        ' Actualización automática de KPIs',
+        ' Interface mejorada para exportación de datos',
+        ' Integración directa con Google Sheets',
+        ' Experiencia de usuario optimizada en analíticas'
       ]
     }
   ]
@@ -243,7 +243,7 @@ export default function CompleteManual() {
     <div className="container mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">📖 Manual Completo de Usuario</h1>
+        <h1 className="text-3xl font-bold mb-2"> Manual Completo de Usuario</h1>
         <p className="text-muted-foreground mb-4">
           Guía completa para usar todas las funciones de Khesed-tek Systems
         </p>
@@ -285,13 +285,13 @@ export default function CompleteManual() {
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4">
               <Button variant="outline" className="justify-start" onClick={() => alert('La descarga de PDF será implementada próximamente. Por ahora puede usar la función de imprimir de su navegador.')}>
-                📄 Descargar PDF Completo
+                 Descargar PDF Completo
               </Button>
               <Button variant="outline" className="justify-start" onClick={() => window.print()}>
-                📊 Versión para Impresión
+                 Versión para Impresión
               </Button>
               <Button variant="outline" className="justify-start" onClick={() => alert('La versión móvil está disponible navegando esta misma página desde su teléfono.')}>
-                📱 Versión Móvil (Resumida)
+                 Versión Móvil (Resumida)
               </Button>
             </div>
           </CardContent>
@@ -331,11 +331,11 @@ export default function CompleteManual() {
                 <div className="flex gap-2 pt-2">
                   <Link href={`/help/manual/${section.id}`}>
                     <Button size="sm">
-                      📖 Leer Sección
+                       Leer Sección
                     </Button>
                   </Link>
                   <Button variant="outline" size="sm" onClick={() => alert('La descarga de PDF por sección será implementada próximamente. Use la función de imprimir para obtener una copia física.')}>
-                    📄 Descargar PDF
+                     Descargar PDF
                   </Button>
                 </div>
               </div>

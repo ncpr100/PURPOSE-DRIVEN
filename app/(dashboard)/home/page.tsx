@@ -252,7 +252,7 @@ export default async function DashboardPage() {
       .catch(() => []);
   } catch (error) {
     console.log(
-      "⚠️ Database unavailable, using fallback dashboard data:",
+      "️ Database unavailable, using fallback dashboard data:",
       error,
     );
     // Fallback data is already initialized above

@@ -297,7 +297,7 @@ export default function EditUserRolePage() {
 
           {hasRoleChanged && (
             <div className="text-sm text-[hsl(var(--warning))]">
-              ⚠️ Tienes cambios sin guardar
+              Tienes cambios sin guardar
             </div>
           )}
         </div>

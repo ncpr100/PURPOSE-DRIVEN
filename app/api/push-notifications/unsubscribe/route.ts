@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     // Remove subscription using the service
     await PushNotificationService.removeSubscription(user.id, endpoint)
 
-    console.log(`✅ Push notification subscription removed for user ${user.id}`)
+    console.log(` Push notification subscription removed for user ${user.id}`)
 
     return NextResponse.json({ 
       success: true, 

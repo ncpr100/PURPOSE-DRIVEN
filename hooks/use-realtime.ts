@@ -101,7 +101,7 @@ export function useRealTime(options: UseRealTimeOptions = {}) {
       eventSourceRef.current = eventSource
 
       eventSource.onopen = () => {
-        console.log('📡 Connected to real-time server (SSE)')
+        console.log(' Connected to real-time server (SSE)')
         retryCount.current = 0
         updateState({ 
           isConnected: true, 
@@ -135,7 +135,7 @@ export function useRealTime(options: UseRealTimeOptions = {}) {
       }
 
       eventSource.onerror = (event) => {
-        console.warn('📡 SSE connection error (non-critical):', event)
+        console.warn(' SSE connection error (non-critical):', event)
         
         // Prevent errors from propagating and breaking navigation
         try {
@@ -191,7 +191,7 @@ export function useRealTime(options: UseRealTimeOptions = {}) {
 
   const scheduleReconnect = useCallback(() => {
     if (retryCount.current >= maxRetries) {
-      console.log('📡 Max reconnection attempts reached')
+      console.log(' Max reconnection attempts reached')
       updateState({ error: 'No se pudo reconectar al servidor después de varios intentos' })
       return
     }
@@ -205,7 +205,7 @@ export function useRealTime(options: UseRealTimeOptions = {}) {
 
     reconnectTimeoutRef.current = setTimeout(() => {
       if (!eventSourceRef.current || eventSourceRef.current.readyState === EventSource.CLOSED) {
-        console.log(`📡 Attempting to reconnect (attempt ${retryCount.current}/${maxRetries})`)
+        console.log(` Attempting to reconnect (attempt ${retryCount.current}/${maxRetries})`)
         connect()
       }
     }, delay)
@@ -213,7 +213,7 @@ export function useRealTime(options: UseRealTimeOptions = {}) {
 
   // Handle real-time messages
   const handleRealTimeMessage = useCallback((message: RealTimeNotification) => {
-    console.log('📱 Real-time message received:', message)
+    console.log(' Real-time message received:', message)
     
     // Update notifications list
     setState(prev => ({
@@ -263,13 +263,13 @@ export function useRealTime(options: UseRealTimeOptions = {}) {
 
       switch (data.priority) {
         case 'URGENT':
-          toast.error(`🚨 ${data.title}: ${data.message}`, toastOptions)
+          toast.error(` ${data.title}: ${data.message}`, toastOptions)
           break
         case 'HIGH':
-          toast(`⚡ ${data.title}: ${data.message}`, toastOptions)
+          toast(` ${data.title}: ${data.message}`, toastOptions)
           break
         default:
-          toast.success(`📢 ${data.title}`, toastOptions)
+          toast.success(` ${data.title}`, toastOptions)
           break
       }
     }
@@ -332,7 +332,7 @@ export function useRealTime(options: UseRealTimeOptions = {}) {
     const data = notification.data
     
     if (enableToasts) {
-      toast(`🔧 Sistema: ${data.message}`, {
+      toast(` Sistema: ${data.message}`, {
         duration: 6000,
         style: { backgroundColor: '#f3f4f6' }
       })

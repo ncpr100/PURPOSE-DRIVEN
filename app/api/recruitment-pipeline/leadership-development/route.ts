@@ -584,7 +584,7 @@ export async function POST(request: NextRequest) {
 
     const { targetMemberId, minLeadershipScore = 50 } = await request.json()
 
-    console.log('🌟 Iniciando análisis de desarrollo de liderazgo...')
+    console.log(' Iniciando análisis de desarrollo de liderazgo...')
 
     let memberFilter: any = {
       churchId: session.user.churchId,
@@ -610,7 +610,7 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    console.log(`📊 Analizando ${members.length} candidatos para liderazgo...`)
+    console.log(` Analizando ${members.length} candidatos para liderazgo...`)
 
     const leadershipProfiles: LeadershipProfile[] = []
 
@@ -643,7 +643,7 @@ export async function POST(request: NextRequest) {
       }
     })
   } catch (error) {
-    console.error('❌ Error en análisis de desarrollo de liderazgo:', error)
+    console.error(' Error en análisis de desarrollo de liderazgo:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' }, 
       { status: 500 }

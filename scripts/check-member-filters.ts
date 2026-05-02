@@ -10,17 +10,17 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function checkMemberFilterData() {
-  console.log('🔍 MEMBER FILTER DATA DIAGNOSTIC\n')
+  console.log(' MEMBER FILTER DATA DIAGNOSTIC\n')
   console.log('=' .repeat(60))
 
   try {
     // Get total member count
     const totalMembers = await prisma.member.count()
-    console.log(`\n📊 Total Members: ${totalMembers}`)
+    console.log(`\n Total Members: ${totalMembers}`)
 
     // Check gender distribution
     console.log('\n' + '='.repeat(60))
-    console.log('👥 GENDER DISTRIBUTION')
+    console.log(' GENDER DISTRIBUTION')
     console.log('='.repeat(60))
     
     const genderCounts = await prisma.member.groupBy({
@@ -54,7 +54,7 @@ async function checkMemberFilterData() {
 
     // Check marital status distribution
     console.log('\n' + '='.repeat(60))
-    console.log('💑 MARITAL STATUS DISTRIBUTION')
+    console.log(' MARITAL STATUS DISTRIBUTION')
     console.log('='.repeat(60))
     
     const maritalCounts = await prisma.member.groupBy({
@@ -88,7 +88,7 @@ async function checkMemberFilterData() {
 
     // Check birthDate distribution
     console.log('\n' + '='.repeat(60))
-    console.log('🎂 BIRTH DATE DISTRIBUTION')
+    console.log(' BIRTH DATE DISTRIBUTION')
     console.log('='.repeat(60))
     
     const membersWithBirthDate = await prisma.member.count({
@@ -146,7 +146,7 @@ async function checkMemberFilterData() {
 
     // Check for data quality issues
     console.log('\n' + '='.repeat(60))
-    console.log('⚠️  DATA QUALITY CHECKS')
+    console.log('️  DATA QUALITY CHECKS')
     console.log('='.repeat(60))
 
     // Check for weird gender values
@@ -171,12 +171,12 @@ async function checkMemberFilterData() {
     })
 
     if (weirdGenders.length > 0) {
-      console.log('\n⚠️  Found members with unusual gender values:')
+      console.log('\n️  Found members with unusual gender values:')
       weirdGenders.forEach(member => {
         console.log(`  ${member.firstName} ${member.lastName}: "${member.gender}"`)
       })
     } else {
-      console.log('\n✅ All gender values look normal')
+      console.log('\n All gender values look normal')
     }
 
     // Check for whitespace issues
@@ -196,20 +196,20 @@ async function checkMemberFilterData() {
     })
 
     if (gendersWithSpaces.length > 0) {
-      console.log('\n⚠️  Found gender values with leading/trailing spaces:')
+      console.log('\n️  Found gender values with leading/trailing spaces:')
       gendersWithSpaces.forEach(member => {
         console.log(`  ${member.firstName}: "|${member.gender}|"`)
       })
     } else {
-      console.log('✅ No whitespace issues in gender values')
+      console.log(' No whitespace issues in gender values')
     }
 
     console.log('\n' + '='.repeat(60))
-    console.log('✅ DIAGNOSTIC COMPLETE')
+    console.log(' DIAGNOSTIC COMPLETE')
     console.log('='.repeat(60) + '\n')
 
   } catch (error) {
-    console.error('❌ Error running diagnostic:', error)
+    console.error(' Error running diagnostic:', error)
   } finally {
     await prisma.$disconnect()
   }
@@ -218,10 +218,10 @@ async function checkMemberFilterData() {
 // Run the diagnostic
 checkMemberFilterData()
   .then(() => {
-    console.log('\n✅ Script completed successfully')
+    console.log('\n Script completed successfully')
     process.exit(0)
   })
   .catch((error) => {
-    console.error('\n❌ Script failed:', error)
+    console.error('\n Script failed:', error)
     process.exit(1)
   })

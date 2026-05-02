@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
         // Invalidate related cache after updates
         await analyticsService.invalidateMemberCache("all");
       } catch (dbError) {
-        console.log("⚠️ Database unavailable during refresh, skipping update");
+        console.log("️ Database unavailable during refresh, skipping update");
       }
     }
 
@@ -159,7 +159,7 @@ export async function GET(request: NextRequest) {
       retentionData = results[2];
     } catch (dbError) {
       console.log(
-        "⚠️ Database unavailable for enhanced analytics, using fallback data",
+        "️ Database unavailable for enhanced analytics, using fallback data",
       );
       // Use fallback data
       enhancedData = {
@@ -296,7 +296,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
     communications = results[6];
   } catch (dbError) {
     console.log(
-      "⚠️ Database unavailable for legacy analytics, using empty data",
+      "️ Database unavailable for legacy analytics, using empty data",
     );
     // Fallback data already initialized above
   }
@@ -451,7 +451,7 @@ async function getMemberSpecificActions(churchId: string): Promise<any[]> {
     }));
   } catch (dbError) {
     console.log(
-      "⚠️ Database unavailable for member-specific actions, returning empty",
+      "️ Database unavailable for member-specific actions, returning empty",
     );
     return [];
   }

@@ -76,7 +76,7 @@ function buildDatabaseUrl(): string {
 
   if (missing.length > 0) {
     console.error(
-      `🚨 CRITICAL: Missing required env vars: ${missing.join(', ')}\n` +
+      ` CRITICAL: Missing required env vars: ${missing.join(', ')}\n` +
       '   → Vercel: Project → Settings → Environment Variables\n\n' +
       '   DATABASE_URL  (pooler, port 6543):\n' +
       '     postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1\n\n' +
@@ -96,7 +96,7 @@ function buildDatabaseUrl(): string {
     new URL(url)
   } catch {
     console.error(
-      '🚨 DATABASE_URL is still invalid after sanitization.\n' +
+      ' DATABASE_URL is still invalid after sanitization.\n' +
       `   Raw value starts with: ${rawUrl.slice(0, 30)}...\n` +
       '   Check Vercel env var for stray quotes or illegal characters.\n' +
       '   Password special chars MUST be URL-encoded: % → %25, @ → %40, # → %23'

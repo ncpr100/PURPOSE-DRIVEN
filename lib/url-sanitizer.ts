@@ -175,7 +175,7 @@ export function generatePublicShareUrl(moduleName: string, options: {
 export function logSharingActivity(originalUrl: string, sanitizedUrl: string): void {
   // Only log in development for debugging
   if (process.env.NODE_ENV === 'development') {
-    console.log('🔗 URL Sharing Activity:', {
+    console.log(' URL Sharing Activity:', {
       original: originalUrl,
       sanitized: sanitizedUrl,
       wasSanitized: originalUrl !== sanitizedUrl,

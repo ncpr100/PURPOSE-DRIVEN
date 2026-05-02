@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    console.log('🔍 Session debug:', {
+    console.log(' Session debug:', {
       hasSession: !!session,
       hasUser: !!session?.user,
       userEmail: session?.user?.email,
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       select: { id: true, churchId: true, role: true }
     })
 
-    console.log('🏛️ User data from DB:', user)
+    console.log('️ User data from DB:', user)
 
     if (!user || !user.churchId) {
       return NextResponse.json({ error: 'Usuario sin iglesia asignada' }, { status: 400 })

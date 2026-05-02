@@ -445,7 +445,7 @@ export class RedisCacheManager {
         const extendedTTL = Math.max(currentTTL, minTTLRemaining * 2);
         
         await this.set(key, newData, extendedTTL);
-        console.log(`🔄 Background refreshed: ${key} (TTL: ${extendedTTL}s)`);
+        console.log(` Background refreshed: ${key} (TTL: ${extendedTTL}s)`);
       }
     } catch (error) {
       console.error('Background refresh failed:', error);
@@ -466,7 +466,7 @@ export class RedisCacheManager {
       setTimeout(async () => {
         try {
           await rewarmFunction();
-          console.log(`🔥 Re-warmed after invalidation: ${pattern}`);
+          console.log(` Re-warmed after invalidation: ${pattern}`);
         } catch (error) {
           console.error('Re-warming failed:', error);
         }

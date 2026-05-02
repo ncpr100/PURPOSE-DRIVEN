@@ -21,7 +21,7 @@ export default function SocialMediaAutomationManual() {
     <div className="container mx-auto p-6 max-w-4xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-          📱 Automatización de Redes Sociales
+           Automatización de Redes Sociales
           <Badge variant="secondary">🆕 Nuevo</Badge>
         </h1>
         <p className="text-muted-foreground">
@@ -79,7 +79,7 @@ export default function SocialMediaAutomationManual() {
         {/* Access */}
         <Card>
           <CardHeader>
-            <CardTitle>📍 Acceder al Sistema</CardTitle>
+            <CardTitle> Acceder al Sistema</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="bg-[hsl(var(--info)/0.10)] border border-[hsl(var(--info)/0.3)] rounded-lg p-4">
@@ -160,7 +160,7 @@ export default function SocialMediaAutomationManual() {
               {/* Prayer Requests */}
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <div className="h-5 w-5 text-[hsl(var(--lavender))]">🙏</div>
+                  <div className="h-5 w-5 text-[hsl(var(--lavender))]"></div>
                   3. Peticiones de Oración
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -187,7 +187,7 @@ export default function SocialMediaAutomationManual() {
               {/* Sermon Content */}
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <div className="h-5 w-5 text-[hsl(var(--warning))]">📖</div>
+                  <div className="h-5 w-5 text-[hsl(var(--warning))]"></div>
                   4. Contenido de Sermones
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -215,7 +215,7 @@ export default function SocialMediaAutomationManual() {
               {/* Member Celebrations */}
               <div className="border rounded-lg p-4">
                 <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                  <div className="h-5 w-5 text-[hsl(var(--lavender))]">🎉</div>
+                  <div className="h-5 w-5 text-[hsl(var(--lavender))]"></div>
                   5-8. Celebraciones y Hitos
                 </h3>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -377,7 +377,7 @@ export default function SocialMediaAutomationManual() {
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]">✅ Recomendaciones:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--success))]"> Recomendaciones:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Contenido auténtico:</strong> Mantenga voz genuina de la iglesia</li>
                   <li>• <strong>Moderación:</strong> Revise contenido automático regularmente</li>
@@ -388,7 +388,7 @@ export default function SocialMediaAutomationManual() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]">❌ Evitar:</h4>
+                <h4 className="font-semibold mb-3 text-[hsl(var(--destructive))]"> Evitar:</h4>
                 <ul className="space-y-2 text-sm">
                   <li>• <strong>Sobre-publicación:</strong> No sature feeds con contenido</li>
                   <li>• <strong>Contenido irrelevante:</strong> Mantenga relevancia ministerial</li>
@@ -405,7 +405,7 @@ export default function SocialMediaAutomationManual() {
         {/* Setup Instructions */}
         <Card>
           <CardHeader>
-            <CardTitle>🚀 Configuración Inicial</CardTitle>
+            <CardTitle> Configuración Inicial</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">

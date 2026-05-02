@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     // Send to all church members
     broadcastToChurch(user.churchId, realtimeMessage)
 
-    console.log(`📊 Analytics update broadcast to church ${user.churches?.name}: ${validatedData.type}`)
+    console.log(` Analytics update broadcast to church ${user.churches?.name}: ${validatedData.type}`)
 
     return NextResponse.json({
       success: true,

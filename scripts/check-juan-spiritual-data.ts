@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 async function checkJuanSpiritualData() {
   try {
-    console.log('🔍 Searching for JUAN PACHANGA (JUAN HERRERA)...\n')
+    console.log(' Searching for JUAN PACHANGA (JUAN HERRERA)...\n')
 
     // Find Juan in the database - search more broadly
     const allJuans = await prisma.member.findMany({
@@ -22,7 +22,7 @@ async function checkJuanSpiritualData() {
       take: 5
     })
 
-    console.log(`✅ Found ${allJuans.length} members matching 'Juan':\n`)
+    console.log(` Found ${allJuans.length} members matching 'Juan':\n`)
     
     for (const member of allJuans) {
       console.log('━'.repeat(60))
@@ -32,19 +32,19 @@ async function checkJuanSpiritualData() {
       console.log('')
 
       // Check OLD system (spiritualGiftsStructured JSON field)
-      console.log('📊 OLD SYSTEM CHECK (Member.spiritualGiftsStructured):')
+      console.log(' OLD SYSTEM CHECK (Member.spiritualGiftsStructured):')
       if (member.spiritualGiftsStructured) {
-        console.log('   ✅ HAS DATA in spiritualGiftsStructured field:')
+        console.log('    HAS DATA in spiritualGiftsStructured field:')
         console.log(JSON.stringify(member.spiritualGiftsStructured, null, 2))
       } else {
-        console.log('   ❌ NO DATA in spiritualGiftsStructured field')
+        console.log('    NO DATA in spiritualGiftsStructured field')
       }
       console.log('')
 
       // Check NEW system (MemberSpiritualProfile table via relation)
-      console.log('📊 NEW SYSTEM CHECK (MemberSpiritualProfile table):')
+      console.log(' NEW SYSTEM CHECK (MemberSpiritualProfile table):')
       if (member.spiritualProfile) {
-        console.log('   ✅ HAS DATA in MemberSpiritualProfile table:')
+        console.log('    HAS DATA in MemberSpiritualProfile table:')
         console.log(`   ID: ${member.spiritualProfile.id}`)
         console.log(`   Primary Gifts:`, member.spiritualProfile.primaryGifts)
         console.log(`   Secondary Gifts:`, member.spiritualProfile.secondaryGifts)
@@ -53,7 +53,7 @@ async function checkJuanSpiritualData() {
         console.log(`   Spiritual Calling: ${member.spiritualProfile.spiritualCalling}`)
         console.log(`   Volunteer Readiness: ${member.spiritualProfile.volunteerReadinessScore}`)
       } else {
-        console.log('   ❌ NO DATA in MemberSpiritualProfile table (relation not found)')
+        console.log('    NO DATA in MemberSpiritualProfile table (relation not found)')
       }
       console.log('')
     }
@@ -84,7 +84,7 @@ async function checkJuanSpiritualData() {
     }
 
   } catch (error) {
-    console.error('❌ Error:', error)
+    console.error(' Error:', error)
   } finally {
     await prisma.$disconnect()
   }
