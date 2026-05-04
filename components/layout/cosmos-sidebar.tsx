@@ -9,8 +9,8 @@ import {
   LayoutDashboard, Users, HandHeart, Calendar, DollarSign,
   QrCode, MessageSquare, BarChart3, Zap, FormInput,
   Share2, BookOpen, Settings, Bell, FileText,
-  ChevronDown, ChevronRight, UserCheck, Lightbulb,
-  Brain, ShieldCheck, ClipboardList, Wifi, Star, X,
+  ChevronDown, ChevronRight, ChevronLeft, UserCheck, Lightbulb,
+  Brain, ShieldCheck, ClipboardList, Wifi, Star, X, HelpCircle, PanelLeftClose, PanelLeftOpen,
 } from "lucide-react";
 
 interface NavItem {
@@ -82,6 +82,7 @@ const NAV_STRUCTURE: NavSection[] = [
       { href: "/notifications", label: "Notificaciones",  icon: <Bell size={15} /> },
       { href: "/settings/permissions", label: "Usuarios y Roles", icon: <UserCheck size={15} />, roles: ["PASTOR", "ADMIN_IGLESIA"] },
       { href: "/settings",             label: "Configuración",    icon: <Settings size={15} /> },
+      { href: "/help",                 label: "Ayuda",            icon: <HelpCircle size={15} /> },
     ],
   },
 ];
@@ -99,6 +100,22 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
     "Inteligencia IA": false,
     "Social & Web": true,
   });
+
+  // Desktop pin/collapse state (persisted in localStorage)
+  const [desktopPinned, setDesktopPinned] = useState(true);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("cosmos:sidebar:pinned");
+    if (stored !== null) setDesktopPinned(stored === "true");
+  }, []);
+
+  const toggleDesktopPin = () => {
+    setDesktopPinned((p) => {
+      const next = !p;
+      localStorage.setItem("cosmos:sidebar:pinned", String(next));
+      return next;
+    });
+  };
 
   // Mobile overlay state — toggled by header hamburger via custom event
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -150,20 +167,23 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
           "border-r border-[var(--glass-divider)]",
           "bg-[var(--glass-sidebar-bg)] backdrop-blur-cosmos",
           "no-scrollbar overflow-y-auto overflow-x-hidden",
-          "w-[216px]",
+          "transition-all duration-300 ease-out",
+          // Desktop: width responds to pin state
+          desktopPinned ? "md:w-[216px]" : "md:w-14",
           // Desktop: static, fills body-row height
           "md:flex-shrink-0 md:h-full md:relative md:translate-x-0",
-          // Mobile: fixed overlay, slides in/out
+          // Mobile: always full width overlay (pin does not apply)
+          "max-md:w-[216px]",
           "max-md:fixed max-md:top-14 max-md:left-0 max-md:bottom-0 max-md:z-50",
           "max-md:transition-transform max-md:duration-300 max-md:ease-out",
           mobileOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full",
           className
         )}
       >
-      {/* Logo + mobile close button */}
-      <div className="flex items-center gap-2.5 px-4 py-3.5 border-b border-[var(--glass-divider)]">
+      {/* Logo + mobile close + desktop pin toggle */}
+      <div className="flex items-center gap-2.5 px-4 py-3.5 border-b border-[var(--glass-divider)]">  
         <CosmosLogoMark size={26} />
-        <div className="flex-1">
+        <div className={cn("flex-1", !desktopPinned && "md:hidden")}>
           <div className="font-display text-[13px] font-bold tracking-widest text-[hsl(var(--brand-gold-bright))] leading-none">
             KHESED·TEK
           </div>
@@ -179,10 +199,18 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
         >
           <X size={14} />
         </button>
+        {/* Pin/unpin button — desktop only */}
+        <button
+          onClick={toggleDesktopPin}
+          aria-label={desktopPinned ? "Colapsar menú" : "Expandir menú"}
+          className="max-md:hidden flex items-center justify-center w-6 h-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--accent)/0.3)] transition-colors flex-shrink-0"
+        >
+          {desktopPinned ? <PanelLeftClose size={14} /> : <PanelLeftOpen size={14} />}
+        </button>
       </div>
 
-      {/* Live status */}
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[var(--glass-border-soft)]">
+      {/* Live status — hidden when desktop-collapsed */}
+      <div className={cn("flex items-center gap-2 px-4 py-2.5 border-b border-[var(--glass-border-soft)]", !desktopPinned && "md:hidden")}>
         <div className="live-dot" />
         <span className="text-[9px] tracking-[0.12em] text-[#1DC98C] uppercase">
           12 Agentes Activos
@@ -196,8 +224,10 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
       <nav className="flex-1 py-2">
         {NAV_STRUCTURE.map((group) => (
           <div key={group.section}>
-            {/* Section header */}
-            {group.collapsible ? (
+            {/* Section header — hidden when desktop-collapsed */}
+            {!desktopPinned ? (
+              <div className="max-md:block hidden" />
+            ) : group.collapsible ? (
               <button
                 onClick={() => toggleSection(group.section)}
                 className={cn(
@@ -220,20 +250,21 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
               <div className="section-label px-4 py-2 mt-2">{group.section}</div>
             )}
 
-            {/* Nav items */}
-            {(!group.collapsible || !collapsed[group.section]) && (
+            {/* Nav items — always show when desktop-collapsed (icons only) */}
+            {(desktopPinned ? (!group.collapsible || !collapsed[group.section]) : true) && (
               <div className="mt-0.5">
                 {group.items.filter(canSee).map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={cn("nav-item", isActive(item.href) && "active")}
+                    title={!desktopPinned ? item.label : undefined}
+                    className={cn("nav-item", isActive(item.href) && "active", !desktopPinned && "md:justify-center md:px-0")}
                   >
-                    <span className="w-4 flex-shrink-0 flex items-center justify-center text-[hsl(var(--muted-foreground))]">
+                    <span className={cn("flex-shrink-0 flex items-center justify-center text-[hsl(var(--muted-foreground))]", desktopPinned ? "w-4" : "md:w-full md:max-w-[40px]")}>
                       {item.icon}
                     </span>
-                    <span className="flex-1 truncate">{item.label}</span>
-                    {item.badge && item.badgeType && (
+                    <span className={cn("flex-1 truncate", !desktopPinned && "md:hidden")}>{item.label}</span>
+                    {desktopPinned && item.badge && item.badgeType && (
                       <span
                         className={cn(
                           "ml-auto px-1.5 py-0.5 rounded-full text-[9px] font-medium flex-shrink-0",
@@ -253,11 +284,11 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
 
       {/* User footer */}
       <div className="border-t border-[var(--glass-divider)] p-3">
-        <div className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[hsl(var(--accent)/0.3)] cursor-pointer transition-colors">
+        <div className={cn("flex items-center gap-2.5 p-2 rounded-lg hover:bg-[hsl(var(--accent)/0.3)] cursor-pointer transition-colors", !desktopPinned && "md:justify-center")}>
           <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--brand-gold-dim))] to-[hsl(var(--brand-gold))] flex items-center justify-center text-[11px] font-display font-bold text-[hsl(var(--brand-navy-deep))] flex-shrink-0">
             {session?.user?.name?.charAt(0) || "N"}
           </div>
-          <div className="flex-1 min-w-0">
+          <div className={cn("flex-1 min-w-0", !desktopPinned && "md:hidden")}>
             <div className="text-[11px] font-medium text-foreground truncate">
               {session?.user?.name || "Usuario"}
             </div>
@@ -269,7 +300,7 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
                 : userRole}
             </div>
           </div>
-          <Settings size={12} className="text-muted-foreground flex-shrink-0" />
+          <Settings size={12} className={cn("text-muted-foreground flex-shrink-0", !desktopPinned && "md:hidden")} />
         </div>
       </div>
     </aside>

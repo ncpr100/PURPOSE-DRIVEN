@@ -35,7 +35,7 @@ function VisitorCheckInForm() {
           <label className="text-[10px] text-muted-foreground uppercase tracking-wide mb-1 block">
             Apellido *
           </label>
-          <input className="cosmos-input" placeholder="Garc├¡a" required />
+          <input className="cosmos-input" placeholder="García" required />
         </div>
       </div>
 
@@ -48,7 +48,7 @@ function VisitorCheckInForm() {
         </div>
         <div>
           <label className="text-[10px] text-muted-foreground uppercase tracking-wide mb-1 block">
-            Tel├⌐fono
+            Teléfono
           </label>
           <input className="cosmos-input" type="tel" placeholder="+57 300..." />
         </div>
@@ -68,7 +68,7 @@ function VisitorCheckInForm() {
         </div>
         <div>
           <div className="text-[13px] font-medium text-foreground">Primera visita</div>
-          <div className="text-[10px] text-muted-foreground">Se crear├í un seguimiento autom├ítico</div>
+          <div className="text-[10px] text-muted-foreground">Se creará un seguimiento automático</div>
         </div>
         {isFirstTime && <Badge variant="gold" size="sm" className="ml-auto">Prioridad alta</Badge>}
       </div>
@@ -77,17 +77,17 @@ function VisitorCheckInForm() {
         <label className="text-[10px] text-muted-foreground uppercase tracking-wide mb-1 block">
           Motivo de visita
         </label>
-        <input className="cosmos-input" placeholder="┬┐C├│mo nos conoci├│?" />
+        <input className="cosmos-input" placeholder="¿Cómo nos conoció?" />
       </div>
 
       <div>
         <label className="text-[10px] text-muted-foreground uppercase tracking-wide mb-1 block">
-          Petici├│n de oraci├│n (opcional)
+          Petición de oración (opcional)
         </label>
         <textarea
           className="cosmos-input resize-none"
           rows={2}
-          placeholder="┬┐Hay algo espec├¡fico por lo que podamos orar?"
+          placeholder="¿Hay algo específico por lo que podamos orar?"
         />
       </div>
 
@@ -121,17 +121,17 @@ function ChildrenCheckInForm() {
         <Shield size={16} className="text-[#26D9D9] flex-shrink-0" />
         <div>
           <div className="text-[12px] font-medium text-[#26D9D9]">Sistema de Seguridad Activo</div>
-          <div className="text-[10px] text-muted-foreground">PIN de seguridad generado autom├íticamente</div>
+          <div className="text-[10px] text-muted-foreground">PIN de seguridad generado automáticamente</div>
         </div>
       </div>
 
       {/* Child info */}
       <div>
-        <div className="section-label mb-3">Datos del Ni├▒o</div>
+        <div className="section-label mb-3">Datos del Niño</div>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="text-[10px] text-muted-foreground uppercase tracking-wide mb-1 block">Nombre *</label>
-            <input className="cosmos-input" placeholder="Mar├¡a" required />
+            <input className="cosmos-input" placeholder="María" required />
           </div>
           <div>
             <label className="text-[10px] text-muted-foreground uppercase tracking-wide mb-1 block">Edad *</label>
@@ -146,7 +146,7 @@ function ChildrenCheckInForm() {
         <div className="space-y-3">
           <input className="cosmos-input" placeholder="Nombre del padre/madre *" required />
           <div className="grid grid-cols-2 gap-3">
-            <input className="cosmos-input" type="tel" placeholder="Tel├⌐fono *" required />
+            <input className="cosmos-input" type="tel" placeholder="Teléfono *" required />
             <input className="cosmos-input" type="email" placeholder="Email" />
           </div>
         </div>
@@ -157,7 +157,7 @@ function ChildrenCheckInForm() {
         <div className="section-label mb-3">Contacto de Emergencia</div>
         <div className="grid grid-cols-2 gap-3">
           <input className="cosmos-input" placeholder="Nombre" />
-          <input className="cosmos-input" type="tel" placeholder="Tel├⌐fono" />
+          <input className="cosmos-input" type="tel" placeholder="Teléfono" />
         </div>
       </div>
 
@@ -181,10 +181,10 @@ function ChildrenCheckInForm() {
 
 // ΓöÇΓöÇΓöÇ RECENT CHECK-INS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const RECENT = [
-  { name: "Juan Garc├¡a",    time: "hace 2 min",  type: "first_time", color: "#F0B83C" },
-  { name: "Ana Mart├¡nez",   time: "hace 5 min",  type: "returning",  color: "#1DC98C" },
+  { name: "Juan García",    time: "hace 2 min",  type: "first_time", color: "#F0B83C" },
+  { name: "Ana Martínez",   time: "hace 5 min",  type: "returning",  color: "#1DC98C" },
   { name: "Carlos B.",      time: "hace 8 min",  type: "returning",  color: "#1DC98C" },
-  { name: "Ni├▒a: Sof├¡a L.", time: "hace 12 min", type: "child",      color: "#26D9D9" },
+  { name: "Niña: Sofía L.", time: "hace 12 min", type: "child",      color: "#26D9D9" },
 ];
 
 // ΓöÇΓöÇΓöÇ MAIN PAGE ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
@@ -198,11 +198,11 @@ export function CosmosCheckInsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="page-title">Registro de Visitantes</h1>
-          <p className="page-subtitle">Domingo ┬╖ 9:00 AM ┬╖ 23 registros hoy</p>
+          <p className="page-subtitle">Domingo · 9:00 AM · 23 registros hoy</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
-            <QrCode size={13} /> Esc├íner QR
+            <QrCode size={13} /> Escáner QR
           </Button>
           <Button variant="glass" size="sm">
             <Camera size={13} /> QR de Bienvenida
@@ -219,7 +219,7 @@ export function CosmosCheckInsPage() {
             <div className="flex border-b border-[rgba(255,255,255,0.06)]">
               {[
                 { id: "visitor", label: "Visitante", icon: <User size={13} /> },
-                { id: "child",   label: "Ni├▒os y J├│venes", icon: <Baby size={13} /> },
+                { id: "child",   label: "Niños y Jóvenes", icon: <Baby size={13} /> },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -262,7 +262,7 @@ export function CosmosCheckInsPage() {
                     variant={r.type === "first_time" ? "gold" : r.type === "child" ? "info" : "success"}
                     size="sm"
                   >
-                    {r.type === "first_time" ? "1ra" : r.type === "child" ? "Ni├▒o" : "Reg"}
+                    {r.type === "first_time" ? "1ra" : r.type === "child" ? "Niño" : "Reg"}
                   </Badge>
                 </div>
               ))}
@@ -276,7 +276,7 @@ export function CosmosCheckInsPage() {
               {[
                 { label: "Total registros",    value: 23,  color: "#F0B83C" },
                 { label: "Primera visita",     value: 5,   color: "#E84855" },
-                { label: "Ni├▒os registrados",  value: 8,   color: "#26D9D9" },
+                { label: "Niños registrados",  value: 8,   color: "#26D9D9" },
                 { label: "Seguimientos creados", value: 5, color: "#1DC98C" },
               ].map((s) => (
                 <div key={s.label} className="flex items-center justify-between">

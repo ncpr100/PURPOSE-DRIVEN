@@ -196,7 +196,7 @@ export function CosmosHeader() {
             </div>
             <div className="p-3 space-y-2">
               {[
-                { icon: <Shield size={13} className="text-cosmos-rose" />, text: "3 peticiones de oraci├│n urgentes",    time: "hace 5 min" },
+                { icon: <Shield size={13} className="text-cosmos-rose" />, text: "3 peticiones de oración urgentes",    time: "hace 5 min" },
                 { icon: <Activity size={13} className="text-cosmos-emerald" />, text: "Nuevo visitante registrado",     time: "hace 12 min" },
                 { icon: <CheckCircle size={13} className="text-cosmos-emerald" />, text: "Seguimiento completado",    time: "hace 1h" },
               ].map((n, i) => (
@@ -242,7 +242,7 @@ export function CosmosHeader() {
               className="flex items-center gap-2 px-3 py-2 rounded-md text-[12px] text-foreground hover:bg-[hsl(var(--accent)/0.3)] transition-colors"
             >
               <Settings size={13} className="text-muted-foreground" />
-              Configuraci├│n
+              Configuración
             </Link>
             <Link
               href="/users"
@@ -258,7 +258,7 @@ export function CosmosHeader() {
                 className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-[12px] text-destructive hover:bg-[hsl(var(--destructive)/0.1)] transition-colors text-left"
               >
                 <LogOut size={13} />
-                Cerrar Sesi├│n
+                Cerrar Sesión
               </button>
             </div>
           </div>
