@@ -29,8 +29,10 @@ import {
   Users,
   Zap,
   AlertTriangle,
-  RefreshCw
+  RefreshCw,
+  ArrowLeft
 } from 'lucide-react'
+import Link from 'next/link'
 
 interface IntegrationsClientProps {
   userRole: string
@@ -223,6 +225,13 @@ export function IntegrationsClient({ userRole }: IntegrationsClientProps) {
 
   return (
     <div className="space-y-6">
+      <Link
+        href="/settings"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Volver a Configuración
+      </Link>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Integraciones de Comunicación</h1>

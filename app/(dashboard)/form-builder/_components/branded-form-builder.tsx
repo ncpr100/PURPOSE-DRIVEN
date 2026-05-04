@@ -371,10 +371,7 @@ export default function BrandedFormBuilder({
     try {
       console.log(` Starting ${type} upload:`, file.name, file.size);
       const url = await uploadImage(file, type);
-      console.log(
-        ` ${type} upload successful:`,
-        url.substring(0, 50) + "...",
-      );
+      console.log(` ${type} upload successful:`, url.substring(0, 50) + "...");
 
       // Update appropriate config
       if (type === "qr-logo") {
@@ -655,7 +652,9 @@ export default function BrandedFormBuilder({
                       Guardado {lastSaved.toLocaleTimeString()}
                     </span>
                   ) : (
-                    <span className="text-muted-foreground/70">Sin guardar</span>
+                    <span className="text-muted-foreground/70">
+                      Sin guardar
+                    </span>
                   )}
                 </div>
               </div>
@@ -1025,8 +1024,7 @@ export default function BrandedFormBuilder({
 
                   // ── HEADING BLOCK ──
                   if (field.type === "heading") {
-                    const Tag =
-                      `h${field.headingLevel || 2}` as string;
+                    const Tag = `h${field.headingLevel || 2}` as string;
                     const sizes: Record<number, string> = {
                       1: "22px",
                       2: "18px",
@@ -1139,7 +1137,9 @@ export default function BrandedFormBuilder({
                         >
                           {field.label}
                           {field.required && (
-                            <span className="text-[hsl(var(--destructive))] ml-1">*</span>
+                            <span className="text-[hsl(var(--destructive))] ml-1">
+                              *
+                            </span>
                           )}
                         </label>
                       )}
@@ -1198,7 +1198,9 @@ export default function BrandedFormBuilder({
                           >
                             {field.label}
                             {field.required && (
-                              <span className="text-[hsl(var(--destructive))] ml-1">*</span>
+                              <span className="text-[hsl(var(--destructive))] ml-1">
+                                *
+                              </span>
                             )}
                           </span>
                         </div>
@@ -1807,7 +1809,9 @@ export default function BrandedFormBuilder({
                 </div>
 
                 <Separator />
-                <p className="text-xs text-muted-foreground font-medium">DISEÑO</p>
+                <p className="text-xs text-muted-foreground font-medium">
+                  DISEÑO
+                </p>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <Label className="text-xs">Bordes</Label>

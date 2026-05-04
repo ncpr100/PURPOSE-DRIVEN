@@ -14,8 +14,9 @@ import { UserRoleAssignment } from './user-role-assignment';
 import { 
   Shield, RefreshCw, AlertTriangle, CheckCircle,
   Settings, Users, Key, Database, BarChart3, Heart,
-  UserCheck, BookOpen, Cog, FileText, Plus, UserPlus
+  UserCheck, BookOpen, Cog, FileText, Plus, UserPlus, ArrowLeft
 } from 'lucide-react';
+import Link from 'next/link';
 import { toast } from 'sonner';
 import {
   ChurchRole,
@@ -233,6 +234,13 @@ export function PermissionsClient() {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
+      <Link
+        href="/settings"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Volver a Configuración
+      </Link>
       {/* Header with Role-Specific Information */}
       <div className="flex items-center justify-between">
         <div>

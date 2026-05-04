@@ -24,8 +24,10 @@ import {
   Brain,
   Clock,
   BookOpen,
-  CheckCircle
+  CheckCircle,
+  ArrowLeft
 } from 'lucide-react'
+import Link from 'next/link'
 import { toast } from 'sonner'
 
 interface QualificationSettingsClientProps {
@@ -162,6 +164,13 @@ export function QualificationSettingsClient({ userRole, churchId }: Qualificatio
 
   return (
     <div className="container mx-auto py-6 space-y-8">
+      <Link
+        href="/settings"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Volver a Configuración
+      </Link>
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Criterios de Calificación</h1>
