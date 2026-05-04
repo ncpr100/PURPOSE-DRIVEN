@@ -93,27 +93,26 @@ export function ThemeSettingsClient() {
     }
   }
 
+  const THEME_ALLOWED_ROLES = ['SUPER_ADMIN', 'PASTOR', 'ADMIN_IGLESIA']
+
   useEffect(() => {
-    if (session?.user?.role === 'SUPER_ADMIN') {
+    if (session?.user?.role && THEME_ALLOWED_ROLES.includes(session.user.role)) {
       fetchThemePreferences()
     } else {
       setLoading(false)
     }
   }, [session])
 
-  // SUPER_ADMIN only access control
-  if (!session?.user || session.user.role !== 'SUPER_ADMIN') {
+  // Only block users below ADMIN_IGLESIA
+  if (!session?.user || !THEME_ALLOWED_ROLES.includes(session.user.role)) {
     return (
       <div className="container mx-auto p-6">
         <Card>
           <CardContent className="text-center py-12">
             <Palette className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Acceso Restringido</h2>
+            <h2 className="text-xl font-semibold mb-2">Acceso Requerido</h2>
             <p className="text-muted-foreground">
-              Esta configuración está disponible solo para Super Administradores de la plataforma.
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              Para personalizar los colores de su iglesia, visite: Perfil de la Iglesia → Colores y Diseño
+              Esta configuración está disponible para Pastores y Administradores de la iglesia.
             </p>
           </CardContent>
         </Card>

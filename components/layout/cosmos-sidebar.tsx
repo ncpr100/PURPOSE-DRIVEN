@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -6,11 +6,35 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard, Users, HandHeart, Calendar, DollarSign,
-  QrCode, MessageSquare, BarChart3, Zap, FormInput,
-  Share2, BookOpen, Settings, Bell, FileText,
-  ChevronDown, ChevronRight, ChevronLeft, UserCheck, Lightbulb,
-  Brain, ShieldCheck, ClipboardList, Wifi, Star, X, HelpCircle, PanelLeftClose, PanelLeftOpen,
+  LayoutDashboard,
+  Users,
+  HandHeart,
+  Calendar,
+  DollarSign,
+  QrCode,
+  MessageSquare,
+  BarChart3,
+  Zap,
+  FormInput,
+  Share2,
+  BookOpen,
+  Settings,
+  Bell,
+  FileText,
+  ChevronDown,
+  ChevronRight,
+  ChevronLeft,
+  UserCheck,
+  Lightbulb,
+  Brain,
+  ShieldCheck,
+  ClipboardList,
+  Wifi,
+  Star,
+  X,
+  HelpCircle,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 
 interface NavItem {
@@ -30,59 +54,129 @@ interface NavSection {
 }
 
 const BADGE_STYLES = {
-  alert:   "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] border border-[hsl(var(--destructive)/0.3)]",
-  success: "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] border border-[hsl(var(--success)/0.3)]",
-  warning: "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] border border-[hsl(var(--warning)/0.3)]",
-  info:    "bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] border border-[hsl(var(--info)/0.3)]",
+  alert:
+    "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))] border border-[hsl(var(--destructive)/0.3)]",
+  success:
+    "bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))] border border-[hsl(var(--success)/0.3)]",
+  warning:
+    "bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))] border border-[hsl(var(--warning)/0.3)]",
+  info: "bg-[hsl(var(--info)/0.15)] text-[hsl(var(--info))] border border-[hsl(var(--info)/0.3)]",
 };
 
 const NAV_STRUCTURE: NavSection[] = [
   {
     section: "Ministerio",
     items: [
-      { href: "/home",          label: "Dashboard",          icon: <LayoutDashboard size={15} /> },
-      { href: "/members",       label: "Miembros",           icon: <Users size={15} /> },
-      { href: "/prayer-wall",   label: "Muro de Oración",     icon: <HandHeart size={15} />,     badge: 3,  badgeType: "alert" },
-      { href: "/check-ins",     label: "Visitantes",         icon: <QrCode size={15} />,        badge: 8,  badgeType: "success" },
-      { href: "/sermons",       label: "Sermones",           icon: <BookOpen size={15} /> },
+      {
+        href: "/home",
+        label: "Dashboard",
+        icon: <LayoutDashboard size={15} />,
+      },
+      { href: "/members", label: "Miembros", icon: <Users size={15} /> },
+      {
+        href: "/prayer-wall",
+        label: "Muro de Oración",
+        icon: <HandHeart size={15} />,
+        badge: 3,
+        badgeType: "alert",
+      },
+      {
+        href: "/check-ins",
+        label: "Visitantes",
+        icon: <QrCode size={15} />,
+        badge: 8,
+        badgeType: "success",
+      },
+      { href: "/sermons", label: "Sermones", icon: <BookOpen size={15} /> },
     ],
   },
   {
     section: "Operaciones",
     items: [
-      { href: "/volunteers",    label: "Voluntarios",        icon: <HandHeart size={15} />,     badge: 1,  badgeType: "alert" },
-      { href: "/events",        label: "Eventos",            icon: <Calendar size={15} /> },
-      { href: "/donations",     label: "Mayordomía",          icon: <DollarSign size={15} /> },
-      { href: "/communications",label: "Comunicaciones",     icon: <MessageSquare size={15} /> },
-      { href: "/form-builder",  label: "Formularios",        icon: <FormInput size={15} /> },
+      {
+        href: "/volunteers",
+        label: "Voluntarios",
+        icon: <HandHeart size={15} />,
+        badge: 1,
+        badgeType: "alert",
+      },
+      { href: "/events", label: "Eventos", icon: <Calendar size={15} /> },
+      {
+        href: "/donations",
+        label: "Mayordomía",
+        icon: <DollarSign size={15} />,
+      },
+      {
+        href: "/communications",
+        label: "Comunicaciones",
+        icon: <MessageSquare size={15} />,
+      },
+      {
+        href: "/form-builder",
+        label: "Formularios",
+        icon: <FormInput size={15} />,
+      },
     ],
   },
   {
     section: "Inteligencia IA",
     items: [
-      { href: "/home#agents",           label: "12 Agentes IA",          icon: <Brain size={15} /> },
-      { href: "/analytics",             label: "Analítica",               icon: <BarChart3 size={15} /> },
-      { href: "/intelligent-analytics", label: "IA Predictiva",          icon: <Lightbulb size={15} /> },
-      { href: "/automation-rules",      label: "Automatizaciones",       icon: <Zap size={15} /> },
-      { href: "/business-intelligence", label: "Inteligencia Negocio",   icon: <ClipboardList size={15} /> },
+      {
+        href: "/home#agents",
+        label: "12 Agentes IA",
+        icon: <Brain size={15} />,
+      },
+      { href: "/analytics", label: "Analítica", icon: <BarChart3 size={15} /> },
+      {
+        href: "/intelligent-analytics",
+        label: "IA Predictiva",
+        icon: <Lightbulb size={15} />,
+      },
+      {
+        href: "/automation-rules",
+        label: "Automatizaciones",
+        icon: <Zap size={15} />,
+      },
+      {
+        href: "/business-intelligence",
+        label: "Inteligencia Negocio",
+        icon: <ClipboardList size={15} />,
+      },
     ],
     collapsible: true,
   },
   {
     section: "Social & Web",
     items: [
-      { href: "/social-media", label: "Redes Sociales",  icon: <Share2 size={15} /> },
-      { href: "/reports",      label: "Informes",         icon: <FileText size={15} /> },
+      {
+        href: "/social-media",
+        label: "Redes Sociales",
+        icon: <Share2 size={15} />,
+      },
+      { href: "/reports", label: "Informes", icon: <FileText size={15} /> },
     ],
     collapsible: true,
   },
   {
     section: "Sistema",
     items: [
-      { href: "/notifications", label: "Notificaciones",  icon: <Bell size={15} /> },
-      { href: "/settings/permissions", label: "Usuarios y Roles", icon: <UserCheck size={15} />, roles: ["PASTOR", "ADMIN_IGLESIA"] },
-      { href: "/settings",             label: "Configuración",    icon: <Settings size={15} /> },
-      { href: "/help",                 label: "Ayuda",            icon: <HelpCircle size={15} /> },
+      {
+        href: "/notifications",
+        label: "Notificaciones",
+        icon: <Bell size={15} />,
+      },
+      {
+        href: "/settings/permissions",
+        label: "Usuarios y Roles",
+        icon: <UserCheck size={15} />,
+        roles: ["PASTOR", "ADMIN_IGLESIA"],
+      },
+      {
+        href: "/settings",
+        label: "Configuración",
+        icon: <Settings size={15} />,
+      },
+      { href: "/help", label: "Ayuda", icon: <HelpCircle size={15} /> },
     ],
   },
 ];
@@ -122,12 +216,12 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
 
   useEffect(() => {
     const onToggle = () => setMobileOpen((o) => !o);
-    const onClose  = () => setMobileOpen(false);
+    const onClose = () => setMobileOpen(false);
     window.addEventListener("cosmos:sidebar:toggle", onToggle);
-    window.addEventListener("cosmos:sidebar:close",  onClose);
+    window.addEventListener("cosmos:sidebar:close", onClose);
     return () => {
       window.removeEventListener("cosmos:sidebar:toggle", onToggle);
-      window.removeEventListener("cosmos:sidebar:close",  onClose);
+      window.removeEventListener("cosmos:sidebar:close", onClose);
     };
   }, []);
 
@@ -177,133 +271,186 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
           "max-md:fixed max-md:top-14 max-md:left-0 max-md:bottom-0 max-md:z-50",
           "max-md:transition-transform max-md:duration-300 max-md:ease-out",
           mobileOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full",
-          className
+          className,
         )}
       >
-      {/* Logo + mobile close + desktop pin toggle */}
-      <div className="flex items-center gap-2.5 px-4 py-3.5 border-b border-[var(--glass-divider)]">  
-        <CosmosLogoMark size={26} />
-        <div className={cn("flex-1", !desktopPinned && "md:hidden")}>
-          <div className="font-display text-[13px] font-bold tracking-widest text-[hsl(var(--brand-gold-bright))] leading-none">
-            KHESED·TEK
+        {/* Logo + mobile close + desktop pin toggle */}
+        <div className={cn(
+          "flex items-center gap-2.5 px-4 py-3.5 border-b border-[var(--glass-divider)]",
+          !desktopPinned && "md:justify-center md:px-0 md:gap-1"
+        )}>
+          <CosmosLogoMark size={26} />
+          <div className={cn("flex-1", !desktopPinned && "md:hidden")}>
+            <div className="font-display text-[13px] font-bold tracking-widest text-[hsl(var(--brand-gold-bright))] leading-none">
+              KHESED·TEK
+            </div>
+            <div className="text-[9px] text-[hsl(var(--brand-gold-dim))] tracking-[0.12em] mt-0.5">
+              SYSTEMS CMS
+            </div>
           </div>
-          <div className="text-[9px] text-[hsl(var(--brand-gold-dim))] tracking-[0.12em] mt-0.5">
-            SYSTEMS CMS
-          </div>
-        </div>
-        {/* Close button — mobile only */}
-        <button
-          onClick={() => setMobileOpen(false)}
-          aria-label="Cerrar menú"
-          className="md:hidden flex items-center justify-center w-6 h-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--accent)/0.3)] transition-colors flex-shrink-0"
-        >
-          <X size={14} />
-        </button>
-        {/* Pin/unpin button — desktop only */}
-        <button
-          onClick={toggleDesktopPin}
-          aria-label={desktopPinned ? "Colapsar menú" : "Expandir menú"}
-          className="max-md:hidden flex items-center justify-center w-6 h-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--accent)/0.3)] transition-colors flex-shrink-0"
-        >
-          {desktopPinned ? <PanelLeftClose size={14} /> : <PanelLeftOpen size={14} />}
-        </button>
-      </div>
-
-      {/* Live status — hidden when desktop-collapsed */}
-      <div className={cn("flex items-center gap-2 px-4 py-2.5 border-b border-[var(--glass-border-soft)]", !desktopPinned && "md:hidden")}>
-        <div className="live-dot" />
-        <span className="text-[9px] tracking-[0.12em] text-[#1DC98C] uppercase">
-          12 Agentes Activos
-        </span>
-        <div className="ml-auto flex items-center gap-1">
-          <Wifi size={9} className="text-[#1DC98C]" />
-        </div>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 py-2">
-        {NAV_STRUCTURE.map((group) => (
-          <div key={group.section}>
-            {/* Section header — hidden when desktop-collapsed */}
-            {!desktopPinned ? (
-              <div className="max-md:block hidden" />
-            ) : group.collapsible ? (
-              <button
-                onClick={() => toggleSection(group.section)}
-                className={cn(
-                  "w-full flex items-center gap-2 px-4 py-2 mt-2",
-                  "text-[9px] tracking-[0.16em] uppercase",
-                  "nav-section-btn rounded-none",
-                  "transition-all duration-150",
-                  "text-left cursor-pointer"
-                )}
-              >
-                <span className="text-[hsl(var(--brand-gold-dim))]">{group.section}</span>
-                <div className="flex-1 h-px bg-[var(--glass-divider)]" />
-                {collapsed[group.section] ? (
-                  <ChevronRight size={9} className="text-[hsl(var(--brand-gold-dim))]" />
-                ) : (
-                  <ChevronDown size={9} className="text-[hsl(var(--brand-gold-dim))]" />
-                )}
-              </button>
+          {/* Close button — mobile only */}
+          <button
+            onClick={() => setMobileOpen(false)}
+            aria-label="Cerrar menú"
+            className="md:hidden flex items-center justify-center w-6 h-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--accent)/0.3)] transition-colors flex-shrink-0"
+          >
+            <X size={14} />
+          </button>
+          {/* Pin/unpin button — desktop only */}
+          <button
+            onClick={toggleDesktopPin}
+            aria-label={desktopPinned ? "Colapsar menú" : "Expandir menú"}
+            className="max-md:hidden flex items-center justify-center w-6 h-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--accent)/0.3)] transition-colors flex-shrink-0"
+          >
+            {desktopPinned ? (
+              <PanelLeftClose size={14} />
             ) : (
-              <div className="section-label px-4 py-2 mt-2">{group.section}</div>
+              <PanelLeftOpen size={14} />
             )}
+          </button>
+        </div>
 
-            {/* Nav items — always show when desktop-collapsed (icons only) */}
-            {(desktopPinned ? (!group.collapsible || !collapsed[group.section]) : true) && (
-              <div className="mt-0.5">
-                {group.items.filter(canSee).map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    title={!desktopPinned ? item.label : undefined}
-                    className={cn("nav-item", isActive(item.href) && "active", !desktopPinned && "md:justify-center md:px-0")}
-                  >
-                    <span className={cn("flex-shrink-0 flex items-center justify-center text-[hsl(var(--muted-foreground))]", desktopPinned ? "w-4" : "md:w-full md:max-w-[40px]")}>
-                      {item.icon}
-                    </span>
-                    <span className={cn("flex-1 truncate", !desktopPinned && "md:hidden")}>{item.label}</span>
-                    {desktopPinned && item.badge && item.badgeType && (
+        {/* Live status — hidden when desktop-collapsed */}
+        <div
+          className={cn(
+            "flex items-center gap-2 px-4 py-2.5 border-b border-[var(--glass-border-soft)]",
+            !desktopPinned && "md:hidden",
+          )}
+        >
+          <div className="live-dot" />
+          <span className="text-[9px] tracking-[0.12em] text-[#1DC98C] uppercase">
+            12 Agentes Activos
+          </span>
+          <div className="ml-auto flex items-center gap-1">
+            <Wifi size={9} className="text-[#1DC98C]" />
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 py-2">
+          {NAV_STRUCTURE.map((group) => (
+            <div key={group.section}>
+              {/* Section header — hidden when desktop-collapsed */}
+              {!desktopPinned ? (
+                <div className="max-md:block hidden" />
+              ) : group.collapsible ? (
+                <button
+                  onClick={() => toggleSection(group.section)}
+                  className={cn(
+                    "w-full flex items-center gap-2 px-4 py-2 mt-2",
+                    "text-[9px] tracking-[0.16em] uppercase",
+                    "nav-section-btn rounded-none",
+                    "transition-all duration-150",
+                    "text-left cursor-pointer",
+                  )}
+                >
+                  <span className="text-[hsl(var(--brand-gold-dim))]">
+                    {group.section}
+                  </span>
+                  <div className="flex-1 h-px bg-[var(--glass-divider)]" />
+                  {collapsed[group.section] ? (
+                    <ChevronRight
+                      size={9}
+                      className="text-[hsl(var(--brand-gold-dim))]"
+                    />
+                  ) : (
+                    <ChevronDown
+                      size={9}
+                      className="text-[hsl(var(--brand-gold-dim))]"
+                    />
+                  )}
+                </button>
+              ) : (
+                <div className="section-label px-4 py-2 mt-2">
+                  {group.section}
+                </div>
+              )}
+
+              {/* Nav items — always show when desktop-collapsed (icons only) */}
+              {(desktopPinned
+                ? !group.collapsible || !collapsed[group.section]
+                : true) && (
+                <div className="mt-0.5">
+                  {group.items.filter(canSee).map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      title={!desktopPinned ? item.label : undefined}
+                      className={cn(
+                        "nav-item",
+                        isActive(item.href) && "active",
+                        !desktopPinned && "md:justify-center md:px-0",
+                      )}
+                    >
                       <span
                         className={cn(
-                          "ml-auto px-1.5 py-0.5 rounded-full text-[9px] font-medium flex-shrink-0",
-                          BADGE_STYLES[item.badgeType]
+                          "flex-shrink-0 flex items-center justify-center text-[hsl(var(--muted-foreground))]",
+                          desktopPinned ? "w-4" : "md:w-full md:max-w-[40px]",
                         )}
                       >
-                        {item.badge}
+                        {item.icon}
                       </span>
-                    )}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </nav>
+                      <span
+                        className={cn(
+                          "flex-1 truncate",
+                          !desktopPinned && "md:hidden",
+                        )}
+                      >
+                        {item.label}
+                      </span>
+                      {desktopPinned && item.badge && item.badgeType && (
+                        <span
+                          className={cn(
+                            "ml-auto px-1.5 py-0.5 rounded-full text-[9px] font-medium flex-shrink-0",
+                            BADGE_STYLES[item.badgeType],
+                          )}
+                        >
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
 
-      {/* User footer */}
-      <div className="border-t border-[var(--glass-divider)] p-3">
-        <div className={cn("flex items-center gap-2.5 p-2 rounded-lg hover:bg-[hsl(var(--accent)/0.3)] cursor-pointer transition-colors", !desktopPinned && "md:justify-center")}>
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--brand-gold-dim))] to-[hsl(var(--brand-gold))] flex items-center justify-center text-[11px] font-display font-bold text-[hsl(var(--brand-navy-deep))] flex-shrink-0">
-            {session?.user?.name?.charAt(0) || "N"}
-          </div>
-          <div className={cn("flex-1 min-w-0", !desktopPinned && "md:hidden")}>
-            <div className="text-[11px] font-medium text-foreground truncate">
-              {session?.user?.name || "Usuario"}
+        {/* User footer */}
+        <div className="border-t border-[var(--glass-divider)] p-3">
+          <div
+            className={cn(
+              "flex items-center gap-2.5 p-2 rounded-lg hover:bg-[hsl(var(--accent)/0.3)] cursor-pointer transition-colors",
+              !desktopPinned && "md:justify-center",
+            )}
+          >
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--brand-gold-dim))] to-[hsl(var(--brand-gold))] flex items-center justify-center text-[11px] font-display font-bold text-[hsl(var(--brand-navy-deep))] flex-shrink-0">
+              {session?.user?.name?.charAt(0) || "N"}
             </div>
-            <div className="text-[9px] text-muted-foreground truncate">
-              {userRole === "PASTOR"
-                ? "Pastor"
-                : userRole === "ADMIN_IGLESIA"
-                ? "Admin"
-                : userRole}
+            <div
+              className={cn("flex-1 min-w-0", !desktopPinned && "md:hidden")}
+            >
+              <div className="text-[11px] font-medium text-foreground truncate">
+                {session?.user?.name || "Usuario"}
+              </div>
+              <div className="text-[9px] text-muted-foreground truncate">
+                {userRole === "PASTOR"
+                  ? "Pastor"
+                  : userRole === "ADMIN_IGLESIA"
+                    ? "Admin"
+                    : userRole}
+              </div>
             </div>
+            <Settings
+              size={12}
+              className={cn(
+                "text-muted-foreground flex-shrink-0",
+                !desktopPinned && "md:hidden",
+              )}
+            />
           </div>
-          <Settings size={12} className={cn("text-muted-foreground flex-shrink-0", !desktopPinned && "md:hidden")} />
         </div>
-      </div>
-    </aside>
+      </aside>
     </>
   );
 }
@@ -311,7 +458,9 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
 // ─── Logo Mark Component ──────────────────────────────────────────────────────
 function CosmosLogoMark({ size = 26 }: { size?: number }) {
   return (
-    <div style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
+    <div
+      style={{ position: "relative", width: size, height: size, flexShrink: 0 }}
+    >
       {/* Vertical bar */}
       <div
         style={{
@@ -355,4 +504,3 @@ function CosmosLogoMark({ size = 26 }: { size?: number }) {
     </div>
   );
 }
-
