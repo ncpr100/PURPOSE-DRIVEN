@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Performance
+- **Import route** (`app/api/members/import/route.ts`): Replaced N×2 row-by-row DB round-trips with batched strategy — all validation in memory, ONE `findMany` to detect duplicates by email, ONE `createMany` for all new records. Import limit raised from 1,000 → 5,000 rows. Bulk automation triggers removed (inappropriate for CSV import: would have fired up to 5,000 welcome emails).
+- **Import function timeout** (`vercel.json`): Added dedicated function override for `app/api/members/import/**` — `memory: 1024`, `maxDuration: 60` (up from 15 s default). Previous 15 s limit caused silent partial imports above ~500 rows.
+- **Check-in automation** (`app/api/check-ins/route.ts`): Made automation trigger fire-and-forget (IIFE, not awaited). Prevents Sunday-peak stacking where hundreds of concurrent check-ins were blocked waiting on email/SMS API calls before the HTTP response could return.
+
 ### Fixed
 - **Build error (Turbopack line 592) — `form-viewer.tsx`**: `formConfig.fields.map((field) => {` is a block-body arrow function; its closing was `))}` (missing the `}` that closes the block body). Changed to `); })}` so Turbopack accepts the file.
 - **QR gradient renders as solid-color rectangle — `qr-generator.ts`**: `source-atop` fills the gradient over ALL opaque canvas pixels — both dark QR dots AND the white background — making dots and background indistinguishable. Fixed with a 3-step `destination-in` masking approach: (1) fill canvas with gradient (`source-over`), (2) draw transparent-background QR with `destination-in` → gradient kept only where dark dots are opaque, (3) restore white background with `destination-over`. Also changed `generateAdvancedQR` to generate the QR with `light: '#00000000'` (transparent) when `useGradient` is enabled so the mask works correctly.
