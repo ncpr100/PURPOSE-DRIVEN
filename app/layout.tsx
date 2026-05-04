@@ -60,11 +60,7 @@ export default async function RootLayout({
     // NO inline style prop — backgrounds are governed by the <style> tag below
     // so CSS cascade (and theme toggling) work correctly without any JS cleanup.
     // suppressHydrationWarning lets next-themes reconcile on client silently.
-    <html
-      lang="es"
-      data-theme="dark"
-      suppressHydrationWarning
-    >
+    <html lang="es" data-theme="dark" suppressHydrationWarning>
       <head>
         {/*
           Critical CSS — render-blocking <style> applied before any external
@@ -74,9 +70,11 @@ export default async function RootLayout({
           html[data-theme="light"] fires automatically — no JS cleanup required.
           This resolves the inline-style specificity issue flagged in PR #67 review.
         */}
-        <style dangerouslySetInnerHTML={{ __html:
-          `html{background:#05080F;color-scheme:dark;}html[data-theme="light"]{background:#F0F2F5;color-scheme:light;}`
-        }} />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `html{background:#05080F;color-scheme:dark;}html[data-theme="light"]{background:#F0F2F5;color-scheme:light;}`,
+          }}
+        />
         {/*
           Anti-FOUC inline script — runs synchronously BEFORE any CSS or React.
           Background is handled by the <style> tag above; script only needs to:
@@ -90,7 +88,7 @@ export default async function RootLayout({
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var el=document.documentElement;var t=localStorage.getItem('cosmos-theme');if(t==='light'){el.classList.add('no-fouc');el.setAttribute('data-theme','light');var rm=function(){el.classList.remove('no-fouc')};window.addEventListener('load',rm,{once:true});setTimeout(rm,800)}}catch(e){}})()`
+            __html: `(function(){try{var el=document.documentElement;var t=localStorage.getItem('cosmos-theme');if(t==='light'){el.classList.add('no-fouc');el.setAttribute('data-theme','light');var rm=function(){el.classList.remove('no-fouc')};window.addEventListener('load',rm,{once:true});setTimeout(rm,800)}}catch(e){}})()`,
           }}
         />
         <script src="/cache-invalidation.js" defer></script>

@@ -275,10 +275,12 @@ export function CosmosSidebar({ className }: CosmosSidebarProps) {
         )}
       >
         {/* Logo + mobile close + desktop pin toggle */}
-        <div className={cn(
-          "flex items-center gap-2.5 px-4 py-3.5 border-b border-[var(--glass-divider)]",
-          !desktopPinned && "md:justify-center md:px-0 md:gap-1"
-        )}>
+        <div
+          className={cn(
+            "flex items-center gap-2.5 px-4 py-3.5 border-b border-[var(--glass-divider)]",
+            !desktopPinned && "md:justify-center md:px-0 md:gap-1",
+          )}
+        >
           <CosmosLogoMark size={26} />
           <div className={cn("flex-1", !desktopPinned && "md:hidden")}>
             <div className="font-display text-[13px] font-bold tracking-widest text-[hsl(var(--brand-gold-bright))] leading-none">
