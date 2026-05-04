@@ -15,14 +15,14 @@ const SETTINGS_SECTIONS = [
     href: '/settings/profile',
     icon: User,
     title: 'Perfil de Iglesia',
-    description: 'Nombre, dirección, logo y datos generales de la iglesia',
+    description: 'Nombre, dirección, logo y datos de contacto de la iglesia',
     color: 'text-blue-400',
   },
   {
     href: '/settings/theme',
     icon: Palette,
     title: 'Tema y Marca',
-    description: 'Colores, tipografía y personalización visual',
+    description: 'Colores, presets, tipografía, diseño visual y datos de la iglesia en un solo lugar',
     color: 'text-purple-400',
   },
   {
