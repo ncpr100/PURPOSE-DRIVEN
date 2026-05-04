@@ -16,7 +16,7 @@ export async function GET(request: Request, props: { params: Promise<{ filename:
       const fileBuffer = await readFile(filePath);
       const mimeType = lookup(filePath) || 'application/octet-stream';
       
-      return new NextResponse(fileBuffer, {
+      return new NextResponse(new Uint8Array(fileBuffer), {
         headers: {
           'Content-Type': mimeType,
           'Cache-Control': 'public, max-age=31536000',

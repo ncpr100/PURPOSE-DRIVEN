@@ -19,6 +19,17 @@ import { RealTimeNotification } from '@/hooks/use-realtime'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 
+// framer-motion v10 + TypeScript 5.9 compatibility: className not in inferred type
+const MotionDiv = motion.div as React.ComponentType<React.PropsWithChildren<{
+  className?: string;
+  style?: React.CSSProperties;
+  layout?: boolean;
+  initial?: object | boolean;
+  animate?: object | string;
+  exit?: object | string;
+  transition?: object;
+}>>;
+
 interface RealTimeToastProps {
   notifications: RealTimeNotification[]
   maxVisible?: number
@@ -149,7 +160,7 @@ export function RealTimeToast({
     <div className={`fixed ${getPositionClasses()} z-[100] space-y-2 max-w-sm w-full pointer-events-none`}>
       {/* Clear all button */}
       {visibleToasts.length > 1 && (
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           className="flex justify-end pointer-events-auto"
@@ -162,13 +173,13 @@ export function RealTimeToast({
           >
             Limpiar todo
           </Button>
-        </motion.div>
+        </MotionDiv>
       )}
 
       {/* Toast notifications */}
       <AnimatePresence mode="popLayout">
         {visibleToasts.map((toast, index) => (
-          <motion.div
+          <MotionDiv
             key={toast.id}
             layout
             initial={{ opacity: 0, x: 300, scale: 0.8 }}
@@ -278,7 +289,7 @@ export function RealTimeToast({
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </MotionDiv>
         ))}
       </AnimatePresence>
     </div>

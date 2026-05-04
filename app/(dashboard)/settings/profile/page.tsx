@@ -152,18 +152,14 @@ export default function ChurchProfilePage() {
     const loadChurchData = async () => {
       if (session?.user?.churchId) {
         try {
-          // Fetch church data from API since it's not in session anymore
-          const response = await fetch('/api/church/profile')
-          if (response.ok) {
-            const data = await response.json()
-            console.log('Loading church data from API...')
-            console.log(' Church name:', data.church?.name)
-            console.log('️  Logo exists:', !!data.church?.logo)
-            if (data.church?.logo) {
-              console.log(' Logo length:', data.church.logo.length)
-              console.log(' Logo preview:', data.church.logo.substring(0, 50))
-            }
-            
+          // Fetch church profile and theme data in parallel
+          const [profileResponse, themeResponse] = await Promise.all([
+            fetch('/api/church/profile'),
+            fetch('/api/church/theme')
+          ])
+
+          if (profileResponse.ok) {
+            const data = await profileResponse.json()
             setChurchData({
               name: data.church?.name || '',
               address: data.church?.address || '',
@@ -175,15 +171,29 @@ export default function ChurchProfilePage() {
               logo: data.church?.logo || ''
             })
           }
+
+          if (themeResponse.ok) {
+            const themeData = await themeResponse.json()
+            const config = themeData?.theme?.themeConfig
+              ? JSON.parse(themeData.theme.themeConfig)
+              : null
+            if (config) {
+              setThemeData(prev => ({
+                ...prev,
+                primaryColor: config.primaryColor || prev.primaryColor,
+                secondaryColor: config.secondaryColor || prev.secondaryColor,
+                accentColor: config.accentColor || prev.accentColor,
+                primaryFont: themeData.theme.primaryFont || prev.primaryFont,
+                headingFont: themeData.theme.headingFont || prev.headingFont,
+              }))
+            }
+          }
         } catch (error) {
           console.error('Error loading church data:', error)
         }
-      } else {
-        console.log('️  No churchId in session')
-        console.log('Session user:', session?.user)
       }
     }
-    
+
     loadChurchData()
   }, [session])
 

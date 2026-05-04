@@ -206,14 +206,14 @@ export function CosmosDashboard() {
                 display: "flex", alignItems: "center", gap: "9px",
                 padding: "7px 16px", margin: "1px 8px", borderRadius: "6px",
                 fontSize: "12px",
-                color: item.active ? "#F0B83C" : "rgba(138,147,168,0.8)",
+                color: ('active' in item && item.active) ? "#F0B83C" : "rgba(138,147,168,0.8)",
                 cursor: "pointer",
-                background: item.active ? "rgba(201,146,42,0.12)" : "transparent",
-                border: item.active ? "1px solid rgba(201,146,42,0.2)" : "1px solid transparent",
+                background: ('active' in item && item.active) ? "rgba(201,146,42,0.12)" : "transparent",
+                border: ('active' in item && item.active) ? "1px solid rgba(201,146,42,0.2)" : "1px solid transparent",
                 position: "relative",
                 transition: "all 0.15s",
               }}>
-                {item.active && (
+                {('active' in item && item.active) && (
                   <div style={{
                     position: "absolute", left: 0, top: "20%", bottom: "20%",
                     width: "2px", background: "#F0B83C", borderRadius: "0 2px 2px 0",
@@ -255,7 +255,7 @@ export function CosmosDashboard() {
           </div>
 
           {/* Constellation map */}
-          <ConstellationMap className="mb-3" style={{ marginBottom: "14px" }} />
+          <ConstellationMap className="mb-3" />
 
           {/* Bottom grid */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>

@@ -38,8 +38,8 @@ const ENGAGEMENT_DATA = [
 
 // ΓöÇΓöÇΓöÇ PRAYER REQUESTS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const MOCK_REQUESTS = [
-  { id: "1", title: "Cirug├¡a de Mar├¡a L├│pez",     category: "Salud",    status: "pending",   urgency: "high",   time: "hace 2h",  isAnonymous: false, prayedBy: 8 },
-  { id: "2", title: "Restauraci├│n familiar",       category: "Familia",  status: "pending",   urgency: "high",   time: "hace 4h",  isAnonymous: true,  prayedBy: 12 },
+  { id: "1", title: "Cirugía de María López",     category: "Salud",    status: "pending",   urgency: "high",   time: "hace 2h",  isAnonymous: false, prayedBy: 8 },
+  { id: "2", title: "Restauración familiar",       category: "Familia",  status: "pending",   urgency: "high",   time: "hace 4h",  isAnonymous: true,  prayedBy: 12 },
   { id: "3", title: "Trabajo para Carlos B.",      category: "Trabajo",  status: "completed", urgency: "medium", time: "ayer",     isAnonymous: false, prayedBy: 24 },
   { id: "4", title: "Viaje misionero Torres",      category: "Espiritual", status: "pending", urgency: "medium", time: "hace 1d",  isAnonymous: false, prayedBy: 15 },
   { id: "5", title: "Sanidad del hijo de Ana",    category: "Salud",    status: "pending",   urgency: "high",   time: "hace 3h",  isAnonymous: false, prayedBy: 6 },
@@ -83,15 +83,15 @@ export function CosmosPrayerWall() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="page-title">Muro de Oraci├│n</h1>
-          <p className="page-subtitle">47 peticiones ┬╖ 3 urgentes ┬╖ Agente 4 activo</p>
+          <h1 className="page-title">Muro de Oración</h1>
+          <p className="page-subtitle">47 peticiones · 3 urgentes · Agente 4 activo</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
             <Bell size={13} /> Configurar alertas
           </Button>
           <Button size="sm" className="btn-cta-gradient">
-            <Plus size={13} /> Nueva Petici├│n
+            <Plus size={13} /> Nueva Petición
           </Button>
         </div>
       </div>
@@ -102,7 +102,7 @@ export function CosmosPrayerWall() {
           { label: "Total Peticiones",      value: 47,  color: CHART_COLORS.gold,     suffix: "" },
           { label: "Respondidas",           value: 38,  color: CHART_COLORS.emerald,  suffix: "" },
           { label: "Tiempo Resp. Promedio", value: 2.4, color: CHART_COLORS.cyan,     suffix: "h" },
-          { label: "Puntuaci├│n Intercesi├│n", value: 79,  color: CHART_COLORS.lavender, suffix: "" }, // was userEngagementScore in English
+          { label: "Puntuación Intercesión", value: 79,  color: CHART_COLORS.lavender, suffix: "" }, // was userEngagementScore in English
         ].map((s) => (
           <div key={s.label} className="metric-card">
             <div className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2">
@@ -127,7 +127,7 @@ export function CosmosPrayerWall() {
                 : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
           >
-            {tab === "requests" ? "Peticiones" : "Anal├¡tica"}
+            {tab === "requests" ? "Peticiones" : "Analítica"}
           </button>
         ))}
       </div>
@@ -166,7 +166,7 @@ export function CosmosPrayerWall() {
                         {req.isAnonymous ? (
                           <span className="flex items-center gap-1">
                             <Lock size={11} className="text-muted-foreground" />
-                            An├│nimo
+                            Anónimo
                           </span>
                         ) : req.title}
                       </CardTitle>
@@ -186,7 +186,7 @@ export function CosmosPrayerWall() {
                           style={{ background: urg.color }}
                         />
                         <span className="text-[10px] text-muted-foreground">{req.category}</span>
-                        <span className="text-[10px] text-muted-foreground">┬╖</span>
+                        <span className="text-[10px] text-muted-foreground">·</span>
                         <span className="text-[10px] text-muted-foreground">{req.time}</span>
                       </div>
                       <div className="flex items-center gap-1 text-[10px] text-[hsl(var(--brand-gold-dim))]">
@@ -216,7 +216,7 @@ export function CosmosPrayerWall() {
           {/* Trends line chart */}
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>Tendencia de Peticiones ΓÇö ├Ültimas 4 semanas</CardTitle>
+              <CardTitle>Tendencia de Peticiones ΓÇö Últimas 4 semanas</CardTitle>
             </CardHeader>
             <CardContent>
               <div style={{ height: 200 }}>
@@ -241,7 +241,7 @@ export function CosmosPrayerWall() {
 
           {/* Categories pie */}
           <Card>
-            <CardHeader><CardTitle>Distribuci├│n por Categor├¡a</CardTitle></CardHeader>
+            <CardHeader><CardTitle>Distribución por Categoría</CardTitle></CardHeader>
             <CardContent>
               <div style={{ height: 180 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -269,9 +269,9 @@ export function CosmosPrayerWall() {
             </CardContent>
           </Card>
 
-          {/* Puntuaci├│n de Intercesi├│n (was userEngagementScore ΓÇö localization fix) */}
+          {/* Puntuación de Intercesión (was userEngagementScore ΓÇö localization fix) */}
           <Card>
-            <CardHeader><CardTitle>Puntuaci├│n de Intercesi├│n Mensual</CardTitle></CardHeader>
+            <CardHeader><CardTitle>Puntuación de Intercesión Mensual</CardTitle></CardHeader>
             <CardContent>
               <div style={{ height: 180 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -287,7 +287,7 @@ export function CosmosPrayerWall() {
                     <YAxis domain={[0, 100]} tick={{ fill: DARK_CHART_AXIS, fontSize: 11 }} axisLine={false} tickLine={false} />
                     <Tooltip content={<CosmosTooltip />} />
                     <Area
-                      type="monotone" dataKey="puntaje" name="Puntuaci├│n"
+                      type="monotone" dataKey="puntaje" name="Puntuación"
                       stroke={CHART_COLORS.lavender} strokeWidth={2}
                       fill="url(#interGrad)"
                       dot={{ fill: CHART_COLORS.lavender, r: 3 }}

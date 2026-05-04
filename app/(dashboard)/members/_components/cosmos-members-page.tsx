@@ -14,14 +14,14 @@ const LIFECYCLE_STAGES = {
   NUEVO_CREYENTE:  { label: "Nuevo Creyente",  variant: "nuevo-creyente" as const, color: "#26D9D9" },
   CRECIMIENTO:     { label: "Crecimiento",     variant: "crecimiento"    as const, color: "#1DC98C" },
   MADURO:          { label: "Maduro",          variant: "maduro"         as const, color: "#F0B83C" },
-  LIDER:           { label: "L├¡der",           variant: "lider"          as const, color: "#9B8FFF" },
+  LIDER:           { label: "Líder",           variant: "lider"          as const, color: "#9B8FFF" },
 };
 
 const RETENTION_COLORS = {
   LOW:      { label: "Bajo",     color: "#1DC98C" },
   MEDIUM:   { label: "Medio",    color: "#F0B83C" },
   HIGH:     { label: "Alto",     color: "#E84855" },
-  CRITICAL: { label: "Cr├¡tico",  color: "#E84855" },
+  CRITICAL: { label: "Crítico",  color: "#E84855" },
 };
 
 // ΓöÇΓöÇΓöÇ MOCK STAT CARDS ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
@@ -29,7 +29,7 @@ const MEMBER_STATS = [
   { label: "Total Miembros",    value: 347, delta: "+12",    deltaDir: "up"   as const, color: "#1DC98C" },
   { label: "Activos este mes",  value: 298, delta: "86%",    deltaDir: "up"   as const, color: "#F0B83C" },
   { label: "En riesgo",         value: 23,  delta: "-3",     deltaDir: "up"   as const, color: "#E84855" },
-  { label: "Nuevos (30 d├¡as)",  value: 18,  delta: "+8%",    deltaDir: "up"   as const, color: "#26D9D9" },
+  { label: "Nuevos (30 días)",  value: 18,  delta: "+8%",    deltaDir: "up"   as const, color: "#26D9D9" },
 ];
 
 export function CosmosMembersPage() {
@@ -43,7 +43,7 @@ export function CosmosMembersPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="page-title">Directorio de Miembros</h1>
-          <p className="page-subtitle">347 miembros ┬╖ 5 etapas de ciclo de vida</p>
+          <p className="page-subtitle">347 miembros · 5 etapas de ciclo de vida</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" className="hidden sm:flex">
@@ -148,9 +148,9 @@ export function CosmosMembersPage() {
                 <th>Miembro</th>
                 <th>Etapa</th>
                 <th className="hidden md:table-cell">Ministerio</th>
-                <th className="hidden lg:table-cell">Puntaje de participaci├│n</th>
+                <th className="hidden lg:table-cell">Puntaje de participación</th>
                 <th className="hidden lg:table-cell">Riesgo</th>
-                <th className="hidden sm:table-cell">├Ültima asistencia</th>
+                <th className="hidden sm:table-cell">Última asistencia</th>
                 <th></th>
               </tr>
             </thead>
@@ -184,7 +184,7 @@ export function CosmosMembersPage() {
                       <Badge variant={stage.variant} size="sm">{stage.label}</Badge>
                     </td>
                     <td className="hidden md:table-cell text-xs text-muted-foreground">
-                      {m.ministry || "ΓÇö"}
+                      {m.ministry || "—"}
                     </td>
                     <td className="hidden lg:table-cell">
                       <div className="flex items-center gap-2">
@@ -255,11 +255,11 @@ const MOCK_MEMBERS = [
   { id: "1", firstName: "Marco",    lastName: "Alvarado",  email: "marco@email.com",    lifecycle: "MADURO",          ministry: "Alabanza",    engagementScore: 88, retentionRisk: "LOW",    lastAttendance: "Hoy" },
   { id: "2", firstName: "Ana",      lastName: "Restrepo",  email: "ana@email.com",      lifecycle: "LIDER",           ministry: "Tech/Audio",  engagementScore: 94, retentionRisk: "LOW",    lastAttendance: "Hoy" },
   { id: "3", firstName: "Luis",     lastName: "Vargas",    email: "luis@email.com",     lifecycle: "CRECIMIENTO",     ministry: "Ujieres",     engagementScore: 62, retentionRisk: "MEDIUM", lastAttendance: "Hoy" },
-  { id: "4", firstName: "Sof├¡a",    lastName: "Mart├¡nez",  email: "sofia@email.com",    lifecycle: "MADURO",          ministry: "Ni├▒os",       engagementScore: 79, retentionRisk: "LOW",    lastAttendance: "Hoy" },
-  { id: "5", firstName: "Jos├⌐",     lastName: "Mart├¡nez",  email: "jose@email.com",     lifecycle: "CRECIMIENTO",     ministry: null,          engagementScore: 28, retentionRisk: "CRITICAL","lastAttendance": "Hace 23 d├¡as" },
-  { id: "6", firstName: "Patricia", lastName: "Gonz├ílez",  email: "patricia@email.com", lifecycle: "NUEVO_CREYENTE",  ministry: null,          engagementScore: 45, retentionRisk: "MEDIUM", lastAttendance: "Semana pasada" },
+  { id: "4", firstName: "Sofía",    lastName: "Martínez",  email: "sofia@email.com",    lifecycle: "MADURO",          ministry: "Niños",       engagementScore: 79, retentionRisk: "LOW",    lastAttendance: "Hoy" },
+  { id: "5", firstName: "José",     lastName: "Martínez",  email: "jose@email.com",     lifecycle: "CRECIMIENTO",     ministry: null,          engagementScore: 28, retentionRisk: "CRITICAL","lastAttendance": "Hace 23 días" },
+  { id: "6", firstName: "Patricia", lastName: "González",  email: "patricia@email.com", lifecycle: "NUEVO_CREYENTE",  ministry: null,          engagementScore: 45, retentionRisk: "MEDIUM", lastAttendance: "Semana pasada" },
   { id: "7", firstName: "Rafael",   lastName: "Torres",    email: "rafael@email.com",   lifecycle: "MADURO",          ministry: "Alabanza",    engagementScore: 84, retentionRisk: "LOW",    lastAttendance: "Hoy" },
-  { id: "8", firstName: "Carmen",   lastName: "V├ísquez",   email: "carmen@email.com",   lifecycle: "LIDER",           ministry: "J├│venes",     engagementScore: 91, retentionRisk: "LOW",    lastAttendance: "Hoy" },
-  { id: "9", firstName: "Diego",    lastName: "Herrera",   email: "diego@email.com",    lifecycle: "VISITANTE",       ministry: null,          engagementScore: 32, retentionRisk: "HIGH",   lastAttendance: "Hace 12 d├¡as" },
-  { id: "10",firstName: "Mar├¡a",    lastName: "L├│pez",     email: "maria@email.com",    lifecycle: "CRECIMIENTO",     ministry: "Damas",       engagementScore: 67, retentionRisk: "LOW",    lastAttendance: "Domingo" },
+  { id: "8", firstName: "Carmen",   lastName: "Vásquez",   email: "carmen@email.com",   lifecycle: "LIDER",           ministry: "Jóvenes",     engagementScore: 91, retentionRisk: "LOW",    lastAttendance: "Hoy" },
+  { id: "9", firstName: "Diego",    lastName: "Herrera",   email: "diego@email.com",    lifecycle: "VISITANTE",       ministry: null,          engagementScore: 32, retentionRisk: "HIGH",   lastAttendance: "Hace 12 días" },
+  { id: "10",firstName: "María",    lastName: "López",     email: "maria@email.com",    lifecycle: "CRECIMIENTO",     ministry: "Damas",       engagementScore: 67, retentionRisk: "LOW",    lastAttendance: "Domingo" },
 ];

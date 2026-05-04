@@ -14,10 +14,10 @@ const TYPE_LABELS: Record<string, string> = {
   call:                    "Llamada",
   email:                   "Email",
   visit:                   "Visita",
-  automatic:               "Autom├ítico",
+  automatic:               "Automático",
   custom_form_submission:  "Formulario",
   visitor_form_submission: "Visitante",
-  prayer_request:          "Oraci├│n",
+  prayer_request:          "Oración",
   first_time:              "Primera vez",
 };
 
@@ -52,11 +52,11 @@ const PRIORITY_LABELS: Record<string, string> = {
 
 // ΓöÇΓöÇΓöÇ MOCK DATA ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 const MOCK_FOLLOWUPS = [
-  { id: "1", name: "Juan Garc├¡a",      email: "juan@email.com",   phone: "+573001234567", type: "first_time",  status: "pending",   priority: "high",   scheduledAt: "Hoy 10:00 AM", notes: "Primera visita ΓÇö lleg├│ con un amigo", isFirstTime: true },
-  { id: "2", name: "Mar├¡a Rodr├¡guez",  email: "maria@email.com",  phone: "+573009876543", type: "call",        status: "pending",   priority: "high",   scheduledAt: "Hoy 2:00 PM",  notes: "Pidi├│ oraci├│n por su familia", isFirstTime: false },
-  { id: "3", name: "Carlos Mej├¡a",     email: "carlos@email.com", phone: "+573005556666", type: "email",       status: "scheduled", priority: "medium", scheduledAt: "Ma├▒ana 9:00 AM", notes: "", isFirstTime: false },
-  { id: "4", name: "Luisa P├⌐rez",      email: "luisa@email.com",  phone: "+573002223333", type: "visit",       status: "completed", priority: "medium", scheduledAt: "Ayer",          notes: "Visitada ΓÇö interesada en grupos peque├▒os", isFirstTime: false },
-  { id: "5", name: "An├│nimo",          email: "",                 phone: "",              type: "prayer_request", status: "pending", priority: "high", scheduledAt: "Hoy",           notes: "Petici├│n de oraci├│n urgente recibida", isFirstTime: true },
+  { id: "1", name: "Juan García",      email: "juan@email.com",   phone: "+573001234567", type: "first_time",  status: "pending",   priority: "high",   scheduledAt: "Hoy 10:00 AM", notes: "Primera visita ΓÇö llegó con un amigo", isFirstTime: true },
+  { id: "2", name: "María Rodríguez",  email: "maria@email.com",  phone: "+573009876543", type: "call",        status: "pending",   priority: "high",   scheduledAt: "Hoy 2:00 PM",  notes: "Pidió oración por su familia", isFirstTime: false },
+  { id: "3", name: "Carlos Mejía",     email: "carlos@email.com", phone: "+573005556666", type: "email",       status: "scheduled", priority: "medium", scheduledAt: "Mañana 9:00 AM", notes: "", isFirstTime: false },
+  { id: "4", name: "Luisa Pérez",      email: "luisa@email.com",  phone: "+573002223333", type: "visit",       status: "completed", priority: "medium", scheduledAt: "Ayer",          notes: "Visitada ΓÇö interesada en grupos pequeños", isFirstTime: false },
+  { id: "5", name: "Anónimo",          email: "",                 phone: "",              type: "prayer_request", status: "pending", priority: "high", scheduledAt: "Hoy",           notes: "Petición de oración urgente recibida", isFirstTime: true },
 ];
 
 export function CosmosVisitorFollowups() {
@@ -82,7 +82,7 @@ export function CosmosVisitorFollowups() {
         <div>
           <h1 className="page-title">Seguimiento de Visitantes</h1>
           <p className="page-subtitle">
-            {MOCK_FOLLOWUPS.filter(f => f.status === "pending").length} pendientes ┬╖
+            {MOCK_FOLLOWUPS.filter(f => f.status === "pending").length} pendientes ·
             Primeras visitas primero
           </p>
         </div>
@@ -138,7 +138,7 @@ export function CosmosVisitorFollowups() {
                     color: fu.priority === "high" ? "#E84855" : "#F0B83C",
                   }}
                 >
-                  {fu.name === "An├│nimo" ? "?" : fu.name.charAt(0)}
+                  {fu.name === "Anónimo" ? "?" : fu.name.charAt(0)}
                 </div>
 
                 {/* Main content */}
@@ -235,7 +235,7 @@ export function CosmosVisitorFollowups() {
           <div className="flex justify-center mb-3">
             <CheckCircle size={36} className="text-[hsl(var(--success))]" />
           </div>
-          <p className="text-sm">No hay seguimientos en esta categor├¡a.</p>
+          <p className="text-sm">No hay seguimientos en esta categoría.</p>
         </div>
       )}
     </div>
