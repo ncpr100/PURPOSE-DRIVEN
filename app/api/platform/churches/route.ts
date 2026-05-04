@@ -321,8 +321,26 @@ export async function POST(request: NextRequest) {
     const authStatusMessage = result.supabaseUser 
       ? ' Tu cuenta de autenticación ha sido creada automáticamente.'
       : '️ Por favor contacta al soporte para activar tu cuenta de autenticación.'
-      
-    const welcomeEmailContent = `
+
+    // Load platform settings to get custom welcome email template (if configured)
+    const platformSettings = await db.platform_settings.findFirst()
+
+    const replaceEmailTokens = (template: string) =>
+      template
+        .replaceAll('{{adminName}}', adminUser.name)
+        .replaceAll('{{churchName}}', name)
+        .replaceAll('{{adminEmail}}', adminUser.email)
+        .replaceAll('{{tempPassword}}', temporaryPassword)
+        .replaceAll('{{loginUrl}}', getServerBaseUrl())
+        .replaceAll('{{authStatus}}', authStatusMessage)
+
+    const welcomeEmailSubject = platformSettings?.welcomeEmailSubject
+      ? replaceEmailTokens(platformSettings.welcomeEmailSubject)
+      : `Bienvenido a Kḥesed-tek - Credenciales de ${name}`
+
+    const welcomeEmailContent = platformSettings?.welcomeEmailBody
+      ? replaceEmailTokens(platformSettings.welcomeEmailBody)
+      : `
       <html>
         <head>
           <style>
@@ -388,7 +406,7 @@ export async function POST(request: NextRequest) {
     if (sendCredentialsNow !== false) {
       emailQueue.add({
         to: adminUser.email,
-        subject: `Bienvenido a Kḥesed-tek - Credenciales de ${name}`,
+        subject: welcomeEmailSubject,
         html: welcomeEmailContent,
         churchName: name,
         userName: adminUser.name

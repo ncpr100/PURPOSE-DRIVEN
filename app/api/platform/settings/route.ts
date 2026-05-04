@@ -25,6 +25,8 @@ export async function GET() {
           supportEmail: 'soporte@khesed-tek-systems.org',
           maintenanceMode: false,
           allowRegistrations: true,
+          welcomeEmailSubject: null,
+          welcomeEmailBody: null,
           updatedAt: new Date()
         }
       })
@@ -52,7 +54,9 @@ export async function PUT(request: NextRequest) {
         platformName: data.platformName,
         supportEmail: data.supportEmail,
         maintenanceMode: data.maintenanceMode,
-        allowRegistrations: data.allowRegistrations
+        allowRegistrations: data.allowRegistrations,
+        welcomeEmailSubject: data.welcomeEmailSubject ?? null,
+        welcomeEmailBody: data.welcomeEmailBody ?? null
       },
       create: {
         id: 'default',
@@ -64,6 +68,8 @@ export async function PUT(request: NextRequest) {
         supportEmail: data.supportEmail || 'soporte@khesed-tek-systems.org',
         maintenanceMode: data.maintenanceMode || false,
         allowRegistrations: data.allowRegistrations || true,
+        welcomeEmailSubject: data.welcomeEmailSubject ?? null,
+        welcomeEmailBody: data.welcomeEmailBody ?? null,
         updatedAt: new Date()
       }
     });

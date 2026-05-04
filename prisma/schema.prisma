@@ -1481,17 +1481,19 @@ model plan_features {
 }
 
 model platform_settings {
-  id                 String   @id @default("default")
-  currency           String   @default("USD")
-  taxRate            Float    @default(0.0)
-  freeTrialDays      Int      @default(14)
-  gracePeriodDays    Int      @default(7)
-  platformName       String   @default("Kḥesed-tek Church Management Systems")
-  supportEmail       String   @default("soporte@khesedtek.com")
-  maintenanceMode    Boolean  @default(false)
-  allowRegistrations Boolean  @default(true)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime
+  id                   String   @id @default("default")
+  currency             String   @default("USD")
+  taxRate              Float    @default(0.0)
+  freeTrialDays        Int      @default(14)
+  gracePeriodDays      Int      @default(7)
+  platformName         String   @default("Kḥesed-tek Church Management Systems")
+  supportEmail         String   @default("soporte@khesedtek.com")
+  maintenanceMode      Boolean  @default(false)
+  allowRegistrations   Boolean  @default(true)
+  welcomeEmailSubject  String?
+  welcomeEmailBody     String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime
 }
 
 model prayer_approvals {

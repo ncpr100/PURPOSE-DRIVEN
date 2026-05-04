@@ -57,6 +57,10 @@ export default function PlatformSettingsPage() {
       taxRate: 0.0,
       freeTrialDays: 14,
       gracePeriodDays: 7
+    },
+    welcomeEmail: {
+      subject: '',
+      body: ''
     }
   })
   const [platformSettingsId, setPlatformSettingsId] = useState<string | null>(null)
@@ -107,6 +111,10 @@ export default function PlatformSettingsPage() {
             taxRate: data.taxRate ?? prev.billing.taxRate,
             freeTrialDays: data.freeTrialDays ?? prev.billing.freeTrialDays,
             gracePeriodDays: data.gracePeriodDays ?? prev.billing.gracePeriodDays
+          },
+          welcomeEmail: {
+            subject: data.welcomeEmailSubject || '',
+            body: data.welcomeEmailBody || ''
           }
         }))
       }
@@ -217,7 +225,9 @@ export default function PlatformSettingsPage() {
           currency: settings.billing.currency,
           taxRate: settings.billing.taxRate,
           freeTrialDays: settings.billing.freeTrialDays,
-          gracePeriodDays: settings.billing.gracePeriodDays
+          gracePeriodDays: settings.billing.gracePeriodDays,
+          welcomeEmailSubject: settings.welcomeEmail.subject || null,
+          welcomeEmailBody: settings.welcomeEmail.body || null
         })
       })
 
@@ -259,7 +269,7 @@ export default function PlatformSettingsPage() {
 
       {/* Settings Tabs */}
       <Tabs defaultValue="platform" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-7">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="platform" className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
             Plataforma
@@ -283,6 +293,10 @@ export default function PlatformSettingsPage() {
           <TabsTrigger value="billing" className="flex items-center gap-2">
             <CreditCard className="h-4 w-4" />
             Facturación
+          </TabsTrigger>
+          <TabsTrigger value="email" className="flex items-center gap-2">
+            <Mail className="h-4 w-4" />
+            Email Bienvenida
           </TabsTrigger>
           <TabsTrigger value="system" className="flex items-center gap-2">
             <Database className="h-4 w-4" />
@@ -810,6 +824,105 @@ export default function PlatformSettingsPage() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* Email Bienvenida Tab */}
+        <TabsContent value="email" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Mail className="h-5 w-5 text-blue-600" />
+                Plantilla de Email de Bienvenida
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <p className="text-sm text-muted-foreground">
+                Personalice el email que reciben los administradores cuando se crea una nueva iglesia.
+                Si se deja en blanco, se usará la plantilla predeterminada del sistema.
+              </p>
+
+              {/* Subject */}
+              <div className="space-y-2">
+                <Label htmlFor="welcomeSubject">Asunto del Email</Label>
+                <Input
+                  id="welcomeSubject"
+                  placeholder="Bienvenido a Kḥesed-tek - Credenciales de {{churchName}}"
+                  value={settings.welcomeEmail.subject}
+                  onChange={(e) => handleSettingChange('welcomeEmail', 'subject', e.target.value)}
+                />
+              </div>
+
+              {/* Body */}
+              <div className="space-y-2">
+                <Label htmlFor="welcomeBody">Cuerpo del Email (HTML)</Label>
+                <Textarea
+                  id="welcomeBody"
+                  placeholder="<html>...</html> — deje en blanco para usar la plantilla predeterminada"
+                  value={settings.welcomeEmail.body}
+                  onChange={(e) => handleSettingChange('welcomeEmail', 'body', e.target.value)}
+                  className="min-h-[300px] font-mono text-xs"
+                />
+              </div>
+
+              {/* Variable reference */}
+              <div className="rounded-md border p-4 bg-muted/30 space-y-2">
+                <p className="text-sm font-semibold">Variables disponibles:</p>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  {[
+                    ['{{adminName}}', 'Nombre del administrador'],
+                    ['{{churchName}}', 'Nombre de la iglesia'],
+                    ['{{adminEmail}}', 'Email del administrador'],
+                    ['{{tempPassword}}', 'Contraseña temporal'],
+                    ['{{loginUrl}}', 'URL de acceso al sistema'],
+                    ['{{authStatus}}', 'Mensaje de estado de autenticación'],
+                  ].map(([token, desc]) => (
+                    <div key={token} className="flex items-start gap-2">
+                      <code className="bg-muted px-1 py-0.5 rounded text-blue-700 font-mono shrink-0">{token}</code>
+                      <span className="text-muted-foreground">{desc}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className="flex flex-wrap items-center gap-3">
+                <Button
+                  onClick={() => handleSaveSettings('Email Bienvenida')}
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Guardar Plantilla
+                </Button>
+                <Button
+                  variant="outline"
+                  disabled={!settings.welcomeEmail.body}
+                  onClick={() => {
+                    const win = window.open('about:blank', '_blank')
+                    if (win) {
+                      win.document.write(settings.welcomeEmail.body)
+                      win.document.close()
+                    }
+                  }}
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Vista Previa
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="text-destructive hover:text-destructive"
+                  disabled={!settings.welcomeEmail.subject && !settings.welcomeEmail.body}
+                  onClick={() => {
+                    handleSettingChange('welcomeEmail', 'subject', '')
+                    handleSettingChange('welcomeEmail', 'body', '')
+                    handleSaveSettings('Email Bienvenida')
+                  }}
+                >
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Restaurar Predeterminado
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
       </Tabs>
     </div>
   )
