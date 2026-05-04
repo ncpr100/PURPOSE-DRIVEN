@@ -1,176 +1,224 @@
+"use client";
 
-'use client'
-
-import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Separator } from '@/components/ui/separator'
-import { Badge } from '@/components/ui/badge'
-import { toast } from 'react-hot-toast'
-import { Palette, Type, Layout, Settings, Undo2, Save, Eye, Building2, Upload } from 'lucide-react'
-import { Textarea } from '@/components/ui/textarea'
-import { ColorPicker } from './color-picker'
-import { ThemePreview } from './theme-preview'
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "react-hot-toast";
+import Link from "next/link";
+import {
+  Palette,
+  Type,
+  Layout,
+  Settings,
+  Undo2,
+  Save,
+  Eye,
+  Building2,
+  Upload,
+  ArrowLeft,
+} from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { ColorPicker } from "./color-picker";
+import { ThemePreview } from "./theme-preview";
 
 interface ThemePreference {
-  id: string
-  themeName: string
-  themeMode: 'light' | 'dark' | 'auto'
-  primaryColor?: string
-  secondaryColor?: string
-  accentColor?: string
-  destructiveColor?: string
-  backgroundColor?: string
-  foregroundColor?: string
-  cardColor?: string
-  cardForegroundColor?: string
-  borderColor?: string
-  mutedColor?: string
-  mutedForegroundColor?: string
-  fontFamily?: string
-  fontSize?: 'small' | 'medium' | 'large' | 'xl'
-  borderRadius?: string
-  compactMode: boolean
-  logoUrl?: string
-  faviconUrl?: string
-  brandName?: string
-  isPublic: boolean
+  id: string;
+  themeName: string;
+  themeMode: "light" | "dark" | "auto";
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  destructiveColor?: string;
+  backgroundColor?: string;
+  foregroundColor?: string;
+  cardColor?: string;
+  cardForegroundColor?: string;
+  borderColor?: string;
+  mutedColor?: string;
+  mutedForegroundColor?: string;
+  fontFamily?: string;
+  fontSize?: "small" | "medium" | "large" | "xl";
+  borderRadius?: string;
+  compactMode: boolean;
+  logoUrl?: string;
+  faviconUrl?: string;
+  brandName?: string;
+  isPublic: boolean;
 }
 
 const DEFAULT_COLORS = {
   light: {
-    primary: '220.9 39.3% 11%',
-    secondary: '220 14.3% 95.9%',
-    accent: '220 14.3% 95.9%',
-    destructive: '0 84.2% 60.2%',
-    background: '0 0% 100%',
-    foreground: '224 71.4% 4.1%',
-    card: '0 0% 100%',
-    cardForeground: '224 71.4% 4.1%',
-    border: '220 13% 91%',
-    muted: '220 14.3% 95.9%',
-    mutedForeground: '220 8.9% 46.1%',
+    primary: "220.9 39.3% 11%",
+    secondary: "220 14.3% 95.9%",
+    accent: "220 14.3% 95.9%",
+    destructive: "0 84.2% 60.2%",
+    background: "0 0% 100%",
+    foreground: "224 71.4% 4.1%",
+    card: "0 0% 100%",
+    cardForeground: "224 71.4% 4.1%",
+    border: "220 13% 91%",
+    muted: "220 14.3% 95.9%",
+    mutedForeground: "220 8.9% 46.1%",
   },
   dark: {
-    primary: '210 20% 98%',
-    secondary: '215 27.9% 16.9%',
-    accent: '215 27.9% 16.9%',
-    destructive: '0 62.8% 30.6%',
-    background: '224 71.4% 4.1%',
-    foreground: '210 20% 98%',
-    card: '224 71.4% 4.1%',
-    cardForeground: '210 20% 98%',
-    border: '215 27.9% 16.9%',
-    muted: '215 27.9% 16.9%',
-    mutedForeground: '217.9 10.6% 64.9%',
-  }
-}
+    primary: "210 20% 98%",
+    secondary: "215 27.9% 16.9%",
+    accent: "215 27.9% 16.9%",
+    destructive: "0 62.8% 30.6%",
+    background: "224 71.4% 4.1%",
+    foreground: "210 20% 98%",
+    card: "224 71.4% 4.1%",
+    cardForeground: "210 20% 98%",
+    border: "215 27.9% 16.9%",
+    muted: "215 27.9% 16.9%",
+    mutedForeground: "217.9 10.6% 64.9%",
+  },
+};
 
 const COLOR_PRESETS = [
-  { name: 'Azul Confianza',  colors: ['#2563EB', '#6B7280', '#059669'] },
-  { name: 'Verde Esperanza', colors: ['#059669', '#6B7280', '#DC2626'] },
-  { name: 'Púrpura Realeza', colors: ['#7C3AED', '#6B7280', '#F59E0B'] },
-  { name: 'Rojo Pasión',     colors: ['#DC2626', '#6B7280', '#059669'] },
-  { name: 'Naranja Cálido',  colors: ['#EA580C', '#6B7280', '#2563EB'] },
-  { name: 'Gris Elegante',   colors: ['#374151', '#6B7280', '#3B82F6'] },
-  { name: 'Índigo Profundo', colors: ['#4F46E5', '#6B7280', '#0EA5E9'] },
-  { name: 'Teal Fresco',     colors: ['#0D9488', '#6B7280', '#8B5CF6'] },
-]
+  { name: "Azul Confianza", colors: ["#2563EB", "#6B7280", "#059669"] },
+  { name: "Verde Esperanza", colors: ["#059669", "#6B7280", "#DC2626"] },
+  { name: "Púrpura Realeza", colors: ["#7C3AED", "#6B7280", "#F59E0B"] },
+  { name: "Rojo Pasión", colors: ["#DC2626", "#6B7280", "#059669"] },
+  { name: "Naranja Cálido", colors: ["#EA580C", "#6B7280", "#2563EB"] },
+  { name: "Gris Elegante", colors: ["#374151", "#6B7280", "#3B82F6"] },
+  { name: "Índigo Profundo", colors: ["#4F46E5", "#6B7280", "#0EA5E9"] },
+  { name: "Teal Fresco", colors: ["#0D9488", "#6B7280", "#8B5CF6"] },
+];
 
 interface ChurchInfo {
-  name: string; address: string; country: string
-  phone: string; email: string; website: string; description: string; logo: string
+  name: string;
+  address: string;
+  country: string;
+  phone: string;
+  email: string;
+  website: string;
+  description: string;
+  logo: string;
 }
 
 export function ThemeSettingsClient() {
-  const { data: session } = useSession()
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [themePreference, setThemePreference] = useState<ThemePreference | null>(null)
-  const [showPreview, setShowPreview] = useState(false)
+  const { data: session } = useSession();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [themePreference, setThemePreference] =
+    useState<ThemePreference | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
   const [churchInfo, setChurchInfo] = useState<ChurchInfo>({
-    name: '', address: '', country: 'Colombia',
-    phone: '', email: '', website: '', description: '', logo: ''
-  })
-  const [uploadingLogo, setUploadingLogo] = useState(false)
+    name: "",
+    address: "",
+    country: "Colombia",
+    phone: "",
+    email: "",
+    website: "",
+    description: "",
+    logo: "",
+  });
+  const [uploadingLogo, setUploadingLogo] = useState(false);
 
   const fetchThemePreferences = async () => {
     try {
-      const response = await fetch('/api/theme-preferences')
+      const response = await fetch("/api/theme-preferences");
       if (response.ok) {
-        const data = await response.json()
-        setThemePreference(data)
+        const data = await response.json();
+        setThemePreference(data);
       }
     } catch (error) {
-      console.error('Error fetching theme preferences:', error)
-      toast.error('Error al cargar configuración de tema')
+      console.error("Error fetching theme preferences:", error);
+      toast.error("Error al cargar configuración de tema");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const THEME_ALLOWED_ROLES = ['SUPER_ADMIN', 'PASTOR', 'ADMIN_IGLESIA']
+  const THEME_ALLOWED_ROLES = ["SUPER_ADMIN", "PASTOR", "ADMIN_IGLESIA"];
 
   const fetchChurchInfo = async () => {
     try {
-      const res = await fetch('/api/church/profile')
+      const res = await fetch("/api/church/profile");
       if (res.ok) {
-        const data = await res.json()
+        const data = await res.json();
         setChurchInfo({
-          name: data.church?.name || '',
-          address: data.church?.address || '',
-          country: data.church?.country || 'Colombia',
-          phone: data.church?.phone || '',
-          email: data.church?.email || '',
-          website: data.church?.website || '',
-          description: data.church?.description || '',
-          logo: data.church?.logo || '',
-        })
+          name: data.church?.name || "",
+          address: data.church?.address || "",
+          country: data.church?.country || "Colombia",
+          phone: data.church?.phone || "",
+          email: data.church?.email || "",
+          website: data.church?.website || "",
+          description: data.church?.description || "",
+          logo: data.church?.logo || "",
+        });
       }
     } catch (error) {
-      console.error('Error fetching church info:', error)
+      console.error("Error fetching church info:", error);
     }
-  }
+  };
 
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    if (!file.type.startsWith('image/')) { toast.error('Por favor selecciona un archivo de imagen'); return }
-    if (file.size > 2 * 1024 * 1024) { toast.error('El archivo debe ser menor a 2MB'); return }
-    setUploadingLogo(true)
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Por favor selecciona un archivo de imagen");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("El archivo debe ser menor a 2MB");
+      return;
+    }
+    setUploadingLogo(true);
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('type', 'church-logo')
-      const res = await fetch('/api/upload', { method: 'POST', body: formData })
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", "church-logo");
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
       if (res.ok) {
-        const data = await res.json()
-        setChurchInfo(prev => ({ ...prev, logo: data.url }))
-        toast.success('Logo subido exitosamente')
+        const data = await res.json();
+        setChurchInfo((prev) => ({ ...prev, logo: data.url }));
+        toast.success("Logo subido exitosamente");
       } else {
-        toast.error('Error al subir el logo')
+        toast.error("Error al subir el logo");
       }
     } catch {
-      toast.error('Error al subir el logo')
+      toast.error("Error al subir el logo");
     } finally {
-      setUploadingLogo(false)
+      setUploadingLogo(false);
     }
-  }
+  };
 
   useEffect(() => {
-    if (session?.user?.role && THEME_ALLOWED_ROLES.includes(session.user.role)) {
-      fetchThemePreferences()
-      fetchChurchInfo()
+    if (
+      session?.user?.role &&
+      THEME_ALLOWED_ROLES.includes(session.user.role)
+    ) {
+      fetchThemePreferences();
+      fetchChurchInfo();
     } else {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [session])
+  }, [session]);
 
   // Only block users below ADMIN_IGLESIA
   if (!session?.user || !THEME_ALLOWED_ROLES.includes(session.user.role)) {
@@ -181,141 +229,145 @@ export function ThemeSettingsClient() {
             <Palette className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <h2 className="text-xl font-semibold mb-2">Acceso Requerido</h2>
             <p className="text-muted-foreground">
-              Esta configuración está disponible para Pastores y Administradores de la iglesia.
+              Esta configuración está disponible para Pastores y Administradores
+              de la iglesia.
             </p>
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   const saveThemePreferences = async () => {
-    if (!themePreference) return
+    if (!themePreference) return;
 
-    setSaving(true)
+    setSaving(true);
     try {
       const saveOps: Promise<Response | null>[] = [
-        fetch('/api/theme-preferences', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+        fetch("/api/theme-preferences", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(themePreference),
         }),
-      ]
+      ];
 
       if (churchInfo.name.trim()) {
         saveOps.push(
-          fetch('/api/church/profile', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+          fetch("/api/church/profile", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(churchInfo),
-          })
-        )
+          }),
+        );
       }
 
-      const [themeRes, profileRes] = await Promise.all(saveOps)
+      const [themeRes, profileRes] = await Promise.all(saveOps);
 
       if (themeRes?.ok) {
-        applyThemeChanges()
+        applyThemeChanges();
       }
       if (profileRes && !profileRes.ok) {
-        toast.error('Error al guardar datos de la iglesia')
+        toast.error("Error al guardar datos de la iglesia");
       } else {
-        toast.success('Configuración guardada exitosamente')
+        toast.success("Configuración guardada exitosamente");
       }
     } catch (error) {
-      console.error('Error saving configuration:', error)
-      toast.error('Error al guardar configuración')
+      console.error("Error saving configuration:", error);
+      toast.error("Error al guardar configuración");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const resetToDefault = async () => {
     try {
-      const response = await fetch('/api/theme-preferences', {
-        method: 'DELETE',
-      })
+      const response = await fetch("/api/theme-preferences", {
+        method: "DELETE",
+      });
 
       if (response.ok) {
-        const data = await response.json()
-        setThemePreference(data)
-        toast.success('Tema restablecido a valores por defecto')
-        applyThemeChanges()
+        const data = await response.json();
+        setThemePreference(data);
+        toast.success("Tema restablecido a valores por defecto");
+        applyThemeChanges();
       } else {
-        toast.error('Error al restablecer tema')
+        toast.error("Error al restablecer tema");
       }
     } catch (error) {
-      console.error('Error resetting theme:', error)
-      toast.error('Error al restablecer tema')
+      console.error("Error resetting theme:", error);
+      toast.error("Error al restablecer tema");
     }
-  }
+  };
 
   const applyThemeChanges = () => {
-    if (!themePreference) return
+    if (!themePreference) return;
 
-    const root = document.documentElement
-    const mode = themePreference.themeMode === 'auto' ? 
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : 
-      themePreference.themeMode
+    const root = document.documentElement;
+    const mode =
+      themePreference.themeMode === "auto"
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+        : themePreference.themeMode;
 
     // Apply theme mode
-    root.classList.remove('light', 'dark')
-    root.classList.add(mode)
+    root.classList.remove("light", "dark");
+    root.classList.add(mode);
 
     // Apply custom colors if they exist
-    const colors = mode === 'dark' ? DEFAULT_COLORS.dark : DEFAULT_COLORS.light
+    const colors = mode === "dark" ? DEFAULT_COLORS.dark : DEFAULT_COLORS.light;
 
     if (themePreference.primaryColor) {
-      root.style.setProperty('--primary', themePreference.primaryColor)
+      root.style.setProperty("--primary", themePreference.primaryColor);
     } else {
-      root.style.setProperty('--primary', colors.primary)
+      root.style.setProperty("--primary", colors.primary);
     }
 
     if (themePreference.secondaryColor) {
-      root.style.setProperty('--secondary', themePreference.secondaryColor)
+      root.style.setProperty("--secondary", themePreference.secondaryColor);
     } else {
-      root.style.setProperty('--secondary', colors.secondary)
+      root.style.setProperty("--secondary", colors.secondary);
     }
 
     if (themePreference.accentColor) {
-      root.style.setProperty('--accent', themePreference.accentColor)
+      root.style.setProperty("--accent", themePreference.accentColor);
     } else {
-      root.style.setProperty('--accent', colors.accent)
+      root.style.setProperty("--accent", colors.accent);
     }
 
     if (themePreference.backgroundColor) {
-      root.style.setProperty('--background', themePreference.backgroundColor)
+      root.style.setProperty("--background", themePreference.backgroundColor);
     } else {
-      root.style.setProperty('--background', colors.background)
+      root.style.setProperty("--background", colors.background);
     }
 
     if (themePreference.borderRadius) {
-      root.style.setProperty('--radius', themePreference.borderRadius)
+      root.style.setProperty("--radius", themePreference.borderRadius);
     } else {
-      root.style.setProperty('--radius', '0.5rem')
+      root.style.setProperty("--radius", "0.5rem");
     }
 
     // Apply font family
     if (themePreference.fontFamily) {
-      document.body.style.fontFamily = themePreference.fontFamily
+      document.body.style.fontFamily = themePreference.fontFamily;
     }
 
     // Apply compact mode
     if (themePreference.compactMode) {
-      root.classList.add('compact-mode')
+      root.classList.add("compact-mode");
     } else {
-      root.classList.remove('compact-mode')
+      root.classList.remove("compact-mode");
     }
-  }
+  };
 
   const updateThemePreference = (key: keyof ThemePreference, value: any) => {
-    if (!themePreference) return
-    
-    setThemePreference(prev => ({
+    if (!themePreference) return;
+
+    setThemePreference((prev) => ({
       ...prev!,
-      [key]: value
-    }))
-  }
+      [key]: value,
+    }));
+  };
 
   if (loading) {
     return (
@@ -323,28 +375,37 @@ export function ThemeSettingsClient() {
         <div className="animate-pulse">
           <div className="h-8 bg-muted rounded w-64 mb-6"></div>
           <div className="space-y-4">
-            {[1, 2, 3].map(i => (
+            {[1, 2, 3].map((i) => (
               <div key={i} className="h-32 bg-muted rounded"></div>
             ))}
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (!themePreference) {
     return (
       <div className="container mx-auto p-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Error al cargar configuración de tema</h1>
+          <h1 className="text-2xl font-bold mb-4">
+            Error al cargar configuración de tema
+          </h1>
           <Button onClick={fetchThemePreferences}>Reintentar</Button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="container mx-auto p-6 space-y-6">
+      <Link
+        href="/settings"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Volver a Configuración
+      </Link>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -360,13 +421,9 @@ export function ThemeSettingsClient() {
             className="gap-2"
           >
             <Eye className="h-4 w-4" />
-            {showPreview ? 'Ocultar Vista Previa' : 'Vista Previa'}
+            {showPreview ? "Ocultar Vista Previa" : "Vista Previa"}
           </Button>
-          <Button
-            variant="outline"
-            onClick={resetToDefault}
-            className="gap-2"
-          >
+          <Button variant="outline" onClick={resetToDefault} className="gap-2">
             <Undo2 className="h-4 w-4" />
             Restablecer
           </Button>
@@ -376,7 +433,7 @@ export function ThemeSettingsClient() {
             className="gap-2"
           >
             <Save className="h-4 w-4" />
-            {saving ? 'Guardando...' : 'Guardar Cambios'}
+            {saving ? "Guardando..." : "Guardar Cambios"}
           </Button>
         </div>
       </div>
@@ -426,7 +483,9 @@ export function ThemeSettingsClient() {
           <Card>
             <CardHeader>
               <CardTitle>Presets Rápidos</CardTitle>
-              <CardDescription>Aplica una combinación de colores con un clic</CardDescription>
+              <CardDescription>
+                Aplica una combinación de colores con un clic
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -434,18 +493,24 @@ export function ThemeSettingsClient() {
                   <button
                     key={preset.name}
                     onClick={() => {
-                      updateThemePreference('primaryColor', preset.colors[0])
-                      updateThemePreference('secondaryColor', preset.colors[1])
-                      updateThemePreference('accentColor', preset.colors[2])
+                      updateThemePreference("primaryColor", preset.colors[0]);
+                      updateThemePreference("secondaryColor", preset.colors[1]);
+                      updateThemePreference("accentColor", preset.colors[2]);
                     }}
                     className="flex flex-col items-start gap-2 p-3 border-2 rounded-lg hover:border-[hsl(var(--brand-gold)/0.5)] hover:bg-[hsl(var(--accent)/0.15)] transition-all text-left"
                   >
                     <div className="flex gap-1">
                       {preset.colors.map((c, i) => (
-                        <div key={i} className="w-5 h-5 rounded-full border border-white/20" style={{ backgroundColor: c }} />
+                        <div
+                          key={i}
+                          className="w-5 h-5 rounded-full border border-white/20"
+                          style={{ backgroundColor: c }}
+                        />
                       ))}
                     </div>
-                    <span className="text-xs font-medium leading-tight">{preset.name}</span>
+                    <span className="text-xs font-medium leading-tight">
+                      {preset.name}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -464,8 +529,8 @@ export function ThemeSettingsClient() {
                 <Label>Modo de Tema</Label>
                 <Select
                   value={themePreference.themeMode}
-                  onValueChange={(value: 'light' | 'dark' | 'auto') => 
-                    updateThemePreference('themeMode', value)
+                  onValueChange={(value: "light" | "dark" | "auto") =>
+                    updateThemePreference("themeMode", value)
                   }
                 >
                   <SelectTrigger>
@@ -486,44 +551,74 @@ export function ThemeSettingsClient() {
                 <ColorPicker
                   label="Color Primario"
                   value={themePreference.primaryColor}
-                  onChange={(value) => updateThemePreference('primaryColor', value)}
-                  defaultValue={themePreference.themeMode === 'dark' ? 
-                    DEFAULT_COLORS.dark.primary : DEFAULT_COLORS.light.primary}
+                  onChange={(value) =>
+                    updateThemePreference("primaryColor", value)
+                  }
+                  defaultValue={
+                    themePreference.themeMode === "dark"
+                      ? DEFAULT_COLORS.dark.primary
+                      : DEFAULT_COLORS.light.primary
+                  }
                 />
                 <ColorPicker
                   label="Color Secundario"
                   value={themePreference.secondaryColor}
-                  onChange={(value) => updateThemePreference('secondaryColor', value)}
-                  defaultValue={themePreference.themeMode === 'dark' ? 
-                    DEFAULT_COLORS.dark.secondary : DEFAULT_COLORS.light.secondary}
+                  onChange={(value) =>
+                    updateThemePreference("secondaryColor", value)
+                  }
+                  defaultValue={
+                    themePreference.themeMode === "dark"
+                      ? DEFAULT_COLORS.dark.secondary
+                      : DEFAULT_COLORS.light.secondary
+                  }
                 />
                 <ColorPicker
                   label="Color de Acento"
                   value={themePreference.accentColor}
-                  onChange={(value) => updateThemePreference('accentColor', value)}
-                  defaultValue={themePreference.themeMode === 'dark' ? 
-                    DEFAULT_COLORS.dark.accent : DEFAULT_COLORS.light.accent}
+                  onChange={(value) =>
+                    updateThemePreference("accentColor", value)
+                  }
+                  defaultValue={
+                    themePreference.themeMode === "dark"
+                      ? DEFAULT_COLORS.dark.accent
+                      : DEFAULT_COLORS.light.accent
+                  }
                 />
                 <ColorPicker
                   label="Color Destructivo"
                   value={themePreference.destructiveColor}
-                  onChange={(value) => updateThemePreference('destructiveColor', value)}
-                  defaultValue={themePreference.themeMode === 'dark' ? 
-                    DEFAULT_COLORS.dark.destructive : DEFAULT_COLORS.light.destructive}
+                  onChange={(value) =>
+                    updateThemePreference("destructiveColor", value)
+                  }
+                  defaultValue={
+                    themePreference.themeMode === "dark"
+                      ? DEFAULT_COLORS.dark.destructive
+                      : DEFAULT_COLORS.light.destructive
+                  }
                 />
                 <ColorPicker
                   label="Color de Fondo"
                   value={themePreference.backgroundColor}
-                  onChange={(value) => updateThemePreference('backgroundColor', value)}
-                  defaultValue={themePreference.themeMode === 'dark' ? 
-                    DEFAULT_COLORS.dark.background : DEFAULT_COLORS.light.background}
+                  onChange={(value) =>
+                    updateThemePreference("backgroundColor", value)
+                  }
+                  defaultValue={
+                    themePreference.themeMode === "dark"
+                      ? DEFAULT_COLORS.dark.background
+                      : DEFAULT_COLORS.light.background
+                  }
                 />
                 <ColorPicker
                   label="Color de Texto"
                   value={themePreference.foregroundColor}
-                  onChange={(value) => updateThemePreference('foregroundColor', value)}
-                  defaultValue={themePreference.themeMode === 'dark' ? 
-                    DEFAULT_COLORS.dark.foreground : DEFAULT_COLORS.light.foreground}
+                  onChange={(value) =>
+                    updateThemePreference("foregroundColor", value)
+                  }
+                  defaultValue={
+                    themePreference.themeMode === "dark"
+                      ? DEFAULT_COLORS.dark.foreground
+                      : DEFAULT_COLORS.light.foreground
+                  }
                 />
               </div>
             </CardContent>
@@ -543,8 +638,10 @@ export function ThemeSettingsClient() {
                 <div className="space-y-2">
                   <Label>Familia de Fuente</Label>
                   <Select
-                    value={themePreference.fontFamily || 'Inter'}
-                    onValueChange={(value) => updateThemePreference('fontFamily', value)}
+                    value={themePreference.fontFamily || "Inter"}
+                    onValueChange={(value) =>
+                      updateThemePreference("fontFamily", value)
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -556,18 +653,20 @@ export function ThemeSettingsClient() {
                       <SelectItem value="Lato">Lato</SelectItem>
                       <SelectItem value="Poppins">Poppins</SelectItem>
                       <SelectItem value="Montserrat">Montserrat</SelectItem>
-                      <SelectItem value="Source Sans Pro">Source Sans Pro</SelectItem>
+                      <SelectItem value="Source Sans Pro">
+                        Source Sans Pro
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label>Tamaño de Fuente</Label>
                   <Select
-                    value={themePreference.fontSize || 'medium'}
-                    onValueChange={(value: 'small' | 'medium' | 'large' | 'xl') => 
-                      updateThemePreference('fontSize', value)
-                    }
+                    value={themePreference.fontSize || "medium"}
+                    onValueChange={(
+                      value: "small" | "medium" | "large" | "xl",
+                    ) => updateThemePreference("fontSize", value)}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -598,8 +697,10 @@ export function ThemeSettingsClient() {
                 <div className="space-y-2">
                   <Label>Radio de Bordes</Label>
                   <Select
-                    value={themePreference.borderRadius || '0.5rem'}
-                    onValueChange={(value) => updateThemePreference('borderRadius', value)}
+                    value={themePreference.borderRadius || "0.5rem"}
+                    onValueChange={(value) =>
+                      updateThemePreference("borderRadius", value)
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -623,8 +724,8 @@ export function ThemeSettingsClient() {
                   </div>
                   <Switch
                     checked={themePreference.compactMode}
-                    onCheckedChange={(checked) => 
-                      updateThemePreference('compactMode', checked)
+                    onCheckedChange={(checked) =>
+                      updateThemePreference("compactMode", checked)
                     }
                   />
                 </div>
@@ -646,7 +747,9 @@ export function ThemeSettingsClient() {
                 <Label>Nombre del Tema</Label>
                 <Input
                   value={themePreference.themeName}
-                  onChange={(e) => updateThemePreference('themeName', e.target.value)}
+                  onChange={(e) =>
+                    updateThemePreference("themeName", e.target.value)
+                  }
                   placeholder="Mi tema personalizado"
                 />
               </div>
@@ -654,8 +757,10 @@ export function ThemeSettingsClient() {
               <div className="space-y-2">
                 <Label>URL del Favicon</Label>
                 <Input
-                  value={themePreference.faviconUrl || ''}
-                  onChange={(e) => updateThemePreference('faviconUrl', e.target.value)}
+                  value={themePreference.faviconUrl || ""}
+                  onChange={(e) =>
+                    updateThemePreference("faviconUrl", e.target.value)
+                  }
                   placeholder="https://tusitio.com/favicon.ico"
                 />
               </div>
@@ -671,8 +776,8 @@ export function ThemeSettingsClient() {
                 </div>
                 <Switch
                   checked={themePreference.isPublic}
-                  onCheckedChange={(checked) => 
-                    updateThemePreference('isPublic', checked)
+                  onCheckedChange={(checked) =>
+                    updateThemePreference("isPublic", checked)
                   }
                 />
               </div>
@@ -724,11 +829,13 @@ export function ThemeSettingsClient() {
                       variant="outline"
                       size="sm"
                       disabled={uploadingLogo}
-                      onClick={() => document.getElementById('logo-upload-theme')?.click()}
+                      onClick={() =>
+                        document.getElementById("logo-upload-theme")?.click()
+                      }
                       className="gap-2"
                     >
                       <Upload className="h-4 w-4" />
-                      {uploadingLogo ? 'Subiendo...' : 'Subir Logo'}
+                      {uploadingLogo ? "Subiendo..." : "Subir Logo"}
                     </Button>
                     <input
                       id="logo-upload-theme"
@@ -742,12 +849,16 @@ export function ThemeSettingsClient() {
                         variant="ghost"
                         size="sm"
                         className="text-destructive hover:text-destructive"
-                        onClick={() => setChurchInfo(prev => ({ ...prev, logo: '' }))}
+                        onClick={() =>
+                          setChurchInfo((prev) => ({ ...prev, logo: "" }))
+                        }
                       >
                         Eliminar
                       </Button>
                     )}
-                    <p className="text-xs text-muted-foreground">JPG, PNG, GIF · máx. 2MB</p>
+                    <p className="text-xs text-muted-foreground">
+                      JPG, PNG, GIF · máx. 2MB
+                    </p>
                   </div>
                 </div>
               </div>
@@ -757,10 +868,18 @@ export function ThemeSettingsClient() {
               {/* Church info fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Nombre de la Iglesia <span className="text-destructive">*</span></Label>
+                  <Label>
+                    Nombre de la Iglesia{" "}
+                    <span className="text-destructive">*</span>
+                  </Label>
                   <Input
                     value={churchInfo.name}
-                    onChange={(e) => setChurchInfo(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) =>
+                      setChurchInfo((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
                     placeholder="Iglesia Central ..."
                   />
                 </div>
@@ -769,7 +888,12 @@ export function ThemeSettingsClient() {
                   <Input
                     type="email"
                     value={churchInfo.email}
-                    onChange={(e) => setChurchInfo(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={(e) =>
+                      setChurchInfo((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     placeholder="contacto@iglesia.com"
                   />
                 </div>
@@ -777,7 +901,12 @@ export function ThemeSettingsClient() {
                   <Label>Teléfono</Label>
                   <Input
                     value={churchInfo.phone}
-                    onChange={(e) => setChurchInfo(prev => ({ ...prev, phone: e.target.value }))}
+                    onChange={(e) =>
+                      setChurchInfo((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
+                    }
                     placeholder="+1234567890"
                   />
                 </div>
@@ -785,7 +914,12 @@ export function ThemeSettingsClient() {
                   <Label>Sitio Web</Label>
                   <Input
                     value={churchInfo.website}
-                    onChange={(e) => setChurchInfo(prev => ({ ...prev, website: e.target.value }))}
+                    onChange={(e) =>
+                      setChurchInfo((prev) => ({
+                        ...prev,
+                        website: e.target.value,
+                      }))
+                    }
                     placeholder="https://iglesia.com"
                   />
                 </div>
@@ -793,7 +927,12 @@ export function ThemeSettingsClient() {
                   <Label>Dirección</Label>
                   <Input
                     value={churchInfo.address}
-                    onChange={(e) => setChurchInfo(prev => ({ ...prev, address: e.target.value }))}
+                    onChange={(e) =>
+                      setChurchInfo((prev) => ({
+                        ...prev,
+                        address: e.target.value,
+                      }))
+                    }
                     placeholder="Calle Principal 123, Ciudad"
                   />
                 </div>
@@ -801,7 +940,12 @@ export function ThemeSettingsClient() {
                   <Label>Descripción</Label>
                   <Textarea
                     value={churchInfo.description}
-                    onChange={(e) => setChurchInfo(prev => ({ ...prev, description: e.target.value }))}
+                    onChange={(e) =>
+                      setChurchInfo((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
                     placeholder="Una iglesia comprometida con la comunidad..."
                     rows={3}
                   />
@@ -812,5 +956,5 @@ export function ThemeSettingsClient() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

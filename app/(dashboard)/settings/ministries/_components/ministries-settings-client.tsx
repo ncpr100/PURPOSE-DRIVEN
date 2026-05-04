@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,7 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
-  Settings, Plus, Edit, Trash2, Save, AlertCircle, CheckCircle, Heart, Users
+  Settings, Plus, Edit, Trash2, Save, AlertCircle, CheckCircle, Heart, Users, ArrowLeft
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -203,6 +204,13 @@ export default function MinistriesSettingsClient({
 
   return (
     <div className="space-y-6">
+      <Link
+        href="/settings"
+        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Volver a Configuración
+      </Link>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
