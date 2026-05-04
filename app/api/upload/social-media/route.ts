@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       const fileName = `${uuidv4()}${fileExtension}`;
       const filePath = path.join(uploadDir, fileName);
 
-      await writeFile(filePath, buffer);
+      await writeFile(filePath, new Uint8Array(buffer));
 
       uploadedFiles.push({
         originalName: file.name,

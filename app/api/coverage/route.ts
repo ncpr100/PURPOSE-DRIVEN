@@ -18,13 +18,18 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
+  if (!session.user.churchId) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+
+  const churchId = session.user.churchId;
   const now = new Date();
   const sevenDaysLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
   // event_coverage_status has no relation to events — fetch events separately
   const upcomingEvents = await db.events.findMany({
     where: {
-      churchId: session.user.churchId,
+      churchId,
       startDate: { gte: now, lte: sevenDaysLater },
     },
     select: { id: true, title: true, startDate: true },
@@ -36,7 +41,7 @@ export async function GET(req: NextRequest) {
 
   const slots = await db.event_coverage_status.findMany({
     where: {
-      churchId: session.user.churchId,
+      churchId,
       eventId: { in: eventIds },
     },
     orderBy: { createdAt: "asc" },
@@ -80,6 +85,6 @@ export async function POST(req: NextRequest) {
   }
 
   // Manually trigger the sentinel
-  const report = await runCoverageSentinel(session.user.churchId);
+  const report = await runCoverageSentinel(session.user.churchId ?? "");
   return NextResponse.json({ report });
 }

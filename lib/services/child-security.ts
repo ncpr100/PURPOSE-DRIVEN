@@ -258,7 +258,8 @@ export class ChildSecurityService {
   private encryptPhoto(photo: string): string {
     const key = crypto.randomBytes(32)
     const iv = crypto.randomBytes(16)
-    const cipher = crypto.createCipher('aes-256-cbc', key)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const cipher = (crypto.createCipher as any)('aes-256-cbc', key)
     
     let encrypted = cipher.update(photo, 'utf8', 'hex')
     encrypted += cipher.final('hex')

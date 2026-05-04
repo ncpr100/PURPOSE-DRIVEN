@@ -110,7 +110,7 @@ export class PushNotificationClient {
       // Create new subscription
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: this.urlBase64ToUint8Array(vapidPublicKey)
+        applicationServerKey: this.urlBase64ToUint8Array(vapidPublicKey) as unknown as BufferSource
       })
 
       console.log(' Push subscription created')
@@ -178,8 +178,7 @@ export class PushNotificationClient {
       badge: '/icons/badge-72.png',
       tag: 'test-notification',
       requireInteraction: false,
-      vibrate: [200, 100, 200]
-    })
+    } as NotificationOptions)
 
     // Auto-close after 5 seconds
     setTimeout(() => {

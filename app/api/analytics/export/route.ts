@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
       ? new TextEncoder().encode(exportData)
       : exportData;
       
-    const response = new NextResponse(responseBody, {
+    const response = new NextResponse(responseBody as BodyInit, {
       status: 200,
       headers: {
         'Content-Type': contentType,

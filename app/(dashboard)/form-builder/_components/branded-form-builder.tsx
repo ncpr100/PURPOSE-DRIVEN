@@ -73,7 +73,7 @@ export default function BrandedFormBuilder({
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [hasLocalDraft, setHasLocalDraft] = useState(false);
-  const autoSaveTimeoutRef = useRef<NodeJS.Timeout>();
+  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // FILE INPUT REFS (fixes Button-inside-Label file picker issue)
   const churchLogoInputRef = useRef<HTMLInputElement>(null);
@@ -1026,7 +1026,7 @@ export default function BrandedFormBuilder({
                   // ── HEADING BLOCK ──
                   if (field.type === "heading") {
                     const Tag =
-                      `h${field.headingLevel || 2}` as keyof JSX.IntrinsicElements;
+                      `h${field.headingLevel || 2}` as string;
                     const sizes: Record<number, string> = {
                       1: "22px",
                       2: "18px",
