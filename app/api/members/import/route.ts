@@ -251,13 +251,19 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
-    if (jsonData.length > 1000) {
+    if (jsonData.length > 5000) {
       return NextResponse.json({ 
-        message: 'Máximo 1000 registros por importación' 
+        message: 'Máximo 5000 registros por importación' 
       }, { status: 400 })
     }
 
-    // Process import
+    // Process import — batched strategy:
+    // 1. Validate all rows in memory (zero DB calls)
+    // 2. ONE batch query to find all existing members by email
+    // 3. db.members.createMany() for all new records (ONE DB round-trip)
+    // 4. Individual updates only for the update path (less common)
+    // Note: bulk automation triggers are intentionally skipped —
+    //       importing a CSV should not fire 5000 welcome emails.
     const result: ImportResult = {
       success: true,
       imported: 0,
@@ -266,105 +272,96 @@ export async function POST(request: NextRequest) {
       errors: []
     }
 
+    // Step 1 — validate and map all rows in memory
+    const validRows: { index: number; mapped: any }[] = []
     for (let i = 0; i < jsonData.length; i++) {
-      const row = jsonData[i]
-      const rowNumber = i + 2 // Account for header row
-      
-      try {
-        // Map and normalize fields
-        const mappedData = mapFields(row)
-        mappedData.churchId = session.user.churchId
-        mappedData.isActive = true
+      const rowNumber = i + 2
+      const mapped = mapFields(jsonData[i])
+      mapped.churchId = session.user.churchId
+      mapped.isActive = true
 
-        // Validate data
-        const validationErrors = validateMemberData(mappedData)
-        if (validationErrors.length > 0) {
-          validationErrors.forEach(error => {
-            result.errors.push({
-              row: rowNumber,
-              field: 'validation',
-              value: mappedData,
-              error
-            })
-          })
-          result.failed++
-          continue
-        }
+      const validationErrors = validateMemberData(mapped)
+      if (validationErrors.length > 0) {
+        validationErrors.forEach(error => {
+          result.errors.push({ row: rowNumber, field: 'validation', value: mapped, error })
+        })
+        result.failed++
+        continue
+      }
+      validRows.push({ index: i, mapped })
+    }
 
-        // Check if member exists (by email or name combination)
-        let existingMember = null
-        if (mappedData.email) {
-          existingMember = await db.members.findFirst({
-            where: {
-              churchId: session.user.churchId,
-              email: mappedData.email,
-              isActive: true
-            }
-          })
-        }
+    // Step 2 — ONE batch query to find existing members by email
+    const emailsToCheck = validRows.map(r => r.mapped.email).filter(Boolean) as string[]
+    const existingByEmail = new Map<string, { id: string }>()
+    if (emailsToCheck.length > 0) {
+      const existing = await db.members.findMany({
+        where: { churchId: session.user.churchId, email: { in: emailsToCheck }, isActive: true },
+        select: { id: true, email: true }
+      })
+      existing.forEach(m => { if (m.email) existingByEmail.set(m.email, { id: m.id }) })
+    }
 
-        // If not found by email, try by name
-        if (!existingMember && mappedData.firstName && mappedData.lastName) {
-          existingMember = await db.members.findFirst({
-            where: {
-              churchId: session.user.churchId,
-              firstName: mappedData.firstName,
-              lastName: mappedData.lastName,
-              isActive: true
-            }
-          })
-        }
+    // Step 3 — split into creates vs updates vs skips
+    const toCreate: any[] = []
+    const toUpdate: { id: string; data: any; rowNumber: number }[] = []
 
-        if (existingMember && !updateExisting) {
-          result.errors.push({
-            row: rowNumber,
-            field: 'duplicate',
-            value: `${mappedData.firstName} ${mappedData.lastName}`,
-            error: 'Miembro ya existe. Active "Actualizar existentes" para sobreescribir.'
-          })
-          result.failed++
-          continue
-        }
+    for (const { index, mapped } of validRows) {
+      const rowNumber = index + 2
+      const existingMember = mapped.email ? existingByEmail.get(mapped.email) : undefined
 
-        // Create or update member
-        if (existingMember && updateExisting) {
-          await db.members.update({
-            where: { id: existingMember.id },
-            data: mappedData
-          })
-          result.updated++
-        } else {
-          const member = await db.members.create({
-            data: mappedData
-          })
-
-          // Trigger automation for new member
-          try {
-            const { AutomationTriggers } = await import('@/lib/automation-engine')
-            await AutomationTriggers.memberJoined({
-              id: member.id,
-              firstName: member.firstName,
-              lastName: member.lastName,
-              email: member.email,
-              phone: member.phone,
-              membershipDate: member.membershipDate,
-              isActive: member.isActive
-            }, session.user.churchId)
-          } catch (automationError) {
-            console.error('Error triggering automation:', automationError)
-          }
-
-          result.imported++
-        }
-
-      } catch (error) {
-        console.error(`Error processing row ${rowNumber}:`, error)
+      if (existingMember && !updateExisting) {
         result.errors.push({
           row: rowNumber,
-          field: 'system',
-          value: row,
-          error: 'Error interno del sistema'
+          field: 'duplicate',
+          value: `${mapped.firstName} ${mapped.lastName}`,
+          error: 'Miembro ya existe. Active "Actualizar existentes" para sobreescribir.'
         })
+        result.failed++
+        continue
+      }
+
+      if (existingMember && updateExisting) {
+        const { churchId, isActive, ...updateData } = mapped
+        toUpdate.push({ id: existingMember.id, data: updateData, rowNumber })
+      } else {
+        toCreate.push({ id: nanoid(), ...mapped })
+      }
+    }
+
+    // Step 4 — ONE createMany call for all new members
+    if (toCreate.length > 0) {
+      try {
+        await db.members.createMany({ data: toCreate, skipDuplicates: true })
+        result.imported = toCreate.length
+      } catch (batchError) {
+        console.error('Batch create failed, falling back to row-by-row:', batchError)
+        // Fallback: individual creates to surface which rows fail
+        for (const memberData of toCreate) {
+          try {
+            await db.members.create({ data: memberData })
+            result.imported++
+          } catch (rowError) {
+            result.errors.push({
+              row: -1,
+              field: 'system',
+              value: `${memberData.firstName} ${memberData.lastName}`,
+              error: 'Error al crear registro'
+            })
+            result.failed++
+          }
+        }
+      }
+    }
+
+    // Step 5 — individual updates (less common path)
+    for (const { id, data, rowNumber } of toUpdate) {
+      try {
+        await db.members.update({ where: { id }, data })
+        result.updated++
+      } catch (error) {
+        console.error(`Error updating row ${rowNumber}:`, error)
+        result.errors.push({ row: rowNumber, field: 'system', value: data, error: 'Error al actualizar registro' })
         result.failed++
       }
     }

@@ -143,36 +143,41 @@ export async function POST(request: NextRequest) {
     })
 
     //  TRIGGER AUTOMATION for visitor check-in
-    try {
-      const { triggerAutomations, markAutomationTriggered } = await import('@/lib/automation-trigger-service')
-      
-      const triggerType = isFirstTime ? 'VISITOR_FIRST_TIME' : 'VISITOR_CHECKED_IN'
-      
-      const result = await triggerAutomations({
-        type: triggerType,
-        churchId: session.user.churchId,
-        data: {
-          checkInId: checkIn.id,
-          qrCode: qrData,
-          visitorName: `${firstName} ${lastName}`,
-          visitorEmail: email,
-          visitorPhone: phone,
-          isFirstTime: isFirstTime || false,
-          visitReason,
-          prayerRequest: prayer_requests,
-          eventId: eventId || undefined,
-          source: 'check_in',
-          timestamp: new Date()
+    // Fire-and-forget: do NOT await — check-in response must return immediately.
+    // During Sunday peak, hundreds of concurrent check-ins would queue up if we
+    // blocked on automation execution (which may involve email/SMS API calls).
+    ;(async () => {
+      try {
+        const { triggerAutomations, markAutomationTriggered } = await import('@/lib/automation-trigger-service')
+        
+        const triggerType = isFirstTime ? 'VISITOR_FIRST_TIME' : 'VISITOR_CHECKED_IN'
+        
+        const automationResult = await triggerAutomations({
+          type: triggerType,
+          churchId: session.user.churchId,
+          data: {
+            checkInId: checkIn.id,
+            qrCode: qrData,
+            visitorName: `${firstName} ${lastName}`,
+            visitorEmail: email,
+            visitorPhone: phone,
+            isFirstTime: isFirstTime || false,
+            visitReason,
+            prayerRequest: prayer_requests,
+            eventId: eventId || undefined,
+            source: 'check_in',
+            timestamp: new Date()
+          }
+        })
+        
+        if (automationResult.success && automationResult.rulesTriggered > 0) {
+          await markAutomationTriggered('check_in', checkIn.id, automationResult.executionIds)
+          console.log(` Triggered ${automationResult.rulesTriggered} automation rule(s) for ${triggerType}`)
         }
-      })
-      
-      if (result.success && result.rulesTriggered > 0) {
-        await markAutomationTriggered('check_in', checkIn.id, result.executionIds)
-        console.log(` Triggered ${result.rulesTriggered} automation rule(s) for ${triggerType}`)
+      } catch (automationError) {
+        console.error(' Automation trigger failed for check-in:', automationError)
       }
-    } catch (automationError) {
-      console.error(' Automation trigger failed for check-in:', automationError)
-    }
+    })()
 
     return NextResponse.json(checkIn, { status: 201 })
 
