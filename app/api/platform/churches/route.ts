@@ -389,7 +389,6 @@ export async function POST(request: NextRequest) {
   <div class="wrapper">
     <div class="header">
       <h1>Kḥesed-tek CMS</h1>
-      <p>44 años de corazón pastoral, ahora potenciados por tecnología</p>
     </div>
     <div class="body">
       <p class="greeting">Hola, ${adminUser.name},</p>
@@ -419,7 +418,6 @@ export async function POST(request: NextRequest) {
           Sabemos que su tiempo es valioso, por eso le sugerimos comenzar con estas 3 acciones simples:
         </p>
         <ol>
-          <li>Salude a sus Agentes: Ingrese al panel y vea el estado actual de su Shepherd's Log.</li>
           <li>Revise su WhatsApp: En breve recibirá un mensaje de prueba de nuestro Agent 12 para verificar la conexión con su equipo de voluntarios.</li>
           <li>Agende su sesión de bienvenida: Si aún no lo ha hecho, puede programar una llamada de 15 minutos con nosotros para resolver dudas técnicas.</li>
         </ol>
@@ -428,13 +426,12 @@ export async function POST(request: NextRequest) {
       <div class="card card-green">
         <p>
           <span class="label">Estamos para servirle.</span><br />
-          Recuerde que, como Iglesia Fundadora, usted tiene línea directa con nosotros.
           Si tiene cualquier duda o necesita ayuda configurando a su equipo, simplemente
           responda a este correo o escríbanos por WhatsApp al <strong>+57 302 1234410</strong>.
         </p>
       </div>
       <p style="font-size:14px; color:#4a5568; margin-top:24px; line-height:1.7;">
-        Estamos orando para que esta herramienta sea de bendición para su vida, su familia
+        Estamos creyendo para que esta herramienta sea de bendición para su vida, su familia
         y toda la congregación de <strong>${name}</strong>.<br /><br />
         En Cristo,<br />
         <strong>El Equipo de Khesed-Tek Systems</strong>
