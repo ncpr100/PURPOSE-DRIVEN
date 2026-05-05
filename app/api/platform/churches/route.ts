@@ -363,20 +363,20 @@ export async function POST(request: NextRequest) {
     .wrapper { max-width: 620px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
     .header { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); padding: 40px 32px; text-align: center; }
     .header h1 { color: #ffffff; font-size: 26px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .header p { color: #bfdbfe; font-size: 14px; }
+    .header p { color: #fde68a; font-size: 14px; }
     .body { padding: 36px 32px; }
-    .greeting { font-size: 18px; font-weight: 600; color: #1e3a5f; margin-bottom: 12px; }
+    .greeting { font-size: 18px; font-weight: 600; color: #0D1B2E; margin-bottom: 12px; }
     .intro { font-size: 15px; color: #4a5568; line-height: 1.7; margin-bottom: 24px; }
     .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #6b7280; margin-bottom: 10px; }
     .card { border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
-    .card-blue { background: #eff6ff; border-left: 4px solid #2563eb; }
+    .card-blue { background: #fdf8ee; border-left: 4px solid #C9922A; }
     .card-orange { background: #fff7ed; border-left: 4px solid #f97316; }
-    .card-green { background: #f0fdf4; border-left: 4px solid #16a34a; }
+    .card-green { background: #f0fdfd; border-left: 4px solid #26D9D9; }
     .card p { font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 6px; }
     .card p:last-child { margin-bottom: 0; }
-    .label { font-weight: 600; color: #1e3a5f; }
-    .credential-code { background: #1e3a5f; color: #93c5fd; font-family: 'Courier New', monospace; font-size: 15px; padding: 2px 8px; border-radius: 4px; }
-    .cta { display: block; width: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff !important; text-align: center; font-size: 16px; font-weight: 600; padding: 14px 24px; border-radius: 8px; text-decoration: none; margin: 28px 0; }
+    .label { font-weight: 600; color: #C9922A; }
+    .credential-code { background: #0D1B2E; color: #F0BE42; font-family: 'Courier New', monospace; font-size: 15px; padding: 2px 8px; border-radius: 4px; }
+    .cta { display: block; width: 100%; background: linear-gradient(135deg, #C9922A 0%, #8f6818 100%); color: #0D1B2E !important; text-align: center; font-size: 16px; font-weight: 600; padding: 14px 24px; border-radius: 8px; text-decoration: none; margin: 28px 0; }
     .steps ol { padding-left: 20px; }
     .steps li { font-size: 14px; color: #374151; line-height: 1.7; margin-bottom: 4px; }
     .divider { border: none; border-top: 1px solid #e5e7eb; margin: 28px 0; }
@@ -392,7 +392,7 @@ export async function POST(request: NextRequest) {
       <p>44 años de corazón pastoral, ahora potenciados por tecnología</p>
     </div>
     <div class="body">
-      <p class="greeting">Hola, Pastor ${adminUser.name}</p>
+      <p class="greeting">Hola, ${adminUser.name},</p>
       <p class="intro">
         ¡Es un honor caminar junto a usted en esta nueva etapa para su ministerio!<br />
         Le confirmamos que el perfil de <strong>${name}</strong> ha sido creado y configurado

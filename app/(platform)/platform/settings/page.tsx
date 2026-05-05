@@ -43,7 +43,7 @@ const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background-color: #f0f4f8;
+      background-color: #f8f4ee;
       color: #1a202c;
       padding: 32px 16px;
     }
@@ -56,7 +56,7 @@ const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
     .header {
-      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+      background: linear-gradient(135deg, #0D1B2E 0%, #1e3a5f 100%);
       padding: 40px 32px;
       text-align: center;
     }
@@ -68,7 +68,7 @@ const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
       margin-bottom: 6px;
     }
     .header p {
-      color: #bfdbfe;
+      color: #fde68a;
       font-size: 14px;
     }
     .body {
@@ -77,8 +77,7 @@ const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
     .greeting {
       font-size: 18px;
       font-weight: 600;
-      color: #1e3a5f;
-      margin-bottom: 12px;
+      color: #0D1B2E;
     }
     .intro {
       font-size: 15px;
@@ -100,16 +99,16 @@ const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
       margin-bottom: 20px;
     }
     .card-blue {
-      background: #eff6ff;
-      border-left: 4px solid #2563eb;
+      background: #fdf8ee;
+      border-left: 4px solid #C9922A;
     }
     .card-orange {
       background: #fff7ed;
       border-left: 4px solid #f97316;
     }
     .card-green {
-      background: #f0fdf4;
-      border-left: 4px solid #16a34a;
+      background: #f0fdfd;
+      border-left: 4px solid #26D9D9;
     }
     .card p {
       font-size: 14px;
@@ -118,10 +117,10 @@ const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
       margin-bottom: 6px;
     }
     .card p:last-child { margin-bottom: 0; }
-    .label { font-weight: 600; color: #1e3a5f; }
+    .label { font-weight: 600; color: #C9922A; }
     .credential-code {
-      background: #1e3a5f;
-      color: #93c5fd;
+      background: #0D1B2E;
+      color: #F0BE42;
       font-family: 'Courier New', monospace;
       font-size: 15px;
       padding: 2px 8px;
@@ -131,8 +130,8 @@ const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
     .cta {
       display: block;
       width: 100%;
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      color: #ffffff !important;
+      background: linear-gradient(135deg, #C9922A 0%, #8f6818 100%);
+      color: #0D1B2E !important;
       text-align: center;
       font-size: 16px;
       font-weight: 600;
@@ -183,7 +182,7 @@ const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
     <!-- Body -->
     <div class="body">
 
-      <p class="greeting">Hola, Pastor {{adminName}}</p>
+      <p class="greeting">Hola, {{adminName}},</p>
       <p class="intro">
         ¡Es un honor caminar junto a usted en esta nueva etapa para su ministerio!<br />
         Le confirmamos que el perfil de <strong>{{churchName}}</strong> ha sido creado y configurado
