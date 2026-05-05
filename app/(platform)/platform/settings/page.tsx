@@ -1366,9 +1366,24 @@ export default function PlatformSettingsPage() {
                   variant="outline"
                   disabled={!settings.welcomeEmail.body}
                   onClick={() => {
+                    // Replace variables with realistic demo values so the
+                    // preview shows exactly what the pastor will receive.
+                    const preview = settings.welcomeEmail.body
+                      .replaceAll("{{adminName}}", "Pastor Carlos García")
+                      .replaceAll("{{churchName}}", "Iglesia Central")
+                      .replaceAll("{{adminEmail}}", "pastor@iglesiacentral.com")
+                      .replaceAll("{{tempPassword}}", "Khesed2024#")
+                      .replaceAll(
+                        "{{loginUrl}}",
+                        "https://khesed-tek-cms-org.vercel.app",
+                      )
+                      .replaceAll(
+                        "{{authStatus}}",
+                        "Tu cuenta de autenticación ha sido creada automáticamente.",
+                      );
                     const win = window.open("about:blank", "_blank");
                     if (win) {
-                      win.document.write(settings.welcomeEmail.body);
+                      win.document.write(preview);
                       win.document.close();
                     }
                   }}
