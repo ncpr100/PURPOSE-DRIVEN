@@ -418,7 +418,8 @@ export async function POST(request: NextRequest) {
           Sabemos que su tiempo es valioso, por eso le sugerimos comenzar con estas 3 acciones simples:
         </p>
         <ol>
-          <li>Revise su WhatsApp: En breve recibirá un mensaje de prueba de nuestro Agent 12 para verificar la conexión con su equipo de voluntarios.</li>
+          <li>Ingrese al panel y vea el estado actual de su Shepherd's Log.</li>
+          <li>Revise su WhatsApp: También recibirá este mensaje por WhatsApp como respaldo, en caso de que no tenga acceso a su correo.</li>
           <li>Agende su sesión de bienvenida: Si aún no lo ha hecho, puede programar una llamada de 15 minutos con nosotros para resolver dudas técnicas.</li>
         </ol>
       </div>
