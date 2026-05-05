@@ -2,8 +2,8 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { Logo } from '@/components/ui/logo'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -52,13 +52,7 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
       {/* Logo */}
       <div className="p-4 pb-2">
         <div className="flex items-center gap-3">
-          <Image
-            src="/logo.png"
-            alt="Khesed-tek CMS"
-            width={48}
-            height={48}
-            className="rounded-md object-contain"
-          />
+          <Logo size="md" showText={false} />
           <div>
             <h1 className="text-sm font-bold leading-tight">Kḥesed-tek</h1>
             <p className="text-xs text-muted-foreground/70">Super Admin</p>
@@ -90,13 +84,7 @@ function MobileSidebar({ pathname }: { pathname: string }) {
           {/* Logo */}
           <div className="p-4 pb-2">
             <div className="flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt="Khesed-tek CMS"
-                width={48}
-                height={48}
-                className="rounded-md object-contain"
-              />
+              <Logo size="md" showText={false} />
               <div>
                 <h1 className="text-sm font-bold leading-tight">Kḥesed-tek</h1>
                 <p className="text-xs text-muted-foreground/70">Super Admin</p>
