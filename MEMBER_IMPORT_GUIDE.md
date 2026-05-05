@@ -27,7 +27,7 @@
 | CSV | `.csv` | Texto plano, separado por comas |
 
 **Límite de tamaño**: 10 MB  
-**Límite de filas**: 1,000 registros por importación
+**Límite de filas**: 5,000 registros por importación
 
 ---
 
@@ -147,7 +147,7 @@ María,García,maria@email.com,555-0124,"Carrera 67, #89",Medellín,Antioquia,05
 
 **5 — Ejecutar la importación**
 - Hacer clic en **"Importar"**
-- Esperar la barra de progreso (puede tomar hasta 30 segundos para 1,000 registros)
+- Esperar la barra de progreso (puede tomar hasta 60 segundos para 5,000 registros)
 
 **6 — Revisar resultados**
 El sistema muestra un resumen:
@@ -207,7 +207,7 @@ Diana,López,diana.lopez@email.com,,,Barranquilla,Atlántico,,1988-09-30,2023-08
 | `Email inválido` | El email no tiene formato correcto | Revisar formato: `usuario@dominio.com` |
 | `Teléfono inválido` | El teléfono contiene letras | Solo números, espacios, `+`, `-`, `(`, `)` |
 | `Tipo de archivo no válido` | El archivo no es .xlsx, .xls o .csv | Convertir a formato soportado |
-| `El archivo debe ser menor a 10MB` | Archivo muy grande | Dividir en múltiples archivos de ≤1,000 filas |
+| `El archivo debe ser menor a 10MB` | Archivo muy grande | Dividir en múltiples archivos de ≤5,000 filas |
 
 ---
 
@@ -215,7 +215,7 @@ Diana,López,diana.lopez@email.com,,,Barranquilla,Atlántico,,1988-09-30,2023-08
 
 Para cargar una lista grande eficientemente:
 
-1. **Dividir en lotes** de máximo 1,000 filas por importación
+1. **Dividir en lotes** de máximo 5,000 filas por importación
 2. **Activar "Actualizar registros existentes"** para poder re-importar sin duplicados
 3. **Asegurar emails únicos** — el email es la clave de deduplicación
 4. Miembros **sin email** se crean siempre como nuevos (sin deduplicación)

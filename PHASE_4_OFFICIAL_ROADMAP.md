@@ -411,4 +411,58 @@ export class PlinGateway implements PaymentGateway {
 
 **Document Owner**: Technical Architecture Team  
 **Next Review**: February 1, 2026  
+
+---
+
+## 📧 **MULTI-LANGUAGE TRANSACTIONAL EMAILS (EN / ES / PT)**
+
+> Added May 4, 2026 — builds on Phase 3 finale welcome email customization (PR #72)
+
+### **Background**
+Welcome email customization was shipped as a single Spanish-only template stored in `platform_settings.welcomeEmailSubject` + `platform_settings.welcomeEmailBody`. Phase 4 must evolve this into a full multi-language system to support English and Portuguese tenants.
+
+### **Step 1 — New DB Table: `email_templates`**
+Replace the two flat fields in `platform_settings` with a dedicated table:
+```prisma
+model email_templates {
+  id        String   @id @default(cuid())
+  type      String   // "welcome_church", "password_reset", "payment_confirmed", etc.
+  language  String   // "es", "en", "pt"
+  subject   String
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([type, language])
+}
+```
+Migration: copy current `platform_settings.welcomeEmailSubject/Body` → `email_templates` as `{ type: "welcome_church", language: "es" }`, then drop the two flat fields.
+
+### **Step 2 — Language Field on Church Record**
+Add `language String @default("es")` to the `church` model. Super Admin selects language during church onboarding (dropdown: Español / English / Português). This drives which template is sent.
+
+### **Step 3 — Template Resolution in Churches API**
+Update `app/api/platform/churches/route.ts` POST handler:
+```typescript
+const churchLanguage = body.language || 'es'
+const template = await db.email_templates.findFirst({
+  where: { type: 'welcome_church', language: churchLanguage }
+}) ?? await db.email_templates.findFirst({
+  where: { type: 'welcome_church', language: 'es' }  // fallback to Spanish
+})
+// if still null → use hardcoded HTML (ultimate fallback)
+```
+Token replacement stays identical: `{{adminName}}`, `{{churchName}}`, `{{adminEmail}}`, `{{tempPassword}}`, `{{loginUrl}}`, `{{authStatus}}`.
+
+### **Step 4 — Update Platform Settings UI**
+Modify the existing **"Email Bienvenida"** tab in `app/(platform)/platform/settings/page.tsx`:
+- Add a language toggle (ES / EN / PT) that switches which template is being edited
+- Each language loads/saves independently via new API: `GET/PUT /api/platform/email-templates?type=welcome_church&language=es`
+
+### **Step 5 — Extend to All Transactional Emails**
+Once the table exists, apply the same pattern to: `password_reset`, `payment_confirmed`, `trial_expiring`, `subscription_activated`.
+
+### **Notes**
+- JSON column was considered but rejected in favor of a table for scalability
+- Language detection via `Accept-Language` header or country→language mapping is also viable but explicit dropdown is preferred for SaaS onboarding clarity
+- Nothing built in Phase 3 blocks this — the flat fields serve as the Spanish MVP bridge
 **Status**: **APPROVED FOR IMPLEMENTATION** - Q1 2026

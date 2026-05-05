@@ -13,7 +13,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Bell, LogOut, User, Shield } from 'lucide-react'
+import { Bell, LogOut, User, Shield, Sun, Moon } from 'lucide-react'
+import { useTheme } from '@/hooks/use-theme'
 
 interface PlatformHeaderProps {
   user: {
@@ -30,6 +31,7 @@ export function PlatformHeader({ user }: PlatformHeaderProps) {
     .map((n) => n[0])
     .join('')
     .toUpperCase() || 'SA'
+  const { isDark, toggle: toggleTheme } = useTheme()
 
   return (
     <header className="bg-[hsl(var(--card))] border-b border-border px-3 md:px-6 py-4">
@@ -47,6 +49,17 @@ export function PlatformHeader({ user }: PlatformHeaderProps) {
 
         {/* Right side - user actions */}
         <div className="flex items-center gap-2 md:gap-4">
+          {/* Theme toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="px-2"
+            onClick={toggleTheme}
+            title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+          >
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+
           {/* Notifications */}
           <Button variant="ghost" size="sm" className="px-2">
             <Bell className="h-4 w-4" />
