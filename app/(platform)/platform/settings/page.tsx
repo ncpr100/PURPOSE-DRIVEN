@@ -29,6 +29,233 @@ import {
 } from "lucide-react";
 import { SubscriptionManagement } from "@/components/platform/subscription/subscription-management";
 
+// ─── Professional default welcome email template ───────────────────────────
+const DEFAULT_WELCOME_SUBJECT =
+  "Bienvenido a Kḥesed-tek CMS - Credenciales de {{churchName}}";
+
+const DEFAULT_WELCOME_BODY = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenido a Kḥesed-tek CMS</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f0f4f8;
+      color: #1a202c;
+      padding: 32px 16px;
+    }
+    .wrapper {
+      max-width: 620px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+      padding: 40px 32px;
+      text-align: center;
+    }
+    .header h1 {
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .header p {
+      color: #bfdbfe;
+      font-size: 14px;
+    }
+    .body {
+      padding: 36px 32px;
+    }
+    .greeting {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e3a5f;
+      margin-bottom: 12px;
+    }
+    .intro {
+      font-size: 15px;
+      color: #4a5568;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+    .card {
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+    .card-blue {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+    }
+    .card-orange {
+      background: #fff7ed;
+      border-left: 4px solid #f97316;
+    }
+    .card-green {
+      background: #f0fdf4;
+      border-left: 4px solid #16a34a;
+    }
+    .card p {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .card p:last-child { margin-bottom: 0; }
+    .label { font-weight: 600; color: #1e3a5f; }
+    .credential-code {
+      background: #1e3a5f;
+      color: #93c5fd;
+      font-family: 'Courier New', monospace;
+      font-size: 15px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .cta {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff !important;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin: 28px 0;
+    }
+    .steps ol {
+      padding-left: 20px;
+    }
+    .steps li {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.7;
+      margin-bottom: 4px;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 28px 0;
+    }
+    .footer {
+      background: #f8fafc;
+      border-top: 1px solid #e5e7eb;
+      padding: 24px 32px;
+      text-align: center;
+    }
+    .footer p {
+      font-size: 12px;
+      color: #9ca3af;
+      line-height: 1.6;
+    }
+    .footer strong {
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>Kḥesed-tek CMS</h1>
+      <p>44 años de corazón pastoral, ahora potenciados por tecnología</p>
+    </div>
+
+    <!-- Body -->
+    <div class="body">
+
+      <p class="greeting">Hola, Pastor {{adminName}}</p>
+      <p class="intro">
+        ¡Es un honor caminar junto a usted en esta nueva etapa para su ministerio!<br />
+        Le confirmamos que el perfil de <strong>{{churchName}}</strong> ha sido creado y configurado
+        exitosamente en nuestra plataforma. A partir de hoy, usted cuenta con un equipo de agentes de IA
+        diseñados desde la experiencia pastoral para ayudarle a recuperar su tiempo y cuidar mejor de su congregación.
+      </p>
+
+      <!-- Credentials -->
+      <p class="section-title">Sus credenciales de acceso</p>
+      <div class="card card-blue">
+        <p>Para comenzar a explorar su nuevo panel administrativo, utilice los siguientes datos:</p>
+        <br />
+        <p><span class="label">Enlace de acceso:</span> <a href="{{loginUrl}}">{{loginUrl}}</a></p>
+        <p><span class="label">Usuario:</span> {{adminEmail}}</p>
+        <p><span class="label">Contraseña temporal:</span> <span class="credential-code">{{tempPassword}}</span></p>
+        <br />
+        <p style="font-size:13px; color:#6b7280;">{{authStatus}}</p>
+      </div>
+
+      <!-- CTA Button -->
+      <a href="{{loginUrl}}" class="cta">Acceder a mi Panel Administrativo</a>
+
+      <!-- Warning -->
+      <div class="card card-orange">
+        <p><span class="label">Importante:</span> Le recomendamos cambiar su contraseña en su primer inicio de sesión por seguridad.</p>
+      </div>
+
+      <!-- First Steps -->
+      <p class="section-title">Sus primeros pasos recomendados</p>
+      <div class="steps">
+        <p style="font-size:14px; color:#4a5568; margin-bottom:10px;">
+          Sabemos que su tiempo es valioso, por eso le sugerimos comenzar con estas 3 acciones simples:
+        </p>
+        <ol>
+          <li>Salude a sus Agentes: Ingrese al panel y vea el estado actual de su Shepherd's Log.</li>
+          <li>Revise su WhatsApp: En breve recibirá un mensaje de prueba de nuestro Agent 12 para verificar la conexión con su equipo de voluntarios.</li>
+          <li>Agende su sesión de bienvenida: Si aún no lo ha hecho, puede programar una llamada de 15 minutos con nosotros para resolver dudas técnicas.</li>
+        </ol>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Support -->
+      <div class="card card-green">
+        <p>
+          <span class="label">Estamos para servirle.</span><br />
+          Recuerde que, como Iglesia Fundadora, usted tiene línea directa con nosotros.
+          Si tiene cualquier duda o necesita ayuda configurando a su equipo, simplemente
+          responda a este correo o escríbanos por WhatsApp al <strong>+57 302 1234410</strong>.
+        </p>
+      </div>
+
+      <p style="font-size:14px; color:#4a5568; margin-top:24px; line-height:1.7;">
+        Estamos orando para que esta herramienta sea de bendición para su vida, su familia
+        y toda la congregación de <strong>{{churchName}}</strong>.<br /><br />
+        En Cristo,<br />
+        <strong>El Equipo de Khesed-Tek Systems</strong>
+      </p>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p><strong>Kḥesed-tek Church Management Systems</strong></p>
+      <p>soporte@khesed-tek-systems.org &nbsp;|&nbsp; Sistema completo de gestión para iglesias</p>
+    </div>
+
+  </div>
+</body>
+</html>`;
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function PlatformSettingsPage() {
   const [settings, setSettings] = useState({
     platform: {
@@ -87,6 +314,11 @@ export default function PlatformSettingsPage() {
   const subjectRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const lastFocused = useRef<"subject" | "body">("body");
+
+  const loadDefaultTemplate = () => {
+    handleSettingChange("welcomeEmail", "subject", DEFAULT_WELCOME_SUBJECT);
+    handleSettingChange("welcomeEmail", "body", DEFAULT_WELCOME_BODY);
+  };
 
   const insertVariable = (token: string) => {
     const isSubject = lastFocused.current === "subject";
@@ -1145,6 +1377,15 @@ export default function PlatformSettingsPage() {
                   Vista Previa
                 </Button>
                 <Button
+                  variant="outline"
+                  onClick={() => {
+                    loadDefaultTemplate();
+                  }}
+                >
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Cargar Plantilla Profesional
+                </Button>
+                <Button
                   variant="ghost"
                   className="text-destructive hover:text-destructive"
                   disabled={
@@ -1157,8 +1398,7 @@ export default function PlatformSettingsPage() {
                     handleSaveSettings("Email Bienvenida");
                   }}
                 >
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Restaurar Predeterminado
+                  Limpiar Plantilla
                 </Button>
               </div>
             </CardContent>
