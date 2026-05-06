@@ -160,6 +160,13 @@ export default function SignInPage() {
                   Regístrate aquí
                 </Link>
               </div>
+
+              <div className="text-center text-xs text-muted-foreground pt-2 border-t border-border">
+                Al usar esta plataforma aceptas nuestros{' '}
+                <Link href="/terms" className="hover:underline">Términos de Servicio</Link>
+                {' '}y{' '}
+                <Link href="/privacy" className="hover:underline">Política de Privacidad</Link>
+              </div>
             </form>
           </CardContent>
         </Card>
