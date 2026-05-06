@@ -17,6 +17,18 @@ export default function TermsPage() {
         </div>
       </div>
 
+      {/* Download bar */}
+      <div className="max-w-4xl mx-auto px-6 pt-8 flex justify-end">
+        <a
+          href="/downloads/terms-of-service.html"
+          download="Khesed-Tek-Terms-of-Service.html"
+          className="inline-flex items-center gap-2 bg-[#0D1B2E] text-[#C9922A] text-sm font-semibold px-5 py-2.5 rounded-md hover:opacity-90 transition-opacity"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </a>
+      </div>
+
       {/* Content */}
       <div className="max-w-4xl mx-auto px-6 py-12 space-y-10 text-muted-foreground text-sm leading-relaxed">
 
