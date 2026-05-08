@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { monitoringMiddleware } from "./middleware/monitoring";
 
 // Rutas que requieren autenticación
 const PROTECTED_ROUTES = [
@@ -85,6 +86,7 @@ const ROUTE_PERMISSIONS = {
 } as const;
 
 export async function proxy(request: NextRequest) {
+  return monitoringMiddleware(request, async () => {
   const response = NextResponse.next();
 
   // Add cache headers for static assets
@@ -235,6 +237,7 @@ export async function proxy(request: NextRequest) {
   }
 
   return response;
+  }); // end monitoringMiddleware
 }
 
 // Basic role access check (simplified for middleware)

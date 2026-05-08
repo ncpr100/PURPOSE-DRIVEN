@@ -26,6 +26,8 @@ import {
   Menu,
   Share2,
   CreditCard,
+  Shield,
+  Zap,
 } from 'lucide-react'
 
 const navigation = [
@@ -40,6 +42,8 @@ const navigation = [
   { name: 'Redes Sociales', href: '/platform/social-media', icon: Share2 },
   { name: 'Analítica', href: '/platform/analytics', icon: BarChart3 },
   { name: 'Mi Perfil', href: '/platform/profile', icon: User },
+  { name: 'SRE — Uptime 24/7', href: '/platform/agents/sre', icon: Shield },
+  { name: 'Rendimiento Web', href: '/platform/agents/performance', icon: Zap },
   { name: 'Configuración', href: '/platform/settings', icon: Settings },
   { name: 'Config. Soporte', href: '/platform/support-settings', icon: MessageCircle },
   { name: 'Documentación', href: '/platform/help', icon: Book },

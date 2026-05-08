@@ -3097,3 +3097,234 @@ enum CoverageStatus {
 }
 
 
+// ================================================================
+// KHESED-TEK CMS — MONITORING INFRASTRUCTURE SCHEMA
+// Add to the BOTTOM of prisma/schema.prisma
+//
+// New tables: 8
+// New enums:  6
+// Run after adding:
+//   npx prisma migrate dev --name add_monitoring_infrastructure
+// ================================================================
+
+// ── ENUMS ────────────────────────────────────────────────────
+
+enum IncidentSeverity {
+  P1_CRITICAL    // Full outage — all tenants affected
+  P2_HIGH        // Partial outage — feature degraded
+  P3_MEDIUM      // Performance degradation — SLA at risk
+  P4_LOW         // Minor issue — no user impact
+}
+
+enum IncidentStatus {
+  DETECTED
+  ACKNOWLEDGED
+  INVESTIGATING
+  MITIGATING
+  RESOLVED
+  POST_MORTEM_PENDING
+  CLOSED
+}
+
+enum AlertChannel {
+  IN_APP
+  WHATSAPP
+  EMAIL
+  SMS
+}
+
+enum AlertStatus {
+  PENDING
+  SENT
+  ACKNOWLEDGED
+  FAILED
+}
+
+enum HealthStatus {
+  HEALTHY
+  DEGRADED
+  DOWN
+  UNKNOWN
+}
+
+enum MetricType {
+  RESPONSE_TIME_P50
+  RESPONSE_TIME_P95
+  RESPONSE_TIME_P99
+  ERROR_RATE
+  CACHE_HIT_RATE
+  DB_QUERY_TIME
+  UPTIME_PERCENTAGE
+  THROUGHPUT_RPS
+  CPU_USAGE
+  MEMORY_USAGE
+  COLD_START_COUNT
+  BUNDLE_SIZE_KB
+}
+
+// ── TABLE 1: API Request Metrics ─────────────────────────────
+// Captures every API route response time and status.
+// Middleware writes to this table on every request.
+// Retention: 30 days raw, then summarized into platform_metric_summaries.
+model api_request_metrics {
+  id            String   @id @default(cuid())
+  route         String   // e.g. '/api/members'
+  method        String   // GET | POST | PUT | DELETE | PATCH
+  statusCode    Int
+  durationMs    Float    // response time in milliseconds
+  churchId      String?  // null for platform routes
+  userId        String?
+  isError       Boolean  @default(false)
+  errorMessage  String?  @db.Text
+  userAgent     String?
+  region        String?  // Vercel region (iad1, gru1, etc.)
+  isColdStart   Boolean  @default(false)
+  requestedAt   DateTime @default(now())
+
+  @@index([route, requestedAt])
+  @@index([isError, requestedAt])
+  @@index([churchId, requestedAt])
+  @@index([requestedAt])
+  @@map("api_request_metrics")
+}
+
+// ── TABLE 2: Platform Health Checks ──────────────────────────
+// Stores results of each synthetic health check run.
+// Covers: DB, Redis, all 11 integrations, production URL.
+model platform_health_checks {
+  id              String       @id @default(cuid())
+  service         String       // 'database' | 'redis' | 'stripe' | 'whatsapp' | etc.
+  status          HealthStatus
+  responseTimeMs  Float?
+  errorMessage    String?      @db.Text
+  metadata        Json?        // Extra context (version, pool size, etc.)
+  checkedAt       DateTime     @default(now())
+
+  @@index([service, checkedAt])
+  @@index([status, checkedAt])
+  @@map("platform_health_checks")
+}
+
+// ── TABLE 3: Incidents ────────────────────────────────────────
+// Every detected outage, degradation, or anomaly.
+model platform_incidents {
+  id               String           @id @default(cuid())
+  title            String
+  description      String           @db.Text
+  severity         IncidentSeverity
+  status           IncidentStatus   @default(DETECTED)
+  affectedServices String[]         // ['database', 'redis', 'stripe']
+  affectedTenants  Int              @default(0) // number of churches impacted
+  detectedAt       DateTime         @default(now())
+  acknowledgedAt   DateTime?
+  resolvedAt       DateTime?
+  acknowledgedBy   String?          // userId
+  resolvedBy       String?          // userId
+  rootCause        String?          @db.Text
+  resolution       String?          @db.Text
+  postMortem       String?          @db.Text
+  timeToDetectMs   Int?             // MTTD
+  timeToAcknowledgeMs Int?          // MTTA
+  timeToResolveMs  Int?             // MTTR
+  isAutoDetected   Boolean          @default(true)
+  alertsSent       Int              @default(0)
+
+  timeline    incident_timeline_events[]
+  alerts      incident_alerts[]
+
+  @@index([status, detectedAt])
+  @@index([severity, detectedAt])
+  @@map("platform_incidents")
+}
+
+// ── TABLE 4: Incident Timeline ────────────────────────────────
+model incident_timeline_events {
+  id          String   @id @default(cuid())
+  incidentId  String
+  event       String   // 'DETECTED' | 'ALERT_SENT' | 'ACKNOWLEDGED' | 'UPDATE' | 'RESOLVED'
+  description String   @db.Text
+  author      String   @default("SRE-Agent") // userId or 'SRE-Agent'
+  createdAt   DateTime @default(now())
+
+  incident platform_incidents @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+
+  @@index([incidentId, createdAt])
+  @@map("incident_timeline_events")
+}
+
+// ── TABLE 5: Incident Alerts ──────────────────────────────────
+model incident_alerts {
+  id          String       @id @default(cuid())
+  incidentId  String
+  channel     AlertChannel
+  recipient   String       // phone, email, or userId
+  message     String       @db.Text
+  status      AlertStatus  @default(PENDING)
+  sentAt      DateTime?
+  error       String?
+  createdAt   DateTime     @default(now())
+
+  incident platform_incidents @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+
+  @@map("incident_alerts")
+}
+
+// ── TABLE 6: Platform Metric Summaries ───────────────────────
+// Hourly/daily rollups of api_request_metrics.
+// Kept for 1 year. Used for trend analysis.
+model platform_metric_summaries {
+  id          String     @id @default(cuid())
+  period      String     // 'hourly' | 'daily' | 'weekly'
+  periodStart DateTime
+  periodEnd   DateTime
+  metricType  MetricType
+  route       String?    // null = platform-wide aggregate
+  value       Float
+  sampleCount Int
+  createdAt   DateTime   @default(now())
+
+  @@unique([period, periodStart, metricType, route])
+  @@index([period, periodStart])
+  @@index([metricType, periodStart])
+  @@map("platform_metric_summaries")
+}
+
+// ── TABLE 7: Performance Recommendations ─────────────────────
+// AI-generated performance improvement recommendations.
+// Generated by Agent 13 (Web Performance Engineer).
+model performance_recommendations {
+  id            String   @id @default(cuid())
+  category      String   // 'api' | 'cache' | 'database' | 'bundle' | 'cold-start'
+  title         String
+  description   String   @db.Text
+  impact        String   // 'HIGH' | 'MEDIUM' | 'LOW'
+  effort        String   // 'HIGH' | 'MEDIUM' | 'LOW'
+  affectedRoute String?
+  codeSnippet   String?  @db.Text
+  isActioned    Boolean  @default(false)
+  actionedBy    String?
+  actionedAt    DateTime?
+  generatedAt   DateTime @default(now())
+  expiresAt     DateTime // Recommendations expire after 7 days if not actioned
+
+  @@index([isActioned, generatedAt])
+  @@map("performance_recommendations")
+}
+
+// ── TABLE 8: SLA Records ──────────────────────────────────────
+// Monthly SLA calculation per tenant tier.
+model platform_sla_records {
+  id                String   @id @default(cuid())
+  month             String   // 'YYYY-MM'
+  tier              String   // 'SEMILLA' | 'COSECHA' | 'REINO' | 'RED'
+  targetUptime      Float    @default(0.999) // 99.9%
+  actualUptime      Float
+  totalDowntimeMs   Int      @default(0)
+  incidentCount     Int      @default(0)
+  p1IncidentCount   Int      @default(0)
+  slaBreached       Boolean  @default(false)
+  calculatedAt      DateTime @default(now())
+
+  @@unique([month, tier])
+  @@map("platform_sla_records")
+}

@@ -62,6 +62,26 @@
     {
       "path": "/api/cron/coverage-precheck",
       "schedule": "0 */1 * * *"
+    },
+    {
+      "path": "/api/cron/sre-health-check",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/performance-collect",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/metrics-rollup",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/sla-calculation",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/data-retention",
+      "schedule": "0 3 * * *"
     }
   ],
   "headers": [
