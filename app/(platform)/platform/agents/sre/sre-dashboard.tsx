@@ -39,6 +39,7 @@ interface SLARecord {
   tier: string;
   actualUptime: number;
   totalDowntimeMs: number;
+  p1IncidentCount?: number;
   slaBreached: boolean;
 }
 

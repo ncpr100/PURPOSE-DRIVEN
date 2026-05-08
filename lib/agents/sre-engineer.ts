@@ -142,7 +142,7 @@ async function detectAndCreateIncidents(checks: HealthCheckResult[]): Promise<nu
     if (existing) continue; // Already tracking this incident
 
     // Determine affected tenant count
-    const activeTenants = await db.church.count({ where: { isActive: true } });
+    const activeTenants = await db.churches.count({ where: { isActive: true } });
     const affectedTenants =
       rule.severity === "P1_CRITICAL" ? activeTenants
       : rule.severity === "P2_HIGH" ? Math.ceil(activeTenants * 0.5)

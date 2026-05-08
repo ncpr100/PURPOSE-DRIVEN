@@ -3,6 +3,7 @@
 // Checks all system components and external integrations.
 // Called by the SRE agent cron every 60 seconds.
 
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 
 export type ServiceName =
@@ -97,13 +98,8 @@ async function checkRedis(): Promise<HealthCheckResult> {
     const pingResult = await redis.ping();
     const ms = Date.now() - start;
 
-    // Get memory info
-    let usedMemoryMb = null;
-    try {
-      const info = await redis.info("memory");
-      const match = info.match(/used_memory_human:(\S+)/);
-      usedMemoryMb = match?.[1] || null;
-    } catch { /* non-critical */ }
+    // Upstash Redis SDK does not expose info() in current typings.
+    const usedMemoryMb = null;
 
     return {
       service: "redis",
@@ -323,7 +319,7 @@ async function persistHealthChecks(checks: HealthCheckResult[]): Promise<void> {
         status: c.status,
         responseTimeMs: c.responseTimeMs,
         errorMessage: c.errorMessage,
-        metadata: c.metadata ?? undefined,
+        metadata: c.metadata ? (c.metadata as Prisma.InputJsonValue) : undefined,
       })),
     });
   } catch (err) {

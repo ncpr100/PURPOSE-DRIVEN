@@ -5,6 +5,7 @@
 // All confirmed in SRE setup: A = yes to SMS, B = 99.9% SLA, C = 30/90/365 day retention
 
 import { db } from "@/lib/db";
+import { nanoid } from "nanoid";
 
 export interface AlertPayload {
   incidentId: string;
@@ -84,21 +85,23 @@ export async function sendAlertCascade(payload: AlertPayload): Promise<void> {
 
 // ── IN-APP NOTIFICATION ───────────────────────────────────────
 async function sendInAppAlert(payload: AlertPayload, url: string): Promise<void> {
-  // Find all SUPER_ADMIN users
-  const superAdmins = await db.user.findMany({
-    where: { isSuperAdmin: true, isActive: true },
-    select: { id: true },
+  // notifications requires churchId, so only target active SUPER_ADMIN users with a church context
+  const superAdmins = await db.users.findMany({
+    where: { role: "SUPER_ADMIN", isActive: true, churchId: { not: null } },
+    select: { id: true, churchId: true },
   });
 
   if (superAdmins.length === 0) return;
 
-  await db.notification.createMany({
+  await db.notifications.createMany({
     data: superAdmins.map((admin) => ({
-      userId: admin.id,
+      id: nanoid(),
+      churchId: admin.churchId!,
+      targetUser: admin.id,
       type: "SRE_INCIDENT",
       title: `${SEVERITY_EMOJI[payload.severity]} ${payload.title}`,
-      body: `Servicios afectados: ${payload.affectedServices.join(", ")}. Ver detalles en el panel SRE.`,
-      isRead: false,
+      message: `Servicios afectados: ${payload.affectedServices.join(", ")}. Ver detalles en el panel SRE: ${url}`,
+      priority: payload.severity === "P1_CRITICAL" ? "HIGH" : "NORMAL",
     })),
     skipDuplicates: true,
   });
