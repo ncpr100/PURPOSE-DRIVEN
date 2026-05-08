@@ -14,9 +14,16 @@ export async function GET(req: NextRequest) {
   try {
     const result = await runDataRetentionCleanup();
     console.log("[CRON/DATA-RETENTION]", result);
-    return NextResponse.json({ ok: true, ...result, timestamp: new Date().toISOString() });
+    return NextResponse.json({
+      ok: true,
+      ...result,
+      timestamp: new Date().toISOString(),
+    });
   } catch (err) {
     console.error("[CRON/DATA-RETENTION] Failed:", err);
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: String(err) },
+      { status: 500 },
+    );
   }
 }

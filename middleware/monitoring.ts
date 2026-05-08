@@ -7,9 +7,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Routes to exclude from monitoring (too noisy, no value)
 const EXCLUDED_ROUTES = [
-  "/api/health",             // our own health checks
+  "/api/health", // our own health checks
   "/api/monitoring/collect", // our own metrics collector
-  "/_next",                  // Next.js internals
+  "/_next", // Next.js internals
   "/favicon",
   "/static",
 ];
@@ -19,7 +19,7 @@ let isWarm = false;
 
 export async function monitoringMiddleware(
   request: NextRequest,
-  handler: () => Promise<NextResponse>
+  handler: () => Promise<NextResponse>,
 ): Promise<NextResponse> {
   const url = new URL(request.url);
   const route = url.pathname;
@@ -42,7 +42,7 @@ export async function monitoringMiddleware(
     errorMessage = err instanceof Error ? err.message : String(err);
     response = NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -89,7 +89,7 @@ function extractChurchId(req: NextRequest): string | undefined {
       req.cookies.get("__Secure-next-auth.session-token")?.value;
     if (!sessionCookie) return undefined;
     const payload = JSON.parse(
-      Buffer.from(sessionCookie.split(".")[1], "base64url").toString()
+      Buffer.from(sessionCookie.split(".")[1], "base64url").toString(),
     );
     return payload?.churchId;
   } catch {
@@ -104,7 +104,7 @@ function extractUserId(req: NextRequest): string | undefined {
       req.cookies.get("__Secure-next-auth.session-token")?.value;
     if (!sessionCookie) return undefined;
     const payload = JSON.parse(
-      Buffer.from(sessionCookie.split(".")[1], "base64url").toString()
+      Buffer.from(sessionCookie.split(".")[1], "base64url").toString(),
     );
     return payload?.sub || payload?.id;
   } catch {

@@ -18,9 +18,8 @@ export async function GET(_req: NextRequest) {
     return NextResponse.json({ snapshot: null, anomalies: [], disabled: true });
   }
 
-  const { collectPerformanceSnapshot, detectPerformanceAnomalies } = await import(
-    "@/lib/agents/performance-engineer"
-  );
+  const { collectPerformanceSnapshot, detectPerformanceAnomalies } =
+    await import("@/lib/agents/performance-engineer");
   const snapshot = await collectPerformanceSnapshot(5);
   const anomalies = detectPerformanceAnomalies(snapshot);
 

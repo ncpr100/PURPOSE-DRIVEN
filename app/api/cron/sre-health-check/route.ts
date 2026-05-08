@@ -12,15 +12,25 @@ export async function GET(req: NextRequest) {
   }
 
   if (process.env.ENABLE_SRE_ENGINEER !== "true") {
-    return NextResponse.json({ skipped: true, reason: "SRE Engineer not enabled" });
+    return NextResponse.json({
+      skipped: true,
+      reason: "SRE Engineer not enabled",
+    });
   }
 
   try {
     const result = await runSRECycle();
     console.log("[CRON/SRE-HEALTH]", result);
-    return NextResponse.json({ ok: true, ...result, timestamp: new Date().toISOString() });
+    return NextResponse.json({
+      ok: true,
+      ...result,
+      timestamp: new Date().toISOString(),
+    });
   } catch (err) {
     console.error("[CRON/SRE-HEALTH] Failed:", err);
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: String(err) },
+      { status: 500 },
+    );
   }
 }

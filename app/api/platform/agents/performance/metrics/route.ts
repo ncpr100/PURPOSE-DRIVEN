@@ -37,12 +37,17 @@ export async function GET(req: NextRequest) {
       pivoted.set(key, { periodStart: s.periodStart.getTime() });
     }
     const metricKey =
-      s.metricType === "RESPONSE_TIME_P50" ? "p50Ms" :
-      s.metricType === "RESPONSE_TIME_P95" ? "p95Ms" :
-      s.metricType === "RESPONSE_TIME_P99" ? "p99Ms" :
-      s.metricType === "ERROR_RATE" ? "errorRate" :
-      s.metricType === "THROUGHPUT_RPS" ? "throughput" :
-      s.metricType.toLowerCase();
+      s.metricType === "RESPONSE_TIME_P50"
+        ? "p50Ms"
+        : s.metricType === "RESPONSE_TIME_P95"
+          ? "p95Ms"
+          : s.metricType === "RESPONSE_TIME_P99"
+            ? "p99Ms"
+            : s.metricType === "ERROR_RATE"
+              ? "errorRate"
+              : s.metricType === "THROUGHPUT_RPS"
+                ? "throughput"
+                : s.metricType.toLowerCase();
     pivoted.get(key)![metricKey] = s.value;
   }
 

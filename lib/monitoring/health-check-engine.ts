@@ -30,23 +30,23 @@ export interface HealthCheckResult {
 
 // ── SLA THRESHOLDS ────────────────────────────────────────────
 const RESPONSE_THRESHOLDS = {
-  database:        { healthy: 100,  degraded: 500  }, // ms
-  redis:           { healthy: 20,   degraded: 100  },
-  production_url:  { healthy: 2000, degraded: 5000 },
-  stripe:          { healthy: 500,  degraded: 2000 },
-  mailgun:         { healthy: 500,  degraded: 2000 },
-  twilio:          { healthy: 500,  degraded: 2000 },
-  whatsapp:        { healthy: 800,  degraded: 3000 },
-  mercadopago:     { healthy: 500,  degraded: 2000 },
-  abacusai:        { healthy: 1000, degraded: 4000 },
-  paddle:          { healthy: 500,  degraded: 2000 },
-  vercel_api:      { healthy: 500,  degraded: 2000 },
-  supabase_api:    { healthy: 300,  degraded: 1000 },
+  database: { healthy: 100, degraded: 500 }, // ms
+  redis: { healthy: 20, degraded: 100 },
+  production_url: { healthy: 2000, degraded: 5000 },
+  stripe: { healthy: 500, degraded: 2000 },
+  mailgun: { healthy: 500, degraded: 2000 },
+  twilio: { healthy: 500, degraded: 2000 },
+  whatsapp: { healthy: 800, degraded: 3000 },
+  mercadopago: { healthy: 500, degraded: 2000 },
+  abacusai: { healthy: 1000, degraded: 4000 },
+  paddle: { healthy: 500, degraded: 2000 },
+  vercel_api: { healthy: 500, degraded: 2000 },
+  supabase_api: { healthy: 300, degraded: 1000 },
 };
 
 function classify(
   service: ServiceName,
-  responseTimeMs: number
+  responseTimeMs: number,
 ): "HEALTHY" | "DEGRADED" {
   const t = RESPONSE_THRESHOLDS[service] || { healthy: 1000, degraded: 3000 };
   return responseTimeMs <= t.healthy ? "HEALTHY" : "DEGRADED";
@@ -145,7 +145,8 @@ async function checkProductionUrl(): Promise<HealthCheckResult> {
       service: "production_url",
       status: "DOWN",
       responseTimeMs: Date.now() - start,
-      errorMessage: err instanceof Error ? err.message : "Timeout or unreachable",
+      errorMessage:
+        err instanceof Error ? err.message : "Timeout or unreachable",
       metadata: { url },
     };
   }
@@ -155,7 +156,13 @@ async function checkProductionUrl(): Promise<HealthCheckResult> {
 async function checkStripe(): Promise<HealthCheckResult> {
   const start = Date.now();
   if (!process.env.STRIPE_SECRET_KEY) {
-    return { service: "stripe", status: "UNKNOWN", responseTimeMs: null, errorMessage: "Not configured", metadata: null };
+    return {
+      service: "stripe",
+      status: "UNKNOWN",
+      responseTimeMs: null,
+      errorMessage: "Not configured",
+      metadata: null,
+    };
   }
   try {
     const res = await fetch("https://api.stripe.com/v1/balance", {
@@ -171,7 +178,13 @@ async function checkStripe(): Promise<HealthCheckResult> {
       metadata: { statusCode: res.status },
     };
   } catch (err) {
-    return { service: "stripe", status: "DOWN", responseTimeMs: Date.now() - start, errorMessage: String(err), metadata: null };
+    return {
+      service: "stripe",
+      status: "DOWN",
+      responseTimeMs: Date.now() - start,
+      errorMessage: String(err),
+      metadata: null,
+    };
   }
 }
 
@@ -182,7 +195,13 @@ async function checkWhatsApp(): Promise<HealthCheckResult> {
   const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
 
   if (!token || !phoneId) {
-    return { service: "whatsapp", status: "UNKNOWN", responseTimeMs: null, errorMessage: "Not configured", metadata: null };
+    return {
+      service: "whatsapp",
+      status: "UNKNOWN",
+      responseTimeMs: null,
+      errorMessage: "Not configured",
+      metadata: null,
+    };
   }
   try {
     const res = await fetch(
@@ -190,7 +209,7 @@ async function checkWhatsApp(): Promise<HealthCheckResult> {
       {
         headers: { Authorization: `Bearer ${token}` },
         signal: AbortSignal.timeout(5000),
-      }
+      },
     );
     const ms = Date.now() - start;
     const data = res.ok ? await res.json() : null;
@@ -202,7 +221,13 @@ async function checkWhatsApp(): Promise<HealthCheckResult> {
       metadata: { phone: data?.display_phone_number, apiStatus: data?.status },
     };
   } catch (err) {
-    return { service: "whatsapp", status: "DOWN", responseTimeMs: Date.now() - start, errorMessage: String(err), metadata: null };
+    return {
+      service: "whatsapp",
+      status: "DOWN",
+      responseTimeMs: Date.now() - start,
+      errorMessage: String(err),
+      metadata: null,
+    };
   }
 }
 
@@ -210,10 +235,19 @@ async function checkWhatsApp(): Promise<HealthCheckResult> {
 async function checkMailgun(): Promise<HealthCheckResult> {
   const start = Date.now();
   const key = process.env.MAILGUN_API_KEY;
-  if (!key) return { service: "mailgun", status: "UNKNOWN", responseTimeMs: null, errorMessage: "Not configured", metadata: null };
+  if (!key)
+    return {
+      service: "mailgun",
+      status: "UNKNOWN",
+      responseTimeMs: null,
+      errorMessage: "Not configured",
+      metadata: null,
+    };
   try {
     const res = await fetch("https://api.mailgun.net/v3/domains", {
-      headers: { Authorization: `Basic ${Buffer.from(`api:${key}`).toString("base64")}` },
+      headers: {
+        Authorization: `Basic ${Buffer.from(`api:${key}`).toString("base64")}`,
+      },
       signal: AbortSignal.timeout(5000),
     });
     const ms = Date.now() - start;
@@ -225,7 +259,13 @@ async function checkMailgun(): Promise<HealthCheckResult> {
       metadata: { statusCode: res.status },
     };
   } catch (err) {
-    return { service: "mailgun", status: "DOWN", responseTimeMs: Date.now() - start, errorMessage: String(err), metadata: null };
+    return {
+      service: "mailgun",
+      status: "DOWN",
+      responseTimeMs: Date.now() - start,
+      errorMessage: String(err),
+      metadata: null,
+    };
   }
 }
 
@@ -234,12 +274,24 @@ async function checkTwilio(): Promise<HealthCheckResult> {
   const start = Date.now();
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const token = process.env.TWILIO_AUTH_TOKEN;
-  if (!sid || !token) return { service: "twilio", status: "UNKNOWN", responseTimeMs: null, errorMessage: "Not configured", metadata: null };
+  if (!sid || !token)
+    return {
+      service: "twilio",
+      status: "UNKNOWN",
+      responseTimeMs: null,
+      errorMessage: "Not configured",
+      metadata: null,
+    };
   try {
-    const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}.json`, {
-      headers: { Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}` },
-      signal: AbortSignal.timeout(5000),
-    });
+    const res = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${sid}.json`,
+      {
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}`,
+        },
+        signal: AbortSignal.timeout(5000),
+      },
+    );
     const ms = Date.now() - start;
     return {
       service: "twilio",
@@ -249,7 +301,13 @@ async function checkTwilio(): Promise<HealthCheckResult> {
       metadata: { statusCode: res.status },
     };
   } catch (err) {
-    return { service: "twilio", status: "DOWN", responseTimeMs: Date.now() - start, errorMessage: String(err), metadata: null };
+    return {
+      service: "twilio",
+      status: "DOWN",
+      responseTimeMs: Date.now() - start,
+      errorMessage: String(err),
+      metadata: null,
+    };
   }
 }
 
@@ -257,10 +315,17 @@ async function checkTwilio(): Promise<HealthCheckResult> {
 async function checkAbacusAI(): Promise<HealthCheckResult> {
   const start = Date.now();
   const key = process.env.ABACUSAI_API_KEY;
-  if (!key) return { service: "abacusai", status: "UNKNOWN", responseTimeMs: null, errorMessage: "Not configured", metadata: null };
+  if (!key)
+    return {
+      service: "abacusai",
+      status: "UNKNOWN",
+      responseTimeMs: null,
+      errorMessage: "Not configured",
+      metadata: null,
+    };
   try {
     const res = await fetch("https://api.abacus.ai/api/v0/listProjects", {
-      headers: { "apiKey": key },
+      headers: { apiKey: key },
       signal: AbortSignal.timeout(6000),
     });
     const ms = Date.now() - start;
@@ -272,7 +337,13 @@ async function checkAbacusAI(): Promise<HealthCheckResult> {
       metadata: { statusCode: res.status },
     };
   } catch (err) {
-    return { service: "abacusai", status: "DOWN", responseTimeMs: Date.now() - start, errorMessage: String(err), metadata: null };
+    return {
+      service: "abacusai",
+      status: "DOWN",
+      responseTimeMs: Date.now() - start,
+      errorMessage: String(err),
+      metadata: null,
+    };
   }
 }
 
@@ -293,8 +364,14 @@ export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
   const checks: HealthCheckResult[] = results.map((r, i) => {
     if (r.status === "fulfilled") return r.value;
     const services: ServiceName[] = [
-      "database", "redis", "production_url", "stripe",
-      "whatsapp", "mailgun", "twilio", "abacusai",
+      "database",
+      "redis",
+      "production_url",
+      "stripe",
+      "whatsapp",
+      "mailgun",
+      "twilio",
+      "abacusai",
     ];
     return {
       service: services[i],
@@ -319,7 +396,9 @@ async function persistHealthChecks(checks: HealthCheckResult[]): Promise<void> {
         status: c.status,
         responseTimeMs: c.responseTimeMs,
         errorMessage: c.errorMessage,
-        metadata: c.metadata ? (c.metadata as Prisma.InputJsonValue) : undefined,
+        metadata: c.metadata
+          ? (c.metadata as Prisma.InputJsonValue)
+          : undefined,
       })),
     });
   } catch (err) {
@@ -342,5 +421,10 @@ export function summarizeHealth(checks: HealthCheckResult[]): {
   if (down > 0 || (down === 0 && degraded >= 3)) overall = "DOWN";
   else if (degraded > 0) overall = "DEGRADED";
 
-  return { overall, downCount: down, degradedCount: degraded, healthyCount: healthy };
+  return {
+    overall,
+    downCount: down,
+    degradedCount: degraded,
+    healthyCount: healthy,
+  };
 }

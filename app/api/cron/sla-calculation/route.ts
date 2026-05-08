@@ -16,9 +16,16 @@ export async function GET(req: NextRequest) {
 
   try {
     await calculateMonthlySLA(month);
-    return NextResponse.json({ ok: true, month, timestamp: new Date().toISOString() });
+    return NextResponse.json({
+      ok: true,
+      month,
+      timestamp: new Date().toISOString(),
+    });
   } catch (err) {
     console.error("[CRON/SLA-CALC] Failed:", err);
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: String(err) },
+      { status: 500 },
+    );
   }
 }
