@@ -1,9 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import { v4 as uuidv4 } from "uuid";
 
 export const dynamic = "force-dynamic";
 
@@ -22,9 +19,6 @@ export async function POST(request: Request) {
     if (!files || files.length === 0) {
       return NextResponse.json({ error: "No files provided" }, { status: 400 });
     }
-
-    const uploadDir = path.join(process.cwd(), "../uploads/social-media");
-    await mkdir(uploadDir, { recursive: true });
 
     const uploadedFiles = [];
 
@@ -60,20 +54,15 @@ export async function POST(request: Request) {
         );
       }
 
+      // Convert to base64 data URL (Vercel-compatible — no filesystem writes)
       const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      // Generate unique filename
-      const fileExtension = path.extname(file.name);
-      const fileName = `${uuidv4()}${fileExtension}`;
-      const filePath = path.join(uploadDir, fileName);
-
-      await writeFile(filePath, new Uint8Array(buffer));
+      const base64 = Buffer.from(bytes).toString("base64");
+      const dataUrl = `data:${file.type};base64,${base64}`;
 
       uploadedFiles.push({
         originalName: file.name,
-        fileName: fileName,
-        url: `/api/files/social-media/${fileName}`,
+        fileName: file.name,
+        url: dataUrl,
         size: file.size,
         type: file.type,
       });

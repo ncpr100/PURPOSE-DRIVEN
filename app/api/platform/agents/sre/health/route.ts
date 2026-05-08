@@ -15,15 +15,17 @@ export async function GET(_req: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const checks = await db.$queryRaw<Array<{
-    id: string;
-    service: string;
-    status: string;
-    responseTimeMs: number | null;
-    errorMessage: string | null;
-    metadata: unknown;
-    checkedAt: Date;
-  }>>`
+  const checks = await db.$queryRaw<
+    Array<{
+      id: string;
+      service: string;
+      status: string;
+      responseTimeMs: number | null;
+      errorMessage: string | null;
+      metadata: unknown;
+      checkedAt: Date;
+    }>
+  >`
     SELECT DISTINCT ON (service)
       id, service, status, "responseTimeMs", "errorMessage", metadata, "checkedAt"
     FROM platform_health_checks

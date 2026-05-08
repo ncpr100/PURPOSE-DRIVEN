@@ -8,9 +8,20 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Activity, AlertTriangle, CheckCircle, Clock, Database,
-  RefreshCw, Shield, Wifi, WifiOff, Zap, MessageCircle,
-  TrendingUp, Server, FileText,
+  Activity,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Database,
+  RefreshCw,
+  Shield,
+  Wifi,
+  WifiOff,
+  Zap,
+  MessageCircle,
+  TrendingUp,
+  Server,
+  FileText,
 } from "lucide-react";
 
 // ── TYPES ─────────────────────────────────────────────────────
@@ -44,29 +55,43 @@ interface SLARecord {
 }
 
 // ── SERVICE CONFIG ────────────────────────────────────────────
-const SERVICE_CONFIG: Record<string, { label: string; icon: string; critical: boolean }> = {
-  database:       { label: "Base de Datos",    icon: "🗄️",  critical: true },
-  redis:          { label: "Redis Cache",      icon: "⚡",  critical: true },
-  production_url: { label: "URL Producción",   icon: "🌐",  critical: true },
-  stripe:         { label: "Stripe",           icon: "💳",  critical: true },
-  whatsapp:       { label: "WhatsApp Business",icon: "💬",  critical: true },
-  mailgun:        { label: "Mailgun Email",    icon: "📧",  critical: false },
-  twilio:         { label: "Twilio SMS",       icon: "📱",  critical: false },
-  abacusai:       { label: "AbacusAI",         icon: "🧠",  critical: false },
+const SERVICE_CONFIG: Record<
+  string,
+  { label: string; icon: string; critical: boolean }
+> = {
+  database: { label: "Base de Datos", icon: "🗄️", critical: true },
+  redis: { label: "Redis Cache", icon: "⚡", critical: true },
+  production_url: { label: "URL Producción", icon: "🌐", critical: true },
+  stripe: { label: "Stripe", icon: "💳", critical: true },
+  whatsapp: { label: "WhatsApp Business", icon: "💬", critical: true },
+  mailgun: { label: "Mailgun Email", icon: "📧", critical: false },
+  twilio: { label: "Twilio SMS", icon: "📱", critical: false },
+  abacusai: { label: "AbacusAI", icon: "🧠", critical: false },
 };
 
 const STATUS_CONFIG = {
-  HEALTHY:  { color: "#1DC98C", label: "Operacional",  dot: "live-dot" },
-  DEGRADED: { color: "#F0B83C", label: "Degradado",    dot: "live-dot-warning" },
-  DOWN:     { color: "#E84855", label: "Caído",        dot: "live-dot-alert" },
-  UNKNOWN:  { color: "#94A3B8", label: "Desconocido",  dot: "" },
+  HEALTHY: { color: "#1DC98C", label: "Operacional", dot: "live-dot" },
+  DEGRADED: { color: "#F0B83C", label: "Degradado", dot: "live-dot-warning" },
+  DOWN: { color: "#E84855", label: "Caído", dot: "live-dot-alert" },
+  UNKNOWN: { color: "#94A3B8", label: "Desconocido", dot: "" },
 };
 
-const SEVERITY_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  P1_CRITICAL: { label: "P1 Crítico",  color: "#E84855", bg: "rgba(232,72,85,0.12)" },
-  P2_HIGH:     { label: "P2 Alto",     color: "#F0B83C", bg: "rgba(240,184,60,0.12)" },
-  P3_MEDIUM:   { label: "P3 Medio",    color: "#26D9D9", bg: "rgba(38,217,217,0.12)" },
-  P4_LOW:      { label: "P4 Bajo",     color: "#94A3B8", bg: "rgba(148,163,184,0.08)" },
+const SEVERITY_CONFIG: Record<
+  string,
+  { label: string; color: string; bg: string }
+> = {
+  P1_CRITICAL: {
+    label: "P1 Crítico",
+    color: "#E84855",
+    bg: "rgba(232,72,85,0.12)",
+  },
+  P2_HIGH: { label: "P2 Alto", color: "#F0B83C", bg: "rgba(240,184,60,0.12)" },
+  P3_MEDIUM: {
+    label: "P3 Medio",
+    color: "#26D9D9",
+    bg: "rgba(38,217,217,0.12)",
+  },
+  P4_LOW: { label: "P4 Bajo", color: "#94A3B8", bg: "rgba(148,163,184,0.08)" },
 };
 
 // ── MAIN DASHBOARD ────────────────────────────────────────────
@@ -77,7 +102,9 @@ export function CosmosSREDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const [isRunning, setIsRunning] = useState(false);
-  const [activeTab, setActiveTab] = useState<"status" | "incidents" | "sla">("status");
+  const [activeTab, setActiveTab] = useState<"status" | "incidents" | "sla">(
+    "status",
+  );
 
   const fetchData = useCallback(async () => {
     try {
@@ -88,7 +115,8 @@ export function CosmosSREDashboard() {
       ]);
 
       if (checksRes.ok) setChecks((await checksRes.json()).checks || []);
-      if (incidentsRes.ok) setIncidents((await incidentsRes.json()).incidents || []);
+      if (incidentsRes.ok)
+        setIncidents((await incidentsRes.json()).incidents || []);
       if (slaRes.ok) setSlaRecords((await slaRes.json()).records || []);
 
       setLastRefresh(new Date());
@@ -118,10 +146,11 @@ export function CosmosSREDashboard() {
   // Compute overall status
   const downCount = checks.filter((c) => c.status === "DOWN").length;
   const degradedCount = checks.filter((c) => c.status === "DEGRADED").length;
-  const overallStatus = downCount > 0 ? "DOWN" : degradedCount > 0 ? "DEGRADED" : "HEALTHY";
+  const overallStatus =
+    downCount > 0 ? "DOWN" : degradedCount > 0 ? "DEGRADED" : "HEALTHY";
 
   const activeIncidents = incidents.filter(
-    (i) => !["CLOSED", "RESOLVED"].includes(i.status)
+    (i) => !["CLOSED", "RESOLVED"].includes(i.status),
   );
 
   const currentSLA = slaRecords.find((s) => s.tier === "COSECHA");
@@ -131,7 +160,6 @@ export function CosmosSREDashboard() {
 
   return (
     <div className="space-y-5 animate-fade-up">
-
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
@@ -140,7 +168,8 @@ export function CosmosSREDashboard() {
             Control SRE — Misión 24/7
           </h1>
           <p className="page-subtitle">
-            Agente 14 · SLA 99.9% · Última verificación: {lastRefresh.toLocaleTimeString("es-CO")}
+            Agente 14 · SLA 99.9% · Última verificación:{" "}
+            {lastRefresh.toLocaleTimeString("es-CO")}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -153,7 +182,11 @@ export function CosmosSREDashboard() {
             onClick={triggerManualCheck}
             loading={isRunning}
           >
-            {!isRunning && <><Zap size={13} /> Verificar Ahora</>}
+            {!isRunning && (
+              <>
+                <Zap size={13} /> Verificar Ahora
+              </>
+            )}
           </Button>
         </div>
       </div>
@@ -171,28 +204,41 @@ export function CosmosSREDashboard() {
             className="w-10 h-10 rounded-full flex items-center justify-center"
             style={{ background: `${STATUS_CONFIG[overallStatus].color}20` }}
           >
-            {overallStatus === "HEALTHY"
-              ? <CheckCircle size={20} style={{ color: STATUS_CONFIG.HEALTHY.color }} />
-              : overallStatus === "DEGRADED"
-              ? <AlertTriangle size={20} style={{ color: STATUS_CONFIG.DEGRADED.color }} />
-              : <WifiOff size={20} style={{ color: STATUS_CONFIG.DOWN.color }} />
-            }
+            {overallStatus === "HEALTHY" ? (
+              <CheckCircle
+                size={20}
+                style={{ color: STATUS_CONFIG.HEALTHY.color }}
+              />
+            ) : overallStatus === "DEGRADED" ? (
+              <AlertTriangle
+                size={20}
+                style={{ color: STATUS_CONFIG.DEGRADED.color }}
+              />
+            ) : (
+              <WifiOff size={20} style={{ color: STATUS_CONFIG.DOWN.color }} />
+            )}
           </div>
           <div>
             <div className="font-display font-semibold text-foreground">
-              {overallStatus === "HEALTHY" ? "Todos los sistemas operacionales" :
-               overallStatus === "DEGRADED" ? `${degradedCount} servicio(s) degradado(s)` :
-               `${downCount} servicio(s) caído(s) — INCIDENTE ACTIVO`}
+              {overallStatus === "HEALTHY"
+                ? "Todos los sistemas operacionales"
+                : overallStatus === "DEGRADED"
+                  ? `${degradedCount} servicio(s) degradado(s)`
+                  : `${downCount} servicio(s) caído(s) — INCIDENTE ACTIVO`}
             </div>
             <div className="text-xs text-muted-foreground">
-              {checks.length} servicios monitoreados · {activeIncidents.length} incidente(s) activo(s)
+              {checks.length} servicios monitoreados · {activeIncidents.length}{" "}
+              incidente(s) activo(s)
             </div>
           </div>
         </div>
 
         {/* SLA chip */}
         <div className="text-right">
-          <div className="font-display text-2xl font-bold" style={{ color: STATUS_CONFIG.HEALTHY.color }}>
+          <div
+            className="font-display text-2xl font-bold"
+            style={{ color: STATUS_CONFIG.HEALTHY.color }}
+          >
             {uptimePct}%
           </div>
           <div className="text-xs text-muted-foreground">Uptime este mes</div>
@@ -202,15 +248,42 @@ export function CosmosSREDashboard() {
       {/* Summary stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 stagger">
         {[
-          { label: "Servicios Online",   value: checks.filter(c => c.status === "HEALTHY").length,   total: checks.length, color: "#1DC98C" },
-          { label: "Incidentes Activos", value: activeIncidents.length,                               total: null,          color: activeIncidents.length > 0 ? "#E84855" : "#1DC98C" },
-          { label: "Incidentes (mes)",   value: incidents.length,                                     total: null,          color: "#F0B83C" },
-          { label: "SLA Target",         value: "99.9%",                                              total: null,          color: "#26D9D9", isString: true },
+          {
+            label: "Servicios Online",
+            value: checks.filter((c) => c.status === "HEALTHY").length,
+            total: checks.length,
+            color: "#1DC98C",
+          },
+          {
+            label: "Incidentes Activos",
+            value: activeIncidents.length,
+            total: null,
+            color: activeIncidents.length > 0 ? "#E84855" : "#1DC98C",
+          },
+          {
+            label: "Incidentes (mes)",
+            value: incidents.length,
+            total: null,
+            color: "#F0B83C",
+          },
+          {
+            label: "SLA Target",
+            value: "99.9%",
+            total: null,
+            color: "#26D9D9",
+            isString: true,
+          },
         ].map((s, i) => (
           <div key={i} className="metric-card">
-            <div className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2">{s.label}</div>
-            <div className="font-display text-2xl font-bold" style={{ color: s.color }}>
-              {(s as any).isString ? s.value : s.value}{s.total !== null ? `/${s.total}` : ""}
+            <div className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2">
+              {s.label}
+            </div>
+            <div
+              className="font-display text-2xl font-bold"
+              style={{ color: s.color }}
+            >
+              {(s as any).isString ? s.value : s.value}
+              {s.total !== null ? `/${s.total}` : ""}
             </div>
           </div>
         ))}
@@ -219,9 +292,18 @@ export function CosmosSREDashboard() {
       {/* Tab bar */}
       <div className="flex items-center gap-1 border-b border-[rgba(255,255,255,0.06)]">
         {[
-          { id: "status",    label: "Estado de Servicios", icon: <Activity size={13} /> },
-          { id: "incidents", label: "Incidentes",          icon: <AlertTriangle size={13} />, badge: activeIncidents.length },
-          { id: "sla",       label: "SLA Reports",         icon: <TrendingUp size={13} /> },
+          {
+            id: "status",
+            label: "Estado de Servicios",
+            icon: <Activity size={13} />,
+          },
+          {
+            id: "incidents",
+            label: "Incidentes",
+            icon: <AlertTriangle size={13} />,
+            badge: activeIncidents.length,
+          },
+          { id: "sla", label: "SLA Reports", icon: <TrendingUp size={13} /> },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -257,9 +339,13 @@ export function CosmosSREDashboard() {
                     <div className="flex items-center gap-2.5">
                       <span className="text-xl">{cfg.icon}</span>
                       <div>
-                        <div className="text-[12px] font-medium text-foreground">{cfg.label}</div>
+                        <div className="text-[12px] font-medium text-foreground">
+                          {cfg.label}
+                        </div>
                         {cfg.critical && (
-                          <span className="text-[9px] text-destructive/70">Crítico para operación</span>
+                          <span className="text-[9px] text-destructive/70">
+                            Crítico para operación
+                          </span>
                         )}
                       </div>
                     </div>
@@ -268,14 +354,18 @@ export function CosmosSREDashboard() {
                         className="w-2 h-2 rounded-full"
                         style={{
                           background: sc.color,
-                          animation: status === "HEALTHY"
-                            ? "livePulse 2s ease-in-out infinite"
-                            : status === "DOWN"
-                            ? "rosePulse 0.8s ease-in-out infinite"
-                            : "goldPulse 1.2s ease-in-out infinite",
+                          animation:
+                            status === "HEALTHY"
+                              ? "livePulse 2s ease-in-out infinite"
+                              : status === "DOWN"
+                                ? "rosePulse 0.8s ease-in-out infinite"
+                                : "goldPulse 1.2s ease-in-out infinite",
                         }}
                       />
-                      <span className="text-[10px] font-medium" style={{ color: sc.color }}>
+                      <span
+                        className="text-[10px] font-medium"
+                        style={{ color: sc.color }}
+                      >
                         {sc.label}
                       </span>
                     </div>
@@ -296,7 +386,9 @@ export function CosmosSREDashboard() {
 
                   {check?.errorMessage && (
                     <div className="mt-2 p-2 rounded-md bg-destructive/10 border border-destructive/20">
-                      <p className="text-[10px] text-destructive truncate">{check.errorMessage}</p>
+                      <p className="text-[10px] text-destructive truncate">
+                        {check.errorMessage}
+                      </p>
                     </div>
                   )}
                 </CardContent>
@@ -311,13 +403,21 @@ export function CosmosSREDashboard() {
         <div className="space-y-3">
           {incidents.length === 0 ? (
             <div className="text-center py-16">
-              <CheckCircle size={40} className="mx-auto mb-3 text-cosmos-emerald opacity-60" />
-              <p className="text-sm text-muted-foreground">Sin incidentes este mes. ✅</p>
+              <CheckCircle
+                size={40}
+                className="mx-auto mb-3 text-cosmos-emerald opacity-60"
+              />
+              <p className="text-sm text-muted-foreground">
+                Sin incidentes este mes. ✅
+              </p>
             </div>
           ) : (
             incidents.map((incident) => {
-              const sev = SEVERITY_CONFIG[incident.severity] || SEVERITY_CONFIG.P4_LOW;
-              const isActive = !["CLOSED", "RESOLVED"].includes(incident.status);
+              const sev =
+                SEVERITY_CONFIG[incident.severity] || SEVERITY_CONFIG.P4_LOW;
+              const isActive = !["CLOSED", "RESOLVED"].includes(
+                incident.status,
+              );
 
               return (
                 <Card key={incident.id} variant={isActive ? "alert" : "flat"}>
@@ -327,7 +427,11 @@ export function CosmosSREDashboard() {
                         <div className="flex items-center gap-2 flex-wrap mb-1">
                           <span
                             className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                            style={{ background: sev.bg, color: sev.color, border: `1px solid ${sev.color}30` }}
+                            style={{
+                              background: sev.bg,
+                              color: sev.color,
+                              border: `1px solid ${sev.color}30`,
+                            }}
                           >
                             {sev.label}
                           </span>
@@ -335,26 +439,41 @@ export function CosmosSREDashboard() {
                             variant={isActive ? "destructive" : "completed"}
                             size="sm"
                           >
-                            {incident.status === "DETECTED" ? "Detectado"
-                             : incident.status === "ACKNOWLEDGED" ? "Reconocido"
-                             : incident.status === "RESOLVED" || incident.status === "CLOSED" ? "Resuelto"
-                             : incident.status}
+                            {incident.status === "DETECTED"
+                              ? "Detectado"
+                              : incident.status === "ACKNOWLEDGED"
+                                ? "Reconocido"
+                                : incident.status === "RESOLVED" ||
+                                    incident.status === "CLOSED"
+                                  ? "Resuelto"
+                                  : incident.status}
                           </Badge>
                         </div>
-                        <div className="text-[13px] font-medium text-foreground">{incident.title}</div>
+                        <div className="text-[13px] font-medium text-foreground">
+                          {incident.title}
+                        </div>
                         <div className="text-[10px] text-muted-foreground mt-1">
-                          Servicios: {(incident.affectedServices as string[]).join(", ")} ·
-                          {incident.affectedTenants > 0 && ` ${incident.affectedTenants} iglesias ·`}
-                          Detectado: {new Date(incident.detectedAt).toLocaleString("es-CO")}
+                          Servicios:{" "}
+                          {(incident.affectedServices as string[]).join(", ")} ·
+                          {incident.affectedTenants > 0 &&
+                            ` ${incident.affectedTenants} iglesias ·`}
+                          Detectado:{" "}
+                          {new Date(incident.detectedAt).toLocaleString(
+                            "es-CO",
+                          )}
                         </div>
                         {incident.resolvedAt && incident.timeToResolveMs && (
                           <div className="text-[10px] text-cosmos-emerald mt-0.5">
-                            ✅ Resuelto en {Math.round(incident.timeToResolveMs / 60000)} minutos
+                            ✅ Resuelto en{" "}
+                            {Math.round(incident.timeToResolveMs / 60000)}{" "}
+                            minutos
                           </div>
                         )}
                       </div>
                       <Button variant="ghost" size="sm" asChild>
-                        <a href={`/platform/agents/sre/incidents/${incident.id}`}>
+                        <a
+                          href={`/platform/agents/sre/incidents/${incident.id}`}
+                        >
                           <FileText size={13} />
                         </a>
                       </Button>
@@ -397,12 +516,19 @@ export function CosmosSREDashboard() {
                         <tr key={`${r.month}-${r.tier}`}>
                           <td className="text-xs">{r.month}</td>
                           <td>
-                            <Badge variant="gold" size="sm">{r.tier}</Badge>
+                            <Badge variant="gold" size="sm">
+                              {r.tier}
+                            </Badge>
                           </td>
                           <td>
                             <span
                               className="text-xs font-bold"
-                              style={{ color: r.actualUptime >= 0.999 ? "#1DC98C" : "#E84855" }}
+                              style={{
+                                color:
+                                  r.actualUptime >= 0.999
+                                    ? "#1DC98C"
+                                    : "#E84855",
+                              }}
                             >
                               {(r.actualUptime * 100).toFixed(3)}%
                             </span>
@@ -415,7 +541,9 @@ export function CosmosSREDashboard() {
                           </td>
                           <td>
                             <Badge
-                              variant={r.slaBreached ? "destructive" : "success"}
+                              variant={
+                                r.slaBreached ? "destructive" : "success"
+                              }
                               size="sm"
                             >
                               {r.slaBreached ? "Incumplido" : "Cumplido"}
@@ -436,16 +564,48 @@ export function CosmosSREDashboard() {
               <div className="section-label mb-3">Compromisos de SLA</div>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { plan: "Plan Semilla",  uptime: "99.5%", downtime: "3.65h/año",  support: "Email 48h" },
-                  { plan: "Plan Cosecha", uptime: "99.9%", downtime: "8.76h/año",  support: "WhatsApp 4h" },
-                  { plan: "Plan Reino",   uptime: "99.9%", downtime: "8.76h/año",  support: "WhatsApp 2h" },
-                  { plan: "Plan Red",     uptime: "99.9%", downtime: "8.76h/año",  support: "Dedicado 1h" },
+                  {
+                    plan: "Plan Semilla",
+                    uptime: "99.5%",
+                    downtime: "3.65h/año",
+                    support: "Email 48h",
+                  },
+                  {
+                    plan: "Plan Cosecha",
+                    uptime: "99.9%",
+                    downtime: "8.76h/año",
+                    support: "WhatsApp 4h",
+                  },
+                  {
+                    plan: "Plan Reino",
+                    uptime: "99.9%",
+                    downtime: "8.76h/año",
+                    support: "WhatsApp 2h",
+                  },
+                  {
+                    plan: "Plan Red",
+                    uptime: "99.9%",
+                    downtime: "8.76h/año",
+                    support: "Dedicado 1h",
+                  },
                 ].map((s) => (
-                  <div key={s.plan} className="p-3 rounded-lg border border-[rgba(201,146,42,0.1)] bg-[rgba(201,146,42,0.04)]">
-                    <div className="text-[11px] font-medium text-foreground mb-1">{s.plan}</div>
-                    <div className="text-[10px] text-muted-foreground">Uptime: <span className="text-cosmos-emerald">{s.uptime}</span></div>
-                    <div className="text-[10px] text-muted-foreground">Downtime máx: {s.downtime}</div>
-                    <div className="text-[10px] text-muted-foreground">Soporte: {s.support}</div>
+                  <div
+                    key={s.plan}
+                    className="p-3 rounded-lg border border-[rgba(201,146,42,0.1)] bg-[rgba(201,146,42,0.04)]"
+                  >
+                    <div className="text-[11px] font-medium text-foreground mb-1">
+                      {s.plan}
+                    </div>
+                    <div className="text-[10px] text-muted-foreground">
+                      Uptime:{" "}
+                      <span className="text-cosmos-emerald">{s.uptime}</span>
+                    </div>
+                    <div className="text-[10px] text-muted-foreground">
+                      Downtime máx: {s.downtime}
+                    </div>
+                    <div className="text-[10px] text-muted-foreground">
+                      Soporte: {s.support}
+                    </div>
                   </div>
                 ))}
               </div>

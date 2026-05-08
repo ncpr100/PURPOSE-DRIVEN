@@ -6,7 +6,10 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { db } from "@/lib/db";
-import { runAllHealthChecks, summarizeHealth } from "@/lib/monitoring/health-check-engine";
+import {
+  runAllHealthChecks,
+  summarizeHealth,
+} from "@/lib/monitoring/health-check-engine";
 import { sendAlertCascade } from "@/lib/alerts/alert-cascade";
 import type { HealthCheckResult } from "@/lib/monitoring/health-check-engine";
 
@@ -25,7 +28,8 @@ const INCIDENT_RULES = [
     severity: "P1_CRITICAL" as const,
     title: "Base de Datos Inaccesible — Plataforma No Funcional",
     affectedServices: ["database"],
-    description: "El servidor de base de datos PostgreSQL (Supabase) no responde. Todas las iglesias están sin servicio.",
+    description:
+      "El servidor de base de datos PostgreSQL (Supabase) no responde. Todas las iglesias están sin servicio.",
   },
   {
     // P1: Production URL unreachable
@@ -34,7 +38,8 @@ const INCIDENT_RULES = [
     severity: "P1_CRITICAL" as const,
     title: "URL de Producción Caída — Plataforma Inaccesible",
     affectedServices: ["production_url"],
-    description: "khesed-tek-cms-org.vercel.app no responde. Todas las iglesias no pueden acceder al sistema.",
+    description:
+      "khesed-tek-cms-org.vercel.app no responde. Todas las iglesias no pueden acceder al sistema.",
   },
   {
     // P2: Redis down (fallback exists but performance degrades)
@@ -43,7 +48,8 @@ const INCIDENT_RULES = [
     severity: "P2_HIGH" as const,
     title: "Redis Caído — Rendimiento Degradado",
     affectedServices: ["redis"],
-    description: "El servidor Redis (Upstash) no responde. El sistema operará con el fallback de PostgreSQL. Rendimiento reducido en análisis y caché.",
+    description:
+      "El servidor Redis (Upstash) no responde. El sistema operará con el fallback de PostgreSQL. Rendimiento reducido en análisis y caché.",
   },
   {
     // P2: Multiple services degraded simultaneously
@@ -52,7 +58,8 @@ const INCIDENT_RULES = [
     severity: "P2_HIGH" as const,
     title: "Degradación Múltiple de Servicios",
     affectedServices: [],
-    description: "Tres o más servicios reportan degradación simultánea. Posible problema de infraestructura subyacente.",
+    description:
+      "Tres o más servicios reportan degradación simultánea. Posible problema de infraestructura subyacente.",
   },
   {
     // P2: Payment gateway down (donations affected)
@@ -61,7 +68,8 @@ const INCIDENT_RULES = [
     severity: "P2_HIGH" as const,
     title: "Pasarela de Pago (Stripe) Inaccesible",
     affectedServices: ["stripe"],
-    description: "Stripe no responde. Los pagos de suscripción y donaciones online pueden estar fallando.",
+    description:
+      "Stripe no responde. Los pagos de suscripción y donaciones online pueden estar fallando.",
   },
   {
     // P2: WhatsApp down (Agent 12 cannot cascade)
@@ -70,7 +78,8 @@ const INCIDENT_RULES = [
     severity: "P2_HIGH" as const,
     title: "WhatsApp Business API Caído — Agente 12 Sin Función",
     affectedServices: ["whatsapp"],
-    description: "La API de WhatsApp Business no responde. El Agente 12 de Cobertura no puede enviar cascadas. Las iglesias en servicio dominical no tienen respaldo automático.",
+    description:
+      "La API de WhatsApp Business no responde. El Agente 12 de Cobertura no puede enviar cascadas. Las iglesias en servicio dominical no tienen respaldo automático.",
   },
   {
     // P3: Email delivery down
@@ -79,7 +88,8 @@ const INCIDENT_RULES = [
     severity: "P3_MEDIUM" as const,
     title: "Entrega de Email (Mailgun) Degradada",
     affectedServices: ["mailgun"],
-    description: "Mailgun no responde. El envío de emails de comunicación y notificaciones puede estar fallando.",
+    description:
+      "Mailgun no responde. El envío de emails de comunicación y notificaciones puede estar fallando.",
   },
   {
     // P3: AI predictions unavailable
@@ -88,7 +98,8 @@ const INCIDENT_RULES = [
     severity: "P3_MEDIUM" as const,
     title: "IA Predictiva (AbacusAI) No Disponible",
     affectedServices: ["abacusai"],
-    description: "AbacusAI no responde. Las predicciones de retención y análisis inteligente mostrarán datos del caché o fallarán silenciosamente.",
+    description:
+      "AbacusAI no responde. Las predicciones de retención y análisis inteligente mostrarán datos del caché o fallarán silenciosamente.",
   },
 ];
 
@@ -100,7 +111,12 @@ export async function runSRECycle(): Promise<{
   overallStatus: string;
 }> {
   if (process.env.ENABLE_SRE_ENGINEER !== "true") {
-    return { checksRun: 0, incidentsDetected: 0, incidentsResolved: 0, overallStatus: "DISABLED" };
+    return {
+      checksRun: 0,
+      incidentsDetected: 0,
+      incidentsResolved: 0,
+      overallStatus: "DISABLED",
+    };
   }
 
   // 1. Run all health checks
@@ -125,7 +141,9 @@ export async function runSRECycle(): Promise<{
 }
 
 // ── INCIDENT DETECTION ────────────────────────────────────────
-async function detectAndCreateIncidents(checks: HealthCheckResult[]): Promise<number> {
+async function detectAndCreateIncidents(
+  checks: HealthCheckResult[],
+): Promise<number> {
   let newIncidentCount = 0;
 
   for (const rule of INCIDENT_RULES) {
@@ -135,18 +153,24 @@ async function detectAndCreateIncidents(checks: HealthCheckResult[]): Promise<nu
     const existing = await db.platform_incidents.findFirst({
       where: {
         title: rule.title,
-        status: { in: ["DETECTED", "ACKNOWLEDGED", "INVESTIGATING", "MITIGATING"] },
+        status: {
+          in: ["DETECTED", "ACKNOWLEDGED", "INVESTIGATING", "MITIGATING"],
+        },
       },
     });
 
     if (existing) continue; // Already tracking this incident
 
     // Determine affected tenant count
-    const activeTenants = await db.churches.count({ where: { isActive: true } });
+    const activeTenants = await db.churches.count({
+      where: { isActive: true },
+    });
     const affectedTenants =
-      rule.severity === "P1_CRITICAL" ? activeTenants
-      : rule.severity === "P2_HIGH" ? Math.ceil(activeTenants * 0.5)
-      : Math.ceil(activeTenants * 0.1);
+      rule.severity === "P1_CRITICAL"
+        ? activeTenants
+        : rule.severity === "P2_HIGH"
+          ? Math.ceil(activeTenants * 0.5)
+          : Math.ceil(activeTenants * 0.1);
 
     // Calculate affected services from live checks
     const affectedServices =
@@ -206,10 +230,14 @@ async function detectAndCreateIncidents(checks: HealthCheckResult[]): Promise<nu
 }
 
 // ── INCIDENT RESOLUTION ───────────────────────────────────────
-async function resolveRecoveredIncidents(checks: HealthCheckResult[]): Promise<number> {
+async function resolveRecoveredIncidents(
+  checks: HealthCheckResult[],
+): Promise<number> {
   const activeIncidents = await db.platform_incidents.findMany({
     where: {
-      status: { in: ["DETECTED", "ACKNOWLEDGED", "INVESTIGATING", "MITIGATING"] },
+      status: {
+        in: ["DETECTED", "ACKNOWLEDGED", "INVESTIGATING", "MITIGATING"],
+      },
       isAutoDetected: true,
     },
     select: { id: true, title: true, affectedServices: true, detectedAt: true },
@@ -227,7 +255,8 @@ async function resolveRecoveredIncidents(checks: HealthCheckResult[]): Promise<n
     if (!allHealthy) continue;
 
     const resolvedAt = new Date();
-    const timeToResolveMs = resolvedAt.getTime() - new Date(incident.detectedAt).getTime();
+    const timeToResolveMs =
+      resolvedAt.getTime() - new Date(incident.detectedAt).getTime();
 
     await db.platform_incidents.update({
       where: { id: incident.id },
@@ -249,7 +278,8 @@ async function resolveRecoveredIncidents(checks: HealthCheckResult[]): Promise<n
     });
 
     // Generate post-mortem for P1/P2 incidents
-    if (timeToResolveMs > 5 * 60 * 1000) { // only if lasted >5 min
+    if (timeToResolveMs > 5 * 60 * 1000) {
+      // only if lasted >5 min
       await generatePostMortem(incident.id, incident.title, timeToResolveMs);
     }
 
@@ -257,7 +287,9 @@ async function resolveRecoveredIncidents(checks: HealthCheckResult[]): Promise<n
     await sendResolutionAlert(incident.id, incident.title, timeToResolveMs);
 
     resolvedCount++;
-    console.log(`[SRE] Incident resolved: ${incident.title} (${Math.round(timeToResolveMs / 60000)} min)`);
+    console.log(
+      `[SRE] Incident resolved: ${incident.title} (${Math.round(timeToResolveMs / 60000)} min)`,
+    );
   }
 
   return resolvedCount;
@@ -267,7 +299,7 @@ async function resolveRecoveredIncidents(checks: HealthCheckResult[]): Promise<n
 export async function generatePostMortem(
   incidentId: string,
   incidentTitle: string,
-  durationMs: number
+  durationMs: number,
 ): Promise<void> {
   try {
     const timeline = await db.incident_timeline_events.findMany({
@@ -346,10 +378,12 @@ Genera el post-mortem en formato JSON (sin markdown):
   } catch (err) {
     console.error("[SRE] Post-mortem generation failed:", err);
     // Mark as pending but don't crash
-    await db.platform_incidents.update({
-      where: { id: incidentId },
-      data: { status: "POST_MORTEM_PENDING" },
-    }).catch(() => {});
+    await db.platform_incidents
+      .update({
+        where: { id: incidentId },
+        data: { status: "POST_MORTEM_PENDING" },
+      })
+      .catch(() => {});
   }
 }
 
@@ -373,7 +407,7 @@ export async function calculateMonthlySLA(month: string): Promise<void> {
 
   const totalDowntimeMs = p1Incidents.reduce(
     (sum, i) => sum + (i.timeToResolveMs || 0),
-    0
+    0,
   );
 
   const actualUptime = 1 - totalDowntimeMs / totalMs;
@@ -447,7 +481,7 @@ export async function runDataRetentionCleanup(): Promise<{
 // ── HELPERS ───────────────────────────────────────────────────
 async function cacheCurrentStatus(
   checks: HealthCheckResult[],
-  summary: { overall: string; downCount: number; degradedCount: number }
+  summary: { overall: string; downCount: number; degradedCount: number },
 ): Promise<void> {
   try {
     const { Redis } = await import("@upstash/redis");
@@ -458,15 +492,17 @@ async function cacheCurrentStatus(
     await redis.setex(
       "platform:sre:status",
       120, // 2 min TTL
-      JSON.stringify({ checks, summary, updatedAt: new Date().toISOString() })
+      JSON.stringify({ checks, summary, updatedAt: new Date().toISOString() }),
     );
-  } catch { /* non-critical */ }
+  } catch {
+    /* non-critical */
+  }
 }
 
 async function sendResolutionAlert(
   incidentId: string,
   title: string,
-  durationMs: number
+  durationMs: number,
 ): Promise<void> {
   const adminPhone = process.env.SRE_ADMIN_WHATSAPP;
   if (!adminPhone) return;
@@ -484,7 +520,10 @@ async function sendResolutionAlert(
 
   await fetch(`https://graph.facebook.com/v18.0/${phoneId}/messages`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       messaging_product: "whatsapp",
       to: adminPhone.replace(/\D/g, ""),

@@ -18,24 +18,24 @@ export interface AlertPayload {
 
 const SEVERITY_EMOJI = {
   P1_CRITICAL: "🔴🚨",
-  P2_HIGH:     "🟠⚠️",
-  P3_MEDIUM:   "🟡⚡",
-  P4_LOW:      "🟢ℹ️",
+  P2_HIGH: "🟠⚠️",
+  P3_MEDIUM: "🟡⚡",
+  P4_LOW: "🟢ℹ️",
 };
 
 const SEVERITY_LABEL = {
   P1_CRITICAL: "CRÍTICO — P1",
-  P2_HIGH:     "ALTO — P2",
-  P3_MEDIUM:   "MEDIO — P3",
-  P4_LOW:      "BAJO — P4",
+  P2_HIGH: "ALTO — P2",
+  P3_MEDIUM: "MEDIO — P3",
+  P4_LOW: "BAJO — P4",
 };
 
 // Which channels fire for each severity
 const CHANNEL_MATRIX = {
   P1_CRITICAL: ["IN_APP", "WHATSAPP", "EMAIL", "SMS"],
-  P2_HIGH:     ["IN_APP", "WHATSAPP", "EMAIL"],
-  P3_MEDIUM:   ["IN_APP", "EMAIL"],
-  P4_LOW:      ["IN_APP"],
+  P2_HIGH: ["IN_APP", "WHATSAPP", "EMAIL"],
+  P3_MEDIUM: ["IN_APP", "EMAIL"],
+  P4_LOW: ["IN_APP"],
 };
 
 // ── MAIN CASCADE FUNCTION ─────────────────────────────────────
@@ -77,14 +77,19 @@ export async function sendAlertCascade(payload: AlertPayload): Promise<void> {
 
   // Update incident with alert count
   const sentCount = results.filter((r) => r.status === "fulfilled").length;
-  await db.platform_incidents.update({
-    where: { id: payload.incidentId },
-    data: { alertsSent: { increment: sentCount } },
-  }).catch(() => {});
+  await db.platform_incidents
+    .update({
+      where: { id: payload.incidentId },
+      data: { alertsSent: { increment: sentCount } },
+    })
+    .catch(() => {});
 }
 
 // ── IN-APP NOTIFICATION ───────────────────────────────────────
-async function sendInAppAlert(payload: AlertPayload, url: string): Promise<void> {
+async function sendInAppAlert(
+  payload: AlertPayload,
+  url: string,
+): Promise<void> {
   // notifications requires churchId, so only target active SUPER_ADMIN users with a church context
   const superAdmins = await db.users.findMany({
     where: { role: "SUPER_ADMIN", isActive: true, churchId: { not: null } },
@@ -120,7 +125,10 @@ async function sendInAppAlert(payload: AlertPayload, url: string): Promise<void>
 }
 
 // ── WHATSAPP ALERT ────────────────────────────────────────────
-async function sendWhatsAppAlert(payload: AlertPayload, message: string): Promise<void> {
+async function sendWhatsAppAlert(
+  payload: AlertPayload,
+  message: string,
+): Promise<void> {
   const adminPhone = process.env.SRE_ADMIN_WHATSAPP;
   if (!adminPhone) {
     console.warn("[ALERT_CASCADE] SRE_ADMIN_WHATSAPP not configured");
@@ -131,19 +139,22 @@ async function sendWhatsAppAlert(payload: AlertPayload, message: string): Promis
   const token = process.env.WHATSAPP_ACCESS_TOKEN;
   if (!phoneId || !token) return;
 
-  const res = await fetch(`https://graph.facebook.com/v18.0/${phoneId}/messages`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+  const res = await fetch(
+    `https://graph.facebook.com/v18.0/${phoneId}/messages`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messaging_product: "whatsapp",
+        to: adminPhone.replace(/\D/g, ""),
+        type: "text",
+        text: { body: message },
+      }),
     },
-    body: JSON.stringify({
-      messaging_product: "whatsapp",
-      to: adminPhone.replace(/\D/g, ""),
-      type: "text",
-      text: { body: message },
-    }),
-  });
+  );
 
   const status = res.ok ? "SENT" : "FAILED";
   const error = res.ok ? undefined : `HTTP ${res.status}`;
@@ -164,7 +175,10 @@ async function sendWhatsAppAlert(payload: AlertPayload, message: string): Promis
 }
 
 // ── EMAIL ALERT ───────────────────────────────────────────────
-async function sendEmailAlert(payload: AlertPayload, dashboardUrl: string): Promise<void> {
+async function sendEmailAlert(
+  payload: AlertPayload,
+  dashboardUrl: string,
+): Promise<void> {
   const adminEmail = process.env.SRE_ADMIN_EMAIL;
   const mailgunKey = process.env.MAILGUN_API_KEY;
   const mailgunDomain = process.env.MAILGUN_DOMAIN;
@@ -201,14 +215,17 @@ async function sendEmailAlert(payload: AlertPayload, dashboardUrl: string): Prom
     html: htmlBody,
   });
 
-  const res = await fetch(`https://api.mailgun.net/v3/${mailgunDomain}/messages`, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${Buffer.from(`api:${mailgunKey}`).toString("base64")}`,
-      "Content-Type": "application/x-www-form-urlencoded",
+  const res = await fetch(
+    `https://api.mailgun.net/v3/${mailgunDomain}/messages`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${Buffer.from(`api:${mailgunKey}`).toString("base64")}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: formData.toString(),
     },
-    body: formData.toString(),
-  });
+  );
 
   const status = res.ok ? "SENT" : "FAILED";
   await db.incident_alerts.create({
@@ -227,7 +244,10 @@ async function sendEmailAlert(payload: AlertPayload, dashboardUrl: string): Prom
 }
 
 // ── SMS ALERT (Twilio) — P1 only ─────────────────────────────
-async function sendSMSAlert(payload: AlertPayload, message: string): Promise<void> {
+async function sendSMSAlert(
+  payload: AlertPayload,
+  message: string,
+): Promise<void> {
   const adminPhone = process.env.SRE_ADMIN_PHONE;
   const fromPhone = process.env.TWILIO_PHONE_NUMBER;
   const sid = process.env.TWILIO_ACCOUNT_SID;
@@ -259,7 +279,7 @@ async function sendSMSAlert(payload: AlertPayload, message: string): Promise<voi
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: formData.toString(),
-    }
+    },
   );
 
   const status = res.ok ? "SENT" : "FAILED";

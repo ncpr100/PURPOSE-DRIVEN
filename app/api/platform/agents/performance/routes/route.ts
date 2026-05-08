@@ -18,7 +18,8 @@ export async function GET(_req: NextRequest) {
     return NextResponse.json({ slowest: [], mostErrored: [], disabled: true });
   }
 
-  const { collectPerformanceSnapshot } = await import("@/lib/agents/performance-engineer");
+  const { collectPerformanceSnapshot } =
+    await import("@/lib/agents/performance-engineer");
   const snapshot = await collectPerformanceSnapshot(60);
 
   return NextResponse.json({

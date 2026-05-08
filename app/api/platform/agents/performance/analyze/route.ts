@@ -13,7 +13,10 @@ export async function POST(_req: NextRequest) {
   }
 
   if (process.env.ENABLE_PERFORMANCE_ENGINEER !== "true") {
-    return NextResponse.json({ error: "Performance Engineer not enabled" }, { status: 503 });
+    return NextResponse.json(
+      { error: "Performance Engineer not enabled" },
+      { status: 503 },
+    );
   }
 
   const {

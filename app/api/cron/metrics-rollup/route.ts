@@ -25,7 +25,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ ok: true, message: "No metrics to roll up" });
     }
 
-    const durations = hourlyMetrics.map((m) => m.durationMs).sort((a, b) => a - b);
+    const durations = hourlyMetrics
+      .map((m) => m.durationMs)
+      .sort((a, b) => a - b);
     const errorCount = hourlyMetrics.filter((m) => m.isError).length;
 
     const percentile = (arr: number[], pct: number) => {
@@ -86,6 +88,9 @@ export async function GET(req: NextRequest) {
     });
   } catch (err) {
     console.error("[CRON/METRICS-ROLLUP] Failed:", err);
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: String(err) },
+      { status: 500 },
+    );
   }
 }

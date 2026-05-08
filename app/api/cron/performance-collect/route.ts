@@ -18,7 +18,10 @@ export async function GET(req: NextRequest) {
   }
 
   if (process.env.ENABLE_PERFORMANCE_ENGINEER !== "true") {
-    return NextResponse.json({ skipped: true, reason: "Performance Engineer not enabled" });
+    return NextResponse.json({
+      skipped: true,
+      reason: "Performance Engineer not enabled",
+    });
   }
 
   try {
@@ -27,7 +30,7 @@ export async function GET(req: NextRequest) {
 
     // Auto-create incidents for P1/P2 anomalies not already open
     const criticalAnomalies = anomalies.filter(
-      (a) => a.severity === "P1_CRITICAL" || a.severity === "P2_HIGH"
+      (a) => a.severity === "P1_CRITICAL" || a.severity === "P2_HIGH",
     );
 
     for (const anomaly of criticalAnomalies) {
@@ -78,6 +81,9 @@ export async function GET(req: NextRequest) {
     });
   } catch (err) {
     console.error("[CRON/PERF-COLLECT] Failed:", err);
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: String(err) },
+      { status: 500 },
+    );
   }
 }

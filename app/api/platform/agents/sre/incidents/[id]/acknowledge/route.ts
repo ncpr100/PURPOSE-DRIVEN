@@ -9,7 +9,7 @@ import { db } from "@/lib/db";
 
 export async function POST(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const session = await getServerSession(authOptions);
   if (session?.user?.role !== "SUPER_ADMIN") {
@@ -32,7 +32,8 @@ export async function POST(
       status: "ACKNOWLEDGED",
       acknowledgedAt: now,
       acknowledgedBy: session.user.id,
-      timeToAcknowledgeMs: now.getTime() - new Date(incident.detectedAt).getTime(),
+      timeToAcknowledgeMs:
+        now.getTime() - new Date(incident.detectedAt).getTime(),
     },
   });
 

@@ -17,17 +17,17 @@ export async function POST(req: NextRequest) {
 
     await db.api_request_metrics.create({
       data: {
-        route:        payload.route,
-        method:       payload.method,
-        statusCode:   payload.statusCode,
-        durationMs:   payload.durationMs,
-        churchId:     payload.churchId,
-        userId:       payload.userId,
-        isError:      payload.isError,
+        route: payload.route,
+        method: payload.method,
+        statusCode: payload.statusCode,
+        durationMs: payload.durationMs,
+        churchId: payload.churchId,
+        userId: payload.userId,
+        isError: payload.isError,
         errorMessage: payload.errorMessage,
-        isColdStart:  payload.isColdStart,
-        region:       payload.region,
-        userAgent:    payload.userAgent,
+        isColdStart: payload.isColdStart,
+        region: payload.region,
+        userAgent: payload.userAgent,
       },
     });
 

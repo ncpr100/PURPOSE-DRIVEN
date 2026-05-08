@@ -13,7 +13,10 @@ export async function POST(_req: NextRequest) {
   }
 
   if (process.env.ENABLE_SRE_ENGINEER !== "true") {
-    return NextResponse.json({ error: "SRE Engineer not enabled" }, { status: 503 });
+    return NextResponse.json(
+      { error: "SRE Engineer not enabled" },
+      { status: 503 },
+    );
   }
 
   const { runSRECycle } = await import("@/lib/agents/sre-engineer");
