@@ -1,9 +1,9 @@
 # PROJECT SOURCE OF TRUTH
 ## Khesed-Tek Church Management System
 
-**Document Version**: 1.1  
+**Document Version**: 1.2  
 **Established**: March 2026  
-**Last Updated**: April 2026  
+**Last Updated**: June 2026  
 **Authority**: Lead System Architect  
 **Status**: CANONICAL — All AI agents and developers MUST follow this document
 
@@ -16,12 +16,19 @@ This document was created after a formal codebase audit that identified 6 critic
 
 ## 1. PROJECT OVERVIEW
 
-**Framework**: Next.js 14.2.28 — App Router (`app/` directory)  
+**Framework**: Next.js 16.x — App Router (`app/` directory)  
 **Database**: PostgreSQL via Prisma ORM 6.7.0 (`prisma/schema.prisma`)  
 **Auth**: NextAuth.js 4.24.11 with JWT strategy  
 **UI**: Radix UI primitives + Tailwind CSS + shadcn/ui  
 **Deployment**: Vercel (auto-deploy from `git push origin main`)  
 **Database Host**: Supabase PostgreSQL  
+
+### Post-Major-Release Addendum (feat/redis-rate-limit)
+
+- `lib/` is actively organized by capability areas (for example: `agents/`, `alerts/`, `monitoring/`, `services/`, `social-media/`, `validations/`).
+- Redis-backed caching remains centralized in `lib/redis-cache-manager.ts` with optimization bootstrap via `lib/analytics-cache-initializer.ts`.
+- AI constitution policy is centralized in `lib/ai-constitution.ts`; commit history confirms clause hardening and cross-agent wiring.
+- <!-- TODO: REVIEW --> Release narrative references `lib/core` and `lib/security`; these folders are not present in the current branch snapshot and require verification before codifying as canonical structure.
 
 ---
 
@@ -66,6 +73,12 @@ This document was created after a formal codebase audit that identified 6 critic
 │   ├── db.ts                     ← CANONICAL Prisma singleton (ALWAYS import from here)
 │   ├── auth.ts                   ← CANONICAL NextAuth config
 │   ├── validation-schemas.ts     ← CANONICAL Zod schemas for member/donation/etc.
+│   ├── agents/                   ← Agent orchestration/services
+│   ├── alerts/                   ← Incident and escalation services
+│   ├── monitoring/               ← Health checks, SRE, telemetry helpers
+│   ├── services/                 ← Shared domain services
+│   ├── social-media/             ← Social media domain logic
+│   ├── validations/              ← Feature-specific validation modules
 │   ├── validations/
 │   │   ├── member.ts             ← Member-specific validation (legacy, prefer validation-schemas.ts)
 │   │   └── volunteer.ts          ← Volunteer-specific Zod schemas
@@ -113,7 +126,7 @@ This document was created after a formal codebase audit that identified 6 critic
 
 ### 4.1 Authentication
 - **Config**: `lib/auth.ts` — NextAuth config with JWT strategy
-- **Middleware**: `middleware.ts` (229 lines) — Controls ALL routing, role checks
+- **Edge Auth Gate**: `proxy.ts` — Controls ALL routing, role checks
 - **Session access (server)**: `getServerSession(authOptions)` from `next-auth/next`
 - **Session access (client)**: `useSession()` from `next-auth/react`
 - **NEVER** bypass middleware or trust user-supplied churchId
