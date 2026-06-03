@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Documentation
+- **Post-major-release technical refresh**: `README.md` was rewritten to reflect the active architecture (Next.js App Router, Prisma, Redis cache stack) and the current modular `lib/` layout.
+- **Operational guidance update (Spanish)**: Added onboarding, role scope, and deployment workflow sections in `README.md` for tenant/platform operators.
+- **Canonical source update**: `PROJECT_SOURCE_OF_TRUTH.md` updated with a June 2026 addendum covering modular `lib/`, cache initialization, and AI constitution centralization.
+
+### Configuration
+- **Environment template hardening**: Added `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` placeholders to `.env.example` while preserving `DATABASE_URL` as required.
+
+### Cleanup
+- **Temporary root scripts removed**: Deleted one-time diagnostic/migration helper scripts from project root (`fix-*`, `*tester*`, `*diagnostic*`, `*cleanup*` variants) to reduce maintenance debt and prevent accidental execution in production workflows.
+
 ### Performance
 - **Import route** (`app/api/members/import/route.ts`): Replaced N×2 row-by-row DB round-trips with batched strategy — all validation in memory, ONE `findMany` to detect duplicates by email, ONE `createMany` for all new records. Import limit raised from 1,000 → 5,000 rows. Bulk automation triggers removed (inappropriate for CSV import: would have fired up to 5,000 welcome emails).
 - **Import function timeout** (`vercel.json`): Added dedicated function override for `app/api/members/import/**` — `memory: 1024`, `maxDuration: 60` (up from 15 s default). Previous 15 s limit caused silent partial imports above ~500 rows.
