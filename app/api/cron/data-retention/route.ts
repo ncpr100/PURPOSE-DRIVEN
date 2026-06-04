@@ -3,7 +3,7 @@
 // Schedule: 0 3 * * *
 
 import { NextRequest, NextResponse } from "next/server";
-import { runDataRetentionCleanup } from "@/lib/agents/sre-engineer";
+import { runDataRetentionCleanup } from "@/lib/system/sre-engineer";
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");

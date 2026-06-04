@@ -5,7 +5,7 @@
 import { nanoid } from "nanoid";
 import { db } from "@/lib/db";
 import { whatsappBusinessService } from "@/lib/integrations/whatsapp";
-import { AI_CONSTITUTION } from "@/lib/ai-constitution";
+import { AI_CONSTITUTION } from "@/lib/ai/constitution";
 
 export interface TriageResult {
   isDistress: boolean;
@@ -27,7 +27,7 @@ const DEFAULT_KEYWORDS = (process.env.TRIAGE_KEYWORDS || "")
  */
 export async function detectDistress(
   text: string,
-  churchId: string
+  churchId: string,
 ): Promise<{ isDistress: boolean; keyword: string | null }> {
   if (process.env.ENABLE_SPIRITUAL_TRIAGE !== "true") {
     return { isDistress: false, keyword: null };
@@ -102,7 +102,7 @@ async function notifyPastoralTeam(
     detectedKeyword: string;
     messageBody: string;
     requesterPhone?: string;
-  }
+  },
 ) {
   const onCallPastor = await db.users.findFirst({
     where: {
@@ -115,7 +115,7 @@ async function notifyPastoralTeam(
 
   if (!onCallPastor) {
     console.warn(
-      `[TRIAGE] No active PASTOR found for church ${churchId} — triage event ${triageEventId} has no recipient`
+      `[TRIAGE] No active PASTOR found for church ${churchId} — triage event ${triageEventId} has no recipient`,
     );
     return;
   }

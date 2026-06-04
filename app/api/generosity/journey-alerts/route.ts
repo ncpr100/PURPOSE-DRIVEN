@@ -4,7 +4,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import { runGenerosityJourneyAnalysis } from "@/lib/generosity-journey-service";
+import { runGenerosityJourneyAnalysis } from "@/lib/agents/generosity-coach";
 
 export const dynamic = "force-dynamic";
 

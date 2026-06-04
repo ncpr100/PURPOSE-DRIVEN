@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { refreshLeadershipPipeline } from "@/lib/leadership-pipeline-service";
+import { refreshLeadershipPipeline } from "@/lib/agents/leadership-pipeline";
 import { nanoid } from "nanoid";
 
 export const dynamic = "force-dynamic";

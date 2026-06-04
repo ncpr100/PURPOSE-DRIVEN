@@ -53,7 +53,7 @@ export async function POST(
 
   // Trigger post-mortem generation async (fire-and-forget)
   if (process.env.ENABLE_SRE_ENGINEER === "true") {
-    const { generatePostMortem } = await import("@/lib/agents/sre-engineer");
+    const { generatePostMortem } = await import("@/lib/system/sre-engineer");
     generatePostMortem(
       params.id,
       resolution ?? "",

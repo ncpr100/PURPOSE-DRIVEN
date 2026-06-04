@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3000",
-    "build": "NODE_OPTIONS='--max-old-space-size=2048' next build",
+    "build": "next build",
     "build:vercel": "NODE_OPTIONS='--max-old-space-size=2048' next build",
     "build:minimal": "NODE_OPTIONS='--max-old-space-size=1536' next build",
     "postinstall": "prisma generate",
