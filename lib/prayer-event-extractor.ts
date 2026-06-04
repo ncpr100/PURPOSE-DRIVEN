@@ -3,7 +3,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { db } from "@/lib/db";
-import { buildSystemPrompt } from "@/lib/ai-constitution";
+import { buildSystemPrompt } from "@/lib/ai/constitution";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -59,7 +59,10 @@ Rules:
     .join("");
 
   // Strip markdown fences Claude sometimes adds despite instructions
-  const cleanText = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+  const cleanText = rawText
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
 
   try {
     return JSON.parse(cleanText) as ExtractedEvent;

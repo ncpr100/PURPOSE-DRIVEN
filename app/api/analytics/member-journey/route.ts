@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { MemberJourneyAnalytics } from "@/lib/member-journey-analytics";
-import { createCachedAnalyticsService } from "@/lib/cached-analytics-service";
+import { createCachedAnalyticsService } from "@/lib/services/cached-analytics";
 import { AnalyticsCacheInitializer } from "@/lib/analytics-cache-initializer";
 
 export const dynamic = "force-dynamic";
@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
         // Invalidate related cache after updates
         await analyticsService.invalidateMemberCache("all");
       } catch (dbError) {
-        console.log("️ Database unavailable during refresh, skipping update");
+        console.log("ï¸ Database unavailable during refresh, skipping update");
       }
     }
 
@@ -159,7 +159,7 @@ export async function GET(request: NextRequest) {
       retentionData = results[2];
     } catch (dbError) {
       console.log(
-        "️ Database unavailable for enhanced analytics, using fallback data",
+        "ï¸ Database unavailable for enhanced analytics, using fallback data",
       );
       // Use fallback data
       enhancedData = {
@@ -296,7 +296,7 @@ async function getLegacyAnalytics(churchId: string, period: number) {
     communications = results[6];
   } catch (dbError) {
     console.log(
-      "️ Database unavailable for legacy analytics, using empty data",
+      "ï¸ Database unavailable for legacy analytics, using empty data",
     );
     // Fallback data already initialized above
   }
@@ -451,7 +451,7 @@ async function getMemberSpecificActions(churchId: string): Promise<any[]> {
     }));
   } catch (dbError) {
     console.log(
-      "️ Database unavailable for member-specific actions, returning empty",
+      "ï¸ Database unavailable for member-specific actions, returning empty",
     );
     return [];
   }
@@ -549,7 +549,7 @@ function calculateConversionFunnel(
     regularAttendee: createStage(3, "Asistente Regular"),
     member: createStage(4, "Miembro"),
     activeMember: createStage(5, "Miembro Activo"),
-    leader: createStage(6, "Líder"),
+    leader: createStage(6, "LÃ­der"),
   };
 }
 
@@ -680,8 +680,8 @@ function calculatePathwayAnalysis(
       stage: "Visitante Recurrente",
       dropoffRate: 35,
       recommendations: [
-        "Invitar a grupos pequeños",
-        "Ofrecer clases de membresía",
+        "Invitar a grupos pequeÃ±os",
+        "Ofrecer clases de membresÃ­a",
         "Conectar con mentores espirituales",
       ],
     },
@@ -711,7 +711,7 @@ function calculateSegmentAnalysis(
   // Demographic analysis
   const demographics = [
     {
-      segment: "Jóvenes (18-30)",
+      segment: "JÃ³venes (18-30)",
       count: members.filter((m) => {
         if (!m.birthDate) return false;
         const age =
@@ -719,7 +719,7 @@ function calculateSegmentAnalysis(
         return age >= 18 && age <= 30;
       }).length,
       conversionRate: 75,
-      preferredPathway: "Eventos sociales → Grupos jóvenes → Membresía",
+      preferredPathway: "Eventos sociales â†’ Grupos jÃ³venes â†’ MembresÃ­a",
     },
     {
       segment: "Adultos (31-50)",
@@ -730,7 +730,7 @@ function calculateSegmentAnalysis(
         return age >= 31 && age <= 50;
       }).length,
       conversionRate: 85,
-      preferredPathway: "Servicios → Grupos familiares → Voluntariado",
+      preferredPathway: "Servicios â†’ Grupos familiares â†’ Voluntariado",
     },
     {
       segment: "Adultos mayores (50+)",
@@ -741,7 +741,7 @@ function calculateSegmentAnalysis(
         return age > 50;
       }).length,
       conversionRate: 90,
-      preferredPathway: "Servicios → Ministerios → Liderazgo",
+      preferredPathway: "Servicios â†’ Ministerios â†’ Liderazgo",
     },
   ];
 
@@ -753,7 +753,7 @@ function calculateSegmentAnalysis(
       characteristics: [
         "Voluntariado activo",
         "Asistencia regular",
-        "Participación en ministerios",
+        "ParticipaciÃ³n en ministerios",
       ],
     },
     {
@@ -761,8 +761,8 @@ function calculateSegmentAnalysis(
       count: Math.round(members.length * 0.4),
       characteristics: [
         "Asistencia ocasional",
-        "Participación en eventos",
-        "Donaciones periódicas",
+        "ParticipaciÃ³n en eventos",
+        "Donaciones periÃ³dicas",
       ],
     },
     {
@@ -770,7 +770,7 @@ function calculateSegmentAnalysis(
       count: Math.round(members.length * 0.3),
       characteristics: [
         "Asistencia irregular",
-        "Participación mínima",
+        "ParticipaciÃ³n mÃ­nima",
         "Necesita seguimiento",
       ],
     },

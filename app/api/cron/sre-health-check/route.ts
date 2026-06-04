@@ -3,7 +3,7 @@
 // Schedule: * * * * *
 
 import { NextRequest, NextResponse } from "next/server";
-import { runSRECycle } from "@/lib/agents/sre-engineer";
+import { runSRECycle } from "@/lib/system/sre-engineer";
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");

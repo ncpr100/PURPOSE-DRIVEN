@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from "@/lib/auth";
-import { createCachedAnalyticsService } from '@/lib/cached-analytics-service';
+import { authOptions } from "@/lib/security/auth";
+import { createCachedAnalyticsService } from '@/lib/services/cached-analytics';
 import { AnalyticsCacheInitializer } from '@/lib/analytics-cache-initializer';
 
 export const dynamic = 'force-dynamic';
@@ -64,3 +64,6 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+
+

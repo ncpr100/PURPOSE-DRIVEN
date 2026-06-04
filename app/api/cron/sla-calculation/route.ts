@@ -3,7 +3,7 @@
 // Schedule: 0 0 * * *
 
 import { NextRequest, NextResponse } from "next/server";
-import { calculateMonthlySLA } from "@/lib/agents/sre-engineer";
+import { calculateMonthlySLA } from "@/lib/system/sre-engineer";
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");

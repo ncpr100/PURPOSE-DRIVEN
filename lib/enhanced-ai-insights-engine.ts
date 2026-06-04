@@ -1,10 +1,14 @@
-/**
+﻿/**
  * Enhanced AI Insights Engine with Machine Learning
  * Implements sophisticated predictive modeling for 90%+ accuracy
  */
 
-import { db } from './db';
-import { MemberLifecycleStage, RetentionRisk, EngagementLevel } from './cached-analytics-service';
+import { db } from "@/lib/core/db";
+import {
+  MemberLifecycleStage,
+  RetentionRisk,
+  EngagementLevel,
+} from "@/lib/services/cached-analytics";
 
 // Advanced ML Types
 export interface MLModelFeatures {
@@ -13,54 +17,54 @@ export interface MLModelFeatures {
   gender?: string;
   maritalStatus?: string;
   childrenCount?: number;
-  
+
   // Behavioral Patterns (last 90 days)
   attendanceFrequency: number;
   attendanceConsistency: number; // Variance in attendance
   averageServiceDuration: number; // How long they stay
   preferredServiceTimes: string[]; // Morning, evening, etc.
-  
+
   // Engagement Patterns
   communicationResponseRate: number;
   communicationInitiation: number; // How often they start conversations
   eventParticipationRate: number;
   eventTypePreferences: string[]; // Worship, social, educational
-  
+
   // Financial Patterns
   givingFrequency: number;
   givingConsistency: number;
   givingAmount: number;
   givingChannelPreference: string; // Online, cash, check
-  
+
   // Ministry & Leadership
   volunteerHours: number;
   leadershipRoles: number;
   mentorshipActivity: number;
   servingConsistency: number;
-  
+
   // Spiritual Growth Indicators
   spiritualAssessmentScore: number;
   bibleStudyParticipation: number;
   prayer_requestsFrequency: number;
   testimonySharing: number;
   discipleshipPrograms: number;
-  
+
   // Social Connection
   smallGroupParticipation: number;
   friendshipConnections: number;
   familyInvolvement: number;
   newMemberMentoring: number;
-  
+
   // Life Events & External Factors
   recentLifeChanges: string[]; // Marriage, birth, job loss, etc.
   seasonalPatterns: { [month: string]: number };
   geographicStability: number; // How often they move
-  
+
   // Historical Performance
   membershipDuration: number;
   previousChurchExperience: number;
   conversionStoryType: string;
-  
+
   // Risk Indicators
   consecutiveAbsences: number;
   communicationDecline: number;
@@ -74,7 +78,7 @@ export interface EnhancedPrediction {
   contributingFactors: Array<{
     factor: string;
     weight: number;
-    impact: 'positive' | 'negative';
+    impact: "positive" | "negative";
     evidence: string;
   }>;
   recommendations: Array<{
@@ -86,14 +90,14 @@ export interface EnhancedPrediction {
   riskMitigations?: Array<{
     risk: string;
     mitigation: string;
-    urgency: 'immediate' | 'short-term' | 'medium-term';
+    urgency: "immediate" | "short-term" | "medium-term";
   }>;
 }
 
 export class EnhancedAIInsightsEngine {
   private churchId: string;
   private historicalAccuracy: Map<string, number> = new Map();
-  
+
   constructor(churchId: string) {
     this.churchId = churchId;
   }
@@ -105,16 +109,16 @@ export class EnhancedAIInsightsEngine {
     const member = await db.members.findUnique({
       where: { id: memberId },
       include: {
-        donations: { orderBy: { createdAt: 'desc' }, take: 100 },
+        donations: { orderBy: { createdAt: "desc" }, take: 100 },
         volunteers: {
           include: {
             volunteer_assignments: true,
-            ministries: true // Include the ministry relation
-          }
+            ministries: true, // Include the ministry relation
+          },
         },
         member_spiritual_profiles: true,
         member_journeys: true,
-      }
+      },
     });
 
     if (!member) {
@@ -122,7 +126,7 @@ export class EnhancedAIInsightsEngine {
     }
 
     const now = new Date();
-    const ninetyDaysAgo = new Date(now.getTime() - (90 * 24 * 60 * 60 * 1000));
+    const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
 
     // Get attendance data from CheckIn records (the correct way)
     const checkIns = await db.check_ins.findMany({
@@ -131,15 +135,15 @@ export class EnhancedAIInsightsEngine {
         checkedInAt: { gte: ninetyDaysAgo },
         OR: [
           { email: member.email },
-          { 
+          {
             AND: [
               { firstName: member.firstName },
-              { lastName: member.lastName }
-            ]
-          }
-        ]
+              { lastName: member.lastName },
+            ],
+          },
+        ],
       },
-      orderBy: { checkedInAt: 'desc' }
+      orderBy: { checkedInAt: "desc" },
     });
 
     // Get communication data (count-based, not email-specific)
@@ -147,14 +151,19 @@ export class EnhancedAIInsightsEngine {
       where: {
         churchId: this.churchId,
         createdAt: { gte: ninetyDaysAgo },
-        status: 'ENVIADO'
-      }
+        status: "ENVIADO",
+      },
     });
 
     // Calculate features
     return {
       // Demographics
-      age: member.birthDate ? Math.floor((now.getTime() - member.birthDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000)) : undefined,
+      age: member.birthDate
+        ? Math.floor(
+            (now.getTime() - member.birthDate.getTime()) /
+              (365.25 * 24 * 60 * 60 * 1000),
+          )
+        : undefined,
       gender: member.gender || undefined,
       maritalStatus: member.maritalStatus || undefined,
       childrenCount: 0, // Would need family data
@@ -166,25 +175,45 @@ export class EnhancedAIInsightsEngine {
       preferredServiceTimes: this.calculatePreferredTimes(checkIns),
 
       // Engagement Patterns
-      communicationResponseRate: this.calculateCommunicationResponse(member, communications),
-      communicationInitiation: this.calculateCommunicationInitiation(member, communications),
+      communicationResponseRate: this.calculateCommunicationResponse(
+        member,
+        communications,
+      ),
+      communicationInitiation: this.calculateCommunicationInitiation(
+        member,
+        communications,
+      ),
       eventParticipationRate: checkIns.length / 13, // Use actual CheckIn records
       eventTypePreferences: this.calculateEventPreferences(checkIns),
 
       // Financial Patterns
-      givingFrequency: (member as any).donations.filter((d: any) => d.createdAt >= ninetyDaysAgo).length / 13,
-      givingConsistency: this.calculateGivingConsistency((member as any).donations, ninetyDaysAgo),
-      givingAmount: this.calculateAverageGiving((member as any).donations, ninetyDaysAgo),
-      givingChannelPreference: this.calculateGivingChannel((member as any).donations),
+      givingFrequency:
+        (member as any).donations.filter(
+          (d: any) => d.createdAt >= ninetyDaysAgo,
+        ).length / 13,
+      givingConsistency: this.calculateGivingConsistency(
+        (member as any).donations,
+        ninetyDaysAgo,
+      ),
+      givingAmount: this.calculateAverageGiving(
+        (member as any).donations,
+        ninetyDaysAgo,
+      ),
+      givingChannelPreference: this.calculateGivingChannel(
+        (member as any).donations,
+      ),
 
       // Ministry & Leadership
       volunteerHours: this.calculateVolunteerHours(member.volunteers),
-      leadershipRoles: member.volunteers.filter(v => v.ministries?.name?.toLowerCase().includes('lider')).length,
+      leadershipRoles: member.volunteers.filter((v) =>
+        v.ministries?.name?.toLowerCase().includes("lider"),
+      ).length,
       mentorshipActivity: 0, // Would need mentorship data
       servingConsistency: this.calculateServingConsistency(member.volunteers),
 
       // Spiritual Growth
-      spiritualAssessmentScore: member.member_spiritual_profiles?.spiritualMaturityScore || 50,
+      spiritualAssessmentScore:
+        member.member_spiritual_profiles?.spiritualMaturityScore || 50,
       bibleStudyParticipation: 0, // Would need Bible study data
       prayer_requestsFrequency: 0, // Would need prayer data
       testimonySharing: 0, // Would need testimony data
@@ -202,16 +231,23 @@ export class EnhancedAIInsightsEngine {
       geographicStability: 1, // Would need address history
 
       // Historical
-      membershipDuration: member.membershipDate ? 
-        Math.floor((now.getTime() - member.membershipDate.getTime()) / (24 * 60 * 60 * 1000)) : 0,
+      membershipDuration: member.membershipDate
+        ? Math.floor(
+            (now.getTime() - member.membershipDate.getTime()) /
+              (24 * 60 * 60 * 1000),
+          )
+        : 0,
       previousChurchExperience: 0, // Would need church history
-      conversionStoryType: 'unknown',
+      conversionStoryType: "unknown",
 
       // Risk Indicators
       consecutiveAbsences: this.calculateConsecutiveAbsences(checkIns),
-      communicationDecline: this.calculateCommunicationDecline(member, communications),
+      communicationDecline: this.calculateCommunicationDecline(
+        member,
+        communications,
+      ),
       givingDecline: this.calculateGivingDecline(member.donations),
-      socialDisengagement: this.calculateSocialDisengagement(member)
+      socialDisengagement: this.calculateSocialDisengagement(member),
     };
   }
 
@@ -220,7 +256,7 @@ export class EnhancedAIInsightsEngine {
    */
   async predictRetentionRisk(memberId: string): Promise<EnhancedPrediction> {
     const features = await this.extractMemberFeatures(memberId);
-    
+
     // Enhanced ML scoring algorithm
     let riskScore = 0;
     const contributingFactors: any[] = [];
@@ -252,7 +288,9 @@ export class EnhancedAIInsightsEngine {
     contributingFactors.push(...lifeFactorsRisk.factors);
 
     // Generate specific recommendations
-    recommendations.push(...this.generateRetentionRecommendations(features, riskScore));
+    recommendations.push(
+      ...this.generateRetentionRecommendations(features, riskScore),
+    );
 
     // Determine confidence based on data completeness
     const confidence = this.calculatePredictionConfidence(features);
@@ -269,27 +307,32 @@ export class EnhancedAIInsightsEngine {
       prediction: {
         retentionRisk,
         riskScore: Math.round(riskScore),
-        timeframe: '90 days',
-        likelihood: this.convertScoreToLikelihood(riskScore)
+        timeframe: "90 days",
+        likelihood: this.convertScoreToLikelihood(riskScore),
       },
       confidence,
       contributingFactors,
       recommendations,
-      riskMitigations: this.generateRiskMitigations(retentionRisk, contributingFactors)
+      riskMitigations: this.generateRiskMitigations(
+        retentionRisk,
+        contributingFactors,
+      ),
     };
   }
 
   /**
    * Enhanced lifecycle stage prediction
    */
-  async predictNextLifecycleStage(memberId: string): Promise<EnhancedPrediction> {
+  async predictNextLifecycleStage(
+    memberId: string,
+  ): Promise<EnhancedPrediction> {
     const features = await this.extractMemberFeatures(memberId);
     const currentJourney = await db.member_journeys.findFirst({
-      where: { memberId }
+      where: { memberId },
     });
 
     if (!currentJourney) {
-      throw new Error('Member journey not found');
+      throw new Error("Member journey not found");
     }
 
     const currentStage = currentJourney.currentStage as MemberLifecycleStage;
@@ -300,40 +343,50 @@ export class EnhancedAIInsightsEngine {
         nextStage: predictions.mostLikely.stage,
         probability: predictions.mostLikely.probability,
         timeframe: predictions.mostLikely.estimatedDays,
-        alternatives: predictions.alternatives
+        alternatives: predictions.alternatives,
       },
       confidence: this.calculateStageConfidence(features, currentStage),
       contributingFactors: predictions.factors,
-      recommendations: this.generateStageRecommendations(features, currentStage, predictions.mostLikely.stage)
+      recommendations: this.generateStageRecommendations(
+        features,
+        currentStage,
+        predictions.mostLikely.stage,
+      ),
     };
   }
 
   /**
    * Enhanced ministry recommendation with ML
    */
-  async generateMLMinistryRecommendations(memberId: string): Promise<EnhancedPrediction> {
+  async generateMLMinistryRecommendations(
+    memberId: string,
+  ): Promise<EnhancedPrediction> {
     const features = await this.extractMemberFeatures(memberId);
     const member = await db.members.findUnique({
       where: { id: memberId },
-      include: { member_spiritual_profiles: true }
+      include: { member_spiritual_profiles: true },
     });
 
     const ministries = await db.ministries.findMany({
-      where: { churchId: this.churchId, isActive: true }
+      where: { churchId: this.churchId, isActive: true },
     });
 
     const recommendations = await Promise.all(
-      ministries.map(async ministry => {
-        const match = await this.calculateMLMinistryMatch(features, ministry, member?.member_spiritual_profiles);
+      ministries.map(async (ministry) => {
+        const match = await this.calculateMLMinistryMatch(
+          features,
+          ministry,
+          member?.member_spiritual_profiles,
+        );
         return {
           ministryId: ministry.id,
           ministryName: ministry.name,
           matchScore: match.score,
           confidence: match.confidence,
           reasons: match.reasons,
-          successProbability: match.successProbability
+          successProbability: match.successProbability,
         };
-      })
+      }),
     );
 
     const topRecommendations = recommendations
@@ -344,17 +397,25 @@ export class EnhancedAIInsightsEngine {
       prediction: {
         recommendations: topRecommendations,
         strongestMatch: topRecommendations[0],
-        averageConfidence: topRecommendations.reduce((sum, r) => sum + r.confidence, 0) / topRecommendations.length
+        averageConfidence:
+          topRecommendations.reduce((sum, r) => sum + r.confidence, 0) /
+          topRecommendations.length,
       },
       confidence: this.calculateRecommendationConfidence(features),
       contributingFactors: this.generateMinistryFactors(features),
-      recommendations: this.generateMinistryDevelopmentPlan(topRecommendations, features)
+      recommendations: this.generateMinistryDevelopmentPlan(
+        topRecommendations,
+        features,
+      ),
     };
   }
 
   // Helper Methods for Advanced Analytics
 
-  private analyzeAttendanceRisk(features: MLModelFeatures): { score: number; factors: any[] } {
+  private analyzeAttendanceRisk(features: MLModelFeatures): {
+    score: number;
+    factors: any[];
+  } {
     let score = 0;
     const factors: any[] = [];
 
@@ -362,10 +423,10 @@ export class EnhancedAIInsightsEngine {
     if (features.attendanceFrequency < 0.5) {
       score += 40;
       factors.push({
-        factor: 'Low attendance frequency',
+        factor: "Low attendance frequency",
         weight: 0.4,
-        impact: 'negative',
-        evidence: `Attends ${(features.attendanceFrequency * 52).toFixed(1)} times per year`
+        impact: "negative",
+        evidence: `Attends ${(features.attendanceFrequency * 52).toFixed(1)} times per year`,
       });
     }
 
@@ -373,10 +434,10 @@ export class EnhancedAIInsightsEngine {
     if (features.attendanceConsistency < 0.3) {
       score += 30;
       factors.push({
-        factor: 'Inconsistent attendance pattern',
+        factor: "Inconsistent attendance pattern",
         weight: 0.3,
-        impact: 'negative',
-        evidence: 'Irregular attendance patterns indicate disengagement'
+        impact: "negative",
+        evidence: "Irregular attendance patterns indicate disengagement",
       });
     }
 
@@ -384,17 +445,20 @@ export class EnhancedAIInsightsEngine {
     if (features.consecutiveAbsences > 4) {
       score += 50;
       factors.push({
-        factor: 'Extended absence period',
+        factor: "Extended absence period",
         weight: 0.5,
-        impact: 'negative',
-        evidence: `${features.consecutiveAbsences} consecutive weeks absent`
+        impact: "negative",
+        evidence: `${features.consecutiveAbsences} consecutive weeks absent`,
       });
     }
 
     return { score: Math.min(100, score), factors };
   }
 
-  private analyzeEngagementRisk(features: MLModelFeatures): { score: number; factors: any[] } {
+  private analyzeEngagementRisk(features: MLModelFeatures): {
+    score: number;
+    factors: any[];
+  } {
     let score = 0;
     const factors: any[] = [];
 
@@ -402,10 +466,10 @@ export class EnhancedAIInsightsEngine {
     if (features.communicationResponseRate < 0.3) {
       score += 35;
       factors.push({
-        factor: 'Poor communication engagement',
+        factor: "Poor communication engagement",
         weight: 0.35,
-        impact: 'negative',
-        evidence: `${(features.communicationResponseRate * 100).toFixed(0)}% response rate`
+        impact: "negative",
+        evidence: `${(features.communicationResponseRate * 100).toFixed(0)}% response rate`,
       });
     }
 
@@ -413,71 +477,80 @@ export class EnhancedAIInsightsEngine {
     if (features.eventParticipationRate < 0.2) {
       score += 30;
       factors.push({
-        factor: 'Low event participation',
+        factor: "Low event participation",
         weight: 0.3,
-        impact: 'negative',
-        evidence: 'Rarely participates in church events'
+        impact: "negative",
+        evidence: "Rarely participates in church events",
       });
     }
 
     return { score: Math.min(100, score), factors };
   }
 
-  private analyzeFinancialRisk(features: MLModelFeatures): { score: number; factors: any[] } {
+  private analyzeFinancialRisk(features: MLModelFeatures): {
+    score: number;
+    factors: any[];
+  } {
     let score = 0;
     const factors: any[] = [];
 
     if (features.givingFrequency === 0) {
       score += 40;
       factors.push({
-        factor: 'No financial contribution',
+        factor: "No financial contribution",
         weight: 0.4,
-        impact: 'negative',
-        evidence: 'Has not given in the last 90 days'
+        impact: "negative",
+        evidence: "Has not given in the last 90 days",
       });
     }
 
     if (features.givingDecline > 0.5) {
       score += 30;
       factors.push({
-        factor: 'Declining giving pattern',
+        factor: "Declining giving pattern",
         weight: 0.3,
-        impact: 'negative',
-        evidence: 'Giving has decreased significantly'
+        impact: "negative",
+        evidence: "Giving has decreased significantly",
       });
     }
 
     return { score: Math.min(100, score), factors };
   }
 
-  private analyzeMinistryRisk(features: MLModelFeatures): { score: number; factors: any[] } {
+  private analyzeMinistryRisk(features: MLModelFeatures): {
+    score: number;
+    factors: any[];
+  } {
     let score = 0;
     const factors: any[] = [];
 
     if (features.volunteerHours === 0) {
       score += 35;
       factors.push({
-        factor: 'No ministry involvement',
+        factor: "No ministry involvement",
         weight: 0.35,
-        impact: 'negative',
-        evidence: 'Not currently serving in any ministry'
+        impact: "negative",
+        evidence: "Not currently serving in any ministry",
       });
     }
 
     if (features.servingConsistency < 0.3) {
       score += 25;
       factors.push({
-        factor: 'Inconsistent service',
+        factor: "Inconsistent service",
         weight: 0.25,
-        impact: 'negative',
-        evidence: 'Irregular ministry participation'
+        impact: "negative",
+        evidence: "Irregular ministry participation",
       });
     }
 
     return { score: Math.min(100, score), factors };
   }
 
-  private analyzeLifeFactorsRisk(features: MLModelFeatures): { score: number; factors: any[] } {
+  private analyzeLifeFactorsRisk(features: MLModelFeatures): {
+    score: number;
+    factors: any[];
+  } {
     let score = 0;
     const factors: any[] = [];
 
@@ -485,10 +558,10 @@ export class EnhancedAIInsightsEngine {
     if (features.age && (features.age < 25 || features.age > 65)) {
       score += 15;
       factors.push({
-        factor: 'Age-related transition risk',
+        factor: "Age-related transition risk",
         weight: 0.15,
-        impact: 'negative',
-        evidence: 'Age group with higher mobility/life changes'
+        impact: "negative",
+        evidence: "Age group with higher mobility/life changes",
       });
     }
 
@@ -498,18 +571,27 @@ export class EnhancedAIInsightsEngine {
   // Calculation helper methods
   private calculateAttendanceConsistency(check_ins: any[]) {
     if (check_ins.length < 2) return 0;
-    
+
     const intervals = [];
     for (let i = 1; i < check_ins.length; i++) {
-      const days = Math.floor((check_ins[i-1].checkedInAt.getTime() - check_ins[i].checkedInAt.getTime()) / (24 * 60 * 60 * 1000));
+      const days = Math.floor(
+        (check_ins[i - 1].checkedInAt.getTime() -
+          check_ins[i].checkedInAt.getTime()) /
+          (24 * 60 * 60 * 1000),
+      );
       intervals.push(days);
     }
-    
-    const mean = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
-    const variance = intervals.reduce((sum, interval) => sum + Math.pow(interval - mean, 2), 0) / intervals.length;
-    
+
+    const mean =
+      intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
+    const variance =
+      intervals.reduce(
+        (sum, interval) => sum + Math.pow(interval - mean, 2),
+        0,
+      ) / intervals.length;
+
     // Lower variance = higher consistency
-    return Math.max(0, 1 - (variance / 100));
+    return Math.max(0, 1 - variance / 100);
   }
 
   private calculateAverageServiceDuration(check_ins: any[]) {
@@ -519,20 +601,20 @@ export class EnhancedAIInsightsEngine {
 
   private calculatePreferredTimes(check_ins: any[]) {
     const timePreferences = new Map<string, number>();
-    
-    check_ins.forEach(checkIn => {
+
+    check_ins.forEach((checkIn) => {
       const hour = checkIn.checkedInAt.getHours();
       let timeSlot: string;
-      
-      if (hour < 10) timeSlot = 'early_morning';
-      else if (hour < 12) timeSlot = 'morning';
-      else if (hour < 15) timeSlot = 'afternoon';
-      else if (hour < 18) timeSlot = 'late_afternoon';
-      else timeSlot = 'evening';
-      
+
+      if (hour < 10) timeSlot = "early_morning";
+      else if (hour < 12) timeSlot = "morning";
+      else if (hour < 15) timeSlot = "afternoon";
+      else if (hour < 18) timeSlot = "late_afternoon";
+      else timeSlot = "evening";
+
       timePreferences.set(timeSlot, (timePreferences.get(timeSlot) || 0) + 1);
     });
-    
+
     return Array.from(timePreferences.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 2)
@@ -540,12 +622,18 @@ export class EnhancedAIInsightsEngine {
   }
 
   // Continue with more helper methods...
-  private calculateCommunicationResponse(member: any, communications: any[]): number {
+  private calculateCommunicationResponse(
+    member: any,
+    communications: any[],
+  ): number {
     // Simplified - would need actual response tracking
     return 0.6;
   }
 
-  private calculateCommunicationInitiation(member: any, communications: any[]): number {
+  private calculateCommunicationInitiation(
+    member: any,
+    communications: any[],
+  ): number {
     // Would need to track member-initiated communications
     return 0.2;
   }
@@ -553,137 +641,185 @@ export class EnhancedAIInsightsEngine {
   private calculateEventPreferences(check_ins: any[]) {
     // Analyze event types from CheckIn records
     if (check_ins.length === 0) return [];
-    
+
     // Get unique event types from check-ins with events
     const eventTypes = check_ins
       .filter((checkIn: any) => checkIn.event)
-      .map((checkIn: any) => checkIn.event.category || 'GENERAL')
+      .map((checkIn: any) => checkIn.event.category || "GENERAL")
       .filter((type: any, index: any, arr: any) => arr.indexOf(type) === index);
-    
-    return eventTypes.length > 0 ? eventTypes : ['worship', 'social'];
+
+    return eventTypes.length > 0 ? eventTypes : ["worship", "social"];
   }
 
-  private calculateGivingConsistency(donations: any[], startDate: Date): number {
-    const recentDonations = donations.filter(d => d.createdAt >= startDate);
+  private calculateGivingConsistency(
+    donations: any[],
+    startDate: Date,
+  ): number {
+    const recentDonations = donations.filter((d) => d.createdAt >= startDate);
     if (recentDonations.length < 2) return 0;
-    
-    const amounts = recentDonations.map(d => parseFloat(d.amount));
-    const mean = amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length;
-    const variance = amounts.reduce((sum, amount) => sum + Math.pow(amount - mean, 2), 0) / amounts.length;
-    
-    return Math.max(0, 1 - (variance / (mean * mean)));
+
+    const amounts = recentDonations.map((d) => parseFloat(d.amount));
+    const mean =
+      amounts.reduce((sum, amount) => sum + amount, 0) / amounts.length;
+    const variance =
+      amounts.reduce((sum, amount) => sum + Math.pow(amount - mean, 2), 0) /
+      amounts.length;
+
+    return Math.max(0, 1 - variance / (mean * mean));
   }
 
   private calculateAverageGiving(donations: any[], startDate: Date): number {
-    const recentDonations = donations.filter(d => d.createdAt >= startDate);
+    const recentDonations = donations.filter((d) => d.createdAt >= startDate);
     if (recentDonations.length === 0) return 0;
-    
-    return recentDonations.reduce((sum, d) => sum + parseFloat(d.amount), 0) / recentDonations.length;
+
+    return (
+      recentDonations.reduce((sum, d) => sum + parseFloat(d.amount), 0) /
+      recentDonations.length
+    );
   }
 
   private calculateGivingChannel(donations: any[]): string {
     const channels = new Map<string, number>();
-    donations.forEach(donation => {
-      const channel = donation.paymentMethod || 'unknown';
+    donations.forEach((donation) => {
+      const channel = donation.paymentMethod || "unknown";
       channels.set(channel, (channels.get(channel) || 0) + 1);
     });
-    
-    return Array.from(channels.entries())
-      .sort((a, b) => b[1] - a[1])[0]?.[0] || 'unknown';
+
+    return (
+      Array.from(channels.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] ||
+      "unknown"
+    );
   }
 
   // Additional sophisticated helper methods would continue here...
   // This is a foundational implementation showing the approach
 
-  private generateRetentionRecommendations(features: MLModelFeatures, riskScore: number): any[] {
+  private generateRetentionRecommendations(
+    features: MLModelFeatures,
+    riskScore: number,
+  ): any[] {
     const recommendations: any[] = [];
-    
+
     if (features.attendanceFrequency < 0.5) {
       recommendations.push({
-        action: 'Personal pastoral contact',
+        action: "Personal pastoral contact",
         priority: 90,
         expectedImpact: 70,
-        timeline: 'Within 1 week'
+        timeline: "Within 1 week",
       });
     }
-    
+
     if (features.communicationResponseRate < 0.3) {
       recommendations.push({
-        action: 'Change communication channel',
+        action: "Change communication channel",
         priority: 60,
         expectedImpact: 50,
-        timeline: 'Within 2 weeks'
+        timeline: "Within 2 weeks",
       });
     }
-    
+
     return recommendations;
   }
 
   private calculatePredictionConfidence(features: MLModelFeatures): number {
     let confidence = 0;
     let totalFactors = 0;
-    
+
     // Data completeness scoring
-    if (features.attendanceFrequency !== undefined) { confidence += 20; totalFactors += 20; }
-    if (features.givingFrequency !== undefined) { confidence += 15; totalFactors += 15; }
-    if (features.communicationResponseRate !== undefined) { confidence += 15; totalFactors += 15; }
-    if (features.volunteerHours !== undefined) { confidence += 10; totalFactors += 10; }
-    if (features.membershipDuration !== undefined) { confidence += 10; totalFactors += 10; }
-    if (features.spiritualAssessmentScore !== undefined) { confidence += 10; totalFactors += 10; }
-    
-    return totalFactors > 0 ? Math.round((confidence / totalFactors) * 100) : 50;
+    if (features.attendanceFrequency !== undefined) {
+      confidence += 20;
+      totalFactors += 20;
+    }
+    if (features.givingFrequency !== undefined) {
+      confidence += 15;
+      totalFactors += 15;
+    }
+    if (features.communicationResponseRate !== undefined) {
+      confidence += 15;
+      totalFactors += 15;
+    }
+    if (features.volunteerHours !== undefined) {
+      confidence += 10;
+      totalFactors += 10;
+    }
+    if (features.membershipDuration !== undefined) {
+      confidence += 10;
+      totalFactors += 10;
+    }
+    if (features.spiritualAssessmentScore !== undefined) {
+      confidence += 10;
+      totalFactors += 10;
+    }
+
+    return totalFactors > 0
+      ? Math.round((confidence / totalFactors) * 100)
+      : 50;
   }
 
   private convertScoreToLikelihood(score: number): string {
-    if (score >= 76) return 'Very likely to leave';
-    if (score >= 51) return 'Likely to leave';
-    if (score >= 26) return 'May leave without intervention';
-    if (score >= 11) return 'Low risk of leaving';
-    return 'Very unlikely to leave';
+    if (score >= 76) return "Very likely to leave";
+    if (score >= 51) return "Likely to leave";
+    if (score >= 26) return "May leave without intervention";
+    if (score >= 11) return "Low risk of leaving";
+    return "Very unlikely to leave";
   }
 
   private generateRiskMitigations(risk: RetentionRisk, factors: any[]): any[] {
     const mitigations: any[] = [];
-    
+
     if (risk === RetentionRisk.VERY_HIGH || risk === RetentionRisk.HIGH) {
       mitigations.push({
-        risk: 'Immediate departure risk',
-        mitigation: 'Emergency pastoral intervention with leadership team',
-        urgency: 'immediate'
+        risk: "Immediate departure risk",
+        mitigation: "Emergency pastoral intervention with leadership team",
+        urgency: "immediate",
       });
     }
-    
+
     return mitigations;
   }
 
   // Additional methods for stage prediction, ministry recommendations, etc.
-  private analyzeStageProgression(features: MLModelFeatures, currentStage: MemberLifecycleStage): any {
+  private analyzeStageProgression(
+    features: MLModelFeatures,
+    currentStage: MemberLifecycleStage,
+  ): any {
     // Implementation for sophisticated stage progression analysis
     return {
       mostLikely: {
         stage: MemberLifecycleStage.ESTABLISHED_MEMBER,
         probability: 0.75,
-        estimatedDays: 45
+        estimatedDays: 45,
       },
       alternatives: [],
-      factors: []
+      factors: [],
     };
   }
 
-  private calculateStageConfidence(features: MLModelFeatures, currentStage: MemberLifecycleStage): number {
+  private calculateStageConfidence(
+    features: MLModelFeatures,
+    currentStage: MemberLifecycleStage,
+  ): number {
     return 85;
   }
 
-  private generateStageRecommendations(features: MLModelFeatures, currentStage: MemberLifecycleStage, nextStage: MemberLifecycleStage): any[] {
+  private generateStageRecommendations(
+    features: MLModelFeatures,
+    currentStage: MemberLifecycleStage,
+    nextStage: MemberLifecycleStage,
+  ): any[] {
     return [];
   }
 
-  private async calculateMLMinistryMatch(features: MLModelFeatures, ministry: any, member_spiritual_profiles: any): Promise<any> {
+  private async calculateMLMinistryMatch(
+    features: MLModelFeatures,
+    ministry: any,
+    member_spiritual_profiles: any,
+  ): Promise<any> {
     return {
       score: 75,
       confidence: 80,
       reasons: [],
-      successProbability: 0.7
+      successProbability: 0.7,
     };
   }
 
@@ -695,7 +831,10 @@ export class EnhancedAIInsightsEngine {
     return [];
   }
 
-  private generateMinistryDevelopmentPlan(recommendations: any[], features: MLModelFeatures): any[] {
+  private generateMinistryDevelopmentPlan(
+    recommendations: any[],
+    features: MLModelFeatures,
+  ): any[] {
     return [];
   }
 
@@ -704,7 +843,10 @@ export class EnhancedAIInsightsEngine {
     return 0;
   }
 
-  private calculateCommunicationDecline(member: any, communications: any[]): number {
+  private calculateCommunicationDecline(
+    member: any,
+    communications: any[],
+  ): number {
     // Calculate if communication engagement is declining
     return 0;
   }
@@ -731,8 +873,10 @@ export class EnhancedAIInsightsEngine {
 
   private calculateSeasonalPatterns(check_ins: any[]) {
     const patterns: { [month: string]: number } = {};
-    check_ins.forEach(checkIn => {
-      const month = checkIn.checkedInAt.toLocaleDateString('en-US', { month: 'long' });
+    check_ins.forEach((checkIn) => {
+      const month = checkIn.checkedInAt.toLocaleDateString("en-US", {
+        month: "long",
+      });
       patterns[month] = (patterns[month] || 0) + 1;
     });
     return patterns;

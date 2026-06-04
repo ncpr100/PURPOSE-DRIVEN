@@ -19,7 +19,7 @@ export async function POST(_req: NextRequest) {
     );
   }
 
-  const { runSRECycle } = await import("@/lib/agents/sre-engineer");
+  const { runSRECycle } = await import("@/lib/system/sre-engineer");
   const result = await runSRECycle();
   return NextResponse.json({ ok: true, ...result });
 }

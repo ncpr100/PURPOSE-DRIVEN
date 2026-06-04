@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { refreshLeadershipPipeline } from "@/lib/leadership-pipeline-service";
+import { refreshLeadershipPipeline } from "@/lib/agents/leadership-pipeline";
 
 export const dynamic = "force-dynamic";
 

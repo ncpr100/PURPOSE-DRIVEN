@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { AI_CONSTITUTION } from "@/lib/ai-constitution";
+import { AI_CONSTITUTION } from "@/lib/ai/constitution";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,10 @@ export async function GET(_request: NextRequest) {
 
   if (!["PASTOR", "ADMIN_IGLESIA"].includes(session.user.role ?? "")) {
     return NextResponse.json(
-      { error: "Solo pastores y administradores pueden ver el Diario del Pastor." },
+      {
+        error:
+          "Solo pastores y administradores pueden ver el Diario del Pastor.",
+      },
       { status: 403 },
     );
   }
@@ -45,9 +48,7 @@ export async function GET(_request: NextRequest) {
     }
 
     // Cache expired or missing — generate fresh (triggered on-demand)
-    const { refreshShepherdsLog } = await import(
-      "@/lib/shepherds-log-service"
-    );
+    const { refreshShepherdsLog } = await import("@/lib/shepherds-log-service");
     const { members, disclaimer } = await refreshShepherdsLog(churchId);
 
     return NextResponse.json({

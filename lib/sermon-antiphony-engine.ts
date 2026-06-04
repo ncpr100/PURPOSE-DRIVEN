@@ -3,7 +3,7 @@
 // Analyzes sermons for cultural blind spots, skeptic challenges, and unresolved tensions.
 
 import Anthropic from "@anthropic-ai/sdk";
-import { buildSystemPrompt } from "@/lib/ai-constitution";
+import { buildSystemPrompt } from "@/lib/ai/constitution";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -19,9 +19,8 @@ export interface AntiphonyAnalysis {
 
 export async function analyzeSermon(
   sermonText: string,
-  churchCountry: string = "Colombia"
+  churchCountry: string = "Colombia",
 ): Promise<AntiphonyAnalysis> {
-  
   // Guard: don't run if feature is disabled
   if (process.env.ENABLE_SERMON_ANTIPHONY !== "true") {
     throw new Error("Sermon Antiphony Engine is not enabled.");
@@ -58,7 +57,11 @@ Rules:
   const response = await anthropic.messages.create({
     model: "claude-sonnet-4-5",
     max_tokens: 1500,
-    system: buildSystemPrompt(["imageOfGod", "language", "noPastoralReplacement"]),
+    system: buildSystemPrompt([
+      "imageOfGod",
+      "language",
+      "noPastoralReplacement",
+    ]),
     messages: [{ role: "user", content: prompt }],
   });
 
@@ -68,7 +71,10 @@ Rules:
     .join("");
 
   // Strip markdown fences Claude sometimes adds despite instructions
-  const cleanText = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+  const cleanText = rawText
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
 
   try {
     const parsed = JSON.parse(cleanText) as AntiphonyAnalysis;

@@ -3,7 +3,7 @@
 // Uses data that already exists in the database — no AI generation of pastoral content.
 
 import { db } from "@/lib/db";
-import { AI_CONSTITUTION } from "@/lib/ai-constitution";
+import { AI_CONSTITUTION } from "@/lib/ai/constitution";
 
 export interface ShepherdsMemberEntry {
   id: string;

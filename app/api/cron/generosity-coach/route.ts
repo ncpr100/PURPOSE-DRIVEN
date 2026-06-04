@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { runGenerosityJourneyAnalysis } from "@/lib/generosity-journey-service";
+import { runGenerosityJourneyAnalysis } from "@/lib/agents/generosity-coach";
 
 export const dynamic = "force-dynamic";
 
