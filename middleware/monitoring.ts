@@ -43,14 +43,14 @@ export async function monitoringMiddleware(
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ timestamp: Date.now(), status: "ok" }), // ⚠️ Keep your original payload if different
+        body: JSON.stringify({ timestamp: Date.now(), status: "ok" }),
         signal: AbortSignal.timeout(1500),
+        keepalive: true,
       },
     );
-  } catch (error) {
-    // Silently fail in production to prevent cold-start crashes
+  } catch (error: any) {
     if (process.env.NODE_ENV === "development") {
-      console.debug("[MONITORING] Network error skipped:", error.message);
+      console.debug("[MONITORING] Skipped:", error.message);
     }
   }
 
