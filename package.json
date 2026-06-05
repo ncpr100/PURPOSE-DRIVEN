@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx prisma generate && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "build:memory-optimized": "./scripts/memory-optimized-build.sh",
@@ -26,7 +26,8 @@
     "verify:patterns": "node scripts/verify-critical-patterns.js",
     "fix:patterns": "bash scripts/apply-critical-fixes.sh",
     "pre-deploy": "bash scripts/pre-deploy-check.sh",
-    "seed:plans": "tsx --require dotenv/config scripts/seed-subscription-plans.ts"
+    "seed:plans": "tsx --require dotenv/config scripts/seed-subscription-plans.ts",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "tsx --require dotenv/config scripts/seed.ts"
