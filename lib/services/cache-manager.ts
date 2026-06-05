@@ -1,58 +1,77 @@
-﻿import Redis from 'ioredis';
+﻿import { Redis } from "@upstash/redis";
 
-const redis = process.env.UPSTASH_REDIS_REST_URL ? new Redis(process.env.UPSTASH_REDIS_REST_URL) : null;
+// Singleton con lazy initialization
+let redisClient: Redis | null = null;
 
-export interface CacheOptions {
-  ttl?: number;
-  forceRefresh?: boolean;
-  warmCache?: boolean;
+function getRedisClient(): Redis | null {
+  // Verificar si las variables de entorno existen
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  if (!url || !token) {
+    console.warn(
+      "⚠️ [Cache Manager] Upstash Redis not configured. Cache disabled.",
+    );
+    return null;
+  }
+
+  // Crear instancia solo una vez (Singleton)
+  if (!redisClient) {
+    console.log("🔧 [Cache Manager] Initializing Upstash Redis client...");
+    redisClient = new Redis({
+      url,
+      token,
+    });
+  }
+
+  return redisClient;
 }
-
-export interface CacheMetrics {
-  hitRate: number;
-  missRate: number;
-  avgLatency: number;
-}
-
-export const CACHE_KEYS = {
-  EXECUTIVE_REPORT: (churchId: string, period: string) => `exec-report:${churchId}:${period}`,
-  MEMBER_JOURNEY: (churchId: string, memberId: string) => `member-journey:${churchId}:${memberId}`,
-  CHURCH_ANALYTICS: (churchId: string, period: string) => `church-analytics:${churchId}:${period}`,
-  RETENTION_ANALYTICS: (churchId: string, period: number) => `retention:${churchId}:${period}`,
-  CONVERSION_FUNNEL: (churchId: string, period: number) => `conversion:${churchId}:${period}`,
-  ENGAGEMENT_DISTRIBUTION: (churchId: string) => `engagement:${churchId}`,
-  QUICK_STATS: (churchId: string) => `quick-stats:${churchId}`,
-  PREDICTIVE_INSIGHTS: (churchId: string) => `predictive:${churchId}` 
-};
-
-export const CACHE_TTL = {
-  EXECUTIVE_REPORT: 3600,
-  MEMBER_ANALYTICS: 1800,
-  RETENTION_ANALYTICS: 3600,
-  CONVERSION_FUNNEL: 3600,
-  ENGAGEMENT_METRICS: 1800,
-  QUICK_STATS: 300,
-  PREDICTIVE_INSIGHTS: 1800
-};
 
 export const cacheManager = {
-  async get(key: string) {
+  async get(key: string): Promise<string | null> {
+    const redis = getRedisClient();
     if (!redis) return null;
-    return redis.get(key);
+
+    try {
+      return await redis.get(key);
+    } catch (error) {
+      console.error(
+        `❌ [Cache Manager] GET error for key "${key}":`,
+        (error as Error).message,
+      );
+      return null;
+    }
   },
-  async set(key: string, value: string, ttl?: number) {
+
+  async set(key: string, value: string, ttl?: number): Promise<void> {
+    const redis = getRedisClient();
     if (!redis) return;
-    if (ttl) await redis.setex(key, ttl, value);
-    else await redis.set(key, value);
+
+    try {
+      if (ttl) {
+        await redis.setex(key, ttl, value);
+      } else {
+        await redis.set(key, value);
+      }
+    } catch (error) {
+      console.error(
+        `❌ [Cache Manager] SET error for key "${key}":`,
+        (error as Error).message,
+      );
+    }
   },
-  async del(key: string) {
+
+  async del(key: string): Promise<void> {
+    const redis = getRedisClient();
     if (!redis) return;
-    await redis.del(key);
+
+    try {
+      await redis.del(key);
+    } catch (error) {
+      console.error(
+        `❌ [Cache Manager] DEL error for key "${key}":`,
+        (error as Error).message,
+      );
+    }
   },
-  async warmCache(churchId: string) {
-    console.log('🔥 Warming cache for church:', churchId);
-  },
-  async autoInvalidate(type: string, churchId: string, memberId?: string) {
-    console.log('🔄 Auto-invalidating cache:', type, churchId, memberId || '');
-  }
 };
