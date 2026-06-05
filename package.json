@@ -6,8 +6,8 @@
   "dev": "next dev",
   "build": "npx prisma generate && next build",
   "start": "next start",
-  "lint": "next lint",
-  "postinstall": "npx prisma generate",
+  "lint": "next lint"
+},
     "build:memory-optimized": "./scripts/memory-optimized-build.sh",
     "build:incremental": "next build --experimental-build-mode=compile",
     "start": "next start",
