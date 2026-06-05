@@ -1,133 +1,80 @@
-// middleware/monitoring.ts
-// MONITORING FOUNDATION — Layer 1
-// Intercepts every API request and records response time, status, errors.
-// This is the data source for BOTH Agent 13 and Agent 14.
-
 import { NextRequest, NextResponse } from "next/server";
 
-// Routes to exclude from monitoring (too noisy, no value)
-const EXCLUDED_ROUTES = [
-  "/api/health", // our own health checks
-  "/api/monitoring/collect", // our own metrics collector
-  "/_next", // Next.js internals
-  "/favicon",
-  "/static",
-];
+// Helper functions for extracting church and user IDs from request
+function extractChurchId(request: NextRequest): string {
+  const churchId =
+    request.headers.get("x-church-id") ||
+    request.nextUrl.searchParams.get("churchId");
+  return churchId || "unknown";
+}
 
-// Detect Vercel cold starts (first invocation after idle)
-let isWarm = false;
+function extractUserId(request: NextRequest): string {
+  const userId =
+    request.headers.get("x-user-id") ||
+    request.nextUrl.searchParams.get("userId");
+  return userId || "unknown";
+}
 
 export async function monitoringMiddleware(
   request: NextRequest,
-  handler: () => Promise<NextResponse>,
-): Promise<NextResponse> {
-  const url = new URL(request.url);
-  const route = url.pathname;
-
-  // Skip excluded routes
-  if (EXCLUDED_ROUTES.some((ex) => route.startsWith(ex))) {
-    return handler();
-  }
-
+  response: NextResponse,
+) {
   const startTime = Date.now();
-  const wasColdStart = !isWarm;
-  isWarm = true;
 
-  let response: NextResponse;
-  let errorMessage: string | undefined;
-
-  // === MONITORING DISABLED FOR VERCEL ===
-  // Self-referential fetch calls cause ECONNRESET on Vercel serverless
-  // Re-enable later with Upstash QStash or Vercel Analytics if needed
+  // 1. Extract Metrics
   const durationMs = Date.now() - startTime;
-  const statusCode = response?.status || 200; // Safe fallback
+  const statusCode = response.status;
   const isError = statusCode >= 400;
-  const churchId = extractChurchId(request);
-  const userId = extractUserId(request);
-  // === END MONITORING BLOCK ===
-  // Fire-and-forget metric write — never blocks the response
-  recordMetric({
-    route: normalizeRoute(route),
-    method: request.method,
-    statusCode,
-    durationMs,
+
+  // Call your extraction functions here
+  const churchId =
+    typeof extractChurchId === "function"
+      ? extractChurchId(request)
+      : "unknown";
+  const userId =
+    typeof extractUserId === "function" ? extractUserId(request) : "unknown";
+
+  // 2. Prepare Payload
+  const payload = {
     churchId,
     userId,
+    path: request.nextUrl.pathname,
+    method: request.method,
+    status: statusCode,
+    durationMs,
     isError,
-    errorMessage,
-    isColdStart: wasColdStart,
-    region: process.env.VERCEL_REGION,
-    userAgent: request.headers.get("user-agent") || undefined,
-  }).catch((err) => {
-    console.error("[MONITORING_MIDDLEWARE] Failed to record metric:", err);
-  });
+    timestamp: new Date().toISOString(),
+  };
 
-  return response;
-}
+  // 3. Send Metrics (The Fix)
+  // We construct the URL dynamically to ensure we hit the correct deployment.
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+  const targetUrl = `${appUrl}/api/monitoring/collect`;
 
-// ── Normalize dynamic route segments ─────────────────────────
-function normalizeRoute(route: string): string {
-  return route
-    .replace(/\/[a-z0-9]{20,}/gi, "/[id]")
-    .replace(/\/\d+/g, "/[id]")
-    .replace(/\/[0-9a-f-]{36}/gi, "/[uuid]");
-}
-
-// ── Extract IDs from JWT cookie (best-effort) ─────────────────
-function extractChurchId(req: NextRequest): string | undefined {
   try {
-    const sessionCookie =
-      req.cookies.get("next-auth.session-token")?.value ||
-      req.cookies.get("__Secure-next-auth.session-token")?.value;
-    if (!sessionCookie) return undefined;
-    const payload = JSON.parse(
-      Buffer.from(sessionCookie.split(".")[1], "base64url").toString(),
-    );
-    return payload?.churchId;
-  } catch {
-    return undefined;
+    // Fire and forget with a timeout to prevent blocking the response
+    // 'keepalive: true' helps ensure the request isn't dropped immediately
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+
+    await fetch(targetUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+      cache: "no-store",
+      keepalive: true,
+    });
+
+    clearTimeout(timeoutId);
+  } catch (error: any) {
+    // The Fix: Silently handle network errors so they don't crash the app or spam logs
+    // This happens often on Vercel during cold starts or routing shifts.
+    if (error.name !== "AbortError") {
+      console.warn(
+        "[MONITORING] Network call skipped (non-critical):",
+        error.message,
+      );
+    }
   }
-}
-
-function extractUserId(req: NextRequest): string | undefined {
-  try {
-    const sessionCookie =
-      req.cookies.get("next-auth.session-token")?.value ||
-      req.cookies.get("__Secure-next-auth.session-token")?.value;
-    if (!sessionCookie) return undefined;
-    const payload = JSON.parse(
-      Buffer.from(sessionCookie.split(".")[1], "base64url").toString(),
-    );
-    return payload?.sub || payload?.id;
-  } catch {
-    return undefined;
-  }
-}
-
-// ── Async metric writer ───────────────────────────────────────
-interface MetricPayload {
-  route: string;
-  method: string;
-  statusCode: number;
-  durationMs: number;
-  churchId?: string;
-  userId?: string;
-  isError: boolean;
-  errorMessage?: string;
-  isColdStart: boolean;
-  region?: string;
-  userAgent?: string;
-}
-
-async function recordMetric(payload: MetricPayload): Promise<void> {
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
-
-  await fetch(`${baseUrl}/api/monitoring/collect`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Internal-Key": process.env.MONITORING_INTERNAL_KEY || "",
-    },
-    body: JSON.stringify(payload),
-  });
 }
