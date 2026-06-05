@@ -4,9 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 
 model accounts {
@@ -505,8 +503,8 @@ model churches {
   phone                            String?
   email                            String?
   website                          String?
-  stripeConnectAccountId           String?   // Stripe Connect account for tenant payment isolation
-  stripeConnectStatus              String?   @default("not_connected") // not_connected | pending | active | deauthorized
+  stripeConnectAccountId           String? // Stripe Connect account for tenant payment isolation
+  stripeConnectStatus              String?                            @default("not_connected") // not_connected | pending | active | deauthorized
   founded                          DateTime?
   logo                             String?
   description                      String?
@@ -1481,19 +1479,19 @@ model plan_features {
 }
 
 model platform_settings {
-  id                   String   @id @default("default")
-  currency             String   @default("USD")
-  taxRate              Float    @default(0.0)
-  freeTrialDays        Int      @default(14)
-  gracePeriodDays      Int      @default(7)
-  platformName         String   @default("Kḥesed-tek Church Management Systems")
-  supportEmail         String   @default("soporte@khesedtek.com")
-  maintenanceMode      Boolean  @default(false)
-  allowRegistrations   Boolean  @default(true)
-  welcomeEmailSubject  String?
-  welcomeEmailBody     String?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime
+  id                  String   @id @default("default")
+  currency            String   @default("USD")
+  taxRate             Float    @default(0.0)
+  freeTrialDays       Int      @default(14)
+  gracePeriodDays     Int      @default(7)
+  platformName        String   @default("Kḥesed-tek Church Management Systems")
+  supportEmail        String   @default("soporte@khesedtek.com")
+  maintenanceMode     Boolean  @default(false)
+  allowRegistrations  Boolean  @default(true)
+  welcomeEmailSubject String?
+  welcomeEmailBody    String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime
 }
 
 model prayer_approvals {
@@ -1586,28 +1584,28 @@ model prayer_qr_codes {
 }
 
 model prayer_requests {
-  id                    String               @id
-  contactId             String
-  churchId              String
-  categoryId            String
-  message               String
-  isAnonymous           Boolean              @default(false)
-  status                String               @default("pending")
-  priority              String               @default("normal")
-  source                String?
-  formId                String?
-  qrCodeId              String?
-  automationTriggered   Boolean              @default(false)
-  triggeredRuleIds      String[]             @default([])
-  lastAutomationRun     DateTime?
-  createdAt             DateTime             @default(now())
-  updatedAt             DateTime             @default(now())
-  prayer_approvals      prayer_approvals?
-  prayer_categories     prayer_categories    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  churches              churches             @relation(fields: [churchId], references: [id], onDelete: Cascade)
-  prayer_contacts       prayer_contacts      @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  prayer_testimonies    prayer_testimonies[]
-  
+  id                  String               @id
+  contactId           String
+  churchId            String
+  categoryId          String
+  message             String
+  isAnonymous         Boolean              @default(false)
+  status              String               @default("pending")
+  priority            String               @default("normal")
+  source              String?
+  formId              String?
+  qrCodeId            String?
+  automationTriggered Boolean              @default(false)
+  triggeredRuleIds    String[]             @default([])
+  lastAutomationRun   DateTime?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @default(now())
+  prayer_approvals    prayer_approvals?
+  prayer_categories   prayer_categories    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  churches            churches             @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  prayer_contacts     prayer_contacts      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  prayer_testimonies  prayer_testimonies[]
+
   @@index([automationTriggered])
 }
 
@@ -2184,19 +2182,19 @@ model visitor_qr_codes {
 }
 
 model visitor_submissions {
-  id                    String        @id
-  formId                String
-  data                  Json
-  submittedAt           DateTime      @default(now())
-  ipAddress             String?
-  userAgent             String?
-  status                String        @default("pending")
-  churchId              String
-  automationTriggered   Boolean       @default(false)
-  triggeredRuleIds      String[]      @default([])
-  lastAutomationRun     DateTime?
-  churches              churches      @relation(fields: [churchId], references: [id])
-  visitor_forms         visitor_forms @relation(fields: [formId], references: [id], onDelete: Cascade)
+  id                  String        @id
+  formId              String
+  data                Json
+  submittedAt         DateTime      @default(now())
+  ipAddress           String?
+  userAgent           String?
+  status              String        @default("pending")
+  churchId            String
+  automationTriggered Boolean       @default(false)
+  triggeredRuleIds    String[]      @default([])
+  lastAutomationRun   DateTime?
+  churches            churches      @relation(fields: [churchId], references: [id])
+  visitor_forms       visitor_forms @relation(fields: [formId], references: [id], onDelete: Cascade)
 
   @@index([churchId, submittedAt])
   @@index([formId, status])
@@ -2535,27 +2533,27 @@ enum VisitorCategory {
 
 // Platform-wide form models for marketing and lead generation
 model PlatformForm {
-  id           String    @id @default(cuid())
-  name         String
-  description  String?
-  slug         String    @unique // URL-friendly identifier for public forms
-  fields       Json      // Array of form field definitions
-  style        Json      // Form styling configuration
-  settings     Json      // Form settings (notifications, redirects, etc.)
-  isActive     Boolean   @default(true)
-  isPublic     Boolean   @default(true)  // Public forms accessible without auth
-  campaignTag  String?   // Marketing campaign identifier
-  leadScore    Int       @default(50)    // Base lead score for submissions
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  deletedAt    DateTime? // Soft delete support
-  createdById  String    // SUPER_ADMIN who created the form
-  
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  slug        String    @unique // URL-friendly identifier for public forms
+  fields      Json // Array of form field definitions
+  style       Json // Form styling configuration
+  settings    Json // Form settings (notifications, redirects, etc.)
+  isActive    Boolean   @default(true)
+  isPublic    Boolean   @default(true) // Public forms accessible without auth
+  campaignTag String? // Marketing campaign identifier
+  leadScore   Int       @default(50) // Base lead score for submissions
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime? // Soft delete support
+  createdById String // SUPER_ADMIN who created the form
+
   // Relationships
-  createdBy    users     @relation("PlatformFormCreatedBy", fields: [createdById], references: [id])
-  submissions  PlatformFormSubmission[]
-  qrCodes      PlatformQRCode[]
-  
+  createdBy   users                    @relation("PlatformFormCreatedBy", fields: [createdById], references: [id])
+  submissions PlatformFormSubmission[]
+  qrCodes     PlatformQRCode[]
+
   @@index([slug])
   @@index([campaignTag])
   @@index([isActive, isPublic])
@@ -2565,25 +2563,25 @@ model PlatformForm {
 model PlatformFormSubmission {
   id            String    @id @default(cuid())
   formId        String
-  data          Json      // Submitted form data
-  leadScore     Int       @default(0)     // Calculated lead score
+  data          Json // Submitted form data
+  leadScore     Int       @default(0) // Calculated lead score
   source        String    @default("direct") // Traffic source
-  referrer      String?   // HTTP referrer
-  userAgent     String?   // User agent string
-  ipAddress     String?   // Client IP address
-  campaignTag   String?   // Campaign tracking
+  referrer      String? // HTTP referrer
+  userAgent     String? // User agent string
+  ipAddress     String? // Client IP address
+  campaignTag   String? // Campaign tracking
   status        String    @default("new") // new, contacted, converted, processed, rejected
-  notes         String?   // Admin notes
+  notes         String? // Admin notes
   followUpDate  DateTime? // Scheduled follow-up date
   processedAt   DateTime? // When lead was processed
-  processedById String?   // SUPER_ADMIN who processed the lead
+  processedById String? // SUPER_ADMIN who processed the lead
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  
+
   // Relationships
-  form          PlatformForm @relation(fields: [formId], references: [id], onDelete: Cascade)
-  processedBy   users?       @relation("PlatformSubmissionProcessedBy", fields: [processedById], references: [id])
-  
+  form        PlatformForm @relation(fields: [formId], references: [id], onDelete: Cascade)
+  processedBy users?       @relation("PlatformSubmissionProcessedBy", fields: [processedById], references: [id])
+
   @@index([formId])
   @@index([status])
   @@index([campaignTag])
@@ -2596,22 +2594,22 @@ model PlatformFormSubmission {
 model PlatformQRCode {
   id               String    @id @default(cuid())
   formId           String
-  config           Json      // QR code visual configuration (size, colors, logo, etc.)
-  trackingParams   Json      // UTM and custom tracking parameters
-  placementContext String?   // Where QR code is placed (business_card, flyer, poster, etc.)
-  qrUrl            String    // The URL the QR code points to (with tracking params)
+  config           Json // QR code visual configuration (size, colors, logo, etc.)
+  trackingParams   Json // UTM and custom tracking parameters
+  placementContext String? // Where QR code is placed (business_card, flyer, poster, etc.)
+  qrUrl            String // The URL the QR code points to (with tracking params)
   isActive         Boolean   @default(true)
-  scanCount        Int       @default(0)     // Total scan count
+  scanCount        Int       @default(0) // Total scan count
   lastScannedAt    DateTime? // Last time QR was scanned
-  generatedById    String    // SUPER_ADMIN who generated the QR
+  generatedById    String // SUPER_ADMIN who generated the QR
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
-  
+
   // Relationships
-  form             PlatformForm @relation(fields: [formId], references: [id], onDelete: Cascade)
-  generatedBy      users        @relation("PlatformQRGeneratedBy", fields: [generatedById], references: [id])
-  scans            PlatformQRScan[]
-  
+  form        PlatformForm     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  generatedBy users            @relation("PlatformQRGeneratedBy", fields: [generatedById], references: [id])
+  scans       PlatformQRScan[]
+
   @@index([formId])
   @@index([placementContext])
   @@index([scanCount])
@@ -2619,18 +2617,18 @@ model PlatformQRCode {
 }
 
 model PlatformQRScan {
-  id             String    @id @default(cuid())
+  id             String   @id @default(cuid())
   qrCodeId       String
-  scannedAt      DateTime  @default(now())
-  userAgent      String?   // Device/browser info
-  ipAddress      String?   // Scanner IP
-  location       Json?     // Geographic data if available
-  referrer       String?   // Page referrer
-  conversionData Json?     // Conversion tracking data
-  
+  scannedAt      DateTime @default(now())
+  userAgent      String? // Device/browser info
+  ipAddress      String? // Scanner IP
+  location       Json? // Geographic data if available
+  referrer       String? // Page referrer
+  conversionData Json? // Conversion tracking data
+
   // Relationships
-  qrCode         PlatformQRCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
-  
+  qrCode PlatformQRCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+
   @@index([qrCodeId])
   @@index([scannedAt])
   @@index([ipAddress])
@@ -2638,24 +2636,24 @@ model PlatformQRScan {
 
 // Church QR Codes for tenant churches
 model qr_codes {
-  id          String    @id
-  name        String
-  type        String    // website, call, sms, email, whatsapp, form, payment, etc.
-  data        String    // The actual data/URL for the QR code
-  formId      String?   // Reference to custom form if type is "form"
-  config      Json      // Visual configuration (colors, style, logo, etc.)
-  preview     String?   @db.Text  // Base64 or URL to QR code preview image
-  churchId    String
-  createdBy   String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
+  id        String   @id
+  name      String
+  type      String // website, call, sms, email, whatsapp, form, payment, etc.
+  data      String // The actual data/URL for the QR code
+  formId    String? // Reference to custom form if type is "form"
+  config    Json // Visual configuration (colors, style, logo, etc.)
+  preview   String?  @db.Text // Base64 or URL to QR code preview image
+  churchId  String
+  createdBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relationships
-  church      churches  @relation(fields: [churchId], references: [id], onDelete: Cascade)
-  form        custom_forms? @relation(fields: [formId], references: [id], onDelete: SetNull)
-  user        users     @relation("QRCodeCreatedBy", fields: [createdBy], references: [id])
-  scans       qr_scans[]
-  
+  church churches      @relation(fields: [churchId], references: [id], onDelete: Cascade)
+  form   custom_forms? @relation(fields: [formId], references: [id], onDelete: SetNull)
+  user   users         @relation("QRCodeCreatedBy", fields: [createdBy], references: [id])
+  scans  qr_scans[]
+
   @@index([churchId])
   @@index([type])
   @@index([formId])
@@ -2663,16 +2661,16 @@ model qr_codes {
 }
 
 model qr_scans {
-  id         String    @id @default(cuid())
-  qrCodeId   String
-  scannedAt  DateTime  @default(now())
-  userAgent  String?
-  ipAddress  String?
-  location   Json?
-  
+  id        String   @id @default(cuid())
+  qrCodeId  String
+  scannedAt DateTime @default(now())
+  userAgent String?
+  ipAddress String?
+  location  Json?
+
   // Relationships
-  qrCode     qr_codes  @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
-  
+  qrCode qr_codes @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+
   @@index([qrCodeId])
   @@index([scannedAt])
 }
@@ -2680,11 +2678,11 @@ model qr_scans {
 // Dynamic QR codes for super admin — destination can be changed after printing
 model DynamicQRCode {
   id              String    @id @default(cuid())
-  shortCode       String    @unique   // short code used in /qr/[shortCode]
+  shortCode       String    @unique // short code used in /qr/[shortCode]
   name            String
-  destinationType String    @default("url")  // url | form | payment | event | survey
-  destinationUrl  String    // current redirect target (mutable without reprinting)
-  config          Json      // QR visual config (colors, dot style, logo, etc.)
+  destinationType String    @default("url") // url | form | payment | event | survey
+  destinationUrl  String // current redirect target (mutable without reprinting)
+  config          Json // QR visual config (colors, dot style, logo, etc.)
   isActive        Boolean   @default(true)
   scanCount       Int       @default(0)
   lastScannedAt   DateTime?
@@ -2693,7 +2691,7 @@ model DynamicQRCode {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  createdBy users         @relation("DynamicQRCreatedBy", fields: [createdById], references: [id])
+  createdBy users           @relation("DynamicQRCreatedBy", fields: [createdById], references: [id])
   scans     DynamicQRScan[]
 
   @@index([shortCode])
@@ -2703,13 +2701,13 @@ model DynamicQRCode {
 }
 
 model DynamicQRScan {
-  id        String        @id @default(cuid())
+  id        String   @id @default(cuid())
   qrCodeId  String
-  scannedAt DateTime      @default(now())
+  scannedAt DateTime @default(now())
   userAgent String?
   ipAddress String?
 
-  qrCode    DynamicQRCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  qrCode DynamicQRCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
 
   @@index([qrCodeId])
   @@index([scannedAt])
@@ -2717,18 +2715,18 @@ model DynamicQRScan {
 
 // Platform-level payments — NEVER mixes with tenant funds
 model PlatformPayment {
-  id              String    @id @default(cuid())
-  stripePaymentId String?   @unique     // Stripe Payment Intent ID
-  amount          Int                   // amount in cents (e.g. 1000 = $10.00)
-  currency        String    @default("usd")
-  status          String    @default("pending")  // pending | succeeded | failed | refunded
+  id              String   @id @default(cuid())
+  stripePaymentId String?  @unique // Stripe Payment Intent ID
+  amount          Int // amount in cents (e.g. 1000 = $10.00)
+  currency        String   @default("usd")
+  status          String   @default("pending") // pending | succeeded | failed | refunded
   description     String?
   payerEmail      String?
   payerName       String?
   metadata        Json?
-  createdById     String?   // super admin who initiated; null = self-service
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  createdById     String? // super admin who initiated; null = self-service
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   createdBy users? @relation("PlatformPaymentCreatedBy", fields: [createdById], references: [id])
 
@@ -2736,23 +2734,24 @@ model PlatformPayment {
   @@index([stripePaymentId])
   @@index([createdAt])
 }
+
 // ============================================
 // AI MINISTRY AGENTS — NEW MODELS
 // ============================================
 
 // Agent 1: Sermon Antiphony Engine
 model sermon_ai_analysis {
-  id                  String   @id @default(cuid())
-  churchId            String
-  sermonId            String   @unique
-  culturalMirror      String   @db.Text
-  skepticFilter       String   @db.Text
-  unresolvedTension   String   @db.Text
-  comfortSentence     String   @db.Text
-  discomfortSentence  String   @db.Text
-  modelVersion        String   @default("claude-sonnet-4-20250514")
-  generatedAt         DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  churchId           String
+  sermonId           String   @unique
+  culturalMirror     String   @db.Text
+  skepticFilter      String   @db.Text
+  unresolvedTension  String   @db.Text
+  comfortSentence    String   @db.Text
+  discomfortSentence String   @db.Text
+  modelVersion       String   @default("claude-sonnet-4-20250514")
+  generatedAt        DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -2774,21 +2773,21 @@ model triage_keywords {
 }
 
 model triage_events {
-  id              String            @id @default(cuid())
-  churchId        String
-  triggerSource   String            // 'prayer_form' | 'visitor_form' | 'chat'
-  sourceId        String            // ID of the prayer request or form submission
-  detectedKeyword String
-  requesterName   String?
-  requesterPhone  String?
-  requesterEmail  String?
-  messageBody     String            @db.Text
-  status          TriageStatus      @default(PENDING)
-  assignedToId    String?           // userId of pastor/care team
-  resolvedAt      DateTime?
+  id               String       @id @default(cuid())
+  churchId         String
+  triggerSource    String // 'prayer_form' | 'visitor_form' | 'chat'
+  sourceId         String // ID of the prayer request or form submission
+  detectedKeyword  String
+  requesterName    String?
+  requesterPhone   String?
+  requesterEmail   String?
+  messageBody      String       @db.Text
+  status           TriageStatus @default(PENDING)
+  assignedToId     String? // userId of pastor/care team
+  resolvedAt       DateTime?
   humanRespondedAt DateTime?
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -2805,17 +2804,17 @@ enum TriageStatus {
 
 // Agent 4: Prayer Watchman
 model prayer_watchman_events {
-  id                    String    @id @default(cuid())
-  churchId              String
-  prayerRequestId       String
-  eventDescription      String
-  eventDateTime         DateTime
-  reminderSentAt        DateTime?
-  followUpSentAt        DateTime?
-  followUpResponse      String?   @db.Text
-  status                WatchmanStatus @default(SCHEDULED)
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  id               String         @id @default(cuid())
+  churchId         String
+  prayerRequestId  String
+  eventDescription String
+  eventDateTime    DateTime
+  reminderSentAt   DateTime?
+  followUpSentAt   DateTime?
+  followUpResponse String?        @db.Text
+  status           WatchmanStatus @default(SCHEDULED)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -2832,11 +2831,11 @@ enum WatchmanStatus {
 
 // Agent 5: Shepherd's Log
 model shepherds_log_cache {
-  id             String   @id @default(cuid())
-  churchId       String   @unique
-  members        Json     // Array of at-risk member summaries
-  generatedAt    DateTime @default(now())
-  expiresAt      DateTime
+  id          String   @id @default(cuid())
+  churchId    String   @unique
+  members     Json // Array of at-risk member summaries
+  generatedAt DateTime @default(now())
+  expiresAt   DateTime
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -2844,12 +2843,12 @@ model shepherds_log_cache {
 }
 
 model pastoral_contacts {
-  id         String   @id @default(cuid())
-  churchId   String
-  memberId   String
-  contactedBy String  // userId of pastor
-  method     String   // 'call' | 'whatsapp' | 'visit' | 'email'
-  notes      String?  @db.Text
+  id          String   @id @default(cuid())
+  churchId    String
+  memberId    String
+  contactedBy String // userId of pastor
+  method      String // 'call' | 'whatsapp' | 'visit' | 'email'
+  notes       String?  @db.Text
   contactedAt DateTime @default(now())
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -2865,7 +2864,7 @@ model pastoral_contacts {
 model leadership_pipeline_cache {
   id          String   @id @default(cuid())
   churchId    String   @unique
-  candidates  Json     // Array of leadership candidate summaries
+  candidates  Json // Array of leadership candidate summaries
   generatedAt DateTime @default(now())
   expiresAt   DateTime
 
@@ -2875,14 +2874,14 @@ model leadership_pipeline_cache {
 }
 
 model leadership_invitations {
-  id          String                @id @default(cuid())
+  id          String                 @id @default(cuid())
   churchId    String
   memberId    String
-  invitedBy   String                // userId of pastor
-  role        String                // leadership role suggested
-  notes       String?               @db.Text
+  invitedBy   String // userId of pastor
+  role        String // leadership role suggested
+  notes       String?                @db.Text
   status      LeadershipInviteStatus @default(PENDING)
-  invitedAt   DateTime              @default(now())
+  invitedAt   DateTime               @default(now())
   respondedAt DateTime?
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -2903,11 +2902,11 @@ model burnout_alerts {
   churchId    String
   volunteerId String
   alertType   BurnoutAlertType
-  severity    String           // 'WARNING' | 'CRITICAL'
+  severity    String // 'WARNING' | 'CRITICAL'
   details     String           @db.Text
   isResolved  Boolean          @default(false)
   resolvedAt  DateTime?
-  resolvedBy  String?          // userId
+  resolvedBy  String? // userId
   createdAt   DateTime         @default(now())
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -2932,8 +2931,8 @@ model visitor_conversion_reports {
   followedUp      Int
   returned        Int
   conversionRate  Float
-  patterns        Json     // Array of identified patterns
-  recommendations Json     // Array of action recommendations
+  patterns        Json // Array of identified patterns
+  recommendations Json // Array of action recommendations
   generatedAt     DateTime @default(now())
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -2943,15 +2942,15 @@ model visitor_conversion_reports {
 
 // Agent 9: Generosity Journey Coach
 model generosity_journey_alerts {
-  id         String               @id @default(cuid())
+  id         String              @id @default(cuid())
   churchId   String
   memberId   String
   alertType  GenerosityAlertType
-  message    String               @db.Text
-  isActioned Boolean              @default(false)
+  message    String              @db.Text
+  isActioned Boolean             @default(false)
   actionedBy String?
   actionedAt DateTime?
-  createdAt  DateTime             @default(now())
+  createdAt  DateTime            @default(now())
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
 
@@ -2971,11 +2970,11 @@ model small_group_health_scores {
   id               String   @id @default(cuid())
   churchId         String
   groupId          String
-  sizeTrend        String   // 'GROWING' | 'STABLE' | 'DECLINING'
-  attendanceScore  Float    // 0-100
-  leaderScore      Float    // 0-100
-  integrationScore Float    // 0-100
-  overallStatus    String   // 'GREEN' | 'YELLOW' | 'RED'
+  sizeTrend        String // 'GROWING' | 'STABLE' | 'DECLINING'
+  attendanceScore  Float // 0-100
+  leaderScore      Float // 0-100
+  integrationScore Float // 0-100
+  overallStatus    String // 'GREEN' | 'YELLOW' | 'RED'
   recommendations  Json
   scoredAt         DateTime @default(now())
 
@@ -2989,13 +2988,13 @@ model small_group_health_scores {
 model church_board_reports {
   id               String   @id @default(cuid())
   churchId         String
-  reportMonth      String   // 'YYYY-MM'
+  reportMonth      String // 'YYYY-MM'
   narrative        String   @db.Text
   attendanceDelta  Float
   giversDelta      Float
   visitorRetention Float
   smallGroupScore  Float
-  actionItems      Json     // Array of 3 specific action items
+  actionItems      Json // Array of 3 specific action items
   generatedAt      DateTime @default(now())
 
   church churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
@@ -3053,14 +3052,14 @@ model event_coverage_status {
 
 // Table 3: Individual contact attempts in the cascade
 model coverage_contact_log {
-  id                   String   @id @default(cuid())
+  id                   String    @id @default(cuid())
   churchId             String
   coverageStatusId     String
   contactedVolunteerId String
   channel              String
-  messageBody          String   @db.Text
-  sentAt               DateTime @default(now())
-  responseReceived     Boolean  @default(false)
+  messageBody          String    @db.Text
+  sentAt               DateTime  @default(now())
+  responseReceived     Boolean   @default(false)
   responseAt           DateTime?
   responseType         String?
 
@@ -3096,7 +3095,6 @@ enum CoverageStatus {
   NO_BACKUP_ASSIGNED
 }
 
-
 // ================================================================
 // KHESED-TEK CMS — MONITORING INFRASTRUCTURE SCHEMA
 // Add to the BOTTOM of prisma/schema.prisma
@@ -3110,10 +3108,10 @@ enum CoverageStatus {
 // ── ENUMS ────────────────────────────────────────────────────
 
 enum IncidentSeverity {
-  P1_CRITICAL    // Full outage — all tenants affected
-  P2_HIGH        // Partial outage — feature degraded
-  P3_MEDIUM      // Performance degradation — SLA at risk
-  P4_LOW         // Minor issue — no user impact
+  P1_CRITICAL // Full outage — all tenants affected
+  P2_HIGH // Partial outage — feature degraded
+  P3_MEDIUM // Performance degradation — SLA at risk
+  P4_LOW // Minor issue — no user impact
 }
 
 enum IncidentStatus {
@@ -3167,19 +3165,19 @@ enum MetricType {
 // Middleware writes to this table on every request.
 // Retention: 30 days raw, then summarized into platform_metric_summaries.
 model api_request_metrics {
-  id            String   @id @default(cuid())
-  route         String   // e.g. '/api/members'
-  method        String   // GET | POST | PUT | DELETE | PATCH
-  statusCode    Int
-  durationMs    Float    // response time in milliseconds
-  churchId      String?  // null for platform routes
-  userId        String?
-  isError       Boolean  @default(false)
-  errorMessage  String?  @db.Text
-  userAgent     String?
-  region        String?  // Vercel region (iad1, gru1, etc.)
-  isColdStart   Boolean  @default(false)
-  requestedAt   DateTime @default(now())
+  id           String   @id @default(cuid())
+  route        String // e.g. '/api/members'
+  method       String // GET | POST | PUT | DELETE | PATCH
+  statusCode   Int
+  durationMs   Float // response time in milliseconds
+  churchId     String? // null for platform routes
+  userId       String?
+  isError      Boolean  @default(false)
+  errorMessage String?  @db.Text
+  userAgent    String?
+  region       String? // Vercel region (iad1, gru1, etc.)
+  isColdStart  Boolean  @default(false)
+  requestedAt  DateTime @default(now())
 
   @@index([route, requestedAt])
   @@index([isError, requestedAt])
@@ -3192,13 +3190,13 @@ model api_request_metrics {
 // Stores results of each synthetic health check run.
 // Covers: DB, Redis, all 11 integrations, production URL.
 model platform_health_checks {
-  id              String       @id @default(cuid())
-  service         String       // 'database' | 'redis' | 'stripe' | 'whatsapp' | etc.
-  status          HealthStatus
-  responseTimeMs  Float?
-  errorMessage    String?      @db.Text
-  metadata        Json?        // Extra context (version, pool size, etc.)
-  checkedAt       DateTime     @default(now())
+  id             String       @id @default(cuid())
+  service        String // 'database' | 'redis' | 'stripe' | 'whatsapp' | etc.
+  status         HealthStatus
+  responseTimeMs Float?
+  errorMessage   String?      @db.Text
+  metadata       Json? // Extra context (version, pool size, etc.)
+  checkedAt      DateTime     @default(now())
 
   @@index([service, checkedAt])
   @@index([status, checkedAt])
@@ -3208,29 +3206,29 @@ model platform_health_checks {
 // ── TABLE 3: Incidents ────────────────────────────────────────
 // Every detected outage, degradation, or anomaly.
 model platform_incidents {
-  id               String           @id @default(cuid())
-  title            String
-  description      String           @db.Text
-  severity         IncidentSeverity
-  status           IncidentStatus   @default(DETECTED)
-  affectedServices String[]         // ['database', 'redis', 'stripe']
-  affectedTenants  Int              @default(0) // number of churches impacted
-  detectedAt       DateTime         @default(now())
-  acknowledgedAt   DateTime?
-  resolvedAt       DateTime?
-  acknowledgedBy   String?          // userId
-  resolvedBy       String?          // userId
-  rootCause        String?          @db.Text
-  resolution       String?          @db.Text
-  postMortem       String?          @db.Text
-  timeToDetectMs   Int?             // MTTD
-  timeToAcknowledgeMs Int?          // MTTA
-  timeToResolveMs  Int?             // MTTR
-  isAutoDetected   Boolean          @default(true)
-  alertsSent       Int              @default(0)
+  id                  String           @id @default(cuid())
+  title               String
+  description         String           @db.Text
+  severity            IncidentSeverity
+  status              IncidentStatus   @default(DETECTED)
+  affectedServices    String[] // ['database', 'redis', 'stripe']
+  affectedTenants     Int              @default(0) // number of churches impacted
+  detectedAt          DateTime         @default(now())
+  acknowledgedAt      DateTime?
+  resolvedAt          DateTime?
+  acknowledgedBy      String? // userId
+  resolvedBy          String? // userId
+  rootCause           String?          @db.Text
+  resolution          String?          @db.Text
+  postMortem          String?          @db.Text
+  timeToDetectMs      Int? // MTTD
+  timeToAcknowledgeMs Int? // MTTA
+  timeToResolveMs     Int? // MTTR
+  isAutoDetected      Boolean          @default(true)
+  alertsSent          Int              @default(0)
 
-  timeline    incident_timeline_events[]
-  alerts      incident_alerts[]
+  timeline incident_timeline_events[]
+  alerts   incident_alerts[]
 
   @@index([status, detectedAt])
   @@index([severity, detectedAt])
@@ -3241,7 +3239,7 @@ model platform_incidents {
 model incident_timeline_events {
   id          String   @id @default(cuid())
   incidentId  String
-  event       String   // 'DETECTED' | 'ALERT_SENT' | 'ACKNOWLEDGED' | 'UPDATE' | 'RESOLVED'
+  event       String // 'DETECTED' | 'ALERT_SENT' | 'ACKNOWLEDGED' | 'UPDATE' | 'RESOLVED'
   description String   @db.Text
   author      String   @default("SRE-Agent") // userId or 'SRE-Agent'
   createdAt   DateTime @default(now())
@@ -3254,15 +3252,15 @@ model incident_timeline_events {
 
 // ── TABLE 5: Incident Alerts ──────────────────────────────────
 model incident_alerts {
-  id          String       @id @default(cuid())
-  incidentId  String
-  channel     AlertChannel
-  recipient   String       // phone, email, or userId
-  message     String       @db.Text
-  status      AlertStatus  @default(PENDING)
-  sentAt      DateTime?
-  error       String?
-  createdAt   DateTime     @default(now())
+  id         String       @id @default(cuid())
+  incidentId String
+  channel    AlertChannel
+  recipient  String // phone, email, or userId
+  message    String       @db.Text
+  status     AlertStatus  @default(PENDING)
+  sentAt     DateTime?
+  error      String?
+  createdAt  DateTime     @default(now())
 
   incident platform_incidents @relation(fields: [incidentId], references: [id], onDelete: Cascade)
 
@@ -3274,11 +3272,11 @@ model incident_alerts {
 // Kept for 1 year. Used for trend analysis.
 model platform_metric_summaries {
   id          String     @id @default(cuid())
-  period      String     // 'hourly' | 'daily' | 'weekly'
+  period      String // 'hourly' | 'daily' | 'weekly'
   periodStart DateTime
   periodEnd   DateTime
   metricType  MetricType
-  route       String?    // null = platform-wide aggregate
+  route       String? // null = platform-wide aggregate
   value       Float
   sampleCount Int
   createdAt   DateTime   @default(now())
@@ -3293,18 +3291,18 @@ model platform_metric_summaries {
 // AI-generated performance improvement recommendations.
 // Generated by Agent 13 (Web Performance Engineer).
 model performance_recommendations {
-  id            String   @id @default(cuid())
-  category      String   // 'api' | 'cache' | 'database' | 'bundle' | 'cold-start'
+  id            String    @id @default(cuid())
+  category      String // 'api' | 'cache' | 'database' | 'bundle' | 'cold-start'
   title         String
-  description   String   @db.Text
-  impact        String   // 'HIGH' | 'MEDIUM' | 'LOW'
-  effort        String   // 'HIGH' | 'MEDIUM' | 'LOW'
+  description   String    @db.Text
+  impact        String // 'HIGH' | 'MEDIUM' | 'LOW'
+  effort        String // 'HIGH' | 'MEDIUM' | 'LOW'
   affectedRoute String?
-  codeSnippet   String?  @db.Text
-  isActioned    Boolean  @default(false)
+  codeSnippet   String?   @db.Text
+  isActioned    Boolean   @default(false)
   actionedBy    String?
   actionedAt    DateTime?
-  generatedAt   DateTime @default(now())
+  generatedAt   DateTime  @default(now())
   expiresAt     DateTime // Recommendations expire after 7 days if not actioned
 
   @@index([isActioned, generatedAt])
@@ -3314,16 +3312,16 @@ model performance_recommendations {
 // ── TABLE 8: SLA Records ──────────────────────────────────────
 // Monthly SLA calculation per tenant tier.
 model platform_sla_records {
-  id                String   @id @default(cuid())
-  month             String   // 'YYYY-MM'
-  tier              String   // 'SEMILLA' | 'COSECHA' | 'REINO' | 'RED'
-  targetUptime      Float    @default(0.999) // 99.9%
-  actualUptime      Float
-  totalDowntimeMs   Int      @default(0)
-  incidentCount     Int      @default(0)
-  p1IncidentCount   Int      @default(0)
-  slaBreached       Boolean  @default(false)
-  calculatedAt      DateTime @default(now())
+  id              String   @id @default(cuid())
+  month           String // 'YYYY-MM'
+  tier            String // 'SEMILLA' | 'COSECHA' | 'REINO' | 'RED'
+  targetUptime    Float    @default(0.999) // 99.9%
+  actualUptime    Float
+  totalDowntimeMs Int      @default(0)
+  incidentCount   Int      @default(0)
+  p1IncidentCount Int      @default(0)
+  slaBreached     Boolean  @default(false)
+  calculatedAt    DateTime @default(now())
 
   @@unique([month, tier])
   @@map("platform_sla_records")
