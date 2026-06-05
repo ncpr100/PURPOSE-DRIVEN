@@ -90,19 +90,21 @@ export async function monitoringMiddleware(
     process.env.MONITORING_WEBHOOK_URL ||
     `${request.nextUrl.origin}/api/monitoring/collect`;
 
-  // 🔥 CRITICAL FIX: Fire-and-forget the fetch, DON'T await it
-  // This prevents blocking the callback execution
+  // Fire-and-forget: wrap fetch in async function, call without await
   const sendMetric = async () => {
     try {
       await fetch(targetUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "Khesed-Tek-Monitor/1.0",
+        },
         body: JSON.stringify(payload),
         keepalive: true,
+        duplex: "half",
         cache: "no-store",
         signal: AbortSignal.timeout(2000),
-        duplex: "half",
-      } as RequestInit & { duplex: "half" });
+      } as RequestInit);
     } catch (error: any) {
       // Silent fail: network errors should never block the app
       if (
