@@ -7,9 +7,8 @@
 export class IntelligentCacheWarmer {
   private metrics: CacheMetrics = { hitRate: 0, missRate: 0, avgLatency: 0 };
   private isRunning = false;
-  private monitoringInterval: ReturnType<typeof setInterval> | null = null;
+  private monitoringInterval: NodeJS.Timeout | null = null;
 
-  // Check if Redis is actually configured before attempting to use it
   private get isRedisConfigured(): boolean {
     return !!(
       process.env.REDIS_URL ||
@@ -29,11 +28,26 @@ export class IntelligentCacheWarmer {
     }
 
     console.log("🔥 Warming cache for church:", this.churchId);
-
-    // Use Promise.allSettled to ensure one failure doesn't crash the whole warmer
     await Promise.allSettled([
       this.warmExecutiveReport(),
       this.warmQuickStats(),
+    ]);
+  }
+
+  async forceWarmup() {
+    if (!this.isRedisConfigured) {
+      console.log(
+        "⏭️ [BUILD TIME] Redis not configured. Skipping force warmup.",
+      );
+      return;
+    }
+
+    console.log("🔄 Force warming cache for church:", this.churchId);
+
+    // Delete existing cache first, then warm
+    await Promise.allSettled([
+      this.forceWarmExecutiveReport(),
+      this.forceWarmQuickStats(),
     ]);
   }
 
@@ -84,7 +98,6 @@ export class IntelligentCacheWarmer {
       const cached = await cacheManager.get(key);
       if (!cached) console.log("📊 Pre-warming executive report...");
     } catch (error) {
-      // Silently fail during build if Redis is unreachable
       console.warn(
         "⚠️ Failed to warm executive report cache:",
         (error as Error).message,
@@ -98,9 +111,36 @@ export class IntelligentCacheWarmer {
       const cached = await cacheManager.get(key);
       if (!cached) console.log("📈 Pre-warming quick stats...");
     } catch (error) {
-      // Silently fail during build if Redis is unreachable
       console.warn(
         "⚠️ Failed to warm quick stats cache:",
+        (error as Error).message,
+      );
+    }
+  }
+
+  private async forceWarmExecutiveReport() {
+    try {
+      const key = CACHE_KEYS.EXECUTIVE_REPORT(this.churchId, "30d");
+      await cacheManager.del(key);
+      console.log("🗑️ Deleted executive report cache, warming...");
+      await this.warmExecutiveReport();
+    } catch (error) {
+      console.warn(
+        "⚠️ Failed to force warm executive report cache:",
+        (error as Error).message,
+      );
+    }
+  }
+
+  private async forceWarmQuickStats() {
+    try {
+      const key = CACHE_KEYS.QUICK_STATS(this.churchId);
+      await cacheManager.del(key);
+      console.log("🗑️ Deleted quick stats cache, warming...");
+      await this.warmQuickStats();
+    } catch (error) {
+      console.warn(
+        "⚠️ Failed to force warm quick stats cache:",
         (error as Error).message,
       );
     }
