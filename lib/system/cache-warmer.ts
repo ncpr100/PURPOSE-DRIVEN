@@ -7,12 +7,30 @@
 export class IntelligentCacheWarmer {
   private metrics: CacheMetrics = { hitRate: 0, missRate: 0, avgLatency: 0 };
   private isRunning = false;
-  private monitoringInterval: NodeJS.Timeout | null = null;
+  private monitoringInterval: ReturnType<typeof setInterval> | null = null;
+
+  // Check if Redis is actually configured before attempting to use it
+  private get isRedisConfigured(): boolean {
+    return !!(
+      process.env.REDIS_URL ||
+      process.env.UPSTASH_REDIS_REST_URL ||
+      process.env.KV_URL
+    );
+  }
 
   constructor(private churchId: string = "default") {}
 
   async warmCache() {
+    if (!this.isRedisConfigured) {
+      console.log(
+        "⏭️ [BUILD TIME] Redis not configured. Skipping cache warm to prevent build crashes.",
+      );
+      return;
+    }
+
     console.log("🔥 Warming cache for church:", this.churchId);
+
+    // Use Promise.allSettled to ensure one failure doesn't crash the whole warmer
     await Promise.allSettled([
       this.warmExecutiveReport(),
       this.warmQuickStats(),
@@ -61,15 +79,31 @@ export class IntelligentCacheWarmer {
   }
 
   private async warmExecutiveReport() {
-    const key = CACHE_KEYS.EXECUTIVE_REPORT(this.churchId, "30d");
-    const cached = await cacheManager.get(key);
-    if (!cached) console.log("📊 Pre-warming executive report...");
+    try {
+      const key = CACHE_KEYS.EXECUTIVE_REPORT(this.churchId, "30d");
+      const cached = await cacheManager.get(key);
+      if (!cached) console.log("📊 Pre-warming executive report...");
+    } catch (error) {
+      // Silently fail during build if Redis is unreachable
+      console.warn(
+        "⚠️ Failed to warm executive report cache:",
+        (error as Error).message,
+      );
+    }
   }
 
   private async warmQuickStats() {
-    const key = CACHE_KEYS.QUICK_STATS(this.churchId);
-    const cached = await cacheManager.get(key);
-    if (!cached) console.log("📈 Pre-warming quick stats...");
+    try {
+      const key = CACHE_KEYS.QUICK_STATS(this.churchId);
+      const cached = await cacheManager.get(key);
+      if (!cached) console.log("📈 Pre-warming quick stats...");
+    } catch (error) {
+      // Silently fail during build if Redis is unreachable
+      console.warn(
+        "⚠️ Failed to warm quick stats cache:",
+        (error as Error).message,
+      );
+    }
   }
 
   private updateMetrics() {
