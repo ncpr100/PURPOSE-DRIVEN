@@ -36,31 +36,15 @@ export async function monitoringMiddleware(
   let response: NextResponse;
   let errorMessage: string | undefined;
 
-  try {
-    await fetch(
-      process.env.NEXT_PUBLIC_APP_URL ||
-        "https://khesed-tek-cms-org.vercel.app/api/monitoring/collect",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ timestamp: Date.now(), status: "ok" }),
-        signal: AbortSignal.timeout(1500),
-        keepalive: true,
-      },
-    );
-  } catch (error: any) {
-    if (process.env.NODE_ENV === "development") {
-      console.debug("[MONITORING] Skipped:", error.message);
-    }
-  }
-
+  // === MONITORING DISABLED FOR VERCEL ===
+  // Self-referential fetch calls cause ECONNRESET on Vercel serverless
+  // Re-enable later with Upstash QStash or Vercel Analytics if needed
   const durationMs = Date.now() - startTime;
-  const statusCode = response.status;
+  const statusCode = response?.status || 200; // Safe fallback
   const isError = statusCode >= 400;
-
   const churchId = extractChurchId(request);
   const userId = extractUserId(request);
-
+  // === END MONITORING BLOCK ===
   // Fire-and-forget metric write — never blocks the response
   recordMetric({
     route: normalizeRoute(route),
