@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx -y prisma@6.7.0 generate && next build",
+    "build": "npm install tailwindcss tailwindcss-animate tailwind-merge clsx --legacy-peer-deps && npx -y prisma@6.7.0 generate && next build",
     "start": "next start",
     "lint": "next lint",
     "build:memory-optimized": "./scripts/memory-optimized-build.sh",
