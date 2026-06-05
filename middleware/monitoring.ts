@@ -37,13 +37,21 @@ export async function monitoringMiddleware(
   let errorMessage: string | undefined;
 
   try {
-    response = await handler();
-  } catch (err) {
-    errorMessage = err instanceof Error ? err.message : String(err);
-    response = NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
+    await fetch(
+      process.env.NEXT_PUBLIC_APP_URL ||
+        "https://khesed-tek-cms-org.vercel.app/api/monitoring/collect",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ timestamp: Date.now(), status: "ok" }), // ⚠️ Keep your original payload if different
+        signal: AbortSignal.timeout(1500),
+      },
     );
+  } catch (error) {
+    // Silently fail in production to prevent cold-start crashes
+    if (process.env.NODE_ENV === "development") {
+      console.debug("[MONITORING] Network error skipped:", error.message);
+    }
   }
 
   const durationMs = Date.now() - startTime;
