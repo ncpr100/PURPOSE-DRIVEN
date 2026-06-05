@@ -37,10 +37,10 @@ export const CACHE_KEYS = {
 // CACHE TTL (Time To Live in seconds)
 // ============================================
 export const CACHE_TTL = {
-  SHORT: 300, // 5 minutes
-  MEDIUM: 1800, // 30 minutes
-  LONG: 3600, // 1 hour
-  VERY_LONG: 86400, // 24 hours
+  SHORT: 300,
+  MEDIUM: 1800,
+  LONG: 3600,
+  VERY_LONG: 86400,
   EXECUTIVE_REPORT: 3600,
   QUICK_STATS: 300,
   MEMBER_JOURNEY: 1800,
@@ -85,21 +85,37 @@ function getRedisClient(): Redis | null {
 // ============================================
 // CACHE MANAGER
 // ============================================
-export const cacheManager = {
+class CacheManager {
+  private hits = 0;
+  private misses = 0;
+  private latencies: number[] = [];
+
   async get(key: string): Promise<string | null> {
     const redis = getRedisClient();
     if (!redis) return null;
 
+    const start = Date.now();
     try {
-      return await redis.get(key);
+      const value = await redis.get(key);
+      const latency = Date.now() - start;
+      this.latencies.push(latency);
+
+      if (value) {
+        this.hits++;
+      } else {
+        this.misses++;
+      }
+
+      return (value as string | null) ?? null;
     } catch (error) {
       console.error(
         `❌ [Cache Manager] GET error for key "${key}":`,
         (error as Error).message,
       );
+      this.misses++;
       return null;
     }
-  },
+  }
 
   async set(key: string, value: string, ttl?: number): Promise<void> {
     const redis = getRedisClient();
@@ -117,7 +133,7 @@ export const cacheManager = {
         (error as Error).message,
       );
     }
-  },
+  }
 
   async del(key: string): Promise<void> {
     const redis = getRedisClient();
@@ -131,7 +147,7 @@ export const cacheManager = {
         (error as Error).message,
       );
     }
-  },
+  }
 
   async getJson<T>(key: string): Promise<T | null> {
     const value = await this.get(key);
@@ -142,9 +158,23 @@ export const cacheManager = {
     } catch {
       return null;
     }
-  },
+  }
 
   async setJson<T>(key: string, value: T, ttl?: number): Promise<void> {
     await this.set(key, JSON.stringify(value), ttl);
-  },
-};
+  }
+
+  getMetrics(): CacheMetrics {
+    const total = this.hits + this.misses;
+    const hitRate = total > 0 ? this.hits / total : 0;
+    const missRate = total > 0 ? this.misses / total : 0;
+    const avgLatency =
+      this.latencies.length > 0
+        ? this.latencies.reduce((a, b) => a + b, 0) / this.latencies.length
+        : 0;
+
+    return { hitRate, missRate, avgLatency };
+  }
+}
+
+export const cacheManager = new CacheManager();
