@@ -286,7 +286,8 @@ export default function PlatformSettingsPage() {
       body: "",
     },
   });
-  const [platformSettingsId, setPlatformSettingsId] = useState<string | null>(
+  const [selectedEmailLanguage, setSelectedEmailLanguage] = useState<"es" | "en" | "pt">("es");
+    const [platformSettingsId, setPlatformSettingsId] = useState<string | null>(
     null,
   );
 
@@ -312,7 +313,48 @@ export default function PlatformSettingsPage() {
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const lastFocused = useRef<"subject" | "body">("body");
 
-  const loadDefaultTemplate = () => {
+  
+    const loadEmailTemplateByLanguage = async (lang: "es" | "en" | "pt") => {
+      try {
+        const res = await fetch(`/api/platform/email-templates?type=welcome_church&language=${lang}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.template) {
+            handleSettingChange("welcomeEmail", "subject", data.template.subject);
+            handleSettingChange("welcomeEmail", "body", data.template.body);
+          } else {
+            handleSettingChange("welcomeEmail", "subject", "");
+            handleSettingChange("welcomeEmail", "body", "");
+          }
+        }
+      } catch (error) {
+        console.error("Error loading email template:", error);
+      }
+    };
+
+    const saveEmailTemplateToDb = async () => {
+      try {
+        const res = await fetch('/api/platform/email-templates', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'welcome_church',
+            language: selectedEmailLanguage,
+            subject: settings.welcomeEmail.subject,
+            body: settings.welcomeEmail.body
+          })
+        });
+        if (res.ok) {
+          toast.success(`Plantilla en ${selectedEmailLanguage.toUpperCase()} guardada exitosamente`);
+        } else {
+          toast.error('Error al guardar plantilla');
+        }
+      } catch (error) {
+        console.error('Error saving template:', error);
+        toast.error('Error al guardar plantilla');
+      }
+    };
+const loadDefaultTemplate = () => {
     handleSettingChange("welcomeEmail", "subject", DEFAULT_WELCOME_SUBJECT);
     handleSettingChange("welcomeEmail", "body", DEFAULT_WELCOME_BODY);
   };
@@ -1355,7 +1397,7 @@ export default function PlatformSettingsPage() {
 
               {/* Action buttons */}
               <div className="flex flex-wrap items-center gap-3">
-                <Button onClick={() => handleSaveSettings("Email Bienvenida")}>
+                <Button onClick={async () => { await saveEmailTemplateToDb(); await handleSaveSettings("Email Bienvenida"); }}>
                   <Mail className="h-4 w-4 mr-2" />
                   Guardar Plantilla
                 </Button>
