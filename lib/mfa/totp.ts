@@ -1,74 +1,71 @@
-import { TOTP, Secret } from 'otpauth';
-import { randomBytes } from 'crypto';
+import * as OTPAuth from 'otpauth';
 import { encrypt, decrypt } from './encryption';
-const TOTP_ISSUER = 'Khesed-Tek CMS';
-const TOTP_ALGORITHM = 'SHA1';
-const TOTP_DIGITS = 6;
-const TOTP_PERIOD = 30;
-const TOTP_WINDOW = 1; // ±30 seconds tolerance for clock drift
 /**
- * Generates a new TOTP secret and QR code URL
+ * Genera un nuevo secreto TOTP para un usuario
+ * @param email - Email del usuario (usado como label en el authenticator)
+ * @returns Secret en base32 + URL para QR code
  */
-export function generateTOTPSecret(userEmail: string): {
+export function generateTOTPSecret(email: string): {
   secret: string;
-  encryptedSecret: string;
   qrCodeUrl: string;
-  otpauthUrl: string;
 } {
-  // Generate a random secret (32 bytes = 256 bits)
-  const secretBytes = randomBytes(32);
-  const secret = Buffer.from(secretBytes).toString('base32');
-  // Encrypt the secret before storing
-  const encryptedSecret = encrypt(secret);
-  // Create TOTP instance
-  const totp = new TOTP({
-    issuer: TOTP_ISSUER,
-    label: userEmail,
-    algorithm: TOTP_ALGORITHM,
-    digits: TOTP_DIGITS,
-    period: TOTP_PERIOD,
-    secret: secret as Secret,
+  // Generar un secreto aleatorio de 20 bytes (160 bits) - estándar TOTP
+  const secret = new OTPAuth.Secret({ size: 20 });
+  // Crear instancia TOTP
+  const totp = new OTPAuth.TOTP({
+    issuer: 'Khesed-Tek',
+    label: email,
+    algorithm: 'SHA1',
+    digits: 6,
+    period: 30,
+    secret: secret,
   });
-  const otpauthUrl = totp.toString();
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(otpauthUrl)}`;
+  // secret.base32 ya viene en formato base32 correcto
+  // totp.toString() genera la URL otpauth:// para el QR
   return {
-    secret, // Only for display during setup
-    encryptedSecret, // Store this in database
-    qrCodeUrl,
-    otpauthUrl,
+    secret: secret.base32,
+    qrCodeUrl: totp.toString(),
   };
 }
 /**
- * Verifies a TOTP code against the encrypted secret
+ * Verifica un código TOTP contra un secreto encriptado
+ * @param code - Código de 6 dígitos ingresado por el usuario
+ * @param encryptedSecret - Secreto encriptado (AES-256-GCM) desde la DB
+ * @returns true si el código es válido
  */
-export function verifyTOTP(encryptedSecret: string, token: string): boolean {
+export function verifyTOTP(code: string, encryptedSecret: string): boolean {
   try {
-    const secret = decrypt(encryptedSecret);
-    const totp = new TOTP({
-      issuer: TOTP_ISSUER,
-      algorithm: TOTP_ALGORITHM,
-      digits: TOTP_DIGITS,
-      period: TOTP_PERIOD,
-      secret: secret as Secret,
+    // Desencriptar el secreto
+    const secretBase32 = decrypt(encryptedSecret);
+    // Reconstruir el TOTP
+    const totp = new OTPAuth.TOTP({
+      algorithm: 'SHA1',
+      digits: 6,
+      period: 30,
+      secret: OTPAuth.Secret.fromBase32(secretBase32),
     });
-    const delta = totp.validate({ token, window: TOTP_WINDOW });
+    // Validar con ventana de tolerancia de ±1 período (±30s)
+    const delta = totp.validate({ token: code, window: 1 });
     return delta !== null;
   } catch (error) {
-    console.error('[MFA] TOTP verification error:', error);
+    console.error('[MFA] Error verificando TOTP:', error);
     return false;
   }
 }
 /**
- * Generates a new TOTP code (for testing purposes)
+ * Genera un código QR como Data URL (base64)
+ * Requiere la librería 'qrcode' instalada
+ * @param otpauthUrl - URL otpauth:// generada por generateTOTPSecret
+ * @returns Data URL en formato base64
  */
-export function generateTOTPCode(encryptedSecret: string): string {
-  const secret = decrypt(encryptedSecret);
-  const totp = new TOTP({
-    issuer: TOTP_ISSUER,
-    algorithm: TOTP_ALGORITHM,
-    digits: TOTP_DIGITS,
-    period: TOTP_PERIOD,
-    secret: secret as Secret,
+export async function generateQRCodeDataUrl(otpauthUrl: string): Promise<string> {
+  const QRCode = require('qrcode');
+  return await QRCode.toDataURL(otpauthUrl, {
+    width: 300,
+    margin: 2,
+    color: {
+      dark: '#000000',
+      light: '#ffffff',
+    },
   });
-  return totp.generate();
 }
