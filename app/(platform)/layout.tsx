@@ -3,6 +3,7 @@
 import { PlatformSidebar } from '@/components/platform/platform-sidebar'
 import { PlatformHeader } from '@/components/platform/platform-header'
 import { validateSuperAdminAccess } from '@/lib/server-auth-validator'
+import { MFARequiredBanner } from '@/components/mfa/MFARequiredBanner';
 
 export default async function PlatformLayout({
   children,
@@ -22,7 +23,8 @@ export default async function PlatformLayout({
         
         <main className="flex-1 overflow-y-auto p-3 md:p-6">
           <div className="max-w-full">
-            {children}
+            <MFARequiredBanner />
+        {children}
           </div>
         </main>
       </div>
