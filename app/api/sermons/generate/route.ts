@@ -33,28 +33,24 @@ export async function POST(request: NextRequest) {
     const durationText = duration ? ` de ${duration} minutos` : "";
     const languageText = language === "en" ? "en inglés" : "en español";
 
-    // PROMPT ESTRATÉGICO: Fuerza la exégesis del texto sobre el tema genérico
-    const prompt = `Actúa como un teólogo reformado experto en exégesis bíblica y predicación expositiva. 
-Crea un sermón completo ${languageText}${audienceText}${scriptureText}${durationText} sobre el tema: "${topic}".
+    // PROMPT BLINDADO: Exige exégesis real, prohíbe relleno genérico
+    const prompt = `Eres un exegeta bíblico experto en lenguas originales y contexto histórico. Tu tarea es analizar el texto bíblico proporcionado.
 
-${scripture ? `⚠️ INSTRUCCIÓN CRÍTICA DE EXÉGESIS: El texto base es ${scripture}. Tu sermón DEBE ser una exposición real de este pasaje. No generes contenido genérico o abstracto sobre "${topic}". Analiza el significado original del texto, su contexto histórico-gramatical, y conecta ese significado con el tema. Por ejemplo, si el texto es Efesios 4:22, el sermón debe tratar exegéticamente sobre "despojarse del viejo hombre", no sobre "el yo soy" de manera genérica.` : ""}
-
-MARCO TEOLÓGICO: Teología del Pacto Reformada
-- Enfoque en los pactos bíblicos (Obras, Gracia, Redención)
-- Perspectiva cristocéntrica en toda exposición
-- Aplicación práctica desde la gracia soberana
-- Énfasis en la santificación progresiva
+REGLAS ABSOLUTAS (NO NEGOCIABLES):
+1. PROHIBIDO usar frases genéricas de relleno como "la gracia soberana", "marco del pacto" o "teología reformada" a menos que el texto bíblico lo exija explícitamente.
+2. Tu prioridad #1 es la EXÉGESIS del pasaje: ¿Qué significaba esto para el autor original? ¿Cuál es el contexto histórico-gramatical?
+3. No hagas un sermón genérico sobre el tema "${topic}". El sermón debe surgir DEL TEXTO BÍBLICO (${scripture || "el texto proporcionado"}).
+4. Ejemplo: Si el texto es Efesios 4:22, el sermón debe tratar exegéticamente sobre "despojarse del viejo hombre", no sobre "el yo soy" de forma abstracta.
 
 ESTRUCTURA OBLIGATORIA:
-1. INTRODUCCIÓN: Ilustración de apertura, conexión con la vida cotidiana, propósito del sermón.
-2. CONTEXTO BÍBLICO Y PACTUAL: Trasfondo histórico, ubicación en el pacto de gracia, conexión cristológica.
-3. PUNTOS PRINCIPALES (3 puntos): Cada uno con título, explicación bíblica (exégesis real), aplicación práctica e ilustración.
-4. CONCLUSIÓN REFORMADA: Resumen, exaltación de la gracia, llamado a la fe, oración pastoral.
-5. ESQUEMA ESTRUCTURAL: Tema central, texto principal, 3 puntos (títulos), aplicación clave.
+1. ANÁLISIS EXEGÉTICO: Contexto histórico, significado de palabras clave en el original, y flujo del argumento del autor.
+2. CONEXIÓN CRISTOCÉNTRICA: Cómo este pasaje específico apunta a la obra de Cristo.
+3. APLICACIÓN PRÁCTICA: 3 acciones concretas y medibles para la congregación esta semana, derivadas directamente del texto.
+4. ESQUEMA: Bosquejo homilético limpio (Título, Texto, 3 Puntos, Conclusión).
 
-FORMATO: Markdown limpio, lenguaje bíblicamente fiel, doctrinalmente sólido, pastoralmente cálido. Incluye las 5 Solas donde sea pertinente.`;
+FORMATO: Markdown limpio, tono pastoral pero académicamente riguroso. Sin clichés.`;
 
-    // LLAMADA A OPENROUTER (Free Tier)
+    // LLAMADA A OPENROUTER (Usando tu configuración existente)
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -67,12 +63,12 @@ FORMATO: Markdown limpio, lenguaje bíblicamente fiel, doctrinalmente sólido, p
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "meta-llama/llama-3-8b-instruct:free", // Modelo 100% gratuito en OpenRouter
+          model: "meta-llama/llama-3-8b-instruct:free", // Modelo 100% gratuito
           messages: [
             {
               role: "system",
               content:
-                "Eres un asistente teológico reformado experto en exégesis bíblica. Siempre prioriza el análisis del texto bíblico proporcionado sobre temas genéricos.",
+                "Eres un asistente teológico experto en exégesis bíblica. Siempre prioriza el análisis del texto bíblico proporcionado sobre temas genéricos.",
             },
             {
               role: "user",
@@ -102,7 +98,7 @@ FORMATO: Markdown limpio, lenguaje bíblicamente fiel, doctrinalmente sólido, p
       content: sermonContent,
       usage: {
         tokens: data.usage?.total_tokens || 0,
-        cost: 0, // Free tier
+        cost: 0,
         provider: "OpenRouter (Free Tier)",
       },
     });
@@ -113,23 +109,37 @@ FORMATO: Markdown limpio, lenguaje bíblicamente fiel, doctrinalmente sólido, p
     );
 
     // FALLBACK ESTRATÉGICO: Si OpenRouter falla, usamos la plantilla local
-    const { topic, scripture, audience, duration, language } = await request
+    const { topic, scripture, audience, duration } = await request
       .json()
       .catch(() => ({}));
 
     if (topic) {
-      const fallbackSermon = generateFallbackSermon({
-        topic,
-        scripture,
-        audience,
-        duration,
-        language,
-      });
+      const fallbackSermon = `# SERMÓN: ${topic.toUpperCase()}
+${scripture ? `**Texto Base:** ${scripture}` : ""}
+**Audiencia:** ${audience || "Congregación general"}
+**Duración:** ${duration || "30"} minutos
+
+---
+*Nota: Este sermón fue generado usando una plantilla de respaldo local porque el servicio de IA no respondió. Para obtener un análisis exegético profundo, intenta nuevamente más tarde.*
+
+## 1. INTRODUCCIÓN
+El pasaje de ${scripture || "las Escrituras"} nos invita a reflexionar sobre ${topic.toLowerCase()} desde una perspectiva bíblica y práctica.
+
+## 2. CONTEXTO BÍBLICO
+Este tema tiene raíces profundas en la revelación de Dios. Cristo cumple perfectamente todo lo que este tema requiere.
+
+## 3. PUNTOS PRINCIPALES
+1. **La Perspectiva de Dios:** Nuestra comprensión debe estar fundamentada en la autoridad de las Escrituras.
+2. **Nuestra Respuesta:** Como creyentes, tenemos el privilegio de responder correctamente, fluyendo de corazones regenerados.
+3. **La Gloria de Dios:** El propósito último es declarar que Dios es digno de confianza.
+
+## 4. CONCLUSIÓN
+Comprometámonos a buscar la voluntad de Dios con renovada determinación. Amén.`;
+
       return NextResponse.json({
         content: fallbackSermon,
         usage: { tokens: 0, cost: 0, provider: "Local Fallback Template" },
-        warning:
-          "Generado con plantilla de respaldo (Servicio de IA no disponible)",
+        warning: "Generado con plantilla de respaldo",
       });
     }
 
@@ -138,65 +148,4 @@ FORMATO: Markdown limpio, lenguaje bíblicamente fiel, doctrinalmente sólido, p
       { status: 500 },
     );
   }
-}
-
-// Función de respaldo (Fallback) 100% local y gratuita
-function generateFallbackSermon({
-  topic,
-  scripture,
-  audience,
-  duration,
-  language,
-}: {
-  topic: string;
-  scripture?: string;
-  audience?: string;
-  duration?: string;
-  language?: string;
-}) {
-  const audienceText = audience ? ` para ${audience}` : "";
-  const scriptureText = scripture ? ` basado en ${scripture}` : "";
-  const durationText = duration ? ` de ${duration} minutos` : "";
-
-  return `# SERMÓN REFORMADO: ${topic.toUpperCase()}
-${scriptureText ? `**Texto Base:** ${scripture}` : ""}
-**Audiencia:** ${audience || "Congregación general"}
-**Duración:** ${duration || "30"} minutos
-**Enfoque:** Teología del Pacto Reformada
-
----
-
-## 1. INTRODUCCIÓN
-**Ilustración de apertura:**
-${scripture ? `El pasaje de ${scripture} nos enseña una verdad fundamental sobre ${topic.toLowerCase()}` : `Cuando consideramos el tema de ${topic.toLowerCase()}`}, debemos recordar que estamos viendo este asunto a través del lente de la gracia soberana de Dios.
-
-**Propósito del sermón:**
-Hoy examinaremos lo que las Escrituras enseñan sobre ${topic.toLowerCase()} y cómo podemos aplicar estas verdades en nuestra vida diaria para la gloria de Dios.
-
----
-
-## 2. CONTEXTO BÍBLICO Y PACTUAL
-${scripture ? `El pasaje de ${scripture} fue escrito en un contexto específico que` : "El tema de"} ${topic.toLowerCase()} tiene raíces profundas en la revelación progresiva de Dios. Cristo, como mediador del nuevo pacto, cumple perfectamente todo lo que este tema requiere.
-
----
-
-## 3. PUNTOS PRINCIPALES
-### PUNTO 1: LA PERSPECTIVA DE DIOS
-Las Escrituras nos enseñan que Dios tiene un diseño perfecto. Nuestra comprensión debe estar fundamentada en la autoridad de las Escrituras (Sola Scriptura).
-
-### PUNTO 2: NUESTRA RESPUESTA COMO PUEBLO DEL PACTO
-Como creyentes incluidos en el pacto de gracia, tenemos el privilegio y la responsabilidad de responder correctamente. Esto fluye de corazones regenerados por el Espíritu Santo.
-
-### PUNTO 3: LA GLORIA DE DIOS COMO META FINAL
-El propósito último de toda enseñanza bíblica es la gloria de Dios (Soli Deo Gloria). Nuestra obediencia declara al mundo que Dios es digno de confianza.
-
----
-
-## 4. CONCLUSIÓN REFORMADA
-Hemos visto que ${topic.toLowerCase()} está íntimamente conectado con el pacto de gracia. Comprometámonos a buscar la voluntad de Dios con renovada determinación.
-
-*"Padre celestial, te agradecemos por tu Palabra. Ayúdanos a vivir de manera que te honre. En el nombre de Jesús, Amén."*
-
----
-*Nota: Este sermón fue generado usando una plantilla de respaldo local. Para obtener un análisis exegético profundo, asegúrate de que el servicio de IA (OpenRouter) esté disponible.*`;
 }

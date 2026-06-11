@@ -227,31 +227,23 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
     );
   }
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+  return (      {/* Header Limpio y Unificado */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
             Gestión de Sermones
           </h1>
           <p className="text-muted-foreground">
-            Crea y administra sermones con ayuda de IA
+            Crea, administra y analiza sermones con herramientas de exégesis bíblica e IA.
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button
-            onClick={() => setShowSpanishAssistant(true)}
-            className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]"
-          >
-            <Sparkles className="h-4 w-4 mr-2" />
-            Asistente IA
-          </Button>
-          <Button variant="outline" onClick={() => setShowAssistant(true)}>
-            <BookOpen className="h-4 w-4 mr-2" />
-            Asistente IA (Avanzado)
-          </Button>
-        </div>
+        <Button
+          onClick={() => setShowAssistant(true)}
+          className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+        >
+          <Sparkles className="h-4 w-4 mr-2" />
+          Generar Sermón con IA
+        </Button>
       </div>
 
       {/* Search */}
