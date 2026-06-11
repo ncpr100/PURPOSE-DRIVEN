@@ -164,6 +164,12 @@ All items below were delivered outside the original roadmap scope, fully audited
 | G09 | Spanish Bible API Optimization | 4G Backlog | Backlog |
 | G10 | Migration Suite (Planning Center, ChurchTools, Breeze) | 4G (Weeks 14–16) | Not started |
 
+## Vulnerabilidades Conocidas (Monitoreadas)
+- postcss < 8.5.10: XSS en CSS stringify (riesgo bajo, no procesamos CSS externo)
+- uuid < 11.1.1: Buffer bounds check (riesgo bajo, uso normal no expuesto)
+- Acción: Monitorear actualizaciones de next-auth y exceljs
+- NO ejecutar `npm audit fix --force` (rompería dependencias críticas)
+
 ---
 
 ## Phase A: Agent Activation & Initial Traction
