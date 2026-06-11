@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   Card,
-  CardContent,
+  Content,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -67,11 +67,15 @@ export default function BibleVersionComparison() {
   );
 
   const handleSearch = async () => {
-      const handleSearch = async () => {
-    // 🔍 AGREGA ESTA LÍNEA PARA VERIFICAR LA CLAVE EN EL NAVEGADOR
-    console.log("🔑 Clave en el navegador:", process.env.NEXT_PUBLIC_API_BIBLE_KEY ? "✅ PRESENTE (Longitud: " + process.env.NEXT_PUBLIC_API_BIBLE_KEY.length + ")" : "❌ AUSENTE o VACÍA");
-    
-    if (!searchReference.trim()) {
+    // 🔍 Verificar la clave en el navegador
+    console.log(
+      "🔑 Clave en el navegador:",
+      process.env.NEXT_PUBLIC_API_BIBLE_KEY
+        ? "✅ PRESENTE (Longitud: " +
+            process.env.NEXT_PUBLIC_API_BIBLE_KEY.length +
+            ")"
+        : "❌ AUSENTE o VACÍA",
+    );
 
     console.log("🔍 Bible comparison search initiated");
     console.log("🔍 Search reference:", searchReference);
@@ -219,7 +223,7 @@ export default function BibleVersionComparison() {
                 placeholder="ej: Juan 3:16, Romanos 8:28"
                 value={searchReference}
                 onChange={(e) => setSearchReference(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 className="bg-background text-foreground border-border"
               />
             </div>
@@ -256,22 +260,22 @@ export default function BibleVersionComparison() {
               </Select>
             </div>
           </div>
-          S
+
           <div className="space-y-2">
             <Label className="text-foreground">Versiones a Comparar</Label>
             <div className="flex flex-wrap gap-2">
-              {filteredVersions.map((versions: any) => (
+              {filteredVersions.map((version: any) => (
                 <Badge
-                  key={versions.id}
+                  key={version.id}
                   variant={
-                    selectedVersions.includes(versions.id)
+                    selectedVersions.includes(version.id)
                       ? "default"
                       : "outline"
                   }
                   className="cursor-pointer transition-colors"
-                  onClick={() => toggleVersion(versions.id)}
+                  onClick={() => toggleVersion(version.id)}
                 >
-                  {versions.name}
+                  {version.name}
                 </Badge>
               ))}
             </div>
@@ -463,10 +467,4 @@ export default function BibleVersionComparison() {
       </Card>
     </div>
   );
-}
-
-}
-
-}
-
 }
