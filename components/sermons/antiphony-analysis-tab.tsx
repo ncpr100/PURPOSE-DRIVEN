@@ -1,35 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { toast } from "sonner";
-import {
-  AlertTriangle,
-  Brain,
-  Eye,
-  Globe,
-  Heart,
-  HelpCircle,
-  Loader2,
-  Zap,
-} from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
+import { useState, useEffect } from "react";
+import { Sparkles, AlertTriangle, Lightbulb, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-interface AntiphonyAnalysis {
-  culturalMirror: string | null;
-  skepticFilter: string | null;
-  unresolvedTension: string | null;
-  comfortSentence: string | null;
-  discomfortSentence: string | null;
-  generatedAt?: string;
-}
-
-interface Props {
+interface AntiphonyAnalysisTabProps {
   sermonId: string;
-  existingAnalysis?: AntiphonyAnalysis | null;
-  onTensionGenerated?: (tension: string) => void;
+  existingAnalysis?: any;
+  onTensionGenerated?: (data: any) => void;
   canAnalyze?: boolean;
 }
 
@@ -38,169 +18,214 @@ export function AntiphonyAnalysisTab({
   existingAnalysis,
   onTensionGenerated,
   canAnalyze = true,
-}: Props) {
-  const [analysis, setAnalysis] = useState<AntiphonyAnalysis | null>(
-    existingAnalysis || null,
-  );
-  const [isLoading, setIsLoading] = useState(false);
+}: AntiphonyAnalysisTabProps) {
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysis, setAnalysis] = useState<any>(existingAnalysis || null);
+  const [error, setError] = useState("");
 
-  const runAnalysis = async () => {
-    if (!canAnalyze) {
-      toast.error("Solo los pastores pueden ejecutar este análisis.");
-      return;
+  // Si cambia el existingAnalysis desde el padre, actualizamos el estado
+  useEffect(() => {
+    if (existingAnalysis) {
+      setAnalysis(existingAnalysis);
     }
+  }, [existingAnalysis]);
 
-    setIsLoading(true);
+  const handleAnalyze = async () => {
+    if (!canAnalyze) return;
+
+    setIsAnalyzing(true);
+    setError("");
+
     try {
-      const res = await fetch(`/api/sermons/${sermonId}/antiphony-analysis`, {
+      const res = await fetch(`/api/sermons/${sermonId}/analyze`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
       });
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error al analizar el sermón");
-      setAnalysis(data.analysis);
-      toast.success("Análisis completado");
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error desconocido";
-      toast.error(message);
+
+      if (res.ok && data.success) {
+        setAnalysis(data.analysis);
+        if (onTensionGenerated) {
+          onTensionGenerated(data.analysis);
+        }
+      } else {
+        setError(data.error || "Error al analizar el sermón");
+      }
+    } catch (err) {
+      console.error("Error en análisis:", err);
+      setError("Error de red al conectar con el Motor Antifonal");
     } finally {
-      setIsLoading(false);
+      setIsAnalyzing(false);
     }
   };
 
-  const sendToSmallGroups = () => {
-    if (analysis?.unresolvedTension && onTensionGenerated) {
-      onTensionGenerated(analysis.unresolvedTension);
-      toast.success("Pregunta enviada al módulo de grupos pequeños");
-    }
-  };
+  if (!analysis && !isAnalyzing) {
+    return (
+      <Card className="bg-card border-border">
+        <CardContent className="pt-6 pb-6 text-center space-y-4">
+          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+            <Sparkles className="h-8 w-8 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-foreground">
+              Motor Antifonal (Agente 1)
+            </h3>
+            <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
+              Analiza tu sermón para detectar puntos ciegos culturales,
+              tensiones doctrinales y recomendaciones de aplicación para el
+              contexto latinoamericano.
+            </p>
+          </div>
+          {error && (
+            <p className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+              {error}
+            </p>
+          )}
+          <Button
+            onClick={handleAnalyze}
+            disabled={!canAnalyze || isAnalyzing}
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            {isAnalyzing ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" /> Analizando con
+                IA...
+              </>
+            ) : (
+              <>
+                <Sparkles className="h-4 w-4 mr-2" /> Analizar Sermón
+              </>
+            )}
+          </Button>
+          {!canAnalyze && (
+            <p className="text-xs text-muted-foreground">
+              Guarda el título y el texto base del sermón antes de analizar.
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (isAnalyzing) {
+    return (
+      <Card className="bg-card border-border">
+        <CardContent className="pt-12 pb-12 text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+          <p className="text-foreground font-medium">
+            El Motor Antifonal está analizando tu mensaje...
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Esto puede tomar unos 10-15 segundos.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h3 className="text-lg font-semibold">Análisis ministerial</h3>
-          <p className="text-sm text-muted-foreground">
-            IA como espejo cultural y teológico, no como predicador
-          </p>
-        </div>
-        <Button onClick={runAnalysis} disabled={isLoading || !canAnalyze}>
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Analizando...
-            </>
+      {/* Puntos Ciegos Culturales */}
+      <Card className="border-yellow-200 bg-yellow-50 dark:bg-yellow-900/10 dark:border-yellow-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base flex items-center gap-2 text-yellow-900 dark:text-yellow-100">
+            <AlertTriangle className="h-5 w-5" />
+            Puntos Ciegos Culturales
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {analysis?.culturalBlindSpots?.length > 0 ? (
+            <ul className="space-y-2">
+              {analysis.culturalBlindSpots.map((spot: string, idx: number) => (
+                <li
+                  key={idx}
+                  className="text-sm text-yellow-800 dark:text-yellow-200 flex gap-2 items-start"
+                >
+                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-yellow-600 dark:bg-yellow-400 flex-shrink-0" />
+                  {spot}
+                </li>
+              ))}
+            </ul>
           ) : (
-            <>
-              <Brain className="mr-2 h-4 w-4" />
-              {analysis ? "Revisar análisis" : "Analizar sermón"}
-            </>
+            <p className="text-sm text-yellow-800 dark:text-yellow-200">
+              No se detectaron puntos ciegos culturales significativos.
+            </p>
           )}
+        </CardContent>
+      </Card>
+
+      {/* Tensiones Doctrinales */}
+      <Card className="border-orange-200 bg-orange-50 dark:bg-orange-900/10 dark:border-orange-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base flex items-center gap-2 text-orange-900 dark:text-orange-100">
+            <AlertTriangle className="h-5 w-5" />
+            Tensiones Doctrinales
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {analysis?.doctrinalTensions?.length > 0 ? (
+            <ul className="space-y-2">
+              {analysis.doctrinalTensions.map(
+                (tension: string, idx: number) => (
+                  <li
+                    key={idx}
+                    className="text-sm text-orange-800 dark:text-orange-200 flex gap-2 items-start"
+                  >
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-orange-600 dark:bg-orange-400 flex-shrink-0" />
+                    {tension}
+                  </li>
+                ),
+              )}
+            </ul>
+          ) : (
+            <p className="text-sm text-orange-800 dark:text-orange-200">
+              No se detectaron tensiones doctrinales.
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Recomendaciones de Aplicación */}
+      <Card className="border-green-200 bg-green-50 dark:bg-green-900/10 dark:border-green-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base flex items-center gap-2 text-green-900 dark:text-green-100">
+            <Lightbulb className="h-5 w-5" />
+            Recomendaciones de Aplicación
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {analysis?.applicationSuggestions?.length > 0 ? (
+            <ul className="space-y-2">
+              {analysis.applicationSuggestions.map(
+                (suggestion: string, idx: number) => (
+                  <li
+                    key={idx}
+                    className="text-sm text-green-800 dark:text-green-200 flex gap-2 items-start"
+                  >
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-green-600 dark:bg-green-400 flex-shrink-0" />
+                    {suggestion}
+                  </li>
+                ),
+              )}
+            </ul>
+          ) : (
+            <p className="text-sm text-green-800 dark:text-green-200">
+              No hay recomendaciones adicionales.
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      <div className="flex justify-end">
+        <Button
+          variant="outline"
+          onClick={() => setAnalysis(null)}
+          className="border-border text-muted-foreground hover:text-foreground"
+        >
+          Analizar de nuevo
         </Button>
       </div>
-
-      <div className="rounded-md border border-[hsl(var(--warning)/0.3)] bg-[hsl(var(--warning)/0.10)] p-3 text-sm text-amber-800">
-        <div className="flex items-start gap-2">
-          <AlertTriangle className="mt-0.5 h-4 w-4 text-[hsl(var(--warning))]" />
-          <span>
-            Generado por IA como apoyo ministerial. La decisión pastoral final
-            pertenece al pastor.
-          </span>
-        </div>
-      </div>
-
-      {analysis && (
-        <div className="grid gap-4">
-          <Card className="border-[hsl(var(--success)/0.3)]">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <Heart className="h-4 w-4 text-[hsl(var(--success))]" />
-                Frase de consuelo
-                <Badge variant="outline" className="border-[hsl(var(--success)/0.4)] text-[hsl(var(--success))]">
-                  Para redes sociales
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <blockquote className="border-l-4 border-[hsl(var(--success)/0.30)] pl-4 text-sm italic">
-                “{analysis.comfortSentence || "No disponible"}”
-              </blockquote>
-            </CardContent>
-          </Card>
-
-          <Card className="border-[hsl(var(--warning)/0.3)]">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <Zap className="h-4 w-4 text-[hsl(var(--warning))]" />
-                Frase de incomodidad profética
-                <Badge variant="outline" className="border-[hsl(var(--warning)/0.30)] text-[hsl(var(--warning))]">
-                  Para reflexión
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <blockquote className="border-l-4 border-[hsl(var(--warning)/0.30)] pl-4 text-sm italic">
-                “{analysis.discomfortSentence || "No disponible"}”
-              </blockquote>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <Globe className="h-4 w-4 text-[hsl(var(--info))]" />
-                Espejo cultural
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">{analysis.culturalMirror || "No disponible"}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <Eye className="h-4 w-4 text-[hsl(var(--lavender))]" />
-                Filtro del escéptico
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">{analysis.skepticFilter || "No disponible"}</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-[hsl(var(--info)/0.3)]">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <HelpCircle className="h-4 w-4 text-[hsl(var(--info))]" />
-                Tensión no resuelta
-                <Badge variant="outline" className="border-[hsl(var(--info)/0.4)] text-[hsl(var(--info))]">
-                  Para grupos pequeños
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-3 text-sm font-medium">
-                {analysis.unresolvedTension || "No disponible"}
-              </p>
-              {onTensionGenerated && (
-                <Button size="sm" variant="outline" onClick={sendToSmallGroups}>
-                  Enviar a grupos pequeños
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {!analysis && !isLoading && (
-        <div className="py-12 text-center text-muted-foreground">
-          <Brain className="mx-auto mb-3 h-12 w-12 opacity-30" />
-          <p>Haga clic en analizar sermón para iniciar el análisis ministerial.</p>
-          <p className="mt-1 text-xs">
-            Requiere transcripción o contenido completo del sermón.
-          </p>
-        </div>
-      )}
     </div>
   );
 }

@@ -1767,18 +1767,30 @@ model roles {
 }
 
 model sermons {
-    id        String    @id
+    id        String    @id @default(cuid())
     title     String
-    content   String?
+    content   String? // Borrador completo del sermón
     outline   String?
-    scripture String?
+    scripture String? // Texto base (ej: "Juan 3:16")
     date      DateTime?
     speaker   String?
     churchId  String
     isPublic  Boolean   @default(false)
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @default(now())
-    churches  churches  @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+    // --- CAMPOS NUEVOS PARA AGENTE 1 (MOTOR ANTIFONAL) ---
+    status                 String   @default("draft") // draft, published, archived
+    aiAnalysis             Json? // Resultado completo del análisis IA
+    culturalBlindSpots     String[] // Puntos ciegos culturales detectados
+    doctrinalTensions      String[] // Tensiones doctrinales detectadas
+    applicationSuggestions String[] // Recomendaciones de aplicación práctica
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    churches churches @relation(fields: [churchId], references: [id], onDelete: Cascade)
+
+    @@index([churchId])
+    @@index([date])
 }
 
 model sessions {
@@ -2074,8 +2086,8 @@ model users {
     qrCodesCreated                         qr_codes[]                               @relation("QRCodeCreatedBy")
     dynamicQRCodesCreated                  DynamicQRCode[]                          @relation("DynamicQRCreatedBy")
     platformPaymentsCreated                PlatformPayment[]                        @relation("PlatformPaymentCreatedBy")
-  // G02: Multi-Factor Authentication settings
-  mfaSettings     user_mfa_settings?
+    // G02: Multi-Factor Authentication settings
+    mfaSettings                            user_mfa_settings?
 }
 
 model verification_tokens {
@@ -3432,47 +3444,50 @@ model platform_sla_records {
 }
 
 model email_templates {
-  id        String   @id @default(cuid())
-  type      String   // "welcome_church", "password_reset", "payment_confirmed", "trial_expiring", "subscription_activated"
-  language  String   @default("es") // "es", "en", "pt"
-  subject   String
-  body      String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@unique([type, language])
-  @@index([type])
-  @@index([language])
+    id        String   @id @default(cuid())
+    type      String // "welcome_church", "password_reset", "payment_confirmed", "trial_expiring", "subscription_activated"
+    language  String   @default("es") // "es", "en", "pt"
+    subject   String
+    body      String   @db.Text
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([type, language])
+    @@index([type])
+    @@index([language])
 }
 
 // ============================================================================
 // G02: Multi-Factor Authentication Settings
 // ============================================================================
 model user_mfa_settings {
-  id              String    @id @default(cuid())
-  userId          String    @unique
-  totpSecret      String?   // Encrypted with AES-256-GCM
-  backupCodes     String[]  // Array of bcrypt-hashed codes (10 codes)
-  isEnabled       Boolean   @default(false)
-  failedAttempts  Int       @default(0)
-  lockedUntil     DateTime?
-  lastUsedAt      DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  user            users     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@index([userId])
-  @@index([isEnabled])
+    id             String    @id @default(cuid())
+    userId         String    @unique
+    totpSecret     String? // Encrypted with AES-256-GCM
+    backupCodes    String[] // Array of bcrypt-hashed codes (10 codes)
+    isEnabled      Boolean   @default(false)
+    failedAttempts Int       @default(0)
+    lockedUntil    DateTime?
+    lastUsedAt     DateTime?
+    createdAt      DateTime  @default(now())
+    updatedAt      DateTime  @updatedAt
+    user           users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+    @@index([isEnabled])
 }
 
 // ============================================================================
 // G02: MFA Policy Settings (Super_Admin controls mandatory MFA)
 // ============================================================================
 model mfa_policy_settings {
-  id                String   @id @default(cuid())
-  isEnabled         Boolean  @default(false)  // Super_Admin toggles this ON
-  enforcedAt        DateTime?                 // When policy was enabled
-  gracePeriodHours  Int      @default(24)     // Hours before blocking access
-  requiredRoles     String[] @default(["ADMIN", "SUPER_ADMIN"])
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  @@unique([id])
+    id               String    @id @default(cuid())
+    isEnabled        Boolean   @default(false) // Super_Admin toggles this ON
+    enforcedAt       DateTime? // When policy was enabled
+    gracePeriodHours Int       @default(24) // Hours before blocking access
+    requiredRoles    String[]  @default(["ADMIN", "SUPER_ADMIN"])
+    createdAt        DateTime  @default(now())
+    updatedAt        DateTime  @updatedAt
+
+    @@unique([id])
 }
