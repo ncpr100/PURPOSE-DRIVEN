@@ -77,7 +77,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
   };
 
   const handleDeleteSermon = async (sermonId: string) => {
-    if (!confirm("Ãƒâ€šÃ‚Â¿EstÃƒÆ’Ã‚Â¡s seguro de que deseas eliminar este sermÃƒÆ’Ã‚Â³n?")) {
+    if (!confirm("ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿EstÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡s seguro de que deseas eliminar este sermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n?")) {
       return;
     }
 
@@ -89,11 +89,11 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       if (response.ok) {
         await fetchSermons();
       } else {
-        alert("Error al eliminar el sermÃƒÆ’Ã‚Â³n");
+        alert("Error al eliminar el sermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n");
       }
     } catch (error) {
       console.error("Error deleting sermon:", error);
-      alert("Error al eliminar el sermÃƒÆ’Ã‚Â³n");
+      alert("Error al eliminar el sermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n");
     }
   };
 
@@ -142,7 +142,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Ver SermÃƒÆ’Ã‚Â³n</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Ver SermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n</h1>
           <Button variant="outline" onClick={() => setViewingSermon(null)}>
             Volver
           </Button>
@@ -177,14 +177,14 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
                   className="flex items-center gap-2"
                 >
                   <Brain className="h-4 w-4" />
-                  AnÃƒÆ’Ã‚Â¡lisis ministerial
+                  AnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lisis ministerial
                 </TabsTrigger>
                 <TabsTrigger
                   value="formacion"
                   className="flex items-center gap-2"
                 >
                   <Share2 className="h-4 w-4" />
-                  Contenido formaciÃƒÆ’Ã‚Â³n
+                  Contenido formaciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n
                 </TabsTrigger>
               </TabsList>
 
@@ -234,11 +234,11 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            GestiÃƒÆ’Ã‚Â³n de Sermones
+            GestiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n de Sermones
           </h1>
           <p className="text-muted-foreground">
-            Crea, administra y analiza sermones con herramientas de exÃƒÆ’Ã‚Â©gesis
-            bÃƒÆ’Ã‚Â­blica e IA.
+            Crea, administra y analiza sermones con herramientas de exÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©gesis
+            bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­blica e IA.
           </p>
         </div>
         <Button
@@ -246,7 +246,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          Generar SermÃƒÆ’Ã‚Â³n con IA
+          Generar SermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n con IA
         </Button>
       </div>
 
@@ -256,7 +256,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por tÃƒÆ’Ã‚Â­tulo, escritura o predicador..."
+              placeholder="Buscar por tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­tulo, escritura o predicador..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
