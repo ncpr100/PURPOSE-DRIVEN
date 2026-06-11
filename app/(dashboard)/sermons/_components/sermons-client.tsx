@@ -227,14 +227,17 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
     );
   }
 
-  return (      {/* Header Limpio y Unificado */}
+  return (
+    <div className="space-y-6">
+      {/* Header Limpio y Unificado */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
             Gestión de Sermones
           </h1>
           <p className="text-muted-foreground">
-            Crea, administra y analiza sermones con herramientas de exégesis bíblica e IA.
+            Crea, administra y analiza sermones con herramientas de exégesis
+            bíblica e IA.
           </p>
         </div>
         <Button
