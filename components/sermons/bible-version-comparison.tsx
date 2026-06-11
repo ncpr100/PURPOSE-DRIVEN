@@ -72,7 +72,7 @@ export default function BibleVersionComparison() {
     console.log("🔑 Clave en el navegador:", process.env.NEXT_PUBLIC_API_BIBLE_KEY ? "✅ PRESENTE (Longitud: " + process.env.NEXT_PUBLIC_API_BIBLE_KEY.length + ")" : "❌ AUSENTE o VACÍA");
     
     if (!searchReference.trim()) {
-      
+
     console.log("🔍 Bible comparison search initiated");
     console.log("🔍 Search reference:", searchReference);
     console.log("🔍 Selected versions:", selectedVersions);
@@ -463,4 +463,6 @@ export default function BibleVersionComparison() {
       </Card>
     </div>
   );
+}
+
 }
