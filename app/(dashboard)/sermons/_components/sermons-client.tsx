@@ -1,6 +1,4 @@
-// FORCE REBUILD: Sparkles import verified
 "use client";
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { SermonAssistant } from "@/components/sermons/sermon-assistant";
 import { AntiphonyAnalysisTab } from "@/components/sermons/antiphony-analysis-tab";
 import { FormationContentTab } from "@/components/sermons/formation-content-tab";
-
 import {
   BookOpen,
   Plus,
@@ -24,12 +21,10 @@ import {
   Share2,
 } from "lucide-react";
 import { formatDate, truncateText } from "@/lib/utils";
-
 interface SermonsClientProps {
   userRole: string;
   churchId: string;
 }
-
 export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
   const [sermons, setSermons] = useState<any[]>([]);
   const [filteredSermons, setFilteredSermons] = useState<any[]>([]);
@@ -38,15 +33,12 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
   const [showAssistant, setShowAssistant] = useState(false);
   const [showSpanishAssistant, setShowSpanishAssistant] = useState(false);
   const [viewingSermon, setViewingSermon] = useState<any | null>(null);
-
   useEffect(() => {
     fetchSermons();
   }, []);
-
   useEffect(() => {
     filterSermons();
   }, [sermons, searchTerm]);
-
   const fetchSermons = async () => {
     try {
       const response = await fetch("/api/sermons");
@@ -60,10 +52,8 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       setIsLoading(false);
     }
   };
-
   const filterSermons = () => {
     let filtered = sermons;
-
     if (searchTerm) {
       filtered = filtered.filter(
         (sermon) =>
@@ -72,37 +62,31 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           sermon.speaker?.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
-
     setFilteredSermons(filtered);
   };
-
   const handleDeleteSermon = async (sermonId: string) => {
-    if (!confirm("ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿EstÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡s seguro de que deseas eliminar este sermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n?")) {
+    if (!confirm("¿Estás seguro de que deseas eliminar este sermón?")) {
       return;
     }
-
     try {
       const response = await fetch(`/api/sermons/${sermonId}`, {
         method: "DELETE",
       });
-
       if (response.ok) {
         await fetchSermons();
       } else {
-        alert("Error al eliminar el sermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n");
+        alert("Error al eliminar el sermón");
       }
     } catch (error) {
       console.error("Error deleting sermon:", error);
-      alert("Error al eliminar el sermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n");
+      alert("Error al eliminar el sermón");
     }
   };
-
   const handleSaveFromAssistant = (sermonData: any) => {
     fetchSermons();
     setShowAssistant(false);
     setShowSpanishAssistant(false);
   };
-
   if (showSpanishAssistant) {
     return (
       <div className="space-y-6">
@@ -121,7 +105,6 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       </div>
     );
   }
-
   if (showAssistant) {
     return (
       <div className="space-y-6">
@@ -137,12 +120,11 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       </div>
     );
   }
-
   if (viewingSermon) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Ver SermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Ver Sermón</h1>
           <Button variant="outline" onClick={() => setViewingSermon(null)}>
             Volver
           </Button>
@@ -177,17 +159,16 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
                   className="flex items-center gap-2"
                 >
                   <Brain className="h-4 w-4" />
-                  AnÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡lisis ministerial
+                  Análisis ministerial
                 </TabsTrigger>
                 <TabsTrigger
                   value="formacion"
                   className="flex items-center gap-2"
                 >
                   <Share2 className="h-4 w-4" />
-                  Contenido formaciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n
+                  Contenido formación
                 </TabsTrigger>
               </TabsList>
-
               <TabsContent value="contenido" className="space-y-4">
                 {viewingSermon.outline && (
                   <div>
@@ -210,14 +191,12 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
                   </div>
                 )}
               </TabsContent>
-
               <TabsContent value="analisis">
                 <AntiphonyAnalysisTab
                   sermonId={viewingSermon.id}
                   canAnalyze={userRole === "PASTOR"}
                 />
               </TabsContent>
-
               <TabsContent value="formacion">
                 <FormationContentTab sermonId={viewingSermon.id} />
               </TabsContent>
@@ -227,18 +206,16 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       </div>
     );
   }
-
   return (
     <div className="space-y-6">
-      {/* Header Limpio y Unificado */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            GestiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n de Sermones
+            Gestión de Sermones
           </h1>
           <p className="text-muted-foreground">
-            Crea, administra y analiza sermones con herramientas de exÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©gesis
-            bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­blica e IA.
+            Crea, administra y analiza sermones con herramientas de exégesis
+            bíblica e IA.
           </p>
         </div>
         <Button
@@ -246,17 +223,15 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          Generar SermÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n con IA
+          Generar Sermón con IA
         </Button>
       </div>
-
-      {/* Search */}
       <Card>
         <CardContent className="p-6">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­tulo, escritura o predicador..."
+              placeholder="Buscar por título, escritura o predicador..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
@@ -264,8 +239,6 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* Sermons Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {isLoading ? (
           <div className="col-span-full text-center py-8">
@@ -281,15 +254,11 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
             </p>
             <div className="flex gap-2 justify-center">
               <Button
-                onClick={() => setShowSpanishAssistant(true)}
-                className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]"
+                onClick={() => setShowAssistant(true)}
+                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
               >
                 <Sparkles className="h-4 w-4 mr-2" />
                 Crear con IA
-              </Button>
-              <Button variant="outline" onClick={() => setShowAssistant(true)}>
-                <BookOpen className="h-4 w-4 mr-2" />
-                Crear con IA (Avanzado)
               </Button>
             </div>
           </div>
