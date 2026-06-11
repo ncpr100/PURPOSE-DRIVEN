@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
@@ -12,7 +12,7 @@ import { AutomationTemplates } from './automation-templates'
 import { 
   Zap, Plus, CheckCircle, Clock, TrendingUp, Sparkles,
   Users, Calendar, MessageCircle, MessageSquare, ArrowRight, Palette, HandHeart, Lightbulb
-} from 'lucide-react'
+, Sparkles, Sparkles} from 'lucide-react'
 
 interface AutomationRule {
   id: string; name: string; description: string | null; isActive: boolean
@@ -67,7 +67,7 @@ const getCategoryPastelColor = (category: string): string => {
 
 const getCategoryLabel = (category: string) => {
   const labels: Record<string, string> = {
-    'PRAYER_REQUEST': 'Peticiones de Oración', 'VISITOR_FOLLOWUP': 'Seguimiento de Visitantes',
+    'PRAYER_REQUEST': 'Peticiones de OraciÃ³n', 'VISITOR_FOLLOWUP': 'Seguimiento de Visitantes',
     'SOCIAL_MEDIA': 'Redes Sociales', 'EVENTS': 'Eventos'
   }
   return labels[category] || category
@@ -146,7 +146,7 @@ export function UnifiedAutomationInterface() {
       }
     } catch (error) {
       console.error('Error fetching automation data:', error)
-      toast.error('Error al cargar datos de automatización')
+      toast.error('Error al cargar datos de automatizaciÃ³n')
     } finally {
       setLoading(false)
     }
@@ -218,7 +218,7 @@ export function UnifiedAutomationInterface() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Reglas de Automatización</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Reglas de AutomatizaciÃ³n</h1>
           <p className="text-muted-foreground">Automatiza flujos de trabajo y ahorra tiempo con reglas inteligentes</p>
         </div>
         <Button onClick={() => setCreateDialogOpen(true)} size="lg">
@@ -274,7 +274,7 @@ export function UnifiedAutomationInterface() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Tasa de Éxito</p>
+                <p className="text-sm font-medium text-muted-foreground">Tasa de Ã‰xito</p>
                 <p className="text-3xl font-bold text-foreground">{stats.successRate}%</p>
               </div>
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[hsl(var(--warning)/0.10)]">
@@ -296,7 +296,7 @@ export function UnifiedAutomationInterface() {
               <div>
                 <h3 className="text-lg font-semibold text-foreground">Personaliza los Colores de tus Plantillas</h3>
                 <p className="text-muted-foreground text-sm">
-                  Configura colores personalizados para cada categoría de automatización.
+                  Configura colores personalizados para cada categorÃ­a de automatizaciÃ³n.
                 </p>
               </div>
             </div>
@@ -339,7 +339,7 @@ export function UnifiedAutomationInterface() {
                         </span>
                         {rule.lastExecuted && (
                           <span className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />Última: {new Date(rule.lastExecuted).toLocaleDateString('es-ES')}
+                            <Clock className="h-4 w-4" />Ãšltima: {new Date(rule.lastExecuted).toLocaleDateString('es-ES')}
                           </span>
                         )}
                       </div>
@@ -438,19 +438,19 @@ export function UnifiedAutomationInterface() {
       <Card className="bg-muted/50">
         <CardContent className="p-6">
           <div className="space-y-4">
-            <h3 className="font-semibold text-lg flex items-center gap-2"><Lightbulb className="h-5 w-5 text-warning" /> ¿Cómo funcionan las automatizaciones?</h3>
+            <h3 className="font-semibold text-lg flex items-center gap-2"><Lightbulb className="h-5 w-5 text-warning" /> Â¿CÃ³mo funcionan las automatizaciones?</h3>
             <div className="grid gap-4 md:grid-cols-3 text-sm">
               <div className="space-y-2">
                 <p className="font-medium">1. Disparador</p>
-                <p className="text-muted-foreground">La automatización se activa cuando ocurre un evento específico (nueva petición de oración, visitante, etc.)</p>
+                <p className="text-muted-foreground">La automatizaciÃ³n se activa cuando ocurre un evento especÃ­fico (nueva peticiÃ³n de oraciÃ³n, visitante, etc.)</p>
               </div>
               <div className="space-y-2">
                 <p className="font-medium">2. Condiciones</p>
-                <p className="text-muted-foreground">Se evalúan condiciones (ej: categoría URGENTE, primera visita) para determinar si continuar</p>
+                <p className="text-muted-foreground">Se evalÃºan condiciones (ej: categorÃ­a URGENTE, primera visita) para determinar si continuar</p>
               </div>
               <div className="space-y-2">
                 <p className="font-medium">3. Acciones</p>
-                <p className="text-muted-foreground">Se ejecutan acciones automáticas (enviar email, SMS, crear tarea, notificar equipo)</p>
+                <p className="text-muted-foreground">Se ejecutan acciones automÃ¡ticas (enviar email, SMS, crear tarea, notificar equipo)</p>
               </div>
             </div>
           </div>

@@ -36,7 +36,7 @@ import {
   BellOff,
   HardDrive,
   HelpCircle
-} from 'lucide-react'
+, Sparkles, Sparkles} from 'lucide-react'
 import { PrayerRequestManager } from '@/components/prayer-wall/PrayerRequestManager'
 import { ResponseTemplateManager } from '@/components/prayer-wall/ResponseTemplateManager'
 import { PrayerContactManager } from '@/components/prayer-wall/PrayerContactManager'
@@ -143,7 +143,7 @@ export default function PrayerRequestsPage() {
     const result = await installPrompt.userChoice
     
     if (result.outcome === 'accepted') {
-      toast.success('Aplicación instalada correctamente')
+      toast.success('AplicaciÃƒÂ³n instalada correctamente')
     }
     
     setInstallPrompt(null)
@@ -161,7 +161,7 @@ export default function PrayerRequestsPage() {
     setNotificationPermission(permission)
 
     if (permission === 'granted') {
-      toast.success('Notificaciones activadas - Recibirás alertas de nuevas peticiones')
+      toast.success('Notificaciones activadas - RecibirÃƒÂ¡s alertas de nuevas peticiones')
       // Subscribe to push notifications
       if ('serviceWorker' in navigator && 'PushManager' in window) {
         try {
@@ -171,7 +171,7 @@ export default function PrayerRequestsPage() {
         }
       }
     } else {
-      toast.error('Permisos de notificación denegados')
+      toast.error('Permisos de notificaciÃƒÂ³n denegados')
     }
   }
 
@@ -247,8 +247,8 @@ export default function PrayerRequestsPage() {
         const activities: RecentActivity[] = requests.map((req: any) => ({
           id: req.id,
           type: 'request' as const,
-          title: `Nueva petición de ${req.contact?.fullName || 'Usuario anónimo'}`,
-          description: `Categoría: ${req.category?.name || 'Sin categoría'} - ${req.message.substring(0, 60)}...`,
+          title: `Nueva peticiÃƒÂ³n de ${req.contact?.fullName || 'Usuario anÃƒÂ³nimo'}`,
+          description: `CategorÃƒÂ­a: ${req.category?.name || 'Sin categorÃƒÂ­a'} - ${req.message.substring(0, 60)}...`,
           timestamp: req.createdAt,
           status: req.status
         }))
@@ -315,9 +315,9 @@ export default function PrayerRequestsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard de Peticiones de Oración</h1>
+          <h1 className="text-3xl font-bold">Dashboard de Peticiones de OraciÃƒÂ³n</h1>
           <p className="text-muted-foreground">
-            Gestiona las peticiones de oración, plantillas de respuesta y contactos de tu comunidad
+            Gestiona las peticiones de oraciÃƒÂ³n, plantillas de respuesta y contactos de tu comunidad
           </p>
         </div>
       </div>
@@ -328,7 +328,7 @@ export default function PrayerRequestsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Smartphone className="h-5 w-5 text-[hsl(var(--info))]" />
-              <CardTitle className="text-lg">Aplicación Mobile - Gestión de Peticiones</CardTitle>
+              <CardTitle className="text-lg">AplicaciÃƒÂ³n Mobile - GestiÃƒÂ³n de Peticiones</CardTitle>
             </div>
             <Dialog>
               <DialogTrigger asChild>
@@ -340,7 +340,7 @@ export default function PrayerRequestsPage() {
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <Heart className="h-6 w-6 text-[hsl(var(--destructive))]" />
-                    Guía de Aplicación Mobile - Peticiones de Oración
+                    GuÃƒÂ­a de AplicaciÃƒÂ³n Mobile - Peticiones de OraciÃƒÂ³n
                   </DialogTitle>
                   <DialogDescription>
                     Instala y usa la app para gestionar peticiones desde cualquier dispositivo
@@ -351,28 +351,28 @@ export default function PrayerRequestsPage() {
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
                       <Smartphone className="h-5 w-5 text-[hsl(var(--info))]" />
-                      Instalar como Aplicación Mobile
+                      Instalar como AplicaciÃƒÂ³n Mobile
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      Convierte el sistema de peticiones en una app independiente para responder rápidamente desde cualquier lugar.
+                      Convierte el sistema de peticiones en una app independiente para responder rÃƒÂ¡pidamente desde cualquier lugar.
                     </p>
                     <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--info)/0.3)]">
                       <p className="font-medium text-sm text-foreground">Beneficios para el Equipo:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--info))]">
                         <li>Responde a peticiones urgentes al instante</li>
-                        <li>Funciona sin conexión (modo offline)</li>
+                        <li>Funciona sin conexiÃƒÂ³n (modo offline)</li>
                         <li>Recibe notificaciones de nuevas peticiones</li>
-                        <li>Acceso rápido desde pantalla de inicio</li>
+                        <li>Acceso rÃƒÂ¡pido desde pantalla de inicio</li>
                         <li>No ocupa espacio en App Store/Play Store</li>
                       </ul>
                     </div>
                     <div className="bg-muted/30 p-4 rounded-lg space-y-2">
-                      <p className="font-medium text-sm">Instalación (Recomendado):</p>
+                      <p className="font-medium text-sm">InstalaciÃƒÂ³n (Recomendado):</p>
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
-                        <li>Haz clic en "Instalar Aplicación" arriba</li>
-                        <li>Confirma en el diálogo del navegador</li>
-                        <li>Encuentra el ícono en tu pantalla de inicio</li>
-                        <li>Ábrela como cualquier app nativa</li>
+                        <li>Haz clic en "Instalar AplicaciÃƒÂ³n" arriba</li>
+                        <li>Confirma en el diÃƒÂ¡logo del navegador</li>
+                        <li>Encuentra el ÃƒÂ­cono en tu pantalla de inicio</li>
+                        <li>ÃƒÂbrela como cualquier app nativa</li>
                       </ol>
                     </div>
                   </div>
@@ -390,7 +390,7 @@ export default function PrayerRequestsPage() {
                       <p className="font-medium text-sm text-[hsl(var(--warning))]">Tipos de Notificaciones:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--warning))]">
                         <li><strong>Urgentes:</strong> Peticiones marcadas como prioritarias</li>
-                        <li><strong>Nuevas Solicitudes:</strong> Cuando alguien envía una petición</li>
+                        <li><strong>Nuevas Solicitudes:</strong> Cuando alguien envÃƒÂ­a una peticiÃƒÂ³n</li>
                         <li><strong>Respuestas Pendientes:</strong> Recordatorio de peticiones sin responder</li>
                         <li><strong>Contactos Nuevos:</strong> Cuando se registra un nuevo contacto</li>
                       </ul>
@@ -400,7 +400,7 @@ export default function PrayerRequestsPage() {
                       <ol className="list-decimal list-inside text-sm space-y-1 ml-2">
                         <li>Haz clic en "Activar Notificaciones" arriba</li>
                         <li>Permite las notificaciones cuando el navegador pregunte</li>
-                        <li>Recibirás una notificación de prueba</li>
+                        <li>RecibirÃƒÂ¡s una notificaciÃƒÂ³n de prueba</li>
                         <li>Configura horarios en Ajustes (opcional)</li>
                       </ol>
                     </div>
@@ -410,23 +410,23 @@ export default function PrayerRequestsPage() {
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
                       <HardDrive className="h-5 w-5 text-[hsl(var(--success))]" />
-                      Modo Offline - Trabaja Sin Conexión
+                      Modo Offline - Trabaja Sin ConexiÃƒÂ³n
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      Accede a peticiones recientes incluso sin internet. Ideal para áreas con señal débil.
+                      Accede a peticiones recientes incluso sin internet. Ideal para ÃƒÂ¡reas con seÃƒÂ±al dÃƒÂ©bil.
                     </p>
                     <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--success)/0.3)]">
-                      <p className="font-medium text-sm text-foreground">Qué Funciona Offline:</p>
+                      <p className="font-medium text-sm text-foreground">QuÃƒÂ© Funciona Offline:</p>
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--success))]">
-                        <li>Ver últimas 100 peticiones guardadas</li>
+                        <li>Ver ÃƒÂºltimas 100 peticiones guardadas</li>
                         <li>Leer detalles completos de cada solicitud</li>
-                        <li>Redactar respuestas (se envían al reconectar)</li>
-                        <li>Marcar peticiones como leídas</li>
+                        <li>Redactar respuestas (se envÃƒÂ­an al reconectar)</li>
+                        <li>Marcar peticiones como leÃƒÂ­das</li>
                         <li>Acceder a plantillas de respuesta</li>
                       </ul>
                     </div>
                     <div className="bg-muted/30 p-4 rounded-lg">
-                      <p className="text-sm"><strong>Sincronización Automática:</strong> Cuando recuperes la conexión, todos los cambios se sincronizarán automáticamente con el servidor.</p>
+                      <p className="text-sm"><strong>SincronizaciÃƒÂ³n AutomÃƒÂ¡tica:</strong> Cuando recuperes la conexiÃƒÂ³n, todos los cambios se sincronizarÃƒÂ¡n automÃƒÂ¡ticamente con el servidor.</p>
                     </div>
                   </div>
 
@@ -434,13 +434,13 @@ export default function PrayerRequestsPage() {
                   <div className="space-y-3">
                     <h3 className="font-semibold text-lg flex items-center gap-2">
                       <Zap className="h-5 w-5 text-[hsl(var(--lavender))]" />
-                      Mejores Prácticas para el Equipo
+                      Mejores PrÃƒÂ¡cticas para el Equipo
                     </h3>
                     <div className="bg-[hsl(var(--lavender)/0.10)] p-4 rounded-lg space-y-2 border border-[hsl(var(--lavender)/0.3)]">
                       <ul className="list-disc list-inside text-sm space-y-1 ml-2 text-[hsl(var(--lavender))]">
-                        <li><strong>Instala en todos los dispositivos:</strong> Móvil, tablet y computadora</li>
+                        <li><strong>Instala en todos los dispositivos:</strong> MÃƒÂ³vil, tablet y computadora</li>
                         <li><strong>Activa notificaciones:</strong> No te pierdas peticiones urgentes</li>
-                        <li><strong>Responde rápido:</strong> El modo offline te permite trabajar desde cualquier lugar</li>
+                        <li><strong>Responde rÃƒÂ¡pido:</strong> El modo offline te permite trabajar desde cualquier lugar</li>
                         <li><strong>Usa plantillas:</strong> Ahorra tiempo con respuestas predefinidas</li>
                         <li><strong>Revisa analytics:</strong> Monitorea tiempos de respuesta del equipo</li>
                       </ul>
@@ -472,7 +472,7 @@ export default function PrayerRequestsPage() {
                 <WifiOff className="h-5 w-5 text-[hsl(var(--destructive))]" />
               )}
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Conexión</p>
+                <p className="text-xs font-medium text-muted-foreground">ConexiÃƒÂ³n</p>
                 <Badge variant={isOnline ? 'default' : 'destructive'} className="text-xs">
                   {isOnline ? 'Online' : 'Offline'}
                 </Badge>
@@ -501,7 +501,7 @@ export default function PrayerRequestsPage() {
             <div className="flex items-center gap-2">
               <HardDrive className={`h-5 w-5 ${isInstalled ? 'text-[hsl(var(--info))]' : 'text-muted-foreground/70'}`} />
               <div>
-                <p className="text-xs font-medium text-muted-foreground">Sin Conexión</p>
+                <p className="text-xs font-medium text-muted-foreground">Sin ConexiÃƒÂ³n</p>
                 <Badge variant={isInstalled ? 'default' : 'outline'} className="text-xs">
                   {isInstalled ? 'Disponible' : 'Requiere app'}
                 </Badge>
@@ -518,7 +518,7 @@ export default function PrayerRequestsPage() {
                 className="bg-[hsl(var(--info))] hover:bg-[hsl(var(--info))]"
               >
                 <Smartphone className="h-4 w-4 mr-2" />
-                Instalar Aplicación
+                Instalar AplicaciÃƒÂ³n
               </Button>
             )}
             
@@ -548,7 +548,7 @@ export default function PrayerRequestsPage() {
         <StatCard
           title="Peticiones Pendientes"
           value={stats.pendingRequests}
-          subtitle="Requieren atención"
+          subtitle="Requieren atenciÃƒÂ³n"
           icon={AlertTriangle}
           color="text-[hsl(var(--warning))]"
         />
@@ -641,11 +641,11 @@ export default function PrayerRequestsPage() {
           </TabsTrigger>
           <TabsTrigger value="automation">
             <Zap className="w-4 h-4 mr-2" />
-            Automatización
+            AutomatizaciÃƒÂ³n
           </TabsTrigger>
           <TabsTrigger value="analytics">
             <BarChart3 className="w-4 h-4 mr-2" />
-            Análisis
+            AnÃƒÂ¡lisis
           </TabsTrigger>
           <TabsTrigger value="activity">
             <Activity className="w-4 h-4 mr-2" />
@@ -664,7 +664,7 @@ export default function PrayerRequestsPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[hsl(var(--warning))]" />
-                Gestión de Agradecimientos
+                GestiÃƒÂ³n de Agradecimientos
               </CardTitle>
               <CardDescription>
                 Administra y modera agradecimientos de oraciones contestadas
@@ -677,8 +677,8 @@ export default function PrayerRequestsPage() {
                   Sistema de Agradecimientos Integrado
                 </h3>
                 <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                  Los agradecimientos se gestionan desde el Muro de Oración con funcionalidad completa 
-                  de aprobación, categorización y publicación.
+                  Los agradecimientos se gestionan desde el Muro de OraciÃƒÂ³n con funcionalidad completa 
+                  de aprobaciÃƒÂ³n, categorizaciÃƒÂ³n y publicaciÃƒÂ³n.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button
@@ -686,7 +686,7 @@ export default function PrayerRequestsPage() {
                     className="px-6 py-3 bg-[hsl(var(--warning)/0.10)]0 text-white rounded-lg hover:bg-amber-600 transition-colors font-medium"
                   >
                     <Sparkles className="w-4 h-4 mr-2 inline" />
-                    Ir al Muro de Oración
+                    Ir al Muro de OraciÃƒÂ³n
                   </button>
                   <button
                     onClick={() => window.open('/prayer-wall', '_blank')}
@@ -710,7 +710,7 @@ export default function PrayerRequestsPage() {
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-[hsl(var(--info))]">0</div>
-                  <div className="text-sm text-muted-foreground">Agradecimientos Públicos</div>
+                  <div className="text-sm text-muted-foreground">Agradecimientos PÃƒÂºblicos</div>
                 </div>
               </div>
             </CardContent>
@@ -830,7 +830,7 @@ export default function PrayerRequestsPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Estadísticas Diarias</CardTitle>
+                  <CardTitle>EstadÃƒÂ­sticas Diarias</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-center p-4 bg-[hsl(var(--info)/0.10)] rounded-lg">

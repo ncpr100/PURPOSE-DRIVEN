@@ -12,14 +12,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Search, BookOpen, Loader2 } from "lucide-react";
+import { Search, BookOpen, Loader2 , Sparkles} from "lucide-react";
 import { toast } from "sonner";
 
 const VERSIONS = [
-  { id: "almeida", name: "Almeida (Portugués)" },
-  { id: "kjv", name: "King James Version (Inglés)" },
-  { id: "web", name: "World English Bible (Inglés)" },
-  { id: "clementine", name: "Clementine (Latín)" },
+  { id: "almeida", name: "Almeida (PortuguÃ©s)" },
+  { id: "kjv", name: "King James Version (InglÃ©s)" },
+  { id: "web", name: "World English Bible (InglÃ©s)" },
+  { id: "clementine", name: "Clementine (LatÃ­n)" },
 ];
 
 interface VerseResult {
@@ -39,7 +39,7 @@ export default function BibleVersionComparison() {
 
   const handleSearch = async () => {
     if (!searchReference.trim()) {
-      toast.error("Ingresa una referencia bíblica (ej: Juan 3:16)");
+      toast.error("Ingresa una referencia bÃ­blica (ej: Juan 3:16)");
       return;
     }
 
@@ -50,7 +50,7 @@ export default function BibleVersionComparison() {
       const formattedRef = searchReference.replace(/\s+/g, "+");
       const promises = selectedVersions.map(async (versionId) => {
         try {
-          // Usamos bible-api.com: 100% gratuita, sin API Key, sin límites estrictos
+          // Usamos bible-api.com: 100% gratuita, sin API Key, sin lÃ­mites estrictos
           const response = await fetch(
             `https://bible-api.com/${formattedRef}?translation=${versionId}`,
           );
@@ -62,24 +62,24 @@ export default function BibleVersionComparison() {
           return {
             version: versionName,
             reference: data.reference || searchReference,
-            text: data.text || "Texto no disponible para esta versión.",
+            text: data.text || "Texto no disponible para esta versiÃ³n.",
           };
         } catch (err) {
           return {
             version:
               VERSIONS.find((v) => v.id === versionId)?.name || versionId,
             reference: searchReference,
-            text: "⚠️ No se encontró esta referencia en esta versión.",
+            text: "âš ï¸ No se encontrÃ³ esta referencia en esta versiÃ³n.",
           };
         }
       });
 
       const fetchedResults = await Promise.all(promises);
       setResults(fetchedResults);
-      toast.success("Comparación obtenida exitosamente");
+      toast.success("ComparaciÃ³n obtenida exitosamente");
     } catch (error) {
-      console.error("Error en búsqueda bíblica:", error);
-      toast.error("Error al conectar con el servicio bíblico");
+      console.error("Error en bÃºsqueda bÃ­blica:", error);
+      toast.error("Error al conectar con el servicio bÃ­blico");
     } finally {
       setLoading(false);
     }
@@ -99,11 +99,11 @@ export default function BibleVersionComparison() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Gestión de Sermones
+            GestiÃ³n de Sermones
           </h1>
           <p className="text-muted-foreground">
-            Crea, administra y analiza sermones con herramientas de exégesis
-            bíblica e IA.
+            Crea, administra y analiza sermones con herramientas de exÃ©gesis
+            bÃ­blica e IA.
           </p>
         </div>
         <Button
@@ -111,7 +111,7 @@ export default function BibleVersionComparison() {
           className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          Generar Sermón con IA
+          Generar SermÃ³n con IA
         </Button>
       </div>
 
@@ -121,7 +121,7 @@ export default function BibleVersionComparison() {
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por título, escritura o predicador..."
+              placeholder="Buscar por tÃ­tulo, escritura o predicador..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
