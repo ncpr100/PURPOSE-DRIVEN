@@ -1,113 +1,116 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Textarea } from '@/components/ui/textarea'
-import { SermonAssistant } from '@/components/sermons/sermon-assistant'
-import { AntiphonyAnalysisTab } from '@/components/sermons/antiphony-analysis-tab'
-import { FormationContentTab } from '@/components/sermons/formation-content-tab'
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { SermonAssistant } from "@/components/sermons/sermon-assistant";
+import { AntiphonyAnalysisTab } from "@/components/sermons/antiphony-analysis-tab";
+import { FormationContentTab } from "@/components/sermons/formation-content-tab";
 
-import { 
-  BookOpen, 
-  Plus, 
-  Search, 
-  Edit, 
+import {
+  BookOpen,
+  Plus,
+  Search,
+  Edit,
   Trash2,
   Eye,
   Sparkles,
   Brain,
-  Share2
-} from 'lucide-react'
-import { formatDate, truncateText } from '@/lib/utils'
+  Share2,
+} from "lucide-react";
+import { formatDate, truncateText } from "@/lib/utils";
 
 interface SermonsClientProps {
-  userRole: string
-  churchId: string
+  userRole: string;
+  churchId: string;
 }
 
 export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
-  const [sermons, setSermons] = useState<any[]>([])
-  const [filteredSermons, setFilteredSermons] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [showAssistant, setShowAssistant] = useState(false)
-  const [showSpanishAssistant, setShowSpanishAssistant] = useState(false)
-  const [viewingSermon, setViewingSermon] = useState<any | null>(null)
+  const [sermons, setSermons] = useState<any[]>([]);
+  const [filteredSermons, setFilteredSermons] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showAssistant, setShowAssistant] = useState(false);
+  const [showSpanishAssistant, setShowSpanishAssistant] = useState(false);
+  const [viewingSermon, setViewingSermon] = useState<any | null>(null);
 
   useEffect(() => {
-    fetchSermons()
-  }, [])
+    fetchSermons();
+  }, []);
 
   useEffect(() => {
-    filterSermons()
-  }, [sermons, searchTerm])
+    filterSermons();
+  }, [sermons, searchTerm]);
 
   const fetchSermons = async () => {
     try {
-      const response = await fetch('/api/sermons')
+      const response = await fetch("/api/sermons");
       if (response.ok) {
-        const data = await response.json()
-        setSermons(data)
+        const data = await response.json();
+        setSermons(data);
       }
     } catch (error) {
-      console.error('Error fetching sermons:', error)
+      console.error("Error fetching sermons:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const filterSermons = () => {
-    let filtered = sermons
+    let filtered = sermons;
 
     if (searchTerm) {
-      filtered = filtered.filter(sermon =>
-        sermon.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        sermon.scripture?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        sermon.speaker?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      filtered = filtered.filter(
+        (sermon) =>
+          sermon.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          sermon.scripture?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          sermon.speaker?.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
     }
 
-    setFilteredSermons(filtered)
-  }
+    setFilteredSermons(filtered);
+  };
 
   const handleDeleteSermon = async (sermonId: string) => {
-    if (!confirm('¿Estás seguro de que deseas eliminar este sermón?')) {
-      return
+    if (!confirm("¿Estás seguro de que deseas eliminar este sermón?")) {
+      return;
     }
 
     try {
       const response = await fetch(`/api/sermons/${sermonId}`, {
-        method: 'DELETE',
-      })
+        method: "DELETE",
+      });
 
       if (response.ok) {
-        await fetchSermons()
+        await fetchSermons();
       } else {
-        alert('Error al eliminar el sermón')
+        alert("Error al eliminar el sermón");
       }
     } catch (error) {
-      console.error('Error deleting sermon:', error)
-      alert('Error al eliminar el sermón')
+      console.error("Error deleting sermon:", error);
+      alert("Error al eliminar el sermón");
     }
-  }
+  };
 
   const handleSaveFromAssistant = (sermonData: any) => {
-    fetchSermons()
-    setShowAssistant(false)
-    setShowSpanishAssistant(false)
-  }
+    fetchSermons();
+    setShowAssistant(false);
+    setShowSpanishAssistant(false);
+  };
 
   if (showSpanishAssistant) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Asistente de Sermones</h1>
-          <Button 
-            variant="outline" 
+          <h1 className="text-3xl font-bold tracking-tight">
+            Asistente de Sermones
+          </h1>
+          <Button
+            variant="outline"
             onClick={() => setShowSpanishAssistant(false)}
           >
             Volver a Sermones
@@ -115,24 +118,23 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
         </div>
         <SermonAssistant onSave={handleSaveFromAssistant} />
       </div>
-    )
+    );
   }
 
   if (showAssistant) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Asistente de Sermones (Multilingual)</h1>
-          <Button 
-            variant="outline" 
-            onClick={() => setShowAssistant(false)}
-          >
+          <h1 className="text-3xl font-bold tracking-tight">
+            Asistente de Sermones (Multilingual)
+          </h1>
+          <Button variant="outline" onClick={() => setShowAssistant(false)}>
             Volver a Sermones
           </Button>
         </div>
         <SermonAssistant onSave={handleSaveFromAssistant} />
       </div>
-    )
+    );
   }
 
   if (viewingSermon) {
@@ -140,10 +142,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold tracking-tight">Ver Sermón</h1>
-          <Button 
-            variant="outline" 
-            onClick={() => setViewingSermon(null)}
-          >
+          <Button variant="outline" onClick={() => setViewingSermon(null)}>
             Volver
           </Button>
         </div>
@@ -151,7 +150,9 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           <CardHeader>
             <div className="flex items-start justify-between">
               <div>
-                <CardTitle className="text-2xl">{viewingSermon.title}</CardTitle>
+                <CardTitle className="text-2xl">
+                  {viewingSermon.title}
+                </CardTitle>
                 <div className="mt-2 flex items-center gap-2">
                   {viewingSermon.scripture && (
                     <Badge variant="secondary">{viewingSermon.scripture}</Badge>
@@ -170,11 +171,17 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
             <Tabs defaultValue="contenido" className="space-y-4">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="contenido">Contenido</TabsTrigger>
-                <TabsTrigger value="analisis" className="flex items-center gap-2">
+                <TabsTrigger
+                  value="analisis"
+                  className="flex items-center gap-2"
+                >
                   <Brain className="h-4 w-4" />
                   Análisis ministerial
                 </TabsTrigger>
-                <TabsTrigger value="formacion" className="flex items-center gap-2">
+                <TabsTrigger
+                  value="formacion"
+                  className="flex items-center gap-2"
+                >
                   <Share2 className="h-4 w-4" />
                   Contenido formación
                 </TabsTrigger>
@@ -206,7 +213,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
               <TabsContent value="analisis">
                 <AntiphonyAnalysisTab
                   sermonId={viewingSermon.id}
-                  canAnalyze={userRole === 'PASTOR'}
+                  canAnalyze={userRole === "PASTOR"}
                 />
               </TabsContent>
 
@@ -217,7 +224,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           </CardContent>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -225,13 +232,18 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Gestión de Sermones</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Gestión de Sermones
+          </h1>
           <p className="text-muted-foreground">
             Crea y administra sermones con ayuda de IA
           </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setShowSpanishAssistant(true)} className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]">
+          <Button
+            onClick={() => setShowSpanishAssistant(true)}
+            className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]"
+          >
             <Sparkles className="h-4 w-4 mr-2" />
             Asistente IA
           </Button>
@@ -267,10 +279,15 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           <div className="col-span-full text-center py-12">
             <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground mb-4">
-              {searchTerm ? 'No se encontraron sermones' : 'No hay sermones creados'}
+              {searchTerm
+                ? "No se encontraron sermones"
+                : "No hay sermones creados"}
             </p>
             <div className="flex gap-2 justify-center">
-              <Button onClick={() => setShowSpanishAssistant(true)} className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]">
+              <Button
+                onClick={() => setShowSpanishAssistant(true)}
+                className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]"
+              >
                 <Sparkles className="h-4 w-4 mr-2" />
                 Crear con IA
               </Button>
@@ -333,5 +350,5 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
         )}
       </div>
     </div>
-  )
+  );
 }
