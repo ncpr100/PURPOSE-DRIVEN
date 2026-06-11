@@ -14,7 +14,7 @@ import {
   Calendar,
   Users,
   HandHeart
-, Sparkles, Sparkles} from 'lucide-react'
+} from 'lucide-react'
 
 // Helper function to render preset field icons as JSX components
 export const getPresetFieldIcon = (iconName: string) => {

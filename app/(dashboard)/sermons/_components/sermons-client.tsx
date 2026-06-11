@@ -22,7 +22,7 @@ import {
   Sparkles,
   Brain,
   Share2,
-, Sparkles, Sparkles} from "lucide-react";
+} from "lucide-react";
 import { formatDate, truncateText } from "@/lib/utils";
 
 interface SermonsClientProps {
@@ -77,7 +77,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
   };
 
   const handleDeleteSermon = async (sermonId: string) => {
-    if (!confirm("Ã‚Â¿EstÃƒÂ¡s seguro de que deseas eliminar este sermÃƒÂ³n?")) {
+    if (!confirm("Ãƒâ€šÃ‚Â¿EstÃƒÆ’Ã‚Â¡s seguro de que deseas eliminar este sermÃƒÆ’Ã‚Â³n?")) {
       return;
     }
 
@@ -89,11 +89,11 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       if (response.ok) {
         await fetchSermons();
       } else {
-        alert("Error al eliminar el sermÃƒÂ³n");
+        alert("Error al eliminar el sermÃƒÆ’Ã‚Â³n");
       }
     } catch (error) {
       console.error("Error deleting sermon:", error);
-      alert("Error al eliminar el sermÃƒÂ³n");
+      alert("Error al eliminar el sermÃƒÆ’Ã‚Â³n");
     }
   };
 
@@ -142,7 +142,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Ver SermÃƒÂ³n</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Ver SermÃƒÆ’Ã‚Â³n</h1>
           <Button variant="outline" onClick={() => setViewingSermon(null)}>
             Volver
           </Button>
@@ -177,14 +177,14 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
                   className="flex items-center gap-2"
                 >
                   <Brain className="h-4 w-4" />
-                  AnÃƒÂ¡lisis ministerial
+                  AnÃƒÆ’Ã‚Â¡lisis ministerial
                 </TabsTrigger>
                 <TabsTrigger
                   value="formacion"
                   className="flex items-center gap-2"
                 >
                   <Share2 className="h-4 w-4" />
-                  Contenido formaciÃƒÂ³n
+                  Contenido formaciÃƒÆ’Ã‚Â³n
                 </TabsTrigger>
               </TabsList>
 
@@ -234,11 +234,11 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            GestiÃƒÂ³n de Sermones
+            GestiÃƒÆ’Ã‚Â³n de Sermones
           </h1>
           <p className="text-muted-foreground">
-            Crea, administra y analiza sermones con herramientas de exÃƒÂ©gesis
-            bÃƒÂ­blica e IA.
+            Crea, administra y analiza sermones con herramientas de exÃƒÆ’Ã‚Â©gesis
+            bÃƒÆ’Ã‚Â­blica e IA.
           </p>
         </div>
         <Button
@@ -246,7 +246,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          Generar SermÃƒÂ³n con IA
+          Generar SermÃƒÆ’Ã‚Â³n con IA
         </Button>
       </div>
 
@@ -256,7 +256,7 @@ export function SermonsClient({ userRole, churchId }: SermonsClientProps) {
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar por tÃƒÂ­tulo, escritura o predicador..."
+              placeholder="Buscar por tÃƒÆ’Ã‚Â­tulo, escritura o predicador..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
