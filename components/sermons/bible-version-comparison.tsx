@@ -95,95 +95,117 @@ export default function BibleVersionComparison() {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <BookOpen className="h-5 w-5 text-primary" />
-            Comparación de Versiones Bíblicas
-          </CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Herramienta gratuita y sin límites para comparar textos bíblicos.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="reference" className="text-foreground">
-                Referencia Bíblica
-              </Label>
-              <Input
-                id="reference"
-                placeholder="ej: Juan 3:16 o John 3:16"
-                value={searchReference}
-                onChange={(e) => setSearchReference(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                className="bg-background text-foreground border-border"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label className="text-foreground">Versiones a Comparar</Label>
-              <div className="flex flex-wrap gap-2 pt-1">
-                {VERSIONS.map((version) => (
-                  <Badge
-                    key={version.id}
-                    variant={
-                      selectedVersions.includes(version.id)
-                        ? "default"
-                        : "outline"
-                    }
-                    className="cursor-pointer transition-colors"
-                    onClick={() => toggleVersion(version.id)}
-                  >
-                    {version.name}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          </div>
+      {/* Header Limpio y Unificado */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+            Gestión de Sermones
+          </h1>
+          <p className="text-muted-foreground">
+            Crea, administra y analiza sermones con herramientas de exégesis
+            bíblica e IA.
+          </p>
+        </div>
+        <Button
+          onClick={() => setShowAssistant(true)}
+          className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+        >
+          <Sparkles className="h-4 w-4 mr-2" />
+          Generar Sermón con IA
+        </Button>
+      </div>
 
-          <Button
-            onClick={handleSearch}
-            disabled={loading || selectedVersions.length === 0}
-            className="w-full md:w-auto bg-primary text-primary-foreground hover:bg-primary/90"
-          >
-            {loading ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
-              <Search className="h-4 w-4 mr-2" />
-            )}
-            {loading ? "Buscando..." : "Comparar Versiones"}
-          </Button>
+      {/* Search */}
+      <Card>
+        <CardContent className="p-6">
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar por título, escritura o predicador..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-8"
+            />
+          </div>
         </CardContent>
       </Card>
 
-      {loading && (
-        <div className="text-center py-8 text-muted-foreground">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
-          <p>Consultando textos bíblicos...</p>
-        </div>
-      )}
-
-      {!loading && results.length > 0 && (
-        <div className="grid gap-4">
-          {results.map((result, index) => (
-            <Card key={index} className="bg-card border-border">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg text-foreground">
-                  {result.version}
+      {/* Sermons Grid */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {isLoading ? (
+          <div className="col-span-full text-center py-8">
+            <p>Cargando sermones...</p>
+          </div>
+        ) : filteredSermons.length === 0 ? (
+          <div className="col-span-full text-center py-12">
+            <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground mb-4">
+              {searchTerm
+                ? "No se encontraron sermones"
+                : "No hay sermones creados"}
+            </p>
+            <div className="flex gap-2 justify-center">
+              <Button
+                onClick={() => setShowAssistant(true)}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                <Sparkles className="h-4 w-4 mr-2" />
+                Crear con IA
+              </Button>
+            </div>
+          </div>
+        ) : (
+          filteredSermons.map((sermon) => (
+            <Card key={sermon.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg line-clamp-2">
+                  {sermon.title}
                 </CardTitle>
-                <CardDescription className="text-muted-foreground">
-                  {result.reference}
-                </CardDescription>
+                <div className="flex flex-wrap items-center gap-2">
+                  {sermon.scripture && (
+                    <Badge variant="secondary" className="text-xs">
+                      {sermon.scripture}
+                    </Badge>
+                  )}
+                  {sermon.speaker && (
+                    <Badge variant="outline" className="text-xs">
+                      {sermon.speaker}
+                    </Badge>
+                  )}
+                </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-base leading-relaxed text-foreground whitespace-pre-wrap">
-                  {result.text}
-                </p>
+              <CardContent className="space-y-4">
+                {sermon.content && (
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {truncateText(sermon.content, 120)}
+                  </p>
+                )}
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">
+                    {formatDate(sermon.createdAt)}
+                  </p>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setViewingSermon(sermon)}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDeleteSermon(sermon.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }
