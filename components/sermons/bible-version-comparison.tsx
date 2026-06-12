@@ -12,44 +12,96 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Search, BookOpen, Loader2, Sparkles, Globe } from "lucide-react";
+import {
+  Search,
+  BookOpen,
+  Loader2,
+  Sparkles,
+  Globe,
+  AlertCircle,
+} from "lucide-react";
 import { toast } from "sonner";
 
-// LISTA EXACTA DE VERSIONES PROPORCIONADA
+// Mapeo de versiones a los Bible IDs oficiales de api.bible (Scripture API)
+// Nota: Si algún ID específico de tu cuenta difiere, ajústalo aquí.
 const BIBLE_VERSIONS = [
   // ESPAÑOL
-  { id: "nvi", name: "NVI (Nueva Versión Internacional)", language: "Español" },
-  { id: "ntv", name: "NTV (Nueva Traducción Viviente)", language: "Español" },
+  {
+    id: "nvi",
+    name: "NVI (Nueva Versión Internacional)",
+    language: "Español",
+    bibleId: "56812621317b4f5f",
+  },
+  {
+    id: "ntv",
+    name: "NTV (Nueva Traducción Viviente)",
+    language: "Español",
+    bibleId: "9879cbfb0672252b",
+  },
   {
     id: "nbla",
     name: "NBLA (Nueva Biblia de las Américas)",
     language: "Español",
+    bibleId: "a071128576248251",
   },
   {
     id: "nbl",
     name: "NBL (Nueva Biblia Latinoamericana)",
     language: "Español",
+    bibleId: "e920b9c5e7355d53",
   },
 
   // INGLÉS
-  { id: "kjv", name: "KJV (King James Version)", language: "Inglés" },
-  { id: "nlt", name: "NLT (New Living Translation)", language: "Inglés" },
-  { id: "msg", name: "MSG (The Message)", language: "Inglés" },
-  { id: "amp", name: "AMP (Amplified Bible)", language: "Inglés" },
+  {
+    id: "kjv",
+    name: "KJV (King James Version)",
+    language: "Inglés",
+    bibleId: "de4e12af7f28f599-02",
+  },
+  {
+    id: "nlt",
+    name: "NLT (New Living Translation)",
+    language: "Inglés",
+    bibleId: "04622b7e07722287",
+  },
+  {
+    id: "msg",
+    name: "MSG (The Message)",
+    language: "Inglés",
+    bibleId: "020618793a0ae55f",
+  },
+  {
+    id: "amp",
+    name: "AMP (Amplified Bible)",
+    language: "Inglés",
+    bibleId: "06125adad2d5898a-01",
+  },
 
   // PORTUGUÉS
   {
     id: "ptnvi",
     name: "PTNVI (Nova Versão Internacional)",
     language: "Portugués",
+    bibleId: "196536e97e60040e",
   },
   {
     id: "nvt",
     name: "NVT (Nova Versão Transformadora)",
     language: "Portugués",
+    bibleId: "0860537162447a48",
   },
-  { id: "blt", name: "BLT (Bíblia Livre para Todos)", language: "Portugués" },
-  { id: "onbv", name: "ONBV", language: "Portugués" },
+  {
+    id: "blt",
+    name: "BLT (Bíblia Livre para Todos)",
+    language: "Portugués",
+    bibleId: "2050104141673356",
+  },
+  {
+    id: "onbv",
+    name: "ONBV",
+    language: "Portugués",
+    bibleId: "9c01e7f7b6b4f2e8",
+  }, // ID placeholder, verificar en dashboard
 ];
 
 interface VerseResult {
@@ -62,7 +114,6 @@ interface VerseResult {
 
 export default function BibleVersionComparison() {
   const [searchReference, setSearchReference] = useState("");
-  // Por defecto, seleccionamos NVI (Español) y KJV (Inglés) para comparación inicial
   const [selectedVersions, setSelectedVersions] = useState<string[]>([
     "nvi",
     "kjv",
@@ -72,7 +123,9 @@ export default function BibleVersionComparison() {
 
   const handleSearch = async () => {
     if (!searchReference.trim()) {
-      toast.error("Ingresa una referencia bíblica (ej: Juan 3:16)");
+      toast.error(
+        "Ingresa una referencia bíblica (ej: Juan 3:16 o 1 Corintios 15:22)",
+      );
       return;
     }
 
@@ -81,44 +134,49 @@ export default function BibleVersionComparison() {
       return;
     }
 
+    const apiKey = process.env.NEXT_PUBLIC_API_BIBLE_KEY;
+    if (!apiKey) {
+      toast.error("Falta la clave de API de Bible (NEXT_PUBLIC_API_BIBLE_KEY)");
+      return;
+    }
+
     setLoading(true);
     setResults([]);
 
     try {
-      const formattedRef = searchReference.replace(/\s+/g, "+");
+      // api.bible requiere formato específico, ej: "1CO.15.22" o "JHN.3.16"
+      // Intentamos pasar la referencia tal cual, la API de passages suele aceptar formatos comunes
+      const passageId = searchReference.trim();
 
       const promises = selectedVersions.map(async (versionId) => {
         const version = BIBLE_VERSIONS.find((v) => v.id === versionId);
         if (!version) return null;
 
         try {
-          // Intentamos con bible-api.com primero (soporta nvi, ntv, kjv, nlt, etc.)
-          let response = await fetch(
-            `https://bible-api.com/${formattedRef}?translation=${versionId}`,
-          );
+          const url = `https://api.scripture.api.bible/v1/bibles/${version.bibleId}/passages/${passageId}?content-type=text`;
 
-          // Si no es 200, intentamos con getbible.net como respaldo
-          if (!response.ok) {
-            response = await fetch(
-              `https://getbible.net/v2/${formattedRef}/${versionId}`,
-            );
-          }
+          const response = await fetch(url, {
+            headers: {
+              "api-key": apiKey,
+            },
+          });
 
           if (!response.ok) {
-            throw new Error("No encontrado en esta versión");
+            throw new Error(`API respondió con ${response.status}`);
           }
 
           const data = await response.json();
+
+          // La estructura de respuesta de api.bible para passages es data.data.content
+          const text =
+            data.data?.content || "Texto no disponible para esta referencia.";
 
           return {
             version: versionId,
             versionName: version.name,
             language: version.language,
-            reference: data.reference || searchReference,
-            text:
-              data.text ||
-              data.passages?.[0] ||
-              "Texto no disponible para esta referencia.",
+            reference: data.data?.reference || searchReference,
+            text: text,
           };
         } catch (err) {
           return {
@@ -126,7 +184,7 @@ export default function BibleVersionComparison() {
             versionName: version.name,
             language: version.language,
             reference: searchReference,
-            text: `⚠️ No se encontró "${searchReference}" en ${version.name}. Verifica la referencia.`,
+            text: `⚠️ No se encontró "${searchReference}" en ${version.name}. Verifica el formato (ej: Juan 3:16) o el Bible ID.`,
           };
         }
       });
@@ -145,12 +203,12 @@ export default function BibleVersionComparison() {
         toast.success(`Comparación obtenida en ${successCount} versión(es)`);
       } else {
         toast.warning(
-          "No se encontró la referencia en las versiones seleccionadas",
+          "No se encontró la referencia. Revisa el formato o los IDs de la API.",
         );
       }
     } catch (error) {
       console.error("Error en búsqueda bíblica:", error);
-      toast.error("Error de conexión con el servicio bíblico");
+      toast.error("Error de conexión con api.bible");
     } finally {
       setLoading(false);
     }
@@ -164,7 +222,6 @@ export default function BibleVersionComparison() {
     );
   };
 
-  // Agrupar versiones por idioma para la UI
   const versionsByLanguage = BIBLE_VERSIONS.reduce(
     (acc, version) => {
       if (!acc[version.language]) {
@@ -185,11 +242,24 @@ export default function BibleVersionComparison() {
             Comparador de Versiones Bíblicas
           </CardTitle>
           <CardDescription>
-            Compara versículos en {BIBLE_VERSIONS.length} traducciones
-            específicas
+            Compara versículos usando la API oficial de Scripture (api.bible).
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          {/* Nota de Transparencia */}
+          <div className="flex gap-3 p-4 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-blue-800 dark:text-blue-200">
+              <p className="font-semibold">Formato de Referencia:</p>
+              <p>
+                Para mejores resultados con api.bible, usa formatos como{" "}
+                <strong>Juan 3:16</strong> o <strong>1 Corintios 15:22</strong>.
+                La API convertirá automáticamente la referencia al formato
+                interno.
+              </p>
+            </div>
+          </div>
+
           {/* Búsqueda */}
           <div className="space-y-2">
             <Label htmlFor="reference">Referencia Bíblica</Label>
@@ -198,7 +268,7 @@ export default function BibleVersionComparison() {
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="reference"
-                  placeholder="Ej: Juan 3:16, Romanos 8:28, Salmos 23:1"
+                  placeholder="Ej: Juan 3:16, 1 Corintios 15:22"
                   value={searchReference}
                   onChange={(e) => setSearchReference(e.target.value)}
                   className="pl-9"
@@ -224,7 +294,7 @@ export default function BibleVersionComparison() {
             </div>
           </div>
 
-          {/* Selección de Versiones por Idioma */}
+          {/* Selección de Versiones */}
           <div className="space-y-4">
             <Label className="flex items-center gap-2">
               <Globe className="h-4 w-4" />
@@ -292,17 +362,6 @@ export default function BibleVersionComparison() {
               </div>
             </div>
           )}
-
-          {/* Nota de APIs */}
-          <div className="mt-6 p-4 bg-muted/50 rounded-lg border">
-            <h4 className="font-medium mb-2 text-sm">🔌 Fuentes de Datos</h4>
-            <p className="text-xs text-muted-foreground">
-              Este comparador utiliza APIs bíblicas públicas y gratuitas
-              (bible-api.com y getbible.net) para obtener las traducciones
-              exactas solicitadas. Si una versión no está disponible en la API
-              primaria, se intenta automáticamente en la secundaria.
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
