@@ -1,247 +1,151 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/lib/auth'
-
-export const dynamic = 'force-dynamic'
-
-// Free sermon generation function - no AI dependencies
-function generateStructuredSermon({ topic, scripture, audience, duration, language }: {
-  topic: string;
-  scripture?: string;
-  audience?: string;
-  duration?: string;
-  language?: string;
-}) {
-  const audienceText = audience ? ` para ${audience}` : ''
-  const scriptureText = scripture ? ` basado en ${scripture}` : ''
-  const durationText = duration ? ` de ${duration} minutos` : ''
-  
-  const sermonTemplate = `# SERMÓN REFORMADO: ${topic.toUpperCase()}
-${scriptureText ? `**Texto Base:** ${scripture}` : ''}
-**Audiencia:** ${audience || 'Congregación general'}
-**Duración:** ${duration || '30'} minutos
-**Enfoque:** Teología del Pacto Reformada
-
----
-
-## 1. INTRODUCCIÓN
-
-**Ilustración de apertura:**
-${scripture ? `El pasaje de ${scripture} nos enseña una verdad fundamental sobre` : 'Cuando consideramos el tema de'} ${topic.toLowerCase()}, debemos recordar que estamos viendo este asunto a través del lente de la gracia soberana de Dios. En nuestro contexto actual, muchas personas buscan ${topic.toLowerCase()} de maneras que no honran a Dios.
-
-**Conexión con la vida cotidiana:**
-${audienceText} Vivimos en un mundo que constantemente nos desafía en cuanto a ${topic.toLowerCase()}. La perspectiva bíblica nos ofrece no solo entendimiento, sino también esperanza fundada en las promesas del pacto de gracia.
-
-**Propósito del sermón:**
-Hoy examinaremos lo que las Escrituras enseñan sobre ${topic.toLowerCase()}, cómo esto se relaciona con el pacto de gracia, y cómo podemos aplicar estas verdades en nuestra vida diaria para la gloria de Dios.
-
----
-
-## 2. CONTEXTO BÍBLICO Y PACTUAL
-
-**Trasfondo histórico:**
-${scripture ? `El pasaje de ${scripture} fue escrito en un contexto específico que` : 'El tema de'} ${topic.toLowerCase()} tiene raíces profundas en la revelación progresiva de Dios. Desde Génesis hasta Apocalipsis, vemos cómo Dios ha trabajado a través de sus pactos para revelar su voluntad concerniente a este tema.
-
-**Ubicación en el pacto de gracia:**
-En el marco de la teología del pacto, entendemos que ${topic.toLowerCase()} no es simplemente un concepto aislado, sino que forma parte del gran plan redentor de Dios. Cristo, como mediador del nuevo pacto, cumple perfectamente todo lo que este tema requiere.
-
-**Conexión cristológica:**
-${scripture ? `En ${scripture}, vemos` : 'En relación con'} ${topic.toLowerCase()}, Cristo se presenta como nuestro ejemplo perfecto y nuestro salvador suficiente. Él no solo nos muestra cómo vivir en esta área, sino que también nos capacita mediante su Espíritu.
-
----
-
-## 3. PUNTOS PRINCIPALES
-
-### **PUNTO 1: LA PERSPECTIVA DE DIOS SOBRE ${topic.toUpperCase()}**
-
-**Explicación bíblica:**
-Las Escrituras nos enseñan que Dios tiene un diseño perfecto para ${topic.toLowerCase()}. Su voluntad revelada en su Palabra nos muestra no solo lo que debemos hacer, sino también por qué es importante para nuestro crecimiento espiritual y su gloria.
-
-Desde una perspectiva reformada, entendemos que nuestra comprensión de ${topic.toLowerCase()} debe estar fundamentada en la autoridad de las Escrituras (Sola Scriptura) y aplicada por la gracia de Dios (Sola Gratia).
-
-**Aplicación práctica:**
-En la vida diaria, esto significa que nuestras decisiones concernientes a ${topic.toLowerCase()} deben ser guiadas por principios bíblicos, no por la sabiduría mundana o nuestros propios sentimientos.
-
-**Ilustración:**
-Piense en un navegador GPS que nos guía por el camino correcto. De la misma manera, la Palabra de Dios actúa como nuestro GPS espiritual en el área de ${topic.toLowerCase()}.
-
-### **PUNTO 2: NUESTRA RESPUESTA COMO PUEBLO DEL PACTO**
-
-**Explicación bíblica:**
-Como creyentes que han sido incluidos en el pacto de gracia, tenemos tanto el privilegio como la responsabilidad de responder correctamente a las enseñanzas de Dios sobre ${topic.toLowerCase()}. Esta respuesta fluye de corazones regenerados por el Espíritu Santo.
-
-La santificación progresiva significa que crecemos gradualmente en nuestro entendimiento y aplicación de ${topic.toLowerCase()} a medida que el Espíritu Santo obra en nosotros.
-
-**Aplicación práctica:**
-Esto requiere disciplinas espirituales como la oración, el estudio bíblico, la comunión fraternal, y la obediencia práctica en las áreas donde Dios nos ha dado luz.
-
-**Ilustración:**
-Como un músculo que se fortalece con el ejercicio constante, nuestra capacidad para honrar a Dios en ${topic.toLowerCase()} se desarrolla con la práctica fiel y dependencia del Espíritu Santo.
-
-### **PUNTO 3: LA GLORIA DE DIOS COMO META FINAL**
-
-**Explicación bíblica:**
-El propósito último de toda enseñanza bíblica, incluyendo lo que aprendemos sobre ${topic.toLowerCase()}, es la gloria de Dios (Soli Deo Gloria). Nuestra obediencia en esta área no es principalmente para nuestro beneficio, sino para demostrar la grandeza y bondad de nuestro Dios.
-
-Cuando vivimos según los principios bíblicos relacionados con ${topic.toLowerCase()}, estamos declarando al mundo que Dios es digno de confianza y que sus caminos son perfectos.
-
-**Aplicación práctica:**
-Pregúntese: "¿Cómo puedo honrar a Dios en mi manejo de ${topic.toLowerCase()}?" Esta pregunta debe guiar nuestras decisiones y acciones en esta área.
-
-**Ilustración:**
-Como un espejo que refleja la luz del sol, nuestras vidas deben reflejar la gloria de Dios en cada aspecto, incluyendo ${topic.toLowerCase()}.
-
----
-
-## 4. CONCLUSIÓN REFORMADA
-
-**Resumen dentro del marco del pacto:**
-Hemos visto que ${topic.toLowerCase()} no es un tema periférico en la vida cristiana, sino que está íntimamente conectado con el pacto de gracia y la obra redentora de Cristo. Dios ha provisto todo lo que necesitamos para vivir de manera que le agrade en esta área.
-
-**Exaltación de la gracia soberana:**
-Recordemos que cualquier progreso que hagamos en ${topic.toLowerCase()} es resultado de la gracia de Dios operando en nosotros. No dependemos de nuestras propias fuerzas, sino del poder del Espíritu Santo que habita en nosotros.
-
-**Llamado a la fe y obediencia:**
-Por tanto, comprometámonos a buscar la voluntad de Dios en ${topic.toLowerCase()} con renovada determinación. Que nuestra obediencia fluya de corazones agradecidos por lo que Cristo ha hecho por nosotros.
-
-**Aplicación práctica de la santificación:**
-Esta semana, identifique una manera específica en que puede aplicar lo que hemos aprendido sobre ${topic.toLowerCase()}. Ore pidiendo la ayuda del Espíritu Santo y busque la responsabilidad de hermanos en la fe.
-
-**Oración pastoral final:**
-*"Padre celestial, te agradecemos por tu Palabra que nos guía en todas las áreas de la vida, incluyendo ${topic.toLowerCase()}. Ayúdanos a vivir de manera que te honre y glorifique tu nombre. Que el Espíritu Santo nos capacite para ser fieles en esta área para tu gloria y el bien de otros. En el nombre de Jesús, Amén."*
-
----
-
-## 5. ESQUEMA ESTRUCTURAL
-
-**Tema Central:** ${topic}
-${scripture ? `**Texto Principal:** ${scripture}` : ''}
-
-**Puntos Principales:**
-1. La Perspectiva de Dios sobre ${topic}
-2. Nuestra Respuesta como Pueblo del Pacto  
-3. La Gloria de Dios como Meta Final
-
-**Aplicación Clave:** Vivir ${topic.toLowerCase()} de manera que honre a Dios y refleje nuestra identidad como pueblo del pacto de gracia.
-
-**Enfoque Teológico:** Sola Scriptura • Sola Gratia • Sola Fide • Solus Christus • Soli Deo Gloria
-
----
-
-*Este sermón ha sido estructurado según principios de Teología del Pacto Reformada${durationText ? ` para una duración aproximada${durationText}` : ''}. Se recomienda adaptar los ejemplos y aplicaciones según el contexto específico de la congregación.*`
-
-  return sermonTemplate
-}
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await getServerSession(authOptions);
 
     if (!session?.user?.churchId) {
-      return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ message: "No autorizado" }, { status: 401 });
     }
 
-    if (!['SUPER_ADMIN', 'ADMIN_IGLESIA', 'PASTOR'].includes(session.user.role)) {
-      return NextResponse.json({ message: 'Sin permisos' }, { status: 403 })
+    if (
+      !["SUPER_ADMIN", "ADMIN_IGLESIA", "PASTOR"].includes(session.user.role)
+    ) {
+      return NextResponse.json({ message: "Sin permisos" }, { status: 403 });
     }
 
-    const { topic, scripture, audience, duration, language } = await request.json()
+    const { topic, scripture, audience, duration, language } =
+      await request.json();
 
     if (!topic) {
       return NextResponse.json(
-        { message: 'El tema es requerido' },
-        { status: 400 }
-      )
+        { message: "El tema es requerido" },
+        { status: 400 },
+      );
     }
 
-    // Build the prompt for the AI
-    const audienceText = audience ? ` para ${audience}` : ''
-    const scriptureText = scripture ? ` basado en ${scripture}` : ''
-    const durationText = duration ? ` de ${duration} minutos` : ''
-    const languageText = language === 'en' ? 'en inglés' : 'en español'
+    const audienceText = audience ? ` para ${audience}` : "";
+    const scriptureText = scripture ? ` basado en ${scripture}` : "";
+    const durationText = duration ? ` de ${duration} minutos` : "";
+    const languageText = language === "en" ? "en inglés" : "en español";
 
-    const prompt = `Crea un sermón completo basado en TEOLOGÍA DEL PACTO (Covenant Theology)${audienceText}${scriptureText}${durationText} ${languageText} sobre el tema: "${topic}".
+    // PROMPT BLINDADO: Exige exégesis real, prohíbe relleno genérico
+    const prompt = `Eres un exegeta bíblico experto en lenguas originales y contexto histórico. Tu tarea es analizar el texto bíblico proporcionado.
 
-MARCO TEOLÓGICO: Teología del Pacto Reformada
-- Enfoque en los pactos bíblicos (Obras, Gracia, Redención)
-- Perspectiva cristocéntrica en toda exposición
-- Aplicación práctica desde la gracia soberana
-- Énfasis en la santificación progresiva
+REGLAS ABSOLUTAS (NO NEGOCIABLES):
+1. PROHIBIDO usar frases genéricas de relleno como "la gracia soberana", "marco del pacto" o "teología reformada" a menos que el texto bíblico lo exija explícitamente.
+2. Tu prioridad #1 es la EXÉGESIS del pasaje: ¿Qué significaba esto para el autor original? ¿Cuál es el contexto histórico-gramatical?
+3. No hagas un sermón genérico sobre el tema "${topic}". El sermón debe surgir DEL TEXTO BÍBLICO (${scripture || "el texto proporcionado"}).
+4. Ejemplo: Si el texto es Efesios 4:22, el sermón debe tratar exegéticamente sobre "despojarse del viejo hombre", no sobre "el yo soy" de forma abstracta.
 
-El sermón debe incluir:
+ESTRUCTURA OBLIGATORIA:
+1. ANÁLISIS EXEGÉTICO: Contexto histórico, significado de palabras clave en el original, y flujo del argumento del autor.
+2. CONEXIÓN CRISTOCÉNTRICA: Cómo este pasaje específico apunta a la obra de Cristo.
+3. APLICACIÓN PRÁCTICA: 3 acciones concretas y medibles para la congregación esta semana, derivadas directamente del texto.
+4. ESQUEMA: Bosquejo homilético limpio (Título, Texto, 3 Puntos, Conclusión).
 
-1. INTRODUCCIÓN (2-3 párrafos)
-   - Una historia, ilustración o pregunta que capture la atención
-   - Conexión con la vida cotidiana desde una perspectiva reformada
-   - Presentación clara del tema principal dentro del pacto de gracia
+FORMATO: Markdown limpio, tono pastoral pero académicamente riguroso. Sin clichés.`;
 
-2. CONTEXTO BÍBLICO Y PACTUAL (2-3 párrafos)
-   - Trasfondo histórico y cultural del pasaje${scriptureText ? ` (${scripture})` : ''}
-   - Ubicación dentro del desarrollo del pacto de gracia
-   - Conexión cristológica del texto
-   - Explicación del significado original y su cumplimiento en Cristo
-
-3. PUNTOS PRINCIPALES (3 puntos principales desde perspectiva reformada)
-   - Cada punto debe tener:
-     * Un título claro y memorable
-     * Explicación bíblica (2-3 párrafos)
-     * Aplicación práctica para la vida diaria
-     * Una ilustración o ejemplo contemporáneo
-
-4. CONCLUSIÓN REFORMADA (2-3 párrafos)
-   - Resumen de los puntos principales dentro del marco del pacto
-   - Exaltación de la gracia soberana de Dios
-   - Llamado a la fe y obediencia en Cristo
-   - Aplicación práctica de la santificación
-   - Oración pastoral final
-
-5. ESQUEMA ESTRUCTURAL
-   - Proporciona un esquema breve al final con:
-     * Tema central
-     * Texto principal
-     * 3 puntos principales (títulos solamente)
-     * Aplicación clave
-
-FORMATO: Escribe el sermón en formato de prosa reformada, con párrafos bien estructurados. Usa un lenguaje bíblicamente fiel, doctrinalmente sólido pero pastoralmente cálido. Incluye referencias bíblicas abundantes, especialmente conexiones cristológicas. Asegúrate de que sea aplicable a la vida cristiana moderna desde una perspectiva pactual.
-
-ÉNFASIS TEOLÓGICO: 
-- Sola Scriptura, Sola Gratia, Sola Fide, Solus Christus, Soli Deo Gloria
-- Enfoque en la gloria de Dios en la salvación
-- Equilibrio entre doctrina y aplicación práctica
-
-DURACIÓN: El sermón debe ser apropiado para${durationText} de predicación.
-
-Por favor, crea el sermón completo siguiendo esta estructura reformada:`
-
-    const messages = [
+    // LLAMADA A OPENROUTER (Usando tu configuración existente)
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
       {
-        role: 'user',
-        content: prompt
-      }
-    ]
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "HTTP-Referer":
+            process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+          "X-Title": "Khesed-Tek Sermon Generator",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "meta-llama/llama-3-8b-instruct:free", // Modelo 100% gratuito
+          messages: [
+            {
+              role: "system",
+              content:
+                "Eres un asistente teológico experto en exégesis bíblica. Siempre prioriza el análisis del texto bíblico proporcionado sobre temas genéricos.",
+            },
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 4000,
+        }),
+      },
+    );
 
-    // Instead of using paid AI service, provide structured template generation
-    // This maintains the Reformed theology structure while being 100% free
-    
-    const structuredSermon = generateStructuredSermon({
-      topic,
-      scripture,
-      audience,
-      duration,
-      language
-    })
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("OpenRouter API Error:", errorData);
+      throw new Error(`OpenRouter failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const sermonContent = data.choices?.[0]?.message?.content || "";
+
+    if (!sermonContent) {
+      throw new Error("OpenRouter returned empty content");
+    }
 
     return NextResponse.json({
-      content: structuredSermon,
-      usage: { tokens: 0, cost: 0 } // Free alternative
-    })
-
+      content: sermonContent,
+      usage: {
+        tokens: data.usage?.total_tokens || 0,
+        cost: 0,
+        provider: "OpenRouter (Free Tier)",
+      },
+    });
   } catch (error) {
-    console.error('Error generating sermon:', error)
+    console.error(
+      "Error generating sermon with AI, triggering fallback:",
+      error,
+    );
+
+    // FALLBACK ESTRATÉGICO: Si OpenRouter falla, usamos la plantilla local
+    const { topic, scripture, audience, duration } = await request
+      .json()
+      .catch(() => ({}));
+
+    if (topic) {
+      const fallbackSermon = `# SERMÓN: ${topic.toUpperCase()}
+${scripture ? `**Texto Base:** ${scripture}` : ""}
+**Audiencia:** ${audience || "Congregación general"}
+**Duración:** ${duration || "30"} minutos
+
+---
+*Nota: Este sermón fue generado usando una plantilla de respaldo local porque el servicio de IA no respondió. Para obtener un análisis exegético profundo, intenta nuevamente más tarde.*
+
+## 1. INTRODUCCIÓN
+El pasaje de ${scripture || "las Escrituras"} nos invita a reflexionar sobre ${topic.toLowerCase()} desde una perspectiva bíblica y práctica.
+
+## 2. CONTEXTO BÍBLICO
+Este tema tiene raíces profundas en la revelación de Dios. Cristo cumple perfectamente todo lo que este tema requiere.
+
+## 3. PUNTOS PRINCIPALES
+1. **La Perspectiva de Dios:** Nuestra comprensión debe estar fundamentada en la autoridad de las Escrituras.
+2. **Nuestra Respuesta:** Como creyentes, tenemos el privilegio de responder correctamente, fluyendo de corazones regenerados.
+3. **La Gloria de Dios:** El propósito último es declarar que Dios es digno de confianza.
+
+## 4. CONCLUSIÓN
+Comprometámonos a buscar la voluntad de Dios con renovada determinación. Amén.`;
+
+      return NextResponse.json({
+        content: fallbackSermon,
+        usage: { tokens: 0, cost: 0, provider: "Local Fallback Template" },
+        warning: "Generado con plantilla de respaldo",
+      });
+    }
+
     return NextResponse.json(
-      { message: 'Error generando el sermón' },
-      { status: 500 }
-    )
+      { message: "Error generando el sermón" },
+      { status: 500 },
+    );
   }
 }

@@ -1,235 +1,153 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Search, Copy, BookOpen, Zap, Eye, EyeOff } from 'lucide-react'
-import { freeBibleService, BibleVerse, FREE_BIBLE_VERSIONS } from '@/lib/services/free-bible-service'
-import { toast } from 'sonner'
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Search, BookOpen, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 
-interface ComparisonResult {
-  reference: string
-  verses: BibleVerse[]
-  crossReferences: string[]
-  loading: boolean
-  error?: string
+const VERSIONS = [
+  { id: "almeida", name: "Almeida (Portugués)" },
+  { id: "kjv", name: "King James Version (Inglés)" },
+  { id: "web", name: "World English Bible (Inglés)" },
+  { id: "clementine", name: "Clementine (Latín)" },
+];
+
+interface VerseResult {
+  version: string;
+  reference: string;
+  text: string;
 }
 
 export default function BibleVersionComparison() {
-  const [searchReference, setSearchReference] = useState('')
-  const [selectedVersions, setSelectedVersions] = useState<string[]>(['RVR1960', 'NVI', 'TLA'])
-  const [comparisonResult, setComparisonResult] = useState<ComparisonResult | null>(null)
-  const [crossReferences, setCrossReferences] = useState<string[]>([])
-  const [showDifferences, setShowDifferences] = useState(true)
-  const [topic, setTopic] = useState('')
+  const [searchReference, setSearchReference] = useState("");
+  const [selectedVersions, setSelectedVersions] = useState<string[]>([
+    "almeida",
+    "kjv",
+  ]);
+  const [results, setResults] = useState<VerseResult[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // Available languages for filtering
-  const languages = [...new Set(FREE_BIBLE_VERSIONS.map(v => v.language))]
-  const [selectedLanguage, setSelectedLanguage] = useState('es')
-
-  // Filter versions by selected language
-  const filteredVersions = FREE_BIBLE_VERSIONS.filter(v => v.language === selectedLanguage)
-
-  /**
-   * Search and compare Bible versions
-   */
   const handleSearch = async () => {
-    console.log(' Bible comparison search initiated')
-    console.log(' Search reference:', searchReference)
-    console.log(' Selected versions:', selectedVersions)
-    
     if (!searchReference.trim()) {
-      console.log(' Empty search reference')
-      toast.error('Por favor ingresa una referencia bíblica')
-      return
+      toast.error("Ingresa una referencia bíblica (ej: Juan 3:16)");
+      return;
     }
 
-    if (selectedVersions.length === 0) {
-      console.log(' No versions selected')
-      toast.error('Selecciona al menos una versión para comparar')
-      return
-    }
-
-    setComparisonResult({
-      reference: searchReference,
-      verses: [],
-      crossReferences: [],
-      loading: true
-    })
+    setLoading(true);
+    setResults([]);
 
     try {
-      console.log(' Starting Bible service calls...')
-      
-      // Get verses from selected versions
-      console.log(' Calling compareVerses with:', searchReference, selectedVersions)
-      const verses = await freeBibleService.compareVerses(searchReference, selectedVersions)
-      console.log(' Verses received:', verses.length, verses)
-      
-      // Get cross-references
-      console.log(' Calling getCrossReferences with:', searchReference, topic)
-      const crossRefs = await freeBibleService.getCrossReferences(searchReference, topic)
-      console.log(' Cross references received:', crossRefs.length, crossRefs)
-      
-      setComparisonResult({
-        reference: searchReference,
-        verses,
-        crossReferences: crossRefs,
-        loading: false
-      })
+      const formattedRef = searchReference.replace(/\s+/g, "+");
+      const promises = selectedVersions.map(async (versionId) => {
+        try {
+          const response = await fetch(
+            `https://bible-api.com/${formattedRef}?translation=${versionId}`,
+          );
+          if (!response.ok) throw new Error("No encontrado");
+          const data = await response.json();
 
-      setCrossReferences(crossRefs)
-      
-      if (verses.length === 0) {
-        console.log('️ No verses found')
-        toast.warning('No se encontraron versículos para esta referencia')
-      } else {
-        console.log(' Search completed successfully')
-        toast.success(`Se encontraron ${verses.length} versiones`)
-      }
-      
+          const versionName =
+            VERSIONS.find((v) => v.id === versionId)?.name || versionId;
+          return {
+            version: versionName,
+            reference: data.reference || searchReference,
+            text: data.text || "Texto no disponible para esta versión.",
+          };
+        } catch (err) {
+          return {
+            version:
+              VERSIONS.find((v) => v.id === versionId)?.name || versionId,
+            reference: searchReference,
+            text: "⚠️ No se encontró esta referencia en esta versión.",
+          };
+        }
+      });
+
+      const fetchedResults = await Promise.all(promises);
+      setResults(fetchedResults);
+      toast.success("Comparación obtenida exitosamente");
     } catch (error) {
-      console.error(' Bible comparison search error:', error)
-      setComparisonResult({
-        reference: searchReference,
-        verses: [],
-        crossReferences: [],
-        loading: false,
-        error: error instanceof Error ? error.message : 'Error desconocido'
-      })
-      toast.error('Error al buscar el versículo')
+      console.error("Error en búsqueda bíblica:", error);
+      toast.error("Error al conectar con el servicio bíblico");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  /**
-   * Add/remove version from comparison
-   */
   const toggleVersion = (versionId: string) => {
-    setSelectedVersions(prev => {
-      if (prev.includes(versionId)) {
-        return prev.filter(v => v !== versionId)
-      } else {
-        return [...prev, versionId]
-      }
-    })
-  }
-
-  /**
-   * Copy verse text to clipboard
-   */
-  const copyVerse = (verse: BibleVerse) => {
-    const text = `${verse.reference} (${verse.version})\n${verse.text}`
-    if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText(text)
-      toast.success('Versículo copiado al portapapeles')
-    }
-  }
-
-  /**
-   * Highlight differences between versions (simplified)
-   */
-  const highlightDifferences = (text: string, allTexts: string[]): React.ReactNode => {
-    if (!showDifferences || allTexts.length < 2) {
-      return text
-    }
-
-    // Simple word-based difference highlighting
-    const words = text.split(' ')
-    const otherWords = allTexts.filter(t => t !== text).flatMap(t => t.split(' '))
-    
-    return (
-      <span>
-        {words.map((word, index) => {
-          const isUnique = !otherWords.some(otherword => 
-            otherword.toLowerCase().replace(/[^\w]/g, '') === word.toLowerCase().replace(/[^\w]/g, '')
-          )
-          
-          return (
-            <span
-              key={index}
-              className={isUnique ? 'bg-[hsl(var(--warning)/0.15)] px-1 rounded' : ''}
-              title={isUnique ? 'Palabra única en esta versión' : undefined}
-            >
-              {word}
-              {index < words.length - 1 ? ' ' : ''}
-            </span>
-          )
-        })}
-      </span>
-    )
-  }
-
-  /**
-   * Search cross-reference
-   */
-  const searchCrossReference = (reference: string) => {
-    setSearchReference(reference)
-    handleSearch()
-  }
+    setSelectedVersions((prev) =>
+      prev.includes(versionId)
+        ? prev.filter((v) => v !== versionId)
+        : [...prev, versionId],
+    );
+  };
 
   return (
     <div className="space-y-6">
-      {/* Search Section */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
-            Comparación de Versiones Bíblicas
+            Comparador de Versiones Bíblicas
           </CardTitle>
           <CardDescription>
-            Compara diferentes versiones de la Biblia y encuentra referencias cruzadas
+            Compara versículos en diferentes traducciones bíblicas
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Reference Input */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="reference">Referencia Bíblica</Label>
-              <Input
-                id="reference"
-                placeholder="ej: Juan 3:16, Romanos 8:28"
-                value={searchReference}
-                onChange={(e) => setSearchReference(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="topic">Tema (opcional)</Label>
-              <Input
-                id="topic"
-                placeholder="ej: amor, fe, esperanza"
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="language">Idioma</Label>
-              <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="es">Español</SelectItem>
-                  <SelectItem value="en">English</SelectItem>
-                </SelectContent>
-              </Select>
+          <div className="space-y-2">
+            <Label htmlFor="reference">Referencia Bíblica</Label>
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="reference"
+                  placeholder="Ej: Juan 3:16"
+                  value={searchReference}
+                  onChange={(e) => setSearchReference(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <Button
+                onClick={handleSearch}
+                disabled={loading || selectedVersions.length === 0}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Buscando...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    Comparar
+                  </>
+                )}
+              </Button>
             </div>
           </div>
 
-          {/* Version Selection */}
           <div className="space-y-2">
             <Label>Versiones a Comparar</Label>
             <div className="flex flex-wrap gap-2">
-              {filteredVersions.map((version) => (
+              {VERSIONS.map((version) => (
                 <Badge
                   key={version.id}
-                  variant={selectedVersions.includes(version.id) ? "default" : "outline"}
+                  variant={
+                    selectedVersions.includes(version.id)
+                      ? "default"
+                      : "outline"
+                  }
                   className="cursor-pointer"
                   onClick={() => toggleVersion(version.id)}
                 >
@@ -237,156 +155,28 @@ export default function BibleVersionComparison() {
                 </Badge>
               ))}
             </div>
-            <p className="text-sm text-muted-foreground">
-              {selectedVersions.length} versiones seleccionadas
-            </p>
           </div>
 
-          {/* Search Button */}
-          <div className="flex gap-2">
-            <Button onClick={handleSearch} disabled={comparisonResult?.loading}>
-              <Search className="h-4 w-4 mr-2" />
-              {comparisonResult?.loading ? 'Buscando...' : 'Buscar'}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setShowDifferences(!showDifferences)}
-            >
-              {showDifferences ? (
-                <><EyeOff className="h-4 w-4 mr-2" /> Ocultar Diferencias</>
-              ) : (
-                <><Eye className="h-4 w-4 mr-2" /> Mostrar Diferencias</>
-              )}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Results Section */}
-      {comparisonResult && (
-        <Tabs defaultValue="comparison" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="comparison">
-              Comparación ({comparisonResult.verses.length})
-            </TabsTrigger>
-            <TabsTrigger value="crossrefs">
-              Referencias Cruzadas ({comparisonResult.crossReferences.length})
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="comparison" className="space-y-4">
-            {comparisonResult.loading ? (
-              <Card>
-                <CardContent className="py-8">
-                  <div className="text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                    <p>Buscando versículos...</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : comparisonResult.error ? (
-              <Card>
-                <CardContent className="py-8">
-                  <div className="text-center text-[hsl(var(--destructive))]">
-                    <p>Error: {comparisonResult.error}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : comparisonResult.verses.length > 0 ? (
-              <div className="grid gap-4">
-                {comparisonResult.verses.map((verse, index) => (
-                  <Card key={index}>
-                    <CardHeader className="pb-2">
-                      <div className="flex justify-between items-center">
-                        <CardTitle className="text-lg">
-                          {verse.version} - {verse.reference}
-                        </CardTitle>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => copyVerse(verse)}
-                        >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Copiar
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-base leading-relaxed">
-                        {showDifferences ? 
-                          highlightDifferences(
-                            verse.text, 
-                            comparisonResult.verses.map(v => v.text)
-                          ) : 
-                          verse.text
-                        }
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card>
-                <CardContent className="py-8">
-                  <div className="text-center">
-                    <p>No se encontraron versículos para &quot;{comparisonResult.reference}&quot;</p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-
-          <TabsContent value="crossrefs" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5" />
-                  Referencias Cruzadas
-                </CardTitle>
-                <CardDescription>
-                  Versículos relacionados con {comparisonResult.reference}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ScrollArea className="h-60">
-                  <div className="space-y-2">
-                    {crossReferences.map((ref, index) => (
-                      <div key={index}>
-                        <Button
-                          variant="ghost"
-                          className="justify-start w-full text-left"
-                          onClick={() => searchCrossReference(ref)}
-                        >
-                          <BookOpen className="h-4 w-4 mr-2" />
-                          {ref}
-                        </Button>
-                        {index < crossReferences.length - 1 && <Separator />}
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      )}
-
-      {/* Instructions */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="text-sm text-muted-foreground space-y-2">
-            <h4 className="font-medium text-foreground">Instrucciones de uso:</h4>
-            <ul className="list-disc list-inside space-y-1">
-              <li>Ingresa una referencia bíblica (ej: &quot;Juan 3:16&quot;, &quot;1 Corintios 13:4-7&quot;)</li>
-              <li>Selecciona las versiones que deseas comparar haciendo clic en las etiquetas</li>
-              <li>Opcionalmente añade un tema para obtener referencias cruzadas más precisas</li>
-              <li>Las diferencias entre versiones se resaltan en amarillo cuando está activado</li>
-              <li>Haz clic en las referencias cruzadas para buscarlas automáticamente</li>
-              <li>Usa el botón &quot;Copiar&quot; para copiar cualquier versículo al portapapeles</li>
-            </ul>
-          </div>
+          {results.length > 0 && (
+            <div className="space-y-4 mt-6">
+              <h3 className="font-semibold text-lg">Resultados</h3>
+              {results.map((result, idx) => (
+                <Card key={idx}>
+                  <CardHeader>
+                    <CardTitle className="text-base">
+                      {result.version}
+                    </CardTitle>
+                    <CardDescription>{result.reference}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm leading-relaxed">{result.text}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

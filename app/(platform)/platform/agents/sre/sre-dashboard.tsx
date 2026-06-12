@@ -62,11 +62,12 @@ const SERVICE_CONFIG: Record<
   database: { label: "Base de Datos", icon: "🗄️", critical: true },
   redis: { label: "Redis Cache", icon: "⚡", critical: true },
   production_url: { label: "URL Producción", icon: "🌐", critical: true },
-  stripe: { label: "Stripe", icon: "💳", critical: true },
+  stripe: { label: "Stripe (Backup)", icon: "💳", critical: false },
+  paddle: { label: "Paddle (MoR)", icon: "💰", critical: true },
   whatsapp: { label: "WhatsApp Business", icon: "💬", critical: true },
   mailgun: { label: "Mailgun Email", icon: "📧", critical: false },
   twilio: { label: "Twilio SMS", icon: "📱", critical: false },
-  abacusai: { label: "AbacusAI", icon: "🧠", critical: false },
+  openrouter: { label: "OpenRouter AI", icon: "🌐", critical: true },
 };
 
 const STATUS_CONFIG = {

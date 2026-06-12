@@ -5,15 +5,12 @@
   "framework": "nextjs",
   "functions": {
     "app/api/members/import/**/*.js": {
-      "memory": 1024,
       "maxDuration": 60
     },
     "app/**/*.js": {
-      "memory": 1024,
       "maxDuration": 30
     },
     "app/api/**/*.js": {
-      "memory": 512,
       "maxDuration": 15
     }
   },

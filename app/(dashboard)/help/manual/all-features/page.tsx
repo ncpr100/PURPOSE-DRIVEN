@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -23,20 +23,20 @@ export default function AllFeaturesGuide() {
 
   const categories = [
     { id: 'core', name: 'Funciones Principales', icon: <Home className="h-4 w-4" />, color: 'bg-[hsl(var(--info)/0.10)]0' },
-    { id: 'analytics', name: 'Analíticas', icon: <BarChart3 className="h-4 w-4" />, color: 'bg-[hsl(var(--lavender)/0.10)]0' },
-    { id: 'automation', name: 'Automatización', icon: <Zap className="h-4 w-4" />, color: 'bg-[hsl(var(--warning)/0.10)]0' },
-    { id: 'communication', name: 'Comunicación', icon: <Mail className="h-4 w-4" />, color: 'bg-[hsl(var(--success)/0.10)]0' },
+    { id: 'analytics', name: 'AnalÃƒÂ­ticas', icon: <BarChart3 className="h-4 w-4" />, color: 'bg-[hsl(var(--lavender)/0.10)]0' },
+    { id: 'automation', name: 'AutomatizaciÃƒÂ³n', icon: <Zap className="h-4 w-4" />, color: 'bg-[hsl(var(--warning)/0.10)]0' },
+    { id: 'communication', name: 'ComunicaciÃƒÂ³n', icon: <Mail className="h-4 w-4" />, color: 'bg-[hsl(var(--success)/0.10)]0' },
     { id: 'volunteers', name: 'Voluntarios', icon: <Award className="h-4 w-4" />, color: 'bg-[hsl(var(--warning)/0.10)]0' },
     { id: 'forms', name: 'Formularios', icon: <FileText className="h-4 w-4" />, color: 'bg-[hsl(var(--destructive)/0.08)]0' },
     { id: 'advanced', name: 'Avanzadas', icon: <Sparkles className="h-4 w-4" />, color: 'bg-primary/[0.06]0' },
-    { id: 'settings', name: 'Configuración', icon: <Settings className="h-4 w-4" />, color: 'bg-muted/300' }
+    { id: 'settings', name: 'ConfiguraciÃƒÂ³n', icon: <Settings className="h-4 w-4" />, color: 'bg-muted/300' }
   ]
 
   const allFeatures = [
     // CORE FEATURES (15)
     {
       id: 1,
-      name: "Gestión de Miembros",
+      name: "GestiÃƒÂ³n de Miembros",
       category: "core",
       description: "Agregar, editar, importar miembros individuales o masivamente",
       accessPath: "/members",
@@ -47,7 +47,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 2,
-      name: "Gestión de Eventos",
+      name: "GestiÃƒÂ³n de Eventos",
       category: "core",
       description: "Crear eventos, check-in con QR, seguimiento de asistencia",
       accessPath: "/events",
@@ -58,9 +58,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 3,
-      name: "Gestión de Donaciones",
+      name: "GestiÃƒÂ³n de Donaciones",
       category: "core",
-      description: "Registro manual y en línea de donaciones con Stripe",
+      description: "Registro manual y en lÃƒÂ­nea de donaciones con Stripe",
       accessPath: "/donations",
       manual: "/help/manual/phase-1-getting-started",
       videoAvailable: false,
@@ -82,7 +82,7 @@ export default function AllFeaturesGuide() {
       id: 5,
       name: "Dashboard Principal",
       category: "core",
-      description: "Vista general de métricas clave de la iglesia",
+      description: "Vista general de mÃƒÂ©tricas clave de la iglesia",
       accessPath: "/",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: true,
@@ -91,9 +91,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 6,
-      name: "Muro de Oración",
+      name: "Muro de OraciÃƒÂ³n",
       category: "core",
-      description: "Peticiones de oración públicas con seguimiento",
+      description: "Peticiones de oraciÃƒÂ³n pÃƒÂºblicas con seguimiento",
       accessPath: "/prayer-wall",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -102,7 +102,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 7,
-      name: "Evaluación Espiritual",
+      name: "EvaluaciÃƒÂ³n Espiritual",
       category: "core",
       description: "Cuestionarios de dones espirituales y madurez",
       accessPath: "/members/[id]/spiritual-assessment",
@@ -113,7 +113,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 8,
-      name: "Gestión de Familias",
+      name: "GestiÃƒÂ³n de Familias",
       category: "core",
       description: "Agrupar miembros por familia con relaciones",
       accessPath: "/families",
@@ -137,7 +137,7 @@ export default function AllFeaturesGuide() {
       id: 10,
       name: "Constructor de Sitio Web",
       category: "core",
-      description: "Crear sitio web público de la iglesia",
+      description: "Crear sitio web pÃƒÂºblico de la iglesia",
       accessPath: "/website-builder",
       manual: "/help/manual/phase-2-configuration",
       videoAvailable: false,
@@ -159,7 +159,7 @@ export default function AllFeaturesGuide() {
       id: 12,
       name: "Reportes Financieros",
       category: "core",
-      description: "Gráficos de ingresos, donantes recurrentes",
+      description: "GrÃƒÂ¡ficos de ingresos, donantes recurrentes",
       accessPath: "/donations/reports",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: false,
@@ -168,9 +168,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 13,
-      name: "Gestión de Grupos Pequeños",
+      name: "GestiÃƒÂ³n de Grupos PequeÃƒÂ±os",
       category: "core",
-      description: "Crear y administrar grupos de estudio bíblico",
+      description: "Crear y administrar grupos de estudio bÃƒÂ­blico",
       accessPath: "/groups",
       manual: "/help/manual/phase-1-getting-started",
       videoAvailable: false,
@@ -181,7 +181,7 @@ export default function AllFeaturesGuide() {
       id: 14,
       name: "Check-in Digital (QR)",
       category: "core",
-      description: "Registro de asistencia con códigos QR únicos",
+      description: "Registro de asistencia con cÃƒÂ³digos QR ÃƒÂºnicos",
       accessPath: "/events/[id]/check-in",
       manual: "/help/manual/phase-4-events",
       videoAvailable: true,
@@ -203,9 +203,9 @@ export default function AllFeaturesGuide() {
     // ANALYTICS (8)
     {
       id: 16,
-      name: "Analíticas Generales",
+      name: "AnalÃƒÂ­ticas Generales",
       category: "analytics",
-      description: "Reportes estándar de miembros, finanzas, eventos",
+      description: "Reportes estÃƒÂ¡ndar de miembros, finanzas, eventos",
       accessPath: "/analytics",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: true,
@@ -214,9 +214,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 17,
-      name: "Analíticas Inteligentes (AI)",
+      name: "AnalÃƒÂ­ticas Inteligentes (AI)",
       category: "analytics",
-      description: "Predicciones de retención, recomendaciones, insights",
+      description: "Predicciones de retenciÃƒÂ³n, recomendaciones, insights",
       accessPath: "/intelligent-analytics",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: true,
@@ -238,7 +238,7 @@ export default function AllFeaturesGuide() {
       id: 19,
       name: "Member Journey Analytics",
       category: "analytics",
-      description: "Análisis de ciclo de vida de miembros",
+      description: "AnÃƒÂ¡lisis de ciclo de vida de miembros",
       accessPath: "/intelligent-analytics/member-journey",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: false,
@@ -247,7 +247,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 20,
-      name: "Predicción de Retención",
+      name: "PredicciÃƒÂ³n de RetenciÃƒÂ³n",
       category: "analytics",
       description: "AI identifica miembros en riesgo de abandono",
       accessPath: "/intelligent-analytics/retention-predictions",
@@ -271,7 +271,7 @@ export default function AllFeaturesGuide() {
       id: 22,
       name: "Proyecciones Financieras",
       category: "analytics",
-      description: "Predicción de ingresos futuros con AI",
+      description: "PredicciÃƒÂ³n de ingresos futuros con AI",
       accessPath: "/intelligent-analytics/financial-projections",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: false,
@@ -280,7 +280,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 23,
-      name: "Exportación Avanzada",
+      name: "ExportaciÃƒÂ³n Avanzada",
       category: "analytics",
       description: "Exportar a PDF Ejecutivo, Excel, CSV con branding",
       accessPath: "/analytics/export",
@@ -293,9 +293,9 @@ export default function AllFeaturesGuide() {
     // AUTOMATION (5)
     {
       id: 24,
-      name: "Reglas de Automatización",
+      name: "Reglas de AutomatizaciÃƒÂ³n",
       category: "automation",
-      description: "Crear flujos automáticos basados en triggers",
+      description: "Crear flujos automÃƒÂ¡ticos basados en triggers",
       accessPath: "/automation-rules",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -304,7 +304,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 25,
-      name: "Automatización de Redes Sociales",
+      name: "AutomatizaciÃƒÂ³n de Redes Sociales",
       category: "automation",
       description: "Auto-publicar en Facebook, Instagram, Twitter, etc.",
       accessPath: "/social-media",
@@ -315,9 +315,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 26,
-      name: "Email de Bienvenida Automático",
+      name: "Email de Bienvenida AutomÃƒÂ¡tico",
       category: "automation",
-      description: "Envía email cuando se agrega nuevo miembro",
+      description: "EnvÃƒÂ­a email cuando se agrega nuevo miembro",
       accessPath: "/automation-rules",
       manual: "/help/manual/phase-5-communications",
       videoAvailable: false,
@@ -328,7 +328,7 @@ export default function AllFeaturesGuide() {
       id: 27,
       name: "Recordatorios de Eventos",
       category: "automation",
-      description: "Notificaciones automáticas antes de eventos",
+      description: "Notificaciones automÃƒÂ¡ticas antes de eventos",
       accessPath: "/events/[id]/settings",
       manual: "/help/manual/phase-4-events",
       videoAvailable: false,
@@ -339,7 +339,7 @@ export default function AllFeaturesGuide() {
       id: 28,
       name: "Seguimiento de Visitantes",
       category: "automation",
-      description: "Email automático a visitantes primerizos",
+      description: "Email automÃƒÂ¡tico a visitantes primerizos",
       accessPath: "/automation-rules",
       manual: "/help/manual/phase-5-communications",
       videoAvailable: false,
@@ -374,7 +374,7 @@ export default function AllFeaturesGuide() {
       id: 31,
       name: "Notificaciones Push",
       category: "communication",
-      description: "Alertas móviles en tiempo real",
+      description: "Alertas mÃƒÂ³viles en tiempo real",
       accessPath: "/communications/push",
       manual: "/help/manual/phase-5-communications",
       videoAvailable: false,
@@ -385,7 +385,7 @@ export default function AllFeaturesGuide() {
       id: 32,
       name: "Plantillas de Email",
       category: "communication",
-      description: "6 plantillas pre-diseñadas (bienvenida, eventos, etc.)",
+      description: "6 plantillas pre-diseÃƒÂ±adas (bienvenida, eventos, etc.)",
       accessPath: "/communications/templates",
       manual: "/help/manual/phase-5-communications",
       videoAvailable: false,
@@ -394,7 +394,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 33,
-      name: "Personalización de Mensajes",
+      name: "PersonalizaciÃƒÂ³n de Mensajes",
       category: "communication",
       description: "Variables {{nombre}}, {{iglesia}} en emails",
       accessPath: "/communications/email",
@@ -405,7 +405,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 34,
-      name: "Estadísticas de Email",
+      name: "EstadÃƒÂ­sticas de Email",
       category: "communication",
       description: "Seguimiento de aperturas, clicks, bounces",
       accessPath: "/communications/stats",
@@ -418,7 +418,7 @@ export default function AllFeaturesGuide() {
     // VOLUNTEERS (4)
     {
       id: 35,
-      name: "Gestión de Voluntarios",
+      name: "GestiÃƒÂ³n de Voluntarios",
       category: "volunteers",
       description: "Administrar voluntarios por ministerio",
       accessPath: "/volunteers",
@@ -466,7 +466,7 @@ export default function AllFeaturesGuide() {
       id: 39,
       name: "Formulario de Visitantes",
       category: "forms",
-      description: "Form web público para primerizos",
+      description: "Form web pÃƒÂºblico para primerizos",
       accessPath: "/forms/visitor-form",
       manual: "/help/manual/phase-1-getting-started",
       videoAvailable: false,
@@ -475,9 +475,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 40,
-      name: "Formulario de Peticiones de Oración",
+      name: "Formulario de Peticiones de OraciÃƒÂ³n",
       category: "forms",
-      description: "Form web para solicitar oración",
+      description: "Form web para solicitar oraciÃƒÂ³n",
       accessPath: "/forms/prayer-request",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -499,9 +499,9 @@ export default function AllFeaturesGuide() {
     // ADVANCED FEATURES (12)
     {
       id: 42,
-      name: "Integración con Stripe",
+      name: "IntegraciÃƒÂ³n con Stripe",
       category: "advanced",
-      description: "Pagos en línea con tarjeta de crédito",
+      description: "Pagos en lÃƒÂ­nea con tarjeta de crÃƒÂ©dito",
       accessPath: "/settings/integrations/stripe",
       manual: "/help/manual/phase-2-configuration",
       videoAvailable: false,
@@ -510,9 +510,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 43,
-      name: "Integración con Twilio (SMS)",
+      name: "IntegraciÃƒÂ³n con Twilio (SMS)",
       category: "advanced",
-      description: "Envío de SMS vía API de Twilio",
+      description: "EnvÃƒÂ­o de SMS vÃƒÂ­a API de Twilio",
       accessPath: "/settings/integrations/twilio",
       manual: "/help/manual/phase-2-configuration",
       videoAvailable: false,
@@ -521,9 +521,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 44,
-      name: "Integración con Mailgun",
+      name: "IntegraciÃƒÂ³n con Mailgun",
       category: "advanced",
-      description: "Servicio de envío de emails transaccionales",
+      description: "Servicio de envÃƒÂ­o de emails transaccionales",
       accessPath: "/settings/integrations/mailgun",
       manual: "/help/manual/phase-2-configuration",
       videoAvailable: false,
@@ -532,7 +532,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 45,
-      name: "API Pública de la Iglesia",
+      name: "API PÃƒÂºblica de la Iglesia",
       category: "advanced",
       description: "Endpoints REST para integraciones externas",
       accessPath: "/settings/api",
@@ -554,7 +554,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 47,
-      name: "Importación Masiva (Excel/CSV)",
+      name: "ImportaciÃƒÂ³n Masiva (Excel/CSV)",
       category: "advanced",
       description: "Subir cientos de miembros desde archivo",
       accessPath: "/members/import",
@@ -565,7 +565,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 48,
-      name: "Exportación de Datos",
+      name: "ExportaciÃƒÂ³n de Datos",
       category: "advanced",
       description: "Descargar miembros, eventos, donaciones",
       accessPath: "/settings/export",
@@ -578,7 +578,7 @@ export default function AllFeaturesGuide() {
       id: 49,
       name: "Multi-Ubicaciones",
       category: "advanced",
-      description: "Gestionar múltiples campus de una iglesia",
+      description: "Gestionar mÃƒÂºltiples campus de una iglesia",
       accessPath: "/settings/locations",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -598,7 +598,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 51,
-      name: "Personalización de Marca",
+      name: "PersonalizaciÃƒÂ³n de Marca",
       category: "advanced",
       description: "Logo, colores, dominio personalizado",
       accessPath: "/settings/branding",
@@ -622,7 +622,7 @@ export default function AllFeaturesGuide() {
       id: 53,
       name: "Modo Offline (PWA)",
       category: "advanced",
-      description: "Funcionalidad sin conexión con sincronización",
+      description: "Funcionalidad sin conexiÃƒÂ³n con sincronizaciÃƒÂ³n",
       accessPath: "/prayer-wall",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -633,9 +633,9 @@ export default function AllFeaturesGuide() {
     // SETTINGS (8)
     {
       id: 54,
-      name: "Configuración General",
+      name: "ConfiguraciÃƒÂ³n General",
       category: "settings",
-      description: "Nombre, email, teléfono, dirección de iglesia",
+      description: "Nombre, email, telÃƒÂ©fono, direcciÃƒÂ³n de iglesia",
       accessPath: "/settings/general",
       manual: "/help/manual/phase-2-configuration",
       videoAvailable: true,
@@ -644,7 +644,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 55,
-      name: "Gestión de Usuarios",
+      name: "GestiÃƒÂ³n de Usuarios",
       category: "settings",
       description: "Crear, editar, eliminar usuarios del sistema",
       accessPath: "/settings/users",
@@ -655,7 +655,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 56,
-      name: "Configuración de Email",
+      name: "ConfiguraciÃƒÂ³n de Email",
       category: "settings",
       description: "SMTP, remitente, firma de emails",
       accessPath: "/settings/email",
@@ -666,9 +666,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 57,
-      name: "Configuración de Pagos",
+      name: "ConfiguraciÃƒÂ³n de Pagos",
       category: "settings",
-      description: "Conectar Stripe, métodos de pago",
+      description: "Conectar Stripe, mÃƒÂ©todos de pago",
       accessPath: "/settings/payments",
       manual: "/help/manual/phase-2-configuration",
       videoAvailable: false,
@@ -677,7 +677,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 58,
-      name: "Configuración de Notificaciones",
+      name: "ConfiguraciÃƒÂ³n de Notificaciones",
       category: "settings",
       description: "Preferencias de alertas y recordatorios",
       accessPath: "/settings/notifications",
@@ -688,9 +688,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 59,
-      name: "Configuración de Seguridad",
+      name: "ConfiguraciÃƒÂ³n de Seguridad",
       category: "settings",
-      description: "2FA, políticas de contraseñas, sesiones",
+      description: "2FA, polÃƒÂ­ticas de contraseÃƒÂ±as, sesiones",
       accessPath: "/settings/security",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -699,9 +699,9 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 60,
-      name: "Backup y Restauración",
+      name: "Backup y RestauraciÃƒÂ³n",
       category: "settings",
-      description: "Copias de seguridad automáticas y manuales",
+      description: "Copias de seguridad automÃƒÂ¡ticas y manuales",
       accessPath: "/settings/backup",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -710,7 +710,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 61,
-      name: "Logs de Auditoría",
+      name: "Logs de AuditorÃƒÂ­a",
       category: "settings",
       description: "Historial de acciones de usuarios",
       accessPath: "/settings/audit-logs",
@@ -744,7 +744,7 @@ export default function AllFeaturesGuide() {
           <div>
             <h1 className="text-4xl font-bold mb-2"> Todas las Funciones de Khesed-tek</h1>
             <p className="text-xl opacity-90">
-              Catálogo completo de {allFeatures.length} funciones disponibles en la plataforma
+              CatÃƒÂ¡logo completo de {allFeatures.length} funciones disponibles en la plataforma
             </p>
           </div>
         </div>
@@ -777,7 +777,7 @@ export default function AllFeaturesGuide() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
             <Input
               type="text"
-              placeholder="Buscar por nombre o descripción..."
+              placeholder="Buscar por nombre o descripciÃƒÂ³n..."
               className="pl-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -785,7 +785,7 @@ export default function AllFeaturesGuide() {
           </div>
 
           <div>
-            <p className="text-sm font-medium mb-3">Filtrar por Categoría:</p>
+            <p className="text-sm font-medium mb-3">Filtrar por CategorÃƒÂ­a:</p>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant={selectedCategory === null ? 'default' : 'outline'}
@@ -822,7 +822,7 @@ export default function AllFeaturesGuide() {
         {searchQuery && (
           <Button variant="ghost" size="sm" onClick={() => setSearchQuery('')}>
             <X className="h-4 w-4 mr-1" />
-            Limpiar búsqueda
+            Limpiar bÃƒÂºsqueda
           </Button>
         )}
       </div>
@@ -894,7 +894,7 @@ export default function AllFeaturesGuide() {
             <div>
               <h3 className="text-xl font-semibold text-muted-foreground mb-2">No se encontraron funciones</h3>
               <p className="text-muted-foreground mb-4">
-                Intenta con otros términos de búsqueda o cambia el filtro de categoría
+                Intenta con otros tÃƒÂ©rminos de bÃƒÂºsqueda o cambia el filtro de categorÃƒÂ­a
               </p>
               <Button onClick={() => { setSearchQuery(''); setSelectedCategory(null) }}>
                 Ver todas las funciones

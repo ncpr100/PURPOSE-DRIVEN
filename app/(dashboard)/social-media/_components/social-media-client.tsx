@@ -231,13 +231,13 @@ export default function SocialMediaClient() {
       if (response.ok) {
         const data = await response.json()
         setAnalytics(data.data)
-        toast.success('Analíticas sincronizadas exitosamente')
+        toast.success('AnalÃƒÆ’Ã‚Â­ticas sincronizadas exitosamente')
       } else {
         throw new Error('Analytics sync failed')
       }
     } catch (error) {
       console.error('Failed to sync analytics:', error)
-      toast.error('Error al sincronizar analíticas')
+      toast.error('Error al sincronizar analÃƒÆ’Ã‚Â­ticas')
     } finally {
       setIsSyncingAnalytics(false)
     }
@@ -257,7 +257,7 @@ export default function SocialMediaClient() {
     return (
       <Card>
         <CardContent className="flex items-center justify-center py-8">
-          <p>Por favor inicia sesión para acceder a la gestión de redes sociales.</p>
+          <p>Por favor inicia sesiÃƒÆ’Ã‚Â³n para acceder a la gestiÃƒÆ’Ã‚Â³n de redes sociales.</p>
         </CardContent>
       </Card>
     )
@@ -284,7 +284,7 @@ export default function SocialMediaClient() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Redes Sociales</h1>
-          <p className="text-muted-foreground">Gestión profesional simplificada</p>
+          <p className="text-muted-foreground">GestiÃƒÆ’Ã‚Â³n profesional simplificada</p>
         </div>
         
         {aiAddonActive && (
@@ -308,7 +308,7 @@ export default function SocialMediaClient() {
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4" />
-            Analíticas
+            AnalÃƒÆ’Ã‚Â­ticas
           </TabsTrigger>
           <TabsTrigger value="ai-premium" className="flex items-center gap-2">
             <Sparkles className="h-4 w-4" />
@@ -541,7 +541,7 @@ export default function SocialMediaClient() {
                 
                 <Textarea
                   id="content"
-                  placeholder="Escribe tu mensaje inspiracional aquí..."
+                  placeholder="Escribe tu mensaje inspiracional aquÃƒÆ’Ã‚Â­..."
                   value={newPost.content}
                   onChange={(e) => setNewPost(prev => ({ ...prev, content: e.target.value }))}
                   className="min-h-[120px] resize-none"
@@ -606,7 +606,7 @@ export default function SocialMediaClient() {
 
               {/* Scheduling */}
               <div className="space-y-3">
-                <Label className="text-base font-medium">Programar Publicación (Opcional)</Label>
+                <Label className="text-base font-medium">Programar PublicaciÃƒÆ’Ã‚Â³n (Opcional)</Label>
                 <div className="flex items-center gap-4">
                   <Input
                     type="datetime-local"
@@ -633,7 +633,7 @@ export default function SocialMediaClient() {
                     <Sparkles className="h-5 w-5 text-[hsl(var(--lavender))]" />
                     <div>
                       <p className="font-medium text-foreground">Mejorar con AI</p>
-                      <p className="text-sm text-[hsl(var(--lavender))]">Optimizar contenido automáticamente</p>
+                      <p className="text-sm text-[hsl(var(--lavender))]">Optimizar contenido automÃƒÆ’Ã‚Â¡ticamente</p>
                     </div>
                   </div>
                   <Switch
@@ -709,8 +709,8 @@ export default function SocialMediaClient() {
         <TabsContent value="analytics" className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold">Analíticas Unificadas</h2>
-              <p className="text-muted-foreground">Métricas de todas tus plataformas en un lugar</p>
+              <h2 className="text-2xl font-bold">AnalÃƒÆ’Ã‚Â­ticas Unificadas</h2>
+              <p className="text-muted-foreground">MÃƒÆ’Ã‚Â©tricas de todas tus plataformas en un lugar</p>
             </div>
             <Button onClick={syncAnalytics} disabled={isSyncingAnalytics}>
               {isSyncingAnalytics ? (
@@ -813,15 +813,15 @@ export default function SocialMediaClient() {
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
-                        <span className="text-sm">Generación de contenido con GPT-4</span>
+                        <span className="text-sm">GeneraciÃƒÆ’Ã‚Â³n de contenido con GPT-4</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
-                        <span className="text-sm">Optimización automática</span>
+                        <span className="text-sm">OptimizaciÃƒÆ’Ã‚Â³n automÃƒÆ’Ã‚Â¡tica</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
-                        <span className="text-sm">Análisis de engagement</span>
+                        <span className="text-sm">AnÃƒÆ’Ã‚Â¡lisis de engagement</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))]" />
@@ -832,7 +832,7 @@ export default function SocialMediaClient() {
 
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-lg">Estadísticas de Uso</CardTitle>
+                      <CardTitle className="text-lg">EstadÃƒÆ’Ã‚Â­sticas de Uso</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
@@ -844,7 +844,7 @@ export default function SocialMediaClient() {
                         <span className="font-semibold">~8 horas</span>
                       </div>
                       <Progress value={40} className="h-2" />
-                      <p className="text-xs text-muted-foreground">40% del límite mensual utilizado</p>
+                      <p className="text-xs text-muted-foreground">40% del lÃƒÆ’Ã‚Â­mite mensual utilizado</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -868,15 +868,15 @@ export default function SocialMediaClient() {
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0" />
-                      <span className="text-sm">Optimización automática por plataforma</span>
+                      <span className="text-sm">OptimizaciÃƒÆ’Ã‚Â³n automÃƒÆ’Ã‚Â¡tica por plataforma</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0" />
-                      <span className="text-sm">Análisis predictivo de engagement</span>
+                      <span className="text-sm">AnÃƒÆ’Ã‚Â¡lisis predictivo de engagement</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0" />
-                      <span className="text-sm">Programación inteligente</span>
+                      <span className="text-sm">ProgramaciÃƒÆ’Ã‚Â³n inteligente</span>
                     </div>
                   </div>
 

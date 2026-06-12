@@ -16,7 +16,7 @@ export type ServiceName =
   | "twilio"
   | "whatsapp"
   | "mercadopago"
-  | "abacusai"
+  | "openrouter"
   | "vercel_api"
   | "supabase_api";
 
@@ -38,7 +38,7 @@ const RESPONSE_THRESHOLDS = {
   twilio: { healthy: 500, degraded: 2000 },
   whatsapp: { healthy: 800, degraded: 3000 },
   mercadopago: { healthy: 500, degraded: 2000 },
-  abacusai: { healthy: 1000, degraded: 4000 },
+  openrouter: { healthy: 500, degraded: 2000 },
   paddle: { healthy: 500, degraded: 2000 },
   vercel_api: { healthy: 500, degraded: 2000 },
   supabase_api: { healthy: 300, degraded: 1000 },
@@ -311,37 +311,119 @@ async function checkTwilio(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: AbacusAI ───────────────────────────────────────────
-async function checkAbacusAI(): Promise<HealthCheckResult> {
+// ── CHECK: OpenRouter (Primary AI Provider for all 15 agents) ───
+async function checkOpenRouter(): Promise<HealthCheckResult> {
   const start = Date.now();
-  const key = process.env.ABACUSAI_API_KEY;
-  if (!key)
+  // Lectura robusta de variable de entorno con fallback y logging
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  console.log("[OpenRouter Health] API Key present:", !!apiKey);
+  console.log(
+    "[OpenRouter Health] API Key prefix:",
+    apiKey ? apiKey.substring(0, 15) + "..." : "N/A",
+  );
+  if (!apiKey) {
     return {
-      service: "abacusai",
+      service: "openrouter",
       status: "UNKNOWN",
       responseTimeMs: null,
-      errorMessage: "Not configured",
-      metadata: null,
+      errorMessage: "OPENROUTER_API_KEY not configured in server env",
+      metadata: { envCheck: !!process.env.OPENROUTER_API_KEY },
     };
+  }
   try {
-    const res = await fetch("https://api.abacus.ai/api/v0/listProjects", {
-      headers: { apiKey: key },
-      signal: AbortSignal.timeout(6000),
+    // Ping a la API de OpenRouter para verificar disponibilidad y autenticación
+    const res = await fetch("https://openrouter.ai/api/v1/models", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "HTTP-Referer": process.env.NEXTAUTH_URL || "http://localhost:3000",
+        "X-Title": "Khesed-Tek CMS SRE Monitor",
+      },
+      signal: AbortSignal.timeout(5000),
     });
     const ms = Date.now() - start;
+    console.log(`[OpenRouter Health] Response: ${res.status} in ${ms}ms`);
+    // 200 OK significa que la API responde y la key es válida
+    const apiAlive = res.ok;
     return {
-      service: "abacusai",
-      status: res.ok ? classify("abacusai", ms) : "DEGRADED",
+      service: "openrouter",
+      status: apiAlive ? classify("openrouter", ms) : "DOWN",
       responseTimeMs: ms,
-      errorMessage: res.ok ? null : `HTTP ${res.status}`,
-      metadata: { statusCode: res.status },
+      errorMessage: apiAlive
+        ? null
+        : `HTTP ${res.status}: ${await res.text().catch(() => "No body")}`,
+      metadata: {
+        statusCode: res.status,
+        provider: "OpenRouter",
+        endpoint: "/api/v1/models",
+        envCheck: !!process.env.OPENROUTER_API_KEY,
+      },
     };
   } catch (err) {
+    console.error("[OpenRouter Health] Error:", err);
     return {
-      service: "abacusai",
+      service: "openrouter",
       status: "DOWN",
       responseTimeMs: Date.now() - start,
       errorMessage: String(err),
+      metadata: null,
+    };
+  }
+}
+
+// ── CHECK: Paddle (Primary Payment Processor - Merchant of Record) ───
+async function checkPaddle(): Promise<HealthCheckResult> {
+  const start = Date.now();
+  const apiKey = process.env.PADDLE_API_KEY;
+
+  if (!apiKey) {
+    return {
+      service: "paddle",
+      status: "UNKNOWN",
+      responseTimeMs: null,
+      errorMessage: "PADDLE_API_KEY not configured in server env",
+      metadata: { envCheck: false },
+    };
+  }
+
+  try {
+    // Detectar automáticamente si es Sandbox o Producción
+    const isSandbox = apiKey.startsWith("test_");
+    const baseUrl = isSandbox
+      ? "https://sandbox-api.paddle.com"
+      : "https://api.paddle.com";
+
+    const res = await fetch(`${baseUrl}/products?per_page=1`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      signal: AbortSignal.timeout(5000),
+    });
+
+    const ms = Date.now() - start;
+    const isUp = res.ok;
+
+    return {
+      service: "paddle",
+      status: isUp ? classify("paddle", ms) : "DOWN",
+      responseTimeMs: ms,
+      errorMessage: isUp
+        ? null
+        : `HTTP ${res.status}: ${await res.text().catch(() => "No body")}`,
+      metadata: {
+        statusCode: res.status,
+        environment: isSandbox ? "sandbox" : "production",
+        endpoint: `${baseUrl}/products`,
+      },
+    };
+  } catch (err) {
+    return {
+      service: "paddle",
+      status: "DOWN",
+      responseTimeMs: Date.now() - start,
+      errorMessage: err instanceof Error ? err.message : String(err),
       metadata: null,
     };
   }
@@ -358,7 +440,8 @@ export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
     checkWhatsApp(),
     checkMailgun(),
     checkTwilio(),
-    checkAbacusAI(),
+    checkOpenRouter(),
+    checkPaddle(),
   ]);
 
   const checks: HealthCheckResult[] = results.map((r, i) => {
@@ -371,7 +454,8 @@ export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
       "whatsapp",
       "mailgun",
       "twilio",
-      "abacusai",
+      "openrouter",
+      "paddle",
     ];
     return {
       service: services[i],

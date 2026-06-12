@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { sendEmail, emailQueue } from "@/lib/email";
 import { getServerBaseUrl } from "@/lib/server-url";
 import { nanoid } from "nanoid";
+import { resolveEmailTemplate, replaceTokens as replaceTemplateTokens } from "@/lib/email-template-resolver";
 
 /**
  * Generates a cryptographically secure 12-character temporary password.
@@ -204,6 +205,7 @@ export async function POST(request: NextRequest) {
       // When false, the church is created but credential email is NOT sent yet.
       // Super Admin can send credentials later via Credenciales page.
       sendCredentialsNow = true,
+      language = "es",
     } = body;
 
     // Validaciones
@@ -268,6 +270,7 @@ export async function POST(request: NextRequest) {
           founded: founded ? new Date(founded) : null,
           description,
           isActive: true,
+          language: language,
           updatedAt: new Date(),
         },
       });

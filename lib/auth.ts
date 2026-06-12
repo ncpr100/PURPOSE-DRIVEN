@@ -57,13 +57,23 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user || !user.password) {
-            console.error(" AUTH[PROD]: User not found for email:", credentials.email);
+            console.error(
+              " AUTH[PROD]: User not found for email:",
+              credentials.email,
+            );
             devLog(" AUTH: User not found or no password in database");
             return null;
           }
 
           devLog(" AUTH: User found:", user.email, "Role:", user.role);
-          console.log(" AUTH[PROD]: User found, role:", user.role, "active:", user.isActive, "hasPassword:", !!user.password);
+          console.log(
+            " AUTH[PROD]: User found, role:",
+            user.role,
+            "active:",
+            user.isActive,
+            "hasPassword:",
+            !!user.password,
+          );
 
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
@@ -71,7 +81,12 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!isPasswordValid) {
-            console.error(" AUTH[PROD]: Password mismatch for:", credentials.email, "hash_prefix:", user.password.substring(0, 7));
+            console.error(
+              " AUTH[PROD]: Password mismatch for:",
+              credentials.email,
+              "hash_prefix:",
+              user.password.substring(0, 7),
+            );
             devLog(" AUTH: Invalid password");
             return null;
           }
@@ -158,10 +173,7 @@ export const authOptions: NextAuthOptions = {
               churchId: user.churchId || "",
             };
           } else {
-            devLog(
-              " SESSION: User not found in DB for token.sub:",
-              token.sub,
-            );
+            devLog(" SESSION: User not found in DB for token.sub:", token.sub);
           }
         } catch (error) {
           devLog("️ SESSION: Database connection failed, using token data");

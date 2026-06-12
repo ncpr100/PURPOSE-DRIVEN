@@ -234,7 +234,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
   // Get all event dates for highlighting in calendar
   const eventDates = events.map(event => new Date(event.startDate))
 
-  // Template icon renderer — maps string names to lucide components
+  // Template icon renderer ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â maps string names to lucide components
   const renderTemplateIcon = (iconName: string) => {
     const map: Record<string, React.ReactNode> = {
       Church:    <Church    className="h-5 w-5" />,
@@ -257,16 +257,16 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       icon: 'Church',
       category: 'CULTO',
       duration: 120, // minutes
-      description: 'Servicio principal dominical con predicación y adoración',
+      description: 'Servicio principal dominical con predicaciÃƒÆ’Ã‚Â³n y adoraciÃƒÆ’Ã‚Â³n',
       defaultResources: ['Sistema de Sonido', 'Proyector', 'Plataforma'],
       defaultBudget: 0,
-      suggestedVolunteers: ['Músicos', 'Técnicos de Sonido', 'Ujieres'],
+      suggestedVolunteers: ['MÃƒÆ’Ã‚Âºsicos', 'TÃƒÆ’Ã‚Â©cnicos de Sonido', 'Ujieres'],
       isPublic: true,
       defaultLocation: 'Templo Principal'
     },
     {
       id: 'estudio-biblico',
-      name: 'Estudio Bíblico',
+      name: 'Estudio BÃƒÆ’Ã‚Â­blico',
       icon: 'BookOpen',
       category: 'ESTUDIO',
       duration: 90,
@@ -279,25 +279,25 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     },
     {
       id: 'reunion-jovenes',
-      name: 'Reunión de Jóvenes',
+      name: 'ReuniÃƒÆ’Ã‚Â³n de JÃƒÆ’Ã‚Â³venes',
       icon: 'Music',
       category: 'JUVENTUD',
       duration: 150,
-      description: 'Actividad para jóvenes con música, mensaje y compañerismo',
+      description: 'Actividad para jÃƒÆ’Ã‚Â³venes con mÃƒÆ’Ã‚Âºsica, mensaje y compaÃƒÆ’Ã‚Â±erismo',
       defaultResources: ['Sistema de Sonido', 'Instrumento Musical', 'Refrigerios'],
       defaultBudget: 200,
-      suggestedVolunteers: ['Pastor de Jóvenes', 'Músicos', 'Ayudantes'],
+      suggestedVolunteers: ['Pastor de JÃƒÆ’Ã‚Â³venes', 'MÃƒÆ’Ã‚Âºsicos', 'Ayudantes'],
       isPublic: true,
-      defaultLocation: 'Salón Juvenil'
+      defaultLocation: 'SalÃƒÆ’Ã‚Â³n Juvenil'
     },
     {
       id: 'actividad-ninos',
-      name: 'Escuela Dominical Niños',
+      name: 'Escuela Dominical NiÃƒÆ’Ã‚Â±os',
       icon: 'Baby',
-      category: 'NIÑOS',
+      category: 'NIÃƒÆ’Ã¢â‚¬ËœOS',
       duration: 60,
-      description: 'Enseñanza bíblica para niños con actividades didácticas',
-      defaultResources: ['Aula Niños', 'Material Didáctico', 'Refrigerios'],
+      description: 'EnseÃƒÆ’Ã‚Â±anza bÃƒÆ’Ã‚Â­blica para niÃƒÆ’Ã‚Â±os con actividades didÃƒÆ’Ã‚Â¡cticas',
+      defaultResources: ['Aula NiÃƒÆ’Ã‚Â±os', 'Material DidÃƒÆ’Ã‚Â¡ctico', 'Refrigerios'],
       defaultBudget: 100,
       suggestedVolunteers: ['Maestros', 'Asistentes', 'Coordinador'],
       isPublic: false,
@@ -310,7 +310,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       category: 'RETIRO',
       duration: 1440, // 24 horas
       description: 'Fin de semana de crecimiento espiritual fuera de la iglesia',
-      defaultResources: ['Transporte', 'Hospedaje', 'Alimentación'],
+      defaultResources: ['Transporte', 'Hospedaje', 'AlimentaciÃƒÆ’Ã‚Â³n'],
       defaultBudget: 5000,
       suggestedVolunteers: ['Pastores', 'Coordinadores', 'Cocineros'],
       isPublic: true,
@@ -322,36 +322,36 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       icon: 'Mic',
       category: 'CONFERENCIA',
       duration: 480, // 8 horas
-      description: 'Eventos especiales con invitados y múltiples sesiones',
+      description: 'Eventos especiales con invitados y mÃƒÆ’Ã‚Âºltiples sesiones',
       defaultResources: ['Auditorio', 'Sistema AV Completo', 'Registro'],
       defaultBudget: 3000,
-      suggestedVolunteers: ['Coordinadores', 'Técnicos', 'Protocolo'],
+      suggestedVolunteers: ['Coordinadores', 'TÃƒÆ’Ã‚Â©cnicos', 'Protocolo'],
       isPublic: true,
       defaultLocation: 'Auditorio Principal'
     },
     {
       id: 'reunion-celula',
-      name: 'Reunión de Célula',
+      name: 'ReuniÃƒÆ’Ã‚Â³n de CÃƒÆ’Ã‚Â©lula',
       icon: 'Home',
       category: 'CELULA',
       duration: 90,
-      description: 'Reunión íntima en hogar para estudio y oración',
+      description: 'ReuniÃƒÆ’Ã‚Â³n ÃƒÆ’Ã‚Â­ntima en hogar para estudio y oraciÃƒÆ’Ã‚Â³n',
       defaultResources: ['Biblia', 'Material de Estudio'],
       defaultBudget: 30,
-      suggestedVolunteers: ['Líder de Célula', 'Anfitrión'],
+      suggestedVolunteers: ['LÃƒÆ’Ã‚Â­der de CÃƒÆ’Ã‚Â©lula', 'AnfitriÃƒÆ’Ã‚Â³n'],
       isPublic: false,
       defaultLocation: 'Casa de Miembro'
     },
     {
       id: 'campana-evangelistica',
-      name: 'Campaña Evangelística',
+      name: 'CampaÃƒÆ’Ã‚Â±a EvangelÃƒÆ’Ã‚Â­stica',
       icon: 'Megaphone',
       category: 'EVANGELISMO',
       duration: 180,
-      description: 'Evento de alcance comunitario con mensaje evangelístico',
-      defaultResources: ['Sonido Portátil', 'Banners', 'Folletos'],
+      description: 'Evento de alcance comunitario con mensaje evangelÃƒÆ’Ã‚Â­stico',
+      defaultResources: ['Sonido PortÃƒÆ’Ã‚Â¡til', 'Banners', 'Folletos'],
       defaultBudget: 800,
-      suggestedVolunteers: ['Evangelistas', 'Intercesores', 'Logística'],
+      suggestedVolunteers: ['Evangelistas', 'Intercesores', 'LogÃƒÆ’Ã‚Â­stica'],
       isPublic: true,
       defaultLocation: 'Plaza Central'
     }
@@ -433,7 +433,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
     if (!eventForm.title || !eventForm.startDate) {
       console.error('Validation failed: Missing title or start date')
-      toast.error('Título y fecha de inicio son requeridos')
+      toast.error('TÃƒÆ’Ã‚Â­tulo y fecha de inicio son requeridos')
       return
     }
 
@@ -545,7 +545,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           }))
           toast.success('Sugerencia aplicada. Puedes editarla antes de guardar')
         } else {
-          toast.info('No se encontraron sugerencias específicas')
+          toast.info('No se encontraron sugerencias especÃƒÆ’Ã‚Â­ficas')
         }
       } else {
         const errorData = await response.json()
@@ -563,7 +563,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     
     try {
       setIsAutoAssigning(true)
-      toast.info('Asignando voluntarios automáticamente...')
+      toast.info('Asignando voluntarios automÃƒÆ’Ã‚Â¡ticamente...')
       
       const response = await fetch(`/api/events/${eventId}/auto-assign-volunteers`, {
         method: 'POST',
@@ -574,14 +574,14 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         const data = await response.json()
         
         if (!data || typeof data.assignedCount !== 'number') {
-          toast.error('Respuesta inválida del servidor')
+          toast.error('Respuesta invÃƒÆ’Ã‚Â¡lida del servidor')
           return
         }
         
         if (data.assignedCount === 0) {
           toast.warning('No se encontraron voluntarios elegibles para asignar')
         } else {
-          toast.success(`${data.assignedCount} voluntarios asignados automáticamente`)
+          toast.success(`${data.assignedCount} voluntarios asignados automÃƒÆ’Ã‚Â¡ticamente`)
         }
         
         fetchEvents()
@@ -592,7 +592,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       }
     } catch (error) {
       console.error('Error in autoAssignVolunteers:', error)
-      toast.error('Error de conexión al asignar voluntarios')
+      toast.error('Error de conexiÃƒÆ’Ã‚Â³n al asignar voluntarios')
     } finally {
       setIsAutoAssigning(false)
     }
@@ -613,7 +613,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
       if (response.ok) {
         const data = await response.json()
-        toast.success(`Comunicación programada para ${data.recipientCount} destinatarios`)
+        toast.success(`ComunicaciÃƒÆ’Ã‚Â³n programada para ${data.recipientCount} destinatarios`)
         setCommunicationForm({
           type: 'EMAIL',
           subject: '',
@@ -625,7 +625,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         fetchEvents()
       }
     } catch (error) {
-      toast.error('Error al enviar comunicación')
+      toast.error('Error al enviar comunicaciÃƒÆ’Ã‚Â³n')
     }
   }
 
@@ -638,7 +638,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
     }
 
     if (!eventForm.title || !eventForm.startDate) {
-      toast.error('Título y fecha de inicio son requeridos')
+      toast.error('TÃƒÆ’Ã‚Â­tulo y fecha de inicio son requeridos')
       return
     }
 
@@ -739,7 +739,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
             Sistema Inteligente de Eventos
           </h1>
           <p className="text-muted-foreground">
-            Planificación completa con IA, gestión de voluntarios, y comunicaciones automatizadas
+            PlanificaciÃƒÆ’Ã‚Â³n completa con IA, gestiÃƒÆ’Ã‚Â³n de voluntarios, y comunicaciones automatizadas
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -749,7 +749,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           </Badge>
           <Badge variant="secondary" className="px-3 py-1">
             <Target className="h-4 w-4 mr-2" />
-            Integración Completa
+            IntegraciÃƒÆ’Ã‚Â³n Completa
           </Badge>
         </div>
       </div>
@@ -820,7 +820,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="planning" className="flex items-center gap-1">
             <Calendar className="h-4 w-4" />
-            Planificación
+            PlanificaciÃƒÆ’Ã‚Â³n
           </TabsTrigger>
           <TabsTrigger value="volunteers" className="flex items-center gap-1">
             <UserPlus className="h-4 w-4" />
@@ -844,7 +844,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex items-center gap-1">
             <BarChart3 className="h-4 w-4" />
-            Analíticas
+            AnalÃƒÆ’Ã‚Â­ticas
           </TabsTrigger>
           <TabsTrigger value="calendar" className="flex items-center gap-1">
             <Calendar className="h-4 w-4" />
@@ -855,7 +855,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         {/* Event Planning Tab */}
         <TabsContent value="planning" className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Planificación de Eventos</h2>
+            <h2 className="text-xl font-semibold">PlanificaciÃƒÆ’Ã‚Â³n de Eventos</h2>
             <Dialog open={isNewEventDialogOpen} onOpenChange={setIsNewEventDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
@@ -870,14 +870,14 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                     Crear Evento Inteligente
                   </DialogTitle>
                   <DialogDescription>
-                    Usa IA para sugerencias automáticas o crea tu evento desde cero
+                    Usa IA para sugerencias automÃƒÆ’Ã‚Â¡ticas o crea tu evento desde cero
                   </DialogDescription>
                 </DialogHeader>
                 
                 {/* Event Templates Section */}
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1.5"><Target className="h-4 w-4" /> Plantillas Rápidas</h3>
+                    <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1.5"><Target className="h-4 w-4" /> Plantillas RÃƒÆ’Ã‚Â¡pidas</h3>
                     <span className="text-xs text-muted-foreground">Haz clic para aplicar</span>
                   </div>
                   <div className="grid grid-cols-4 gap-2 max-h-32 overflow-y-auto">
@@ -913,7 +913,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="eventTitle">Título del Evento *</Label>
+                      <Label htmlFor="eventTitle">TÃƒÆ’Ã‚Â­tulo del Evento *</Label>
                       <Input
                         id="eventTitle"
                         value={eventForm.title}
@@ -923,7 +923,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="eventCategory">Categoría</Label>
+                      <Label htmlFor="eventCategory">CategorÃƒÆ’Ã‚Â­a</Label>
                       <Select
                         value={eventForm.category}
                         onValueChange={(value) => setEventForm(prev => ({ ...prev, category: value }))}
@@ -935,7 +935,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                           <SelectItem value="CULTO">Culto</SelectItem>
                           <SelectItem value="CONFERENCIA">Conferencia</SelectItem>
                           <SelectItem value="SOCIAL">Evento Social</SelectItem>
-                          <SelectItem value="CAPACITACION">Capacitación</SelectItem>
+                          <SelectItem value="CAPACITACION">CapacitaciÃƒÆ’Ã‚Â³n</SelectItem>
                           <SelectItem value="SERVICIO">Servicio Comunitario</SelectItem>
                           <SelectItem value="OTRO">Otro</SelectItem>
                         </SelectContent>
@@ -944,12 +944,12 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="eventDescription">Descripción</Label>
+                    <Label htmlFor="eventDescription">DescripciÃƒÆ’Ã‚Â³n</Label>
                     <Textarea
                       id="eventDescription"
                       value={eventForm.description}
                       onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
-                      placeholder="Descripción detallada del evento..."
+                      placeholder="DescripciÃƒÆ’Ã‚Â³n detallada del evento..."
                       rows={3}
                     />
                   </div>
@@ -978,12 +978,12 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="location">Ubicación</Label>
+                      <Label htmlFor="location">UbicaciÃƒÆ’Ã‚Â³n</Label>
                       <Input
                         id="location"
                         value={eventForm.location}
                         onChange={(e) => setEventForm(prev => ({ ...prev, location: e.target.value }))}
-                        placeholder="Salón principal, Auditorio..."
+                        placeholder="SalÃƒÆ’Ã‚Â³n principal, Auditorio..."
                       />
                     </div>
                     <div className="space-y-2">
@@ -1005,7 +1005,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       checked={eventForm.isPublic}
                       onCheckedChange={(checked) => setEventForm(prev => ({ ...prev, isPublic: checked }))}
                     />
-                    <Label htmlFor="isPublic">Evento público (visible para todos los miembros)</Label>
+                    <Label htmlFor="isPublic">Evento pÃƒÆ’Ã‚Âºblico (visible para todos los miembros)</Label>
                   </div>
 
                   <div className="flex justify-end gap-2 pt-4">
@@ -1027,13 +1027,13 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                     Editar Evento
                   </DialogTitle>
                   <DialogDescription>
-                    Actualiza la información del evento
+                    Actualiza la informaciÃƒÆ’Ã‚Â³n del evento
                   </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleUpdateEvent} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="editEventTitle">Título del Evento *</Label>
+                      <Label htmlFor="editEventTitle">TÃƒÆ’Ã‚Â­tulo del Evento *</Label>
                       <Input
                         id="editEventTitle"
                         value={eventForm.title}
@@ -1043,7 +1043,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="editEventCategory">Categoría</Label>
+                      <Label htmlFor="editEventCategory">CategorÃƒÆ’Ã‚Â­a</Label>
                       <Select
                         value={eventForm.category}
                         onValueChange={(value) => setEventForm(prev => ({ ...prev, category: value }))}
@@ -1055,7 +1055,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                           <SelectItem value="CULTO">Culto</SelectItem>
                           <SelectItem value="CONFERENCIA">Conferencia</SelectItem>
                           <SelectItem value="SOCIAL">Evento Social</SelectItem>
-                          <SelectItem value="CAPACITACION">Capacitación</SelectItem>
+                          <SelectItem value="CAPACITACION">CapacitaciÃƒÆ’Ã‚Â³n</SelectItem>
                           <SelectItem value="SERVICIO">Servicio Comunitario</SelectItem>
                           <SelectItem value="OTRO">Otro</SelectItem>
                         </SelectContent>
@@ -1064,12 +1064,12 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="editEventDescription">Descripción</Label>
+                    <Label htmlFor="editEventDescription">DescripciÃƒÆ’Ã‚Â³n</Label>
                     <Textarea
                       id="editEventDescription"
                       value={eventForm.description}
                       onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
-                      placeholder="Descripción detallada del evento..."
+                      placeholder="DescripciÃƒÆ’Ã‚Â³n detallada del evento..."
                       rows={3}
                     />
                   </div>
@@ -1098,12 +1098,12 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="editLocation">Ubicación</Label>
+                      <Label htmlFor="editLocation">UbicaciÃƒÆ’Ã‚Â³n</Label>
                       <Input
                         id="editLocation"
                         value={eventForm.location}
                         onChange={(e) => setEventForm(prev => ({ ...prev, location: e.target.value }))}
-                        placeholder="Salón principal, Auditorio..."
+                        placeholder="SalÃƒÆ’Ã‚Â³n principal, Auditorio..."
                       />
                     </div>
                     <div className="space-y-2">
@@ -1125,7 +1125,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       checked={eventForm.isPublic}
                       onCheckedChange={(checked) => setEventForm(prev => ({ ...prev, isPublic: checked }))}
                     />
-                    <Label htmlFor="editIsPublic">Evento público (visible para todos los miembros)</Label>
+                    <Label htmlFor="editIsPublic">Evento pÃƒÆ’Ã‚Âºblico (visible para todos los miembros)</Label>
                   </div>
 
                   <div className="flex justify-end gap-2 pt-4">
@@ -1155,9 +1155,9 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
             <Card>
               <CardContent className="text-center py-12">
                 <Calendar className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
-                <h3 className="text-xl font-semibold mb-2">¡Comienza a Planificar!</h3>
+                <h3 className="text-xl font-semibold mb-2">Ãƒâ€šÃ‚Â¡Comienza a Planificar!</h3>
                 <p className="text-muted-foreground mb-6">
-                  Crea tu primer evento con asistencia de IA y gestión automática de recursos
+                  Crea tu primer evento con asistencia de IA y gestiÃƒÆ’Ã‚Â³n automÃƒÆ’Ã‚Â¡tica de recursos
                 </p>
                 <Button onClick={() => setIsNewEventDialogOpen(true)}>
                   <Plus className="h-4 w-4 mr-2" />
@@ -1289,9 +1289,9 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         <TabsContent value="volunteers" className="space-y-4">
           <Alert>
             <UserPlus className="h-4 w-4" />
-            <AlertTitle>Gestión Inteligente de Voluntarios</AlertTitle>
+            <AlertTitle>GestiÃƒÆ’Ã‚Â³n Inteligente de Voluntarios</AlertTitle>
             <AlertDescription>
-              Asignación automática basada en habilidades, disponibilidad y carga de trabajo. 
+              AsignaciÃƒÆ’Ã‚Â³n automÃƒÆ’Ã‚Â¡tica basada en habilidades, disponibilidad y carga de trabajo. 
               Integrado con el sistema de voluntarios existente.
             </AlertDescription>
           </Alert>
@@ -1300,16 +1300,16 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         <TabsContent value="engagement" className="space-y-4">
           <Alert>
             <Users className="h-4 w-4" />
-            <AlertTitle>Centro de Participación de Miembros</AlertTitle>
+            <AlertTitle>Centro de ParticipaciÃƒÆ’Ã‚Â³n de Miembros</AlertTitle>
             <AlertDescription>
-              Invitaciones automáticas, seguimiento de asistencia, y retroalimentación post-evento.
+              Invitaciones automÃƒÆ’Ã‚Â¡ticas, seguimiento de asistencia, y retroalimentaciÃƒÆ’Ã‚Â³n post-evento.
             </AlertDescription>
           </Alert>
         </TabsContent>
 
         <TabsContent value="resources" className="space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Gestión de Recursos</h2>
+            <h2 className="text-xl font-semibold">GestiÃƒÆ’Ã‚Â³n de Recursos</h2>
             <Dialog open={isResourceDialogOpen} onOpenChange={setIsResourceDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
@@ -1361,7 +1361,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="resourceDescription">Descripción</Label>
+                    <Label htmlFor="resourceDescription">DescripciÃƒÆ’Ã‚Â³n</Label>
                     <Textarea
                       id="resourceDescription"
                       value={resourceForm.description}
@@ -1426,7 +1426,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
             <MessageSquare className="h-4 w-4" />
             <AlertTitle>Comunicaciones Automatizadas</AlertTitle>
             <AlertDescription>
-              Invitaciones, recordatorios, y actualizaciones automáticas via email, SMS, y push notifications.
+              Invitaciones, recordatorios, y actualizaciones automÃƒÆ’Ã‚Â¡ticas via email, SMS, y push notifications.
             </AlertDescription>
           </Alert>
         </TabsContent>
@@ -1434,9 +1434,9 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
         <TabsContent value="budget" className="space-y-4">
           <Alert>
             <DollarSign className="h-4 w-4" />
-            <AlertTitle>Gestión de Presupuesto y Donaciones</AlertTitle>
+            <AlertTitle>GestiÃƒÆ’Ã‚Â³n de Presupuesto y Donaciones</AlertTitle>
             <AlertDescription>
-              Seguimiento de gastos por evento y recaudación de fondos específicos.
+              Seguimiento de gastos por evento y recaudaciÃƒÆ’Ã‚Â³n de fondos especÃƒÆ’Ã‚Â­ficos.
             </AlertDescription>
           </Alert>
         </TabsContent>
@@ -1446,7 +1446,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
             <BarChart3 className="h-4 w-4" />
             <AlertTitle>Analytics Avanzados</AlertTitle>
             <AlertDescription>
-              Análisis de asistencia, participación de voluntarios, ROI de eventos, y tendencias.
+              AnÃƒÆ’Ã‚Â¡lisis de asistencia, participaciÃƒÆ’Ã‚Â³n de voluntarios, ROI de eventos, y tendencias.
             </AlertDescription>
           </Alert>
         </TabsContent>
@@ -1566,7 +1566,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
 
                   {/* Mobile: Quick event indicator */}
                   <div className="block lg:hidden mt-3 p-2 bg-muted/30 rounded text-xs text-center">
-                    <Calendar className="inline h-3.5 w-3.5 mr-1" />Días con eventos en azul • Toque fecha para ver detalles
+                    <Calendar className="inline h-3.5 w-3.5 mr-1" />DÃƒÆ’Ã‚Â­as con eventos en azul ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Toque fecha para ver detalles
                   </div>
                 </CardContent>
               </Card>
@@ -1598,7 +1598,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                       <div className="text-center py-6 lg:py-8 text-muted-foreground">
                         <Calendar className="h-8 w-8 lg:h-12 lg:w-12 mx-auto mb-2 lg:mb-4 opacity-20" />
                         <p className="text-sm lg:text-base">No hay eventos programados</p>
-                        <p className="text-xs lg:text-sm mt-1">para este día</p>
+                        <p className="text-xs lg:text-sm mt-1">para este dÃƒÆ’Ã‚Â­a</p>
                       </div>
                     ) : (
                       <div className="space-y-2 lg:space-y-3">
@@ -1648,13 +1648,13 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm lg:text-base flex items-center gap-2">
                     <Plus className="h-4 w-4" />
-                    Evento Rápido
+                    Evento RÃƒÆ’Ã‚Â¡pido
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <Input 
-                      placeholder="Título del evento" 
+                      placeholder="TÃƒÆ’Ã‚Â­tulo del evento" 
                       className="text-sm"
                     />
                     <div className="flex gap-2">
@@ -1681,9 +1681,9 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
       <Dialog open={isCommunicationDialogOpen} onOpenChange={setIsCommunicationDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Enviar Comunicación</DialogTitle>
+            <DialogTitle>Enviar ComunicaciÃƒÆ’Ã‚Â³n</DialogTitle>
             <DialogDescription>
-              {selectedEvent ? `Para el evento: ${selectedEvent.title}` : 'Comunicación del evento'}
+              {selectedEvent ? `Para el evento: ${selectedEvent.title}` : 'ComunicaciÃƒÆ’Ã‚Â³n del evento'}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={(e) => {
@@ -1691,7 +1691,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
             if (selectedEvent) sendEventCommunication(selectedEvent.id)
           }} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="communicationType">Tipo de Comunicación</Label>
+              <Label htmlFor="communicationType">Tipo de ComunicaciÃƒÆ’Ã‚Â³n</Label>
               <Select
                 value={communicationForm.type}
                 onValueChange={(value) => setCommunicationForm(prev => ({ ...prev, type: value as any }))}
@@ -1702,7 +1702,7 @@ export function SmartEventsClient({ userRole, churchId }: SmartEventsClientProps
                 <SelectContent>
                   <SelectItem value="EMAIL">Email</SelectItem>
                   <SelectItem value="SMS">SMS</SelectItem>
-                  <SelectItem value="PUSH">Notificación Push</SelectItem>
+                  <SelectItem value="PUSH">NotificaciÃƒÆ’Ã‚Â³n Push</SelectItem>
                   <SelectItem value="SOCIAL">Redes Sociales</SelectItem>
                 </SelectContent>
               </Select>

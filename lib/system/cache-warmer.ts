@@ -9,13 +9,45 @@ export class IntelligentCacheWarmer {
   private isRunning = false;
   private monitoringInterval: NodeJS.Timeout | null = null;
 
+  private get isRedisConfigured(): boolean {
+    return !!(
+      process.env.REDIS_URL ||
+      process.env.UPSTASH_REDIS_REST_URL ||
+      process.env.KV_URL
+    );
+  }
+
   constructor(private churchId: string = "default") {}
 
   async warmCache() {
+    if (!this.isRedisConfigured) {
+      console.log(
+        "⏭️ [BUILD TIME] Redis not configured. Skipping cache warm to prevent build crashes.",
+      );
+      return;
+    }
+
     console.log("🔥 Warming cache for church:", this.churchId);
     await Promise.allSettled([
       this.warmExecutiveReport(),
       this.warmQuickStats(),
+    ]);
+  }
+
+  async forceWarmup() {
+    if (!this.isRedisConfigured) {
+      console.log(
+        "⏭️ [BUILD TIME] Redis not configured. Skipping force warmup.",
+      );
+      return;
+    }
+
+    console.log("🔄 Force warming cache for church:", this.churchId);
+
+    // Delete existing cache first, then warm
+    await Promise.allSettled([
+      this.forceWarmExecutiveReport(),
+      this.forceWarmQuickStats(),
     ]);
   }
 
@@ -61,15 +93,57 @@ export class IntelligentCacheWarmer {
   }
 
   private async warmExecutiveReport() {
-    const key = CACHE_KEYS.EXECUTIVE_REPORT(this.churchId, "30d");
-    const cached = await cacheManager.get(key);
-    if (!cached) console.log("📊 Pre-warming executive report...");
+    try {
+      const key = CACHE_KEYS.EXECUTIVE_REPORT(this.churchId, "30d");
+      const cached = await cacheManager.get(key);
+      if (!cached) console.log("📊 Pre-warming executive report...");
+    } catch (error) {
+      console.warn(
+        "⚠️ Failed to warm executive report cache:",
+        (error as Error).message,
+      );
+    }
   }
 
   private async warmQuickStats() {
-    const key = CACHE_KEYS.QUICK_STATS(this.churchId);
-    const cached = await cacheManager.get(key);
-    if (!cached) console.log("📈 Pre-warming quick stats...");
+    try {
+      const key = CACHE_KEYS.QUICK_STATS(this.churchId);
+      const cached = await cacheManager.get(key);
+      if (!cached) console.log("📈 Pre-warming quick stats...");
+    } catch (error) {
+      console.warn(
+        "⚠️ Failed to warm quick stats cache:",
+        (error as Error).message,
+      );
+    }
+  }
+
+  private async forceWarmExecutiveReport() {
+    try {
+      const key = CACHE_KEYS.EXECUTIVE_REPORT(this.churchId, "30d");
+      await cacheManager.del(key);
+      console.log("🗑️ Deleted executive report cache, warming...");
+      await this.warmExecutiveReport();
+    } catch (error) {
+      console.warn(
+        "⚠️ Failed to force warm executive report cache:",
+        (error as Error).message,
+      );
+    }
+  }
+
+  private async forceWarmQuickStats() {
+    try {
+      const key = CACHE_KEYS.QUICK_STATS(this.churchId);
+      await cacheManager.del(key);
+      console.log("🗑️ Deleted quick stats cache, warming...");
+      await this.warmQuickStats();
+    } catch (error) {
+      console.warn(
+        "⚠️ Failed to force warm quick stats cache:",
+        (error as Error).message,
+      );
+    }
   }
 
   private updateMetrics() {

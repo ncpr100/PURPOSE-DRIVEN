@@ -137,7 +137,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
       }
     } catch (error) {
       console.error('Error fetching analytics:', error);
-      setError('Error al cargar los datos analíticos. Por favor intenta nuevamente.');
+      setError('Error al cargar los datos analÃƒÆ’Ã‚Â­ticos. Por favor intenta nuevamente.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -176,22 +176,22 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
   // Export Utilities
   const convertToCSV = (data: any) => {
-    const headers = ['Métrica', 'Valor', 'Crecimiento', 'Período']
+    const headers = ['MÃƒÆ’Ã‚Â©trica', 'Valor', 'Crecimiento', 'PerÃƒÆ’Ã‚Â­odo']
     const rows = []
     
     if (overview) {
-      rows.push(['Miembros Totales', overview.members.total, `${overview.members.growth}%`, `${period} días`])
-      rows.push(['Donaciones Totales', formatCurrency(overview.donations.total), `${overview.donations.growth}%`, `${period} días`])
-      rows.push(['Promedio Donación', formatCurrency(overview.donations.average), '', `${period} días`])
-      rows.push(['Eventos Realizados', overview.events.total, `${overview.events.growth}%`, `${period} días`])
-      rows.push(['Comunicaciones Enviadas', overview.communications.total, `${overview.communications.growth}%`, `${period} días`])
-      rows.push(['Voluntarios Activos', overview.volunteers.total, `${overview.volunteers.growth}%`, `${period} días`])
-      rows.push(['Publicaciones Sociales', overview.socialMedia.posts, `${overview.socialMedia.growth}%`, `${period} días`])
+      rows.push(['Miembros Totales', overview.members.total, `${overview.members.growth}%`, `${period} dÃƒÆ’Ã‚Â­as`])
+      rows.push(['Donaciones Totales', formatCurrency(overview.donations.total), `${overview.donations.growth}%`, `${period} dÃƒÆ’Ã‚Â­as`])
+      rows.push(['Promedio DonaciÃƒÆ’Ã‚Â³n', formatCurrency(overview.donations.average), '', `${period} dÃƒÆ’Ã‚Â­as`])
+      rows.push(['Eventos Realizados', overview.events.total, `${overview.events.growth}%`, `${period} dÃƒÆ’Ã‚Â­as`])
+      rows.push(['Comunicaciones Enviadas', overview.communications.total, `${overview.communications.growth}%`, `${period} dÃƒÆ’Ã‚Â­as`])
+      rows.push(['Voluntarios Activos', overview.volunteers.total, `${overview.volunteers.growth}%`, `${period} dÃƒÆ’Ã‚Â­as`])
+      rows.push(['Publicaciones Sociales', overview.socialMedia.posts, `${overview.socialMedia.growth}%`, `${period} dÃƒÆ’Ã‚Â­as`])
       
       if (overview.comprehensive) {
-        rows.push(['Peticiones de Oración', overview.comprehensive.prayerMinistry.requestsReceived, '', `${period} días`])
-        rows.push(['Check-ins Registrados', overview.comprehensive.engagement.checkIns, '', `${period} días`])
-        rows.push(['Seguimientos Realizados', overview.comprehensive.engagement.followUps, '', `${period} días`])
+        rows.push(['Peticiones de OraciÃƒÆ’Ã‚Â³n', overview.comprehensive.prayerMinistry.requestsReceived, '', `${period} dÃƒÆ’Ã‚Â­as`])
+        rows.push(['Check-ins Registrados', overview.comprehensive.engagement.checkIns, '', `${period} dÃƒÆ’Ã‚Â­as`])
+        rows.push(['Seguimientos Realizados', overview.comprehensive.engagement.followUps, '', `${period} dÃƒÆ’Ã‚Â­as`])
       }
     }
     
@@ -203,23 +203,23 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
     const data = {
       worksheets: [
         {
-          name: 'Métricas Principales',
+          name: 'MÃƒÆ’Ã‚Â©tricas Principales',
           data: overview ? [
-            ['Métrica', 'Valor Actual', 'Crecimiento (%)', 'Período'],
-            ['Miembros Activos', overview.members.total, overview.members.growth, `${period} días`],
-            ['Donaciones Totales', overview.donations.total, overview.donations.growth, `${period} días`],
-            ['Promedio por Donación', overview.donations.average, '', `${period} días`],
-            ['Total Donaciones', overview.donations.count, '', `${period} días`],
-            ['Eventos Realizados', overview.events.total, overview.events.growth, `${period} días`],
-            ['Comunicaciones', overview.communications.total, overview.communications.growth, `${period} días`],
-            ['Voluntarios Activos', overview.volunteers.total, overview.volunteers.growth, `${period} días`],
-            ['Publicaciones Sociales', overview.socialMedia.posts, overview.socialMedia.growth, `${period} días`]
+            ['MÃƒÆ’Ã‚Â©trica', 'Valor Actual', 'Crecimiento (%)', 'PerÃƒÆ’Ã‚Â­odo'],
+            ['Miembros Activos', overview.members.total, overview.members.growth, `${period} dÃƒÆ’Ã‚Â­as`],
+            ['Donaciones Totales', overview.donations.total, overview.donations.growth, `${period} dÃƒÆ’Ã‚Â­as`],
+            ['Promedio por DonaciÃƒÆ’Ã‚Â³n', overview.donations.average, '', `${period} dÃƒÆ’Ã‚Â­as`],
+            ['Total Donaciones', overview.donations.count, '', `${period} dÃƒÆ’Ã‚Â­as`],
+            ['Eventos Realizados', overview.events.total, overview.events.growth, `${period} dÃƒÆ’Ã‚Â­as`],
+            ['Comunicaciones', overview.communications.total, overview.communications.growth, `${period} dÃƒÆ’Ã‚Â­as`],
+            ['Voluntarios Activos', overview.volunteers.total, overview.volunteers.growth, `${period} dÃƒÆ’Ã‚Â­as`],
+            ['Publicaciones Sociales', overview.socialMedia.posts, overview.socialMedia.growth, `${period} dÃƒÆ’Ã‚Â­as`]
           ] : []
         },
         {
           name: 'Tendencias',
           data: trends?.trends ? [
-            ['Período', 'Donaciones (Monto)', 'Donaciones (Cantidad)', 'Eventos', 'Comunicaciones', 'Asistencia'],
+            ['PerÃƒÆ’Ã‚Â­odo', 'Donaciones (Monto)', 'Donaciones (Cantidad)', 'Eventos', 'Comunicaciones', 'Asistencia'],
             ...trends.trends.map(trend => [
               trend.period,
               trend.donations.amount,
@@ -235,18 +235,18 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
     if (overview?.comprehensive) {
       data.worksheets.push({
-        name: 'Métricas Avanzadas',
+        name: 'MÃƒÆ’Ã‚Â©tricas Avanzadas',
         data: [
-          ['Categoría', 'Métrica', 'Valor', 'Detalles'],
-          ['Oración', 'Peticiones Recibidas', overview.comprehensive.prayerMinistry.requestsReceived, ''],
-          ['Oración', 'Respuestas Dadas', overview.comprehensive.prayerMinistry.responsesGiven, ''],
-          ['Oración', 'Tasa de Respuesta', `${overview.comprehensive.prayerMinistry.responseRate}%`, ''],
-          ['Participación', 'Check-ins', overview.comprehensive.engagement.checkIns, ''],
-          ['Participación', 'Seguimientos', overview.comprehensive.engagement.followUps, ''],
-          ['Participación', 'Automatizaciones Activas', overview.comprehensive.engagement.activeAutomations, ''],
-          ['Membresía', 'Nuevos Miembros', overview.comprehensive.membership.newMembers, `${period} días`],
-          ['Comunicación', 'Total Destinatarios', overview.comprehensive.communications.totalRecipients, ''],
-          ['Comunicación', 'Promedio por Mensaje', Math.round(overview.comprehensive.communications.averageRecipientsPerMessage), '']
+          ['CategorÃƒÆ’Ã‚Â­a', 'MÃƒÆ’Ã‚Â©trica', 'Valor', 'Detalles'],
+          ['OraciÃƒÆ’Ã‚Â³n', 'Peticiones Recibidas', overview.comprehensive.prayerMinistry.requestsReceived, ''],
+          ['OraciÃƒÆ’Ã‚Â³n', 'Respuestas Dadas', overview.comprehensive.prayerMinistry.responsesGiven, ''],
+          ['OraciÃƒÆ’Ã‚Â³n', 'Tasa de Respuesta', `${overview.comprehensive.prayerMinistry.responseRate}%`, ''],
+          ['ParticipaciÃƒÆ’Ã‚Â³n', 'Check-ins', overview.comprehensive.engagement.checkIns, ''],
+          ['ParticipaciÃƒÆ’Ã‚Â³n', 'Seguimientos', overview.comprehensive.engagement.followUps, ''],
+          ['ParticipaciÃƒÆ’Ã‚Â³n', 'Automatizaciones Activas', overview.comprehensive.engagement.activeAutomations, ''],
+          ['MembresÃƒÆ’Ã‚Â­a', 'Nuevos Miembros', overview.comprehensive.membership.newMembers, `${period} dÃƒÆ’Ã‚Â­as`],
+          ['ComunicaciÃƒÆ’Ã‚Â³n', 'Total Destinatarios', overview.comprehensive.communications.totalRecipients, ''],
+          ['ComunicaciÃƒÆ’Ã‚Â³n', 'Promedio por Mensaje', Math.round(overview.comprehensive.communications.averageRecipientsPerMessage), '']
         ]
       })
     }
@@ -297,7 +297,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
       const formatLabels = {
         pdf: 'PDF (Profesional con branding)',
-        excel: 'Excel (Múltiples hojas con gráficos)',
+        excel: 'Excel (MÃƒÆ’Ã‚Âºltiples hojas con grÃƒÆ’Ã‚Â¡ficos)',
         csv: 'CSV (Compatible con sistemas externos)'
       };
 
@@ -319,7 +319,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
       const baseFilename = `reporte-analitico-${timestamp}`
       
       const reportData = {
-        title: `Reporte Analítico - ${new Date().toLocaleDateString('es-ES')}`,
+        title: `Reporte AnalÃƒÆ’Ã‚Â­tico - ${new Date().toLocaleDateString('es-ES')}`,
         period: period,
         metrics: overview,
         trends: trends,
@@ -354,7 +354,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
             return `=== ${sheet.name} ===\n${sheetContent}\n\n`
           }).join('')
           
-          content = `Reporte Analítico - ${reportData.title}\nGenerado: ${reportData.createdAt}\nPeríodo: ${period} días\nIglesia: ${reportData.church}\n\n${sheets}`
+          content = `Reporte AnalÃƒÆ’Ã‚Â­tico - ${reportData.title}\nGenerado: ${reportData.createdAt}\nPerÃƒÆ’Ã‚Â­odo: ${period} dÃƒÆ’Ã‚Â­as\nIglesia: ${reportData.church}\n\n${sheets}`
           mimeType = 'application/vnd.ms-excel'
           filename = `${baseFilename}.xls`
           break
@@ -377,9 +377,9 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
         URL.revokeObjectURL(url)
         
         const formatLabels = {
-          json: 'JSON (API integración)',
+          json: 'JSON (API integraciÃƒÆ’Ã‚Â³n)',
           csv: 'CSV (Google Sheets listo)',
-          excel: 'Excel (múltiples hojas)'
+          excel: 'Excel (mÃƒÆ’Ã‚Âºltiples hojas)'
         }
         
         toast.success(`Reporte ${formatLabels[format]} descargado exitosamente`)
@@ -398,7 +398,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
   const handleUpdateKPIs = async () => {
     try {
-      toast.info('⏳ Actualizando KPIs y métricas...')
+      toast.info('ÃƒÂ¢Ã‚ÂÃ‚Â³ Actualizando KPIs y mÃƒÆ’Ã‚Â©tricas...')
       
       // Trigger KPI calculation
       const response = await fetch('/api/kpi-metrics/calculate', {
@@ -416,7 +416,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
       }
     } catch (error) {
       console.error('Error updating KPIs:', error)
-      toast.error('Error al actualizar KPIs. Se ha refrescado la información actual.')
+      toast.error('Error al actualizar KPIs. Se ha refrescado la informaciÃƒÆ’Ã‚Â³n actual.')
       // Fallback to just refreshing current data
       await fetchAnalyticsData(false)
     }
@@ -448,7 +448,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
       <div className="flex items-center justify-center h-64">
         <div className="flex items-center gap-2">
           <Loader2 className="h-6 w-6 animate-spin" />
-          <span>Cargando analíticas...</span>
+          <span>Cargando analÃƒÆ’Ã‚Â­ticas...</span>
         </div>
       </div>
     );
@@ -478,9 +478,9 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Analíticas Generales</h1>
+          <h1 className="text-3xl font-bold text-foreground">AnalÃƒÆ’Ã‚Â­ticas Generales</h1>
           <p className="text-muted-foreground mt-2">
-            Métricas operacionales y perspectivas basadas en datos para la gestión diaria de tu ministerio
+            MÃƒÆ’Ã‚Â©tricas operacionales y perspectivas basadas en datos para la gestiÃƒÆ’Ã‚Â³n diaria de tu ministerio
           </p>
         </div>
         
@@ -490,10 +490,10 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="7">Últimos 7 días</SelectItem>
-              <SelectItem value="30">Últimos 30 días</SelectItem>
-              <SelectItem value="90">Últimos 90 días</SelectItem>
-              <SelectItem value="365">Último año</SelectItem>
+              <SelectItem value="7">ÃƒÆ’Ã…Â¡ltimos 7 dÃƒÆ’Ã‚Â­as</SelectItem>
+              <SelectItem value="30">ÃƒÆ’Ã…Â¡ltimos 30 dÃƒÆ’Ã‚Â­as</SelectItem>
+              <SelectItem value="90">ÃƒÆ’Ã…Â¡ltimos 90 dÃƒÆ’Ã‚Â­as</SelectItem>
+              <SelectItem value="365">ÃƒÆ’Ã…Â¡ltimo aÃƒÆ’Ã‚Â±o</SelectItem>
             </SelectContent>
           </Select>
           
@@ -624,15 +624,15 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
                     <BarChart3 className="h-4 w-4 text-primary" />
-                    Donación Promedio
+                    DonaciÃƒÆ’Ã‚Â³n Promedio
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{formatCurrency(overview.donations.average)}</div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Por donación</span>
+                    <span className="text-xs text-muted-foreground">Por donaciÃƒÆ’Ã‚Â³n</span>
                     <Badge variant="secondary" className="text-xs">
-                      {period} días
+                      {period} dÃƒÆ’Ã‚Â­as
                     </Badge>
                   </div>
                 </CardContent>
@@ -642,7 +642,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center gap-2">
                     <Activity className="h-4 w-4 text-[hsl(var(--info))]" />
-                    Participación
+                    ParticipaciÃƒÆ’Ã‚Â³n
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -665,7 +665,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm font-medium flex items-center gap-2">
                         <Heart className="h-4 w-4 text-[hsl(var(--destructive))]" />
-                        Ministerio de Oración
+                        Ministerio de OraciÃƒÆ’Ã‚Â³n
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -859,7 +859,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                 </CardTitle>
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">
-                    Análisis automático de patrones y recomendaciones inteligentes
+                    AnÃƒÆ’Ã‚Â¡lisis automÃƒÆ’Ã‚Â¡tico de patrones y recomendaciones inteligentes
                   </p>
                   <Button
                     variant="outline"
@@ -970,7 +970,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                                 <ul className="text-xs text-muted-foreground space-y-1">
                                   {(insight.actionItems || []).slice(0, 2).map((action: string, i: number) => (
                                     <li key={i} className="flex items-start gap-1">
-                                      <span className="text-[hsl(var(--success))] mt-0.5">•</span>
+                                      <span className="text-[hsl(var(--success))] mt-0.5">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢</span>
                                       <span>{action}</span>
                                     </li>
                                   ))}
@@ -996,7 +996,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                     <Brain className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-muted-foreground mb-2">Generando Insights Inteligentes</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Haz clic en &quot;Actualizar IA&quot; para generar análisis automático de patrones
+                      Haz clic en &quot;Actualizar IA&quot; para generar anÃƒÆ’Ã‚Â¡lisis automÃƒÆ’Ã‚Â¡tico de patrones
                     </p>
                     <Button onClick={fetchAIInsights} disabled={aiInsightsLoading}>
                       <Sparkles className="h-4 w-4 mr-2" />
@@ -1019,23 +1019,23 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                   <TrendingUp className="h-4 w-4" />
                   <AlertDescription>
                     <strong>Las donaciones muestran una tendencia al alza</strong> con un incremento del {overview?.donations.growth}% 
-                    comparado al período anterior. Considera lanzar una campaña especial para mantener el impulso.
+                    comparado al perÃƒÆ’Ã‚Â­odo anterior. Considera lanzar una campaÃƒÆ’Ã‚Â±a especial para mantener el impulso.
                   </AlertDescription>
                 </Alert>
                 
                 <Alert>
                   <Users className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>La participación de los miembros es sólida</strong> con {overview?.communications.total} comunicaciones 
-                    enviadas en los últimos {period} días. Mantén esta estrategia de comunicación consistente.
+                    <strong>La participaciÃƒÆ’Ã‚Â³n de los miembros es sÃƒÆ’Ã‚Â³lida</strong> con {overview?.communications.total} comunicaciones 
+                    enviadas en los ÃƒÆ’Ã‚Âºltimos {period} dÃƒÆ’Ã‚Â­as. MantÃƒÆ’Ã‚Â©n esta estrategia de comunicaciÃƒÆ’Ã‚Â³n consistente.
                   </AlertDescription>
                 </Alert>
                 
                 <Alert>
                   <Calendar className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>La participación en eventos está {overview && overview.events.growth > 0 ? 'creciendo' : 'estable'}</strong>. 
-                    Considera diversificar los tipos de eventos para atraer diferentes demografías.
+                    <strong>La participaciÃƒÆ’Ã‚Â³n en eventos estÃƒÆ’Ã‚Â¡ {overview && overview.events.growth > 0 ? 'creciendo' : 'estable'}</strong>. 
+                    Considera diversificar los tipos de eventos para atraer diferentes demografÃƒÆ’Ã‚Â­as.
                   </AlertDescription>
                 </Alert>
               </CardContent>
@@ -1057,9 +1057,9 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       <div className="flex-1">
                         <div className="font-medium text-[hsl(var(--success))]">Excel (.xlsx)</div>
                         <div className="text-sm text-[hsl(var(--success))] space-y-1">
-                          <div>• Múltiples hojas de trabajo</div>
-                          <div>• Tablas de datos organizadas</div>
-                          <div>• Importación directa a Excel</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ MÃƒÆ’Ã‚Âºltiples hojas de trabajo</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Tablas de datos organizadas</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ImportaciÃƒÆ’Ã‚Â³n directa a Excel</div>
                         </div>
                       </div>
                     </div>
@@ -1069,9 +1069,9 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       <div className="flex-1">
                         <div className="font-medium text-[hsl(var(--warning))]">CSV (.csv)</div>
                         <div className="text-sm text-[hsl(var(--warning))] space-y-1">
-                          <div>• Listo para Google Sheets</div>
-                          <div>• Compatibilidad universal</div>
-                          <div>• Importación fácil de datos</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Listo para Google Sheets</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Compatibilidad universal</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ImportaciÃƒÆ’Ã‚Â³n fÃƒÆ’Ã‚Â¡cil de datos</div>
                         </div>
                       </div>
                     </div>
@@ -1081,9 +1081,9 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       <div className="flex-1">
                         <div className="font-medium text-[hsl(var(--info))]">JSON (.json)</div>
                         <div className="text-sm text-[hsl(var(--info))] space-y-1">
-                          <div>• Estructura de datos completa</div>
-                          <div>• Integración con APIs</div>
-                          <div>• Amigable para desarrolladores</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Estructura de datos completa</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ IntegraciÃƒÆ’Ã‚Â³n con APIs</div>
+                          <div>ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Amigable para desarrolladores</div>
                         </div>
                       </div>
                     </div>
@@ -1091,7 +1091,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
                   <div className="mt-4 p-3 bg-muted/30 rounded-lg border">
                     <p className="text-sm text-muted-foreground text-center">
-                      Los reportes se generan en tiempo real con datos actuales y están listos para uso inmediato en tu plataforma de análisis preferida
+                      Los reportes se generan en tiempo real con datos actuales y estÃƒÆ’Ã‚Â¡n listos para uso inmediato en tu plataforma de anÃƒÆ’Ã‚Â¡lisis preferida
                     </p>
                   </div>
                 </div>
@@ -1100,7 +1100,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
             
             <Card>
               <CardHeader>
-                <CardTitle>Acciones Rápidas</CardTitle>
+                <CardTitle>Acciones RÃƒÆ’Ã‚Â¡pidas</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {/* Advanced Export Section */}
@@ -1120,7 +1120,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       )}
                       <div className="flex-1 text-left">
                         <div className="font-medium">PDF Ejecutivo</div>
-                        <div className="text-xs text-muted-foreground">Con branding • Gráficos • Insights IA</div>
+                        <div className="text-xs text-muted-foreground">Con branding ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ GrÃƒÆ’Ã‚Â¡ficos ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Insights IA</div>
                       </div>
                     </Button>
                     <Button 
@@ -1136,7 +1136,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       )}
                       <div className="flex-1 text-left">
                         <div className="font-medium">Excel Avanzado</div>
-                        <div className="text-xs text-muted-foreground">Múltiples hojas • Datos detallados • Métricas</div>
+                        <div className="text-xs text-muted-foreground">MÃƒÆ’Ã‚Âºltiples hojas ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Datos detallados ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ MÃƒÆ’Ã‚Â©tricas</div>
                       </div>
                     </Button>
                     <Button 
@@ -1152,7 +1152,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       )}
                       <div className="flex-1 text-left">
                         <div className="font-medium">CSV Estructurado</div>
-                        <div className="text-xs text-muted-foreground">Optimizado • Insights IA incluidos</div>
+                        <div className="text-xs text-muted-foreground">Optimizado ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Insights IA incluidos</div>
                       </div>
                     </Button>
                   </div>
@@ -1160,7 +1160,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
 
                 {/* Legacy Export Section */}
                 <div className="space-y-3 border-t pt-4">
-                  <h4 className="font-medium text-sm text-muted-foreground flex items-center gap-1"><FileText className="h-4 w-4" /> Exportes Básicos</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground flex items-center gap-1"><FileText className="h-4 w-4" /> Exportes BÃƒÆ’Ã‚Â¡sicos</h4>
                   <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button 
@@ -1182,7 +1182,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       <FileSpreadsheet className="h-4 w-4 mr-3 text-[hsl(var(--success))]" />
                       <div className="flex-1">
                         <div className="font-medium">Excel (.xlsx)</div>
-                        <div className="text-xs text-muted-foreground">Múltiples hojas • Tablas organizadas</div>
+                        <div className="text-xs text-muted-foreground">MÃƒÆ’Ã‚Âºltiples hojas ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Tablas organizadas</div>
                       </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
@@ -1192,7 +1192,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       <Database className="h-4 w-4 mr-3 text-[hsl(var(--warning))]" />
                       <div className="flex-1">
                         <div className="font-medium">CSV (.csv)</div>
-                        <div className="text-xs text-muted-foreground">Google Sheets listo • Compatible universal</div>
+                        <div className="text-xs text-muted-foreground">Google Sheets listo ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ Compatible universal</div>
                       </div>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
@@ -1202,7 +1202,7 @@ export default function AnalyticsClient({ userRole, churchId }: AnalyticsClientP
                       <Download className="h-4 w-4 mr-3 text-[hsl(var(--info))]" />
                       <div className="flex-1">
                         <div className="font-medium">JSON (.json)</div>
-                        <div className="text-xs text-muted-foreground">Estructura completa • Integración API</div>
+                        <div className="text-xs text-muted-foreground">Estructura completa ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ IntegraciÃƒÆ’Ã‚Â³n API</div>
                       </div>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
