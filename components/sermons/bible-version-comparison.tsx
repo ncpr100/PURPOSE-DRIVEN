@@ -22,84 +22,60 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-// IDs oficiales de api.bible (Scripture API)
+// VERSIONES REALES Y AUTORIZADAS PARA TU API KEY EN rest.api.bible
 const BIBLE_VERSIONS = [
   // ESPAÑOL
   {
-    id: "nvi",
-    name: "NVI (Nueva Versión Internacional)",
+    id: "rvr09",
+    name: "Reina Valera 1909",
     language: "Español",
-    bibleId: "56812621317b4f5f",
+    bibleId: "592420522e16049f-01",
   },
   {
-    id: "ntv",
-    name: "NTV (Nueva Traducción Viviente)",
+    id: "pdDpt",
+    name: "Palabra de Dios para ti",
     language: "Español",
-    bibleId: "9879cbfb0672252b",
+    bibleId: "48acedcf8595c754-01",
   },
   {
-    id: "nbla",
-    name: "NBLA (Nueva Biblia de las Américas)",
+    id: "spabes",
+    name: "Simple Spanish",
     language: "Español",
-    bibleId: "a071128576248251",
+    bibleId: "b32b9d1b64b4ef29-01",
   },
   {
-    id: "nbl",
-    name: "NBL (Nueva Biblia Latinoamericana)",
+    id: "vbl",
+    name: "Versión Biblia Libre (VBL)",
     language: "Español",
-    bibleId: "e920b9c5e7355d53",
+    bibleId: "482ddd53705278cc-02",
   },
 
   // INGLÉS
   {
     id: "kjv",
-    name: "KJV (King James Version)",
+    name: "King James Version (KJV)",
     language: "Inglés",
     bibleId: "de4e12af7f28f599-02",
   },
   {
-    id: "nlt",
-    name: "NLT (New Living Translation)",
+    id: "web",
+    name: "World English Bible (WEB)",
     language: "Inglés",
-    bibleId: "04622b7e07722287",
+    bibleId: "9879dbb7cfe39e4d-02",
   },
   {
-    id: "msg",
-    name: "MSG (The Message)",
-    language: "Inglés",
-    bibleId: "020618793a0ae55f",
-  },
-  {
-    id: "amp",
-    name: "AMP (Amplified Bible)",
+    id: "asv",
+    name: "American Standard (ASV)",
     language: "Inglés",
     bibleId: "06125adad2d5898a-01",
   },
 
   // PORTUGUÉS
   {
-    id: "ptnvi",
-    name: "PTNVI (Nova Versão Internacional)",
-    language: "Portugués",
-    bibleId: "196536e97e60040e",
-  },
-  {
-    id: "nvt",
-    name: "NVT (Nova Versão Transformadora)",
-    language: "Portugués",
-    bibleId: "0860537162447a48",
-  },
-  {
     id: "blt",
-    name: "BLT (Bíblia Livre para Todos)",
+    name: "Bíblia Livre Para Todos (BLT)",
     language: "Portugués",
-    bibleId: "2050104141673356",
-  },
-  {
-    id: "onbv",
-    name: "ONBV",
-    language: "Portugués",
-    bibleId: "9c01e7f7b6b4f2e8",
+    bibleId: "d63894c8d9a7a503-01",
   },
 ];
 
@@ -116,7 +92,7 @@ interface VerseResult {
 export default function BibleVersionComparison() {
   const [searchReference, setSearchReference] = useState("");
   const [selectedVersions, setSelectedVersions] = useState<string[]>([
-    "nvi",
+    "rvr09",
     "kjv",
   ]);
   const [results, setResults] = useState<VerseResult[]>([]);
@@ -124,7 +100,7 @@ export default function BibleVersionComparison() {
 
   const handleSearch = async () => {
     if (!searchReference.trim()) {
-      toast.error("Ingresa una referencia bíblica (ej: 1 Corintios 15:56)");
+      toast.error("Ingresa una referencia bíblica (ej: Juan 3:16)");
       return;
     }
 
@@ -136,7 +112,7 @@ export default function BibleVersionComparison() {
     const apiKey = process.env.NEXT_PUBLIC_API_BIBLE_KEY;
     if (!apiKey) {
       toast.error(
-        "Falta la clave NEXT_PUBLIC_API_BIBLE_KEY en las variables de entorno",
+        "Falta NEXT_PUBLIC_API_BIBLE_KEY en las variables de entorno",
       );
       return;
     }
@@ -152,13 +128,11 @@ export default function BibleVersionComparison() {
         if (!version) return null;
 
         try {
-          // Usamos el endpoint /search que acepta lenguaje natural (ej: "1 corintios 15:56")
-          const url = `https://api.scripture.api.bible/v1/bibles/${version.bibleId}/search?query=${query}&limit=1`;
+          // Usando el endpoint oficial rest.api.bible que acepta lenguaje natural
+          const url = `https://rest.api.bible/v1/bibles/${version.bibleId}/search?query=${query}&limit=1`;
 
           const response = await fetch(url, {
-            headers: {
-              "api-key": apiKey,
-            },
+            headers: { "api-key": apiKey },
           });
 
           if (!response.ok) {
@@ -169,7 +143,7 @@ export default function BibleVersionComparison() {
               reference: searchReference,
               text: "",
               hasError: true,
-              errorMessage: `Error de API (${response.status}). Verifica que tu clave tenga acceso a esta versión.`,
+              errorMessage: `Error de conexión (${response.status}).`,
             };
           }
 
@@ -183,17 +157,26 @@ export default function BibleVersionComparison() {
               reference: searchReference,
               text: "",
               hasError: true,
-              errorMessage: "No se encontró esta referencia en esta versión.",
+              errorMessage:
+                "No se encontró esta referencia exacta en esta versión.",
             };
           }
 
           const match = data.data[0];
+          // Limpiar etiquetas HTML o de formato que a veces devuelve la API
+          const cleanText = match.text
+            ? match.text
+                .replace(/<[^>]*>?/gm, "")
+                .replace(/\s+/g, " ")
+                .trim()
+            : "Texto no disponible.";
+
           return {
             version: versionId,
             versionName: version.name,
             language: version.language,
             reference: match.reference || searchReference,
-            text: match.text || "Texto no disponible.",
+            text: cleanText,
             hasError: false,
           };
         } catch (err) {
@@ -204,7 +187,7 @@ export default function BibleVersionComparison() {
             reference: searchReference,
             text: "",
             hasError: true,
-            errorMessage: "Error de conexión con api.bible.",
+            errorMessage: "Error de red al contactar rest.api.bible.",
           };
         }
       });
@@ -216,7 +199,6 @@ export default function BibleVersionComparison() {
 
       setResults(validResults);
 
-      // Lógica robusta basada en booleano, no en strings
       const successCount = validResults.filter((r) => !r.hasError).length;
       if (successCount > 0) {
         toast.success(`Comparación obtenida en ${successCount} versión(es)`);
@@ -243,9 +225,7 @@ export default function BibleVersionComparison() {
 
   const versionsByLanguage = BIBLE_VERSIONS.reduce(
     (acc, version) => {
-      if (!acc[version.language]) {
-        acc[version.language] = [];
-      }
+      if (!acc[version.language]) acc[version.language] = [];
       acc[version.language].push(version);
       return acc;
     },
@@ -261,18 +241,20 @@ export default function BibleVersionComparison() {
             Comparador de Versiones Bíblicas
           </CardTitle>
           <CardDescription>
-            Compara versículos usando la API oficial de Scripture (api.bible).
+            Compara versículos usando la API oficial de Scripture
+            (rest.api.bible).
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex gap-3 p-4 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg">
             <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-blue-800 dark:text-blue-200">
-              <p className="font-semibold">Formato de Referencia:</p>
+              <p className="font-semibold">Versiones Disponibles:</p>
               <p>
-                Usa lenguaje natural como <strong>1 Corintios 15:56</strong> o{" "}
-                <strong>Juan 3:16</strong>. El sistema buscará automáticamente
-                la coincidencia más precisa.
+                Se muestran las versiones autorizadas por tu cuenta actual
+                (Reina Valera, KJV, WEB, BLT, etc.). Las versiones con derechos
+                de autor premium (NVI, NLT, MSG) requieren licencias adicionales
+                en API.Bible.
               </p>
             </div>
           </div>
@@ -284,7 +266,7 @@ export default function BibleVersionComparison() {
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="reference"
-                  placeholder="Ej: 1 Corintios 15:56, Juan 3:16"
+                  placeholder="Ej: Juan 3:16, 1 Corintios 15:56"
                   value={searchReference}
                   onChange={(e) => setSearchReference(e.target.value)}
                   className="pl-9"
