@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Search, BookOpen, Loader2 , Sparkles} from "lucide-react";
+import { Search, BookOpen, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 const VERSIONS = [
@@ -50,7 +50,6 @@ export default function BibleVersionComparison() {
       const formattedRef = searchReference.replace(/\s+/g, "+");
       const promises = selectedVersions.map(async (versionId) => {
         try {
-          // Usamos bible-api.com: 100% gratuita, sin API Key, sin lÃƒÂ­mites estrictos
           const response = await fetch(
             `https://bible-api.com/${formattedRef}?translation=${versionId}`,
           );
@@ -62,24 +61,24 @@ export default function BibleVersionComparison() {
           return {
             version: versionName,
             reference: data.reference || searchReference,
-            text: data.text || "Texto no disponible para esta versiÃƒÂ³n.",
+            text: data.text || "Texto no disponible para esta versión.",
           };
         } catch (err) {
           return {
             version:
               VERSIONS.find((v) => v.id === versionId)?.name || versionId,
             reference: searchReference,
-            text: "Ã¢Å¡Â Ã¯Â¸Â No se encontrÃƒÂ³ esta referencia en esta versiÃƒÂ³n.",
+            text: "⚠️ No se encontró esta referencia en esta versión.",
           };
         }
       });
 
       const fetchedResults = await Promise.all(promises);
       setResults(fetchedResults);
-      toast.success("ComparaciÃƒÂ³n obtenida exitosamente");
+      toast.success("Comparación obtenida exitosamente");
     } catch (error) {
-      console.error("Error en bÃƒÂºsqueda bíblica:", error);
-      toast.error("Error al conectar con el servicio bÃƒÂ­blico");
+      console.error("Error en búsqueda bíblica:", error);
+      toast.error("Error al conectar con el servicio bíblico");
     } finally {
       setLoading(false);
     }
@@ -95,117 +94,89 @@ export default function BibleVersionComparison() {
 
   return (
     <div className="space-y-6">
-      {/* Header Limpio y Unificado */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            GestiÃƒÂ³n de Sermones
-          </h1>
-          <p className="text-muted-foreground">
-            Crea, administra y analiza sermones con herramientas de exÃƒÂ©gesis
-            bíblica e IA.
-          </p>
-        </div>
-        <Button
-          onClick={() => setShowAssistant(true)}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
-        >
-          <Sparkles className="h-4 w-4 mr-2" />
-          Generar SermÃƒÂ³n con IA
-        </Button>
-      </div>
-
-      {/* Search */}
       <Card>
-        <CardContent className="p-6">
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Buscar por tÃƒÂ­tulo, escritura o predicador..."
-              value={searchReference}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Sermons Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {isLoading ? (
-          <div className="col-span-full text-center py-8">
-            <p>Cargando sermones...</p>
-          </div>
-        ) : filteredSermons.length === 0 ? (
-          <div className="col-span-full text-center py-12">
-            <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground mb-4">
-              {searchReference
-                ? "No se encontraron sermones"
-                : "No hay sermones creados"}
-            </p>
-            <div className="flex gap-2 justify-center">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BookOpen className="h-5 w-5" />
+            Comparador de Versiones Bíblicas
+          </CardTitle>
+          <CardDescription>
+            Compara versículos en diferentes traducciones bíblicas
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="reference">Referencia Bíblica</Label>
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="reference"
+                  placeholder="Ej: Juan 3:16"
+                  value={searchReference}
+                  onChange={(e) => setSearchReference(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
               <Button
-                onClick={() => setShowAssistant(true)}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={handleSearch}
+                disabled={loading || selectedVersions.length === 0}
               >
-                <Sparkles className="h-4 w-4 mr-2" />
-                Crear con IA
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Buscando...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    Comparar
+                  </>
+                )}
               </Button>
             </div>
           </div>
-        ) : (
-          filteredSermons.map((sermon) => (
-            <Card key={sermon.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg line-clamp-2">
-                  {sermon.title}
-                </CardTitle>
-                <div className="flex flex-wrap items-center gap-2">
-                  {sermon.scripture && (
-                    <Badge variant="secondary" className="text-xs">
-                      {sermon.scripture}
-                    </Badge>
-                  )}
-                  {sermon.speaker && (
-                    <Badge variant="outline" className="text-xs">
-                      {sermon.speaker}
-                    </Badge>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {sermon.content && (
-                  <p className="text-sm text-muted-foreground line-clamp-3">
-                    {truncateText(sermon.content, 120)}
-                  </p>
-                )}
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-muted-foreground">
-                    {formatDate(sermon.createdAt)}
-                  </p>
-                  <div className="flex gap-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setViewingSermon(sermon)}
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDeleteSermon(sermon.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        )}
-      </div>
+
+          <div className="space-y-2">
+            <Label>Versiones a Comparar</Label>
+            <div className="flex flex-wrap gap-2">
+              {VERSIONS.map((version) => (
+                <Badge
+                  key={version.id}
+                  variant={
+                    selectedVersions.includes(version.id)
+                      ? "default"
+                      : "outline"
+                  }
+                  className="cursor-pointer"
+                  onClick={() => toggleVersion(version.id)}
+                >
+                  {version.name}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          {results.length > 0 && (
+            <div className="space-y-4 mt-6">
+              <h3 className="font-semibold text-lg">Resultados</h3>
+              {results.map((result, idx) => (
+                <Card key={idx}>
+                  <CardHeader>
+                    <CardTitle className="text-base">
+                      {result.version}
+                    </CardTitle>
+                    <CardDescription>{result.reference}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm leading-relaxed">{result.text}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
