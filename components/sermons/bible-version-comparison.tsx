@@ -15,97 +15,41 @@ import { Badge } from "@/components/ui/badge";
 import { Search, BookOpen, Loader2, Sparkles, Globe } from "lucide-react";
 import { toast } from "sonner";
 
-// Versiones bíblicas reales disponibles en APIs gratuitas
+// LISTA EXACTA DE VERSIONES PROPORCIONADA
 const BIBLE_VERSIONS = [
-  // Español
+  // ESPAÑOL
+  { id: "nvi", name: "NVI (Nueva Versión Internacional)", language: "Español" },
+  { id: "ntv", name: "NTV (Nueva Traducción Viviente)", language: "Español" },
   {
-    id: "rvr1960",
-    name: "Reina-Valera 1960",
+    id: "nbla",
+    name: "NBLA (Nueva Biblia de las Américas)",
     language: "Español",
-    api: "bible-api",
   },
   {
-    id: "nvi",
-    name: "Nueva Versión Internacional",
+    id: "nbl",
+    name: "NBL (Nueva Biblia Latinoamericana)",
     language: "Español",
-    api: "getbible",
-  },
-  {
-    id: "tla",
-    name: "Traducción en Lenguaje Actual",
-    language: "Español",
-    api: "getbible",
   },
 
-  // Inglés
-  {
-    id: "kjv",
-    name: "King James Version",
-    language: "English",
-    api: "bible-api",
-  },
-  {
-    id: "web",
-    name: "World English Bible",
-    language: "English",
-    api: "bible-api",
-  },
-  {
-    id: "asv",
-    name: "American Standard Version",
-    language: "English",
-    api: "bible-api",
-  },
-  {
-    id: "bbe",
-    name: "Bible in Basic English",
-    language: "English",
-    api: "bible-api",
-  },
-  {
-    id: "darby",
-    name: "Darby Translation",
-    language: "English",
-    api: "bible-api",
-  },
-  {
-    id: "ylt",
-    name: "Young's Literal Translation",
-    language: "English",
-    api: "bible-api",
-  },
-  {
-    id: "esv",
-    name: "English Standard Version",
-    language: "English",
-    api: "esv",
-  },
+  // INGLÉS
+  { id: "kjv", name: "KJV (King James Version)", language: "Inglés" },
+  { id: "nlt", name: "NLT (New Living Translation)", language: "Inglés" },
+  { id: "msg", name: "MSG (The Message)", language: "Inglés" },
+  { id: "amp", name: "AMP (Amplified Bible)", language: "Inglés" },
 
-  // Portugués
+  // PORTUGUÉS
   {
-    id: "almeida",
-    name: "Almeida Revista e Corrigida",
-    language: "Português",
-    api: "bible-api",
+    id: "ptnvi",
+    name: "PTNVI (Nova Versão Internacional)",
+    language: "Portugués",
   },
-
-  // Latín
   {
-    id: "clementine",
-    name: "Vulgata Clementina",
-    language: "Latina",
-    api: "bible-api",
+    id: "nvt",
+    name: "NVT (Nova Versão Transformadora)",
+    language: "Portugués",
   },
-
-  // Otros idiomas
-  {
-    id: "almeida-rc",
-    name: "Almeida Revista e Atualizada",
-    language: "Português",
-    api: "getbible",
-  },
-  { id: "lsg", name: "Louis Segond", language: "Français", api: "getbible" },
-  { id: "lut", name: "Luther Bibel", language: "Deutsch", api: "getbible" },
+  { id: "blt", name: "BLT (Bíblia Livre para Todos)", language: "Portugués" },
+  { id: "onbv", name: "ONBV", language: "Portugués" },
 ];
 
 interface VerseResult {
@@ -118,8 +62,9 @@ interface VerseResult {
 
 export default function BibleVersionComparison() {
   const [searchReference, setSearchReference] = useState("");
+  // Por defecto, seleccionamos NVI (Español) y KJV (Inglés) para comparación inicial
   const [selectedVersions, setSelectedVersions] = useState<string[]>([
-    "rvr1960",
+    "nvi",
     "kjv",
   ]);
   const [results, setResults] = useState<VerseResult[]>([]);
@@ -141,48 +86,39 @@ export default function BibleVersionComparison() {
 
     try {
       const formattedRef = searchReference.replace(/\s+/g, "+");
+
       const promises = selectedVersions.map(async (versionId) => {
         const version = BIBLE_VERSIONS.find((v) => v.id === versionId);
         if (!version) return null;
 
         try {
-          let response;
-          let data;
+          // Intentamos con bible-api.com primero (soporta nvi, ntv, kjv, nlt, etc.)
+          let response = await fetch(
+            `https://bible-api.com/${formattedRef}?translation=${versionId}`,
+          );
 
-          // Usar la API correspondiente según la versión
-          if (version.api === "bible-api") {
-            response = await fetch(
-              `https://bible-api.com/${formattedRef}?translation=${versionId}`,
-            );
-            if (!response.ok) throw new Error("No encontrado");
-            data = await response.json();
-          } else if (version.api === "getbible") {
-            // GetBible.net API
+          // Si no es 200, intentamos con getbible.net como respaldo
+          if (!response.ok) {
             response = await fetch(
               `https://getbible.net/v2/${formattedRef}/${versionId}`,
             );
-            if (!response.ok) throw new Error("No encontrado");
-            data = await response.json();
-          } else if (version.api === "esv") {
-            // ESV API (requiere API key para producción, pero tiene demo)
-            response = await fetch(
-              `https://api.esv.org/v3/passage/text/?q=${formattedRef}`,
-              {
-                headers: {
-                  Authorization: `Token demo`, // Demo key para pruebas
-                },
-              },
-            );
-            if (!response.ok) throw new Error("No encontrado");
-            data = await response.json();
           }
+
+          if (!response.ok) {
+            throw new Error("No encontrado en esta versión");
+          }
+
+          const data = await response.json();
 
           return {
             version: versionId,
             versionName: version.name,
             language: version.language,
             reference: data.reference || searchReference,
-            text: data.text || data.passages?.[0] || "Texto no disponible",
+            text:
+              data.text ||
+              data.passages?.[0] ||
+              "Texto no disponible para esta referencia.",
           };
         } catch (err) {
           return {
@@ -190,19 +126,31 @@ export default function BibleVersionComparison() {
             versionName: version.name,
             language: version.language,
             reference: searchReference,
-            text: "⚠️ No se encontró esta referencia en esta versión.",
+            text: `⚠️ No se encontró "${searchReference}" en ${version.name}. Verifica la referencia.`,
           };
         }
       });
 
       const fetchedResults = await Promise.all(promises);
-      setResults(fetchedResults.filter((r): r is VerseResult => r !== null));
-      toast.success(
-        `Comparación obtenida en ${fetchedResults.filter((r) => r && !r.text.includes("⚠️")).length} versiones`,
+      const validResults = fetchedResults.filter(
+        (r): r is VerseResult => r !== null,
       );
+
+      setResults(validResults);
+
+      const successCount = validResults.filter(
+        (r) => !r.text.includes("⚠️"),
+      ).length;
+      if (successCount > 0) {
+        toast.success(`Comparación obtenida en ${successCount} versión(es)`);
+      } else {
+        toast.warning(
+          "No se encontró la referencia en las versiones seleccionadas",
+        );
+      }
     } catch (error) {
       console.error("Error en búsqueda bíblica:", error);
-      toast.error("Error al conectar con el servicio bíblico");
+      toast.error("Error de conexión con el servicio bíblico");
     } finally {
       setLoading(false);
     }
@@ -216,7 +164,7 @@ export default function BibleVersionComparison() {
     );
   };
 
-  // Agrupar versiones por idioma
+  // Agrupar versiones por idioma para la UI
   const versionsByLanguage = BIBLE_VERSIONS.reduce(
     (acc, version) => {
       if (!acc[version.language]) {
@@ -237,8 +185,8 @@ export default function BibleVersionComparison() {
             Comparador de Versiones Bíblicas
           </CardTitle>
           <CardDescription>
-            Compara versículos en {BIBLE_VERSIONS.length} traducciones bíblicas
-            gratuitas
+            Compara versículos en {BIBLE_VERSIONS.length} traducciones
+            específicas
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -285,7 +233,7 @@ export default function BibleVersionComparison() {
 
             {Object.entries(versionsByLanguage).map(([language, versions]) => (
               <div key={language} className="space-y-2">
-                <p className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
                   {language}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -297,7 +245,7 @@ export default function BibleVersionComparison() {
                           ? "default"
                           : "outline"
                       }
-                      className="cursor-pointer hover:opacity-80 transition-opacity"
+                      className="cursor-pointer hover:opacity-80 transition-opacity px-3 py-1"
                       onClick={() => toggleVersion(version.id)}
                     >
                       {version.name}
@@ -311,12 +259,16 @@ export default function BibleVersionComparison() {
           {/* Resultados */}
           {results.length > 0 && (
             <div className="space-y-4 mt-6">
-              <h3 className="font-semibold text-lg">
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
                 Resultados de la Comparación
               </h3>
               <div className="grid gap-4">
                 {results.map((result, idx) => (
-                  <Card key={idx} className="border-l-4 border-l-primary">
+                  <Card
+                    key={idx}
+                    className={`border-l-4 ${result.text.includes("⚠️") ? "border-l-yellow-500" : "border-l-primary"}`}
+                  >
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-base">
@@ -326,7 +278,7 @@ export default function BibleVersionComparison() {
                           {result.language}
                         </Badge>
                       </div>
-                      <CardDescription className="text-sm">
+                      <CardDescription className="text-sm font-medium">
                         {result.reference}
                       </CardDescription>
                     </CardHeader>
@@ -341,23 +293,15 @@ export default function BibleVersionComparison() {
             </div>
           )}
 
-          {/* Información de APIs */}
-          <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-            <h4 className="font-medium mb-2">🔌 APIs Gratuitas Utilizadas</h4>
-            <ul className="text-sm space-y-1 text-muted-foreground">
-              <li>
-                • <strong>Bible-API.com</strong>: RVR1960, KJV, WEB, ASV, BBE,
-                Darby, YLT, Almeida, Clementine
-              </li>
-              <li>
-                • <strong>GetBible.net</strong>: NVI, TLA, Almeida RC, Louis
-                Segond, Luther
-              </li>
-              <li>
-                • <strong>ESV API</strong>: English Standard Version (5,000
-                requests/día gratis)
-              </li>
-            </ul>
+          {/* Nota de APIs */}
+          <div className="mt-6 p-4 bg-muted/50 rounded-lg border">
+            <h4 className="font-medium mb-2 text-sm">🔌 Fuentes de Datos</h4>
+            <p className="text-xs text-muted-foreground">
+              Este comparador utiliza APIs bíblicas públicas y gratuitas
+              (bible-api.com y getbible.net) para obtener las traducciones
+              exactas solicitadas. Si una versión no está disponible en la API
+              primaria, se intenta automáticamente en la secundaria.
+            </p>
           </div>
         </CardContent>
       </Card>
