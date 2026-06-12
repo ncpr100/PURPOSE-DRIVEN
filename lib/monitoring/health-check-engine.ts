@@ -316,8 +316,11 @@ async function checkOpenRouter(): Promise<HealthCheckResult> {
   const start = Date.now();
   // Lectura robusta de variable de entorno con fallback y logging
   const apiKey = process.env.OPENROUTER_API_KEY;
-  console.log('[OpenRouter Health] API Key present:', !!apiKey);
-  console.log('[OpenRouter Health] API Key prefix:', apiKey ? apiKey.substring(0, 15) + '...' : 'N/A');
+  console.log("[OpenRouter Health] API Key present:", !!apiKey);
+  console.log(
+    "[OpenRouter Health] API Key prefix:",
+    apiKey ? apiKey.substring(0, 15) + "..." : "N/A",
+  );
   if (!apiKey) {
     return {
       service: "openrouter",
@@ -332,7 +335,7 @@ async function checkOpenRouter(): Promise<HealthCheckResult> {
     const res = await fetch("https://openrouter.ai/api/v1/models", {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         "HTTP-Referer": process.env.NEXTAUTH_URL || "http://localhost:3000",
         "X-Title": "Khesed-Tek CMS SRE Monitor",
       },
@@ -346,16 +349,18 @@ async function checkOpenRouter(): Promise<HealthCheckResult> {
       service: "openrouter",
       status: apiAlive ? classify("openrouter", ms) : "DOWN",
       responseTimeMs: ms,
-      errorMessage: apiAlive ? null : `HTTP ${res.status}: ${await res.text().catch(() => 'No body')}`,
-      metadata: { 
+      errorMessage: apiAlive
+        ? null
+        : `HTTP ${res.status}: ${await res.text().catch(() => "No body")}`,
+      metadata: {
         statusCode: res.status,
         provider: "OpenRouter",
         endpoint: "/api/v1/models",
-        envCheck: !!process.env.OPENROUTER_API_KEY
+        envCheck: !!process.env.OPENROUTER_API_KEY,
       },
     };
   } catch (err) {
-    console.error('[OpenRouter Health] Error:', err);
+    console.error("[OpenRouter Health] Error:", err);
     return {
       service: "openrouter",
       status: "DOWN",
@@ -366,55 +371,59 @@ async function checkOpenRouter(): Promise<HealthCheckResult> {
   }
 }
 
-
 // ── CHECK: Paddle (Primary Payment Processor - Merchant of Record) ───
 async function checkPaddle(): Promise<HealthCheckResult> {
   const start = Date.now();
-  // Lectura robusta de variable de entorno con fallback y logging
   const apiKey = process.env.PADDLE_API_KEY;
-  console.log('[Paddle Health] API Key present:', !!apiKey);
-  console.log('[Paddle Health] API Key prefix:', apiKey ? apiKey.substring(0, 15) + '...' : 'N/A');
+
   if (!apiKey) {
     return {
       service: "paddle",
       status: "UNKNOWN",
       responseTimeMs: null,
       errorMessage: "PADDLE_API_KEY not configured in server env",
-      metadata: { envCheck: !!process.env.PADDLE_API_KEY },
+      metadata: { envCheck: false },
     };
   }
+
   try {
-    // Usar endpoint correcto de Paddle Billing API
-    const res = await fetch("https://api.paddle.com/products?per_page=1", {
+    // Detectar automáticamente si es Sandbox o Producción
+    const isSandbox = apiKey.startsWith("test_");
+    const baseUrl = isSandbox
+      ? "https://sandbox-api.paddle.com"
+      : "https://api.paddle.com";
+
+    const res = await fetch(`${baseUrl}/products?per_page=1`, {
       method: "GET",
-      headers: { 
-        "Authorization": `Bearer ${apiKey}`,
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       signal: AbortSignal.timeout(5000),
     });
+
     const ms = Date.now() - start;
-    console.log(`[Paddle Health] Response: ${res.status} in ${ms}ms`);
-    // 200 OK = API operativa y key válida
     const isUp = res.ok;
+
     return {
       service: "paddle",
       status: isUp ? classify("paddle", ms) : "DOWN",
       responseTimeMs: ms,
-      errorMessage: isUp ? null : `HTTP ${res.status}: ${await res.text().catch(() => 'No body')}`,
-      metadata: { 
-        statusCode: res.status, 
-        environment: apiKey.includes("test_") ? "sandbox" : "production",
-        endpoint: "https://api.paddle.com/products"
+      errorMessage: isUp
+        ? null
+        : `HTTP ${res.status}: ${await res.text().catch(() => "No body")}`,
+      metadata: {
+        statusCode: res.status,
+        environment: isSandbox ? "sandbox" : "production",
+        endpoint: `${baseUrl}/products`,
       },
     };
   } catch (err) {
-    console.error('[Paddle Health] Error:', err);
     return {
       service: "paddle",
       status: "DOWN",
       responseTimeMs: Date.now() - start,
-      errorMessage: String(err),
+      errorMessage: err instanceof Error ? err.message : String(err),
       metadata: null,
     };
   }
@@ -432,8 +441,8 @@ export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
     checkMailgun(),
     checkTwilio(),
     checkOpenRouter(),
-      checkPaddle(),
-    ]);
+    checkPaddle(),
+  ]);
 
   const checks: HealthCheckResult[] = results.map((r, i) => {
     if (r.status === "fulfilled") return r.value;
@@ -446,8 +455,8 @@ export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
       "mailgun",
       "twilio",
       "openrouter",
-        "paddle",
-      ];
+      "paddle",
+    ];
     return {
       service: services[i],
       status: "UNKNOWN" as const,
