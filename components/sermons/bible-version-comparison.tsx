@@ -22,8 +22,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-// Mapeo de versiones a los Bible IDs oficiales de api.bible (Scripture API)
-// Nota: Si algún ID específico de tu cuenta difiere, ajústalo aquí.
+// IDs oficiales de api.bible (Scripture API)
 const BIBLE_VERSIONS = [
   // ESPAÑOL
   {
@@ -101,7 +100,7 @@ const BIBLE_VERSIONS = [
     name: "ONBV",
     language: "Portugués",
     bibleId: "9c01e7f7b6b4f2e8",
-  }, // ID placeholder, verificar en dashboard
+  },
 ];
 
 interface VerseResult {
@@ -110,6 +109,8 @@ interface VerseResult {
   language: string;
   reference: string;
   text: string;
+  hasError: boolean;
+  errorMessage?: string;
 }
 
 export default function BibleVersionComparison() {
@@ -123,9 +124,7 @@ export default function BibleVersionComparison() {
 
   const handleSearch = async () => {
     if (!searchReference.trim()) {
-      toast.error(
-        "Ingresa una referencia bíblica (ej: Juan 3:16 o 1 Corintios 15:22)",
-      );
+      toast.error("Ingresa una referencia bíblica (ej: 1 Corintios 15:56)");
       return;
     }
 
@@ -136,7 +135,9 @@ export default function BibleVersionComparison() {
 
     const apiKey = process.env.NEXT_PUBLIC_API_BIBLE_KEY;
     if (!apiKey) {
-      toast.error("Falta la clave de API de Bible (NEXT_PUBLIC_API_BIBLE_KEY)");
+      toast.error(
+        "Falta la clave NEXT_PUBLIC_API_BIBLE_KEY en las variables de entorno",
+      );
       return;
     }
 
@@ -144,16 +145,15 @@ export default function BibleVersionComparison() {
     setResults([]);
 
     try {
-      // api.bible requiere formato específico, ej: "1CO.15.22" o "JHN.3.16"
-      // Intentamos pasar la referencia tal cual, la API de passages suele aceptar formatos comunes
-      const passageId = searchReference.trim();
+      const query = encodeURIComponent(searchReference.trim());
 
       const promises = selectedVersions.map(async (versionId) => {
         const version = BIBLE_VERSIONS.find((v) => v.id === versionId);
         if (!version) return null;
 
         try {
-          const url = `https://api.scripture.api.bible/v1/bibles/${version.bibleId}/passages/${passageId}?content-type=text`;
+          // Usamos el endpoint /search que acepta lenguaje natural (ej: "1 corintios 15:56")
+          const url = `https://api.scripture.api.bible/v1/bibles/${version.bibleId}/search?query=${query}&limit=1`;
 
           const response = await fetch(url, {
             headers: {
@@ -162,21 +162,39 @@ export default function BibleVersionComparison() {
           });
 
           if (!response.ok) {
-            throw new Error(`API respondió con ${response.status}`);
+            return {
+              version: versionId,
+              versionName: version.name,
+              language: version.language,
+              reference: searchReference,
+              text: "",
+              hasError: true,
+              errorMessage: `Error de API (${response.status}). Verifica que tu clave tenga acceso a esta versión.`,
+            };
           }
 
           const data = await response.json();
 
-          // La estructura de respuesta de api.bible para passages es data.data.content
-          const text =
-            data.data?.content || "Texto no disponible para esta referencia.";
+          if (!data.data || data.data.length === 0) {
+            return {
+              version: versionId,
+              versionName: version.name,
+              language: version.language,
+              reference: searchReference,
+              text: "",
+              hasError: true,
+              errorMessage: "No se encontró esta referencia en esta versión.",
+            };
+          }
 
+          const match = data.data[0];
           return {
             version: versionId,
             versionName: version.name,
             language: version.language,
-            reference: data.data?.reference || searchReference,
-            text: text,
+            reference: match.reference || searchReference,
+            text: match.text || "Texto no disponible.",
+            hasError: false,
           };
         } catch (err) {
           return {
@@ -184,7 +202,9 @@ export default function BibleVersionComparison() {
             versionName: version.name,
             language: version.language,
             reference: searchReference,
-            text: `⚠️ No se encontró "${searchReference}" en ${version.name}. Verifica el formato (ej: Juan 3:16) o el Bible ID.`,
+            text: "",
+            hasError: true,
+            errorMessage: "Error de conexión con api.bible.",
           };
         }
       });
@@ -196,19 +216,18 @@ export default function BibleVersionComparison() {
 
       setResults(validResults);
 
-      const successCount = validResults.filter(
-        (r) => !r.text.includes("⚠️"),
-      ).length;
+      // Lógica robusta basada en booleano, no en strings
+      const successCount = validResults.filter((r) => !r.hasError).length;
       if (successCount > 0) {
         toast.success(`Comparación obtenida en ${successCount} versión(es)`);
       } else {
         toast.warning(
-          "No se encontró la referencia. Revisa el formato o los IDs de la API.",
+          "No se encontró la referencia en las versiones seleccionadas.",
         );
       }
     } catch (error) {
       console.error("Error en búsqueda bíblica:", error);
-      toast.error("Error de conexión con api.bible");
+      toast.error("Error inesperado al conectar con el servicio bíblico");
     } finally {
       setLoading(false);
     }
@@ -246,21 +265,18 @@ export default function BibleVersionComparison() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Nota de Transparencia */}
           <div className="flex gap-3 p-4 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg">
             <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-blue-800 dark:text-blue-200">
               <p className="font-semibold">Formato de Referencia:</p>
               <p>
-                Para mejores resultados con api.bible, usa formatos como{" "}
-                <strong>Juan 3:16</strong> o <strong>1 Corintios 15:22</strong>.
-                La API convertirá automáticamente la referencia al formato
-                interno.
+                Usa lenguaje natural como <strong>1 Corintios 15:56</strong> o{" "}
+                <strong>Juan 3:16</strong>. El sistema buscará automáticamente
+                la coincidencia más precisa.
               </p>
             </div>
           </div>
 
-          {/* Búsqueda */}
           <div className="space-y-2">
             <Label htmlFor="reference">Referencia Bíblica</Label>
             <div className="flex gap-2">
@@ -268,7 +284,7 @@ export default function BibleVersionComparison() {
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="reference"
-                  placeholder="Ej: Juan 3:16, 1 Corintios 15:22"
+                  placeholder="Ej: 1 Corintios 15:56, Juan 3:16"
                   value={searchReference}
                   onChange={(e) => setSearchReference(e.target.value)}
                   className="pl-9"
@@ -294,7 +310,6 @@ export default function BibleVersionComparison() {
             </div>
           </div>
 
-          {/* Selección de Versiones */}
           <div className="space-y-4">
             <Label className="flex items-center gap-2">
               <Globe className="h-4 w-4" />
@@ -326,7 +341,6 @@ export default function BibleVersionComparison() {
             ))}
           </div>
 
-          {/* Resultados */}
           {results.length > 0 && (
             <div className="space-y-4 mt-6">
               <h3 className="font-semibold text-lg flex items-center gap-2">
@@ -337,13 +351,18 @@ export default function BibleVersionComparison() {
                 {results.map((result, idx) => (
                   <Card
                     key={idx}
-                    className={`border-l-4 ${result.text.includes("⚠️") ? "border-l-yellow-500" : "border-l-primary"}`}
+                    className={`border-l-4 ${result.hasError ? "border-l-yellow-500" : "border-l-primary"}`}
                   >
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-base">
-                          {result.versionName}
-                        </CardTitle>
+                        <div className="flex items-center gap-2">
+                          {result.hasError && (
+                            <AlertCircle className="h-4 w-4 text-yellow-500" />
+                          )}
+                          <CardTitle className="text-base">
+                            {result.versionName}
+                          </CardTitle>
+                        </div>
                         <Badge variant="secondary" className="text-xs">
                           {result.language}
                         </Badge>
@@ -353,9 +372,15 @@ export default function BibleVersionComparison() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                        {result.text}
-                      </p>
+                      {result.hasError ? (
+                        <p className="text-sm text-yellow-600 dark:text-yellow-400">
+                          {result.errorMessage}
+                        </p>
+                      ) : (
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                          {result.text}
+                        </p>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
