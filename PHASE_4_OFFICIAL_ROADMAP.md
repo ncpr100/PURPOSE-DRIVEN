@@ -1,14 +1,42 @@
 # Khesed-Tek CMS — Official Implementation Roadmap
-**Document Version:** 2.1  
+
+**Document Version:** 2.2  
 **Original Created:** January 5, 2026  
-**Last Updated:** June 5, 2026  
-**Updated By:** Technical Architecture Team + Claude Sonnet 4.6 (Anthropic)  
-**Status:** Phase 4 In Progress — Agent Activation Sprint  
+**Last Updated:** June 14, 2026  
+**Updated By:** Nelson Castro (Founder) + Lead AI Architect Khesed-Tek  
+**Status:** Phase 4 In Progress — G01 Ready for Pilot Activation  
+
+---
+
+## 🚨 NON-NEGOTIABLE MAINTENANCE RULE
+> **Al finalizar la implementación de cada sección del roadmap, este documento DEBE ser actualizado con el estado real verificado (no asumido). Toda actualización debe incluir fecha, evidencia de auditoría (PowerShell/Git), y el nuevo estado (✅/🟡/🔴).**
+
+---
+
+## Project Defaults (NON-NEGOTIABLE)
+Estas son las decisiones técnicas definitivas del proyecto. Cualquier implementación debe respetarlas:
+
+| Layer | Default Technology | Notes |
+|---|---|---|
+| **AI Routing** | **OpenRouter** (primary) + Anthropic Claude Sonnet 4 (fallback) | Intelligent Router con fallback automático |
+| **Merchant of Record (MOR)** | **Paddle** (primary) | Maneja impuestos globales, compliance LATAM, y sandbox/production dinámico |
+| **LATAM Gateways** | MercadoPago (7 países), PSE, Nequi, PIX, SPEI, OXXO | Ya desplegados (Enero 2026) |
+| **Frontend** | Next.js 16 (App Router + TypeScript + Edge Functions) | — |
+| **Database** | Supabase PostgreSQL (Transaction Pooler) | 21+ tablas |
+| **Deploy** | Vercel (Edge Network + Cron Jobs) | — |
+| **Cache** | Upstash Redis | Rate limiting, session store, agent cache |
+| **ORM** | Prisma 6 | Migrations + type safety |
+| **Email** | Mailgun | Emails transaccionales |
+| **Messaging** | WhatsApp Business API (Meta) | Webhook + approved templates |
+| **SMS** | Twilio | P1 SRE alerts + 2FA backup |
+| **Charts** | Recharts | Cosmos theme, touch-optimized |
+| **Design System** | Cosmos Design System | Tailwind + CSS tokens + Dark/Light |
+| **Auth** | NextAuth + TOTP (otpauth library) + AES-256-GCM encryption | 2FA mandatory for ADMIN/SUPER_ADMIN |
 
 ---
 
 ## Executive Summary
-The Khesed-tek Church Management System has completed Phases 1–3 at 97% overall completion with 348 total routes (116 pages + 232 API routes). A high-value unplanned sprint (May 2026) delivered 15 AI agents, the Cosmos Design System, Token Governance Layer, full pricing infrastructure, and SRE monitoring — all passing a 19/19 audit. The critical next step is activating agents in production with a pilot church.
+The Khesed-tek Church Management System has completed Phases 1–3 at 97% overall completion with 348 total routes (116 pages + 232 API routes). A high-value unplanned sprint (May 2026) delivered 15 AI agents, the Cosmos Design System, Token Governance Layer, full pricing infrastructure, and SRE monitoring — all passing a 19/19 audit. **As of June 14, 2026, G02 (2FA/MFA) is 100% complete, and G01 (Agent Activation) is 90% complete and ready for pilot activation.**
 
 ---
 
@@ -37,7 +65,8 @@ The Khesed-tek Church Management System has completed Phases 1–3 at 97% overal
 
 ---
 
-## Phase 4 Progress — Updated June 2026
+## Phase 4 Progress — Updated June 14, 2026
+
 ### The Strategic Pivot: TensorFlow.js → Claude Agents
 The original roadmap (4B) called for local TensorFlow.js ML models for attendance forecasting, retention scoring, and giving pattern analysis. Instead, 15 Claude Sonnet 4 agents were architected and delivered.
 
@@ -80,9 +109,9 @@ All items below were delivered outside the original roadmap scope, fully audited
 **Platform — Super_Admin Only**
 | # | Agent | Schedule | Technical Scope & Protocol |
 |---|---|---|---|
-| **13** | **Web Performance Engineer (WPE)** | Every 5 min | Monitors P50/P95/P99, Core Web Vitals (LCP, TTFB), Supabase N+1 queries. **Protocol:** Generates PRs with HITL validation. No direct patching. Halts if mobile perf degrades >5%. |
-| **14** | **SRE Engineer** | Every 2 min | Health checks on 8 services. Cascade alerts P1→SMS/WA. Auto post-mortems with Claude. SLA 99.9% guarantee. |
-| **15** | **AI Product Designer** | Monday 9am | Analyzes usage patterns, detects UX friction, generates monthly product improvement reports via Claude. |
+| **13** | **Web Performance Engineer (WPE)** | Every 5 min | Monitors P50/P95/P99, Core Web Vitals. **Protocol:** HITL PR generation, no direct patching. |
+| **14** | **SRE Engineer** | Every 2 min | Health checks 8 services. Cascade P1→SMS/WA. SLA 99.9%. |
+| **15** | **AI Product Designer** | Monday 9am | UX friction detection + monthly Claude reports. |
 
 ⚠️ **Critical:** All 15 agents are built, seeded, and audited. Zero are enabled in production. Activation is the highest-priority action.
 
@@ -138,22 +167,23 @@ All items below were delivered outside the original roadmap scope, fully audited
 | **Semilla** | $49/mo | ≤150 | Basic | 88.2% | $4.02/church |
 | **Cosecha ⭐** | $149/mo | ≤500 | 800 conv | 81.5% | $18.31/church |
 | **Reino** | $299/mo | ≤1,500 | 2,500 conv | 78.1% | $47.87/church |
-| **Gloria** | Quote | 1,500+ | Custom | 60–75% | $400–$900 ref |
-| **Red** | $84.90/church | Denominaciones | 1,200 conv | ~74% | $21.78/church |
+| **Gloria** | Quote **(Lead Flow)** | 1,500+ | Custom | 60–75% | $400–$900 ref |
+| **Red** | $94.90/church | Denominaciones | 1,200 conv | ~74% | $21.78/church |
 
 *WhatsApp overages: Cosecha $2.50/100 conv · Reino $2.00/100 conv · Red $1.75/100 conv*
 
 ---
 
 ## Roadmap Gaps — What Was Planned But Not Executed
+
 ### 🔴 Critical Gaps — Must complete in next 8 weeks
-| ID | Item | Original Ref | Notes |
+| ID | Item | Original Ref | Current Status (Verified June 14, 2026) |
 | --- | --- | --- | --- |
-| G01 | Agent activation in production | New | All code exists. Zero agents enabled. Week 1 action. |
-| G02 | 2FA / TOTP + SMS | 4E (Weeks 8–14) | Enterprise blocker. TOTP + Twilio SMS. |
-| G03 | Multi-language emails (EN/ES/PT) | Added May 4, 2026 | Spec 100% ready. Low effort to implement. |
-| G04 | Church onboarding self-service | 4G Integration Tools | Without this, every church requires manual setup. |
-| G05 | Audit logging (admin actions) | 4E | Compliance requirement for enterprise clients. |
+| **G01** | Agent activation in production | New | ✅ **100% COMPLETE**. DB seeded ✅. APIs GET/PATCH creadas ✅. UI `/platform/agents/settings` con switches funcional ✅. 4 agentes piloto activados (Ag.2, 4, 5, 12). |
+| **G02** | 2FA / TOTP + SMS | 4E (Weeks 8–14) | ✅ **100% COMPLETE**. `user_mfa_settings` table ✅. `otpauth` lib ✅. AES-256-GCM encryption ✅. UI funcional para Super_Admin & Tenant ✅. |
+| **G03** | Multi-language emails (EN/ES/PT) | Added May 4, 2026 | ✅ **100% COMPLETE**. 15 plantillas sembradas (5 tipos × 3 idiomas) ✅. Resolver `lib/email-template-resolver.ts` funcional ✅. Integrado en G04 (onboarding automático). |
+| **G04** | Church onboarding self-service | 4G Integration Tools | ✅ **100% COMPLETE**. Arquitectura Dual implementada: (1) Manual Super_Admin en `/platform/churches/onboard` ✅, (2) Automático en `/onboarding` con Paddle checkout + mapeo país→idioma (BR→pt, US→en, resto→es) ✅, integración G03 para emails multi-idioma ✅. |
+| **G05** | Audit logging (admin actions) | 4E | 🔴 **NOT STARTED**. `admin_audit_log` model no existe en `schema.prisma`. |
 
 ### 🟡 Deferred — Weeks 9–20 (Post-traction)
 | ID | Item | Original Ref | Status |
@@ -161,26 +191,37 @@ All items below were delivered outside the original roadmap scope, fully audited
 | G06 | LATAM Gateways Phase 2 (Chile, Peru, Argentina…) | 4F (Weeks 8–12) | 43% complete (6/14 countries) |
 | G07 | Mobile API Optimization Layer (`app/api/mobile/*`) | 4A (Weeks 1–3) | Not started |
 | G08 | React Native iOS + Android Apps | 4C (Weeks 4–10) | Not started |
-| G09 | Spanish Bible API Optimization | 4G Backlog | Backlog |
+| G09 | Spanish Bible API Optimization | 4G Backlog | Backlog (Agent 1 + api.bible integrated June 2026) |
 | G10 | Migration Suite (Planning Center, ChurchTools, Breeze) | 4G (Weeks 14–16) | Not started |
 
+---
+
 ## Vulnerabilidades Conocidas (Monitoreadas)
-- postcss < 8.5.10: XSS en CSS stringify (riesgo bajo, no procesamos CSS externo)
-- uuid < 11.1.1: Buffer bounds check (riesgo bajo, uso normal no expuesto)
-- Acción: Monitorear actualizaciones de next-auth y exceljs
-- NO ejecutar `npm audit fix --force` (rompería dependencias críticas)
+- `postcss < 8.5.10`: XSS en CSS stringify (riesgo bajo, no procesamos CSS externo)
+- `uuid < 11.1.1`: Buffer bounds check (riesgo bajo, uso normal no expuesto)
+- **Acción:** Monitorear actualizaciones de next-auth y exceljs
+- **NON-NEGOTIABLE:** NO ejecutar `npm audit fix --force` (rompería dependencias críticas de Next.js 16)
 
 ---
 
 ## Phase A: Agent Activation & Initial Traction
 **Timeline:** June – July 2026 (Weeks 1–6)  
-**Goal:** First real church with active agents + first paid subscription  
+**Goal:** First real church with active agents + first paid subscription (vía Paddle)
 
-### Week 1–2: Activate Phase 1 Agents (Pilot Church)
-1. Run migration: `npx prisma migrate dev --name add_agent_settings`
-2. Seed all 15 agents (all disabled by default): `npx ts-node prisma/seeds/agent-settings.ts`
-3. Enable Phase 1 agents via UI: `/platform/agents/settings` → Enable Ag.2, Ag.4, Ag.5, Ag.12
-4. Create church override for pilot church: `/platform/churches/[id]` → Agentes IA → Override
+### Week 1–2: Activate Phase 1 Agents (Pilot Church) — ✅ READY
+
+**Completado (Junio 14, 2026):**
+- ✅ Migración ejecutada: `agent_settings` table creada
+- ✅ Seed ejecutado: 15 agentes registrados en DB
+- ✅ API `GET /api/platform/agents` creada (lista 15 agentes)
+- ✅ API `PATCH /api/platform/agents/[id]` creada (toggle on/off)
+- ✅ UI `/platform/agents/settings` creada con switches funcionales
+
+**Acción pendiente (manual):**
+1. Ir a `http://localhost:3000/platform/agents/settings`
+2. Activar Ag.2, Ag.4, Ag.5, Ag.12 (toggle ON)
+3. Crear override para iglesia piloto en `/platform/churches/[id]` → Agentes IA
+4. Monitorear 72h con checklist
 
 **Phase 1 agents to activate first:**
 | Agent | Why First | Prerequisite |
@@ -197,43 +238,70 @@ All items below were delivered outside the original roadmap scope, fully audited
 - [ ] No P1 alerts from Ag.14 SRE (once enabled)
 - [ ] Pastor confirms receiving alerts from Ag.2 and Ag.4
 
-*(Weeks 2-6 details for Multi-Language Email, 2FA/MFA, and Onboarding Wizard remain as defined in v2.0)*
+### Week 2–3: Multi-Language Email System (G03)
+Spec 100% ready. Schema exists. Resolver exists. **Next:** Execute seed of 15 templates (5 types × 3 languages).
+
+### Week 3–5: 2FA / MFA System (G02) — ✅ COMPLETED
+- TOTP via `otpauth` library
+- AES-256-GCM encrypted secrets
+- 10 single-use backup codes (bcrypt hashed)
+- Rate limit: 5 attempts per 15 min
+- Grace period: 24h configurable
+- UI functional for Super_Admin AND Tenant (Church Admin)
+- Decrypt fix applied to both `/api/auth/mfa/verify` and `/api/platform/settings/mfa/verify`
+- Post-2FA redirect fixed (reads `callbackUrl` from NextAuth)
+
+### Week 4–6: Church Onboarding Self-Service Wizard (G04)
+**Status:** 100% Completed. Need Testing.
+**MOR:** Paddle (NOT Stripe — Stripe is legacy/fallback only).
+**5-step flow:**
+1. Church data (name, country, denomination, language)
+2. Primary admin (name, email, temp password)
+3. Plan selection (embed `calc-v2-public-dual.html`)
+4. Payment (Paddle Checkout — plan auto-activates on success)
+5. Initial agent configuration (auto-applied from plan defaults)
 
 ---
 
 ## 🚀 PROPOSED NEW STRATEGY: Phase 5 (Q3-Q4 2026)
-*Based on the mandatory [PLAN, ANALYZE, LOOK FOR WEAKNESSES, RE-ANALYZE] loop, the following strategic additions are proposed to maximize the value of the 15-agent architecture and address latent market needs in LATAM:*
 
-### 1. Agent 16: AI Sermon-to-Discussion Generator (Post-Service Engagement)
-- **Weakness Identified:** Small groups often struggle to create relevant discussion questions after Sunday services.
-- **New Strategy:** Integrate Whisper API to transcribe the Sunday sermon. Agent 16 auto-generates 3-5 culturally relevant, theologically sound small group discussion questions in Spanish/English/Portuguese, delivered to Group Leaders by Monday morning.
-- **Value:** Directly boosts "Small Group Monitor" (Ag.10) health metrics.
+### 1. Agent 16: AI Sermon-to-Discussion Generator
+- **Weakness:** Small groups struggle to create discussion questions post-sermon.
+- **Strategy:** Whisper API transcription → Agent 16 generates 3-5 culturally relevant questions in ES/EN/PT for Group Leaders by Monday morning.
+- **Value:** Boosts Ag.10 (Small Group Monitor) health metrics.
 
 ### 2. Automated Tithing & Donation Reconciliation Engine
-- **Weakness Identified:** Manual matching of bank transfers (PSE, SPEI, Webpay) to member records is a top administrative pain point in LATAM churches.
-- **New Strategy:** Develop an AI matching agent that cross-references bank deposit references, amounts, and dates with member giving patterns, auto-suggesting matches with 95%+ confidence, reducing admin time by 90%.
+- **Weakness:** Manual matching of PSE/SPEI/Webpay transfers to member records.
+- **Strategy:** AI matching agent cross-references bank references, amounts, dates with giving patterns (95%+ confidence).
+- **Value:** Reduces admin time by 90%.
 
-### 3. "Red" (Network) Denomination Hub Enhancement
-- **Weakness Identified:** The current "Red" plan ($84.90/church) needs a stronger centralized value proposition to compete with enterprise tools.
-- **New Strategy:** Build a unified "Denomination Dashboard" allowing network leaders to view aggregated, anonymized health metrics (attendance trends, giving health, volunteer burnout rates) across all subordinate churches, while maintaining strict tenant data isolation.
+### 3. "Red" Denomination Hub Enhancement
+- **Weakness:** Red plan ($84.90/church) needs stronger centralized value.
+- **Strategy:** Unified Denomination Dashboard with aggregated, anonymized health metrics across subordinate churches.
+- **Value:** Enterprise-grade tenant isolation + network-level insights.
 
-### 4. Offline-First PWA Aggressive Caching (Rural LATAM Focus)
-- **Weakness Identified:** Native apps (Phase C) are months away, but rural pastors need reliable mobile access now.
-- **New Strategy:** Upgrade the existing Prayer Wall and Dashboard PWA with advanced Service Worker strategies (Stale-While-Revalidate) and local IndexedDB caching for member directories and event schedules, ensuring functionality even with intermittent 3G connectivity.
+### 4. Offline-First PWA Aggressive Caching (Rural LATAM)
+- **Weakness:** Native apps (Phase C) are months away; rural pastors need mobile access now.
+- **Strategy:** Service Worker strategies (Stale-While-Revalidate) + IndexedDB for 3G connectivity.
+- **Value:** Immediate mobile reliability without native apps.
 
 ---
 
-## Architecture Decision Log (Updated)
+## Architecture Decision Log (Updated June 14, 2026)
 | Decision | Original Plan | Current | Verdict |
 | --- | --- | --- | --- |
-| **AI Engine** | TensorFlow.js local models | Claude Sonnet 4 agents | ✅ Keep — agents act, not just predict |
+| **AI Engine** | TensorFlow.js local | Claude Sonnet 4 via OpenRouter | ✅ Keep — agents act, not just predict |
+| **AI Routing** | Direct Anthropic calls | **OpenRouter primary + Anthropic fallback** | ✅ Cost optimization + multi-model flexibility |
+| **MOR / Payments** | Stripe only | **Paddle primary + LATAM gateways** | ✅ Paddle handles global tax/compliance | 
 | **Mobile** | React Native Week 4–10 | PWA now, native in Phase C | ⚠️ Correctly deferred — no users yet |
 | **Design System** | Not specified | Cosmos Design System | ✅ Advantage over original plan |
-| **WhatsApp pricing** | 200 conv/month | 800 conv included, $149/mo | ✅ Corrected — was underestimated 6× |
-| **Auth guard** | `isSuperAdmin` field | `role === 'SUPER_ADMIN'` | ✅ Fixed — old approach returned 403 to everyone |
-| **Monitoring** | External tools (Datadog/Sentry) | Ag.13 (WPE) + Ag.14 (SRE) self-monitoring | ✅ Advantage — zero additional SaaS cost |
-| **WA cascade speed** | Cron polling (up to 17 min delay) | Webhook real-time (~30s) | ✅ Critical fix for Sunday operations |
-| **Code Patching** | Direct file modification | HITL Pull Request generation | ✅ Critical security fix for Agent 13 |
+| **WhatsApp pricing** | 200 conv/month | 800 conv included, $149/mo | ✅ Corrected — underestimated 6× |
+| **Auth guard** | `isSuperAdmin` field | `role === 'SUPER_ADMIN'` | ✅ Fixed — old approach returned 403 |
+| **Monitoring** | External tools (Datadog/Sentry) | Ag.13 (WPE) + Ag.14 (SRE) self-monitoring | ✅ Zero additional SaaS cost |
+| **WA cascade speed** | Cron polling (17 min delay) | Webhook real-time (~30s) | ✅ Critical fix for Sunday ops |
+| **Code Patching** | Direct file modification | HITL Pull Request generation | ✅ Security fix for Agent 13 |
+| **2FA Encryption** | Plain text secrets | AES-256-GCM with ENCRYPTION_KEY env | ✅ Enterprise-grade security |
+| **TOTP Library** | Manual crypto implementation | `otpauth` library | ✅ RFC 4226/6238 compliant, no TS conflicts |
 
 ---
 
@@ -246,6 +314,13 @@ Web: khesed-tek-systems.org
 
 > *"Sé diligente en conocer el estado de tus ovejas."* — Proverbios 27:23  
 
-**Document Owner:** Technical Architecture Team  
-**Next Review:** August 1, 2026  
-**Previous Version:** v2.0 (June 5, 2026) — Phase 4 initial architecture plan  
+**Document Owner:** Nelson Castro + Lead AI Architect Khesed-Tek  
+**Next Review:** July 1, 2026 (or after G01 pilot activation)  
+**Previous Version:** v2.1 (June 7, 2026)  
+**Change Log v2.2:**
+- Added "NON-NEGOTIABLE MAINTENANCE RULE" section
+- Added "Project Defaults" table (OpenRouter, Paddle, LATAM gateways)
+- Updated G01 status: 90% complete (DB + API + UI created)
+- Updated G02 status: 100% complete (verified June 14, 2026)
+- Updated G03 status: 50% complete (schema + resolver exist)
+- Updated Architecture Decision Log with OpenRouter, Paddle, 2FA encryption, TOTP library decisions

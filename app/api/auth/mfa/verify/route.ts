@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { db } from '@/lib/db';
 import { verifyTOTP, verifyBackupCode, markBackupCodeAsUsed } from '@/lib/mfa';
+import { decrypt } from '@/lib/mfa/encryption';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 export const runtime = 'nodejs';
@@ -18,23 +19,23 @@ export async function POST(request: NextRequest) {
     const { code, type } = await request.json();
     if (!code || typeof code !== 'string') {
       return NextResponse.json(
-        { error: 'Código requerido' },
+        { error: 'CÃ³digo requerido' },
         { status: 400 }
       );
     }
     if (!type || !['totp', 'backup'].includes(type)) {
       return NextResponse.json(
-        { error: 'Tipo de código inválido (totp o backup)' },
+        { error: 'Tipo de cÃ³digo invÃ¡lido (totp o backup)' },
         { status: 400 }
       );
     }
-    // Obtener configuración MFA
+    // Obtener configuraciÃ³n MFA
     const mfaSettings = await db.user_mfa_settings.findUnique({
       where: { userId },
     });
     if (!mfaSettings || !mfaSettings.isEnabled) {
       return NextResponse.json(
-        { error: '2FA no está activo para este usuario' },
+        { error: '2FA no estÃ¡ activo para este usuario' },
         { status: 400 }
       );
     }
@@ -50,10 +51,11 @@ export async function POST(request: NextRequest) {
     let isValid = false;
     let backupIndex = -1;
     if (type === 'totp') {
-      // Verificar código TOTP
-      isValid = verifyTOTP(mfaSettings.totpSecret!, code.trim());
+      // Verificar cÃ³digo TOTP
+      const decryptedSecret = decrypt(mfaSettings.totpSecret!);
+      isValid = verifyTOTP(decryptedSecret, code.trim());
     } else if (type === 'backup') {
-      // Verificar código de respaldo
+      // Verificar cÃ³digo de respaldo
       backupIndex = await verifyBackupCode(mfaSettings.backupCodes, code.trim());
       isValid = backupIndex !== -1;
     }
@@ -61,7 +63,7 @@ export async function POST(request: NextRequest) {
       // Incrementar intentos fallidos
       const failedAttempts = mfaSettings.failedAttempts + 1;
       const updateData: any = { failedAttempts };
-      // Lockout si excede máximo
+      // Lockout si excede mÃ¡ximo
       if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
         updateData.lockedUntil = new Date(Date.now() + LOCKOUT_DURATION_MS);
         console.warn(`[MFA] Usuario ${userId} bloqueado por ${MAX_FAILED_ATTEMPTS} intentos fallidos`);
@@ -73,13 +75,13 @@ export async function POST(request: NextRequest) {
       const remaining = MAX_FAILED_ATTEMPTS - failedAttempts;
       return NextResponse.json(
         { 
-          error: `Código inválido. ${remaining > 0 ? `${remaining} intentos restantes` : 'Cuenta bloqueada'}.`,
+          error: `CÃ³digo invÃ¡lido. ${remaining > 0 ? `${remaining} intentos restantes` : 'Cuenta bloqueada'}.`,
           remainingAttempts: Math.max(0, remaining),
         },
         { status: 400 }
       );
     }
-    // Éxito: resetear intentos y actualizar timestamp
+    // Ã‰xito: resetear intentos y actualizar timestamp
     const updateData: any = {
       failedAttempts: 0,
       lockedUntil: null,
@@ -95,18 +97,18 @@ export async function POST(request: NextRequest) {
       data: updateData,
     });
     console.log(`[MFA] Login 2FA exitoso para usuario: ${userId} (type: ${type})`);
-    // Establecer cookie de sesión verificada
+    // Establecer cookie de sesiÃ³n verificada
     const cookieStore = await cookies();
     cookieStore.set('mfa_verified', 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 30, // 30 días
+      maxAge: 60 * 60 * 24 * 30, // 30 dÃ­as
     });
     return NextResponse.json({
       success: true,
-      message: 'Verificación 2FA exitosa',
+      message: 'VerificaciÃ³n 2FA exitosa',
     });
   } catch (error) {
     console.error('[MFA Auth Verify] Error:', error);
@@ -116,3 +118,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
