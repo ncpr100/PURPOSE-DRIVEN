@@ -182,7 +182,7 @@ All items below were delivered outside the original roadmap scope, fully audited
 | **G01** | Agent activation in production | New | ✅ **100% COMPLETE**. DB seeded ✅. APIs GET/PATCH creadas ✅. UI `/platform/agents/settings` con switches funcional ✅. 4 agentes piloto activados (Ag.2, 4, 5, 12). |
 | **G02** | 2FA / TOTP + SMS | 4E (Weeks 8–14) | ✅ **100% COMPLETE**. `user_mfa_settings` table ✅. `otpauth` lib ✅. AES-256-GCM encryption ✅. UI funcional para Super_Admin & Tenant ✅. |
 | **G03** | Multi-language emails (EN/ES/PT) | Added May 4, 2026 | ✅ **100% COMPLETE**. 15 plantillas sembradas (5 tipos × 3 idiomas) ✅. Resolver `lib/email-template-resolver.ts` funcional ✅. Integrado en G04 (onboarding automático). |
-| **G04** | Church onboarding self-service | 4G Integration Tools | ✅ **100% COMPLETE**. Arquitectura Dual implementada: (1) Manual Super_Admin en `/platform/churches/onboard` ✅, (2) Automático en `/onboarding` con Paddle checkout + mapeo país→idioma (BR→pt, US→en, resto→es) ✅, integración G03 para emails multi-idioma ✅. |
+| **G04** | Church onboarding self-service | 4G Integration Tools | ✅ **100% COMPLETE** (June 15, 2026). Arquitectura Dual: (1) Manual Super_Admin en /platform/churches/onboard, (2) Automático en /auth/fresh-signup con 5 planes ROADMAP (SEMILLA/COSECHA/REINO/GLORIA/RED), DB-driven pricing via /api/public/subscription-plans, outline icons de lucide-react, sortOrder corregido (GLORIA antes que RED), legacy plans eliminados de BD. Integración G03 para emails multi-idioma. |
 | **G05** | Audit logging (admin actions) | 4E | 🔴 **NOT STARTED**. `admin_audit_log` model no existe en `schema.prisma`. |
 
 ### 🟡 Deferred — Weeks 9–20 (Post-traction)
