@@ -1488,7 +1488,7 @@ model platform_settings {
     taxRate             Float    @default(0.0)
     freeTrialDays       Int      @default(14)
     gracePeriodDays     Int      @default(7)
-    platformName        String   @default("Kḥesed-tek Church Management Systems")
+    platformName        String   @default("Ká¸¥esed-tek Church Management Systems")
     supportEmail        String   @default("soporte@khesedtek.com")
     maintenanceMode     Boolean  @default(false)
     allowRegistrations  Boolean  @default(true)
@@ -1769,7 +1769,7 @@ model roles {
 model sermons {
     id        String    @id @default(cuid())
     title     String
-    content   String? // Borrador completo del sermón
+    content   String? // Borrador completo del sermÃ³n
     outline   String?
     scripture String? // Texto base (ej: "Juan 3:16")
     date      DateTime?
@@ -1779,10 +1779,10 @@ model sermons {
 
     // --- CAMPOS NUEVOS PARA AGENTE 1 (MOTOR ANTIFONAL) ---
     status                 String   @default("draft") // draft, published, archived
-    aiAnalysis             Json? // Resultado completo del análisis IA
+    aiAnalysis             Json? // Resultado completo del anÃ¡lisis IA
     culturalBlindSpots     String[] // Puntos ciegos culturales detectados
     doctrinalTensions      String[] // Tensiones doctrinales detectadas
-    applicationSuggestions String[] // Recomendaciones de aplicación práctica
+    applicationSuggestions String[] // Recomendaciones de aplicaciÃ³n prÃ¡ctica
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -1920,7 +1920,7 @@ model support_contact_info {
     email          String   @default("soporte@khesedtek.com")
     schedule       String   @default("Lun-Vie 8AM-8PM (Colombia)")
     companyName    String   @default("Khesed-tek Systems")
-    location       String   @default("Bogotá, Colombia")
+    location       String   @default("BogotÃ¡, Colombia")
     website        String   @default("https://khesedtek.com")
     createdAt      DateTime @default(now())
     updatedAt      DateTime
@@ -2693,7 +2693,7 @@ model qr_scans {
     @@index([scannedAt])
 }
 
-// Dynamic QR codes for super admin — destination can be changed after printing
+// Dynamic QR codes for super admin â€” destination can be changed after printing
 model DynamicQRCode {
     id              String    @id @default(cuid())
     shortCode       String    @unique // short code used in /qr/[shortCode]
@@ -2731,7 +2731,7 @@ model DynamicQRScan {
     @@index([scannedAt])
 }
 
-// Platform-level payments — NEVER mixes with tenant funds
+// Platform-level payments â€” NEVER mixes with tenant funds
 model PlatformPayment {
     id              String   @id @default(cuid())
     stripePaymentId String?  @unique // Stripe Payment Intent ID
@@ -2754,7 +2754,7 @@ model PlatformPayment {
 }
 
 // ============================================
-// AI MINISTRY AGENTS — NEW MODELS
+// AI MINISTRY AGENTS â€” NEW MODELS
 // ============================================
 
 // Agent 1: Sermon Antiphony Engine
@@ -2875,7 +2875,7 @@ model pastoral_contacts {
 }
 
 // ============================================
-// AI MINISTRY AGENTS PHASE 2 — NEW MODELS
+// AI MINISTRY AGENTS PHASE 2 â€” NEW MODELS
 // ============================================
 
 // Agent 6: Leadership Pipeline
@@ -3025,7 +3025,7 @@ model church_board_reports {
 // AGENT 12: VOLUNTEER COVERAGE ENGINE
 // ============================================
 
-// Table 1: Backup roster — who backs up whom, in what priority
+// Table 1: Backup roster â€” who backs up whom, in what priority
 model volunteer_backup_rosters {
     id                 String   @id @default(cuid())
     churchId           String
@@ -3114,12 +3114,12 @@ enum CoverageStatus {
 }
 
 // ================================================================
-// KHESED-TEK CMS — AGENT CONTROL & GOVERNANCE LAYER
+// KHESED-TEK CMS â€” AGENT CONTROL & GOVERNANCE LAYER
 // Required for: Agent execution, HITL protocol, token governance
 // Run: npx prisma migrate dev --name add_agent_control_governance
 // ================================================================
 
-// ── TABLE 1: Agent Settings (Platform-level toggle) ────────────
+// â”€â”€ TABLE 1: Agent Settings (Platform-level toggle) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Controls whether each of the 15 agents is enabled at platform level.
 // Precedence: Override > Platform Toggle > Plan Default
 model agent_settings {
@@ -3142,7 +3142,7 @@ model agent_settings {
     @@map("agent_settings")
 }
 
-// ── TABLE 2: Church Agent Overrides (Manual per-church control) ─
+// â”€â”€ TABLE 2: Church Agent Overrides (Manual per-church control) â”€
 // Allows Super_Admin to enable/disable specific agents for individual churches.
 // ALWAYS wins over platform toggle and plan defaults.
 model church_agent_overrides {
@@ -3163,7 +3163,7 @@ model church_agent_overrides {
     @@map("church_agent_overrides")
 }
 
-// ── TABLE 3: Agent Execution Log (Audit trail + HITL) ──────────
+// â”€â”€ TABLE 3: Agent Execution Log (Audit trail + HITL) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Records every execution of every agent for every church.
 // Stores the validated JSON output from Claude (Zod-validated).
 model agent_execution_log {
@@ -3187,7 +3187,7 @@ model agent_execution_log {
     @@map("agent_execution_log")
 }
 
-// ── TABLE 4: Agent Token Usage (Governance & Billing) ──────────
+// â”€â”€ TABLE 4: Agent Token Usage (Governance & Billing) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Tracks Anthropic API token consumption per agent per church per month.
 // Used for: billing, alerts at 80% of limit, hard caps.
 model agent_token_usage {
@@ -3212,7 +3212,7 @@ model agent_token_usage {
 }
 
 // ================================================================
-// KHESED-TEK CMS — MONITORING INFRASTRUCTURE SCHEMA
+// KHESED-TEK CMS â€” MONITORING INFRASTRUCTURE SCHEMA
 // Add to the BOTTOM of prisma/schema.prisma
 //
 // New tables: 8
@@ -3221,13 +3221,13 @@ model agent_token_usage {
 //   npx prisma migrate dev --name add_monitoring_infrastructure
 // ================================================================
 
-// ── ENUMS ────────────────────────────────────────────────────
+// â”€â”€ ENUMS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 enum IncidentSeverity {
-    P1_CRITICAL // Full outage — all tenants affected
-    P2_HIGH // Partial outage — feature degraded
-    P3_MEDIUM // Performance degradation — SLA at risk
-    P4_LOW // Minor issue — no user impact
+    P1_CRITICAL // Full outage â€” all tenants affected
+    P2_HIGH // Partial outage â€” feature degraded
+    P3_MEDIUM // Performance degradation â€” SLA at risk
+    P4_LOW // Minor issue â€” no user impact
 }
 
 enum IncidentStatus {
@@ -3276,7 +3276,7 @@ enum MetricType {
     BUNDLE_SIZE_KB
 }
 
-// ── TABLE 1: API Request Metrics ─────────────────────────────
+// â”€â”€ TABLE 1: API Request Metrics â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Captures every API route response time and status.
 // Middleware writes to this table on every request.
 // Retention: 30 days raw, then summarized into platform_metric_summaries.
@@ -3302,7 +3302,7 @@ model api_request_metrics {
     @@map("api_request_metrics")
 }
 
-// ── TABLE 2: Platform Health Checks ──────────────────────────
+// â”€â”€ TABLE 2: Platform Health Checks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Stores results of each synthetic health check run.
 // Covers: DB, Redis, all 11 integrations, production URL.
 model platform_health_checks {
@@ -3319,7 +3319,7 @@ model platform_health_checks {
     @@map("platform_health_checks")
 }
 
-// ── TABLE 3: Incidents ────────────────────────────────────────
+// â”€â”€ TABLE 3: Incidents â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Every detected outage, degradation, or anomaly.
 model platform_incidents {
     id                  String           @id @default(cuid())
@@ -3351,7 +3351,7 @@ model platform_incidents {
     @@map("platform_incidents")
 }
 
-// ── TABLE 4: Incident Timeline ────────────────────────────────
+// â”€â”€ TABLE 4: Incident Timeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 model incident_timeline_events {
     id          String   @id @default(cuid())
     incidentId  String
@@ -3366,7 +3366,7 @@ model incident_timeline_events {
     @@map("incident_timeline_events")
 }
 
-// ── TABLE 5: Incident Alerts ──────────────────────────────────
+// â”€â”€ TABLE 5: Incident Alerts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 model incident_alerts {
     id         String       @id @default(cuid())
     incidentId String
@@ -3383,7 +3383,7 @@ model incident_alerts {
     @@map("incident_alerts")
 }
 
-// ── TABLE 6: Platform Metric Summaries ───────────────────────
+// â”€â”€ TABLE 6: Platform Metric Summaries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Hourly/daily rollups of api_request_metrics.
 // Kept for 1 year. Used for trend analysis.
 model platform_metric_summaries {
@@ -3403,7 +3403,7 @@ model platform_metric_summaries {
     @@map("platform_metric_summaries")
 }
 
-// ── TABLE 7: Performance Recommendations ─────────────────────
+// â”€â”€ TABLE 7: Performance Recommendations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // AI-generated performance improvement recommendations.
 // Generated by Agent 13 (Web Performance Engineer).
 model performance_recommendations {
@@ -3425,7 +3425,7 @@ model performance_recommendations {
     @@map("performance_recommendations")
 }
 
-// ── TABLE 8: SLA Records ──────────────────────────────────────
+// â”€â”€ TABLE 8: SLA Records â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Monthly SLA calculation per tenant tier.
 model platform_sla_records {
     id              String   @id @default(cuid())
@@ -3490,4 +3490,18 @@ model mfa_policy_settings {
     updatedAt        DateTime  @updatedAt
 
     @@unique([id])
+}
+model church_leads {
+  id           String   @id @default(cuid())
+  churchName   String
+  country      String
+  language     String
+  adminName    String
+  adminEmail   String
+  campuses     Int?
+  members      Int?
+  needs        String?
+  status       String   @default("new")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

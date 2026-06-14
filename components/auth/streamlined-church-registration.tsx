@@ -39,7 +39,7 @@ export default function StreamlinedChurchRegistration() {
     firstName: '',
     lastName: '',
     email: '',
-    subscriptionPlan: 'BÁSICO'
+    subscriptionPlan: 'SEMILLA'
   })
   
   const [isLoading, setIsLoading] = useState(false)
@@ -50,11 +50,13 @@ export default function StreamlinedChurchRegistration() {
   const [validationErrors, setValidationErrors] = useState<Record<string, boolean>>({})
 
   // Icon mapping for plans
-  const PLAN_ICONS = {
-    BÁSICO: Crown,
-    PROFESIONAL: Zap,
-    EMPRESARIAL: Package,
-  }
+  const PLAN_ICONS: Record<string, any> = {
+  SEMILLA: Church,
+  COSECHA: Zap,
+  REINO: Crown,
+  RED: Building,
+  GLORIA: Users,
+}
 
   // EMERGENCY CORRECTION - Only blocking ACTUAL test data  
   const checkForContamination = (value: string, fieldName: string) => {
@@ -166,7 +168,7 @@ export default function StreamlinedChurchRegistration() {
         firstName: '',
         lastName: '',
         email: '',
-        subscriptionPlan: 'BÁSICO'
+        subscriptionPlan: 'SEMILLA'
       })
 
     } catch (error: any) {
