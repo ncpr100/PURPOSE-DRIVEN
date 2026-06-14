@@ -1,11 +1,11 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 type VerificationMethod = 'totp' | 'backup';
 export default function MFAVerificationPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/dashboard';
+  const redirectTo = searchParams.get('callbackUrl') || searchParams.get('redirect') || '/';
   const [method, setMethod] = useState<VerificationMethod>('totp');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
@@ -22,17 +22,17 @@ export default function MFAVerificationPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Código inválido');
+        setError(data.error || 'CÃ³digo invÃ¡lido');
         if (data.remainingAttempts !== undefined) {
           setRemainingAttempts(data.remainingAttempts);
         }
         setLoading(false);
         return;
       }
-      // Éxito - redirigir al destino
+      // Ã‰xito - redirigir al destino
       router.push(redirectTo);
     } catch (err: any) {
-      setError('Error de conexión. Intenta de nuevo.');
+      setError('Error de conexiÃ³n. Intenta de nuevo.');
       setLoading(false);
     }
   };
@@ -41,10 +41,10 @@ export default function MFAVerificationPage() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Verificación de Dos Factores
+            VerificaciÃ³n de Dos Factores
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Ingresa el código de verificación para continuar
+            Ingresa el cÃ³digo de verificaciÃ³n para continuar
           </p>
         </div>
         <div className="mt-8 space-y-6">
@@ -72,7 +72,7 @@ export default function MFAVerificationPage() {
                     : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                 }`}
               >
-                Código de App
+                CÃ³digo de App
               </button>
               <button
                 onClick={() => {
@@ -86,14 +86,14 @@ export default function MFAVerificationPage() {
                     : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                 }`}
               >
-                Código de Respaldo
+                CÃ³digo de Respaldo
               </button>
             </div>
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
                 {method === 'totp' 
-                  ? 'Código de 6 dígitos de tu app de autenticación' 
-                  : 'Código de respaldo de 8 caracteres'}
+                  ? 'CÃ³digo de 6 dÃ­gitos de tu app de autenticaciÃ³n' 
+                  : 'CÃ³digo de respaldo de 8 caracteres'}
               </label>
               <input
                 id="code"
@@ -124,7 +124,7 @@ export default function MFAVerificationPage() {
               onClick={() => router.push('/auth/login')}
               className="text-sm text-gray-600 hover:text-gray-800"
             >
-              ← Volver al inicio de sesión
+              â† Volver al inicio de sesiÃ³n
             </button>
           </div>
         </div>
@@ -132,3 +132,4 @@ export default function MFAVerificationPage() {
     </div>
   );
 }
+
