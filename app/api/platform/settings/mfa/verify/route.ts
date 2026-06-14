@@ -1,9 +1,9 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { verifyTOTP } from @/lib/mfa/totp";
-import { decrypt } from @/lib/mfa/encryption";
+import { verifyTOTP } from "@/lib/mfa/totp";
+import { decrypt } from "@/lib/mfa/encryption";
 import { generateBackupCodes } from "@/lib/mfa/backup-codes";
 
 export const runtime = "nodejs";
