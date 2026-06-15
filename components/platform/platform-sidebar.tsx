@@ -49,6 +49,7 @@ const navigation = [
   { name: "Redes Sociales", href: "/platform/social-media", icon: Share2 },
   { name: "Analítica", href: "/platform/analytics", icon: BarChart3 },
   { name: "Mi Perfil", href: "/platform/profile", icon: User },
+  { name: "Configuración de Agentes", href: "/platform/agents/settings", icon: Cpu },
   { name: "SRE — Uptime 24/7", href: "/platform/agents/sre", icon: Shield },
   { name: "Rendimiento Web", href: "/platform/agents/performance", icon: Zap },
   { name: "Configuración", href: "/platform/settings", icon: Settings },
