@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     try {
       const body = await request.json();
       totpCode = body.totpCode;
-      console.log("ðŸ”µ [API VERIFY] 3. CÃ³digo recibido:", totpCode);
+      console.log("ðŸ”µ [API VERIFY] 3. Código recibido:", totpCode);
     } catch (parseError) {
       console.error("ðŸ”´ [API VERIFY] Error parseando JSON:", parseError);
       return NextResponse.json(
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     if (!totpCode || totpCode.length !== 6) {
       return NextResponse.json(
-        { error: "El cÃ³digo debe tener 6 dÃ­gitos" },
+        { error: "El cÃ³digo debe tener 6 dígitos" },
         { status: 400 },
       );
     }
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(
-      "ðŸ”µ [API VERIFY] 4. ConfiguraciÃ³n encontrada. isEnabled:",
+      "ðŸ”µ [API VERIFY] 4. Configuración encontrada. isEnabled:",
       mfaSettings.isEnabled,
     );
 
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     const isValid = verifyTOTP(decryptedSecret, totpCode);
 
     if (!isValid) {
-      console.log("ðŸ”´ [API VERIFY] 6. CÃ³digo TOTP invÃ¡lido");
+      console.log("ðŸ”´ [API VERIFY] 6. Código TOTP invÃ¡lido");
       const newFailedAttempts = (mfaSettings.failedAttempts || 0) + 1;
       const updateData: any = { failedAttempts: newFailedAttempts };
 
@@ -102,13 +102,13 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         {
-          error: `CÃ³digo invÃ¡lido. Intentos restantes: ${Math.max(0, 5 - newFailedAttempts)}`,
+          error: `Código invÃ¡lido. Intentos restantes: ${Math.max(0, 5 - newFailedAttempts)}`,
         },
         { status: 400 },
       );
     }
 
-    console.log("ðŸŸ¢ [API VERIFY] 7. CÃ³digo TOTP vÃ¡lido. Activando 2FA...");
+    console.log("ðŸŸ¢ [API VERIFY] 7. Código TOTP vÃ¡lido. Activando 2FA...");
 
     // 4. Ã‰XITO: Activar 2FA
     await db.user_mfa_settings.update({
@@ -132,9 +132,9 @@ export async function POST(request: NextRequest) {
         where: { userId: session.user.id },
         data: { backupCodes: hashedCodes },
       });
-      console.log("ðŸŸ¢ [API VERIFY] 9. CÃ³digos de respaldo generados");
+      console.log("ðŸŸ¢ [API VERIFY] 9. Códigos de respaldo generados");
     } else {
-      console.log("ðŸŸ¢ [API VERIFY] 8. CÃ³digos de respaldo ya existen");
+      console.log("ðŸŸ¢ [API VERIFY] 8. Códigos de respaldo ya existen");
     }
 
     console.log("ðŸŸ¢ [API VERIFY] 10. 2FA activado exitosamente");
