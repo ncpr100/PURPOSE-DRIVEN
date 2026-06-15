@@ -33,7 +33,8 @@
     "pre-deploy": "bash scripts/pre-deploy-check.sh",
     "seed:plans": "tsx --require dotenv/config scripts/seed-subscription-plans.ts",
     "postinstall": "npx -y prisma@6.7.0 generate",
-    "prepare": "husky || exit 0"
+    "prepare": "husky || exit 0",
+    "validate": "node scripts/validate-all.js"
   },
   "prisma": {
     "seed": "tsx --require dotenv/config scripts/seed.ts"
