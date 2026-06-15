@@ -33,6 +33,64 @@ Estas son las decisiones técnicas definitivas del proyecto. Cualquier implement
 | **Design System** | Cosmos Design System | Tailwind + CSS tokens + Dark/Light |
 | **Auth** | NextAuth + TOTP (otpauth library) + AES-256-GCM encryption | 2FA mandatory for ADMIN/SUPER_ADMIN |
 
+## Quality Assurance & CI/CD Automation (June 2026)
+
+### Pre-commit Hooks (Husky + lint-staged)
+Implemented lightweight validation on staged files only to prevent production regressions:
+- **Trigger**: Runs automatically before every `git commit`
+- **Scope**: Only files matching `*.{ts,tsx}` pattern
+- **Checks**:
+  - UTF-8 encoding validation (detects Mojibake characters: Ã, â€, Â¡, Â¿)
+  - Lucide-react import validation (ensures all icons used are imported)
+- **Configuration**: `lint-staged` in `package.json` → `scripts/validate-staged.js`
+- **Husky setup**: `.husky/pre-commit` → `npx lint-staged`
+- **CI tolerance**: `prepare` script uses `husky || exit 0` to skip in production builds
+
+### GitHub Actions CI/CD Gates
+Automated validation on every Pull Request targeting `main`:
+- **Workflow**: `.github/workflows/quality-gates.yml`
+- **Trigger**: `pull_request` events to `main` branch
+- **Steps**:
+  1. Checkout code
+  2. Setup Node.js 20
+  3. Install dependencies (`npm ci`)
+  4. Run CI quality gate (`node scripts/quality-gate-ci.js`) — scans entire codebase
+  5. Run type check with 4GB heap limit (`NODE_OPTIONS="--max-old-space-size=4096"`)
+  6. Run production build (`npm run build`)
+- **Blocking**: PR cannot merge if any step fails
+
+### Manual Validation Script
+For on-demand full codebase validation:
+- **Command**: `npm run validate`
+- **Script**: `scripts/validate-all.js`
+- **Scope**: Scans `app/`, `components/`, `lib/` directories
+- **Checks**: Same as CI gate (encoding + imports)
+- **Use case**: Pre-merge verification before creating PR
+
+### Zero-Tolerance Policy
+All three validation layers must pass before code reaches production:
+1. ✅ Pre-commit hook (local)
+2. ✅ CI gate (GitHub Actions)
+3. ✅ Manual validation (optional, for confidence)
+
+### Files Created
+scripts/
+├── validate-staged.js # Pre-commit hook validation
+├── validate-all.js # Manual full codebase scan
+└── quality-gate-ci.js # CI/CD pipeline validation
+.husky/
+└── pre-commit # Husky hook → runs lint-staged
+.github/workflows/
+└── quality-gates.yml # GitHub Actions workflow
+
+
+### Prevention Results
+This system prevents the following production issues:
+- Missing icon imports (e.g., `Cpu is not defined` error)
+- UTF-8 encoding corruption (Mojibake in Spanish text)
+- Type errors that crash the application
+- Build failures that block deployment
+
 ---
 
 ## Executive Summary
