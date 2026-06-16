@@ -321,6 +321,21 @@ Spec 100% ready. Schema exists. Resolver exists. **Next:** Execute seed of 15 te
 
 ---
 
+### Architecture Decision: Prisma 6.x to 7.x Migration (Deferred)
+| Decision | Original Plan | Current | Verdict |
+| --- | --- | --- | --- |
+| ORM Version | Upgrade to Prisma 7.x in Phase 4 | Maintain Prisma 6.7.0 through Phase A & B | ✅ **Deferred to Phase C / Tech Debt Sprint** |
+
+**Rationale:**  
+Prisma 7 introduces critical breaking changes (removal of `url` in `schema.prisma`, mandatory `prisma.config.ts`, and `PrismaClient` constructor changes). Implementing this now would require 18–28 hours of refactoring and testing, diverting focus from the critical Phase A goal: Agent Activation and first paid subscriptions. Prisma 6.7.0 is stable, fully functional, and successfully builds all 149/149 pages.
+
+**Future Implementation Plan (When triggered in Phase C):**
+1. **Configuration:** Create `prisma.config.ts` to handle `DATABASE_URL` and Accelerate connections.
+2. **Schema Cleanup:** Remove the `url` property from all `datasource` blocks in `schema.prisma`.
+3. **Client Update:** Refactor all `new PrismaClient()` instantiations across ~232 API routes to use the new adapter/config pattern.
+4. **Testing:** Execute comprehensive migration tests in a staging environment with production data snapshots.
+5. **CI/CD:** Update GitHub Actions and Vercel build scripts to use `prisma@latest` without version pinning.
+
 ## 🚀 PROPOSED NEW STRATEGY: Phase 5 (Q3-Q4 2026)
 
 ### 1. Agent 16: AI Sermon-to-Discussion Generator
@@ -362,6 +377,47 @@ Spec 100% ready. Schema exists. Resolver exists. **Next:** Execute seed of 15 te
 | **TOTP Library** | Manual crypto implementation | `otpauth` library | ✅ RFC 4226/6238 compliant, no TS conflicts |
 
 ---
+
+# Leer el contenido actual
+$content = Get-Content ROADMAP.md -Raw
+
+# Definir la nueva sección
+$newSection = @"
+
+### Architecture Decision: Prisma 6.x to 7.x Migration (Deferred)
+| Decision | Original Plan | Current | Verdict |
+| --- | --- | --- | --- |
+| ORM Version | Upgrade to Prisma 7.x in Phase 4 | Maintain Prisma 6.7.0 through Phase A & B | ✅ **Deferred to Phase C / Tech Debt Sprint** |
+
+**Rationale:**  
+Prisma 7 introduces critical breaking changes (removal of ``url`` in ``schema.prisma``, mandatory ``prisma.config.ts``, and ``PrismaClient`` constructor changes). Implementing this now would require 18–28 hours of refactoring and testing, diverting focus from the critical Phase A goal: Agent Activation and first paid subscriptions. Prisma 6.7.0 is stable, fully functional, and successfully builds all 149/149 pages.
+
+**Future Implementation Plan (When triggered in Phase C):**
+1. **Configuration:** Create ``prisma.config.ts`` to handle ``DATABASE_URL`` and Accelerate connections.
+2. **Schema Cleanup:** Remove the ``url`` property from all ``datasource`` blocks in ``schema.prisma``.
+3. **Client Update:** Refactor all ``new PrismaClient()`` instantiations across ~232 API routes to use the new adapter/config pattern.
+4. **Testing:** Execute comprehensive migration tests in a staging environment with production data snapshots.
+5. **CI/CD:** Update GitHub Actions and Vercel build scripts to use ``prisma@latest`` without version pinning.
+
+**Trigger Conditions:**
+- Phase A completed (first church with active agents)
+- 10+ churches active in production
+- Dedicated 2-3 week tech debt sprint scheduled
+- Staging environment with production data snapshot available
+
+"@
+
+# Insertar antes de la sección "Contact"
+$contactPattern = "## Contact"
+if ($content -match $contactPattern) {
+    $newContent = $content -replace $contactPattern, ($newSection + "`n" + $contactPattern)
+    Set-Content ROADMAP.md -Value $newContent -NoNewline
+    Write-Host "✅ Sección de decisión de Prisma 7 agregada al ROADMAP.md"
+} else {
+    Write-Host "⚠️ No se encontró la sección 'Contact'. Agregando al final del archivo..."
+    Add-Content ROADMAP.md -Value $newSection
+    Write-Host "✅ Sección agregada al final del archivo"
+}
 
 ## Contact
 **Nelson Castro** — Founder  
