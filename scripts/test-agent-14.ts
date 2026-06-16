@@ -1,4 +1,4 @@
-﻿import { executeAgent } from "../lib/agents/executor";
+import { executeAgent } from "../lib/agents/executor";
 async function main() {
   console.log("🧪 Testing Agent 14 (SRE) with OpenRouter...");
   try {

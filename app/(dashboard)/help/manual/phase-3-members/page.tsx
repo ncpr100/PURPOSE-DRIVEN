@@ -37,28 +37,28 @@ export default function Phase3MembersGuide() {
         </div>
       </div>
 
-      {/* Para NiÒ±os */}
+      {/* Para Ninos */}
       <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
         <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
           <Heart className="h-5 w-5" />
-          Para NiÒ±os: ��QuÒ© es un &quot;Miembro&quot;?
+          Para Ninos: Que es un &quot;Miembro&quot;?
         </h4>
         <p className="text-sm text-[hsl(var(--warning))]">
-          Un miembro es como una persona en tu lista de amigos. AsÒ­ como tienes una agenda con 
-          nombres y telÒ©fonos de tus amigos, Khesed-tek es como una agenda super especial para 
-          tu iglesia. AquÒ­ guardas los nombres, cumpleaÒ±os, y datos de todas las personas que 
-          van a tu iglesia. ��Es como tener un Ò�lbum de fotos digital de tu familia de la iglesia!
+          Un miembro es como una persona en tu lista de amigos. Asi como tienes una agenda con 
+          nombres y telefonos de tus amigos, Khesed-tek es como una agenda super especial para 
+          tu iglesia. Aqui guardas los nombres, cumpleanos, y datos de todas las personas que 
+          van a tu iglesia. Es como tener un Òlbum de fotos digital de tu familia de la iglesia!
         </p>
       </div>
 
-      {/* MÒ©todo 1: Agregar UN Miembro */}
+      {/* Metodo 1: Agregar UN Miembro */}
       <Card className="border-[hsl(var(--success)/0.4)]">
         <CardHeader className="bg-[hsl(var(--success)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
             <div className="bg-[hsl(var(--success))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               A
             </div>
-            MÒ©todo A: Agregar UN Miembro a la Vez
+            Metodo A: Agregar UN Miembro a la Vez
           </CardTitle>
           <CardDescription className="text-base mt-2">
             Perfecto para empezar - agregar persona por persona
@@ -69,14 +69,14 @@ export default function Phase3MembersGuide() {
             {[
               {
                 step: "A.1",
-                title: "Ir a la PÒ�gina de Miembros",
+                title: "Ir a la PÒgina de Miembros",
                 icon: <Users className="h-5 w-5 text-[hsl(var(--info))]" />,
                 image: "",
-                description: "En el menÒº de la izquierda, busca y haz clic en 'Miembros'",
+                description: "En el menu de la izquierda, busca y haz clic en 'Miembros'",
                 tips: [
-                  "Es el menÒº con iconos a la izquierda de tu pantalla",
-                  "Busca un Ò­cono de dos personitas ",
-                  "La palabra 'Miembros' aparece al lado del Ò­cono"
+                  "Es el menu con iconos a la izquierda de tu pantalla",
+                  "Busca un icono de dos personitas ",
+                  "La palabra 'Miembros' aparece al lado del icono"
                 ]
               },
               {
@@ -84,23 +84,23 @@ export default function Phase3MembersGuide() {
                 title: "Hacer Clic en '+ Nuevo Miembro'",
                 icon: <UserPlus className="h-5 w-5 text-[hsl(var(--success))]" />,
                 image: "",
-                description: "Arriba a la derecha, verÒ�s un botÒ³n verde que dice '+ Nuevo Miembro'",
+                description: "Arriba a la derecha, verÒs un boton verde que dice '+ Nuevo Miembro'",
                 tips: [
-                  "Es un botÒ³n verde grande - no puedes perderlo",
-                  "Tiene un sÒ­mbolo + (mÒ�s) al inicio",
-                  "Se abrirÒ� un formulario (hoja con espacios en blanco)"
+                  "Es un boton verde grande - no puedes perderlo",
+                  "Tiene un simbolo + (mÒs) al inicio",
+                  "Se abrirÒ un formulario (hoja con espacios en blanco)"
                 ]
               },
               {
                 step: "A.3",
-                title: "Llenar InformaciÒ³n BÒSICA (Requerida)",
+                title: "Llenar Informacion BÒSICA (Requerida)",
                 icon: <FileText className="h-5 w-5 text-[hsl(var(--warning))]" />,
                 image: "ï¸",
                 description: "Completa estos campos obligatorios - tienen una estrellita roja *",
                 details: [
                   {
                     field: "Nombre Completo *",
-                    example: "Ejemplo: Juan Carlos PÒ©rez GonzÒ�lez",
+                    example: "Ejemplo: Juan Carlos Perez GonzÒlez",
                     why: "El nombre real de la persona",
                     required: true
                   },
@@ -111,35 +111,35 @@ export default function Phase3MembersGuide() {
                     required: true
                   },
                   {
-                    field: "TelÒ©fono",
+                    field: "Telefono",
                     example: "+57 300 123 4567",
                     why: "Para llamarle o enviar mensajes de texto",
                     required: false
                   },
                   {
-                    field: "GÒ©nero",
+                    field: "Genero",
                     example: "Selecciona: Masculino, Femenino, u Otro",
-                    why: "Para estadÒ­sticas de la iglesia",
+                    why: "Para estadisticas de la iglesia",
                     required: false
                   },
                   {
                     field: "Fecha de Nacimiento",
-                    example: "15/03/1985 (DÒ­a/Mes/AÒ±o)",
-                    why: "Para enviar felicitaciones de cumpleaÒ±os automÒ�ticas",
+                    example: "15/03/1985 (Dia/Mes/Ano)",
+                    why: "Para enviar felicitaciones de cumpleanos automÒticas",
                     required: false
                   }
                 ]
               },
               {
                 step: "A.4",
-                title: "Agregar InformaciÒ³n EXTRA (Opcional)",
+                title: "Agregar Informacion EXTRA (Opcional)",
                 icon: <Sparkles className="h-5 w-5 text-[hsl(var(--lavender))]" />,
                 image: "â­",
-                description: "Esta informaciÒ³n NO es obligatoria, pero es muy Òºtil:",
+                description: "Esta informacion NO es obligatoria, pero es muy util:",
                 details: [
                   {
-                    field: "DirecciÒ³n de Casa",
-                    example: "Calle 123 #45-67, Apto 501, BogotÒ�",
+                    field: "Direccion de Casa",
+                    example: "Calle 123 #45-67, Apto 501, BogotÒ",
                     why: "Para visitarle o enviar correspondencia"
                   },
                   {
@@ -148,7 +148,7 @@ export default function Phase3MembersGuide() {
                     why: "Para actividades de parejas o solteros"
                   },
                   {
-                    field: "OcupaciÒ³n/Trabajo",
+                    field: "Ocupacion/Trabajo",
                     example: "Ingeniero, Profesor, Ama de casa, Estudiante",
                     why: "Para conocer las profesiones en la iglesia"
                   },
@@ -159,8 +159,8 @@ export default function Phase3MembersGuide() {
                   },
                   {
                     field: "Notas Especiales",
-                    example: "AlÒ©rgico a los cacahuates, prefiere servir en alabanza",
-                    why: "InformaciÒ³n importante para recordar"
+                    example: "Alergico a los cacahuates, prefiere servir en alabanza",
+                    why: "Informacion importante para recordar"
                   }
                 ]
               },
@@ -169,32 +169,32 @@ export default function Phase3MembersGuide() {
                 title: "Seleccionar Etapa de Vida Espiritual",
                 icon: <Award className="h-5 w-5 text-[hsl(var(--warning))]" />,
                 image: "",
-                description: "Indica en quÒ© etapa espiritual estÒ� la persona:",
+                description: "Indica en que etapa espiritual estÒ la persona:",
                 details: [
                   {
                     stage: "ðŸ⬠⬢ VISITANTE",
-                    description: "Persona nueva que estÒ� visitando la iglesia por primera vez",
-                    example: "MarÒ­a vino por primera vez el domingo pasado"
+                    description: "Persona nueva que estÒ visitando la iglesia por primera vez",
+                    example: "Maria vino por primera vez el domingo pasado"
                   },
                   {
                     stage: " NUEVO CREYENTE",
-                    description: "ReciÒ©n aceptÒ³ a Cristo, estÒ� aprendiendo lo bÒ�sico",
-                    example: "Pedro se bautizÒ³ hace 2 meses"
+                    description: "Recien acepto a Cristo, estÒ aprendiendo lo bÒsico",
+                    example: "Pedro se bautizo hace 2 meses"
                   },
                   {
                     stage: " CRECIMIENTO",
-                    description: "Asiste regularmente, estÒ� creciendo en la fe",
-                    example: "Ana viene hace 1 aÒ±o y participa en estudios bÒ­blicos"
+                    description: "Asiste regularmente, estÒ creciendo en la fe",
+                    example: "Ana viene hace 1 ano y participa en estudios biblicos"
                   },
                   {
                     stage: " MADURO",
                     description: "Cristiano consolidado, puede ayudar a otros",
-                    example: "Carlos lleva 5 aÒ±os, conoce bien la Biblia"
+                    example: "Carlos lleva 5 anos, conoce bien la Biblia"
                   },
                   {
                     stage: " LÒDER",
                     description: "Sirve activamente liderando ministerios",
-                    example: "Laura dirige el grupo de jÒ³venes"
+                    example: "Laura dirige el grupo de jovenes"
                   }
                 ]
               },
@@ -203,12 +203,12 @@ export default function Phase3MembersGuide() {
                 title: "Guardar el Nuevo Miembro",
                 icon: <CheckCircle className="h-5 w-5 text-[hsl(var(--success))]" />,
                 image: "",
-                description: "Haz clic en el botÒ³n verde 'Guardar' abajo del formulario",
+                description: "Haz clic en el boton verde 'Guardar' abajo del formulario",
                 tips: [
-                  "��No olvides hacer clic en Guardar! Si cierras sin guardar, perderÒ�s todo",
-                  "AparecerÒ� un mensaje verde que dice 'Miembro creado exitosamente'",
-                  "El nuevo miembro aparecerÒ� en la lista de miembros",
-                  "Puedes editarlo despuÒ©s si necesitas cambiar algo"
+                  "No olvides hacer clic en Guardar! Si cierras sin guardar, perderÒs todo",
+                  "AparecerÒ un mensaje verde que dice 'Miembro creado exitosamente'",
+                  "El nuevo miembro aparecerÒ en la lista de miembros",
+                  "Puedes editarlo despues si necesitas cambiar algo"
                 ]
               }
             ].map((item, index) => (
@@ -252,7 +252,7 @@ export default function Phase3MembersGuide() {
                           </p>
                           <ul className="text-xs text-[hsl(var(--success))] space-y-1">
                             {item.tips.map((tip, idx) => (
-                              <li key={idx}>â��¢ {tip}</li>
+                              <li key={idx}>â¢ {tip}</li>
                             ))}
                           </ul>
                         </div>
@@ -266,30 +266,30 @@ export default function Phase3MembersGuide() {
         </CardContent>
       </Card>
 
-      {/* MÒ©todo 2: Importar MUCHOS Miembros */}
+      {/* Metodo 2: Importar MUCHOS Miembros */}
       <Card className="border-[hsl(var(--info)/0.4)]">
         <CardHeader className="bg-[hsl(var(--info)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
             <div className="bg-[hsl(var(--info))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               B
             </div>
-            MÒ©todo B: Importar MUCHOS Miembros (Excel/CSV)
+            Metodo B: Importar MUCHOS Miembros (Excel/CSV)
           </CardTitle>
           <CardDescription className="text-base mt-2">
-            Para cuando tienes 10, 50, 100+ personas para agregar rÒ�pidamente
+            Para cuando tienes 10, 50, 100+ personas para agregar rÒpidamente
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
           <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
             <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
               <Lightbulb className="h-5 w-5" />
-              ��CuÒ�ndo Usar la ImportaciÒ³n Masiva?
+              CuÒndo Usar la Importacion Masiva?
             </h4>
             <ul className="text-sm text-[hsl(var(--warning))] space-y-1">
               <li> Tienes una lista en Excel de 20+ personas</li>
-              <li> EstÒ�s migrando de otro sistema a Khesed-tek</li>
+              <li> EstÒs migrando de otro sistema a Khesed-tek</li>
               <li> Quieres ahorrar tiempo (1 vez vs 100 veces)</li>
-              <li> Ya tienes los datos organizados en una hoja de cÒ�lculo</li>
+              <li> Ya tienes los datos organizados en una hoja de cÒlculo</li>
             </ul>
           </div>
 
@@ -300,8 +300,8 @@ export default function Phase3MembersGuide() {
                 title: "Descargar la Plantilla Excel",
                 description: "Primero necesitas el formato correcto",
                 instructions: [
-                  "Ve a Miembros â⬠�" Haz clic en 'Importar'",
-                  "VerÒ�s un botÒ³n azul 'Descargar Plantilla'",
+                  "Ve a Miembros > Haz clic en Importar",
+                  "VerÒs un boton azul 'Descargar Plantilla'",
                   "Descarga el archivo Excel a tu computadora",
                   "Òbrelo con Excel o Google Sheets"
                 ]
@@ -309,14 +309,14 @@ export default function Phase3MembersGuide() {
               {
                 step: "B.2",
                 title: "Llenar la Plantilla con Tus Miembros",
-                description: "Copia la informaciÒ³n de tus miembros a las columnas:",
+                description: "Copia la informacion de tus miembros a las columnas:",
                 columns: [
-                  { name: "nombre", description: "Nombre completo de la persona", example: "Juan PÒ©rez" },
-                  { name: "email", description: "Correo electrÒ³nico", example: "juan@gmail.com" },
-                  { name: "telefono", description: "NÒºmero de telÒ©fono", example: "+57 300 1234567" },
+                  { name: "nombre", description: "Nombre completo de la persona", example: "Juan Perez" },
+                  { name: "email", description: "Correo electronico", example: "juan@gmail.com" },
+                  { name: "telefono", description: "Numero de telefono", example: "+57 300 1234567" },
                   { name: "genero", description: "Masculino, Femenino, Otro", example: "Masculino" },
                   { name: "fechaNacimiento", description: "Formato: DD/MM/AAAA", example: "15/03/1985" },
-                  { name: "direccion", description: "DirecciÒ³n de casa", example: "Calle 123 #45-67" },
+                  { name: "direccion", description: "Direccion de casa", example: "Calle 123 #45-67" },
                   { name: "lifecycle", description: "VISITANTE, NUEVO_CREYENTE, CRECIMIENTO, MADURO, LIDER", example: "CRECIMIENTO" }
                 ]
               },
@@ -325,7 +325,7 @@ export default function Phase3MembersGuide() {
                 title: "Subir el Archivo Completado",
                 instructions: [
                   "Guarda el archivo Excel en tu computadora",
-                  "Vuelve a Khesed-tek â⬠�" Miembros â⬠�" Importar",
+                  "Vuelve a Khesed-tek > Miembros > Importar",
                   "Haz clic en 'Seleccionar Archivo' o arrastra el archivo",
                   "Selecciona tu archivo Excel guardado",
                   "Haz clic en 'Importar Miembros'"
@@ -335,10 +335,10 @@ export default function Phase3MembersGuide() {
                 step: "B.4",
                 title: "Revisar los Resultados",
                 instructions: [
-                  "El sistema te mostrarÒ� cuÒ�ntos miembros se importaron correctamente",
-                  "Si hubo errores, te dirÒ� quÒ© filas tienen problemas",
+                  "El sistema te mostrarÒ cuÒntos miembros se importaron correctamente",
+                  "Si hubo errores, te dirÒ que filas tienen problemas",
                   "Corrige los errores en el Excel y vuelve a importar esas filas",
-                  "��Listo! Todos tus miembros estÒ�n ahora en el sistema"
+                  "Listo! Todos tus miembros estÒn ahora en el sistema"
                 ]
               }
             ].map((item, index) => (
@@ -380,7 +380,7 @@ export default function Phase3MembersGuide() {
         </CardContent>
       </Card>
 
-      {/* GestiÒ³n de Miembros */}
+      {/* Gestion de Miembros */}
       <Card className="border-[hsl(var(--lavender)/0.4)]">
         <CardHeader className="bg-[hsl(var(--lavender)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
@@ -388,7 +388,7 @@ export default function Phase3MembersGuide() {
             Acciones con Tus Miembros
           </CardTitle>
           <CardDescription className="text-base mt-2">
-            QuÒ© puedes hacer despuÒ©s de agregar miembros
+            Que puedes hacer despues de agregar miembros
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
@@ -397,37 +397,37 @@ export default function Phase3MembersGuide() {
               {
                 icon: <Search className="h-8 w-8 text-[hsl(var(--info))]" />,
                 title: "Buscar Miembros",
-                description: "Escribe un nombre en la barra de bÒºsqueda arriba",
-                tip: "Busca por nombre, email, o telÒ©fono"
+                description: "Escribe un nombre en la barra de busqueda arriba",
+                tip: "Busca por nombre, email, o telefono"
               },
               {
                 icon: <Filter className="h-8 w-8 text-[hsl(var(--success))]" />,
                 title: "Filtrar por Etapa",
                 description: "Haz clic en 'Filtros' y selecciona VISITANTE, LÒDER, etc.",
-                tip: "Òštil para ver solo nuevos o lÒ­deres"
+                tip: "Òštil para ver solo nuevos o lideres"
               },
               {
                 icon: <Edit className="h-8 w-8 text-[hsl(var(--warning))]" />,
-                title: "Editar InformaciÒ³n",
-                description: "Haz clic en el nombre del miembro â⬠�" botÒ³n 'Editar'",
-                tip: "Actualiza telÒ©fonos, direcciones, etc."
+                title: "Editar Informacion",
+                description: "Haz clic en el nombre del miembro > boton Editar",
+                tip: "Actualiza telefonos, direcciones, etc."
               },
               {
                 icon: <Mail className="h-8 w-8 text-[hsl(var(--lavender))]" />,
                 title: "Enviar Emails",
-                description: "Selecciona miembros â⬠�" 'Enviar Email Masivo'",
-                tip: "ComunÒ­cate con grupos especÒ­ficos"
+                description: "Selecciona miembros  -  'Enviar Email Masivo'",
+                tip: "Comunicate con grupos especificos"
               },
               {
                 icon: <Download className="h-8 w-8 text-[hsl(var(--info))]" />,
                 title: "Exportar Lista",
                 description: "Descarga tu lista en Excel para imprimir",
-                tip: "Òštil para directorios fÒ­sicos"
+                tip: "Òštil para directorios fisicos"
               },
               {
                 icon: <Award className="h-8 w-8 text-[hsl(var(--warning))]" />,
                 title: "Ver Perfil Espiritual",
-                description: "Haz clic en el miembro â⬠�" pestaÒ±a 'Perfil Espiritual'",
+                description: "Haz clic en el miembro  -  pestana 'Perfil Espiritual'",
                 tip: "Dones, ministerios, crecimiento"
               }
             ].map((action, index) => (
@@ -459,18 +459,18 @@ export default function Phase3MembersGuide() {
             {
               problem: " Dice que el email ya existe",
               solutions: [
-                "Ese miembro ya estÒ� registrado - bÒºscalo en la lista",
+                "Ese miembro ya estÒ registrado - buscalo en la lista",
                 "Si es un email duplicado real, usa +1 al final (juan+1@gmail.com)",
                 "O actualiza el miembro existente en vez de crear uno nuevo"
               ]
             },
             {
-              problem: " La importaciÒ³n falla con errores",
+              problem: " La importacion falla con errores",
               solutions: [
                 "Verifica que las columnas tengan exactamente los nombres de la plantilla",
-                "Revisa que las fechas estÒ©n en formato DD/MM/AAAA",
-                "AsegÒºrate que lifecycle tenga valores exactos: VISITANTE, NUEVO_CREYENTE, etc.",
-                "No dejes filas vacÒ­as en medio del archivo"
+                "Revisa que las fechas esten en formato DD/MM/AAAA",
+                "Asegurate que lifecycle tenga valores exactos: VISITANTE, NUEVO_CREYENTE, etc.",
+                "No dejes filas vacias en medio del archivo"
               ]
             },
             {
@@ -482,10 +482,10 @@ export default function Phase3MembersGuide() {
               ]
             },
             {
-              problem: " EliminÒ© un miembro por error",
+              problem: " Elimine un miembro por error",
               solutions: [
-                "��CUIDADO! Las eliminaciones son permanentes",
-                "No se puede recuperar - deberÒ�s volver a crearlo",
+                "CUIDADO! Las eliminaciones son permanentes",
+                "No se puede recuperar - deberÒs volver a crearlo",
                 "Mejor desactiva miembros en vez de eliminarlos"
               ]
             }
@@ -507,12 +507,12 @@ export default function Phase3MembersGuide() {
         <Link href="/help/manual/complete-onboarding-guide">
           <Button variant="outline" size="lg">
             <ArrowRight className="h-5 w-5 mr-2 rotate-180" />
-            Fase Anterior: ConfiguraciÒ³n
+            Fase Anterior: Configuracion
           </Button>
         </Link>
         <Link href="/help/manual/phase-4-events">
           <Button size="lg" className="bg-[hsl(var(--success))] hover:bg-[hsl(var(--success))]">
-            ��Siguiente! Crear Eventos
+            Siguiente! Crear Eventos
             <ArrowRight className="h-5 w-5 ml-2" />
           </Button>
         </Link>

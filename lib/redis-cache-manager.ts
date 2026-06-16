@@ -1,4 +1,4 @@
-﻿// lib/services/cache-manager.ts
+// lib/services/cache-manager.ts
 import { Redis } from "@upstash/redis";
 
 // Singleton con lazy initialization

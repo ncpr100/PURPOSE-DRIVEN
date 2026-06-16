@@ -1,4 +1,4 @@
-﻿// Member Analytics Cache Service
+// Member Analytics Cache Service
 import { cacheManager, CACHE_KEYS, CACHE_TTL } from './cache-manager';
 export const memberAnalyticsCache = {
   async get(churchId: string, memberId: string) {

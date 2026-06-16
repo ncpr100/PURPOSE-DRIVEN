@@ -1,4 +1,4 @@
-�import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { db } from '@/lib/db';
 import { verifyTOTP, verifyBackupCode, markBackupCodeAsUsed } from '@/lib/mfa';
@@ -19,23 +19,23 @@ export async function POST(request: NextRequest) {
     const { code, type } = await request.json();
     if (!code || typeof code !== 'string') {
       return NextResponse.json(
-        { error: 'C�digo requerido' },
+        { error: 'Cdigo requerido' },
         { status: 400 }
       );
     }
     if (!type || !['totp', 'backup'].includes(type)) {
       return NextResponse.json(
-        { error: 'Tipo de c�digo inv�lido (totp o backup)' },
+        { error: 'Tipo de cdigo invlido (totp o backup)' },
         { status: 400 }
       );
     }
-    // Obtener configuraci�n MFA
+    // Obtener configuracin MFA
     const mfaSettings = await db.user_mfa_settings.findUnique({
       where: { userId },
     });
     if (!mfaSettings || !mfaSettings.isEnabled) {
       return NextResponse.json(
-        { error: '2FA no est� activo para este usuario' },
+        { error: '2FA no est activo para este usuario' },
         { status: 400 }
       );
     }
@@ -51,11 +51,11 @@ export async function POST(request: NextRequest) {
     let isValid = false;
     let backupIndex = -1;
     if (type === 'totp') {
-      // Verificar c�digo TOTP
+      // Verificar cdigo TOTP
       const decryptedSecret = decrypt(mfaSettings.totpSecret!);
       isValid = verifyTOTP(decryptedSecret, code.trim());
     } else if (type === 'backup') {
-      // Verificar c�digo de respaldo
+      // Verificar cdigo de respaldo
       backupIndex = await verifyBackupCode(mfaSettings.backupCodes, code.trim());
       isValid = backupIndex !== -1;
     }
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       // Incrementar intentos fallidos
       const failedAttempts = mfaSettings.failedAttempts + 1;
       const updateData: any = { failedAttempts };
-      // Lockout si excede m�ximo
+      // Lockout si excede mximo
       if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
         updateData.lockedUntil = new Date(Date.now() + LOCKOUT_DURATION_MS);
         console.warn(`[MFA] Usuario ${userId} bloqueado por ${MAX_FAILED_ATTEMPTS} intentos fallidos`);
@@ -75,13 +75,13 @@ export async function POST(request: NextRequest) {
       const remaining = MAX_FAILED_ATTEMPTS - failedAttempts;
       return NextResponse.json(
         { 
-          error: `C�digo inv�lido. ${remaining > 0 ? `${remaining} intentos restantes` : 'Cuenta bloqueada'}.`,
+          error: `Cdigo invlido. ${remaining > 0 ? `${remaining} intentos restantes` : 'Cuenta bloqueada'}.`,
           remainingAttempts: Math.max(0, remaining),
         },
         { status: 400 }
       );
     }
-    // �0xito: resetear intentos y actualizar timestamp
+    // 0xito: resetear intentos y actualizar timestamp
     const updateData: any = {
       failedAttempts: 0,
       lockedUntil: null,
@@ -97,18 +97,18 @@ export async function POST(request: NextRequest) {
       data: updateData,
     });
     console.log(`[MFA] Login 2FA exitoso para usuario: ${userId} (type: ${type})`);
-    // Establecer cookie de sesi�n verificada
+    // Establecer cookie de sesin verificada
     const cookieStore = await cookies();
     cookieStore.set('mfa_verified', 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 30, // 30 d�as
+      maxAge: 60 * 60 * 24 * 30, // 30 das
     });
     return NextResponse.json({
       success: true,
-      message: 'Verificaci�n 2FA exitosa',
+      message: 'Verificacin 2FA exitosa',
     });
   } catch (error) {
     console.error('[MFA Auth Verify] Error:', error);

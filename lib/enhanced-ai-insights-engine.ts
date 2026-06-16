@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Enhanced AI Insights Engine with Machine Learning
  * Implements sophisticated predictive modeling for 90%+ accuracy
  */

@@ -19,16 +19,16 @@ export default function Phase6AnalyticsGuide() {
         <div className="flex items-center gap-4">
           <BarChart3 className="h-12 w-12" />
           <div>
-            <h1 className="text-4xl font-bold mb-2"> Fase 6: Dashboard y AnalÒ­ticas</h1>
+            <h1 className="text-4xl font-bold mb-2"> Fase 6: Dashboard y Analiticas</h1>
             <p className="text-xl opacity-90">
-              Entiende los datos de tu iglesia con grÒ�ficas y reportes
+              Entiende los datos de tu iglesia con grÒficas y reportes
             </p>
           </div>
         </div>
         <div className="mt-6 flex gap-4 text-sm">
           <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Target className="h-3 w-3 mr-1" />
-            Fase 6 de 6 - ��Òšltima Fase!
+            Fase 6 de 6 - Òšltima Fase!
           </Badge>
           <Badge variant="secondary" className="bg-[hsl(var(--card))]/20 text-white">
             <Star className="h-3 w-3 mr-1" />
@@ -37,17 +37,17 @@ export default function Phase6AnalyticsGuide() {
         </div>
       </div>
 
-      {/* Para NiÒ±os */}
+      {/* Para Ninos */}
       <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
         <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
           <Heart className="h-5 w-5" />
-          Para NiÒ±os: ��QuÒ© son las &quot;AnalÒ­ticas&quot;?
+          Para Ninos: Que son las &quot;Analiticas&quot;?
         </h4>
         <p className="text-sm text-[hsl(var(--warning))]">
-          Imagina que tienes una caja mÒ�gica que cuenta todo lo que pasa en tu iglesia: cuÒ�ntas 
-          personas vinieron hoy, cuÒ�ntos niÒ±os hay, cuÒ�nto dinero se donÒ³, quÒ© eventos fueron los 
-          mÒ�s populares. Las analÒ­ticas son como grÒ�ficas de colores que te muestran toda esa 
-          informaciÒ³n de forma bonita y fÒ�cil de entender. ��Es como tener rayos X de tu iglesia!
+          Imagina que tienes una caja mÒgica que cuenta todo lo que pasa en tu iglesia: cuÒntas 
+          personas vinieron hoy, cuÒntos ninos hay, cuÒnto dinero se dono, que eventos fueron los 
+          mÒs populares. Las analiticas son como grÒficas de colores que te muestran toda esa 
+          informacion de forma bonita y fÒcil de entender. Es como tener rayos X de tu iglesia!
         </p>
       </div>
 
@@ -58,7 +58,7 @@ export default function Phase6AnalyticsGuide() {
             <div className="bg-[hsl(var(--info))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               1
             </div>
-            Tu Dashboard Principal (PÒ�gina de Inicio)
+            Tu Dashboard Principal (PÒgina de Inicio)
           </CardTitle>
           <CardDescription className="text-base mt-2">
             Lo primero que ves cuando entras - un resumen de TODO
@@ -68,10 +68,10 @@ export default function Phase6AnalyticsGuide() {
           <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <Eye className="h-5 w-5 text-[hsl(var(--info))]" />
-              ��DÒ³nde EstÒ� el Dashboard?
+              Donde EstÒ el Dashboard?
             </h4>
             <p className="text-sm mb-2">
-              Cuando inicias sesiÒ³n, la primera pantalla es tu Dashboard. TambiÒ©n puedes llegar 
+              Cuando inicias sesion, la primera pantalla es tu Dashboard. Tambien puedes llegar 
               haciendo clic en &quot;Inicio&quot; o el logo de Khesed-tek arriba a la izquierda.
             </p>
           </div>
@@ -84,7 +84,7 @@ export default function Phase6AnalyticsGuide() {
                   "Total de miembros registrados",
                   "Nuevos miembros este mes",
                   "Visitantes recientes",
-                  "DistribuciÒ³n por etapa espiritual"
+                  "Distribucion por etapa espiritual"
                 ],
                 color: "blue"
               },
@@ -92,28 +92,28 @@ export default function Phase6AnalyticsGuide() {
                 title: " Tarjeta de Finanzas",
                 metrics: [
                   "Donaciones del mes actual",
-                  "ComparaciÒ³n con mes anterior",
-                  "Promedio de donaciÒ³n por persona",
-                  "GrÒ�fica de tendencia mensual"
+                  "Comparacion con mes anterior",
+                  "Promedio de donacion por persona",
+                  "GrÒfica de tendencia mensual"
                 ],
                 color: "green"
               },
               {
-                title: " PrÒ³ximos Eventos",
+                title: " Proximos Eventos",
                 metrics: [
                   "Eventos de esta semana",
                   "Cantidad de inscritos",
-                  "Eventos mÒ�s populares",
+                  "Eventos mÒs populares",
                   "Check-ins recientes"
                 ],
                 color: "orange"
               },
               {
-                title: " Peticiones de OraciÒ³n",
+                title: " Peticiones de Oracion",
                 metrics: [
                   "Peticiones activas",
                   "Peticiones respondidas este mes",
-                  "CategorÒ­as mÒ�s comunes",
+                  "Categorias mÒs comunes",
                   "Tasa de respuesta"
                 ],
                 color: "purple"
@@ -122,9 +122,9 @@ export default function Phase6AnalyticsGuide() {
                 title: " Crecimiento General",
                 metrics: [
                   "Tasa de crecimiento mensual",
-                  "ComparaciÒ³n trimestral",
+                  "Comparacion trimestral",
                   "Tendencia de asistencia",
-                  "ProyecciÒ³n para prÒ³ximo mes"
+                  "Proyeccion para proximo mes"
                 ],
                 color: "cyan"
               },
@@ -133,7 +133,7 @@ export default function Phase6AnalyticsGuide() {
                 metrics: [
                   "Òšltimos miembros registrados",
                   "Donaciones recientes",
-                  "Check-ins del dÒ­a",
+                  "Check-ins del dia",
                   "Comunicaciones enviadas"
                 ],
                 color: "pink"
@@ -161,121 +161,121 @@ export default function Phase6AnalyticsGuide() {
               Consejo de Experto
             </h4>
             <p className="text-sm text-[hsl(var(--warning))]">
-              Tu dashboard se actualiza en TIEMPO REAL. Si alguien se registra, hace una donaciÒ³n, 
-              o se inscribe a un evento, verÒ�s los nÒºmeros cambiar automÒ�ticamente. ��Es como magia! 
-              No necesitas refrescar la pÒ�gina.
+              Tu dashboard se actualiza en TIEMPO REAL. Si alguien se registra, hace una donacion, 
+              o se inscribe a un evento, verÒs los numeros cambiar automÒticamente. Es como magia! 
+              No necesitas refrescar la pÒgina.
             </p>
           </div>
         </CardContent>
       </Card>
 
-      {/* AnalÒ­ticas Generales */}
+      {/* Analiticas Generales */}
       <Card className="border-[hsl(var(--success)/0.4)]">
         <CardHeader className="bg-[hsl(var(--success)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
             <div className="bg-[hsl(var(--success))] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
               2
             </div>
-            AnalÒ­ticas Generales (Reportes Detallados)
+            Analiticas Generales (Reportes Detallados)
           </CardTitle>
           <CardDescription className="text-base mt-2">
-            InformaciÒ³n profunda sobre cada Ò�rea de tu iglesia
+            Informacion profunda sobre cada Òrea de tu iglesia
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
           <div className="space-y-4">
             <div className="bg-[hsl(var(--success)/0.10)] p-4 rounded-lg">
-              <h4 className="font-semibold mb-2"> CÒ³mo Llegar:</h4>
+              <h4 className="font-semibold mb-2"> Como Llegar:</h4>
               <p className="text-sm">
-                En el menÒº izquierdo â⬠�" <strong>AnalÒ­ticas</strong> â⬠�" <strong>AnalÒ­ticas Generales</strong>
+                En el menu izquierdo  -  <strong>Analiticas</strong>  -  <strong>Analiticas Generales</strong>
               </p>
             </div>
 
             {[
               {
-                section: " AnalÒ­ticas de Miembros",
+                section: " Analiticas de Miembros",
                 icon: <Users className="h-6 w-6 text-[hsl(var(--info))]" />,
                 reports: [
                   {
-                    name: "Crecimiento de MembresÒ­a",
-                    description: "GrÒ�fica de lÒ­neas mostrando crecimiento mes a mes",
+                    name: "Crecimiento de Membresia",
+                    description: "GrÒfica de lineas mostrando crecimiento mes a mes",
                     useCase: "Ver si estamos creciendo o estancados"
                   },
                   {
-                    name: "DistribuciÒ³n por Edad",
-                    description: "GrÒ�fica de pastel: cuÒ�ntos niÒ±os, jÒ³venes, adultos, ancianos",
+                    name: "Distribucion por Edad",
+                    description: "GrÒfica de pastel: cuÒntos ninos, jovenes, adultos, ancianos",
                     useCase: "Planear actividades apropiadas para cada edad"
                   },
                   {
-                    name: "DistribuciÒ³n por GÒ©nero",
-                    description: "Porcentaje de hombres vs mujeres en la congregaciÒ³n",
+                    name: "Distribucion por Genero",
+                    description: "Porcentaje de hombres vs mujeres en la congregacion",
                     useCase: "Balancear ministerios para hombres y mujeres"
                   },
                   {
-                    name: "Mapa de UbicaciÒ³n",
+                    name: "Mapa de Ubicacion",
                     description: "Mapa con puntos donde viven los miembros",
-                    useCase: "Organizar cÒ©lulas geogrÒ�ficamente"
+                    useCase: "Organizar celulas geogrÒficamente"
                   },
                   {
-                    name: "RetenciÒ³n de Miembros",
-                    description: "CuÒ�ntos miembros siguen activos vs inactivos",
-                    useCase: "Identificar quiÒ©nes necesitan seguimiento"
+                    name: "Retencion de Miembros",
+                    description: "CuÒntos miembros siguen activos vs inactivos",
+                    useCase: "Identificar quienes necesitan seguimiento"
                   }
                 ]
               },
               {
-                section: " AnalÒ­ticas Financieras",
+                section: " Analiticas Financieras",
                 icon: <DollarSign className="h-6 w-6 text-[hsl(var(--success))]" />,
                 reports: [
                   {
                     name: "Ingresos por Mes",
-                    description: "GrÒ�fica de barras de donaciones mensuales",
+                    description: "GrÒfica de barras de donaciones mensuales",
                     useCase: "Presupuestar y planear gastos"
                   },
                   {
-                    name: "MÒ©todos de Pago",
-                    description: "CuÒ�nto se recibiÒ³ en efectivo, tarjeta, transferencia",
-                    useCase: "Decidir quÒ© mÒ©todos promover"
+                    name: "Metodos de Pago",
+                    description: "CuÒnto se recibio en efectivo, tarjeta, transferencia",
+                    useCase: "Decidir que metodos promover"
                   },
                   {
                     name: "Donadores Recurrentes",
-                    description: "QuiÒ©nes donan mensualmente vs ocasionalmente",
+                    description: "Quienes donan mensualmente vs ocasionalmente",
                     useCase: "Agradecer a donadores fieles"
                   },
                   {
-                    name: "CategorÒ­as de Gastos",
-                    description: "En quÒ© se gastÒ³ el dinero (ministerios, edificio, misiones)",
+                    name: "Categorias de Gastos",
+                    description: "En que se gasto el dinero (ministerios, edificio, misiones)",
                     useCase: "Transparencia financiera"
                   },
                   {
-                    name: "ProyecciÒ³n Anual",
-                    description: "Estimado de ingresos totales para el aÒ±o",
-                    useCase: "Planear proyectos grandes (construcciÒ³n, retiros)"
+                    name: "Proyeccion Anual",
+                    description: "Estimado de ingresos totales para el ano",
+                    useCase: "Planear proyectos grandes (construccion, retiros)"
                   }
                 ]
               },
               {
-                section: " AnalÒ­ticas de Eventos",
+                section: " Analiticas de Eventos",
                 icon: <Calendar className="h-6 w-6 text-[hsl(var(--warning))]" />,
                 reports: [
                   {
                     name: "Asistencia por Evento",
-                    description: "Comparar cuÒ�nta gente vino a cada evento",
-                    useCase: "Saber quÒ© eventos son mÒ�s populares"
+                    description: "Comparar cuÒnta gente vino a cada evento",
+                    useCase: "Saber que eventos son mÒs populares"
                   },
                   {
-                    name: "Tasa de ConversiÒ³n",
+                    name: "Tasa de Conversion",
                     description: "% de inscritos que realmente asistieron",
-                    useCase: "Mejorar planificaciÒ³n de capacidad"
+                    useCase: "Mejorar planificacion de capacidad"
                   },
                   {
-                    name: "Eventos MÒ�s Exitosos",
-                    description: "Ranking de eventos por asistencia y satisfacciÒ³n",
+                    name: "Eventos MÒs Exitosos",
+                    description: "Ranking de eventos por asistencia y satisfaccion",
                     useCase: "Repetir eventos que funcionan"
                   },
                   {
                     name: "Frecuencia de Asistencia",
-                    description: "QuiÒ©nes asisten a todo vs ocasionalmente",
+                    description: "Quienes asisten a todo vs ocasionalmente",
                     useCase: "Identificar miembros comprometidos"
                   }
                 ]
@@ -295,7 +295,7 @@ export default function Phase6AnalyticsGuide() {
                         </p>
                         <p className="text-xs text-muted-foreground mb-1">{report.description}</p>
                         <p className="text-xs text-[hsl(var(--lavender))] italic">
-                           Para quÒ© sirve: {report.useCase}
+                           Para que sirve: {report.useCase}
                         </p>
                       </div>
                     ))}
@@ -307,27 +307,27 @@ export default function Phase6AnalyticsGuide() {
         </CardContent>
       </Card>
 
-      {/* AnalÒ­ticas Inteligentes (AI) */}
+      {/* Analiticas Inteligentes (AI) */}
       <Card className="border-[hsl(var(--lavender)/0.4)]">
         <CardHeader className="bg-[hsl(var(--lavender)/0.10)]">
           <CardTitle className="flex items-center gap-3 text-2xl">
             <Sparkles className="h-8 w-8 text-[hsl(var(--lavender))]" />
-            AnalÒ­ticas Inteligentes (Con Inteligencia Artificial)
+            Analiticas Inteligentes (Con Inteligencia Artificial)
           </CardTitle>
           <CardDescription className="text-base mt-2">
-            El sistema te da recomendaciones automÒ�ticas basadas en datos
+            El sistema te da recomendaciones automÒticas basadas en datos
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
           <div className="bg-[hsl(var(--warning)/0.10)] p-4 rounded-lg border-2 border-[hsl(var(--warning)/0.4)]">
             <h4 className="font-bold text-[hsl(var(--warning))] flex items-center gap-2 mb-2">
               <Lightbulb className="h-5 w-5" />
-              ��QuÒ© es la Inteligencia Artificial en AnalÒ­ticas?
+              Que es la Inteligencia Artificial en Analiticas?
             </h4>
             <p className="text-sm text-[hsl(var(--warning))]">
-              Es como tener un asistente sÒºper inteligente que mira todos los datos de tu iglesia 
-              y te dice cosas como: &quot;Este miembro probablemente dejarÒ� de venir si no le contactas&quot;, 
-              o &quot;Basado en tendencias, este mes recibirÒ�s $500,000 en donaciones&quot;. ��El sistema 
+              Es como tener un asistente super inteligente que mira todos los datos de tu iglesia 
+              y te dice cosas como: &quot;Este miembro probablemente dejarÒ de venir si no le contactas&quot;, 
+              o &quot;Basado en tendencias, este mes recibirÒs $500,000 en donaciones&quot;. El sistema 
               aprende solo y te avisa de problemas ANTES de que pasen!
             </p>
           </div>
@@ -335,39 +335,39 @@ export default function Phase6AnalyticsGuide() {
           <div className="grid md:grid-cols-2 gap-4">
             {[
               {
-                feature: " PredicciÒ³n de RetenciÒ³n",
-                description: "Te dice quÒ© miembros estÒ�n en riesgo de dejar la iglesia",
-                example: "Juan no ha asistido en 3 semanas â⬠�" Sistema sugiere: 'Contactar urgente'",
+                feature: " Prediccion de Retencion",
+                description: "Te dice que miembros estÒn en riesgo de dejar la iglesia",
+                example: "Juan no ha asistido en 3 semanas > Alerta: Contactar urgente",
                 icon: <TrendingUp className="h-6 w-6 text-[hsl(var(--destructive))]" />
               },
               {
                 feature: " Recomendaciones de Ministerios",
-                description: "Sugiere en quÒ© ministerio cada persona encajarÒ­a mejor",
-                example: "MarÒ­a tiene don de enseÒ±anza â⬠�" Recomienda: 'Escuela Dominical'",
+                description: "Sugiere en que ministerio cada persona encajaria mejor",
+                example: "Maria tiene don de ensenanza > Recomienda: Escuela Dominical",
                 icon: <Award className="h-6 w-6 text-[hsl(var(--warning))]" />
               },
               {
                 feature: " Proyecciones Financieras",
-                description: "Predice cuÒ�nto recibirÒ�s de donaciones prÒ³ximo mes",
-                example: "Basado en 6 meses de datos: 'Enero estimado: $650,000 �±15%'",
+                description: "Predice cuÒnto recibirÒs de donaciones proximo mes",
+                example: "Basado en 6 meses de datos: 'Enero estimado: $650,000 ±15%'",
                 icon: <LineChart className="h-6 w-6 text-[hsl(var(--success))]" />
               },
               {
                 feature: " Alertas Proactivas",
                 description: "Te avisa de problemas potenciales antes de que pasen",
-                example: "Asistencia bajÒ³ 20% â⬠�" Alerta: 'Revisar programaciÒ³n de cultos'",
+                example: "Asistencia bajo 20% > Alerta: Revisar programacion de cultos",
                 icon: <Bell className="h-6 w-6 text-[hsl(var(--warning))]" />
               },
               {
-                feature: " AnÒ�lisis de Crecimiento Espiritual",
+                feature: " AnÒlisis de Crecimiento Espiritual",
                 description: "Mide el progreso espiritual de cada miembro",
-                example: "Pedro pasÒ³ de VISITANTE a CRECIMIENTO en 3 meses â⬠�" '��Excelente!'",
+                example: "Pedro paso de VISITANTE a CRECIMIENTO en 3 meses > Excelente",
                 icon: <Activity className="h-6 w-6 text-[hsl(var(--info))]" />
               },
               {
                 feature: " Sugerencias de Contenido",
-                description: "Recomienda quÒ© temas predicar segÒºn necesidades",
-                example: "Muchos miembros en crisis financiera â⬠�" 'EnseÒ±ar sobre mayordomÒ­a'",
+                description: "Recomienda que temas predicar segun necesidades",
+                example: "Muchos miembros en crisis financiera  -  'Ensenar sobre mayordomia'",
                 icon: <MessageSquare className="h-6 w-6 text-[hsl(var(--lavender))]" />
               }
             ].map((feature, index) => (
@@ -390,14 +390,14 @@ export default function Phase6AnalyticsGuide() {
           <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <Target className="h-5 w-5 text-[hsl(var(--info))]" />
-              CÒ³mo Acceder a las AnalÒ­ticas Inteligentes
+              Como Acceder a las Analiticas Inteligentes
             </h4>
             <ol className="text-sm space-y-2 ml-4">
-              <li>1. MenÒº izquierdo â⬠�" <strong>AnalÒ­ticas</strong></li>
-              <li>2. Clic en <strong>AnalÒ­ticas Inteligentes</strong></li>
-              <li>3. Selecciona el mÒ³dulo que quieres ver (RetenciÒ³n, Predicciones, etc.)</li>
+              <li>1. Menu izquierdo  -  <strong>Analiticas</strong></li>
+              <li>2. Clic en <strong>Analiticas Inteligentes</strong></li>
+              <li>3. Selecciona el modulo que quieres ver (Retencion, Predicciones, etc.)</li>
               <li>4. Lee las recomendaciones del sistema</li>
-              <li>5. Toma acciÒ³n segÒºn las sugerencias</li>
+              <li>5. Toma accion segun las sugerencias</li>
             </ol>
           </div>
         </CardContent>
@@ -411,7 +411,7 @@ export default function Phase6AnalyticsGuide() {
             Exportar y Compartir Reportes
           </CardTitle>
           <CardDescription className="text-base mt-2">
-            Descarga grÒ�ficas y tablas para presentaciones o reuniones
+            Descarga grÒficas y tablas para presentaciones o reuniones
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 pt-6">
@@ -420,23 +420,23 @@ export default function Phase6AnalyticsGuide() {
               {
                 format: "PDF Ejecutivo",
                 icon: "",
-                description: "Reporte profesional con grÒ�ficas para imprimir",
+                description: "Reporte profesional con grÒficas para imprimir",
                 best: "Presentaciones a la junta directiva, reuniones anuales",
-                includes: ["Logo de la iglesia", "GrÒ�ficas en color", "Resumen ejecutivo", "Firma digital"]
+                includes: ["Logo de la iglesia", "GrÒficas en color", "Resumen ejecutivo", "Firma digital"]
               },
               {
                 format: "Excel Avanzado",
                 icon: "",
-                description: "Hojas de cÒ�lculo con todos los datos crudos",
-                best: "AnÒ�lisis profundo, crear tus propias grÒ�ficas",
-                includes: ["MÒºltiples pestaÒ±as", "Filtros automÒ�ticos", "FÒ³rmulas", "Tablas dinÒ�micas"]
+                description: "Hojas de cÒlculo con todos los datos crudos",
+                best: "AnÒlisis profundo, crear tus propias grÒficas",
+                includes: ["Multiples pestanas", "Filtros automÒticos", "Formulas", "Tablas dinÒmicas"]
               },
               {
                 format: "CSV Estructurado",
                 icon: "",
                 description: "Datos en texto plano, compatible con todo",
                 best: "Importar a otros sistemas, respaldos",
-                includes: ["Formato universal", "Ligero", "Compatible", "FÒ�cil de leer"]
+                includes: ["Formato universal", "Ligero", "Compatible", "FÒcil de leer"]
               }
             ].map((format, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
@@ -450,7 +450,7 @@ export default function Phase6AnalyticsGuide() {
                     <p className="font-medium text-[hsl(var(--info))] mb-1">Incluye:</p>
                     <ul className="space-y-1 text-[hsl(var(--info))]">
                       {format.includes.map((item, idx) => (
-                        <li key={idx}>â��¢ {item}</li>
+                        <li key={idx}>â¢ {item}</li>
                       ))}
                     </ul>
                   </div>
@@ -465,12 +465,12 @@ export default function Phase6AnalyticsGuide() {
               Pasos para Exportar Reportes
             </h4>
             <ol className="text-sm space-y-2 ml-4">
-              <li>1. Ve a la secciÒ³n de AnalÒ­ticas que quieres exportar</li>
-              <li>2. Haz clic en el botÒ³n <strong>&quot;Exportar&quot;</strong> (arriba a la derecha)</li>
+              <li>1. Ve a la seccion de Analiticas que quieres exportar</li>
+              <li>2. Haz clic en el boton <strong>&quot;Exportar&quot;</strong> (arriba a la derecha)</li>
               <li>3. Selecciona el formato (PDF, Excel, o CSV)</li>
-              <li>4. Elige el rango de fechas (Òºltimo mes, trimestre, aÒ±o)</li>
+              <li>4. Elige el rango de fechas (ultimo mes, trimestre, ano)</li>
               <li>5. Haz clic en <strong>&quot;Descargar Reporte&quot;</strong></li>
-              <li>6. ��El archivo se descargarÒ� a tu computadora!</li>
+              <li>6. El archivo se descargarÒ a tu computadora!</li>
             </ol>
           </div>
         </CardContent>
@@ -486,35 +486,35 @@ export default function Phase6AnalyticsGuide() {
         </CardHeader>
         <CardContent className="space-y-4 pt-6">
           <p className="text-sm text-muted-foreground">
-            Puedes decidir quÒ© tarjetas ver y en quÒ© orden. ��Hazlo tu dashboard ideal!
+            Puedes decidir que tarjetas ver y en que orden. Hazlo tu dashboard ideal!
           </p>
 
           <div className="space-y-3">
             <div className="bg-[hsl(var(--destructive)/0.08)] p-3 rounded">
-              <h5 className="font-medium text-sm mb-2"> CÒ³mo Personalizar:</h5>
+              <h5 className="font-medium text-sm mb-2"> Como Personalizar:</h5>
               <ul className="text-xs space-y-1 ml-4">
-                <li>1. En tu Dashboard, haz clic en el botÒ³n ï¸ &quot;Personalizar&quot; (arriba a la derecha)</li>
+                <li>1. En tu Dashboard, haz clic en el boton ï¸ &quot;Personalizar&quot; (arriba a la derecha)</li>
                 <li>2. Arrastra las tarjetas para cambiar el orden</li>
                 <li>3. Marca/desmarca casillas para mostrar u ocultar tarjetas</li>
-                <li>4. Haz clic en &quot;Guardar ConfiguraciÒ³n&quot;</li>
+                <li>4. Haz clic en &quot;Guardar Configuracion&quot;</li>
               </ul>
             </div>
 
             <div className="grid md:grid-cols-2 gap-3 text-xs">
               <div className="bg-[hsl(var(--success)/0.10)] p-3 rounded">
-                <p className="font-medium text-[hsl(var(--success))] mb-1"> Ideas de PersonalizaciÒ³n:</p>
+                <p className="font-medium text-[hsl(var(--success))] mb-1"> Ideas de Personalizacion:</p>
                 <ul className="space-y-1 text-[hsl(var(--success))]">
-                  <li>â��¢ Si eres pastor: Prioriza miembros y eventos</li>
-                  <li>â��¢ Si eres tesorero: Finanzas arriba</li>
-                  <li>â��¢ Si lideras jÒ³venes: Solo ver jÒ³venes</li>
-                  <li>â��¢ Oculta tarjetas que no usas</li>
+                  <li>â¢ Si eres pastor: Prioriza miembros y eventos</li>
+                  <li>â¢ Si eres tesorero: Finanzas arriba</li>
+                  <li>â¢ Si lideras jovenes: Solo ver jovenes</li>
+                  <li>â¢ Oculta tarjetas que no usas</li>
                 </ul>
               </div>
               <div className="bg-[hsl(var(--info)/0.10)] p-3 rounded">
                 <p className="font-medium text-[hsl(var(--info))] mb-1"> Consejo:</p>
                 <p className="text-[hsl(var(--info))]">
-                  Tu personalizaciÒ³n se guarda automÒ�ticamente. La prÒ³xima vez que entres, 
-                  verÒ�s TU dashboard personalizado, no el de otros usuarios.
+                  Tu personalizacion se guarda automÒticamente. La proxima vez que entres, 
+                  verÒs TU dashboard personalizado, no el de otros usuarios.
                 </p>
               </div>
             </div>
@@ -527,45 +527,45 @@ export default function Phase6AnalyticsGuide() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-[hsl(var(--destructive))]">
             <AlertTriangle className="h-6 w-6" />
-            Problemas Comunes con AnalÒ­ticas
+            Problemas Comunes con Analiticas
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {[
             {
-              problem: " Los nÒºmeros no se actualizan / estÒ�n desactualizados",
+              problem: " Los numeros no se actualizan / estÒn desactualizados",
               solutions: [
                 "Espera 5-10 segundos - el sistema actualiza cada pocos segundos",
-                "Refresca la pÒ�gina (F5 o botÒ³n de recargar del navegador)",
-                "Verifica que tu conexiÒ³n a internet estÒ© funcionando",
-                "Si persiste, cierra sesiÒ³n y vuelve a entrar"
+                "Refresca la pÒgina (F5 o boton de recargar del navegador)",
+                "Verifica que tu conexion a internet este funcionando",
+                "Si persiste, cierra sesion y vuelve a entrar"
               ]
             },
             {
-              problem: " Las grÒ�ficas no se muestran / salen en blanco",
+              problem: " Las grÒficas no se muestran / salen en blanco",
               solutions: [
                 "Verifica que tengas datos en ese rango de fechas",
-                "Cambia el filtro de fechas (por ejemplo, Òºltimos 6 meses en vez de Òºltimo mes)",
+                "Cambia el filtro de fechas (por ejemplo, ultimos 6 meses en vez de ultimo mes)",
                 "Intenta con otro navegador (Chrome funciona mejor)",
-                "Desactiva bloqueadores de anuncios (pueden bloquear grÒ�ficas)"
+                "Desactiva bloqueadores de anuncios (pueden bloquear grÒficas)"
               ]
             },
             {
-              problem: " No puedo exportar reportes (botÒ³n no funciona)",
+              problem: " No puedo exportar reportes (boton no funciona)",
               solutions: [
                 "Verifica que tienes permiso de ADMIN o PASTOR",
-                "AsegÒºrate que seleccionaste un rango de fechas",
-                "Intenta descargar en formato PDF primero (es mÒ�s ligero)",
+                "Asegurate que seleccionaste un rango de fechas",
+                "Intenta descargar en formato PDF primero (es mÒs ligero)",
                 "Si el reporte es muy grande (1000+ registros), divide en meses"
               ]
             },
             {
               problem: " Las predicciones de IA parecen incorrectas",
               solutions: [
-                "La IA necesita mÒ­nimo 3 meses de datos para ser precisa",
+                "La IA necesita minimo 3 meses de datos para ser precisa",
                 "Verifica que los datos ingresados sean correctos",
-                "Las predicciones mejoran con el tiempo - sÒ© paciente",
-                "Si ves algo muy raro, reporta al soporte tÒ©cnico"
+                "Las predicciones mejoran con el tiempo - se paciente",
+                "Si ves algo muy raro, reporta al soporte tecnico"
               ]
             }
           ].map((item, index) => (
@@ -586,17 +586,17 @@ export default function Phase6AnalyticsGuide() {
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl text-foreground">
             <Gift className="h-10 w-10" />
-            ��Felicidades! Completaste el Onboarding
+            Felicidades! Completaste el Onboarding
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="text-center p-6">
             <div className="text-6xl mb-4"></div>
             <h3 className="text-2xl font-bold text-[hsl(var(--success))] mb-2">
-              ��Ya Sabes Usar Khesed-tek!
+              Ya Sabes Usar Khesed-tek!
             </h3>
             <p className="text-muted-foreground mb-6">
-              Completaste las 6 fases del onboarding. Ahora estÒ�s listo para administrar 
+              Completaste las 6 fases del onboarding. Ahora estÒs listo para administrar 
               tu iglesia como un profesional.
             </p>
           </div>
@@ -608,7 +608,7 @@ export default function Phase6AnalyticsGuide() {
               { phase: "Fase 3", name: "Miembros Agregados", icon: "" },
               { phase: "Fase 4", name: "Eventos Creados", icon: "" },
               { phase: "Fase 5", name: "Comunicaciones Enviadas", icon: "" },
-              { phase: "Fase 6", name: "AnalÒ­ticas Dominadas", icon: "" }
+              { phase: "Fase 6", name: "Analiticas Dominadas", icon: "" }
             ].map((item, index) => (
               <div key={index} className="bg-[hsl(var(--card))] p-4 rounded-lg text-center">
                 <div className="text-3xl mb-2">{item.icon}</div>
@@ -621,7 +621,7 @@ export default function Phase6AnalyticsGuide() {
           <div className="bg-[hsl(var(--info)/0.10)] p-4 rounded-lg mt-6">
             <h4 className="font-semibold mb-3 flex items-center gap-2">
               <Star className="h-5 w-5 text-[hsl(var(--info))]" />
-              PrÒ³ximos Pasos Recomendados
+              Proximos Pasos Recomendados
             </h4>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
@@ -633,19 +633,19 @@ export default function Phase6AnalyticsGuide() {
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
                 <div>
-                  <strong>Configura automatizaciones:</strong> Emails automÒ�ticos, recordatorios, seguimientos
+                  <strong>Configura automatizaciones:</strong> Emails automÒticos, recordatorios, seguimientos
                 </div>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
                 <div>
-                  <strong>Invita a tu equipo:</strong> Agrega pastores, lÒ­deres, y voluntarios al sistema
+                  <strong>Invita a tu equipo:</strong> Agrega pastores, lideres, y voluntarios al sistema
                 </div>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-[hsl(var(--success))] flex-shrink-0 mt-0.5" />
                 <div>
-                  <strong>Revisa la guÒ­a completa de funciones:</strong> 70+ funciones disponibles
+                  <strong>Revisa la guia completa de funciones:</strong> 70+ funciones disponibles
                 </div>
               </li>
             </ul>

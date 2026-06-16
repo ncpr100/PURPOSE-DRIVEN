@@ -1,4 +1,4 @@
-﻿import {
+import {
   cacheManager,
   CACHE_KEYS,
   CacheMetrics,
