@@ -195,13 +195,13 @@ export default function SocialMediaDashboardClient({
       })
 
       if (response.ok) {
-        toast.success('AnalÃƒÆ’Ã‚Â­ticas sincronizadas')
+        toast.success('AnalÒ��­ticas sincronizadas')
         await loadAnalytics()
       } else {
-        toast.error('Error sincronizando analÃƒÆ’Ã‚Â­ticas')
+        toast.error('Error sincronizando analÒ��­ticas')
       }
     } catch (error) {
-      toast.error('Error de conexiÃƒÆ’Ã‚Â³n')
+      toast.error('Error de conexiÒ��³n')
     } finally {
       setIsSyncingAnalytics(false)
     }
@@ -261,7 +261,7 @@ export default function SocialMediaDashboardClient({
           </TabsTrigger>
           <TabsTrigger value="analytics">
             <TrendingUp className="h-4 w-4 mr-2" />
-            AnalÃƒÆ’Ã‚Â­ticas
+            AnalÒ��­ticas
           </TabsTrigger>
           <TabsTrigger value="accounts">
             <Settings className="h-4 w-4 mr-2" />
@@ -293,7 +293,7 @@ export default function SocialMediaDashboardClient({
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{analytics?.summary?.totalPosts || 0}</div>
-                <p className="text-xs text-muted-foreground">ÃƒÆ’Ã…Â¡ltimos 30 dÃƒÆ’Ã‚Â­as</p>
+                <p className="text-xs text-muted-foreground">Ò��&�ltimos 30 dÒ��­as</p>
               </CardContent>
             </Card>
 
@@ -314,7 +314,7 @@ export default function SocialMediaDashboardClient({
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Tasa de InteracciÃƒÆ’Ã‚Â³n</CardTitle>
+                <CardTitle className="text-sm font-medium">Tasa de InteracciÒ��³n</CardTitle>
                 <Heart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -348,7 +348,7 @@ export default function SocialMediaDashboardClient({
                           {account.displayName}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {account.platform} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ @{account.username}
+                          {account.platform} Ò¢â�a¬�¢ @{account.username}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge variant={account.connectionStatus === 'CONNECTED' ? 'default' : 'secondary'} className="text-xs">
@@ -372,7 +372,7 @@ export default function SocialMediaDashboardClient({
                   Posts Recientes
                 </CardTitle>
                 <CardDescription>
-                  Tus publicaciones mÃƒÆ’Ã‚Â¡s recientes
+                  Tus publicaciones mÒ���s recientes
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -418,10 +418,10 @@ export default function SocialMediaDashboardClient({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Plus className="h-5 w-5 text-[hsl(var(--info))]" />
-                  Conecta MÃƒÆ’Ã‚Â¡s Plataformas
+                  Conecta MÒ���s Plataformas
                 </CardTitle>
                 <CardDescription>
-                  AmplÃƒÆ’Ã‚Â­a tu alcance conectando mÃƒÆ’Ã‚Â¡s redes sociales
+                  AmplÒ��­a tu alcance conectando mÒ���s redes sociales
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -441,7 +441,7 @@ export default function SocialMediaDashboardClient({
                       )}
                       <span className="font-medium">Conectar {platform}</span>
                       <span className="text-xs text-muted-foreground text-center">
-                        {platform === 'FACEBOOK' && 'PÃƒÆ’Ã‚Â¡ginas y posts automÃƒÆ’Ã‚Â¡ticos'}
+                        {platform === 'FACEBOOK' && 'PÒ���ginas y posts automÒ���ticos'}
                         {platform === 'INSTAGRAM' && 'Stories y contenido visual'}
                         {platform === 'YOUTUBE' && 'Videos y canal'}
                       </span>
@@ -471,7 +471,7 @@ export default function SocialMediaDashboardClient({
                 <Label htmlFor="content">Contenido del Post</Label>
                 <Textarea
                   id="content"
-                  placeholder="Ãƒâ€šÃ‚Â¿QuÃƒÆ’Ã‚Â© quieres compartir con tu comunidad?"
+                  placeholder="Ò�a��QuÒ��© quieres compartir con tu comunidad?"
                   value={newPost.content}
                   onChange={(e) => setNewPost(prev => ({ ...prev, content: e.target.value }))}
                   className="min-h-[120px]"
@@ -495,7 +495,7 @@ export default function SocialMediaDashboardClient({
 
               {/* Platform Selection */}
               <div className="space-y-3">
-                <Label>Plataformas de PublicaciÃƒÆ’Ã‚Â³n</Label>
+                <Label>Plataformas de PublicaciÒ��³n</Label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {connectedAccounts.map(account => (
                     <div key={account.id} className="flex items-center space-x-2">
@@ -534,7 +534,7 @@ export default function SocialMediaDashboardClient({
 
               {/* Schedule */}
               <div className="space-y-2">
-                <Label htmlFor="schedule">Programar PublicaciÃƒÆ’Ã‚Â³n (Opcional)</Label>
+                <Label htmlFor="schedule">Programar PublicaciÒ��³n (Opcional)</Label>
                 <Input
                   id="schedule"
                   type="datetime-local"
@@ -585,8 +585,8 @@ export default function SocialMediaDashboardClient({
         <TabsContent value="analytics" className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-semibold">AnalÃƒÆ’Ã‚Â­ticas de Redes Sociales</h2>
-              <p className="text-muted-foreground">MÃƒÆ’Ã‚Â©tricas de rendimiento de todas tus plataformas</p>
+              <h2 className="text-2xl font-semibold">AnalÒ��­ticas de Redes Sociales</h2>
+              <p className="text-muted-foreground">MÒ��©tricas de rendimiento de todas tus plataformas</p>
             </div>
             
             <Button
@@ -658,7 +658,7 @@ export default function SocialMediaDashboardClient({
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <TrendingUp className="h-5 w-5 text-[hsl(var(--success))]" />
-                      Posts con Mayor InteracciÃƒÆ’Ã‚Â³n
+                      Posts con Mayor InteracciÒ��³n
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -695,13 +695,13 @@ export default function SocialMediaDashboardClient({
               <CardContent className="flex items-center justify-center py-12">
                 <div className="text-center">
                   <TrendingUp className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4" />
-                  <h3 className="font-medium text-foreground mb-2">No hay datos de analÃƒÆ’Ã‚Â­ticas</h3>
+                  <h3 className="font-medium text-foreground mb-2">No hay datos de analÒ��­ticas</h3>
                   <p className="text-muted-foreground mb-4">
-                    Conecta tus plataformas y publica contenido para ver analÃƒÆ’Ã‚Â­ticas
+                    Conecta tus plataformas y publica contenido para ver analÒ��­ticas
                   </p>
                   <Button onClick={syncAnalytics} variant="outline">
                     <RefreshCw className="h-4 w-4 mr-2" />
-                    Sincronizar AnalÃƒÆ’Ã‚Â­ticas
+                    Sincronizar AnalÒ��­ticas
                   </Button>
                 </div>
               </CardContent>
@@ -712,7 +712,7 @@ export default function SocialMediaDashboardClient({
         {/* Accounts Management Tab */}
         <TabsContent value="accounts" className="space-y-6">
           <div>
-            <h2 className="text-2xl font-semibold">GestiÃƒÆ’Ã‚Â³n de Cuentas</h2>
+            <h2 className="text-2xl font-semibold">GestiÒ��³n de Cuentas</h2>
             <p className="text-muted-foreground">Conecta y administra tus plataformas de redes sociales</p>
           </div>
 
@@ -736,11 +736,11 @@ export default function SocialMediaDashboardClient({
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-[hsl(var(--success))]">
                     <CheckCircle2 className="h-4 w-4" />
-                    GeneraciÃƒÆ’Ã‚Â³n automÃƒÆ’Ã‚Â¡tica de hashtags
+                    GeneraciÒ��³n automÒ���tica de hashtags
                   </div>
                   <div className="flex items-center gap-2 text-sm text-[hsl(var(--success))]">
                     <CheckCircle2 className="h-4 w-4" />
-                    OptimizaciÃƒÆ’Ã‚Â³n de contenido por plataforma
+                    OptimizaciÒ��³n de contenido por plataforma
                   </div>
                   <div className="flex items-center gap-2 text-sm text-[hsl(var(--success))]">
                     <CheckCircle2 className="h-4 w-4" />
@@ -748,7 +748,7 @@ export default function SocialMediaDashboardClient({
                   </div>
                   <div className="flex items-center gap-2 text-sm text-[hsl(var(--success))]">
                     <CheckCircle2 className="h-4 w-4" />
-                    AnÃƒÆ’Ã‚Â¡lisis de audiencia y tendencias
+                    AnÒ���lisis de audiencia y tendencias
                   </div>
                 </div>
               ) : (
@@ -756,11 +756,11 @@ export default function SocialMediaDashboardClient({
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Sparkles className="h-4 w-4" />
-                      GeneraciÃƒÆ’Ã‚Â³n automÃƒÆ’Ã‚Â¡tica de hashtags
+                      GeneraciÒ��³n automÒ���tica de hashtags
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Sparkles className="h-4 w-4" />
-                      OptimizaciÃƒÆ’Ã‚Â³n de contenido por plataforma
+                      OptimizaciÒ��³n de contenido por plataforma
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Sparkles className="h-4 w-4" />
@@ -795,7 +795,7 @@ export default function SocialMediaDashboardClient({
                         </div>
                         <div>
                           <h3 className="font-medium">{account.displayName}</h3>
-                          <p className="text-sm text-muted-foreground">{account.platform} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ @{account.username}</p>
+                          <p className="text-sm text-muted-foreground">{account.platform} Ò¢â�a¬�¢ @{account.username}</p>
                           <div className="flex items-center gap-2 mt-1">
                             <Badge variant={account.connectionStatus === 'CONNECTED' ? 'default' : 'secondary'}>
                               {account.connectionStatus === 'CONNECTED' ? 'Conectado' : 'Desconectado'}
@@ -839,7 +839,7 @@ export default function SocialMediaDashboardClient({
                   Plataformas Disponibles
                 </CardTitle>
                 <CardDescription>
-                  Conecta mÃƒÆ’Ã‚Â¡s plataformas para ampliar tu alcance
+                  Conecta mÒ���s plataformas para ampliar tu alcance
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -851,7 +851,7 @@ export default function SocialMediaDashboardClient({
                         <div>
                           <h3 className="font-medium">{platform}</h3>
                           <p className="text-sm text-muted-foreground">
-                            {platform === 'FACEBOOK' && 'PÃƒÆ’Ã‚Â¡ginas y posts automÃƒÆ’Ã‚Â¡ticos'}
+                            {platform === 'FACEBOOK' && 'PÒ���ginas y posts automÒ���ticos'}
                             {platform === 'INSTAGRAM' && 'Stories y contenido visual'}
                             {platform === 'YOUTUBE' && 'Videos y canal'}
                           </p>

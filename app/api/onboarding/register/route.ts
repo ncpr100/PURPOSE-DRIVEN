@@ -13,9 +13,9 @@ export async function POST(request: NextRequest) {
     }
     const existingUser = await db.users.findUnique({ where: { email: adminEmail } });
     if (existingUser) {
-      return NextResponse.json({ error: "Este email ya estÃ¡ registrado" }, { status: 400 });
+      return NextResponse.json({ error: "Este email ya está registrado" }, { status: 400 });
     }
-    // 1. MAPEO ESTRICTO DE PAÃS A IDIOMA (Regla NON-NEGOTIABLE)
+    // 1. MAPEO ESTRICTO DE PAÍS A IDIOMA (Regla NON-NEGOTIABLE)
     const language = country === "BR" ? "pt" : country === "US" ? "en" : "es";
     const tempPassword = randomBytes(12).toString("base64").slice(0, 12);
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     };
     const priceId = paddlePriceIds[plan];
     if (!priceId) {
-      return NextResponse.json({ error: "Plan no vÃ¡lido" }, { status: 400 });
+      return NextResponse.json({ error: "Plan no válido" }, { status: 400 });
     }
     // 2. Crear la iglesia con el idioma detectado
     const church = await db.churches.create({
@@ -53,15 +53,15 @@ export async function POST(request: NextRequest) {
     const emailTemplate = await db.email_templates.findFirst({
       where: { type: "welcome_church", language },
     }) ?? await db.email_templates.findFirst({
-      where: { type: "welcome_church", language: "es" }, // Fallback a espaÃ±ol
+      where: { type: "welcome_church", language: "es" }, // Fallback a español
     });
-    const emailBody = emailTemplate?.body || "<p>Bienvenido a Khesed-Tek. Tu contraseÃ±a temporal es: {{tempPassword}}</p>";
+    const emailBody = emailTemplate?.body || "<p>Bienvenido a Khesed-Tek. Tu contraseña temporal es: {{tempPassword}}</p>";
     const finalEmailBody = emailBody
       .replace("{{adminName}}", adminName)
       .replace("{{churchName}}", churchName)
       .replace("{{tempPassword}}", tempPassword)
       .replace("{{loginUrl}}", `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/auth/signin`);
-    // TODO: AquÃ­ irÃ­a la llamada real a tu servicio de email (ej: Mailgun)
+    // TODO: Aquí iría la llamada real a tu servicio de email (ej: Mailgun)
     // await sendEmail({ to: adminEmail, subject: emailTemplate?.subject || "Bienvenido", html: finalEmailBody });
     console.log(`[G03] Email de bienvenida preparado en idioma: ${language} para ${adminEmail}`);
     // 5. Generar URL de checkout de Paddle

@@ -22,17 +22,17 @@ export default function MFAVerificationPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Código invÃ¡lido');
+        setError(data.error || 'C�digo inv�lido');
         if (data.remainingAttempts !== undefined) {
           setRemainingAttempts(data.remainingAttempts);
         }
         setLoading(false);
         return;
       }
-      // Ã‰xito - redirigir al destino
+      // �0xito - redirigir al destino
       router.push(redirectTo);
     } catch (err: any) {
-      setError('Error de conexiÃ³n. Intenta de nuevo.');
+      setError('Error de conexi�n. Intenta de nuevo.');
       setLoading(false);
     }
   };
@@ -41,10 +41,10 @@ export default function MFAVerificationPage() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Verificación de Dos Factores
+            Verificaci�n de Dos Factores
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Ingresa el cÃ³digo de verificaciÃ³n para continuar
+            Ingresa el c�digo de verificaci�n para continuar
           </p>
         </div>
         <div className="mt-8 space-y-6">
@@ -72,7 +72,7 @@ export default function MFAVerificationPage() {
                     : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                 }`}
               >
-                Código de App
+                C�digo de App
               </button>
               <button
                 onClick={() => {
@@ -86,14 +86,14 @@ export default function MFAVerificationPage() {
                     : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                 }`}
               >
-                Código de Respaldo
+                C�digo de Respaldo
               </button>
             </div>
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
                 {method === 'totp' 
-                  ? 'Código de 6 dígitos de tu app de autenticación' 
-                  : 'Código de respaldo de 8 caracteres'}
+                  ? 'C�digo de 6 d�gitos de tu app de autenticaci�n' 
+                  : 'C�digo de respaldo de 8 caracteres'}
               </label>
               <input
                 id="code"
@@ -124,7 +124,7 @@ export default function MFAVerificationPage() {
               onClick={() => router.push('/auth/login')}
               className="text-sm text-gray-600 hover:text-gray-800"
             >
-              ← Volver al inicio de sesión
+              �� Volver al inicio de sesi�n
             </button>
           </div>
         </div>

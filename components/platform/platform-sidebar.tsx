@@ -48,18 +48,18 @@ const navigation = [
     icon: ClipboardList,
   },
   { name: "Redes Sociales", href: "/platform/social-media", icon: Share2 },
-  { name: "Analítica", href: "/platform/analytics", icon: BarChart3 },
+  { name: "Anal�tica", href: "/platform/analytics", icon: BarChart3 },
   { name: "Mi Perfil", href: "/platform/profile", icon: User },
-  { name: "Configuración de Agentes", href: "/platform/agents/settings", icon: Cpu },
-  { name: "SRE — Uptime 24/7", href: "/platform/agents/sre", icon: Shield },
+{ name: "Configuraci�n de Agentes", href: "/platform/agents/settings", icon: Cpu },
+{ name: "SRE — Uptime 24/7", href: "/platform/agents/sre", icon: Shield },
   { name: "Rendimiento Web", href: "/platform/agents/performance", icon: Zap },
-  { name: "Configuración", href: "/platform/settings", icon: Settings },
+  { name: "Configuraci�n", href: "/platform/settings", icon: Settings },
   {
     name: "Config. Soporte",
     href: "/platform/support-settings",
     icon: MessageCircle,
   },
-  { name: "Documentación", href: "/platform/help", icon: Book },
+  { name: "Documentaci�n", href: "/platform/help", icon: Book },
 ];
 
 // Desktop Sidebar Component
@@ -71,7 +71,7 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
         <div className="flex items-center gap-3">
           <Logo size="md" showText={false} />
           <div>
-            <h1 className="text-sm font-bold leading-tight">Kḥesed-tek</h1>
+            <h1 className="text-sm font-bold leading-tight">K%esed-tek</h1>
             <p className="text-xs text-muted-foreground/70">Super Admin</p>
           </div>
         </div>
@@ -103,7 +103,7 @@ function MobileSidebar({ pathname }: { pathname: string }) {
             <div className="flex items-center gap-3">
               <Logo size="md" showText={false} />
               <div>
-                <h1 className="text-sm font-bold leading-tight">Kḥesed-tek</h1>
+                <h1 className="text-sm font-bold leading-tight">K%esed-tek</h1>
                 <p className="text-xs text-muted-foreground/70">Super Admin</p>
               </div>
             </div>

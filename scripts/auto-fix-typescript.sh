@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # 🔧 AUTOMATIC TYPESCRIPT ERROR FIXER
 # Fixes the most common patterns causing Railway deployment failures
 

@@ -185,7 +185,7 @@ export function EnhancedSpiritualAssessment({
     if (ministryPassions.length === 0) {
       return {
         valid: false,
-        message: "Por favor selecciona al menos una pasiÃƒÆ’Ã‚Â³n ministerial",
+        message: "Por favor selecciona al menos una pasiÒ��³n ministerial",
       };
     }
 
@@ -206,7 +206,7 @@ export function EnhancedSpiritualAssessment({
     if (!motivation.trim()) {
       return {
         valid: false,
-        message: "Por favor describe tu motivaciÃƒÆ’Ã‚Â³n para servir",
+        message: "Por favor describe tu motivaciÒ��³n para servir",
       };
     }
 
@@ -255,7 +255,7 @@ export function EnhancedSpiritualAssessment({
       setSaveError(
         error instanceof Error
           ? error.message
-          : "Error al guardar la evaluaciÃƒÆ’Ã‚Â³n",
+          : "Error al guardar la evaluaciÒ��³n",
       );
     } finally {
       setIsSaving(false);
@@ -279,7 +279,7 @@ export function EnhancedSpiritualAssessment({
             </div>
             <div>
               <h2 className="text-3xl font-bold">
-                EvaluaciÃƒÆ’Ã‚Â³n de Dones Espirituales
+                EvaluaciÒ��³n de Dones Espirituales
               </h2>
               <p className="text-muted-foreground mt-1">
                 Descubre tus dones y encuentra tu lugar en el ministerio
@@ -291,7 +291,7 @@ export function EnhancedSpiritualAssessment({
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">
-                Progreso de EvaluaciÃƒÆ’Ã‚Â³n
+                Progreso de EvaluaciÒ��³n
               </span>
               <span className="font-semibold">{completion}%</span>
             </div>
@@ -309,10 +309,10 @@ export function EnhancedSpiritualAssessment({
               <CheckCircle2 className="h-5 w-5 text-[hsl(var(--success))] dark:text-[hsl(var(--success)/0.7)] mt-0.5 flex-shrink-0" />
               <div>
                 <p className="font-semibold text-foreground dark:text-[hsl(var(--success)/0.6)]">
-                  Ãƒâ€šÃ‚Â¡EvaluaciÃƒÆ’Ã‚Â³n Guardada!
+                  Ò�a��EvaluaciÒ��³n Guardada!
                 </p>
                 <p className="text-sm text-[hsl(var(--success))] dark:text-[hsl(var(--success)/0.8)] mt-1">
-                  Tu evaluaciÃƒÆ’Ã‚Â³n de dones espirituales se ha guardado
+                  Tu evaluaciÒ��³n de dones espirituales se ha guardado
                   correctamente.
                 </p>
               </div>
@@ -401,7 +401,7 @@ export function EnhancedSpiritualAssessment({
               <CardDescription>
                 Selecciona <strong>Promete</strong> para dones primarios o{" "}
                 <strong>Secundario</strong> para dones de apoyo. Puedes
-                seleccionar mÃƒÆ’Ã‚Âºltiples dones en diferentes categorÃƒÆ’Ã‚Â­as.
+                seleccionar mÒ��ºltiples dones en diferentes categorÒ��­as.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -596,7 +596,7 @@ export function EnhancedSpiritualAssessment({
                 </Badge>
               </CardTitle>
               <CardDescription>
-                Ãƒâ€šÃ‚Â¿QuÃƒÆ’Ã‚Â© ÃƒÆ’Ã‚Â¡reas del ministerio te apasionan? Selecciona todas las que
+                Ò�a��QuÒ��© Ò���reas del ministerio te apasionan? Selecciona todas las que
                 apliquen.
               </CardDescription>
             </CardHeader>
@@ -643,7 +643,7 @@ export function EnhancedSpiritualAssessment({
             <CardHeader>
               <CardTitle>Nivel de Experiencia en Ministerio</CardTitle>
               <CardDescription>
-                Ãƒâ€šÃ‚Â¿CuÃƒÆ’Ã‚Â¡nta experiencia tienes sirviendo en ministerios cristianos?
+                Ò�a��CuÒ���nta experiencia tienes sirviendo en ministerios cristianos?
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -679,8 +679,8 @@ export function EnhancedSpiritualAssessment({
                 <span className="text-[hsl(var(--destructive))]">*</span>
               </CardTitle>
               <CardDescription>
-                Describe brevemente lo que sientes que Dios te estÃƒÆ’Ã‚Â¡ llamando a
-                hacer. Esto puede ser general o especÃƒÆ’Ã‚Â­fico.
+                Describe brevemente lo que sientes que Dios te estÒ��� llamando a
+                hacer. Esto puede ser general o especÒ��­fico.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -688,7 +688,7 @@ export function EnhancedSpiritualAssessment({
                 value={spiritualCalling}
                 onChange={(e) => setSpiritualCalling(e.target.value)}
                 disabled={readOnly}
-                placeholder="Ej: Siento un llamado a trabajar con jÃƒÆ’Ã‚Â³venes, enseÃƒÆ’Ã‚Â±ar la Palabra, servir a los necesitados..."
+                placeholder="Ej: Siento un llamado a trabajar con jÒ��³venes, enseÒ��±ar la Palabra, servir a los necesitados..."
                 className="min-h-[100px] resize-none"
                 maxLength={500}
                 required
@@ -710,11 +710,11 @@ export function EnhancedSpiritualAssessment({
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                MotivaciÃƒÆ’Ã‚Â³n para Servir
+                MotivaciÒ��³n para Servir
                 <span className="text-[hsl(var(--destructive))]">*</span>
               </CardTitle>
               <CardDescription>
-                Ãƒâ€šÃ‚Â¿QuÃƒÆ’Ã‚Â© te motiva a servir en la iglesia? Ãƒâ€šÃ‚Â¿QuÃƒÆ’Ã‚Â© esperas lograr o
+                Ò�a��QuÒ��© te motiva a servir en la iglesia? Ò�a��QuÒ��© esperas lograr o
                 aprender?
               </CardDescription>
             </CardHeader>
@@ -766,7 +766,7 @@ export function EnhancedSpiritualAssessment({
                 ) : (
                   <>
                     <Save className="h-4 w-4 mr-2" />
-                    Guardar EvaluaciÃƒÆ’Ã‚Â³n
+                    Guardar EvaluaciÒ��³n
                   </>
                 )}
               </Button>
@@ -779,7 +779,7 @@ export function EnhancedSpiritualAssessment({
               <Info className="h-5 w-5 text-[hsl(var(--info))] dark:text-[hsl(var(--info)/0.7)] mt-0.5 flex-shrink-0" />
               <div>
                 <p className="text-sm text-foreground dark:text-[hsl(var(--info)/0.6)]">
-                  Completa al menos el 60% de la evaluaciÃƒÆ’Ã‚Â³n para poder
+                  Completa al menos el 60% de la evaluaciÒ��³n para poder
                   guardarla. Necesitas seleccionar dones espirituales, pasiones
                   ministeriales y nivel de experiencia.
                 </p>

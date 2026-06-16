@@ -1,0 +1,16 @@
+﻿const fs = require('fs');
+const f1 = 'app/(dashboard)/help/manual/phase-3-members/page.tsx';
+let l1 = fs.readFileSync(f1, 'utf8').split('\n');
+l1[302] = `                  "Ve a Miembros - Haz clic en 'Importar'",`;
+l1[303] = `                  "Verás un botón azul 'Descargar Plantilla'",`;
+l1[304] = `                  "Descarga el archivo Excel a tu computadora",`;
+l1[305] = `                  "Ábrelo con Excel o Google Sheets"`;
+fs.writeFileSync(f1, l1.join('\n'), 'utf8');
+console.log('Fixed: ' + f1);
+const f2 = 'app/(dashboard)/help/manual/phase-6-analytics/page.tsx';
+let l2 = fs.readFileSync(f2, 'utf8').split('\n');
+l2[339] = `                example: "Juan no ha asistido en 3 semanas - Sistema sugiere: 'Contactar urgente'",`;
+l2[345] = `                example: "María tiene don de enseñanza - Recomienda: 'Escuela Dominical'",`;
+fs.writeFileSync(f2, l2.join('\n'), 'utf8');
+console.log('Fixed: ' + f2);
+console.log('Done');

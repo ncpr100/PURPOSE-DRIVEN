@@ -1,0 +1,12 @@
+﻿const fs = require('fs');
+const f1 = 'app/(dashboard)/help/manual/phase-3-members/page.tsx';
+let l1 = fs.readFileSync(f1, 'utf8').split('\n');
+l1[327] = `                  "Vuelve a Khesed-tek - Miembros - Importar",`;
+fs.writeFileSync(f1, l1.join('\n'), 'utf8');
+console.log('Fixed line 328 in: ' + f1);
+const f2 = 'app/(dashboard)/help/manual/phase-6-analytics/page.tsx';
+let l2 = fs.readFileSync(f2, 'utf8').split('\n');
+l2[357] = `                example: "Asistencia bajo 20% - Alerta: 'Revisar programacion de cultos'",`;
+fs.writeFileSync(f2, l2.join('\n'), 'utf8');
+console.log('Fixed line 358 in: ' + f2);
+console.log('Done');
