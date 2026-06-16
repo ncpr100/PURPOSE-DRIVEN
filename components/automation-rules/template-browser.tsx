@@ -149,7 +149,7 @@ export function TemplateBrowser() {
       
       toast({
         title: 'Plantilla Activada',
-        description: 'La regla de automatizaciÃƒÆ’Ã‚Â³n estÃƒÆ’Ã‚Â¡ ahora activa',
+        description: 'La regla de automatizaciÒ��³n estÒ��� ahora activa',
       });
     } catch (error) {
       console.error('Error activating template:', error);
@@ -191,7 +191,7 @@ export function TemplateBrowser() {
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Plantillas de AutomatizaciÃƒÆ’Ã‚Â³n</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Plantillas de AutomatizaciÒ��³n</h2>
           <p className="text-muted-foreground">
             Activa flujos de trabajo pre-construidos con un solo clic
           </p>
@@ -202,7 +202,7 @@ export function TemplateBrowser() {
             size="sm"
             onClick={() => setViewMode('grid')}
           >
-            CuadrÃƒÆ’Ã‚Â­cula
+            CuadrÒ��­cula
           </Button>
           <Button
             variant={viewMode === 'list' ? 'default' : 'outline'}
@@ -234,7 +234,7 @@ export function TemplateBrowser() {
             Todas ({templates.length})
           </TabsTrigger>
           <TabsTrigger value="PRAYER_REQUEST">
-            OraciÃƒÆ’Ã‚Â³n ({templates.filter(t => t.category === 'PRAYER_REQUEST').length})
+            OraciÒ��³n ({templates.filter(t => t.category === 'PRAYER_REQUEST').length})
           </TabsTrigger>
           <TabsTrigger value="VISITOR_FOLLOWUP">
             Visitantes ({templates.filter(t => t.category === 'VISITOR_FOLLOWUP').length})

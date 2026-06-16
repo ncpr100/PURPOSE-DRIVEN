@@ -219,31 +219,31 @@ export function AutomationTemplates({
 
   const getCategoryLabel = (category: string) => {
     const labels: Record<string, string> = {
-      PRAYER_REQUEST: "Peticiones de OraciÃƒÆ’Ã‚Â³n",
+      PRAYER_REQUEST: "Peticiones de OraciÒ��³n",
       VISITOR_FOLLOWUP: "Seguimiento de Visitantes",
       MEMBER_ENGAGEMENT: "Compromiso de Miembros",
-      DONATION_MANAGEMENT: "GestiÃƒÆ’Ã‚Â³n de Donaciones",
-      EVENT_MANAGEMENT: "GestiÃƒÆ’Ã‚Â³n de Eventos",
+      DONATION_MANAGEMENT: "GestiÒ��³n de Donaciones",
+      EVENT_MANAGEMENT: "GestiÒ��³n de Eventos",
     };
     return labels[category] || category;
   };
 
   const ICON_OPTIONS = [
-    { value: "Heart", label: "CorazÃƒÆ’Ã‚Â³n" },
+    { value: "Heart", label: "CorazÒ��³n" },
     { value: "Users", label: "Personas" },
     { value: "Zap", label: "Rayo" },
     { value: "Bell", label: "Campana" },
     { value: "Mail", label: "Correo" },
-    { value: "Phone", label: "TelÃƒÆ’Ã‚Â©fono" },
+    { value: "Phone", label: "TelÒ��©fono" },
     { value: "Calendar", label: "Calendario" },
     { value: "BookOpen", label: "Biblia" },
     { value: "Church", label: "Iglesia" },
-    { value: "Music", label: "MÃƒÆ’Ã‚Âºsica" },
-    { value: "Baby", label: "NiÃƒÆ’Ã‚Â±os" },
+    { value: "Music", label: "MÒ��ºsica" },
+    { value: "Baby", label: "NiÒ��±os" },
     { value: "HandHeart", label: "Ministerio" },
     { value: "Megaphone", label: "Anuncio" },
-    { value: "ShieldCheck", label: "ProtecciÃƒÆ’Ã‚Â³n" },
-    { value: "Gift", label: "DonaciÃƒÆ’Ã‚Â³n" },
+    { value: "ShieldCheck", label: "ProtecciÒ��³n" },
+    { value: "Gift", label: "DonaciÒ��³n" },
     { value: "MessageSquare", label: "Mensaje" },
     { value: "FileText", label: "Documento" },
     { value: "Star", label: "Estrella" },
@@ -452,10 +452,10 @@ export function AutomationTemplates({
       <div>
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <FileText className="h-6 w-6" />
-          Plantillas de AutomatizaciÃƒÆ’Ã‚Â³n
+          Plantillas de AutomatizaciÒ��³n
         </h2>
         <p className="text-muted-foreground mt-1">
-          Utiliza plantillas predefinidas para crear reglas rÃƒÆ’Ã‚Â¡pidamente
+          Utiliza plantillas predefinidas para crear reglas rÒ���pidamente
         </p>
       </div>
 
@@ -476,7 +476,7 @@ export function AutomationTemplates({
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Todas las CategorÃƒÆ’Ã‚Â­as</SelectItem>
+            <SelectItem value="all">Todas las CategorÒ��­as</SelectItem>
             {categories.map((category) => (
               <SelectItem key={category.name} value={category.name}>
                 {getCategoryLabel(category.name)} ({category.count})
@@ -585,7 +585,7 @@ export function AutomationTemplates({
                 No se encontraron plantillas
               </h3>
               <p className="text-muted-foreground">
-                No hay plantillas que coincidan con tu bÃƒÆ’Ã‚Âºsqueda.
+                No hay plantillas que coincidan con tu bÒ��ºsqueda.
               </p>
             </div>
           </CardContent>
@@ -618,7 +618,7 @@ export function AutomationTemplates({
                 />
               </div>
               <div>
-                <Label htmlFor="edit-desc">DescripciÃƒÆ’Ã‚Â³n</Label>
+                <Label htmlFor="edit-desc">DescripciÒ��³n</Label>
                 <Textarea
                   id="edit-desc"
                   value={editDescription}
@@ -629,20 +629,20 @@ export function AutomationTemplates({
               </div>
             </div>
 
-            {/* Icon + Color ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â independent controls */}
+            {/* Icon + Color Ò¢â�a¬â�� independent controls */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="edit-icon">ÃƒÆ’Ã‚Âcono</Label>
+                <Label htmlFor="edit-icon">Ò��cono</Label>
                 <Select value={editIcon} onValueChange={setEditIcon}>
                   <SelectTrigger id="edit-icon" className="mt-1">
-                    <SelectValue placeholder="Seleccionar ÃƒÆ’Ã‚Â­cono">
+                    <SelectValue placeholder="Seleccionar Ò��­cono">
                       {editIcon ? (
                         <span className="flex items-center gap-2">
                           {renderIcon(editIcon, "h-4 w-4")}
                           {ICON_OPTIONS.find((o) => o.value === editIcon)?.label || editIcon}
                         </span>
                       ) : (
-                        "Seleccionar ÃƒÆ’Ã‚Â­cono"
+                        "Seleccionar Ò��­cono"
                       )}
                     </SelectValue>
                   </SelectTrigger>
@@ -680,26 +680,26 @@ export function AutomationTemplates({
 
             {/* Trigger type */}
             <div>
-              <Label htmlFor="edit-trigger">Disparador ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Ãƒâ€šÃ‚Â¿CuÃƒÆ’Ã‚Â¡ndo se activa?</Label>
+              <Label htmlFor="edit-trigger">Disparador Ò¢â�a¬â�� Ò�a��CuÒ���ndo se activa?</Label>
               <Select value={editTrigger} onValueChange={setEditTrigger}>
                 <SelectTrigger id="edit-trigger" className="mt-1">
                   <SelectValue placeholder="Seleccionar disparador" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="PRAYER_REQUEST_SUBMITTED">PeticiÃƒÆ’Ã‚Â³n de oraciÃƒÆ’Ã‚Â³n enviada</SelectItem>
-                  <SelectItem value="PRAYER_FORM_SUBMITTED">Formulario de oraciÃƒÆ’Ã‚Â³n enviado</SelectItem>
+                  <SelectItem value="PRAYER_REQUEST_SUBMITTED">PeticiÒ��³n de oraciÒ��³n enviada</SelectItem>
+                  <SelectItem value="PRAYER_FORM_SUBMITTED">Formulario de oraciÒ��³n enviado</SelectItem>
                   <SelectItem value="VISITOR_FORM_SUBMITTED">Formulario de visitante enviado</SelectItem>
                   <SelectItem value="FORM_SUBMITTED">Cualquier formulario</SelectItem>
                   <SelectItem value="MEMBER_JOINED">Nuevo miembro registrado</SelectItem>
-                  <SelectItem value="DONATION_RECEIVED">DonaciÃƒÆ’Ã‚Â³n recibida</SelectItem>
-                  <SelectItem value="BIRTHDAY">CumpleaÃƒÆ’Ã‚Â±os de miembro</SelectItem>
+                  <SelectItem value="DONATION_RECEIVED">DonaciÒ��³n recibida</SelectItem>
+                  <SelectItem value="BIRTHDAY">CumpleaÒ��±os de miembro</SelectItem>
                   <SelectItem value="FOLLOW_UP_DUE">Seguimiento pendiente</SelectItem>
                   <SelectItem value="VISITOR_CHECKIN">Check-in de visitante</SelectItem>
                 </SelectContent>
               </Select>
               {editTemplate?.isSystem && (
                 <p className="text-xs text-[hsl(var(--warning))] mt-1">
-                  Nota: las plantillas del sistema solo permiten cambiar ÃƒÆ’Ã‚Â­cono, color, nombre y descripciÃƒÆ’Ã‚Â³n. Los lÃƒÆ’Ã‚Â³gica (disparador, condiciones, acciones) solo puede editarla el Super Administrador.
+                  Nota: las plantillas del sistema solo permiten cambiar Ò��­cono, color, nombre y descripciÒ��³n. Los lÒ��³gica (disparador, condiciones, acciones) solo puede editarla el Super Administrador.
                 </p>
               )}
             </div>
@@ -723,7 +723,7 @@ export function AutomationTemplates({
                 </Button>
               </div>
               {editConditions.length === 0 && (
-                <p className="text-xs text-muted-foreground">Sin condiciones ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â la regla se ejecuta en todos los casos.</p>
+                <p className="text-xs text-muted-foreground">Sin condiciones Ò¢â�a¬â�� la regla se ejecuta en todos los casos.</p>
               )}
               <div className="space-y-2">
                 {editConditions.map((cond, idx) => (
@@ -795,11 +795,11 @@ export function AutomationTemplates({
                     ])
                   }
                 >
-                  <Plus className="h-3 w-3" /> Agregar AcciÃƒÆ’Ã‚Â³n
+                  <Plus className="h-3 w-3" /> Agregar AcciÒ��³n
                 </Button>
               </div>
               {editActions.length === 0 && (
-                <p className="text-xs text-[hsl(var(--warning))]">Agrega al menos una acciÃƒÆ’Ã‚Â³n.</p>
+                <p className="text-xs text-[hsl(var(--warning))]">Agrega al menos una acciÒ��³n.</p>
               )}
               <div className="space-y-3">
                 {editActions.map((action, idx) => (
@@ -820,8 +820,8 @@ export function AutomationTemplates({
                           <SelectItem value="SEND_EMAIL">Enviar Email</SelectItem>
                           <SelectItem value="SEND_WHATSAPP">Enviar WhatsApp</SelectItem>
                           <SelectItem value="SEND_SMS">Enviar SMS</SelectItem>
-                          <SelectItem value="SEND_NOTIFICATION">NotificaciÃƒÆ’Ã‚Â³n Push</SelectItem>
-                          <SelectItem value="CREATE_PRAYER_RESPONSE">Respuesta de OraciÃƒÆ’Ã‚Â³n</SelectItem>
+                          <SelectItem value="SEND_NOTIFICATION">NotificaciÒ��³n Push</SelectItem>
+                          <SelectItem value="CREATE_PRAYER_RESPONSE">Respuesta de OraciÒ��³n</SelectItem>
                           <SelectItem value="CREATE_FOLLOW_UP">Crear Seguimiento</SelectItem>
                           <SelectItem value="ASSIGN_STAFF">Asignar Personal</SelectItem>
                         </SelectContent>
@@ -836,7 +836,7 @@ export function AutomationTemplates({
                       </Button>
                     </div>
                     <Textarea
-                      placeholder="Mensaje / Texto de la acciÃƒÆ’Ã‚Â³n (usa {{contactName}}, {{prayerCategory}}, etc.)"
+                      placeholder="Mensaje / Texto de la acciÒ��³n (usa {{contactName}}, {{prayerCategory}}, etc.)"
                       value={action.configuration?.message || action.configuration?.body || ""}
                       onChange={(e) => {
                         const updated = [...editActions];
@@ -907,7 +907,7 @@ export function AutomationTemplates({
               </Label>
               <Input
                 id="create-name"
-                placeholder="Ej. ConfirmaciÃƒÆ’Ã‚Â³n de PeticiÃƒÆ’Ã‚Â³n Familiar"
+                placeholder="Ej. ConfirmaciÒ��³n de PeticiÒ��³n Familiar"
                 value={createName}
                 onChange={(e) => setCreateName(e.target.value)}
                 className="mt-1"
@@ -916,10 +916,10 @@ export function AutomationTemplates({
 
             {/* Description */}
             <div>
-              <Label htmlFor="create-desc">DescripciÃƒÆ’Ã‚Â³n (opcional)</Label>
+              <Label htmlFor="create-desc">DescripciÒ��³n (opcional)</Label>
               <Textarea
                 id="create-desc"
-                placeholder="Describe cuÃƒÆ’Ã‚Â¡ndo y cÃƒÆ’Ã‚Â³mo se debe usar esta plantilla..."
+                placeholder="Describe cuÒ���ndo y cÒ��³mo se debe usar esta plantilla..."
                 value={createDescription}
                 onChange={(e) => setCreateDescription(e.target.value)}
                 rows={2}
@@ -929,14 +929,14 @@ export function AutomationTemplates({
 
             {/* Category */}
             <div>
-              <Label htmlFor="create-category">CategorÃƒÆ’Ã‚Â­a</Label>
+              <Label htmlFor="create-category">CategorÒ��­a</Label>
               <Select value={createCategory} onValueChange={setCreateCategory}>
                 <SelectTrigger id="create-category" className="mt-1">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="PRAYER_REQUEST">
-                    Peticiones de OraciÃƒÆ’Ã‚Â³n
+                    Peticiones de OraciÒ��³n
                   </SelectItem>
                   <SelectItem value="VISITOR_FOLLOWUP">
                     Seguimiento de Visitantes
@@ -945,10 +945,10 @@ export function AutomationTemplates({
                     Compromiso de Miembros
                   </SelectItem>
                   <SelectItem value="DONATION_MANAGEMENT">
-                    GestiÃƒÆ’Ã‚Â³n de Donaciones
+                    GestiÒ��³n de Donaciones
                   </SelectItem>
                   <SelectItem value="EVENT_MANAGEMENT">
-                    GestiÃƒÆ’Ã‚Â³n de Eventos
+                    GestiÒ��³n de Eventos
                   </SelectItem>
                   <SelectItem value="CUSTOM">Personalizado</SelectItem>
                 </SelectContent>
@@ -958,7 +958,7 @@ export function AutomationTemplates({
             {/* Trigger */}
             <div>
               <Label htmlFor="create-trigger">
-                Disparador (Ãƒâ€šÃ‚Â¿cuÃƒÆ’Ã‚Â¡ndo se activa?)
+                Disparador (Ò�a��cuÒ���ndo se activa?)
               </Label>
               <Select value={createTrigger} onValueChange={setCreateTrigger}>
                 <SelectTrigger id="create-trigger" className="mt-1">
@@ -966,10 +966,10 @@ export function AutomationTemplates({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="PRAYER_REQUEST_SUBMITTED">
-                    PeticiÃƒÆ’Ã‚Â³n de oraciÃƒÆ’Ã‚Â³n enviada
+                    PeticiÒ��³n de oraciÒ��³n enviada
                   </SelectItem>
                   <SelectItem value="PRAYER_FORM_SUBMITTED">
-                    Formulario de oraciÃƒÆ’Ã‚Â³n enviado
+                    Formulario de oraciÒ��³n enviado
                   </SelectItem>
                   <SelectItem value="VISITOR_FORM_SUBMITTED">
                     Formulario de visitante enviado
@@ -981,10 +981,10 @@ export function AutomationTemplates({
                     Nuevo miembro registrado
                   </SelectItem>
                   <SelectItem value="DONATION_RECEIVED">
-                    DonaciÃƒÆ’Ã‚Â³n recibida
+                    DonaciÒ��³n recibida
                   </SelectItem>
                   <SelectItem value="BIRTHDAY">
-                    CumpleaÃƒÆ’Ã‚Â±os de miembro
+                    CumpleaÒ��±os de miembro
                   </SelectItem>
                   <SelectItem value="FOLLOW_UP_DUE">
                     Seguimiento pendiente
@@ -996,7 +996,7 @@ export function AutomationTemplates({
             {/* Action type */}
             <div>
               <Label htmlFor="create-action-type">
-                AcciÃƒÆ’Ã‚Â³n (Ãƒâ€šÃ‚Â¿quÃƒÆ’Ã‚Â© hace al activarse?)
+                AcciÒ��³n (Ò�a��quÒ��© hace al activarse?)
               </Label>
               <Select
                 value={createActionType}
@@ -1010,13 +1010,13 @@ export function AutomationTemplates({
                   <SelectItem value="SEND_WHATSAPP">Enviar WhatsApp</SelectItem>
                   <SelectItem value="SEND_SMS">Enviar SMS</SelectItem>
                   <SelectItem value="CREATE_PRAYER_RESPONSE">
-                    Crear respuesta de oraciÃƒÆ’Ã‚Â³n
+                    Crear respuesta de oraciÒ��³n
                   </SelectItem>
                   <SelectItem value="CREATE_FOLLOW_UP">
                     Crear tarea de seguimiento
                   </SelectItem>
                   <SelectItem value="SEND_NOTIFICATION">
-                    Enviar notificaciÃƒÆ’Ã‚Â³n push
+                    Enviar notificaciÒ��³n push
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -1025,7 +1025,7 @@ export function AutomationTemplates({
             {/* Action message */}
             <div>
               <Label htmlFor="create-action-msg">
-                Mensaje de la AcciÃƒÆ’Ã‚Â³n <span className="text-[hsl(var(--destructive))]">*</span>
+                Mensaje de la AcciÒ��³n <span className="text-[hsl(var(--destructive))]">*</span>
               </Label>
               <Textarea
                 id="create-action-msg"
@@ -1081,7 +1081,7 @@ export function AutomationTemplates({
               </Label>
               <Input
                 id="create-name"
-                placeholder="Ej. ConfirmaciÃƒÆ’Ã‚Â³n de PeticiÃƒÆ’Ã‚Â³n Familiar"
+                placeholder="Ej. ConfirmaciÒ��³n de PeticiÒ��³n Familiar"
                 value={createName}
                 onChange={(e) => setCreateName(e.target.value)}
                 className="mt-1"
@@ -1090,10 +1090,10 @@ export function AutomationTemplates({
 
             {/* Description */}
             <div>
-              <Label htmlFor="create-desc">DescripciÃƒÆ’Ã‚Â³n (opcional)</Label>
+              <Label htmlFor="create-desc">DescripciÒ��³n (opcional)</Label>
               <Textarea
                 id="create-desc"
-                placeholder="Describe cuÃƒÆ’Ã‚Â¡ndo y cÃƒÆ’Ã‚Â³mo se debe usar esta plantilla..."
+                placeholder="Describe cuÒ���ndo y cÒ��³mo se debe usar esta plantilla..."
                 value={createDescription}
                 onChange={(e) => setCreateDescription(e.target.value)}
                 rows={2}
@@ -1103,17 +1103,17 @@ export function AutomationTemplates({
 
             {/* Category */}
             <div>
-              <Label htmlFor="create-category">CategorÃƒÆ’Ã‚Â­a</Label>
+              <Label htmlFor="create-category">CategorÒ��­a</Label>
               <Select value={createCategory} onValueChange={setCreateCategory}>
                 <SelectTrigger id="create-category" className="mt-1">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="PRAYER_REQUEST">Peticiones de OraciÃƒÆ’Ã‚Â³n</SelectItem>
+                  <SelectItem value="PRAYER_REQUEST">Peticiones de OraciÒ��³n</SelectItem>
                   <SelectItem value="VISITOR_FOLLOWUP">Seguimiento de Visitantes</SelectItem>
                   <SelectItem value="MEMBER_ENGAGEMENT">Compromiso de Miembros</SelectItem>
-                  <SelectItem value="DONATION_MANAGEMENT">GestiÃƒÆ’Ã‚Â³n de Donaciones</SelectItem>
-                  <SelectItem value="EVENT_MANAGEMENT">GestiÃƒÆ’Ã‚Â³n de Eventos</SelectItem>
+                  <SelectItem value="DONATION_MANAGEMENT">GestiÒ��³n de Donaciones</SelectItem>
+                  <SelectItem value="EVENT_MANAGEMENT">GestiÒ��³n de Eventos</SelectItem>
                   <SelectItem value="CUSTOM">Personalizado</SelectItem>
                 </SelectContent>
               </Select>
@@ -1121,19 +1121,19 @@ export function AutomationTemplates({
 
             {/* Trigger */}
             <div>
-              <Label htmlFor="create-trigger">Disparador (Ãƒâ€šÃ‚Â¿cuÃƒÆ’Ã‚Â¡ndo se activa?)</Label>
+              <Label htmlFor="create-trigger">Disparador (Ò�a��cuÒ���ndo se activa?)</Label>
               <Select value={createTrigger} onValueChange={setCreateTrigger}>
                 <SelectTrigger id="create-trigger" className="mt-1">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="PRAYER_REQUEST_SUBMITTED">PeticiÃƒÆ’Ã‚Â³n de oraciÃƒÆ’Ã‚Â³n enviada</SelectItem>
-                  <SelectItem value="PRAYER_FORM_SUBMITTED">Formulario de oraciÃƒÆ’Ã‚Â³n enviado</SelectItem>
+                  <SelectItem value="PRAYER_REQUEST_SUBMITTED">PeticiÒ��³n de oraciÒ��³n enviada</SelectItem>
+                  <SelectItem value="PRAYER_FORM_SUBMITTED">Formulario de oraciÒ��³n enviado</SelectItem>
                   <SelectItem value="VISITOR_FORM_SUBMITTED">Formulario de visitante enviado</SelectItem>
                   <SelectItem value="FORM_SUBMITTED">Cualquier formulario enviado</SelectItem>
                   <SelectItem value="MEMBER_JOINED">Nuevo miembro registrado</SelectItem>
-                  <SelectItem value="DONATION_RECEIVED">DonaciÃƒÆ’Ã‚Â³n recibida</SelectItem>
-                  <SelectItem value="BIRTHDAY">CumpleaÃƒÆ’Ã‚Â±os de miembro</SelectItem>
+                  <SelectItem value="DONATION_RECEIVED">DonaciÒ��³n recibida</SelectItem>
+                  <SelectItem value="BIRTHDAY">CumpleaÒ��±os de miembro</SelectItem>
                   <SelectItem value="FOLLOW_UP_DUE">Seguimiento pendiente</SelectItem>
                 </SelectContent>
               </Select>
@@ -1141,7 +1141,7 @@ export function AutomationTemplates({
 
             {/* Action type */}
             <div>
-              <Label htmlFor="create-action-type">AcciÃƒÆ’Ã‚Â³n (Ãƒâ€šÃ‚Â¿quÃƒÆ’Ã‚Â© hace al activarse?)</Label>
+              <Label htmlFor="create-action-type">AcciÒ��³n (Ò�a��quÒ��© hace al activarse?)</Label>
               <Select value={createActionType} onValueChange={setCreateActionType}>
                 <SelectTrigger id="create-action-type" className="mt-1">
                   <SelectValue />
@@ -1150,9 +1150,9 @@ export function AutomationTemplates({
                   <SelectItem value="SEND_EMAIL">Enviar Email</SelectItem>
                   <SelectItem value="SEND_WHATSAPP">Enviar WhatsApp</SelectItem>
                   <SelectItem value="SEND_SMS">Enviar SMS</SelectItem>
-                  <SelectItem value="CREATE_PRAYER_RESPONSE">Crear respuesta de oraciÃƒÆ’Ã‚Â³n</SelectItem>
+                  <SelectItem value="CREATE_PRAYER_RESPONSE">Crear respuesta de oraciÒ��³n</SelectItem>
                   <SelectItem value="CREATE_FOLLOW_UP">Crear tarea de seguimiento</SelectItem>
-                  <SelectItem value="SEND_NOTIFICATION">Enviar notificaciÃƒÆ’Ã‚Â³n push</SelectItem>
+                  <SelectItem value="SEND_NOTIFICATION">Enviar notificaciÒ��³n push</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -1160,7 +1160,7 @@ export function AutomationTemplates({
             {/* Action message */}
             <div>
               <Label htmlFor="create-action-msg">
-                Mensaje de la AcciÃƒÆ’Ã‚Â³n <span className="text-[hsl(var(--destructive))]">*</span>
+                Mensaje de la AcciÒ��³n <span className="text-[hsl(var(--destructive))]">*</span>
               </Label>
               <Textarea
                 id="create-action-msg"

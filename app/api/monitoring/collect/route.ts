@@ -1,6 +1,6 @@
-﻿// app/api/monitoring/collect/route.ts
+�// app/api/monitoring/collect/route.ts
 // Internal endpoint that receives metrics from the middleware.
-// Protected by MONITORING_INTERNAL_KEY â€” never exposed to clients.
+// Protected by MONITORING_INTERNAL_KEY � never exposed to clients.
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    // Log but never throw â€” monitoring must not cascade failures
+    // Log but never throw � monitoring must not cascade failures
     console.error("[MONITORING_COLLECT] DB write failed:", err);
     return NextResponse.json({ ok: false });
   }

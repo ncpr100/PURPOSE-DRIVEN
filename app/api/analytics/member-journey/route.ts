@@ -549,7 +549,7 @@ function calculateConversionFunnel(
     regularAttendee: createStage(3, "Asistente Regular"),
     member: createStage(4, "Miembro"),
     activeMember: createStage(5, "Miembro Activo"),
-    leader: createStage(6, "LÃ­der"),
+    leader: createStage(6, "Líder"),
   };
 }
 
@@ -680,8 +680,8 @@ function calculatePathwayAnalysis(
       stage: "Visitante Recurrente",
       dropoffRate: 35,
       recommendations: [
-        "Invitar a grupos pequeÃ±os",
-        "Ofrecer clases de membresÃ­a",
+        "Invitar a grupos pequeños",
+        "Ofrecer clases de membresía",
         "Conectar con mentores espirituales",
       ],
     },
@@ -711,7 +711,7 @@ function calculateSegmentAnalysis(
   // Demographic analysis
   const demographics = [
     {
-      segment: "JÃ³venes (18-30)",
+      segment: "Jóvenes (18-30)",
       count: members.filter((m) => {
         if (!m.birthDate) return false;
         const age =
@@ -719,7 +719,7 @@ function calculateSegmentAnalysis(
         return age >= 18 && age <= 30;
       }).length,
       conversionRate: 75,
-      preferredPathway: "Eventos sociales â†’ Grupos jÃ³venes â†’ MembresÃ­a",
+      preferredPathway: "Eventos sociales â†’ Grupos jóvenes â†’ Membresía",
     },
     {
       segment: "Adultos (31-50)",
@@ -753,7 +753,7 @@ function calculateSegmentAnalysis(
       characteristics: [
         "Voluntariado activo",
         "Asistencia regular",
-        "ParticipaciÃ³n en ministerios",
+        "Participación en ministerios",
       ],
     },
     {
@@ -761,8 +761,8 @@ function calculateSegmentAnalysis(
       count: Math.round(members.length * 0.4),
       characteristics: [
         "Asistencia ocasional",
-        "ParticipaciÃ³n en eventos",
-        "Donaciones periÃ³dicas",
+        "Participación en eventos",
+        "Donaciones periódicas",
       ],
     },
     {
@@ -770,7 +770,7 @@ function calculateSegmentAnalysis(
       count: Math.round(members.length * 0.3),
       characteristics: [
         "Asistencia irregular",
-        "ParticipaciÃ³n mÃ­nima",
+        "Participación mínima",
         "Necesita seguimiento",
       ],
     },
