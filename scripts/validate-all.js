@@ -55,5 +55,5 @@ if (errors > 0) {
   process.exit(1);
 }
 
-console.log("✅ Validation passed: No encoding or import errors found.");
+console.log("Validation passed: No encoding or import errors found.");
 process.exit(0);
