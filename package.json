@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm install --include=dev --legacy-peer-deps && npx -y prisma@6.7.0 generate && next build",
+    "build": "npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "build:memory-optimized": "./scripts/memory-optimized-build.sh",
