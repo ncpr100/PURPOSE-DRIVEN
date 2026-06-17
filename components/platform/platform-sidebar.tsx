@@ -59,7 +59,7 @@ const navigation = [
     href: "/platform/support-settings",
     icon: MessageCircle,
   },
-  { name: "Documentaciï¿½n", href: "/platform/help", icon: Book },
+  { name: "Documentación", href: "/platform/help", icon: Book },
 ];
 
 // Desktop Sidebar Component
