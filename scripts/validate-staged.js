@@ -2,7 +2,7 @@
 const path = require('path');
 const files = process.argv.slice(2);
 let hasErrors = false;
-const mojibakeRegex = /Ã|â€|Â¡|Â¿/;
+const mojibakeRegex = /Ñ|'|Â¡|Â¿/;
 files.forEach(file => {
   const filePath = path.resolve(file);
   if (!fs.existsSync(filePath)) return;

@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const dirsToScan = ["app", "components", "lib"];
-const mojibakeRegex = /Ã|â€|Â¡|Â¿/;
+const mojibakeRegex = /Ñ|'|Â¡|Â¿/;
 let errors = 0;
 
 function checkDir(dir) {
