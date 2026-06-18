@@ -1,11 +1,11 @@
-﻿'use client';
+'use client';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 type VerificationMethod = 'totp' | 'backup';
 export default function MFAVerificationPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('callbackUrl') || searchParams.get('redirect') || '/';
+  const redirectTo = searchParams.get('redirect') || '/dashboard';
   const [method, setMethod] = useState<VerificationMethod>('totp');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
@@ -66,7 +66,11 @@ export default function MFAVerificationPage() {
                   setCode('');
                   setError('');
                 }}
-                className={lex-1 px-4 py-2 rounded-lg transition-colors }
+                className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
+                  method === 'totp'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                }`}
               >
                 Código de App
               </button>
@@ -76,15 +80,19 @@ export default function MFAVerificationPage() {
                   setCode('');
                   setError('');
                 }}
-                className={lex-1 px-4 py-2 rounded-lg transition-colors }
+                className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
+                  method === 'backup'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                }`}
               >
                 Código de Respaldo
               </button>
             </div>
             <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
-                {method === 'totp'
-                  ? 'Código de 6 dígitos de tu app de autenticación'
+                {method === 'totp' 
+                  ? 'Código de 6 dígitos de tu app de autenticación' 
                   : 'Código de respaldo de 8 caracteres'}
               </label>
               <input
