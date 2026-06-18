@@ -1,4 +1,6 @@
-﻿'use client';
+﻿const fs = require('fs');
+const file = 'app/(auth)/auth/mfa/page.tsx';
+const correctContent = 'use client';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 type VerificationMethod = 'totp' | 'backup';
@@ -66,7 +68,7 @@ export default function MFAVerificationPage() {
                   setCode('');
                   setError('');
                 }}
-                className={lex-1 px-4 py-2 rounded-lg transition-colors }
+                className={\lex-1 px-4 py-2 rounded-lg transition-colors \\}
               >
                 Código de App
               </button>
@@ -76,7 +78,7 @@ export default function MFAVerificationPage() {
                   setCode('');
                   setError('');
                 }}
-                className={lex-1 px-4 py-2 rounded-lg transition-colors }
+                className={\lex-1 px-4 py-2 rounded-lg transition-colors \\}
               >
                 Código de Respaldo
               </button>
@@ -93,7 +95,7 @@ export default function MFAVerificationPage() {
                 value={code}
                 onChange={(e) => {
                   if (method === 'totp') {
-                    setCode(e.target.value.replace(/\D/g, '').slice(0, 6));
+                    setCode(e.target.value.replace(/\\D/g, '').slice(0, 6));
                   } else {
                     setCode(e.target.value.toUpperCase().slice(0, 9));
                   }
@@ -124,3 +126,6 @@ export default function MFAVerificationPage() {
     </div>
   );
 }
+;
+fs.writeFileSync(file, correctContent, 'utf8');
+console.log('✅ Archivo MFA reescrito correctamente con todos los acentos');

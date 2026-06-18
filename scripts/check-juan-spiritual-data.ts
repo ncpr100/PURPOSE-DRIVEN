@@ -60,7 +60,7 @@ async function checkJuanSpiritualData() {
 
     // Also do a direct query on MemberSpiritualProfile table
     console.log('━'.repeat(60))
-    console.log('� DIRECT QUERY ON MemberSpiritualProfile TABLE:')
+    console.log(' DIRECT QUERY ON MemberSpiritualProfile TABLE:')
     const allProfiles = await prisma.memberSpiritualProfile.findMany({
       include: {
         member: {

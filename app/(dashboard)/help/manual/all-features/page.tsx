@@ -159,7 +159,7 @@ export default function AllFeaturesGuide() {
       id: 12,
       name: "Reportes Financieros",
       category: "core",
-      description: "GrÒ�ficos de ingresos, donantes recurrentes",
+      description: "GrÒficos de ingresos, donantes recurrentes",
       accessPath: "/donations/reports",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: false,
@@ -205,7 +205,7 @@ export default function AllFeaturesGuide() {
       id: 16,
       name: "AnalÒ­ticas Generales",
       category: "analytics",
-      description: "Reportes estÒ�ndar de miembros, finanzas, eventos",
+      description: "Reportes estÒndar de miembros, finanzas, eventos",
       accessPath: "/analytics",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: true,
@@ -238,7 +238,7 @@ export default function AllFeaturesGuide() {
       id: 19,
       name: "Member Journey Analytics",
       category: "analytics",
-      description: "AnÒ�lisis de ciclo de vida de miembros",
+      description: "AnÒlisis de ciclo de vida de miembros",
       accessPath: "/intelligent-analytics/member-journey",
       manual: "/help/manual/phase-6-analytics",
       videoAvailable: false,
@@ -295,7 +295,7 @@ export default function AllFeaturesGuide() {
       id: 24,
       name: "Reglas de AutomatizaciÒ³n",
       category: "automation",
-      description: "Crear flujos automÒ�ticos basados en triggers",
+      description: "Crear flujos automÒticos basados en triggers",
       accessPath: "/automation-rules",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -315,7 +315,7 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 26,
-      name: "Email de Bienvenida AutomÒ�tico",
+      name: "Email de Bienvenida AutomÒtico",
       category: "automation",
       description: "EnvÒ­a email cuando se agrega nuevo miembro",
       accessPath: "/automation-rules",
@@ -328,7 +328,7 @@ export default function AllFeaturesGuide() {
       id: 27,
       name: "Recordatorios de Eventos",
       category: "automation",
-      description: "Notificaciones automÒ�ticas antes de eventos",
+      description: "Notificaciones automÒticas antes de eventos",
       accessPath: "/events/[id]/settings",
       manual: "/help/manual/phase-4-events",
       videoAvailable: false,
@@ -339,7 +339,7 @@ export default function AllFeaturesGuide() {
       id: 28,
       name: "Seguimiento de Visitantes",
       category: "automation",
-      description: "Email automÒ�tico a visitantes primerizos",
+      description: "Email automÒtico a visitantes primerizos",
       accessPath: "/automation-rules",
       manual: "/help/manual/phase-5-communications",
       videoAvailable: false,
@@ -701,7 +701,7 @@ export default function AllFeaturesGuide() {
       id: 60,
       name: "Backup y RestauraciÒ³n",
       category: "settings",
-      description: "Copias de seguridad automÒ�ticas y manuales",
+      description: "Copias de seguridad automÒticas y manuales",
       accessPath: "/settings/backup",
       manual: "/help/manual/troubleshooting",
       videoAvailable: false,
@@ -744,7 +744,7 @@ export default function AllFeaturesGuide() {
           <div>
             <h1 className="text-4xl font-bold mb-2"> Todas las Funciones de Khesed-tek</h1>
             <p className="text-xl opacity-90">
-              CatÒ�logo completo de {allFeatures.length} funciones disponibles en la plataforma
+              CatÒlogo completo de {allFeatures.length} funciones disponibles en la plataforma
             </p>
           </div>
         </div>

@@ -438,7 +438,7 @@ export function UnifiedAutomationInterface() {
       <Card className="bg-muted/50">
         <CardContent className="p-6">
           <div className="space-y-4">
-            <h3 className="font-semibold text-lg flex items-center gap-2"><Lightbulb className="h-5 w-5 text-warning" /> ��CÒ³mo funcionan las automatizaciones?</h3>
+            <h3 className="font-semibold text-lg flex items-center gap-2"><Lightbulb className="h-5 w-5 text-warning" /> CÒ³mo funcionan las automatizaciones?</h3>
             <div className="grid gap-4 md:grid-cols-3 text-sm">
               <div className="space-y-2">
                 <p className="font-medium">1. Disparador</p>
@@ -450,7 +450,7 @@ export function UnifiedAutomationInterface() {
               </div>
               <div className="space-y-2">
                 <p className="font-medium">3. Acciones</p>
-                <p className="text-muted-foreground">Se ejecutan acciones automÒ�ticas (enviar email, SMS, crear tarea, notificar equipo)</p>
+                <p className="text-muted-foreground">Se ejecutan acciones automÒticas (enviar email, SMS, crear tarea, notificar equipo)</p>
               </div>
             </div>
           </div>
