@@ -142,7 +142,7 @@ export default function SubscriptionManual() {
                   <p><strong>2.1.</strong> En Mi Suscripción, haga clic en &quot; Complementos&quot;</p>
                   <p><strong>2.2.</strong> Opciones disponibles:</p>
                   <ul className="ml-4 space-y-2 text-muted-foreground">
-                    <li>• <strong>� Integración WhatsApp ($50,000 COP/mes):</strong>
+                    <li>• <strong> Integración WhatsApp ($50,000 COP/mes):</strong>
                       <br />WhatsApp Business API completo integrado</li>
                     <li>• <strong> Marca Personalizada ($30,000 COP/mes):</strong>
                       <br />Personalización completa de colores, logo y marca</li>
