@@ -261,7 +261,7 @@ export function VolunteersClient({
 
       if (!memberId) {
         console.warn(
-          `Ò¯�¸� Volunteer ${volunteer.firstName} ${volunteer.lastName} has no linked member`,
+          `Ò¯¸ Volunteer ${volunteer.firstName} ${volunteer.lastName} has no linked member`,
         );
         continue;
       }
@@ -300,7 +300,7 @@ export function VolunteersClient({
         // Ensure all volunteers have proper structure
         // FIX #005b: Prisma returns 'members' and 'ministries' (plural, matching schema relation
         // field names). The old code read volunteer.member / volunteer.ministry (singular) which
-        // were always undefined Ò¢â�� â���� both showed null. Also normalise assignment relation name.
+        // were always undefined Ò¢â â both showed null. Also normalise assignment relation name.
         const safeVolunteers = data.map((volunteer: any) => ({
           ...volunteer,
           assignments:
@@ -357,7 +357,7 @@ export function VolunteersClient({
         console.log(" Spiritual profile loaded:", data.profile);
         setMemberSpiritualProfile(data.profile);
       } else {
-        console.log("Ò¢â��ž�¹Ò¯�¸� No spiritual profile found");
+        console.log("Ò¢âž¹Ò¯¸ No spiritual profile found");
         setMemberSpiritualProfile(null);
       }
     } catch (error) {
@@ -377,7 +377,7 @@ export function VolunteersClient({
         console.log(" Availability matrix loaded:", data.matrix);
         setMemberAvailabilityMatrix(data.matrix);
       } else {
-        console.log("Ò¢â��ž�¹Ò¯�¸� No availability matrix found");
+        console.log("Ò¢âž¹Ò¯¸ No availability matrix found");
         setMemberAvailabilityMatrix(null);
       }
     } catch (error) {
@@ -399,15 +399,15 @@ export function VolunteersClient({
     const dayNames: { [key: string]: string } = {
       monday: "Lunes",
       tuesday: "Martes",
-      wednesday: "MiÒ��©rcoles",
+      wednesday: "MiÒ©rcoles",
       thursday: "Jueves",
       friday: "Viernes",
-      saturday: "SÒ���bado",
+      saturday: "SÒbado",
       sunday: "Domingo",
     };
 
     const timeNames: { [key: string]: string } = {
-      morning: "MaÒ��±ana (6:00 - 12:00)",
+      morning: "MaÒ±ana (6:00 - 12:00)",
       afternoon: "Tarde (12:00 - 18:00)",
       evening: "Noche (18:00 - 22:00)",
     };
@@ -497,7 +497,7 @@ export function VolunteersClient({
 
     // Validation based on assignment type
     if (!selectedVolunteer || !assignmentData.title) {
-      toast.error("El tÒ��­tulo de la asignaciÒ��³n es requerido");
+      toast.error("El tÒ­tulo de la asignaciÒ³n es requerido");
       return;
     }
 
@@ -530,8 +530,8 @@ export function VolunteersClient({
         const isPermanent = assignmentData.assignmentType === "permanent";
         toast.success(
           isPermanent
-            ? "AsignaciÒ��³n permanente creada exitosamente"
-            : "AsignaciÒ��³n temporal creada exitosamente",
+            ? "AsignaciÒ³n permanente creada exitosamente"
+            : "AsignaciÒ³n temporal creada exitosamente",
         );
         setAssignmentData({
           title: "",
@@ -548,10 +548,10 @@ export function VolunteersClient({
         fetchVolunteers();
       } else {
         const error = await response.json();
-        toast.error(error.message || "Error al crear asignaciÒ��³n");
+        toast.error(error.message || "Error al crear asignaciÒ³n");
       }
     } catch (error) {
-      toast.error("Error al crear asignaciÒ��³n");
+      toast.error("Error al crear asignaciÒ³n");
     }
   };
 
@@ -580,7 +580,7 @@ export function VolunteersClient({
             Sistema de Voluntarios Inteligente
           </h1>
           <p className="text-muted-foreground">
-            GestiÒ��³n completa con IA: Reclutamiento, ProgramaciÒ��³n, y Desarrollo
+            GestiÒ³n completa con IA: Reclutamiento, ProgramaciÒ³n, y Desarrollo
             de Liderazgo
           </p>
         </div>
@@ -612,7 +612,7 @@ export function VolunteersClient({
           </TabsTrigger>
           <TabsTrigger value="onboarding" className="flex items-center gap-1">
             <PlayCircle className="h-4 w-4" />
-            IncorporaciÒ��³n
+            IncorporaciÒ³n
           </TabsTrigger>
           <TabsTrigger value="intelligent" className="flex items-center gap-1">
             <Brain className="h-4 w-4" />
@@ -620,9 +620,9 @@ export function VolunteersClient({
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex items-center gap-1">
             <BarChart3 className="h-4 w-4" />
-            AnalÒ��­ticas
+            AnalÒ­ticas
           </TabsTrigger>
-          <TabsTrigger value="volunteers">GestiÒ��³n</TabsTrigger>
+          <TabsTrigger value="volunteers">GestiÒ³n</TabsTrigger>
         </TabsList>
 
         {/* Phase 3: Recruitment Pipeline Dashboard */}
@@ -697,7 +697,7 @@ export function VolunteersClient({
                   const isAvailableWeekend =
                     availabilityStr.includes("fin") ||
                     availabilityStr.includes("week") ||
-                    availabilityStr.includes("sÒ���bado") ||
+                    availabilityStr.includes("sÒbado") ||
                     availabilityStr.includes("sabado") ||
                     availabilityStr.includes("domingo") ||
                     availabilityStr.includes("todo");
@@ -784,7 +784,7 @@ export function VolunteersClient({
                           <div className="p-3 bg-[hsl(var(--warning)/0.10)] border border-[hsl(var(--warning)/0.3)] rounded-md">
                             <p className="text-xs text-amber-800">
                               <strong>Nota:</strong> Este voluntario no ha
-                              completado su evaluaciÒ��³n espiritual. Recomendamos
+                              completado su evaluaciÒ³n espiritual. Recomendamos
                               completarla para mejores recomendaciones.
                             </p>
                           </div>
@@ -806,7 +806,7 @@ export function VolunteersClient({
                               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                 <Target className="h-4 w-4" />
                                 <span>
-                                  Completar evaluaciÒ��³n para recomendaciones
+                                  Completar evaluaciÒ³n para recomendaciones
                                 </span>
                               </div>
                             )}
@@ -860,7 +860,7 @@ export function VolunteersClient({
                   <p className="text-muted-foreground">
                     {volunteers.length === 0
                       ? "Agrega voluntarios para generar recomendaciones personalizadas"
-                      : "Los voluntarios existentes no estÒ���n marcados como activos"}
+                      : "Los voluntarios existentes no estÒn marcados como activos"}
                   </p>
                 </CardContent>
               </Card>
@@ -906,7 +906,7 @@ export function VolunteersClient({
         <TabsContent value="volunteers" className="space-y-6">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-xl font-semibold">GestiÒ��³n de Voluntarios</h2>
+              <h2 className="text-xl font-semibold">GestiÒ³n de Voluntarios</h2>
               <p className="text-muted-foreground">
                 Administra los voluntarios de tu iglesia
               </p>
@@ -930,7 +930,7 @@ export function VolunteersClient({
                   </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleCreateVolunteer} className="space-y-4">
-                  {/* Member selection Ò¢â�a¬â�� links volunteer to existing member */}
+                  {/* Member selection Ò¢âa¬â links volunteer to existing member */}
                   {allMembers.length > 0 && (
                     <div className="space-y-2">
                       <Label htmlFor="memberId">
@@ -972,7 +972,7 @@ export function VolunteersClient({
                       </Select>
                       <p className="text-xs text-muted-foreground">
                         Vincular evita que el miembro aparezca como candidato
-                        simultÒ���neamente
+                        simultÒneamente
                       </p>
                     </div>
                   )}
@@ -1023,7 +1023,7 @@ export function VolunteersClient({
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">TelÒ��©fono</Label>
+                    <Label htmlFor="phone">TelÒ©fono</Label>
                     <Input
                       id="phone"
                       value={formData.phone}
@@ -1073,7 +1073,7 @@ export function VolunteersClient({
                           skills: e.target.value,
                         }))
                       }
-                      placeholder="MÒ��ºsica, Sonido, NiÒ��±os, etc."
+                      placeholder="MÒºsica, Sonido, NiÒ±os, etc."
                     />
                   </div>
 
@@ -1295,7 +1295,7 @@ export function VolunteersClient({
                 </h3>
                 <p className="text-muted-foreground">
                   {searchTerm
-                    ? "Intenta con otros tÒ��©rminos de bÒ��ºsqueda"
+                    ? "Intenta con otros tÒ©rminos de bÒºsqueda"
                     : "Comienza agregando tu primer voluntario"}
                 </p>
               </CardContent>
@@ -1308,7 +1308,7 @@ export function VolunteersClient({
       <Dialog open={isAssignDialogOpen} onOpenChange={setIsAssignDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Crear AsignaciÒ��³n</DialogTitle>
+            <DialogTitle>Crear AsignaciÒ³n</DialogTitle>
             <DialogDescription>
               Asignar tarea a {selectedVolunteer?.firstName}{" "}
               {selectedVolunteer?.lastName}
@@ -1321,7 +1321,7 @@ export function VolunteersClient({
                 htmlFor="assignmentType"
                 className="text-base font-semibold"
               >
-                Tipo de AsignaciÒ��³n *
+                Tipo de AsignaciÒ³n *
               </Label>
               <Select
                 value={assignmentData.assignmentType}
@@ -1342,7 +1342,7 @@ export function VolunteersClient({
                       <div>
                         <div className="font-medium">Temporal</div>
                         <div className="text-xs text-muted-foreground">
-                          Para eventos o dÒ��­as especÒ��­ficos
+                          Para eventos o dÒ­as especÒ­ficos
                         </div>
                       </div>
                     </div>
@@ -1353,7 +1353,7 @@ export function VolunteersClient({
                       <div>
                         <div className="font-medium">Permanente</div>
                         <div className="text-xs text-muted-foreground">
-                          Rol continuo sin fecha de finalizaciÒ��³n
+                          Rol continuo sin fecha de finalizaciÒ³n
                         </div>
                       </div>
                     </div>
@@ -1364,8 +1364,8 @@ export function VolunteersClient({
                 <div className="mt-2 p-3 bg-primary/10 border border-primary/20 rounded-md">
                   <p className="text-sm text-foreground">
                     <strong>Nota:</strong> Las asignaciones permanentes no
-                    tienen fecha de finalizaciÒ��³n. El voluntario puede tener
-                    mÒ��ºltiples asignaciones temporales ademÒ���s de su rol
+                    tienen fecha de finalizaciÒ³n. El voluntario puede tener
+                    mÒºltiples asignaciones temporales ademÒs de su rol
                     permanente.
                   </p>
                 </div>
@@ -1374,20 +1374,20 @@ export function VolunteersClient({
                 <div className="mt-2 p-3 bg-info/10 border border-info/20 rounded-md">
                   <p className="text-sm text-foreground">
                     <strong>Nota:</strong> Las asignaciones temporales requieren
-                    fecha y horario especÒ��­ficos. RecibirÒ���s notificaciÒ��³n cuando
-                    la asignaciÒ��³n estÒ��© prÒ��³xima a finalizar.
+                    fecha y horario especÒ­ficos. RecibirÒs notificaciÒ³n cuando
+                    la asignaciÒ³n estÒ© prÒ³xima a finalizar.
                   </p>
                 </div>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="title">TÒ��­tulo de la AsignaciÒ��³n *</Label>
+              <Label htmlFor="title">TÒ­tulo de la AsignaciÒ³n *</Label>
               <Input
                 id="title"
                 placeholder={
                   assignmentData.assignmentType === "permanent"
-                    ? "Ej: LÒ��­der de Alabanza"
+                    ? "Ej: LÒ­der de Alabanza"
                     : "Ej: Ayuda en Evento de Navidad"
                 }
                 value={assignmentData.title}
@@ -1402,7 +1402,7 @@ export function VolunteersClient({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">DescripciÒ��³n</Label>
+              <Label htmlFor="description">DescripciÒ³n</Label>
               <Textarea
                 id="description"
                 placeholder="Describe las responsabilidades y expectativas..."
@@ -1438,7 +1438,7 @@ export function VolunteersClient({
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="endDate">
-                      Fecha de FinalizaciÒ��³n (Opcional)
+                      Fecha de FinalizaciÒ³n (Opcional)
                     </Label>
                     <Input
                       id="endDate"
@@ -1471,7 +1471,7 @@ export function VolunteersClient({
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="endTime">Hora de FinalizaciÒ��³n *</Label>
+                    <Label htmlFor="endTime">Hora de FinalizaciÒ³n *</Label>
                     <Input
                       id="endTime"
                       type="time"
@@ -1498,8 +1498,8 @@ export function VolunteersClient({
                   </h4>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Este voluntario serÒ��� asignado de manera continua. No se
-                  requiere fecha o horario especÒ��­fico. Puedes agregar
+                  Este voluntario serÒ asignado de manera continua. No se
+                  requiere fecha o horario especÒ­fico. Puedes agregar
                   asignaciones temporales adicionales en cualquier momento.
                 </p>
               </div>
@@ -1527,7 +1527,7 @@ export function VolunteersClient({
               >
                 Cancelar
               </Button>
-              <Button type="submit">Crear AsignaciÒ��³n</Button>
+              <Button type="submit">Crear AsignaciÒ³n</Button>
             </div>
           </form>
         </DialogContent>
@@ -1543,7 +1543,7 @@ export function VolunteersClient({
               {selectedVolunteer?.lastName}
             </DialogTitle>
             <DialogDescription>
-              InformaciÒ��³n detallada del voluntario y recomendaciones
+              InformaciÒ³n detallada del voluntario y recomendaciones
             </DialogDescription>
           </DialogHeader>
 
@@ -1553,7 +1553,7 @@ export function VolunteersClient({
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-sm font-medium text-muted-foreground">
-                    InformaciÒ��³n Personal
+                    InformaciÒ³n Personal
                   </Label>
                   <div className="mt-2 space-y-2">
                     <div className="flex items-center gap-2">
@@ -1797,10 +1797,10 @@ export function VolunteersClient({
                       <div className="text-center py-4">
                         <Brain className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
                         <p className="text-sm text-muted-foreground">
-                          No hay evaluaciÒ��³n de dones espirituales
+                          No hay evaluaciÒ³n de dones espirituales
                         </p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          El voluntario no ha completado la evaluaciÒ��³n
+                          El voluntario no ha completado la evaluaciÒ³n
                         </p>
                         <Button
                           variant="outline"
@@ -1811,7 +1811,7 @@ export function VolunteersClient({
                           }}
                         >
                           <Brain className="h-4 w-4 mr-2" />
-                          Completar EvaluaciÒ��³n Espiritual
+                          Completar EvaluaciÒ³n Espiritual
                         </Button>
                       </div>
                     )}
@@ -1837,7 +1837,7 @@ export function VolunteersClient({
                           >
                             <Calendar className="h-4 w-4 text-[hsl(var(--info))]" />
                             <span className="text-sm">
-                              AsignaciÒ��³n {index + 1}
+                              AsignaciÒ³n {index + 1}
                             </span>
                             <Badge
                               variant="outline"
@@ -1850,7 +1850,7 @@ export function VolunteersClient({
                       {(selectedVolunteer.assignments || []).length > 3 && (
                         <div className="text-sm text-muted-foreground">
                           +{selectedVolunteer.assignments.length - 3}{" "}
-                          asignaciones mÒ���s
+                          asignaciones mÒs
                         </div>
                       )}
                     </div>
@@ -1958,7 +1958,7 @@ export function VolunteersClient({
                                 <Target className="h-4 w-4 text-[hsl(var(--warning))]" />
                                 <span>
                                   {ministryPassions.length === 1
-                                    ? "PasiÒ��³n ministerial identificada"
+                                    ? "PasiÒ³n ministerial identificada"
                                     : `${ministryPassions.length} pasiones ministeriales identificadas`}
                                 </span>
                                 <Badge
@@ -1978,10 +1978,10 @@ export function VolunteersClient({
                       <Lightbulb className="h-4 w-4 text-[hsl(var(--warning))]" />
                       <div className="flex-1">
                         <p className="font-medium text-[hsl(var(--warning))]">
-                          EvaluaciÒ��³n espiritual pendiente
+                          EvaluaciÒ³n espiritual pendiente
                         </p>
                         <p className="text-xs text-[hsl(var(--warning))] mt-1">
-                          Complete la evaluaciÒ��³n para obtener recomendaciones
+                          Complete la evaluaciÒ³n para obtener recomendaciones
                           inteligentes
                         </p>
                       </div>
@@ -2015,7 +2015,7 @@ export function VolunteersClient({
                   }}
                 >
                   <Activity className="h-4 w-4 mr-1" />
-                  Crear AsignaciÒ��³n
+                  Crear AsignaciÒ³n
                 </Button>
               </div>
             </div>
@@ -2029,7 +2029,7 @@ export function VolunteersClient({
           <DialogHeader>
             <DialogTitle>Editar Voluntario</DialogTitle>
             <DialogDescription>
-              Actualiza la informaciÒ��³n del voluntario
+              Actualiza la informaciÒ³n del voluntario
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleEditVolunteer} className="space-y-4">
@@ -2078,7 +2078,7 @@ export function VolunteersClient({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-phone">TelÒ��©fono</Label>
+              <Label htmlFor="edit-phone">TelÒ©fono</Label>
               <Input
                 id="edit-phone"
                 value={editFormData.phone}
@@ -2124,7 +2124,7 @@ export function VolunteersClient({
                     skills: e.target.value,
                   }))
                 }
-                placeholder="MÒ��ºsica, Sonido, NiÒ��±os, etc."
+                placeholder="MÒºsica, Sonido, NiÒ±os, etc."
               />
             </div>
             <div className="flex justify-end gap-2">
