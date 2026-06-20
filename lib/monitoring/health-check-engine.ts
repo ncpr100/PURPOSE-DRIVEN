@@ -30,8 +30,12 @@ export interface HealthCheckResult {
 
 // ── SLA THRESHOLDS ────────────────────────────────────────────
 const RESPONSE_THRESHOLDS = {
-  database: { healthy: 100, degraded: 500 }, // ms
-  redis: { healthy: 20, degraded: 100 },
+  // ⚠️ Umbrales ajustados para plan gratuito de Supabase/Upstash (Jun 2026)
+  // Database latencia real: ~620ms (plan gratuito compartido)
+  // Redis latencia real: ~290ms (plan gratuito REST API)
+  // TODO: Cuando haya suscriptores pagos, reducir a valores óptimos
+  database: { healthy: 800, degraded: 2000 }, // ms
+  redis: { healthy: 400, degraded: 1000 },
   production_url: { healthy: 2000, degraded: 5000 },
   stripe: { healthy: 500, degraded: 2000 },
   mailgun: { healthy: 500, degraded: 2000 },
