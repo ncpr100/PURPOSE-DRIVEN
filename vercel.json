@@ -4,6 +4,10 @@
     {
       "path": "/api/cron/shepherds-log",
       "schedule": "0 6 * * 1"
+    },
+    {
+      "path": "/api/cron/burnout-sentinel",
+      "schedule": "0 9 * * 1"
     }
   ]
 }
