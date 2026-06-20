@@ -91,16 +91,6 @@ const INCIDENT_RULES = [
     description:
       "Mailgun no responde. El envío de emails de comunicación y notificaciones puede estar fallando.",
   },
-  {
-    // P3: AI predictions unavailable
-    condition: (checks: HealthCheckResult[]) =>
-      checks.find((c) => c.service === "abacusai")?.status === "DOWN",
-    severity: "P3_MEDIUM" as const,
-    title: "IA Predictiva (AbacusAI) No Disponible",
-    affectedServices: ["abacusai"],
-    description:
-      "AbacusAI no responde. Las predicciones de retención y análisis inteligente mostrarán datos del caché o fallarán silenciosamente.",
-  },
 ];
 
 // ── MAIN SRE CYCLE ────────────────────────────────────────────
