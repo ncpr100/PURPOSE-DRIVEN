@@ -1,10 +1,10 @@
 # Khesed-Tek CMS — Official Implementation Roadmap
 
-**Document Version:** 2.2  
+**Document Version:** 2.3  
 **Original Created:** January 5, 2026  
-**Last Updated:** June 14, 2026  
+**Last Updated:** June 20, 2026  
 **Updated By:** Nelson Castro (Founder) + Lead AI Architect Khesed-Tek  
-**Status:** Phase 4 In Progress — G01 Ready for Pilot Activation  
+**Status:** Phase 4 In Progress — 3 Agents Active in Production  
 
 ---
 
@@ -94,7 +94,7 @@ This system prevents the following production issues:
 ---
 
 ## Executive Summary
-The Khesed-tek Church Management System has completed Phases 1–3 at 97% overall completion with 348 total routes (116 pages + 232 API routes). A high-value unplanned sprint (May 2026) delivered 15 AI agents, the Cosmos Design System, Token Governance Layer, full pricing infrastructure, and SRE monitoring — all passing a 19/19 audit. **As of June 14, 2026, G02 (2FA/MFA) is 100% complete, and G01 (Agent Activation) is 90% complete and ready for pilot activation.**
+The Khesed-tek Church Management System has completed Phases 1–3 at 97% overall completion with 348 total routes (116 pages + 232 API routes). A high-value unplanned sprint (May 2026) delivered 15 AI agents, the Cosmos Design System, Token Governance Layer, full pricing infrastructure, and SRE monitoring — all passing a 19/19 audit. **As of June 20, 2026, G02 (2FA/MFA) is 100% complete, G03 (Multi-language emails) is 100% complete, G04 (Church onboarding) is 100% complete, and G01 (Agent Activation) is progressing with 3 agents active in production (Ag.5, Ag.7, Ag.14) and platform status HEALTHY.**
 
 ---
 
@@ -145,11 +145,11 @@ All items below were delivered outside the original roadmap scope, fully audited
 
 #### AI Agent System — 15 Agents
 **Pastoral Care — Plan Semilla+**
-| # | Agent | Schedule | WhatsApp | Claude |
-|---|---|---|---|---|
-| 2 | Spiritual Triage (Triaje Espiritual) | Real-time event-driven | ✅ Required | ❌ |
-| 4 | Prayer Watchman (Vigilante de Oración) | Every 30 min | ✅ Required | ❌ |
-| 5 | Shepherd's Log (Registro del Pastor) | Monday 7am | ❌ | ❌ |
+| # | Agent | Schedule | WhatsApp | Claude | Status |
+|---|---|---|---|---|---|
+| 2 | Spiritual Triage (Triaje Espiritual) | Real-time event-driven | ✅ Required | ❌ | ⏳ Pending WA approval |
+| 4 | Prayer Watchman (Vigilante de Oración) | Every 30 min | ✅ Required | ❌ | ⏳ Pending WA approval |
+| 5 | Shepherd's Log (Registro del Pastor) | Monday 6am UTC | ❌ | ❌ | ✅ **ACTIVE** (June 20, 2026) |
 
 **Content & Intelligence — Plan Cosecha+**
 | # | Agent | Schedule | WhatsApp | Claude |
@@ -157,7 +157,7 @@ All items below were delivered outside the original roadmap scope, fully audited
 | 1 | Sermon Antiphony Engine (Motor Antifonal) | Wednesday 8am | ❌ | ✅ Required |
 | 3 | Content Filter (Filtro de Contenido) | Daily 7am | ❌ | ✅ Required |
 | 6 | Leadership Pipeline | 1st of month | ❌ | ✅ Required |
-| 7 | Burnout Sentinel (Centinela de Agotamiento) | Monday 9am | ❌ | ❌ |
+| 7 | Burnout Sentinel (Centinela de Agotamiento) | Monday 9am UTC | ❌ | ❌ | ✅ **ACTIVE** (June 20, 2026) |
 | 8 | Visitor Conversion Intelligence | 1st of month | ❌ | ✅ Required |
 | 9 | Generosity Coach (Coach de Mayordomía) | Monday 8am | ❌ | ✅ Required |
 | 10 | Small Group Monitor (Monitor de Grupos) | Monday 10am | ❌ | ❌ |
@@ -165,11 +165,11 @@ All items below were delivered outside the original roadmap scope, fully audited
 | 12 ★ | Coverage Engine (Motor de Cobertura) | Friday 8am + webhook | ✅ Required | ❌ |
 
 **Platform — Super_Admin Only**
-| # | Agent | Schedule | Technical Scope & Protocol |
-|---|---|---|---|
-| **13** | **Web Performance Engineer (WPE)** | Every 5 min | Monitors P50/P95/P99, Core Web Vitals. **Protocol:** HITL PR generation, no direct patching. |
-| **14** | **SRE Engineer** | Every 2 min | Health checks 8 services. Cascade P1→SMS/WA. SLA 99.9%. |
-| **15** | **AI Product Designer** | Monday 9am | UX friction detection + monthly Claude reports. |
+| # | Agent | Schedule | Technical Scope & Protocol | Status |
+|---|---|---|---|---|
+| **13** | **Web Performance Engineer (WPE)** | Every 5 min | Monitors P50/P95/P99, Core Web Vitals. **Protocol:** HITL PR generation, no direct patching. | ⏳ Not activated |
+| **14** | **SRE Engineer** | Every 5 min | Health checks 8 services. Cascade P1→SMS/WA. SLA 99.9%. | ✅ **ACTIVE** (June 20, 2026) |
+| **15** | **AI Product Designer** | Monday 9am | UX friction detection + monthly Claude reports. | ⏳ Not activated |
 
 ⚠️ **Critical:** All 15 agents are built, seeded, and audited. Zero are enabled in production. Activation is the highest-priority action.
 
@@ -237,9 +237,9 @@ All items below were delivered outside the original roadmap scope, fully audited
 ### 🔴 Critical Gaps — Must complete in next 8 weeks
 | ID | Item | Original Ref | Current Status (Verified June 14, 2026) |
 | --- | --- | --- | --- |
-| **G01** | Agent activation in production | New | ✅ **100% COMPLETE**. DB seeded ✅. APIs GET/PATCH creadas ✅. UI `/platform/agents/settings` con switches funcional ✅. 4 agentes piloto activados (Ag.2, 4, 5, 12). |
+| **G01** | Agent activation in production | New | 🟡 **IN PROGRESS (75%)**. DB seeded ✅. APIs GET/PATCH creadas ✅. UI `/platform/agents/settings` con switches funcional ✅. **3 agentes activos en producción**: Ag.5 (Shepherd's Log, lunes 6AM UTC), Ag.7 (Burnout Sentinel, lunes 9AM UTC), Ag.14 (SRE Engineer, cada 5 min). Ag.2, 4, 12 pendientes de aprobación de plantillas WhatsApp por Meta. |
 | **G02** | 2FA / TOTP + SMS | 4E (Weeks 8–14) | ✅ **100% COMPLETE**. `user_mfa_settings` table ✅. `otpauth` lib ✅. AES-256-GCM encryption ✅. UI funcional para Super_Admin & Tenant ✅. |
-| **G03** | Multi-language emails (EN/ES/PT) | Added May 4, 2026 | ✅ **100% COMPLETE**. 15 plantillas sembradas (5 tipos × 3 idiomas) ✅. Resolver `lib/email-template-resolver.ts` funcional ✅. Integrado en G04 (onboarding automático). |
+| **G03** | Multi-language emails (EN/ES/PT) | Added May 4, 2026 | ✅ **100% COMPLETE** (verified June 20, 2026). 15 plantillas sembradas (5 tipos × 3 idiomas) ✅. Resolver `lib/email-template-resolver.ts` funcional ✅. Integrado en G04 (onboarding automático). |
 | **G04** | Church onboarding self-service | 4G Integration Tools | ✅ **100% COMPLETE** (June 15, 2026). Arquitectura Dual: (1) Manual Super_Admin en /platform/churches/onboard, (2) Automático en /auth/fresh-signup con 5 planes ROADMAP (SEMILLA/COSECHA/REINO/GLORIA/RED), DB-driven pricing via /api/public/subscription-plans, outline icons de lucide-react, sortOrder corregido (GLORIA antes que RED), legacy plans eliminados de BD. Integración G03 para emails multi-idioma. |
 | **G05** | Audit logging (admin actions) | 4E | 🔴 **NOT STARTED**. `admin_audit_log` model no existe en `schema.prisma`. |
 
@@ -290,11 +290,13 @@ All items below were delivered outside the original roadmap scope, fully audited
 | Ag.12 — Coverage Engine ★ | Mission-critical Sunday coverage | WhatsApp Business API + approved cascade templates |
 
 **72h monitoring checklist:**
-- [ ] `agent_settings.lastRunStatus` = SUCCESS for all 4 agents
-- [ ] Token spend within plan limits (check `/platform/governance/tokens`)
-- [ ] WhatsApp templates not rejected by Meta
-- [ ] No P1 alerts from Ag.14 SRE (once enabled)
-- [ ] Pastor confirms receiving alerts from Ag.2 and Ag.4
+- [x] ✅ Ag.5 `lastRunStatus` = SUCCESS (verificado June 20, 2026)
+- [x] ✅ Ag.7 `lastRunStatus` = SUCCESS (verificado June 20, 2026)
+- [x] ✅ Ag.14 `lastRunStatus` = SUCCESS (verificado June 20, 2026)
+- [x] ✅ Token spend within plan limits (check `/platform/governance/tokens`)
+- [x] ✅ No P1 alerts from Ag.14 SRE (overallStatus: HEALTHY)
+- [ ] WhatsApp templates not rejected by Meta (pendiente de aprobación)
+- [ ] Pastor confirms receiving alerts from Ag.2 and Ag.4 (pendiente de activación WA)
 
 ### Week 2–3: Multi-Language Email System (G03)
 Spec 100% ready. Schema exists. Resolver exists. **Next:** Execute seed of 15 templates (5 types × 3 languages).
@@ -429,8 +431,19 @@ Web: khesed-tek-systems.org
 > *"Sé diligente en conocer el estado de tus ovejas."* — Proverbios 27:23  
 
 **Document Owner:** Nelson Castro + Lead AI Architect Khesed-Tek  
-**Next Review:** July 1, 2026 (or after G01 pilot activation)  
-**Previous Version:** v2.1 (June 7, 2026)  
+**Next Review:** June 27, 2026 (or after WhatsApp template approval)  
+**Previous Version:** v2.2 (June 14, 2026)  
+**Change Log v2.3 (June 20, 2026):**
+- Updated G01 status: 75% complete (3 agents active in production)
+- Updated G03 status: 100% complete (verified June 20, 2026)
+- Added Ag.5 Shepherd's Log activation (cron lunes 6:00 AM UTC)
+- Added Ag.7 Burnout Sentinel activation (cron lunes 9:00 AM UTC)
+- Added Ag.14 SRE Engineer activation (cron cada 5 min)
+- Added infrastructure optimizations: health check thresholds adjusted for free tier
+- Added incident resolution: Incident #2 and #3 closed manually
+- Added code cleanup: AbacusAI rule removed from INCIDENT_RULES
+- Added Paddle API configuration fix (v2 API key in Vercel Production)
+- Updated platform status: ✅ HEALTHY (all services operational)
 **Change Log v2.2:**
 - Added "NON-NEGOTIABLE MAINTENANCE RULE" section
 - Added "Project Defaults" table (OpenRouter, Paddle, LATAM gateways)
