@@ -199,8 +199,8 @@ export default function SuperAdminAutomationManual() {
                   <div className="bg-[hsl(var(--muted))] p-3 rounded font-mono text-xs">
                     <div>TWILIO_ACCOUNT_SID=your_twilio_account_sid</div>
                     <div>TWILIO_AUTH_TOKEN=your_twilio_auth_token</div>
-                    <div>MAILGUN_API_KEY=your_mailgun_api_key</div>
-                    <div>MAILGUN_DOMAIN=your_mailgun_domain</div>
+                    <div>RESEND_API_KEY=your_resend_api_key</div>
+                    <div>RESEND_DOMAIN=your_resend_domain</div>
                     <div>FIREBASE_SERVER_KEY=your_firebase_server_key</div>
                   </div>
                 </div>

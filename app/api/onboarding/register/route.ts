@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       .replace("{{churchName}}", churchName)
       .replace("{{tempPassword}}", tempPassword)
       .replace("{{loginUrl}}", `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/auth/signin`);
-    // TODO: Aquí iría la llamada real a tu servicio de email (ej: Mailgun)
+    // TODO: Aquí iría la llamada real a tu servicio de email (ej: Resend)
     // await sendEmail({ to: adminEmail, subject: emailTemplate?.subject || "Bienvenido", html: finalEmailBody });
     console.log(`[G03] Email de bienvenida preparado en idioma: ${language} para ${adminEmail}`);
     // 5. Generar URL de checkout de Paddle

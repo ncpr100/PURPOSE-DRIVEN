@@ -521,10 +521,10 @@ export default function AllFeaturesGuide() {
     },
     {
       id: 44,
-      name: "IntegraciÒ³n con Mailgun",
+      name: "IntegraciÒ³n con Resend",
       category: "advanced",
       description: "Servicio de envÒ­o de emails transaccionales",
-      accessPath: "/settings/integrations/mailgun",
+      accessPath: "/settings/integrations/resend",
       manual: "/help/manual/phase-2-configuration",
       videoAvailable: false,
       implemented: true,

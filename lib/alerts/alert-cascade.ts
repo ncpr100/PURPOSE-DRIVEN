@@ -180,10 +180,10 @@ async function sendEmailAlert(
   dashboardUrl: string,
 ): Promise<void> {
   const adminEmail = process.env.SRE_ADMIN_EMAIL;
-  const mailgunKey = process.env.MAILGUN_API_KEY;
-  const mailgunDomain = process.env.MAILGUN_DOMAIN;
+  const resendKey = process.env.RESEND_API_KEY;
+  const resendDomain = process.env.RESEND_DOMAIN;
 
-  if (!adminEmail || !mailgunKey || !mailgunDomain) {
+  if (!adminEmail || !resendKey || !resendDomain) {
     console.warn("[ALERT_CASCADE] Email alert not configured");
     return;
   }
@@ -209,18 +209,18 @@ async function sendEmailAlert(
   `;
 
   const formData = new URLSearchParams({
-    from: `SRE Agent <sre@${mailgunDomain}>`,
+    from: `SRE Agent <sre@${resendDomain}>`,
     to: adminEmail,
     subject,
     html: htmlBody,
   });
 
   const res = await fetch(
-    `https://api.mailgun.net/v3/${mailgunDomain}/messages`,
+    `https://api.resend.net/v3/${resendDomain}/messages`,
     {
       method: "POST",
       headers: {
-        Authorization: `Basic ${Buffer.from(`api:${mailgunKey}`).toString("base64")}`,
+        Authorization: `Basic ${Buffer.from(`api:${resendKey}`).toString("base64")}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: formData.toString(),

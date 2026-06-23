@@ -65,7 +65,7 @@ const SERVICE_CONFIG: Record<
   stripe: { label: "Stripe (Backup)", icon: "💳", critical: false },
   paddle: { label: "Paddle (MoR)", icon: "💰", critical: true },
   whatsapp: { label: "WhatsApp Business", icon: "💬", critical: true },
-  mailgun: { label: "Mailgun Email", icon: "📧", critical: false },
+  resend: { label: "Resend Email", icon: "📧", critical: false },
   twilio: { label: "Twilio SMS", icon: "📱", critical: false },
   openrouter: { label: "OpenRouter AI", icon: "🌐", critical: true },
 };
