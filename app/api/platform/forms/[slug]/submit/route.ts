@@ -180,7 +180,7 @@ export async function POST(request: NextRequest, props: { params: Promise<{ slug
           data: validatedData.formData
         })
         
-        // TODO: Integrate with Mailgun or similar email service
+        // TODO: Integrate with Resend or similar email service
       } catch (notificationError) {
         console.error('Notification sending failed:', notificationError)
         // Don't fail the submission if notification fails

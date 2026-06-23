@@ -12,7 +12,7 @@ export type ServiceName =
   | "production_url"
   | "stripe"
   | "paddle"
-  | "mailgun"
+  | "resend"
   | "twilio"
   | "whatsapp"
   | "mercadopago"
@@ -38,7 +38,7 @@ const RESPONSE_THRESHOLDS = {
   redis: { healthy: 400, degraded: 1000 },
   production_url: { healthy: 2000, degraded: 5000 },
   stripe: { healthy: 500, degraded: 2000 },
-  mailgun: { healthy: 500, degraded: 2000 },
+  resend: { healthy: 500, degraded: 2000 },
   twilio: { healthy: 500, degraded: 2000 },
   whatsapp: { healthy: 800, degraded: 3000 },
   mercadopago: { healthy: 500, degraded: 2000 },
@@ -235,36 +235,36 @@ async function checkWhatsApp(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: Mailgun ────────────────────────────────────────────
-async function checkMailgun(): Promise<HealthCheckResult> {
+// ── CHECK: Resend ────────────────────────────────────────────
+async function checkResend(): Promise<HealthCheckResult> {
   const start = Date.now();
-  const key = process.env.MAILGUN_API_KEY;
+  const key = process.env.RESEND_API_KEY;
   if (!key)
     return {
-      service: "mailgun",
+      service: "resend",
       status: "UNKNOWN",
       responseTimeMs: null,
       errorMessage: "Not configured",
       metadata: null,
     };
   try {
-    const res = await fetch("https://api.mailgun.net/v3/domains", {
+    const res = await fetch("https://api.resend.com/domains", {
       headers: {
-        Authorization: `Basic ${Buffer.from(`api:${key}`).toString("base64")}`,
+        Authorization: `Bearer ${key}`,
       },
       signal: AbortSignal.timeout(5000),
     });
     const ms = Date.now() - start;
     return {
-      service: "mailgun",
-      status: res.ok ? classify("mailgun", ms) : "DEGRADED",
+      service: "resend",
+      status: res.ok ? classify("resend", ms) : "DEGRADED",
       responseTimeMs: ms,
       errorMessage: res.ok ? null : `HTTP ${res.status}`,
       metadata: { statusCode: res.status },
     };
   } catch (err) {
     return {
-      service: "mailgun",
+      service: "resend",
       status: "DOWN",
       responseTimeMs: Date.now() - start,
       errorMessage: String(err),
@@ -442,7 +442,7 @@ export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
     checkProductionUrl(),
     checkStripe(),
     checkWhatsApp(),
-    checkMailgun(),
+    checkResend(),
     checkTwilio(),
     checkOpenRouter(),
     checkPaddle(),
@@ -456,7 +456,7 @@ export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
       "production_url",
       "stripe",
       "whatsapp",
-      "mailgun",
+      "resend",
       "twilio",
       "openrouter",
       "paddle",

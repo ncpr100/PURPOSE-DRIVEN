@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db as prisma } from '@/lib/db'
 import { communicationService } from '@/lib/integrations/communication'
-import { mailgunService } from '@/lib/integrations/mailgun'
+import { resendService } from '@/lib/integrations/resend'
 import { twilioService } from '@/lib/integrations/twilio'
 import { whatsappBusinessService } from '@/lib/integrations/whatsapp'
 
@@ -38,16 +38,16 @@ export async function GET(request: NextRequest) {
     const status = {
       communication: communicationService.getStatus(),
       services: {
-        mailgun: mailgunService.getStatus(),
+        resend: resendService.getStatus(),
         twilio: twilioService.getStatus(),
         whatsapp: whatsappBusinessService.getStatus()
       },
       environment: {
-        mailgun_configured: !!(process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN),
+        resend_configured: !!(process.env.RESEND_API_KEY && process.env.RESEND_DOMAIN),
         twilio_configured: !!(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN),
         whatsapp_configured: !!(process.env.WHATSAPP_ACCESS_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID),
         providers_enabled: {
-          mailgun: process.env.ENABLE_MAILGUN === 'true',
+          resend: process.env.ENABLE_RESEND === 'true',
           twilio: process.env.ENABLE_TWILIO_SMS === 'true',
           whatsapp: process.env.ENABLE_WHATSAPP === 'true'
         }

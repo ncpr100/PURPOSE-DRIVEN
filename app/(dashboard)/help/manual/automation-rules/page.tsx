@@ -1241,7 +1241,7 @@ export default function AutomationRulesManual() {
                     • Revise la configuración de Twilio (SMS/WhatsApp) en
                     Configuración
                   </li>
-                  <li>• Verifique la configuración de Mailgun (Email)</li>
+                  <li>• Verifique la configuración de Resend (Email)</li>
                   <li>
                     • El sistema intentará canales de respaldo automáticamente
                   </li>

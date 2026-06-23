@@ -53,16 +53,16 @@ interface IntegrationStatus {
     whatsapp: { enabled: boolean; provider: string; configured: boolean }
   }
   services: {
-    mailgun: { enabled: boolean; configured: boolean }
+    resend: { enabled: boolean; configured: boolean }
     twilio: { enabled: boolean; configured: boolean }
     whatsapp: { enabled: boolean; configured: boolean }
   }
   environment: {
-    mailgun_configured: boolean
+    resend_configured: boolean
     twilio_configured: boolean
     whatsapp_configured: boolean
     providers_enabled: {
-      mailgun: boolean
+      resend: boolean
       twilio: boolean
       whatsapp: boolean
     }
@@ -200,16 +200,16 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
             whatsapp: { enabled: false, provider: 'none', configured: false }
           },
           services: {
-            mailgun: { enabled: false, configured: false },
+            resend: { enabled: false, configured: false },
             twilio: { enabled: false, configured: false },
             whatsapp: { enabled: false, configured: false }
           },
           environment: {
-            mailgun_configured: false,
+            resend_configured: false,
             twilio_configured: false,
             whatsapp_configured: false,
             providers_enabled: {
-              mailgun: false,
+              resend: false,
               twilio: false,
               whatsapp: false
             }
@@ -226,16 +226,16 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
           whatsapp: { enabled: false, provider: 'none', configured: false }
         },
         services: {
-          mailgun: { enabled: false, configured: false },
+          resend: { enabled: false, configured: false },
           twilio: { enabled: false, configured: false },
           whatsapp: { enabled: false, configured: false }
         },
         environment: {
-          mailgun_configured: false,
+          resend_configured: false,
           twilio_configured: false,
           whatsapp_configured: false,
           providers_enabled: {
-            mailgun: false,
+            resend: false,
             twilio: false,
             whatsapp: false
           }
@@ -511,7 +511,7 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
                     <SelectContent>
                       <SelectItem value="TWILIO">Twilio (SMS)</SelectItem>
                       <SelectItem value="WHATSAPP">WhatsApp Business</SelectItem>
-                      <SelectItem value="MAILGUN">Mailgun (Email)</SelectItem>
+                      <SelectItem value="RESEND">Resend (Email)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -1153,17 +1153,17 @@ export function CommunicationsClient({ userRole, churchId }: CommunicationsClien
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Mailgun Config */}
+              {/* Resend Config */}
               <div>
                 <h3 className="font-medium mb-2 flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  Mailgun Email Service
+                  Resend Email Service
                 </h3>
                 <div className="bg-muted/50 p-3 rounded text-sm font-mono text-muted-foreground">
-                  MAILGUN_API_KEY=&quot;key-xxxxx&quot;<br/>
-                  MAILGUN_DOMAIN=&quot;mg.tudominio.com&quot;<br/>
-                  MAILGUN_FROM_EMAIL=&quot;noreply@tudominio.com&quot;<br/>
-                  ENABLE_MAILGUN=&quot;true&quot;
+                  RESEND_API_KEY=&quot;re_xxxxx&quot;<br/>
+                  RESEND_DOMAIN=&quot;khesed-tek-systems.org&quot;<br/>
+                  RESEND_FROM_EMAIL=&quot;noreply@tudominio.com&quot;<br/>
+                  ENABLE_RESEND=&quot;true&quot;
                 </div>
               </div>
 
