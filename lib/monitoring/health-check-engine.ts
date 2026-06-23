@@ -15,7 +15,6 @@ export type ServiceName =
   | "resend"
   | "twilio"
   | "whatsapp"
-  | "mercadopago"
   | "openrouter"
   | "vercel_api"
   | "supabase_api";
@@ -41,7 +40,6 @@ const RESPONSE_THRESHOLDS = {
   resend: { healthy: 500, degraded: 2000 },
   twilio: { healthy: 500, degraded: 2000 },
   whatsapp: { healthy: 800, degraded: 3000 },
-  mercadopago: { healthy: 500, degraded: 2000 },
   openrouter: { healthy: 500, degraded: 2000 },
   paddle: { healthy: 500, degraded: 2000 },
   vercel_api: { healthy: 500, degraded: 2000 },
