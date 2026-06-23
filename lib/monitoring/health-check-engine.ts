@@ -15,7 +15,6 @@ export type ServiceName =
   | "resend"
   | "twilio"
   | "whatsapp"
-  | "mercadopago"
   | "openrouter"
   | "vercel_api"
   | "supabase_api";
@@ -41,7 +40,6 @@ const RESPONSE_THRESHOLDS = {
   resend: { healthy: 500, degraded: 2000 },
   twilio: { healthy: 500, degraded: 2000 },
   whatsapp: { healthy: 800, degraded: 3000 },
-  mercadopago: { healthy: 500, degraded: 2000 },
   openrouter: { healthy: 500, degraded: 2000 },
   paddle: { healthy: 500, degraded: 2000 },
   vercel_api: { healthy: 500, degraded: 2000 },
@@ -315,6 +313,86 @@ async function checkTwilio(): Promise<HealthCheckResult> {
   }
 }
 
+// ── CHECK: Supabase API ────────────────────────────────────────────
+async function checkSupabase(): Promise<HealthCheckResult> {
+  const start = Date.now();
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) {
+    return {
+      service: "supabase_api",
+      status: "UNKNOWN",
+      responseTimeMs: null,
+      errorMessage: "Supabase credentials not configured",
+      metadata: null,
+    };
+  }
+  try {
+    // Supabase REST API: GET /rest/v1/ (health check endpoint)
+    const res = await fetch(`${url}/rest/v1/`, {
+      headers: {
+        apikey: key,
+        Authorization: `Bearer ${key}`,
+      },
+      signal: AbortSignal.timeout(5000),
+    });
+    const ms = Date.now() - start;
+    return {
+      service: "supabase_api",
+      status: res.ok ? classify("supabase_api", ms) : "DEGRADED",
+      responseTimeMs: ms,
+      errorMessage: res.ok ? null : `HTTP ${res.status}`,
+      metadata: { statusCode: res.status },
+    };
+  } catch (err) {
+    return {
+      service: "supabase_api",
+      status: "DOWN",
+      responseTimeMs: Date.now() - start,
+      errorMessage: String(err),
+      metadata: null,
+    };
+  }
+}
+// ── CHECK: Vercel API ────────────────────────────────────────────
+async function checkVercel(): Promise<HealthCheckResult> {
+  const start = Date.now();
+  const token = process.env.VERCEL_API_TOKEN;
+  if (!token) {
+    return {
+      service: "vercel_api",
+      status: "UNKNOWN",
+      responseTimeMs: null,
+      errorMessage: "VERCEL_API_TOKEN not configured",
+      metadata: null,
+    };
+  }
+  try {
+    // Vercel API: GET /v2/projects
+    const res = await fetch("https://api.vercel.com/v2/projects?limit=1", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      signal: AbortSignal.timeout(5000),
+    });
+    const ms = Date.now() - start;
+    return {
+      service: "vercel_api",
+      status: res.ok ? classify("vercel_api", ms) : "DEGRADED",
+      responseTimeMs: ms,
+      errorMessage: res.ok ? null : `HTTP ${res.status}`,
+      metadata: { statusCode: res.status },
+    };
+  } catch (err) {
+    return {
+      service: "vercel_api",
+      status: "DOWN",
+      responseTimeMs: Date.now() - start,
+      errorMessage: String(err),
+      metadata: null,
+    };
+  }
+}
 // ── CHECK: OpenRouter (Primary AI Provider for all 15 agents) ───
 async function checkOpenRouter(): Promise<HealthCheckResult> {
   const start = Date.now();
@@ -444,6 +522,8 @@ export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
     checkWhatsApp(),
     checkResend(),
     checkTwilio(),
+    checkVercel(),
+    checkSupabase(),
     checkOpenRouter(),
     checkPaddle(),
   ]);
