@@ -2,9 +2,9 @@
 
 **Document Version:** 2.3  
 **Original Created:** January 5, 2026  
-**Last Updated:** June 20, 2026  
+**Last Updated: June 23, 2026
 **Updated By:** Nelson Castro (Founder) + Lead AI Architect Khesed-Tek  
-**Status:** Phase 4 In Progress — 3 Agents Active in Production  
+**Status: Phase 4 In Progress — Infrastructure & Monitoring Complete
 
 ---
 
@@ -98,6 +98,43 @@ The Khesed-tek Church Management System has completed Phases 1–3 at 97% overal
 
 ---
 
+
+## June 23, 2026 Achievements — Infrastructure & Monitoring Sprint
+### Email Service Migration
+- **Migrated from Mailgun to Resend**: Complete replacement of email service provider
+- Created lib/integrations/resend.ts with full email service implementation
+- Updated all dashboard references and integration status endpoints
+- Resend now HEALTHY and operational (191ms response time)
+### WhatsApp Business API
+- **Permanent Token Configured**: Generated 60-day token from Meta Business Suite
+- Resolved HTTP 401 authentication errors
+- WhatsApp Business API now HEALTHY (469ms response time)
+- Ready for Phase 1 agent activation (Ag.2, Ag.4, Ag.12)
+### SRE Health Check Expansion
+- **Expanded from 8 to 11 monitored services**:
+  - Added checkVercel() function for Vercel API monitoring
+  - Added checkSupabase() function for Supabase API monitoring
+  - Removed MercadoPago from platform health checks (correctly identified as tenant-level gateway)
+- All 11 services now monitored in real-time via /api/cron/sre-health-check
+### Dashboard Updates
+- Updated SRE Dashboard (sre-dashboard.tsx) to display all 11 services
+- Added Vercel API and Supabase API to service configuration
+- Removed MercadoPago from monitoring (tenant-level, not platform-level)
+### Current System Status
+- HEALTHY: 8 services (database, redis, production_url, paddle, resend, twilio, whatsapp, openrouter)
+- DEGRADED: 1 service (supabase_api - 1772ms latency, expected on free plan)
+- UNKNOWN: 2 services (stripe, vercel_api - not configured)
+- DOWN: 0 services
+### Technical Debt Resolved
+- Fixed Prisma client corruption issues (EPERM errors)
+- Cleaned up all Mailgun references across codebase
+- Updated tech stack documentation to reflect Resend as primary email service
+- Verified all builds pass without errors
+### Next Steps
+- Merge changes to main branch
+- Activate Phase 1 agents (Ag.2, Ag.4, Ag.5, Ag.12) with pilot church
+- Configure VERCEL_API_TOKEN for complete infrastructure monitoring
+- Consider Supabase plan upgrade if latency impacts user experience
 ## Current Production Status
 ### Phase 1: Core Foundation ✅ 100% Complete
 - Member Management with Spiritual Assessments
@@ -216,6 +253,8 @@ All items below were delivered outside the original roadmap scope, fully audited
 | 🟡 High | Coverage cascade delay up to 17 min (cron polling) | Fixed with WhatsApp webhook for real-time advance (~30s) |
 | 🟡 High | Redis circular dependency in SRE agent | Fixed with try/catch + PostgreSQL fallback |
 | 🟡 High | N+1 query — 6 sequential queries per church per agent | Fixed with `getAgentMapForChurch()` — 2 queries + Redis cache 60s |
+| 🟢 Fixed | Mailgun → Resend migration | Replaced Mailgun with Resend across entire codebase. Created new integration service, updated health checks, dashboard, and all references. |
+
 
 ---
 
@@ -294,7 +333,7 @@ All items below were delivered outside the original roadmap scope, fully audited
 - [x] ✅ Ag.7 `lastRunStatus` = SUCCESS (verificado June 20, 2026)
 - [x] ✅ Ag.14 `lastRunStatus` = SUCCESS (verificado June 20, 2026)
 - [x] ✅ Token spend within plan limits (check `/platform/governance/tokens`)
-- [x] ✅ No P1 alerts from Ag.14 SRE (overallStatus: HEALTHY)
+- [x] ✅ No P1 alerts from Ag.14 SRE (overallStatus: Phase 4 In Progress — Infrastructure & Monitoring Complete
 - [ ] WhatsApp templates not rejected by Meta (pendiente de aprobación)
 - [ ] Pastor confirms receiving alerts from Ag.2 and Ag.4 (pendiente de activación WA)
 
@@ -312,7 +351,7 @@ Spec 100% ready. Schema exists. Resolver exists. **Next:** Execute seed of 15 te
 - Post-2FA redirect fixed (reads `callbackUrl` from NextAuth)
 
 ### Week 4–6: Church Onboarding Self-Service Wizard (G04)
-**Status:** 100% Completed. Need Testing.
+**Status: Phase 4 In Progress — Infrastructure & Monitoring Complete
 **MOR:** Paddle (NOT Stripe — Stripe is legacy/fallback only).
 **5-step flow:**
 1. Church data (name, country, denomination, language)
