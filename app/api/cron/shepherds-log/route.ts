@@ -1,4 +1,4 @@
-// app/api/cron/shepherds-log/route.ts
+﻿// app/api/cron/shepherds-log/route.ts
 // Weekly cron: Refresh the Shepherd's Log cache for all active churches.
 // Runs every Monday at 6:00 AM (vercel.json: "0 6 * * 1")
 //
@@ -14,6 +14,10 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   try {
     const authHeader = req.headers.get("Authorization");
+    console.log("[CRON_DEBUG] CRON_SECRET env:", process.env.CRON_SECRET ? "SET" : "NOT SET");
+    console.log("[CRON_DEBUG] Auth header:", authHeader);
+    console.log("[CRON_DEBUG] Expected:", `Bearer ${process.env.CRON_SECRET}`);
+    console.log("[CRON_DEBUG] Match:", authHeader === `Bearer ${process.env.CRON_SECRET}`);
     if (
       !process.env.CRON_SECRET ||
       authHeader !== `Bearer ${process.env.CRON_SECRET}`
@@ -62,3 +66,6 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+
+
