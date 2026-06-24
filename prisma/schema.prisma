@@ -512,6 +512,7 @@ model churches {
     isActive                         Boolean                            @default(true)
     createdAt                        DateTime                           @default(now())
     updatedAt                        DateTime
+  language                     String   @default("es")
     ai_model_ab_tests                ai_model_ab_tests[]
     ai_model_performance             ai_model_performance[]
     ai_prediction_records            ai_prediction_records[]
