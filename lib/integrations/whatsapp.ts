@@ -1,4 +1,4 @@
-
+﻿
 import axios from 'axios'
 
 export interface WhatsAppConfig {
@@ -48,7 +48,7 @@ export class WhatsAppBusinessService {
                     !!this.config.accessToken && 
                     !!this.config.phoneNumberId
 
-    this.baseUrl = `https://graph.facebook.com/v18.0/${this.config.phoneNumberId}/messages`
+    this.baseUrl = `https://graph.facebook.com/v21.0/${this.config.phoneNumberId}/messages`
   }
 
   async sendMessage(message: WhatsAppBusinessMessage): Promise<{ success: boolean; messageId?: string; error?: string }> {
@@ -165,3 +165,4 @@ export class WhatsAppBusinessService {
 
 // Singleton instance
 export const whatsappBusinessService = new WhatsAppBusinessService()
+
