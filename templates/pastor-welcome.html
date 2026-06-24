@@ -1,0 +1,288 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhatsApp Next Steps - Pastor Welcome Template (ES / EN / PT) | Khesed-Tek Systems</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; max-width: 860px; margin: 40px auto; padding: 0 24px; color: #1a1a2e; }
+    h1 { color: #0D1B2E; border-bottom: 3px solid #C9922A; padding-bottom: 10px; }
+    h2 { color: #C9922A; margin-top: 32px; }
+    h3 { color: #0D1B2E; margin-top: 20px; }
+    .badge { display: inline-block; background: #0D1B2E; color: #C9922A; font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 12px; margin-right: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .lang-badge { display: inline-block; font-size: 12px; font-weight: bold; padding: 4px 12px; border-radius: 12px; margin-right: 6px; text-transform: uppercase; }
+    .lang-es { background: #c0392b; color: white; }
+    .lang-en { background: #1a5276; color: white; }
+    .lang-pt { background: #1e8449; color: white; }
+    .field-block { background: #f8f8f0; border: 1px solid #ddd; border-left: 4px solid #C9922A; border-radius: 4px; padding: 14px 18px; margin: 10px 0; }
+    .field-label { font-size: 11px; font-weight: bold; color: #666; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+    .field-value { font-size: 14px; color: #1a1a2e; white-space: pre-wrap; line-height: 1.6; }
+    .variable-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    .variable-table th { background: #0D1B2E; color: #C9922A; padding: 10px 14px; text-align: left; font-size: 12px; }
+    .variable-table td { padding: 9px 14px; border-bottom: 1px solid #eee; font-size: 13px; }
+    .variable-table tr:nth-child(even) { background: #f5f5f5; }
+    .step { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px 20px; margin: 12px 0; }
+    .step-num { display: inline-block; width: 26px; height: 26px; background: #C9922A; color: white; border-radius: 50%; text-align: center; line-height: 26px; font-weight: bold; font-size: 13px; margin-right: 10px; }
+    .warning { background: #fff8e1; border: 1px solid #f0c040; border-radius: 4px; padding: 12px 16px; margin: 16px 0; font-size: 13px; }
+    .tip { background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 4px; padding: 12px 16px; margin: 16px 0; font-size: 13px; }
+    .wa-preview { background: #e5ddd5; border-radius: 8px; padding: 20px; margin: 20px 0; }
+    .wa-bubble { background: white; border-radius: 8px 8px 8px 0; padding: 12px 16px; max-width: 420px; box-shadow: 0 1px 2px rgba(0,0,0,0.15); font-size: 13px; line-height: 1.6; }
+    .wa-header { font-weight: bold; font-size: 14px; margin-bottom: 8px; color: #075e54; }
+    .wa-btn { margin-top: 10px; padding: 8px 12px; background: #075e54; color: white; border-radius: 4px; text-align: center; font-size: 13px; font-weight: bold; }
+    .wa-footer { font-size: 11px; color: #999; margin-top: 8px; }
+    footer { margin-top: 48px; border-top: 1px solid #ddd; padding-top: 16px; font-size: 11px; color: #888; text-align: center; }
+    .tabs { display: flex; gap: 4px; margin: 24px 0 0; border-bottom: 2px solid #C9922A; }
+    .tab-btn { padding: 10px 22px; border: none; background: #f0ede6; color: #555; font-weight: bold; font-size: 13px; cursor: pointer; border-radius: 6px 6px 0 0; }
+    .tab-btn.active { background: #C9922A; color: white; }
+    .tab-btn:hover:not(.active) { background: #e8d9b8; }
+    .tab-panel { display: none; padding: 24px 0; }
+    .tab-panel.active { display: block; }
+    .lang-section-header { display: flex; align-items: center; gap: 12px; background: #0D1B2E; color: #C9922A; padding: 14px 20px; border-radius: 6px; margin-bottom: 20px; }
+    .lang-section-header h2 { color: #C9922A; margin: 0; font-size: 18px; }
+    .header-bar { background: #0D1B2E; color: #C9922A; padding: 12px 20px; border-radius: 6px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .header-bar strong { font-weight: bold; }
+    .print-btn { background: #C9922A; color: #0D1B2E; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    .subtitle { color: #555; font-size: 13px; }
+    .step-link { color: #0D1B2E; text-decoration: underline; }
+    .tip-margin { margin-top: 32px; }
+    @media print {
+      .no-print { display: none !important; }
+      .tabs { display: none; }
+      .tab-panel { display: block !important; }
+      .tab-panel + .tab-panel { page-break-before: always; margin-top: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar no-print">
+    <strong>Khesed-Tek Systems, LLC — WhatsApp Next Steps Submission Guide</strong>
+    <button class="print-btn" onclick="window.print()">&#x2B73; Download / Print PDF (All Languages)</button>
+  </div>
+  <h1>WhatsApp Next Steps<br/>Template Submission - Pastor Welcome</h1>
+  <p class="subtitle">
+    <span class="badge">Template 1 of 4</span>
+    <span class="badge">Category: Utility</span>
+    <span class="badge">Name: pastor_welcome_khesed_tek</span>
+    <span class="lang-badge lang-es">ES</span>
+    <span class="lang-badge lang-en">EN</span>
+    <span class="lang-badge lang-pt">PT</span>
+  </p>
+  <p>Use this document when filling in the Meta Business Manager template form at <strong>business.facebook.com</strong>. Submit once per language — each language is a separate submission using the <strong>same template name</strong>.</p>
+  <div class="warning">
+    <strong>Important:</strong> Meta does not accept file uploads. You must manually enter each field in Meta Business Manager. Use this document as your copy-paste reference.<br/><br/>
+    <strong>Recommended submission order:</strong> Spanish (es) first, then English (en), then Portuguese pt_BR.
+  </div>
+  <div class="tabs no-print">
+    <button class="tab-btn active" onclick="showTab('es',this)">Spanish (es)</button>
+    <button class="tab-btn" onclick="showTab('en',this)">English (en)</button>
+    <button class="tab-btn" onclick="showTab('pt',this)">Portuguese (pt_BR)</button>
+  </div>
+  <!-- ===== SPANISH ===== -->
+  <div id="tab-es" class="tab-panel active">
+    <div class="lang-section-header">
+      <span class="lang-badge lang-es">ES</span>
+      <h2>Spanish (es) — Español</h2>
+    </div>
+    <h2>Template Fields</h2>
+    <div class="field-block"><div class="field-label">Template Name</div><div class="field-value">pastor_welcome_khesed_tek</div></div>
+    <div class="field-block"><div class="field-label">Category</div><div class="field-value">UTILITY</div></div>
+    <div class="field-block"><div class="field-label">Language</div><div class="field-value">Spanish (es)</div></div>
+    <div class="field-block"><div class="field-label">Header Type</div><div class="field-value">TEXT</div></div>
+    <div class="field-block"><div class="field-label">Header Text (max 60 chars)</div><div class="field-value">Bienvenido a Khesed-tek CMS</div></div>
+    <div class="field-block"><div class="field-label">Body Text</div><div class="field-value">Hola, {{1}},
+Su iglesia *{{2}}* ha sido registrada exitosamente en la plataforma Khesed-tek CMS. A partir de hoy, cuenta con un sistema completo de gestion ministerial.
+*Sus credenciales de acceso:*
+- Correo: {{3}}
+- Contrasena temporal: {{4}}
+Por seguridad, le recomendamos cambiar su contrasena inmediatamente al iniciar sesion.
+Tambien recibira este mensaje por correo electronico como respaldo.
+*Agende su sesion de bienvenida:* Si aun no lo ha hecho, puede programar una llamada de 15 minutos con nuestro equipo para resolver dudas tecnicas.
+Estamos creyendo en el crecimiento de su ministerio.
+Acceder ahora: {{5}}</div></div>
+    <div class="field-block"><div class="field-label">Footer Text (max 60 chars)</div><div class="field-value">soporte@khesed-tek-systems.org</div></div>
+    <div class="field-block"><div class="field-label">Button Type</div><div class="field-value">Call to Action — Visit Website</div></div>
+    <div class="field-block"><div class="field-label">Button Text</div><div class="field-value">Ingresar al Panel</div></div>
+    <div class="field-block"><div class="field-label">Button URL</div><div class="field-value">https://khesed-tek-cms-org.vercel.app</div></div>
+    <h2>Variable Reference</h2>
+    <table class="variable-table">
+      <thead><tr><th>Meta Variable</th><th>System Variable</th><th>Example Value</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>{{1}}</td><td>adminName</td><td>Carlos Garcia</td><td>Pastor / admin name</td></tr>
+        <tr><td>{{2}}</td><td>churchName</td><td>Iglesia Central</td><td>Church name</td></tr>
+        <tr><td>{{3}}</td><td>adminEmail</td><td>pastor@iglesiacentral.com</td><td>Administrator email</td></tr>
+        <tr><td>{{4}}</td><td>tempPassword</td><td>Temp@4921x</td><td>Auto-generated temp password</td></tr>
+        <tr><td>{{5}}</td><td>loginUrl</td><td>https://khesed-tek-cms-org.vercel.app</td><td>Platform login URL</td></tr>
+      </tbody>
+    </table>
+    <h2>WhatsApp Preview</h2>
+    <div class="wa-preview"><div class="wa-bubble">
+      <div class="wa-header">Bienvenido a Khesed-tek CMS</div>
+      Hola, Carlos Garcia,<br/><br/>
+      Su iglesia <strong>Iglesia Central</strong> ha sido registrada exitosamente en la plataforma Khesed-tek CMS.<br/><br/>
+      <strong>Sus credenciales:</strong><br/>
+      - Correo: pastor@iglesiacentral.com<br/>
+      - Contrasena: Temp@4921x<br/><br/>
+      Estamos creyendo en el crecimiento de su ministerio.<br/><br/>
+      Acceder ahora: https://khesed-tek-cms-org.vercel.app
+      <div class="wa-btn">Ingresar al Panel</div>
+      <div class="wa-footer">soporte@khesed-tek-systems.org</div>
+    </div></div>
+    <h2>Step-by-Step Submission</h2>
+    <div class="step"><span class="step-num">1</span>Go to <a href="https://business.facebook.com" target="_blank" rel="noopener noreferrer" class="step-link">business.facebook.com</a> → WhatsApp Manager</div>
+    <div class="step"><span class="step-num">2</span>Account Tools → Message Templates → Create Template</div>
+    <div class="step"><span class="step-num">3</span><strong>Category:</strong> Utility</div>
+    <div class="step"><span class="step-num">4</span><strong>Template Name:</strong> <code>pastor_welcome_khesed_tek</code></div>
+    <div class="step"><span class="step-num">5</span><strong>Language:</strong> Spanish (es)</div>
+    <div class="step"><span class="step-num">6</span>Header → Text → paste header above</div>
+    <div class="step"><span class="step-num">7</span>Body → paste body above. Enter sample values from table above when prompted for each variable</div>
+    <div class="step"><span class="step-num">8</span>Footer → paste footer above</div>
+    <div class="step"><span class="step-num">9</span>Button → Call to Action → Visit Website → paste button text + URL</div>
+    <div class="step"><span class="step-num">10</span><strong>Submit for Review.</strong> Approval typically takes 24–48 hours. Repeat steps for English and Portuguese.</div>
+  </div>
+  <!-- ===== ENGLISH ===== -->
+  <div id="tab-en" class="tab-panel">
+    <div class="lang-section-header">
+      <span class="lang-badge lang-en">EN</span>
+      <h2>English (en)</h2>
+    </div>
+    <h2>Template Fields</h2>
+    <div class="field-block"><div class="field-label">Template Name</div><div class="field-value">pastor_welcome_khesed_tek</div></div>
+    <div class="field-block"><div class="field-label">Category</div><div class="field-value">UTILITY</div></div>
+    <div class="field-block"><div class="field-label">Language</div><div class="field-value">English (en)</div></div>
+    <div class="field-block"><div class="field-label">Header Type</div><div class="field-value">TEXT</div></div>
+    <div class="field-block"><div class="field-label">Header Text (max 60 chars)</div><div class="field-value">Welcome to Khesed-tek CMS</div></div>
+    <div class="field-block"><div class="field-label">Body Text</div><div class="field-value">Hello, {{1}},
+Your church *{{2}}* has been successfully registered on the Khesed-tek CMS platform. Starting today, you have access to a complete ministry management system.
+*Your login credentials:*
+- Email: {{3}}
+- Temporary password: {{4}}
+For your security, we recommend changing your password immediately upon first login.
+You will also receive this message by email as a backup.
+*Schedule your welcome session:* If you haven't already, you can book a 15-minute call with our team to resolve any technical questions.
+We believe in the growth of your ministry.
+Access now: {{5}}</div></div>
+    <div class="field-block"><div class="field-label">Footer Text (max 60 chars)</div><div class="field-value">support@khesed-tek-systems.org</div></div>
+    <div class="field-block"><div class="field-label">Button Type</div><div class="field-value">Call to Action — Visit Website</div></div>
+    <div class="field-block"><div class="field-label">Button Text</div><div class="field-value">Access Dashboard</div></div>
+    <div class="field-block"><div class="field-label">Button URL</div><div class="field-value">https://khesed-tek-cms-org.vercel.app</div></div>
+    <h2>Variable Reference</h2>
+    <table class="variable-table">
+      <thead><tr><th>Meta Variable</th><th>System Variable</th><th>Example Value</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>{{1}}</td><td>adminName</td><td>John Smith</td><td>Pastor / admin name</td></tr>
+        <tr><td>{{2}}</td><td>churchName</td><td>Grace Community Church</td><td>Church name</td></tr>
+        <tr><td>{{3}}</td><td>adminEmail</td><td>pastor@gracechurch.com</td><td>Administrator email</td></tr>
+        <tr><td>{{4}}</td><td>tempPassword</td><td>Temp@4921x</td><td>Auto-generated temp password</td></tr>
+        <tr><td>{{5}}</td><td>loginUrl</td><td>https://khesed-tek-cms-org.vercel.app</td><td>Platform login URL</td></tr>
+      </tbody>
+    </table>
+    <h2>WhatsApp Preview</h2>
+    <div class="wa-preview"><div class="wa-bubble">
+      <div class="wa-header">Welcome to Khesed-tek CMS</div>
+      Hello, John Smith,<br/><br/>
+      Your church <strong>Grace Community Church</strong> has been successfully registered on the Khesed-tek CMS platform.<br/><br/>
+      <strong>Your login credentials:</strong><br/>
+      - Email: pastor@gracechurch.com<br/>
+      - Temporary password: Temp@4921x<br/><br/>
+      We believe in the growth of your ministry.<br/><br/>
+      Access now: https://khesed-tek-cms-org.vercel.app
+      <div class="wa-btn">Access Dashboard</div>
+      <div class="wa-footer">support@khesed-tek-systems.org</div>
+    </div></div>
+    <h2>Step-by-Step Submission</h2>
+    <div class="step"><span class="step-num">1</span>Go to <a href="https://business.facebook.com" target="_blank" rel="noopener noreferrer" class="step-link">business.facebook.com</a> → WhatsApp Manager</div>
+    <div class="step"><span class="step-num">2</span>Account Tools → Message Templates → Create Template</div>
+    <div class="step"><span class="step-num">3</span><strong>Category:</strong> Utility</div>
+    <div class="step"><span class="step-num">4</span><strong>Template Name:</strong> <code>pastor_welcome_khesed_tek</code> (same name, different language)</div>
+    <div class="step"><span class="step-num">5</span><strong>Language:</strong> English (en)</div>
+    <div class="step"><span class="step-num">6</span>Header → Text → paste header above</div>
+    <div class="step"><span class="step-num">7</span>Body → paste body above. Enter sample values when prompted for each variable</div>
+    <div class="step"><span class="step-num">8</span>Footer → paste footer above</div>
+    <div class="step"><span class="step-num">9</span>Button → Call to Action → Visit Website → paste button text + URL</div>
+    <div class="step"><span class="step-num">10</span><strong>Submit for Review.</strong> Approval: 24–48 hours.</div>
+  </div>
+  <!-- ===== PORTUGUESE ===== -->
+  <div id="tab-pt" class="tab-panel">
+    <div class="lang-section-header">
+      <span class="lang-badge lang-pt">PT</span>
+      <h2>Portuguese (pt_BR) — Portugues (Brasil)</h2>
+    </div>
+    <h2>Template Fields</h2>
+    <div class="field-block"><div class="field-label">Template Name</div><div class="field-value">pastor_welcome_khesed_tek</div></div>
+    <div class="field-block"><div class="field-label">Category</div><div class="field-value">UTILITY</div></div>
+    <div class="field-block"><div class="field-label">Language</div><div class="field-value">Portuguese (Brazil) — pt_BR</div></div>
+    <div class="field-block"><div class="field-label">Header Type</div><div class="field-value">TEXT</div></div>
+    <div class="field-block"><div class="field-label">Header Text (max 60 chars)</div><div class="field-value">Bem-vindo ao Khesed-tek CMS</div></div>
+    <div class="field-block"><div class="field-label">Body Text</div><div class="field-value">Ola, {{1}},
+Sua igreja *{{2}}* foi registrada com sucesso na plataforma Khesed-tek CMS. A partir de hoje, voce tem acesso a um sistema completo de gestao ministerial.
+*Suas credenciais de acesso:*
+- E-mail: {{3}}
+- Senha temporaria: {{4}}
+Por seguranca, recomendamos que voce altere sua senha imediatamente ao fazer login.
+Voce tambem recebera esta mensagem por e-mail como backup.
+*Agende sua sessao de boas-vindas:* Se ainda nao o fez, voce pode agendar uma chamada de 15 minutos com nossa equipe para resolver duvidas tecnicas.
+Acreditamos no crescimento do seu ministerio.
+Acessar agora: {{5}}</div></div>
+    <div class="field-block"><div class="field-label">Footer Text (max 60 chars)</div><div class="field-value">suporte@khesed-tek-systems.org</div></div>
+    <div class="field-block"><div class="field-label">Button Type</div><div class="field-value">Call to Action — Visit Website</div></div>
+    <div class="field-block"><div class="field-label">Button Text</div><div class="field-value">Acessar Painel</div></div>
+    <div class="field-block"><div class="field-label">Button URL</div><div class="field-value">https://khesed-tek-cms-org.vercel.app</div></div>
+    <h2>Referencia de Variaveis</h2>
+    <table class="variable-table">
+      <thead><tr><th>Meta Variable</th><th>System Variable</th><th>Exemplo</th><th>Descricao</th></tr></thead>
+      <tbody>
+        <tr><td>{{1}}</td><td>adminName</td><td>Joao Silva</td><td>Nome do pastor / administrador</td></tr>
+        <tr><td>{{2}}</td><td>churchName</td><td>Igreja da Graca</td><td>Nome da igreja</td></tr>
+        <tr><td>{{3}}</td><td>adminEmail</td><td>pastor@igrejadagraca.com.br</td><td>E-mail do administrador</td></tr>
+        <tr><td>{{4}}</td><td>tempPassword</td><td>Temp@4921x</td><td>Senha temporaria gerada automaticamente</td></tr>
+        <tr><td>{{5}}</td><td>loginUrl</td><td>https://khesed-tek-cms-org.vercel.app</td><td>URL de login da plataforma</td></tr>
+      </tbody>
+    </table>
+    <h2>Pre-visualizacao do WhatsApp</h2>
+    <div class="wa-preview"><div class="wa-bubble">
+      <div class="wa-header">Bem-vindo ao Khesed-tek CMS</div>
+      Ola, Joao Silva,<br/><br/>
+      Sua igreja <strong>Igreja da Graca</strong> foi registrada com sucesso na plataforma Khesed-tek CMS.<br/><br/>
+      <strong>Suas credenciais:</strong><br/>
+      - E-mail: pastor@igrejadagraca.com.br<br/>
+      - Senha: Temp@4921x<br/><br/>
+      Acreditamos no crescimento do seu ministerio.<br/><br/>
+      Acessar agora: https://khesed-tek-cms-org.vercel.app
+      <div class="wa-btn">Acessar Painel</div>
+      <div class="wa-footer">suporte@khesed-tek-systems.org</div>
+    </div></div>
+    <h2>Guia de Envio Passo a Passo</h2>
+    <div class="step"><span class="step-num">1</span>Acesse <a href="https://business.facebook.com" target="_blank" rel="noopener noreferrer" class="step-link">business.facebook.com</a> → WhatsApp Manager</div>
+    <div class="step"><span class="step-num">2</span>Ferramentas de conta → Modelos de mensagem → Criar modelo</div>
+    <div class="step"><span class="step-num">3</span><strong>Categoria:</strong> Utilitario (Utility)</div>
+    <div class="step"><span class="step-num">4</span><strong>Nome do modelo:</strong> <code>pastor_welcome_khesed_tek</code> (mesmo nome, idioma diferente)</div>
+    <div class="step"><span class="step-num">5</span><strong>Idioma:</strong> Portugues (Brasil) — pt_BR</div>
+    <div class="step"><span class="step-num">6</span>Cabecalho → Texto → cole o texto acima</div>
+    <div class="step"><span class="step-num">7</span>Corpo → cole o texto acima. Insira os valores de exemplo quando solicitado para cada variavel</div>
+    <div class="step"><span class="step-num">8</span>Rodape → cole o rodape acima</div>
+    <div class="step"><span class="step-num">9</span>Botao → Chamada para Acao → Visitar site → cole texto e URL acima</div>
+    <div class="step"><span class="step-num">10</span><strong>Enviar para revisao.</strong> Aprovacao: 24–48 horas.</div>
+  </div>
+  <div class="tip tip-margin">
+    After all 3 language approvals: Update environment variables <code>TWILIO_WHATSAPP_TEMPLATE_SID_WELCOME_ES</code>, <code>_EN</code>, and <code>_PT</code> in Vercel with the SIDs provided by Meta/Twilio.
+  </div>
+  <div class="warning">
+    After approval, test each language version in the Twilio WhatsApp Sandbox before enabling in production.
+  </div>
+  <footer>
+    Khesed-Tek Systems, LLC — Delaware Limited Liability Company<br/>
+    soporte@khesed-tek-systems.org | +57 302 123 4410 | khesed-tek-systems.org<br/>
+    Prepared May 2026 · Template v2.0 (ES / EN / PT)
+  </footer>
+  <script>
+    function showTab(lang, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + lang).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>
