@@ -1,83 +1,40 @@
-
-import { NextRequest, NextResponse } from 'next/server'
-import { whatsappBusinessService } from '@/lib/integrations/whatsapp'
-
+﻿import { NextRequest, NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
-
-// GET - Webhook verification
+// GET - Webhook verification (Meta requires this)
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const mode = searchParams.get('hub.mode')
-    const token = searchParams.get('hub.verify_token')
-    const challenge = searchParams.get('hub.challenge')
-
-    if (mode === 'subscribe' && token && challenge) {
-      const verification = whatsappBusinessService.verifyWebhook(token, challenge)
-      
-      if (verification.success && verification.challenge) {
-        return new NextResponse(verification.challenge)
-      }
-    }
-
-    return NextResponse.json({ error: 'Invalid verification request' }, { status: 400 })
-  } catch (error) {
-    console.error('WhatsApp webhook verification error:', error)
-    return NextResponse.json({ error: 'Verification failed' }, { status: 500 })
+  const { searchParams } = new URL(request.url)
+  const mode = searchParams.get('hub.mode')
+  const token = searchParams.get('hub.verify_token')
+  const challenge = searchParams.get('hub.challenge')
+  const VERIFY_TOKEN = process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN || ''
+  if (mode === 'subscribe' && token === VERIFY_TOKEN && challenge) {
+    console.log('[WHATSAPP] Webhook verified successfully')
+    return new NextResponse(challenge, { status: 200 })
   }
+  console.error('[WHATSAPP] Webhook verification failed', { mode, token: token ? 'present' : 'missing' })
+  return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 }
-
-// POST - Webhook message handling
+// POST - Receive incoming messages
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
-    // Log incoming webhook (for debugging)
-    console.log('WhatsApp webhook received:', JSON.stringify(body, null, 2))
-
-    // Process incoming messages/status updates
-    if (body.entry && body.entry[0]?.changes) {
-      const changes = body.entry[0].changes
-      
-      for (const change of changes) {
-        if (change.value.messages) {
-          // Handle incoming messages
-          const messages = change.value.messages
-          for (const message of messages) {
-            console.log('Received WhatsApp message:', {
-              from: message.from,
-              type: message.type,
-              text: message.text?.body,
-              timestamp: message.timestamp
-            })
-            
-            // Here you could:
-            // 1. Save message to database
-            // 2. Auto-respond to certain messages
-            // 3. Notify church staff of new messages
-            // 4. Integrate with prayer request system, etc.
-          }
-        }
-
-        if (change.value.statuses) {
-          // Handle message status updates (sent, delivered, read, failed)
-          const statuses = change.value.statuses
-          for (const status of statuses) {
-            console.log('WhatsApp message status:', {
-              messageId: status.id,
-              status: status.status,
-              timestamp: status.timestamp
-            })
-            
-            // Here you could update message delivery status in database
-          }
-        }
+    console.log('[WHATSAPP] Webhook received:', JSON.stringify(body, null, 2))
+    const entry = body.entry?.[0]
+    const changes = entry?.changes?.[0]
+    const value = changes?.value
+    if (value?.messages) {
+      for (const message of value.messages) {
+        console.log('[WHATSAPP] Message from', message.from, ':', message.text?.body || message.type)
       }
     }
-
+    if (value?.statuses) {
+      for (const status of value.statuses) {
+        console.log('[WHATSAPP] Status:', status.id, status.status)
+      }
+    }
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('WhatsApp webhook processing error:', error)
-    return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 })
+    console.error('[WHATSAPP] Webhook error:', error)
+    return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
