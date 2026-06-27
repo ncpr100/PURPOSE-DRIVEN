@@ -1,0 +1,81 @@
+{
+  "installCommand": "npm install --legacy-peer-deps --include=dev",
+  "crons": [
+    {
+      "path": "/api/cron/prayer-watchman",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/triage-followup",
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/cron/cascade-advance",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/coverage-precheck",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/pre-event-check",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/metrics-rollup",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/coverage-sentinel",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/data-retention",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/sla-calculation",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/performance-collect",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/sre-health-check",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/cron/backup-roster-build",
+      "schedule": "0 6 * * 1"
+    },
+    {
+      "path": "/api/cron/shepherds-log",
+      "schedule": "0 6 * * 1"
+    },
+    {
+      "path": "/api/cron/leadership-pipeline",
+      "schedule": "0 7 * * 1"
+    },
+    {
+      "path": "/api/cron/burnout-sentinel",
+      "schedule": "0 8 * * 1"
+    },
+    {
+      "path": "/api/cron/board-report",
+      "schedule": "0 6 * * 1"
+    },
+    {
+      "path": "/api/cron/visitor-conversion",
+      "schedule": "0 9 1 * *"
+    },
+    {
+      "path": "/api/cron/generosity-coach",
+      "schedule": "0 10 1 * *"
+    },
+    {
+      "path": "/api/cron/small-group-monitor",
+      "schedule": "0 11 1 * *"
+    }
+  ]
+}
