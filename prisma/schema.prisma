@@ -3505,4 +3505,15 @@ model church_leads {
   status       String   @default("new")
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}// ============================================
+// TRIAGE ACCESS LOGS - Audit trail for crisis alerts
+// ============================================
+model triage_access_logs {
+  id              String   @id @default(cuid())
+  triageEventId   String
+  pastorId        String
+  accessedAt      DateTime @default(now())
+  ipAddress       String
+  @@index([pastorId])
+  @@index([accessedAt])
 }
