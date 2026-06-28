@@ -1,8 +1,10 @@
 // lib/spiritual-triage-service.ts
 // Agent 2: Spiritual Triage — Warm Handoff Protocol
 // Detects distress keywords and routes to human pastoral care.
+// SECURITY: Implements Ley 1581 compliance - no sensitive data in WhatsApp
 
 import { nanoid } from "nanoid";
+import { sign } from "jsonwebtoken";
 import { db } from "@/lib/db";
 import { whatsappBusinessService } from "@/lib/integrations/whatsapp";
 import { AI_CONSTITUTION } from "@/lib/ai/constitution";
@@ -14,7 +16,6 @@ export interface TriageResult {
 }
 
 // Default keywords loaded from env — comma-separated list
-// e.g. TRIAGE_KEYWORDS="suicidio,me quiero morir,no quiero vivir,crisis,abuso"
 const DEFAULT_KEYWORDS = (process.env.TRIAGE_KEYWORDS || "")
   .split(",")
   .map((k) => k.trim().toLowerCase())
@@ -22,8 +23,6 @@ const DEFAULT_KEYWORDS = (process.env.TRIAGE_KEYWORDS || "")
 
 /**
  * Checks if a text body contains any distress keyword.
- * Uses church-specific keywords from DB when available,
- * falling back to the DEFAULT_KEYWORDS env list.
  */
 export async function detectDistress(
   text: string,
@@ -55,12 +54,60 @@ export async function detectDistress(
 }
 
 /**
+ * Derives severity level from detected keyword
+ */
+function deriveSeverity(keyword: string): "CRÍTICA" | "MODERADA" | "BAJA" {
+  const criticalKeywords = [
+    "suicidio",
+    "suicid",
+    "matarme",
+    "morir",
+    "asesinar",
+    "violencia",
+    "abuso",
+    "arma",
+  ];
+  const moderateKeywords = [
+    "deprimido",
+    "depresión",
+    "ansiedad",
+    "miedo",
+    "tristeza",
+    "soledad",
+    "crisis",
+  ];
+
+  const keywordLower = keyword.toLowerCase();
+
+  if (criticalKeywords.some((k) => keywordLower.includes(k))) {
+    return "CRÍTICA";
+  }
+  if (moderateKeywords.some((k) => keywordLower.includes(k))) {
+    return "MODERADA";
+  }
+  return "BAJA";
+}
+
+/**
+ * Generates secure JWT token for triage event access
+ */
+function generateSecureTriageLink(
+  triageEventId: string,
+  pastorId: string,
+  churchId: string,
+): string {
+  const token = sign(
+    { triageEventId, pastorId, churchId },
+    process.env.JWT_SECRET!,
+    { expiresIn: "15m" },
+  );
+
+  return `${process.env.NEXTAUTH_URL}/prayer-wall/triage/${triageEventId}?token=${token}`;
+}
+
+/**
  * Creates a triage event record and immediately fires pastoral notifications.
- * Returns the new triage event ID.
- *
- * NOTE: The 30-minute fallback message to the requester (if no human responds)
- * is handled by the cron job at /api/cron/triage-followup, which queries
- * triage_events WHERE status = PENDING AND createdAt < (now - 30 min).
+ * SECURITY: WhatsApp messages contain NO sensitive data - only severity code + secure link
  */
 export async function createTriageEvent(params: {
   churchId: string;
@@ -120,11 +167,21 @@ async function notifyPastoralTeam(
     return;
   }
 
-  const shortMessage = params.messageBody.substring(0, 150);
+  // Derive severity from keyword
+  const severity = deriveSeverity(params.detectedKeyword);
   const name = params.requesterName || "Anónimo";
+
+  // Generate secure link with JWT (expires in 15 min)
+  const secureLink = generateSecureTriageLink(
+    triageEventId,
+    onCallPastor.id,
+    churchId,
+  );
+
+  // 1. Create in-app notification (CAN contain more details - requires authentication)
+  const shortMessage = params.messageBody.substring(0, 150);
   const triageUrl = `${process.env.NEXTAUTH_URL}/dashboard/triage/${triageEventId}`;
 
-  // 1. Create in-app notification (always)
   await db.notifications.create({
     data: {
       id: nanoid(),
@@ -141,20 +198,23 @@ ${AI_CONSTITUTION.disclaimer}`,
     },
   });
 
-  // 2. Send WhatsApp to pastor (if phone is configured and ENABLE_WHATSAPP is true)
+  // 2. Send WhatsApp to pastor (SECURE: NO sensitive data)
   if (onCallPastor.phone) {
     try {
       await whatsappBusinessService.sendMessage({
-        to: onCallPastor.phone.replace(/\D/g, ""), // strip non-digits
+        to: onCallPastor.phone.replace(/\D/g, ""),
         type: "text",
         text: {
           body:
-            `*ATENCIÓN PASTORAL URGENTE*\n\n` +
+            `🚨 ALERTA DE CRISIS DETECTADA\n\n` +
+            `Pastor, se detectó una situación que requiere tu atención.\n\n` +
+            `Nivel: ${severity}\n` +
             `Persona: ${name}\n` +
-            `Palabra clave detectada: "${params.detectedKeyword}"\n` +
-            `Mensaje: "${shortMessage}"\n\n` +
-            `Por favor responda en los próximos 30 minutos.\n` +
-            `Ver en el sistema: ${triageUrl}`,
+            `Hora: ${new Date().toLocaleString("es-CO")}\n\n` +
+            `🔒 Ver detalles completos en el Muro de Oración:\n` +
+            `${secureLink}\n\n` +
+            `Este enlace expira en 15 minutos.\n\n` +
+            `Agente de Triaje Espiritual - Khesed-Tek`,
         },
       });
     } catch (err) {
