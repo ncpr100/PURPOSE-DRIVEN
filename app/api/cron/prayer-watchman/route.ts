@@ -2,8 +2,8 @@
 // Cron job: Send WhatsApp care messages around scheduled prayer events.
 //
 // Runs every 15 minutes. Two passes per event:
-//   REMINDER — sent ~15 min before the event (status: REMINDER_SENT)
-//   FOLLOW-UP — sent ~2 hours after the event  (status: FOLLOWUP_SENT)
+//   REMINDER - sent ~15 min before the event (status: REMINDER_SENT)
+//   FOLLOW-UP - sent ~2 hours after the event  (status: FOLLOWUP_SENT)
 //
 // Schedule with:
 //   POST /api/cron/prayer-watchman
@@ -27,7 +27,18 @@ export async function GET(req: NextRequest) {
       authHeader !== `Bearer ${process.env.CRON_SECRET}`
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    }  // CRITICAL: Check if Agent 4 is enabled in database
+  const agent = await db.agent_settings.findUnique({
+    where: { agentId: 4 },
+    select: { isEnabled: true, agentName: true }
+  });
+  if (!agent?.isEnabled) {
+    console.log('[CRON/Prayer Watchman] Agent 4 is DISABLED - skipping execution');
+    return NextResponse.json({
+      skipped: true,
+      reason: "Agent 4 (Prayer Watchman) is disabled in platform settings",
+    });
+  }
 
     if (process.env.ENABLE_PRAYER_WATCHMAN !== "true") {
       return NextResponse.json({ skipped: true, reason: "watchman disabled" });
@@ -45,7 +56,7 @@ export async function GET(req: NextRequest) {
     let followups = 0;
     const errors: string[] = [];
 
-    // ── PASS 1: Reminders — events happening in the next 15 minutes ──────────
+    // â”€â”€ PASS 1: Reminders - events happening in the next 15 minutes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const dueSoon = await db.prayer_watchman_events.findMany({
       where: {
         status: "SCHEDULED",
@@ -75,7 +86,7 @@ export async function GET(req: NextRequest) {
 
         const phone = pr?.prayer_contacts?.phone;
         if (!phone) {
-          // Skip — no phone or anonymous request
+          // Skip - no phone or anonymous request
           await db.prayer_watchman_events.update({
             where: { id: event.id },
             data: { reminderSentAt: now, status: "REMINDER_SENT" },
@@ -84,7 +95,7 @@ export async function GET(req: NextRequest) {
         }
 
         const name = pr?.prayer_contacts?.fullName || "Querido/a";
-        const body = `Hola ${name}  Estamos orando por ti y recordamos que tienes "${event.eventDescription}" pronto. Dios te acompaña. `;
+        const body = `Hola ${name}  Estamos orando por ti y recordamos que tienes "${event.eventDescription}" pronto. Dios te acompa-a. `;
 
         await whatsappBusinessService.sendTextMessage(phone, body);
         await db.prayer_watchman_events.update({
@@ -99,7 +110,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // ── PASS 2: Follow-ups — events that ended ≥2 hours ago ─────────────────
+    // â”€â”€ PASS 2: Follow-ups - events that ended â‰¥2 hours ago â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const needFollowup = await db.prayer_watchman_events.findMany({
       where: {
         status: "REMINDER_SENT",
@@ -132,7 +143,7 @@ export async function GET(req: NextRequest) {
         }
 
         const name = pr?.prayer_contacts?.fullName || "Querido/a";
-        const body = `Hola ${name}, ¿cómo estuvo "${event.eventDescription}"? Seguimos orando por ti. Si quieres compartir algo, responde a este mensaje. `;
+        const body = `Hola ${name}, -c-mo estuvo "${event.eventDescription}"? Seguimos orando por ti. Si quieres compartir algo, responde a este mensaje. `;
 
         await whatsappBusinessService.sendTextMessage(phone, body);
         await db.prayer_watchman_events.update({
@@ -161,3 +172,4 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+

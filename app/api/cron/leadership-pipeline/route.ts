@@ -19,7 +19,18 @@ export async function GET(req: NextRequest) {
       authHeader !== `Bearer ${process.env.CRON_SECRET}`
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    }  // CRITICAL: Check if Agent 6 is enabled in database
+  const agent = await db.agent_settings.findUnique({
+    where: { agentId: 6 },
+    select: { isEnabled: true, agentName: true }
+  });
+  if (!agent?.isEnabled) {
+    console.log('[CRON/Leadership Pipeline] Agent 6 is DISABLED - skipping execution');
+    return NextResponse.json({
+      skipped: true,
+      reason: "Agent 6 (Leadership Pipeline) is disabled in platform settings",
+    });
+  }
 
     if (process.env.ENABLE_LEADERSHIP_PIPELINE !== "true") {
       return NextResponse.json({
@@ -64,3 +75,4 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
