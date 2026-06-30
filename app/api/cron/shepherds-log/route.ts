@@ -1,4 +1,4 @@
-﻿// app/api/cron/shepherds-log/route.ts
+// app/api/cron/shepherds-log/route.ts
 // Weekly cron: Refresh the Shepherd's Log cache for all active churches.
 // Runs every Monday at 6:00 AM (vercel.json: "0 6 * * 1")
 //
@@ -23,7 +23,18 @@ export async function GET(req: NextRequest) {
       authHeader !== `Bearer ${process.env.CRON_SECRET}`
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    }  // CRITICAL: Check if Agent 5 is enabled in database
+  const agent = await db.agent_settings.findUnique({
+    where: { agentId: 5 },
+    select: { isEnabled: true, agentName: true }
+  });
+  if (!agent?.isEnabled) {
+    console.log('[CRON/Shepherds Log] Agent 5 is DISABLED - skipping execution');
+    return NextResponse.json({
+      skipped: true,
+      reason: "Agent 5 (Shepherds Log) is disabled in platform settings",
+    });
+  }
 
     if (process.env.ENABLE_SHEPHERDS_LOG !== "true") {
       return NextResponse.json({
@@ -66,6 +77,7 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
 
 
 

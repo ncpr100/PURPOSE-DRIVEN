@@ -19,7 +19,18 @@ export async function GET(req: NextRequest) {
       authHeader !== `Bearer ${process.env.CRON_SECRET}`
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    }  // CRITICAL: Check if Agent 7 is enabled in database
+  const agent = await db.agent_settings.findUnique({
+    where: { agentId: 7 },
+    select: { isEnabled: true, agentName: true }
+  });
+  if (!agent?.isEnabled) {
+    console.log('[CRON/Burnout Sentinel] Agent 7 is DISABLED - skipping execution');
+    return NextResponse.json({
+      skipped: true,
+      reason: "Agent 7 (Burnout Sentinel) is disabled in platform settings",
+    });
+  }
 
     if (process.env.ENABLE_BURNOUT_SENTINEL !== "true") {
       return NextResponse.json({
@@ -61,3 +72,4 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+

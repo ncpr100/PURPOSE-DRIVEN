@@ -19,7 +19,18 @@ export async function GET(req: NextRequest) {
       authHeader !== `Bearer ${process.env.CRON_SECRET}`
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    }  // CRITICAL: Check if Agent 8 is enabled in database
+  const agent = await db.agent_settings.findUnique({
+    where: { agentId: 8 },
+    select: { isEnabled: true, agentName: true }
+  });
+  if (!agent?.isEnabled) {
+    console.log('[CRON/Visitor Conversion] Agent 8 is DISABLED - skipping execution');
+    return NextResponse.json({
+      skipped: true,
+      reason: "Agent 8 (Visitor Conversion) is disabled in platform settings",
+    });
+  }
 
     if (process.env.ENABLE_VISITOR_CONVERSION !== "true") {
       return NextResponse.json({
@@ -64,3 +75,4 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
