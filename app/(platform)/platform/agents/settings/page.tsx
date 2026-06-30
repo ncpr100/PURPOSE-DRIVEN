@@ -33,7 +33,7 @@ export default function AgentSettingsPage() {
   }, [status]);
   const fetchAgents = async () => {
     try {
-      const res = await fetch("/api/platform/agents");
+      const res = await fetch("/api/platform/agents", { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
         setAgents(data.agents || []);
@@ -71,14 +71,20 @@ export default function AgentSettingsPage() {
   return (
     <div className="space-y-6 max-w-5xl mx-auto p-4">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Configuración de Agentes IA</h1>
+        <h1 className="text-2xl font-bold text-foreground">
+          Configuración de Agentes IA
+        </h1>
         <p className="text-muted-foreground">
-          Activa o desactiva los 15 agentes a nivel de plataforma. Los cambios se aplican inmediatamente sin redeploy.
+          Activa o desactiva los 15 agentes a nivel de plataforma. Los cambios
+          se aplican inmediatamente sin redeploy.
         </p>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {agents.map((agent) => (
-          <Card key={agent.id} className={`border ${agent.isEnabled ? "border-green-500/50 bg-green-500/5" : "border-border"}`}>
+          <Card
+            key={agent.id}
+            className={`border ${agent.isEnabled ? "border-green-500/50 bg-green-500/5" : "border-border"}`}
+          >
             <CardHeader className="pb-3">
               <div className="flex justify-between items-start">
                 <div>
@@ -92,17 +98,23 @@ export default function AgentSettingsPage() {
                 <Switch
                   checked={agent.isEnabled}
                   disabled={updating === agent.agentId}
-                  onCheckedChange={() => toggleAgent(agent.agentId, agent.isEnabled)}
+                  onCheckedChange={() =>
+                    toggleAgent(agent.agentId, agent.isEnabled)
+                  }
                 />
               </div>
             </CardHeader>
             <CardContent className="pt-0 space-y-3">
               <div className="flex flex-wrap gap-2">
                 {agent.requiresWhatsApp && (
-                  <Badge variant="secondary" className="text-xs">Requiere WhatsApp</Badge>
+                  <Badge variant="secondary" className="text-xs">
+                    Requiere WhatsApp
+                  </Badge>
                 )}
                 {agent.requiresAnthropicKey && (
-                  <Badge variant="secondary" className="text-xs">Requiere Anthropic</Badge>
+                  <Badge variant="secondary" className="text-xs">
+                    Requiere Anthropic
+                  </Badge>
                 )}
               </div>
               {agent.lastRunStatus && (
