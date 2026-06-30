@@ -6,7 +6,7 @@ import { runSRECycle } from "@/lib/system/sre-engineer";
 import { db } from "@/lib/db";
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
-  if (authHeader !== Bearer \) {
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   // ✅ CRITICAL: Check if Agent 14 is enabled in database

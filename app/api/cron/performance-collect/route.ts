@@ -11,7 +11,7 @@ import { sendAlertCascade } from "@/lib/alerts/alert-cascade";
 import { db } from "@/lib/db";
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
-  if (authHeader !== Bearer \) {
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   // ✅ CRITICAL: Check if Agent 13 is enabled in database
@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
         await db.platform_incidents.create({
           data: {
             severity: anomaly.severity,
-            title: Performance: \,
+            title: `Performance: ${anomaly.type}`,
             description: anomaly.description,
             affectedService: anomaly.service,
             detectedAt: new Date(),
