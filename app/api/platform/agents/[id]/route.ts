@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -19,13 +20,19 @@ export async function PATCH(
     const body = await request.json();
     const { isEnabled } = body;
     if (typeof isEnabled !== "boolean") {
-      return NextResponse.json({ error: "isEnabled debe ser boolean" }, { status: 400 });
+      return NextResponse.json(
+        { error: "isEnabled debe ser boolean" },
+        { status: 400 },
+      );
     }
     const updated = await db.agent_settings.update({
       where: { agentId },
       data: { isEnabled },
     });
-    console.log(`[API Agents Toggle] Agente ${agentId} ${isEnabled ? "activado" : "desactivado"}`);
+    revalidatePath("/platform/agents/settings");
+    console.log(
+      `[API Agents Toggle] Agente ${agentId} ${isEnabled ? "activado" : "desactivado"}`,
+    );
     return NextResponse.json({ agent: updated, success: true });
   } catch (error: any) {
     console.error("[API Agents Toggle] Error:", error);
