@@ -612,6 +612,71 @@ export default function EnhancedChurchManagement() {
                     </Card>
                   </div>
                 </TabsContent>
+                  <TabsContent value="agents">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Control de Agentes IA</CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                          Overrides activos: <strong>{overrides.length}</strong> | Los overrides manuales tienen prioridad sobre la configuraci?n de plataforma.
+                        </p>
+                      </CardHeader>
+                      <CardContent className="space-y-3 min-h-[200px]">
+                        {agentsLoading ? (
+                          <div className="flex flex-col items-center justify-center py-12">
+                            <RefreshCw className="h-8 w-8 animate-spin mb-4 text-primary" />
+                            <p className="text-sm font-medium">Cargando configuraci?n de agentes...</p>
+                          </div>
+                        ) : agents.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                            <AlertTriangle className="h-8 w-8 mb-2 text-amber-500" />
+                            <p className="text-sm font-medium">No se encontraron agentes.</p>
+                            <p className="text-xs mt-1">Verifica que los agentes est?n habilitados en /platform/agents/settings</p>
+                          </div>
+                        ) : (
+                          <div className="grid gap-3">
+                            {agents.map((agent) => {
+                              const override = overrides.find(o => o.agentId === agent.agentId)
+                              const effectiveStatus = override ? override.isEnabled : agent.isEnabled
+                              return (
+                                <div key={agent.agentId} className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent/50 transition-colors">
+                                  <div className="space-y-1">
+                                    <div className="flex items-center gap-2">
+                                      <p className="font-medium text-sm">Ag. {agent.agentId}: {agent.agentName}</p>
+                                      {override && (
+                                        <Badge variant="secondary" className="bg-amber-100 text-amber-800 text-[10px] h-5">
+                                          Override
+                                        </Badge>
+                                      )}
+                                    </div>
+                                    <p className="text-[10px] text-muted-foreground">
+                                      Estado: <strong>{effectiveStatus ? "ACTIVO" : "INACTIVO"}</strong>
+                                      {override && ` (Platform: ${agent.isEnabled ? "ON" : "OFF"} ? Override: ${override.isEnabled ? "ON" : "OFF"})`}
+                                    </p>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <Switch
+                                      checked={effectiveStatus}
+                                      onCheckedChange={() => handleAgentToggle(agent, override)}
+                                    />
+                                    {override && (
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-8 w-8 p-0"
+                                        onClick={() => handleResetOverride(agent)}
+                                      >
+                                        <RefreshCw className="h-4 w-4" />
+                                      </Button>
+                                    )}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
 
                 <TabsContent value="metrics">
                   <div className="grid gap-4 md:grid-cols-3">
