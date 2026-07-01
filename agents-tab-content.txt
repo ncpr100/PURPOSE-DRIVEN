@@ -1,0 +1,58 @@
+// Tab content for Agent Overrides
+<TabsContent value="agents">
+  <Card>
+    <CardHeader>
+      <CardTitle>Control de Agentes IA</CardTitle>
+      <CardDescription>
+        Gestiona los 15 agentes de inteligencia artificial para esta iglesia
+      </CardDescription>
+    </CardHeader>
+    <CardContent className="space-y-4">
+      <div className="text-sm text-muted-foreground mb-4">
+        <p>Overrides activos: <strong>{overrides.length}</strong></p>
+        <p className="mt-2">
+          Los overrides manuales tienen prioridad sobre la configuraci?n de plataforma.
+        </p>
+      </div>
+      <div className="grid gap-3">
+        {agents.map((agent) => {
+          const override = overrides.find(o => o.agentId === agent.agentId);
+          const effectiveStatus = override ? override.isEnabled : agent.isEnabled;
+          return (
+            <div key={agent.agentId} className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <p className="font-medium">Ag. {agent.agentId}: {agent.agentName}</p>
+                  {override && (
+                    <Badge variant="secondary" className="bg-amber-100 text-amber-800">
+                      Override
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Estado: <strong>{effectiveStatus ? "ACTIVO" : "INACTIVO"}</strong>
+                  {override && ` (Platform: ${agent.isEnabled ? "ON" : "OFF"} ? Override: ${override.isEnabled ? "ON" : "OFF"})`}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={effectiveStatus}
+                  onCheckedChange={() => handleAgentToggle(agent, override)}
+                />
+                {override && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleResetOverride(agent)}
+                  >
+                    Reset
+                  </Button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </CardContent>
+  </Card>
+</TabsContent>

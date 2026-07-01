@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Switch } from '@/components/ui/switch'
 import { 
   Building2, 
   Users, 
@@ -81,6 +82,10 @@ export default function EnhancedChurchManagement() {
   const [showChurchDetails, setShowChurchDetails] = useState(false)
   const [deleteChurchId, setDeleteChurchId] = useState<string | null>(null)
   const [deleteLoading, setDeleteLoading] = useState(false)
+  const [agents, setAgents] = useState<any[]>([])
+  const [overrides, setOverrides] = useState<any[]>([])
+  const [agentsLoading, setAgentsLoading] = useState(false)
+
   
   const [filters, setFilters] = useState<ChurchFilter>({
     search: '',
@@ -88,6 +93,71 @@ export default function EnhancedChurchManagement() {
     risk: 'all',
     subscription: 'all'
   })
+
+  
+  const fetchAgentsAndOverrides = async (churchId: string) => {
+    try {
+      setAgentsLoading(true)
+      // Fetch all agents
+      const agentsRes = await fetch('/api/platform/agents')
+      if (agentsRes.ok) {
+        const agentsData = await agentsRes.json()
+        setAgents(agentsData.agents || [])
+      }
+      // Fetch overrides for this church
+      const overridesRes = await fetch(`/api/platform/churches/${churchId}/overrides`)
+      if (overridesRes.ok) {
+        const overridesData = await overridesRes.json()
+        setOverrides(overridesData.overrides || [])
+      }
+    } catch (error) {
+      console.error('Error fetching agents:', error)
+    } finally {
+      setAgentsLoading(false)
+    }
+  }
+  const handleAgentToggle = async (agent: any, override: any) => {
+    if (!selectedChurch) return
+    const newStatus = override ? !override.isEnabled : !agent.isEnabled
+    try {
+      if (override) {
+        // Update existing override
+        await fetch(`/api/platform/churches/${selectedChurch.id}/overrides/${override.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isEnabled: newStatus, reason: 'Updated via UI' })
+        })
+      } else {
+        // Create new override
+        await fetch(`/api/platform/churches/${selectedChurch.id}/overrides`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ agentId: agent.agentId, isEnabled: newStatus, reason: 'Created via UI' })
+        })
+      }
+      // Refresh overrides
+      await fetchAgentsAndOverrides(selectedChurch.id)
+      toast.success('Override actualizado')
+    } catch (error) {
+      console.error('Error toggling agent:', error)
+      toast.error('Error al actualizar override')
+    }
+  }
+  const handleResetOverride = async (agent: any) => {
+    if (!selectedChurch) return
+    const override = overrides.find(o => o.agentId === agent.agentId)
+    if (!override) return
+    try {
+      await fetch(`/api/platform/churches/${selectedChurch.id}/overrides/${override.id}`, {
+        method: 'DELETE'
+      })
+      await fetchAgentsAndOverrides(selectedChurch.id)
+      toast.success('Override eliminado')
+    } catch (error) {
+      console.error('Error resetting override:', error)
+      toast.error('Error al eliminar override')
+    }
+  }
 
   const fetchChurches = async () => {
     try {
@@ -492,6 +562,7 @@ export default function EnhancedChurchManagement() {
                   <TabsTrigger value="overview">Resumen</TabsTrigger>
                   <TabsTrigger value="metrics">Métricas</TabsTrigger>
                   <TabsTrigger value="activity">Actividad</TabsTrigger>
+                  <TabsTrigger value="agents">Agentes IA</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="overview">
