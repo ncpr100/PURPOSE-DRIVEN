@@ -622,20 +622,20 @@ export default function EnhancedChurchManagement() {
                       <CardHeader>
                         <CardTitle>Control de Agentes IA</CardTitle>
                         <p className="text-sm text-muted-foreground">
-                          Overrides activos: <strong>{overrides.length}</strong> | Los overrides manuales tienen prioridad sobre la configuraci?n de plataforma.
+                          Overrides activos: <strong>{overrides.length}</strong> | Los overrides manuales tienen prioridad sobre la configuracion de plataforma.
                         </p>
                       </CardHeader>
                       <CardContent className="space-y-3 min-h-[200px]">
                         {agentsLoading ? (
                           <div className="flex flex-col items-center justify-center py-12">
                             <RefreshCw className="h-8 w-8 animate-spin mb-4 text-primary" />
-                            <p className="text-sm font-medium">Cargando configuraci?n de agentes...</p>
+                            <p className="text-sm font-medium">Cargando configuracion de agentes...</p>
                           </div>
                         ) : agents.length === 0 ? (
                           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                             <AlertTriangle className="h-8 w-8 mb-2 text-amber-500" />
                             <p className="text-sm font-medium">No se encontraron agentes.</p>
-                            <p className="text-xs mt-1">Verifica que los agentes est?n habilitados en /platform/agents/settings</p>
+                            <p className="text-xs mt-1">Verifica que los agentes esten habilitados en /platform/agents/settings</p>
                           </div>
                         ) : (
                           <div className="grid gap-3">
@@ -655,7 +655,7 @@ export default function EnhancedChurchManagement() {
                                     </div>
                                     <p className="text-[10px] text-muted-foreground">
                                       Estado: <strong>{effectiveStatus ? "ACTIVO" : "INACTIVO"}</strong>
-                                      {override && ` (Platform: ${agent.isEnabled ? "ON" : "OFF"} ? Override: ${override.isEnabled ? "ON" : "OFF"})`}
+                                      {override && ` (Platform: ${agent.isEnabled ? "ON" : "OFF"} -> Override: ${override.isEnabled ? "ON" : "OFF"})`}
                                     </p>
                                   </div>
                                   <div className="flex items-center gap-2">
