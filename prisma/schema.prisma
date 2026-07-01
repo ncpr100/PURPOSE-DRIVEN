@@ -3517,3 +3517,18 @@ model triage_access_logs {
   @@index([pastorId])
   @@index([accessedAt])
 }
+model admin_audit_log {
+  id         String   @id @default(cuid())
+  userId     String
+  churchId   String?
+  action     String   // "agent.toggle", "pricing.update", "church.create", etc.
+  target     String?
+  oldValue   Json?
+  newValue   Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  @@index([userId])
+  @@index([churchId])
+  @@index([createdAt])
+}
