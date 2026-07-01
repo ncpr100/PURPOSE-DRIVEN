@@ -243,6 +243,11 @@ export default function EnhancedChurchManagement() {
   useEffect(() => {
     fetchChurches()
   }, [])
+  useEffect(() => {
+    if (showChurchDetails && selectedChurch) {
+      fetchAgentsAndOverrides(selectedChurch.id)
+    }
+  }, [showChurchDetails, selectedChurch])
 
   const getRiskBadgeVariant = (risk: string) => {
     switch (risk) {
