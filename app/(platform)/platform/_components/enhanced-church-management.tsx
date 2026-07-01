@@ -625,7 +625,7 @@ export default function EnhancedChurchManagement() {
                           Overrides activos: <strong>{overrides.length}</strong> | Los overrides manuales tienen prioridad sobre la configuracion de plataforma.
                         </p>
                       </CardHeader>
-                      <CardContent className="space-y-3 min-h-[200px]">
+                      <CardContent className="space-y-3 min-h-[200px] max-h-[600px] overflow-y-auto pr-2">
                         {agentsLoading ? (
                           <div className="flex flex-col items-center justify-center py-12">
                             <RefreshCw className="h-8 w-8 animate-spin mb-4 text-primary" />
