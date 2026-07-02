@@ -114,6 +114,18 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("[TRIAGE_CRON] Fatal error:", error);
+    // --- EXECUTION TRACKING (ERROR) ---
+    const errDuration = Date.now() - startTime;
+    const errMsg = error instanceof Error ? error.message : String(error);
+    await db.agent_settings.update({
+      where: { agentId: 2 },
+      data: {
+        lastRunStatus: 'FAILED',
+        lastRunAt: new Date(),
+        lastRunDuration: errDuration,
+        lastError: errMsg.substring(0, 500),
+      },
+    }).catch(e => console.error('[TRACKING] Error update failed:', e));
     return NextResponse.json(
       { error: "Error interno del servidor" },
       { status: 500 },
