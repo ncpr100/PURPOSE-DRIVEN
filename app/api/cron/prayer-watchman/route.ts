@@ -1,24 +1,16 @@
-// app/api/cron/prayer-watchman/route.ts
+﻿// app/api/cron/prayer-watchman/route.ts
 // Cron job: Send WhatsApp care messages around scheduled prayer events.
-//
 // Runs every 15 minutes. Two passes per event:
 //   REMINDER - sent ~15 min before the event (status: REMINDER_SENT)
 //   FOLLOW-UP - sent ~2 hours after the event  (status: FOLLOWUP_SENT)
-//
-// Schedule with:
-//   POST /api/cron/prayer-watchman
-//   Authorization: Bearer <CRON_SECRET>
-
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { whatsappBusinessService } from "@/lib/integrations/whatsapp";
-
 export const dynamic = "force-dynamic";
-
 const REMINDER_WINDOW_MINUTES = 15;
 const FOLLOWUP_DELAY_HOURS = 2;
-
 export async function GET(req: NextRequest) {
+  const startTime = Date.now(); // Track execution time
   try {
     // Verify cron authorization
     const authHeader = req.headers.get("Authorization");
@@ -27,23 +19,23 @@ export async function GET(req: NextRequest) {
       authHeader !== `Bearer ${process.env.CRON_SECRET}`
     ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }  // CRITICAL: Check if Agent 4 is enabled in database
-  const agent = await db.agent_settings.findUnique({
-    where: { agentId: 4 },
-    select: { isEnabled: true, agentName: true }
-  });
-  if (!agent?.isEnabled) {
-    console.log('[CRON/Prayer Watchman] Agent 4 is DISABLED - skipping execution');
-    return NextResponse.json({
-      skipped: true,
-      reason: "Agent 4 (Prayer Watchman) is disabled in platform settings",
-    });
-  }
-
-    if (process.env.ENABLE_PRAYER_WATCHMAN !== "true") {
-      return NextResponse.json({ skipped: true, reason: "watchman disabled" });
     }
-
+    // CRITICAL: Check if Agent 4 is enabled in database
+    const agent = await db.agent_settings.findUnique({
+      where: { agentId: 4 },
+      select: { isEnabled: true, agentName: true }
+    });
+    if (!agent?.isEnabled) {
+      console.log('[CRON/Prayer Watchman] Agent 4 is DISABLED - skipping execution');
+      return NextResponse.json({
+        skipped: true,
+        reason: "Agent 4 (Prayer Watchman) is disabled in platform settings",
+      });
+    }
+    // Optional: Check environment variable override
+    if (process.env.ENABLE_PRAYER_WATCHMAN === "false") {
+      return NextResponse.json({ skipped: true, reason: "watchman disabled via env var" });
+    }
     const now = new Date();
     const reminderWindowEnd = new Date(
       now.getTime() + REMINDER_WINDOW_MINUTES * 60 * 1000,
@@ -51,24 +43,16 @@ export async function GET(req: NextRequest) {
     const followupCutoff = new Date(
       now.getTime() - FOLLOWUP_DELAY_HOURS * 60 * 60 * 1000,
     );
-
     let reminders = 0;
     let followups = 0;
     const errors: string[] = [];
-
-    // â”€â”€ PASS 1: Reminders - events happening in the next 15 minutes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // PASS 1: Reminders - events happening in the next 15 minutes
     const dueSoon = await db.prayer_watchman_events.findMany({
       where: {
         status: "SCHEDULED",
         eventDateTime: { gte: now, lte: reminderWindowEnd },
       },
-      include: {
-        // Resolve contact info at send-time via prayerRequestId
-        // prayer_watchman_events has no direct relation to prayer_requests in the
-        // Prisma schema, so we do a separate lookup below per-event.
-      },
     });
-
     for (const event of dueSoon) {
       try {
         const pr = await db.prayer_requests.findFirst({
@@ -83,20 +67,16 @@ export async function GET(req: NextRequest) {
             },
           },
         });
-
         const phone = pr?.prayer_contacts?.phone;
         if (!phone) {
-          // Skip - no phone or anonymous request
           await db.prayer_watchman_events.update({
             where: { id: event.id },
             data: { reminderSentAt: now, status: "REMINDER_SENT" },
           });
           continue;
         }
-
         const name = pr?.prayer_contacts?.fullName || "Querido/a";
-        const body = `Hola ${name}  Estamos orando por ti y recordamos que tienes "${event.eventDescription}" pronto. Dios te acompa-a. `;
-
+        const body = `Hola ${name}. Estamos orando por ti y recordamos que tienes "${event.eventDescription}" pronto. Dios te acompaña.`;
         await whatsappBusinessService.sendTextMessage(phone, body);
         await db.prayer_watchman_events.update({
           where: { id: event.id },
@@ -109,15 +89,13 @@ export async function GET(req: NextRequest) {
         console.error(`[WATCHMAN] Reminder failed for ${event.id}:`, err);
       }
     }
-
-    // â”€â”€ PASS 2: Follow-ups - events that ended â‰¥2 hours ago â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // PASS 2: Follow-ups - events that ended ≥2 hours ago
     const needFollowup = await db.prayer_watchman_events.findMany({
       where: {
         status: "REMINDER_SENT",
         eventDateTime: { lte: followupCutoff },
       },
     });
-
     for (const event of needFollowup) {
       try {
         const pr = await db.prayer_requests.findFirst({
@@ -132,7 +110,6 @@ export async function GET(req: NextRequest) {
             },
           },
         });
-
         const phone = pr?.prayer_contacts?.phone;
         if (!phone) {
           await db.prayer_watchman_events.update({
@@ -141,10 +118,8 @@ export async function GET(req: NextRequest) {
           });
           continue;
         }
-
         const name = pr?.prayer_contacts?.fullName || "Querido/a";
-        const body = `Hola ${name}, -c-mo estuvo "${event.eventDescription}"? Seguimos orando por ti. Si quieres compartir algo, responde a este mensaje. `;
-
+        const body = `Hola ${name}, ¿cómo estuvo "${event.eventDescription}"? Seguimos orando por ti. Si quieres compartir algo, responde a este mensaje.`;
         await whatsappBusinessService.sendTextMessage(phone, body);
         await db.prayer_watchman_events.update({
           where: { id: event.id },
@@ -157,19 +132,44 @@ export async function GET(req: NextRequest) {
         console.error(`[WATCHMAN] Follow-up failed for ${event.id}:`, err);
       }
     }
-
+    // CRITICAL: Update agent_settings with execution status
+    const duration = Date.now() - startTime;
+    await db.agent_settings.update({
+      where: { agentId: 4 },
+      data: {
+        lastRunStatus: errors.length > 0 ? 'PARTIAL' : 'SUCCESS',
+        lastRunAt: now,
+        lastRunDuration: duration,
+        lastError: errors.length > 0 ? errors.join('; ').substring(0, 500) : null,
+      },
+    });
+    console.log(`[WATCHMAN] Execution completed: ${reminders} reminders, ${followups} follow-ups in ${duration}ms`);
     return NextResponse.json({
       success: true,
       reminders,
       followups,
+      duration,
       ...(errors.length > 0 && { errors }),
     });
   } catch (err) {
+    // CRITICAL: Update agent_settings with error status
+    const duration = Date.now() - startTime;
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    await db.agent_settings.update({
+      where: { agentId: 4 },
+      data: {
+        lastRunStatus: 'FAILED',
+        lastRunAt: new Date(),
+        lastRunDuration: duration,
+        lastError: errorMessage.substring(0, 500),
+      },
+    }).catch(updateErr => {
+      console.error('[WATCHMAN] Failed to update agent_settings:', updateErr);
+    });
     console.error("[WATCHMAN] Cron error:", err);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", message: errorMessage },
       { status: 500 },
     );
   }
 }
-
