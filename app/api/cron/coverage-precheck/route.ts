@@ -12,6 +12,7 @@ import { runPreEventCheck } from "@/lib/volunteer-coverage/coverage-engine";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  const startTime = Date.now();
   try {
     const authHeader = req.headers.get("Authorization");
     if (
@@ -47,14 +48,41 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({
-      success: true,
+    
+    // --- EXECUTION TRACKING (SUCCESS) ---
+    const duration = Date.now() - startTime;
+    await db.agent_settings.update({
+      where: { agentId: 12 },
+      data: {
+        lastRunStatus: 'SUCCESS',
+        lastRunAt: new Date(),
+        lastRunDuration: duration,
+        lastError: null,
+      },
+    }).catch(e => console.error('[TRACKING] Success update failed:', e));
+    
+
+    return NextResponse.json({ success: true,
       processed,
       total: churches.length,
       ...(errors.length > 0 && { errors }),
     });
   } catch (err) {
     console.error("[COVERAGE_PRECHECK] Cron error:", err);
+
+    // --- EXECUTION TRACKING (ERROR) ---
+    const errDuration = Date.now() - startTime;
+    const errMsg = err instanceof Error ? err.message : String(err);
+    await db.agent_settings.update({
+      where: { agentId: 12 },
+      data: {
+        lastRunStatus: 'FAILED',
+        lastRunAt: new Date(),
+        lastRunDuration: errDuration,
+        lastError: errMsg.substring(0, 500),
+      },
+    }).catch(e => console.error('[TRACKING] Error update failed:', e));
+    
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

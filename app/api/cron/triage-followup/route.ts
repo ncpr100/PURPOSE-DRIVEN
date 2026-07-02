@@ -15,6 +15,7 @@ export const dynamic = "force-dynamic";
 const FALLBACK_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
 export async function GET(req: NextRequest) {
+  const startTime = Date.now();
   try {
     // Verify cron authorization
     const authHeader = req.headers.get("Authorization");
@@ -92,8 +93,21 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({
-      success: true,
+    
+    // --- EXECUTION TRACKING (SUCCESS) ---
+    const duration = Date.now() - startTime;
+    await db.agent_settings.update({
+      where: { agentId: 2 },
+      data: {
+        lastRunStatus: 'SUCCESS',
+        lastRunAt: new Date(),
+        lastRunDuration: duration,
+        lastError: null,
+      },
+    }).catch(e => console.error('[TRACKING] Success update failed:', e));
+    
+
+    return NextResponse.json({ success: true,
       processed: overdueEvents.length,
       sent,
       errors: errors.length > 0 ? errors : undefined,
