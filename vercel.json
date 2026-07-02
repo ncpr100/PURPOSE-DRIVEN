@@ -43,7 +43,7 @@
     },
     {
       "path": "/api/cron/sre-health-check",
-      "schedule": "* * * * *"
+      "schedule": "*/10 * * * *"
     },
     {
       "path": "/api/cron/backup-roster-build",
