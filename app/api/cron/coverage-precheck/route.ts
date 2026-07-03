@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const startTime = Date.now();
+  let duration = 0;
   try {
     const authHeader = req.headers.get("Authorization");
     if (
@@ -51,7 +52,7 @@ export async function GET(req: NextRequest) {
 
     
         // --- EXECUTION TRACKING (SUCCESS) ---
-    const duration = Date.now() - startTime;
+    duration = Date.now() - startTime;
     const overdueEvents = [];
     const sent = 0;
     await logAgentExecution({
@@ -72,7 +73,7 @@ export async function GET(req: NextRequest) {
     console.error("[COVERAGE_PRECHECK] Cron error:", err);
 
         // --- EXECUTION TRACKING (ERROR) ---
-    const errDuration = Date.now() - startTime;
+    duration = Date.now() - startTime;
     const errMsg = err instanceof Error ? err.message : String(err);
     await logAgentExecution({
       agentId: 12,
