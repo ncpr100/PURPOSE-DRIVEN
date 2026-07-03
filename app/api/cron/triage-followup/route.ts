@@ -13,8 +13,6 @@ const FALLBACK_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
 export async function GET(req: NextRequest) {
   const startTime = Date.now();
-  let duration = 0;
-  let errDuration = 0;
   let duration = 0; // ✅ Definido al inicio
 
   try {
