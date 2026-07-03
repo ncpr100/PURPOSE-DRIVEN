@@ -15,6 +15,7 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const startTime = Date.now();
   let duration = 0;
+  let errDuration = 0;
   try {
     const authHeader = req.headers.get("Authorization");
     if (
