@@ -1,10 +1,6 @@
 // app/api/cron/triage-followup/route.ts
 // Cron job: Send fallback WhatsApp message to requester when no pastor
 // has responded to a triage event within 30 minutes.
-//
-// Call this endpoint every 10 minutes from your scheduler:
-//   POST /api/cron/triage-followup
-//   Authorization: Bearer <CRON_SECRET>
 
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
@@ -16,7 +12,8 @@ export const dynamic = "force-dynamic";
 const FALLBACK_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
 export async function GET(req: NextRequest) {
-  const startTime = Date.now();
+  const startTime = Date.now(); // ✅ Definido al inicio
+
   try {
     // Verify cron authorization
     const authHeader = req.headers.get("Authorization");
@@ -34,7 +31,6 @@ export async function GET(req: NextRequest) {
     const cutoff = new Date(Date.now() - FALLBACK_WINDOW_MS);
 
     // Find triage events that are still PENDING and older than 30 minutes
-    // where the requester has a phone number for the fallback message
     const overdueEvents = await db.triage_events.findMany({
       where: {
         status: "PENDING",
@@ -48,9 +44,7 @@ export async function GET(req: NextRequest) {
         requesterName: true,
         requesterPhone: true,
         detectedKeyword: true,
-        church: {
-          select: { name: true },
-        },
+        church: { select: { name: true } },
       },
     });
 
@@ -60,7 +54,7 @@ export async function GET(req: NextRequest) {
     for (const event of overdueEvents) {
       try {
         const name = event.requesterName || "Querido/a";
-        const churchName = event.church.name;
+        const churchName = event.church?.name || "nuestra iglesia";
 
         await whatsappBusinessService.sendMessage({
           to: event.requesterPhone!.replace(/\D/g, ""),
@@ -74,7 +68,6 @@ export async function GET(req: NextRequest) {
           },
         });
 
-        // Mark as ESCALATED so this event is not processed again
         await db.triage_events.update({
           where: { id: event.id },
           data: { status: "ESCALATED" },
@@ -94,31 +87,52 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    
-        // --- EXECUTION TRACKING (SUCCESS) ---
-    const duration = Date.now() - startTime;`n    await logAgentExecution({`n      agentId: 2,`n      status: "SUCCESS",`n      durationMs: duration,
-      tokensUsed: 0,
-      outputData: { processed: overdueEvents?.length || 0, sent: sent || 0 }
-    });
-    
+    // ✅ Calcular duración ANTES de usarla
+    const duration = Date.now() - startTime;
 
-    return NextResponse.json({ success: true,
+    // --- EXECUTION TRACKING (SUCCESS) ---
+    await logAgentExecution({
+      agentId: 2,
+      status: "SUCCESS",
+      durationMs: duration, // ✅ Variable ahora definida
+      tokensUsed: 0,
+      outputData: {
+        processed: overdueEvents?.length || 0,
+        sent: sent || 0,
+      },
+    });
+
+    return NextResponse.json({
+      success: true,
       processed: overdueEvents.length,
       sent,
       errors: errors.length > 0 ? errors : undefined,
     });
   } catch (error) {
+    // ✅ Calcular duración en caso de error
+    const errorDuration = Date.now() - startTime;
+    const errorMessage = error instanceof Error ? error.message : String(error);
+
     console.error("[TRIAGE_CRON] Fatal error:", error);
-        // --- EXECUTION TRACKING (ERROR) ---
+
+    // --- EXECUTION TRACKING (ERROR) ---
     await logAgentExecution({
       agentId: 2,
+      churchId: "PLATFORM",
       status: "FAILED",
-      durationMs: errDuration,
+      durationMs: errorDuration, // ✅ Variable correcta (no errDuration)
       tokensUsed: 0,
-      errorMessage: errMsg.substring(0, 500)
+      errorMessage: errorMessage.substring(0, 500),
     });
+
+    // ✅ RETURN obligatorio para cerrar la request
     return NextResponse.json(
-      { error: "Error interno del servidor" },
+      {
+        success: false,
+        error: "Internal server error",
+        message:
+          process.env.NODE_ENV === "development" ? errorMessage : undefined,
+      },
       { status: 500 },
     );
   }

@@ -51,6 +51,9 @@ export async function GET(req: NextRequest) {
 
     
         // --- EXECUTION TRACKING (SUCCESS) ---
+    const duration = Date.now() - startTime;
+    const overdueEvents = [];
+    const sent = 0;
     await logAgentExecution({
       agentId: 12,
       status: "SUCCESS",
@@ -69,6 +72,8 @@ export async function GET(req: NextRequest) {
     console.error("[COVERAGE_PRECHECK] Cron error:", err);
 
         // --- EXECUTION TRACKING (ERROR) ---
+    const errDuration = Date.now() - startTime;
+    const errMsg = err instanceof Error ? err.message : String(err);
     await logAgentExecution({
       agentId: 12,
       status: "FAILED",
