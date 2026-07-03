@@ -12,7 +12,8 @@ export const dynamic = "force-dynamic";
 const FALLBACK_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
 export async function GET(req: NextRequest) {
-  const startTime = Date.now(); // ✅ Definido al inicio
+  const startTime = Date.now();
+  let duration = 0; // ✅ Definido al inicio
 
   try {
     // Verify cron authorization
@@ -88,7 +89,7 @@ export async function GET(req: NextRequest) {
     }
 
     // ✅ Calcular duración ANTES de usarla
-    const duration = Date.now() - startTime;
+    duration = Date.now() - startTime;
 
     // --- EXECUTION TRACKING (SUCCESS) ---
     await logAgentExecution({

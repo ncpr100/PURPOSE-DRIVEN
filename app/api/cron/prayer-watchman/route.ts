@@ -11,7 +11,8 @@ export const dynamic = "force-dynamic";
 const REMINDER_WINDOW_MINUTES = 15;
 const FOLLOWUP_DELAY_HOURS = 2;
 export async function GET(req: NextRequest) {
-  const startTime = Date.now(); // Track execution time
+  const startTime = Date.now();
+  let duration = 0; // Track execution time
   try {
     // Verify cron authorization
     const authHeader = req.headers.get("Authorization");
