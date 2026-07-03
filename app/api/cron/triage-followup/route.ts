@@ -9,6 +9,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { whatsappBusinessService } from "@/lib/integrations/whatsapp";
+import { logAgentExecution } from "@/lib/agent-logger";
 
 export const dynamic = "force-dynamic";
 
@@ -94,17 +95,14 @@ export async function GET(req: NextRequest) {
     }
 
     
-    // --- EXECUTION TRACKING (SUCCESS) ---
-    const duration = Date.now() - startTime;
-    await db.agent_settings.update({
-      where: { agentId: 2 },
-      data: {
-        lastRunStatus: 'SUCCESS',
-        lastRunAt: new Date(),
-        lastRunDuration: duration,
-        lastError: null,
-      },
-    }).catch(e => console.error('[TRACKING] Success update failed:', e));
+        // --- EXECUTION TRACKING (SUCCESS) ---
+    await logAgentExecution({
+      agentId: 2,
+      status: "SUCCESS",
+      durationMs: duration,
+      tokensUsed: 0,
+      outputData: { processed: overdueEvents?.length || 0, sent: sent || 0 }
+    });
     
 
     return NextResponse.json({ success: true,
@@ -114,18 +112,14 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("[TRIAGE_CRON] Fatal error:", error);
-    // --- EXECUTION TRACKING (ERROR) ---
-    const errDuration = Date.now() - startTime;
-    const errMsg = error instanceof Error ? error.message : String(error);
-    await db.agent_settings.update({
-      where: { agentId: 2 },
-      data: {
-        lastRunStatus: 'FAILED',
-        lastRunAt: new Date(),
-        lastRunDuration: errDuration,
-        lastError: errMsg.substring(0, 500),
-      },
-    }).catch(e => console.error('[TRACKING] Error update failed:', e));
+        // --- EXECUTION TRACKING (ERROR) ---
+    await logAgentExecution({
+      agentId: 2,
+      status: "FAILED",
+      durationMs: errDuration,
+      tokensUsed: 0,
+      errorMessage: errMsg.substring(0, 500)
+    });
     return NextResponse.json(
       { error: "Error interno del servidor" },
       { status: 500 },

@@ -1,4 +1,4 @@
-﻿// app/api/cron/prayer-watchman/route.ts
+// app/api/cron/prayer-watchman/route.ts
 // Cron job: Send WhatsApp care messages around scheduled prayer events.
 // Runs every 15 minutes. Two passes per event:
 //   REMINDER - sent ~15 min before the event (status: REMINDER_SENT)
@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { whatsappBusinessService } from "@/lib/integrations/whatsapp";
+import { logAgentExecution } from "@/lib/agent-logger";
 export const dynamic = "force-dynamic";
 const REMINDER_WINDOW_MINUTES = 15;
 const FOLLOWUP_DELAY_HOURS = 2;
@@ -133,15 +134,14 @@ export async function GET(req: NextRequest) {
       }
     }
     // CRITICAL: Update agent_settings with execution status
-    const duration = Date.now() - startTime;
-    await db.agent_settings.update({
-      where: { agentId: 4 },
-      data: {
-        lastRunStatus: errors.length > 0 ? 'PARTIAL' : 'SUCCESS',
-        lastRunAt: now,
-        lastRunDuration: duration,
-        lastError: errors.length > 0 ? errors.join('; ').substring(0, 500) : null,
-      },
+    await logAgentExecution({
+      agentId: 4,
+      churchId: "PLATFORM",
+      status: errors.length > 0 ? "PARTIAL" : "SUCCESS",
+      durationMs: duration,
+      tokensUsed: 0,
+      outputData: { reminders, followups },
+      errorMessage: errors.length > 0 ? errors.join('; ').substring(0, 500) : undefined
     });
     console.log(`[WATCHMAN] Execution completed: ${reminders} reminders, ${followups} follow-ups in ${duration}ms`);
     return NextResponse.json({
@@ -153,18 +153,13 @@ export async function GET(req: NextRequest) {
     });
   } catch (err) {
     // CRITICAL: Update agent_settings with error status
-    const duration = Date.now() - startTime;
-    const errorMessage = err instanceof Error ? err.message : String(err);
-    await db.agent_settings.update({
-      where: { agentId: 4 },
-      data: {
-        lastRunStatus: 'FAILED',
-        lastRunAt: new Date(),
-        lastRunDuration: duration,
-        lastError: errorMessage.substring(0, 500),
-      },
-    }).catch(updateErr => {
-      console.error('[WATCHMAN] Failed to update agent_settings:', updateErr);
+    await logAgentExecution({
+      agentId: 4,
+      churchId: "PLATFORM",
+      status: "FAILED",
+      durationMs: duration,
+      tokensUsed: 0,
+      errorMessage: errorMessage.substring(0, 500)
     });
     console.error("[WATCHMAN] Cron error:", err);
     return NextResponse.json(
