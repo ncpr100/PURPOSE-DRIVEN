@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { refreshShepherdsLog } from "@/lib/shepherds-log-service";
+import { logAgentExecution } from "@/lib/agent-logger";
 export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest) {
   const startTime = Date.now();
@@ -50,41 +51,28 @@ export async function GET(req: NextRequest) {
     }
     const duration = Date.now() - startTime;
     // CRITICAL: Update agent_settings with execution status
-    await db.agent_settings.update({
-      where: { agentId: 5 },
-      data: {
-        lastRunStatus: errors.length === 0 ? 'SUCCESS' : 'PARTIAL',
-        lastRunAt: new Date(),
-        lastRunDuration: duration,
-        lastError: errors.length > 0 ? errors.join('; ') : null,
-      },
-    });
-    console.log(`[SHEPHERDS_LOG] Execution completed: ${refreshed}/${churches.length} churches refreshed in ${duration}ms`);
-    return NextResponse.json({
-      success: true,
-      refreshed,
-      total: churches.length,
-      duration,
-      ...(errors.length > 0 && { errors }),
+    await logAgentExecution({
+      agentId: 5,
+      churchId: "PLATFORM",
+      status: errors.length === 0 ? "SUCCESS" : "PARTIAL",
+      durationMs: duration,
+      tokensUsed: 0,
+      outputData: { refreshed, total: churches.length },
+      errorMessage: errors.length > 0 ? errors.join('; ') : undefined
     });
   } catch (err) {
     const duration = Date.now() - startTime;
     const errorMessage = err instanceof Error ? err.message : String(err);
     console.error("[SHEPHERDS_LOG] Cron error:", err);
     // CRITICAL: Update agent_settings with failure status
-    try {
-      await db.agent_settings.update({
-        where: { agentId: 5 },
-        data: {
-          lastRunStatus: 'FAILED',
-          lastRunAt: new Date(),
-          lastRunDuration: duration,
-          lastError: errorMessage,
-        },
-      });
-    } catch (updateErr) {
-      console.error('[SHEPHERDS_LOG] Failed to update agent_settings:', updateErr);
-    }
+    await logAgentExecution({
+      agentId: 5,
+      churchId: "PLATFORM",
+      status: "FAILED",
+      durationMs: duration,
+      tokensUsed: 0,
+      errorMessage: errorMessage.substring(0, 500)
+    });
     return NextResponse.json(
       { error: "Internal server error", message: errorMessage },
       { status: 500 },
