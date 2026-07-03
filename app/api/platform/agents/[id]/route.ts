@@ -25,9 +25,29 @@ export async function PATCH(
         { status: 400 },
       );
     }
+    // Capture current state before update for audit delta
+    const previous = await db.agent_settings.findUnique({
+      where: { agentId },
+      select: { isEnabled: true },
+    });
     const updated = await db.agent_settings.update({
       where: { agentId },
       data: { isEnabled },
+    });
+    // G05: Admin audit log — record every agent toggle by SUPER_ADMIN
+    await db.admin_audit_log.create({
+      data: {
+        userId: session.user.id,
+        action: "agent.toggle",
+        target: `agent:${agentId}`,
+        oldValue: { isEnabled: previous?.isEnabled ?? null },
+        newValue: { isEnabled },
+        ipAddress:
+          request.headers.get("x-forwarded-for") ??
+          request.headers.get("x-real-ip") ??
+          "unknown",
+        userAgent: request.headers.get("user-agent") ?? undefined,
+      },
     });
     revalidatePath("/platform/agents/settings");
     console.log(
