@@ -12,6 +12,8 @@ const REMINDER_WINDOW_MINUTES = 15;
 const FOLLOWUP_DELAY_HOURS = 2;
 export async function GET(req: NextRequest) {
   const startTime = Date.now();
+  let duration = 0;
+  let errDuration = 0;
   let duration = 0; // Track execution time
   try {
     // Verify cron authorization

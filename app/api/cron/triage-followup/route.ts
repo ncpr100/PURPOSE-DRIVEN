@@ -13,6 +13,8 @@ const FALLBACK_WINDOW_MS = 30 * 60 * 1000; // 30 minutes
 
 export async function GET(req: NextRequest) {
   const startTime = Date.now();
+  let duration = 0;
+  let errDuration = 0;
   let duration = 0; // ✅ Definido al inicio
 
   try {
@@ -78,12 +80,12 @@ export async function GET(req: NextRequest) {
         console.log(
           `[TRIAGE_CRON] Fallback sent for event ${event.id} — church: ${event.churchId}`,
         );
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : String(err);
+      } catch (error) {
+        const msg = error instanceof Error ? error.message : String(error);
         errors.push(`${event.id}: ${msg}`);
         console.error(
           `[TRIAGE_CRON] Failed to send fallback for event ${event.id}:`,
-          err,
+          error,
         );
       }
     }
