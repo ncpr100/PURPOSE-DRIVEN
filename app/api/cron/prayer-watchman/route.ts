@@ -143,7 +143,8 @@ export async function GET(req: NextRequest) {
       outputData: { reminders, followups },
       errorMessage: errors.length > 0 ? errors.join('; ').substring(0, 500) : undefined
     });
-    console.log(`[WATCHMAN] Execution completed: ${reminders} reminders, ${followups} follow-ups in ${duration}ms`);
+    const logDuration = Date.now() - startTime;
+    console.log(`[WATCHMAN] Execution completed: ${reminders} reminders, ${followups} follow-ups in ${logDuration}ms`);
     return NextResponse.json({
       success: true,
       reminders,
