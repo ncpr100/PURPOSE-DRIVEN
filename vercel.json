@@ -38,6 +38,14 @@
       "schedule": "0 0 * * *"
     },
     {
+      "path": "/api/cron/sermon-antiphony",
+      "schedule": "0 8 * * 3"
+    },
+    {
+      "path": "/api/cron/content-filter",
+      "schedule": "0 7 * * *"
+    },
+    {
       "path": "/api/cron/performance-collect",
       "schedule": "*/5 * * * *"
     },
