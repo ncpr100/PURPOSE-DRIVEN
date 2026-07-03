@@ -96,10 +96,7 @@ export async function GET(req: NextRequest) {
 
     
         // --- EXECUTION TRACKING (SUCCESS) ---
-    await logAgentExecution({
-      agentId: 2,
-      status: "SUCCESS",
-      durationMs: duration,
+    const duration = Date.now() - startTime;`n    await logAgentExecution({`n      agentId: 2,`n      status: "SUCCESS",`n      durationMs: duration,
       tokensUsed: 0,
       outputData: { processed: overdueEvents?.length || 0, sent: sent || 0 }
     });
