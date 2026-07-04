@@ -21,8 +21,8 @@ import { agent14SREOutputSchema } from '@/lib/agents/schemas/agent-schema';
 // ── DATA-ONLY AGENT LIBS (no LLM) ─────────────────────────────────────────────
 import { identifyLeadershipCandidates } from '@/lib/agents/leadership-pipeline';
 import { runBurnoutSentinel } from '@/lib/volunteer-burnout-sentinel';
-import { generateGenerosityAlerts } from '@/lib/agents/generosity-coach';
-import { generateSmallGroupHealthScores } from '@/lib/small-group-health-monitor';
+import { runGenerosityJourneyAnalysis } from '@/lib/agents/generosity-coach';
+import { scoreAllSmallGroups } from '@/lib/small-group-health-monitor';
 // ── AI ROUTER ─────────────────────────────────────────────────────────────────
 import { intelligentRouter } from '@/lib/ai/intelligent-router';
 export async function executeAgent(agentId: number, context?: any) {
@@ -31,7 +31,7 @@ export async function executeAgent(agentId: number, context?: any) {
     const sreContext: SREContext = {
       apiErrorRate5xx: 0.5,
       p95ResponseTimeMs: 450,
-      supabaseHealthStatus: "UP",
+      supabaseHealthStatus: "HEALTHY",
       recentIncidentsCount: 0,
       coldStartCountLastHour: 3
     };
@@ -186,7 +186,7 @@ export async function executeAgent8(context: VisitorConversionContext) {
 
 // ── AGENT 9: Generosity Coach (pure data — no LLM) ───────────────────────────
 export async function executeAgent9(churchId: string) {
-  const alerts = await generateGenerosityAlerts(churchId);
+  const alerts = await runGenerosityJourneyAnalysis(churchId);
   const now = new Date();
   return {
     status: "SUCCESS",
@@ -201,7 +201,7 @@ export async function executeAgent9(churchId: string) {
 
 // ── AGENT 10: Small Group Monitor (pure data — no LLM) ───────────────────────
 export async function executeAgent10(churchId: string) {
-  const scores = await generateSmallGroupHealthScores(churchId);
+  const scores = await scoreAllSmallGroups(churchId);
   const now = new Date();
   const scoresArray = Array.isArray(scores) ? scores : [];
   return {
