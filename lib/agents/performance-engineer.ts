@@ -1,13 +1,12 @@
 // lib/agents/performance-engineer.ts
 // AGENT 13 — Web Performance Engineer
 // Monitors Core Web Vitals, API performance, cache health, and cold starts.
-// Generates AI-powered recommendations using Claude API.
+// Generates AI-powered recommendations via OpenRouter (Llama free tier →
+// Qwen standard → Claude Sonnet 4 → GPT-4o fallback).
 // Runs on schedule: every 5 minutes for metrics, hourly for recommendations.
 
-import Anthropic from "@anthropic-ai/sdk";
+import { intelligentRouter } from "@/lib/ai/intelligent-router";
 import { db } from "@/lib/db";
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 // ── SLA THRESHOLDS (99.9% uptime target) ─────────────────────
 const PERFORMANCE_THRESHOLDS = {
@@ -316,18 +315,9 @@ Rules:
 - Never recommend replacing the core stack`;
 
   try {
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1200,
-      messages: [{ role: "user", content: prompt }],
-    });
+    const result = await intelligentRouter.execute(13, prompt, "", 1200);
 
-    const rawText = response.content
-      .filter((b) => b.type === "text")
-      .map((b) => (b as { type: "text"; text: string }).text)
-      .join("");
-
-    const parsed = JSON.parse(rawText) as {
+    const parsed = JSON.parse(result.text) as {
       recommendations: Array<{
         category: string;
         title: string;

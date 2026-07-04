@@ -44,7 +44,6 @@ export async function GET(request: NextRequest) {
     const executiveReport = await analyticsService.getExecutiveReport({
       period: periodDays,
       forceRefresh,
-      cacheWarm: true
     });
 
     return NextResponse.json(executiveReport, { 

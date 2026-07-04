@@ -13,6 +13,7 @@ export type ServiceName =
   | "stripe"
   | "paddle"
   | "resend"
+  | "mailgun"
   | "twilio"
   | "whatsapp"
   | "openrouter"

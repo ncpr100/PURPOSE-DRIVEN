@@ -4,7 +4,7 @@
 // SLA target: 99.9% uptime (max 8.7 hours downtime/year)
 // Runs: health checks every 60 seconds, SLA calc daily, post-mortems on resolution.
 
-import Anthropic from "@anthropic-ai/sdk";
+import { intelligentRouter } from "@/lib/ai/intelligent-router";
 import { db } from "@/lib/db";
 import {
   runAllHealthChecks,
@@ -12,8 +12,6 @@ import {
 } from "@/lib/monitoring/health-check-engine";
 import { sendAlertCascade } from "@/lib/alerts/alert-cascade";
 import type { HealthCheckResult } from "@/lib/monitoring/health-check-engine";
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 // ── SLA CONFIGURATION ─────────────────────────────────────────
 const SLA_TARGET = 0.999; // 99.9%
@@ -334,18 +332,9 @@ Genera el post-mortem en formato JSON (sin markdown):
   "postMortemText": "Post-mortem completo en formato narrativo (4-5 párrafos)"
 }`;
 
-    const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1500,
-      messages: [{ role: "user", content: prompt }],
-    });
+    const result = await intelligentRouter.execute(14, prompt, "", 1500);
 
-    const rawText = response.content
-      .filter((b) => b.type === "text")
-      .map((b) => (b as { type: "text"; text: string }).text)
-      .join("");
-
-    const pm = JSON.parse(rawText);
+    const pm = JSON.parse(result.text);
 
     await db.platform_incidents.update({
       where: { id: incidentId },

@@ -53,6 +53,7 @@ export const CACHE_TTL = {
   PERFORMANCE_METRICS: 300,
   AGENT_SETTINGS: 60,
   PRICING_CONFIG: 3600,
+  MEMBER_ANALYTICS: 1800,
 };
 
 // ============================================
