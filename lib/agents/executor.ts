@@ -239,4 +239,3 @@ export async function executeAgent13(context: PerformanceEngineerContext) {
     metadata: { modelUsed: result.modelUsed, tokensUsed: result.tokensUsed },
   };
 }
-}

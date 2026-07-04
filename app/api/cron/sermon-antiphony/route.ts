@@ -35,10 +35,13 @@ export async function GET(req: NextRequest) {
       select: { isEnabled: true, agentName: true },
     });
     if (!agent?.isEnabled) {
-      console.log("[CRON/Sermon Antiphony] Agent 1 is DISABLED - skipping execution");
+      console.log(
+        "[CRON/Sermon Antiphony] Agent 1 is DISABLED - skipping execution",
+      );
       return NextResponse.json({
         skipped: true,
-        reason: "Agent 1 (Sermon Antiphony Engine) is disabled in platform settings",
+        reason:
+          "Agent 1 (Sermon Antiphony Engine) is disabled in platform settings",
       });
     }
 
@@ -116,7 +119,12 @@ export async function GET(req: NextRequest) {
     duration = Date.now() - startTime;
     await logAgentExecution({
       agentId: 1,
-      status: errors.length > 0 && analyzed === 0 ? "FAILED" : errors.length > 0 ? "PARTIAL" : "SUCCESS",
+      status:
+        errors.length > 0 && analyzed === 0
+          ? "FAILED"
+          : errors.length > 0
+            ? "PARTIAL"
+            : "SUCCESS",
       durationMs: duration,
       outputData: { analyzed, skipped, errors: errors.length },
       ...(errors.length > 0 && { errorMessage: errors[0].substring(0, 500) }),
