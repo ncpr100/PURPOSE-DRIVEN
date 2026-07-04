@@ -89,6 +89,18 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // G05: Audit log — plan creation by SUPER_ADMIN
+    await db.admin_audit_log.create({
+      data: {
+        userId: session.user.id,
+        action: 'pricing.plan.create',
+        target: `plan:${plan.id}`,
+        newValue: { name: plan.name, priceMonthly: plan.priceMonthly },
+        ipAddress: request.headers.get('x-forwarded-for') ?? undefined,
+        userAgent: request.headers.get('user-agent') ?? undefined,
+      }
+    }).catch(() => { /* non-blocking */ })
+
     return NextResponse.json(plan)
 
   } catch (error) {
@@ -161,6 +173,19 @@ export async function PUT(request: NextRequest) {
     })
 
     console.log(' Plan updated successfully:', plan.id)
+
+    // G05: Audit log — plan update by SUPER_ADMIN
+    await db.admin_audit_log.create({
+      data: {
+        userId: session.user.id,
+        action: 'pricing.plan.update',
+        target: `plan:${plan.id}`,
+        newValue: { name: plan.name, priceMonthly: plan.priceMonthly, isActive: plan.isActive },
+        ipAddress: request.headers.get('x-forwarded-for') ?? undefined,
+        userAgent: request.headers.get('user-agent') ?? undefined,
+      }
+    }).catch(() => { /* non-blocking */ })
+
     return NextResponse.json(plan)
 
   } catch (error) {

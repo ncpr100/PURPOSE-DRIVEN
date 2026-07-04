@@ -492,6 +492,19 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 },
     );
+
+    // G05: Audit log — church creation by SUPER_ADMIN (fire and forget)
+    db.admin_audit_log.create({
+      data: {
+        userId: session.user.id,
+        action: 'church.create',
+        target: 'church:new',
+        newValue: { name: result?.church?.name, adminEmail: result?.admin?.email },
+        ipAddress: request.headers.get('x-forwarded-for') ?? undefined,
+        userAgent: request.headers.get('user-agent') ?? undefined,
+      }
+    }).catch(() => { /* non-blocking */ });
+
   } catch (error) {
     console.error("Error creating church:", error);
     return NextResponse.json(

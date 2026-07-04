@@ -8,6 +8,7 @@ import { getAgent11BoardSynthesizerPrompt, BoardSynthesizerContext } from '@/lib
 import { getAgent12CoverageEnginePrompt, CoverageContext } from '@/lib/agents/prompts/agent-12-coverage-engine';
 import { getAgent13PerformanceEngineerPrompt, PerformanceEngineerContext } from '@/lib/agents/prompts/agent-13-performance-engineer';
 import { getAgent14SREPrompt, SREContext } from '@/lib/agents/prompts/agent-14-sre-master';
+import { getAgent15ProductDesignerPrompt, ProductDesignerContext } from '@/lib/agents/prompts/agent-15-product-designer';
 // ── SCHEMAS ───────────────────────────────────────────────────────────────────
 import { agent1AntiphonySchema } from '@/lib/agents/schemas/agent-1-schema';
 import { agent2SpiritualTriageSchema } from '@/lib/agents/schemas/agent-2-schema';
@@ -18,6 +19,7 @@ import { agent11BoardSynthesizerSchema } from '@/lib/agents/schemas/agent-11-sch
 import { agent12CoverageEngineSchema } from '@/lib/agents/schemas/agent-12-schema';
 import { agent13PerformanceEngineerSchema } from '@/lib/agents/schemas/agent-13-schema';
 import { agent14SREOutputSchema } from '@/lib/agents/schemas/agent-schema';
+import { agent15ProductDesignerSchema } from '@/lib/agents/schemas/agent-15-schema';
 // ── DATA-ONLY AGENT LIBS (no LLM) ─────────────────────────────────────────────
 import { identifyLeadershipCandidates } from '@/lib/agents/leadership-pipeline';
 import { runBurnoutSentinel } from '@/lib/volunteer-burnout-sentinel';
@@ -233,6 +235,18 @@ export async function executeAgent13(context: PerformanceEngineerContext) {
   const systemPrompt = getAgent13PerformanceEngineerPrompt(context);
   const prompt = JSON.stringify(context);
   const result = await intelligentRouter.execute(13, prompt, systemPrompt, 1500, agent13PerformanceEngineerSchema);
+  return {
+    status: "SUCCESS",
+    data: JSON.parse(result.text),
+    metadata: { modelUsed: result.modelUsed, tokensUsed: result.tokensUsed },
+  };
+}
+
+// ── AGENT 15: AI Product Designer (OpenRouter → Anthropic fallback) ───────────
+export async function executeAgent15(context: ProductDesignerContext) {
+  const systemPrompt = getAgent15ProductDesignerPrompt(context);
+  const prompt = JSON.stringify(context);
+  const result = await intelligentRouter.execute(15, prompt, systemPrompt, 1800, agent15ProductDesignerSchema);
   return {
     status: "SUCCESS",
     data: JSON.parse(result.text),
