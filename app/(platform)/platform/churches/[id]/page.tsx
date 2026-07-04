@@ -24,7 +24,7 @@ export default async function ChurchDetailsPage({ params }: { params: Promise<{ 
         churchId={id} 
         churchName={church.name}
         initialAgents={agents} 
-        initialOverrides={overrides} 
+        initialOverrides={overrides.map(o => ({ id: o.id, agentId: o.agentId, isEnabled: o.isEnabled, reason: o.reason ?? undefined }))} 
       />
     </div>
   );

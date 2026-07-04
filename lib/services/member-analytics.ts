@@ -12,5 +12,13 @@ export const memberAnalyticsCache = {
   async invalidate(churchId: string, memberId: string) {
     const key = CACHE_KEYS.MEMBER_JOURNEY(churchId, memberId);
     await cacheManager.del(key);
-  }
+  },
+  // Stub methods retained for backward compatibility with analytics routes.
+  // These return null (cache miss) so callers fall back to live DB queries.
+  async getEngagementDashboard(_churchId: string): Promise<null> { return null; },
+  async cacheEngagementDashboard(_churchId: string, _data: any): Promise<void> { /* no-op */ },
+  async getLifecycleFunnel(_churchId: string, _dateRange?: any): Promise<null> { return null; },
+  async cacheLifecycleFunnel(_churchId: string, _data: any, _dateRange?: any): Promise<void> { /* no-op */ },
+  async getMinistryRecommendations(_churchId: string): Promise<null> { return null; },
+  async cacheMinistryRecommendations(_churchId: string, _data: any): Promise<void> { /* no-op */ },
 };

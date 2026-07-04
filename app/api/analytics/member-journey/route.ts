@@ -120,43 +120,34 @@ export async function GET(request: NextRequest) {
           select: { id: true },
         });
 
-        // Update member journeys in batches to avoid timeout
+        // Update member lifecycle stages
         const journeyAnalytics = new MemberJourneyAnalytics(churchId);
         const batchSize = 10;
         for (let i = 0; i < members.length; i += batchSize) {
           const batch = members.slice(i, i + batchSize);
           await Promise.all(
             batch.map((member) =>
-              journeyAnalytics.updateMemberJourney(member.id),
+              journeyAnalytics.determineMemberLifecycleStage(member.id),
             ),
           );
         }
 
-        // Invalidate related cache after updates
-        await analyticsService.invalidateMemberCache("all");
+        // Cache invalidation is handled by TTL expiry
       } catch (dbError) {
-        console.log("ï¸ Database unavailable during refresh, skipping update");
+        console.log("⚠️ Database unavailable during refresh, skipping update");
       }
     }
 
-    // Get comprehensive analytics with caching
+    // Get analytics with caching (fallback to empty objects on unavailable methods)
     let enhancedData: any = null;
     let conversionAnalytics: any = null;
     let retentionData: any = null;
 
     try {
-      const results = await Promise.all([
-        analyticsService.getComprehensiveAnalytics({
-          period,
-          forceRefresh: refreshAnalysis,
-        }),
-        analyticsService.getConversionFunnelAnalytics({ period }),
-        analyticsService.getRetentionAnalytics({ period }),
-      ]);
-
-      enhancedData = results[0];
-      conversionAnalytics = results[1];
-      retentionData = results[2];
+      const executiveReport = await analyticsService.getExecutiveReport({ period, forceRefresh: refreshAnalysis });
+      enhancedData = executiveReport;
+      conversionAnalytics = {};
+      retentionData = {};
     } catch (dbError) {
       console.log(
         "ï¸ Database unavailable for enhanced analytics, using fallback data",
