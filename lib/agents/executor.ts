@@ -1,13 +1,29 @@
-import { getAgent14SREPrompt, SREContext } from '@/lib/agents/prompts/agent-14-sre-master';
+// ── PROMPTS ──────────────────────────────────────────────────────────────────
+import { getAgent1SermonAntiphonyPrompt, SermonAntiphonyContext } from '@/lib/agents/prompts/agent-1-sermon-antiphony';
 import { getAgent2SpiritualTriagePrompt, TriageContext } from '@/lib/agents/prompts/agent-2-spiritual-triage';
 import { getAgent4PrayerWatchmanPrompt, PrayerWatchmanContext } from '@/lib/agents/prompts/agent-4-prayer-watchman';
 import { getAgent5ShepherdLogPrompt, ShepherdLogContext } from '@/lib/agents/prompts/agent-5-shepherd-log';
+import { getAgent8VisitorConversionPrompt, VisitorConversionContext } from '@/lib/agents/prompts/agent-8-visitor-conversion';
+import { getAgent11BoardSynthesizerPrompt, BoardSynthesizerContext } from '@/lib/agents/prompts/agent-11-board-synthesizer';
 import { getAgent12CoverageEnginePrompt, CoverageContext } from '@/lib/agents/prompts/agent-12-coverage-engine';
-import { agent14SREOutputSchema } from '@/lib/agents/schemas/agent-schema';
+import { getAgent13PerformanceEngineerPrompt, PerformanceEngineerContext } from '@/lib/agents/prompts/agent-13-performance-engineer';
+import { getAgent14SREPrompt, SREContext } from '@/lib/agents/prompts/agent-14-sre-master';
+// ── SCHEMAS ───────────────────────────────────────────────────────────────────
+import { agent1AntiphonySchema } from '@/lib/agents/schemas/agent-1-schema';
 import { agent2SpiritualTriageSchema } from '@/lib/agents/schemas/agent-2-schema';
 import { agent4PrayerWatchmanSchema } from '@/lib/agents/schemas/agent-4-schema';
 import { agent5ShepherdLogSchema } from '@/lib/agents/schemas/agent-5-schema';
+import { agent8VisitorConversionSchema } from '@/lib/agents/schemas/agent-8-schema';
+import { agent11BoardSynthesizerSchema } from '@/lib/agents/schemas/agent-11-schema';
 import { agent12CoverageEngineSchema } from '@/lib/agents/schemas/agent-12-schema';
+import { agent13PerformanceEngineerSchema } from '@/lib/agents/schemas/agent-13-schema';
+import { agent14SREOutputSchema } from '@/lib/agents/schemas/agent-schema';
+// ── DATA-ONLY AGENT LIBS (no LLM) ─────────────────────────────────────────────
+import { identifyLeadershipCandidates } from '@/lib/agents/leadership-pipeline';
+import { runBurnoutSentinel } from '@/lib/volunteer-burnout-sentinel';
+import { generateGenerosityAlerts } from '@/lib/agents/generosity-coach';
+import { generateSmallGroupHealthScores } from '@/lib/small-group-health-monitor';
+// ── AI ROUTER ─────────────────────────────────────────────────────────────────
 import { intelligentRouter } from '@/lib/ai/intelligent-router';
 export async function executeAgent(agentId: number, context?: any) {
   console.log("[Executor] Iniciando Agente " + agentId);
@@ -114,4 +130,113 @@ export async function executeAgent(agentId: number, context?: any) {
     };
   }
   throw new Error("Agente " + agentId + " no implementado aun en el executor.");
+}
+
+// ── AGENT 1: Sermon Antiphony Engine (OpenRouter → Anthropic fallback) ────────
+export async function executeAgent1(context: SermonAntiphonyContext) {
+  const systemPrompt = getAgent1SermonAntiphonyPrompt(context);
+  const prompt = JSON.stringify({ sermonText: context.sermonText, churchCountry: context.churchCountry });
+  const result = await intelligentRouter.execute(1, prompt, systemPrompt, 1500, agent1AntiphonySchema);
+  return {
+    status: "SUCCESS",
+    data: JSON.parse(result.text),
+    metadata: { modelUsed: result.modelUsed, tokensUsed: result.tokensUsed },
+  };
+}
+
+// ── AGENT 6: Leadership Pipeline (pure data — no LLM) ────────────────────────
+export async function executeAgent6(churchId: string) {
+  const candidates = await identifyLeadershipCandidates(churchId);
+  return {
+    status: "SUCCESS",
+    data: {
+      candidates,
+      totalScanned: candidates.length,
+      reportGeneratedAt: new Date().toISOString(),
+    },
+    metadata: { modelUsed: "none", tokensUsed: { input: 0, output: 0, total: 0 } },
+  };
+}
+
+// ── AGENT 7: Burnout Sentinel (pure data — no LLM) ───────────────────────────
+export async function executeAgent7(churchId: string) {
+  const alerts = await runBurnoutSentinel(churchId);
+  return {
+    status: "SUCCESS",
+    data: {
+      alerts,
+      scannedCount: Array.isArray(alerts) ? alerts.length : 0,
+      reportGeneratedAt: new Date().toISOString(),
+    },
+    metadata: { modelUsed: "none", tokensUsed: { input: 0, output: 0, total: 0 } },
+  };
+}
+
+// ── AGENT 8: Visitor Conversion Intelligence (OpenRouter → Anthropic fallback)
+export async function executeAgent8(context: VisitorConversionContext) {
+  const systemPrompt = getAgent8VisitorConversionPrompt(context);
+  const prompt = JSON.stringify(context);
+  const result = await intelligentRouter.execute(8, prompt, systemPrompt, 1200, agent8VisitorConversionSchema);
+  return {
+    status: "SUCCESS",
+    data: JSON.parse(result.text),
+    metadata: { modelUsed: result.modelUsed, tokensUsed: result.tokensUsed },
+  };
+}
+
+// ── AGENT 9: Generosity Coach (pure data — no LLM) ───────────────────────────
+export async function executeAgent9(churchId: string) {
+  const alerts = await generateGenerosityAlerts(churchId);
+  const now = new Date();
+  return {
+    status: "SUCCESS",
+    data: {
+      alerts,
+      totalAnalyzed: Array.isArray(alerts) ? alerts.length : 0,
+      reportMonth: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`,
+    },
+    metadata: { modelUsed: "none", tokensUsed: { input: 0, output: 0, total: 0 } },
+  };
+}
+
+// ── AGENT 10: Small Group Monitor (pure data — no LLM) ───────────────────────
+export async function executeAgent10(churchId: string) {
+  const scores = await generateSmallGroupHealthScores(churchId);
+  const now = new Date();
+  const scoresArray = Array.isArray(scores) ? scores : [];
+  return {
+    status: "SUCCESS",
+    data: {
+      scores: scoresArray,
+      redGroups: scoresArray.filter((s: any) => s.overallStatus === "RED").length,
+      yellowGroups: scoresArray.filter((s: any) => s.overallStatus === "YELLOW").length,
+      reportMonth: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`,
+    },
+    metadata: { modelUsed: "none", tokensUsed: { input: 0, output: 0, total: 0 } },
+  };
+}
+
+// ── AGENT 11: Board Synthesizer (OpenRouter → Anthropic fallback) ─────────────
+export async function executeAgent11(context: BoardSynthesizerContext) {
+  const systemPrompt = getAgent11BoardSynthesizerPrompt(context);
+  const prompt = JSON.stringify(context);
+  const result = await intelligentRouter.execute(11, prompt, systemPrompt, 1800, agent11BoardSynthesizerSchema);
+  return {
+    status: "SUCCESS",
+    data: JSON.parse(result.text),
+    metadata: { modelUsed: result.modelUsed, tokensUsed: result.tokensUsed },
+  };
+}
+
+// ── AGENT 13: Performance Engineer (OpenRouter → Anthropic fallback) ──────────
+export async function executeAgent13(context: PerformanceEngineerContext) {
+  const systemPrompt = getAgent13PerformanceEngineerPrompt(context);
+  const prompt = JSON.stringify(context);
+  const result = await intelligentRouter.execute(13, prompt, systemPrompt, 1500, agent13PerformanceEngineerSchema);
+  return {
+    status: "SUCCESS",
+    data: JSON.parse(result.text),
+    metadata: { modelUsed: result.modelUsed, tokensUsed: result.tokensUsed },
+  };
+}
 }

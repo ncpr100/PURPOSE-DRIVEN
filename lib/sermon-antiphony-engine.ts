@@ -2,12 +2,9 @@
 // Agent 1: Sermon Antiphony Engine
 // Analyzes sermons for cultural blind spots, skeptic challenges, and unresolved tensions.
 
-import Anthropic from "@anthropic-ai/sdk";
+import { intelligentRouter } from "@/lib/ai/intelligent-router";
 import { buildSystemPrompt } from "@/lib/ai/constitution";
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+import { agent1AntiphonySchema } from "@/lib/agents/schemas/agent-1-schema";
 
 export interface AntiphonyAnalysis {
   culturalMirror: string;
@@ -54,32 +51,14 @@ Rules:
 - If the sermon text is too short to identify these elements, return null for those fields.
 - Return ONLY the JSON. No preamble, no explanation, no markdown fences.`;
 
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-5",
-    max_tokens: 1500,
-    system: buildSystemPrompt([
-      "imageOfGod",
-      "language",
-      "noPastoralReplacement",
-    ]),
-    messages: [{ role: "user", content: prompt }],
-  });
-
-  const rawText = response.content
-    .filter((block) => block.type === "text")
-    .map((block) => (block as { type: "text"; text: string }).text)
-    .join("");
-
-  // Strip markdown fences Claude sometimes adds despite instructions
-  const cleanText = rawText
-    .replace(/^```(?:json)?\s*/i, "")
-    .replace(/\s*```$/i, "")
-    .trim();
+  // Route via intelligentRouter (OpenRouter primary → Anthropic claude-sonnet-4 fallback)
+  const systemPrompt = buildSystemPrompt(["imageOfGod", "language", "noPastoralReplacement"]);
+  const result = await intelligentRouter.execute(1, prompt, systemPrompt, 1500, agent1AntiphonySchema);
 
   try {
-    const parsed = JSON.parse(cleanText) as AntiphonyAnalysis;
+    const parsed = JSON.parse(result.text) as AntiphonyAnalysis;
     return parsed;
   } catch {
-    throw new Error(`Antiphony Engine returned invalid JSON: ${cleanText}`);
+    throw new Error(`Antiphony Engine returned invalid JSON: ${result.text}`);
   }
 }
