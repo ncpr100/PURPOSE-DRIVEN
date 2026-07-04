@@ -36,7 +36,9 @@ export async function GET(req: NextRequest) {
       select: { isEnabled: true, agentName: true },
     });
     if (!agent?.isEnabled) {
-      console.log("[CRON/Content Filter] Agent 3 is DISABLED - skipping execution");
+      console.log(
+        "[CRON/Content Filter] Agent 3 is DISABLED - skipping execution",
+      );
       return NextResponse.json({
         skipped: true,
         reason: "Agent 3 (Content Filter) is disabled in platform settings",
@@ -60,9 +62,7 @@ export async function GET(req: NextRequest) {
         church: { isActive: true },
         sermons: {
           // aiAnalysis null means no formation content stored yet
-          OR: [
-            { aiAnalysis: { equals: null } },
-          ],
+          OR: [{ aiAnalysis: { equals: null } }],
         },
       },
       take: 20, // Cap daily run to control costs
@@ -108,9 +108,18 @@ export async function GET(req: NextRequest) {
     duration = Date.now() - startTime;
     await logAgentExecution({
       agentId: 3,
-      status: errors.length > 0 && generated === 0 ? "FAILED" : errors.length > 0 ? "PARTIAL" : "SUCCESS",
+      status:
+        errors.length > 0 && generated === 0
+          ? "FAILED"
+          : errors.length > 0
+            ? "PARTIAL"
+            : "SUCCESS",
       durationMs: duration,
-      outputData: { generated, total_queued: analyses.length, errors: errors.length },
+      outputData: {
+        generated,
+        total_queued: analyses.length,
+        errors: errors.length,
+      },
       ...(errors.length > 0 && { errorMessage: errors[0].substring(0, 500) }),
     });
 

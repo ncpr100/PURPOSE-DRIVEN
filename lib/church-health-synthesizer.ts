@@ -3,10 +3,8 @@
 // Monthly narrative report for pastoral board / leadership team.
 // Interprets data into pastoral language. Never draws theological conclusions.
 
-import Anthropic from "@anthropic-ai/sdk";
+import { intelligentRouter } from "@/lib/ai/intelligent-router";
 import { db } from "@/lib/db";
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 export async function generateBoardReport(churchId: string) {
   if (process.env.ENABLE_BOARD_REPORT !== "true") {
@@ -179,28 +177,18 @@ Devuelve SOLO un JSON válido (sin markdown):
   "highlightConcern": "La UNA cosa que más necesita atención del consejo"
 }`;
 
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 1500,
-    messages: [{ role: "user", content: prompt }],
-  });
-
-  const rawText = response.content
-    .filter((b) => b.type === "text")
-    .map((b) => (b as { type: "text"; text: string }).text)
-    .join("");
-
+  // Route via intelligentRouter (OpenRouter primary → Anthropic claude-sonnet-4 fallback)
   let boardContent: {
     narrative: string;
     actionItems: string[];
     highlightPositive: string;
     highlightConcern: string;
   };
-
   try {
-    boardContent = JSON.parse(rawText);
+    const result = await intelligentRouter.execute(11, prompt, "", 1500);
+    boardContent = JSON.parse(result.text);
   } catch {
-    throw new Error("Claude returned invalid JSON for board report");
+    throw new Error("intelligentRouter returned invalid JSON for board report");
   }
 
   // -- Save the report --

@@ -1,13 +1,9 @@
 // Agent 4: Prayer Watchman — Event Extractor
 // Identifies date-specific events in prayer requests and schedules care touchpoints.
 
-import Anthropic from "@anthropic-ai/sdk";
-import { db } from "@/lib/db";
+import { intelligentRouter } from "@/lib/ai/intelligent-router";
 import { buildSystemPrompt } from "@/lib/ai/constitution";
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+import { db } from "@/lib/db";
 
 interface ExtractedEvent {
   hasEvent: boolean;
@@ -46,26 +42,11 @@ Rules:
 - If no specific date or time is mentioned, hasEvent must be false
 - Return ONLY the JSON. No other text.`;
 
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-5",
-    max_tokens: 200,
-    system: buildSystemPrompt(["imageOfGod", "language"]),
-    messages: [{ role: "user", content: prompt }],
-  });
-
-  const rawText = response.content
-    .filter((b) => b.type === "text")
-    .map((b) => (b as { type: "text"; text: string }).text)
-    .join("");
-
-  // Strip markdown fences Claude sometimes adds despite instructions
-  const cleanText = rawText
-    .replace(/^```(?:json)?\s*/i, "")
-    .replace(/\s*```$/i, "")
-    .trim();
-
+  // Route via intelligentRouter (OpenRouter primary → Anthropic claude-sonnet-4 fallback)
+  const systemPrompt = buildSystemPrompt(["imageOfGod", "language"]);
   try {
-    return JSON.parse(cleanText) as ExtractedEvent;
+    const result = await intelligentRouter.execute(4, prompt, systemPrompt, 200);
+    return JSON.parse(result.text) as ExtractedEvent;
   } catch {
     return { hasEvent: false, eventDateTime: null, eventDescription: null };
   }

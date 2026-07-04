@@ -9,10 +9,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { generateBoardReport } from "@/lib/church-health-synthesizer";
+import { logAgentExecution } from "@/lib/agent-logger";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  const startTime = Date.now();
+  let errDuration = 0;
   try {
     const authHeader = req.headers.get("Authorization");
     if (
@@ -22,10 +25,23 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // CRITICAL: Check if Agent 11 is enabled in database
+    const agent = await db.agent_settings.findUnique({
+      where: { agentId: 11 },
+      select: { isEnabled: true, agentName: true },
+    });
+    if (!agent?.isEnabled) {
+      console.log("[CRON/Board Report] Agent 11 is DISABLED - skipping execution");
+      return NextResponse.json({
+        skipped: true,
+        reason: "Agent 11 (Board Synthesizer) is disabled in platform settings",
+      });
+    }
+
     if (process.env.ENABLE_BOARD_REPORT !== "true") {
       return NextResponse.json({
         skipped: true,
-        reason: "board report disabled",
+        reason: "ENABLE_BOARD_REPORT env var not set to true",
       });
     }
 
@@ -51,6 +67,15 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    const duration = Date.now() - startTime;
+    await logAgentExecution({
+      agentId: 11,
+      status: errors.length > 0 && generated === 0 ? "FAILED" : errors.length > 0 ? "PARTIAL" : "SUCCESS",
+      durationMs: duration,
+      outputData: { generated, total: churches.length, errors: errors.length },
+      ...(errors.length > 0 && { errorMessage: errors[0].substring(0, 500) }),
+    });
+
     return NextResponse.json({
       success: true,
       generated,
@@ -58,7 +83,15 @@ export async function GET(req: NextRequest) {
       ...(errors.length > 0 && { errors }),
     });
   } catch (err) {
+    errDuration = Date.now() - startTime;
+    const errMsg = err instanceof Error ? err.message : String(err);
     console.error("[BOARD_REPORT] Cron error:", err);
+    await logAgentExecution({
+      agentId: 11,
+      status: "FAILED",
+      durationMs: errDuration,
+      errorMessage: errMsg.substring(0, 500),
+    });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

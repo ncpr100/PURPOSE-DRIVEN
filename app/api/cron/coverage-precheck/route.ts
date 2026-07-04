@@ -51,8 +51,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    
-        // --- EXECUTION TRACKING (SUCCESS) ---
+    // --- EXECUTION TRACKING (SUCCESS) ---
     duration = Date.now() - startTime;
     const overdueEvents = [];
     const sent = 0;
@@ -61,11 +60,11 @@ export async function GET(req: NextRequest) {
       status: "SUCCESS",
       durationMs: duration,
       tokensUsed: 0,
-      outputData: { processed: overdueEvents?.length || 0, sent: sent || 0 }
+      outputData: { processed: overdueEvents?.length || 0, sent: sent || 0 },
     });
-    
 
-    return NextResponse.json({ success: true,
+    return NextResponse.json({
+      success: true,
       processed,
       total: churches.length,
       ...(errors.length > 0 && { errors }),
@@ -73,7 +72,7 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.error("[COVERAGE_PRECHECK] Cron error:", err);
 
-        // --- EXECUTION TRACKING (ERROR) ---
+    // --- EXECUTION TRACKING (ERROR) ---
     duration = Date.now() - startTime;
     const errMsg = err instanceof Error ? err.message : String(err);
     await logAgentExecution({
@@ -81,9 +80,9 @@ export async function GET(req: NextRequest) {
       status: "FAILED",
       durationMs: errDuration,
       tokensUsed: 0,
-      errorMessage: errMsg.substring(0, 500)
+      errorMessage: errMsg.substring(0, 500),
     });
-    
+
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

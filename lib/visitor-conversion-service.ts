@@ -2,10 +2,8 @@
 // Agent 8: Visitor Conversion Intelligence
 // Analyzes why visitors return or don't — surfaces patterns, not individual judgments.
 
-import Anthropic from "@anthropic-ai/sdk";
+import { intelligentRouter } from "@/lib/ai/intelligent-router";
 import { db } from "@/lib/db";
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 export interface ConversionPattern {
   pattern: string;
@@ -141,27 +139,17 @@ Devuelve SOLO un JSON válido (sin markdown) con esta estructura:
 Máximo 3 patrones. Usa lenguaje pastoral, no de marketing. 
 Recuerda: el objetivo es discipulado, no crecimiento numérico.`;
 
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
-    max_tokens: 800,
-    messages: [{ role: "user", content: prompt }],
-  });
-
-  const rawText = response.content
-    .filter((b) => b.type === "text")
-    .map((b) => (b as { type: "text"; text: string }).text)
-    .join("");
-
+  // Route via intelligentRouter (OpenRouter primary → Anthropic claude-sonnet-4 fallback)
   let analysis: {
     summary: string;
     patterns: ConversionPattern[];
     topPriority: string;
   };
-
   try {
-    analysis = JSON.parse(rawText);
+    const result = await intelligentRouter.execute(8, prompt, "", 800);
+    analysis = JSON.parse(result.text);
   } catch {
-    throw new Error("Claude returned invalid JSON for visitor analysis");
+    throw new Error("intelligentRouter returned invalid JSON for visitor analysis");
   }
 
   // 6. Save report — visitor_conversion_reports has no compound unique constraint,

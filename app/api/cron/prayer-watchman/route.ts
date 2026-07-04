@@ -25,10 +25,12 @@ export async function GET(req: NextRequest) {
     // CRITICAL: Check if Agent 4 is enabled in database
     const agent = await db.agent_settings.findUnique({
       where: { agentId: 4 },
-      select: { isEnabled: true, agentName: true }
+      select: { isEnabled: true, agentName: true },
     });
     if (!agent?.isEnabled) {
-      console.log('[CRON/Prayer Watchman] Agent 4 is DISABLED - skipping execution');
+      console.log(
+        "[CRON/Prayer Watchman] Agent 4 is DISABLED - skipping execution",
+      );
       return NextResponse.json({
         skipped: true,
         reason: "Agent 4 (Prayer Watchman) is disabled in platform settings",
@@ -36,7 +38,10 @@ export async function GET(req: NextRequest) {
     }
     // Optional: Check environment variable override
     if (process.env.ENABLE_PRAYER_WATCHMAN === "false") {
-      return NextResponse.json({ skipped: true, reason: "watchman disabled via env var" });
+      return NextResponse.json({
+        skipped: true,
+        reason: "watchman disabled via env var",
+      });
     }
     const now = new Date();
     const reminderWindowEnd = new Date(
@@ -142,10 +147,13 @@ export async function GET(req: NextRequest) {
       durationMs: duration,
       tokensUsed: 0,
       outputData: { reminders, followups },
-      errorMessage: errors.length > 0 ? errors.join('; ').substring(0, 500) : undefined
+      errorMessage:
+        errors.length > 0 ? errors.join("; ").substring(0, 500) : undefined,
     });
     const logDuration = Date.now() - startTime;
-    console.log(`[WATCHMAN] Execution completed: ${reminders} reminders, ${followups} follow-ups in ${logDuration}ms`);
+    console.log(
+      `[WATCHMAN] Execution completed: ${reminders} reminders, ${followups} follow-ups in ${logDuration}ms`,
+    );
     return NextResponse.json({
       success: true,
       reminders,
@@ -161,7 +169,7 @@ export async function GET(req: NextRequest) {
       status: "FAILED",
       durationMs: duration,
       tokensUsed: 0,
-      errorMessage: errorMessage.substring(0, 500)
+      errorMessage: errorMessage.substring(0, 500),
     });
     console.error("[WATCHMAN] Cron error:", err);
     return NextResponse.json(
