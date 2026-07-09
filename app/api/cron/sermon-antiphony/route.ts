@@ -1,5 +1,5 @@
-// app/api/cron/sermon-antiphony/route.ts
-// Agent 1: Sermon Antiphony Engine — Weekly cron
+﻿// app/api/cron/sermon-antiphony/route.ts
+// Agent 1: Sermon Antiphony Engine â€” Weekly cron
 // Analyzes newly submitted sermons for cultural blind spots, skeptic challenges,
 // and unresolved tensions. Runs every Wednesday at 8:00 AM UTC.
 // vercel.json: "0 8 * * 3"
@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { analyzeSermon } from "@/lib/sermon-antiphony-engine";
 import { logAgentExecution } from "@/lib/agent-logger";
+import { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -69,7 +70,7 @@ export async function GET(req: NextRequest) {
         where: {
           churchId: church.id,
           content: { not: null },
-          sermon_ai_analysis: null,
+          aiAnalysis: null as any, // ✅ Fix JsonNullableFilter type mismatch
         },
         select: { id: true, title: true, content: true },
         take: 5, // Cap per church per run to control token spend

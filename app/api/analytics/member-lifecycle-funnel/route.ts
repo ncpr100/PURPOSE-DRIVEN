@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -24,8 +24,10 @@ export async function GET(request: Request) {
     // Try to get from cache first
     const cached = await memberAnalyticsCache.getLifecycleFunnel(churchId, dateRange);
     if (cached) {
+      // ✅ FIX: Parse JSON string to object before spreading (TS2698)
+      const parsed = (typeof cached === 'string' ? JSON.parse(cached) : cached) as Record<string, any>;
       return NextResponse.json({
-        ...cached,
+        ...parsed,
         cached: true,
         timestamp: new Date().toISOString()
       });
@@ -180,3 +182,4 @@ export async function GET(request: Request) {
     );
   }
 }
+

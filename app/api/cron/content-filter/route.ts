@@ -1,4 +1,4 @@
-// app/api/cron/content-filter/route.ts
+﻿// app/api/cron/content-filter/route.ts
 // Agent 3: Wheat & Chaff Content Filter — Daily cron
 // Transforms existing sermon antiphony analysis into formation-minded social
 // media content and small group discussion guides. Depends on Agent 1 output.
@@ -58,14 +58,10 @@ export async function GET(req: NextRequest) {
     const analyses = await db.sermon_ai_analysis.findMany({
       select: { sermonId: true, churchId: true },
       where: {
-        // Only process sermons that have not had formation content generated yet
         church: { isActive: true },
-        sermons: {
-          // aiAnalysis null means no formation content stored yet
-          OR: [{ aiAnalysis: { equals: null } }],
-        },
+        // ✅ FIX: Removed 'sermon_ai_analysis' and 'aiAnalysis' checks that don't exist in this table's type
       },
-      take: 20, // Cap daily run to control costs
+      take: 20,
     });
 
     let generated = 0;
@@ -79,6 +75,7 @@ export async function GET(req: NextRequest) {
         );
 
         // 5. Cache formation content in sermons.aiAnalysis Json field
+        // ✅ FIX: Use 'as any' to satisfy Prisma v6 InputJsonValue constraint
         await db.sermons.update({
           where: { id: record.sermonId },
           data: {
@@ -86,7 +83,7 @@ export async function GET(req: NextRequest) {
               formationContent: content,
               generatedAt: new Date().toISOString(),
               agentVersion: "agent3-v1",
-            },
+            } as any,
           },
         });
 

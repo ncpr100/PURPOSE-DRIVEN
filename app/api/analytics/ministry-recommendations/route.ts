@@ -1,72 +1,73 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { memberAnalyticsCache } from '@/lib/member-analytics-cache';
+﻿import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { memberAnalyticsCache } from "@/lib/member-analytics-cache";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.churchId) {
       return NextResponse.json(
-        { error: 'No autorizado - Se requiere membresía de iglesia' },
-        { status: 401 }
+        { error: "No autorizado - Se requiere membresía de iglesia" },
+        { status: 401 },
       );
     }
 
     const churchId = session.user.churchId;
 
     // Try to get from cache first
-    const cached = await memberAnalyticsCache.getMinistryRecommendations(churchId);
+    const cached =
+      await memberAnalyticsCache.getMinistryRecommendations(churchId);
     if (cached) {
+      // ✅ FIX: Parse JSON string before spreading (TS2698)
+      const parsed = typeof cached === "string" ? JSON.parse(cached) : cached;
       return NextResponse.json({
-        ...cached,
+        ...parsed,
         cached: true,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
-    }
+    } // ✅ FIX: Closing brace for if(cached) block
 
     // Get existing ministry recommendations
-    const existingRecommendations = await db.ministry_pathway_recommendations.findMany({
-      where: {
-        churchId,
-        status: 'pending'
-      },
-      include: {
-        member_journeys: {
-          include: {
-            members: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-                spiritualGiftsStructured: true
-              }
-            }
-          }
-        }
-      },
-      orderBy: [
-        { matchScore: 'desc' },
-        { priority: 'asc' }
-      ]
-    });
+    const existingRecommendations =
+      await db.ministry_pathway_recommendations.findMany({
+        where: {
+          churchId,
+          status: "pending",
+        },
+        include: {
+          member_journeys: {
+            include: {
+              members: {
+                select: {
+                  id: true,
+                  firstName: true,
+                  lastName: true,
+                  email: true,
+                  spiritualGiftsStructured: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: [{ matchScore: "desc" }, { priority: "asc" }],
+      });
 
     // Get ministry information from ministries table
     const ministries = await db.ministries.findMany({
       where: {
         churchId,
-        isActive: true
+        isActive: true,
       },
       select: {
         id: true,
         name: true,
-        description: true
-      }
+        description: true,
+      },
     });
 
     // Get volunteer information to calculate current capacity
@@ -74,27 +75,32 @@ export async function GET(request: Request) {
       where: {
         churchId,
         isActive: true,
-        ministryId: { not: null }
+        ministryId: { not: null },
       },
       select: {
-        ministryId: true
-      }
+        ministryId: true,
+      },
     });
 
-    const volunteerCounts = activeVolunteers.reduce((acc, vol) => {
-      if (vol.ministryId) {
-        acc[vol.ministryId] = (acc[vol.ministryId] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>);
+    const volunteerCounts = activeVolunteers.reduce(
+      (acc, vol) => {
+        if (vol.ministryId) {
+          acc[vol.ministryId] = (acc[vol.ministryId] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
     // Get members ready for ministry involvement
     const readyMembers = await db.member_journeys.findMany({
       where: {
         churchId,
-        currentStage: { in: ['ESTABLISHED_MEMBER', 'LEADING_MEMBER', 'SERVING_MEMBER'] },
+        currentStage: {
+          in: ["ESTABLISHED_MEMBER", "LEADING_MEMBER", "SERVING_MEMBER"],
+        },
         engagementScore: { gte: 60 },
-        members: { isActive: true }
+        members: { isActive: true },
       },
       include: {
         members: {
@@ -105,141 +111,182 @@ export async function GET(request: Request) {
             email: true,
             spiritualGiftsStructured: true,
             experienceLevelEnum: true,
-            leadershipStage: true
-          }
+            leadershipStage: true,
+          },
         },
         member_behavioral_patterns: {
-          orderBy: { analyzedAt: 'desc' },
-          take: 1
-        }
-      }
+          orderBy: { analyzedAt: "desc" },
+          take: 1,
+        },
+      },
     });
 
     // Calculate AI-powered recommendations based on spiritual gifts and behavioral patterns
     const generateRecommendations = (member: any) => {
       const memberData = member.members;
-      const spiritualGifts = memberData.spiritualGiftsStructured ? 
-        JSON.parse(memberData.spiritualGiftsStructured as string) : { primary: [], secondary: [] };
+      const spiritualGifts = memberData.spiritualGiftsStructured
+        ? JSON.parse(memberData.spiritualGiftsStructured as string)
+        : { primary: [], secondary: [] };
       const behavioral = member.member_behavioral_patterns[0];
 
       const recommendations: any[] = [];
 
       // Leadership Development Track
-      if (memberData.leadershipStage === 'VOLUNTEER' && 
-          member.engagementScore >= 80 && 
-          behavioral?.leadershipPotential > 0.7) {
+      if (
+        memberData.leadershipStage === "VOLUNTEER" &&
+        member.engagementScore >= 80 &&
+        behavioral?.leadershipPotential > 0.7
+      ) {
         recommendations.push({
-          type: 'leadership',
-          title: 'Desarrollo de Liderazgo',
-          description: 'Programa de formación para líderes emergentes',
+          type: "leadership",
+          title: "Desarrollo de Liderazgo",
+          description: "Programa de formación para líderes emergentes",
           matchScore: 90 + Math.round(behavioral.leadershipPotential * 10),
-          priority: 'high',
-          timeCommitment: '6-8 horas semanales',
-          requiredSkills: ['Liderazgo', 'Comunicación', 'Trabajo en equipo'],
-          basedOnFactors: ['Alto potencial de liderazgo', 'Excelente engagement', 'Experiencia como voluntario']
+          priority: "high",
+          timeCommitment: "6-8 horas semanales",
+          requiredSkills: ["Liderazgo", "Comunicación", "Trabajo en equipo"],
+          basedOnFactors: [
+            "Alto potencial de liderazgo",
+            "Excelente engagement",
+            "Experiencia como voluntario",
+          ],
         });
       }
 
       // Teaching Ministry
-      if (spiritualGifts.primary?.includes('ENSEÑANZA') || 
-          spiritualGifts.secondary?.includes('ENSEÑANZA')) {
+      if (
+        spiritualGifts.primary?.includes("ENSEÑANZA") ||
+        spiritualGifts.secondary?.includes("ENSEÑANZA")
+      ) {
         recommendations.push({
-          type: 'ministry',
-          title: 'Ministerio de Enseñanza',
-          description: 'Enseñanza en clases bíblicas y grupos pequeños',
+          type: "ministry",
+          title: "Ministerio de Enseñanza",
+          description: "Enseñanza en clases bíblicas y grupos pequeños",
           matchScore: 85 + (behavioral?.communicationEngagement > 0.8 ? 10 : 0),
-          priority: 'high',
-          timeCommitment: '4-6 horas semanales',
-          requiredSkills: ['Conocimiento bíblico', 'Comunicación efectiva', 'Paciencia'],
-          basedOnFactors: ['Don de enseñanza identificado', 'Buena comunicación']
+          priority: "high",
+          timeCommitment: "4-6 horas semanales",
+          requiredSkills: [
+            "Conocimiento bíblico",
+            "Comunicación efectiva",
+            "Paciencia",
+          ],
+          basedOnFactors: [
+            "Don de enseñanza identificado",
+            "Buena comunicación",
+          ],
         });
       }
 
       // Hospitality Ministry
-      if (spiritualGifts.primary?.includes('HOSPITALIDAD') || 
-          behavioral?.socialInteraction > 0.7) {
+      if (
+        spiritualGifts.primary?.includes("HOSPITALIDAD") ||
+        behavioral?.socialInteraction > 0.7
+      ) {
         recommendations.push({
-          type: 'service',
-          title: 'Equipo de Hospitalidad',
-          description: 'Dar la bienvenida y crear ambiente acogedor',
+          type: "service",
+          title: "Equipo de Hospitalidad",
+          description: "Dar la bienvenida y crear ambiente acogedor",
           matchScore: 80 + Math.round(behavioral?.socialInteraction * 10),
-          priority: 'medium',
-          timeCommitment: '2-3 horas semanales',
-          requiredSkills: ['Amabilidad', 'Organización', 'Comunicación'],
-          basedOnFactors: ['Fuerte interacción social', 'Don de hospitalidad']
+          priority: "medium",
+          timeCommitment: "2-3 horas semanales",
+          requiredSkills: ["Amabilidad", "Organización", "Comunicación"],
+          basedOnFactors: ["Fuerte interacción social", "Don de hospitalidad"],
         });
       }
 
       // Children/Youth Ministry
-      if (spiritualGifts.primary?.includes('PASTOR') || 
-          memberData.experienceLevelEnum === 'AVANZADO') {
+      if (
+        spiritualGifts.primary?.includes("PASTOR") ||
+        memberData.experienceLevelEnum === "AVANZADO"
+      ) {
         recommendations.push({
-          type: 'ministry',
-          title: 'Ministerio Juvenil',
-          description: 'Trabajo con jóvenes y adolescentes',
+          type: "ministry",
+          title: "Ministerio Juvenil",
+          description: "Trabajo con jóvenes y adolescentes",
           matchScore: 75 + (behavioral?.spiritualGrowthActivity > 0.6 ? 15 : 0),
-          priority: 'medium',
-          timeCommitment: '4-5 horas semanales',
-          requiredSkills: ['Paciencia', 'Creatividad', 'Energía', 'Liderazgo'],
-          basedOnFactors: ['Experiencia avanzada', 'Actividad de crecimiento espiritual']
+          priority: "medium",
+          timeCommitment: "4-5 horas semanales",
+          requiredSkills: ["Paciencia", "Creatividad", "Energía", "Liderazgo"],
+          basedOnFactors: [
+            "Experiencia avanzada",
+            "Actividad de crecimiento espiritual",
+          ],
         });
       }
 
       // Music/Worship Ministry
-      if (spiritualGifts.primary?.includes('MUSICA') || 
-          spiritualGifts.secondary?.includes('MUSICA')) {
+      if (
+        spiritualGifts.primary?.includes("MUSICA") ||
+        spiritualGifts.secondary?.includes("MUSICA")
+      ) {
         recommendations.push({
-          type: 'ministry',
-          title: 'Ministerio de Alabanza',
-          description: 'Participación en el equipo de alabanza y adoración',
+          type: "ministry",
+          title: "Ministerio de Alabanza",
+          description: "Participación en el equipo de alabanza y adoración",
           matchScore: 85,
-          priority: 'high',
-          timeCommitment: '3-4 horas semanales',
-          requiredSkills: ['Habilidad musical', 'Compromiso', 'Trabajo en equipo'],
-          basedOnFactors: ['Don musical identificado']
+          priority: "high",
+          timeCommitment: "3-4 horas semanales",
+          requiredSkills: [
+            "Habilidad musical",
+            "Compromiso",
+            "Trabajo en equipo",
+          ],
+          basedOnFactors: ["Don musical identificado"],
         });
       }
 
       // Growth/Discipleship Programs
-      if (member.engagementScore >= 70 && behavioral?.spiritualGrowthActivity > 0.5) {
+      if (
+        member.engagementScore >= 70 &&
+        behavioral?.spiritualGrowthActivity > 0.5
+      ) {
         recommendations.push({
-          type: 'growth',
-          title: 'Programa de Discipulado',
-          description: 'Crecimiento espiritual a través de mentoring',
+          type: "growth",
+          title: "Programa de Discipulado",
+          description: "Crecimiento espiritual a través de mentoring",
           matchScore: 70 + Math.round(behavioral.spiritualGrowthActivity * 20),
-          priority: 'medium',
-          timeCommitment: '2-3 horas semanales',
-          requiredSkills: ['Compromiso', 'Deseo de crecimiento', 'Disponibilidad'],
-          basedOnFactors: ['Alta actividad de crecimiento espiritual', 'Buen engagement']
+          priority: "medium",
+          timeCommitment: "2-3 horas semanales",
+          requiredSkills: [
+            "Compromiso",
+            "Deseo de crecimiento",
+            "Disponibilidad",
+          ],
+          basedOnFactors: [
+            "Alta actividad de crecimiento espiritual",
+            "Buen engagement",
+          ],
         });
       }
 
-      return recommendations.sort((a, b) => b.matchScore - a.matchScore).slice(0, 3);
+      return recommendations
+        .sort((a, b) => b.matchScore - a.matchScore)
+        .slice(0, 3);
     };
 
     // Generate recommendations for ready members who don't have existing recommendations
     const membersWithRecommendations = new Set(
-      existingRecommendations.map(rec => rec.member_journeys.members?.id)
+      existingRecommendations.map((rec) => rec.member_journeys.members?.id),
     );
 
     const newRecommendations: any[] = [];
-    readyMembers.forEach(member => {
+    readyMembers.forEach((member) => {
       if (!membersWithRecommendations.has(member.members?.id)) {
         const memberRecs = generateRecommendations(member);
-        memberRecs.forEach(rec => {
+        memberRecs.forEach((rec) => {
           newRecommendations.push({
             ...rec,
             memberId: member.members?.id,
             memberName: `${member.members?.firstName} ${member.members?.lastName}`,
             currentStage: member.currentStage,
-            engagementScore: member.engagementScore
+            engagementScore: member.engagementScore,
           });
         });
       }
     });
 
     // Format existing recommendations
-    const formattedExisting = existingRecommendations.map(rec => ({
+    const formattedExisting = existingRecommendations.map((rec) => ({
       id: rec.id,
       type: rec.recommendationType,
       title: rec.title,
@@ -247,8 +294,12 @@ export async function GET(request: Request) {
       matchScore: rec.matchScore,
       priority: rec.priority,
       timeCommitment: rec.timeCommitment,
-      requiredSkills: rec.requiredSkills ? JSON.parse(rec.requiredSkills as string) : [],
-      basedOnFactors: rec.basedOnFactors ? JSON.parse(rec.basedOnFactors as string) : [],
+      requiredSkills: rec.requiredSkills
+        ? JSON.parse(rec.requiredSkills as string)
+        : [],
+      basedOnFactors: rec.basedOnFactors
+        ? JSON.parse(rec.basedOnFactors as string)
+        : [],
       status: rec.status,
       memberId: rec.member_journeys.members?.id,
       memberName: `${rec.member_journeys.members?.firstName} ${rec.member_journeys.members?.lastName}`,
@@ -256,38 +307,43 @@ export async function GET(request: Request) {
       currentStage: rec.member_journeys.currentStage,
       spiritualGiftsMatch: rec.spiritualGiftsMatch,
       experienceMatch: rec.experienceMatch,
-      createdAt: rec.createdAt
+      createdAt: rec.createdAt,
     }));
 
     // Calculate ministry statistics
     const ministryStats = {
-      totalOpenings: ministries.length * 3, // Assume average 3 positions per ministry
-      totalVolunteers: Object.values(volunteerCounts).reduce((sum: number, count: number) => sum + count, 0),
-      urgentNeeds: ministries.filter(ministry => 
-        (volunteerCounts[ministry.id] || 0) < 2
+      totalOpenings: ministries.length * 3,
+      totalVolunteers: Object.values(volunteerCounts).reduce(
+        (sum: number, count: number) => sum + count,
+        0,
+      ),
+      urgentNeeds: ministries.filter(
+        (ministry) => (volunteerCounts[ministry.id] || 0) < 2,
       ).length,
-      recentMatches: existingRecommendations.filter(rec => 
-        rec.createdAt >= new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-      ).length
+      recentMatches: existingRecommendations.filter(
+        (rec) =>
+          rec.createdAt >= new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      ).length,
     };
 
     // Get member recommendations grouped by member
-    const memberRecommendations = readyMembers.slice(0, 10).map(member => {
-      const memberRecs = existingRecommendations.filter(rec => 
-        rec.member_journeys.members?.id === member.members?.id
+    const memberRecommendations = readyMembers.slice(0, 10).map((member) => {
+      const memberRecs = existingRecommendations.filter(
+        (rec) => rec.member_journeys.members?.id === member.members?.id,
       );
-      
+
       if (memberRecs.length === 0) {
-        // Generate new recommendations
         const generated = generateRecommendations(member).slice(0, 2);
         return {
           id: member.members?.id,
           name: `${member.members?.firstName} ${member.members?.lastName}`,
           currentStage: member.currentStage,
           engagementScore: member.engagementScore,
-          spiritualGifts: member.members?.spiritualGiftsStructured ? 
-            JSON.parse(member.members.spiritualGiftsStructured as string).primary || [] : [],
-          recommendations: generated
+          spiritualGifts: member.members?.spiritualGiftsStructured
+            ? JSON.parse(member.members.spiritualGiftsStructured as string)
+                .primary || []
+            : [],
+          recommendations: generated,
         };
       }
 
@@ -296,15 +352,17 @@ export async function GET(request: Request) {
         name: `${member.members?.firstName} ${member.members?.lastName}`,
         currentStage: member.currentStage,
         engagementScore: member.engagementScore,
-        spiritualGifts: member.members?.spiritualGiftsStructured ? 
-          JSON.parse(member.members.spiritualGiftsStructured as string).primary || [] : [],
-        recommendations: memberRecs.slice(0, 2).map(rec => ({
+        spiritualGifts: member.members?.spiritualGiftsStructured
+          ? JSON.parse(member.members.spiritualGiftsStructured as string)
+              .primary || []
+          : [],
+        recommendations: memberRecs.slice(0, 2).map((rec) => ({
           id: rec.id,
           type: rec.recommendationType,
           title: rec.title,
           matchScore: rec.matchScore,
-          priority: rec.priority
-        }))
+          priority: rec.priority,
+        })),
       };
     });
 
@@ -312,45 +370,52 @@ export async function GET(request: Request) {
     const recommendationsData = {
       topRecommendations: [
         ...formattedExisting.slice(0, 5),
-        ...newRecommendations.slice(0, 5)
-      ].sort((a, b) => b.matchScore - a.matchScore).slice(0, 8),
-      
+        ...newRecommendations.slice(0, 5),
+      ]
+        .sort((a, b) => b.matchScore - a.matchScore)
+        .slice(0, 8),
+
       memberRecommendations,
-      
+
       ministryStats,
-      
+
       urgentNeeds: ministries
-        .filter(ministry => (volunteerCounts[ministry.id] || 0) < 2)
-        .map(ministry => ({
+        .filter((ministry) => (volunteerCounts[ministry.id] || 0) < 2)
+        .map((ministry) => ({
           id: ministry.id,
           title: ministry.name,
-          description: ministry.description || 'Descripción no disponible',
+          description: ministry.description || "Descripción no disponible",
           currentVolunteers: volunteerCounts[ministry.id] || 0,
           neededVolunteers: 3 - (volunteerCounts[ministry.id] || 0),
-          category: 'general', // Default category
-          timeCommitment: 'Por determinar', // Default time commitment
-          requiredSkills: ['Compromiso', 'Disponibilidad'] // Default skills
+          category: "general",
+          timeCommitment: "Por determinar",
+          requiredSkills: ["Compromiso", "Disponibilidad"],
         })),
-      
+
       recentActivity: {
         newRecommendations: newRecommendations.length,
         pendingApplications: existingRecommendations.length,
-        recentMatches: ministryStats.recentMatches
+        recentMatches: ministryStats.recentMatches,
       },
-      
-      lastUpdated: new Date().toISOString()
+
+      lastUpdated: new Date().toISOString(),
     };
 
     // Cache the results
-    await memberAnalyticsCache.cacheMinistryRecommendations(churchId, recommendationsData);
+    await memberAnalyticsCache.cacheMinistryRecommendations(
+      churchId,
+      recommendationsData,
+    );
 
     return NextResponse.json(recommendationsData);
-
   } catch (error) {
-    console.error('Error fetching ministry recommendations:', error);
+    console.error("Error fetching ministry recommendations:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor al obtener recomendaciones de ministerio' },
-      { status: 500 }
+      {
+        error:
+          "Error interno del servidor al obtener recomendaciones de ministerio",
+      },
+      { status: 500 },
     );
   }
 }

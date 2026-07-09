@@ -1,13 +1,11 @@
 /**
  * Cache Optimization Controller - 100% Hit Rate Achievement System
- *
- * This controller orchestrates between the Redis cache manager and intelligent
- * cache warmer to achieve and maintain 100% cache hit rates for critical operations.
+ * Orchestrates between Redis cache manager and intelligent cache warmer.
  */
 
-import { cacheManager } from "../services/cache-manager";
-import { IntelligentCacheWarmer } from "./cache-warmer";
-import type { CacheMetrics } from "../services/cache-manager";
+import { cacheManager } from "@/lib/services/cache-manager";
+import type { CacheMetrics } from "@/lib/services/cache-manager";
+import { warmAllChurchCaches } from "@/lib/system/cache-warmer";
 
 export interface OptimizationTarget {
   pattern: string;
@@ -32,12 +30,11 @@ export interface OptimizationReport {
 }
 
 export class CacheOptimizationController {
-  private cacheWarmer: IntelligentCacheWarmer;
   private optimizationTargets: OptimizationTarget[] = [];
   private lastOptimizationReport: OptimizationReport | null = null;
   private isOptimizing = false;
+  private monitoringIntervals: NodeJS.Timeout[] = [];
 
-  // 100% Hit Rate Targets for Critical Operations
   private readonly CRITICAL_TARGETS: OptimizationTarget[] = [
     {
       pattern: "analytics:executive:*",
@@ -77,85 +74,57 @@ export class CacheOptimizationController {
   ];
 
   constructor() {
-    this.cacheWarmer = new IntelligentCacheWarmer();
     this.optimizationTargets = [...this.CRITICAL_TARGETS];
   }
 
-  /**
-   * Initialize the optimization controller and start monitoring
-   */
   async initialize(): Promise<void> {
     try {
-      // Initialize cache warmer
-      await this.cacheWarmer.start();
-
-      // Start optimization monitoring
       await this.startOptimizationMonitoring();
-
-      console.log(" Cache optimization controller initialized");
+      console.log("✅ Cache optimization controller initialized");
     } catch (error) {
       console.error(
-        " Cache optimization controller initialization failed:",
+        "❌ Cache optimization controller initialization failed:",
         error,
       );
       throw error;
     }
   }
 
-  /**
-   * Start continuous optimization monitoring
-   */
   private async startOptimizationMonitoring(): Promise<void> {
-    // Run initial optimization
     await this.runOptimizationCycle();
 
-    // Schedule regular optimization cycles (every 5 minutes)
-    setInterval(
+    const regularInterval = setInterval(
       async () => {
-        if (!this.isOptimizing) {
-          await this.runOptimizationCycle();
-        }
+        if (!this.isOptimizing) await this.runOptimizationCycle();
       },
       5 * 60 * 1000,
     );
+    this.monitoringIntervals.push(regularInterval);
 
-    // Schedule intensive optimization cycles (every 30 minutes)
-    setInterval(
+    const intensiveInterval = setInterval(
       async () => {
-        if (!this.isOptimizing) {
-          await this.runIntensiveOptimization();
-        }
+        if (!this.isOptimizing) await this.runIntensiveOptimization();
       },
       30 * 60 * 1000,
     );
+    this.monitoringIntervals.push(intensiveInterval);
   }
 
-  /**
-   * Run a complete optimization cycle to achieve 100% hit rates
-   */
   async runOptimizationCycle(): Promise<OptimizationReport> {
-    if (this.isOptimizing) {
-      return this.lastOptimizationReport!;
-    }
+    if (this.isOptimizing) return this.lastOptimizationReport!;
 
     this.isOptimizing = true;
     const startTime = Date.now();
 
     try {
-      // Get current cache metrics
       const currentMetrics = await cacheManager.getMetrics();
-
-      // Analyze each target
       const achievements = await Promise.all(
         this.optimizationTargets.map((target) =>
           this.analyzeTarget(target, currentMetrics),
         ),
       );
-
-      // Determine overall status
       const overallStatus = this.calculateOverallStatus(achievements);
 
-      // Generate optimization report
       const report: OptimizationReport = {
         timestamp: new Date(),
         currentMetrics,
@@ -165,64 +134,48 @@ export class CacheOptimizationController {
         nextOptimizationCycle: new Date(Date.now() + 5 * 60 * 1000),
       };
 
-      // Execute optimizations for underperforming targets
       await this.executeOptimizations(achievements);
-
       this.lastOptimizationReport = report;
 
-      const duration = Date.now() - startTime;
       console.log(
-        ` Optimization cycle completed in ${duration}ms - Status: ${overallStatus}`,
+        `🔄 Optimization cycle completed in ${Date.now() - startTime}ms - Status: ${overallStatus}`,
       );
-
       return report;
     } catch (error) {
-      console.error(" Optimization cycle failed:", error);
+      console.error("❌ Optimization cycle failed:", error);
       throw error;
     } finally {
       this.isOptimizing = false;
     }
   }
 
-  /**
-   * Run intensive optimization for critical targets
-   */
   async runIntensiveOptimization(): Promise<void> {
     const criticalTargets = this.optimizationTargets.filter(
       (t) => t.priority === "critical",
     );
-
     for (const target of criticalTargets) {
       try {
-        // Force comprehensive warmup for this pattern
-        await this.cacheWarmer.forceWarmup();
-
+        await warmAllChurchCaches();
         console.log(
-          ` Intensive warming completed for pattern: ${target.pattern}`,
+          `🔥 Intensive warming completed for pattern: ${target.pattern}`,
         );
       } catch (error) {
         console.error(
-          ` Intensive warming failed for pattern ${target.pattern}:`,
+          `❌ Intensive warming failed for pattern ${target.pattern}:`,
           error,
         );
       }
     }
   }
 
-  /**
-   * Analyze target performance and generate recommendations
-   */
   private async analyzeTarget(
     target: OptimizationTarget,
     metrics: CacheMetrics,
   ): Promise<OptimizationReport["achievements"][0]> {
-    // For this demo, we'll estimate hit rate based on overall metrics
-    // In production, you'd track pattern-specific metrics
     const estimatedHitRate = this.estimatePatternHitRate(
       target.pattern,
       metrics,
     );
-
     let status: "achieved" | "warning" | "critical";
     const recommendations: string[] = [];
 
@@ -233,52 +186,36 @@ export class CacheOptimizationController {
       );
     } else if (estimatedHitRate >= target.warningThreshold) {
       status = "warning";
-      recommendations.push("Increase cache warming frequency");
-      recommendations.push("Optimize TTL settings for this pattern");
+      recommendations.push(
+        "Increase cache warming frequency",
+        "Optimize TTL settings for this pattern",
+      );
     } else {
       status = "critical";
-      recommendations.push("URGENT: Implement immediate cache warming");
-      recommendations.push("Increase cache capacity allocation");
       recommendations.push(
+        "URGENT: Implement immediate cache warming",
+        "Increase cache capacity allocation",
         "Review query patterns for optimization opportunities",
       );
     }
 
-    return {
-      target,
-      actualHitRate: estimatedHitRate,
-      status,
-      recommendations,
-    };
+    return { target, actualHitRate: estimatedHitRate, status, recommendations };
   }
 
-  /**
-   * Estimate hit rate for a specific pattern based on overall metrics
-   */
   private estimatePatternHitRate(
     pattern: string,
     metrics: CacheMetrics,
   ): number {
-    let baseHitRate = metrics.hitRate;
-
-    // Adjust based on pattern priority and characteristics
-    if (pattern.includes("analytics:executive")) {
-      // Executive analytics are heavily warmed
+    let baseHitRate = metrics.hitRate * 100;
+    if (pattern.includes("analytics:executive"))
       baseHitRate = Math.min(100, baseHitRate * 1.05);
-    } else if (pattern.includes("dashboard")) {
-      // Dashboard data is frequently accessed
+    else if (pattern.includes("dashboard"))
       baseHitRate = Math.min(100, baseHitRate * 1.02);
-    } else if (pattern.includes("predictive")) {
-      // Predictive data may have lower hit rates initially
+    else if (pattern.includes("predictive"))
       baseHitRate = Math.max(0, baseHitRate * 0.95);
-    }
-
     return Math.round(baseHitRate * 100) / 100;
   }
 
-  /**
-   * Calculate overall optimization status
-   */
   private calculateOverallStatus(
     achievements: OptimizationReport["achievements"],
   ): OptimizationReport["overallStatus"] {
@@ -286,22 +223,13 @@ export class CacheOptimizationController {
       (a) => a.status === "critical",
     ).length;
     const warnings = achievements.filter((a) => a.status === "warning").length;
-    const achieved = achievements.filter((a) => a.status === "achieved").length;
 
-    if (criticalIssues > 0) {
-      return "critical";
-    } else if (warnings > 2) {
-      return "needs_attention";
-    } else if (warnings > 0) {
-      return "good";
-    } else {
-      return "optimal";
-    }
+    if (criticalIssues > 0) return "critical";
+    if (warnings > 2) return "needs_attention";
+    if (warnings > 0) return "good";
+    return "optimal";
   }
 
-  /**
-   * Execute optimizations for underperforming targets
-   */
   private async executeOptimizations(
     achievements: OptimizationReport["achievements"],
   ): Promise<void> {
@@ -311,79 +239,55 @@ export class CacheOptimizationController {
 
     for (const achievement of needsOptimization) {
       try {
-        const { target } = achievement;
-
-        if (achievement.status === "critical") {
-          // Emergency optimization
-          await this.cacheWarmer.forceWarmup();
-
-          console.log(` Emergency optimization executed for ${target.pattern}`);
-        } else if (achievement.status === "warning") {
-          // Standard optimization
-          await this.cacheWarmer.forceWarmup();
-
-          console.log(`️ Warning optimization executed for ${target.pattern}`);
-        }
+        await warmAllChurchCaches();
+        const level =
+          achievement.status === "critical" ? "🚨 Emergency" : "⚠️ Warning";
+        console.log(
+          `${level} optimization executed for ${achievement.target.pattern}`,
+        );
       } catch (error) {
         console.error(
-          ` Optimization execution failed for ${achievement.target.pattern}:`,
+          `❌ Optimization execution failed for ${achievement.target.pattern}:`,
           error,
         );
       }
     }
   }
 
-  /**
-   * Get the latest optimization report
-   */
   getLatestReport(): OptimizationReport | null {
     return this.lastOptimizationReport;
   }
 
-  /**
-   * Add a custom optimization target
-   */
   addOptimizationTarget(target: OptimizationTarget): void {
     this.optimizationTargets.push(target);
     console.log(
-      ` Added optimization target: ${target.pattern} (${target.priority})`,
+      `➕ Added optimization target: ${target.pattern} (${target.priority})`,
     );
   }
 
-  /**
-   * Remove an optimization target
-   */
   removeOptimizationTarget(pattern: string): void {
     const initialLength = this.optimizationTargets.length;
     this.optimizationTargets = this.optimizationTargets.filter(
       (t) => t.pattern !== pattern,
     );
-
     if (this.optimizationTargets.length < initialLength) {
-      console.log(` Removed optimization target: ${pattern}`);
+      console.log(`➖ Removed optimization target: ${pattern}`);
     }
   }
 
-  /**
-   * Force immediate optimization for a specific pattern
-   */
   async forceOptimization(pattern: string): Promise<void> {
     try {
-      await this.cacheWarmer.forceWarmup();
-
-      console.log(` Forced optimization completed for pattern: ${pattern}`);
+      await warmAllChurchCaches();
+      console.log(`⚡ Forced optimization completed for pattern: ${pattern}`);
     } catch (error) {
       console.error(
-        ` Forced optimization failed for pattern ${pattern}:`,
+        `❌ Forced optimization failed for pattern ${pattern}:`,
         error,
       );
       throw error;
     }
   }
 
-  /**
-   * Get real-time optimization status
-   */
   async getOptimizationStatus(): Promise<{
     isOptimizing: boolean;
     lastReport: OptimizationReport | null;
@@ -402,15 +306,13 @@ export class CacheOptimizationController {
     };
   }
 
-  /**
-   * Shutdown optimization monitoring
-   */
   shutdown(): void {
-    // Clear any running intervals
+    this.monitoringIntervals.forEach((interval) => clearInterval(interval));
+    this.monitoringIntervals = [];
     this.isOptimizing = false;
-    console.log(" Cache optimization controller shutdown");
+    console.log("🛑 Cache optimization controller shutdown");
   }
 }
 
-// Singleton instance for global use
+// Singleton instance
 export const cacheOptimizationController = new CacheOptimizationController();

@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL")
+    url      = env("DATABASE_URL") // ✅ Requerido en Prisma 6
 }
 
 model accounts {
@@ -512,7 +512,7 @@ model churches {
     isActive                         Boolean                            @default(true)
     createdAt                        DateTime                           @default(now())
     updatedAt                        DateTime
-  language                     String   @default("es")
+    language                         String                             @default("es")
     ai_model_ab_tests                ai_model_ab_tests[]
     ai_model_performance             ai_model_performance[]
     ai_prediction_records            ai_prediction_records[]
@@ -3492,43 +3492,48 @@ model mfa_policy_settings {
 
     @@unique([id])
 }
+
 model church_leads {
-  id           String   @id @default(cuid())
-  churchName   String
-  country      String
-  language     String
-  adminName    String
-  adminEmail   String
-  campuses     Int?
-  members      Int?
-  needs        String?
-  status       String   @default("new")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}// ============================================
+    id         String   @id @default(cuid())
+    churchName String
+    country    String
+    language   String
+    adminName  String
+    adminEmail String
+    campuses   Int?
+    members    Int?
+    needs      String?
+    status     String   @default("new")
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
+// ============================================
 // TRIAGE ACCESS LOGS - Audit trail for crisis alerts
 // ============================================
 model triage_access_logs {
-  id              String   @id @default(cuid())
-  triageEventId   String
-  pastorId        String
-  accessedAt      DateTime @default(now())
-  ipAddress       String
-  @@index([pastorId])
-  @@index([accessedAt])
+    id            String   @id @default(cuid())
+    triageEventId String
+    pastorId      String
+    accessedAt    DateTime @default(now())
+    ipAddress     String
+
+    @@index([pastorId])
+    @@index([accessedAt])
 }
+
 model admin_audit_log {
-  id         String   @id @default(cuid())
-  userId     String
-  churchId   String?
-  action     String   // "agent.toggle", "pricing.update", "church.create", etc.
-  target     String?
-  oldValue   Json?
-  newValue   Json?
-  ipAddress  String?
-  userAgent  String?
-  createdAt  DateTime @default(now())
-  @@index([userId])
-  @@index([churchId])
-  @@index([createdAt])
+    id        String   @id @default(cuid())
+    userId    String
+    churchId  String?
+    action    String // "agent.toggle", "pricing.update", "church.create", etc.
+    target    String?
+    oldValue  Json?
+    newValue  Json?
+    ipAddress String?
+    userAgent String?
+    createdAt DateTime @default(now())
+
+    @@index([userId])
+    @@index([churchId])
+    @@index([createdAt])
 }

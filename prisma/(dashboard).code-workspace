@@ -1,0 +1,73 @@
+{
+	"folders": [
+		{
+			"path": "../(dashboard)"
+		},
+		{
+			"path": "../.cleanup-backup"
+		},
+		{
+			"path": "../.github"
+		},
+		{
+			"path": "../.husky"
+		},
+		{
+			"path": "../.prompts"
+		},
+		{
+			"path": "../.vscode"
+		},
+		{
+			"path": "../__tests__"
+		},
+		{
+			"path": "../app"
+		},
+		{
+			"path": "../archive"
+		},
+		{
+			"path": "../components"
+		},
+		{
+			"path": "../docs"
+		},
+		{
+			"path": "../hooks"
+		},
+		{
+			"path": "../khesed-ui"
+		},
+		{
+			"path": "../lib"
+		},
+		{
+			"path": "../middleware"
+		},
+		{
+			"path": "../migrations"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../public"
+		},
+		{
+			"path": "../scripts"
+		},
+		{
+			"path": "../styles"
+		},
+		{
+			"path": "../templates"
+		},
+		{
+			"path": "../tests"
+		},
+		{
+			"path": "../types"
+		}
+	]
+}

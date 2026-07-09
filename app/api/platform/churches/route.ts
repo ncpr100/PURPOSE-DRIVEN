@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { randomBytes } from "crypto";
 import { authOptions } from "@/lib/auth";
@@ -6,11 +6,14 @@ import { db } from "@/lib/db";
 import { sendEmail, emailQueue } from "@/lib/email";
 import { getServerBaseUrl } from "@/lib/server-url";
 import { nanoid } from "nanoid";
-import { resolveEmailTemplate, replaceTokens as replaceTemplateTokens } from "@/lib/email-template-resolver";
+import {
+  resolveEmailTemplate,
+  replaceTokens as replaceTemplateTokens,
+} from "@/lib/email-template-resolver";
 
 /**
  * Generates a cryptographically secure 12-character temporary password.
- * Each church receives a UNIQUE password — never a shared default.
+ * Each church receives a UNIQUE password â€” never a shared default.
  * Format: 3 uppercase + 3 lowercase + 3 digits + 3 special chars, shuffled.
  */
 function generateSecureTemporaryPassword(): string {
@@ -307,7 +310,7 @@ export async function POST(request: NextRequest) {
         console.log(` Auto-created Supabase Auth user for ${adminUser.email}`);
       } else {
         console.warn(
-          `️ Could not create Supabase Auth user for ${adminUser.email} - will need manual creation`,
+          `️ Could not create Supabase Auth user for ${adminUser.email} - will need manual creation`,
         );
       }
 
@@ -336,7 +339,7 @@ export async function POST(request: NextRequest) {
 
     const authStatusMessage = result.supabaseUser
       ? " Tu cuenta de autenticación ha sido creada automáticamente."
-      : "️ Por favor contacta al soporte para activar tu cuenta de autenticación.";
+      : "️ Por favor contacta al soporte para activar tu cuenta de autenticación.";
 
     // Load platform settings to get custom welcome email template (if configured)
     const platformSettings = await db.platform_settings.findFirst();
@@ -352,14 +355,14 @@ export async function POST(request: NextRequest) {
 
     const welcomeEmailSubject = platformSettings?.welcomeEmailSubject
       ? replaceEmailTokens(platformSettings.welcomeEmailSubject)
-      : `Bienvenido a Kḥesed-tek - Credenciales de ${name}`;
+      : `Bienvenido a Khesed-tek - Credenciales de ${name}`;
 
     const defaultEmailBody = `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bienvenido a Kḥesed-tek CMS</title>
+  <title>Bienvenido a Khesed-tek CMS</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f4f8; color: #1a202c; padding: 32px 16px; }
@@ -391,7 +394,7 @@ export async function POST(request: NextRequest) {
 <body>
   <div class="wrapper">
     <div class="header">
-      <h1>Kḥesed-tek CMS</h1>
+      <h1>Khesed-tek CMS</h1>
     </div>
     <div class="body">
       <p class="greeting">Hola, ${adminUser.name},</p>
@@ -442,7 +445,7 @@ export async function POST(request: NextRequest) {
       </p>
     </div>
     <div class="footer">
-      <p><strong>Kḥesed-tek Church Management Systems</strong></p>
+      <p><strong>Khesed-tek Church Management Systems</strong></p>
       <p>soporte@khesed-tek-systems.org &nbsp;|&nbsp; Sistema completo de gestión para iglesias</p>
     </div>
   </div>
@@ -455,7 +458,7 @@ export async function POST(request: NextRequest) {
 
     // Only send credential email if Super Admin explicitly requested it.
     // When sendCredentialsNow === false the church is created but locked until
-    // payment is confirmed — Super Admin sends credentials from Credenciales page.
+    // payment is confirmed â€” Super Admin sends credentials from Credenciales page.
     if (sendCredentialsNow !== false) {
       emailQueue
         .add({
@@ -493,18 +496,24 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
 
-    // G05: Audit log — church creation by SUPER_ADMIN (fire and forget)
-    db.admin_audit_log.create({
-      data: {
-        userId: session.user.id,
-        action: 'church.create',
-        target: 'church:new',
-        newValue: { name: result?.church?.name, adminEmail: result?.admin?.email },
-        ipAddress: request.headers.get('x-forwarded-for') ?? undefined,
-        userAgent: request.headers.get('user-agent') ?? undefined,
-      }
-    }).catch(() => { /* non-blocking */ });
-
+    // G05: Audit log â€” church creation by SUPER_ADMIN (fire and forget)
+    db.admin_audit_log
+      .create({
+        data: {
+          userId: session?.user?.id || "",
+          action: "church.create",
+          target: "church:new",
+          newValue: {
+            name: result?.church?.name,
+            adminEmail: result?.admin?.email,
+          },
+          ipAddress: request.headers.get("x-forwarded-for") ?? undefined,
+          userAgent: request.headers.get("user-agent") ?? undefined,
+        },
+      })
+      .catch(() => {
+        /* non-blocking */
+      });
   } catch (error) {
     console.error("Error creating church:", error);
     return NextResponse.json(
