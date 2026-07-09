@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { randomBytes } from "crypto";
 import { authOptions } from "@/lib/auth";
@@ -13,7 +13,7 @@ import {
 
 /**
  * Generates a cryptographically secure 12-character temporary password.
- * Each church receives a UNIQUE password â€” never a shared default.
+ * Each church receives a UNIQUE password —” never a shared default.
  * Format: 3 uppercase + 3 lowercase + 3 digits + 3 special chars, shuffled.
  */
 function generateSecureTemporaryPassword(): string {
@@ -458,7 +458,7 @@ export async function POST(request: NextRequest) {
 
     // Only send credential email if Super Admin explicitly requested it.
     // When sendCredentialsNow === false the church is created but locked until
-    // payment is confirmed â€” Super Admin sends credentials from Credenciales page.
+    // payment is confirmed —” Super Admin sends credentials from Credenciales page.
     if (sendCredentialsNow !== false) {
       emailQueue
         .add({
@@ -496,7 +496,7 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
 
-    // G05: Audit log â€” church creation by SUPER_ADMIN (fire and forget)
+    // G05: Audit log —” church creation by SUPER_ADMIN (fire and forget)
     db.admin_audit_log
       .create({
         data: {

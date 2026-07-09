@@ -1,9 +1,9 @@
-﻿// lib/agents/product-designer.ts
+// lib/agents/product-designer.ts
 // Agent 15: AI Product Designer
 // Monthly UX friction detection and improvement recommendation engine.
 // Runs: Monday 9am UTC (1st of each month cadence via cron filter).
 // Output: Stores recommendations in performance_recommendations with category='ux_friction'.
-// HITL PROTOCOL: Generates report only â€” no direct UI changes.
+// HITL PROTOCOL: Generates report only —” no direct UI changes.
 
 import { db } from "@/lib/db";
 import { intelligentRouter } from "@/lib/ai/intelligent-router";
@@ -51,7 +51,7 @@ export async function runProductDesignerAnalysis(): Promise<{
     .map((i) => ({
       route: i.affectedServices!,
       errorCount: 1,
-      errorRate: 0.05, // Estimated â€” no per-route error tracking in current schema
+      errorRate: 0.05, // Estimated —” no per-route error tracking in current schema
     }));
 
   // 3. Slow routes (from performance_recommendations)

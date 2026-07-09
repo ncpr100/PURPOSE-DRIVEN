@@ -1,5 +1,5 @@
-﻿// app/api/cron/sermon-antiphony/route.ts
-// Agent 1: Sermon Antiphony Engine â€” Weekly cron
+// app/api/cron/sermon-antiphony/route.ts
+// Agent 1: Sermon Antiphony Engine —” Weekly cron
 // Analyzes newly submitted sermons for cultural blind spots, skeptic challenges,
 // and unresolved tensions. Runs every Wednesday at 8:00 AM UTC.
 // vercel.json: "0 8 * * 3"

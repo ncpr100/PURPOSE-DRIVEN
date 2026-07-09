@@ -1,5 +1,5 @@
-﻿// lib/monitoring/health-check-engine.ts
-// MONITORING FOUNDATION â€” Layer 1
+// lib/monitoring/health-check-engine.ts
+// MONITORING FOUNDATION —” Layer 1
 // Checks all system components and external integrations.
 // Called by the SRE agent cron every 60 seconds.
 
@@ -519,7 +519,7 @@ async function checkPaddle(): Promise<HealthCheckResult> {
 
 // CHECK: RUN ALL CHECKS
 export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
-  // Run all checks in parallel â€” never wait for one to block others
+  // Run all checks in parallel —” never wait for one to block others
   const results = await Promise.allSettled([
     checkDatabase(),
     checkRedis(),
