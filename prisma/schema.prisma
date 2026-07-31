@@ -3384,7 +3384,7 @@ model incident_alerts {
     @@map("incident_alerts")
 }
 
-// â”€â”€ TABLE 6: Platform Metric Summaries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 6: Platform Metric Summaries
 // Hourly/daily rollups of api_request_metrics.
 // Kept for 1 year. Used for trend analysis.
 model platform_metric_summaries {
@@ -3507,6 +3507,7 @@ model church_leads {
     createdAt  DateTime @default(now())
     updatedAt  DateTime @updatedAt
 }
+
 // ============================================
 // TRIAGE ACCESS LOGS - Audit trail for crisis alerts
 // ============================================
