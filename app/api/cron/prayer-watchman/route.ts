@@ -1,4 +1,4 @@
-// app/api/cron/prayer-watchman/route.ts
+﻿// app/api/cron/prayer-watchman/route.ts
 // Cron job: Send WhatsApp care messages around scheduled prayer events.
 // Runs every 15 minutes. Two passes per event:
 //   REMINDER - sent ~15 min before the event (status: REMINDER_SENT)
@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
         console.error(`[WATCHMAN] Reminder failed for ${event.id}:`, err);
       }
     }
-    // PASS 2: Follow-ups - events that ended ≥2 hours ago
+    // PASS 2: Follow-ups - events that ended â‰¥2 hours ago
     const needFollowup = await db.prayer_watchman_events.findMany({
       where: {
         status: "REMINDER_SENT",
@@ -161,20 +161,9 @@ export async function GET(req: NextRequest) {
       duration,
       ...(errors.length > 0 && { errors }),
     });
-  } catch (err) {
-    // CRITICAL: Update agent_settings with error status
-    await logAgentExecution({
-      agentId: 4,
-      churchId: "PLATFORM",
-      status: "FAILED",
-      durationMs: duration,
-      tokensUsed: 0,
-      errorMessage: errorMessage.substring(0, 500),
-    });
-    console.error("[WATCHMAN] Cron error:", err);
-    return NextResponse.json(
-      { error: "Internal server error", message: errorMessage },
+  } catch (err: any) { const errorMessage = err?.message || "Unknown error"; await logAgentExecution({ agentId: 4, churchId: "PLATFORM", status: "FAILED", durationMs: duration, tokensUsed: 0, errorMessage: errorMessage.substring(0, 500), }); console.error("[WATCHMAN] Cron error:", err); return NextResponse.json({ error: "Internal server error", message: errorMessage },
       { status: 500 },
     );
   }
 }
+

@@ -1,5 +1,5 @@
 // lib/monitoring/health-check-engine.ts
-// MONITORING FOUNDATION — Layer 1
+// MONITORING FOUNDATION —” Layer 1
 // Checks all system components and external integrations.
 // Called by the SRE agent cron every 60 seconds.
 
@@ -28,9 +28,9 @@ export interface HealthCheckResult {
   metadata: Record<string, unknown> | null;
 }
 
-// ── SLA THRESHOLDS ────────────────────────────────────────────
+// SLA THRESHOLDS
 const RESPONSE_THRESHOLDS = {
-  // ⚠️ Umbrales ajustados para plan gratuito de Supabase/Upstash (Jun 2026)
+  // âš ️ Umbrales ajustados para plan gratuito de Supabase/Upstash (Jun 2026)
   // Database latencia real: ~620ms (plan gratuito compartido)
   // Redis latencia real: ~290ms (plan gratuito REST API)
   // TODO: Cuando haya suscriptores pagos, reducir a valores óptimos
@@ -51,11 +51,14 @@ function classify(
   service: ServiceName,
   responseTimeMs: number,
 ): "HEALTHY" | "DEGRADED" {
-  const t = RESPONSE_THRESHOLDS[service] || { healthy: 1000, degraded: 3000 };
+  const t = (RESPONSE_THRESHOLDS as any)[service] || {
+    healthy: 1000,
+    degraded: 3000,
+  };
   return responseTimeMs <= t.healthy ? "HEALTHY" : "DEGRADED";
 }
 
-// ── CHECK: Database (Prisma + Supabase) ───────────────────────
+// CHECK: Database (Prisma + Supabase)
 async function checkDatabase(): Promise<HealthCheckResult> {
   const start = Date.now();
   try {
@@ -87,7 +90,7 @@ async function checkDatabase(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: Redis ──────────────────────────────────────────────
+// CHECK: Redis
 async function checkRedis(): Promise<HealthCheckResult> {
   const start = Date.now();
   try {
@@ -122,7 +125,7 @@ async function checkRedis(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: Production URL ─────────────────────────────────────
+// CHECK: Production URL
 async function checkProductionUrl(): Promise<HealthCheckResult> {
   const start = Date.now();
   const url =
@@ -155,7 +158,7 @@ async function checkProductionUrl(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: Stripe ─────────────────────────────────────────────
+// CHECK: Stripe
 async function checkStripe(): Promise<HealthCheckResult> {
   const start = Date.now();
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -191,7 +194,7 @@ async function checkStripe(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: WhatsApp Business API ──────────────────────────────
+// CHECK: WhatsApp Business API
 async function checkWhatsApp(): Promise<HealthCheckResult> {
   const start = Date.now();
   const token = process.env.WHATSAPP_ACCESS_TOKEN;
@@ -234,7 +237,7 @@ async function checkWhatsApp(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: Resend ────────────────────────────────────────────
+// CHECK: Resend
 async function checkResend(): Promise<HealthCheckResult> {
   const start = Date.now();
   const key = process.env.RESEND_API_KEY;
@@ -272,7 +275,7 @@ async function checkResend(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: Twilio ─────────────────────────────────────────────
+// CHECK: Twilio
 async function checkTwilio(): Promise<HealthCheckResult> {
   const start = Date.now();
   const sid = process.env.TWILIO_ACCOUNT_SID;
@@ -314,11 +317,13 @@ async function checkTwilio(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: Supabase API ────────────────────────────────────────────
+// CHECK: Supabase API
 async function checkSupabase(): Promise<HealthCheckResult> {
   const start = Date.now();
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) {
     return {
       service: "supabase_api",
@@ -355,7 +360,7 @@ async function checkSupabase(): Promise<HealthCheckResult> {
     };
   }
 }
-// ── CHECK: Vercel API ────────────────────────────────────────────
+// CHECK: Vercel API
 async function checkVercel(): Promise<HealthCheckResult> {
   const start = Date.now();
   const token = process.env.VERCEL_API_TOKEN;
@@ -394,7 +399,7 @@ async function checkVercel(): Promise<HealthCheckResult> {
     };
   }
 }
-// ── CHECK: OpenRouter (Primary AI Provider for all 15 agents) ───
+// CHECK: OpenRouter (Primary AI Provider for all 15 agents)
 async function checkOpenRouter(): Promise<HealthCheckResult> {
   const start = Date.now();
   // Lectura robusta de variable de entorno con fallback y logging
@@ -454,7 +459,7 @@ async function checkOpenRouter(): Promise<HealthCheckResult> {
   }
 }
 
-// ── CHECK: Paddle (Primary Payment Processor - Merchant of Record) ───
+// CHECK: Paddle (Primary Payment Processor - Merchant of Record)
 async function checkPaddle(): Promise<HealthCheckResult> {
   const start = Date.now();
   const apiKey = process.env.PADDLE_API_KEY;
@@ -512,9 +517,9 @@ async function checkPaddle(): Promise<HealthCheckResult> {
   }
 }
 
-// ── RUN ALL CHECKS ────────────────────────────────────────────
+// CHECK: RUN ALL CHECKS
 export async function runAllHealthChecks(): Promise<HealthCheckResult[]> {
-  // Run all checks in parallel — never wait for one to block others
+  // Run all checks in parallel —” never wait for one to block others
   const results = await Promise.allSettled([
     checkDatabase(),
     checkRedis(),
@@ -575,7 +580,7 @@ async function persistHealthChecks(checks: HealthCheckResult[]): Promise<void> {
   }
 }
 
-// ── QUICK STATUS SUMMARY ──────────────────────────────────────
+// CHECK: QUICK STATUS SUMMARY
 export function summarizeHealth(checks: HealthCheckResult[]): {
   overall: "HEALTHY" | "DEGRADED" | "DOWN";
   downCount: number;

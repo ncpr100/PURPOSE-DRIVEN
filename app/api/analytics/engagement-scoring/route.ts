@@ -1,19 +1,19 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { memberAnalyticsCache } from '@/lib/member-analytics-cache';
+﻿import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { memberAnalyticsCache } from "@/lib/member-analytics-cache";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.churchId) {
       return NextResponse.json(
-        { error: 'No autorizado - Se requiere membresía de iglesia' },
-        { status: 401 }
+        { error: "No autorizado - Se requiere membresía de iglesia" },
+        { status: 401 },
       );
     }
 
@@ -22,10 +22,12 @@ export async function GET(request: Request) {
     // Try to get from cache first
     const cached = await memberAnalyticsCache.getEngagementDashboard(churchId);
     if (cached) {
+      // ✅ FIX: Parse JSON string before spreading (TS2698)
+      const parsed = typeof cached === "string" ? JSON.parse(cached) : cached;
       return NextResponse.json({
-        ...cached,
+        ...parsed,
         cached: true,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
 
@@ -33,36 +35,36 @@ export async function GET(request: Request) {
     const engagementStats = await db.member_journeys.aggregate({
       where: {
         churchId,
-        members: { isActive: true }
+        members: { isActive: true },
       },
       _avg: {
         engagementScore: true,
-        retentionScore: true
+        retentionScore: true,
       },
-      _count: true
+      _count: true,
     });
 
     // Get engagement distribution
     const engagementDistribution = await db.member_journeys.groupBy({
-      by: ['engagementLevel'],
+      by: ["engagementLevel"],
       where: {
         churchId,
-        members: { isActive: true }
+        members: { isActive: true },
       },
-      _count: true
+      _count: true,
     });
 
     // Get engagement by lifecycle stage
     const engagementByStage = await db.member_journeys.groupBy({
-      by: ['currentStage'],
+      by: ["currentStage"],
       where: {
         churchId,
-        members: { isActive: true }
+        members: { isActive: true },
       },
       _avg: {
-        engagementScore: true
+        engagementScore: true,
       },
-      _count: true
+      _count: true,
     });
 
     // Get behavioral pattern metrics
@@ -70,8 +72,8 @@ export async function GET(request: Request) {
       where: {
         churchId,
         analyzedAt: {
-          gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
-        }
+          gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
+        },
       },
       _avg: {
         averageWeeklyAttendance: true,
@@ -81,8 +83,8 @@ export async function GET(request: Request) {
         ministryParticipation: true,
         socialInteraction: true,
         spiritualGrowthActivity: true,
-        leadershipPotential: true
-      }
+        leadershipPotential: true,
+      },
     });
 
     // Get engagement trends (last 6 months)
@@ -93,68 +95,75 @@ export async function GET(request: Request) {
       where: {
         churchId,
         lastAnalysisDate: {
-          gte: sixMonthsAgo
-        }
+          gte: sixMonthsAgo,
+        },
       },
       select: {
         engagementScore: true,
         lastAnalysisDate: true,
-        currentStage: true
+        currentStage: true,
       },
       orderBy: {
-        lastAnalysisDate: 'asc'
-      }
+        lastAnalysisDate: "asc",
+      },
     });
 
     // Group trends by month
-    const trendsByMonth = engagementTrends.reduce((acc, record) => {
-      const monthKey = record.lastAnalysisDate.toISOString().substring(0, 7); // YYYY-MM
-      if (!acc[monthKey]) {
-        acc[monthKey] = { total: 0, count: 0, scores: [] };
-      }
-      acc[monthKey].total += record.engagementScore;
-      acc[monthKey].count += 1;
-      acc[monthKey].scores.push(record.engagementScore);
-      return acc;
-    }, {} as Record<string, { total: number; count: number; scores: number[] }>);
+    const trendsByMonth = engagementTrends.reduce(
+      (acc, record) => {
+        const monthKey = record.lastAnalysisDate.toISOString().substring(0, 7); // YYYY-MM
+        if (!acc[monthKey]) {
+          acc[monthKey] = { total: 0, count: 0, scores: [] };
+        }
+        acc[monthKey].total += record.engagementScore;
+        acc[monthKey].count += 1;
+        acc[monthKey].scores.push(record.engagementScore);
+        return acc;
+      },
+      {} as Record<string, { total: number; count: number; scores: number[] }>,
+    );
 
     // Type-safe mapping for monthly averages
     type MonthlyData = { total: number; count: number; scores: number[] };
-    const monthlyAverages = Object.entries(trendsByMonth).map(([month, data]: [string, MonthlyData]) => ({
-      month,
-      averageEngagement: Math.round(data.total / data.count),
-      memberCount: data.count
-    }));
+    const monthlyAverages = Object.entries(trendsByMonth).map(
+      ([month, data]: [string, MonthlyData]) => ({
+        month,
+        averageEngagement: Math.round(data.total / data.count),
+        memberCount: data.count,
+      }),
+    );
 
     // Calculate engagement score categories
     const engagementCategories = {
       high: 0, // 80-100
       medium: 0, // 50-79
       low: 0, // 0-49
-      atRisk: 0 // Below 30
+      atRisk: 0, // Below 30
     };
 
-    await db.member_journeys.findMany({
-      where: {
-        churchId,
-        members: { isActive: true }
-      },
-      select: { engagementScore: true }
-    }).then(journeys => {
-      journeys.forEach(journey => {
-        const score = journey.engagementScore;
-        if (score >= 80) engagementCategories.high++;
-        else if (score >= 50) engagementCategories.medium++;
-        else if (score >= 30) engagementCategories.low++;
-        else engagementCategories.atRisk++;
+    await db.member_journeys
+      .findMany({
+        where: {
+          churchId,
+          members: { isActive: true },
+        },
+        select: { engagementScore: true },
+      })
+      .then((journeys) => {
+        journeys.forEach((journey) => {
+          const score = journey.engagementScore;
+          if (score >= 80) engagementCategories.high++;
+          else if (score >= 50) engagementCategories.medium++;
+          else if (score >= 30) engagementCategories.low++;
+          else engagementCategories.atRisk++;
+        });
       });
-    });
 
     // Get top engaged members
     const topEngagedMembers = await db.member_journeys.findMany({
       where: {
         churchId,
-        members: { isActive: true }
+        members: { isActive: true },
       },
       include: {
         members: {
@@ -162,14 +171,14 @@ export async function GET(request: Request) {
             id: true,
             firstName: true,
             lastName: true,
-            email: true
-          }
-        }
+            email: true,
+          },
+        },
       },
       orderBy: {
-        engagementScore: 'desc'
+        engagementScore: "desc",
       },
-      take: 10
+      take: 10,
     });
 
     // Calculate engagement improvement recommendations
@@ -177,100 +186,128 @@ export async function GET(request: Request) {
       where: {
         churchId,
         engagementScore: { lt: 50 },
-        members: { isActive: true }
-      }
+        members: { isActive: true },
+      },
     });
 
     const inactiveMembers = await db.member_journeys.count({
       where: {
         churchId,
-        engagementLevel: 'LOW',
-        members: { isActive: true }
-      }
+        engagementLevel: "LOW",
+        members: { isActive: true },
+      },
     });
 
     const engagementDashboardData = {
       overview: {
-        averageEngagement: Math.round(engagementStats._avg.engagementScore || 0),
+        averageEngagement: Math.round(
+          engagementStats._avg.engagementScore || 0,
+        ),
         averageRetention: Math.round(engagementStats._avg.retentionScore || 0),
         totalMembers: engagementStats._count,
-        activeMembers: engagementStats._count
+        activeMembers: engagementStats._count,
       },
       distribution: {
         high: engagementCategories.high,
         medium: engagementCategories.medium,
         low: engagementCategories.low,
-        atRisk: engagementCategories.atRisk
+        atRisk: engagementCategories.atRisk,
       },
-      engagementByLevel: engagementDistribution.map(level => ({
+      engagementByLevel: engagementDistribution.map((level) => ({
         level: level.engagementLevel,
         count: level._count,
-        percentage: Math.round((level._count / engagementStats._count) * 100)
+        percentage: Math.round((level._count / engagementStats._count) * 100),
       })),
-      stageEngagement: engagementByStage.map(stage => ({
+      stageEngagement: engagementByStage.map((stage) => ({
         stage: stage.currentStage,
         averageEngagement: Math.round(stage._avg.engagementScore || 0),
-        memberCount: stage._count
+        memberCount: stage._count,
       })),
       behavioralMetrics: {
-        attendance: Math.round((behavioralMetrics._avg.averageWeeklyAttendance || 0) * 100),
-        consistency: Math.round((behavioralMetrics._avg.attendanceConsistency || 0) * 100),
-        communication: Math.round((behavioralMetrics._avg.communicationEngagement || 0) * 100),
-        eventParticipation: Math.round((behavioralMetrics._avg.eventParticipation || 0) * 100),
-        ministryInvolvement: Math.round((behavioralMetrics._avg.ministryParticipation || 0) * 100),
-        socialInteraction: Math.round((behavioralMetrics._avg.socialInteraction || 0) * 100),
-        spiritualGrowth: Math.round((behavioralMetrics._avg.spiritualGrowthActivity || 0) * 100),
-        leadershipPotential: Math.round((behavioralMetrics._avg.leadershipPotential || 0) * 100)
+        attendance: Math.round(
+          (behavioralMetrics._avg.averageWeeklyAttendance || 0) * 100,
+        ),
+        consistency: Math.round(
+          (behavioralMetrics._avg.attendanceConsistency || 0) * 100,
+        ),
+        communication: Math.round(
+          (behavioralMetrics._avg.communicationEngagement || 0) * 100,
+        ),
+        eventParticipation: Math.round(
+          (behavioralMetrics._avg.eventParticipation || 0) * 100,
+        ),
+        ministryInvolvement: Math.round(
+          (behavioralMetrics._avg.ministryParticipation || 0) * 100,
+        ),
+        socialInteraction: Math.round(
+          (behavioralMetrics._avg.socialInteraction || 0) * 100,
+        ),
+        spiritualGrowth: Math.round(
+          (behavioralMetrics._avg.spiritualGrowthActivity || 0) * 100,
+        ),
+        leadershipPotential: Math.round(
+          (behavioralMetrics._avg.leadershipPotential || 0) * 100,
+        ),
       },
       trends: {
         monthly: monthlyAverages.slice(-6), // Last 6 months
         improvement: {
           lowEngagementCount: lowEngagementMembers,
           inactiveCount: inactiveMembers,
-          improvementPotential: Math.round((lowEngagementMembers / engagementStats._count) * 100)
-        }
+          improvementPotential: Math.round(
+            (lowEngagementMembers / engagementStats._count) * 100,
+          ),
+        },
       },
-      topMembers: topEngagedMembers.map(journey => ({
+      topMembers: topEngagedMembers.map((journey) => ({
         id: journey.members?.id,
         name: `${journey.members?.firstName} ${journey.members?.lastName}`,
         email: journey.members?.email,
         engagementScore: journey.engagementScore,
         stage: journey.currentStage,
-        retentionScore: journey.retentionScore
+        retentionScore: journey.retentionScore,
       })),
       recommendations: [
         {
-          title: 'Mejorar Comunicación',
-          description: 'Aumentar la frecuencia de comunicación para miembros con baja respuesta',
-          priority: lowEngagementMembers > engagementStats._count * 0.2 ? 'high' : 'medium',
-          impact: 'Incremento del 15-25% en engagement'
+          title: "Mejorar Comunicación",
+          description:
+            "Aumentar la frecuencia de comunicación para miembros con baja respuesta",
+          priority:
+            lowEngagementMembers > engagementStats._count * 0.2
+              ? "high"
+              : "medium",
+          impact: "Incremento del 15-25% en engagement",
         },
         {
-          title: 'Programas de Participación',
-          description: 'Crear más oportunidades de participación en eventos y ministerios',
-          priority: 'medium',
-          impact: 'Mejora en la retención del 20%'
+          title: "Programas de Participación",
+          description:
+            "Crear más oportunidades de participación en eventos y ministerios",
+          priority: "medium",
+          impact: "Mejora en la retención del 20%",
         },
         {
-          title: 'Seguimiento Personalizado',
-          description: 'Implementar seguimiento individual para miembros en riesgo',
-          priority: engagementCategories.atRisk > 5 ? 'high' : 'low',
-          impact: 'Reducción del 30% en pérdida de miembros'
-        }
+          title: "Seguimiento Personalizado",
+          description:
+            "Implementar seguimiento individual para miembros en riesgo",
+          priority: engagementCategories.atRisk > 5 ? "high" : "low",
+          impact: "Reducción del 30% en pérdida de miembros",
+        },
       ],
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     };
 
     // Cache the results
-    await memberAnalyticsCache.cacheEngagementDashboard(churchId, engagementDashboardData);
+    await memberAnalyticsCache.cacheEngagementDashboard(
+      churchId,
+      JSON.stringify(engagementDashboardData),
+    );
 
     return NextResponse.json(engagementDashboardData);
-
   } catch (error) {
-    console.error('Error fetching engagement dashboard:', error);
+    console.error("Error fetching engagement dashboard:", error);
     return NextResponse.json(
-      { error: 'Error interno del servidor al obtener datos de engagement' },
-      { status: 500 }
+      { error: "Error interno del servidor al obtener datos de engagement" },
+      { status: 500 },
     );
   }
 }

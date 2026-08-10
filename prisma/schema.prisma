@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL")
+    url      = env("DATABASE_URL") // ✅ Requerido en Prisma 6
 }
 
 model accounts {
@@ -512,7 +512,7 @@ model churches {
     isActive                         Boolean                            @default(true)
     createdAt                        DateTime                           @default(now())
     updatedAt                        DateTime
-  language                     String   @default("es")
+    language                         String                             @default("es")
     ai_model_ab_tests                ai_model_ab_tests[]
     ai_model_performance             ai_model_performance[]
     ai_prediction_records            ai_prediction_records[]
@@ -3115,12 +3115,12 @@ enum CoverageStatus {
 }
 
 // ================================================================
-// KHESED-TEK CMS â€” AGENT CONTROL & GOVERNANCE LAYER
+// KHESED-TEK CMS AGENT CONTROL & GOVERNANCE LAYER
 // Required for: Agent execution, HITL protocol, token governance
 // Run: npx prisma migrate dev --name add_agent_control_governance
 // ================================================================
 
-// â”€â”€ TABLE 1: Agent Settings (Platform-level toggle) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 1: Agent Settings (Platform-level toggle) 
 // Controls whether each of the 15 agents is enabled at platform level.
 // Precedence: Override > Platform Toggle > Plan Default
 model agent_settings {
@@ -3164,7 +3164,7 @@ model church_agent_overrides {
     @@map("church_agent_overrides")
 }
 
-// â”€â”€ TABLE 3: Agent Execution Log (Audit trail + HITL) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 3: Agent Execution Log (Audit trail + HITL) 
 // Records every execution of every agent for every church.
 // Stores the validated JSON output from Claude (Zod-validated).
 model agent_execution_log {
@@ -3188,7 +3188,7 @@ model agent_execution_log {
     @@map("agent_execution_log")
 }
 
-// â”€â”€ TABLE 4: Agent Token Usage (Governance & Billing) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 4: Agent Token Usage (Governance & Billing) 
 // Tracks Anthropic API token consumption per agent per church per month.
 // Used for: billing, alerts at 80% of limit, hard caps.
 model agent_token_usage {
@@ -3222,7 +3222,7 @@ model agent_token_usage {
 //   npx prisma migrate dev --name add_monitoring_infrastructure
 // ================================================================
 
-// â”€â”€ ENUMS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ENUMS 
 
 enum IncidentSeverity {
     P1_CRITICAL // Full outage â€” all tenants affected
@@ -3277,7 +3277,7 @@ enum MetricType {
     BUNDLE_SIZE_KB
 }
 
-// â”€â”€ TABLE 1: API Request Metrics â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 1: API Request Metrics 
 // Captures every API route response time and status.
 // Middleware writes to this table on every request.
 // Retention: 30 days raw, then summarized into platform_metric_summaries.
@@ -3303,7 +3303,7 @@ model api_request_metrics {
     @@map("api_request_metrics")
 }
 
-// â”€â”€ TABLE 2: Platform Health Checks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 2: Platform Health Checks 
 // Stores results of each synthetic health check run.
 // Covers: DB, Redis, all 11 integrations, production URL.
 model platform_health_checks {
@@ -3320,7 +3320,7 @@ model platform_health_checks {
     @@map("platform_health_checks")
 }
 
-// â”€â”€ TABLE 3: Incidents â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 3: Incidents 
 // Every detected outage, degradation, or anomaly.
 model platform_incidents {
     id                  String           @id @default(cuid())
@@ -3352,7 +3352,7 @@ model platform_incidents {
     @@map("platform_incidents")
 }
 
-// â”€â”€ TABLE 4: Incident Timeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 4: Incident Timeline 
 model incident_timeline_events {
     id          String   @id @default(cuid())
     incidentId  String
@@ -3367,7 +3367,7 @@ model incident_timeline_events {
     @@map("incident_timeline_events")
 }
 
-// â”€â”€ TABLE 5: Incident Alerts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 5: Incident Alerts 
 model incident_alerts {
     id         String       @id @default(cuid())
     incidentId String
@@ -3384,7 +3384,7 @@ model incident_alerts {
     @@map("incident_alerts")
 }
 
-// â”€â”€ TABLE 6: Platform Metric Summaries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 6: Platform Metric Summaries
 // Hourly/daily rollups of api_request_metrics.
 // Kept for 1 year. Used for trend analysis.
 model platform_metric_summaries {
@@ -3404,7 +3404,7 @@ model platform_metric_summaries {
     @@map("platform_metric_summaries")
 }
 
-// â”€â”€ TABLE 7: Performance Recommendations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 7: Performance Recommendations 
 // AI-generated performance improvement recommendations.
 // Generated by Agent 13 (Web Performance Engineer).
 model performance_recommendations {
@@ -3426,7 +3426,7 @@ model performance_recommendations {
     @@map("performance_recommendations")
 }
 
-// â”€â”€ TABLE 8: SLA Records â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// TABLE 8: SLA Records
 // Monthly SLA calculation per tenant tier.
 model platform_sla_records {
     id              String   @id @default(cuid())
@@ -3492,43 +3492,49 @@ model mfa_policy_settings {
 
     @@unique([id])
 }
+
 model church_leads {
-  id           String   @id @default(cuid())
-  churchName   String
-  country      String
-  language     String
-  adminName    String
-  adminEmail   String
-  campuses     Int?
-  members      Int?
-  needs        String?
-  status       String   @default("new")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}// ============================================
+    id         String   @id @default(cuid())
+    churchName String
+    country    String
+    language   String
+    adminName  String
+    adminEmail String
+    campuses   Int?
+    members    Int?
+    needs      String?
+    status     String   @default("new")
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
+
+// ============================================
 // TRIAGE ACCESS LOGS - Audit trail for crisis alerts
 // ============================================
 model triage_access_logs {
-  id              String   @id @default(cuid())
-  triageEventId   String
-  pastorId        String
-  accessedAt      DateTime @default(now())
-  ipAddress       String
-  @@index([pastorId])
-  @@index([accessedAt])
+    id            String   @id @default(cuid())
+    triageEventId String
+    pastorId      String
+    accessedAt    DateTime @default(now())
+    ipAddress     String
+
+    @@index([pastorId])
+    @@index([accessedAt])
 }
+
 model admin_audit_log {
-  id         String   @id @default(cuid())
-  userId     String
-  churchId   String?
-  action     String   // "agent.toggle", "pricing.update", "church.create", etc.
-  target     String?
-  oldValue   Json?
-  newValue   Json?
-  ipAddress  String?
-  userAgent  String?
-  createdAt  DateTime @default(now())
-  @@index([userId])
-  @@index([churchId])
-  @@index([createdAt])
+    id        String   @id @default(cuid())
+    userId    String
+    churchId  String?
+    action    String // "agent.toggle", "pricing.update", "church.create", etc.
+    target    String?
+    oldValue  Json?
+    newValue  Json?
+    ipAddress String?
+    userAgent String?
+    createdAt DateTime @default(now())
+
+    @@index([userId])
+    @@index([churchId])
+    @@index([createdAt])
 }

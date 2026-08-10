@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { cacheOptimizationController } from "@/lib/system/cache-optimization";
-import { cacheManager } from "@/lib/redis-cache-manager";
+import { cacheManager } from "@/lib/services/cache-manager";
 
 export const dynamic = "force-dynamic";
 
@@ -189,3 +189,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

@@ -4,9 +4,9 @@ const db = new PrismaClient()
 
 async function checkAllChurches() {
   try {
-    console.log(' CHECKING ALL CHURCHES\n')
+    console.log('🔍 CHECKING ALL CHURCHES\n')
 
-    const churches = await db.church.findMany({
+    const churches = await db.churches.findMany({
       select: {
         id: true,
         name: true,
@@ -35,7 +35,7 @@ async function checkAllChurches() {
     }
 
   } catch (error) {
-    console.error(' Error:', error)
+    console.error('❌ Error:', error)
   } finally {
     await db.$disconnect()
   }

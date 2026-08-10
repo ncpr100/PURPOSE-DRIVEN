@@ -1,15 +1,35 @@
-
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ChangeEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Brain, Users, BarChart3, Search, Plus, Eye, Edit, BookOpen } from 'lucide-react'
+import { Brain, Users, BarChart3, Search, Plus, Edit, BookOpen } from 'lucide-react'
 import { toast } from 'sonner'
+
+// ============================================================================
+// INTERFACES Y TIPOS
+// ============================================================================
+
+interface SpiritualGift {
+  id: string
+  name: string
+  description?: string
+}
+
+interface SpiritualProfileData {
+  id: string
+  primaryGifts: string[]
+  secondaryGifts: string[]
+  spiritualCalling?: string
+  ministryPassions: string[]
+  experienceLevel: number
+  volunteerReadinessScore: number
+  assessmentDate: string
+}
 
 interface Member {
   id: string
@@ -18,16 +38,7 @@ interface Member {
   email?: string
   spiritualGifts?: string[] // OLD SYSTEM - Keep for backward compatibility
   secondaryGifts?: string[] // OLD SYSTEM - Keep for backward compatibility
-  spiritualProfile?: {       // NEW SYSTEM - Primary source of truth
-    id: string
-    primaryGifts: any[]
-    secondaryGifts: any[]
-    spiritualCalling?: string
-    ministryPassions: any[]
-    experienceLevel: number
-    volunteerReadinessScore: number
-    assessmentDate: string
-  }
+  spiritualProfile?: SpiritualProfileData // NEW SYSTEM - Primary source of truth
 }
 
 interface SpiritualProfile {
@@ -42,16 +53,27 @@ interface SpiritualProfile {
   assessmentDate: string
 }
 
+// ============================================================================
+// COMPONENTE PRINCIPAL
+// ============================================================================
+
 export default function SpiritualGiftsManagement() {
   const router = useRouter()
   const [members, setMembers] = useState<Member[]>([])
   const [profiles, setProfiles] = useState<SpiritualProfile[]>([])
-  const [spiritualGifts, setSpiritualGifts] = useState<any[]>([])
+  const [spiritualGifts, setSpiritualGifts] = useState<SpiritualGift[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
 
-  // Helper function to safely get spiritual gifts array
-  const getSafeGiftsArray = (gifts: any) => {
+  // ============================================================================
+  // FUNCIONES AUXILIARES
+  // ============================================================================
+
+  /**
+   * Helper function to safely get spiritual gifts array
+   * Handles both array and JSON string formats for backward compatibility
+   */
+  const getSafeGiftsArray = (gifts: string[] | string | undefined | null): string[] => {
     try {
       if (Array.isArray(gifts)) {
         return gifts
@@ -65,12 +87,24 @@ export default function SpiritualGiftsManagement() {
     return []
   }
 
+  /**
+   * Get gift name by ID from the spiritual gifts catalog
+   */
+  const getGiftName = (giftId: string): string => {
+    const gift = spiritualGifts.find((g: SpiritualGift) => g.id === giftId)
+    return gift?.name || giftId
+  }
+
+  // ============================================================================
+  // EFFECTS Y FETCH DATA
+  // ============================================================================
+
   useEffect(() => {
     fetchData()
     
     // Add window focus listener for automatic refresh when returning from assessment
     const handleWindowFocus = () => {
-      console.log(' Window focused - refreshing spiritual gifts data...')
+      console.log('Window focused - refreshing spiritual gifts data...')
       fetchData()
     }
     
@@ -94,24 +128,24 @@ export default function SpiritualGiftsManagement() {
 
   const fetchMembers = async () => {
     try {
-      console.log(' Fetching members from /api/members (SAME AS OTHER DASHBOARDS)...')
-      const response = await fetch('/api/members?limit=10000') // Get all members for consistency
+      console.log('Fetching members from /api/members...')
+      const response = await fetch('/api/members?limit=10000')
       if (response.ok) {
         const data = await response.json()
-        console.log(' Members fetched from SAME API as other dashboards:', data.members?.length || data.length, 'members')
+        console.log('Members fetched:', data.members?.length || data.length)
         
         // Use the same data structure as other parts of the app
-        const membersArray = data.members || data
-        console.log(' Members with spiritual gifts:', membersArray.filter((m: any) => getSafeGiftsArray(m.spiritualGifts).length > 0).length)
-        console.log(' Members with spiritual profiles:', membersArray.filter((m: any) => m.spiritualProfile).length)
+        const membersArray: Member[] = data.members || data
+        console.log('Members with spiritual gifts:', membersArray.filter((m: Member) => getSafeGiftsArray(m.spiritualGifts).length > 0).length)
+        console.log('Members with spiritual profiles:', membersArray.filter((m: Member) => m.spiritualProfile).length)
         
         setMembers(membersArray)
       } else {
-        console.error(' Failed to fetch members:', response.status)
+        console.error('Failed to fetch members:', response.status)
         toast.error('Error al cargar miembros')
       }
     } catch (error) {
-      console.error(' Network error fetching members:', error)
+      console.error('Network error fetching members:', error)
       toast.error('Error al cargar miembros')
     }
   }
@@ -126,72 +160,78 @@ export default function SpiritualGiftsManagement() {
         toast.error('Error al cargar dones espirituales')
       }
     } catch (error) {
+      console.error('Error fetching spiritual gifts:', error)
       toast.error('Error al cargar dones espirituales')
     }
   }
 
+  // ============================================================================
+  // HANDLERS
+  // ============================================================================
+
   const openAssessmentDialog = (member: Member) => {
-    console.log(' Opening spiritual assessment for member:', member.id, member.firstName, member.lastName)
-    console.log(' Redirecting to:', `/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
+    console.log('Opening spiritual assessment for member:', member.id, member.firstName, member.lastName)
+    console.log('Redirecting to:', `/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
     
     // Redirect to dedicated spiritual assessment page with returnTo parameter
     router.push(`/volunteers/spiritual-assessment?memberId=${member.id}&returnTo=/spiritual-gifts`)
   }
 
-  const handleAssessmentSave = (profile: any) => {
-    console.log(' handleAssessmentSave called with profile:', profile)
+  const handleAssessmentSave = (profile: SpiritualProfile) => {
+    console.log('handleAssessmentSave called with profile:', profile)
     toast.success('Perfil espiritual guardado exitosamente')
     
-    console.log(' Triggering fetchData() to refresh metrics...')
+    console.log('Triggering fetchData() to refresh metrics...')
     // Refresh data to ensure metrics and profiles are updated
     fetchData().then(() => {
-      console.log(' fetchData() completed - UI should be refreshed')
+      console.log('fetchData() completed - UI should be refreshed')
     }).catch((error) => {
-      console.error(' fetchData() failed:', error)
+      console.error('fetchData() failed:', error)
     })
-    
-    // If the response indicates metrics should be refreshed, trigger any necessary cache updates
-    if (profile.refreshMetrics) {
-      console.log(' Profile has refreshMetrics flag, refreshing metrics...')
-      // Additional metrics refresh logic could go here
-    }
   }
 
-  const filteredMembers = members.filter(member =>
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+  }
+
+  // ============================================================================
+  // FILTROS Y CÁLCULOS
+  // ============================================================================
+
+  const filteredMembers = members.filter((member: Member) =>
     `${member.firstName} ${member.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    member.email?.toLowerCase().includes(searchTerm.toLowerCase())
+    (member.email?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false)
   )
 
-  const membersWithProfiles = filteredMembers.filter(member => {
-    // 🆕 NEW SYSTEM - Check spiritual profile relation (primary)
+  const membersWithProfiles = filteredMembers.filter((member: Member) => {
+    // NEW SYSTEM - Check spiritual profile relation (primary)
     const hasNewProfile = member.spiritualProfile && 
                          member.spiritualProfile.primaryGifts && 
                          member.spiritualProfile.primaryGifts.length > 0
     
-    //  OLD SYSTEM - Check legacy fields (fallback)
+    // OLD SYSTEM - Check legacy fields (fallback)
     const hasOldGifts = getSafeGiftsArray(member.spiritualGifts).length > 0
     
     // Use NEW system if available, fallback to OLD system
     return hasNewProfile || hasOldGifts
   })
 
-  const membersWithoutProfiles = filteredMembers.filter(member => {
-    // 🆕 NEW SYSTEM - Check spiritual profile relation (primary)
+  const membersWithoutProfiles = filteredMembers.filter((member: Member) => {
+    // NEW SYSTEM - Check spiritual profile relation (primary)
     const hasNewProfile = member.spiritualProfile && 
                          member.spiritualProfile.primaryGifts && 
                          member.spiritualProfile.primaryGifts.length > 0
     
-    //  OLD SYSTEM - Check legacy fields (fallback)
+    // OLD SYSTEM - Check legacy fields (fallback)
     const hasOldGifts = getSafeGiftsArray(member.spiritualGifts).length > 0
     
     // Member lacks profile if NEITHER system has data
     return !hasNewProfile && !hasOldGifts
   })
 
-  const getGiftName = (giftId: string) => {
-    const gift = spiritualGifts.find(g => g.id === giftId)
-    return gift?.name || giftId
-  }
+  // ============================================================================
+  // LOADING STATE
+  // ============================================================================
 
   if (loading) {
     return (
@@ -201,8 +241,13 @@ export default function SpiritualGiftsManagement() {
     )
   }
 
+  // ============================================================================
+  // RENDER PRINCIPAL
+  // ============================================================================
+
   return (
     <div className="container mx-auto p-6 space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
@@ -222,7 +267,7 @@ export default function SpiritualGiftsManagement() {
           <Input
             placeholder="Buscar miembros..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             className="pl-10"
           />
         </div>
@@ -269,7 +314,6 @@ export default function SpiritualGiftsManagement() {
             <div className="text-2xl font-bold">
               {members.length > 0 ? (() => {
                 const percentage = (membersWithProfiles.length / members.length) * 100;
-                // Show 1 decimal place if percentage is less than 1%, otherwise round to whole number
                 return percentage < 1 ? percentage.toFixed(1) : Math.round(percentage);
               })() : 0}%
             </div>
@@ -285,166 +329,179 @@ export default function SpiritualGiftsManagement() {
           <TabsTrigger value="without-profile">Sin Evaluación ({membersWithoutProfiles.length})</TabsTrigger>
         </TabsList>
 
+        {/* Tab: All Members */}
         <TabsContent value="all" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredMembers.map((member) => (
-              <Card key={member.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg">
-                    {member.firstName} {member.lastName}
-                  </CardTitle>
-                  <CardDescription>{member.email}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Display spiritual gifts from NEW system first, fallback to OLD system */}
-                  {member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0 ? (
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Nuevo Sistema)</p>
-                      <div className="flex flex-wrap gap-1">
-                        {(member.spiritualProfile?.primaryGifts || []).slice(0, 3).map((giftId, index) => (
-                          <Badge key={index} variant="default" className="text-xs">
-                            {getGiftName(giftId)}
-                          </Badge>
-                        ))}
-                        {(member.spiritualProfile?.primaryGifts || []).length > 3 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{(member.spiritualProfile?.primaryGifts || []).length - 3} más
-                          </Badge>
+            {filteredMembers.map((member: Member) => {
+              const hasNewProfile = member.spiritualProfile && 
+                                   member.spiritualProfile.primaryGifts && 
+                                   member.spiritualProfile.primaryGifts.length > 0
+              const hasOldGifts = getSafeGiftsArray(member.spiritualGifts).length > 0
+              const hasAnyProfile = hasNewProfile || hasOldGifts
+
+              return (
+                <Card key={member.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">
+                      {member.firstName} {member.lastName}
+                    </CardTitle>
+                    <CardDescription>{member.email}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Display spiritual gifts from NEW system first, fallback to OLD system */}
+                    {hasNewProfile && member.spiritualProfile ? (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Nuevo Sistema)</p>
+                        <div className="flex flex-wrap gap-1">
+                          {member.spiritualProfile.primaryGifts.slice(0, 3).map((giftId: string, index: number) => (
+                            <Badge key={index} variant="default" className="text-xs">
+                              {getGiftName(giftId)}
+                            </Badge>
+                          ))}
+                          {member.spiritualProfile.primaryGifts.length > 3 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{member.spiritualProfile.primaryGifts.length - 3} más
+                            </Badge>
+                          )}
+                        </div>
+                        {member.spiritualProfile.spiritualCalling && (
+                          <p className="text-xs text-muted-foreground mt-2">
+                            Llamado: {member.spiritualProfile.spiritualCalling.substring(0, 50)}...
+                          </p>
                         )}
                       </div>
-                      {member.spiritualProfile.spiritualCalling && (
-                        <p className="text-xs text-muted-foreground mt-2">
-                          Llamado: {member.spiritualProfile.spiritualCalling.substring(0, 50)}...
-                        </p>
+                    ) : hasOldGifts ? (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Sistema Anterior)</p>
+                        <div className="flex flex-wrap gap-1">
+                          {(() => {
+                            const gifts = getSafeGiftsArray(member.spiritualGifts)
+                            return gifts.slice(0, 3).map((giftId: string, index: number) => (
+                              <Badge key={index} variant="default" className="text-xs">
+                                {getGiftName(giftId)}
+                              </Badge>
+                            ))
+                          })()}
+                          {(() => {
+                            const gifts = getSafeGiftsArray(member.spiritualGifts)
+                            return gifts.length > 3 ? (
+                              <Badge variant="outline" className="text-xs">
+                                +{gifts.length - 3} más
+                              </Badge>
+                            ) : null
+                          })()}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-4">
+                        <Brain className="mx-auto h-6 w-6 text-muted-foreground mb-2" />
+                        <p className="text-sm text-muted-foreground">Sin evaluación</p>
+                      </div>
+                    )}
+                    
+                    <div className="flex gap-2">
+                      {hasAnyProfile ? (
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="flex-1"
+                          onClick={() => {
+                            toast.loading('Abriendo evaluación espiritual...')
+                            openAssessmentDialog(member)
+                          }}
+                        >
+                          <Edit className="h-4 w-4 mr-1" />
+                          Ver Perfil
+                        </Button>
+                      ) : (
+                        <Button 
+                          size="sm" 
+                          className="flex-1"
+                          onClick={() => {
+                            toast.loading('Abriendo evaluación espiritual...')
+                            openAssessmentDialog(member)
+                          }}
+                        >
+                          <Plus className="h-4 w-4 mr-1" />
+                          Crear Evaluación
+                        </Button>
                       )}
                     </div>
-                  ) : getSafeGiftsArray(member.spiritualGifts).length > 0 ? (
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        </TabsContent>
+
+        {/* Tab: With Profile */}
+        <TabsContent value="with-profile">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {membersWithProfiles.map((member: Member) => {
+              const hasNewProfile = member.spiritualProfile && 
+                                   member.spiritualProfile.primaryGifts && 
+                                   member.spiritualProfile.primaryGifts.length > 0
+
+              return (
+                <Card key={member.id} className="hover:shadow-lg transition-shadow border-[hsl(var(--success)/0.3)]">
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      {member.firstName} {member.lastName}
+                      <Badge variant="default" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
+                        Completado
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription>{member.email}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground mb-2">Dones Primarios (Sistema Anterior)</p>
+                      <p className="text-sm font-medium text-muted-foreground mb-2">Dones Espirituales</p>
                       <div className="flex flex-wrap gap-1">
-                        {(() => {
-                          const gifts = getSafeGiftsArray(member.spiritualGifts)
-                          return gifts.slice(0, 3).map((giftId, index) => (
+                        {hasNewProfile && member.spiritualProfile ? (
+                          member.spiritualProfile.primaryGifts.map((giftId: string, index: number) => (
                             <Badge key={index} variant="default" className="text-xs">
                               {getGiftName(giftId)}
                             </Badge>
                           ))
-                        })()}
-                        {(() => {
-                          const gifts = getSafeGiftsArray(member.spiritualGifts)
-                          return gifts.length > 3 && (
-                            <Badge variant="outline" className="text-xs">
-                              +{gifts.length - 3} más
+                        ) : (
+                          getSafeGiftsArray(member.spiritualGifts).map((giftId: string, index: number) => (
+                            <Badge key={index} variant="default" className="text-xs">
+                              {getGiftName(giftId)}
                             </Badge>
-                          )
-                        })()}
+                          ))
+                        )}
                       </div>
                     </div>
-                  ) : (
-                    <div className="text-center py-4">
-                      <Brain className="mx-auto h-6 w-6 text-muted-foreground mb-2" />
-                      <p className="text-sm text-muted-foreground">Sin evaluación</p>
-                    </div>
-                  )}
-                  
-                  <div className="flex gap-2">
-                    {/* Check if member has profile in EITHER system */}
-                    {((member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0) || 
-                      getSafeGiftsArray(member.spiritualGifts).length > 0) ? (
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="flex-1"
-                        onClick={() => {
-                          toast.loading('Abriendo evaluación espiritual...')
-                          openAssessmentDialog(member)
-                        }}
-                      >
-                        <Edit className="h-4 w-4 mr-1" />
-                        Ver Perfil
-                      </Button>
-                    ) : (
-                      <Button 
-                        size="sm" 
-                        className="flex-1"
-                        onClick={() => {
-                          toast.loading('Abriendo evaluación espiritual...')
-                          openAssessmentDialog(member)
-                        }}
-                      >
-                        <Plus className="h-4 w-4 mr-1" />
-                        Crear Evaluación
-                      </Button>
+                    
+                    {member.spiritualProfile?.assessmentDate && (
+                      <p className="text-xs text-muted-foreground">
+                        Evaluado: {new Date(member.spiritualProfile.assessmentDate).toLocaleDateString()}
+                      </p>
                     )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => {
+                        toast.loading('Abriendo evaluación espiritual...')
+                        openAssessmentDialog(member)
+                      }}
+                    >
+                      <Edit className="h-4 w-4 mr-1" />
+                      Ver Perfil
+                    </Button>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </TabsContent>
 
-        <TabsContent value="with-profile">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {membersWithProfiles.map((member) => (
-              <Card key={member.id} className="hover:shadow-lg transition-shadow border-[hsl(var(--success)/0.3)]">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    {member.firstName} {member.lastName}
-                    <Badge variant="default" className="bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))]">
-                      Completado
-                    </Badge>
-                  </CardTitle>
-                  <CardDescription>{member.email}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-2">Dones Espirituales</p>
-                    <div className="flex flex-wrap gap-1">
-                      {/* Display gifts from NEW system first, fallback to OLD system */}
-                      {member.spiritualProfile && member.spiritualProfile.primaryGifts && member.spiritualProfile.primaryGifts.length > 0 ? (
-                        member.spiritualProfile.primaryGifts.map((giftId, index) => (
-                          <Badge key={index} variant="default" className="text-xs">
-                            {getGiftName(giftId)}
-                          </Badge>
-                        ))
-                      ) : (
-                        member.spiritualGifts?.map((giftId, index) => (
-                          <Badge key={index} variant="default" className="text-xs">
-                            {getGiftName(giftId)}
-                          </Badge>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                  
-                  {/* Show assessment date if available from NEW system */}
-                  {member.spiritualProfile?.assessmentDate && (
-                    <p className="text-xs text-muted-foreground">
-                      Evaluado: {new Date(member.spiritualProfile.assessmentDate).toLocaleDateString()}
-                    </p>
-                  )}
-                  
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => {
-                      toast.loading('Abriendo evaluación espiritual...')
-                      openAssessmentDialog(member)
-                    }}
-                  >
-                    <Edit className="h-4 w-4 mr-1" />
-                    Ver Perfil
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
+        {/* Tab: Without Profile */}
         <TabsContent value="without-profile">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {membersWithoutProfiles.map((member) => (
+            {membersWithoutProfiles.map((member: Member) => (
               <Card key={member.id} className="hover:shadow-lg transition-shadow border-[hsl(var(--warning)/0.3)]">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">

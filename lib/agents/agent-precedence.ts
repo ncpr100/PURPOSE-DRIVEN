@@ -4,7 +4,7 @@
 // 2. Platform Toggle (agent_settings.isEnabled) ? If no override
 // 3. Plan Default (pricing_config.agents) ? Fallback base
 import { db } from "@/lib/db";
-import { cacheManager } from "@/lib/redis-cache-manager";
+import { cacheManager } from "@/lib/services/cache-manager";
 export interface AgentStatus {
   agentId: number;
   agentName: string;

@@ -3,11 +3,14 @@
 // Monthly UX friction detection and improvement recommendation engine.
 // Runs: Monday 9am UTC (1st of each month cadence via cron filter).
 // Output: Stores recommendations in performance_recommendations with category='ux_friction'.
-// HITL PROTOCOL: Generates report only — no direct UI changes.
+// HITL PROTOCOL: Generates report only —” no direct UI changes.
 
 import { db } from "@/lib/db";
 import { intelligentRouter } from "@/lib/ai/intelligent-router";
-import { getAgent15ProductDesignerPrompt, ProductDesignerContext } from "@/lib/agents/prompts/agent-15-product-designer";
+import {
+  getAgent15ProductDesignerPrompt,
+  ProductDesignerContext,
+} from "@/lib/agents/prompts/agent-15-product-designer";
 import { agent15ProductDesignerSchema } from "@/lib/agents/schemas/agent-15-schema";
 
 export async function runProductDesignerAnalysis(): Promise<{
@@ -23,35 +26,35 @@ export async function runProductDesignerAnalysis(): Promise<{
   const reportMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-  // ── 1. Platform-level stats ──────────────────────────────────
+  // 1. Platform-level stats
   const [totalChurches, activeChurches] = await Promise.all([
     db.churches.count(),
     db.churches.count({ where: { isActive: true } }),
   ]);
 
-  // ── 2. Top error routes (from platform_incidents) ────────────
+  // 2. Top error routes (from platform_incidents)
   const recentIncidents = await db.platform_incidents.findMany({
     where: { detectedAt: { gte: thirtyDaysAgo } },
     select: {
       title: true,
       severity: true,
       timeToResolveMs: true,
-      affectedService: true,
+      affectedServices: true,
     },
     orderBy: { detectedAt: "desc" },
     take: 10,
   });
 
   const topErrorRoutes = recentIncidents
-    .filter((i) => i.affectedService)
+    .filter((i) => i.affectedServices)
     .slice(0, 5)
     .map((i) => ({
-      route: i.affectedService!,
+      route: i.affectedServices!,
       errorCount: 1,
-      errorRate: 0.05, // Estimated — no per-route error tracking in current schema
+      errorRate: 0.05, // Estimated —” no per-route error tracking in current schema
     }));
 
-  // ── 3. Slow routes (from performance_recommendations) ────────
+  // 3. Slow routes (from performance_recommendations)
   const perfRecommendations = await db.performance_recommendations.findMany({
     where: {
       isActioned: false,
@@ -70,41 +73,48 @@ export async function runProductDesignerAnalysis(): Promise<{
       p95DurationMs: 5000,
     }));
 
-  // ── 4. Feature adoption gaps ─────────────────────────────────
+  // 4. Feature
   const [totalWithAgents, totalWithFormBuilder] = await Promise.all([
     db.agent_settings.count({ where: { isEnabled: true } }),
     db.custom_forms.count(),
   ]);
 
   const featureAdoptionGaps: string[] = [];
-  const agentAdoptionPct = totalChurches > 0
-    ? (totalWithAgents / (totalChurches * 15)) * 100
-    : 0;
+  const agentAdoptionPct =
+    totalChurches > 0 ? (totalWithAgents / (totalChurches * 15)) * 100 : 0;
   if (agentAdoptionPct < 30) {
     featureAdoptionGaps.push(
-      `Agentes IA: ${agentAdoptionPct.toFixed(0)}% de slots de agentes activados en total`
+      `Agentes IA: ${agentAdoptionPct.toFixed(0)}% de slots de agentes activados en total`,
     );
   }
   if (totalWithFormBuilder < totalChurches * 0.5) {
     featureAdoptionGaps.push(
-      `Form Builder: solo ${totalWithFormBuilder} formularios creados para ${totalChurches} iglesias`
+      `Form Builder: solo ${totalWithFormBuilder} formularios creados para ${totalChurches} iglesias`,
     );
   }
 
-  // ── 5. Build context and call intelligentRouter ───────────────
+  // 5. Build context and call intelligentRouter
+  const recentIncidentsMapped = recentIncidents.map((i) => ({
+    title: i.title,
+    severity: i.severity as string,
+    resolvedIn: i.timeToResolveMs
+      ? `${(i.timeToResolveMs / 1000).toFixed(1)}s`
+      : "unresolved",
+  }));
+
   const context: ProductDesignerContext = {
     reportMonth,
     totalChurches,
     activeChurches,
-    topErrorRoutes,
-    slowRoutes,
-    recentIncidents: recentIncidents.slice(0, 5).map((i) => ({
-      title: i.title,
-      severity: i.severity,
-      resolvedIn: i.timeToResolveMs
-        ? `${Math.round(i.timeToResolveMs / 60000)}min`
-        : "pendiente",
+    // ✅ FIX: Normalizar route a string (era string[] causando TS2322)
+    topErrorRoutes: topErrorRoutes.map((r) => ({
+      route: Array.isArray(r.route) ? r.route.join(", ") : r.route,
+      errorCount: r.errorCount,
+      errorRate: r.errorRate,
     })),
+    // ✅ ADDED: Propiedades requeridas por ProductDesignerContext
+    slowRoutes,
+    recentIncidents: recentIncidentsMapped,
     featureAdoptionGaps,
   };
 
@@ -135,7 +145,7 @@ export async function runProductDesignerAnalysis(): Promise<{
     reportMonth: string;
   };
 
-  // ── 6. Persist friction points as performance_recommendations ──
+  // 6. Persist friction points as performance_recommendations
   const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
   if (report.frictionPoints.length > 0) {
@@ -144,7 +154,12 @@ export async function runProductDesignerAnalysis(): Promise<{
         category: "ux_friction",
         title: `[${fp.severity}] ${fp.area}: ${fp.description.substring(0, 100)}`,
         description: `${fp.description}\n\nUsuarios afectados: ${fp.affectedUsers}`,
-        impact: fp.severity === "HIGH" ? "critical" : fp.severity === "MEDIUM" ? "high" : "medium",
+        impact:
+          fp.severity === "HIGH"
+            ? "critical"
+            : fp.severity === "MEDIUM"
+              ? "high"
+              : "medium",
         effort: "medium",
         affectedRoute: fp.area,
         codeSnippet: fp.suggestedFix,
@@ -169,7 +184,7 @@ export async function runProductDesignerAnalysis(): Promise<{
   }
 
   console.log(
-    `[PRODUCT_DESIGNER] Report ${reportMonth}: ${report.frictionPoints.length} friction points, ${report.quickWins.length} quick wins`
+    `[PRODUCT_DESIGNER] Report ${reportMonth}: ${report.frictionPoints.length} friction points, ${report.quickWins.length} quick wins`,
   );
 
   return {

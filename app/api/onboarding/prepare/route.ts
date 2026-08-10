@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
@@ -39,9 +39,9 @@ export async function POST(request: NextRequest) {
       adminEmail,
       planTier,
     } = body;
-    // ═════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     // VALIDACIONES
-    // ═════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     const errors: string[] = [];
     if (!churchName || churchName.trim().length < 3) {
       errors.push('El nombre de la iglesia es requerido (mínimo 3 caracteres)');
@@ -74,18 +74,16 @@ export async function POST(request: NextRequest) {
         { status: 409 }
       );
     }
-    // ═════════════════════════════════════════════════════════
-    // CREAR CHURCH + USER EN TRANSACCIÓN
-    // ═════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+    // CREAR CHURCH + USER EN TRANSACCIñ“N
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     const result = await db.$transaction(async (tx) => {
       // 1. Crear iglesia (status PENDING hasta que Paddle confirme pago)
-      const church = await tx.churches.create({
-        data: {
+      const church = await tx.churches.create({ data: { id: crypto.randomUUID(),
           name: churchName.trim(),
           country: country.trim(),
-          denomination: denomination?.trim() || null,
           language: (language || 'es').toLowerCase(),
-          isActive: false, // ← Se activa cuando Paddle confirme payment
+          isActive: false, // â† Se activa cuando Paddle confirme payment
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -94,14 +92,13 @@ export async function POST(request: NextRequest) {
       const tempPassword = crypto.randomBytes(12).toString('base64url');
       const hashedPassword = await bcrypt.hash(tempPassword, 12);
       // 3. Crear usuario admin de la iglesia
-      const admin = await tx.users.create({
-        data: {
+      const admin = await tx.users.create({ data: { id: crypto.randomUUID(),
           email: adminEmail.toLowerCase().trim(),
           name: adminName.trim(),
           password: hashedPassword,
           role: 'ADMIN_IGLESIA',
           churchId: church.id,
-          isActive: false, // ← Se activa cuando Paddle confirme payment
+          isActive: false, // â† Se activa cuando Paddle confirme payment
           isFirstLogin: true,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -109,9 +106,9 @@ export async function POST(request: NextRequest) {
       });
       return { church, admin, tempPassword };
     });
-    // ═════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     // MAPEAR PLAN TIER A PADDLE PRICE ID
-    // ═════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     // NOTA: Reemplaza estos IDs con los reales de tu Paddle Dashboard
     const paddlePriceMap: Record<string, string> = {
       semilla: process.env.PADDLE_PRICE_SEMILLA || 'pri_01ht6x0y7q5y5y5y5y5y5y5y',
@@ -122,9 +119,9 @@ export async function POST(request: NextRequest) {
     };
     const paddlePriceId = paddlePriceMap[planTier];
     console.log(`[Onboarding] Church ${result.church.id} created (PENDING), preparing Paddle checkout for ${planTier}`);
-    // ═════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     // RESPUESTA AL CLIENTE
-    // ═════════════════════════════════════════════════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     return NextResponse.json({
       success: true,
       churchId: result.church.id,
@@ -143,3 +140,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+

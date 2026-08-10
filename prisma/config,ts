@@ -1,0 +1,14 @@
+// prisma/config.ts
+import { defineConfig } from "prisma/config";
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error("Missing DATABASE_URL in .env file");
+}
+
+export default defineConfig({
+  engine: "classic", // ✅ FIX: Required by Prisma 7 config schema
+  datasource: {
+    url: databaseUrl,
+  },
+});
